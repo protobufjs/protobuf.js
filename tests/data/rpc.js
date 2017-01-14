@@ -3,6 +3,11 @@
 
 var $protobuf = require("../../runtime");
 
+// Common aliases
+var $Reader = $protobuf.Reader,
+    $Writer = $protobuf.Writer,
+    $util   = $protobuf.util;
+
 // Lazily resolved type references
 var $lazyTypes = [];
 
@@ -134,20 +139,19 @@ $root.MyRequest = (function() {
 
     /**
      * Encodes the specified MyRequest message.
-     * @function
      * @param {MyRequest|Object} message MyRequest message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    MyRequest.encode = (function(Writer) { return function encode(message, writer) {
+    MyRequest.encode = function encode(message, writer) {
         if (!writer) {
-            writer = Writer.create();
+            writer = $Writer.create();
         }
         if (message.path !== undefined && message.path !== "") {
             writer.uint32(10).string(message.path);
         }
         return writer;
-    };})($protobuf.Writer);
+    };
 
     /**
      * Encodes the specified MyRequest message, length delimited.
@@ -161,14 +165,13 @@ $root.MyRequest = (function() {
 
     /**
      * Decodes a MyRequest message from the specified reader or buffer.
-     * @function
      * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
      * @param {number} [length] Message length if known beforehand
      * @returns {MyRequest} MyRequest
      */
-    MyRequest.decode = (function(Reader) { return function decode(reader, len) {
-        if (!(reader instanceof Reader)) {
-            reader = Reader.create(reader);
+    MyRequest.decode = function decode(reader, len) {
+        if (!(reader instanceof $Reader)) {
+            reader = $Reader.create(reader);
         }
         var end = len === undefined ? reader.len : reader.pos + len, message = new $root.MyRequest();
         while (reader.pos < end) {
@@ -184,7 +187,7 @@ $root.MyRequest = (function() {
             }
         }
         return message;
-    };})($protobuf.Reader);
+    };
 
     /**
      * Decodes a MyRequest message from the specified reader or buffer, length delimited.
@@ -192,24 +195,23 @@ $root.MyRequest = (function() {
      * @returns {MyRequest} MyRequest
      */
     MyRequest.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-        readerOrBuffer = readerOrBuffer instanceof $protobuf.Reader ? readerOrBuffer : $protobuf.Reader(readerOrBuffer);
+        readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
         return this.decode(readerOrBuffer, readerOrBuffer.uint32());
     };
 
     /**
      * Verifies a MyRequest message.
-     * @function
      * @param {MyRequest|Object} message MyRequest message or plain object to verify
      * @returns {?string} `null` if valid, otherwise the reason why it is not
      */
-    MyRequest.verify = (function(util) { return function verify(message) {
+    MyRequest.verify = function verify(message) {
         if (message.path !== undefined) {
-            if (!util.isString(message.path)) {
+            if (!$util.isString(message.path)) {
                 return "path: string expected";
             }
         }
         return null;
-    };})($protobuf.util);
+    };
 
     /**
      * Creates a MyRequest message from a plain object. Also converts values to their respective internal types.
@@ -227,7 +229,6 @@ $root.MyRequest = (function() {
     /**
      * Creates a MyRequest message from a plain object. Also converts values to their respective internal types.
      * This is an alias of {@link MyRequest.fromObject}.
-     * @function
      * @param {Object.<string,*>} object Plain object
      * @returns {MyRequest} MyRequest
      */
@@ -312,20 +313,19 @@ $root.MyResponse = (function() {
 
     /**
      * Encodes the specified MyResponse message.
-     * @function
      * @param {MyResponse|Object} message MyResponse message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    MyResponse.encode = (function(Writer) { return function encode(message, writer) {
+    MyResponse.encode = function encode(message, writer) {
         if (!writer) {
-            writer = Writer.create();
+            writer = $Writer.create();
         }
         if (message.status !== undefined && message.status !== 0) {
             writer.uint32(16).int32(message.status);
         }
         return writer;
-    };})($protobuf.Writer);
+    };
 
     /**
      * Encodes the specified MyResponse message, length delimited.
@@ -339,14 +339,13 @@ $root.MyResponse = (function() {
 
     /**
      * Decodes a MyResponse message from the specified reader or buffer.
-     * @function
      * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
      * @param {number} [length] Message length if known beforehand
      * @returns {MyResponse} MyResponse
      */
-    MyResponse.decode = (function(Reader) { return function decode(reader, len) {
-        if (!(reader instanceof Reader)) {
-            reader = Reader.create(reader);
+    MyResponse.decode = function decode(reader, len) {
+        if (!(reader instanceof $Reader)) {
+            reader = $Reader.create(reader);
         }
         var end = len === undefined ? reader.len : reader.pos + len, message = new $root.MyResponse();
         while (reader.pos < end) {
@@ -362,7 +361,7 @@ $root.MyResponse = (function() {
             }
         }
         return message;
-    };})($protobuf.Reader);
+    };
 
     /**
      * Decodes a MyResponse message from the specified reader or buffer, length delimited.
@@ -370,24 +369,23 @@ $root.MyResponse = (function() {
      * @returns {MyResponse} MyResponse
      */
     MyResponse.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-        readerOrBuffer = readerOrBuffer instanceof $protobuf.Reader ? readerOrBuffer : $protobuf.Reader(readerOrBuffer);
+        readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
         return this.decode(readerOrBuffer, readerOrBuffer.uint32());
     };
 
     /**
      * Verifies a MyResponse message.
-     * @function
      * @param {MyResponse|Object} message MyResponse message or plain object to verify
      * @returns {?string} `null` if valid, otherwise the reason why it is not
      */
-    MyResponse.verify = (function(util) { return function verify(message) {
+    MyResponse.verify = function verify(message) {
         if (message.status !== undefined) {
-            if (!util.isInteger(message.status)) {
+            if (!$util.isInteger(message.status)) {
                 return "status: integer expected";
             }
         }
         return null;
-    };})($protobuf.util);
+    };
 
     /**
      * Creates a MyResponse message from a plain object. Also converts values to their respective internal types.
@@ -405,7 +403,6 @@ $root.MyResponse = (function() {
     /**
      * Creates a MyResponse message from a plain object. Also converts values to their respective internal types.
      * This is an alias of {@link MyResponse.fromObject}.
-     * @function
      * @param {Object.<string,*>} object Plain object
      * @returns {MyResponse} MyResponse
      */
@@ -458,7 +455,7 @@ $root.MyResponse = (function() {
 })();
 
 // Resolve lazy type names to actual types
-$protobuf.util.lazyResolve($root, $lazyTypes);
+$util.lazyResolve($root, $lazyTypes);
 
 $protobuf.roots["test_rpc"] = $root;
 

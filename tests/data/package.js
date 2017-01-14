@@ -3,6 +3,11 @@
 
 var $protobuf = require("../../runtime");
 
+// Common aliases
+var $Reader = $protobuf.Reader,
+    $Writer = $protobuf.Writer,
+    $util   = $protobuf.util;
+
 // Lazily resolved type references
 var $lazyTypes = [];
 
@@ -77,7 +82,7 @@ $root.Package = (function() {
      * Package keywords.
      * @type {Array.<string>}
      */
-    Package.prototype.keywords = $protobuf.util.emptyArray;
+    Package.prototype.keywords = $util.emptyArray;
 
     /**
      * Package main.
@@ -89,31 +94,31 @@ $root.Package = (function() {
      * Package bin.
      * @type {Object.<string,string>}
      */
-    Package.prototype.bin = $protobuf.util.emptyObject;
+    Package.prototype.bin = $util.emptyObject;
 
     /**
      * Package scripts.
      * @type {Object.<string,string>}
      */
-    Package.prototype.scripts = $protobuf.util.emptyObject;
+    Package.prototype.scripts = $util.emptyObject;
 
     /**
      * Package dependencies.
      * @type {Object.<string,string>}
      */
-    Package.prototype.dependencies = $protobuf.util.emptyObject;
+    Package.prototype.dependencies = $util.emptyObject;
 
     /**
      * Package optionalDependencies.
      * @type {Object.<string,string>}
      */
-    Package.prototype.optionalDependencies = $protobuf.util.emptyObject;
+    Package.prototype.optionalDependencies = $util.emptyObject;
 
     /**
      * Package devDependencies.
      * @type {Object.<string,string>}
      */
-    Package.prototype.devDependencies = $protobuf.util.emptyObject;
+    Package.prototype.devDependencies = $util.emptyObject;
 
     /**
      * Package types.
@@ -125,7 +130,7 @@ $root.Package = (function() {
      * Package cliDependencies.
      * @type {Array.<string>}
      */
-    Package.prototype.cliDependencies = $protobuf.util.emptyArray;
+    Package.prototype.cliDependencies = $util.emptyArray;
 
     // Lazily resolved referenced types
     var $types = {5:"Package.Repository"}; $lazyTypes.push($types);
@@ -141,14 +146,13 @@ $root.Package = (function() {
 
     /**
      * Encodes the specified Package message.
-     * @function
      * @param {Package|Object} message Package message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    Package.encode = (function(Writer, util, types) { return function encode(message, writer) {
+    Package.encode = function encode(message, writer) {
         if (!writer) {
-            writer = Writer.create();
+            writer = $Writer.create();
         }
         if (message.name !== undefined && message.name !== "") {
             writer.uint32(10).string(message.name);
@@ -166,7 +170,7 @@ $root.Package = (function() {
             writer.uint32(42).string(message.license);
         }
         if (message.repository !== undefined && message.repository !== null) {
-            types[5].encode(message.repository, writer.uint32(50).fork()).ldelim();
+            $types[5].encode(message.repository, writer.uint32(50).fork()).ldelim();
         }
         if (message.bugs !== undefined && message.bugs !== "") {
             writer.uint32(58).string(message.bugs);
@@ -182,33 +186,33 @@ $root.Package = (function() {
         if (message.main !== undefined && message.main !== "") {
             writer.uint32(82).string(message.main);
         }
-        if (message.bin && message.bin !== util.emptyObject) {
+        if (message.bin && message.bin !== $util.emptyObject) {
             for (var keys = Object.keys(message.bin), i = 0; i < keys.length; ++i) {
                 writer.uint32(90).fork().uint32(10).string(keys[i]).uint32(18).string(message.bin[keys[i]]).ldelim();
             }
         }
-        if (message.scripts && message.scripts !== util.emptyObject) {
+        if (message.scripts && message.scripts !== $util.emptyObject) {
             for (var keys = Object.keys(message.scripts), i = 0; i < keys.length; ++i) {
                 writer.uint32(98).fork().uint32(10).string(keys[i]).uint32(18).string(message.scripts[keys[i]]).ldelim();
             }
         }
-        if (message.dependencies && message.dependencies !== util.emptyObject) {
+        if (message.dependencies && message.dependencies !== $util.emptyObject) {
             for (var keys = Object.keys(message.dependencies), i = 0; i < keys.length; ++i) {
                 writer.uint32(106).fork().uint32(10).string(keys[i]).uint32(18).string(message.dependencies[keys[i]]).ldelim();
             }
         }
-        if (message.optionalDependencies && message.optionalDependencies !== util.emptyObject) {
+        if (message.optionalDependencies && message.optionalDependencies !== $util.emptyObject) {
             for (var keys = Object.keys(message.optionalDependencies), i = 0; i < keys.length; ++i) {
                 writer.uint32(114).fork().uint32(10).string(keys[i]).uint32(18).string(message.optionalDependencies[keys[i]]).ldelim();
             }
         }
-        if (message.devDependencies && message.devDependencies !== util.emptyObject) {
+        if (message.devDependencies && message.devDependencies !== $util.emptyObject) {
             for (var keys = Object.keys(message.devDependencies), i = 0; i < keys.length; ++i) {
                 writer.uint32(122).fork().uint32(10).string(keys[i]).uint32(18).string(message.devDependencies[keys[i]]).ldelim();
             }
         }
-        if (message.types !== undefined && message.types !== "") {
-            writer.uint32(138).string(message.types);
+        if (message.$types !== undefined && message.$types !== "") {
+            writer.uint32(138).string(message.$types);
         }
         if (message.cliDependencies) {
             for (var i = 0; i < message.cliDependencies.length; ++i) {
@@ -216,7 +220,7 @@ $root.Package = (function() {
             }
         }
         return writer;
-    };})($protobuf.Writer, $protobuf.util, $types);
+    };
 
     /**
      * Encodes the specified Package message, length delimited.
@@ -230,14 +234,13 @@ $root.Package = (function() {
 
     /**
      * Decodes a Package message from the specified reader or buffer.
-     * @function
      * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
      * @param {number} [length] Message length if known beforehand
      * @returns {Package} Package
      */
-    Package.decode = (function(Reader, util, types) { return function decode(reader, len) {
-        if (!(reader instanceof Reader)) {
-            reader = Reader.create(reader);
+    Package.decode = function decode(reader, len) {
+        if (!(reader instanceof $Reader)) {
+            reader = $Reader.create(reader);
         }
         var end = len === undefined ? reader.len : reader.pos + len, message = new $root.Package();
         while (reader.pos < end) {
@@ -264,7 +267,7 @@ $root.Package = (function() {
                 break;
 
             case 6:
-                message.repository = types[5].decode(reader, reader.uint32());
+                message.repository = $types[5].decode(reader, reader.uint32());
                 break;
 
             case 7:
@@ -288,56 +291,56 @@ $root.Package = (function() {
 
             case 11:
                 reader.skip().pos++;
-                if (message.bin === util.emptyObject) {
+                if (message.bin === $util.emptyObject) {
                     message.bin = {};
                 }
                 var key = reader.string();
                 reader.pos++;
-                message.bin[typeof key === "object" ? util.longToHash(key) : key] = reader.string();
+                message.bin[typeof key === "object" ? $util.longToHash(key) : key] = reader.string();
                 break;
 
             case 12:
                 reader.skip().pos++;
-                if (message.scripts === util.emptyObject) {
+                if (message.scripts === $util.emptyObject) {
                     message.scripts = {};
                 }
                 var key = reader.string();
                 reader.pos++;
-                message.scripts[typeof key === "object" ? util.longToHash(key) : key] = reader.string();
+                message.scripts[typeof key === "object" ? $util.longToHash(key) : key] = reader.string();
                 break;
 
             case 13:
                 reader.skip().pos++;
-                if (message.dependencies === util.emptyObject) {
+                if (message.dependencies === $util.emptyObject) {
                     message.dependencies = {};
                 }
                 var key = reader.string();
                 reader.pos++;
-                message.dependencies[typeof key === "object" ? util.longToHash(key) : key] = reader.string();
+                message.dependencies[typeof key === "object" ? $util.longToHash(key) : key] = reader.string();
                 break;
 
             case 14:
                 reader.skip().pos++;
-                if (message.optionalDependencies === util.emptyObject) {
+                if (message.optionalDependencies === $util.emptyObject) {
                     message.optionalDependencies = {};
                 }
                 var key = reader.string();
                 reader.pos++;
-                message.optionalDependencies[typeof key === "object" ? util.longToHash(key) : key] = reader.string();
+                message.optionalDependencies[typeof key === "object" ? $util.longToHash(key) : key] = reader.string();
                 break;
 
             case 15:
                 reader.skip().pos++;
-                if (message.devDependencies === util.emptyObject) {
+                if (message.devDependencies === $util.emptyObject) {
                     message.devDependencies = {};
                 }
                 var key = reader.string();
                 reader.pos++;
-                message.devDependencies[typeof key === "object" ? util.longToHash(key) : key] = reader.string();
+                message.devDependencies[typeof key === "object" ? $util.longToHash(key) : key] = reader.string();
                 break;
 
             case 17:
-                message.types = reader.string();
+                message.$types = reader.string();
                 break;
 
             case 18:
@@ -353,7 +356,7 @@ $root.Package = (function() {
             }
         }
         return message;
-    };})($protobuf.Reader, $protobuf.util, $types);
+    };
 
     /**
      * Decodes a Package message from the specified reader or buffer, length delimited.
@@ -361,55 +364,54 @@ $root.Package = (function() {
      * @returns {Package} Package
      */
     Package.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-        readerOrBuffer = readerOrBuffer instanceof $protobuf.Reader ? readerOrBuffer : $protobuf.Reader(readerOrBuffer);
+        readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
         return this.decode(readerOrBuffer, readerOrBuffer.uint32());
     };
 
     /**
      * Verifies a Package message.
-     * @function
      * @param {Package|Object} message Package message or plain object to verify
      * @returns {?string} `null` if valid, otherwise the reason why it is not
      */
-    Package.verify = (function(util, types) { return function verify(message) {
+    Package.verify = function verify(message) {
         if (message.name !== undefined) {
-            if (!util.isString(message.name)) {
+            if (!$util.isString(message.name)) {
                 return "name: string expected";
             }
         }
         if (message.version !== undefined) {
-            if (!util.isString(message.version)) {
+            if (!$util.isString(message.version)) {
                 return "version: string expected";
             }
         }
         if (message.description !== undefined) {
-            if (!util.isString(message.description)) {
+            if (!$util.isString(message.description)) {
                 return "description: string expected";
             }
         }
         if (message.author !== undefined) {
-            if (!util.isString(message.author)) {
+            if (!$util.isString(message.author)) {
                 return "author: string expected";
             }
         }
         if (message.license !== undefined) {
-            if (!util.isString(message.license)) {
+            if (!$util.isString(message.license)) {
                 return "license: string expected";
             }
         }
         if (message.repository !== undefined && message.repository !== null) {
-            var err = types[5].verify(message.repository);
+            var err = $types[5].verify(message.repository);
             if (err) {
                 return "repository." + err;
             }
         }
         if (message.bugs !== undefined) {
-            if (!util.isString(message.bugs)) {
+            if (!$util.isString(message.bugs)) {
                 return "bugs: string expected";
             }
         }
         if (message.homepage !== undefined) {
-            if (!util.isString(message.homepage)) {
+            if (!$util.isString(message.homepage)) {
                 return "homepage: string expected";
             }
         }
@@ -418,74 +420,74 @@ $root.Package = (function() {
                 return "keywords: array expected";
             }
             for (var i = 0; i < message.keywords.length; ++i) {
-                if (!util.isString(message.keywords[i])) {
+                if (!$util.isString(message.keywords[i])) {
                     return "keywords: string[] expected";
                 }
             }
         }
         if (message.main !== undefined) {
-            if (!util.isString(message.main)) {
+            if (!$util.isString(message.main)) {
                 return "main: string expected";
             }
         }
         if (message.bin !== undefined) {
-            if (!util.isObject(message.bin)) {
+            if (!$util.isObject(message.bin)) {
                 return "bin: object expected";
             }
             var key = Object.keys(message.bin);
             for (var i = 0; i < key.length; ++i) {
-                if (!util.isString(message.bin[key[i]])) {
+                if (!$util.isString(message.bin[key[i]])) {
                     return "bin: string{key:string} expected";
                 }
             }
         }
         if (message.scripts !== undefined) {
-            if (!util.isObject(message.scripts)) {
+            if (!$util.isObject(message.scripts)) {
                 return "scripts: object expected";
             }
             var key = Object.keys(message.scripts);
             for (var i = 0; i < key.length; ++i) {
-                if (!util.isString(message.scripts[key[i]])) {
+                if (!$util.isString(message.scripts[key[i]])) {
                     return "scripts: string{key:string} expected";
                 }
             }
         }
         if (message.dependencies !== undefined) {
-            if (!util.isObject(message.dependencies)) {
+            if (!$util.isObject(message.dependencies)) {
                 return "dependencies: object expected";
             }
             var key = Object.keys(message.dependencies);
             for (var i = 0; i < key.length; ++i) {
-                if (!util.isString(message.dependencies[key[i]])) {
+                if (!$util.isString(message.dependencies[key[i]])) {
                     return "dependencies: string{key:string} expected";
                 }
             }
         }
         if (message.optionalDependencies !== undefined) {
-            if (!util.isObject(message.optionalDependencies)) {
+            if (!$util.isObject(message.optionalDependencies)) {
                 return "optionalDependencies: object expected";
             }
             var key = Object.keys(message.optionalDependencies);
             for (var i = 0; i < key.length; ++i) {
-                if (!util.isString(message.optionalDependencies[key[i]])) {
+                if (!$util.isString(message.optionalDependencies[key[i]])) {
                     return "optionalDependencies: string{key:string} expected";
                 }
             }
         }
         if (message.devDependencies !== undefined) {
-            if (!util.isObject(message.devDependencies)) {
+            if (!$util.isObject(message.devDependencies)) {
                 return "devDependencies: object expected";
             }
             var key = Object.keys(message.devDependencies);
             for (var i = 0; i < key.length; ++i) {
-                if (!util.isString(message.devDependencies[key[i]])) {
+                if (!$util.isString(message.devDependencies[key[i]])) {
                     return "devDependencies: string{key:string} expected";
                 }
             }
         }
-        if (message.types !== undefined) {
-            if (!util.isString(message.types)) {
-                return "types: string expected";
+        if (message.$types !== undefined) {
+            if (!$util.isString(message.$types)) {
+                return "$types: string expected";
             }
         }
         if (message.cliDependencies !== undefined) {
@@ -493,20 +495,20 @@ $root.Package = (function() {
                 return "cliDependencies: array expected";
             }
             for (var i = 0; i < message.cliDependencies.length; ++i) {
-                if (!util.isString(message.cliDependencies[i])) {
+                if (!$util.isString(message.cliDependencies[i])) {
                     return "cliDependencies: string[] expected";
                 }
             }
         }
         return null;
-    };})($protobuf.util, $types);
+    };
 
     /**
      * Creates a Package message from a plain object. Also converts values to their respective internal types.
      * @param {Object.<string,*>} object Plain object
      * @returns {Package} Package
      */
-    Package.fromObject = (function(types) { return function fromObject(object) {
+    Package.fromObject = function fromObject(object) {
         var message = new $root.Package();
         if (object.name !== undefined && object.name !== null) {
             message.name = String(object.name);
@@ -524,7 +526,7 @@ $root.Package = (function() {
             message.license = String(object.license);
         }
         if (object.repository !== undefined && object.repository !== null) {
-            message.repository = types[5].fromObject(object.repository);
+            message.repository = $types[5].fromObject(object.repository);
         }
         if (object.bugs !== undefined && object.bugs !== null) {
             message.bugs = String(object.bugs);
@@ -571,8 +573,8 @@ $root.Package = (function() {
                 message.devDependencies[keys[i]] = String(object.devDependencies[keys[i]]);
             }
         }
-        if (object.types !== undefined && object.types !== null) {
-            message.types = String(object.types);
+        if (object.$types !== undefined && object.$types !== null) {
+            message.$types = String(object.$types);
         }
         if (object.cliDependencies) {
             message.cliDependencies = [];
@@ -581,12 +583,11 @@ $root.Package = (function() {
             }
         }
         return message;
-    };})($types);
+    };
 
     /**
      * Creates a Package message from a plain object. Also converts values to their respective internal types.
      * This is an alias of {@link Package.fromObject}.
-     * @function
      * @param {Object.<string,*>} object Plain object
      * @returns {Package} Package
      */
@@ -598,7 +599,7 @@ $root.Package = (function() {
      * @param {$protobuf.ConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      */
-    Package.toObject = (function(util, types) { return function toObject(message, options) {
+    Package.toObject = function toObject(message, options) {
         if (!options) {
             options = {};
         }
@@ -624,7 +625,7 @@ $root.Package = (function() {
             object.bugs = "";
             object.homepage = "";
             object.main = "";
-            object.types = "";
+            object.$types = "";
         }
         for (var keys = Object.keys(message), i = 0; i < keys.length; ++i) {
             switch (keys[i]) {
@@ -660,7 +661,7 @@ $root.Package = (function() {
 
             case "repository":
                 if (message.repository !== undefined && message.repository !== null) {
-                    object.repository = types[5].toObject(message.repository, options);
+                    object.repository = $types[5].toObject(message.repository, options);
                 }
                 break;
 
@@ -692,7 +693,7 @@ $root.Package = (function() {
                 break;
 
             case "bin":
-                if (message.bin && message.bin !== util.emptyObject) {
+                if (message.bin && message.bin !== $util.emptyObject) {
                     object.bin = {};
                     for (var keys2 = Object.keys(message.bin), j = 0; j < keys2.length; ++j) {
                         object.bin[keys2[j]] = message.bin[keys2[j]];
@@ -701,7 +702,7 @@ $root.Package = (function() {
                 break;
 
             case "scripts":
-                if (message.scripts && message.scripts !== util.emptyObject) {
+                if (message.scripts && message.scripts !== $util.emptyObject) {
                     object.scripts = {};
                     for (var keys2 = Object.keys(message.scripts), j = 0; j < keys2.length; ++j) {
                         object.scripts[keys2[j]] = message.scripts[keys2[j]];
@@ -710,7 +711,7 @@ $root.Package = (function() {
                 break;
 
             case "dependencies":
-                if (message.dependencies && message.dependencies !== util.emptyObject) {
+                if (message.dependencies && message.dependencies !== $util.emptyObject) {
                     object.dependencies = {};
                     for (var keys2 = Object.keys(message.dependencies), j = 0; j < keys2.length; ++j) {
                         object.dependencies[keys2[j]] = message.dependencies[keys2[j]];
@@ -719,7 +720,7 @@ $root.Package = (function() {
                 break;
 
             case "optionalDependencies":
-                if (message.optionalDependencies && message.optionalDependencies !== util.emptyObject) {
+                if (message.optionalDependencies && message.optionalDependencies !== $util.emptyObject) {
                     object.optionalDependencies = {};
                     for (var keys2 = Object.keys(message.optionalDependencies), j = 0; j < keys2.length; ++j) {
                         object.optionalDependencies[keys2[j]] = message.optionalDependencies[keys2[j]];
@@ -728,7 +729,7 @@ $root.Package = (function() {
                 break;
 
             case "devDependencies":
-                if (message.devDependencies && message.devDependencies !== util.emptyObject) {
+                if (message.devDependencies && message.devDependencies !== $util.emptyObject) {
                     object.devDependencies = {};
                     for (var keys2 = Object.keys(message.devDependencies), j = 0; j < keys2.length; ++j) {
                         object.devDependencies[keys2[j]] = message.devDependencies[keys2[j]];
@@ -736,9 +737,9 @@ $root.Package = (function() {
                 }
                 break;
 
-            case "types":
-                if (message.types !== undefined && message.types !== null) {
-                    object.types = message.types;
+            case "$types":
+                if (message.$types !== undefined && message.$types !== null) {
+                    object.$types = message.$types;
                 }
                 break;
 
@@ -753,7 +754,7 @@ $root.Package = (function() {
             }
         }
         return object;
-    };})($protobuf.util, $types);
+    };
 
     /**
      * Creates a plain object from this Package message. Also converts values to other types if specified.
@@ -811,14 +812,13 @@ $root.Package = (function() {
 
         /**
          * Encodes the specified Repository message.
-         * @function
          * @param {Package.Repository|Object} message Repository message or plain object to encode
          * @param {$protobuf.Writer} [writer] Writer to encode to
          * @returns {$protobuf.Writer} Writer
          */
-        Repository.encode = (function(Writer) { return function encode(message, writer) {
+        Repository.encode = function encode(message, writer) {
             if (!writer) {
-                writer = Writer.create();
+                writer = $Writer.create();
             }
             if (message.type !== undefined && message.type !== "") {
                 writer.uint32(10).string(message.type);
@@ -827,7 +827,7 @@ $root.Package = (function() {
                 writer.uint32(18).string(message.url);
             }
             return writer;
-        };})($protobuf.Writer);
+        };
 
         /**
          * Encodes the specified Repository message, length delimited.
@@ -841,14 +841,13 @@ $root.Package = (function() {
 
         /**
          * Decodes a Repository message from the specified reader or buffer.
-         * @function
          * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
          * @param {number} [length] Message length if known beforehand
          * @returns {Package.Repository} Repository
          */
-        Repository.decode = (function(Reader) { return function decode(reader, len) {
-            if (!(reader instanceof Reader)) {
-                reader = Reader.create(reader);
+        Repository.decode = function decode(reader, len) {
+            if (!(reader instanceof $Reader)) {
+                reader = $Reader.create(reader);
             }
             var end = len === undefined ? reader.len : reader.pos + len, message = new $root.Package.Repository();
             while (reader.pos < end) {
@@ -868,7 +867,7 @@ $root.Package = (function() {
                 }
             }
             return message;
-        };})($protobuf.Reader);
+        };
 
         /**
          * Decodes a Repository message from the specified reader or buffer, length delimited.
@@ -876,29 +875,28 @@ $root.Package = (function() {
          * @returns {Package.Repository} Repository
          */
         Repository.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-            readerOrBuffer = readerOrBuffer instanceof $protobuf.Reader ? readerOrBuffer : $protobuf.Reader(readerOrBuffer);
+            readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
             return this.decode(readerOrBuffer, readerOrBuffer.uint32());
         };
 
         /**
          * Verifies a Repository message.
-         * @function
          * @param {Package.Repository|Object} message Repository message or plain object to verify
          * @returns {?string} `null` if valid, otherwise the reason why it is not
          */
-        Repository.verify = (function(util) { return function verify(message) {
+        Repository.verify = function verify(message) {
             if (message.type !== undefined) {
-                if (!util.isString(message.type)) {
+                if (!$util.isString(message.type)) {
                     return "type: string expected";
                 }
             }
             if (message.url !== undefined) {
-                if (!util.isString(message.url)) {
+                if (!$util.isString(message.url)) {
                     return "url: string expected";
                 }
             }
             return null;
-        };})($protobuf.util);
+        };
 
         /**
          * Creates a Repository message from a plain object. Also converts values to their respective internal types.
@@ -919,7 +917,6 @@ $root.Package = (function() {
         /**
          * Creates a Repository message from a plain object. Also converts values to their respective internal types.
          * This is an alias of {@link Package.Repository.fromObject}.
-         * @function
          * @param {Object.<string,*>} object Plain object
          * @returns {Package.Repository} Repository
          */
@@ -982,7 +979,7 @@ $root.Package = (function() {
 })();
 
 // Resolve lazy type names to actual types
-$protobuf.util.lazyResolve($root, $lazyTypes);
+$util.lazyResolve($root, $lazyTypes);
 
 $protobuf.roots["test_package"] = $root;
 

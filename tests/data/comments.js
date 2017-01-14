@@ -3,6 +3,11 @@
 
 var $protobuf = require("../../runtime");
 
+// Common aliases
+var $Reader = $protobuf.Reader,
+    $Writer = $protobuf.Writer,
+    $util   = $protobuf.util;
+
 // Lazily resolved type references
 var $lazyTypes = [];
 
@@ -58,14 +63,13 @@ $root.Test1 = (function() {
 
     /**
      * Encodes the specified Test1 message.
-     * @function
      * @param {Test1|Object} message Test1 message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    Test1.encode = (function(Writer) { return function encode(message, writer) {
+    Test1.encode = function encode(message, writer) {
         if (!writer) {
-            writer = Writer.create();
+            writer = $Writer.create();
         }
         if (message.field1 !== undefined && message.field1 !== "") {
             writer.uint32(10).string(message.field1);
@@ -77,7 +81,7 @@ $root.Test1 = (function() {
             writer.uint32(24).bool(message.field3);
         }
         return writer;
-    };})($protobuf.Writer);
+    };
 
     /**
      * Encodes the specified Test1 message, length delimited.
@@ -91,14 +95,13 @@ $root.Test1 = (function() {
 
     /**
      * Decodes a Test1 message from the specified reader or buffer.
-     * @function
      * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
      * @param {number} [length] Message length if known beforehand
      * @returns {Test1} Test1
      */
-    Test1.decode = (function(Reader) { return function decode(reader, len) {
-        if (!(reader instanceof Reader)) {
-            reader = Reader.create(reader);
+    Test1.decode = function decode(reader, len) {
+        if (!(reader instanceof $Reader)) {
+            reader = $Reader.create(reader);
         }
         var end = len === undefined ? reader.len : reader.pos + len, message = new $root.Test1();
         while (reader.pos < end) {
@@ -122,7 +125,7 @@ $root.Test1 = (function() {
             }
         }
         return message;
-    };})($protobuf.Reader);
+    };
 
     /**
      * Decodes a Test1 message from the specified reader or buffer, length delimited.
@@ -130,24 +133,23 @@ $root.Test1 = (function() {
      * @returns {Test1} Test1
      */
     Test1.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-        readerOrBuffer = readerOrBuffer instanceof $protobuf.Reader ? readerOrBuffer : $protobuf.Reader(readerOrBuffer);
+        readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
         return this.decode(readerOrBuffer, readerOrBuffer.uint32());
     };
 
     /**
      * Verifies a Test1 message.
-     * @function
      * @param {Test1|Object} message Test1 message or plain object to verify
      * @returns {?string} `null` if valid, otherwise the reason why it is not
      */
-    Test1.verify = (function(util) { return function verify(message) {
+    Test1.verify = function verify(message) {
         if (message.field1 !== undefined) {
-            if (!util.isString(message.field1)) {
+            if (!$util.isString(message.field1)) {
                 return "field1: string expected";
             }
         }
         if (message.field2 !== undefined) {
-            if (!util.isInteger(message.field2)) {
+            if (!$util.isInteger(message.field2)) {
                 return "field2: integer expected";
             }
         }
@@ -157,7 +159,7 @@ $root.Test1 = (function() {
             }
         }
         return null;
-    };})($protobuf.util);
+    };
 
     /**
      * Creates a Test1 message from a plain object. Also converts values to their respective internal types.
@@ -181,7 +183,6 @@ $root.Test1 = (function() {
     /**
      * Creates a Test1 message from a plain object. Also converts values to their respective internal types.
      * This is an alias of {@link Test1.fromObject}.
-     * @function
      * @param {Object.<string,*>} object Plain object
      * @returns {Test1} Test1
      */
@@ -274,17 +275,16 @@ $root.Test2 = (function() {
 
     /**
      * Encodes the specified Test2 message.
-     * @function
      * @param {Test2|Object} message Test2 message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    Test2.encode = (function(Writer) { return function encode(message, writer) {
+    Test2.encode = function encode(message, writer) {
         if (!writer) {
-            writer = Writer.create();
+            writer = $Writer.create();
         }
         return writer;
-    };})($protobuf.Writer);
+    };
 
     /**
      * Encodes the specified Test2 message, length delimited.
@@ -298,14 +298,13 @@ $root.Test2 = (function() {
 
     /**
      * Decodes a Test2 message from the specified reader or buffer.
-     * @function
      * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
      * @param {number} [length] Message length if known beforehand
      * @returns {Test2} Test2
      */
-    Test2.decode = (function(Reader) { return function decode(reader, len) {
-        if (!(reader instanceof Reader)) {
-            reader = Reader.create(reader);
+    Test2.decode = function decode(reader, len) {
+        if (!(reader instanceof $Reader)) {
+            reader = $Reader.create(reader);
         }
         var end = len === undefined ? reader.len : reader.pos + len, message = new $root.Test2();
         while (reader.pos < end) {
@@ -317,7 +316,7 @@ $root.Test2 = (function() {
             }
         }
         return message;
-    };})($protobuf.Reader);
+    };
 
     /**
      * Decodes a Test2 message from the specified reader or buffer, length delimited.
@@ -325,13 +324,12 @@ $root.Test2 = (function() {
      * @returns {Test2} Test2
      */
     Test2.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-        readerOrBuffer = readerOrBuffer instanceof $protobuf.Reader ? readerOrBuffer : $protobuf.Reader(readerOrBuffer);
+        readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
         return this.decode(readerOrBuffer, readerOrBuffer.uint32());
     };
 
     /**
      * Verifies a Test2 message.
-     * @function
      * @param {Test2|Object} message Test2 message or plain object to verify
      * @returns {?string} `null` if valid, otherwise the reason why it is not
      */
@@ -351,7 +349,6 @@ $root.Test2 = (function() {
     /**
      * Creates a Test2 message from a plain object. Also converts values to their respective internal types.
      * This is an alias of {@link Test2.fromObject}.
-     * @function
      * @param {Object.<string,*>} object Plain object
      * @returns {Test2} Test2
      */
@@ -405,7 +402,7 @@ $root.Test3 = (function() {
 })();
 
 // Resolve lazy type names to actual types
-$protobuf.util.lazyResolve($root, $lazyTypes);
+$util.lazyResolve($root, $lazyTypes);
 
 $protobuf.roots["test_comments"] = $root;
 

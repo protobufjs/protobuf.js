@@ -3,6 +3,11 @@
 
 var $protobuf = require("../../runtime");
 
+// Common aliases
+var $Reader = $protobuf.Reader,
+    $Writer = $protobuf.Writer,
+    $util   = $protobuf.util;
+
 // Lazily resolved type references
 var $lazyTypes = [];
 
@@ -35,31 +40,31 @@ $root.Message = (function() {
      * Message stringRepeated.
      * @type {Array.<string>}
      */
-    Message.prototype.stringRepeated = $protobuf.util.emptyArray;
+    Message.prototype.stringRepeated = $util.emptyArray;
 
     /**
      * Message uint64Val.
      * @type {number|$protobuf.Long}
      */
-    Message.prototype.uint64Val = $protobuf.util.Long ? $protobuf.util.Long.fromBits(0,0,true) : 0;
+    Message.prototype.uint64Val = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
 
     /**
      * Message uint64Repeated.
      * @type {Array.<number|$protobuf.Long>}
      */
-    Message.prototype.uint64Repeated = $protobuf.util.emptyArray;
+    Message.prototype.uint64Repeated = $util.emptyArray;
 
     /**
      * Message bytesVal.
      * @type {Uint8Array}
      */
-    Message.prototype.bytesVal = $protobuf.util.newBuffer([]);
+    Message.prototype.bytesVal = $util.newBuffer([]);
 
     /**
      * Message bytesRepeated.
      * @type {Array.<Uint8Array>}
      */
-    Message.prototype.bytesRepeated = $protobuf.util.emptyArray;
+    Message.prototype.bytesRepeated = $util.emptyArray;
 
     /**
      * Message enumVal.
@@ -71,13 +76,13 @@ $root.Message = (function() {
      * Message enumRepeated.
      * @type {Array.<number>}
      */
-    Message.prototype.enumRepeated = $protobuf.util.emptyArray;
+    Message.prototype.enumRepeated = $util.emptyArray;
 
     /**
      * Message int64Map.
      * @type {Object.<string,number|$protobuf.Long>}
      */
-    Message.prototype.int64Map = $protobuf.util.emptyObject;
+    Message.prototype.int64Map = $util.emptyObject;
 
     // Lazily resolved referenced types
     var $types = {6:"Message.SomeEnum",7:"Message.SomeEnum"}; $lazyTypes.push($types);
@@ -93,14 +98,13 @@ $root.Message = (function() {
 
     /**
      * Encodes the specified Message message.
-     * @function
      * @param {Message|Object} message Message message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    Message.encode = (function(Writer, util) { return function encode(message, writer) {
+    Message.encode = function encode(message, writer) {
         if (!writer) {
-            writer = Writer.create();
+            writer = $Writer.create();
         }
         if (message.stringVal !== undefined && message.stringVal !== "") {
             writer.uint32(10).string(message.stringVal);
@@ -110,7 +114,7 @@ $root.Message = (function() {
                 writer.uint32(18).string(message.stringRepeated[i]);
             }
         }
-        if (message.uint64Val !== undefined && message.uint64Val !== null && util.longNe(message.uint64Val, 0, 0)) {
+        if (message.uint64Val !== undefined && message.uint64Val !== null && $util.longNe(message.uint64Val, 0, 0)) {
             writer.uint32(24).uint64(message.uint64Val);
         }
         if (message.uint64Repeated && message.uint64Repeated.length) {
@@ -138,13 +142,13 @@ $root.Message = (function() {
             }
             writer.ldelim();
         }
-        if (message.int64Map && message.int64Map !== util.emptyObject) {
+        if (message.int64Map && message.int64Map !== $util.emptyObject) {
             for (var keys = Object.keys(message.int64Map), i = 0; i < keys.length; ++i) {
                 writer.uint32(74).fork().uint32(10).string(keys[i]).uint32(16).int64(message.int64Map[keys[i]]).ldelim();
             }
         }
         return writer;
-    };})($protobuf.Writer, $protobuf.util);
+    };
 
     /**
      * Encodes the specified Message message, length delimited.
@@ -158,14 +162,13 @@ $root.Message = (function() {
 
     /**
      * Decodes a Message message from the specified reader or buffer.
-     * @function
      * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
      * @param {number} [length] Message length if known beforehand
      * @returns {Message} Message
      */
-    Message.decode = (function(Reader, util) { return function decode(reader, len) {
-        if (!(reader instanceof Reader)) {
-            reader = Reader.create(reader);
+    Message.decode = function decode(reader, len) {
+        if (!(reader instanceof $Reader)) {
+            reader = $Reader.create(reader);
         }
         var end = len === undefined ? reader.len : reader.pos + len, message = new $root.Message();
         while (reader.pos < end) {
@@ -231,12 +234,12 @@ $root.Message = (function() {
 
             case 9:
                 reader.skip().pos++;
-                if (message.int64Map === util.emptyObject) {
+                if (message.int64Map === $util.emptyObject) {
                     message.int64Map = {};
                 }
                 var key = reader.string();
                 reader.pos++;
-                message.int64Map[typeof key === "object" ? util.longToHash(key) : key] = reader.int64();
+                message.int64Map[typeof key === "object" ? $util.longToHash(key) : key] = reader.int64();
                 break;
 
             default:
@@ -245,7 +248,7 @@ $root.Message = (function() {
             }
         }
         return message;
-    };})($protobuf.Reader, $protobuf.util);
+    };
 
     /**
      * Decodes a Message message from the specified reader or buffer, length delimited.
@@ -253,19 +256,18 @@ $root.Message = (function() {
      * @returns {Message} Message
      */
     Message.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-        readerOrBuffer = readerOrBuffer instanceof $protobuf.Reader ? readerOrBuffer : $protobuf.Reader(readerOrBuffer);
+        readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
         return this.decode(readerOrBuffer, readerOrBuffer.uint32());
     };
 
     /**
      * Verifies a Message message.
-     * @function
      * @param {Message|Object} message Message message or plain object to verify
      * @returns {?string} `null` if valid, otherwise the reason why it is not
      */
-    Message.verify = (function(util) { return function verify(message) {
+    Message.verify = function verify(message) {
         if (message.stringVal !== undefined) {
-            if (!util.isString(message.stringVal)) {
+            if (!$util.isString(message.stringVal)) {
                 return "stringVal: string expected";
             }
         }
@@ -274,13 +276,13 @@ $root.Message = (function() {
                 return "stringRepeated: array expected";
             }
             for (var i = 0; i < message.stringRepeated.length; ++i) {
-                if (!util.isString(message.stringRepeated[i])) {
+                if (!$util.isString(message.stringRepeated[i])) {
                     return "stringRepeated: string[] expected";
                 }
             }
         }
         if (message.uint64Val !== undefined) {
-            if (!util.isInteger(message.uint64Val) && !(message.uint64Val && util.isInteger(message.uint64Val.low) && util.isInteger(message.uint64Val.high))) {
+            if (!$util.isInteger(message.uint64Val) && !(message.uint64Val && $util.isInteger(message.uint64Val.low) && $util.isInteger(message.uint64Val.high))) {
                 return "uint64Val: integer|Long expected";
             }
         }
@@ -289,13 +291,13 @@ $root.Message = (function() {
                 return "uint64Repeated: array expected";
             }
             for (var i = 0; i < message.uint64Repeated.length; ++i) {
-                if (!util.isInteger(message.uint64Repeated[i]) && !(message.uint64Repeated[i] && util.isInteger(message.uint64Repeated[i].low) && util.isInteger(message.uint64Repeated[i].high))) {
+                if (!$util.isInteger(message.uint64Repeated[i]) && !(message.uint64Repeated[i] && $util.isInteger(message.uint64Repeated[i].low) && $util.isInteger(message.uint64Repeated[i].high))) {
                     return "uint64Repeated: integer|Long[] expected";
                 }
             }
         }
         if (message.bytesVal !== undefined) {
-            if (!(message.bytesVal && typeof message.bytesVal.length === "number" || util.isString(message.bytesVal))) {
+            if (!(message.bytesVal && typeof message.bytesVal.length === "number" || $util.isString(message.bytesVal))) {
                 return "bytesVal: buffer expected";
             }
         }
@@ -304,7 +306,7 @@ $root.Message = (function() {
                 return "bytesRepeated: array expected";
             }
             for (var i = 0; i < message.bytesRepeated.length; ++i) {
-                if (!(message.bytesRepeated[i] && typeof message.bytesRepeated[i].length === "number" || util.isString(message.bytesRepeated[i]))) {
+                if (!(message.bytesRepeated[i] && typeof message.bytesRepeated[i].length === "number" || $util.isString(message.bytesRepeated[i]))) {
                     return "bytesRepeated: buffer[] expected";
                 }
             }
@@ -335,25 +337,25 @@ $root.Message = (function() {
             }
         }
         if (message.int64Map !== undefined) {
-            if (!util.isObject(message.int64Map)) {
+            if (!$util.isObject(message.int64Map)) {
                 return "int64Map: object expected";
             }
             var key = Object.keys(message.int64Map);
             for (var i = 0; i < key.length; ++i) {
-                if (!util.isInteger(message.int64Map[key[i]]) && !(message.int64Map[key[i]] && util.isInteger(message.int64Map[key[i]].low) && util.isInteger(message.int64Map[key[i]].high))) {
+                if (!$util.isInteger(message.int64Map[key[i]]) && !(message.int64Map[key[i]] && $util.isInteger(message.int64Map[key[i]].low) && $util.isInteger(message.int64Map[key[i]].high))) {
                     return "int64Map: integer|Long{key:string} expected";
                 }
             }
         }
         return null;
-    };})($protobuf.util);
+    };
 
     /**
      * Creates a Message message from a plain object. Also converts values to their respective internal types.
      * @param {Object.<string,*>} object Plain object
      * @returns {Message} Message
      */
-    Message.fromObject = (function(util) { return function fromObject(object) {
+    Message.fromObject = function fromObject(object) {
         var message = new $root.Message();
         if (object.stringVal !== undefined && object.stringVal !== null) {
             message.stringVal = String(object.stringVal);
@@ -365,8 +367,8 @@ $root.Message = (function() {
             }
         }
         if (object.uint64Val !== undefined && object.uint64Val !== null) {
-            if (util.Long) {
-                (message.uint64Val = util.Long.fromValue(object.uint64Val)).unsigned = true;
+            if ($util.Long) {
+                (message.uint64Val = $util.Long.fromValue(object.uint64Val)).unsigned = true;
             } else {
                 if (typeof object.uint64Val === "string") {
                     message.uint64Val = parseInt(object.uint64Val, 10);
@@ -375,7 +377,7 @@ $root.Message = (function() {
                         message.uint64Val = object.uint64Val;
                     } else {
                         if (typeof object.uint64Val === "object") {
-                            message.uint64Val = new util.LongBits(object.uint64Val.low, object.uint64Val.high).toNumber(true);
+                            message.uint64Val = new $util.LongBits(object.uint64Val.low, object.uint64Val.high).toNumber(true);
                         }
                     }
                 }
@@ -384,8 +386,8 @@ $root.Message = (function() {
         if (object.uint64Repeated) {
             message.uint64Repeated = [];
             for (var i = 0; i < object.uint64Repeated.length; ++i) {
-                if (util.Long) {
-                    (message.uint64Repeated[i] = util.Long.fromValue(object.uint64Repeated[i])).unsigned = true;
+                if ($util.Long) {
+                    (message.uint64Repeated[i] = $util.Long.fromValue(object.uint64Repeated[i])).unsigned = true;
                 } else {
                     if (typeof object.uint64Repeated[i] === "string") {
                         message.uint64Repeated[i] = parseInt(object.uint64Repeated[i], 10);
@@ -394,7 +396,7 @@ $root.Message = (function() {
                             message.uint64Repeated[i] = object.uint64Repeated[i];
                         } else {
                             if (typeof object.uint64Repeated[i] === "object") {
-                                message.uint64Repeated[i] = new util.LongBits(object.uint64Repeated[i].low, object.uint64Repeated[i].high).toNumber(true);
+                                message.uint64Repeated[i] = new $util.LongBits(object.uint64Repeated[i].low, object.uint64Repeated[i].high).toNumber(true);
                             }
                         }
                     }
@@ -403,7 +405,7 @@ $root.Message = (function() {
         }
         if (object.bytesVal !== undefined && object.bytesVal !== null) {
             if (typeof object.bytesVal === "string") {
-                util.base64.decode(object.bytesVal, message.bytesVal = util.newBuffer(util.base64.length(object.bytesVal)), 0);
+                $util.base64.decode(object.bytesVal, message.bytesVal = $util.newBuffer($util.base64.length(object.bytesVal)), 0);
             } else {
                 if (object.bytesVal && object.bytesVal.length) {
                     message.bytesVal = object.bytesVal;
@@ -414,7 +416,7 @@ $root.Message = (function() {
             message.bytesRepeated = [];
             for (var i = 0; i < object.bytesRepeated.length; ++i) {
                 if (typeof object.bytesRepeated[i] === "string") {
-                    util.base64.decode(object.bytesRepeated[i], message.bytesRepeated[i] = util.newBuffer(util.base64.length(object.bytesRepeated[i])), 0);
+                    $util.base64.decode(object.bytesRepeated[i], message.bytesRepeated[i] = $util.newBuffer($util.base64.length(object.bytesRepeated[i])), 0);
                 } else {
                     if (object.bytesRepeated[i] && object.bytesRepeated[i].length) {
                         message.bytesRepeated[i] = object.bytesRepeated[i];
@@ -453,8 +455,8 @@ $root.Message = (function() {
         if (object.int64Map) {
             message.int64Map = {};
             for (var keys = Object.keys(object.int64Map), i = 0; i < keys.length; ++i) {
-                if (util.Long) {
-                    (message.int64Map[keys[i]] = util.Long.fromValue(object.int64Map[keys[i]])).unsigned = false;
+                if ($util.Long) {
+                    (message.int64Map[keys[i]] = $util.Long.fromValue(object.int64Map[keys[i]])).unsigned = false;
                 } else {
                     if (typeof object.int64Map[keys[i]] === "string") {
                         message.int64Map[keys[i]] = parseInt(object.int64Map[keys[i]], 10);
@@ -463,7 +465,7 @@ $root.Message = (function() {
                             message.int64Map[keys[i]] = object.int64Map[keys[i]];
                         } else {
                             if (typeof object.int64Map[keys[i]] === "object") {
-                                message.int64Map[keys[i]] = new util.LongBits(object.int64Map[keys[i]].low, object.int64Map[keys[i]].high).toNumber();
+                                message.int64Map[keys[i]] = new $util.LongBits(object.int64Map[keys[i]].low, object.int64Map[keys[i]].high).toNumber();
                             }
                         }
                     }
@@ -471,12 +473,11 @@ $root.Message = (function() {
             }
         }
         return message;
-    };})($protobuf.util);
+    };
 
     /**
      * Creates a Message message from a plain object. Also converts values to their respective internal types.
      * This is an alias of {@link Message.fromObject}.
-     * @function
      * @param {Object.<string,*>} object Plain object
      * @returns {Message} Message
      */
@@ -488,7 +489,7 @@ $root.Message = (function() {
      * @param {$protobuf.ConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      */
-    Message.toObject = (function(util, types) { return function toObject(message, options) {
+    Message.toObject = function toObject(message, options) {
         if (!options) {
             options = {};
         }
@@ -504,8 +505,8 @@ $root.Message = (function() {
         }
         if (options.defaults) {
             object.stringVal = "";
-            if (util.Long) {
-                var long = new util.Long(0, 0, true);
+            if ($util.Long) {
+                var long = new $util.Long(0, 0, true);
                 object.uint64Val = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
             } else {
                 object.uint64Val = options.longs === String ? "0" : 0;
@@ -535,7 +536,7 @@ $root.Message = (function() {
                     if (typeof message.uint64Val === "number") {
                         object.uint64Val = options.longs === String ? String(message.uint64Val) : message.uint64Val;
                     } else {
-                        object.uint64Val = options.longs === String ? util.Long.prototype.toString.call(message.uint64Val) : options.longs === Number ? new util.LongBits(message.uint64Val.low, message.uint64Val.high).toNumber(true) : message.uint64Val;
+                        object.uint64Val = options.longs === String ? $util.Long.prototype.toString.call(message.uint64Val) : options.longs === Number ? new $util.LongBits(message.uint64Val.low, message.uint64Val.high).toNumber(true) : message.uint64Val;
                     }
                 }
                 break;
@@ -547,7 +548,7 @@ $root.Message = (function() {
                         if (typeof message.uint64Repeated[j] === "number") {
                             object.uint64Repeated[j] = options.longs === String ? String(message.uint64Repeated[j]) : message.uint64Repeated[j];
                         } else {
-                            object.uint64Repeated[j] = options.longs === String ? util.Long.prototype.toString.call(message.uint64Repeated[j]) : options.longs === Number ? new util.LongBits(message.uint64Repeated[j].low, message.uint64Repeated[j].high).toNumber(true) : message.uint64Repeated[j];
+                            object.uint64Repeated[j] = options.longs === String ? $util.Long.prototype.toString.call(message.uint64Repeated[j]) : options.longs === Number ? new $util.LongBits(message.uint64Repeated[j].low, message.uint64Repeated[j].high).toNumber(true) : message.uint64Repeated[j];
                         }
                     }
                 }
@@ -555,7 +556,7 @@ $root.Message = (function() {
 
             case "bytesVal":
                 if (message.bytesVal !== undefined && message.bytesVal !== null) {
-                    object.bytesVal = options.bytes === String ? util.base64.encode(message.bytesVal, 0, message.bytesVal.length) : options.bytes === Array ? Array.prototype.slice.call(message.bytesVal) : message.bytesVal;
+                    object.bytesVal = options.bytes === String ? $util.base64.encode(message.bytesVal, 0, message.bytesVal.length) : options.bytes === Array ? Array.prototype.slice.call(message.bytesVal) : message.bytesVal;
                 }
                 break;
 
@@ -563,14 +564,14 @@ $root.Message = (function() {
                 if (message.bytesRepeated.length) {
                     object.bytesRepeated = [];
                     for (var j = 0; j < message.bytesRepeated.length; ++j) {
-                        object.bytesRepeated[j] = options.bytes === String ? util.base64.encode(message.bytesRepeated[j], 0, message.bytesRepeated[j].length) : options.bytes === Array ? Array.prototype.slice.call(message.bytesRepeated[j]) : message.bytesRepeated[j];
+                        object.bytesRepeated[j] = options.bytes === String ? $util.base64.encode(message.bytesRepeated[j], 0, message.bytesRepeated[j].length) : options.bytes === Array ? Array.prototype.slice.call(message.bytesRepeated[j]) : message.bytesRepeated[j];
                     }
                 }
                 break;
 
             case "enumVal":
                 if (message.enumVal !== undefined && message.enumVal !== null) {
-                    object.enumVal = options.enums === String ? types[6][message.enumVal] : message.enumVal;
+                    object.enumVal = options.enums === String ? $types[6][message.enumVal] : message.enumVal;
                 }
                 break;
 
@@ -578,19 +579,19 @@ $root.Message = (function() {
                 if (message.enumRepeated.length) {
                     object.enumRepeated = [];
                     for (var j = 0; j < message.enumRepeated.length; ++j) {
-                        object.enumRepeated[j] = options.enums === String ? types[7][message.enumRepeated[j]] : message.enumRepeated[j];
+                        object.enumRepeated[j] = options.enums === String ? $types[7][message.enumRepeated[j]] : message.enumRepeated[j];
                     }
                 }
                 break;
 
             case "int64Map":
-                if (message.int64Map && message.int64Map !== util.emptyObject) {
+                if (message.int64Map && message.int64Map !== $util.emptyObject) {
                     object.int64Map = {};
                     for (var keys2 = Object.keys(message.int64Map), j = 0; j < keys2.length; ++j) {
                         if (typeof message.int64Map[keys2[j]] === "number") {
                             object.int64Map[keys2[j]] = options.longs === String ? String(message.int64Map[keys2[j]]) : message.int64Map[keys2[j]];
                         } else {
-                            object.int64Map[keys2[j]] = options.longs === String ? util.Long.prototype.toString.call(message.int64Map[keys2[j]]) : options.longs === Number ? new util.LongBits(message.int64Map[keys2[j]].low, message.int64Map[keys2[j]].high).toNumber() : message.int64Map[keys2[j]];
+                            object.int64Map[keys2[j]] = options.longs === String ? $util.Long.prototype.toString.call(message.int64Map[keys2[j]]) : options.longs === Number ? new $util.LongBits(message.int64Map[keys2[j]].low, message.int64Map[keys2[j]].high).toNumber() : message.int64Map[keys2[j]];
                         }
                     }
                 }
@@ -598,7 +599,7 @@ $root.Message = (function() {
             }
         }
         return object;
-    };})($protobuf.util, $types);
+    };
 
     /**
      * Creates a plain object from this Message message. Also converts values to other types if specified.
@@ -637,7 +638,7 @@ $root.Message = (function() {
 })();
 
 // Resolve lazy type names to actual types
-$protobuf.util.lazyResolve($root, $lazyTypes);
+$util.lazyResolve($root, $lazyTypes);
 
 $protobuf.roots["test_convert"] = $root;
 

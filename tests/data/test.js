@@ -3,6 +3,11 @@
 
 var $protobuf = require("../../runtime");
 
+// Common aliases
+var $Reader = $protobuf.Reader,
+    $Writer = $protobuf.Writer,
+    $util   = $protobuf.util;
+
 // Lazily resolved type references
 var $lazyTypes = [];
 
@@ -54,17 +59,16 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified Empty message.
-             * @function
              * @param {jspb.test.Empty|Object} message Empty message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            Empty.encode = (function(Writer) { return function encode(message, writer) {
+            Empty.encode = function encode(message, writer) {
                 if (!writer) {
-                    writer = Writer.create();
+                    writer = $Writer.create();
                 }
                 return writer;
-            };})($protobuf.Writer);
+            };
 
             /**
              * Encodes the specified Empty message, length delimited.
@@ -78,14 +82,13 @@ $root.jspb = (function() {
 
             /**
              * Decodes an Empty message from the specified reader or buffer.
-             * @function
              * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.Empty} Empty
              */
-            Empty.decode = (function(Reader) { return function decode(reader, len) {
-                if (!(reader instanceof Reader)) {
-                    reader = Reader.create(reader);
+            Empty.decode = function decode(reader, len) {
+                if (!(reader instanceof $Reader)) {
+                    reader = $Reader.create(reader);
                 }
                 var end = len === undefined ? reader.len : reader.pos + len, message = new $root.jspb.test.Empty();
                 while (reader.pos < end) {
@@ -97,7 +100,7 @@ $root.jspb = (function() {
                     }
                 }
                 return message;
-            };})($protobuf.Reader);
+            };
 
             /**
              * Decodes an Empty message from the specified reader or buffer, length delimited.
@@ -105,13 +108,12 @@ $root.jspb = (function() {
              * @returns {jspb.test.Empty} Empty
              */
             Empty.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-                readerOrBuffer = readerOrBuffer instanceof $protobuf.Reader ? readerOrBuffer : $protobuf.Reader(readerOrBuffer);
+                readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
                 return this.decode(readerOrBuffer, readerOrBuffer.uint32());
             };
 
             /**
              * Verifies an Empty message.
-             * @function
              * @param {jspb.test.Empty|Object} message Empty message or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
@@ -131,7 +133,6 @@ $root.jspb = (function() {
             /**
              * Creates an Empty message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link jspb.test.Empty.fromObject}.
-             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {jspb.test.Empty} Empty
              */
@@ -219,20 +220,19 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified EnumContainer message.
-             * @function
              * @param {jspb.test.EnumContainer|Object} message EnumContainer message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            EnumContainer.encode = (function(Writer) { return function encode(message, writer) {
+            EnumContainer.encode = function encode(message, writer) {
                 if (!writer) {
-                    writer = Writer.create();
+                    writer = $Writer.create();
                 }
                 if (message.outerEnum !== undefined && message.outerEnum !== 1) {
                     writer.uint32(8).uint32(message.outerEnum);
                 }
                 return writer;
-            };})($protobuf.Writer);
+            };
 
             /**
              * Encodes the specified EnumContainer message, length delimited.
@@ -246,14 +246,13 @@ $root.jspb = (function() {
 
             /**
              * Decodes an EnumContainer message from the specified reader or buffer.
-             * @function
              * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.EnumContainer} EnumContainer
              */
-            EnumContainer.decode = (function(Reader) { return function decode(reader, len) {
-                if (!(reader instanceof Reader)) {
-                    reader = Reader.create(reader);
+            EnumContainer.decode = function decode(reader, len) {
+                if (!(reader instanceof $Reader)) {
+                    reader = $Reader.create(reader);
                 }
                 var end = len === undefined ? reader.len : reader.pos + len, message = new $root.jspb.test.EnumContainer();
                 while (reader.pos < end) {
@@ -269,7 +268,7 @@ $root.jspb = (function() {
                     }
                 }
                 return message;
-            };})($protobuf.Reader);
+            };
 
             /**
              * Decodes an EnumContainer message from the specified reader or buffer, length delimited.
@@ -277,13 +276,12 @@ $root.jspb = (function() {
              * @returns {jspb.test.EnumContainer} EnumContainer
              */
             EnumContainer.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-                readerOrBuffer = readerOrBuffer instanceof $protobuf.Reader ? readerOrBuffer : $protobuf.Reader(readerOrBuffer);
+                readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
                 return this.decode(readerOrBuffer, readerOrBuffer.uint32());
             };
 
             /**
              * Verifies an EnumContainer message.
-             * @function
              * @param {jspb.test.EnumContainer|Object} message EnumContainer message or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
@@ -325,7 +323,6 @@ $root.jspb = (function() {
             /**
              * Creates an EnumContainer message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link jspb.test.EnumContainer.fromObject}.
-             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {jspb.test.EnumContainer} EnumContainer
              */
@@ -337,7 +334,7 @@ $root.jspb = (function() {
              * @param {$protobuf.ConversionOptions} [options] Conversion options
              * @returns {Object.<string,*>} Plain object
              */
-            EnumContainer.toObject = (function(types) { return function toObject(message, options) {
+            EnumContainer.toObject = function toObject(message, options) {
                 if (!options) {
                     options = {};
                 }
@@ -349,13 +346,13 @@ $root.jspb = (function() {
                     switch (keys[i]) {
                     case "outerEnum":
                         if (message.outerEnum !== undefined && message.outerEnum !== null) {
-                            object.outerEnum = options.enums === String ? types[0][message.outerEnum] : message.outerEnum;
+                            object.outerEnum = options.enums === String ? $types[0][message.outerEnum] : message.outerEnum;
                         }
                         break;
                     }
                 }
                 return object;
-            };})($types);
+            };
 
             /**
              * Creates a plain object from this EnumContainer message. Also converts values to other types if specified.
@@ -403,7 +400,7 @@ $root.jspb = (function() {
              * Simple1 aRepeatedString.
              * @type {Array.<string>}
              */
-            Simple1.prototype.aRepeatedString = $protobuf.util.emptyArray;
+            Simple1.prototype.aRepeatedString = $util.emptyArray;
 
             /**
              * Simple1 aBoolean.
@@ -422,14 +419,13 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified Simple1 message.
-             * @function
              * @param {jspb.test.Simple1|Object} message Simple1 message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            Simple1.encode = (function(Writer) { return function encode(message, writer) {
+            Simple1.encode = function encode(message, writer) {
                 if (!writer) {
-                    writer = Writer.create();
+                    writer = $Writer.create();
                 }
                 writer.uint32(10).string(message.aString);
                 if (message.aRepeatedString) {
@@ -441,7 +437,7 @@ $root.jspb = (function() {
                     writer.uint32(24).bool(message.aBoolean);
                 }
                 return writer;
-            };})($protobuf.Writer);
+            };
 
             /**
              * Encodes the specified Simple1 message, length delimited.
@@ -455,14 +451,13 @@ $root.jspb = (function() {
 
             /**
              * Decodes a Simple1 message from the specified reader or buffer.
-             * @function
              * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.Simple1} Simple1
              */
-            Simple1.decode = (function(Reader) { return function decode(reader, len) {
-                if (!(reader instanceof Reader)) {
-                    reader = Reader.create(reader);
+            Simple1.decode = function decode(reader, len) {
+                if (!(reader instanceof $Reader)) {
+                    reader = $Reader.create(reader);
                 }
                 var end = len === undefined ? reader.len : reader.pos + len, message = new $root.jspb.test.Simple1();
                 while (reader.pos < end) {
@@ -489,7 +484,7 @@ $root.jspb = (function() {
                     }
                 }
                 return message;
-            };})($protobuf.Reader);
+            };
 
             /**
              * Decodes a Simple1 message from the specified reader or buffer, length delimited.
@@ -497,18 +492,17 @@ $root.jspb = (function() {
              * @returns {jspb.test.Simple1} Simple1
              */
             Simple1.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-                readerOrBuffer = readerOrBuffer instanceof $protobuf.Reader ? readerOrBuffer : $protobuf.Reader(readerOrBuffer);
+                readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
                 return this.decode(readerOrBuffer, readerOrBuffer.uint32());
             };
 
             /**
              * Verifies a Simple1 message.
-             * @function
              * @param {jspb.test.Simple1|Object} message Simple1 message or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            Simple1.verify = (function(util) { return function verify(message) {
-                if (!util.isString(message.aString)) {
+            Simple1.verify = function verify(message) {
+                if (!$util.isString(message.aString)) {
                     return "aString: string expected";
                 }
                 if (message.aRepeatedString !== undefined) {
@@ -516,7 +510,7 @@ $root.jspb = (function() {
                         return "aRepeatedString: array expected";
                     }
                     for (var i = 0; i < message.aRepeatedString.length; ++i) {
-                        if (!util.isString(message.aRepeatedString[i])) {
+                        if (!$util.isString(message.aRepeatedString[i])) {
                             return "aRepeatedString: string[] expected";
                         }
                     }
@@ -527,7 +521,7 @@ $root.jspb = (function() {
                     }
                 }
                 return null;
-            };})($protobuf.util);
+            };
 
             /**
              * Creates a Simple1 message from a plain object. Also converts values to their respective internal types.
@@ -554,7 +548,6 @@ $root.jspb = (function() {
             /**
              * Creates a Simple1 message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link jspb.test.Simple1.fromObject}.
-             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {jspb.test.Simple1} Simple1
              */
@@ -651,7 +644,7 @@ $root.jspb = (function() {
              * Simple2 aRepeatedString.
              * @type {Array.<string>}
              */
-            Simple2.prototype.aRepeatedString = $protobuf.util.emptyArray;
+            Simple2.prototype.aRepeatedString = $util.emptyArray;
 
             /**
              * Creates a new Simple2 instance using the specified properties.
@@ -664,14 +657,13 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified Simple2 message.
-             * @function
              * @param {jspb.test.Simple2|Object} message Simple2 message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            Simple2.encode = (function(Writer) { return function encode(message, writer) {
+            Simple2.encode = function encode(message, writer) {
                 if (!writer) {
-                    writer = Writer.create();
+                    writer = $Writer.create();
                 }
                 writer.uint32(10).string(message.aString);
                 if (message.aRepeatedString) {
@@ -680,7 +672,7 @@ $root.jspb = (function() {
                     }
                 }
                 return writer;
-            };})($protobuf.Writer);
+            };
 
             /**
              * Encodes the specified Simple2 message, length delimited.
@@ -694,14 +686,13 @@ $root.jspb = (function() {
 
             /**
              * Decodes a Simple2 message from the specified reader or buffer.
-             * @function
              * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.Simple2} Simple2
              */
-            Simple2.decode = (function(Reader) { return function decode(reader, len) {
-                if (!(reader instanceof Reader)) {
-                    reader = Reader.create(reader);
+            Simple2.decode = function decode(reader, len) {
+                if (!(reader instanceof $Reader)) {
+                    reader = $Reader.create(reader);
                 }
                 var end = len === undefined ? reader.len : reader.pos + len, message = new $root.jspb.test.Simple2();
                 while (reader.pos < end) {
@@ -724,7 +715,7 @@ $root.jspb = (function() {
                     }
                 }
                 return message;
-            };})($protobuf.Reader);
+            };
 
             /**
              * Decodes a Simple2 message from the specified reader or buffer, length delimited.
@@ -732,18 +723,17 @@ $root.jspb = (function() {
              * @returns {jspb.test.Simple2} Simple2
              */
             Simple2.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-                readerOrBuffer = readerOrBuffer instanceof $protobuf.Reader ? readerOrBuffer : $protobuf.Reader(readerOrBuffer);
+                readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
                 return this.decode(readerOrBuffer, readerOrBuffer.uint32());
             };
 
             /**
              * Verifies a Simple2 message.
-             * @function
              * @param {jspb.test.Simple2|Object} message Simple2 message or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            Simple2.verify = (function(util) { return function verify(message) {
-                if (!util.isString(message.aString)) {
+            Simple2.verify = function verify(message) {
+                if (!$util.isString(message.aString)) {
                     return "aString: string expected";
                 }
                 if (message.aRepeatedString !== undefined) {
@@ -751,13 +741,13 @@ $root.jspb = (function() {
                         return "aRepeatedString: array expected";
                     }
                     for (var i = 0; i < message.aRepeatedString.length; ++i) {
-                        if (!util.isString(message.aRepeatedString[i])) {
+                        if (!$util.isString(message.aRepeatedString[i])) {
                             return "aRepeatedString: string[] expected";
                         }
                     }
                 }
                 return null;
-            };})($protobuf.util);
+            };
 
             /**
              * Creates a Simple2 message from a plain object. Also converts values to their respective internal types.
@@ -781,7 +771,6 @@ $root.jspb = (function() {
             /**
              * Creates a Simple2 message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link jspb.test.Simple2.fromObject}.
-             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {jspb.test.Simple2} Simple2
              */
@@ -899,21 +888,20 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified SpecialCases message.
-             * @function
              * @param {jspb.test.SpecialCases|Object} message SpecialCases message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            SpecialCases.encode = (function(Writer) { return function encode(message, writer) {
+            SpecialCases.encode = function encode(message, writer) {
                 if (!writer) {
-                    writer = Writer.create();
+                    writer = $Writer.create();
                 }
                 writer.uint32(10).string(message.normal);
                 writer.uint32(18).string(message["default"]);
                 writer.uint32(26).string(message["function"]);
                 writer.uint32(34).string(message["var"]);
                 return writer;
-            };})($protobuf.Writer);
+            };
 
             /**
              * Encodes the specified SpecialCases message, length delimited.
@@ -927,14 +915,13 @@ $root.jspb = (function() {
 
             /**
              * Decodes a SpecialCases message from the specified reader or buffer.
-             * @function
              * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.SpecialCases} SpecialCases
              */
-            SpecialCases.decode = (function(Reader) { return function decode(reader, len) {
-                if (!(reader instanceof Reader)) {
-                    reader = Reader.create(reader);
+            SpecialCases.decode = function decode(reader, len) {
+                if (!(reader instanceof $Reader)) {
+                    reader = $Reader.create(reader);
                 }
                 var end = len === undefined ? reader.len : reader.pos + len, message = new $root.jspb.test.SpecialCases();
                 while (reader.pos < end) {
@@ -962,7 +949,7 @@ $root.jspb = (function() {
                     }
                 }
                 return message;
-            };})($protobuf.Reader);
+            };
 
             /**
              * Decodes a SpecialCases message from the specified reader or buffer, length delimited.
@@ -970,31 +957,30 @@ $root.jspb = (function() {
              * @returns {jspb.test.SpecialCases} SpecialCases
              */
             SpecialCases.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-                readerOrBuffer = readerOrBuffer instanceof $protobuf.Reader ? readerOrBuffer : $protobuf.Reader(readerOrBuffer);
+                readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
                 return this.decode(readerOrBuffer, readerOrBuffer.uint32());
             };
 
             /**
              * Verifies a SpecialCases message.
-             * @function
              * @param {jspb.test.SpecialCases|Object} message SpecialCases message or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            SpecialCases.verify = (function(util) { return function verify(message) {
-                if (!util.isString(message.normal)) {
+            SpecialCases.verify = function verify(message) {
+                if (!$util.isString(message.normal)) {
                     return "normal: string expected";
                 }
-                if (!util.isString(message["default"])) {
+                if (!$util.isString(message["default"])) {
                     return "default: string expected";
                 }
-                if (!util.isString(message["function"])) {
+                if (!$util.isString(message["function"])) {
                     return "function: string expected";
                 }
-                if (!util.isString(message["var"])) {
+                if (!$util.isString(message["var"])) {
                     return "var: string expected";
                 }
                 return null;
-            };})($protobuf.util);
+            };
 
             /**
              * Creates a SpecialCases message from a plain object. Also converts values to their respective internal types.
@@ -1021,7 +1007,6 @@ $root.jspb = (function() {
             /**
              * Creates a SpecialCases message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link jspb.test.SpecialCases.fromObject}.
-             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {jspb.test.SpecialCases} SpecialCases
              */
@@ -1132,13 +1117,13 @@ $root.jspb = (function() {
              * OptionalFields aRepeatedMessage.
              * @type {Array.<jspb.test.OptionalFields.Nested>}
              */
-            OptionalFields.prototype.aRepeatedMessage = $protobuf.util.emptyArray;
+            OptionalFields.prototype.aRepeatedMessage = $util.emptyArray;
 
             /**
              * OptionalFields aRepeatedString.
              * @type {Array.<string>}
              */
-            OptionalFields.prototype.aRepeatedString = $protobuf.util.emptyArray;
+            OptionalFields.prototype.aRepeatedString = $util.emptyArray;
 
             // Lazily resolved referenced types
             var $types = {2:"jspb.test.OptionalFields.Nested",3:"jspb.test.OptionalFields.Nested"}; $lazyTypes.push($types);
@@ -1154,25 +1139,24 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified OptionalFields message.
-             * @function
              * @param {jspb.test.OptionalFields|Object} message OptionalFields message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            OptionalFields.encode = (function(Writer, types) { return function encode(message, writer) {
+            OptionalFields.encode = function encode(message, writer) {
                 if (!writer) {
-                    writer = Writer.create();
+                    writer = $Writer.create();
                 }
                 if (message.aString !== undefined && message.aString !== "") {
                     writer.uint32(10).string(message.aString);
                 }
                 writer.uint32(16).bool(message.aBool);
                 if (message.aNestedMessage !== undefined && message.aNestedMessage !== null) {
-                    types[2].encode(message.aNestedMessage, writer.uint32(26).fork()).ldelim();
+                    $types[2].encode(message.aNestedMessage, writer.uint32(26).fork()).ldelim();
                 }
                 if (message.aRepeatedMessage) {
                     for (var i = 0; i < message.aRepeatedMessage.length; ++i) {
-                        types[3].encode(message.aRepeatedMessage[i], writer.uint32(34).fork()).ldelim();
+                        $types[3].encode(message.aRepeatedMessage[i], writer.uint32(34).fork()).ldelim();
                     }
                 }
                 if (message.aRepeatedString) {
@@ -1181,7 +1165,7 @@ $root.jspb = (function() {
                     }
                 }
                 return writer;
-            };})($protobuf.Writer, $types);
+            };
 
             /**
              * Encodes the specified OptionalFields message, length delimited.
@@ -1195,14 +1179,13 @@ $root.jspb = (function() {
 
             /**
              * Decodes an OptionalFields message from the specified reader or buffer.
-             * @function
              * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.OptionalFields} OptionalFields
              */
-            OptionalFields.decode = (function(Reader, types) { return function decode(reader, len) {
-                if (!(reader instanceof Reader)) {
-                    reader = Reader.create(reader);
+            OptionalFields.decode = function decode(reader, len) {
+                if (!(reader instanceof $Reader)) {
+                    reader = $Reader.create(reader);
                 }
                 var end = len === undefined ? reader.len : reader.pos + len, message = new $root.jspb.test.OptionalFields();
                 while (reader.pos < end) {
@@ -1217,14 +1200,14 @@ $root.jspb = (function() {
                         break;
 
                     case 3:
-                        message.aNestedMessage = types[2].decode(reader, reader.uint32());
+                        message.aNestedMessage = $types[2].decode(reader, reader.uint32());
                         break;
 
                     case 4:
                         if (!(message.aRepeatedMessage && message.aRepeatedMessage.length)) {
                             message.aRepeatedMessage = [];
                         }
-                        message.aRepeatedMessage.push(types[3].decode(reader, reader.uint32()));
+                        message.aRepeatedMessage.push($types[3].decode(reader, reader.uint32()));
                         break;
 
                     case 5:
@@ -1240,7 +1223,7 @@ $root.jspb = (function() {
                     }
                 }
                 return message;
-            };})($protobuf.Reader, $types);
+            };
 
             /**
              * Decodes an OptionalFields message from the specified reader or buffer, length delimited.
@@ -1248,19 +1231,18 @@ $root.jspb = (function() {
              * @returns {jspb.test.OptionalFields} OptionalFields
              */
             OptionalFields.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-                readerOrBuffer = readerOrBuffer instanceof $protobuf.Reader ? readerOrBuffer : $protobuf.Reader(readerOrBuffer);
+                readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
                 return this.decode(readerOrBuffer, readerOrBuffer.uint32());
             };
 
             /**
              * Verifies an OptionalFields message.
-             * @function
              * @param {jspb.test.OptionalFields|Object} message OptionalFields message or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            OptionalFields.verify = (function(util, types) { return function verify(message) {
+            OptionalFields.verify = function verify(message) {
                 if (message.aString !== undefined) {
-                    if (!util.isString(message.aString)) {
+                    if (!$util.isString(message.aString)) {
                         return "aString: string expected";
                     }
                 }
@@ -1268,7 +1250,7 @@ $root.jspb = (function() {
                     return "aBool: boolean expected";
                 }
                 if (message.aNestedMessage !== undefined && message.aNestedMessage !== null) {
-                    var err = types[2].verify(message.aNestedMessage);
+                    var err = $types[2].verify(message.aNestedMessage);
                     if (err) {
                         return "aNestedMessage." + err;
                     }
@@ -1278,7 +1260,7 @@ $root.jspb = (function() {
                         return "aRepeatedMessage: array expected";
                     }
                     for (var i = 0; i < message.aRepeatedMessage.length; ++i) {
-                        var err = types[3].verify(message.aRepeatedMessage[i]);
+                        var err = $types[3].verify(message.aRepeatedMessage[i]);
                         if (err) {
                             return "aRepeatedMessage." + err;
                         }
@@ -1289,20 +1271,20 @@ $root.jspb = (function() {
                         return "aRepeatedString: array expected";
                     }
                     for (var i = 0; i < message.aRepeatedString.length; ++i) {
-                        if (!util.isString(message.aRepeatedString[i])) {
+                        if (!$util.isString(message.aRepeatedString[i])) {
                             return "aRepeatedString: string[] expected";
                         }
                     }
                 }
                 return null;
-            };})($protobuf.util, $types);
+            };
 
             /**
              * Creates an OptionalFields message from a plain object. Also converts values to their respective internal types.
              * @param {Object.<string,*>} object Plain object
              * @returns {jspb.test.OptionalFields} OptionalFields
              */
-            OptionalFields.fromObject = (function(types) { return function fromObject(object) {
+            OptionalFields.fromObject = function fromObject(object) {
                 var message = new $root.jspb.test.OptionalFields();
                 if (object.aString !== undefined && object.aString !== null) {
                     message.aString = String(object.aString);
@@ -1311,12 +1293,12 @@ $root.jspb = (function() {
                     message.aBool = Boolean(object.aBool);
                 }
                 if (object.aNestedMessage !== undefined && object.aNestedMessage !== null) {
-                    message.aNestedMessage = types[2].fromObject(object.aNestedMessage);
+                    message.aNestedMessage = $types[2].fromObject(object.aNestedMessage);
                 }
                 if (object.aRepeatedMessage) {
                     message.aRepeatedMessage = [];
                     for (var i = 0; i < object.aRepeatedMessage.length; ++i) {
-                        message.aRepeatedMessage[i] = types[3].fromObject(object.aRepeatedMessage[i]);
+                        message.aRepeatedMessage[i] = $types[3].fromObject(object.aRepeatedMessage[i]);
                     }
                 }
                 if (object.aRepeatedString) {
@@ -1326,12 +1308,11 @@ $root.jspb = (function() {
                     }
                 }
                 return message;
-            };})($types);
+            };
 
             /**
              * Creates an OptionalFields message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link jspb.test.OptionalFields.fromObject}.
-             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {jspb.test.OptionalFields} OptionalFields
              */
@@ -1343,7 +1324,7 @@ $root.jspb = (function() {
              * @param {$protobuf.ConversionOptions} [options] Conversion options
              * @returns {Object.<string,*>} Plain object
              */
-            OptionalFields.toObject = (function(types) { return function toObject(message, options) {
+            OptionalFields.toObject = function toObject(message, options) {
                 if (!options) {
                     options = {};
                 }
@@ -1373,7 +1354,7 @@ $root.jspb = (function() {
 
                     case "aNestedMessage":
                         if (message.aNestedMessage !== undefined && message.aNestedMessage !== null) {
-                            object.aNestedMessage = types[2].toObject(message.aNestedMessage, options);
+                            object.aNestedMessage = $types[2].toObject(message.aNestedMessage, options);
                         }
                         break;
 
@@ -1381,7 +1362,7 @@ $root.jspb = (function() {
                         if (message.aRepeatedMessage.length) {
                             object.aRepeatedMessage = [];
                             for (var j = 0; j < message.aRepeatedMessage.length; ++j) {
-                                object.aRepeatedMessage[j] = types[3].toObject(message.aRepeatedMessage[j], options);
+                                object.aRepeatedMessage[j] = $types[3].toObject(message.aRepeatedMessage[j], options);
                             }
                         }
                         break;
@@ -1397,7 +1378,7 @@ $root.jspb = (function() {
                     }
                 }
                 return object;
-            };})($types);
+            };
 
             /**
              * Creates a plain object from this OptionalFields message. Also converts values to other types if specified.
@@ -1449,20 +1430,19 @@ $root.jspb = (function() {
 
                 /**
                  * Encodes the specified Nested message.
-                 * @function
                  * @param {jspb.test.OptionalFields.Nested|Object} message Nested message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
                  */
-                Nested.encode = (function(Writer) { return function encode(message, writer) {
+                Nested.encode = function encode(message, writer) {
                     if (!writer) {
-                        writer = Writer.create();
+                        writer = $Writer.create();
                     }
                     if (message.anInt !== undefined && message.anInt !== 0) {
                         writer.uint32(8).int32(message.anInt);
                     }
                     return writer;
-                };})($protobuf.Writer);
+                };
 
                 /**
                  * Encodes the specified Nested message, length delimited.
@@ -1476,14 +1456,13 @@ $root.jspb = (function() {
 
                 /**
                  * Decodes a Nested message from the specified reader or buffer.
-                 * @function
                  * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
                  * @param {number} [length] Message length if known beforehand
                  * @returns {jspb.test.OptionalFields.Nested} Nested
                  */
-                Nested.decode = (function(Reader) { return function decode(reader, len) {
-                    if (!(reader instanceof Reader)) {
-                        reader = Reader.create(reader);
+                Nested.decode = function decode(reader, len) {
+                    if (!(reader instanceof $Reader)) {
+                        reader = $Reader.create(reader);
                     }
                     var end = len === undefined ? reader.len : reader.pos + len, message = new $root.jspb.test.OptionalFields.Nested();
                     while (reader.pos < end) {
@@ -1499,7 +1478,7 @@ $root.jspb = (function() {
                         }
                     }
                     return message;
-                };})($protobuf.Reader);
+                };
 
                 /**
                  * Decodes a Nested message from the specified reader or buffer, length delimited.
@@ -1507,24 +1486,23 @@ $root.jspb = (function() {
                  * @returns {jspb.test.OptionalFields.Nested} Nested
                  */
                 Nested.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-                    readerOrBuffer = readerOrBuffer instanceof $protobuf.Reader ? readerOrBuffer : $protobuf.Reader(readerOrBuffer);
+                    readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
                     return this.decode(readerOrBuffer, readerOrBuffer.uint32());
                 };
 
                 /**
                  * Verifies a Nested message.
-                 * @function
                  * @param {jspb.test.OptionalFields.Nested|Object} message Nested message or plain object to verify
                  * @returns {?string} `null` if valid, otherwise the reason why it is not
                  */
-                Nested.verify = (function(util) { return function verify(message) {
+                Nested.verify = function verify(message) {
                     if (message.anInt !== undefined) {
-                        if (!util.isInteger(message.anInt)) {
+                        if (!$util.isInteger(message.anInt)) {
                             return "anInt: integer expected";
                         }
                     }
                     return null;
-                };})($protobuf.util);
+                };
 
                 /**
                  * Creates a Nested message from a plain object. Also converts values to their respective internal types.
@@ -1542,7 +1520,6 @@ $root.jspb = (function() {
                 /**
                  * Creates a Nested message from a plain object. Also converts values to their respective internal types.
                  * This is an alias of {@link jspb.test.OptionalFields.Nested.fromObject}.
-                 * @function
                  * @param {Object.<string,*>} object Plain object
                  * @returns {jspb.test.OptionalFields.Nested} Nested
                  */
@@ -1657,14 +1634,14 @@ $root.jspb = (function() {
              * @name jspb.test.HasExtensions#.jspb.test.IndirectExtension.repeatedStr
              * @type {Array.<string>}
              */
-            HasExtensions.prototype[".jspb.test.IndirectExtension.repeatedStr"] = $protobuf.util.emptyArray;
+            HasExtensions.prototype[".jspb.test.IndirectExtension.repeatedStr"] = $util.emptyArray;
 
             /**
              * HasExtensions .jspb.test.IndirectExtension.repeatedSimple.
              * @name jspb.test.HasExtensions#.jspb.test.IndirectExtension.repeatedSimple
              * @type {Array.<jspb.test.Simple1>}
              */
-            HasExtensions.prototype[".jspb.test.IndirectExtension.repeatedSimple"] = $protobuf.util.emptyArray;
+            HasExtensions.prototype[".jspb.test.IndirectExtension.repeatedSimple"] = $util.emptyArray;
 
             /**
              * HasExtensions .jspb.test.simple1.
@@ -1687,14 +1664,13 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified HasExtensions message.
-             * @function
              * @param {jspb.test.HasExtensions|Object} message HasExtensions message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            HasExtensions.encode = (function(Writer, types) { return function encode(message, writer) {
+            HasExtensions.encode = function encode(message, writer) {
                 if (!writer) {
-                    writer = Writer.create();
+                    writer = $Writer.create();
                 }
                 if (message.str1 !== undefined && message.str1 !== "") {
                     writer.uint32(10).string(message.str1);
@@ -1706,10 +1682,10 @@ $root.jspb = (function() {
                     writer.uint32(26).string(message.str3);
                 }
                 if (message[".jspb.test.IsExtension.extField"] !== undefined && message[".jspb.test.IsExtension.extField"] !== null) {
-                    types[3].encode(message[".jspb.test.IsExtension.extField"], writer.uint32(802).fork()).ldelim();
+                    $types[3].encode(message[".jspb.test.IsExtension.extField"], writer.uint32(802).fork()).ldelim();
                 }
                 if (message[".jspb.test.IndirectExtension.simple"] !== undefined && message[".jspb.test.IndirectExtension.simple"] !== null) {
-                    types[4].encode(message[".jspb.test.IndirectExtension.simple"], writer.uint32(810).fork()).ldelim();
+                    $types[4].encode(message[".jspb.test.IndirectExtension.simple"], writer.uint32(810).fork()).ldelim();
                 }
                 if (message[".jspb.test.IndirectExtension.str"] !== undefined && message[".jspb.test.IndirectExtension.str"] !== "") {
                     writer.uint32(818).string(message[".jspb.test.IndirectExtension.str"]);
@@ -1721,14 +1697,14 @@ $root.jspb = (function() {
                 }
                 if (message[".jspb.test.IndirectExtension.repeatedSimple"]) {
                     for (var i = 0; i < message[".jspb.test.IndirectExtension.repeatedSimple"].length; ++i) {
-                        types[7].encode(message[".jspb.test.IndirectExtension.repeatedSimple"][i], writer.uint32(834).fork()).ldelim();
+                        $types[7].encode(message[".jspb.test.IndirectExtension.repeatedSimple"][i], writer.uint32(834).fork()).ldelim();
                     }
                 }
                 if (message[".jspb.test.simple1"] !== undefined && message[".jspb.test.simple1"] !== null) {
-                    types[8].encode(message[".jspb.test.simple1"], writer.uint32(842).fork()).ldelim();
+                    $types[8].encode(message[".jspb.test.simple1"], writer.uint32(842).fork()).ldelim();
                 }
                 return writer;
-            };})($protobuf.Writer, $types);
+            };
 
             /**
              * Encodes the specified HasExtensions message, length delimited.
@@ -1742,14 +1718,13 @@ $root.jspb = (function() {
 
             /**
              * Decodes a HasExtensions message from the specified reader or buffer.
-             * @function
              * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.HasExtensions} HasExtensions
              */
-            HasExtensions.decode = (function(Reader, types) { return function decode(reader, len) {
-                if (!(reader instanceof Reader)) {
-                    reader = Reader.create(reader);
+            HasExtensions.decode = function decode(reader, len) {
+                if (!(reader instanceof $Reader)) {
+                    reader = $Reader.create(reader);
                 }
                 var end = len === undefined ? reader.len : reader.pos + len, message = new $root.jspb.test.HasExtensions();
                 while (reader.pos < end) {
@@ -1768,11 +1743,11 @@ $root.jspb = (function() {
                         break;
 
                     case 100:
-                        message[".jspb.test.IsExtension.extField"] = types[3].decode(reader, reader.uint32());
+                        message[".jspb.test.IsExtension.extField"] = $types[3].decode(reader, reader.uint32());
                         break;
 
                     case 101:
-                        message[".jspb.test.IndirectExtension.simple"] = types[4].decode(reader, reader.uint32());
+                        message[".jspb.test.IndirectExtension.simple"] = $types[4].decode(reader, reader.uint32());
                         break;
 
                     case 102:
@@ -1790,11 +1765,11 @@ $root.jspb = (function() {
                         if (!(message[".jspb.test.IndirectExtension.repeatedSimple"] && message[".jspb.test.IndirectExtension.repeatedSimple"].length)) {
                             message[".jspb.test.IndirectExtension.repeatedSimple"] = [];
                         }
-                        message[".jspb.test.IndirectExtension.repeatedSimple"].push(types[7].decode(reader, reader.uint32()));
+                        message[".jspb.test.IndirectExtension.repeatedSimple"].push($types[7].decode(reader, reader.uint32()));
                         break;
 
                     case 105:
-                        message[".jspb.test.simple1"] = types[8].decode(reader, reader.uint32());
+                        message[".jspb.test.simple1"] = $types[8].decode(reader, reader.uint32());
                         break;
 
                     default:
@@ -1803,7 +1778,7 @@ $root.jspb = (function() {
                     }
                 }
                 return message;
-            };})($protobuf.Reader, $types);
+            };
 
             /**
              * Decodes a HasExtensions message from the specified reader or buffer, length delimited.
@@ -1811,46 +1786,45 @@ $root.jspb = (function() {
              * @returns {jspb.test.HasExtensions} HasExtensions
              */
             HasExtensions.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-                readerOrBuffer = readerOrBuffer instanceof $protobuf.Reader ? readerOrBuffer : $protobuf.Reader(readerOrBuffer);
+                readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
                 return this.decode(readerOrBuffer, readerOrBuffer.uint32());
             };
 
             /**
              * Verifies a HasExtensions message.
-             * @function
              * @param {jspb.test.HasExtensions|Object} message HasExtensions message or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            HasExtensions.verify = (function(util, types) { return function verify(message) {
+            HasExtensions.verify = function verify(message) {
                 if (message.str1 !== undefined) {
-                    if (!util.isString(message.str1)) {
+                    if (!$util.isString(message.str1)) {
                         return "str1: string expected";
                     }
                 }
                 if (message.str2 !== undefined) {
-                    if (!util.isString(message.str2)) {
+                    if (!$util.isString(message.str2)) {
                         return "str2: string expected";
                     }
                 }
                 if (message.str3 !== undefined) {
-                    if (!util.isString(message.str3)) {
+                    if (!$util.isString(message.str3)) {
                         return "str3: string expected";
                     }
                 }
                 if (message[".jspb.test.IsExtension.extField"] !== undefined && message[".jspb.test.IsExtension.extField"] !== null) {
-                    var err = types[3].verify(message[".jspb.test.IsExtension.extField"]);
+                    var err = $types[3].verify(message[".jspb.test.IsExtension.extField"]);
                     if (err) {
                         return ".jspb.test.IsExtension.extField." + err;
                     }
                 }
                 if (message[".jspb.test.IndirectExtension.simple"] !== undefined && message[".jspb.test.IndirectExtension.simple"] !== null) {
-                    var err = types[4].verify(message[".jspb.test.IndirectExtension.simple"]);
+                    var err = $types[4].verify(message[".jspb.test.IndirectExtension.simple"]);
                     if (err) {
                         return ".jspb.test.IndirectExtension.simple." + err;
                     }
                 }
                 if (message[".jspb.test.IndirectExtension.str"] !== undefined) {
-                    if (!util.isString(message[".jspb.test.IndirectExtension.str"])) {
+                    if (!$util.isString(message[".jspb.test.IndirectExtension.str"])) {
                         return ".jspb.test.IndirectExtension.str: string expected";
                     }
                 }
@@ -1859,7 +1833,7 @@ $root.jspb = (function() {
                         return ".jspb.test.IndirectExtension.repeatedStr: array expected";
                     }
                     for (var i = 0; i < message[".jspb.test.IndirectExtension.repeatedStr"].length; ++i) {
-                        if (!util.isString(message[".jspb.test.IndirectExtension.repeatedStr"][i])) {
+                        if (!$util.isString(message[".jspb.test.IndirectExtension.repeatedStr"][i])) {
                             return ".jspb.test.IndirectExtension.repeatedStr: string[] expected";
                         }
                     }
@@ -1869,27 +1843,27 @@ $root.jspb = (function() {
                         return ".jspb.test.IndirectExtension.repeatedSimple: array expected";
                     }
                     for (var i = 0; i < message[".jspb.test.IndirectExtension.repeatedSimple"].length; ++i) {
-                        var err = types[7].verify(message[".jspb.test.IndirectExtension.repeatedSimple"][i]);
+                        var err = $types[7].verify(message[".jspb.test.IndirectExtension.repeatedSimple"][i]);
                         if (err) {
                             return ".jspb.test.IndirectExtension.repeatedSimple." + err;
                         }
                     }
                 }
                 if (message[".jspb.test.simple1"] !== undefined && message[".jspb.test.simple1"] !== null) {
-                    var err = types[8].verify(message[".jspb.test.simple1"]);
+                    var err = $types[8].verify(message[".jspb.test.simple1"]);
                     if (err) {
                         return ".jspb.test.simple1." + err;
                     }
                 }
                 return null;
-            };})($protobuf.util, $types);
+            };
 
             /**
              * Creates a HasExtensions message from a plain object. Also converts values to their respective internal types.
              * @param {Object.<string,*>} object Plain object
              * @returns {jspb.test.HasExtensions} HasExtensions
              */
-            HasExtensions.fromObject = (function(types) { return function fromObject(object) {
+            HasExtensions.fromObject = function fromObject(object) {
                 var message = new $root.jspb.test.HasExtensions();
                 if (object.str1 !== undefined && object.str1 !== null) {
                     message.str1 = String(object.str1);
@@ -1901,10 +1875,10 @@ $root.jspb = (function() {
                     message.str3 = String(object.str3);
                 }
                 if (object[".jspb.test.IsExtension.extField"] !== undefined && object[".jspb.test.IsExtension.extField"] !== null) {
-                    message[".jspb.test.IsExtension.extField"] = types[3].fromObject(object[".jspb.test.IsExtension.extField"]);
+                    message[".jspb.test.IsExtension.extField"] = $types[3].fromObject(object[".jspb.test.IsExtension.extField"]);
                 }
                 if (object[".jspb.test.IndirectExtension.simple"] !== undefined && object[".jspb.test.IndirectExtension.simple"] !== null) {
-                    message[".jspb.test.IndirectExtension.simple"] = types[4].fromObject(object[".jspb.test.IndirectExtension.simple"]);
+                    message[".jspb.test.IndirectExtension.simple"] = $types[4].fromObject(object[".jspb.test.IndirectExtension.simple"]);
                 }
                 if (object[".jspb.test.IndirectExtension.str"] !== undefined && object[".jspb.test.IndirectExtension.str"] !== null) {
                     message[".jspb.test.IndirectExtension.str"] = String(object[".jspb.test.IndirectExtension.str"]);
@@ -1918,19 +1892,18 @@ $root.jspb = (function() {
                 if (object[".jspb.test.IndirectExtension.repeatedSimple"]) {
                     message[".jspb.test.IndirectExtension.repeatedSimple"] = [];
                     for (var i = 0; i < object[".jspb.test.IndirectExtension.repeatedSimple"].length; ++i) {
-                        message[".jspb.test.IndirectExtension.repeatedSimple"][i] = types[7].fromObject(object[".jspb.test.IndirectExtension.repeatedSimple"][i]);
+                        message[".jspb.test.IndirectExtension.repeatedSimple"][i] = $types[7].fromObject(object[".jspb.test.IndirectExtension.repeatedSimple"][i]);
                     }
                 }
                 if (object[".jspb.test.simple1"] !== undefined && object[".jspb.test.simple1"] !== null) {
-                    message[".jspb.test.simple1"] = types[8].fromObject(object[".jspb.test.simple1"]);
+                    message[".jspb.test.simple1"] = $types[8].fromObject(object[".jspb.test.simple1"]);
                 }
                 return message;
-            };})($types);
+            };
 
             /**
              * Creates a HasExtensions message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link jspb.test.HasExtensions.fromObject}.
-             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {jspb.test.HasExtensions} HasExtensions
              */
@@ -1942,7 +1915,7 @@ $root.jspb = (function() {
              * @param {$protobuf.ConversionOptions} [options] Conversion options
              * @returns {Object.<string,*>} Plain object
              */
-            HasExtensions.toObject = (function(types) { return function toObject(message, options) {
+            HasExtensions.toObject = function toObject(message, options) {
                 if (!options) {
                     options = {};
                 }
@@ -1982,13 +1955,13 @@ $root.jspb = (function() {
 
                     case ".jspb.test.IsExtension.extField":
                         if (message[".jspb.test.IsExtension.extField"] !== undefined && message[".jspb.test.IsExtension.extField"] !== null) {
-                            object[".jspb.test.IsExtension.extField"] = types[3].toObject(message[".jspb.test.IsExtension.extField"], options);
+                            object[".jspb.test.IsExtension.extField"] = $types[3].toObject(message[".jspb.test.IsExtension.extField"], options);
                         }
                         break;
 
                     case ".jspb.test.IndirectExtension.simple":
                         if (message[".jspb.test.IndirectExtension.simple"] !== undefined && message[".jspb.test.IndirectExtension.simple"] !== null) {
-                            object[".jspb.test.IndirectExtension.simple"] = types[4].toObject(message[".jspb.test.IndirectExtension.simple"], options);
+                            object[".jspb.test.IndirectExtension.simple"] = $types[4].toObject(message[".jspb.test.IndirectExtension.simple"], options);
                         }
                         break;
 
@@ -2011,20 +1984,20 @@ $root.jspb = (function() {
                         if (message[".jspb.test.IndirectExtension.repeatedSimple"].length) {
                             object[".jspb.test.IndirectExtension.repeatedSimple"] = [];
                             for (var j = 0; j < message[".jspb.test.IndirectExtension.repeatedSimple"].length; ++j) {
-                                object[".jspb.test.IndirectExtension.repeatedSimple"][j] = types[7].toObject(message[".jspb.test.IndirectExtension.repeatedSimple"][j], options);
+                                object[".jspb.test.IndirectExtension.repeatedSimple"][j] = $types[7].toObject(message[".jspb.test.IndirectExtension.repeatedSimple"][j], options);
                             }
                         }
                         break;
 
                     case ".jspb.test.simple1":
                         if (message[".jspb.test.simple1"] !== undefined && message[".jspb.test.simple1"] !== null) {
-                            object[".jspb.test.simple1"] = types[8].toObject(message[".jspb.test.simple1"], options);
+                            object[".jspb.test.simple1"] = $types[8].toObject(message[".jspb.test.simple1"], options);
                         }
                         break;
                     }
                 }
                 return object;
-            };})($types);
+            };
 
             /**
              * Creates a plain object from this HasExtensions message. Also converts values to other types if specified.
@@ -2084,13 +2057,13 @@ $root.jspb = (function() {
              * Complex aRepeatedMessage.
              * @type {Array.<jspb.test.Complex.Nested>}
              */
-            Complex.prototype.aRepeatedMessage = $protobuf.util.emptyArray;
+            Complex.prototype.aRepeatedMessage = $util.emptyArray;
 
             /**
              * Complex aRepeatedString.
              * @type {Array.<string>}
              */
-            Complex.prototype.aRepeatedString = $protobuf.util.emptyArray;
+            Complex.prototype.aRepeatedString = $util.emptyArray;
 
             // Lazily resolved referenced types
             var $types = {2:"jspb.test.Complex.Nested",3:"jspb.test.Complex.Nested"}; $lazyTypes.push($types);
@@ -2106,23 +2079,22 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified Complex message.
-             * @function
              * @param {jspb.test.Complex|Object} message Complex message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            Complex.encode = (function(Writer, types) { return function encode(message, writer) {
+            Complex.encode = function encode(message, writer) {
                 if (!writer) {
-                    writer = Writer.create();
+                    writer = $Writer.create();
                 }
                 writer.uint32(10).string(message.aString);
                 writer.uint32(72).bool(message.anOutOfOrderBool);
                 if (message.aNestedMessage !== undefined && message.aNestedMessage !== null) {
-                    types[2].encode(message.aNestedMessage, writer.uint32(34).fork()).ldelim();
+                    $types[2].encode(message.aNestedMessage, writer.uint32(34).fork()).ldelim();
                 }
                 if (message.aRepeatedMessage) {
                     for (var i = 0; i < message.aRepeatedMessage.length; ++i) {
-                        types[3].encode(message.aRepeatedMessage[i], writer.uint32(42).fork()).ldelim();
+                        $types[3].encode(message.aRepeatedMessage[i], writer.uint32(42).fork()).ldelim();
                     }
                 }
                 if (message.aRepeatedString) {
@@ -2131,7 +2103,7 @@ $root.jspb = (function() {
                     }
                 }
                 return writer;
-            };})($protobuf.Writer, $types);
+            };
 
             /**
              * Encodes the specified Complex message, length delimited.
@@ -2145,14 +2117,13 @@ $root.jspb = (function() {
 
             /**
              * Decodes a Complex message from the specified reader or buffer.
-             * @function
              * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.Complex} Complex
              */
-            Complex.decode = (function(Reader, types) { return function decode(reader, len) {
-                if (!(reader instanceof Reader)) {
-                    reader = Reader.create(reader);
+            Complex.decode = function decode(reader, len) {
+                if (!(reader instanceof $Reader)) {
+                    reader = $Reader.create(reader);
                 }
                 var end = len === undefined ? reader.len : reader.pos + len, message = new $root.jspb.test.Complex();
                 while (reader.pos < end) {
@@ -2167,14 +2138,14 @@ $root.jspb = (function() {
                         break;
 
                     case 4:
-                        message.aNestedMessage = types[2].decode(reader, reader.uint32());
+                        message.aNestedMessage = $types[2].decode(reader, reader.uint32());
                         break;
 
                     case 5:
                         if (!(message.aRepeatedMessage && message.aRepeatedMessage.length)) {
                             message.aRepeatedMessage = [];
                         }
-                        message.aRepeatedMessage.push(types[3].decode(reader, reader.uint32()));
+                        message.aRepeatedMessage.push($types[3].decode(reader, reader.uint32()));
                         break;
 
                     case 7:
@@ -2190,7 +2161,7 @@ $root.jspb = (function() {
                     }
                 }
                 return message;
-            };})($protobuf.Reader, $types);
+            };
 
             /**
              * Decodes a Complex message from the specified reader or buffer, length delimited.
@@ -2198,25 +2169,24 @@ $root.jspb = (function() {
              * @returns {jspb.test.Complex} Complex
              */
             Complex.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-                readerOrBuffer = readerOrBuffer instanceof $protobuf.Reader ? readerOrBuffer : $protobuf.Reader(readerOrBuffer);
+                readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
                 return this.decode(readerOrBuffer, readerOrBuffer.uint32());
             };
 
             /**
              * Verifies a Complex message.
-             * @function
              * @param {jspb.test.Complex|Object} message Complex message or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            Complex.verify = (function(util, types) { return function verify(message) {
-                if (!util.isString(message.aString)) {
+            Complex.verify = function verify(message) {
+                if (!$util.isString(message.aString)) {
                     return "aString: string expected";
                 }
                 if (typeof message.anOutOfOrderBool !== "boolean") {
                     return "anOutOfOrderBool: boolean expected";
                 }
                 if (message.aNestedMessage !== undefined && message.aNestedMessage !== null) {
-                    var err = types[2].verify(message.aNestedMessage);
+                    var err = $types[2].verify(message.aNestedMessage);
                     if (err) {
                         return "aNestedMessage." + err;
                     }
@@ -2226,7 +2196,7 @@ $root.jspb = (function() {
                         return "aRepeatedMessage: array expected";
                     }
                     for (var i = 0; i < message.aRepeatedMessage.length; ++i) {
-                        var err = types[3].verify(message.aRepeatedMessage[i]);
+                        var err = $types[3].verify(message.aRepeatedMessage[i]);
                         if (err) {
                             return "aRepeatedMessage." + err;
                         }
@@ -2237,20 +2207,20 @@ $root.jspb = (function() {
                         return "aRepeatedString: array expected";
                     }
                     for (var i = 0; i < message.aRepeatedString.length; ++i) {
-                        if (!util.isString(message.aRepeatedString[i])) {
+                        if (!$util.isString(message.aRepeatedString[i])) {
                             return "aRepeatedString: string[] expected";
                         }
                     }
                 }
                 return null;
-            };})($protobuf.util, $types);
+            };
 
             /**
              * Creates a Complex message from a plain object. Also converts values to their respective internal types.
              * @param {Object.<string,*>} object Plain object
              * @returns {jspb.test.Complex} Complex
              */
-            Complex.fromObject = (function(types) { return function fromObject(object) {
+            Complex.fromObject = function fromObject(object) {
                 var message = new $root.jspb.test.Complex();
                 if (object.aString !== undefined && object.aString !== null) {
                     message.aString = String(object.aString);
@@ -2259,12 +2229,12 @@ $root.jspb = (function() {
                     message.anOutOfOrderBool = Boolean(object.anOutOfOrderBool);
                 }
                 if (object.aNestedMessage !== undefined && object.aNestedMessage !== null) {
-                    message.aNestedMessage = types[2].fromObject(object.aNestedMessage);
+                    message.aNestedMessage = $types[2].fromObject(object.aNestedMessage);
                 }
                 if (object.aRepeatedMessage) {
                     message.aRepeatedMessage = [];
                     for (var i = 0; i < object.aRepeatedMessage.length; ++i) {
-                        message.aRepeatedMessage[i] = types[3].fromObject(object.aRepeatedMessage[i]);
+                        message.aRepeatedMessage[i] = $types[3].fromObject(object.aRepeatedMessage[i]);
                     }
                 }
                 if (object.aRepeatedString) {
@@ -2274,12 +2244,11 @@ $root.jspb = (function() {
                     }
                 }
                 return message;
-            };})($types);
+            };
 
             /**
              * Creates a Complex message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link jspb.test.Complex.fromObject}.
-             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {jspb.test.Complex} Complex
              */
@@ -2291,7 +2260,7 @@ $root.jspb = (function() {
              * @param {$protobuf.ConversionOptions} [options] Conversion options
              * @returns {Object.<string,*>} Plain object
              */
-            Complex.toObject = (function(types) { return function toObject(message, options) {
+            Complex.toObject = function toObject(message, options) {
                 if (!options) {
                     options = {};
                 }
@@ -2321,7 +2290,7 @@ $root.jspb = (function() {
 
                     case "aNestedMessage":
                         if (message.aNestedMessage !== undefined && message.aNestedMessage !== null) {
-                            object.aNestedMessage = types[2].toObject(message.aNestedMessage, options);
+                            object.aNestedMessage = $types[2].toObject(message.aNestedMessage, options);
                         }
                         break;
 
@@ -2329,7 +2298,7 @@ $root.jspb = (function() {
                         if (message.aRepeatedMessage.length) {
                             object.aRepeatedMessage = [];
                             for (var j = 0; j < message.aRepeatedMessage.length; ++j) {
-                                object.aRepeatedMessage[j] = types[3].toObject(message.aRepeatedMessage[j], options);
+                                object.aRepeatedMessage[j] = $types[3].toObject(message.aRepeatedMessage[j], options);
                             }
                         }
                         break;
@@ -2345,7 +2314,7 @@ $root.jspb = (function() {
                     }
                 }
                 return object;
-            };})($types);
+            };
 
             /**
              * Creates a plain object from this Complex message. Also converts values to other types if specified.
@@ -2397,18 +2366,17 @@ $root.jspb = (function() {
 
                 /**
                  * Encodes the specified Nested message.
-                 * @function
                  * @param {jspb.test.Complex.Nested|Object} message Nested message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
                  */
-                Nested.encode = (function(Writer) { return function encode(message, writer) {
+                Nested.encode = function encode(message, writer) {
                     if (!writer) {
-                        writer = Writer.create();
+                        writer = $Writer.create();
                     }
                     writer.uint32(16).int32(message.anInt);
                     return writer;
-                };})($protobuf.Writer);
+                };
 
                 /**
                  * Encodes the specified Nested message, length delimited.
@@ -2422,14 +2390,13 @@ $root.jspb = (function() {
 
                 /**
                  * Decodes a Nested message from the specified reader or buffer.
-                 * @function
                  * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
                  * @param {number} [length] Message length if known beforehand
                  * @returns {jspb.test.Complex.Nested} Nested
                  */
-                Nested.decode = (function(Reader) { return function decode(reader, len) {
-                    if (!(reader instanceof Reader)) {
-                        reader = Reader.create(reader);
+                Nested.decode = function decode(reader, len) {
+                    if (!(reader instanceof $Reader)) {
+                        reader = $Reader.create(reader);
                     }
                     var end = len === undefined ? reader.len : reader.pos + len, message = new $root.jspb.test.Complex.Nested();
                     while (reader.pos < end) {
@@ -2445,7 +2412,7 @@ $root.jspb = (function() {
                         }
                     }
                     return message;
-                };})($protobuf.Reader);
+                };
 
                 /**
                  * Decodes a Nested message from the specified reader or buffer, length delimited.
@@ -2453,22 +2420,21 @@ $root.jspb = (function() {
                  * @returns {jspb.test.Complex.Nested} Nested
                  */
                 Nested.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-                    readerOrBuffer = readerOrBuffer instanceof $protobuf.Reader ? readerOrBuffer : $protobuf.Reader(readerOrBuffer);
+                    readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
                     return this.decode(readerOrBuffer, readerOrBuffer.uint32());
                 };
 
                 /**
                  * Verifies a Nested message.
-                 * @function
                  * @param {jspb.test.Complex.Nested|Object} message Nested message or plain object to verify
                  * @returns {?string} `null` if valid, otherwise the reason why it is not
                  */
-                Nested.verify = (function(util) { return function verify(message) {
-                    if (!util.isInteger(message.anInt)) {
+                Nested.verify = function verify(message) {
+                    if (!$util.isInteger(message.anInt)) {
                         return "anInt: integer expected";
                     }
                     return null;
-                };})($protobuf.util);
+                };
 
                 /**
                  * Creates a Nested message from a plain object. Also converts values to their respective internal types.
@@ -2486,7 +2452,6 @@ $root.jspb = (function() {
                 /**
                  * Creates a Nested message from a plain object. Also converts values to their respective internal types.
                  * This is an alias of {@link jspb.test.Complex.Nested.fromObject}.
-                 * @function
                  * @param {Object.<string,*>} object Plain object
                  * @returns {jspb.test.Complex.Nested} Nested
                  */
@@ -2568,17 +2533,16 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified OuterMessage message.
-             * @function
              * @param {jspb.test.OuterMessage|Object} message OuterMessage message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            OuterMessage.encode = (function(Writer) { return function encode(message, writer) {
+            OuterMessage.encode = function encode(message, writer) {
                 if (!writer) {
-                    writer = Writer.create();
+                    writer = $Writer.create();
                 }
                 return writer;
-            };})($protobuf.Writer);
+            };
 
             /**
              * Encodes the specified OuterMessage message, length delimited.
@@ -2592,14 +2556,13 @@ $root.jspb = (function() {
 
             /**
              * Decodes an OuterMessage message from the specified reader or buffer.
-             * @function
              * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.OuterMessage} OuterMessage
              */
-            OuterMessage.decode = (function(Reader) { return function decode(reader, len) {
-                if (!(reader instanceof Reader)) {
-                    reader = Reader.create(reader);
+            OuterMessage.decode = function decode(reader, len) {
+                if (!(reader instanceof $Reader)) {
+                    reader = $Reader.create(reader);
                 }
                 var end = len === undefined ? reader.len : reader.pos + len, message = new $root.jspb.test.OuterMessage();
                 while (reader.pos < end) {
@@ -2611,7 +2574,7 @@ $root.jspb = (function() {
                     }
                 }
                 return message;
-            };})($protobuf.Reader);
+            };
 
             /**
              * Decodes an OuterMessage message from the specified reader or buffer, length delimited.
@@ -2619,13 +2582,12 @@ $root.jspb = (function() {
              * @returns {jspb.test.OuterMessage} OuterMessage
              */
             OuterMessage.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-                readerOrBuffer = readerOrBuffer instanceof $protobuf.Reader ? readerOrBuffer : $protobuf.Reader(readerOrBuffer);
+                readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
                 return this.decode(readerOrBuffer, readerOrBuffer.uint32());
             };
 
             /**
              * Verifies an OuterMessage message.
-             * @function
              * @param {jspb.test.OuterMessage|Object} message OuterMessage message or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
@@ -2645,7 +2607,6 @@ $root.jspb = (function() {
             /**
              * Creates an OuterMessage message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link jspb.test.OuterMessage.fromObject}.
-             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {jspb.test.OuterMessage} OuterMessage
              */
@@ -2711,20 +2672,19 @@ $root.jspb = (function() {
 
                 /**
                  * Encodes the specified Complex message.
-                 * @function
                  * @param {jspb.test.OuterMessage.Complex|Object} message Complex message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
                  */
-                Complex.encode = (function(Writer) { return function encode(message, writer) {
+                Complex.encode = function encode(message, writer) {
                     if (!writer) {
-                        writer = Writer.create();
+                        writer = $Writer.create();
                     }
                     if (message.innerComplexField !== undefined && message.innerComplexField !== 0) {
                         writer.uint32(8).int32(message.innerComplexField);
                     }
                     return writer;
-                };})($protobuf.Writer);
+                };
 
                 /**
                  * Encodes the specified Complex message, length delimited.
@@ -2738,14 +2698,13 @@ $root.jspb = (function() {
 
                 /**
                  * Decodes a Complex message from the specified reader or buffer.
-                 * @function
                  * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
                  * @param {number} [length] Message length if known beforehand
                  * @returns {jspb.test.OuterMessage.Complex} Complex
                  */
-                Complex.decode = (function(Reader) { return function decode(reader, len) {
-                    if (!(reader instanceof Reader)) {
-                        reader = Reader.create(reader);
+                Complex.decode = function decode(reader, len) {
+                    if (!(reader instanceof $Reader)) {
+                        reader = $Reader.create(reader);
                     }
                     var end = len === undefined ? reader.len : reader.pos + len, message = new $root.jspb.test.OuterMessage.Complex();
                     while (reader.pos < end) {
@@ -2761,7 +2720,7 @@ $root.jspb = (function() {
                         }
                     }
                     return message;
-                };})($protobuf.Reader);
+                };
 
                 /**
                  * Decodes a Complex message from the specified reader or buffer, length delimited.
@@ -2769,24 +2728,23 @@ $root.jspb = (function() {
                  * @returns {jspb.test.OuterMessage.Complex} Complex
                  */
                 Complex.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-                    readerOrBuffer = readerOrBuffer instanceof $protobuf.Reader ? readerOrBuffer : $protobuf.Reader(readerOrBuffer);
+                    readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
                     return this.decode(readerOrBuffer, readerOrBuffer.uint32());
                 };
 
                 /**
                  * Verifies a Complex message.
-                 * @function
                  * @param {jspb.test.OuterMessage.Complex|Object} message Complex message or plain object to verify
                  * @returns {?string} `null` if valid, otherwise the reason why it is not
                  */
-                Complex.verify = (function(util) { return function verify(message) {
+                Complex.verify = function verify(message) {
                     if (message.innerComplexField !== undefined) {
-                        if (!util.isInteger(message.innerComplexField)) {
+                        if (!$util.isInteger(message.innerComplexField)) {
                             return "innerComplexField: integer expected";
                         }
                     }
                     return null;
-                };})($protobuf.util);
+                };
 
                 /**
                  * Creates a Complex message from a plain object. Also converts values to their respective internal types.
@@ -2804,7 +2762,6 @@ $root.jspb = (function() {
                 /**
                  * Creates a Complex message from a plain object. Also converts values to their respective internal types.
                  * This is an alias of {@link jspb.test.OuterMessage.Complex.fromObject}.
-                 * @function
                  * @param {Object.<string,*>} object Plain object
                  * @returns {jspb.test.OuterMessage.Complex} Complex
                  */
@@ -2892,20 +2849,19 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified IsExtension message.
-             * @function
              * @param {jspb.test.IsExtension|Object} message IsExtension message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            IsExtension.encode = (function(Writer) { return function encode(message, writer) {
+            IsExtension.encode = function encode(message, writer) {
                 if (!writer) {
-                    writer = Writer.create();
+                    writer = $Writer.create();
                 }
                 if (message.ext1 !== undefined && message.ext1 !== "") {
                     writer.uint32(10).string(message.ext1);
                 }
                 return writer;
-            };})($protobuf.Writer);
+            };
 
             /**
              * Encodes the specified IsExtension message, length delimited.
@@ -2919,14 +2875,13 @@ $root.jspb = (function() {
 
             /**
              * Decodes an IsExtension message from the specified reader or buffer.
-             * @function
              * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.IsExtension} IsExtension
              */
-            IsExtension.decode = (function(Reader) { return function decode(reader, len) {
-                if (!(reader instanceof Reader)) {
-                    reader = Reader.create(reader);
+            IsExtension.decode = function decode(reader, len) {
+                if (!(reader instanceof $Reader)) {
+                    reader = $Reader.create(reader);
                 }
                 var end = len === undefined ? reader.len : reader.pos + len, message = new $root.jspb.test.IsExtension();
                 while (reader.pos < end) {
@@ -2942,7 +2897,7 @@ $root.jspb = (function() {
                     }
                 }
                 return message;
-            };})($protobuf.Reader);
+            };
 
             /**
              * Decodes an IsExtension message from the specified reader or buffer, length delimited.
@@ -2950,24 +2905,23 @@ $root.jspb = (function() {
              * @returns {jspb.test.IsExtension} IsExtension
              */
             IsExtension.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-                readerOrBuffer = readerOrBuffer instanceof $protobuf.Reader ? readerOrBuffer : $protobuf.Reader(readerOrBuffer);
+                readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
                 return this.decode(readerOrBuffer, readerOrBuffer.uint32());
             };
 
             /**
              * Verifies an IsExtension message.
-             * @function
              * @param {jspb.test.IsExtension|Object} message IsExtension message or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            IsExtension.verify = (function(util) { return function verify(message) {
+            IsExtension.verify = function verify(message) {
                 if (message.ext1 !== undefined) {
-                    if (!util.isString(message.ext1)) {
+                    if (!$util.isString(message.ext1)) {
                         return "ext1: string expected";
                     }
                 }
                 return null;
-            };})($protobuf.util);
+            };
 
             /**
              * Creates an IsExtension message from a plain object. Also converts values to their respective internal types.
@@ -2985,7 +2939,6 @@ $root.jspb = (function() {
             /**
              * Creates an IsExtension message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link jspb.test.IsExtension.fromObject}.
-             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {jspb.test.IsExtension} IsExtension
              */
@@ -3064,17 +3017,16 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified IndirectExtension message.
-             * @function
              * @param {jspb.test.IndirectExtension|Object} message IndirectExtension message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            IndirectExtension.encode = (function(Writer) { return function encode(message, writer) {
+            IndirectExtension.encode = function encode(message, writer) {
                 if (!writer) {
-                    writer = Writer.create();
+                    writer = $Writer.create();
                 }
                 return writer;
-            };})($protobuf.Writer);
+            };
 
             /**
              * Encodes the specified IndirectExtension message, length delimited.
@@ -3088,14 +3040,13 @@ $root.jspb = (function() {
 
             /**
              * Decodes an IndirectExtension message from the specified reader or buffer.
-             * @function
              * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.IndirectExtension} IndirectExtension
              */
-            IndirectExtension.decode = (function(Reader) { return function decode(reader, len) {
-                if (!(reader instanceof Reader)) {
-                    reader = Reader.create(reader);
+            IndirectExtension.decode = function decode(reader, len) {
+                if (!(reader instanceof $Reader)) {
+                    reader = $Reader.create(reader);
                 }
                 var end = len === undefined ? reader.len : reader.pos + len, message = new $root.jspb.test.IndirectExtension();
                 while (reader.pos < end) {
@@ -3107,7 +3058,7 @@ $root.jspb = (function() {
                     }
                 }
                 return message;
-            };})($protobuf.Reader);
+            };
 
             /**
              * Decodes an IndirectExtension message from the specified reader or buffer, length delimited.
@@ -3115,13 +3066,12 @@ $root.jspb = (function() {
              * @returns {jspb.test.IndirectExtension} IndirectExtension
              */
             IndirectExtension.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-                readerOrBuffer = readerOrBuffer instanceof $protobuf.Reader ? readerOrBuffer : $protobuf.Reader(readerOrBuffer);
+                readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
                 return this.decode(readerOrBuffer, readerOrBuffer.uint32());
             };
 
             /**
              * Verifies an IndirectExtension message.
-             * @function
              * @param {jspb.test.IndirectExtension|Object} message IndirectExtension message or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
@@ -3141,7 +3091,6 @@ $root.jspb = (function() {
             /**
              * Creates an IndirectExtension message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link jspb.test.IndirectExtension.fromObject}.
-             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {jspb.test.IndirectExtension} IndirectExtension
              */
@@ -3209,7 +3158,7 @@ $root.jspb = (function() {
              * DefaultValues intField.
              * @type {number|$protobuf.Long}
              */
-            DefaultValues.prototype.intField = $protobuf.util.Long ? $protobuf.util.Long.fromBits(11,0,false) : 11;
+            DefaultValues.prototype.intField = $util.Long ? $util.Long.fromBits(11,0,false) : 11;
 
             /**
              * DefaultValues enumField.
@@ -3227,7 +3176,7 @@ $root.jspb = (function() {
              * DefaultValues bytesField.
              * @type {Uint8Array}
              */
-            DefaultValues.prototype.bytesField = $protobuf.util.newBuffer([109,111,111]);
+            DefaultValues.prototype.bytesField = $util.newBuffer([109,111,111]);
 
             // Lazily resolved referenced types
             var $types = {3:"jspb.test.DefaultValues.Enum"}; $lazyTypes.push($types);
@@ -3243,14 +3192,13 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified DefaultValues message.
-             * @function
              * @param {jspb.test.DefaultValues|Object} message DefaultValues message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            DefaultValues.encode = (function(Writer, util) { return function encode(message, writer) {
+            DefaultValues.encode = function encode(message, writer) {
                 if (!writer) {
-                    writer = Writer.create();
+                    writer = $Writer.create();
                 }
                 if (message.stringField !== undefined && message.stringField !== "default<>'\"abc") {
                     writer.uint32(10).string(message.stringField);
@@ -3258,7 +3206,7 @@ $root.jspb = (function() {
                 if (message.boolField !== undefined && message.boolField !== true) {
                     writer.uint32(16).bool(message.boolField);
                 }
-                if (message.intField !== undefined && message.intField !== null && util.longNe(message.intField, 11, 0)) {
+                if (message.intField !== undefined && message.intField !== null && $util.longNe(message.intField, 11, 0)) {
                     writer.uint32(24).int64(message.intField);
                 }
                 if (message.enumField !== undefined && message.enumField !== undefined) {
@@ -3267,11 +3215,11 @@ $root.jspb = (function() {
                 if (message.emptyField !== undefined && message.emptyField !== "") {
                     writer.uint32(50).string(message.emptyField);
                 }
-                if (message.bytesField && message.bytesField.length && util.arrayNe(message.bytesField, [ 109, 111, 111 ])) {
+                if (message.bytesField && message.bytesField.length && $util.arrayNe(message.bytesField, [ 109, 111, 111 ])) {
                     writer.uint32(66).bytes(message.bytesField);
                 }
                 return writer;
-            };})($protobuf.Writer, $protobuf.util);
+            };
 
             /**
              * Encodes the specified DefaultValues message, length delimited.
@@ -3285,14 +3233,13 @@ $root.jspb = (function() {
 
             /**
              * Decodes a DefaultValues message from the specified reader or buffer.
-             * @function
              * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.DefaultValues} DefaultValues
              */
-            DefaultValues.decode = (function(Reader) { return function decode(reader, len) {
-                if (!(reader instanceof Reader)) {
-                    reader = Reader.create(reader);
+            DefaultValues.decode = function decode(reader, len) {
+                if (!(reader instanceof $Reader)) {
+                    reader = $Reader.create(reader);
                 }
                 var end = len === undefined ? reader.len : reader.pos + len, message = new $root.jspb.test.DefaultValues();
                 while (reader.pos < end) {
@@ -3328,7 +3275,7 @@ $root.jspb = (function() {
                     }
                 }
                 return message;
-            };})($protobuf.Reader);
+            };
 
             /**
              * Decodes a DefaultValues message from the specified reader or buffer, length delimited.
@@ -3336,19 +3283,18 @@ $root.jspb = (function() {
              * @returns {jspb.test.DefaultValues} DefaultValues
              */
             DefaultValues.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-                readerOrBuffer = readerOrBuffer instanceof $protobuf.Reader ? readerOrBuffer : $protobuf.Reader(readerOrBuffer);
+                readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
                 return this.decode(readerOrBuffer, readerOrBuffer.uint32());
             };
 
             /**
              * Verifies a DefaultValues message.
-             * @function
              * @param {jspb.test.DefaultValues|Object} message DefaultValues message or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            DefaultValues.verify = (function(util) { return function verify(message) {
+            DefaultValues.verify = function verify(message) {
                 if (message.stringField !== undefined) {
-                    if (!util.isString(message.stringField)) {
+                    if (!$util.isString(message.stringField)) {
                         return "stringField: string expected";
                     }
                 }
@@ -3358,7 +3304,7 @@ $root.jspb = (function() {
                     }
                 }
                 if (message.intField !== undefined) {
-                    if (!util.isInteger(message.intField) && !(message.intField && util.isInteger(message.intField.low) && util.isInteger(message.intField.high))) {
+                    if (!$util.isInteger(message.intField) && !(message.intField && $util.isInteger(message.intField.low) && $util.isInteger(message.intField.high))) {
                         return "intField: integer|Long expected";
                     }
                 }
@@ -3373,24 +3319,24 @@ $root.jspb = (function() {
                     }
                 }
                 if (message.emptyField !== undefined) {
-                    if (!util.isString(message.emptyField)) {
+                    if (!$util.isString(message.emptyField)) {
                         return "emptyField: string expected";
                     }
                 }
                 if (message.bytesField !== undefined) {
-                    if (!(message.bytesField && typeof message.bytesField.length === "number" || util.isString(message.bytesField))) {
+                    if (!(message.bytesField && typeof message.bytesField.length === "number" || $util.isString(message.bytesField))) {
                         return "bytesField: buffer expected";
                     }
                 }
                 return null;
-            };})($protobuf.util);
+            };
 
             /**
              * Creates a DefaultValues message from a plain object. Also converts values to their respective internal types.
              * @param {Object.<string,*>} object Plain object
              * @returns {jspb.test.DefaultValues} DefaultValues
              */
-            DefaultValues.fromObject = (function(util) { return function fromObject(object) {
+            DefaultValues.fromObject = function fromObject(object) {
                 var message = new $root.jspb.test.DefaultValues();
                 if (object.stringField !== undefined && object.stringField !== null) {
                     message.stringField = String(object.stringField);
@@ -3399,8 +3345,8 @@ $root.jspb = (function() {
                     message.boolField = Boolean(object.boolField);
                 }
                 if (object.intField !== undefined && object.intField !== null) {
-                    if (util.Long) {
-                        (message.intField = util.Long.fromValue(object.intField)).unsigned = false;
+                    if ($util.Long) {
+                        (message.intField = $util.Long.fromValue(object.intField)).unsigned = false;
                     } else {
                         if (typeof object.intField === "string") {
                             message.intField = parseInt(object.intField, 10);
@@ -3409,7 +3355,7 @@ $root.jspb = (function() {
                                 message.intField = object.intField;
                             } else {
                                 if (typeof object.intField === "object") {
-                                    message.intField = new util.LongBits(object.intField.low, object.intField.high).toNumber();
+                                    message.intField = new $util.LongBits(object.intField.low, object.intField.high).toNumber();
                                 }
                             }
                         }
@@ -3431,7 +3377,7 @@ $root.jspb = (function() {
                 }
                 if (object.bytesField !== undefined && object.bytesField !== null) {
                     if (typeof object.bytesField === "string") {
-                        util.base64.decode(object.bytesField, message.bytesField = util.newBuffer(util.base64.length(object.bytesField)), 0);
+                        $util.base64.decode(object.bytesField, message.bytesField = $util.newBuffer($util.base64.length(object.bytesField)), 0);
                     } else {
                         if (object.bytesField && object.bytesField.length) {
                             message.bytesField = object.bytesField;
@@ -3439,12 +3385,11 @@ $root.jspb = (function() {
                     }
                 }
                 return message;
-            };})($protobuf.util);
+            };
 
             /**
              * Creates a DefaultValues message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link jspb.test.DefaultValues.fromObject}.
-             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {jspb.test.DefaultValues} DefaultValues
              */
@@ -3456,7 +3401,7 @@ $root.jspb = (function() {
              * @param {$protobuf.ConversionOptions} [options] Conversion options
              * @returns {Object.<string,*>} Plain object
              */
-            DefaultValues.toObject = (function(util, types) { return function toObject(message, options) {
+            DefaultValues.toObject = function toObject(message, options) {
                 if (!options) {
                     options = {};
                 }
@@ -3464,8 +3409,8 @@ $root.jspb = (function() {
                 if (options.defaults) {
                     object.stringField = "default<>'\"abc";
                     object.boolField = true;
-                    if (util.Long) {
-                        var long = new util.Long(11, 0, false);
+                    if ($util.Long) {
+                        var long = new $util.Long(11, 0, false);
                         object.intField = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
                     } else {
                         object.intField = options.longs === String ? "11" : 11;
@@ -3493,14 +3438,14 @@ $root.jspb = (function() {
                             if (typeof message.intField === "number") {
                                 object.intField = options.longs === String ? String(message.intField) : message.intField;
                             } else {
-                                object.intField = options.longs === String ? util.Long.prototype.toString.call(message.intField) : options.longs === Number ? new util.LongBits(message.intField.low, message.intField.high).toNumber() : message.intField;
+                                object.intField = options.longs === String ? $util.Long.prototype.toString.call(message.intField) : options.longs === Number ? new $util.LongBits(message.intField.low, message.intField.high).toNumber() : message.intField;
                             }
                         }
                         break;
 
                     case "enumField":
                         if (message.enumField !== undefined && message.enumField !== null) {
-                            object.enumField = options.enums === String ? types[3][message.enumField] : message.enumField;
+                            object.enumField = options.enums === String ? $types[3][message.enumField] : message.enumField;
                         }
                         break;
 
@@ -3512,13 +3457,13 @@ $root.jspb = (function() {
 
                     case "bytesField":
                         if (message.bytesField !== undefined && message.bytesField !== null) {
-                            object.bytesField = options.bytes === String ? util.base64.encode(message.bytesField, 0, message.bytesField.length) : options.bytes === Array ? Array.prototype.slice.call(message.bytesField) : message.bytesField;
+                            object.bytesField = options.bytes === String ? $util.base64.encode(message.bytesField, 0, message.bytesField.length) : options.bytes === Array ? Array.prototype.slice.call(message.bytesField) : message.bytesField;
                         }
                         break;
                     }
                 }
                 return object;
-            };})($protobuf.util, $types);
+            };
 
             /**
              * Creates a plain object from this DefaultValues message. Also converts values to other types if specified.
@@ -3588,7 +3533,7 @@ $root.jspb = (function() {
              * FloatingPointFields repeatedFloatField.
              * @type {Array.<number>}
              */
-            FloatingPointFields.prototype.repeatedFloatField = $protobuf.util.emptyArray;
+            FloatingPointFields.prototype.repeatedFloatField = $util.emptyArray;
 
             /**
              * FloatingPointFields defaultFloatField.
@@ -3612,7 +3557,7 @@ $root.jspb = (function() {
              * FloatingPointFields repeatedDoubleField.
              * @type {Array.<number>}
              */
-            FloatingPointFields.prototype.repeatedDoubleField = $protobuf.util.emptyArray;
+            FloatingPointFields.prototype.repeatedDoubleField = $util.emptyArray;
 
             /**
              * FloatingPointFields defaultDoubleField.
@@ -3631,14 +3576,13 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified FloatingPointFields message.
-             * @function
              * @param {jspb.test.FloatingPointFields|Object} message FloatingPointFields message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            FloatingPointFields.encode = (function(Writer) { return function encode(message, writer) {
+            FloatingPointFields.encode = function encode(message, writer) {
                 if (!writer) {
-                    writer = Writer.create();
+                    writer = $Writer.create();
                 }
                 if (message.optionalFloatField !== undefined && message.optionalFloatField !== 0) {
                     writer.uint32(13).float(message.optionalFloatField);
@@ -3665,7 +3609,7 @@ $root.jspb = (function() {
                     writer.uint32(65).double(message.defaultDoubleField);
                 }
                 return writer;
-            };})($protobuf.Writer);
+            };
 
             /**
              * Encodes the specified FloatingPointFields message, length delimited.
@@ -3679,14 +3623,13 @@ $root.jspb = (function() {
 
             /**
              * Decodes a FloatingPointFields message from the specified reader or buffer.
-             * @function
              * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.FloatingPointFields} FloatingPointFields
              */
-            FloatingPointFields.decode = (function(Reader) { return function decode(reader, len) {
-                if (!(reader instanceof Reader)) {
-                    reader = Reader.create(reader);
+            FloatingPointFields.decode = function decode(reader, len) {
+                if (!(reader instanceof $Reader)) {
+                    reader = $Reader.create(reader);
                 }
                 var end = len === undefined ? reader.len : reader.pos + len, message = new $root.jspb.test.FloatingPointFields();
                 while (reader.pos < end) {
@@ -3750,7 +3693,7 @@ $root.jspb = (function() {
                     }
                 }
                 return message;
-            };})($protobuf.Reader);
+            };
 
             /**
              * Decodes a FloatingPointFields message from the specified reader or buffer, length delimited.
@@ -3758,13 +3701,12 @@ $root.jspb = (function() {
              * @returns {jspb.test.FloatingPointFields} FloatingPointFields
              */
             FloatingPointFields.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-                readerOrBuffer = readerOrBuffer instanceof $protobuf.Reader ? readerOrBuffer : $protobuf.Reader(readerOrBuffer);
+                readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
                 return this.decode(readerOrBuffer, readerOrBuffer.uint32());
             };
 
             /**
              * Verifies a FloatingPointFields message.
-             * @function
              * @param {jspb.test.FloatingPointFields|Object} message FloatingPointFields message or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
@@ -3861,7 +3803,6 @@ $root.jspb = (function() {
             /**
              * Creates a FloatingPointFields message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link jspb.test.FloatingPointFields.fromObject}.
-             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {jspb.test.FloatingPointFields} FloatingPointFields
              */
@@ -4002,13 +3943,13 @@ $root.jspb = (function() {
              * TestClone simple2.
              * @type {Array.<jspb.test.Simple1>}
              */
-            TestClone.prototype.simple2 = $protobuf.util.emptyArray;
+            TestClone.prototype.simple2 = $util.emptyArray;
 
             /**
              * TestClone bytesField.
              * @type {Uint8Array}
              */
-            TestClone.prototype.bytesField = $protobuf.util.newBuffer([]);
+            TestClone.prototype.bytesField = $util.newBuffer([]);
 
             /**
              * TestClone unused.
@@ -4037,24 +3978,23 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified TestClone message.
-             * @function
              * @param {jspb.test.TestClone|Object} message TestClone message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            TestClone.encode = (function(Writer, types) { return function encode(message, writer) {
+            TestClone.encode = function encode(message, writer) {
                 if (!writer) {
-                    writer = Writer.create();
+                    writer = $Writer.create();
                 }
                 if (message.str !== undefined && message.str !== "") {
                     writer.uint32(10).string(message.str);
                 }
                 if (message.simple1 !== undefined && message.simple1 !== null) {
-                    types[1].encode(message.simple1, writer.uint32(26).fork()).ldelim();
+                    $types[1].encode(message.simple1, writer.uint32(26).fork()).ldelim();
                 }
                 if (message.simple2) {
                     for (var i = 0; i < message.simple2.length; ++i) {
-                        types[2].encode(message.simple2[i], writer.uint32(42).fork()).ldelim();
+                        $types[2].encode(message.simple2[i], writer.uint32(42).fork()).ldelim();
                     }
                 }
                 if (message.bytesField && message.bytesField.length) {
@@ -4064,10 +4004,10 @@ $root.jspb = (function() {
                     writer.uint32(58).string(message.unused);
                 }
                 if (message[".jspb.test.CloneExtension.extField"] !== undefined && message[".jspb.test.CloneExtension.extField"] !== null) {
-                    types[5].encode(message[".jspb.test.CloneExtension.extField"], writer.uint32(802).fork()).ldelim();
+                    $types[5].encode(message[".jspb.test.CloneExtension.extField"], writer.uint32(802).fork()).ldelim();
                 }
                 return writer;
-            };})($protobuf.Writer, $types);
+            };
 
             /**
              * Encodes the specified TestClone message, length delimited.
@@ -4081,14 +4021,13 @@ $root.jspb = (function() {
 
             /**
              * Decodes a TestClone message from the specified reader or buffer.
-             * @function
              * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.TestClone} TestClone
              */
-            TestClone.decode = (function(Reader, types) { return function decode(reader, len) {
-                if (!(reader instanceof Reader)) {
-                    reader = Reader.create(reader);
+            TestClone.decode = function decode(reader, len) {
+                if (!(reader instanceof $Reader)) {
+                    reader = $Reader.create(reader);
                 }
                 var end = len === undefined ? reader.len : reader.pos + len, message = new $root.jspb.test.TestClone();
                 while (reader.pos < end) {
@@ -4099,14 +4038,14 @@ $root.jspb = (function() {
                         break;
 
                     case 3:
-                        message.simple1 = types[1].decode(reader, reader.uint32());
+                        message.simple1 = $types[1].decode(reader, reader.uint32());
                         break;
 
                     case 5:
                         if (!(message.simple2 && message.simple2.length)) {
                             message.simple2 = [];
                         }
-                        message.simple2.push(types[2].decode(reader, reader.uint32()));
+                        message.simple2.push($types[2].decode(reader, reader.uint32()));
                         break;
 
                     case 6:
@@ -4118,7 +4057,7 @@ $root.jspb = (function() {
                         break;
 
                     case 100:
-                        message[".jspb.test.CloneExtension.extField"] = types[5].decode(reader, reader.uint32());
+                        message[".jspb.test.CloneExtension.extField"] = $types[5].decode(reader, reader.uint32());
                         break;
 
                     default:
@@ -4127,7 +4066,7 @@ $root.jspb = (function() {
                     }
                 }
                 return message;
-            };})($protobuf.Reader, $types);
+            };
 
             /**
              * Decodes a TestClone message from the specified reader or buffer, length delimited.
@@ -4135,24 +4074,23 @@ $root.jspb = (function() {
              * @returns {jspb.test.TestClone} TestClone
              */
             TestClone.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-                readerOrBuffer = readerOrBuffer instanceof $protobuf.Reader ? readerOrBuffer : $protobuf.Reader(readerOrBuffer);
+                readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
                 return this.decode(readerOrBuffer, readerOrBuffer.uint32());
             };
 
             /**
              * Verifies a TestClone message.
-             * @function
              * @param {jspb.test.TestClone|Object} message TestClone message or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            TestClone.verify = (function(util, types) { return function verify(message) {
+            TestClone.verify = function verify(message) {
                 if (message.str !== undefined) {
-                    if (!util.isString(message.str)) {
+                    if (!$util.isString(message.str)) {
                         return "str: string expected";
                     }
                 }
                 if (message.simple1 !== undefined && message.simple1 !== null) {
-                    var err = types[1].verify(message.simple1);
+                    var err = $types[1].verify(message.simple1);
                     if (err) {
                         return "simple1." + err;
                     }
@@ -4162,53 +4100,53 @@ $root.jspb = (function() {
                         return "simple2: array expected";
                     }
                     for (var i = 0; i < message.simple2.length; ++i) {
-                        var err = types[2].verify(message.simple2[i]);
+                        var err = $types[2].verify(message.simple2[i]);
                         if (err) {
                             return "simple2." + err;
                         }
                     }
                 }
                 if (message.bytesField !== undefined) {
-                    if (!(message.bytesField && typeof message.bytesField.length === "number" || util.isString(message.bytesField))) {
+                    if (!(message.bytesField && typeof message.bytesField.length === "number" || $util.isString(message.bytesField))) {
                         return "bytesField: buffer expected";
                     }
                 }
                 if (message.unused !== undefined) {
-                    if (!util.isString(message.unused)) {
+                    if (!$util.isString(message.unused)) {
                         return "unused: string expected";
                     }
                 }
                 if (message[".jspb.test.CloneExtension.extField"] !== undefined && message[".jspb.test.CloneExtension.extField"] !== null) {
-                    var err = types[5].verify(message[".jspb.test.CloneExtension.extField"]);
+                    var err = $types[5].verify(message[".jspb.test.CloneExtension.extField"]);
                     if (err) {
                         return ".jspb.test.CloneExtension.extField." + err;
                     }
                 }
                 return null;
-            };})($protobuf.util, $types);
+            };
 
             /**
              * Creates a TestClone message from a plain object. Also converts values to their respective internal types.
              * @param {Object.<string,*>} object Plain object
              * @returns {jspb.test.TestClone} TestClone
              */
-            TestClone.fromObject = (function(util, types) { return function fromObject(object) {
+            TestClone.fromObject = function fromObject(object) {
                 var message = new $root.jspb.test.TestClone();
                 if (object.str !== undefined && object.str !== null) {
                     message.str = String(object.str);
                 }
                 if (object.simple1 !== undefined && object.simple1 !== null) {
-                    message.simple1 = types[1].fromObject(object.simple1);
+                    message.simple1 = $types[1].fromObject(object.simple1);
                 }
                 if (object.simple2) {
                     message.simple2 = [];
                     for (var i = 0; i < object.simple2.length; ++i) {
-                        message.simple2[i] = types[2].fromObject(object.simple2[i]);
+                        message.simple2[i] = $types[2].fromObject(object.simple2[i]);
                     }
                 }
                 if (object.bytesField !== undefined && object.bytesField !== null) {
                     if (typeof object.bytesField === "string") {
-                        util.base64.decode(object.bytesField, message.bytesField = util.newBuffer(util.base64.length(object.bytesField)), 0);
+                        $util.base64.decode(object.bytesField, message.bytesField = $util.newBuffer($util.base64.length(object.bytesField)), 0);
                     } else {
                         if (object.bytesField && object.bytesField.length) {
                             message.bytesField = object.bytesField;
@@ -4219,15 +4157,14 @@ $root.jspb = (function() {
                     message.unused = String(object.unused);
                 }
                 if (object[".jspb.test.CloneExtension.extField"] !== undefined && object[".jspb.test.CloneExtension.extField"] !== null) {
-                    message[".jspb.test.CloneExtension.extField"] = types[5].fromObject(object[".jspb.test.CloneExtension.extField"]);
+                    message[".jspb.test.CloneExtension.extField"] = $types[5].fromObject(object[".jspb.test.CloneExtension.extField"]);
                 }
                 return message;
-            };})($protobuf.util, $types);
+            };
 
             /**
              * Creates a TestClone message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link jspb.test.TestClone.fromObject}.
-             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {jspb.test.TestClone} TestClone
              */
@@ -4239,7 +4176,7 @@ $root.jspb = (function() {
              * @param {$protobuf.ConversionOptions} [options] Conversion options
              * @returns {Object.<string,*>} Plain object
              */
-            TestClone.toObject = (function(util, types) { return function toObject(message, options) {
+            TestClone.toObject = function toObject(message, options) {
                 if (!options) {
                     options = {};
                 }
@@ -4264,7 +4201,7 @@ $root.jspb = (function() {
 
                     case "simple1":
                         if (message.simple1 !== undefined && message.simple1 !== null) {
-                            object.simple1 = types[1].toObject(message.simple1, options);
+                            object.simple1 = $types[1].toObject(message.simple1, options);
                         }
                         break;
 
@@ -4272,14 +4209,14 @@ $root.jspb = (function() {
                         if (message.simple2.length) {
                             object.simple2 = [];
                             for (var j = 0; j < message.simple2.length; ++j) {
-                                object.simple2[j] = types[2].toObject(message.simple2[j], options);
+                                object.simple2[j] = $types[2].toObject(message.simple2[j], options);
                             }
                         }
                         break;
 
                     case "bytesField":
                         if (message.bytesField !== undefined && message.bytesField !== null) {
-                            object.bytesField = options.bytes === String ? util.base64.encode(message.bytesField, 0, message.bytesField.length) : options.bytes === Array ? Array.prototype.slice.call(message.bytesField) : message.bytesField;
+                            object.bytesField = options.bytes === String ? $util.base64.encode(message.bytesField, 0, message.bytesField.length) : options.bytes === Array ? Array.prototype.slice.call(message.bytesField) : message.bytesField;
                         }
                         break;
 
@@ -4291,13 +4228,13 @@ $root.jspb = (function() {
 
                     case ".jspb.test.CloneExtension.extField":
                         if (message[".jspb.test.CloneExtension.extField"] !== undefined && message[".jspb.test.CloneExtension.extField"] !== null) {
-                            object[".jspb.test.CloneExtension.extField"] = types[5].toObject(message[".jspb.test.CloneExtension.extField"], options);
+                            object[".jspb.test.CloneExtension.extField"] = $types[5].toObject(message[".jspb.test.CloneExtension.extField"], options);
                         }
                         break;
                     }
                 }
                 return object;
-            };})($protobuf.util, $types);
+            };
 
             /**
              * Creates a plain object from this TestClone message. Also converts values to other types if specified.
@@ -4352,20 +4289,19 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified CloneExtension message.
-             * @function
              * @param {jspb.test.CloneExtension|Object} message CloneExtension message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            CloneExtension.encode = (function(Writer) { return function encode(message, writer) {
+            CloneExtension.encode = function encode(message, writer) {
                 if (!writer) {
-                    writer = Writer.create();
+                    writer = $Writer.create();
                 }
                 if (message.ext !== undefined && message.ext !== "") {
                     writer.uint32(18).string(message.ext);
                 }
                 return writer;
-            };})($protobuf.Writer);
+            };
 
             /**
              * Encodes the specified CloneExtension message, length delimited.
@@ -4379,14 +4315,13 @@ $root.jspb = (function() {
 
             /**
              * Decodes a CloneExtension message from the specified reader or buffer.
-             * @function
              * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.CloneExtension} CloneExtension
              */
-            CloneExtension.decode = (function(Reader) { return function decode(reader, len) {
-                if (!(reader instanceof Reader)) {
-                    reader = Reader.create(reader);
+            CloneExtension.decode = function decode(reader, len) {
+                if (!(reader instanceof $Reader)) {
+                    reader = $Reader.create(reader);
                 }
                 var end = len === undefined ? reader.len : reader.pos + len, message = new $root.jspb.test.CloneExtension();
                 while (reader.pos < end) {
@@ -4402,7 +4337,7 @@ $root.jspb = (function() {
                     }
                 }
                 return message;
-            };})($protobuf.Reader);
+            };
 
             /**
              * Decodes a CloneExtension message from the specified reader or buffer, length delimited.
@@ -4410,24 +4345,23 @@ $root.jspb = (function() {
              * @returns {jspb.test.CloneExtension} CloneExtension
              */
             CloneExtension.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-                readerOrBuffer = readerOrBuffer instanceof $protobuf.Reader ? readerOrBuffer : $protobuf.Reader(readerOrBuffer);
+                readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
                 return this.decode(readerOrBuffer, readerOrBuffer.uint32());
             };
 
             /**
              * Verifies a CloneExtension message.
-             * @function
              * @param {jspb.test.CloneExtension|Object} message CloneExtension message or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            CloneExtension.verify = (function(util) { return function verify(message) {
+            CloneExtension.verify = function verify(message) {
                 if (message.ext !== undefined) {
-                    if (!util.isString(message.ext)) {
+                    if (!$util.isString(message.ext)) {
                         return "ext: string expected";
                     }
                 }
                 return null;
-            };})($protobuf.util);
+            };
 
             /**
              * Creates a CloneExtension message from a plain object. Also converts values to their respective internal types.
@@ -4445,7 +4379,6 @@ $root.jspb = (function() {
             /**
              * Creates a CloneExtension message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link jspb.test.CloneExtension.fromObject}.
-             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {jspb.test.CloneExtension} CloneExtension
              */
@@ -4517,7 +4450,7 @@ $root.jspb = (function() {
              * TestGroup repeatedGroup.
              * @type {Array.<jspb.test.TestGroup.RepeatedGroup>}
              */
-            TestGroup.prototype.repeatedGroup = $protobuf.util.emptyArray;
+            TestGroup.prototype.repeatedGroup = $util.emptyArray;
 
             /**
              * TestGroup requiredGroup.
@@ -4563,33 +4496,32 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified TestGroup message.
-             * @function
              * @param {jspb.test.TestGroup|Object} message TestGroup message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            TestGroup.encode = (function(Writer, types) { return function encode(message, writer) {
+            TestGroup.encode = function encode(message, writer) {
                 if (!writer) {
-                    writer = Writer.create();
+                    writer = $Writer.create();
                 }
                 if (message.repeatedGroup) {
                     for (var i = 0; i < message.repeatedGroup.length; ++i) {
-                        types[0].encode(message.repeatedGroup[i], writer.uint32(11)).uint32(12);
+                        $types[0].encode(message.repeatedGroup[i], writer.uint32(11)).uint32(12);
                     }
                 }
-                types[1].encode(message.requiredGroup, writer.uint32(19)).uint32(20);
+                $types[1].encode(message.requiredGroup, writer.uint32(19)).uint32(20);
                 if (message.optionalGroup !== undefined && message.optionalGroup !== null) {
-                    types[2].encode(message.optionalGroup, writer.uint32(27)).uint32(28);
+                    $types[2].encode(message.optionalGroup, writer.uint32(27)).uint32(28);
                 }
                 if (message.id !== undefined && message.id !== "") {
                     writer.uint32(34).string(message.id);
                 }
-                types[4].encode(message.requiredSimple, writer.uint32(42).fork()).ldelim();
+                $types[4].encode(message.requiredSimple, writer.uint32(42).fork()).ldelim();
                 if (message.optionalSimple !== undefined && message.optionalSimple !== null) {
-                    types[5].encode(message.optionalSimple, writer.uint32(50).fork()).ldelim();
+                    $types[5].encode(message.optionalSimple, writer.uint32(50).fork()).ldelim();
                 }
                 return writer;
-            };})($protobuf.Writer, $types);
+            };
 
             /**
              * Encodes the specified TestGroup message, length delimited.
@@ -4603,14 +4535,13 @@ $root.jspb = (function() {
 
             /**
              * Decodes a TestGroup message from the specified reader or buffer.
-             * @function
              * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.TestGroup} TestGroup
              */
-            TestGroup.decode = (function(Reader, types) { return function decode(reader, len) {
-                if (!(reader instanceof Reader)) {
-                    reader = Reader.create(reader);
+            TestGroup.decode = function decode(reader, len) {
+                if (!(reader instanceof $Reader)) {
+                    reader = $Reader.create(reader);
                 }
                 var end = len === undefined ? reader.len : reader.pos + len, message = new $root.jspb.test.TestGroup();
                 while (reader.pos < end) {
@@ -4620,15 +4551,15 @@ $root.jspb = (function() {
                         if (!(message.repeatedGroup && message.repeatedGroup.length)) {
                             message.repeatedGroup = [];
                         }
-                        message.repeatedGroup.push(types[0].decode(reader));
+                        message.repeatedGroup.push($types[0].decode(reader));
                         break;
 
                     case 2:
-                        message.requiredGroup = types[1].decode(reader);
+                        message.requiredGroup = $types[1].decode(reader);
                         break;
 
                     case 3:
-                        message.optionalGroup = types[2].decode(reader);
+                        message.optionalGroup = $types[2].decode(reader);
                         break;
 
                     case 4:
@@ -4636,11 +4567,11 @@ $root.jspb = (function() {
                         break;
 
                     case 5:
-                        message.requiredSimple = types[4].decode(reader, reader.uint32());
+                        message.requiredSimple = $types[4].decode(reader, reader.uint32());
                         break;
 
                     case 6:
-                        message.optionalSimple = types[5].decode(reader, reader.uint32());
+                        message.optionalSimple = $types[5].decode(reader, reader.uint32());
                         break;
 
                     default:
@@ -4649,7 +4580,7 @@ $root.jspb = (function() {
                     }
                 }
                 return message;
-            };})($protobuf.Reader, $types);
+            };
 
             /**
              * Decodes a TestGroup message from the specified reader or buffer, length delimited.
@@ -4657,91 +4588,89 @@ $root.jspb = (function() {
              * @returns {jspb.test.TestGroup} TestGroup
              */
             TestGroup.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-                readerOrBuffer = readerOrBuffer instanceof $protobuf.Reader ? readerOrBuffer : $protobuf.Reader(readerOrBuffer);
+                readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
                 return this.decode(readerOrBuffer, readerOrBuffer.uint32());
             };
 
             /**
              * Verifies a TestGroup message.
-             * @function
              * @param {jspb.test.TestGroup|Object} message TestGroup message or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            TestGroup.verify = (function(util, types) { return function verify(message) {
+            TestGroup.verify = function verify(message) {
                 if (message.repeatedGroup !== undefined) {
                     if (!Array.isArray(message.repeatedGroup)) {
                         return "repeatedGroup: array expected";
                     }
                     for (var i = 0; i < message.repeatedGroup.length; ++i) {
-                        var err = types[0].verify(message.repeatedGroup[i]);
+                        var err = $types[0].verify(message.repeatedGroup[i]);
                         if (err) {
                             return "repeatedGroup." + err;
                         }
                     }
                 }
-                var err = types[1].verify(message.requiredGroup);
+                var err = $types[1].verify(message.requiredGroup);
                 if (err) {
                     return "requiredGroup." + err;
                 }
                 if (message.optionalGroup !== undefined && message.optionalGroup !== null) {
-                    var err = types[2].verify(message.optionalGroup);
+                    var err = $types[2].verify(message.optionalGroup);
                     if (err) {
                         return "optionalGroup." + err;
                     }
                 }
                 if (message.id !== undefined) {
-                    if (!util.isString(message.id)) {
+                    if (!$util.isString(message.id)) {
                         return "id: string expected";
                     }
                 }
-                var err = types[4].verify(message.requiredSimple);
+                var err = $types[4].verify(message.requiredSimple);
                 if (err) {
                     return "requiredSimple." + err;
                 }
                 if (message.optionalSimple !== undefined && message.optionalSimple !== null) {
-                    var err = types[5].verify(message.optionalSimple);
+                    var err = $types[5].verify(message.optionalSimple);
                     if (err) {
                         return "optionalSimple." + err;
                     }
                 }
                 return null;
-            };})($protobuf.util, $types);
+            };
 
             /**
              * Creates a TestGroup message from a plain object. Also converts values to their respective internal types.
              * @param {Object.<string,*>} object Plain object
              * @returns {jspb.test.TestGroup} TestGroup
              */
-            TestGroup.fromObject = (function(types) { return function fromObject(object) {
+            TestGroup.fromObject = function fromObject(object) {
                 var message = new $root.jspb.test.TestGroup();
                 if (object.repeatedGroup) {
                     message.repeatedGroup = [];
                     for (var i = 0; i < object.repeatedGroup.length; ++i) {
-                        message.repeatedGroup[i] = types[0].fromObject(object.repeatedGroup[i]);
+                        message.repeatedGroup[i] = $types[0].fromObject(object.repeatedGroup[i]);
                     }
                 }
                 if (object.requiredGroup !== undefined && object.requiredGroup !== null) {
-                    message.requiredGroup = types[1].fromObject(object.requiredGroup);
+                    message.requiredGroup = $types[1].fromObject(object.requiredGroup);
                 }
                 if (object.optionalGroup !== undefined && object.optionalGroup !== null) {
-                    message.optionalGroup = types[2].fromObject(object.optionalGroup);
+                    message.optionalGroup = $types[2].fromObject(object.optionalGroup);
                 }
                 if (object.id !== undefined && object.id !== null) {
                     message.id = String(object.id);
                 }
                 if (object.requiredSimple !== undefined && object.requiredSimple !== null) {
-                    message.requiredSimple = types[4].fromObject(object.requiredSimple);
+                    message.requiredSimple = $types[4].fromObject(object.requiredSimple);
                 }
                 if (object.optionalSimple !== undefined && object.optionalSimple !== null) {
-                    message.optionalSimple = types[5].fromObject(object.optionalSimple);
+                    message.optionalSimple = $types[5].fromObject(object.optionalSimple);
                 }
                 return message;
-            };})($types);
+            };
 
             /**
              * Creates a TestGroup message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link jspb.test.TestGroup.fromObject}.
-             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {jspb.test.TestGroup} TestGroup
              */
@@ -4753,7 +4682,7 @@ $root.jspb = (function() {
              * @param {$protobuf.ConversionOptions} [options] Conversion options
              * @returns {Object.<string,*>} Plain object
              */
-            TestGroup.toObject = (function(types) { return function toObject(message, options) {
+            TestGroup.toObject = function toObject(message, options) {
                 if (!options) {
                     options = {};
                 }
@@ -4774,20 +4703,20 @@ $root.jspb = (function() {
                         if (message.repeatedGroup.length) {
                             object.repeatedGroup = [];
                             for (var j = 0; j < message.repeatedGroup.length; ++j) {
-                                object.repeatedGroup[j] = types[0].toObject(message.repeatedGroup[j], options);
+                                object.repeatedGroup[j] = $types[0].toObject(message.repeatedGroup[j], options);
                             }
                         }
                         break;
 
                     case "requiredGroup":
                         if (message.requiredGroup !== undefined && message.requiredGroup !== null) {
-                            object.requiredGroup = types[1].toObject(message.requiredGroup, options);
+                            object.requiredGroup = $types[1].toObject(message.requiredGroup, options);
                         }
                         break;
 
                     case "optionalGroup":
                         if (message.optionalGroup !== undefined && message.optionalGroup !== null) {
-                            object.optionalGroup = types[2].toObject(message.optionalGroup, options);
+                            object.optionalGroup = $types[2].toObject(message.optionalGroup, options);
                         }
                         break;
 
@@ -4799,19 +4728,19 @@ $root.jspb = (function() {
 
                     case "requiredSimple":
                         if (message.requiredSimple !== undefined && message.requiredSimple !== null) {
-                            object.requiredSimple = types[4].toObject(message.requiredSimple, options);
+                            object.requiredSimple = $types[4].toObject(message.requiredSimple, options);
                         }
                         break;
 
                     case "optionalSimple":
                         if (message.optionalSimple !== undefined && message.optionalSimple !== null) {
-                            object.optionalSimple = types[5].toObject(message.optionalSimple, options);
+                            object.optionalSimple = $types[5].toObject(message.optionalSimple, options);
                         }
                         break;
                     }
                 }
                 return object;
-            };})($types);
+            };
 
             /**
              * Creates a plain object from this TestGroup message. Also converts values to other types if specified.
@@ -4856,7 +4785,7 @@ $root.jspb = (function() {
                  * RepeatedGroup someBool.
                  * @type {Array.<boolean>}
                  */
-                RepeatedGroup.prototype.someBool = $protobuf.util.emptyArray;
+                RepeatedGroup.prototype.someBool = $util.emptyArray;
 
                 /**
                  * Creates a new RepeatedGroup instance using the specified properties.
@@ -4869,14 +4798,13 @@ $root.jspb = (function() {
 
                 /**
                  * Encodes the specified RepeatedGroup message.
-                 * @function
                  * @param {jspb.test.TestGroup.RepeatedGroup|Object} message RepeatedGroup message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
                  */
-                RepeatedGroup.encode = (function(Writer) { return function encode(message, writer) {
+                RepeatedGroup.encode = function encode(message, writer) {
                     if (!writer) {
-                        writer = Writer.create();
+                        writer = $Writer.create();
                     }
                     writer.uint32(10).string(message.id);
                     if (message.someBool) {
@@ -4885,7 +4813,7 @@ $root.jspb = (function() {
                         }
                     }
                     return writer;
-                };})($protobuf.Writer);
+                };
 
                 /**
                  * Encodes the specified RepeatedGroup message, length delimited.
@@ -4899,14 +4827,13 @@ $root.jspb = (function() {
 
                 /**
                  * Decodes a RepeatedGroup message from the specified reader or buffer.
-                 * @function
                  * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
                  * @param {number} [length] Message length if known beforehand
                  * @returns {jspb.test.TestGroup.RepeatedGroup} RepeatedGroup
                  */
-                RepeatedGroup.decode = (function(Reader) { return function decode(reader, len) {
-                    if (!(reader instanceof Reader)) {
-                        reader = Reader.create(reader);
+                RepeatedGroup.decode = function decode(reader, len) {
+                    if (!(reader instanceof $Reader)) {
+                        reader = $Reader.create(reader);
                     }
                     var end = len === undefined ? reader.len : reader.pos + len, message = new $root.jspb.test.TestGroup.RepeatedGroup();
                     while (reader.pos < end) {
@@ -4939,7 +4866,7 @@ $root.jspb = (function() {
                         }
                     }
                     return message;
-                };})($protobuf.Reader);
+                };
 
                 /**
                  * Decodes a RepeatedGroup message from the specified reader or buffer, length delimited.
@@ -4947,18 +4874,17 @@ $root.jspb = (function() {
                  * @returns {jspb.test.TestGroup.RepeatedGroup} RepeatedGroup
                  */
                 RepeatedGroup.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-                    readerOrBuffer = readerOrBuffer instanceof $protobuf.Reader ? readerOrBuffer : $protobuf.Reader(readerOrBuffer);
+                    readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
                     return this.decode(readerOrBuffer, readerOrBuffer.uint32());
                 };
 
                 /**
                  * Verifies a RepeatedGroup message.
-                 * @function
                  * @param {jspb.test.TestGroup.RepeatedGroup|Object} message RepeatedGroup message or plain object to verify
                  * @returns {?string} `null` if valid, otherwise the reason why it is not
                  */
-                RepeatedGroup.verify = (function(util) { return function verify(message) {
-                    if (!util.isString(message.id)) {
+                RepeatedGroup.verify = function verify(message) {
+                    if (!$util.isString(message.id)) {
                         return "id: string expected";
                     }
                     if (message.someBool !== undefined) {
@@ -4972,7 +4898,7 @@ $root.jspb = (function() {
                         }
                     }
                     return null;
-                };})($protobuf.util);
+                };
 
                 /**
                  * Creates a RepeatedGroup message from a plain object. Also converts values to their respective internal types.
@@ -4996,7 +4922,6 @@ $root.jspb = (function() {
                 /**
                  * Creates a RepeatedGroup message from a plain object. Also converts values to their respective internal types.
                  * This is an alias of {@link jspb.test.TestGroup.RepeatedGroup.fromObject}.
-                 * @function
                  * @param {Object.<string,*>} object Plain object
                  * @returns {jspb.test.TestGroup.RepeatedGroup} RepeatedGroup
                  */
@@ -5093,18 +5018,17 @@ $root.jspb = (function() {
 
                 /**
                  * Encodes the specified RequiredGroup message.
-                 * @function
                  * @param {jspb.test.TestGroup.RequiredGroup|Object} message RequiredGroup message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
                  */
-                RequiredGroup.encode = (function(Writer) { return function encode(message, writer) {
+                RequiredGroup.encode = function encode(message, writer) {
                     if (!writer) {
-                        writer = Writer.create();
+                        writer = $Writer.create();
                     }
                     writer.uint32(10).string(message.id);
                     return writer;
-                };})($protobuf.Writer);
+                };
 
                 /**
                  * Encodes the specified RequiredGroup message, length delimited.
@@ -5118,14 +5042,13 @@ $root.jspb = (function() {
 
                 /**
                  * Decodes a RequiredGroup message from the specified reader or buffer.
-                 * @function
                  * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
                  * @param {number} [length] Message length if known beforehand
                  * @returns {jspb.test.TestGroup.RequiredGroup} RequiredGroup
                  */
-                RequiredGroup.decode = (function(Reader) { return function decode(reader, len) {
-                    if (!(reader instanceof Reader)) {
-                        reader = Reader.create(reader);
+                RequiredGroup.decode = function decode(reader, len) {
+                    if (!(reader instanceof $Reader)) {
+                        reader = $Reader.create(reader);
                     }
                     var end = len === undefined ? reader.len : reader.pos + len, message = new $root.jspb.test.TestGroup.RequiredGroup();
                     while (reader.pos < end) {
@@ -5144,7 +5067,7 @@ $root.jspb = (function() {
                         }
                     }
                     return message;
-                };})($protobuf.Reader);
+                };
 
                 /**
                  * Decodes a RequiredGroup message from the specified reader or buffer, length delimited.
@@ -5152,22 +5075,21 @@ $root.jspb = (function() {
                  * @returns {jspb.test.TestGroup.RequiredGroup} RequiredGroup
                  */
                 RequiredGroup.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-                    readerOrBuffer = readerOrBuffer instanceof $protobuf.Reader ? readerOrBuffer : $protobuf.Reader(readerOrBuffer);
+                    readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
                     return this.decode(readerOrBuffer, readerOrBuffer.uint32());
                 };
 
                 /**
                  * Verifies a RequiredGroup message.
-                 * @function
                  * @param {jspb.test.TestGroup.RequiredGroup|Object} message RequiredGroup message or plain object to verify
                  * @returns {?string} `null` if valid, otherwise the reason why it is not
                  */
-                RequiredGroup.verify = (function(util) { return function verify(message) {
-                    if (!util.isString(message.id)) {
+                RequiredGroup.verify = function verify(message) {
+                    if (!$util.isString(message.id)) {
                         return "id: string expected";
                     }
                     return null;
-                };})($protobuf.util);
+                };
 
                 /**
                  * Creates a RequiredGroup message from a plain object. Also converts values to their respective internal types.
@@ -5185,7 +5107,6 @@ $root.jspb = (function() {
                 /**
                  * Creates a RequiredGroup message from a plain object. Also converts values to their respective internal types.
                  * This is an alias of {@link jspb.test.TestGroup.RequiredGroup.fromObject}.
-                 * @function
                  * @param {Object.<string,*>} object Plain object
                  * @returns {jspb.test.TestGroup.RequiredGroup} RequiredGroup
                  */
@@ -5270,18 +5191,17 @@ $root.jspb = (function() {
 
                 /**
                  * Encodes the specified OptionalGroup message.
-                 * @function
                  * @param {jspb.test.TestGroup.OptionalGroup|Object} message OptionalGroup message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
                  */
-                OptionalGroup.encode = (function(Writer) { return function encode(message, writer) {
+                OptionalGroup.encode = function encode(message, writer) {
                     if (!writer) {
-                        writer = Writer.create();
+                        writer = $Writer.create();
                     }
                     writer.uint32(10).string(message.id);
                     return writer;
-                };})($protobuf.Writer);
+                };
 
                 /**
                  * Encodes the specified OptionalGroup message, length delimited.
@@ -5295,14 +5215,13 @@ $root.jspb = (function() {
 
                 /**
                  * Decodes an OptionalGroup message from the specified reader or buffer.
-                 * @function
                  * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
                  * @param {number} [length] Message length if known beforehand
                  * @returns {jspb.test.TestGroup.OptionalGroup} OptionalGroup
                  */
-                OptionalGroup.decode = (function(Reader) { return function decode(reader, len) {
-                    if (!(reader instanceof Reader)) {
-                        reader = Reader.create(reader);
+                OptionalGroup.decode = function decode(reader, len) {
+                    if (!(reader instanceof $Reader)) {
+                        reader = $Reader.create(reader);
                     }
                     var end = len === undefined ? reader.len : reader.pos + len, message = new $root.jspb.test.TestGroup.OptionalGroup();
                     while (reader.pos < end) {
@@ -5321,7 +5240,7 @@ $root.jspb = (function() {
                         }
                     }
                     return message;
-                };})($protobuf.Reader);
+                };
 
                 /**
                  * Decodes an OptionalGroup message from the specified reader or buffer, length delimited.
@@ -5329,22 +5248,21 @@ $root.jspb = (function() {
                  * @returns {jspb.test.TestGroup.OptionalGroup} OptionalGroup
                  */
                 OptionalGroup.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-                    readerOrBuffer = readerOrBuffer instanceof $protobuf.Reader ? readerOrBuffer : $protobuf.Reader(readerOrBuffer);
+                    readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
                     return this.decode(readerOrBuffer, readerOrBuffer.uint32());
                 };
 
                 /**
                  * Verifies an OptionalGroup message.
-                 * @function
                  * @param {jspb.test.TestGroup.OptionalGroup|Object} message OptionalGroup message or plain object to verify
                  * @returns {?string} `null` if valid, otherwise the reason why it is not
                  */
-                OptionalGroup.verify = (function(util) { return function verify(message) {
-                    if (!util.isString(message.id)) {
+                OptionalGroup.verify = function verify(message) {
+                    if (!$util.isString(message.id)) {
                         return "id: string expected";
                     }
                     return null;
-                };})($protobuf.util);
+                };
 
                 /**
                  * Creates an OptionalGroup message from a plain object. Also converts values to their respective internal types.
@@ -5362,7 +5280,6 @@ $root.jspb = (function() {
                 /**
                  * Creates an OptionalGroup message from a plain object. Also converts values to their respective internal types.
                  * This is an alias of {@link jspb.test.TestGroup.OptionalGroup.fromObject}.
-                 * @function
                  * @param {Object.<string,*>} object Plain object
                  * @returns {jspb.test.TestGroup.OptionalGroup} OptionalGroup
                  */
@@ -5453,20 +5370,19 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified TestGroup1 message.
-             * @function
              * @param {jspb.test.TestGroup1|Object} message TestGroup1 message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            TestGroup1.encode = (function(Writer, types) { return function encode(message, writer) {
+            TestGroup1.encode = function encode(message, writer) {
                 if (!writer) {
-                    writer = Writer.create();
+                    writer = $Writer.create();
                 }
                 if (message.group !== undefined && message.group !== null) {
-                    types[0].encode(message.group, writer.uint32(11)).uint32(12);
+                    $types[0].encode(message.group, writer.uint32(11)).uint32(12);
                 }
                 return writer;
-            };})($protobuf.Writer, $types);
+            };
 
             /**
              * Encodes the specified TestGroup1 message, length delimited.
@@ -5480,21 +5396,20 @@ $root.jspb = (function() {
 
             /**
              * Decodes a TestGroup1 message from the specified reader or buffer.
-             * @function
              * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.TestGroup1} TestGroup1
              */
-            TestGroup1.decode = (function(Reader, types) { return function decode(reader, len) {
-                if (!(reader instanceof Reader)) {
-                    reader = Reader.create(reader);
+            TestGroup1.decode = function decode(reader, len) {
+                if (!(reader instanceof $Reader)) {
+                    reader = $Reader.create(reader);
                 }
                 var end = len === undefined ? reader.len : reader.pos + len, message = new $root.jspb.test.TestGroup1();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     switch (tag >>> 3) {
                     case 1:
-                        message.group = types[0].decode(reader);
+                        message.group = $types[0].decode(reader);
                         break;
 
                     default:
@@ -5503,7 +5418,7 @@ $root.jspb = (function() {
                     }
                 }
                 return message;
-            };})($protobuf.Reader, $types);
+            };
 
             /**
              * Decodes a TestGroup1 message from the specified reader or buffer, length delimited.
@@ -5511,43 +5426,41 @@ $root.jspb = (function() {
              * @returns {jspb.test.TestGroup1} TestGroup1
              */
             TestGroup1.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-                readerOrBuffer = readerOrBuffer instanceof $protobuf.Reader ? readerOrBuffer : $protobuf.Reader(readerOrBuffer);
+                readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
                 return this.decode(readerOrBuffer, readerOrBuffer.uint32());
             };
 
             /**
              * Verifies a TestGroup1 message.
-             * @function
              * @param {jspb.test.TestGroup1|Object} message TestGroup1 message or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            TestGroup1.verify = (function(types) { return function verify(message) {
+            TestGroup1.verify = function verify(message) {
                 if (message.group !== undefined && message.group !== null) {
-                    var err = types[0].verify(message.group);
+                    var err = $types[0].verify(message.group);
                     if (err) {
                         return "group." + err;
                     }
                 }
                 return null;
-            };})($types);
+            };
 
             /**
              * Creates a TestGroup1 message from a plain object. Also converts values to their respective internal types.
              * @param {Object.<string,*>} object Plain object
              * @returns {jspb.test.TestGroup1} TestGroup1
              */
-            TestGroup1.fromObject = (function(types) { return function fromObject(object) {
+            TestGroup1.fromObject = function fromObject(object) {
                 var message = new $root.jspb.test.TestGroup1();
                 if (object.group !== undefined && object.group !== null) {
-                    message.group = types[0].fromObject(object.group);
+                    message.group = $types[0].fromObject(object.group);
                 }
                 return message;
-            };})($types);
+            };
 
             /**
              * Creates a TestGroup1 message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link jspb.test.TestGroup1.fromObject}.
-             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {jspb.test.TestGroup1} TestGroup1
              */
@@ -5559,7 +5472,7 @@ $root.jspb = (function() {
              * @param {$protobuf.ConversionOptions} [options] Conversion options
              * @returns {Object.<string,*>} Plain object
              */
-            TestGroup1.toObject = (function(types) { return function toObject(message, options) {
+            TestGroup1.toObject = function toObject(message, options) {
                 if (!options) {
                     options = {};
                 }
@@ -5571,13 +5484,13 @@ $root.jspb = (function() {
                     switch (keys[i]) {
                     case "group":
                         if (message.group !== undefined && message.group !== null) {
-                            object.group = types[0].toObject(message.group, options);
+                            object.group = $types[0].toObject(message.group, options);
                         }
                         break;
                     }
                 }
                 return object;
-            };})($types);
+            };
 
             /**
              * Creates a plain object from this TestGroup1 message. Also converts values to other types if specified.
@@ -5639,14 +5552,13 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified TestReservedNames message.
-             * @function
              * @param {jspb.test.TestReservedNames|Object} message TestReservedNames message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            TestReservedNames.encode = (function(Writer) { return function encode(message, writer) {
+            TestReservedNames.encode = function encode(message, writer) {
                 if (!writer) {
-                    writer = Writer.create();
+                    writer = $Writer.create();
                 }
                 if (message.extension !== undefined && message.extension !== 0) {
                     writer.uint32(8).int32(message.extension);
@@ -5655,7 +5567,7 @@ $root.jspb = (function() {
                     writer.uint32(80).int32(message[".jspb.test.TestReservedNamesExtension.foo"]);
                 }
                 return writer;
-            };})($protobuf.Writer);
+            };
 
             /**
              * Encodes the specified TestReservedNames message, length delimited.
@@ -5669,14 +5581,13 @@ $root.jspb = (function() {
 
             /**
              * Decodes a TestReservedNames message from the specified reader or buffer.
-             * @function
              * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.TestReservedNames} TestReservedNames
              */
-            TestReservedNames.decode = (function(Reader) { return function decode(reader, len) {
-                if (!(reader instanceof Reader)) {
-                    reader = Reader.create(reader);
+            TestReservedNames.decode = function decode(reader, len) {
+                if (!(reader instanceof $Reader)) {
+                    reader = $Reader.create(reader);
                 }
                 var end = len === undefined ? reader.len : reader.pos + len, message = new $root.jspb.test.TestReservedNames();
                 while (reader.pos < end) {
@@ -5696,7 +5607,7 @@ $root.jspb = (function() {
                     }
                 }
                 return message;
-            };})($protobuf.Reader);
+            };
 
             /**
              * Decodes a TestReservedNames message from the specified reader or buffer, length delimited.
@@ -5704,29 +5615,28 @@ $root.jspb = (function() {
              * @returns {jspb.test.TestReservedNames} TestReservedNames
              */
             TestReservedNames.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-                readerOrBuffer = readerOrBuffer instanceof $protobuf.Reader ? readerOrBuffer : $protobuf.Reader(readerOrBuffer);
+                readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
                 return this.decode(readerOrBuffer, readerOrBuffer.uint32());
             };
 
             /**
              * Verifies a TestReservedNames message.
-             * @function
              * @param {jspb.test.TestReservedNames|Object} message TestReservedNames message or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            TestReservedNames.verify = (function(util) { return function verify(message) {
+            TestReservedNames.verify = function verify(message) {
                 if (message.extension !== undefined) {
-                    if (!util.isInteger(message.extension)) {
+                    if (!$util.isInteger(message.extension)) {
                         return "extension: integer expected";
                     }
                 }
                 if (message[".jspb.test.TestReservedNamesExtension.foo"] !== undefined) {
-                    if (!util.isInteger(message[".jspb.test.TestReservedNamesExtension.foo"])) {
+                    if (!$util.isInteger(message[".jspb.test.TestReservedNamesExtension.foo"])) {
                         return ".jspb.test.TestReservedNamesExtension.foo: integer expected";
                     }
                 }
                 return null;
-            };})($protobuf.util);
+            };
 
             /**
              * Creates a TestReservedNames message from a plain object. Also converts values to their respective internal types.
@@ -5747,7 +5657,6 @@ $root.jspb = (function() {
             /**
              * Creates a TestReservedNames message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link jspb.test.TestReservedNames.fromObject}.
-             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {jspb.test.TestReservedNames} TestReservedNames
              */
@@ -5833,17 +5742,16 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified TestReservedNamesExtension message.
-             * @function
              * @param {jspb.test.TestReservedNamesExtension|Object} message TestReservedNamesExtension message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            TestReservedNamesExtension.encode = (function(Writer) { return function encode(message, writer) {
+            TestReservedNamesExtension.encode = function encode(message, writer) {
                 if (!writer) {
-                    writer = Writer.create();
+                    writer = $Writer.create();
                 }
                 return writer;
-            };})($protobuf.Writer);
+            };
 
             /**
              * Encodes the specified TestReservedNamesExtension message, length delimited.
@@ -5857,14 +5765,13 @@ $root.jspb = (function() {
 
             /**
              * Decodes a TestReservedNamesExtension message from the specified reader or buffer.
-             * @function
              * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.TestReservedNamesExtension} TestReservedNamesExtension
              */
-            TestReservedNamesExtension.decode = (function(Reader) { return function decode(reader, len) {
-                if (!(reader instanceof Reader)) {
-                    reader = Reader.create(reader);
+            TestReservedNamesExtension.decode = function decode(reader, len) {
+                if (!(reader instanceof $Reader)) {
+                    reader = $Reader.create(reader);
                 }
                 var end = len === undefined ? reader.len : reader.pos + len, message = new $root.jspb.test.TestReservedNamesExtension();
                 while (reader.pos < end) {
@@ -5876,7 +5783,7 @@ $root.jspb = (function() {
                     }
                 }
                 return message;
-            };})($protobuf.Reader);
+            };
 
             /**
              * Decodes a TestReservedNamesExtension message from the specified reader or buffer, length delimited.
@@ -5884,13 +5791,12 @@ $root.jspb = (function() {
              * @returns {jspb.test.TestReservedNamesExtension} TestReservedNamesExtension
              */
             TestReservedNamesExtension.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-                readerOrBuffer = readerOrBuffer instanceof $protobuf.Reader ? readerOrBuffer : $protobuf.Reader(readerOrBuffer);
+                readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
                 return this.decode(readerOrBuffer, readerOrBuffer.uint32());
             };
 
             /**
              * Verifies a TestReservedNamesExtension message.
-             * @function
              * @param {jspb.test.TestReservedNamesExtension|Object} message TestReservedNamesExtension message or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
@@ -5910,7 +5816,6 @@ $root.jspb = (function() {
             /**
              * Creates a TestReservedNamesExtension message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link jspb.test.TestReservedNamesExtension.fromObject}.
-             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {jspb.test.TestReservedNamesExtension} TestReservedNamesExtension
              */
@@ -5996,7 +5901,7 @@ $root.jspb = (function() {
              * TestMessageWithOneof repeatedField.
              * @type {Array.<string>}
              */
-            TestMessageWithOneof.prototype.repeatedField = $protobuf.util.emptyArray;
+            TestMessageWithOneof.prototype.repeatedField = $util.emptyArray;
 
             /**
              * TestMessageWithOneof aone.
@@ -6031,8 +5936,8 @@ $root.jspb = (function() {
              * @type {string|undefined}
              */
             Object.defineProperty(TestMessageWithOneof.prototype, "partialOneof", {
-                get: $protobuf.util.oneOfGetter($oneOfFields = ["pone", "pthree"]),
-                set: $protobuf.util.oneOfSetter($oneOfFields)
+                get: $util.oneOfGetter($oneOfFields = ["pone", "pthree"]),
+                set: $util.oneOfSetter($oneOfFields)
             });
 
             /**
@@ -6041,8 +5946,8 @@ $root.jspb = (function() {
              * @type {string|undefined}
              */
             Object.defineProperty(TestMessageWithOneof.prototype, "recursiveOneof", {
-                get: $protobuf.util.oneOfGetter($oneOfFields = ["rone", "rtwo"]),
-                set: $protobuf.util.oneOfSetter($oneOfFields)
+                get: $util.oneOfGetter($oneOfFields = ["rone", "rtwo"]),
+                set: $util.oneOfSetter($oneOfFields)
             });
 
             /**
@@ -6051,8 +5956,8 @@ $root.jspb = (function() {
              * @type {string|undefined}
              */
             Object.defineProperty(TestMessageWithOneof.prototype, "defaultOneofA", {
-                get: $protobuf.util.oneOfGetter($oneOfFields = ["aone", "atwo"]),
-                set: $protobuf.util.oneOfSetter($oneOfFields)
+                get: $util.oneOfGetter($oneOfFields = ["aone", "atwo"]),
+                set: $util.oneOfSetter($oneOfFields)
             });
 
             /**
@@ -6061,8 +5966,8 @@ $root.jspb = (function() {
              * @type {string|undefined}
              */
             Object.defineProperty(TestMessageWithOneof.prototype, "defaultOneofB", {
-                get: $protobuf.util.oneOfGetter($oneOfFields = ["bone", "btwo"]),
-                set: $protobuf.util.oneOfSetter($oneOfFields)
+                get: $util.oneOfGetter($oneOfFields = ["bone", "btwo"]),
+                set: $util.oneOfSetter($oneOfFields)
             });
 
             // Lazily resolved referenced types
@@ -6079,14 +5984,13 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified TestMessageWithOneof message.
-             * @function
              * @param {jspb.test.TestMessageWithOneof|Object} message TestMessageWithOneof message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            TestMessageWithOneof.encode = (function(Writer, types) { return function encode(message, writer) {
+            TestMessageWithOneof.encode = function encode(message, writer) {
                 if (!writer) {
-                    writer = Writer.create();
+                    writer = $Writer.create();
                 }
                 if (message.normalField !== undefined && message.normalField !== false) {
                     writer.uint32(64).bool(message.normalField);
@@ -6107,7 +6011,7 @@ $root.jspb = (function() {
                 }
                 switch (message.recursiveOneof) {
                 case "rone":
-                    types[2].encode(message.rone, writer.uint32(50).fork()).ldelim();
+                    $types[2].encode(message.rone, writer.uint32(50).fork()).ldelim();
                     break;
 
                 case "rtwo":
@@ -6133,7 +6037,7 @@ $root.jspb = (function() {
                     break;
                 }
                 return writer;
-            };})($protobuf.Writer, $types);
+            };
 
             /**
              * Encodes the specified TestMessageWithOneof message, length delimited.
@@ -6147,14 +6051,13 @@ $root.jspb = (function() {
 
             /**
              * Decodes a TestMessageWithOneof message from the specified reader or buffer.
-             * @function
              * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.TestMessageWithOneof} TestMessageWithOneof
              */
-            TestMessageWithOneof.decode = (function(Reader, types) { return function decode(reader, len) {
-                if (!(reader instanceof Reader)) {
-                    reader = Reader.create(reader);
+            TestMessageWithOneof.decode = function decode(reader, len) {
+                if (!(reader instanceof $Reader)) {
+                    reader = $Reader.create(reader);
                 }
                 var end = len === undefined ? reader.len : reader.pos + len, message = new $root.jspb.test.TestMessageWithOneof();
                 while (reader.pos < end) {
@@ -6169,7 +6072,7 @@ $root.jspb = (function() {
                         break;
 
                     case 6:
-                        message.rone = types[2].decode(reader, reader.uint32());
+                        message.rone = $types[2].decode(reader, reader.uint32());
                         break;
 
                     case 7:
@@ -6209,7 +6112,7 @@ $root.jspb = (function() {
                     }
                 }
                 return message;
-            };})($protobuf.Reader, $types);
+            };
 
             /**
              * Decodes a TestMessageWithOneof message from the specified reader or buffer, length delimited.
@@ -6217,35 +6120,34 @@ $root.jspb = (function() {
              * @returns {jspb.test.TestMessageWithOneof} TestMessageWithOneof
              */
             TestMessageWithOneof.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-                readerOrBuffer = readerOrBuffer instanceof $protobuf.Reader ? readerOrBuffer : $protobuf.Reader(readerOrBuffer);
+                readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
                 return this.decode(readerOrBuffer, readerOrBuffer.uint32());
             };
 
             /**
              * Verifies a TestMessageWithOneof message.
-             * @function
              * @param {jspb.test.TestMessageWithOneof|Object} message TestMessageWithOneof message or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            TestMessageWithOneof.verify = (function(util, types) { return function verify(message) {
+            TestMessageWithOneof.verify = function verify(message) {
                 if (message.pone !== undefined) {
-                    if (!util.isString(message.pone)) {
+                    if (!$util.isString(message.pone)) {
                         return "pone: string expected";
                     }
                 }
                 if (message.pthree !== undefined) {
-                    if (!util.isString(message.pthree)) {
+                    if (!$util.isString(message.pthree)) {
                         return "pthree: string expected";
                     }
                 }
                 if (message.rone !== undefined && message.rone !== null) {
-                    var err = types[2].verify(message.rone);
+                    var err = $types[2].verify(message.rone);
                     if (err) {
                         return "rone." + err;
                     }
                 }
                 if (message.rtwo !== undefined) {
-                    if (!util.isString(message.rtwo)) {
+                    if (!$util.isString(message.rtwo)) {
                         return "rtwo: string expected";
                     }
                 }
@@ -6259,40 +6161,40 @@ $root.jspb = (function() {
                         return "repeatedField: array expected";
                     }
                     for (var i = 0; i < message.repeatedField.length; ++i) {
-                        if (!util.isString(message.repeatedField[i])) {
+                        if (!$util.isString(message.repeatedField[i])) {
                             return "repeatedField: string[] expected";
                         }
                     }
                 }
                 if (message.aone !== undefined) {
-                    if (!util.isInteger(message.aone)) {
+                    if (!$util.isInteger(message.aone)) {
                         return "aone: integer expected";
                     }
                 }
                 if (message.atwo !== undefined) {
-                    if (!util.isInteger(message.atwo)) {
+                    if (!$util.isInteger(message.atwo)) {
                         return "atwo: integer expected";
                     }
                 }
                 if (message.bone !== undefined) {
-                    if (!util.isInteger(message.bone)) {
+                    if (!$util.isInteger(message.bone)) {
                         return "bone: integer expected";
                     }
                 }
                 if (message.btwo !== undefined) {
-                    if (!util.isInteger(message.btwo)) {
+                    if (!$util.isInteger(message.btwo)) {
                         return "btwo: integer expected";
                     }
                 }
                 return null;
-            };})($protobuf.util, $types);
+            };
 
             /**
              * Creates a TestMessageWithOneof message from a plain object. Also converts values to their respective internal types.
              * @param {Object.<string,*>} object Plain object
              * @returns {jspb.test.TestMessageWithOneof} TestMessageWithOneof
              */
-            TestMessageWithOneof.fromObject = (function(types) { return function fromObject(object) {
+            TestMessageWithOneof.fromObject = function fromObject(object) {
                 var message = new $root.jspb.test.TestMessageWithOneof();
                 if (object.pone !== undefined && object.pone !== null) {
                     message.pone = String(object.pone);
@@ -6301,7 +6203,7 @@ $root.jspb = (function() {
                     message.pthree = String(object.pthree);
                 }
                 if (object.rone !== undefined && object.rone !== null) {
-                    message.rone = types[2].fromObject(object.rone);
+                    message.rone = $types[2].fromObject(object.rone);
                 }
                 if (object.rtwo !== undefined && object.rtwo !== null) {
                     message.rtwo = String(object.rtwo);
@@ -6328,12 +6230,11 @@ $root.jspb = (function() {
                     message.btwo = object.btwo | 0;
                 }
                 return message;
-            };})($types);
+            };
 
             /**
              * Creates a TestMessageWithOneof message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link jspb.test.TestMessageWithOneof.fromObject}.
-             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {jspb.test.TestMessageWithOneof} TestMessageWithOneof
              */
@@ -6345,7 +6246,7 @@ $root.jspb = (function() {
              * @param {$protobuf.ConversionOptions} [options] Conversion options
              * @returns {Object.<string,*>} Plain object
              */
-            TestMessageWithOneof.toObject = (function(types) { return function toObject(message, options) {
+            TestMessageWithOneof.toObject = function toObject(message, options) {
                 if (!options) {
                     options = {};
                 }
@@ -6380,7 +6281,7 @@ $root.jspb = (function() {
 
                     case "rone":
                         if (message.rone !== undefined && message.rone !== null) {
-                            object.rone = types[2].toObject(message.rone, options);
+                            object.rone = $types[2].toObject(message.rone, options);
                         }
                         break;
 
@@ -6431,7 +6332,7 @@ $root.jspb = (function() {
                     }
                 }
                 return object;
-            };})($types);
+            };
 
             /**
              * Creates a plain object from this TestMessageWithOneof message. Also converts values to other types if specified.
@@ -6479,7 +6380,7 @@ $root.jspb = (function() {
              * TestEndsWithBytes data.
              * @type {Uint8Array}
              */
-            TestEndsWithBytes.prototype.data = $protobuf.util.newBuffer([]);
+            TestEndsWithBytes.prototype.data = $util.newBuffer([]);
 
             /**
              * Creates a new TestEndsWithBytes instance using the specified properties.
@@ -6492,14 +6393,13 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified TestEndsWithBytes message.
-             * @function
              * @param {jspb.test.TestEndsWithBytes|Object} message TestEndsWithBytes message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            TestEndsWithBytes.encode = (function(Writer) { return function encode(message, writer) {
+            TestEndsWithBytes.encode = function encode(message, writer) {
                 if (!writer) {
-                    writer = Writer.create();
+                    writer = $Writer.create();
                 }
                 if (message.value !== undefined && message.value !== 0) {
                     writer.uint32(8).int32(message.value);
@@ -6508,7 +6408,7 @@ $root.jspb = (function() {
                     writer.uint32(18).bytes(message.data);
                 }
                 return writer;
-            };})($protobuf.Writer);
+            };
 
             /**
              * Encodes the specified TestEndsWithBytes message, length delimited.
@@ -6522,14 +6422,13 @@ $root.jspb = (function() {
 
             /**
              * Decodes a TestEndsWithBytes message from the specified reader or buffer.
-             * @function
              * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.TestEndsWithBytes} TestEndsWithBytes
              */
-            TestEndsWithBytes.decode = (function(Reader) { return function decode(reader, len) {
-                if (!(reader instanceof Reader)) {
-                    reader = Reader.create(reader);
+            TestEndsWithBytes.decode = function decode(reader, len) {
+                if (!(reader instanceof $Reader)) {
+                    reader = $Reader.create(reader);
                 }
                 var end = len === undefined ? reader.len : reader.pos + len, message = new $root.jspb.test.TestEndsWithBytes();
                 while (reader.pos < end) {
@@ -6549,7 +6448,7 @@ $root.jspb = (function() {
                     }
                 }
                 return message;
-            };})($protobuf.Reader);
+            };
 
             /**
              * Decodes a TestEndsWithBytes message from the specified reader or buffer, length delimited.
@@ -6557,43 +6456,42 @@ $root.jspb = (function() {
              * @returns {jspb.test.TestEndsWithBytes} TestEndsWithBytes
              */
             TestEndsWithBytes.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-                readerOrBuffer = readerOrBuffer instanceof $protobuf.Reader ? readerOrBuffer : $protobuf.Reader(readerOrBuffer);
+                readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
                 return this.decode(readerOrBuffer, readerOrBuffer.uint32());
             };
 
             /**
              * Verifies a TestEndsWithBytes message.
-             * @function
              * @param {jspb.test.TestEndsWithBytes|Object} message TestEndsWithBytes message or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            TestEndsWithBytes.verify = (function(util) { return function verify(message) {
+            TestEndsWithBytes.verify = function verify(message) {
                 if (message.value !== undefined) {
-                    if (!util.isInteger(message.value)) {
+                    if (!$util.isInteger(message.value)) {
                         return "value: integer expected";
                     }
                 }
                 if (message.data !== undefined) {
-                    if (!(message.data && typeof message.data.length === "number" || util.isString(message.data))) {
+                    if (!(message.data && typeof message.data.length === "number" || $util.isString(message.data))) {
                         return "data: buffer expected";
                     }
                 }
                 return null;
-            };})($protobuf.util);
+            };
 
             /**
              * Creates a TestEndsWithBytes message from a plain object. Also converts values to their respective internal types.
              * @param {Object.<string,*>} object Plain object
              * @returns {jspb.test.TestEndsWithBytes} TestEndsWithBytes
              */
-            TestEndsWithBytes.fromObject = (function(util) { return function fromObject(object) {
+            TestEndsWithBytes.fromObject = function fromObject(object) {
                 var message = new $root.jspb.test.TestEndsWithBytes();
                 if (object.value !== undefined && object.value !== null) {
                     message.value = object.value | 0;
                 }
                 if (object.data !== undefined && object.data !== null) {
                     if (typeof object.data === "string") {
-                        util.base64.decode(object.data, message.data = util.newBuffer(util.base64.length(object.data)), 0);
+                        $util.base64.decode(object.data, message.data = $util.newBuffer($util.base64.length(object.data)), 0);
                     } else {
                         if (object.data && object.data.length) {
                             message.data = object.data;
@@ -6601,12 +6499,11 @@ $root.jspb = (function() {
                     }
                 }
                 return message;
-            };})($protobuf.util);
+            };
 
             /**
              * Creates a TestEndsWithBytes message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link jspb.test.TestEndsWithBytes.fromObject}.
-             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {jspb.test.TestEndsWithBytes} TestEndsWithBytes
              */
@@ -6618,7 +6515,7 @@ $root.jspb = (function() {
              * @param {$protobuf.ConversionOptions} [options] Conversion options
              * @returns {Object.<string,*>} Plain object
              */
-            TestEndsWithBytes.toObject = (function(util) { return function toObject(message, options) {
+            TestEndsWithBytes.toObject = function toObject(message, options) {
                 if (!options) {
                     options = {};
                 }
@@ -6637,13 +6534,13 @@ $root.jspb = (function() {
 
                     case "data":
                         if (message.data !== undefined && message.data !== null) {
-                            object.data = options.bytes === String ? util.base64.encode(message.data, 0, message.data.length) : options.bytes === Array ? Array.prototype.slice.call(message.data) : message.data;
+                            object.data = options.bytes === String ? $util.base64.encode(message.data, 0, message.data.length) : options.bytes === Array ? Array.prototype.slice.call(message.data) : message.data;
                         }
                         break;
                     }
                 }
                 return object;
-            };})($protobuf.util);
+            };
 
             /**
              * Creates a plain object from this TestEndsWithBytes message. Also converts values to other types if specified.
@@ -6685,61 +6582,61 @@ $root.jspb = (function() {
              * TestMapFieldsNoBinary mapStringString.
              * @type {Object.<string,string>}
              */
-            TestMapFieldsNoBinary.prototype.mapStringString = $protobuf.util.emptyObject;
+            TestMapFieldsNoBinary.prototype.mapStringString = $util.emptyObject;
 
             /**
              * TestMapFieldsNoBinary mapStringInt32.
              * @type {Object.<string,number>}
              */
-            TestMapFieldsNoBinary.prototype.mapStringInt32 = $protobuf.util.emptyObject;
+            TestMapFieldsNoBinary.prototype.mapStringInt32 = $util.emptyObject;
 
             /**
              * TestMapFieldsNoBinary mapStringInt64.
              * @type {Object.<string,number|$protobuf.Long>}
              */
-            TestMapFieldsNoBinary.prototype.mapStringInt64 = $protobuf.util.emptyObject;
+            TestMapFieldsNoBinary.prototype.mapStringInt64 = $util.emptyObject;
 
             /**
              * TestMapFieldsNoBinary mapStringBool.
              * @type {Object.<string,boolean>}
              */
-            TestMapFieldsNoBinary.prototype.mapStringBool = $protobuf.util.emptyObject;
+            TestMapFieldsNoBinary.prototype.mapStringBool = $util.emptyObject;
 
             /**
              * TestMapFieldsNoBinary mapStringDouble.
              * @type {Object.<string,number>}
              */
-            TestMapFieldsNoBinary.prototype.mapStringDouble = $protobuf.util.emptyObject;
+            TestMapFieldsNoBinary.prototype.mapStringDouble = $util.emptyObject;
 
             /**
              * TestMapFieldsNoBinary mapStringEnum.
              * @type {Object.<string,number>}
              */
-            TestMapFieldsNoBinary.prototype.mapStringEnum = $protobuf.util.emptyObject;
+            TestMapFieldsNoBinary.prototype.mapStringEnum = $util.emptyObject;
 
             /**
              * TestMapFieldsNoBinary mapStringMsg.
              * @type {Object.<string,jspb.test.MapValueMessageNoBinary>}
              */
-            TestMapFieldsNoBinary.prototype.mapStringMsg = $protobuf.util.emptyObject;
+            TestMapFieldsNoBinary.prototype.mapStringMsg = $util.emptyObject;
 
             /**
              * TestMapFieldsNoBinary mapInt32String.
              * @type {Object.<string,string>}
              */
-            TestMapFieldsNoBinary.prototype.mapInt32String = $protobuf.util.emptyObject;
+            TestMapFieldsNoBinary.prototype.mapInt32String = $util.emptyObject;
 
             /**
              * TestMapFieldsNoBinary mapInt64String.
              * @type {Object.<string,string>}
              */
-            TestMapFieldsNoBinary.prototype.mapInt64String = $protobuf.util.emptyObject;
+            TestMapFieldsNoBinary.prototype.mapInt64String = $util.emptyObject;
 
             /**
              * TestMapFieldsNoBinary mapBoolString.
              * @type {Object.<string,string>}
              */
-            TestMapFieldsNoBinary.prototype.mapBoolString = $protobuf.util.emptyObject;
+            TestMapFieldsNoBinary.prototype.mapBoolString = $util.emptyObject;
 
             /**
              * TestMapFieldsNoBinary testMapFields.
@@ -6751,7 +6648,7 @@ $root.jspb = (function() {
              * TestMapFieldsNoBinary mapStringTestmapfields.
              * @type {Object.<string,jspb.test.TestMapFieldsNoBinary>}
              */
-            TestMapFieldsNoBinary.prototype.mapStringTestmapfields = $protobuf.util.emptyObject;
+            TestMapFieldsNoBinary.prototype.mapStringTestmapfields = $util.emptyObject;
 
             // Lazily resolved referenced types
             var $types = {5:"jspb.test.MapValueEnumNoBinary",6:"jspb.test.MapValueMessageNoBinary",10:"jspb.test.TestMapFieldsNoBinary",11:"jspb.test.TestMapFieldsNoBinary"}; $lazyTypes.push($types);
@@ -6767,77 +6664,76 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified TestMapFieldsNoBinary message.
-             * @function
              * @param {jspb.test.TestMapFieldsNoBinary|Object} message TestMapFieldsNoBinary message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            TestMapFieldsNoBinary.encode = (function(Writer, util, types) { return function encode(message, writer) {
+            TestMapFieldsNoBinary.encode = function encode(message, writer) {
                 if (!writer) {
-                    writer = Writer.create();
+                    writer = $Writer.create();
                 }
-                if (message.mapStringString && message.mapStringString !== util.emptyObject) {
+                if (message.mapStringString && message.mapStringString !== $util.emptyObject) {
                     for (var keys = Object.keys(message.mapStringString), i = 0; i < keys.length; ++i) {
                         writer.uint32(10).fork().uint32(10).string(keys[i]).uint32(18).string(message.mapStringString[keys[i]]).ldelim();
                     }
                 }
-                if (message.mapStringInt32 && message.mapStringInt32 !== util.emptyObject) {
+                if (message.mapStringInt32 && message.mapStringInt32 !== $util.emptyObject) {
                     for (var keys = Object.keys(message.mapStringInt32), i = 0; i < keys.length; ++i) {
                         writer.uint32(18).fork().uint32(10).string(keys[i]).uint32(16).int32(message.mapStringInt32[keys[i]]).ldelim();
                     }
                 }
-                if (message.mapStringInt64 && message.mapStringInt64 !== util.emptyObject) {
+                if (message.mapStringInt64 && message.mapStringInt64 !== $util.emptyObject) {
                     for (var keys = Object.keys(message.mapStringInt64), i = 0; i < keys.length; ++i) {
                         writer.uint32(26).fork().uint32(10).string(keys[i]).uint32(16).int64(message.mapStringInt64[keys[i]]).ldelim();
                     }
                 }
-                if (message.mapStringBool && message.mapStringBool !== util.emptyObject) {
+                if (message.mapStringBool && message.mapStringBool !== $util.emptyObject) {
                     for (var keys = Object.keys(message.mapStringBool), i = 0; i < keys.length; ++i) {
                         writer.uint32(34).fork().uint32(10).string(keys[i]).uint32(16).bool(message.mapStringBool[keys[i]]).ldelim();
                     }
                 }
-                if (message.mapStringDouble && message.mapStringDouble !== util.emptyObject) {
+                if (message.mapStringDouble && message.mapStringDouble !== $util.emptyObject) {
                     for (var keys = Object.keys(message.mapStringDouble), i = 0; i < keys.length; ++i) {
                         writer.uint32(42).fork().uint32(10).string(keys[i]).uint32(17).double(message.mapStringDouble[keys[i]]).ldelim();
                     }
                 }
-                if (message.mapStringEnum && message.mapStringEnum !== util.emptyObject) {
+                if (message.mapStringEnum && message.mapStringEnum !== $util.emptyObject) {
                     for (var keys = Object.keys(message.mapStringEnum), i = 0; i < keys.length; ++i) {
                         writer.uint32(50).fork().uint32(10).string(keys[i]).uint32(16).uint32(message.mapStringEnum[keys[i]]).ldelim();
                     }
                 }
-                if (message.mapStringMsg && message.mapStringMsg !== util.emptyObject) {
+                if (message.mapStringMsg && message.mapStringMsg !== $util.emptyObject) {
                     for (var keys = Object.keys(message.mapStringMsg), i = 0; i < keys.length; ++i) {
                         writer.uint32(58).fork().uint32(10).string(keys[i]);
-                        types[6].encode(message.mapStringMsg[keys[i]], writer.uint32(18).fork()).ldelim().ldelim();
+                        $types[6].encode(message.mapStringMsg[keys[i]], writer.uint32(18).fork()).ldelim().ldelim();
                     }
                 }
-                if (message.mapInt32String && message.mapInt32String !== util.emptyObject) {
+                if (message.mapInt32String && message.mapInt32String !== $util.emptyObject) {
                     for (var keys = Object.keys(message.mapInt32String), i = 0; i < keys.length; ++i) {
                         writer.uint32(66).fork().uint32(8).int32(keys[i]).uint32(18).string(message.mapInt32String[keys[i]]).ldelim();
                     }
                 }
-                if (message.mapInt64String && message.mapInt64String !== util.emptyObject) {
+                if (message.mapInt64String && message.mapInt64String !== $util.emptyObject) {
                     for (var keys = Object.keys(message.mapInt64String), i = 0; i < keys.length; ++i) {
                         writer.uint32(74).fork().uint32(8).int64(keys[i]).uint32(18).string(message.mapInt64String[keys[i]]).ldelim();
                     }
                 }
-                if (message.mapBoolString && message.mapBoolString !== util.emptyObject) {
+                if (message.mapBoolString && message.mapBoolString !== $util.emptyObject) {
                     for (var keys = Object.keys(message.mapBoolString), i = 0; i < keys.length; ++i) {
                         writer.uint32(82).fork().uint32(8).bool(keys[i]).uint32(18).string(message.mapBoolString[keys[i]]).ldelim();
                     }
                 }
                 if (message.testMapFields !== undefined && message.testMapFields !== null) {
-                    types[10].encode(message.testMapFields, writer.uint32(90).fork()).ldelim();
+                    $types[10].encode(message.testMapFields, writer.uint32(90).fork()).ldelim();
                 }
-                if (message.mapStringTestmapfields && message.mapStringTestmapfields !== util.emptyObject) {
+                if (message.mapStringTestmapfields && message.mapStringTestmapfields !== $util.emptyObject) {
                     for (var keys = Object.keys(message.mapStringTestmapfields), i = 0; i < keys.length; ++i) {
                         writer.uint32(98).fork().uint32(10).string(keys[i]);
-                        types[11].encode(message.mapStringTestmapfields[keys[i]], writer.uint32(18).fork()).ldelim().ldelim();
+                        $types[11].encode(message.mapStringTestmapfields[keys[i]], writer.uint32(18).fork()).ldelim().ldelim();
                     }
                 }
                 return writer;
-            };})($protobuf.Writer, $protobuf.util, $types);
+            };
 
             /**
              * Encodes the specified TestMapFieldsNoBinary message, length delimited.
@@ -6851,14 +6747,13 @@ $root.jspb = (function() {
 
             /**
              * Decodes a TestMapFieldsNoBinary message from the specified reader or buffer.
-             * @function
              * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.TestMapFieldsNoBinary} TestMapFieldsNoBinary
              */
-            TestMapFieldsNoBinary.decode = (function(Reader, util, types) { return function decode(reader, len) {
-                if (!(reader instanceof Reader)) {
-                    reader = Reader.create(reader);
+            TestMapFieldsNoBinary.decode = function decode(reader, len) {
+                if (!(reader instanceof $Reader)) {
+                    reader = $Reader.create(reader);
                 }
                 var end = len === undefined ? reader.len : reader.pos + len, message = new $root.jspb.test.TestMapFieldsNoBinary();
                 while (reader.pos < end) {
@@ -6866,116 +6761,116 @@ $root.jspb = (function() {
                     switch (tag >>> 3) {
                     case 1:
                         reader.skip().pos++;
-                        if (message.mapStringString === util.emptyObject) {
+                        if (message.mapStringString === $util.emptyObject) {
                             message.mapStringString = {};
                         }
                         var key = reader.string();
                         reader.pos++;
-                        message.mapStringString[typeof key === "object" ? util.longToHash(key) : key] = reader.string();
+                        message.mapStringString[typeof key === "object" ? $util.longToHash(key) : key] = reader.string();
                         break;
 
                     case 2:
                         reader.skip().pos++;
-                        if (message.mapStringInt32 === util.emptyObject) {
+                        if (message.mapStringInt32 === $util.emptyObject) {
                             message.mapStringInt32 = {};
                         }
                         var key = reader.string();
                         reader.pos++;
-                        message.mapStringInt32[typeof key === "object" ? util.longToHash(key) : key] = reader.int32();
+                        message.mapStringInt32[typeof key === "object" ? $util.longToHash(key) : key] = reader.int32();
                         break;
 
                     case 3:
                         reader.skip().pos++;
-                        if (message.mapStringInt64 === util.emptyObject) {
+                        if (message.mapStringInt64 === $util.emptyObject) {
                             message.mapStringInt64 = {};
                         }
                         var key = reader.string();
                         reader.pos++;
-                        message.mapStringInt64[typeof key === "object" ? util.longToHash(key) : key] = reader.int64();
+                        message.mapStringInt64[typeof key === "object" ? $util.longToHash(key) : key] = reader.int64();
                         break;
 
                     case 4:
                         reader.skip().pos++;
-                        if (message.mapStringBool === util.emptyObject) {
+                        if (message.mapStringBool === $util.emptyObject) {
                             message.mapStringBool = {};
                         }
                         var key = reader.string();
                         reader.pos++;
-                        message.mapStringBool[typeof key === "object" ? util.longToHash(key) : key] = reader.bool();
+                        message.mapStringBool[typeof key === "object" ? $util.longToHash(key) : key] = reader.bool();
                         break;
 
                     case 5:
                         reader.skip().pos++;
-                        if (message.mapStringDouble === util.emptyObject) {
+                        if (message.mapStringDouble === $util.emptyObject) {
                             message.mapStringDouble = {};
                         }
                         var key = reader.string();
                         reader.pos++;
-                        message.mapStringDouble[typeof key === "object" ? util.longToHash(key) : key] = reader.double();
+                        message.mapStringDouble[typeof key === "object" ? $util.longToHash(key) : key] = reader.double();
                         break;
 
                     case 6:
                         reader.skip().pos++;
-                        if (message.mapStringEnum === util.emptyObject) {
+                        if (message.mapStringEnum === $util.emptyObject) {
                             message.mapStringEnum = {};
                         }
                         var key = reader.string();
                         reader.pos++;
-                        message.mapStringEnum[typeof key === "object" ? util.longToHash(key) : key] = reader.uint32();
+                        message.mapStringEnum[typeof key === "object" ? $util.longToHash(key) : key] = reader.uint32();
                         break;
 
                     case 7:
                         reader.skip().pos++;
-                        if (message.mapStringMsg === util.emptyObject) {
+                        if (message.mapStringMsg === $util.emptyObject) {
                             message.mapStringMsg = {};
                         }
                         var key = reader.string();
                         reader.pos++;
-                        message.mapStringMsg[typeof key === "object" ? util.longToHash(key) : key] = types[6].decode(reader, reader.uint32());
+                        message.mapStringMsg[typeof key === "object" ? $util.longToHash(key) : key] = $types[6].decode(reader, reader.uint32());
                         break;
 
                     case 8:
                         reader.skip().pos++;
-                        if (message.mapInt32String === util.emptyObject) {
+                        if (message.mapInt32String === $util.emptyObject) {
                             message.mapInt32String = {};
                         }
                         var key = reader.int32();
                         reader.pos++;
-                        message.mapInt32String[typeof key === "object" ? util.longToHash(key) : key] = reader.string();
+                        message.mapInt32String[typeof key === "object" ? $util.longToHash(key) : key] = reader.string();
                         break;
 
                     case 9:
                         reader.skip().pos++;
-                        if (message.mapInt64String === util.emptyObject) {
+                        if (message.mapInt64String === $util.emptyObject) {
                             message.mapInt64String = {};
                         }
                         var key = reader.int64();
                         reader.pos++;
-                        message.mapInt64String[typeof key === "object" ? util.longToHash(key) : key] = reader.string();
+                        message.mapInt64String[typeof key === "object" ? $util.longToHash(key) : key] = reader.string();
                         break;
 
                     case 10:
                         reader.skip().pos++;
-                        if (message.mapBoolString === util.emptyObject) {
+                        if (message.mapBoolString === $util.emptyObject) {
                             message.mapBoolString = {};
                         }
                         var key = reader.bool();
                         reader.pos++;
-                        message.mapBoolString[typeof key === "object" ? util.longToHash(key) : key] = reader.string();
+                        message.mapBoolString[typeof key === "object" ? $util.longToHash(key) : key] = reader.string();
                         break;
 
                     case 11:
-                        message.testMapFields = types[10].decode(reader, reader.uint32());
+                        message.testMapFields = $types[10].decode(reader, reader.uint32());
                         break;
 
                     case 12:
                         reader.skip().pos++;
-                        if (message.mapStringTestmapfields === util.emptyObject) {
+                        if (message.mapStringTestmapfields === $util.emptyObject) {
                             message.mapStringTestmapfields = {};
                         }
                         var key = reader.string();
                         reader.pos++;
-                        message.mapStringTestmapfields[typeof key === "object" ? util.longToHash(key) : key] = types[11].decode(reader, reader.uint32());
+                        message.mapStringTestmapfields[typeof key === "object" ? $util.longToHash(key) : key] = $types[11].decode(reader, reader.uint32());
                         break;
 
                     default:
@@ -6984,7 +6879,7 @@ $root.jspb = (function() {
                     }
                 }
                 return message;
-            };})($protobuf.Reader, $protobuf.util, $types);
+            };
 
             /**
              * Decodes a TestMapFieldsNoBinary message from the specified reader or buffer, length delimited.
@@ -6992,52 +6887,51 @@ $root.jspb = (function() {
              * @returns {jspb.test.TestMapFieldsNoBinary} TestMapFieldsNoBinary
              */
             TestMapFieldsNoBinary.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-                readerOrBuffer = readerOrBuffer instanceof $protobuf.Reader ? readerOrBuffer : $protobuf.Reader(readerOrBuffer);
+                readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
                 return this.decode(readerOrBuffer, readerOrBuffer.uint32());
             };
 
             /**
              * Verifies a TestMapFieldsNoBinary message.
-             * @function
              * @param {jspb.test.TestMapFieldsNoBinary|Object} message TestMapFieldsNoBinary message or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            TestMapFieldsNoBinary.verify = (function(util, types) { return function verify(message) {
+            TestMapFieldsNoBinary.verify = function verify(message) {
                 if (message.mapStringString !== undefined) {
-                    if (!util.isObject(message.mapStringString)) {
+                    if (!$util.isObject(message.mapStringString)) {
                         return "mapStringString: object expected";
                     }
                     var key = Object.keys(message.mapStringString);
                     for (var i = 0; i < key.length; ++i) {
-                        if (!util.isString(message.mapStringString[key[i]])) {
+                        if (!$util.isString(message.mapStringString[key[i]])) {
                             return "mapStringString: string{key:string} expected";
                         }
                     }
                 }
                 if (message.mapStringInt32 !== undefined) {
-                    if (!util.isObject(message.mapStringInt32)) {
+                    if (!$util.isObject(message.mapStringInt32)) {
                         return "mapStringInt32: object expected";
                     }
                     var key = Object.keys(message.mapStringInt32);
                     for (var i = 0; i < key.length; ++i) {
-                        if (!util.isInteger(message.mapStringInt32[key[i]])) {
+                        if (!$util.isInteger(message.mapStringInt32[key[i]])) {
                             return "mapStringInt32: integer{key:string} expected";
                         }
                     }
                 }
                 if (message.mapStringInt64 !== undefined) {
-                    if (!util.isObject(message.mapStringInt64)) {
+                    if (!$util.isObject(message.mapStringInt64)) {
                         return "mapStringInt64: object expected";
                     }
                     var key = Object.keys(message.mapStringInt64);
                     for (var i = 0; i < key.length; ++i) {
-                        if (!util.isInteger(message.mapStringInt64[key[i]]) && !(message.mapStringInt64[key[i]] && util.isInteger(message.mapStringInt64[key[i]].low) && util.isInteger(message.mapStringInt64[key[i]].high))) {
+                        if (!$util.isInteger(message.mapStringInt64[key[i]]) && !(message.mapStringInt64[key[i]] && $util.isInteger(message.mapStringInt64[key[i]].low) && $util.isInteger(message.mapStringInt64[key[i]].high))) {
                             return "mapStringInt64: integer|Long{key:string} expected";
                         }
                     }
                 }
                 if (message.mapStringBool !== undefined) {
-                    if (!util.isObject(message.mapStringBool)) {
+                    if (!$util.isObject(message.mapStringBool)) {
                         return "mapStringBool: object expected";
                     }
                     var key = Object.keys(message.mapStringBool);
@@ -7048,7 +6942,7 @@ $root.jspb = (function() {
                     }
                 }
                 if (message.mapStringDouble !== undefined) {
-                    if (!util.isObject(message.mapStringDouble)) {
+                    if (!$util.isObject(message.mapStringDouble)) {
                         return "mapStringDouble: object expected";
                     }
                     var key = Object.keys(message.mapStringDouble);
@@ -7059,7 +6953,7 @@ $root.jspb = (function() {
                     }
                 }
                 if (message.mapStringEnum !== undefined) {
-                    if (!util.isObject(message.mapStringEnum)) {
+                    if (!$util.isObject(message.mapStringEnum)) {
                         return "mapStringEnum: object expected";
                     }
                     var key = Object.keys(message.mapStringEnum);
@@ -7076,19 +6970,19 @@ $root.jspb = (function() {
                     }
                 }
                 if (message.mapStringMsg !== undefined) {
-                    if (!util.isObject(message.mapStringMsg)) {
+                    if (!$util.isObject(message.mapStringMsg)) {
                         return "mapStringMsg: object expected";
                     }
                     var key = Object.keys(message.mapStringMsg);
                     for (var i = 0; i < key.length; ++i) {
-                        var err = types[6].verify(message.mapStringMsg[key[i]]);
+                        var err = $types[6].verify(message.mapStringMsg[key[i]]);
                         if (err) {
                             return "mapStringMsg." + err;
                         }
                     }
                 }
                 if (message.mapInt32String !== undefined) {
-                    if (!util.isObject(message.mapInt32String)) {
+                    if (!$util.isObject(message.mapInt32String)) {
                         return "mapInt32String: object expected";
                     }
                     var key = Object.keys(message.mapInt32String);
@@ -7096,13 +6990,13 @@ $root.jspb = (function() {
                         if (!/^-?(?:0|[1-9][0-9]*)$/.test(key[i])) {
                             return "mapInt32String: integer key{key:int32} expected";
                         }
-                        if (!util.isString(message.mapInt32String[key[i]])) {
+                        if (!$util.isString(message.mapInt32String[key[i]])) {
                             return "mapInt32String: string{key:int32} expected";
                         }
                     }
                 }
                 if (message.mapInt64String !== undefined) {
-                    if (!util.isObject(message.mapInt64String)) {
+                    if (!$util.isObject(message.mapInt64String)) {
                         return "mapInt64String: object expected";
                     }
                     var key = Object.keys(message.mapInt64String);
@@ -7110,13 +7004,13 @@ $root.jspb = (function() {
                         if (!/^(?:[\x00-\xff]{8}|-?(?:0|[1-9][0-9]*))$/.test(key[i])) {
                             return "mapInt64String: integer|Long key{key:int64} expected";
                         }
-                        if (!util.isString(message.mapInt64String[key[i]])) {
+                        if (!$util.isString(message.mapInt64String[key[i]])) {
                             return "mapInt64String: string{key:int64} expected";
                         }
                     }
                 }
                 if (message.mapBoolString !== undefined) {
-                    if (!util.isObject(message.mapBoolString)) {
+                    if (!$util.isObject(message.mapBoolString)) {
                         return "mapBoolString: object expected";
                     }
                     var key = Object.keys(message.mapBoolString);
@@ -7124,38 +7018,38 @@ $root.jspb = (function() {
                         if (!/^true|false|0|1$/.test(key[i])) {
                             return "mapBoolString: boolean key{key:bool} expected";
                         }
-                        if (!util.isString(message.mapBoolString[key[i]])) {
+                        if (!$util.isString(message.mapBoolString[key[i]])) {
                             return "mapBoolString: string{key:bool} expected";
                         }
                     }
                 }
                 if (message.testMapFields !== undefined && message.testMapFields !== null) {
-                    var err = types[10].verify(message.testMapFields);
+                    var err = $types[10].verify(message.testMapFields);
                     if (err) {
                         return "testMapFields." + err;
                     }
                 }
                 if (message.mapStringTestmapfields !== undefined) {
-                    if (!util.isObject(message.mapStringTestmapfields)) {
+                    if (!$util.isObject(message.mapStringTestmapfields)) {
                         return "mapStringTestmapfields: object expected";
                     }
                     var key = Object.keys(message.mapStringTestmapfields);
                     for (var i = 0; i < key.length; ++i) {
-                        var err = types[11].verify(message.mapStringTestmapfields[key[i]]);
+                        var err = $types[11].verify(message.mapStringTestmapfields[key[i]]);
                         if (err) {
                             return "mapStringTestmapfields." + err;
                         }
                     }
                 }
                 return null;
-            };})($protobuf.util, $types);
+            };
 
             /**
              * Creates a TestMapFieldsNoBinary message from a plain object. Also converts values to their respective internal types.
              * @param {Object.<string,*>} object Plain object
              * @returns {jspb.test.TestMapFieldsNoBinary} TestMapFieldsNoBinary
              */
-            TestMapFieldsNoBinary.fromObject = (function(util, types) { return function fromObject(object) {
+            TestMapFieldsNoBinary.fromObject = function fromObject(object) {
                 var message = new $root.jspb.test.TestMapFieldsNoBinary();
                 if (object.mapStringString) {
                     message.mapStringString = {};
@@ -7172,8 +7066,8 @@ $root.jspb = (function() {
                 if (object.mapStringInt64) {
                     message.mapStringInt64 = {};
                     for (var keys = Object.keys(object.mapStringInt64), i = 0; i < keys.length; ++i) {
-                        if (util.Long) {
-                            (message.mapStringInt64[keys[i]] = util.Long.fromValue(object.mapStringInt64[keys[i]])).unsigned = false;
+                        if ($util.Long) {
+                            (message.mapStringInt64[keys[i]] = $util.Long.fromValue(object.mapStringInt64[keys[i]])).unsigned = false;
                         } else {
                             if (typeof object.mapStringInt64[keys[i]] === "string") {
                                 message.mapStringInt64[keys[i]] = parseInt(object.mapStringInt64[keys[i]], 10);
@@ -7182,7 +7076,7 @@ $root.jspb = (function() {
                                     message.mapStringInt64[keys[i]] = object.mapStringInt64[keys[i]];
                                 } else {
                                     if (typeof object.mapStringInt64[keys[i]] === "object") {
-                                        message.mapStringInt64[keys[i]] = new util.LongBits(object.mapStringInt64[keys[i]].low, object.mapStringInt64[keys[i]].high).toNumber();
+                                        message.mapStringInt64[keys[i]] = new $util.LongBits(object.mapStringInt64[keys[i]].low, object.mapStringInt64[keys[i]].high).toNumber();
                                     }
                                 }
                             }
@@ -7225,7 +7119,7 @@ $root.jspb = (function() {
                 if (object.mapStringMsg) {
                     message.mapStringMsg = {};
                     for (var keys = Object.keys(object.mapStringMsg), i = 0; i < keys.length; ++i) {
-                        message.mapStringMsg[keys[i]] = types[6].fromObject(object.mapStringMsg[keys[i]]);
+                        message.mapStringMsg[keys[i]] = $types[6].fromObject(object.mapStringMsg[keys[i]]);
                     }
                 }
                 if (object.mapInt32String) {
@@ -7247,21 +7141,20 @@ $root.jspb = (function() {
                     }
                 }
                 if (object.testMapFields !== undefined && object.testMapFields !== null) {
-                    message.testMapFields = types[10].fromObject(object.testMapFields);
+                    message.testMapFields = $types[10].fromObject(object.testMapFields);
                 }
                 if (object.mapStringTestmapfields) {
                     message.mapStringTestmapfields = {};
                     for (var keys = Object.keys(object.mapStringTestmapfields), i = 0; i < keys.length; ++i) {
-                        message.mapStringTestmapfields[keys[i]] = types[11].fromObject(object.mapStringTestmapfields[keys[i]]);
+                        message.mapStringTestmapfields[keys[i]] = $types[11].fromObject(object.mapStringTestmapfields[keys[i]]);
                     }
                 }
                 return message;
-            };})($protobuf.util, $types);
+            };
 
             /**
              * Creates a TestMapFieldsNoBinary message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link jspb.test.TestMapFieldsNoBinary.fromObject}.
-             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {jspb.test.TestMapFieldsNoBinary} TestMapFieldsNoBinary
              */
@@ -7273,7 +7166,7 @@ $root.jspb = (function() {
              * @param {$protobuf.ConversionOptions} [options] Conversion options
              * @returns {Object.<string,*>} Plain object
              */
-            TestMapFieldsNoBinary.toObject = (function(util, types) { return function toObject(message, options) {
+            TestMapFieldsNoBinary.toObject = function toObject(message, options) {
                 if (!options) {
                     options = {};
                 }
@@ -7297,7 +7190,7 @@ $root.jspb = (function() {
                 for (var keys = Object.keys(message), i = 0; i < keys.length; ++i) {
                     switch (keys[i]) {
                     case "mapStringString":
-                        if (message.mapStringString && message.mapStringString !== util.emptyObject) {
+                        if (message.mapStringString && message.mapStringString !== $util.emptyObject) {
                             object.mapStringString = {};
                             for (var keys2 = Object.keys(message.mapStringString), j = 0; j < keys2.length; ++j) {
                                 object.mapStringString[keys2[j]] = message.mapStringString[keys2[j]];
@@ -7306,7 +7199,7 @@ $root.jspb = (function() {
                         break;
 
                     case "mapStringInt32":
-                        if (message.mapStringInt32 && message.mapStringInt32 !== util.emptyObject) {
+                        if (message.mapStringInt32 && message.mapStringInt32 !== $util.emptyObject) {
                             object.mapStringInt32 = {};
                             for (var keys2 = Object.keys(message.mapStringInt32), j = 0; j < keys2.length; ++j) {
                                 object.mapStringInt32[keys2[j]] = message.mapStringInt32[keys2[j]];
@@ -7315,20 +7208,20 @@ $root.jspb = (function() {
                         break;
 
                     case "mapStringInt64":
-                        if (message.mapStringInt64 && message.mapStringInt64 !== util.emptyObject) {
+                        if (message.mapStringInt64 && message.mapStringInt64 !== $util.emptyObject) {
                             object.mapStringInt64 = {};
                             for (var keys2 = Object.keys(message.mapStringInt64), j = 0; j < keys2.length; ++j) {
                                 if (typeof message.mapStringInt64[keys2[j]] === "number") {
                                     object.mapStringInt64[keys2[j]] = options.longs === String ? String(message.mapStringInt64[keys2[j]]) : message.mapStringInt64[keys2[j]];
                                 } else {
-                                    object.mapStringInt64[keys2[j]] = options.longs === String ? util.Long.prototype.toString.call(message.mapStringInt64[keys2[j]]) : options.longs === Number ? new util.LongBits(message.mapStringInt64[keys2[j]].low, message.mapStringInt64[keys2[j]].high).toNumber() : message.mapStringInt64[keys2[j]];
+                                    object.mapStringInt64[keys2[j]] = options.longs === String ? $util.Long.prototype.toString.call(message.mapStringInt64[keys2[j]]) : options.longs === Number ? new $util.LongBits(message.mapStringInt64[keys2[j]].low, message.mapStringInt64[keys2[j]].high).toNumber() : message.mapStringInt64[keys2[j]];
                                 }
                             }
                         }
                         break;
 
                     case "mapStringBool":
-                        if (message.mapStringBool && message.mapStringBool !== util.emptyObject) {
+                        if (message.mapStringBool && message.mapStringBool !== $util.emptyObject) {
                             object.mapStringBool = {};
                             for (var keys2 = Object.keys(message.mapStringBool), j = 0; j < keys2.length; ++j) {
                                 object.mapStringBool[keys2[j]] = message.mapStringBool[keys2[j]];
@@ -7337,7 +7230,7 @@ $root.jspb = (function() {
                         break;
 
                     case "mapStringDouble":
-                        if (message.mapStringDouble && message.mapStringDouble !== util.emptyObject) {
+                        if (message.mapStringDouble && message.mapStringDouble !== $util.emptyObject) {
                             object.mapStringDouble = {};
                             for (var keys2 = Object.keys(message.mapStringDouble), j = 0; j < keys2.length; ++j) {
                                 object.mapStringDouble[keys2[j]] = message.mapStringDouble[keys2[j]];
@@ -7346,25 +7239,25 @@ $root.jspb = (function() {
                         break;
 
                     case "mapStringEnum":
-                        if (message.mapStringEnum && message.mapStringEnum !== util.emptyObject) {
+                        if (message.mapStringEnum && message.mapStringEnum !== $util.emptyObject) {
                             object.mapStringEnum = {};
                             for (var keys2 = Object.keys(message.mapStringEnum), j = 0; j < keys2.length; ++j) {
-                                object.mapStringEnum[keys2[j]] = options.enums === String ? types[5][message.mapStringEnum[keys2[j]]] : message.mapStringEnum[keys2[j]];
+                                object.mapStringEnum[keys2[j]] = options.enums === String ? $types[5][message.mapStringEnum[keys2[j]]] : message.mapStringEnum[keys2[j]];
                             }
                         }
                         break;
 
                     case "mapStringMsg":
-                        if (message.mapStringMsg && message.mapStringMsg !== util.emptyObject) {
+                        if (message.mapStringMsg && message.mapStringMsg !== $util.emptyObject) {
                             object.mapStringMsg = {};
                             for (var keys2 = Object.keys(message.mapStringMsg), j = 0; j < keys2.length; ++j) {
-                                object.mapStringMsg[keys2[j]] = types[6].toObject(message.mapStringMsg[keys2[j]], options);
+                                object.mapStringMsg[keys2[j]] = $types[6].toObject(message.mapStringMsg[keys2[j]], options);
                             }
                         }
                         break;
 
                     case "mapInt32String":
-                        if (message.mapInt32String && message.mapInt32String !== util.emptyObject) {
+                        if (message.mapInt32String && message.mapInt32String !== $util.emptyObject) {
                             object.mapInt32String = {};
                             for (var keys2 = Object.keys(message.mapInt32String), j = 0; j < keys2.length; ++j) {
                                 object.mapInt32String[keys2[j]] = message.mapInt32String[keys2[j]];
@@ -7373,7 +7266,7 @@ $root.jspb = (function() {
                         break;
 
                     case "mapInt64String":
-                        if (message.mapInt64String && message.mapInt64String !== util.emptyObject) {
+                        if (message.mapInt64String && message.mapInt64String !== $util.emptyObject) {
                             object.mapInt64String = {};
                             for (var keys2 = Object.keys(message.mapInt64String), j = 0; j < keys2.length; ++j) {
                                 object.mapInt64String[keys2[j]] = message.mapInt64String[keys2[j]];
@@ -7382,7 +7275,7 @@ $root.jspb = (function() {
                         break;
 
                     case "mapBoolString":
-                        if (message.mapBoolString && message.mapBoolString !== util.emptyObject) {
+                        if (message.mapBoolString && message.mapBoolString !== $util.emptyObject) {
                             object.mapBoolString = {};
                             for (var keys2 = Object.keys(message.mapBoolString), j = 0; j < keys2.length; ++j) {
                                 object.mapBoolString[keys2[j]] = message.mapBoolString[keys2[j]];
@@ -7392,22 +7285,22 @@ $root.jspb = (function() {
 
                     case "testMapFields":
                         if (message.testMapFields !== undefined && message.testMapFields !== null) {
-                            object.testMapFields = types[10].toObject(message.testMapFields, options);
+                            object.testMapFields = $types[10].toObject(message.testMapFields, options);
                         }
                         break;
 
                     case "mapStringTestmapfields":
-                        if (message.mapStringTestmapfields && message.mapStringTestmapfields !== util.emptyObject) {
+                        if (message.mapStringTestmapfields && message.mapStringTestmapfields !== $util.emptyObject) {
                             object.mapStringTestmapfields = {};
                             for (var keys2 = Object.keys(message.mapStringTestmapfields), j = 0; j < keys2.length; ++j) {
-                                object.mapStringTestmapfields[keys2[j]] = types[11].toObject(message.mapStringTestmapfields[keys2[j]], options);
+                                object.mapStringTestmapfields[keys2[j]] = $types[11].toObject(message.mapStringTestmapfields[keys2[j]], options);
                             }
                         }
                         break;
                     }
                 }
                 return object;
-            };})($protobuf.util, $types);
+            };
 
             /**
              * Creates a plain object from this TestMapFieldsNoBinary message. Also converts values to other types if specified.
@@ -7480,20 +7373,19 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified MapValueMessageNoBinary message.
-             * @function
              * @param {jspb.test.MapValueMessageNoBinary|Object} message MapValueMessageNoBinary message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            MapValueMessageNoBinary.encode = (function(Writer) { return function encode(message, writer) {
+            MapValueMessageNoBinary.encode = function encode(message, writer) {
                 if (!writer) {
-                    writer = Writer.create();
+                    writer = $Writer.create();
                 }
                 if (message.foo !== undefined && message.foo !== 0) {
                     writer.uint32(8).int32(message.foo);
                 }
                 return writer;
-            };})($protobuf.Writer);
+            };
 
             /**
              * Encodes the specified MapValueMessageNoBinary message, length delimited.
@@ -7507,14 +7399,13 @@ $root.jspb = (function() {
 
             /**
              * Decodes a MapValueMessageNoBinary message from the specified reader or buffer.
-             * @function
              * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.MapValueMessageNoBinary} MapValueMessageNoBinary
              */
-            MapValueMessageNoBinary.decode = (function(Reader) { return function decode(reader, len) {
-                if (!(reader instanceof Reader)) {
-                    reader = Reader.create(reader);
+            MapValueMessageNoBinary.decode = function decode(reader, len) {
+                if (!(reader instanceof $Reader)) {
+                    reader = $Reader.create(reader);
                 }
                 var end = len === undefined ? reader.len : reader.pos + len, message = new $root.jspb.test.MapValueMessageNoBinary();
                 while (reader.pos < end) {
@@ -7530,7 +7421,7 @@ $root.jspb = (function() {
                     }
                 }
                 return message;
-            };})($protobuf.Reader);
+            };
 
             /**
              * Decodes a MapValueMessageNoBinary message from the specified reader or buffer, length delimited.
@@ -7538,24 +7429,23 @@ $root.jspb = (function() {
              * @returns {jspb.test.MapValueMessageNoBinary} MapValueMessageNoBinary
              */
             MapValueMessageNoBinary.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-                readerOrBuffer = readerOrBuffer instanceof $protobuf.Reader ? readerOrBuffer : $protobuf.Reader(readerOrBuffer);
+                readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
                 return this.decode(readerOrBuffer, readerOrBuffer.uint32());
             };
 
             /**
              * Verifies a MapValueMessageNoBinary message.
-             * @function
              * @param {jspb.test.MapValueMessageNoBinary|Object} message MapValueMessageNoBinary message or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            MapValueMessageNoBinary.verify = (function(util) { return function verify(message) {
+            MapValueMessageNoBinary.verify = function verify(message) {
                 if (message.foo !== undefined) {
-                    if (!util.isInteger(message.foo)) {
+                    if (!$util.isInteger(message.foo)) {
                         return "foo: integer expected";
                     }
                 }
                 return null;
-            };})($protobuf.util);
+            };
 
             /**
              * Creates a MapValueMessageNoBinary message from a plain object. Also converts values to their respective internal types.
@@ -7573,7 +7463,6 @@ $root.jspb = (function() {
             /**
              * Creates a MapValueMessageNoBinary message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link jspb.test.MapValueMessageNoBinary.fromObject}.
-             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {jspb.test.MapValueMessageNoBinary} MapValueMessageNoBinary
              */
@@ -7652,17 +7541,16 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified Deeply message.
-             * @function
              * @param {jspb.test.Deeply|Object} message Deeply message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            Deeply.encode = (function(Writer) { return function encode(message, writer) {
+            Deeply.encode = function encode(message, writer) {
                 if (!writer) {
-                    writer = Writer.create();
+                    writer = $Writer.create();
                 }
                 return writer;
-            };})($protobuf.Writer);
+            };
 
             /**
              * Encodes the specified Deeply message, length delimited.
@@ -7676,14 +7564,13 @@ $root.jspb = (function() {
 
             /**
              * Decodes a Deeply message from the specified reader or buffer.
-             * @function
              * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.Deeply} Deeply
              */
-            Deeply.decode = (function(Reader) { return function decode(reader, len) {
-                if (!(reader instanceof Reader)) {
-                    reader = Reader.create(reader);
+            Deeply.decode = function decode(reader, len) {
+                if (!(reader instanceof $Reader)) {
+                    reader = $Reader.create(reader);
                 }
                 var end = len === undefined ? reader.len : reader.pos + len, message = new $root.jspb.test.Deeply();
                 while (reader.pos < end) {
@@ -7695,7 +7582,7 @@ $root.jspb = (function() {
                     }
                 }
                 return message;
-            };})($protobuf.Reader);
+            };
 
             /**
              * Decodes a Deeply message from the specified reader or buffer, length delimited.
@@ -7703,13 +7590,12 @@ $root.jspb = (function() {
              * @returns {jspb.test.Deeply} Deeply
              */
             Deeply.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-                readerOrBuffer = readerOrBuffer instanceof $protobuf.Reader ? readerOrBuffer : $protobuf.Reader(readerOrBuffer);
+                readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
                 return this.decode(readerOrBuffer, readerOrBuffer.uint32());
             };
 
             /**
              * Verifies a Deeply message.
-             * @function
              * @param {jspb.test.Deeply|Object} message Deeply message or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
@@ -7729,7 +7615,6 @@ $root.jspb = (function() {
             /**
              * Creates a Deeply message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link jspb.test.Deeply.fromObject}.
-             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {jspb.test.Deeply} Deeply
              */
@@ -7789,17 +7674,16 @@ $root.jspb = (function() {
 
                 /**
                  * Encodes the specified Nested message.
-                 * @function
                  * @param {jspb.test.Deeply.Nested|Object} message Nested message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
                  */
-                Nested.encode = (function(Writer) { return function encode(message, writer) {
+                Nested.encode = function encode(message, writer) {
                     if (!writer) {
-                        writer = Writer.create();
+                        writer = $Writer.create();
                     }
                     return writer;
-                };})($protobuf.Writer);
+                };
 
                 /**
                  * Encodes the specified Nested message, length delimited.
@@ -7813,14 +7697,13 @@ $root.jspb = (function() {
 
                 /**
                  * Decodes a Nested message from the specified reader or buffer.
-                 * @function
                  * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
                  * @param {number} [length] Message length if known beforehand
                  * @returns {jspb.test.Deeply.Nested} Nested
                  */
-                Nested.decode = (function(Reader) { return function decode(reader, len) {
-                    if (!(reader instanceof Reader)) {
-                        reader = Reader.create(reader);
+                Nested.decode = function decode(reader, len) {
+                    if (!(reader instanceof $Reader)) {
+                        reader = $Reader.create(reader);
                     }
                     var end = len === undefined ? reader.len : reader.pos + len, message = new $root.jspb.test.Deeply.Nested();
                     while (reader.pos < end) {
@@ -7832,7 +7715,7 @@ $root.jspb = (function() {
                         }
                     }
                     return message;
-                };})($protobuf.Reader);
+                };
 
                 /**
                  * Decodes a Nested message from the specified reader or buffer, length delimited.
@@ -7840,13 +7723,12 @@ $root.jspb = (function() {
                  * @returns {jspb.test.Deeply.Nested} Nested
                  */
                 Nested.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-                    readerOrBuffer = readerOrBuffer instanceof $protobuf.Reader ? readerOrBuffer : $protobuf.Reader(readerOrBuffer);
+                    readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
                     return this.decode(readerOrBuffer, readerOrBuffer.uint32());
                 };
 
                 /**
                  * Verifies a Nested message.
-                 * @function
                  * @param {jspb.test.Deeply.Nested|Object} message Nested message or plain object to verify
                  * @returns {?string} `null` if valid, otherwise the reason why it is not
                  */
@@ -7866,7 +7748,6 @@ $root.jspb = (function() {
                 /**
                  * Creates a Nested message from a plain object. Also converts values to their respective internal types.
                  * This is an alias of {@link jspb.test.Deeply.Nested.fromObject}.
-                 * @function
                  * @param {Object.<string,*>} object Plain object
                  * @returns {jspb.test.Deeply.Nested} Nested
                  */
@@ -7932,20 +7813,19 @@ $root.jspb = (function() {
 
                     /**
                      * Encodes the specified Message message.
-                     * @function
                      * @param {jspb.test.Deeply.Nested.Message|Object} message Message message or plain object to encode
                      * @param {$protobuf.Writer} [writer] Writer to encode to
                      * @returns {$protobuf.Writer} Writer
                      */
-                    Message.encode = (function(Writer) { return function encode(message, writer) {
+                    Message.encode = function encode(message, writer) {
                         if (!writer) {
-                            writer = Writer.create();
+                            writer = $Writer.create();
                         }
                         if (message.count !== undefined && message.count !== 0) {
                             writer.uint32(8).int32(message.count);
                         }
                         return writer;
-                    };})($protobuf.Writer);
+                    };
 
                     /**
                      * Encodes the specified Message message, length delimited.
@@ -7959,14 +7839,13 @@ $root.jspb = (function() {
 
                     /**
                      * Decodes a Message message from the specified reader or buffer.
-                     * @function
                      * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
                      * @param {number} [length] Message length if known beforehand
                      * @returns {jspb.test.Deeply.Nested.Message} Message
                      */
-                    Message.decode = (function(Reader) { return function decode(reader, len) {
-                        if (!(reader instanceof Reader)) {
-                            reader = Reader.create(reader);
+                    Message.decode = function decode(reader, len) {
+                        if (!(reader instanceof $Reader)) {
+                            reader = $Reader.create(reader);
                         }
                         var end = len === undefined ? reader.len : reader.pos + len, message = new $root.jspb.test.Deeply.Nested.Message();
                         while (reader.pos < end) {
@@ -7982,7 +7861,7 @@ $root.jspb = (function() {
                             }
                         }
                         return message;
-                    };})($protobuf.Reader);
+                    };
 
                     /**
                      * Decodes a Message message from the specified reader or buffer, length delimited.
@@ -7990,24 +7869,23 @@ $root.jspb = (function() {
                      * @returns {jspb.test.Deeply.Nested.Message} Message
                      */
                     Message.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-                        readerOrBuffer = readerOrBuffer instanceof $protobuf.Reader ? readerOrBuffer : $protobuf.Reader(readerOrBuffer);
+                        readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
                         return this.decode(readerOrBuffer, readerOrBuffer.uint32());
                     };
 
                     /**
                      * Verifies a Message message.
-                     * @function
                      * @param {jspb.test.Deeply.Nested.Message|Object} message Message message or plain object to verify
                      * @returns {?string} `null` if valid, otherwise the reason why it is not
                      */
-                    Message.verify = (function(util) { return function verify(message) {
+                    Message.verify = function verify(message) {
                         if (message.count !== undefined) {
-                            if (!util.isInteger(message.count)) {
+                            if (!$util.isInteger(message.count)) {
                                 return "count: integer expected";
                             }
                         }
                         return null;
-                    };})($protobuf.util);
+                    };
 
                     /**
                      * Creates a Message message from a plain object. Also converts values to their respective internal types.
@@ -8025,7 +7903,6 @@ $root.jspb = (function() {
                     /**
                      * Creates a Message message from a plain object. Also converts values to their respective internal types.
                      * This is an alias of {@link jspb.test.Deeply.Nested.Message.fromObject}.
-                     * @function
                      * @param {Object.<string,*>} object Plain object
                      * @returns {jspb.test.Deeply.Nested.Message} Message
                      */
@@ -8127,7 +8004,7 @@ $root.google = (function() {
              * FileDescriptorSet file.
              * @type {Array.<google.protobuf.FileDescriptorProto>}
              */
-            FileDescriptorSet.prototype.file = $protobuf.util.emptyArray;
+            FileDescriptorSet.prototype.file = $util.emptyArray;
 
             // Lazily resolved referenced types
             var $types = {0:"google.protobuf.FileDescriptorProto"}; $lazyTypes.push($types);
@@ -8143,22 +8020,21 @@ $root.google = (function() {
 
             /**
              * Encodes the specified FileDescriptorSet message.
-             * @function
              * @param {google.protobuf.FileDescriptorSet|Object} message FileDescriptorSet message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            FileDescriptorSet.encode = (function(Writer, types) { return function encode(message, writer) {
+            FileDescriptorSet.encode = function encode(message, writer) {
                 if (!writer) {
-                    writer = Writer.create();
+                    writer = $Writer.create();
                 }
                 if (message.file) {
                     for (var i = 0; i < message.file.length; ++i) {
-                        types[0].encode(message.file[i], writer.uint32(10).fork()).ldelim();
+                        $types[0].encode(message.file[i], writer.uint32(10).fork()).ldelim();
                     }
                 }
                 return writer;
-            };})($protobuf.Writer, $types);
+            };
 
             /**
              * Encodes the specified FileDescriptorSet message, length delimited.
@@ -8172,14 +8048,13 @@ $root.google = (function() {
 
             /**
              * Decodes a FileDescriptorSet message from the specified reader or buffer.
-             * @function
              * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.FileDescriptorSet} FileDescriptorSet
              */
-            FileDescriptorSet.decode = (function(Reader, types) { return function decode(reader, len) {
-                if (!(reader instanceof Reader)) {
-                    reader = Reader.create(reader);
+            FileDescriptorSet.decode = function decode(reader, len) {
+                if (!(reader instanceof $Reader)) {
+                    reader = $Reader.create(reader);
                 }
                 var end = len === undefined ? reader.len : reader.pos + len, message = new $root.google.protobuf.FileDescriptorSet();
                 while (reader.pos < end) {
@@ -8189,7 +8064,7 @@ $root.google = (function() {
                         if (!(message.file && message.file.length)) {
                             message.file = [];
                         }
-                        message.file.push(types[0].decode(reader, reader.uint32()));
+                        message.file.push($types[0].decode(reader, reader.uint32()));
                         break;
 
                     default:
@@ -8198,7 +8073,7 @@ $root.google = (function() {
                     }
                 }
                 return message;
-            };})($protobuf.Reader, $types);
+            };
 
             /**
              * Decodes a FileDescriptorSet message from the specified reader or buffer, length delimited.
@@ -8206,51 +8081,49 @@ $root.google = (function() {
              * @returns {google.protobuf.FileDescriptorSet} FileDescriptorSet
              */
             FileDescriptorSet.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-                readerOrBuffer = readerOrBuffer instanceof $protobuf.Reader ? readerOrBuffer : $protobuf.Reader(readerOrBuffer);
+                readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
                 return this.decode(readerOrBuffer, readerOrBuffer.uint32());
             };
 
             /**
              * Verifies a FileDescriptorSet message.
-             * @function
              * @param {google.protobuf.FileDescriptorSet|Object} message FileDescriptorSet message or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            FileDescriptorSet.verify = (function(types) { return function verify(message) {
+            FileDescriptorSet.verify = function verify(message) {
                 if (message.file !== undefined) {
                     if (!Array.isArray(message.file)) {
                         return "file: array expected";
                     }
                     for (var i = 0; i < message.file.length; ++i) {
-                        var err = types[0].verify(message.file[i]);
+                        var err = $types[0].verify(message.file[i]);
                         if (err) {
                             return "file." + err;
                         }
                     }
                 }
                 return null;
-            };})($types);
+            };
 
             /**
              * Creates a FileDescriptorSet message from a plain object. Also converts values to their respective internal types.
              * @param {Object.<string,*>} object Plain object
              * @returns {google.protobuf.FileDescriptorSet} FileDescriptorSet
              */
-            FileDescriptorSet.fromObject = (function(types) { return function fromObject(object) {
+            FileDescriptorSet.fromObject = function fromObject(object) {
                 var message = new $root.google.protobuf.FileDescriptorSet();
                 if (object.file) {
                     message.file = [];
                     for (var i = 0; i < object.file.length; ++i) {
-                        message.file[i] = types[0].fromObject(object.file[i]);
+                        message.file[i] = $types[0].fromObject(object.file[i]);
                     }
                 }
                 return message;
-            };})($types);
+            };
 
             /**
              * Creates a FileDescriptorSet message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link google.protobuf.FileDescriptorSet.fromObject}.
-             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {google.protobuf.FileDescriptorSet} FileDescriptorSet
              */
@@ -8262,7 +8135,7 @@ $root.google = (function() {
              * @param {$protobuf.ConversionOptions} [options] Conversion options
              * @returns {Object.<string,*>} Plain object
              */
-            FileDescriptorSet.toObject = (function(types) { return function toObject(message, options) {
+            FileDescriptorSet.toObject = function toObject(message, options) {
                 if (!options) {
                     options = {};
                 }
@@ -8276,14 +8149,14 @@ $root.google = (function() {
                         if (message.file.length) {
                             object.file = [];
                             for (var j = 0; j < message.file.length; ++j) {
-                                object.file[j] = types[0].toObject(message.file[j], options);
+                                object.file[j] = $types[0].toObject(message.file[j], options);
                             }
                         }
                         break;
                     }
                 }
                 return object;
-            };})($types);
+            };
 
             /**
              * Creates a plain object from this FileDescriptorSet message. Also converts values to other types if specified.
@@ -8338,43 +8211,43 @@ $root.google = (function() {
              * FileDescriptorProto dependency.
              * @type {Array.<string>}
              */
-            FileDescriptorProto.prototype.dependency = $protobuf.util.emptyArray;
+            FileDescriptorProto.prototype.dependency = $util.emptyArray;
 
             /**
              * FileDescriptorProto publicDependency.
              * @type {Array.<number>}
              */
-            FileDescriptorProto.prototype.publicDependency = $protobuf.util.emptyArray;
+            FileDescriptorProto.prototype.publicDependency = $util.emptyArray;
 
             /**
              * FileDescriptorProto weakDependency.
              * @type {Array.<number>}
              */
-            FileDescriptorProto.prototype.weakDependency = $protobuf.util.emptyArray;
+            FileDescriptorProto.prototype.weakDependency = $util.emptyArray;
 
             /**
              * FileDescriptorProto messageType.
              * @type {Array.<google.protobuf.DescriptorProto>}
              */
-            FileDescriptorProto.prototype.messageType = $protobuf.util.emptyArray;
+            FileDescriptorProto.prototype.messageType = $util.emptyArray;
 
             /**
              * FileDescriptorProto enumType.
              * @type {Array.<google.protobuf.EnumDescriptorProto>}
              */
-            FileDescriptorProto.prototype.enumType = $protobuf.util.emptyArray;
+            FileDescriptorProto.prototype.enumType = $util.emptyArray;
 
             /**
              * FileDescriptorProto service.
              * @type {Array.<google.protobuf.ServiceDescriptorProto>}
              */
-            FileDescriptorProto.prototype.service = $protobuf.util.emptyArray;
+            FileDescriptorProto.prototype.service = $util.emptyArray;
 
             /**
              * FileDescriptorProto extension.
              * @type {Array.<google.protobuf.FieldDescriptorProto>}
              */
-            FileDescriptorProto.prototype.extension = $protobuf.util.emptyArray;
+            FileDescriptorProto.prototype.extension = $util.emptyArray;
 
             /**
              * FileDescriptorProto options.
@@ -8408,14 +8281,13 @@ $root.google = (function() {
 
             /**
              * Encodes the specified FileDescriptorProto message.
-             * @function
              * @param {google.protobuf.FileDescriptorProto|Object} message FileDescriptorProto message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            FileDescriptorProto.encode = (function(Writer, types) { return function encode(message, writer) {
+            FileDescriptorProto.encode = function encode(message, writer) {
                 if (!writer) {
-                    writer = Writer.create();
+                    writer = $Writer.create();
                 }
                 if (message.name !== undefined && message.name !== "") {
                     writer.uint32(10).string(message.name);
@@ -8440,35 +8312,35 @@ $root.google = (function() {
                 }
                 if (message.messageType) {
                     for (var i = 0; i < message.messageType.length; ++i) {
-                        types[5].encode(message.messageType[i], writer.uint32(34).fork()).ldelim();
+                        $types[5].encode(message.messageType[i], writer.uint32(34).fork()).ldelim();
                     }
                 }
                 if (message.enumType) {
                     for (var i = 0; i < message.enumType.length; ++i) {
-                        types[6].encode(message.enumType[i], writer.uint32(42).fork()).ldelim();
+                        $types[6].encode(message.enumType[i], writer.uint32(42).fork()).ldelim();
                     }
                 }
                 if (message.service) {
                     for (var i = 0; i < message.service.length; ++i) {
-                        types[7].encode(message.service[i], writer.uint32(50).fork()).ldelim();
+                        $types[7].encode(message.service[i], writer.uint32(50).fork()).ldelim();
                     }
                 }
                 if (message.extension) {
                     for (var i = 0; i < message.extension.length; ++i) {
-                        types[8].encode(message.extension[i], writer.uint32(58).fork()).ldelim();
+                        $types[8].encode(message.extension[i], writer.uint32(58).fork()).ldelim();
                     }
                 }
                 if (message.options !== undefined && message.options !== null) {
-                    types[9].encode(message.options, writer.uint32(66).fork()).ldelim();
+                    $types[9].encode(message.options, writer.uint32(66).fork()).ldelim();
                 }
                 if (message.sourceCodeInfo !== undefined && message.sourceCodeInfo !== null) {
-                    types[10].encode(message.sourceCodeInfo, writer.uint32(74).fork()).ldelim();
+                    $types[10].encode(message.sourceCodeInfo, writer.uint32(74).fork()).ldelim();
                 }
                 if (message.syntax !== undefined && message.syntax !== "") {
                     writer.uint32(98).string(message.syntax);
                 }
                 return writer;
-            };})($protobuf.Writer, $types);
+            };
 
             /**
              * Encodes the specified FileDescriptorProto message, length delimited.
@@ -8482,14 +8354,13 @@ $root.google = (function() {
 
             /**
              * Decodes a FileDescriptorProto message from the specified reader or buffer.
-             * @function
              * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.FileDescriptorProto} FileDescriptorProto
              */
-            FileDescriptorProto.decode = (function(Reader, types) { return function decode(reader, len) {
-                if (!(reader instanceof Reader)) {
-                    reader = Reader.create(reader);
+            FileDescriptorProto.decode = function decode(reader, len) {
+                if (!(reader instanceof $Reader)) {
+                    reader = $Reader.create(reader);
                 }
                 var end = len === undefined ? reader.len : reader.pos + len, message = new $root.google.protobuf.FileDescriptorProto();
                 while (reader.pos < end) {
@@ -8542,36 +8413,36 @@ $root.google = (function() {
                         if (!(message.messageType && message.messageType.length)) {
                             message.messageType = [];
                         }
-                        message.messageType.push(types[5].decode(reader, reader.uint32()));
+                        message.messageType.push($types[5].decode(reader, reader.uint32()));
                         break;
 
                     case 5:
                         if (!(message.enumType && message.enumType.length)) {
                             message.enumType = [];
                         }
-                        message.enumType.push(types[6].decode(reader, reader.uint32()));
+                        message.enumType.push($types[6].decode(reader, reader.uint32()));
                         break;
 
                     case 6:
                         if (!(message.service && message.service.length)) {
                             message.service = [];
                         }
-                        message.service.push(types[7].decode(reader, reader.uint32()));
+                        message.service.push($types[7].decode(reader, reader.uint32()));
                         break;
 
                     case 7:
                         if (!(message.extension && message.extension.length)) {
                             message.extension = [];
                         }
-                        message.extension.push(types[8].decode(reader, reader.uint32()));
+                        message.extension.push($types[8].decode(reader, reader.uint32()));
                         break;
 
                     case 8:
-                        message.options = types[9].decode(reader, reader.uint32());
+                        message.options = $types[9].decode(reader, reader.uint32());
                         break;
 
                     case 9:
-                        message.sourceCodeInfo = types[10].decode(reader, reader.uint32());
+                        message.sourceCodeInfo = $types[10].decode(reader, reader.uint32());
                         break;
 
                     case 12:
@@ -8584,7 +8455,7 @@ $root.google = (function() {
                     }
                 }
                 return message;
-            };})($protobuf.Reader, $types);
+            };
 
             /**
              * Decodes a FileDescriptorProto message from the specified reader or buffer, length delimited.
@@ -8592,24 +8463,23 @@ $root.google = (function() {
              * @returns {google.protobuf.FileDescriptorProto} FileDescriptorProto
              */
             FileDescriptorProto.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-                readerOrBuffer = readerOrBuffer instanceof $protobuf.Reader ? readerOrBuffer : $protobuf.Reader(readerOrBuffer);
+                readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
                 return this.decode(readerOrBuffer, readerOrBuffer.uint32());
             };
 
             /**
              * Verifies a FileDescriptorProto message.
-             * @function
              * @param {google.protobuf.FileDescriptorProto|Object} message FileDescriptorProto message or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            FileDescriptorProto.verify = (function(util, types) { return function verify(message) {
+            FileDescriptorProto.verify = function verify(message) {
                 if (message.name !== undefined) {
-                    if (!util.isString(message.name)) {
+                    if (!$util.isString(message.name)) {
                         return "name: string expected";
                     }
                 }
                 if (message["package"] !== undefined) {
-                    if (!util.isString(message["package"])) {
+                    if (!$util.isString(message["package"])) {
                         return "package: string expected";
                     }
                 }
@@ -8618,7 +8488,7 @@ $root.google = (function() {
                         return "dependency: array expected";
                     }
                     for (var i = 0; i < message.dependency.length; ++i) {
-                        if (!util.isString(message.dependency[i])) {
+                        if (!$util.isString(message.dependency[i])) {
                             return "dependency: string[] expected";
                         }
                     }
@@ -8628,7 +8498,7 @@ $root.google = (function() {
                         return "publicDependency: array expected";
                     }
                     for (var i = 0; i < message.publicDependency.length; ++i) {
-                        if (!util.isInteger(message.publicDependency[i])) {
+                        if (!$util.isInteger(message.publicDependency[i])) {
                             return "publicDependency: integer[] expected";
                         }
                     }
@@ -8638,7 +8508,7 @@ $root.google = (function() {
                         return "weakDependency: array expected";
                     }
                     for (var i = 0; i < message.weakDependency.length; ++i) {
-                        if (!util.isInteger(message.weakDependency[i])) {
+                        if (!$util.isInteger(message.weakDependency[i])) {
                             return "weakDependency: integer[] expected";
                         }
                     }
@@ -8648,7 +8518,7 @@ $root.google = (function() {
                         return "messageType: array expected";
                     }
                     for (var i = 0; i < message.messageType.length; ++i) {
-                        var err = types[5].verify(message.messageType[i]);
+                        var err = $types[5].verify(message.messageType[i]);
                         if (err) {
                             return "messageType." + err;
                         }
@@ -8659,7 +8529,7 @@ $root.google = (function() {
                         return "enumType: array expected";
                     }
                     for (var i = 0; i < message.enumType.length; ++i) {
-                        var err = types[6].verify(message.enumType[i]);
+                        var err = $types[6].verify(message.enumType[i]);
                         if (err) {
                             return "enumType." + err;
                         }
@@ -8670,7 +8540,7 @@ $root.google = (function() {
                         return "service: array expected";
                     }
                     for (var i = 0; i < message.service.length; ++i) {
-                        var err = types[7].verify(message.service[i]);
+                        var err = $types[7].verify(message.service[i]);
                         if (err) {
                             return "service." + err;
                         }
@@ -8681,38 +8551,38 @@ $root.google = (function() {
                         return "extension: array expected";
                     }
                     for (var i = 0; i < message.extension.length; ++i) {
-                        var err = types[8].verify(message.extension[i]);
+                        var err = $types[8].verify(message.extension[i]);
                         if (err) {
                             return "extension." + err;
                         }
                     }
                 }
                 if (message.options !== undefined && message.options !== null) {
-                    var err = types[9].verify(message.options);
+                    var err = $types[9].verify(message.options);
                     if (err) {
                         return "options." + err;
                     }
                 }
                 if (message.sourceCodeInfo !== undefined && message.sourceCodeInfo !== null) {
-                    var err = types[10].verify(message.sourceCodeInfo);
+                    var err = $types[10].verify(message.sourceCodeInfo);
                     if (err) {
                         return "sourceCodeInfo." + err;
                     }
                 }
                 if (message.syntax !== undefined) {
-                    if (!util.isString(message.syntax)) {
+                    if (!$util.isString(message.syntax)) {
                         return "syntax: string expected";
                     }
                 }
                 return null;
-            };})($protobuf.util, $types);
+            };
 
             /**
              * Creates a FileDescriptorProto message from a plain object. Also converts values to their respective internal types.
              * @param {Object.<string,*>} object Plain object
              * @returns {google.protobuf.FileDescriptorProto} FileDescriptorProto
              */
-            FileDescriptorProto.fromObject = (function(types) { return function fromObject(object) {
+            FileDescriptorProto.fromObject = function fromObject(object) {
                 var message = new $root.google.protobuf.FileDescriptorProto();
                 if (object.name !== undefined && object.name !== null) {
                     message.name = String(object.name);
@@ -8741,43 +8611,42 @@ $root.google = (function() {
                 if (object.messageType) {
                     message.messageType = [];
                     for (var i = 0; i < object.messageType.length; ++i) {
-                        message.messageType[i] = types[5].fromObject(object.messageType[i]);
+                        message.messageType[i] = $types[5].fromObject(object.messageType[i]);
                     }
                 }
                 if (object.enumType) {
                     message.enumType = [];
                     for (var i = 0; i < object.enumType.length; ++i) {
-                        message.enumType[i] = types[6].fromObject(object.enumType[i]);
+                        message.enumType[i] = $types[6].fromObject(object.enumType[i]);
                     }
                 }
                 if (object.service) {
                     message.service = [];
                     for (var i = 0; i < object.service.length; ++i) {
-                        message.service[i] = types[7].fromObject(object.service[i]);
+                        message.service[i] = $types[7].fromObject(object.service[i]);
                     }
                 }
                 if (object.extension) {
                     message.extension = [];
                     for (var i = 0; i < object.extension.length; ++i) {
-                        message.extension[i] = types[8].fromObject(object.extension[i]);
+                        message.extension[i] = $types[8].fromObject(object.extension[i]);
                     }
                 }
                 if (object.options !== undefined && object.options !== null) {
-                    message.options = types[9].fromObject(object.options);
+                    message.options = $types[9].fromObject(object.options);
                 }
                 if (object.sourceCodeInfo !== undefined && object.sourceCodeInfo !== null) {
-                    message.sourceCodeInfo = types[10].fromObject(object.sourceCodeInfo);
+                    message.sourceCodeInfo = $types[10].fromObject(object.sourceCodeInfo);
                 }
                 if (object.syntax !== undefined && object.syntax !== null) {
                     message.syntax = String(object.syntax);
                 }
                 return message;
-            };})($types);
+            };
 
             /**
              * Creates a FileDescriptorProto message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link google.protobuf.FileDescriptorProto.fromObject}.
-             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {google.protobuf.FileDescriptorProto} FileDescriptorProto
              */
@@ -8789,7 +8658,7 @@ $root.google = (function() {
              * @param {$protobuf.ConversionOptions} [options] Conversion options
              * @returns {Object.<string,*>} Plain object
              */
-            FileDescriptorProto.toObject = (function(types) { return function toObject(message, options) {
+            FileDescriptorProto.toObject = function toObject(message, options) {
                 if (!options) {
                     options = {};
                 }
@@ -8855,7 +8724,7 @@ $root.google = (function() {
                         if (message.messageType.length) {
                             object.messageType = [];
                             for (var j = 0; j < message.messageType.length; ++j) {
-                                object.messageType[j] = types[5].toObject(message.messageType[j], options);
+                                object.messageType[j] = $types[5].toObject(message.messageType[j], options);
                             }
                         }
                         break;
@@ -8864,7 +8733,7 @@ $root.google = (function() {
                         if (message.enumType.length) {
                             object.enumType = [];
                             for (var j = 0; j < message.enumType.length; ++j) {
-                                object.enumType[j] = types[6].toObject(message.enumType[j], options);
+                                object.enumType[j] = $types[6].toObject(message.enumType[j], options);
                             }
                         }
                         break;
@@ -8873,7 +8742,7 @@ $root.google = (function() {
                         if (message.service.length) {
                             object.service = [];
                             for (var j = 0; j < message.service.length; ++j) {
-                                object.service[j] = types[7].toObject(message.service[j], options);
+                                object.service[j] = $types[7].toObject(message.service[j], options);
                             }
                         }
                         break;
@@ -8882,20 +8751,20 @@ $root.google = (function() {
                         if (message.extension.length) {
                             object.extension = [];
                             for (var j = 0; j < message.extension.length; ++j) {
-                                object.extension[j] = types[8].toObject(message.extension[j], options);
+                                object.extension[j] = $types[8].toObject(message.extension[j], options);
                             }
                         }
                         break;
 
                     case "options":
                         if (message.options !== undefined && message.options !== null) {
-                            object.options = types[9].toObject(message.options, options);
+                            object.options = $types[9].toObject(message.options, options);
                         }
                         break;
 
                     case "sourceCodeInfo":
                         if (message.sourceCodeInfo !== undefined && message.sourceCodeInfo !== null) {
-                            object.sourceCodeInfo = types[10].toObject(message.sourceCodeInfo, options);
+                            object.sourceCodeInfo = $types[10].toObject(message.sourceCodeInfo, options);
                         }
                         break;
 
@@ -8907,7 +8776,7 @@ $root.google = (function() {
                     }
                 }
                 return object;
-            };})($types);
+            };
 
             /**
              * Creates a plain object from this FileDescriptorProto message. Also converts values to other types if specified.
@@ -8955,37 +8824,37 @@ $root.google = (function() {
              * DescriptorProto field.
              * @type {Array.<google.protobuf.FieldDescriptorProto>}
              */
-            DescriptorProto.prototype.field = $protobuf.util.emptyArray;
+            DescriptorProto.prototype.field = $util.emptyArray;
 
             /**
              * DescriptorProto extension.
              * @type {Array.<google.protobuf.FieldDescriptorProto>}
              */
-            DescriptorProto.prototype.extension = $protobuf.util.emptyArray;
+            DescriptorProto.prototype.extension = $util.emptyArray;
 
             /**
              * DescriptorProto nestedType.
              * @type {Array.<google.protobuf.DescriptorProto>}
              */
-            DescriptorProto.prototype.nestedType = $protobuf.util.emptyArray;
+            DescriptorProto.prototype.nestedType = $util.emptyArray;
 
             /**
              * DescriptorProto enumType.
              * @type {Array.<google.protobuf.EnumDescriptorProto>}
              */
-            DescriptorProto.prototype.enumType = $protobuf.util.emptyArray;
+            DescriptorProto.prototype.enumType = $util.emptyArray;
 
             /**
              * DescriptorProto extensionRange.
              * @type {Array.<google.protobuf.DescriptorProto.ExtensionRange>}
              */
-            DescriptorProto.prototype.extensionRange = $protobuf.util.emptyArray;
+            DescriptorProto.prototype.extensionRange = $util.emptyArray;
 
             /**
              * DescriptorProto oneofDecl.
              * @type {Array.<google.protobuf.OneofDescriptorProto>}
              */
-            DescriptorProto.prototype.oneofDecl = $protobuf.util.emptyArray;
+            DescriptorProto.prototype.oneofDecl = $util.emptyArray;
 
             /**
              * DescriptorProto options.
@@ -8997,13 +8866,13 @@ $root.google = (function() {
              * DescriptorProto reservedRange.
              * @type {Array.<google.protobuf.DescriptorProto.ReservedRange>}
              */
-            DescriptorProto.prototype.reservedRange = $protobuf.util.emptyArray;
+            DescriptorProto.prototype.reservedRange = $util.emptyArray;
 
             /**
              * DescriptorProto reservedName.
              * @type {Array.<string>}
              */
-            DescriptorProto.prototype.reservedName = $protobuf.util.emptyArray;
+            DescriptorProto.prototype.reservedName = $util.emptyArray;
 
             // Lazily resolved referenced types
             var $types = {1:"google.protobuf.FieldDescriptorProto",2:"google.protobuf.FieldDescriptorProto",3:"google.protobuf.DescriptorProto",4:"google.protobuf.EnumDescriptorProto",5:"google.protobuf.DescriptorProto.ExtensionRange",6:"google.protobuf.OneofDescriptorProto",7:"google.protobuf.MessageOptions",8:"google.protobuf.DescriptorProto.ReservedRange"}; $lazyTypes.push($types);
@@ -9019,54 +8888,53 @@ $root.google = (function() {
 
             /**
              * Encodes the specified DescriptorProto message.
-             * @function
              * @param {google.protobuf.DescriptorProto|Object} message DescriptorProto message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            DescriptorProto.encode = (function(Writer, types) { return function encode(message, writer) {
+            DescriptorProto.encode = function encode(message, writer) {
                 if (!writer) {
-                    writer = Writer.create();
+                    writer = $Writer.create();
                 }
                 if (message.name !== undefined && message.name !== "") {
                     writer.uint32(10).string(message.name);
                 }
                 if (message.field) {
                     for (var i = 0; i < message.field.length; ++i) {
-                        types[1].encode(message.field[i], writer.uint32(18).fork()).ldelim();
+                        $types[1].encode(message.field[i], writer.uint32(18).fork()).ldelim();
                     }
                 }
                 if (message.extension) {
                     for (var i = 0; i < message.extension.length; ++i) {
-                        types[2].encode(message.extension[i], writer.uint32(50).fork()).ldelim();
+                        $types[2].encode(message.extension[i], writer.uint32(50).fork()).ldelim();
                     }
                 }
                 if (message.nestedType) {
                     for (var i = 0; i < message.nestedType.length; ++i) {
-                        types[3].encode(message.nestedType[i], writer.uint32(26).fork()).ldelim();
+                        $types[3].encode(message.nestedType[i], writer.uint32(26).fork()).ldelim();
                     }
                 }
                 if (message.enumType) {
                     for (var i = 0; i < message.enumType.length; ++i) {
-                        types[4].encode(message.enumType[i], writer.uint32(34).fork()).ldelim();
+                        $types[4].encode(message.enumType[i], writer.uint32(34).fork()).ldelim();
                     }
                 }
                 if (message.extensionRange) {
                     for (var i = 0; i < message.extensionRange.length; ++i) {
-                        types[5].encode(message.extensionRange[i], writer.uint32(42).fork()).ldelim();
+                        $types[5].encode(message.extensionRange[i], writer.uint32(42).fork()).ldelim();
                     }
                 }
                 if (message.oneofDecl) {
                     for (var i = 0; i < message.oneofDecl.length; ++i) {
-                        types[6].encode(message.oneofDecl[i], writer.uint32(66).fork()).ldelim();
+                        $types[6].encode(message.oneofDecl[i], writer.uint32(66).fork()).ldelim();
                     }
                 }
                 if (message.options !== undefined && message.options !== null) {
-                    types[7].encode(message.options, writer.uint32(58).fork()).ldelim();
+                    $types[7].encode(message.options, writer.uint32(58).fork()).ldelim();
                 }
                 if (message.reservedRange) {
                     for (var i = 0; i < message.reservedRange.length; ++i) {
-                        types[8].encode(message.reservedRange[i], writer.uint32(74).fork()).ldelim();
+                        $types[8].encode(message.reservedRange[i], writer.uint32(74).fork()).ldelim();
                     }
                 }
                 if (message.reservedName) {
@@ -9075,7 +8943,7 @@ $root.google = (function() {
                     }
                 }
                 return writer;
-            };})($protobuf.Writer, $types);
+            };
 
             /**
              * Encodes the specified DescriptorProto message, length delimited.
@@ -9089,14 +8957,13 @@ $root.google = (function() {
 
             /**
              * Decodes a DescriptorProto message from the specified reader or buffer.
-             * @function
              * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.DescriptorProto} DescriptorProto
              */
-            DescriptorProto.decode = (function(Reader, types) { return function decode(reader, len) {
-                if (!(reader instanceof Reader)) {
-                    reader = Reader.create(reader);
+            DescriptorProto.decode = function decode(reader, len) {
+                if (!(reader instanceof $Reader)) {
+                    reader = $Reader.create(reader);
                 }
                 var end = len === undefined ? reader.len : reader.pos + len, message = new $root.google.protobuf.DescriptorProto();
                 while (reader.pos < end) {
@@ -9110,53 +8977,53 @@ $root.google = (function() {
                         if (!(message.field && message.field.length)) {
                             message.field = [];
                         }
-                        message.field.push(types[1].decode(reader, reader.uint32()));
+                        message.field.push($types[1].decode(reader, reader.uint32()));
                         break;
 
                     case 6:
                         if (!(message.extension && message.extension.length)) {
                             message.extension = [];
                         }
-                        message.extension.push(types[2].decode(reader, reader.uint32()));
+                        message.extension.push($types[2].decode(reader, reader.uint32()));
                         break;
 
                     case 3:
                         if (!(message.nestedType && message.nestedType.length)) {
                             message.nestedType = [];
                         }
-                        message.nestedType.push(types[3].decode(reader, reader.uint32()));
+                        message.nestedType.push($types[3].decode(reader, reader.uint32()));
                         break;
 
                     case 4:
                         if (!(message.enumType && message.enumType.length)) {
                             message.enumType = [];
                         }
-                        message.enumType.push(types[4].decode(reader, reader.uint32()));
+                        message.enumType.push($types[4].decode(reader, reader.uint32()));
                         break;
 
                     case 5:
                         if (!(message.extensionRange && message.extensionRange.length)) {
                             message.extensionRange = [];
                         }
-                        message.extensionRange.push(types[5].decode(reader, reader.uint32()));
+                        message.extensionRange.push($types[5].decode(reader, reader.uint32()));
                         break;
 
                     case 8:
                         if (!(message.oneofDecl && message.oneofDecl.length)) {
                             message.oneofDecl = [];
                         }
-                        message.oneofDecl.push(types[6].decode(reader, reader.uint32()));
+                        message.oneofDecl.push($types[6].decode(reader, reader.uint32()));
                         break;
 
                     case 7:
-                        message.options = types[7].decode(reader, reader.uint32());
+                        message.options = $types[7].decode(reader, reader.uint32());
                         break;
 
                     case 9:
                         if (!(message.reservedRange && message.reservedRange.length)) {
                             message.reservedRange = [];
                         }
-                        message.reservedRange.push(types[8].decode(reader, reader.uint32()));
+                        message.reservedRange.push($types[8].decode(reader, reader.uint32()));
                         break;
 
                     case 10:
@@ -9172,7 +9039,7 @@ $root.google = (function() {
                     }
                 }
                 return message;
-            };})($protobuf.Reader, $types);
+            };
 
             /**
              * Decodes a DescriptorProto message from the specified reader or buffer, length delimited.
@@ -9180,19 +9047,18 @@ $root.google = (function() {
              * @returns {google.protobuf.DescriptorProto} DescriptorProto
              */
             DescriptorProto.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-                readerOrBuffer = readerOrBuffer instanceof $protobuf.Reader ? readerOrBuffer : $protobuf.Reader(readerOrBuffer);
+                readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
                 return this.decode(readerOrBuffer, readerOrBuffer.uint32());
             };
 
             /**
              * Verifies a DescriptorProto message.
-             * @function
              * @param {google.protobuf.DescriptorProto|Object} message DescriptorProto message or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            DescriptorProto.verify = (function(util, types) { return function verify(message) {
+            DescriptorProto.verify = function verify(message) {
                 if (message.name !== undefined) {
-                    if (!util.isString(message.name)) {
+                    if (!$util.isString(message.name)) {
                         return "name: string expected";
                     }
                 }
@@ -9201,7 +9067,7 @@ $root.google = (function() {
                         return "field: array expected";
                     }
                     for (var i = 0; i < message.field.length; ++i) {
-                        var err = types[1].verify(message.field[i]);
+                        var err = $types[1].verify(message.field[i]);
                         if (err) {
                             return "field." + err;
                         }
@@ -9212,7 +9078,7 @@ $root.google = (function() {
                         return "extension: array expected";
                     }
                     for (var i = 0; i < message.extension.length; ++i) {
-                        var err = types[2].verify(message.extension[i]);
+                        var err = $types[2].verify(message.extension[i]);
                         if (err) {
                             return "extension." + err;
                         }
@@ -9223,7 +9089,7 @@ $root.google = (function() {
                         return "nestedType: array expected";
                     }
                     for (var i = 0; i < message.nestedType.length; ++i) {
-                        var err = types[3].verify(message.nestedType[i]);
+                        var err = $types[3].verify(message.nestedType[i]);
                         if (err) {
                             return "nestedType." + err;
                         }
@@ -9234,7 +9100,7 @@ $root.google = (function() {
                         return "enumType: array expected";
                     }
                     for (var i = 0; i < message.enumType.length; ++i) {
-                        var err = types[4].verify(message.enumType[i]);
+                        var err = $types[4].verify(message.enumType[i]);
                         if (err) {
                             return "enumType." + err;
                         }
@@ -9245,7 +9111,7 @@ $root.google = (function() {
                         return "extensionRange: array expected";
                     }
                     for (var i = 0; i < message.extensionRange.length; ++i) {
-                        var err = types[5].verify(message.extensionRange[i]);
+                        var err = $types[5].verify(message.extensionRange[i]);
                         if (err) {
                             return "extensionRange." + err;
                         }
@@ -9256,14 +9122,14 @@ $root.google = (function() {
                         return "oneofDecl: array expected";
                     }
                     for (var i = 0; i < message.oneofDecl.length; ++i) {
-                        var err = types[6].verify(message.oneofDecl[i]);
+                        var err = $types[6].verify(message.oneofDecl[i]);
                         if (err) {
                             return "oneofDecl." + err;
                         }
                     }
                 }
                 if (message.options !== undefined && message.options !== null) {
-                    var err = types[7].verify(message.options);
+                    var err = $types[7].verify(message.options);
                     if (err) {
                         return "options." + err;
                     }
@@ -9273,7 +9139,7 @@ $root.google = (function() {
                         return "reservedRange: array expected";
                     }
                     for (var i = 0; i < message.reservedRange.length; ++i) {
-                        var err = types[8].verify(message.reservedRange[i]);
+                        var err = $types[8].verify(message.reservedRange[i]);
                         if (err) {
                             return "reservedRange." + err;
                         }
@@ -9284,20 +9150,20 @@ $root.google = (function() {
                         return "reservedName: array expected";
                     }
                     for (var i = 0; i < message.reservedName.length; ++i) {
-                        if (!util.isString(message.reservedName[i])) {
+                        if (!$util.isString(message.reservedName[i])) {
                             return "reservedName: string[] expected";
                         }
                     }
                 }
                 return null;
-            };})($protobuf.util, $types);
+            };
 
             /**
              * Creates a DescriptorProto message from a plain object. Also converts values to their respective internal types.
              * @param {Object.<string,*>} object Plain object
              * @returns {google.protobuf.DescriptorProto} DescriptorProto
              */
-            DescriptorProto.fromObject = (function(types) { return function fromObject(object) {
+            DescriptorProto.fromObject = function fromObject(object) {
                 var message = new $root.google.protobuf.DescriptorProto();
                 if (object.name !== undefined && object.name !== null) {
                     message.name = String(object.name);
@@ -9305,46 +9171,46 @@ $root.google = (function() {
                 if (object.field) {
                     message.field = [];
                     for (var i = 0; i < object.field.length; ++i) {
-                        message.field[i] = types[1].fromObject(object.field[i]);
+                        message.field[i] = $types[1].fromObject(object.field[i]);
                     }
                 }
                 if (object.extension) {
                     message.extension = [];
                     for (var i = 0; i < object.extension.length; ++i) {
-                        message.extension[i] = types[2].fromObject(object.extension[i]);
+                        message.extension[i] = $types[2].fromObject(object.extension[i]);
                     }
                 }
                 if (object.nestedType) {
                     message.nestedType = [];
                     for (var i = 0; i < object.nestedType.length; ++i) {
-                        message.nestedType[i] = types[3].fromObject(object.nestedType[i]);
+                        message.nestedType[i] = $types[3].fromObject(object.nestedType[i]);
                     }
                 }
                 if (object.enumType) {
                     message.enumType = [];
                     for (var i = 0; i < object.enumType.length; ++i) {
-                        message.enumType[i] = types[4].fromObject(object.enumType[i]);
+                        message.enumType[i] = $types[4].fromObject(object.enumType[i]);
                     }
                 }
                 if (object.extensionRange) {
                     message.extensionRange = [];
                     for (var i = 0; i < object.extensionRange.length; ++i) {
-                        message.extensionRange[i] = types[5].fromObject(object.extensionRange[i]);
+                        message.extensionRange[i] = $types[5].fromObject(object.extensionRange[i]);
                     }
                 }
                 if (object.oneofDecl) {
                     message.oneofDecl = [];
                     for (var i = 0; i < object.oneofDecl.length; ++i) {
-                        message.oneofDecl[i] = types[6].fromObject(object.oneofDecl[i]);
+                        message.oneofDecl[i] = $types[6].fromObject(object.oneofDecl[i]);
                     }
                 }
                 if (object.options !== undefined && object.options !== null) {
-                    message.options = types[7].fromObject(object.options);
+                    message.options = $types[7].fromObject(object.options);
                 }
                 if (object.reservedRange) {
                     message.reservedRange = [];
                     for (var i = 0; i < object.reservedRange.length; ++i) {
-                        message.reservedRange[i] = types[8].fromObject(object.reservedRange[i]);
+                        message.reservedRange[i] = $types[8].fromObject(object.reservedRange[i]);
                     }
                 }
                 if (object.reservedName) {
@@ -9354,12 +9220,11 @@ $root.google = (function() {
                     }
                 }
                 return message;
-            };})($types);
+            };
 
             /**
              * Creates a DescriptorProto message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link google.protobuf.DescriptorProto.fromObject}.
-             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {google.protobuf.DescriptorProto} DescriptorProto
              */
@@ -9371,7 +9236,7 @@ $root.google = (function() {
              * @param {$protobuf.ConversionOptions} [options] Conversion options
              * @returns {Object.<string,*>} Plain object
              */
-            DescriptorProto.toObject = (function(types) { return function toObject(message, options) {
+            DescriptorProto.toObject = function toObject(message, options) {
                 if (!options) {
                     options = {};
                 }
@@ -9402,7 +9267,7 @@ $root.google = (function() {
                         if (message.field.length) {
                             object.field = [];
                             for (var j = 0; j < message.field.length; ++j) {
-                                object.field[j] = types[1].toObject(message.field[j], options);
+                                object.field[j] = $types[1].toObject(message.field[j], options);
                             }
                         }
                         break;
@@ -9411,7 +9276,7 @@ $root.google = (function() {
                         if (message.extension.length) {
                             object.extension = [];
                             for (var j = 0; j < message.extension.length; ++j) {
-                                object.extension[j] = types[2].toObject(message.extension[j], options);
+                                object.extension[j] = $types[2].toObject(message.extension[j], options);
                             }
                         }
                         break;
@@ -9420,7 +9285,7 @@ $root.google = (function() {
                         if (message.nestedType.length) {
                             object.nestedType = [];
                             for (var j = 0; j < message.nestedType.length; ++j) {
-                                object.nestedType[j] = types[3].toObject(message.nestedType[j], options);
+                                object.nestedType[j] = $types[3].toObject(message.nestedType[j], options);
                             }
                         }
                         break;
@@ -9429,7 +9294,7 @@ $root.google = (function() {
                         if (message.enumType.length) {
                             object.enumType = [];
                             for (var j = 0; j < message.enumType.length; ++j) {
-                                object.enumType[j] = types[4].toObject(message.enumType[j], options);
+                                object.enumType[j] = $types[4].toObject(message.enumType[j], options);
                             }
                         }
                         break;
@@ -9438,7 +9303,7 @@ $root.google = (function() {
                         if (message.extensionRange.length) {
                             object.extensionRange = [];
                             for (var j = 0; j < message.extensionRange.length; ++j) {
-                                object.extensionRange[j] = types[5].toObject(message.extensionRange[j], options);
+                                object.extensionRange[j] = $types[5].toObject(message.extensionRange[j], options);
                             }
                         }
                         break;
@@ -9447,14 +9312,14 @@ $root.google = (function() {
                         if (message.oneofDecl.length) {
                             object.oneofDecl = [];
                             for (var j = 0; j < message.oneofDecl.length; ++j) {
-                                object.oneofDecl[j] = types[6].toObject(message.oneofDecl[j], options);
+                                object.oneofDecl[j] = $types[6].toObject(message.oneofDecl[j], options);
                             }
                         }
                         break;
 
                     case "options":
                         if (message.options !== undefined && message.options !== null) {
-                            object.options = types[7].toObject(message.options, options);
+                            object.options = $types[7].toObject(message.options, options);
                         }
                         break;
 
@@ -9462,7 +9327,7 @@ $root.google = (function() {
                         if (message.reservedRange.length) {
                             object.reservedRange = [];
                             for (var j = 0; j < message.reservedRange.length; ++j) {
-                                object.reservedRange[j] = types[8].toObject(message.reservedRange[j], options);
+                                object.reservedRange[j] = $types[8].toObject(message.reservedRange[j], options);
                             }
                         }
                         break;
@@ -9478,7 +9343,7 @@ $root.google = (function() {
                     }
                 }
                 return object;
-            };})($types);
+            };
 
             /**
              * Creates a plain object from this DescriptorProto message. Also converts values to other types if specified.
@@ -9536,14 +9401,13 @@ $root.google = (function() {
 
                 /**
                  * Encodes the specified ExtensionRange message.
-                 * @function
                  * @param {google.protobuf.DescriptorProto.ExtensionRange|Object} message ExtensionRange message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
                  */
-                ExtensionRange.encode = (function(Writer) { return function encode(message, writer) {
+                ExtensionRange.encode = function encode(message, writer) {
                     if (!writer) {
-                        writer = Writer.create();
+                        writer = $Writer.create();
                     }
                     if (message.start !== undefined && message.start !== 0) {
                         writer.uint32(8).int32(message.start);
@@ -9552,7 +9416,7 @@ $root.google = (function() {
                         writer.uint32(16).int32(message.end);
                     }
                     return writer;
-                };})($protobuf.Writer);
+                };
 
                 /**
                  * Encodes the specified ExtensionRange message, length delimited.
@@ -9566,14 +9430,13 @@ $root.google = (function() {
 
                 /**
                  * Decodes an ExtensionRange message from the specified reader or buffer.
-                 * @function
                  * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
                  * @param {number} [length] Message length if known beforehand
                  * @returns {google.protobuf.DescriptorProto.ExtensionRange} ExtensionRange
                  */
-                ExtensionRange.decode = (function(Reader) { return function decode(reader, len) {
-                    if (!(reader instanceof Reader)) {
-                        reader = Reader.create(reader);
+                ExtensionRange.decode = function decode(reader, len) {
+                    if (!(reader instanceof $Reader)) {
+                        reader = $Reader.create(reader);
                     }
                     var end = len === undefined ? reader.len : reader.pos + len, message = new $root.google.protobuf.DescriptorProto.ExtensionRange();
                     while (reader.pos < end) {
@@ -9593,7 +9456,7 @@ $root.google = (function() {
                         }
                     }
                     return message;
-                };})($protobuf.Reader);
+                };
 
                 /**
                  * Decodes an ExtensionRange message from the specified reader or buffer, length delimited.
@@ -9601,29 +9464,28 @@ $root.google = (function() {
                  * @returns {google.protobuf.DescriptorProto.ExtensionRange} ExtensionRange
                  */
                 ExtensionRange.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-                    readerOrBuffer = readerOrBuffer instanceof $protobuf.Reader ? readerOrBuffer : $protobuf.Reader(readerOrBuffer);
+                    readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
                     return this.decode(readerOrBuffer, readerOrBuffer.uint32());
                 };
 
                 /**
                  * Verifies an ExtensionRange message.
-                 * @function
                  * @param {google.protobuf.DescriptorProto.ExtensionRange|Object} message ExtensionRange message or plain object to verify
                  * @returns {?string} `null` if valid, otherwise the reason why it is not
                  */
-                ExtensionRange.verify = (function(util) { return function verify(message) {
+                ExtensionRange.verify = function verify(message) {
                     if (message.start !== undefined) {
-                        if (!util.isInteger(message.start)) {
+                        if (!$util.isInteger(message.start)) {
                             return "start: integer expected";
                         }
                     }
                     if (message.end !== undefined) {
-                        if (!util.isInteger(message.end)) {
+                        if (!$util.isInteger(message.end)) {
                             return "end: integer expected";
                         }
                     }
                     return null;
-                };})($protobuf.util);
+                };
 
                 /**
                  * Creates an ExtensionRange message from a plain object. Also converts values to their respective internal types.
@@ -9644,7 +9506,6 @@ $root.google = (function() {
                 /**
                  * Creates an ExtensionRange message from a plain object. Also converts values to their respective internal types.
                  * This is an alias of {@link google.protobuf.DescriptorProto.ExtensionRange.fromObject}.
-                 * @function
                  * @param {Object.<string,*>} object Plain object
                  * @returns {google.protobuf.DescriptorProto.ExtensionRange} ExtensionRange
                  */
@@ -9742,14 +9603,13 @@ $root.google = (function() {
 
                 /**
                  * Encodes the specified ReservedRange message.
-                 * @function
                  * @param {google.protobuf.DescriptorProto.ReservedRange|Object} message ReservedRange message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
                  */
-                ReservedRange.encode = (function(Writer) { return function encode(message, writer) {
+                ReservedRange.encode = function encode(message, writer) {
                     if (!writer) {
-                        writer = Writer.create();
+                        writer = $Writer.create();
                     }
                     if (message.start !== undefined && message.start !== 0) {
                         writer.uint32(8).int32(message.start);
@@ -9758,7 +9618,7 @@ $root.google = (function() {
                         writer.uint32(16).int32(message.end);
                     }
                     return writer;
-                };})($protobuf.Writer);
+                };
 
                 /**
                  * Encodes the specified ReservedRange message, length delimited.
@@ -9772,14 +9632,13 @@ $root.google = (function() {
 
                 /**
                  * Decodes a ReservedRange message from the specified reader or buffer.
-                 * @function
                  * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
                  * @param {number} [length] Message length if known beforehand
                  * @returns {google.protobuf.DescriptorProto.ReservedRange} ReservedRange
                  */
-                ReservedRange.decode = (function(Reader) { return function decode(reader, len) {
-                    if (!(reader instanceof Reader)) {
-                        reader = Reader.create(reader);
+                ReservedRange.decode = function decode(reader, len) {
+                    if (!(reader instanceof $Reader)) {
+                        reader = $Reader.create(reader);
                     }
                     var end = len === undefined ? reader.len : reader.pos + len, message = new $root.google.protobuf.DescriptorProto.ReservedRange();
                     while (reader.pos < end) {
@@ -9799,7 +9658,7 @@ $root.google = (function() {
                         }
                     }
                     return message;
-                };})($protobuf.Reader);
+                };
 
                 /**
                  * Decodes a ReservedRange message from the specified reader or buffer, length delimited.
@@ -9807,29 +9666,28 @@ $root.google = (function() {
                  * @returns {google.protobuf.DescriptorProto.ReservedRange} ReservedRange
                  */
                 ReservedRange.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-                    readerOrBuffer = readerOrBuffer instanceof $protobuf.Reader ? readerOrBuffer : $protobuf.Reader(readerOrBuffer);
+                    readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
                     return this.decode(readerOrBuffer, readerOrBuffer.uint32());
                 };
 
                 /**
                  * Verifies a ReservedRange message.
-                 * @function
                  * @param {google.protobuf.DescriptorProto.ReservedRange|Object} message ReservedRange message or plain object to verify
                  * @returns {?string} `null` if valid, otherwise the reason why it is not
                  */
-                ReservedRange.verify = (function(util) { return function verify(message) {
+                ReservedRange.verify = function verify(message) {
                     if (message.start !== undefined) {
-                        if (!util.isInteger(message.start)) {
+                        if (!$util.isInteger(message.start)) {
                             return "start: integer expected";
                         }
                     }
                     if (message.end !== undefined) {
-                        if (!util.isInteger(message.end)) {
+                        if (!$util.isInteger(message.end)) {
                             return "end: integer expected";
                         }
                     }
                     return null;
-                };})($protobuf.util);
+                };
 
                 /**
                  * Creates a ReservedRange message from a plain object. Also converts values to their respective internal types.
@@ -9850,7 +9708,6 @@ $root.google = (function() {
                 /**
                  * Creates a ReservedRange message from a plain object. Also converts values to their respective internal types.
                  * This is an alias of {@link google.protobuf.DescriptorProto.ReservedRange.fromObject}.
-                 * @function
                  * @param {Object.<string,*>} object Plain object
                  * @returns {google.protobuf.DescriptorProto.ReservedRange} ReservedRange
                  */
@@ -10002,14 +9859,13 @@ $root.google = (function() {
 
             /**
              * Encodes the specified FieldDescriptorProto message.
-             * @function
              * @param {google.protobuf.FieldDescriptorProto|Object} message FieldDescriptorProto message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            FieldDescriptorProto.encode = (function(Writer, types) { return function encode(message, writer) {
+            FieldDescriptorProto.encode = function encode(message, writer) {
                 if (!writer) {
-                    writer = Writer.create();
+                    writer = $Writer.create();
                 }
                 if (message.name !== undefined && message.name !== "") {
                     writer.uint32(10).string(message.name);
@@ -10039,10 +9895,10 @@ $root.google = (function() {
                     writer.uint32(82).string(message.jsonName);
                 }
                 if (message.options !== undefined && message.options !== null) {
-                    types[9].encode(message.options, writer.uint32(66).fork()).ldelim();
+                    $types[9].encode(message.options, writer.uint32(66).fork()).ldelim();
                 }
                 return writer;
-            };})($protobuf.Writer, $types);
+            };
 
             /**
              * Encodes the specified FieldDescriptorProto message, length delimited.
@@ -10056,14 +9912,13 @@ $root.google = (function() {
 
             /**
              * Decodes a FieldDescriptorProto message from the specified reader or buffer.
-             * @function
              * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.FieldDescriptorProto} FieldDescriptorProto
              */
-            FieldDescriptorProto.decode = (function(Reader, types) { return function decode(reader, len) {
-                if (!(reader instanceof Reader)) {
-                    reader = Reader.create(reader);
+            FieldDescriptorProto.decode = function decode(reader, len) {
+                if (!(reader instanceof $Reader)) {
+                    reader = $Reader.create(reader);
                 }
                 var end = len === undefined ? reader.len : reader.pos + len, message = new $root.google.protobuf.FieldDescriptorProto();
                 while (reader.pos < end) {
@@ -10106,7 +9961,7 @@ $root.google = (function() {
                         break;
 
                     case 8:
-                        message.options = types[9].decode(reader, reader.uint32());
+                        message.options = $types[9].decode(reader, reader.uint32());
                         break;
 
                     default:
@@ -10115,7 +9970,7 @@ $root.google = (function() {
                     }
                 }
                 return message;
-            };})($protobuf.Reader, $types);
+            };
 
             /**
              * Decodes a FieldDescriptorProto message from the specified reader or buffer, length delimited.
@@ -10123,24 +9978,23 @@ $root.google = (function() {
              * @returns {google.protobuf.FieldDescriptorProto} FieldDescriptorProto
              */
             FieldDescriptorProto.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-                readerOrBuffer = readerOrBuffer instanceof $protobuf.Reader ? readerOrBuffer : $protobuf.Reader(readerOrBuffer);
+                readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
                 return this.decode(readerOrBuffer, readerOrBuffer.uint32());
             };
 
             /**
              * Verifies a FieldDescriptorProto message.
-             * @function
              * @param {google.protobuf.FieldDescriptorProto|Object} message FieldDescriptorProto message or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            FieldDescriptorProto.verify = (function(util, types) { return function verify(message) {
+            FieldDescriptorProto.verify = function verify(message) {
                 if (message.name !== undefined) {
-                    if (!util.isString(message.name)) {
+                    if (!$util.isString(message.name)) {
                         return "name: string expected";
                     }
                 }
                 if (message.number !== undefined) {
-                    if (!util.isInteger(message.number)) {
+                    if (!$util.isInteger(message.number)) {
                         return "number: integer expected";
                     }
                 }
@@ -10182,45 +10036,45 @@ $root.google = (function() {
                     }
                 }
                 if (message.typeName !== undefined) {
-                    if (!util.isString(message.typeName)) {
+                    if (!$util.isString(message.typeName)) {
                         return "typeName: string expected";
                     }
                 }
                 if (message.extendee !== undefined) {
-                    if (!util.isString(message.extendee)) {
+                    if (!$util.isString(message.extendee)) {
                         return "extendee: string expected";
                     }
                 }
                 if (message.defaultValue !== undefined) {
-                    if (!util.isString(message.defaultValue)) {
+                    if (!$util.isString(message.defaultValue)) {
                         return "defaultValue: string expected";
                     }
                 }
                 if (message.oneofIndex !== undefined) {
-                    if (!util.isInteger(message.oneofIndex)) {
+                    if (!$util.isInteger(message.oneofIndex)) {
                         return "oneofIndex: integer expected";
                     }
                 }
                 if (message.jsonName !== undefined) {
-                    if (!util.isString(message.jsonName)) {
+                    if (!$util.isString(message.jsonName)) {
                         return "jsonName: string expected";
                     }
                 }
                 if (message.options !== undefined && message.options !== null) {
-                    var err = types[9].verify(message.options);
+                    var err = $types[9].verify(message.options);
                     if (err) {
                         return "options." + err;
                     }
                 }
                 return null;
-            };})($protobuf.util, $types);
+            };
 
             /**
              * Creates a FieldDescriptorProto message from a plain object. Also converts values to their respective internal types.
              * @param {Object.<string,*>} object Plain object
              * @returns {google.protobuf.FieldDescriptorProto} FieldDescriptorProto
              */
-            FieldDescriptorProto.fromObject = (function(types) { return function fromObject(object) {
+            FieldDescriptorProto.fromObject = function fromObject(object) {
                 var message = new $root.google.protobuf.FieldDescriptorProto();
                 if (object.name !== undefined && object.name !== null) {
                     message.name = String(object.name);
@@ -10351,15 +10205,14 @@ $root.google = (function() {
                     message.jsonName = String(object.jsonName);
                 }
                 if (object.options !== undefined && object.options !== null) {
-                    message.options = types[9].fromObject(object.options);
+                    message.options = $types[9].fromObject(object.options);
                 }
                 return message;
-            };})($types);
+            };
 
             /**
              * Creates a FieldDescriptorProto message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link google.protobuf.FieldDescriptorProto.fromObject}.
-             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {google.protobuf.FieldDescriptorProto} FieldDescriptorProto
              */
@@ -10371,7 +10224,7 @@ $root.google = (function() {
              * @param {$protobuf.ConversionOptions} [options] Conversion options
              * @returns {Object.<string,*>} Plain object
              */
-            FieldDescriptorProto.toObject = (function(types) { return function toObject(message, options) {
+            FieldDescriptorProto.toObject = function toObject(message, options) {
                 if (!options) {
                     options = {};
                 }
@@ -10404,13 +10257,13 @@ $root.google = (function() {
 
                     case "label":
                         if (message.label !== undefined && message.label !== null) {
-                            object.label = options.enums === String ? types[2][message.label] : message.label;
+                            object.label = options.enums === String ? $types[2][message.label] : message.label;
                         }
                         break;
 
                     case "type":
                         if (message.type !== undefined && message.type !== null) {
-                            object.type = options.enums === String ? types[3][message.type] : message.type;
+                            object.type = options.enums === String ? $types[3][message.type] : message.type;
                         }
                         break;
 
@@ -10446,13 +10299,13 @@ $root.google = (function() {
 
                     case "options":
                         if (message.options !== undefined && message.options !== null) {
-                            object.options = types[9].toObject(message.options, options);
+                            object.options = $types[9].toObject(message.options, options);
                         }
                         break;
                     }
                 }
                 return object;
-            };})($types);
+            };
 
             /**
              * Creates a plain object from this FieldDescriptorProto message. Also converts values to other types if specified.
@@ -10582,23 +10435,22 @@ $root.google = (function() {
 
             /**
              * Encodes the specified OneofDescriptorProto message.
-             * @function
              * @param {google.protobuf.OneofDescriptorProto|Object} message OneofDescriptorProto message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            OneofDescriptorProto.encode = (function(Writer, types) { return function encode(message, writer) {
+            OneofDescriptorProto.encode = function encode(message, writer) {
                 if (!writer) {
-                    writer = Writer.create();
+                    writer = $Writer.create();
                 }
                 if (message.name !== undefined && message.name !== "") {
                     writer.uint32(10).string(message.name);
                 }
                 if (message.options !== undefined && message.options !== null) {
-                    types[1].encode(message.options, writer.uint32(18).fork()).ldelim();
+                    $types[1].encode(message.options, writer.uint32(18).fork()).ldelim();
                 }
                 return writer;
-            };})($protobuf.Writer, $types);
+            };
 
             /**
              * Encodes the specified OneofDescriptorProto message, length delimited.
@@ -10612,14 +10464,13 @@ $root.google = (function() {
 
             /**
              * Decodes an OneofDescriptorProto message from the specified reader or buffer.
-             * @function
              * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.OneofDescriptorProto} OneofDescriptorProto
              */
-            OneofDescriptorProto.decode = (function(Reader, types) { return function decode(reader, len) {
-                if (!(reader instanceof Reader)) {
-                    reader = Reader.create(reader);
+            OneofDescriptorProto.decode = function decode(reader, len) {
+                if (!(reader instanceof $Reader)) {
+                    reader = $Reader.create(reader);
                 }
                 var end = len === undefined ? reader.len : reader.pos + len, message = new $root.google.protobuf.OneofDescriptorProto();
                 while (reader.pos < end) {
@@ -10630,7 +10481,7 @@ $root.google = (function() {
                         break;
 
                     case 2:
-                        message.options = types[1].decode(reader, reader.uint32());
+                        message.options = $types[1].decode(reader, reader.uint32());
                         break;
 
                     default:
@@ -10639,7 +10490,7 @@ $root.google = (function() {
                     }
                 }
                 return message;
-            };})($protobuf.Reader, $types);
+            };
 
             /**
              * Decodes an OneofDescriptorProto message from the specified reader or buffer, length delimited.
@@ -10647,51 +10498,49 @@ $root.google = (function() {
              * @returns {google.protobuf.OneofDescriptorProto} OneofDescriptorProto
              */
             OneofDescriptorProto.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-                readerOrBuffer = readerOrBuffer instanceof $protobuf.Reader ? readerOrBuffer : $protobuf.Reader(readerOrBuffer);
+                readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
                 return this.decode(readerOrBuffer, readerOrBuffer.uint32());
             };
 
             /**
              * Verifies an OneofDescriptorProto message.
-             * @function
              * @param {google.protobuf.OneofDescriptorProto|Object} message OneofDescriptorProto message or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            OneofDescriptorProto.verify = (function(util, types) { return function verify(message) {
+            OneofDescriptorProto.verify = function verify(message) {
                 if (message.name !== undefined) {
-                    if (!util.isString(message.name)) {
+                    if (!$util.isString(message.name)) {
                         return "name: string expected";
                     }
                 }
                 if (message.options !== undefined && message.options !== null) {
-                    var err = types[1].verify(message.options);
+                    var err = $types[1].verify(message.options);
                     if (err) {
                         return "options." + err;
                     }
                 }
                 return null;
-            };})($protobuf.util, $types);
+            };
 
             /**
              * Creates an OneofDescriptorProto message from a plain object. Also converts values to their respective internal types.
              * @param {Object.<string,*>} object Plain object
              * @returns {google.protobuf.OneofDescriptorProto} OneofDescriptorProto
              */
-            OneofDescriptorProto.fromObject = (function(types) { return function fromObject(object) {
+            OneofDescriptorProto.fromObject = function fromObject(object) {
                 var message = new $root.google.protobuf.OneofDescriptorProto();
                 if (object.name !== undefined && object.name !== null) {
                     message.name = String(object.name);
                 }
                 if (object.options !== undefined && object.options !== null) {
-                    message.options = types[1].fromObject(object.options);
+                    message.options = $types[1].fromObject(object.options);
                 }
                 return message;
-            };})($types);
+            };
 
             /**
              * Creates an OneofDescriptorProto message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link google.protobuf.OneofDescriptorProto.fromObject}.
-             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {google.protobuf.OneofDescriptorProto} OneofDescriptorProto
              */
@@ -10703,7 +10552,7 @@ $root.google = (function() {
              * @param {$protobuf.ConversionOptions} [options] Conversion options
              * @returns {Object.<string,*>} Plain object
              */
-            OneofDescriptorProto.toObject = (function(types) { return function toObject(message, options) {
+            OneofDescriptorProto.toObject = function toObject(message, options) {
                 if (!options) {
                     options = {};
                 }
@@ -10722,13 +10571,13 @@ $root.google = (function() {
 
                     case "options":
                         if (message.options !== undefined && message.options !== null) {
-                            object.options = types[1].toObject(message.options, options);
+                            object.options = $types[1].toObject(message.options, options);
                         }
                         break;
                     }
                 }
                 return object;
-            };})($types);
+            };
 
             /**
              * Creates a plain object from this OneofDescriptorProto message. Also converts values to other types if specified.
@@ -10776,7 +10625,7 @@ $root.google = (function() {
              * EnumDescriptorProto value.
              * @type {Array.<google.protobuf.EnumValueDescriptorProto>}
              */
-            EnumDescriptorProto.prototype.value = $protobuf.util.emptyArray;
+            EnumDescriptorProto.prototype.value = $util.emptyArray;
 
             /**
              * EnumDescriptorProto options.
@@ -10798,28 +10647,27 @@ $root.google = (function() {
 
             /**
              * Encodes the specified EnumDescriptorProto message.
-             * @function
              * @param {google.protobuf.EnumDescriptorProto|Object} message EnumDescriptorProto message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            EnumDescriptorProto.encode = (function(Writer, types) { return function encode(message, writer) {
+            EnumDescriptorProto.encode = function encode(message, writer) {
                 if (!writer) {
-                    writer = Writer.create();
+                    writer = $Writer.create();
                 }
                 if (message.name !== undefined && message.name !== "") {
                     writer.uint32(10).string(message.name);
                 }
                 if (message.value) {
                     for (var i = 0; i < message.value.length; ++i) {
-                        types[1].encode(message.value[i], writer.uint32(18).fork()).ldelim();
+                        $types[1].encode(message.value[i], writer.uint32(18).fork()).ldelim();
                     }
                 }
                 if (message.options !== undefined && message.options !== null) {
-                    types[2].encode(message.options, writer.uint32(26).fork()).ldelim();
+                    $types[2].encode(message.options, writer.uint32(26).fork()).ldelim();
                 }
                 return writer;
-            };})($protobuf.Writer, $types);
+            };
 
             /**
              * Encodes the specified EnumDescriptorProto message, length delimited.
@@ -10833,14 +10681,13 @@ $root.google = (function() {
 
             /**
              * Decodes an EnumDescriptorProto message from the specified reader or buffer.
-             * @function
              * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.EnumDescriptorProto} EnumDescriptorProto
              */
-            EnumDescriptorProto.decode = (function(Reader, types) { return function decode(reader, len) {
-                if (!(reader instanceof Reader)) {
-                    reader = Reader.create(reader);
+            EnumDescriptorProto.decode = function decode(reader, len) {
+                if (!(reader instanceof $Reader)) {
+                    reader = $Reader.create(reader);
                 }
                 var end = len === undefined ? reader.len : reader.pos + len, message = new $root.google.protobuf.EnumDescriptorProto();
                 while (reader.pos < end) {
@@ -10854,11 +10701,11 @@ $root.google = (function() {
                         if (!(message.value && message.value.length)) {
                             message.value = [];
                         }
-                        message.value.push(types[1].decode(reader, reader.uint32()));
+                        message.value.push($types[1].decode(reader, reader.uint32()));
                         break;
 
                     case 3:
-                        message.options = types[2].decode(reader, reader.uint32());
+                        message.options = $types[2].decode(reader, reader.uint32());
                         break;
 
                     default:
@@ -10867,7 +10714,7 @@ $root.google = (function() {
                     }
                 }
                 return message;
-            };})($protobuf.Reader, $types);
+            };
 
             /**
              * Decodes an EnumDescriptorProto message from the specified reader or buffer, length delimited.
@@ -10875,19 +10722,18 @@ $root.google = (function() {
              * @returns {google.protobuf.EnumDescriptorProto} EnumDescriptorProto
              */
             EnumDescriptorProto.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-                readerOrBuffer = readerOrBuffer instanceof $protobuf.Reader ? readerOrBuffer : $protobuf.Reader(readerOrBuffer);
+                readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
                 return this.decode(readerOrBuffer, readerOrBuffer.uint32());
             };
 
             /**
              * Verifies an EnumDescriptorProto message.
-             * @function
              * @param {google.protobuf.EnumDescriptorProto|Object} message EnumDescriptorProto message or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            EnumDescriptorProto.verify = (function(util, types) { return function verify(message) {
+            EnumDescriptorProto.verify = function verify(message) {
                 if (message.name !== undefined) {
-                    if (!util.isString(message.name)) {
+                    if (!$util.isString(message.name)) {
                         return "name: string expected";
                     }
                 }
@@ -10896,27 +10742,27 @@ $root.google = (function() {
                         return "value: array expected";
                     }
                     for (var i = 0; i < message.value.length; ++i) {
-                        var err = types[1].verify(message.value[i]);
+                        var err = $types[1].verify(message.value[i]);
                         if (err) {
                             return "value." + err;
                         }
                     }
                 }
                 if (message.options !== undefined && message.options !== null) {
-                    var err = types[2].verify(message.options);
+                    var err = $types[2].verify(message.options);
                     if (err) {
                         return "options." + err;
                     }
                 }
                 return null;
-            };})($protobuf.util, $types);
+            };
 
             /**
              * Creates an EnumDescriptorProto message from a plain object. Also converts values to their respective internal types.
              * @param {Object.<string,*>} object Plain object
              * @returns {google.protobuf.EnumDescriptorProto} EnumDescriptorProto
              */
-            EnumDescriptorProto.fromObject = (function(types) { return function fromObject(object) {
+            EnumDescriptorProto.fromObject = function fromObject(object) {
                 var message = new $root.google.protobuf.EnumDescriptorProto();
                 if (object.name !== undefined && object.name !== null) {
                     message.name = String(object.name);
@@ -10924,19 +10770,18 @@ $root.google = (function() {
                 if (object.value) {
                     message.value = [];
                     for (var i = 0; i < object.value.length; ++i) {
-                        message.value[i] = types[1].fromObject(object.value[i]);
+                        message.value[i] = $types[1].fromObject(object.value[i]);
                     }
                 }
                 if (object.options !== undefined && object.options !== null) {
-                    message.options = types[2].fromObject(object.options);
+                    message.options = $types[2].fromObject(object.options);
                 }
                 return message;
-            };})($types);
+            };
 
             /**
              * Creates an EnumDescriptorProto message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link google.protobuf.EnumDescriptorProto.fromObject}.
-             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {google.protobuf.EnumDescriptorProto} EnumDescriptorProto
              */
@@ -10948,7 +10793,7 @@ $root.google = (function() {
              * @param {$protobuf.ConversionOptions} [options] Conversion options
              * @returns {Object.<string,*>} Plain object
              */
-            EnumDescriptorProto.toObject = (function(types) { return function toObject(message, options) {
+            EnumDescriptorProto.toObject = function toObject(message, options) {
                 if (!options) {
                     options = {};
                 }
@@ -10972,20 +10817,20 @@ $root.google = (function() {
                         if (message.value.length) {
                             object.value = [];
                             for (var j = 0; j < message.value.length; ++j) {
-                                object.value[j] = types[1].toObject(message.value[j], options);
+                                object.value[j] = $types[1].toObject(message.value[j], options);
                             }
                         }
                         break;
 
                     case "options":
                         if (message.options !== undefined && message.options !== null) {
-                            object.options = types[2].toObject(message.options, options);
+                            object.options = $types[2].toObject(message.options, options);
                         }
                         break;
                     }
                 }
                 return object;
-            };})($types);
+            };
 
             /**
              * Creates a plain object from this EnumDescriptorProto message. Also converts values to other types if specified.
@@ -11055,14 +10900,13 @@ $root.google = (function() {
 
             /**
              * Encodes the specified EnumValueDescriptorProto message.
-             * @function
              * @param {google.protobuf.EnumValueDescriptorProto|Object} message EnumValueDescriptorProto message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            EnumValueDescriptorProto.encode = (function(Writer, types) { return function encode(message, writer) {
+            EnumValueDescriptorProto.encode = function encode(message, writer) {
                 if (!writer) {
-                    writer = Writer.create();
+                    writer = $Writer.create();
                 }
                 if (message.name !== undefined && message.name !== "") {
                     writer.uint32(10).string(message.name);
@@ -11071,10 +10915,10 @@ $root.google = (function() {
                     writer.uint32(16).int32(message.number);
                 }
                 if (message.options !== undefined && message.options !== null) {
-                    types[2].encode(message.options, writer.uint32(26).fork()).ldelim();
+                    $types[2].encode(message.options, writer.uint32(26).fork()).ldelim();
                 }
                 return writer;
-            };})($protobuf.Writer, $types);
+            };
 
             /**
              * Encodes the specified EnumValueDescriptorProto message, length delimited.
@@ -11088,14 +10932,13 @@ $root.google = (function() {
 
             /**
              * Decodes an EnumValueDescriptorProto message from the specified reader or buffer.
-             * @function
              * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.EnumValueDescriptorProto} EnumValueDescriptorProto
              */
-            EnumValueDescriptorProto.decode = (function(Reader, types) { return function decode(reader, len) {
-                if (!(reader instanceof Reader)) {
-                    reader = Reader.create(reader);
+            EnumValueDescriptorProto.decode = function decode(reader, len) {
+                if (!(reader instanceof $Reader)) {
+                    reader = $Reader.create(reader);
                 }
                 var end = len === undefined ? reader.len : reader.pos + len, message = new $root.google.protobuf.EnumValueDescriptorProto();
                 while (reader.pos < end) {
@@ -11110,7 +10953,7 @@ $root.google = (function() {
                         break;
 
                     case 3:
-                        message.options = types[2].decode(reader, reader.uint32());
+                        message.options = $types[2].decode(reader, reader.uint32());
                         break;
 
                     default:
@@ -11119,7 +10962,7 @@ $root.google = (function() {
                     }
                 }
                 return message;
-            };})($protobuf.Reader, $types);
+            };
 
             /**
              * Decodes an EnumValueDescriptorProto message from the specified reader or buffer, length delimited.
@@ -11127,42 +10970,41 @@ $root.google = (function() {
              * @returns {google.protobuf.EnumValueDescriptorProto} EnumValueDescriptorProto
              */
             EnumValueDescriptorProto.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-                readerOrBuffer = readerOrBuffer instanceof $protobuf.Reader ? readerOrBuffer : $protobuf.Reader(readerOrBuffer);
+                readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
                 return this.decode(readerOrBuffer, readerOrBuffer.uint32());
             };
 
             /**
              * Verifies an EnumValueDescriptorProto message.
-             * @function
              * @param {google.protobuf.EnumValueDescriptorProto|Object} message EnumValueDescriptorProto message or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            EnumValueDescriptorProto.verify = (function(util, types) { return function verify(message) {
+            EnumValueDescriptorProto.verify = function verify(message) {
                 if (message.name !== undefined) {
-                    if (!util.isString(message.name)) {
+                    if (!$util.isString(message.name)) {
                         return "name: string expected";
                     }
                 }
                 if (message.number !== undefined) {
-                    if (!util.isInteger(message.number)) {
+                    if (!$util.isInteger(message.number)) {
                         return "number: integer expected";
                     }
                 }
                 if (message.options !== undefined && message.options !== null) {
-                    var err = types[2].verify(message.options);
+                    var err = $types[2].verify(message.options);
                     if (err) {
                         return "options." + err;
                     }
                 }
                 return null;
-            };})($protobuf.util, $types);
+            };
 
             /**
              * Creates an EnumValueDescriptorProto message from a plain object. Also converts values to their respective internal types.
              * @param {Object.<string,*>} object Plain object
              * @returns {google.protobuf.EnumValueDescriptorProto} EnumValueDescriptorProto
              */
-            EnumValueDescriptorProto.fromObject = (function(types) { return function fromObject(object) {
+            EnumValueDescriptorProto.fromObject = function fromObject(object) {
                 var message = new $root.google.protobuf.EnumValueDescriptorProto();
                 if (object.name !== undefined && object.name !== null) {
                     message.name = String(object.name);
@@ -11171,15 +11013,14 @@ $root.google = (function() {
                     message.number = object.number | 0;
                 }
                 if (object.options !== undefined && object.options !== null) {
-                    message.options = types[2].fromObject(object.options);
+                    message.options = $types[2].fromObject(object.options);
                 }
                 return message;
-            };})($types);
+            };
 
             /**
              * Creates an EnumValueDescriptorProto message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link google.protobuf.EnumValueDescriptorProto.fromObject}.
-             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {google.protobuf.EnumValueDescriptorProto} EnumValueDescriptorProto
              */
@@ -11191,7 +11032,7 @@ $root.google = (function() {
              * @param {$protobuf.ConversionOptions} [options] Conversion options
              * @returns {Object.<string,*>} Plain object
              */
-            EnumValueDescriptorProto.toObject = (function(types) { return function toObject(message, options) {
+            EnumValueDescriptorProto.toObject = function toObject(message, options) {
                 if (!options) {
                     options = {};
                 }
@@ -11217,13 +11058,13 @@ $root.google = (function() {
 
                     case "options":
                         if (message.options !== undefined && message.options !== null) {
-                            object.options = types[2].toObject(message.options, options);
+                            object.options = $types[2].toObject(message.options, options);
                         }
                         break;
                     }
                 }
                 return object;
-            };})($types);
+            };
 
             /**
              * Creates a plain object from this EnumValueDescriptorProto message. Also converts values to other types if specified.
@@ -11271,7 +11112,7 @@ $root.google = (function() {
              * ServiceDescriptorProto method.
              * @type {Array.<google.protobuf.MethodDescriptorProto>}
              */
-            ServiceDescriptorProto.prototype.method = $protobuf.util.emptyArray;
+            ServiceDescriptorProto.prototype.method = $util.emptyArray;
 
             /**
              * ServiceDescriptorProto options.
@@ -11293,28 +11134,27 @@ $root.google = (function() {
 
             /**
              * Encodes the specified ServiceDescriptorProto message.
-             * @function
              * @param {google.protobuf.ServiceDescriptorProto|Object} message ServiceDescriptorProto message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            ServiceDescriptorProto.encode = (function(Writer, types) { return function encode(message, writer) {
+            ServiceDescriptorProto.encode = function encode(message, writer) {
                 if (!writer) {
-                    writer = Writer.create();
+                    writer = $Writer.create();
                 }
                 if (message.name !== undefined && message.name !== "") {
                     writer.uint32(10).string(message.name);
                 }
                 if (message.method) {
                     for (var i = 0; i < message.method.length; ++i) {
-                        types[1].encode(message.method[i], writer.uint32(18).fork()).ldelim();
+                        $types[1].encode(message.method[i], writer.uint32(18).fork()).ldelim();
                     }
                 }
                 if (message.options !== undefined && message.options !== null) {
-                    types[2].encode(message.options, writer.uint32(26).fork()).ldelim();
+                    $types[2].encode(message.options, writer.uint32(26).fork()).ldelim();
                 }
                 return writer;
-            };})($protobuf.Writer, $types);
+            };
 
             /**
              * Encodes the specified ServiceDescriptorProto message, length delimited.
@@ -11328,14 +11168,13 @@ $root.google = (function() {
 
             /**
              * Decodes a ServiceDescriptorProto message from the specified reader or buffer.
-             * @function
              * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.ServiceDescriptorProto} ServiceDescriptorProto
              */
-            ServiceDescriptorProto.decode = (function(Reader, types) { return function decode(reader, len) {
-                if (!(reader instanceof Reader)) {
-                    reader = Reader.create(reader);
+            ServiceDescriptorProto.decode = function decode(reader, len) {
+                if (!(reader instanceof $Reader)) {
+                    reader = $Reader.create(reader);
                 }
                 var end = len === undefined ? reader.len : reader.pos + len, message = new $root.google.protobuf.ServiceDescriptorProto();
                 while (reader.pos < end) {
@@ -11349,11 +11188,11 @@ $root.google = (function() {
                         if (!(message.method && message.method.length)) {
                             message.method = [];
                         }
-                        message.method.push(types[1].decode(reader, reader.uint32()));
+                        message.method.push($types[1].decode(reader, reader.uint32()));
                         break;
 
                     case 3:
-                        message.options = types[2].decode(reader, reader.uint32());
+                        message.options = $types[2].decode(reader, reader.uint32());
                         break;
 
                     default:
@@ -11362,7 +11201,7 @@ $root.google = (function() {
                     }
                 }
                 return message;
-            };})($protobuf.Reader, $types);
+            };
 
             /**
              * Decodes a ServiceDescriptorProto message from the specified reader or buffer, length delimited.
@@ -11370,19 +11209,18 @@ $root.google = (function() {
              * @returns {google.protobuf.ServiceDescriptorProto} ServiceDescriptorProto
              */
             ServiceDescriptorProto.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-                readerOrBuffer = readerOrBuffer instanceof $protobuf.Reader ? readerOrBuffer : $protobuf.Reader(readerOrBuffer);
+                readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
                 return this.decode(readerOrBuffer, readerOrBuffer.uint32());
             };
 
             /**
              * Verifies a ServiceDescriptorProto message.
-             * @function
              * @param {google.protobuf.ServiceDescriptorProto|Object} message ServiceDescriptorProto message or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            ServiceDescriptorProto.verify = (function(util, types) { return function verify(message) {
+            ServiceDescriptorProto.verify = function verify(message) {
                 if (message.name !== undefined) {
-                    if (!util.isString(message.name)) {
+                    if (!$util.isString(message.name)) {
                         return "name: string expected";
                     }
                 }
@@ -11391,27 +11229,27 @@ $root.google = (function() {
                         return "method: array expected";
                     }
                     for (var i = 0; i < message.method.length; ++i) {
-                        var err = types[1].verify(message.method[i]);
+                        var err = $types[1].verify(message.method[i]);
                         if (err) {
                             return "method." + err;
                         }
                     }
                 }
                 if (message.options !== undefined && message.options !== null) {
-                    var err = types[2].verify(message.options);
+                    var err = $types[2].verify(message.options);
                     if (err) {
                         return "options." + err;
                     }
                 }
                 return null;
-            };})($protobuf.util, $types);
+            };
 
             /**
              * Creates a ServiceDescriptorProto message from a plain object. Also converts values to their respective internal types.
              * @param {Object.<string,*>} object Plain object
              * @returns {google.protobuf.ServiceDescriptorProto} ServiceDescriptorProto
              */
-            ServiceDescriptorProto.fromObject = (function(types) { return function fromObject(object) {
+            ServiceDescriptorProto.fromObject = function fromObject(object) {
                 var message = new $root.google.protobuf.ServiceDescriptorProto();
                 if (object.name !== undefined && object.name !== null) {
                     message.name = String(object.name);
@@ -11419,19 +11257,18 @@ $root.google = (function() {
                 if (object.method) {
                     message.method = [];
                     for (var i = 0; i < object.method.length; ++i) {
-                        message.method[i] = types[1].fromObject(object.method[i]);
+                        message.method[i] = $types[1].fromObject(object.method[i]);
                     }
                 }
                 if (object.options !== undefined && object.options !== null) {
-                    message.options = types[2].fromObject(object.options);
+                    message.options = $types[2].fromObject(object.options);
                 }
                 return message;
-            };})($types);
+            };
 
             /**
              * Creates a ServiceDescriptorProto message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link google.protobuf.ServiceDescriptorProto.fromObject}.
-             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {google.protobuf.ServiceDescriptorProto} ServiceDescriptorProto
              */
@@ -11443,7 +11280,7 @@ $root.google = (function() {
              * @param {$protobuf.ConversionOptions} [options] Conversion options
              * @returns {Object.<string,*>} Plain object
              */
-            ServiceDescriptorProto.toObject = (function(types) { return function toObject(message, options) {
+            ServiceDescriptorProto.toObject = function toObject(message, options) {
                 if (!options) {
                     options = {};
                 }
@@ -11467,20 +11304,20 @@ $root.google = (function() {
                         if (message.method.length) {
                             object.method = [];
                             for (var j = 0; j < message.method.length; ++j) {
-                                object.method[j] = types[1].toObject(message.method[j], options);
+                                object.method[j] = $types[1].toObject(message.method[j], options);
                             }
                         }
                         break;
 
                     case "options":
                         if (message.options !== undefined && message.options !== null) {
-                            object.options = types[2].toObject(message.options, options);
+                            object.options = $types[2].toObject(message.options, options);
                         }
                         break;
                     }
                 }
                 return object;
-            };})($types);
+            };
 
             /**
              * Creates a plain object from this ServiceDescriptorProto message. Also converts values to other types if specified.
@@ -11568,14 +11405,13 @@ $root.google = (function() {
 
             /**
              * Encodes the specified MethodDescriptorProto message.
-             * @function
              * @param {google.protobuf.MethodDescriptorProto|Object} message MethodDescriptorProto message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            MethodDescriptorProto.encode = (function(Writer, types) { return function encode(message, writer) {
+            MethodDescriptorProto.encode = function encode(message, writer) {
                 if (!writer) {
-                    writer = Writer.create();
+                    writer = $Writer.create();
                 }
                 if (message.name !== undefined && message.name !== "") {
                     writer.uint32(10).string(message.name);
@@ -11587,7 +11423,7 @@ $root.google = (function() {
                     writer.uint32(26).string(message.outputType);
                 }
                 if (message.options !== undefined && message.options !== null) {
-                    types[3].encode(message.options, writer.uint32(34).fork()).ldelim();
+                    $types[3].encode(message.options, writer.uint32(34).fork()).ldelim();
                 }
                 if (message.clientStreaming !== undefined && message.clientStreaming !== false) {
                     writer.uint32(40).bool(message.clientStreaming);
@@ -11596,7 +11432,7 @@ $root.google = (function() {
                     writer.uint32(48).bool(message.serverStreaming);
                 }
                 return writer;
-            };})($protobuf.Writer, $types);
+            };
 
             /**
              * Encodes the specified MethodDescriptorProto message, length delimited.
@@ -11610,14 +11446,13 @@ $root.google = (function() {
 
             /**
              * Decodes a MethodDescriptorProto message from the specified reader or buffer.
-             * @function
              * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.MethodDescriptorProto} MethodDescriptorProto
              */
-            MethodDescriptorProto.decode = (function(Reader, types) { return function decode(reader, len) {
-                if (!(reader instanceof Reader)) {
-                    reader = Reader.create(reader);
+            MethodDescriptorProto.decode = function decode(reader, len) {
+                if (!(reader instanceof $Reader)) {
+                    reader = $Reader.create(reader);
                 }
                 var end = len === undefined ? reader.len : reader.pos + len, message = new $root.google.protobuf.MethodDescriptorProto();
                 while (reader.pos < end) {
@@ -11636,7 +11471,7 @@ $root.google = (function() {
                         break;
 
                     case 4:
-                        message.options = types[3].decode(reader, reader.uint32());
+                        message.options = $types[3].decode(reader, reader.uint32());
                         break;
 
                     case 5:
@@ -11653,7 +11488,7 @@ $root.google = (function() {
                     }
                 }
                 return message;
-            };})($protobuf.Reader, $types);
+            };
 
             /**
              * Decodes a MethodDescriptorProto message from the specified reader or buffer, length delimited.
@@ -11661,34 +11496,33 @@ $root.google = (function() {
              * @returns {google.protobuf.MethodDescriptorProto} MethodDescriptorProto
              */
             MethodDescriptorProto.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-                readerOrBuffer = readerOrBuffer instanceof $protobuf.Reader ? readerOrBuffer : $protobuf.Reader(readerOrBuffer);
+                readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
                 return this.decode(readerOrBuffer, readerOrBuffer.uint32());
             };
 
             /**
              * Verifies a MethodDescriptorProto message.
-             * @function
              * @param {google.protobuf.MethodDescriptorProto|Object} message MethodDescriptorProto message or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            MethodDescriptorProto.verify = (function(util, types) { return function verify(message) {
+            MethodDescriptorProto.verify = function verify(message) {
                 if (message.name !== undefined) {
-                    if (!util.isString(message.name)) {
+                    if (!$util.isString(message.name)) {
                         return "name: string expected";
                     }
                 }
                 if (message.inputType !== undefined) {
-                    if (!util.isString(message.inputType)) {
+                    if (!$util.isString(message.inputType)) {
                         return "inputType: string expected";
                     }
                 }
                 if (message.outputType !== undefined) {
-                    if (!util.isString(message.outputType)) {
+                    if (!$util.isString(message.outputType)) {
                         return "outputType: string expected";
                     }
                 }
                 if (message.options !== undefined && message.options !== null) {
-                    var err = types[3].verify(message.options);
+                    var err = $types[3].verify(message.options);
                     if (err) {
                         return "options." + err;
                     }
@@ -11704,14 +11538,14 @@ $root.google = (function() {
                     }
                 }
                 return null;
-            };})($protobuf.util, $types);
+            };
 
             /**
              * Creates a MethodDescriptorProto message from a plain object. Also converts values to their respective internal types.
              * @param {Object.<string,*>} object Plain object
              * @returns {google.protobuf.MethodDescriptorProto} MethodDescriptorProto
              */
-            MethodDescriptorProto.fromObject = (function(types) { return function fromObject(object) {
+            MethodDescriptorProto.fromObject = function fromObject(object) {
                 var message = new $root.google.protobuf.MethodDescriptorProto();
                 if (object.name !== undefined && object.name !== null) {
                     message.name = String(object.name);
@@ -11723,7 +11557,7 @@ $root.google = (function() {
                     message.outputType = String(object.outputType);
                 }
                 if (object.options !== undefined && object.options !== null) {
-                    message.options = types[3].fromObject(object.options);
+                    message.options = $types[3].fromObject(object.options);
                 }
                 if (object.clientStreaming !== undefined && object.clientStreaming !== null) {
                     message.clientStreaming = Boolean(object.clientStreaming);
@@ -11732,12 +11566,11 @@ $root.google = (function() {
                     message.serverStreaming = Boolean(object.serverStreaming);
                 }
                 return message;
-            };})($types);
+            };
 
             /**
              * Creates a MethodDescriptorProto message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link google.protobuf.MethodDescriptorProto.fromObject}.
-             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {google.protobuf.MethodDescriptorProto} MethodDescriptorProto
              */
@@ -11749,7 +11582,7 @@ $root.google = (function() {
              * @param {$protobuf.ConversionOptions} [options] Conversion options
              * @returns {Object.<string,*>} Plain object
              */
-            MethodDescriptorProto.toObject = (function(types) { return function toObject(message, options) {
+            MethodDescriptorProto.toObject = function toObject(message, options) {
                 if (!options) {
                     options = {};
                 }
@@ -11784,7 +11617,7 @@ $root.google = (function() {
 
                     case "options":
                         if (message.options !== undefined && message.options !== null) {
-                            object.options = types[3].toObject(message.options, options);
+                            object.options = $types[3].toObject(message.options, options);
                         }
                         break;
 
@@ -11802,7 +11635,7 @@ $root.google = (function() {
                     }
                 }
                 return object;
-            };})($types);
+            };
 
             /**
              * Creates a plain object from this MethodDescriptorProto message. Also converts values to other types if specified.
@@ -11928,7 +11761,7 @@ $root.google = (function() {
              * FileOptions uninterpretedOption.
              * @type {Array.<google.protobuf.UninterpretedOption>}
              */
-            FileOptions.prototype.uninterpretedOption = $protobuf.util.emptyArray;
+            FileOptions.prototype.uninterpretedOption = $util.emptyArray;
 
             // Lazily resolved referenced types
             var $types = {5:"google.protobuf.FileOptions.OptimizeMode",14:"google.protobuf.UninterpretedOption"}; $lazyTypes.push($types);
@@ -11944,14 +11777,13 @@ $root.google = (function() {
 
             /**
              * Encodes the specified FileOptions message.
-             * @function
              * @param {google.protobuf.FileOptions|Object} message FileOptions message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            FileOptions.encode = (function(Writer, types) { return function encode(message, writer) {
+            FileOptions.encode = function encode(message, writer) {
                 if (!writer) {
-                    writer = Writer.create();
+                    writer = $Writer.create();
                 }
                 if (message.javaPackage !== undefined && message.javaPackage !== "") {
                     writer.uint32(10).string(message.javaPackage);
@@ -11997,11 +11829,11 @@ $root.google = (function() {
                 }
                 if (message.uninterpretedOption) {
                     for (var i = 0; i < message.uninterpretedOption.length; ++i) {
-                        types[14].encode(message.uninterpretedOption[i], writer.uint32(7994).fork()).ldelim();
+                        $types[14].encode(message.uninterpretedOption[i], writer.uint32(7994).fork()).ldelim();
                     }
                 }
                 return writer;
-            };})($protobuf.Writer, $types);
+            };
 
             /**
              * Encodes the specified FileOptions message, length delimited.
@@ -12015,14 +11847,13 @@ $root.google = (function() {
 
             /**
              * Decodes a FileOptions message from the specified reader or buffer.
-             * @function
              * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.FileOptions} FileOptions
              */
-            FileOptions.decode = (function(Reader, types) { return function decode(reader, len) {
-                if (!(reader instanceof Reader)) {
-                    reader = Reader.create(reader);
+            FileOptions.decode = function decode(reader, len) {
+                if (!(reader instanceof $Reader)) {
+                    reader = $Reader.create(reader);
                 }
                 var end = len === undefined ? reader.len : reader.pos + len, message = new $root.google.protobuf.FileOptions();
                 while (reader.pos < end) {
@@ -12088,7 +11919,7 @@ $root.google = (function() {
                         if (!(message.uninterpretedOption && message.uninterpretedOption.length)) {
                             message.uninterpretedOption = [];
                         }
-                        message.uninterpretedOption.push(types[14].decode(reader, reader.uint32()));
+                        message.uninterpretedOption.push($types[14].decode(reader, reader.uint32()));
                         break;
 
                     default:
@@ -12097,7 +11928,7 @@ $root.google = (function() {
                     }
                 }
                 return message;
-            };})($protobuf.Reader, $types);
+            };
 
             /**
              * Decodes a FileOptions message from the specified reader or buffer, length delimited.
@@ -12105,24 +11936,23 @@ $root.google = (function() {
              * @returns {google.protobuf.FileOptions} FileOptions
              */
             FileOptions.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-                readerOrBuffer = readerOrBuffer instanceof $protobuf.Reader ? readerOrBuffer : $protobuf.Reader(readerOrBuffer);
+                readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
                 return this.decode(readerOrBuffer, readerOrBuffer.uint32());
             };
 
             /**
              * Verifies a FileOptions message.
-             * @function
              * @param {google.protobuf.FileOptions|Object} message FileOptions message or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            FileOptions.verify = (function(util, types) { return function verify(message) {
+            FileOptions.verify = function verify(message) {
                 if (message.javaPackage !== undefined) {
-                    if (!util.isString(message.javaPackage)) {
+                    if (!$util.isString(message.javaPackage)) {
                         return "javaPackage: string expected";
                     }
                 }
                 if (message.javaOuterClassname !== undefined) {
-                    if (!util.isString(message.javaOuterClassname)) {
+                    if (!$util.isString(message.javaOuterClassname)) {
                         return "javaOuterClassname: string expected";
                     }
                 }
@@ -12153,7 +11983,7 @@ $root.google = (function() {
                     }
                 }
                 if (message.goPackage !== undefined) {
-                    if (!util.isString(message.goPackage)) {
+                    if (!$util.isString(message.goPackage)) {
                         return "goPackage: string expected";
                     }
                 }
@@ -12183,12 +12013,12 @@ $root.google = (function() {
                     }
                 }
                 if (message.objcClassPrefix !== undefined) {
-                    if (!util.isString(message.objcClassPrefix)) {
+                    if (!$util.isString(message.objcClassPrefix)) {
                         return "objcClassPrefix: string expected";
                     }
                 }
                 if (message.csharpNamespace !== undefined) {
-                    if (!util.isString(message.csharpNamespace)) {
+                    if (!$util.isString(message.csharpNamespace)) {
                         return "csharpNamespace: string expected";
                     }
                 }
@@ -12197,21 +12027,21 @@ $root.google = (function() {
                         return "uninterpretedOption: array expected";
                     }
                     for (var i = 0; i < message.uninterpretedOption.length; ++i) {
-                        var err = types[14].verify(message.uninterpretedOption[i]);
+                        var err = $types[14].verify(message.uninterpretedOption[i]);
                         if (err) {
                             return "uninterpretedOption." + err;
                         }
                     }
                 }
                 return null;
-            };})($protobuf.util, $types);
+            };
 
             /**
              * Creates a FileOptions message from a plain object. Also converts values to their respective internal types.
              * @param {Object.<string,*>} object Plain object
              * @returns {google.protobuf.FileOptions} FileOptions
              */
-            FileOptions.fromObject = (function(types) { return function fromObject(object) {
+            FileOptions.fromObject = function fromObject(object) {
                 var message = new $root.google.protobuf.FileOptions();
                 if (object.javaPackage !== undefined && object.javaPackage !== null) {
                     message.javaPackage = String(object.javaPackage);
@@ -12271,16 +12101,15 @@ $root.google = (function() {
                 if (object.uninterpretedOption) {
                     message.uninterpretedOption = [];
                     for (var i = 0; i < object.uninterpretedOption.length; ++i) {
-                        message.uninterpretedOption[i] = types[14].fromObject(object.uninterpretedOption[i]);
+                        message.uninterpretedOption[i] = $types[14].fromObject(object.uninterpretedOption[i]);
                     }
                 }
                 return message;
-            };})($types);
+            };
 
             /**
              * Creates a FileOptions message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link google.protobuf.FileOptions.fromObject}.
-             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {google.protobuf.FileOptions} FileOptions
              */
@@ -12292,7 +12121,7 @@ $root.google = (function() {
              * @param {$protobuf.ConversionOptions} [options] Conversion options
              * @returns {Object.<string,*>} Plain object
              */
-            FileOptions.toObject = (function(types) { return function toObject(message, options) {
+            FileOptions.toObject = function toObject(message, options) {
                 if (!options) {
                     options = {};
                 }
@@ -12350,7 +12179,7 @@ $root.google = (function() {
 
                     case "optimizeFor":
                         if (message.optimizeFor !== undefined && message.optimizeFor !== null) {
-                            object.optimizeFor = options.enums === String ? types[5][message.optimizeFor] : message.optimizeFor;
+                            object.optimizeFor = options.enums === String ? $types[5][message.optimizeFor] : message.optimizeFor;
                         }
                         break;
 
@@ -12406,14 +12235,14 @@ $root.google = (function() {
                         if (message.uninterpretedOption.length) {
                             object.uninterpretedOption = [];
                             for (var j = 0; j < message.uninterpretedOption.length; ++j) {
-                                object.uninterpretedOption[j] = types[14].toObject(message.uninterpretedOption[j], options);
+                                object.uninterpretedOption[j] = $types[14].toObject(message.uninterpretedOption[j], options);
                             }
                         }
                         break;
                     }
                 }
                 return object;
-            };})($types);
+            };
 
             /**
              * Creates a plain object from this FileOptions message. Also converts values to other types if specified.
@@ -12497,7 +12326,7 @@ $root.google = (function() {
              * MessageOptions uninterpretedOption.
              * @type {Array.<google.protobuf.UninterpretedOption>}
              */
-            MessageOptions.prototype.uninterpretedOption = $protobuf.util.emptyArray;
+            MessageOptions.prototype.uninterpretedOption = $util.emptyArray;
 
             // Lazily resolved referenced types
             var $types = {4:"google.protobuf.UninterpretedOption"}; $lazyTypes.push($types);
@@ -12513,14 +12342,13 @@ $root.google = (function() {
 
             /**
              * Encodes the specified MessageOptions message.
-             * @function
              * @param {google.protobuf.MessageOptions|Object} message MessageOptions message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            MessageOptions.encode = (function(Writer, types) { return function encode(message, writer) {
+            MessageOptions.encode = function encode(message, writer) {
                 if (!writer) {
-                    writer = Writer.create();
+                    writer = $Writer.create();
                 }
                 if (message.messageSetWireFormat !== undefined && message.messageSetWireFormat !== false) {
                     writer.uint32(8).bool(message.messageSetWireFormat);
@@ -12536,11 +12364,11 @@ $root.google = (function() {
                 }
                 if (message.uninterpretedOption) {
                     for (var i = 0; i < message.uninterpretedOption.length; ++i) {
-                        types[4].encode(message.uninterpretedOption[i], writer.uint32(7994).fork()).ldelim();
+                        $types[4].encode(message.uninterpretedOption[i], writer.uint32(7994).fork()).ldelim();
                     }
                 }
                 return writer;
-            };})($protobuf.Writer, $types);
+            };
 
             /**
              * Encodes the specified MessageOptions message, length delimited.
@@ -12554,14 +12382,13 @@ $root.google = (function() {
 
             /**
              * Decodes a MessageOptions message from the specified reader or buffer.
-             * @function
              * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.MessageOptions} MessageOptions
              */
-            MessageOptions.decode = (function(Reader, types) { return function decode(reader, len) {
-                if (!(reader instanceof Reader)) {
-                    reader = Reader.create(reader);
+            MessageOptions.decode = function decode(reader, len) {
+                if (!(reader instanceof $Reader)) {
+                    reader = $Reader.create(reader);
                 }
                 var end = len === undefined ? reader.len : reader.pos + len, message = new $root.google.protobuf.MessageOptions();
                 while (reader.pos < end) {
@@ -12587,7 +12414,7 @@ $root.google = (function() {
                         if (!(message.uninterpretedOption && message.uninterpretedOption.length)) {
                             message.uninterpretedOption = [];
                         }
-                        message.uninterpretedOption.push(types[4].decode(reader, reader.uint32()));
+                        message.uninterpretedOption.push($types[4].decode(reader, reader.uint32()));
                         break;
 
                     default:
@@ -12596,7 +12423,7 @@ $root.google = (function() {
                     }
                 }
                 return message;
-            };})($protobuf.Reader, $types);
+            };
 
             /**
              * Decodes a MessageOptions message from the specified reader or buffer, length delimited.
@@ -12604,17 +12431,16 @@ $root.google = (function() {
              * @returns {google.protobuf.MessageOptions} MessageOptions
              */
             MessageOptions.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-                readerOrBuffer = readerOrBuffer instanceof $protobuf.Reader ? readerOrBuffer : $protobuf.Reader(readerOrBuffer);
+                readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
                 return this.decode(readerOrBuffer, readerOrBuffer.uint32());
             };
 
             /**
              * Verifies a MessageOptions message.
-             * @function
              * @param {google.protobuf.MessageOptions|Object} message MessageOptions message or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            MessageOptions.verify = (function(types) { return function verify(message) {
+            MessageOptions.verify = function verify(message) {
                 if (message.messageSetWireFormat !== undefined) {
                     if (typeof message.messageSetWireFormat !== "boolean") {
                         return "messageSetWireFormat: boolean expected";
@@ -12640,21 +12466,21 @@ $root.google = (function() {
                         return "uninterpretedOption: array expected";
                     }
                     for (var i = 0; i < message.uninterpretedOption.length; ++i) {
-                        var err = types[4].verify(message.uninterpretedOption[i]);
+                        var err = $types[4].verify(message.uninterpretedOption[i]);
                         if (err) {
                             return "uninterpretedOption." + err;
                         }
                     }
                 }
                 return null;
-            };})($types);
+            };
 
             /**
              * Creates a MessageOptions message from a plain object. Also converts values to their respective internal types.
              * @param {Object.<string,*>} object Plain object
              * @returns {google.protobuf.MessageOptions} MessageOptions
              */
-            MessageOptions.fromObject = (function(types) { return function fromObject(object) {
+            MessageOptions.fromObject = function fromObject(object) {
                 var message = new $root.google.protobuf.MessageOptions();
                 if (object.messageSetWireFormat !== undefined && object.messageSetWireFormat !== null) {
                     message.messageSetWireFormat = Boolean(object.messageSetWireFormat);
@@ -12671,16 +12497,15 @@ $root.google = (function() {
                 if (object.uninterpretedOption) {
                     message.uninterpretedOption = [];
                     for (var i = 0; i < object.uninterpretedOption.length; ++i) {
-                        message.uninterpretedOption[i] = types[4].fromObject(object.uninterpretedOption[i]);
+                        message.uninterpretedOption[i] = $types[4].fromObject(object.uninterpretedOption[i]);
                     }
                 }
                 return message;
-            };})($types);
+            };
 
             /**
              * Creates a MessageOptions message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link google.protobuf.MessageOptions.fromObject}.
-             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {google.protobuf.MessageOptions} MessageOptions
              */
@@ -12692,7 +12517,7 @@ $root.google = (function() {
              * @param {$protobuf.ConversionOptions} [options] Conversion options
              * @returns {Object.<string,*>} Plain object
              */
-            MessageOptions.toObject = (function(types) { return function toObject(message, options) {
+            MessageOptions.toObject = function toObject(message, options) {
                 if (!options) {
                     options = {};
                 }
@@ -12736,14 +12561,14 @@ $root.google = (function() {
                         if (message.uninterpretedOption.length) {
                             object.uninterpretedOption = [];
                             for (var j = 0; j < message.uninterpretedOption.length; ++j) {
-                                object.uninterpretedOption[j] = types[4].toObject(message.uninterpretedOption[j], options);
+                                object.uninterpretedOption[j] = $types[4].toObject(message.uninterpretedOption[j], options);
                             }
                         }
                         break;
                     }
                 }
                 return object;
-            };})($types);
+            };
 
             /**
              * Creates a plain object from this MessageOptions message. Also converts values to other types if specified.
@@ -12821,7 +12646,7 @@ $root.google = (function() {
              * FieldOptions uninterpretedOption.
              * @type {Array.<google.protobuf.UninterpretedOption>}
              */
-            FieldOptions.prototype.uninterpretedOption = $protobuf.util.emptyArray;
+            FieldOptions.prototype.uninterpretedOption = $util.emptyArray;
 
             // Lazily resolved referenced types
             var $types = {0:"google.protobuf.FieldOptions.CType",2:"google.protobuf.FieldOptions.JSType",6:"google.protobuf.UninterpretedOption"}; $lazyTypes.push($types);
@@ -12837,14 +12662,13 @@ $root.google = (function() {
 
             /**
              * Encodes the specified FieldOptions message.
-             * @function
              * @param {google.protobuf.FieldOptions|Object} message FieldOptions message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            FieldOptions.encode = (function(Writer, types) { return function encode(message, writer) {
+            FieldOptions.encode = function encode(message, writer) {
                 if (!writer) {
-                    writer = Writer.create();
+                    writer = $Writer.create();
                 }
                 if (message.ctype !== undefined && message.ctype !== undefined) {
                     writer.uint32(8).uint32(message.ctype);
@@ -12866,11 +12690,11 @@ $root.google = (function() {
                 }
                 if (message.uninterpretedOption) {
                     for (var i = 0; i < message.uninterpretedOption.length; ++i) {
-                        types[6].encode(message.uninterpretedOption[i], writer.uint32(7994).fork()).ldelim();
+                        $types[6].encode(message.uninterpretedOption[i], writer.uint32(7994).fork()).ldelim();
                     }
                 }
                 return writer;
-            };})($protobuf.Writer, $types);
+            };
 
             /**
              * Encodes the specified FieldOptions message, length delimited.
@@ -12884,14 +12708,13 @@ $root.google = (function() {
 
             /**
              * Decodes a FieldOptions message from the specified reader or buffer.
-             * @function
              * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.FieldOptions} FieldOptions
              */
-            FieldOptions.decode = (function(Reader, types) { return function decode(reader, len) {
-                if (!(reader instanceof Reader)) {
-                    reader = Reader.create(reader);
+            FieldOptions.decode = function decode(reader, len) {
+                if (!(reader instanceof $Reader)) {
+                    reader = $Reader.create(reader);
                 }
                 var end = len === undefined ? reader.len : reader.pos + len, message = new $root.google.protobuf.FieldOptions();
                 while (reader.pos < end) {
@@ -12925,7 +12748,7 @@ $root.google = (function() {
                         if (!(message.uninterpretedOption && message.uninterpretedOption.length)) {
                             message.uninterpretedOption = [];
                         }
-                        message.uninterpretedOption.push(types[6].decode(reader, reader.uint32()));
+                        message.uninterpretedOption.push($types[6].decode(reader, reader.uint32()));
                         break;
 
                     default:
@@ -12934,7 +12757,7 @@ $root.google = (function() {
                     }
                 }
                 return message;
-            };})($protobuf.Reader, $types);
+            };
 
             /**
              * Decodes a FieldOptions message from the specified reader or buffer, length delimited.
@@ -12942,17 +12765,16 @@ $root.google = (function() {
              * @returns {google.protobuf.FieldOptions} FieldOptions
              */
             FieldOptions.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-                readerOrBuffer = readerOrBuffer instanceof $protobuf.Reader ? readerOrBuffer : $protobuf.Reader(readerOrBuffer);
+                readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
                 return this.decode(readerOrBuffer, readerOrBuffer.uint32());
             };
 
             /**
              * Verifies a FieldOptions message.
-             * @function
              * @param {google.protobuf.FieldOptions|Object} message FieldOptions message or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            FieldOptions.verify = (function(types) { return function verify(message) {
+            FieldOptions.verify = function verify(message) {
                 if (message.ctype !== undefined) {
                     switch (message.ctype) {
                     default:
@@ -13000,21 +12822,21 @@ $root.google = (function() {
                         return "uninterpretedOption: array expected";
                     }
                     for (var i = 0; i < message.uninterpretedOption.length; ++i) {
-                        var err = types[6].verify(message.uninterpretedOption[i]);
+                        var err = $types[6].verify(message.uninterpretedOption[i]);
                         if (err) {
                             return "uninterpretedOption." + err;
                         }
                     }
                 }
                 return null;
-            };})($types);
+            };
 
             /**
              * Creates a FieldOptions message from a plain object. Also converts values to their respective internal types.
              * @param {Object.<string,*>} object Plain object
              * @returns {google.protobuf.FieldOptions} FieldOptions
              */
-            FieldOptions.fromObject = (function(types) { return function fromObject(object) {
+            FieldOptions.fromObject = function fromObject(object) {
                 var message = new $root.google.protobuf.FieldOptions();
                 switch (object.ctype) {
                 case "STRING":
@@ -13063,16 +12885,15 @@ $root.google = (function() {
                 if (object.uninterpretedOption) {
                     message.uninterpretedOption = [];
                     for (var i = 0; i < object.uninterpretedOption.length; ++i) {
-                        message.uninterpretedOption[i] = types[6].fromObject(object.uninterpretedOption[i]);
+                        message.uninterpretedOption[i] = $types[6].fromObject(object.uninterpretedOption[i]);
                     }
                 }
                 return message;
-            };})($types);
+            };
 
             /**
              * Creates a FieldOptions message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link google.protobuf.FieldOptions.fromObject}.
-             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {google.protobuf.FieldOptions} FieldOptions
              */
@@ -13084,7 +12905,7 @@ $root.google = (function() {
              * @param {$protobuf.ConversionOptions} [options] Conversion options
              * @returns {Object.<string,*>} Plain object
              */
-            FieldOptions.toObject = (function(types) { return function toObject(message, options) {
+            FieldOptions.toObject = function toObject(message, options) {
                 if (!options) {
                     options = {};
                 }
@@ -13104,7 +12925,7 @@ $root.google = (function() {
                     switch (keys[i]) {
                     case "ctype":
                         if (message.ctype !== undefined && message.ctype !== null) {
-                            object.ctype = options.enums === String ? types[0][message.ctype] : message.ctype;
+                            object.ctype = options.enums === String ? $types[0][message.ctype] : message.ctype;
                         }
                         break;
 
@@ -13116,7 +12937,7 @@ $root.google = (function() {
 
                     case "jstype":
                         if (message.jstype !== undefined && message.jstype !== null) {
-                            object.jstype = options.enums === String ? types[2][message.jstype] : message.jstype;
+                            object.jstype = options.enums === String ? $types[2][message.jstype] : message.jstype;
                         }
                         break;
 
@@ -13142,14 +12963,14 @@ $root.google = (function() {
                         if (message.uninterpretedOption.length) {
                             object.uninterpretedOption = [];
                             for (var j = 0; j < message.uninterpretedOption.length; ++j) {
-                                object.uninterpretedOption[j] = types[6].toObject(message.uninterpretedOption[j], options);
+                                object.uninterpretedOption[j] = $types[6].toObject(message.uninterpretedOption[j], options);
                             }
                         }
                         break;
                     }
                 }
                 return object;
-            };})($types);
+            };
 
             /**
              * Creates a plain object from this FieldOptions message. Also converts values to other types if specified.
@@ -13227,7 +13048,7 @@ $root.google = (function() {
              * OneofOptions uninterpretedOption.
              * @type {Array.<google.protobuf.UninterpretedOption>}
              */
-            OneofOptions.prototype.uninterpretedOption = $protobuf.util.emptyArray;
+            OneofOptions.prototype.uninterpretedOption = $util.emptyArray;
 
             // Lazily resolved referenced types
             var $types = {0:"google.protobuf.UninterpretedOption"}; $lazyTypes.push($types);
@@ -13243,22 +13064,21 @@ $root.google = (function() {
 
             /**
              * Encodes the specified OneofOptions message.
-             * @function
              * @param {google.protobuf.OneofOptions|Object} message OneofOptions message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            OneofOptions.encode = (function(Writer, types) { return function encode(message, writer) {
+            OneofOptions.encode = function encode(message, writer) {
                 if (!writer) {
-                    writer = Writer.create();
+                    writer = $Writer.create();
                 }
                 if (message.uninterpretedOption) {
                     for (var i = 0; i < message.uninterpretedOption.length; ++i) {
-                        types[0].encode(message.uninterpretedOption[i], writer.uint32(7994).fork()).ldelim();
+                        $types[0].encode(message.uninterpretedOption[i], writer.uint32(7994).fork()).ldelim();
                     }
                 }
                 return writer;
-            };})($protobuf.Writer, $types);
+            };
 
             /**
              * Encodes the specified OneofOptions message, length delimited.
@@ -13272,14 +13092,13 @@ $root.google = (function() {
 
             /**
              * Decodes an OneofOptions message from the specified reader or buffer.
-             * @function
              * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.OneofOptions} OneofOptions
              */
-            OneofOptions.decode = (function(Reader, types) { return function decode(reader, len) {
-                if (!(reader instanceof Reader)) {
-                    reader = Reader.create(reader);
+            OneofOptions.decode = function decode(reader, len) {
+                if (!(reader instanceof $Reader)) {
+                    reader = $Reader.create(reader);
                 }
                 var end = len === undefined ? reader.len : reader.pos + len, message = new $root.google.protobuf.OneofOptions();
                 while (reader.pos < end) {
@@ -13289,7 +13108,7 @@ $root.google = (function() {
                         if (!(message.uninterpretedOption && message.uninterpretedOption.length)) {
                             message.uninterpretedOption = [];
                         }
-                        message.uninterpretedOption.push(types[0].decode(reader, reader.uint32()));
+                        message.uninterpretedOption.push($types[0].decode(reader, reader.uint32()));
                         break;
 
                     default:
@@ -13298,7 +13117,7 @@ $root.google = (function() {
                     }
                 }
                 return message;
-            };})($protobuf.Reader, $types);
+            };
 
             /**
              * Decodes an OneofOptions message from the specified reader or buffer, length delimited.
@@ -13306,51 +13125,49 @@ $root.google = (function() {
              * @returns {google.protobuf.OneofOptions} OneofOptions
              */
             OneofOptions.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-                readerOrBuffer = readerOrBuffer instanceof $protobuf.Reader ? readerOrBuffer : $protobuf.Reader(readerOrBuffer);
+                readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
                 return this.decode(readerOrBuffer, readerOrBuffer.uint32());
             };
 
             /**
              * Verifies an OneofOptions message.
-             * @function
              * @param {google.protobuf.OneofOptions|Object} message OneofOptions message or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            OneofOptions.verify = (function(types) { return function verify(message) {
+            OneofOptions.verify = function verify(message) {
                 if (message.uninterpretedOption !== undefined) {
                     if (!Array.isArray(message.uninterpretedOption)) {
                         return "uninterpretedOption: array expected";
                     }
                     for (var i = 0; i < message.uninterpretedOption.length; ++i) {
-                        var err = types[0].verify(message.uninterpretedOption[i]);
+                        var err = $types[0].verify(message.uninterpretedOption[i]);
                         if (err) {
                             return "uninterpretedOption." + err;
                         }
                     }
                 }
                 return null;
-            };})($types);
+            };
 
             /**
              * Creates an OneofOptions message from a plain object. Also converts values to their respective internal types.
              * @param {Object.<string,*>} object Plain object
              * @returns {google.protobuf.OneofOptions} OneofOptions
              */
-            OneofOptions.fromObject = (function(types) { return function fromObject(object) {
+            OneofOptions.fromObject = function fromObject(object) {
                 var message = new $root.google.protobuf.OneofOptions();
                 if (object.uninterpretedOption) {
                     message.uninterpretedOption = [];
                     for (var i = 0; i < object.uninterpretedOption.length; ++i) {
-                        message.uninterpretedOption[i] = types[0].fromObject(object.uninterpretedOption[i]);
+                        message.uninterpretedOption[i] = $types[0].fromObject(object.uninterpretedOption[i]);
                     }
                 }
                 return message;
-            };})($types);
+            };
 
             /**
              * Creates an OneofOptions message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link google.protobuf.OneofOptions.fromObject}.
-             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {google.protobuf.OneofOptions} OneofOptions
              */
@@ -13362,7 +13179,7 @@ $root.google = (function() {
              * @param {$protobuf.ConversionOptions} [options] Conversion options
              * @returns {Object.<string,*>} Plain object
              */
-            OneofOptions.toObject = (function(types) { return function toObject(message, options) {
+            OneofOptions.toObject = function toObject(message, options) {
                 if (!options) {
                     options = {};
                 }
@@ -13376,14 +13193,14 @@ $root.google = (function() {
                         if (message.uninterpretedOption.length) {
                             object.uninterpretedOption = [];
                             for (var j = 0; j < message.uninterpretedOption.length; ++j) {
-                                object.uninterpretedOption[j] = types[0].toObject(message.uninterpretedOption[j], options);
+                                object.uninterpretedOption[j] = $types[0].toObject(message.uninterpretedOption[j], options);
                             }
                         }
                         break;
                     }
                 }
                 return object;
-            };})($types);
+            };
 
             /**
              * Creates a plain object from this OneofOptions message. Also converts values to other types if specified.
@@ -13437,7 +13254,7 @@ $root.google = (function() {
              * EnumOptions uninterpretedOption.
              * @type {Array.<google.protobuf.UninterpretedOption>}
              */
-            EnumOptions.prototype.uninterpretedOption = $protobuf.util.emptyArray;
+            EnumOptions.prototype.uninterpretedOption = $util.emptyArray;
 
             /**
              * EnumOptions .jspb.test.IsExtension.simpleOption.
@@ -13460,14 +13277,13 @@ $root.google = (function() {
 
             /**
              * Encodes the specified EnumOptions message.
-             * @function
              * @param {google.protobuf.EnumOptions|Object} message EnumOptions message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            EnumOptions.encode = (function(Writer, types) { return function encode(message, writer) {
+            EnumOptions.encode = function encode(message, writer) {
                 if (!writer) {
-                    writer = Writer.create();
+                    writer = $Writer.create();
                 }
                 if (message.allowAlias !== undefined && message.allowAlias !== false) {
                     writer.uint32(16).bool(message.allowAlias);
@@ -13477,14 +13293,14 @@ $root.google = (function() {
                 }
                 if (message.uninterpretedOption) {
                     for (var i = 0; i < message.uninterpretedOption.length; ++i) {
-                        types[2].encode(message.uninterpretedOption[i], writer.uint32(7994).fork()).ldelim();
+                        $types[2].encode(message.uninterpretedOption[i], writer.uint32(7994).fork()).ldelim();
                     }
                 }
                 if (message[".jspb.test.IsExtension.simpleOption"] !== undefined && message[".jspb.test.IsExtension.simpleOption"] !== "") {
                     writer.uint32(336904306).string(message[".jspb.test.IsExtension.simpleOption"]);
                 }
                 return writer;
-            };})($protobuf.Writer, $types);
+            };
 
             /**
              * Encodes the specified EnumOptions message, length delimited.
@@ -13498,14 +13314,13 @@ $root.google = (function() {
 
             /**
              * Decodes an EnumOptions message from the specified reader or buffer.
-             * @function
              * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.EnumOptions} EnumOptions
              */
-            EnumOptions.decode = (function(Reader, types) { return function decode(reader, len) {
-                if (!(reader instanceof Reader)) {
-                    reader = Reader.create(reader);
+            EnumOptions.decode = function decode(reader, len) {
+                if (!(reader instanceof $Reader)) {
+                    reader = $Reader.create(reader);
                 }
                 var end = len === undefined ? reader.len : reader.pos + len, message = new $root.google.protobuf.EnumOptions();
                 while (reader.pos < end) {
@@ -13523,7 +13338,7 @@ $root.google = (function() {
                         if (!(message.uninterpretedOption && message.uninterpretedOption.length)) {
                             message.uninterpretedOption = [];
                         }
-                        message.uninterpretedOption.push(types[2].decode(reader, reader.uint32()));
+                        message.uninterpretedOption.push($types[2].decode(reader, reader.uint32()));
                         break;
 
                     case 42113038:
@@ -13536,7 +13351,7 @@ $root.google = (function() {
                     }
                 }
                 return message;
-            };})($protobuf.Reader, $types);
+            };
 
             /**
              * Decodes an EnumOptions message from the specified reader or buffer, length delimited.
@@ -13544,17 +13359,16 @@ $root.google = (function() {
              * @returns {google.protobuf.EnumOptions} EnumOptions
              */
             EnumOptions.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-                readerOrBuffer = readerOrBuffer instanceof $protobuf.Reader ? readerOrBuffer : $protobuf.Reader(readerOrBuffer);
+                readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
                 return this.decode(readerOrBuffer, readerOrBuffer.uint32());
             };
 
             /**
              * Verifies an EnumOptions message.
-             * @function
              * @param {google.protobuf.EnumOptions|Object} message EnumOptions message or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            EnumOptions.verify = (function(util, types) { return function verify(message) {
+            EnumOptions.verify = function verify(message) {
                 if (message.allowAlias !== undefined) {
                     if (typeof message.allowAlias !== "boolean") {
                         return "allowAlias: boolean expected";
@@ -13570,26 +13384,26 @@ $root.google = (function() {
                         return "uninterpretedOption: array expected";
                     }
                     for (var i = 0; i < message.uninterpretedOption.length; ++i) {
-                        var err = types[2].verify(message.uninterpretedOption[i]);
+                        var err = $types[2].verify(message.uninterpretedOption[i]);
                         if (err) {
                             return "uninterpretedOption." + err;
                         }
                     }
                 }
                 if (message[".jspb.test.IsExtension.simpleOption"] !== undefined) {
-                    if (!util.isString(message[".jspb.test.IsExtension.simpleOption"])) {
+                    if (!$util.isString(message[".jspb.test.IsExtension.simpleOption"])) {
                         return ".jspb.test.IsExtension.simpleOption: string expected";
                     }
                 }
                 return null;
-            };})($protobuf.util, $types);
+            };
 
             /**
              * Creates an EnumOptions message from a plain object. Also converts values to their respective internal types.
              * @param {Object.<string,*>} object Plain object
              * @returns {google.protobuf.EnumOptions} EnumOptions
              */
-            EnumOptions.fromObject = (function(types) { return function fromObject(object) {
+            EnumOptions.fromObject = function fromObject(object) {
                 var message = new $root.google.protobuf.EnumOptions();
                 if (object.allowAlias !== undefined && object.allowAlias !== null) {
                     message.allowAlias = Boolean(object.allowAlias);
@@ -13600,19 +13414,18 @@ $root.google = (function() {
                 if (object.uninterpretedOption) {
                     message.uninterpretedOption = [];
                     for (var i = 0; i < object.uninterpretedOption.length; ++i) {
-                        message.uninterpretedOption[i] = types[2].fromObject(object.uninterpretedOption[i]);
+                        message.uninterpretedOption[i] = $types[2].fromObject(object.uninterpretedOption[i]);
                     }
                 }
                 if (object[".jspb.test.IsExtension.simpleOption"] !== undefined && object[".jspb.test.IsExtension.simpleOption"] !== null) {
                     message[".jspb.test.IsExtension.simpleOption"] = String(object[".jspb.test.IsExtension.simpleOption"]);
                 }
                 return message;
-            };})($types);
+            };
 
             /**
              * Creates an EnumOptions message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link google.protobuf.EnumOptions.fromObject}.
-             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {google.protobuf.EnumOptions} EnumOptions
              */
@@ -13624,7 +13437,7 @@ $root.google = (function() {
              * @param {$protobuf.ConversionOptions} [options] Conversion options
              * @returns {Object.<string,*>} Plain object
              */
-            EnumOptions.toObject = (function(types) { return function toObject(message, options) {
+            EnumOptions.toObject = function toObject(message, options) {
                 if (!options) {
                     options = {};
                 }
@@ -13655,7 +13468,7 @@ $root.google = (function() {
                         if (message.uninterpretedOption.length) {
                             object.uninterpretedOption = [];
                             for (var j = 0; j < message.uninterpretedOption.length; ++j) {
-                                object.uninterpretedOption[j] = types[2].toObject(message.uninterpretedOption[j], options);
+                                object.uninterpretedOption[j] = $types[2].toObject(message.uninterpretedOption[j], options);
                             }
                         }
                         break;
@@ -13668,7 +13481,7 @@ $root.google = (function() {
                     }
                 }
                 return object;
-            };})($types);
+            };
 
             /**
              * Creates a plain object from this EnumOptions message. Also converts values to other types if specified.
@@ -13716,7 +13529,7 @@ $root.google = (function() {
              * EnumValueOptions uninterpretedOption.
              * @type {Array.<google.protobuf.UninterpretedOption>}
              */
-            EnumValueOptions.prototype.uninterpretedOption = $protobuf.util.emptyArray;
+            EnumValueOptions.prototype.uninterpretedOption = $util.emptyArray;
 
             // Lazily resolved referenced types
             var $types = {1:"google.protobuf.UninterpretedOption"}; $lazyTypes.push($types);
@@ -13732,25 +13545,24 @@ $root.google = (function() {
 
             /**
              * Encodes the specified EnumValueOptions message.
-             * @function
              * @param {google.protobuf.EnumValueOptions|Object} message EnumValueOptions message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            EnumValueOptions.encode = (function(Writer, types) { return function encode(message, writer) {
+            EnumValueOptions.encode = function encode(message, writer) {
                 if (!writer) {
-                    writer = Writer.create();
+                    writer = $Writer.create();
                 }
                 if (message.deprecated !== undefined && message.deprecated !== false) {
                     writer.uint32(8).bool(message.deprecated);
                 }
                 if (message.uninterpretedOption) {
                     for (var i = 0; i < message.uninterpretedOption.length; ++i) {
-                        types[1].encode(message.uninterpretedOption[i], writer.uint32(7994).fork()).ldelim();
+                        $types[1].encode(message.uninterpretedOption[i], writer.uint32(7994).fork()).ldelim();
                     }
                 }
                 return writer;
-            };})($protobuf.Writer, $types);
+            };
 
             /**
              * Encodes the specified EnumValueOptions message, length delimited.
@@ -13764,14 +13576,13 @@ $root.google = (function() {
 
             /**
              * Decodes an EnumValueOptions message from the specified reader or buffer.
-             * @function
              * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.EnumValueOptions} EnumValueOptions
              */
-            EnumValueOptions.decode = (function(Reader, types) { return function decode(reader, len) {
-                if (!(reader instanceof Reader)) {
-                    reader = Reader.create(reader);
+            EnumValueOptions.decode = function decode(reader, len) {
+                if (!(reader instanceof $Reader)) {
+                    reader = $Reader.create(reader);
                 }
                 var end = len === undefined ? reader.len : reader.pos + len, message = new $root.google.protobuf.EnumValueOptions();
                 while (reader.pos < end) {
@@ -13785,7 +13596,7 @@ $root.google = (function() {
                         if (!(message.uninterpretedOption && message.uninterpretedOption.length)) {
                             message.uninterpretedOption = [];
                         }
-                        message.uninterpretedOption.push(types[1].decode(reader, reader.uint32()));
+                        message.uninterpretedOption.push($types[1].decode(reader, reader.uint32()));
                         break;
 
                     default:
@@ -13794,7 +13605,7 @@ $root.google = (function() {
                     }
                 }
                 return message;
-            };})($protobuf.Reader, $types);
+            };
 
             /**
              * Decodes an EnumValueOptions message from the specified reader or buffer, length delimited.
@@ -13802,17 +13613,16 @@ $root.google = (function() {
              * @returns {google.protobuf.EnumValueOptions} EnumValueOptions
              */
             EnumValueOptions.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-                readerOrBuffer = readerOrBuffer instanceof $protobuf.Reader ? readerOrBuffer : $protobuf.Reader(readerOrBuffer);
+                readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
                 return this.decode(readerOrBuffer, readerOrBuffer.uint32());
             };
 
             /**
              * Verifies an EnumValueOptions message.
-             * @function
              * @param {google.protobuf.EnumValueOptions|Object} message EnumValueOptions message or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            EnumValueOptions.verify = (function(types) { return function verify(message) {
+            EnumValueOptions.verify = function verify(message) {
                 if (message.deprecated !== undefined) {
                     if (typeof message.deprecated !== "boolean") {
                         return "deprecated: boolean expected";
@@ -13823,21 +13633,21 @@ $root.google = (function() {
                         return "uninterpretedOption: array expected";
                     }
                     for (var i = 0; i < message.uninterpretedOption.length; ++i) {
-                        var err = types[1].verify(message.uninterpretedOption[i]);
+                        var err = $types[1].verify(message.uninterpretedOption[i]);
                         if (err) {
                             return "uninterpretedOption." + err;
                         }
                     }
                 }
                 return null;
-            };})($types);
+            };
 
             /**
              * Creates an EnumValueOptions message from a plain object. Also converts values to their respective internal types.
              * @param {Object.<string,*>} object Plain object
              * @returns {google.protobuf.EnumValueOptions} EnumValueOptions
              */
-            EnumValueOptions.fromObject = (function(types) { return function fromObject(object) {
+            EnumValueOptions.fromObject = function fromObject(object) {
                 var message = new $root.google.protobuf.EnumValueOptions();
                 if (object.deprecated !== undefined && object.deprecated !== null) {
                     message.deprecated = Boolean(object.deprecated);
@@ -13845,16 +13655,15 @@ $root.google = (function() {
                 if (object.uninterpretedOption) {
                     message.uninterpretedOption = [];
                     for (var i = 0; i < object.uninterpretedOption.length; ++i) {
-                        message.uninterpretedOption[i] = types[1].fromObject(object.uninterpretedOption[i]);
+                        message.uninterpretedOption[i] = $types[1].fromObject(object.uninterpretedOption[i]);
                     }
                 }
                 return message;
-            };})($types);
+            };
 
             /**
              * Creates an EnumValueOptions message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link google.protobuf.EnumValueOptions.fromObject}.
-             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {google.protobuf.EnumValueOptions} EnumValueOptions
              */
@@ -13866,7 +13675,7 @@ $root.google = (function() {
              * @param {$protobuf.ConversionOptions} [options] Conversion options
              * @returns {Object.<string,*>} Plain object
              */
-            EnumValueOptions.toObject = (function(types) { return function toObject(message, options) {
+            EnumValueOptions.toObject = function toObject(message, options) {
                 if (!options) {
                     options = {};
                 }
@@ -13889,14 +13698,14 @@ $root.google = (function() {
                         if (message.uninterpretedOption.length) {
                             object.uninterpretedOption = [];
                             for (var j = 0; j < message.uninterpretedOption.length; ++j) {
-                                object.uninterpretedOption[j] = types[1].toObject(message.uninterpretedOption[j], options);
+                                object.uninterpretedOption[j] = $types[1].toObject(message.uninterpretedOption[j], options);
                             }
                         }
                         break;
                     }
                 }
                 return object;
-            };})($types);
+            };
 
             /**
              * Creates a plain object from this EnumValueOptions message. Also converts values to other types if specified.
@@ -13944,7 +13753,7 @@ $root.google = (function() {
              * ServiceOptions uninterpretedOption.
              * @type {Array.<google.protobuf.UninterpretedOption>}
              */
-            ServiceOptions.prototype.uninterpretedOption = $protobuf.util.emptyArray;
+            ServiceOptions.prototype.uninterpretedOption = $util.emptyArray;
 
             // Lazily resolved referenced types
             var $types = {1:"google.protobuf.UninterpretedOption"}; $lazyTypes.push($types);
@@ -13960,25 +13769,24 @@ $root.google = (function() {
 
             /**
              * Encodes the specified ServiceOptions message.
-             * @function
              * @param {google.protobuf.ServiceOptions|Object} message ServiceOptions message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            ServiceOptions.encode = (function(Writer, types) { return function encode(message, writer) {
+            ServiceOptions.encode = function encode(message, writer) {
                 if (!writer) {
-                    writer = Writer.create();
+                    writer = $Writer.create();
                 }
                 if (message.deprecated !== undefined && message.deprecated !== false) {
                     writer.uint32(264).bool(message.deprecated);
                 }
                 if (message.uninterpretedOption) {
                     for (var i = 0; i < message.uninterpretedOption.length; ++i) {
-                        types[1].encode(message.uninterpretedOption[i], writer.uint32(7994).fork()).ldelim();
+                        $types[1].encode(message.uninterpretedOption[i], writer.uint32(7994).fork()).ldelim();
                     }
                 }
                 return writer;
-            };})($protobuf.Writer, $types);
+            };
 
             /**
              * Encodes the specified ServiceOptions message, length delimited.
@@ -13992,14 +13800,13 @@ $root.google = (function() {
 
             /**
              * Decodes a ServiceOptions message from the specified reader or buffer.
-             * @function
              * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.ServiceOptions} ServiceOptions
              */
-            ServiceOptions.decode = (function(Reader, types) { return function decode(reader, len) {
-                if (!(reader instanceof Reader)) {
-                    reader = Reader.create(reader);
+            ServiceOptions.decode = function decode(reader, len) {
+                if (!(reader instanceof $Reader)) {
+                    reader = $Reader.create(reader);
                 }
                 var end = len === undefined ? reader.len : reader.pos + len, message = new $root.google.protobuf.ServiceOptions();
                 while (reader.pos < end) {
@@ -14013,7 +13820,7 @@ $root.google = (function() {
                         if (!(message.uninterpretedOption && message.uninterpretedOption.length)) {
                             message.uninterpretedOption = [];
                         }
-                        message.uninterpretedOption.push(types[1].decode(reader, reader.uint32()));
+                        message.uninterpretedOption.push($types[1].decode(reader, reader.uint32()));
                         break;
 
                     default:
@@ -14022,7 +13829,7 @@ $root.google = (function() {
                     }
                 }
                 return message;
-            };})($protobuf.Reader, $types);
+            };
 
             /**
              * Decodes a ServiceOptions message from the specified reader or buffer, length delimited.
@@ -14030,17 +13837,16 @@ $root.google = (function() {
              * @returns {google.protobuf.ServiceOptions} ServiceOptions
              */
             ServiceOptions.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-                readerOrBuffer = readerOrBuffer instanceof $protobuf.Reader ? readerOrBuffer : $protobuf.Reader(readerOrBuffer);
+                readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
                 return this.decode(readerOrBuffer, readerOrBuffer.uint32());
             };
 
             /**
              * Verifies a ServiceOptions message.
-             * @function
              * @param {google.protobuf.ServiceOptions|Object} message ServiceOptions message or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            ServiceOptions.verify = (function(types) { return function verify(message) {
+            ServiceOptions.verify = function verify(message) {
                 if (message.deprecated !== undefined) {
                     if (typeof message.deprecated !== "boolean") {
                         return "deprecated: boolean expected";
@@ -14051,21 +13857,21 @@ $root.google = (function() {
                         return "uninterpretedOption: array expected";
                     }
                     for (var i = 0; i < message.uninterpretedOption.length; ++i) {
-                        var err = types[1].verify(message.uninterpretedOption[i]);
+                        var err = $types[1].verify(message.uninterpretedOption[i]);
                         if (err) {
                             return "uninterpretedOption." + err;
                         }
                     }
                 }
                 return null;
-            };})($types);
+            };
 
             /**
              * Creates a ServiceOptions message from a plain object. Also converts values to their respective internal types.
              * @param {Object.<string,*>} object Plain object
              * @returns {google.protobuf.ServiceOptions} ServiceOptions
              */
-            ServiceOptions.fromObject = (function(types) { return function fromObject(object) {
+            ServiceOptions.fromObject = function fromObject(object) {
                 var message = new $root.google.protobuf.ServiceOptions();
                 if (object.deprecated !== undefined && object.deprecated !== null) {
                     message.deprecated = Boolean(object.deprecated);
@@ -14073,16 +13879,15 @@ $root.google = (function() {
                 if (object.uninterpretedOption) {
                     message.uninterpretedOption = [];
                     for (var i = 0; i < object.uninterpretedOption.length; ++i) {
-                        message.uninterpretedOption[i] = types[1].fromObject(object.uninterpretedOption[i]);
+                        message.uninterpretedOption[i] = $types[1].fromObject(object.uninterpretedOption[i]);
                     }
                 }
                 return message;
-            };})($types);
+            };
 
             /**
              * Creates a ServiceOptions message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link google.protobuf.ServiceOptions.fromObject}.
-             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {google.protobuf.ServiceOptions} ServiceOptions
              */
@@ -14094,7 +13899,7 @@ $root.google = (function() {
              * @param {$protobuf.ConversionOptions} [options] Conversion options
              * @returns {Object.<string,*>} Plain object
              */
-            ServiceOptions.toObject = (function(types) { return function toObject(message, options) {
+            ServiceOptions.toObject = function toObject(message, options) {
                 if (!options) {
                     options = {};
                 }
@@ -14117,14 +13922,14 @@ $root.google = (function() {
                         if (message.uninterpretedOption.length) {
                             object.uninterpretedOption = [];
                             for (var j = 0; j < message.uninterpretedOption.length; ++j) {
-                                object.uninterpretedOption[j] = types[1].toObject(message.uninterpretedOption[j], options);
+                                object.uninterpretedOption[j] = $types[1].toObject(message.uninterpretedOption[j], options);
                             }
                         }
                         break;
                     }
                 }
                 return object;
-            };})($types);
+            };
 
             /**
              * Creates a plain object from this ServiceOptions message. Also converts values to other types if specified.
@@ -14178,7 +13983,7 @@ $root.google = (function() {
              * MethodOptions uninterpretedOption.
              * @type {Array.<google.protobuf.UninterpretedOption>}
              */
-            MethodOptions.prototype.uninterpretedOption = $protobuf.util.emptyArray;
+            MethodOptions.prototype.uninterpretedOption = $util.emptyArray;
 
             // Lazily resolved referenced types
             var $types = {1:"google.protobuf.MethodOptions.IdempotencyLevel",2:"google.protobuf.UninterpretedOption"}; $lazyTypes.push($types);
@@ -14194,14 +13999,13 @@ $root.google = (function() {
 
             /**
              * Encodes the specified MethodOptions message.
-             * @function
              * @param {google.protobuf.MethodOptions|Object} message MethodOptions message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            MethodOptions.encode = (function(Writer, types) { return function encode(message, writer) {
+            MethodOptions.encode = function encode(message, writer) {
                 if (!writer) {
-                    writer = Writer.create();
+                    writer = $Writer.create();
                 }
                 if (message.deprecated !== undefined && message.deprecated !== false) {
                     writer.uint32(264).bool(message.deprecated);
@@ -14211,11 +14015,11 @@ $root.google = (function() {
                 }
                 if (message.uninterpretedOption) {
                     for (var i = 0; i < message.uninterpretedOption.length; ++i) {
-                        types[2].encode(message.uninterpretedOption[i], writer.uint32(7994).fork()).ldelim();
+                        $types[2].encode(message.uninterpretedOption[i], writer.uint32(7994).fork()).ldelim();
                     }
                 }
                 return writer;
-            };})($protobuf.Writer, $types);
+            };
 
             /**
              * Encodes the specified MethodOptions message, length delimited.
@@ -14229,14 +14033,13 @@ $root.google = (function() {
 
             /**
              * Decodes a MethodOptions message from the specified reader or buffer.
-             * @function
              * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.MethodOptions} MethodOptions
              */
-            MethodOptions.decode = (function(Reader, types) { return function decode(reader, len) {
-                if (!(reader instanceof Reader)) {
-                    reader = Reader.create(reader);
+            MethodOptions.decode = function decode(reader, len) {
+                if (!(reader instanceof $Reader)) {
+                    reader = $Reader.create(reader);
                 }
                 var end = len === undefined ? reader.len : reader.pos + len, message = new $root.google.protobuf.MethodOptions();
                 while (reader.pos < end) {
@@ -14254,7 +14057,7 @@ $root.google = (function() {
                         if (!(message.uninterpretedOption && message.uninterpretedOption.length)) {
                             message.uninterpretedOption = [];
                         }
-                        message.uninterpretedOption.push(types[2].decode(reader, reader.uint32()));
+                        message.uninterpretedOption.push($types[2].decode(reader, reader.uint32()));
                         break;
 
                     default:
@@ -14263,7 +14066,7 @@ $root.google = (function() {
                     }
                 }
                 return message;
-            };})($protobuf.Reader, $types);
+            };
 
             /**
              * Decodes a MethodOptions message from the specified reader or buffer, length delimited.
@@ -14271,17 +14074,16 @@ $root.google = (function() {
              * @returns {google.protobuf.MethodOptions} MethodOptions
              */
             MethodOptions.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-                readerOrBuffer = readerOrBuffer instanceof $protobuf.Reader ? readerOrBuffer : $protobuf.Reader(readerOrBuffer);
+                readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
                 return this.decode(readerOrBuffer, readerOrBuffer.uint32());
             };
 
             /**
              * Verifies a MethodOptions message.
-             * @function
              * @param {google.protobuf.MethodOptions|Object} message MethodOptions message or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            MethodOptions.verify = (function(types) { return function verify(message) {
+            MethodOptions.verify = function verify(message) {
                 if (message.deprecated !== undefined) {
                     if (typeof message.deprecated !== "boolean") {
                         return "deprecated: boolean expected";
@@ -14303,21 +14105,21 @@ $root.google = (function() {
                         return "uninterpretedOption: array expected";
                     }
                     for (var i = 0; i < message.uninterpretedOption.length; ++i) {
-                        var err = types[2].verify(message.uninterpretedOption[i]);
+                        var err = $types[2].verify(message.uninterpretedOption[i]);
                         if (err) {
                             return "uninterpretedOption." + err;
                         }
                     }
                 }
                 return null;
-            };})($types);
+            };
 
             /**
              * Creates a MethodOptions message from a plain object. Also converts values to their respective internal types.
              * @param {Object.<string,*>} object Plain object
              * @returns {google.protobuf.MethodOptions} MethodOptions
              */
-            MethodOptions.fromObject = (function(types) { return function fromObject(object) {
+            MethodOptions.fromObject = function fromObject(object) {
                 var message = new $root.google.protobuf.MethodOptions();
                 if (object.deprecated !== undefined && object.deprecated !== null) {
                     message.deprecated = Boolean(object.deprecated);
@@ -14341,16 +14143,15 @@ $root.google = (function() {
                 if (object.uninterpretedOption) {
                     message.uninterpretedOption = [];
                     for (var i = 0; i < object.uninterpretedOption.length; ++i) {
-                        message.uninterpretedOption[i] = types[2].fromObject(object.uninterpretedOption[i]);
+                        message.uninterpretedOption[i] = $types[2].fromObject(object.uninterpretedOption[i]);
                     }
                 }
                 return message;
-            };})($types);
+            };
 
             /**
              * Creates a MethodOptions message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link google.protobuf.MethodOptions.fromObject}.
-             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {google.protobuf.MethodOptions} MethodOptions
              */
@@ -14362,7 +14163,7 @@ $root.google = (function() {
              * @param {$protobuf.ConversionOptions} [options] Conversion options
              * @returns {Object.<string,*>} Plain object
              */
-            MethodOptions.toObject = (function(types) { return function toObject(message, options) {
+            MethodOptions.toObject = function toObject(message, options) {
                 if (!options) {
                     options = {};
                 }
@@ -14384,7 +14185,7 @@ $root.google = (function() {
 
                     case "idempotencyLevel":
                         if (message.idempotencyLevel !== undefined && message.idempotencyLevel !== null) {
-                            object.idempotencyLevel = options.enums === String ? types[1][message.idempotencyLevel] : message.idempotencyLevel;
+                            object.idempotencyLevel = options.enums === String ? $types[1][message.idempotencyLevel] : message.idempotencyLevel;
                         }
                         break;
 
@@ -14392,14 +14193,14 @@ $root.google = (function() {
                         if (message.uninterpretedOption.length) {
                             object.uninterpretedOption = [];
                             for (var j = 0; j < message.uninterpretedOption.length; ++j) {
-                                object.uninterpretedOption[j] = types[2].toObject(message.uninterpretedOption[j], options);
+                                object.uninterpretedOption[j] = $types[2].toObject(message.uninterpretedOption[j], options);
                             }
                         }
                         break;
                     }
                 }
                 return object;
-            };})($types);
+            };
 
             /**
              * Creates a plain object from this MethodOptions message. Also converts values to other types if specified.
@@ -14459,7 +14260,7 @@ $root.google = (function() {
              * UninterpretedOption name.
              * @type {Array.<google.protobuf.UninterpretedOption.NamePart>}
              */
-            UninterpretedOption.prototype.name = $protobuf.util.emptyArray;
+            UninterpretedOption.prototype.name = $util.emptyArray;
 
             /**
              * UninterpretedOption identifierValue.
@@ -14471,13 +14272,13 @@ $root.google = (function() {
              * UninterpretedOption positiveIntValue.
              * @type {number|$protobuf.Long}
              */
-            UninterpretedOption.prototype.positiveIntValue = $protobuf.util.Long ? $protobuf.util.Long.fromBits(0,0,true) : 0;
+            UninterpretedOption.prototype.positiveIntValue = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
 
             /**
              * UninterpretedOption negativeIntValue.
              * @type {number|$protobuf.Long}
              */
-            UninterpretedOption.prototype.negativeIntValue = $protobuf.util.Long ? $protobuf.util.Long.fromBits(0,0,false) : 0;
+            UninterpretedOption.prototype.negativeIntValue = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
 
             /**
              * UninterpretedOption doubleValue.
@@ -14489,7 +14290,7 @@ $root.google = (function() {
              * UninterpretedOption stringValue.
              * @type {Uint8Array}
              */
-            UninterpretedOption.prototype.stringValue = $protobuf.util.newBuffer([]);
+            UninterpretedOption.prototype.stringValue = $util.newBuffer([]);
 
             /**
              * UninterpretedOption aggregateValue.
@@ -14511,27 +14312,26 @@ $root.google = (function() {
 
             /**
              * Encodes the specified UninterpretedOption message.
-             * @function
              * @param {google.protobuf.UninterpretedOption|Object} message UninterpretedOption message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            UninterpretedOption.encode = (function(Writer, util, types) { return function encode(message, writer) {
+            UninterpretedOption.encode = function encode(message, writer) {
                 if (!writer) {
-                    writer = Writer.create();
+                    writer = $Writer.create();
                 }
                 if (message.name) {
                     for (var i = 0; i < message.name.length; ++i) {
-                        types[0].encode(message.name[i], writer.uint32(18).fork()).ldelim();
+                        $types[0].encode(message.name[i], writer.uint32(18).fork()).ldelim();
                     }
                 }
                 if (message.identifierValue !== undefined && message.identifierValue !== "") {
                     writer.uint32(26).string(message.identifierValue);
                 }
-                if (message.positiveIntValue !== undefined && message.positiveIntValue !== null && util.longNe(message.positiveIntValue, 0, 0)) {
+                if (message.positiveIntValue !== undefined && message.positiveIntValue !== null && $util.longNe(message.positiveIntValue, 0, 0)) {
                     writer.uint32(32).uint64(message.positiveIntValue);
                 }
-                if (message.negativeIntValue !== undefined && message.negativeIntValue !== null && util.longNe(message.negativeIntValue, 0, 0)) {
+                if (message.negativeIntValue !== undefined && message.negativeIntValue !== null && $util.longNe(message.negativeIntValue, 0, 0)) {
                     writer.uint32(40).int64(message.negativeIntValue);
                 }
                 if (message.doubleValue !== undefined && message.doubleValue !== 0) {
@@ -14544,7 +14344,7 @@ $root.google = (function() {
                     writer.uint32(66).string(message.aggregateValue);
                 }
                 return writer;
-            };})($protobuf.Writer, $protobuf.util, $types);
+            };
 
             /**
              * Encodes the specified UninterpretedOption message, length delimited.
@@ -14558,14 +14358,13 @@ $root.google = (function() {
 
             /**
              * Decodes an UninterpretedOption message from the specified reader or buffer.
-             * @function
              * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.UninterpretedOption} UninterpretedOption
              */
-            UninterpretedOption.decode = (function(Reader, types) { return function decode(reader, len) {
-                if (!(reader instanceof Reader)) {
-                    reader = Reader.create(reader);
+            UninterpretedOption.decode = function decode(reader, len) {
+                if (!(reader instanceof $Reader)) {
+                    reader = $Reader.create(reader);
                 }
                 var end = len === undefined ? reader.len : reader.pos + len, message = new $root.google.protobuf.UninterpretedOption();
                 while (reader.pos < end) {
@@ -14575,7 +14374,7 @@ $root.google = (function() {
                         if (!(message.name && message.name.length)) {
                             message.name = [];
                         }
-                        message.name.push(types[0].decode(reader, reader.uint32()));
+                        message.name.push($types[0].decode(reader, reader.uint32()));
                         break;
 
                     case 3:
@@ -14608,7 +14407,7 @@ $root.google = (function() {
                     }
                 }
                 return message;
-            };})($protobuf.Reader, $types);
+            };
 
             /**
              * Decodes an UninterpretedOption message from the specified reader or buffer, length delimited.
@@ -14616,40 +14415,39 @@ $root.google = (function() {
              * @returns {google.protobuf.UninterpretedOption} UninterpretedOption
              */
             UninterpretedOption.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-                readerOrBuffer = readerOrBuffer instanceof $protobuf.Reader ? readerOrBuffer : $protobuf.Reader(readerOrBuffer);
+                readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
                 return this.decode(readerOrBuffer, readerOrBuffer.uint32());
             };
 
             /**
              * Verifies an UninterpretedOption message.
-             * @function
              * @param {google.protobuf.UninterpretedOption|Object} message UninterpretedOption message or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            UninterpretedOption.verify = (function(util, types) { return function verify(message) {
+            UninterpretedOption.verify = function verify(message) {
                 if (message.name !== undefined) {
                     if (!Array.isArray(message.name)) {
                         return "name: array expected";
                     }
                     for (var i = 0; i < message.name.length; ++i) {
-                        var err = types[0].verify(message.name[i]);
+                        var err = $types[0].verify(message.name[i]);
                         if (err) {
                             return "name." + err;
                         }
                     }
                 }
                 if (message.identifierValue !== undefined) {
-                    if (!util.isString(message.identifierValue)) {
+                    if (!$util.isString(message.identifierValue)) {
                         return "identifierValue: string expected";
                     }
                 }
                 if (message.positiveIntValue !== undefined) {
-                    if (!util.isInteger(message.positiveIntValue) && !(message.positiveIntValue && util.isInteger(message.positiveIntValue.low) && util.isInteger(message.positiveIntValue.high))) {
+                    if (!$util.isInteger(message.positiveIntValue) && !(message.positiveIntValue && $util.isInteger(message.positiveIntValue.low) && $util.isInteger(message.positiveIntValue.high))) {
                         return "positiveIntValue: integer|Long expected";
                     }
                 }
                 if (message.negativeIntValue !== undefined) {
-                    if (!util.isInteger(message.negativeIntValue) && !(message.negativeIntValue && util.isInteger(message.negativeIntValue.low) && util.isInteger(message.negativeIntValue.high))) {
+                    if (!$util.isInteger(message.negativeIntValue) && !(message.negativeIntValue && $util.isInteger(message.negativeIntValue.low) && $util.isInteger(message.negativeIntValue.high))) {
                         return "negativeIntValue: integer|Long expected";
                     }
                 }
@@ -14659,37 +14457,37 @@ $root.google = (function() {
                     }
                 }
                 if (message.stringValue !== undefined) {
-                    if (!(message.stringValue && typeof message.stringValue.length === "number" || util.isString(message.stringValue))) {
+                    if (!(message.stringValue && typeof message.stringValue.length === "number" || $util.isString(message.stringValue))) {
                         return "stringValue: buffer expected";
                     }
                 }
                 if (message.aggregateValue !== undefined) {
-                    if (!util.isString(message.aggregateValue)) {
+                    if (!$util.isString(message.aggregateValue)) {
                         return "aggregateValue: string expected";
                     }
                 }
                 return null;
-            };})($protobuf.util, $types);
+            };
 
             /**
              * Creates an UninterpretedOption message from a plain object. Also converts values to their respective internal types.
              * @param {Object.<string,*>} object Plain object
              * @returns {google.protobuf.UninterpretedOption} UninterpretedOption
              */
-            UninterpretedOption.fromObject = (function(util, types) { return function fromObject(object) {
+            UninterpretedOption.fromObject = function fromObject(object) {
                 var message = new $root.google.protobuf.UninterpretedOption();
                 if (object.name) {
                     message.name = [];
                     for (var i = 0; i < object.name.length; ++i) {
-                        message.name[i] = types[0].fromObject(object.name[i]);
+                        message.name[i] = $types[0].fromObject(object.name[i]);
                     }
                 }
                 if (object.identifierValue !== undefined && object.identifierValue !== null) {
                     message.identifierValue = String(object.identifierValue);
                 }
                 if (object.positiveIntValue !== undefined && object.positiveIntValue !== null) {
-                    if (util.Long) {
-                        (message.positiveIntValue = util.Long.fromValue(object.positiveIntValue)).unsigned = true;
+                    if ($util.Long) {
+                        (message.positiveIntValue = $util.Long.fromValue(object.positiveIntValue)).unsigned = true;
                     } else {
                         if (typeof object.positiveIntValue === "string") {
                             message.positiveIntValue = parseInt(object.positiveIntValue, 10);
@@ -14698,15 +14496,15 @@ $root.google = (function() {
                                 message.positiveIntValue = object.positiveIntValue;
                             } else {
                                 if (typeof object.positiveIntValue === "object") {
-                                    message.positiveIntValue = new util.LongBits(object.positiveIntValue.low, object.positiveIntValue.high).toNumber(true);
+                                    message.positiveIntValue = new $util.LongBits(object.positiveIntValue.low, object.positiveIntValue.high).toNumber(true);
                                 }
                             }
                         }
                     }
                 }
                 if (object.negativeIntValue !== undefined && object.negativeIntValue !== null) {
-                    if (util.Long) {
-                        (message.negativeIntValue = util.Long.fromValue(object.negativeIntValue)).unsigned = false;
+                    if ($util.Long) {
+                        (message.negativeIntValue = $util.Long.fromValue(object.negativeIntValue)).unsigned = false;
                     } else {
                         if (typeof object.negativeIntValue === "string") {
                             message.negativeIntValue = parseInt(object.negativeIntValue, 10);
@@ -14715,7 +14513,7 @@ $root.google = (function() {
                                 message.negativeIntValue = object.negativeIntValue;
                             } else {
                                 if (typeof object.negativeIntValue === "object") {
-                                    message.negativeIntValue = new util.LongBits(object.negativeIntValue.low, object.negativeIntValue.high).toNumber();
+                                    message.negativeIntValue = new $util.LongBits(object.negativeIntValue.low, object.negativeIntValue.high).toNumber();
                                 }
                             }
                         }
@@ -14726,7 +14524,7 @@ $root.google = (function() {
                 }
                 if (object.stringValue !== undefined && object.stringValue !== null) {
                     if (typeof object.stringValue === "string") {
-                        util.base64.decode(object.stringValue, message.stringValue = util.newBuffer(util.base64.length(object.stringValue)), 0);
+                        $util.base64.decode(object.stringValue, message.stringValue = $util.newBuffer($util.base64.length(object.stringValue)), 0);
                     } else {
                         if (object.stringValue && object.stringValue.length) {
                             message.stringValue = object.stringValue;
@@ -14737,12 +14535,11 @@ $root.google = (function() {
                     message.aggregateValue = String(object.aggregateValue);
                 }
                 return message;
-            };})($protobuf.util, $types);
+            };
 
             /**
              * Creates an UninterpretedOption message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link google.protobuf.UninterpretedOption.fromObject}.
-             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {google.protobuf.UninterpretedOption} UninterpretedOption
              */
@@ -14754,7 +14551,7 @@ $root.google = (function() {
              * @param {$protobuf.ConversionOptions} [options] Conversion options
              * @returns {Object.<string,*>} Plain object
              */
-            UninterpretedOption.toObject = (function(util, types) { return function toObject(message, options) {
+            UninterpretedOption.toObject = function toObject(message, options) {
                 if (!options) {
                     options = {};
                 }
@@ -14764,14 +14561,14 @@ $root.google = (function() {
                 }
                 if (options.defaults) {
                     object.identifierValue = "";
-                    if (util.Long) {
-                        var long = new util.Long(0, 0, true);
+                    if ($util.Long) {
+                        var long = new $util.Long(0, 0, true);
                         object.positiveIntValue = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
                     } else {
                         object.positiveIntValue = options.longs === String ? "0" : 0;
                     }
-                    if (util.Long) {
-                        var long = new util.Long(0, 0, false);
+                    if ($util.Long) {
+                        var long = new $util.Long(0, 0, false);
                         object.negativeIntValue = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
                     } else {
                         object.negativeIntValue = options.longs === String ? "0" : 0;
@@ -14786,7 +14583,7 @@ $root.google = (function() {
                         if (message.name.length) {
                             object.name = [];
                             for (var j = 0; j < message.name.length; ++j) {
-                                object.name[j] = types[0].toObject(message.name[j], options);
+                                object.name[j] = $types[0].toObject(message.name[j], options);
                             }
                         }
                         break;
@@ -14802,7 +14599,7 @@ $root.google = (function() {
                             if (typeof message.positiveIntValue === "number") {
                                 object.positiveIntValue = options.longs === String ? String(message.positiveIntValue) : message.positiveIntValue;
                             } else {
-                                object.positiveIntValue = options.longs === String ? util.Long.prototype.toString.call(message.positiveIntValue) : options.longs === Number ? new util.LongBits(message.positiveIntValue.low, message.positiveIntValue.high).toNumber(true) : message.positiveIntValue;
+                                object.positiveIntValue = options.longs === String ? $util.Long.prototype.toString.call(message.positiveIntValue) : options.longs === Number ? new $util.LongBits(message.positiveIntValue.low, message.positiveIntValue.high).toNumber(true) : message.positiveIntValue;
                             }
                         }
                         break;
@@ -14812,7 +14609,7 @@ $root.google = (function() {
                             if (typeof message.negativeIntValue === "number") {
                                 object.negativeIntValue = options.longs === String ? String(message.negativeIntValue) : message.negativeIntValue;
                             } else {
-                                object.negativeIntValue = options.longs === String ? util.Long.prototype.toString.call(message.negativeIntValue) : options.longs === Number ? new util.LongBits(message.negativeIntValue.low, message.negativeIntValue.high).toNumber() : message.negativeIntValue;
+                                object.negativeIntValue = options.longs === String ? $util.Long.prototype.toString.call(message.negativeIntValue) : options.longs === Number ? new $util.LongBits(message.negativeIntValue.low, message.negativeIntValue.high).toNumber() : message.negativeIntValue;
                             }
                         }
                         break;
@@ -14825,7 +14622,7 @@ $root.google = (function() {
 
                     case "stringValue":
                         if (message.stringValue !== undefined && message.stringValue !== null) {
-                            object.stringValue = options.bytes === String ? util.base64.encode(message.stringValue, 0, message.stringValue.length) : options.bytes === Array ? Array.prototype.slice.call(message.stringValue) : message.stringValue;
+                            object.stringValue = options.bytes === String ? $util.base64.encode(message.stringValue, 0, message.stringValue.length) : options.bytes === Array ? Array.prototype.slice.call(message.stringValue) : message.stringValue;
                         }
                         break;
 
@@ -14837,7 +14634,7 @@ $root.google = (function() {
                     }
                 }
                 return object;
-            };})($protobuf.util, $types);
+            };
 
             /**
              * Creates a plain object from this UninterpretedOption message. Also converts values to other types if specified.
@@ -14895,19 +14692,18 @@ $root.google = (function() {
 
                 /**
                  * Encodes the specified NamePart message.
-                 * @function
                  * @param {google.protobuf.UninterpretedOption.NamePart|Object} message NamePart message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
                  */
-                NamePart.encode = (function(Writer) { return function encode(message, writer) {
+                NamePart.encode = function encode(message, writer) {
                     if (!writer) {
-                        writer = Writer.create();
+                        writer = $Writer.create();
                     }
                     writer.uint32(10).string(message.namePart);
                     writer.uint32(16).bool(message.isExtension);
                     return writer;
-                };})($protobuf.Writer);
+                };
 
                 /**
                  * Encodes the specified NamePart message, length delimited.
@@ -14921,14 +14717,13 @@ $root.google = (function() {
 
                 /**
                  * Decodes a NamePart message from the specified reader or buffer.
-                 * @function
                  * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
                  * @param {number} [length] Message length if known beforehand
                  * @returns {google.protobuf.UninterpretedOption.NamePart} NamePart
                  */
-                NamePart.decode = (function(Reader) { return function decode(reader, len) {
-                    if (!(reader instanceof Reader)) {
-                        reader = Reader.create(reader);
+                NamePart.decode = function decode(reader, len) {
+                    if (!(reader instanceof $Reader)) {
+                        reader = $Reader.create(reader);
                     }
                     var end = len === undefined ? reader.len : reader.pos + len, message = new $root.google.protobuf.UninterpretedOption.NamePart();
                     while (reader.pos < end) {
@@ -14948,7 +14743,7 @@ $root.google = (function() {
                         }
                     }
                     return message;
-                };})($protobuf.Reader);
+                };
 
                 /**
                  * Decodes a NamePart message from the specified reader or buffer, length delimited.
@@ -14956,25 +14751,24 @@ $root.google = (function() {
                  * @returns {google.protobuf.UninterpretedOption.NamePart} NamePart
                  */
                 NamePart.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-                    readerOrBuffer = readerOrBuffer instanceof $protobuf.Reader ? readerOrBuffer : $protobuf.Reader(readerOrBuffer);
+                    readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
                     return this.decode(readerOrBuffer, readerOrBuffer.uint32());
                 };
 
                 /**
                  * Verifies a NamePart message.
-                 * @function
                  * @param {google.protobuf.UninterpretedOption.NamePart|Object} message NamePart message or plain object to verify
                  * @returns {?string} `null` if valid, otherwise the reason why it is not
                  */
-                NamePart.verify = (function(util) { return function verify(message) {
-                    if (!util.isString(message.namePart)) {
+                NamePart.verify = function verify(message) {
+                    if (!$util.isString(message.namePart)) {
                         return "namePart: string expected";
                     }
                     if (typeof message.isExtension !== "boolean") {
                         return "isExtension: boolean expected";
                     }
                     return null;
-                };})($protobuf.util);
+                };
 
                 /**
                  * Creates a NamePart message from a plain object. Also converts values to their respective internal types.
@@ -14995,7 +14789,6 @@ $root.google = (function() {
                 /**
                  * Creates a NamePart message from a plain object. Also converts values to their respective internal types.
                  * This is an alias of {@link google.protobuf.UninterpretedOption.NamePart.fromObject}.
-                 * @function
                  * @param {Object.<string,*>} object Plain object
                  * @returns {google.protobuf.UninterpretedOption.NamePart} NamePart
                  */
@@ -15077,7 +14870,7 @@ $root.google = (function() {
              * SourceCodeInfo location.
              * @type {Array.<google.protobuf.SourceCodeInfo.Location>}
              */
-            SourceCodeInfo.prototype.location = $protobuf.util.emptyArray;
+            SourceCodeInfo.prototype.location = $util.emptyArray;
 
             // Lazily resolved referenced types
             var $types = {0:"google.protobuf.SourceCodeInfo.Location"}; $lazyTypes.push($types);
@@ -15093,22 +14886,21 @@ $root.google = (function() {
 
             /**
              * Encodes the specified SourceCodeInfo message.
-             * @function
              * @param {google.protobuf.SourceCodeInfo|Object} message SourceCodeInfo message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            SourceCodeInfo.encode = (function(Writer, types) { return function encode(message, writer) {
+            SourceCodeInfo.encode = function encode(message, writer) {
                 if (!writer) {
-                    writer = Writer.create();
+                    writer = $Writer.create();
                 }
                 if (message.location) {
                     for (var i = 0; i < message.location.length; ++i) {
-                        types[0].encode(message.location[i], writer.uint32(10).fork()).ldelim();
+                        $types[0].encode(message.location[i], writer.uint32(10).fork()).ldelim();
                     }
                 }
                 return writer;
-            };})($protobuf.Writer, $types);
+            };
 
             /**
              * Encodes the specified SourceCodeInfo message, length delimited.
@@ -15122,14 +14914,13 @@ $root.google = (function() {
 
             /**
              * Decodes a SourceCodeInfo message from the specified reader or buffer.
-             * @function
              * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.SourceCodeInfo} SourceCodeInfo
              */
-            SourceCodeInfo.decode = (function(Reader, types) { return function decode(reader, len) {
-                if (!(reader instanceof Reader)) {
-                    reader = Reader.create(reader);
+            SourceCodeInfo.decode = function decode(reader, len) {
+                if (!(reader instanceof $Reader)) {
+                    reader = $Reader.create(reader);
                 }
                 var end = len === undefined ? reader.len : reader.pos + len, message = new $root.google.protobuf.SourceCodeInfo();
                 while (reader.pos < end) {
@@ -15139,7 +14930,7 @@ $root.google = (function() {
                         if (!(message.location && message.location.length)) {
                             message.location = [];
                         }
-                        message.location.push(types[0].decode(reader, reader.uint32()));
+                        message.location.push($types[0].decode(reader, reader.uint32()));
                         break;
 
                     default:
@@ -15148,7 +14939,7 @@ $root.google = (function() {
                     }
                 }
                 return message;
-            };})($protobuf.Reader, $types);
+            };
 
             /**
              * Decodes a SourceCodeInfo message from the specified reader or buffer, length delimited.
@@ -15156,51 +14947,49 @@ $root.google = (function() {
              * @returns {google.protobuf.SourceCodeInfo} SourceCodeInfo
              */
             SourceCodeInfo.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-                readerOrBuffer = readerOrBuffer instanceof $protobuf.Reader ? readerOrBuffer : $protobuf.Reader(readerOrBuffer);
+                readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
                 return this.decode(readerOrBuffer, readerOrBuffer.uint32());
             };
 
             /**
              * Verifies a SourceCodeInfo message.
-             * @function
              * @param {google.protobuf.SourceCodeInfo|Object} message SourceCodeInfo message or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            SourceCodeInfo.verify = (function(types) { return function verify(message) {
+            SourceCodeInfo.verify = function verify(message) {
                 if (message.location !== undefined) {
                     if (!Array.isArray(message.location)) {
                         return "location: array expected";
                     }
                     for (var i = 0; i < message.location.length; ++i) {
-                        var err = types[0].verify(message.location[i]);
+                        var err = $types[0].verify(message.location[i]);
                         if (err) {
                             return "location." + err;
                         }
                     }
                 }
                 return null;
-            };})($types);
+            };
 
             /**
              * Creates a SourceCodeInfo message from a plain object. Also converts values to their respective internal types.
              * @param {Object.<string,*>} object Plain object
              * @returns {google.protobuf.SourceCodeInfo} SourceCodeInfo
              */
-            SourceCodeInfo.fromObject = (function(types) { return function fromObject(object) {
+            SourceCodeInfo.fromObject = function fromObject(object) {
                 var message = new $root.google.protobuf.SourceCodeInfo();
                 if (object.location) {
                     message.location = [];
                     for (var i = 0; i < object.location.length; ++i) {
-                        message.location[i] = types[0].fromObject(object.location[i]);
+                        message.location[i] = $types[0].fromObject(object.location[i]);
                     }
                 }
                 return message;
-            };})($types);
+            };
 
             /**
              * Creates a SourceCodeInfo message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link google.protobuf.SourceCodeInfo.fromObject}.
-             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {google.protobuf.SourceCodeInfo} SourceCodeInfo
              */
@@ -15212,7 +15001,7 @@ $root.google = (function() {
              * @param {$protobuf.ConversionOptions} [options] Conversion options
              * @returns {Object.<string,*>} Plain object
              */
-            SourceCodeInfo.toObject = (function(types) { return function toObject(message, options) {
+            SourceCodeInfo.toObject = function toObject(message, options) {
                 if (!options) {
                     options = {};
                 }
@@ -15226,14 +15015,14 @@ $root.google = (function() {
                         if (message.location.length) {
                             object.location = [];
                             for (var j = 0; j < message.location.length; ++j) {
-                                object.location[j] = types[0].toObject(message.location[j], options);
+                                object.location[j] = $types[0].toObject(message.location[j], options);
                             }
                         }
                         break;
                     }
                 }
                 return object;
-            };})($types);
+            };
 
             /**
              * Creates a plain object from this SourceCodeInfo message. Also converts values to other types if specified.
@@ -15272,13 +15061,13 @@ $root.google = (function() {
                  * Location path.
                  * @type {Array.<number>}
                  */
-                Location.prototype.path = $protobuf.util.emptyArray;
+                Location.prototype.path = $util.emptyArray;
 
                 /**
                  * Location span.
                  * @type {Array.<number>}
                  */
-                Location.prototype.span = $protobuf.util.emptyArray;
+                Location.prototype.span = $util.emptyArray;
 
                 /**
                  * Location leadingComments.
@@ -15296,7 +15085,7 @@ $root.google = (function() {
                  * Location leadingDetachedComments.
                  * @type {Array.<string>}
                  */
-                Location.prototype.leadingDetachedComments = $protobuf.util.emptyArray;
+                Location.prototype.leadingDetachedComments = $util.emptyArray;
 
                 /**
                  * Creates a new Location instance using the specified properties.
@@ -15309,14 +15098,13 @@ $root.google = (function() {
 
                 /**
                  * Encodes the specified Location message.
-                 * @function
                  * @param {google.protobuf.SourceCodeInfo.Location|Object} message Location message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
                  */
-                Location.encode = (function(Writer) { return function encode(message, writer) {
+                Location.encode = function encode(message, writer) {
                     if (!writer) {
-                        writer = Writer.create();
+                        writer = $Writer.create();
                     }
                     if (message.path && message.path.length) {
                         writer.uint32(10).fork();
@@ -15344,7 +15132,7 @@ $root.google = (function() {
                         }
                     }
                     return writer;
-                };})($protobuf.Writer);
+                };
 
                 /**
                  * Encodes the specified Location message, length delimited.
@@ -15358,14 +15146,13 @@ $root.google = (function() {
 
                 /**
                  * Decodes a Location message from the specified reader or buffer.
-                 * @function
                  * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
                  * @param {number} [length] Message length if known beforehand
                  * @returns {google.protobuf.SourceCodeInfo.Location} Location
                  */
-                Location.decode = (function(Reader) { return function decode(reader, len) {
-                    if (!(reader instanceof Reader)) {
-                        reader = Reader.create(reader);
+                Location.decode = function decode(reader, len) {
+                    if (!(reader instanceof $Reader)) {
+                        reader = $Reader.create(reader);
                     }
                     var end = len === undefined ? reader.len : reader.pos + len, message = new $root.google.protobuf.SourceCodeInfo.Location();
                     while (reader.pos < end) {
@@ -15420,7 +15207,7 @@ $root.google = (function() {
                         }
                     }
                     return message;
-                };})($protobuf.Reader);
+                };
 
                 /**
                  * Decodes a Location message from the specified reader or buffer, length delimited.
@@ -15428,23 +15215,22 @@ $root.google = (function() {
                  * @returns {google.protobuf.SourceCodeInfo.Location} Location
                  */
                 Location.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-                    readerOrBuffer = readerOrBuffer instanceof $protobuf.Reader ? readerOrBuffer : $protobuf.Reader(readerOrBuffer);
+                    readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
                     return this.decode(readerOrBuffer, readerOrBuffer.uint32());
                 };
 
                 /**
                  * Verifies a Location message.
-                 * @function
                  * @param {google.protobuf.SourceCodeInfo.Location|Object} message Location message or plain object to verify
                  * @returns {?string} `null` if valid, otherwise the reason why it is not
                  */
-                Location.verify = (function(util) { return function verify(message) {
+                Location.verify = function verify(message) {
                     if (message.path !== undefined) {
                         if (!Array.isArray(message.path)) {
                             return "path: array expected";
                         }
                         for (var i = 0; i < message.path.length; ++i) {
-                            if (!util.isInteger(message.path[i])) {
+                            if (!$util.isInteger(message.path[i])) {
                                 return "path: integer[] expected";
                             }
                         }
@@ -15454,18 +15240,18 @@ $root.google = (function() {
                             return "span: array expected";
                         }
                         for (var i = 0; i < message.span.length; ++i) {
-                            if (!util.isInteger(message.span[i])) {
+                            if (!$util.isInteger(message.span[i])) {
                                 return "span: integer[] expected";
                             }
                         }
                     }
                     if (message.leadingComments !== undefined) {
-                        if (!util.isString(message.leadingComments)) {
+                        if (!$util.isString(message.leadingComments)) {
                             return "leadingComments: string expected";
                         }
                     }
                     if (message.trailingComments !== undefined) {
-                        if (!util.isString(message.trailingComments)) {
+                        if (!$util.isString(message.trailingComments)) {
                             return "trailingComments: string expected";
                         }
                     }
@@ -15474,13 +15260,13 @@ $root.google = (function() {
                             return "leadingDetachedComments: array expected";
                         }
                         for (var i = 0; i < message.leadingDetachedComments.length; ++i) {
-                            if (!util.isString(message.leadingDetachedComments[i])) {
+                            if (!$util.isString(message.leadingDetachedComments[i])) {
                                 return "leadingDetachedComments: string[] expected";
                             }
                         }
                     }
                     return null;
-                };})($protobuf.util);
+                };
 
                 /**
                  * Creates a Location message from a plain object. Also converts values to their respective internal types.
@@ -15519,7 +15305,6 @@ $root.google = (function() {
                 /**
                  * Creates a Location message from a plain object. Also converts values to their respective internal types.
                  * This is an alias of {@link google.protobuf.SourceCodeInfo.Location.fromObject}.
-                 * @function
                  * @param {Object.<string,*>} object Plain object
                  * @returns {google.protobuf.SourceCodeInfo.Location} Location
                  */
@@ -15633,7 +15418,7 @@ $root.google = (function() {
              * GeneratedCodeInfo annotation.
              * @type {Array.<google.protobuf.GeneratedCodeInfo.Annotation>}
              */
-            GeneratedCodeInfo.prototype.annotation = $protobuf.util.emptyArray;
+            GeneratedCodeInfo.prototype.annotation = $util.emptyArray;
 
             // Lazily resolved referenced types
             var $types = {0:"google.protobuf.GeneratedCodeInfo.Annotation"}; $lazyTypes.push($types);
@@ -15649,22 +15434,21 @@ $root.google = (function() {
 
             /**
              * Encodes the specified GeneratedCodeInfo message.
-             * @function
              * @param {google.protobuf.GeneratedCodeInfo|Object} message GeneratedCodeInfo message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            GeneratedCodeInfo.encode = (function(Writer, types) { return function encode(message, writer) {
+            GeneratedCodeInfo.encode = function encode(message, writer) {
                 if (!writer) {
-                    writer = Writer.create();
+                    writer = $Writer.create();
                 }
                 if (message.annotation) {
                     for (var i = 0; i < message.annotation.length; ++i) {
-                        types[0].encode(message.annotation[i], writer.uint32(10).fork()).ldelim();
+                        $types[0].encode(message.annotation[i], writer.uint32(10).fork()).ldelim();
                     }
                 }
                 return writer;
-            };})($protobuf.Writer, $types);
+            };
 
             /**
              * Encodes the specified GeneratedCodeInfo message, length delimited.
@@ -15678,14 +15462,13 @@ $root.google = (function() {
 
             /**
              * Decodes a GeneratedCodeInfo message from the specified reader or buffer.
-             * @function
              * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.GeneratedCodeInfo} GeneratedCodeInfo
              */
-            GeneratedCodeInfo.decode = (function(Reader, types) { return function decode(reader, len) {
-                if (!(reader instanceof Reader)) {
-                    reader = Reader.create(reader);
+            GeneratedCodeInfo.decode = function decode(reader, len) {
+                if (!(reader instanceof $Reader)) {
+                    reader = $Reader.create(reader);
                 }
                 var end = len === undefined ? reader.len : reader.pos + len, message = new $root.google.protobuf.GeneratedCodeInfo();
                 while (reader.pos < end) {
@@ -15695,7 +15478,7 @@ $root.google = (function() {
                         if (!(message.annotation && message.annotation.length)) {
                             message.annotation = [];
                         }
-                        message.annotation.push(types[0].decode(reader, reader.uint32()));
+                        message.annotation.push($types[0].decode(reader, reader.uint32()));
                         break;
 
                     default:
@@ -15704,7 +15487,7 @@ $root.google = (function() {
                     }
                 }
                 return message;
-            };})($protobuf.Reader, $types);
+            };
 
             /**
              * Decodes a GeneratedCodeInfo message from the specified reader or buffer, length delimited.
@@ -15712,51 +15495,49 @@ $root.google = (function() {
              * @returns {google.protobuf.GeneratedCodeInfo} GeneratedCodeInfo
              */
             GeneratedCodeInfo.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-                readerOrBuffer = readerOrBuffer instanceof $protobuf.Reader ? readerOrBuffer : $protobuf.Reader(readerOrBuffer);
+                readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
                 return this.decode(readerOrBuffer, readerOrBuffer.uint32());
             };
 
             /**
              * Verifies a GeneratedCodeInfo message.
-             * @function
              * @param {google.protobuf.GeneratedCodeInfo|Object} message GeneratedCodeInfo message or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            GeneratedCodeInfo.verify = (function(types) { return function verify(message) {
+            GeneratedCodeInfo.verify = function verify(message) {
                 if (message.annotation !== undefined) {
                     if (!Array.isArray(message.annotation)) {
                         return "annotation: array expected";
                     }
                     for (var i = 0; i < message.annotation.length; ++i) {
-                        var err = types[0].verify(message.annotation[i]);
+                        var err = $types[0].verify(message.annotation[i]);
                         if (err) {
                             return "annotation." + err;
                         }
                     }
                 }
                 return null;
-            };})($types);
+            };
 
             /**
              * Creates a GeneratedCodeInfo message from a plain object. Also converts values to their respective internal types.
              * @param {Object.<string,*>} object Plain object
              * @returns {google.protobuf.GeneratedCodeInfo} GeneratedCodeInfo
              */
-            GeneratedCodeInfo.fromObject = (function(types) { return function fromObject(object) {
+            GeneratedCodeInfo.fromObject = function fromObject(object) {
                 var message = new $root.google.protobuf.GeneratedCodeInfo();
                 if (object.annotation) {
                     message.annotation = [];
                     for (var i = 0; i < object.annotation.length; ++i) {
-                        message.annotation[i] = types[0].fromObject(object.annotation[i]);
+                        message.annotation[i] = $types[0].fromObject(object.annotation[i]);
                     }
                 }
                 return message;
-            };})($types);
+            };
 
             /**
              * Creates a GeneratedCodeInfo message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link google.protobuf.GeneratedCodeInfo.fromObject}.
-             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {google.protobuf.GeneratedCodeInfo} GeneratedCodeInfo
              */
@@ -15768,7 +15549,7 @@ $root.google = (function() {
              * @param {$protobuf.ConversionOptions} [options] Conversion options
              * @returns {Object.<string,*>} Plain object
              */
-            GeneratedCodeInfo.toObject = (function(types) { return function toObject(message, options) {
+            GeneratedCodeInfo.toObject = function toObject(message, options) {
                 if (!options) {
                     options = {};
                 }
@@ -15782,14 +15563,14 @@ $root.google = (function() {
                         if (message.annotation.length) {
                             object.annotation = [];
                             for (var j = 0; j < message.annotation.length; ++j) {
-                                object.annotation[j] = types[0].toObject(message.annotation[j], options);
+                                object.annotation[j] = $types[0].toObject(message.annotation[j], options);
                             }
                         }
                         break;
                     }
                 }
                 return object;
-            };})($types);
+            };
 
             /**
              * Creates a plain object from this GeneratedCodeInfo message. Also converts values to other types if specified.
@@ -15828,7 +15609,7 @@ $root.google = (function() {
                  * Annotation path.
                  * @type {Array.<number>}
                  */
-                Annotation.prototype.path = $protobuf.util.emptyArray;
+                Annotation.prototype.path = $util.emptyArray;
 
                 /**
                  * Annotation sourceFile.
@@ -15859,14 +15640,13 @@ $root.google = (function() {
 
                 /**
                  * Encodes the specified Annotation message.
-                 * @function
                  * @param {google.protobuf.GeneratedCodeInfo.Annotation|Object} message Annotation message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
                  */
-                Annotation.encode = (function(Writer) { return function encode(message, writer) {
+                Annotation.encode = function encode(message, writer) {
                     if (!writer) {
-                        writer = Writer.create();
+                        writer = $Writer.create();
                     }
                     if (message.path && message.path.length) {
                         writer.uint32(10).fork();
@@ -15885,7 +15665,7 @@ $root.google = (function() {
                         writer.uint32(32).int32(message.end);
                     }
                     return writer;
-                };})($protobuf.Writer);
+                };
 
                 /**
                  * Encodes the specified Annotation message, length delimited.
@@ -15899,14 +15679,13 @@ $root.google = (function() {
 
                 /**
                  * Decodes an Annotation message from the specified reader or buffer.
-                 * @function
                  * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
                  * @param {number} [length] Message length if known beforehand
                  * @returns {google.protobuf.GeneratedCodeInfo.Annotation} Annotation
                  */
-                Annotation.decode = (function(Reader) { return function decode(reader, len) {
-                    if (!(reader instanceof Reader)) {
-                        reader = Reader.create(reader);
+                Annotation.decode = function decode(reader, len) {
+                    if (!(reader instanceof $Reader)) {
+                        reader = $Reader.create(reader);
                     }
                     var end = len === undefined ? reader.len : reader.pos + len, message = new $root.google.protobuf.GeneratedCodeInfo.Annotation();
                     while (reader.pos < end) {
@@ -15944,7 +15723,7 @@ $root.google = (function() {
                         }
                     }
                     return message;
-                };})($protobuf.Reader);
+                };
 
                 /**
                  * Decodes an Annotation message from the specified reader or buffer, length delimited.
@@ -15952,44 +15731,43 @@ $root.google = (function() {
                  * @returns {google.protobuf.GeneratedCodeInfo.Annotation} Annotation
                  */
                 Annotation.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-                    readerOrBuffer = readerOrBuffer instanceof $protobuf.Reader ? readerOrBuffer : $protobuf.Reader(readerOrBuffer);
+                    readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
                     return this.decode(readerOrBuffer, readerOrBuffer.uint32());
                 };
 
                 /**
                  * Verifies an Annotation message.
-                 * @function
                  * @param {google.protobuf.GeneratedCodeInfo.Annotation|Object} message Annotation message or plain object to verify
                  * @returns {?string} `null` if valid, otherwise the reason why it is not
                  */
-                Annotation.verify = (function(util) { return function verify(message) {
+                Annotation.verify = function verify(message) {
                     if (message.path !== undefined) {
                         if (!Array.isArray(message.path)) {
                             return "path: array expected";
                         }
                         for (var i = 0; i < message.path.length; ++i) {
-                            if (!util.isInteger(message.path[i])) {
+                            if (!$util.isInteger(message.path[i])) {
                                 return "path: integer[] expected";
                             }
                         }
                     }
                     if (message.sourceFile !== undefined) {
-                        if (!util.isString(message.sourceFile)) {
+                        if (!$util.isString(message.sourceFile)) {
                             return "sourceFile: string expected";
                         }
                     }
                     if (message.begin !== undefined) {
-                        if (!util.isInteger(message.begin)) {
+                        if (!$util.isInteger(message.begin)) {
                             return "begin: integer expected";
                         }
                     }
                     if (message.end !== undefined) {
-                        if (!util.isInteger(message.end)) {
+                        if (!$util.isInteger(message.end)) {
                             return "end: integer expected";
                         }
                     }
                     return null;
-                };})($protobuf.util);
+                };
 
                 /**
                  * Creates an Annotation message from a plain object. Also converts values to their respective internal types.
@@ -16019,7 +15797,6 @@ $root.google = (function() {
                 /**
                  * Creates an Annotation message from a plain object. Also converts values to their respective internal types.
                  * This is an alias of {@link google.protobuf.GeneratedCodeInfo.Annotation.fromObject}.
-                 * @function
                  * @param {Object.<string,*>} object Plain object
                  * @returns {google.protobuf.GeneratedCodeInfo.Annotation} Annotation
                  */
@@ -16107,7 +15884,7 @@ $root.google = (function() {
 })();
 
 // Resolve lazy type names to actual types
-$protobuf.util.lazyResolve($root, $lazyTypes);
+$util.lazyResolve($root, $lazyTypes);
 
 $protobuf.roots["test_test"] = $root;
 

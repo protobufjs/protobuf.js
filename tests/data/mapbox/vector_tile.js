@@ -3,6 +3,11 @@
 
 var $protobuf = require("../../../runtime");
 
+// Common aliases
+var $Reader = $protobuf.Reader,
+    $Writer = $protobuf.Writer,
+    $util   = $protobuf.util;
+
 // Lazily resolved type references
 var $lazyTypes = [];
 
@@ -38,7 +43,7 @@ $root.vector_tile = (function() {
          * Tile layers.
          * @type {Array.<vector_tile.Tile.Layer>}
          */
-        Tile.prototype.layers = $protobuf.util.emptyArray;
+        Tile.prototype.layers = $util.emptyArray;
 
         // Lazily resolved referenced types
         var $types = {0:"vector_tile.Tile.Layer"}; $lazyTypes.push($types);
@@ -54,22 +59,21 @@ $root.vector_tile = (function() {
 
         /**
          * Encodes the specified Tile message.
-         * @function
          * @param {vector_tile.Tile|Object} message Tile message or plain object to encode
          * @param {$protobuf.Writer} [writer] Writer to encode to
          * @returns {$protobuf.Writer} Writer
          */
-        Tile.encode = (function(Writer, types) { return function encode(message, writer) {
+        Tile.encode = function encode(message, writer) {
             if (!writer) {
-                writer = Writer.create();
+                writer = $Writer.create();
             }
             if (message.layers) {
                 for (var i = 0; i < message.layers.length; ++i) {
-                    types[0].encode(message.layers[i], writer.uint32(26).fork()).ldelim();
+                    $types[0].encode(message.layers[i], writer.uint32(26).fork()).ldelim();
                 }
             }
             return writer;
-        };})($protobuf.Writer, $types);
+        };
 
         /**
          * Encodes the specified Tile message, length delimited.
@@ -83,14 +87,13 @@ $root.vector_tile = (function() {
 
         /**
          * Decodes a Tile message from the specified reader or buffer.
-         * @function
          * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
          * @param {number} [length] Message length if known beforehand
          * @returns {vector_tile.Tile} Tile
          */
-        Tile.decode = (function(Reader, types) { return function decode(reader, len) {
-            if (!(reader instanceof Reader)) {
-                reader = Reader.create(reader);
+        Tile.decode = function decode(reader, len) {
+            if (!(reader instanceof $Reader)) {
+                reader = $Reader.create(reader);
             }
             var end = len === undefined ? reader.len : reader.pos + len, message = new $root.vector_tile.Tile();
             while (reader.pos < end) {
@@ -100,7 +103,7 @@ $root.vector_tile = (function() {
                     if (!(message.layers && message.layers.length)) {
                         message.layers = [];
                     }
-                    message.layers.push(types[0].decode(reader, reader.uint32()));
+                    message.layers.push($types[0].decode(reader, reader.uint32()));
                     break;
 
                 default:
@@ -109,7 +112,7 @@ $root.vector_tile = (function() {
                 }
             }
             return message;
-        };})($protobuf.Reader, $types);
+        };
 
         /**
          * Decodes a Tile message from the specified reader or buffer, length delimited.
@@ -117,51 +120,49 @@ $root.vector_tile = (function() {
          * @returns {vector_tile.Tile} Tile
          */
         Tile.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-            readerOrBuffer = readerOrBuffer instanceof $protobuf.Reader ? readerOrBuffer : $protobuf.Reader(readerOrBuffer);
+            readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
             return this.decode(readerOrBuffer, readerOrBuffer.uint32());
         };
 
         /**
          * Verifies a Tile message.
-         * @function
          * @param {vector_tile.Tile|Object} message Tile message or plain object to verify
          * @returns {?string} `null` if valid, otherwise the reason why it is not
          */
-        Tile.verify = (function(types) { return function verify(message) {
+        Tile.verify = function verify(message) {
             if (message.layers !== undefined) {
                 if (!Array.isArray(message.layers)) {
                     return "layers: array expected";
                 }
                 for (var i = 0; i < message.layers.length; ++i) {
-                    var err = types[0].verify(message.layers[i]);
+                    var err = $types[0].verify(message.layers[i]);
                     if (err) {
                         return "layers." + err;
                     }
                 }
             }
             return null;
-        };})($types);
+        };
 
         /**
          * Creates a Tile message from a plain object. Also converts values to their respective internal types.
          * @param {Object.<string,*>} object Plain object
          * @returns {vector_tile.Tile} Tile
          */
-        Tile.fromObject = (function(types) { return function fromObject(object) {
+        Tile.fromObject = function fromObject(object) {
             var message = new $root.vector_tile.Tile();
             if (object.layers) {
                 message.layers = [];
                 for (var i = 0; i < object.layers.length; ++i) {
-                    message.layers[i] = types[0].fromObject(object.layers[i]);
+                    message.layers[i] = $types[0].fromObject(object.layers[i]);
                 }
             }
             return message;
-        };})($types);
+        };
 
         /**
          * Creates a Tile message from a plain object. Also converts values to their respective internal types.
          * This is an alias of {@link vector_tile.Tile.fromObject}.
-         * @function
          * @param {Object.<string,*>} object Plain object
          * @returns {vector_tile.Tile} Tile
          */
@@ -173,7 +174,7 @@ $root.vector_tile = (function() {
          * @param {$protobuf.ConversionOptions} [options] Conversion options
          * @returns {Object.<string,*>} Plain object
          */
-        Tile.toObject = (function(types) { return function toObject(message, options) {
+        Tile.toObject = function toObject(message, options) {
             if (!options) {
                 options = {};
             }
@@ -187,14 +188,14 @@ $root.vector_tile = (function() {
                     if (message.layers.length) {
                         object.layers = [];
                         for (var j = 0; j < message.layers.length; ++j) {
-                            object.layers[j] = types[0].toObject(message.layers[j], options);
+                            object.layers[j] = $types[0].toObject(message.layers[j], options);
                         }
                     }
                     break;
                 }
             }
             return object;
-        };})($types);
+        };
 
         /**
          * Creates a plain object from this Tile message. Also converts values to other types if specified.
@@ -271,19 +272,19 @@ $root.vector_tile = (function() {
              * Value intValue.
              * @type {number|$protobuf.Long}
              */
-            Value.prototype.intValue = $protobuf.util.Long ? $protobuf.util.Long.fromBits(0,0,false) : 0;
+            Value.prototype.intValue = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
 
             /**
              * Value uintValue.
              * @type {number|$protobuf.Long}
              */
-            Value.prototype.uintValue = $protobuf.util.Long ? $protobuf.util.Long.fromBits(0,0,true) : 0;
+            Value.prototype.uintValue = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
 
             /**
              * Value sintValue.
              * @type {number|$protobuf.Long}
              */
-            Value.prototype.sintValue = $protobuf.util.Long ? $protobuf.util.Long.fromBits(0,0,false) : 0;
+            Value.prototype.sintValue = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
 
             /**
              * Value boolValue.
@@ -302,14 +303,13 @@ $root.vector_tile = (function() {
 
             /**
              * Encodes the specified Value message.
-             * @function
              * @param {vector_tile.Tile.Value|Object} message Value message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            Value.encode = (function(Writer, util) { return function encode(message, writer) {
+            Value.encode = function encode(message, writer) {
                 if (!writer) {
-                    writer = Writer.create();
+                    writer = $Writer.create();
                 }
                 if (message.stringValue !== undefined && message.stringValue !== "") {
                     writer.uint32(10).string(message.stringValue);
@@ -320,20 +320,20 @@ $root.vector_tile = (function() {
                 if (message.doubleValue !== undefined && message.doubleValue !== 0) {
                     writer.uint32(25).double(message.doubleValue);
                 }
-                if (message.intValue !== undefined && message.intValue !== null && util.longNe(message.intValue, 0, 0)) {
+                if (message.intValue !== undefined && message.intValue !== null && $util.longNe(message.intValue, 0, 0)) {
                     writer.uint32(32).int64(message.intValue);
                 }
-                if (message.uintValue !== undefined && message.uintValue !== null && util.longNe(message.uintValue, 0, 0)) {
+                if (message.uintValue !== undefined && message.uintValue !== null && $util.longNe(message.uintValue, 0, 0)) {
                     writer.uint32(40).uint64(message.uintValue);
                 }
-                if (message.sintValue !== undefined && message.sintValue !== null && util.longNe(message.sintValue, 0, 0)) {
+                if (message.sintValue !== undefined && message.sintValue !== null && $util.longNe(message.sintValue, 0, 0)) {
                     writer.uint32(48).sint64(message.sintValue);
                 }
                 if (message.boolValue !== undefined && message.boolValue !== false) {
                     writer.uint32(56).bool(message.boolValue);
                 }
                 return writer;
-            };})($protobuf.Writer, $protobuf.util);
+            };
 
             /**
              * Encodes the specified Value message, length delimited.
@@ -347,14 +347,13 @@ $root.vector_tile = (function() {
 
             /**
              * Decodes a Value message from the specified reader or buffer.
-             * @function
              * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {vector_tile.Tile.Value} Value
              */
-            Value.decode = (function(Reader) { return function decode(reader, len) {
-                if (!(reader instanceof Reader)) {
-                    reader = Reader.create(reader);
+            Value.decode = function decode(reader, len) {
+                if (!(reader instanceof $Reader)) {
+                    reader = $Reader.create(reader);
                 }
                 var end = len === undefined ? reader.len : reader.pos + len, message = new $root.vector_tile.Tile.Value();
                 while (reader.pos < end) {
@@ -394,7 +393,7 @@ $root.vector_tile = (function() {
                     }
                 }
                 return message;
-            };})($protobuf.Reader);
+            };
 
             /**
              * Decodes a Value message from the specified reader or buffer, length delimited.
@@ -402,19 +401,18 @@ $root.vector_tile = (function() {
              * @returns {vector_tile.Tile.Value} Value
              */
             Value.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-                readerOrBuffer = readerOrBuffer instanceof $protobuf.Reader ? readerOrBuffer : $protobuf.Reader(readerOrBuffer);
+                readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
                 return this.decode(readerOrBuffer, readerOrBuffer.uint32());
             };
 
             /**
              * Verifies a Value message.
-             * @function
              * @param {vector_tile.Tile.Value|Object} message Value message or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            Value.verify = (function(util) { return function verify(message) {
+            Value.verify = function verify(message) {
                 if (message.stringValue !== undefined) {
-                    if (!util.isString(message.stringValue)) {
+                    if (!$util.isString(message.stringValue)) {
                         return "stringValue: string expected";
                     }
                 }
@@ -429,17 +427,17 @@ $root.vector_tile = (function() {
                     }
                 }
                 if (message.intValue !== undefined) {
-                    if (!util.isInteger(message.intValue) && !(message.intValue && util.isInteger(message.intValue.low) && util.isInteger(message.intValue.high))) {
+                    if (!$util.isInteger(message.intValue) && !(message.intValue && $util.isInteger(message.intValue.low) && $util.isInteger(message.intValue.high))) {
                         return "intValue: integer|Long expected";
                     }
                 }
                 if (message.uintValue !== undefined) {
-                    if (!util.isInteger(message.uintValue) && !(message.uintValue && util.isInteger(message.uintValue.low) && util.isInteger(message.uintValue.high))) {
+                    if (!$util.isInteger(message.uintValue) && !(message.uintValue && $util.isInteger(message.uintValue.low) && $util.isInteger(message.uintValue.high))) {
                         return "uintValue: integer|Long expected";
                     }
                 }
                 if (message.sintValue !== undefined) {
-                    if (!util.isInteger(message.sintValue) && !(message.sintValue && util.isInteger(message.sintValue.low) && util.isInteger(message.sintValue.high))) {
+                    if (!$util.isInteger(message.sintValue) && !(message.sintValue && $util.isInteger(message.sintValue.low) && $util.isInteger(message.sintValue.high))) {
                         return "sintValue: integer|Long expected";
                     }
                 }
@@ -449,14 +447,14 @@ $root.vector_tile = (function() {
                     }
                 }
                 return null;
-            };})($protobuf.util);
+            };
 
             /**
              * Creates a Value message from a plain object. Also converts values to their respective internal types.
              * @param {Object.<string,*>} object Plain object
              * @returns {vector_tile.Tile.Value} Value
              */
-            Value.fromObject = (function(util) { return function fromObject(object) {
+            Value.fromObject = function fromObject(object) {
                 var message = new $root.vector_tile.Tile.Value();
                 if (object.stringValue !== undefined && object.stringValue !== null) {
                     message.stringValue = String(object.stringValue);
@@ -468,8 +466,8 @@ $root.vector_tile = (function() {
                     message.doubleValue = Number(object.doubleValue);
                 }
                 if (object.intValue !== undefined && object.intValue !== null) {
-                    if (util.Long) {
-                        (message.intValue = util.Long.fromValue(object.intValue)).unsigned = false;
+                    if ($util.Long) {
+                        (message.intValue = $util.Long.fromValue(object.intValue)).unsigned = false;
                     } else {
                         if (typeof object.intValue === "string") {
                             message.intValue = parseInt(object.intValue, 10);
@@ -478,15 +476,15 @@ $root.vector_tile = (function() {
                                 message.intValue = object.intValue;
                             } else {
                                 if (typeof object.intValue === "object") {
-                                    message.intValue = new util.LongBits(object.intValue.low, object.intValue.high).toNumber();
+                                    message.intValue = new $util.LongBits(object.intValue.low, object.intValue.high).toNumber();
                                 }
                             }
                         }
                     }
                 }
                 if (object.uintValue !== undefined && object.uintValue !== null) {
-                    if (util.Long) {
-                        (message.uintValue = util.Long.fromValue(object.uintValue)).unsigned = true;
+                    if ($util.Long) {
+                        (message.uintValue = $util.Long.fromValue(object.uintValue)).unsigned = true;
                     } else {
                         if (typeof object.uintValue === "string") {
                             message.uintValue = parseInt(object.uintValue, 10);
@@ -495,15 +493,15 @@ $root.vector_tile = (function() {
                                 message.uintValue = object.uintValue;
                             } else {
                                 if (typeof object.uintValue === "object") {
-                                    message.uintValue = new util.LongBits(object.uintValue.low, object.uintValue.high).toNumber(true);
+                                    message.uintValue = new $util.LongBits(object.uintValue.low, object.uintValue.high).toNumber(true);
                                 }
                             }
                         }
                     }
                 }
                 if (object.sintValue !== undefined && object.sintValue !== null) {
-                    if (util.Long) {
-                        (message.sintValue = util.Long.fromValue(object.sintValue)).unsigned = false;
+                    if ($util.Long) {
+                        (message.sintValue = $util.Long.fromValue(object.sintValue)).unsigned = false;
                     } else {
                         if (typeof object.sintValue === "string") {
                             message.sintValue = parseInt(object.sintValue, 10);
@@ -512,7 +510,7 @@ $root.vector_tile = (function() {
                                 message.sintValue = object.sintValue;
                             } else {
                                 if (typeof object.sintValue === "object") {
-                                    message.sintValue = new util.LongBits(object.sintValue.low, object.sintValue.high).toNumber();
+                                    message.sintValue = new $util.LongBits(object.sintValue.low, object.sintValue.high).toNumber();
                                 }
                             }
                         }
@@ -522,12 +520,11 @@ $root.vector_tile = (function() {
                     message.boolValue = Boolean(object.boolValue);
                 }
                 return message;
-            };})($protobuf.util);
+            };
 
             /**
              * Creates a Value message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link vector_tile.Tile.Value.fromObject}.
-             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {vector_tile.Tile.Value} Value
              */
@@ -539,7 +536,7 @@ $root.vector_tile = (function() {
              * @param {$protobuf.ConversionOptions} [options] Conversion options
              * @returns {Object.<string,*>} Plain object
              */
-            Value.toObject = (function(util) { return function toObject(message, options) {
+            Value.toObject = function toObject(message, options) {
                 if (!options) {
                     options = {};
                 }
@@ -548,20 +545,20 @@ $root.vector_tile = (function() {
                     object.stringValue = "";
                     object.floatValue = 0;
                     object.doubleValue = 0;
-                    if (util.Long) {
-                        var long = new util.Long(0, 0, false);
+                    if ($util.Long) {
+                        var long = new $util.Long(0, 0, false);
                         object.intValue = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
                     } else {
                         object.intValue = options.longs === String ? "0" : 0;
                     }
-                    if (util.Long) {
-                        var long = new util.Long(0, 0, true);
+                    if ($util.Long) {
+                        var long = new $util.Long(0, 0, true);
                         object.uintValue = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
                     } else {
                         object.uintValue = options.longs === String ? "0" : 0;
                     }
-                    if (util.Long) {
-                        var long = new util.Long(0, 0, false);
+                    if ($util.Long) {
+                        var long = new $util.Long(0, 0, false);
                         object.sintValue = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
                     } else {
                         object.sintValue = options.longs === String ? "0" : 0;
@@ -593,7 +590,7 @@ $root.vector_tile = (function() {
                             if (typeof message.intValue === "number") {
                                 object.intValue = options.longs === String ? String(message.intValue) : message.intValue;
                             } else {
-                                object.intValue = options.longs === String ? util.Long.prototype.toString.call(message.intValue) : options.longs === Number ? new util.LongBits(message.intValue.low, message.intValue.high).toNumber() : message.intValue;
+                                object.intValue = options.longs === String ? $util.Long.prototype.toString.call(message.intValue) : options.longs === Number ? new $util.LongBits(message.intValue.low, message.intValue.high).toNumber() : message.intValue;
                             }
                         }
                         break;
@@ -603,7 +600,7 @@ $root.vector_tile = (function() {
                             if (typeof message.uintValue === "number") {
                                 object.uintValue = options.longs === String ? String(message.uintValue) : message.uintValue;
                             } else {
-                                object.uintValue = options.longs === String ? util.Long.prototype.toString.call(message.uintValue) : options.longs === Number ? new util.LongBits(message.uintValue.low, message.uintValue.high).toNumber(true) : message.uintValue;
+                                object.uintValue = options.longs === String ? $util.Long.prototype.toString.call(message.uintValue) : options.longs === Number ? new $util.LongBits(message.uintValue.low, message.uintValue.high).toNumber(true) : message.uintValue;
                             }
                         }
                         break;
@@ -613,7 +610,7 @@ $root.vector_tile = (function() {
                             if (typeof message.sintValue === "number") {
                                 object.sintValue = options.longs === String ? String(message.sintValue) : message.sintValue;
                             } else {
-                                object.sintValue = options.longs === String ? util.Long.prototype.toString.call(message.sintValue) : options.longs === Number ? new util.LongBits(message.sintValue.low, message.sintValue.high).toNumber() : message.sintValue;
+                                object.sintValue = options.longs === String ? $util.Long.prototype.toString.call(message.sintValue) : options.longs === Number ? new $util.LongBits(message.sintValue.low, message.sintValue.high).toNumber() : message.sintValue;
                             }
                         }
                         break;
@@ -626,7 +623,7 @@ $root.vector_tile = (function() {
                     }
                 }
                 return object;
-            };})($protobuf.util);
+            };
 
             /**
              * Creates a plain object from this Value message. Also converts values to other types if specified.
@@ -668,13 +665,13 @@ $root.vector_tile = (function() {
              * Feature id.
              * @type {number|$protobuf.Long}
              */
-            Feature.prototype.id = $protobuf.util.Long ? $protobuf.util.Long.fromBits(0,0,true) : 0;
+            Feature.prototype.id = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
 
             /**
              * Feature tags.
              * @type {Array.<number>}
              */
-            Feature.prototype.tags = $protobuf.util.emptyArray;
+            Feature.prototype.tags = $util.emptyArray;
 
             /**
              * Feature type.
@@ -686,7 +683,7 @@ $root.vector_tile = (function() {
              * Feature geometry.
              * @type {Array.<number>}
              */
-            Feature.prototype.geometry = $protobuf.util.emptyArray;
+            Feature.prototype.geometry = $util.emptyArray;
 
             // Lazily resolved referenced types
             var $types = {2:"vector_tile.Tile.GeomType"}; $lazyTypes.push($types);
@@ -702,16 +699,15 @@ $root.vector_tile = (function() {
 
             /**
              * Encodes the specified Feature message.
-             * @function
              * @param {vector_tile.Tile.Feature|Object} message Feature message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            Feature.encode = (function(Writer, util) { return function encode(message, writer) {
+            Feature.encode = function encode(message, writer) {
                 if (!writer) {
-                    writer = Writer.create();
+                    writer = $Writer.create();
                 }
-                if (message.id !== undefined && message.id !== null && util.longNe(message.id, 0, 0)) {
+                if (message.id !== undefined && message.id !== null && $util.longNe(message.id, 0, 0)) {
                     writer.uint32(8).uint64(message.id);
                 }
                 if (message.tags && message.tags.length) {
@@ -732,7 +728,7 @@ $root.vector_tile = (function() {
                     writer.ldelim();
                 }
                 return writer;
-            };})($protobuf.Writer, $protobuf.util);
+            };
 
             /**
              * Encodes the specified Feature message, length delimited.
@@ -746,14 +742,13 @@ $root.vector_tile = (function() {
 
             /**
              * Decodes a Feature message from the specified reader or buffer.
-             * @function
              * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {vector_tile.Tile.Feature} Feature
              */
-            Feature.decode = (function(Reader) { return function decode(reader, len) {
-                if (!(reader instanceof Reader)) {
-                    reader = Reader.create(reader);
+            Feature.decode = function decode(reader, len) {
+                if (!(reader instanceof $Reader)) {
+                    reader = $Reader.create(reader);
                 }
                 var end = len === undefined ? reader.len : reader.pos + len, message = new $root.vector_tile.Tile.Feature();
                 while (reader.pos < end) {
@@ -801,7 +796,7 @@ $root.vector_tile = (function() {
                     }
                 }
                 return message;
-            };})($protobuf.Reader);
+            };
 
             /**
              * Decodes a Feature message from the specified reader or buffer, length delimited.
@@ -809,19 +804,18 @@ $root.vector_tile = (function() {
              * @returns {vector_tile.Tile.Feature} Feature
              */
             Feature.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-                readerOrBuffer = readerOrBuffer instanceof $protobuf.Reader ? readerOrBuffer : $protobuf.Reader(readerOrBuffer);
+                readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
                 return this.decode(readerOrBuffer, readerOrBuffer.uint32());
             };
 
             /**
              * Verifies a Feature message.
-             * @function
              * @param {vector_tile.Tile.Feature|Object} message Feature message or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            Feature.verify = (function(util) { return function verify(message) {
+            Feature.verify = function verify(message) {
                 if (message.id !== undefined) {
-                    if (!util.isInteger(message.id) && !(message.id && util.isInteger(message.id.low) && util.isInteger(message.id.high))) {
+                    if (!$util.isInteger(message.id) && !(message.id && $util.isInteger(message.id.low) && $util.isInteger(message.id.high))) {
                         return "id: integer|Long expected";
                     }
                 }
@@ -830,7 +824,7 @@ $root.vector_tile = (function() {
                         return "tags: array expected";
                     }
                     for (var i = 0; i < message.tags.length; ++i) {
-                        if (!util.isInteger(message.tags[i])) {
+                        if (!$util.isInteger(message.tags[i])) {
                             return "tags: integer[] expected";
                         }
                     }
@@ -852,24 +846,24 @@ $root.vector_tile = (function() {
                         return "geometry: array expected";
                     }
                     for (var i = 0; i < message.geometry.length; ++i) {
-                        if (!util.isInteger(message.geometry[i])) {
+                        if (!$util.isInteger(message.geometry[i])) {
                             return "geometry: integer[] expected";
                         }
                     }
                 }
                 return null;
-            };})($protobuf.util);
+            };
 
             /**
              * Creates a Feature message from a plain object. Also converts values to their respective internal types.
              * @param {Object.<string,*>} object Plain object
              * @returns {vector_tile.Tile.Feature} Feature
              */
-            Feature.fromObject = (function(util) { return function fromObject(object) {
+            Feature.fromObject = function fromObject(object) {
                 var message = new $root.vector_tile.Tile.Feature();
                 if (object.id !== undefined && object.id !== null) {
-                    if (util.Long) {
-                        (message.id = util.Long.fromValue(object.id)).unsigned = true;
+                    if ($util.Long) {
+                        (message.id = $util.Long.fromValue(object.id)).unsigned = true;
                     } else {
                         if (typeof object.id === "string") {
                             message.id = parseInt(object.id, 10);
@@ -878,7 +872,7 @@ $root.vector_tile = (function() {
                                 message.id = object.id;
                             } else {
                                 if (typeof object.id === "object") {
-                                    message.id = new util.LongBits(object.id.low, object.id.high).toNumber(true);
+                                    message.id = new $util.LongBits(object.id.low, object.id.high).toNumber(true);
                                 }
                             }
                         }
@@ -918,12 +912,11 @@ $root.vector_tile = (function() {
                     }
                 }
                 return message;
-            };})($protobuf.util);
+            };
 
             /**
              * Creates a Feature message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link vector_tile.Tile.Feature.fromObject}.
-             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {vector_tile.Tile.Feature} Feature
              */
@@ -935,7 +928,7 @@ $root.vector_tile = (function() {
              * @param {$protobuf.ConversionOptions} [options] Conversion options
              * @returns {Object.<string,*>} Plain object
              */
-            Feature.toObject = (function(util, types) { return function toObject(message, options) {
+            Feature.toObject = function toObject(message, options) {
                 if (!options) {
                     options = {};
                 }
@@ -945,8 +938,8 @@ $root.vector_tile = (function() {
                     object.geometry = [];
                 }
                 if (options.defaults) {
-                    if (util.Long) {
-                        var long = new util.Long(0, 0, true);
+                    if ($util.Long) {
+                        var long = new $util.Long(0, 0, true);
                         object.id = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
                     } else {
                         object.id = options.longs === String ? "0" : 0;
@@ -960,7 +953,7 @@ $root.vector_tile = (function() {
                             if (typeof message.id === "number") {
                                 object.id = options.longs === String ? String(message.id) : message.id;
                             } else {
-                                object.id = options.longs === String ? util.Long.prototype.toString.call(message.id) : options.longs === Number ? new util.LongBits(message.id.low, message.id.high).toNumber(true) : message.id;
+                                object.id = options.longs === String ? $util.Long.prototype.toString.call(message.id) : options.longs === Number ? new $util.LongBits(message.id.low, message.id.high).toNumber(true) : message.id;
                             }
                         }
                         break;
@@ -976,7 +969,7 @@ $root.vector_tile = (function() {
 
                     case "type":
                         if (message.type !== undefined && message.type !== null) {
-                            object.type = options.enums === String ? types[2][message.type] : message.type;
+                            object.type = options.enums === String ? $types[2][message.type] : message.type;
                         }
                         break;
 
@@ -991,7 +984,7 @@ $root.vector_tile = (function() {
                     }
                 }
                 return object;
-            };})($protobuf.util, $types);
+            };
 
             /**
              * Creates a plain object from this Feature message. Also converts values to other types if specified.
@@ -1045,19 +1038,19 @@ $root.vector_tile = (function() {
              * Layer features.
              * @type {Array.<vector_tile.Tile.Feature>}
              */
-            Layer.prototype.features = $protobuf.util.emptyArray;
+            Layer.prototype.features = $util.emptyArray;
 
             /**
              * Layer keys.
              * @type {Array.<string>}
              */
-            Layer.prototype.keys = $protobuf.util.emptyArray;
+            Layer.prototype.keys = $util.emptyArray;
 
             /**
              * Layer values.
              * @type {Array.<vector_tile.Tile.Value>}
              */
-            Layer.prototype.values = $protobuf.util.emptyArray;
+            Layer.prototype.values = $util.emptyArray;
 
             /**
              * Layer extent.
@@ -1079,20 +1072,19 @@ $root.vector_tile = (function() {
 
             /**
              * Encodes the specified Layer message.
-             * @function
              * @param {vector_tile.Tile.Layer|Object} message Layer message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            Layer.encode = (function(Writer, types) { return function encode(message, writer) {
+            Layer.encode = function encode(message, writer) {
                 if (!writer) {
-                    writer = Writer.create();
+                    writer = $Writer.create();
                 }
                 writer.uint32(120).uint32(message.version);
                 writer.uint32(10).string(message.name);
                 if (message.features) {
                     for (var i = 0; i < message.features.length; ++i) {
-                        types[2].encode(message.features[i], writer.uint32(18).fork()).ldelim();
+                        $types[2].encode(message.features[i], writer.uint32(18).fork()).ldelim();
                     }
                 }
                 if (message.keys) {
@@ -1102,14 +1094,14 @@ $root.vector_tile = (function() {
                 }
                 if (message.values) {
                     for (var i = 0; i < message.values.length; ++i) {
-                        types[4].encode(message.values[i], writer.uint32(34).fork()).ldelim();
+                        $types[4].encode(message.values[i], writer.uint32(34).fork()).ldelim();
                     }
                 }
                 if (message.extent !== undefined && message.extent !== 4096) {
                     writer.uint32(40).uint32(message.extent);
                 }
                 return writer;
-            };})($protobuf.Writer, $types);
+            };
 
             /**
              * Encodes the specified Layer message, length delimited.
@@ -1123,14 +1115,13 @@ $root.vector_tile = (function() {
 
             /**
              * Decodes a Layer message from the specified reader or buffer.
-             * @function
              * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {vector_tile.Tile.Layer} Layer
              */
-            Layer.decode = (function(Reader, types) { return function decode(reader, len) {
-                if (!(reader instanceof Reader)) {
-                    reader = Reader.create(reader);
+            Layer.decode = function decode(reader, len) {
+                if (!(reader instanceof $Reader)) {
+                    reader = $Reader.create(reader);
                 }
                 var end = len === undefined ? reader.len : reader.pos + len, message = new $root.vector_tile.Tile.Layer();
                 while (reader.pos < end) {
@@ -1148,7 +1139,7 @@ $root.vector_tile = (function() {
                         if (!(message.features && message.features.length)) {
                             message.features = [];
                         }
-                        message.features.push(types[2].decode(reader, reader.uint32()));
+                        message.features.push($types[2].decode(reader, reader.uint32()));
                         break;
 
                     case 3:
@@ -1162,7 +1153,7 @@ $root.vector_tile = (function() {
                         if (!(message.values && message.values.length)) {
                             message.values = [];
                         }
-                        message.values.push(types[4].decode(reader, reader.uint32()));
+                        message.values.push($types[4].decode(reader, reader.uint32()));
                         break;
 
                     case 5:
@@ -1175,7 +1166,7 @@ $root.vector_tile = (function() {
                     }
                 }
                 return message;
-            };})($protobuf.Reader, $types);
+            };
 
             /**
              * Decodes a Layer message from the specified reader or buffer, length delimited.
@@ -1183,21 +1174,20 @@ $root.vector_tile = (function() {
              * @returns {vector_tile.Tile.Layer} Layer
              */
             Layer.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-                readerOrBuffer = readerOrBuffer instanceof $protobuf.Reader ? readerOrBuffer : $protobuf.Reader(readerOrBuffer);
+                readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
                 return this.decode(readerOrBuffer, readerOrBuffer.uint32());
             };
 
             /**
              * Verifies a Layer message.
-             * @function
              * @param {vector_tile.Tile.Layer|Object} message Layer message or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            Layer.verify = (function(util, types) { return function verify(message) {
-                if (!util.isInteger(message.version)) {
+            Layer.verify = function verify(message) {
+                if (!$util.isInteger(message.version)) {
                     return "version: integer expected";
                 }
-                if (!util.isString(message.name)) {
+                if (!$util.isString(message.name)) {
                     return "name: string expected";
                 }
                 if (message.features !== undefined) {
@@ -1205,7 +1195,7 @@ $root.vector_tile = (function() {
                         return "features: array expected";
                     }
                     for (var i = 0; i < message.features.length; ++i) {
-                        var err = types[2].verify(message.features[i]);
+                        var err = $types[2].verify(message.features[i]);
                         if (err) {
                             return "features." + err;
                         }
@@ -1216,7 +1206,7 @@ $root.vector_tile = (function() {
                         return "keys: array expected";
                     }
                     for (var i = 0; i < message.keys.length; ++i) {
-                        if (!util.isString(message.keys[i])) {
+                        if (!$util.isString(message.keys[i])) {
                             return "keys: string[] expected";
                         }
                     }
@@ -1226,26 +1216,26 @@ $root.vector_tile = (function() {
                         return "values: array expected";
                     }
                     for (var i = 0; i < message.values.length; ++i) {
-                        var err = types[4].verify(message.values[i]);
+                        var err = $types[4].verify(message.values[i]);
                         if (err) {
                             return "values." + err;
                         }
                     }
                 }
                 if (message.extent !== undefined) {
-                    if (!util.isInteger(message.extent)) {
+                    if (!$util.isInteger(message.extent)) {
                         return "extent: integer expected";
                     }
                 }
                 return null;
-            };})($protobuf.util, $types);
+            };
 
             /**
              * Creates a Layer message from a plain object. Also converts values to their respective internal types.
              * @param {Object.<string,*>} object Plain object
              * @returns {vector_tile.Tile.Layer} Layer
              */
-            Layer.fromObject = (function(types) { return function fromObject(object) {
+            Layer.fromObject = function fromObject(object) {
                 var message = new $root.vector_tile.Tile.Layer();
                 if (object.version !== undefined && object.version !== null) {
                     message.version = object.version >>> 0;
@@ -1256,7 +1246,7 @@ $root.vector_tile = (function() {
                 if (object.features) {
                     message.features = [];
                     for (var i = 0; i < object.features.length; ++i) {
-                        message.features[i] = types[2].fromObject(object.features[i]);
+                        message.features[i] = $types[2].fromObject(object.features[i]);
                     }
                 }
                 if (object.keys) {
@@ -1268,19 +1258,18 @@ $root.vector_tile = (function() {
                 if (object.values) {
                     message.values = [];
                     for (var i = 0; i < object.values.length; ++i) {
-                        message.values[i] = types[4].fromObject(object.values[i]);
+                        message.values[i] = $types[4].fromObject(object.values[i]);
                     }
                 }
                 if (object.extent !== undefined && object.extent !== null) {
                     message.extent = object.extent >>> 0;
                 }
                 return message;
-            };})($types);
+            };
 
             /**
              * Creates a Layer message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link vector_tile.Tile.Layer.fromObject}.
-             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {vector_tile.Tile.Layer} Layer
              */
@@ -1292,7 +1281,7 @@ $root.vector_tile = (function() {
              * @param {$protobuf.ConversionOptions} [options] Conversion options
              * @returns {Object.<string,*>} Plain object
              */
-            Layer.toObject = (function(types) { return function toObject(message, options) {
+            Layer.toObject = function toObject(message, options) {
                 if (!options) {
                     options = {};
                 }
@@ -1325,7 +1314,7 @@ $root.vector_tile = (function() {
                         if (message.features.length) {
                             object.features = [];
                             for (var j = 0; j < message.features.length; ++j) {
-                                object.features[j] = types[2].toObject(message.features[j], options);
+                                object.features[j] = $types[2].toObject(message.features[j], options);
                             }
                         }
                         break;
@@ -1343,7 +1332,7 @@ $root.vector_tile = (function() {
                         if (message.values.length) {
                             object.values = [];
                             for (var j = 0; j < message.values.length; ++j) {
-                                object.values[j] = types[4].toObject(message.values[j], options);
+                                object.values[j] = $types[4].toObject(message.values[j], options);
                             }
                         }
                         break;
@@ -1356,7 +1345,7 @@ $root.vector_tile = (function() {
                     }
                 }
                 return object;
-            };})($types);
+            };
 
             /**
              * Creates a plain object from this Layer message. Also converts values to other types if specified.
@@ -1385,7 +1374,7 @@ $root.vector_tile = (function() {
 })();
 
 // Resolve lazy type names to actual types
-$protobuf.util.lazyResolve($root, $lazyTypes);
+$util.lazyResolve($root, $lazyTypes);
 
 $protobuf.roots["test_vector_tile"] = $root;
 

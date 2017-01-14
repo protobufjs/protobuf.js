@@ -3,6 +3,11 @@
 
 var $protobuf = require("../../runtime");
 
+// Common aliases
+var $Reader = $protobuf.Reader,
+    $Writer = $protobuf.Writer,
+    $util   = $protobuf.util;
+
 // Lazily resolved type references
 var $lazyTypes = [];
 
@@ -42,20 +47,19 @@ $root.A = (function() {
 
     /**
      * Encodes the specified A message.
-     * @function
      * @param {A|Object} message A message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    A.encode = (function(Writer) { return function encode(message, writer) {
+    A.encode = function encode(message, writer) {
         if (!writer) {
-            writer = Writer.create();
+            writer = $Writer.create();
         }
         if (message.whatever !== undefined && message.whatever !== "") {
             writer.uint32(10).string(message.whatever);
         }
         return writer;
-    };})($protobuf.Writer);
+    };
 
     /**
      * Encodes the specified A message, length delimited.
@@ -69,14 +73,13 @@ $root.A = (function() {
 
     /**
      * Decodes a A message from the specified reader or buffer.
-     * @function
      * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
      * @param {number} [length] Message length if known beforehand
      * @returns {A} A
      */
-    A.decode = (function(Reader) { return function decode(reader, len) {
-        if (!(reader instanceof Reader)) {
-            reader = Reader.create(reader);
+    A.decode = function decode(reader, len) {
+        if (!(reader instanceof $Reader)) {
+            reader = $Reader.create(reader);
         }
         var end = len === undefined ? reader.len : reader.pos + len, message = new $root.A();
         while (reader.pos < end) {
@@ -92,7 +95,7 @@ $root.A = (function() {
             }
         }
         return message;
-    };})($protobuf.Reader);
+    };
 
     /**
      * Decodes a A message from the specified reader or buffer, length delimited.
@@ -100,24 +103,23 @@ $root.A = (function() {
      * @returns {A} A
      */
     A.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-        readerOrBuffer = readerOrBuffer instanceof $protobuf.Reader ? readerOrBuffer : $protobuf.Reader(readerOrBuffer);
+        readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
         return this.decode(readerOrBuffer, readerOrBuffer.uint32());
     };
 
     /**
      * Verifies a A message.
-     * @function
      * @param {A|Object} message A message or plain object to verify
      * @returns {?string} `null` if valid, otherwise the reason why it is not
      */
-    A.verify = (function(util) { return function verify(message) {
+    A.verify = function verify(message) {
         if (message.whatever !== undefined) {
-            if (!util.isString(message.whatever)) {
+            if (!$util.isString(message.whatever)) {
                 return "whatever: string expected";
             }
         }
         return null;
-    };})($protobuf.util);
+    };
 
     /**
      * Creates a A message from a plain object. Also converts values to their respective internal types.
@@ -135,7 +137,6 @@ $root.A = (function() {
     /**
      * Creates a A message from a plain object. Also converts values to their respective internal types.
      * This is an alias of {@link A.fromObject}.
-     * @function
      * @param {Object.<string,*>} object Plain object
      * @returns {A} A
      */
@@ -223,20 +224,19 @@ $root.B = (function() {
 
     /**
      * Encodes the specified B message.
-     * @function
      * @param {B|Object} message B message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    B.encode = (function(Writer, types) { return function encode(message, writer) {
+    B.encode = function encode(message, writer) {
         if (!writer) {
-            writer = Writer.create();
+            writer = $Writer.create();
         }
         if (message.A !== undefined && message.A !== null) {
-            types[0].encode(message.A, writer.uint32(10).fork()).ldelim();
+            $types[0].encode(message.A, writer.uint32(10).fork()).ldelim();
         }
         return writer;
-    };})($protobuf.Writer, $types);
+    };
 
     /**
      * Encodes the specified B message, length delimited.
@@ -250,21 +250,20 @@ $root.B = (function() {
 
     /**
      * Decodes a B message from the specified reader or buffer.
-     * @function
      * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
      * @param {number} [length] Message length if known beforehand
      * @returns {B} B
      */
-    B.decode = (function(Reader, types) { return function decode(reader, len) {
-        if (!(reader instanceof Reader)) {
-            reader = Reader.create(reader);
+    B.decode = function decode(reader, len) {
+        if (!(reader instanceof $Reader)) {
+            reader = $Reader.create(reader);
         }
         var end = len === undefined ? reader.len : reader.pos + len, message = new $root.B();
         while (reader.pos < end) {
             var tag = reader.uint32();
             switch (tag >>> 3) {
             case 1:
-                message.A = types[0].decode(reader, reader.uint32());
+                message.A = $types[0].decode(reader, reader.uint32());
                 break;
 
             default:
@@ -273,7 +272,7 @@ $root.B = (function() {
             }
         }
         return message;
-    };})($protobuf.Reader, $types);
+    };
 
     /**
      * Decodes a B message from the specified reader or buffer, length delimited.
@@ -281,43 +280,41 @@ $root.B = (function() {
      * @returns {B} B
      */
     B.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-        readerOrBuffer = readerOrBuffer instanceof $protobuf.Reader ? readerOrBuffer : $protobuf.Reader(readerOrBuffer);
+        readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
         return this.decode(readerOrBuffer, readerOrBuffer.uint32());
     };
 
     /**
      * Verifies a B message.
-     * @function
      * @param {B|Object} message B message or plain object to verify
      * @returns {?string} `null` if valid, otherwise the reason why it is not
      */
-    B.verify = (function(types) { return function verify(message) {
+    B.verify = function verify(message) {
         if (message.A !== undefined && message.A !== null) {
-            var err = types[0].verify(message.A);
+            var err = $types[0].verify(message.A);
             if (err) {
                 return "A." + err;
             }
         }
         return null;
-    };})($types);
+    };
 
     /**
      * Creates a B message from a plain object. Also converts values to their respective internal types.
      * @param {Object.<string,*>} object Plain object
      * @returns {B} B
      */
-    B.fromObject = (function(types) { return function fromObject(object) {
+    B.fromObject = function fromObject(object) {
         var message = new $root.B();
         if (object.A !== undefined && object.A !== null) {
-            message.A = types[0].fromObject(object.A);
+            message.A = $types[0].fromObject(object.A);
         }
         return message;
-    };})($types);
+    };
 
     /**
      * Creates a B message from a plain object. Also converts values to their respective internal types.
      * This is an alias of {@link B.fromObject}.
-     * @function
      * @param {Object.<string,*>} object Plain object
      * @returns {B} B
      */
@@ -329,7 +326,7 @@ $root.B = (function() {
      * @param {$protobuf.ConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      */
-    B.toObject = (function(types) { return function toObject(message, options) {
+    B.toObject = function toObject(message, options) {
         if (!options) {
             options = {};
         }
@@ -341,13 +338,13 @@ $root.B = (function() {
             switch (keys[i]) {
             case "A":
                 if (message.A !== undefined && message.A !== null) {
-                    object.A = types[0].toObject(message.A, options);
+                    object.A = $types[0].toObject(message.A, options);
                 }
                 break;
             }
         }
         return object;
-    };})($types);
+    };
 
     /**
      * Creates a plain object from this B message. Also converts values to other types if specified.
@@ -370,7 +367,7 @@ $root.B = (function() {
 })();
 
 // Resolve lazy type names to actual types
-$protobuf.util.lazyResolve($root, $lazyTypes);
+$util.lazyResolve($root, $lazyTypes);
 
 $protobuf.roots["test_ambiguous-names"] = $root;
 

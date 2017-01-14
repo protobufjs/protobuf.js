@@ -22,6 +22,12 @@ function static_target(root, options, callback) {
     config = options;
     try {
         if (config.comments)
+            push("// Common aliases");
+        push("var $Reader = $protobuf.Reader,");
+        push("    $Writer = $protobuf.Writer,");
+        push("    $util   = $protobuf.util;");
+        push("");
+        if (config.comments)
             push("// Lazily resolved type references");
         push("var $lazyTypes = [];");
         push("");
@@ -36,7 +42,7 @@ function static_target(root, options, callback) {
         push("");
         if (config.comments)
             push("// Resolve lazy type names to actual types");
-        push("$protobuf.util.lazyResolve($root, $lazyTypes);");
+        push("$util.lazyResolve($root, $lazyTypes);");
         return callback(null, out.join("\n"));
     } catch (err) {
         return callback(err);
@@ -165,18 +171,22 @@ function beautify(code) {
 function buildFunction(type, functionName, gen, scope) {
     var code = gen.str(functionName)
         .replace(/\(this.ctor\)/g, " $root" + type.fullName) // types: construct directly instead of using reflected ctor
-        .replace(/(types\[\d+])(\.values)/g, "$1"); // enums: use types[N] instead of reflected types[N].values
+        .replace(/(types\[\d+])(\.values)/g, "$1")           // enums: use types[N] instead of reflected types[N].values
+        .replace(/\bWriter\b/g, "$Writer")                   // use common aliases instead of binding through an iife
+        .replace(/\bReader\b/g, "$Reader")
+        .replace(/\butil\b/g, "$util")
+        .replace(/\btypes\b/g, "$types");
 
     if (config.beautify)
         code = beautify(code);
 
-    // remove unused scope vars
-    Object.keys(scope).forEach(function(key) {
-        if (!new RegExp("\\b(" + key + ")\\b", "g").test(code))
-            delete scope[key];
-    });
+    var hasScope = scope && Object.keys(scope).length;
 
-    var hasScope = Object.keys(scope).length;
+    if (hasScope) // remove unused scope vars
+        Object.keys(scope).forEach(function(key) {
+            if (!new RegExp("\\b(" + key + ")\\b", "g").test(code))
+                delete scope[key];
+        });
 
     // enclose all but the first and last line in an iife returning our properly scoped function
     var lines = code.split(/\n/g);
@@ -276,17 +286,17 @@ function buildType(ref, type) {
             firstField = false;
         }
         if (field.repeated)
-            push(name(type.name) + ".prototype" + prop + " = $protobuf.util.emptyArray;");
+            push(name(type.name) + ".prototype" + prop + " = $util.emptyArray;");
         else if (field.map)
-            push(name(type.name) + ".prototype" + prop + " = $protobuf.util.emptyObject;");
+            push(name(type.name) + ".prototype" + prop + " = $util.emptyObject;");
         else if (field.long)
-            push(name(type.name) + ".prototype" + prop + " = $protobuf.util.Long ? $protobuf.util.Long.fromBits("
+            push(name(type.name) + ".prototype" + prop + " = $util.Long ? $util.Long.fromBits("
                     + JSON.stringify(field.typeDefault.low) + ","
                     + JSON.stringify(field.typeDefault.high) + ","
                     + JSON.stringify(field.typeDefault.unsigned)
                 + ") : " + field.typeDefault.toNumber(field.type.charAt(0) === "u") + ";");
         else if (field.bytes) {
-            push(name(type.name) + ".prototype" + prop + " = $protobuf.util.newBuffer(" + JSON.stringify(Array.prototype.slice.call(field.typeDefault)) + ");");
+            push(name(type.name) + ".prototype" + prop + " = $util.newBuffer(" + JSON.stringify(Array.prototype.slice.call(field.typeDefault)) + ");");
         } else
             push(name(type.name) + ".prototype" + prop + " = " + JSON.stringify(field.typeDefault) + ";");
     });
@@ -310,8 +320,8 @@ function buildType(ref, type) {
         ]);
         push("Object.defineProperty(" + name(type.name) + ".prototype, " + JSON.stringify(oneof.name) +", {");
         ++indent;
-            push("get: $protobuf.util.oneOfGetter($oneOfFields = [" + oneof.oneof.map(JSON.stringify).join(", ") + "]),");
-            push("set: $protobuf.util.oneOfSetter($oneOfFields)");
+            push("get: $util.oneOfGetter($oneOfFields = [" + oneof.oneof.map(JSON.stringify).join(", ") + "]),");
+            push("set: $util.oneOfSetter($oneOfFields)");
         --indent;
         push("});");
     });
@@ -350,16 +360,11 @@ function buildType(ref, type) {
         push("");
         pushComment([
             "Encodes the specified " + type.name + " message.",
-            "@function",
             "@param {" + fullName + "|Object} message " + type.name + " message or plain object to encode",
             "@param {$protobuf.Writer} [writer] Writer to encode to",
             "@returns {$protobuf.Writer} Writer"
         ]);
-        buildFunction(type, "encode", protobuf.encoder(type), {
-            Writer : "$protobuf.Writer",
-            util   : "$protobuf.util",
-            types  : hasTypes ? "$types" : undefined
-        });
+        buildFunction(type, "encode", protobuf.encoder(type));
 
         if (config.delimited) {
             push("");
@@ -383,16 +388,11 @@ function buildType(ref, type) {
         push("");
         pushComment([
             "Decodes " + aOrAn(type.name) + " message from the specified reader or buffer.",
-            "@function",
             "@param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from",
             "@param {number} [length] Message length if known beforehand",
             "@returns {" + fullName + "} " + type.name
         ]);
-        buildFunction(type, "decode", protobuf.decoder(type), {
-            Reader : "$protobuf.Reader",
-            util   : "$protobuf.util",
-            types  : hasTypes ? "$types" : undefined
-        });
+        buildFunction(type, "decode", protobuf.decoder(type));
 
         if (config.delimited) {
             push("");
@@ -403,7 +403,7 @@ function buildType(ref, type) {
             ]);
             push(name(type.name) + ".decodeDelimited = function decodeDelimited(readerOrBuffer) {");
             ++indent;
-            push("readerOrBuffer = readerOrBuffer instanceof $protobuf.Reader ? readerOrBuffer : $protobuf.Reader(readerOrBuffer);");
+            push("readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);");
             push("return this.decode(readerOrBuffer, readerOrBuffer.uint32());");
             --indent;
             push("};");
@@ -415,14 +415,10 @@ function buildType(ref, type) {
         push("");
         pushComment([
             "Verifies " + aOrAn(type.name) + " message.",
-            "@function",
             "@param {" + fullName + "|Object} message " + type.name + " message or plain object to verify",
             "@returns {?string} `null` if valid, otherwise the reason why it is not"
         ]);
-        buildFunction(type, "verify", protobuf.verifier(type), {
-            util  : "$protobuf.util",
-            types : hasTypes ? "$types" : undefined
-        });
+        buildFunction(type, "verify", protobuf.verifier(type));
 
     }
 
@@ -433,16 +429,12 @@ function buildType(ref, type) {
             "@param {Object.<string,*>} object Plain object",
             "@returns {" + fullName + "} " + type.name
         ]);
-        buildFunction(type, "fromObject", protobuf.converter.fromObject(type), {
-            util  : "$protobuf.util",
-            types : hasTypes ? "$types" : undefined
-        });
+        buildFunction(type, "fromObject", protobuf.converter.fromObject(type));
 
         push("");
         pushComment([
             "Creates " + aOrAn(type.name) + " message from a plain object. Also converts values to their respective internal types.",
             "This is an alias of {@link " + fullName + ".fromObject}.",
-            "@function",
             "@param {Object.<string,*>} object Plain object",
             "@returns {" + fullName + "} " + type.name
         ]);
@@ -455,10 +447,7 @@ function buildType(ref, type) {
             "@param {$protobuf.ConversionOptions} [options] Conversion options",
             "@returns {Object.<string,*>} Plain object"
         ]);
-        buildFunction(type, "toObject", protobuf.converter.toObject(type), {
-            util  : "$protobuf.util",
-            types : hasTypes ? "$types" : undefined
-        });
+        buildFunction(type, "toObject", protobuf.converter.toObject(type));
 
         push("");
         pushComment([
