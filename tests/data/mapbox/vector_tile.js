@@ -45,8 +45,10 @@ $root.vector_tile = (function() {
          */
         Tile.prototype.layers = $util.emptyArray;
 
-        // Lazily resolved referenced types
-        var $types = {0:"vector_tile.Tile.Layer"}; $lazyTypes.push($types);
+        // Lazily resolved type references
+        var $types = {
+            0: "vector_tile.Tile.Layer"
+        }; $lazyTypes.push($types);
 
         /**
          * Creates a new Tile instance using the specified properties.
@@ -685,8 +687,10 @@ $root.vector_tile = (function() {
              */
             Feature.prototype.geometry = $util.emptyArray;
 
-            // Lazily resolved referenced types
-            var $types = {2:"vector_tile.Tile.GeomType"}; $lazyTypes.push($types);
+            // Lazily resolved type references
+            var $types = {
+                2: "vector_tile.Tile.GeomType"
+            }; $lazyTypes.push($types);
 
             /**
              * Creates a new Feature instance using the specified properties.
@@ -1058,8 +1062,11 @@ $root.vector_tile = (function() {
              */
             Layer.prototype.extent = 4096;
 
-            // Lazily resolved referenced types
-            var $types = {2:"vector_tile.Tile.Feature",4:"vector_tile.Tile.Value"}; $lazyTypes.push($types);
+            // Lazily resolved type references
+            var $types = {
+                2: "vector_tile.Tile.Feature",
+                4: "vector_tile.Tile.Value"
+            }; $lazyTypes.push($types);
 
             /**
              * Creates a new Layer instance using the specified properties.
@@ -1373,9 +1380,7 @@ $root.vector_tile = (function() {
     return vector_tile;
 })();
 
-// Resolve lazy type names to actual types
+// Resolve lazy type references to actual types
 $util.lazyResolve($root, $lazyTypes);
 
-$protobuf.roots["test_vector_tile"] = $root;
-
-module.exports = $root;
+module.exports = $protobuf.roots["test_vector_tile"] = $root;

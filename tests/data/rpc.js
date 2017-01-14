@@ -454,9 +454,7 @@ $root.MyResponse = (function() {
     return MyResponse;
 })();
 
-// Resolve lazy type names to actual types
+// Resolve lazy type references to actual types
 $util.lazyResolve($root, $lazyTypes);
 
-$protobuf.roots["test_rpc"] = $root;
-
-module.exports = $root;
+module.exports = $protobuf.roots["test_rpc"] = $root;

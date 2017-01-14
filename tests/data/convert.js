@@ -84,8 +84,11 @@ $root.Message = (function() {
      */
     Message.prototype.int64Map = $util.emptyObject;
 
-    // Lazily resolved referenced types
-    var $types = {6:"Message.SomeEnum",7:"Message.SomeEnum"}; $lazyTypes.push($types);
+    // Lazily resolved type references
+    var $types = {
+        6: "Message.SomeEnum",
+        7: "Message.SomeEnum"
+    }; $lazyTypes.push($types);
 
     /**
      * Creates a new Message instance using the specified properties.
@@ -637,9 +640,7 @@ $root.Message = (function() {
     return Message;
 })();
 
-// Resolve lazy type names to actual types
+// Resolve lazy type references to actual types
 $util.lazyResolve($root, $lazyTypes);
 
-$protobuf.roots["test_convert"] = $root;
-
-module.exports = $root;
+module.exports = $protobuf.roots["test_convert"] = $root;

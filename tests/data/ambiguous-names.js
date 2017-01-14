@@ -210,8 +210,10 @@ $root.B = (function() {
      */
     B.prototype.A = null;
 
-    // Lazily resolved referenced types
-    var $types = {0:"A"}; $lazyTypes.push($types);
+    // Lazily resolved type references
+    var $types = {
+        0: "A"
+    }; $lazyTypes.push($types);
 
     /**
      * Creates a new B instance using the specified properties.
@@ -366,9 +368,7 @@ $root.B = (function() {
     return B;
 })();
 
-// Resolve lazy type names to actual types
+// Resolve lazy type references to actual types
 $util.lazyResolve($root, $lazyTypes);
 
-$protobuf.roots["test_ambiguous-names"] = $root;
-
-module.exports = $root;
+module.exports = $protobuf.roots["test_ambiguous-names"] = $root;

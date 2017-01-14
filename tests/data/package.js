@@ -132,8 +132,10 @@ $root.Package = (function() {
      */
     Package.prototype.cliDependencies = $util.emptyArray;
 
-    // Lazily resolved referenced types
-    var $types = {5:"Package.Repository"}; $lazyTypes.push($types);
+    // Lazily resolved type references
+    var $types = {
+        5: "Package.Repository"
+    }; $lazyTypes.push($types);
 
     /**
      * Creates a new Package instance using the specified properties.
@@ -211,8 +213,8 @@ $root.Package = (function() {
                 writer.uint32(122).fork().uint32(10).string(keys[i]).uint32(18).string(message.devDependencies[keys[i]]).ldelim();
             }
         }
-        if (message.$types !== undefined && message.$types !== "") {
-            writer.uint32(138).string(message.$types);
+        if (message.types !== undefined && message.types !== "") {
+            writer.uint32(138).string(message.types);
         }
         if (message.cliDependencies) {
             for (var i = 0; i < message.cliDependencies.length; ++i) {
@@ -340,7 +342,7 @@ $root.Package = (function() {
                 break;
 
             case 17:
-                message.$types = reader.string();
+                message.types = reader.string();
                 break;
 
             case 18:
@@ -485,9 +487,9 @@ $root.Package = (function() {
                 }
             }
         }
-        if (message.$types !== undefined) {
-            if (!$util.isString(message.$types)) {
-                return "$types: string expected";
+        if (message.types !== undefined) {
+            if (!$util.isString(message.types)) {
+                return "types: string expected";
             }
         }
         if (message.cliDependencies !== undefined) {
@@ -573,8 +575,8 @@ $root.Package = (function() {
                 message.devDependencies[keys[i]] = String(object.devDependencies[keys[i]]);
             }
         }
-        if (object.$types !== undefined && object.$types !== null) {
-            message.$types = String(object.$types);
+        if (object.types !== undefined && object.types !== null) {
+            message.types = String(object.types);
         }
         if (object.cliDependencies) {
             message.cliDependencies = [];
@@ -625,7 +627,7 @@ $root.Package = (function() {
             object.bugs = "";
             object.homepage = "";
             object.main = "";
-            object.$types = "";
+            object.types = "";
         }
         for (var keys = Object.keys(message), i = 0; i < keys.length; ++i) {
             switch (keys[i]) {
@@ -737,9 +739,9 @@ $root.Package = (function() {
                 }
                 break;
 
-            case "$types":
-                if (message.$types !== undefined && message.$types !== null) {
-                    object.$types = message.$types;
+            case "types":
+                if (message.types !== undefined && message.types !== null) {
+                    object.types = message.types;
                 }
                 break;
 
@@ -978,9 +980,7 @@ $root.Package = (function() {
     return Package;
 })();
 
-// Resolve lazy type names to actual types
+// Resolve lazy type references to actual types
 $util.lazyResolve($root, $lazyTypes);
 
-$protobuf.roots["test_package"] = $root;
-
-module.exports = $root;
+module.exports = $protobuf.roots["test_package"] = $root;

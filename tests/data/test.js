@@ -206,8 +206,10 @@ $root.jspb = (function() {
              */
             EnumContainer.prototype.outerEnum = 1;
 
-            // Lazily resolved referenced types
-            var $types = {0:"jspb.test.OuterEnum"}; $lazyTypes.push($types);
+            // Lazily resolved type references
+            var $types = {
+                0: "jspb.test.OuterEnum"
+            }; $lazyTypes.push($types);
 
             /**
              * Creates a new EnumContainer instance using the specified properties.
@@ -1125,8 +1127,11 @@ $root.jspb = (function() {
              */
             OptionalFields.prototype.aRepeatedString = $util.emptyArray;
 
-            // Lazily resolved referenced types
-            var $types = {2:"jspb.test.OptionalFields.Nested",3:"jspb.test.OptionalFields.Nested"}; $lazyTypes.push($types);
+            // Lazily resolved type references
+            var $types = {
+                2: "jspb.test.OptionalFields.Nested",
+                3: "jspb.test.OptionalFields.Nested"
+            }; $lazyTypes.push($types);
 
             /**
              * Creates a new OptionalFields instance using the specified properties.
@@ -1650,8 +1655,13 @@ $root.jspb = (function() {
              */
             HasExtensions.prototype[".jspb.test.simple1"] = null;
 
-            // Lazily resolved referenced types
-            var $types = {3:"jspb.test.IsExtension",4:"jspb.test.Simple1",7:"jspb.test.Simple1",8:"jspb.test.Simple1"}; $lazyTypes.push($types);
+            // Lazily resolved type references
+            var $types = {
+                3: "jspb.test.IsExtension",
+                4: "jspb.test.Simple1",
+                7: "jspb.test.Simple1",
+                8: "jspb.test.Simple1"
+            }; $lazyTypes.push($types);
 
             /**
              * Creates a new HasExtensions instance using the specified properties.
@@ -2065,8 +2075,11 @@ $root.jspb = (function() {
              */
             Complex.prototype.aRepeatedString = $util.emptyArray;
 
-            // Lazily resolved referenced types
-            var $types = {2:"jspb.test.Complex.Nested",3:"jspb.test.Complex.Nested"}; $lazyTypes.push($types);
+            // Lazily resolved type references
+            var $types = {
+                2: "jspb.test.Complex.Nested",
+                3: "jspb.test.Complex.Nested"
+            }; $lazyTypes.push($types);
 
             /**
              * Creates a new Complex instance using the specified properties.
@@ -3178,8 +3191,10 @@ $root.jspb = (function() {
              */
             DefaultValues.prototype.bytesField = $util.newBuffer([109,111,111]);
 
-            // Lazily resolved referenced types
-            var $types = {3:"jspb.test.DefaultValues.Enum"}; $lazyTypes.push($types);
+            // Lazily resolved type references
+            var $types = {
+                3: "jspb.test.DefaultValues.Enum"
+            }; $lazyTypes.push($types);
 
             /**
              * Creates a new DefaultValues instance using the specified properties.
@@ -3964,8 +3979,12 @@ $root.jspb = (function() {
              */
             TestClone.prototype[".jspb.test.CloneExtension.extField"] = null;
 
-            // Lazily resolved referenced types
-            var $types = {1:"jspb.test.Simple1",2:"jspb.test.Simple1",5:"jspb.test.CloneExtension"}; $lazyTypes.push($types);
+            // Lazily resolved type references
+            var $types = {
+                1: "jspb.test.Simple1",
+                2: "jspb.test.Simple1",
+                5: "jspb.test.CloneExtension"
+            }; $lazyTypes.push($types);
 
             /**
              * Creates a new TestClone instance using the specified properties.
@@ -4482,8 +4501,14 @@ $root.jspb = (function() {
              */
             TestGroup.prototype.optionalSimple = null;
 
-            // Lazily resolved referenced types
-            var $types = {0:"jspb.test.TestGroup.RepeatedGroup",1:"jspb.test.TestGroup.RequiredGroup",2:"jspb.test.TestGroup.OptionalGroup",4:"jspb.test.Simple2",5:"jspb.test.Simple2"}; $lazyTypes.push($types);
+            // Lazily resolved type references
+            var $types = {
+                0: "jspb.test.TestGroup.RepeatedGroup",
+                1: "jspb.test.TestGroup.RequiredGroup",
+                2: "jspb.test.TestGroup.OptionalGroup",
+                4: "jspb.test.Simple2",
+                5: "jspb.test.Simple2"
+            }; $lazyTypes.push($types);
 
             /**
              * Creates a new TestGroup instance using the specified properties.
@@ -5356,8 +5381,10 @@ $root.jspb = (function() {
              */
             TestGroup1.prototype.group = null;
 
-            // Lazily resolved referenced types
-            var $types = {0:"jspb.test.TestGroup.RepeatedGroup"}; $lazyTypes.push($types);
+            // Lazily resolved type references
+            var $types = {
+                0: "jspb.test.TestGroup.RepeatedGroup"
+            }; $lazyTypes.push($types);
 
             /**
              * Creates a new TestGroup1 instance using the specified properties.
@@ -5970,8 +5997,10 @@ $root.jspb = (function() {
                 set: $util.oneOfSetter($oneOfFields)
             });
 
-            // Lazily resolved referenced types
-            var $types = {2:"jspb.test.TestMessageWithOneof"}; $lazyTypes.push($types);
+            // Lazily resolved type references
+            var $types = {
+                2: "jspb.test.TestMessageWithOneof"
+            }; $lazyTypes.push($types);
 
             /**
              * Creates a new TestMessageWithOneof instance using the specified properties.
@@ -6650,8 +6679,13 @@ $root.jspb = (function() {
              */
             TestMapFieldsNoBinary.prototype.mapStringTestmapfields = $util.emptyObject;
 
-            // Lazily resolved referenced types
-            var $types = {5:"jspb.test.MapValueEnumNoBinary",6:"jspb.test.MapValueMessageNoBinary",10:"jspb.test.TestMapFieldsNoBinary",11:"jspb.test.TestMapFieldsNoBinary"}; $lazyTypes.push($types);
+            // Lazily resolved type references
+            var $types = {
+                5: "jspb.test.MapValueEnumNoBinary",
+                6: "jspb.test.MapValueMessageNoBinary",
+                10: "jspb.test.TestMapFieldsNoBinary",
+                11: "jspb.test.TestMapFieldsNoBinary"
+            }; $lazyTypes.push($types);
 
             /**
              * Creates a new TestMapFieldsNoBinary instance using the specified properties.
@@ -8006,8 +8040,10 @@ $root.google = (function() {
              */
             FileDescriptorSet.prototype.file = $util.emptyArray;
 
-            // Lazily resolved referenced types
-            var $types = {0:"google.protobuf.FileDescriptorProto"}; $lazyTypes.push($types);
+            // Lazily resolved type references
+            var $types = {
+                0: "google.protobuf.FileDescriptorProto"
+            }; $lazyTypes.push($types);
 
             /**
              * Creates a new FileDescriptorSet instance using the specified properties.
@@ -8267,8 +8303,15 @@ $root.google = (function() {
              */
             FileDescriptorProto.prototype.syntax = "";
 
-            // Lazily resolved referenced types
-            var $types = {5:"google.protobuf.DescriptorProto",6:"google.protobuf.EnumDescriptorProto",7:"google.protobuf.ServiceDescriptorProto",8:"google.protobuf.FieldDescriptorProto",9:"google.protobuf.FileOptions",10:"google.protobuf.SourceCodeInfo"}; $lazyTypes.push($types);
+            // Lazily resolved type references
+            var $types = {
+                5: "google.protobuf.DescriptorProto",
+                6: "google.protobuf.EnumDescriptorProto",
+                7: "google.protobuf.ServiceDescriptorProto",
+                8: "google.protobuf.FieldDescriptorProto",
+                9: "google.protobuf.FileOptions",
+                10: "google.protobuf.SourceCodeInfo"
+            }; $lazyTypes.push($types);
 
             /**
              * Creates a new FileDescriptorProto instance using the specified properties.
@@ -8874,8 +8917,17 @@ $root.google = (function() {
              */
             DescriptorProto.prototype.reservedName = $util.emptyArray;
 
-            // Lazily resolved referenced types
-            var $types = {1:"google.protobuf.FieldDescriptorProto",2:"google.protobuf.FieldDescriptorProto",3:"google.protobuf.DescriptorProto",4:"google.protobuf.EnumDescriptorProto",5:"google.protobuf.DescriptorProto.ExtensionRange",6:"google.protobuf.OneofDescriptorProto",7:"google.protobuf.MessageOptions",8:"google.protobuf.DescriptorProto.ReservedRange"}; $lazyTypes.push($types);
+            // Lazily resolved type references
+            var $types = {
+                1: "google.protobuf.FieldDescriptorProto",
+                2: "google.protobuf.FieldDescriptorProto",
+                3: "google.protobuf.DescriptorProto",
+                4: "google.protobuf.EnumDescriptorProto",
+                5: "google.protobuf.DescriptorProto.ExtensionRange",
+                6: "google.protobuf.OneofDescriptorProto",
+                7: "google.protobuf.MessageOptions",
+                8: "google.protobuf.DescriptorProto.ReservedRange"
+            }; $lazyTypes.push($types);
 
             /**
              * Creates a new DescriptorProto instance using the specified properties.
@@ -9845,8 +9897,12 @@ $root.google = (function() {
              */
             FieldDescriptorProto.prototype.options = null;
 
-            // Lazily resolved referenced types
-            var $types = {2:"google.protobuf.FieldDescriptorProto.Label",3:"google.protobuf.FieldDescriptorProto.Type",9:"google.protobuf.FieldOptions"}; $lazyTypes.push($types);
+            // Lazily resolved type references
+            var $types = {
+                2: "google.protobuf.FieldDescriptorProto.Label",
+                3: "google.protobuf.FieldDescriptorProto.Type",
+                9: "google.protobuf.FieldOptions"
+            }; $lazyTypes.push($types);
 
             /**
              * Creates a new FieldDescriptorProto instance using the specified properties.
@@ -10421,8 +10477,10 @@ $root.google = (function() {
              */
             OneofDescriptorProto.prototype.options = null;
 
-            // Lazily resolved referenced types
-            var $types = {1:"google.protobuf.OneofOptions"}; $lazyTypes.push($types);
+            // Lazily resolved type references
+            var $types = {
+                1: "google.protobuf.OneofOptions"
+            }; $lazyTypes.push($types);
 
             /**
              * Creates a new OneofDescriptorProto instance using the specified properties.
@@ -10633,8 +10691,11 @@ $root.google = (function() {
              */
             EnumDescriptorProto.prototype.options = null;
 
-            // Lazily resolved referenced types
-            var $types = {1:"google.protobuf.EnumValueDescriptorProto",2:"google.protobuf.EnumOptions"}; $lazyTypes.push($types);
+            // Lazily resolved type references
+            var $types = {
+                1: "google.protobuf.EnumValueDescriptorProto",
+                2: "google.protobuf.EnumOptions"
+            }; $lazyTypes.push($types);
 
             /**
              * Creates a new EnumDescriptorProto instance using the specified properties.
@@ -10886,8 +10947,10 @@ $root.google = (function() {
              */
             EnumValueDescriptorProto.prototype.options = null;
 
-            // Lazily resolved referenced types
-            var $types = {2:"google.protobuf.EnumValueOptions"}; $lazyTypes.push($types);
+            // Lazily resolved type references
+            var $types = {
+                2: "google.protobuf.EnumValueOptions"
+            }; $lazyTypes.push($types);
 
             /**
              * Creates a new EnumValueDescriptorProto instance using the specified properties.
@@ -11120,8 +11183,11 @@ $root.google = (function() {
              */
             ServiceDescriptorProto.prototype.options = null;
 
-            // Lazily resolved referenced types
-            var $types = {1:"google.protobuf.MethodDescriptorProto",2:"google.protobuf.ServiceOptions"}; $lazyTypes.push($types);
+            // Lazily resolved type references
+            var $types = {
+                1: "google.protobuf.MethodDescriptorProto",
+                2: "google.protobuf.ServiceOptions"
+            }; $lazyTypes.push($types);
 
             /**
              * Creates a new ServiceDescriptorProto instance using the specified properties.
@@ -11391,8 +11457,10 @@ $root.google = (function() {
              */
             MethodDescriptorProto.prototype.serverStreaming = false;
 
-            // Lazily resolved referenced types
-            var $types = {3:"google.protobuf.MethodOptions"}; $lazyTypes.push($types);
+            // Lazily resolved type references
+            var $types = {
+                3: "google.protobuf.MethodOptions"
+            }; $lazyTypes.push($types);
 
             /**
              * Creates a new MethodDescriptorProto instance using the specified properties.
@@ -11763,8 +11831,11 @@ $root.google = (function() {
              */
             FileOptions.prototype.uninterpretedOption = $util.emptyArray;
 
-            // Lazily resolved referenced types
-            var $types = {5:"google.protobuf.FileOptions.OptimizeMode",14:"google.protobuf.UninterpretedOption"}; $lazyTypes.push($types);
+            // Lazily resolved type references
+            var $types = {
+                5: "google.protobuf.FileOptions.OptimizeMode",
+                14: "google.protobuf.UninterpretedOption"
+            }; $lazyTypes.push($types);
 
             /**
              * Creates a new FileOptions instance using the specified properties.
@@ -12328,8 +12399,10 @@ $root.google = (function() {
              */
             MessageOptions.prototype.uninterpretedOption = $util.emptyArray;
 
-            // Lazily resolved referenced types
-            var $types = {4:"google.protobuf.UninterpretedOption"}; $lazyTypes.push($types);
+            // Lazily resolved type references
+            var $types = {
+                4: "google.protobuf.UninterpretedOption"
+            }; $lazyTypes.push($types);
 
             /**
              * Creates a new MessageOptions instance using the specified properties.
@@ -12648,8 +12721,12 @@ $root.google = (function() {
              */
             FieldOptions.prototype.uninterpretedOption = $util.emptyArray;
 
-            // Lazily resolved referenced types
-            var $types = {0:"google.protobuf.FieldOptions.CType",2:"google.protobuf.FieldOptions.JSType",6:"google.protobuf.UninterpretedOption"}; $lazyTypes.push($types);
+            // Lazily resolved type references
+            var $types = {
+                0: "google.protobuf.FieldOptions.CType",
+                2: "google.protobuf.FieldOptions.JSType",
+                6: "google.protobuf.UninterpretedOption"
+            }; $lazyTypes.push($types);
 
             /**
              * Creates a new FieldOptions instance using the specified properties.
@@ -13050,8 +13127,10 @@ $root.google = (function() {
              */
             OneofOptions.prototype.uninterpretedOption = $util.emptyArray;
 
-            // Lazily resolved referenced types
-            var $types = {0:"google.protobuf.UninterpretedOption"}; $lazyTypes.push($types);
+            // Lazily resolved type references
+            var $types = {
+                0: "google.protobuf.UninterpretedOption"
+            }; $lazyTypes.push($types);
 
             /**
              * Creates a new OneofOptions instance using the specified properties.
@@ -13263,8 +13342,10 @@ $root.google = (function() {
              */
             EnumOptions.prototype[".jspb.test.IsExtension.simpleOption"] = "";
 
-            // Lazily resolved referenced types
-            var $types = {2:"google.protobuf.UninterpretedOption"}; $lazyTypes.push($types);
+            // Lazily resolved type references
+            var $types = {
+                2: "google.protobuf.UninterpretedOption"
+            }; $lazyTypes.push($types);
 
             /**
              * Creates a new EnumOptions instance using the specified properties.
@@ -13531,8 +13612,10 @@ $root.google = (function() {
              */
             EnumValueOptions.prototype.uninterpretedOption = $util.emptyArray;
 
-            // Lazily resolved referenced types
-            var $types = {1:"google.protobuf.UninterpretedOption"}; $lazyTypes.push($types);
+            // Lazily resolved type references
+            var $types = {
+                1: "google.protobuf.UninterpretedOption"
+            }; $lazyTypes.push($types);
 
             /**
              * Creates a new EnumValueOptions instance using the specified properties.
@@ -13755,8 +13838,10 @@ $root.google = (function() {
              */
             ServiceOptions.prototype.uninterpretedOption = $util.emptyArray;
 
-            // Lazily resolved referenced types
-            var $types = {1:"google.protobuf.UninterpretedOption"}; $lazyTypes.push($types);
+            // Lazily resolved type references
+            var $types = {
+                1: "google.protobuf.UninterpretedOption"
+            }; $lazyTypes.push($types);
 
             /**
              * Creates a new ServiceOptions instance using the specified properties.
@@ -13985,8 +14070,11 @@ $root.google = (function() {
              */
             MethodOptions.prototype.uninterpretedOption = $util.emptyArray;
 
-            // Lazily resolved referenced types
-            var $types = {1:"google.protobuf.MethodOptions.IdempotencyLevel",2:"google.protobuf.UninterpretedOption"}; $lazyTypes.push($types);
+            // Lazily resolved type references
+            var $types = {
+                1: "google.protobuf.MethodOptions.IdempotencyLevel",
+                2: "google.protobuf.UninterpretedOption"
+            }; $lazyTypes.push($types);
 
             /**
              * Creates a new MethodOptions instance using the specified properties.
@@ -14298,8 +14386,10 @@ $root.google = (function() {
              */
             UninterpretedOption.prototype.aggregateValue = "";
 
-            // Lazily resolved referenced types
-            var $types = {0:"google.protobuf.UninterpretedOption.NamePart"}; $lazyTypes.push($types);
+            // Lazily resolved type references
+            var $types = {
+                0: "google.protobuf.UninterpretedOption.NamePart"
+            }; $lazyTypes.push($types);
 
             /**
              * Creates a new UninterpretedOption instance using the specified properties.
@@ -14872,8 +14962,10 @@ $root.google = (function() {
              */
             SourceCodeInfo.prototype.location = $util.emptyArray;
 
-            // Lazily resolved referenced types
-            var $types = {0:"google.protobuf.SourceCodeInfo.Location"}; $lazyTypes.push($types);
+            // Lazily resolved type references
+            var $types = {
+                0: "google.protobuf.SourceCodeInfo.Location"
+            }; $lazyTypes.push($types);
 
             /**
              * Creates a new SourceCodeInfo instance using the specified properties.
@@ -15420,8 +15512,10 @@ $root.google = (function() {
              */
             GeneratedCodeInfo.prototype.annotation = $util.emptyArray;
 
-            // Lazily resolved referenced types
-            var $types = {0:"google.protobuf.GeneratedCodeInfo.Annotation"}; $lazyTypes.push($types);
+            // Lazily resolved type references
+            var $types = {
+                0: "google.protobuf.GeneratedCodeInfo.Annotation"
+            }; $lazyTypes.push($types);
 
             /**
              * Creates a new GeneratedCodeInfo instance using the specified properties.
@@ -15883,9 +15977,7 @@ $root.google = (function() {
     return google;
 })();
 
-// Resolve lazy type names to actual types
+// Resolve lazy type references to actual types
 $util.lazyResolve($root, $lazyTypes);
 
-$protobuf.roots["test_test"] = $root;
-
-module.exports = $root;
+module.exports = $protobuf.roots["test_test"] = $root;

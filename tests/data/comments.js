@@ -401,9 +401,7 @@ $root.Test3 = (function() {
     return values;
 })();
 
-// Resolve lazy type names to actual types
+// Resolve lazy type references to actual types
 $util.lazyResolve($root, $lazyTypes);
 
-$protobuf.roots["test_comments"] = $root;
-
-module.exports = $root;
+module.exports = $protobuf.roots["test_comments"] = $root;
