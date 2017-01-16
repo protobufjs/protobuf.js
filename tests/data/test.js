@@ -2818,7 +2818,7 @@ $root.jspb = (function() {
              * DefaultValues enumField.
              * @type {number}
              */
-            DefaultValues.prototype.enumField = undefined;
+            DefaultValues.prototype.enumField = 13;
 
             /**
              * DefaultValues emptyField.
@@ -3028,7 +3028,7 @@ $root.jspb = (function() {
                         object.intField = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
                     } else
                         object.intField = options.longs === String ? "11" : 11;
-                    object.enumField = options.enums === String ? undefined : undefined;
+                    object.enumField = options.enums === String ? "E1" : 13;
                     object.emptyField = "";
                     object.bytesField = options.bytes === String ? "moo" : [
                         109,
@@ -10137,7 +10137,7 @@ $root.google = (function() {
              * FileOptions optimizeFor.
              * @type {number}
              */
-            FileOptions.prototype.optimizeFor = undefined;
+            FileOptions.prototype.optimizeFor = 1;
 
             /**
              * FileOptions goPackage.
@@ -10487,7 +10487,7 @@ $root.google = (function() {
                     object.javaMultipleFiles = false;
                     object.javaGenerateEqualsAndHash = false;
                     object.javaStringCheckUtf8 = false;
-                    object.optimizeFor = options.enums === String ? undefined : undefined;
+                    object.optimizeFor = options.enums === String ? "SPEED" : 1;
                     object.goPackage = "";
                     object.ccGenericServices = false;
                     object.javaGenericServices = false;
@@ -10848,7 +10848,7 @@ $root.google = (function() {
              * FieldOptions ctype.
              * @type {number}
              */
-            FieldOptions.prototype.ctype = undefined;
+            FieldOptions.prototype.ctype = 0;
 
             /**
              * FieldOptions packed.
@@ -10860,7 +10860,7 @@ $root.google = (function() {
              * FieldOptions jstype.
              * @type {number}
              */
-            FieldOptions.prototype.jstype = undefined;
+            FieldOptions.prototype.jstype = 0;
 
             /**
              * FieldOptions lazy.
@@ -11114,9 +11114,9 @@ $root.google = (function() {
                 if (options.arrays || options.defaults)
                     object.uninterpretedOption = [];
                 if (options.defaults) {
-                    object.ctype = options.enums === String ? undefined : undefined;
+                    object.ctype = options.enums === String ? "STRING" : 0;
                     object.packed = false;
-                    object.jstype = options.enums === String ? undefined : undefined;
+                    object.jstype = options.enums === String ? "JS_NORMAL" : 0;
                     object.lazy = false;
                     object.deprecated = false;
                     object.weak = false;
@@ -12039,7 +12039,7 @@ $root.google = (function() {
              * MethodOptions idempotencyLevel.
              * @type {number}
              */
-            MethodOptions.prototype.idempotencyLevel = undefined;
+            MethodOptions.prototype.idempotencyLevel = 0;
 
             /**
              * MethodOptions uninterpretedOption.
@@ -12217,7 +12217,7 @@ $root.google = (function() {
                     object.uninterpretedOption = [];
                 if (options.defaults) {
                     object.deprecated = false;
-                    object.idempotencyLevel = options.enums === String ? undefined : undefined;
+                    object.idempotencyLevel = options.enums === String ? "IDEMPOTENCY_UNKNOWN" : 0;
                 }
                 if (message.hasOwnProperty("deprecated") && message.deprecated !== undefined && message.deprecated !== null)
                     object.deprecated = message.deprecated;

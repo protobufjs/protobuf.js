@@ -192,11 +192,10 @@ converter.toObject = function toObject(mtype) {
     ("if(!o)")
         ("o={}")
     ("var d={}");
-    var repeatedFields = fields.filter(function(field) { return field.repeated; });
+    var repeatedFields = fields.filter(function(field) { return field.resolve().repeated; });
     if (repeatedFields.length) { gen
     ("if(o.arrays||o.defaults){");
-        fields.forEach(function(field) {
-            if (field.resolve().repeated) gen
+        repeatedFields.forEach(function(field) { gen
         ("d%s=[]", field._prop);
         }); gen
     ("}");
@@ -204,8 +203,7 @@ converter.toObject = function toObject(mtype) {
     var mapFields = fields.filter(function(field) { return field.map; });
     if (mapFields.length) { gen
     ("if(o.objects||o.defaults){");
-        fields.forEach(function(field) {
-            if (field.map) gen
+        mapFields.forEach(function(field) { gen
         ("d%s={}", field._prop);
         }); gen
     ("}");
@@ -213,9 +211,7 @@ converter.toObject = function toObject(mtype) {
     var otherFields = fields.filter(function(field) { return !(field.repeated || field.map); });
     if (otherFields.length) { gen
     ("if(o.defaults){");
-        fields.forEach(function(field) {
-            if (field.repeated || field.map)
-                return;
+        otherFields.forEach(function(field) {
             if (field.resolvedType instanceof Enum) gen
         ("d%s=o.enums===String?%j:%j", field._prop, field.resolvedType.valuesById[field.typeDefault], field.typeDefault);
             else if (field.long) gen

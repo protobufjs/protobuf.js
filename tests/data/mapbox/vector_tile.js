@@ -567,7 +567,7 @@ $root.vector_tile = (function() {
              * Feature type.
              * @type {number}
              */
-            Feature.prototype.type = undefined;
+            Feature.prototype.type = 0;
 
             /**
              * Feature geometry.
@@ -796,7 +796,7 @@ $root.vector_tile = (function() {
                         object.id = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
                     } else
                         object.id = options.longs === String ? "0" : 0;
-                    object.type = options.enums === String ? undefined : undefined;
+                    object.type = options.enums === String ? "UNKNOWN" : 0;
                 }
                 if (message.hasOwnProperty("id") && message.id !== undefined && message.id !== null)
                     if (typeof message.id === "number")

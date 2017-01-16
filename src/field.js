@@ -255,7 +255,7 @@ FieldPrototype.resolve = function resolve() {
     if (this.options && this.options["default"] !== undefined) {
         this.typeDefault = this.options["default"];
         if (this.resolvedType instanceof Enum && typeof this.typeDefault === "string")
-            this.typeDefault = this.resolvedType.values[this.defaultValue];
+            this.typeDefault = this.resolvedType.values[this.typeDefault];
     }
 
     // convert to internal data type if necesssary
