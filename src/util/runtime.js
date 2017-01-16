@@ -106,20 +106,6 @@ util.newBuffer = function newBuffer(sizeOrArray) {
  */
 util.Array = typeof Uint8Array === "undefined" ? Array : Uint8Array;
 
-/**
- * Tests if two arrays are not equal.
- * @param {Array.<*>} a Array 1
- * @param {Array.<*>} b Array 2
- * @returns {boolean} `true` if not equal, otherwise `false`
- */
-util.arrayNe = function arrayNe(a, b) {
-    if (a.length === b.length)
-        for (var i = 0; i < a.length; ++i)
-            if (a[i] !== b[i])
-                return true;
-    return false;
-};
-
 util.LongBits = require("./longbits");
 
 /**
@@ -150,20 +136,6 @@ util.longFromHash = function longFromHash(hash, unsigned) {
     if (util.Long)
         return util.Long.fromBits(bits.lo, bits.hi, unsigned);
     return bits.toNumber(Boolean(unsigned));
-};
-
-/**
- * Tests if a possibily long value equals the specified low and high bits.
- * @param {number|string|Long} val Value to test
- * @param {number} lo Low bits to test against
- * @param {number} hi High bits to test against
- * @returns {boolean} `true` if not equal
- */
-util.longNe = function longNe(val, lo, hi) {
-    if (typeof val === "object") // Long-like, null is invalid and throws
-        return val.low !== lo || val.high !== hi;
-    var bits = util.LongBits.from(val);
-    return bits.lo !== lo || bits.hi !== hi;
 };
 
 /**

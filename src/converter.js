@@ -230,37 +230,27 @@ converter.toObject = function toObject(mtype) {
         ("d%s=%j", field._prop, field.typeDefault); // also messages (=null)
         }); gen
     ("}");
-    } gen
-    ("for(var ks=Object.keys(m),i=0;i<ks.length;++i){")
-        ("if(m[ks[i]]!==undefined&&m[ks[i]]!==null){")
-            ("switch(ks[i]){");
+    }
     for (var i = 0; i < fields.length; ++i) {
         var field = fields[i],
             prop  = field._prop; gen
-            ("case%j:", field.name);
+    ("if(m.hasOwnProperty(%j)&&m%s!==undefined&&m%s!==null){", field.name, prop, prop);
         if (field.map) { gen
-                ("if(m%s!==util.emptyObject){", prop, prop)
-                    ("d%s={}", prop)
-                    ("for(var ks2=Object.keys(m%s),j=0;j<ks2.length;++j){", prop);
-            genValuePartial_toObject(gen, field, i, prop + "[ks2[j]]")
-                    ("}")
-                ("}");
+        ("d%s={}", prop)
+        ("for(var ks2=Object.keys(m%s),j=0;j<ks2.length;++j){", prop);
+        genValuePartial_toObject(gen, field, i, prop + "[ks2[j]]")
+        ("}");
         } else if (field.repeated) { gen
-                ("if(m%s.length){", prop)
-                    ("d%s=[]", prop)
-                    ("for(var j=0;j<m%s.length;++j){", prop);
+        ("d%s=[]", prop)
+        ("for(var j=0;j<m%s.length;++j){", prop);
             genValuePartial_toObject(gen, field, i, prop + "[j]")
-                    ("}")
-                ("}");
+        ("}");
         } else
-            genValuePartial_toObject(gen, field, i, prop);
+        genValuePartial_toObject(gen, field, i, prop);
         gen
-                ("break");
+    ("}");
     }
     return gen
-            ("}")
-        ("}")
-    ("}")
     ("return d");
     /* eslint-enable no-unexpected-multiline, block-scoped-var, no-redeclare */
 };

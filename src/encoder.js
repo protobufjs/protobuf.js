@@ -35,15 +35,17 @@ function encoder(mtype) {
 
     var i, ref;
     for (var i = 0; i < fields.length; ++i) {
-        var field    = fields[i].resolve(),
-            type     = field.resolvedType instanceof Enum ? "uint32" : field.type,
+        var field    = fields[i].resolve();
+        if (field.partOf) // see below for oneofs
+            continue;
+        var type     = field.resolvedType instanceof Enum ? "uint32" : field.type,
             wireType = types.basic[type];
             ref      = "m" + field._prop;
 
         // Map fields
         if (field.map) {
             var keyType = field.resolvedKeyType /* only valid is enum */ ? "uint32" : field.keyType; gen
-    ("if(%s&&%s!==util.emptyObject){", ref, ref)
+    ("if(m.hasOwnProperty(%j)&&%s){", field.name, ref)
         ("for(var ks=Object.keys(%s),i=0;i<ks.length;++i){", ref)
             ("w.uint32(%d).fork().uint32(%d).%s(ks[i])", (field.id << 3 | 2) >>> 0, 8 | types.mapKey[keyType], keyType);
             if (wireType === undefined) gen
@@ -60,7 +62,7 @@ function encoder(mtype) {
             // Packed repeated
             if (field.packed && types.packed[type] !== undefined) { gen
 
-    ("if(%s&&%s.length){", ref, ref)
+    ("if(m.hasOwnProperty(%j)&&%s.length){", field.name, ref)
         ("w.uint32(%d).fork()", (field.id << 3 | 2) >>> 0)
         ("for(var i=0;i<%s.length;++i)", ref)
             ("w.%s(%s[i])", type, ref)
@@ -70,7 +72,7 @@ function encoder(mtype) {
             // Non-packed
             } else { gen
 
-    ("if(%s){", ref)
+    ("if(m.hasOwnProperty(%j)){", field.name)
         ("for(var i=0;i<%s.length;++i)", ref);
                 if (wireType === undefined)
             genTypePartial(gen, field, i, ref + "[i]");
@@ -82,18 +84,18 @@ function encoder(mtype) {
             }
 
         // Non-repeated
-        } else if (!field.partOf) { // see below for oneofs
+        } else {
             if (!field.required) {
 
                 if (field.long) gen
-    ("if(%s!==undefined&&%s!==null&&util.longNe(%s,%d,%d))", ref, ref, ref, field.defaultValue.low, field.defaultValue.high);
+    ("if(m.hasOwnProperty(%j)&&%s!==undefined&&%s!==null)", field.name, ref, ref);
                 else if (field.bytes) gen
-    ("if(%s&&%s.length" + (field.defaultValue.length ? "&&util.arrayNe(%s,%j)" : "") + ")", ref, ref, ref, Array.prototype.slice.call(field.defaultValue));
+    ("if(m.hasOwnProperty(%j)&&%s)", field.name, ref);
                 else gen
-    ("if(%s!==undefined&&%s!==%j)", ref, ref, field.defaultValue);
+    ("if(m.hasOwnProperty(%j)&&%s!==undefined)", field.name, ref);
 
             }
-
+            
             if (wireType === undefined)
         genTypePartial(gen, field, i, ref);
             else gen

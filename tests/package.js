@@ -3,6 +3,8 @@ var tape = require("tape");
 var protobuf = require(".."),
     pkg = require("../package.json");
 
+process.stdout._handle.setBlocking(true);
+
 tape.test("package.json", function(test) {
 
     protobuf.load("tests/data/package.proto", function(err, root) {

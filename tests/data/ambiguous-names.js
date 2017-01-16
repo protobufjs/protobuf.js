@@ -1,4 +1,4 @@
-/*eslint-disable block-scoped-var, no-redeclare, no-control-regex*/
+/*eslint-disable block-scoped-var, no-redeclare, no-control-regex, no-prototype-builtins*/
 "use strict";
 
 var $protobuf = require("../../runtime");
@@ -54,7 +54,7 @@ $root.A = (function() {
     A.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.whatever !== undefined && message.whatever !== "")
+        if (message.hasOwnProperty("whatever") && message.whatever !== undefined)
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.whatever);
         return writer;
     };
@@ -148,13 +148,8 @@ $root.A = (function() {
         var object = {};
         if (options.defaults)
             object.whatever = "";
-        for (var keys = Object.keys(message), i = 0; i < keys.length; ++i)
-            if (message[keys[i]] !== undefined && message[keys[i]] !== null)
-                switch (keys[i]) {
-                case "whatever":
-                    object.whatever = message.whatever;
-                    break;
-                }
+        if (message.hasOwnProperty("whatever") && message.whatever !== undefined && message.whatever !== null)
+            object.whatever = message.whatever;
         return object;
     };
 
@@ -223,7 +218,7 @@ $root.B = (function() {
     B.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.A !== undefined && message.A !== null)
+        if (message.hasOwnProperty("A") && message.A !== undefined)
             $types[0].encode(message.A, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
         return writer;
     };
@@ -319,13 +314,8 @@ $root.B = (function() {
         var object = {};
         if (options.defaults)
             object.A = null;
-        for (var keys = Object.keys(message), i = 0; i < keys.length; ++i)
-            if (message[keys[i]] !== undefined && message[keys[i]] !== null)
-                switch (keys[i]) {
-                case "A":
-                    object.A = $types[0].toObject(message.A, options);
-                    break;
-                }
+        if (message.hasOwnProperty("A") && message.A !== undefined && message.A !== null)
+            object.A = $types[0].toObject(message.A, options);
         return object;
     };
 

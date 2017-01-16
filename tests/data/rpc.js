@@ -1,4 +1,4 @@
-/*eslint-disable block-scoped-var, no-redeclare, no-control-regex*/
+/*eslint-disable block-scoped-var, no-redeclare, no-control-regex, no-prototype-builtins*/
 "use strict";
 
 var $protobuf = require("../../runtime");
@@ -146,7 +146,7 @@ $root.MyRequest = (function() {
     MyRequest.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.path !== undefined && message.path !== "")
+        if (message.hasOwnProperty("path") && message.path !== undefined)
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.path);
         return writer;
     };
@@ -240,13 +240,8 @@ $root.MyRequest = (function() {
         var object = {};
         if (options.defaults)
             object.path = "";
-        for (var keys = Object.keys(message), i = 0; i < keys.length; ++i)
-            if (message[keys[i]] !== undefined && message[keys[i]] !== null)
-                switch (keys[i]) {
-                case "path":
-                    object.path = message.path;
-                    break;
-                }
+        if (message.hasOwnProperty("path") && message.path !== undefined && message.path !== null)
+            object.path = message.path;
         return object;
     };
 
@@ -310,7 +305,7 @@ $root.MyResponse = (function() {
     MyResponse.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.status !== undefined && message.status !== 0)
+        if (message.hasOwnProperty("status") && message.status !== undefined)
             writer.uint32(/* id 2, wireType 0 =*/16).int32(message.status);
         return writer;
     };
@@ -404,13 +399,8 @@ $root.MyResponse = (function() {
         var object = {};
         if (options.defaults)
             object.status = 0;
-        for (var keys = Object.keys(message), i = 0; i < keys.length; ++i)
-            if (message[keys[i]] !== undefined && message[keys[i]] !== null)
-                switch (keys[i]) {
-                case "status":
-                    object.status = message.status;
-                    break;
-                }
+        if (message.hasOwnProperty("status") && message.status !== undefined && message.status !== null)
+            object.status = message.status;
         return object;
     };
 

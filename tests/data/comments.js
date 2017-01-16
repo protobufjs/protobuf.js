@@ -1,4 +1,4 @@
-/*eslint-disable block-scoped-var, no-redeclare, no-control-regex*/
+/*eslint-disable block-scoped-var, no-redeclare, no-control-regex, no-prototype-builtins*/
 "use strict";
 
 var $protobuf = require("../../runtime");
@@ -70,11 +70,11 @@ $root.Test1 = (function() {
     Test1.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.field1 !== undefined && message.field1 !== "")
+        if (message.hasOwnProperty("field1") && message.field1 !== undefined)
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.field1);
-        if (message.field2 !== undefined && message.field2 !== 0)
+        if (message.hasOwnProperty("field2") && message.field2 !== undefined)
             writer.uint32(/* id 2, wireType 0 =*/16).uint32(message.field2);
-        if (message.field3 !== undefined && message.field3 !== false)
+        if (message.hasOwnProperty("field3") && message.field3 !== undefined)
             writer.uint32(/* id 3, wireType 0 =*/24).bool(message.field3);
         return writer;
     };
@@ -187,19 +187,12 @@ $root.Test1 = (function() {
             object.field2 = 0;
             object.field3 = false;
         }
-        for (var keys = Object.keys(message), i = 0; i < keys.length; ++i)
-            if (message[keys[i]] !== undefined && message[keys[i]] !== null)
-                switch (keys[i]) {
-                case "field1":
-                    object.field1 = message.field1;
-                    break;
-                case "field2":
-                    object.field2 = message.field2;
-                    break;
-                case "field3":
-                    object.field3 = message.field3;
-                    break;
-                }
+        if (message.hasOwnProperty("field1") && message.field1 !== undefined && message.field1 !== null)
+            object.field1 = message.field1;
+        if (message.hasOwnProperty("field2") && message.field2 !== undefined && message.field2 !== null)
+            object.field2 = message.field2;
+        if (message.hasOwnProperty("field3") && message.field3 !== undefined && message.field3 !== null)
+            object.field3 = message.field3;
         return object;
     };
 
