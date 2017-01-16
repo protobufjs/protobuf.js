@@ -2,56 +2,58 @@ var tape = require("tape");
 
 var protobuf = require("..");
 
+var proto = "message A {\
+    required uint32 a = 1;\
+}\
+message B {\
+    required string b = 1;\
+}";
+
 tape.test("reusing", function(test) {
+    var root = protobuf.parse(proto).root;
 
-    protobuf.load("tests/data/simple.proto", function(err, root) {
-        if (err)
-            return test.fail(err.message);
+    var A = root.lookup("A"),
+        B = root.lookup("B");
 
-        var A = root.lookup("A"),
-            B = root.lookup("B");
+    test.test("a writer should write", function(test) {
 
-        test.test("a writer should write", function(test) {
+        var writer = protobuf.Writer.create();
 
-            var writer = protobuf.Writer.create();
+        A.encodeDelimited({
+            a: 1
+        }, writer);
 
-            A.encodeDelimited({
-                a: 1
-            }, writer);
+        B.encodeDelimited({
+            b: 'a'
+        }, writer);
 
-            B.encodeDelimited({
-                b: 'a'
-            }, writer);
+        var buffer = writer.finish();
 
-            var buffer = writer.finish();
+        test.equal(buffer[0], 2, "length 2");
+        test.equal(buffer[1], 8, "id 1, wireType 0");
+        test.equal(buffer[2], 1, "number 1");
+        test.equal(buffer[3], 3, "length 3");
+        test.equal(buffer[4], 10, "id 1, wireType 2");
+        test.equal(buffer[5], 1, "length 1");
+        test.equal(buffer[6], 97, "string 'a'");
 
-            test.equal(buffer[0], 2, "length 2");
-            test.equal(buffer[1], 8, "id 1, wireType 0");
-            test.equal(buffer[2], 1, "number 1");
-            test.equal(buffer[3], 3, "length 3");
-            test.equal(buffer[4], 10, "id 1, wireType 2");
-            test.equal(buffer[5], 1, "length 1");
-            test.equal(buffer[6], 97, "string 'a'");
+        var reader = protobuf.Reader.create(buffer);
 
-            var reader = protobuf.Reader.create(buffer);
+        test.test("and a reader should", function(test) {
 
-            test.test("and a reader should", function(test) {
+            var a = A.decodeDelimited(reader);
+            test.deepEqual(a, { a: 1 }, "read back the first message");
 
-                var a = A.decodeDelimited(reader);
-                test.deepEqual(a, { a: 1 }, "read back the first message");
+            var b = B.decodeDelimited(reader);
+            test.deepEqual(b, { b: 'a' }, "read back the second message");
 
-                var b = B.decodeDelimited(reader);
-                test.deepEqual(b, { b: 'a' }, "read back the second message");
-
-                test.equal(reader.pos, reader.len, "consume the reader");
-
-                test.end();
-            });
+            test.equal(reader.pos, reader.len, "consume the reader");
 
             test.end();
         });
 
         test.end();
-
     });
+
+    test.end();
 });

@@ -2,14 +2,22 @@ var tape = require("tape");
 
 var protobuf = require("..");
 
+var proto = "syntax = \"proto3\";\
+import \"google/protobuf/descriptor.proto\";\
+message MyOptions {\
+  string a = 1;\
+  string b = 2;\
+}\
+extend google.protobuf.FieldOptions {\
+  MyOptions my_options = 50000;\
+}\
+message Test {\
+  string value = 1 [(my_options) = { a: \"foo\" b: \"bar\" }];\
+}";
+
 tape.test("options in textformat", function(test) {
-
-    protobuf.load("tests/data/options-textformat.proto", function(err, root) {
-        if (err)
-            throw err;
-        var Test = root.lookup("Test");
-        test.same(Test.fields.value.options, { "(my_options).a": "foo", "(my_options).b": "bar" }, "should parse correctly");
-        test.end();
-    });
-
+    var root = protobuf.parse(proto).root;
+    var Test = root.lookup("Test");
+    test.same(Test.fields.value.options, { "(my_options).a": "foo", "(my_options).b": "bar" }, "should parse correctly");
+    test.end();
 });

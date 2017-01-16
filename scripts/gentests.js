@@ -8,7 +8,6 @@ var fs   = require("fs"),
     "tests/data/package.proto",
     "tests/data/rpc.proto",
     "tests/data/mapbox/vector_tile.proto",
-    "tests/data/ambiguous-names.proto",
     "tests/data/test.proto",
     "tests/data/convert.proto",
     "tests/data/comments.proto"

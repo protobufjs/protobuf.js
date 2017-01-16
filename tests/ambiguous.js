@@ -2,12 +2,16 @@ var tape = require("tape");
 
 var protobuf = require("..");
 
-tape.test("ambiguous names", function(test) {
-    protobuf.load("tests/data/ambiguous-names.proto", function(err, root) {
-        if (err)
-            return test.fail(err.message);
+var proto = "syntax = \"proto3\";\
+message A {\
+  string whatever = 1;\
+}\
+message B {\
+  A A = 1;\
+}";
 
-        test.pass("should parse without errors");
-        test.end();
-    });
+tape.test("ambiguous names", function(test) {
+    protobuf.parse(proto);
+    test.pass("should parse without errors");
+    test.end();
 });
