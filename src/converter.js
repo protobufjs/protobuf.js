@@ -231,7 +231,7 @@ converter.toObject = function toObject(mtype) {
     for (var i = 0; i < fields.length; ++i) {
         var field = fields[i],
             prop  = util.safeProp(field.name); gen
-    ("if(m.hasOwnProperty(%j)&&m%s!==undefined&&m%s!==null){", field.name, prop, prop);
+    ("if(m%s!==undefined&&m%s!==null&&m.hasOwnProperty(%j)){", prop, prop, field.name);
         if (field.map) { gen
         ("d%s={}", prop)
         ("for(var ks2=Object.keys(m%s),j=0;j<ks2.length;++j){", prop);

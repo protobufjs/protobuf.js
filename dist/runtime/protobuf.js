@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.5.0 (c) 2016, Daniel Wirtz
- * Compiled Mon, 16 Jan 2017 22:27:47 UTC
+ * Compiled Mon, 16 Jan 2017 22:43:15 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -1547,7 +1547,8 @@ VarintOp.prototype.fn = writeVarint32;
 WriterPrototype.uint32 = function write_uint32(value) {
     // here, the call to this.push has been inlined and a varint specific Op subclass is used.
     // uint32 is by far the most frequently used operation and benefits significantly from this.
-    this.len += (this.tail = this.tail.next = new VarintOp((value = value >>> 0)
+    this.len += (this.tail = this.tail.next = new VarintOp(
+        (value = value >>> 0)
                 < 128       ? 1
         : value < 16384     ? 2
         : value < 2097152   ? 3

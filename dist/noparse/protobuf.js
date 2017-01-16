@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.5.0 (c) 2016, Daniel Wirtz
- * Compiled Mon, 16 Jan 2017 22:27:47 UTC
+ * Compiled Mon, 16 Jan 2017 22:43:15 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -1112,7 +1112,7 @@ converter.toObject = function toObject(mtype) {
     for (var i = 0; i < fields.length; ++i) {
         var field = fields[i],
             prop  = util.safeProp(field.name); gen
-    ("if(m.hasOwnProperty(%j)&&m%s!==undefined&&m%s!==null){", field.name, prop, prop);
+    ("if(m%s!==undefined&&m%s!==null&&m.hasOwnProperty(%j)){", prop, prop, field.name);
         if (field.map) { gen
         ("d%s={}", prop)
         ("for(var ks2=Object.keys(m%s),j=0;j<ks2.length;++j){", prop);
@@ -1274,7 +1274,7 @@ function encoder(mtype) {
         // Map fields
         if (field.map) {
             var keyType = field.resolvedKeyType /* only valid is enum */ ? "uint32" : field.keyType; gen
-    ("if(m.hasOwnProperty(%j)&&%s){", field.name, ref)
+    ("if(%s&&m.hasOwnProperty(%j)){", ref, field.name)
         ("for(var ks=Object.keys(%s),i=0;i<ks.length;++i){", ref)
             ("w.uint32(%d).fork().uint32(%d).%s(ks[i])", (field.id << 3 | 2) >>> 0, 8 | types.mapKey[keyType], keyType);
             if (wireType === undefined) gen
@@ -1291,7 +1291,7 @@ function encoder(mtype) {
             // Packed repeated
             if (field.packed && types.packed[type] !== undefined) { gen
 
-    ("if(m.hasOwnProperty(%j)&&%s.length){", field.name, ref)
+    ("if(%s&&%s.length&&m.hasOwnProperty(%j)){", ref, ref, field.name)
         ("w.uint32(%d).fork()", (field.id << 3 | 2) >>> 0)
         ("for(var i=0;i<%s.length;++i)", ref)
             ("w.%s(%s[i])", type, ref)
@@ -1301,7 +1301,7 @@ function encoder(mtype) {
             // Non-packed
             } else { gen
 
-    ("if(m.hasOwnProperty(%j)){", field.name)
+    ("if(%s!==undefined&&m.hasOwnProperty(%j)){", ref, field.name)
         ("for(var i=0;i<%s.length;++i)", ref);
                 if (wireType === undefined)
             genTypePartial(gen, field, i, ref + "[i]");
@@ -1317,11 +1317,11 @@ function encoder(mtype) {
             if (!field.required) {
 
                 if (field.long) gen
-    ("if(m.hasOwnProperty(%j)&&%s!==undefined&&%s!==null)", field.name, ref, ref);
+    ("if(%s!==undefined&&%s!==null&&m.hasOwnProperty(%j))", ref, ref, field.name);
                 else if (field.bytes) gen
-    ("if(m.hasOwnProperty(%j)&&%s)", field.name, ref);
+    ("if(%s&&m.hasOwnProperty(%j))", ref, field.name);
                 else gen
-    ("if(m.hasOwnProperty(%j)&&%s!==undefined)", field.name, ref);
+    ("if(%s!==undefined&&m.hasOwnProperty(%j))", ref, field.name);
 
             }
 
@@ -5638,7 +5638,8 @@ VarintOp.prototype.fn = writeVarint32;
 WriterPrototype.uint32 = function write_uint32(value) {
     // here, the call to this.push has been inlined and a varint specific Op subclass is used.
     // uint32 is by far the most frequently used operation and benefits significantly from this.
-    this.len += (this.tail = this.tail.next = new VarintOp((value = value >>> 0)
+    this.len += (this.tail = this.tail.next = new VarintOp(
+        (value = value >>> 0)
                 < 128       ? 1
         : value < 16384     ? 2
         : value < 2097152   ? 3

@@ -121,7 +121,7 @@ function sprintf(format) {
     for (; i < arguments.length;)
         args.push(arguments[i++]);
     i = 0;
-    format = format.replace(/%([dfjps])/g, function($0, $1) {
+    format = format.replace(/%([dfjs])/g, function($0, $1) {
         switch ($1) {
             case "d":
                 return Math.floor(args[i++]);
