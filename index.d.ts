@@ -2314,14 +2314,6 @@ export namespace util {
     var Array: () => any;
 
     /**
-     * Tests if two arrays are not equal.
-     * @param {Array.<*>} a Array 1
-     * @param {Array.<*>} b Array 2
-     * @returns {boolean} `true` if not equal, otherwise `false`
-     */
-    function arrayNe(a: any[], b: any[]): boolean;
-
-    /**
      * Long.js's Long class if available.
      * @type {?function(new: Long)}
      */
@@ -2341,15 +2333,6 @@ export namespace util {
      * @returns {Long|number} Original value
      */
     function longFromHash(hash: string, unsigned?: boolean): (Long|number);
-
-    /**
-     * Tests if a possibily long value equals the specified low and high bits.
-     * @param {number|string|Long} val Value to test
-     * @param {number} lo Low bits to test against
-     * @param {number} hi High bits to test against
-     * @returns {boolean} `true` if not equal
-     */
-    function longNe(val: (number|string|Long), lo: number, hi: number): boolean;
 
     /**
      * Merges the properties of the source object into the destination object.

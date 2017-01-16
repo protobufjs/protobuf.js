@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.5.0 (c) 2016, Daniel Wirtz
- * Compiled Sun, 15 Jan 2017 00:55:02 UTC
+ * Compiled Mon, 16 Jan 2017 17:38:23 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -1107,37 +1107,27 @@ converter.toObject = function toObject(mtype) {
         ("d%s=%j", field._prop, field.typeDefault); // also messages (=null)
         }); gen
     ("}");
-    } gen
-    ("for(var ks=Object.keys(m),i=0;i<ks.length;++i){")
-        ("switch(ks[i]){");
+    }
     for (var i = 0; i < fields.length; ++i) {
         var field = fields[i],
             prop  = field._prop; gen
-        ("case%j:", field.name);
+    ("if(m.hasOwnProperty(%j)&&m%s!==undefined&&m%s!==null){", field.name, prop, prop);
         if (field.map) { gen
-            ("if(m%s&&m%s!==util.emptyObject){", prop, prop)
-                ("d%s={}", prop)
-                ("for(var ks2=Object.keys(m%s),j=0;j<ks2.length;++j){", prop);
-            genValuePartial_toObject(gen, field, i, prop + "[ks2[j]]")
-                ("}")
-            ("}");
+        ("d%s={}", prop)
+        ("for(var ks2=Object.keys(m%s),j=0;j<ks2.length;++j){", prop);
+        genValuePartial_toObject(gen, field, i, prop + "[ks2[j]]")
+        ("}");
         } else if (field.repeated) { gen
-            ("if(m%s.length){", prop)
-                ("d%s=[]", prop)
-                ("for(var j=0;j<m%s.length;++j){", prop);
+        ("d%s=[]", prop)
+        ("for(var j=0;j<m%s.length;++j){", prop);
             genValuePartial_toObject(gen, field, i, prop + "[j]")
-                ("}")
-            ("}");
-        } else { gen
-            ("if(m%s!==undefined&&m%s!==null){", prop, prop);
-            genValuePartial_toObject(gen, field, i, prop)
-            ("}");
-        } gen
-            ("break");
+        ("}");
+        } else
+        genValuePartial_toObject(gen, field, i, prop);
+        gen
+    ("}");
     }
     return gen
-        ("}")
-    ("}")
     ("return d");
     /* eslint-enable no-unexpected-multiline, block-scoped-var, no-redeclare */
 };
@@ -1273,15 +1263,17 @@ function encoder(mtype) {
 
     var i, ref;
     for (var i = 0; i < fields.length; ++i) {
-        var field    = fields[i].resolve(),
-            type     = field.resolvedType instanceof Enum ? "uint32" : field.type,
+        var field    = fields[i].resolve();
+        if (field.partOf) // see below for oneofs
+            continue;
+        var type     = field.resolvedType instanceof Enum ? "uint32" : field.type,
             wireType = types.basic[type];
             ref      = "m" + field._prop;
 
         // Map fields
         if (field.map) {
             var keyType = field.resolvedKeyType /* only valid is enum */ ? "uint32" : field.keyType; gen
-    ("if(%s&&%s!==util.emptyObject){", ref, ref)
+    ("if(m.hasOwnProperty(%j)&&%s){", field.name, ref)
         ("for(var ks=Object.keys(%s),i=0;i<ks.length;++i){", ref)
             ("w.uint32(%d).fork().uint32(%d).%s(ks[i])", (field.id << 3 | 2) >>> 0, 8 | types.mapKey[keyType], keyType);
             if (wireType === undefined) gen
@@ -1298,7 +1290,7 @@ function encoder(mtype) {
             // Packed repeated
             if (field.packed && types.packed[type] !== undefined) { gen
 
-    ("if(%s&&%s.length){", ref, ref)
+    ("if(m.hasOwnProperty(%j)&&%s.length){", field.name, ref)
         ("w.uint32(%d).fork()", (field.id << 3 | 2) >>> 0)
         ("for(var i=0;i<%s.length;++i)", ref)
             ("w.%s(%s[i])", type, ref)
@@ -1308,7 +1300,7 @@ function encoder(mtype) {
             // Non-packed
             } else { gen
 
-    ("if(%s){", ref)
+    ("if(m.hasOwnProperty(%j)){", field.name)
         ("for(var i=0;i<%s.length;++i)", ref);
                 if (wireType === undefined)
             genTypePartial(gen, field, i, ref + "[i]");
@@ -1320,15 +1312,15 @@ function encoder(mtype) {
             }
 
         // Non-repeated
-        } else if (!field.partOf) { // see below for oneofs
+        } else {
             if (!field.required) {
 
                 if (field.long) gen
-    ("if(%s!==undefined&&%s!==null&&util.longNe(%s,%d,%d))", ref, ref, ref, field.defaultValue.low, field.defaultValue.high);
+    ("if(m.hasOwnProperty(%j)&&%s!==undefined&&%s!==null)", field.name, ref, ref);
                 else if (field.bytes) gen
-    ("if(%s&&%s.length" + (field.defaultValue.length ? "&&util.arrayNe(%s,%j)" : "") + ")", ref, ref, ref, Array.prototype.slice.call(field.defaultValue));
+    ("if(m.hasOwnProperty(%j)&&%s)", field.name, ref);
                 else gen
-    ("if(%s!==undefined&&%s!==%j)", ref, ref, field.defaultValue);
+    ("if(m.hasOwnProperty(%j)&&%s!==undefined)", field.name, ref);
 
             }
 
@@ -5163,20 +5155,6 @@ util.newBuffer = function newBuffer(sizeOrArray) {
  */
 util.Array = typeof Uint8Array === "undefined" ? Array : Uint8Array;
 
-/**
- * Tests if two arrays are not equal.
- * @param {Array.<*>} a Array 1
- * @param {Array.<*>} b Array 2
- * @returns {boolean} `true` if not equal, otherwise `false`
- */
-util.arrayNe = function arrayNe(a, b) {
-    if (a.length === b.length)
-        for (var i = 0; i < a.length; ++i)
-            if (a[i] !== b[i])
-                return true;
-    return false;
-};
-
 util.LongBits = require(32);
 
 /**
@@ -5207,20 +5185,6 @@ util.longFromHash = function longFromHash(hash, unsigned) {
     if (util.Long)
         return util.Long.fromBits(bits.lo, bits.hi, unsigned);
     return bits.toNumber(Boolean(unsigned));
-};
-
-/**
- * Tests if a possibily long value equals the specified low and high bits.
- * @param {number|string|Long} val Value to test
- * @param {number} lo Low bits to test against
- * @param {number} hi High bits to test against
- * @returns {boolean} `true` if not equal
- */
-util.longNe = function longNe(val, lo, hi) {
-    if (typeof val === "object") // Long-like, null is invalid and throws
-        return val.low !== lo || val.high !== hi;
-    var bits = util.LongBits.from(val);
-    return bits.lo !== lo || bits.hi !== hi;
 };
 
 /**

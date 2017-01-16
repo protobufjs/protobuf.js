@@ -95,7 +95,7 @@ function encoder(mtype) {
     ("if(m.hasOwnProperty(%j)&&%s!==undefined)", field.name, ref);
 
             }
-            
+
             if (wireType === undefined)
         genTypePartial(gen, field, i, ref);
             else gen
