@@ -153,74 +153,49 @@ $root.Package = (function() {
      * @returns {$protobuf.Writer} Writer
      */
     Package.encode = function encode(message, writer) {
-        if (!writer) {
+        if (!writer)
             writer = $Writer.create();
-        }
-        if (message.name !== undefined && message.name !== "") {
-            writer.uint32(10).string(message.name);
-        }
-        if (message.version !== undefined && message.version !== "") {
-            writer.uint32(18).string(message.version);
-        }
-        if (message.description !== undefined && message.description !== "") {
-            writer.uint32(26).string(message.description);
-        }
-        if (message.author !== undefined && message.author !== "") {
-            writer.uint32(34).string(message.author);
-        }
-        if (message.license !== undefined && message.license !== "") {
-            writer.uint32(42).string(message.license);
-        }
-        if (message.repository !== undefined && message.repository !== null) {
-            $types[5].encode(message.repository, writer.uint32(50).fork()).ldelim();
-        }
-        if (message.bugs !== undefined && message.bugs !== "") {
-            writer.uint32(58).string(message.bugs);
-        }
-        if (message.homepage !== undefined && message.homepage !== "") {
-            writer.uint32(66).string(message.homepage);
-        }
-        if (message.keywords) {
-            for (var i = 0; i < message.keywords.length; ++i) {
-                writer.uint32(74).string(message.keywords[i]);
-            }
-        }
-        if (message.main !== undefined && message.main !== "") {
-            writer.uint32(82).string(message.main);
-        }
-        if (message.bin && message.bin !== $util.emptyObject) {
-            for (var keys = Object.keys(message.bin), i = 0; i < keys.length; ++i) {
-                writer.uint32(90).fork().uint32(10).string(keys[i]).uint32(18).string(message.bin[keys[i]]).ldelim();
-            }
-        }
-        if (message.scripts && message.scripts !== $util.emptyObject) {
-            for (var keys = Object.keys(message.scripts), i = 0; i < keys.length; ++i) {
-                writer.uint32(98).fork().uint32(10).string(keys[i]).uint32(18).string(message.scripts[keys[i]]).ldelim();
-            }
-        }
-        if (message.dependencies && message.dependencies !== $util.emptyObject) {
-            for (var keys = Object.keys(message.dependencies), i = 0; i < keys.length; ++i) {
-                writer.uint32(106).fork().uint32(10).string(keys[i]).uint32(18).string(message.dependencies[keys[i]]).ldelim();
-            }
-        }
-        if (message.optionalDependencies && message.optionalDependencies !== $util.emptyObject) {
-            for (var keys = Object.keys(message.optionalDependencies), i = 0; i < keys.length; ++i) {
-                writer.uint32(114).fork().uint32(10).string(keys[i]).uint32(18).string(message.optionalDependencies[keys[i]]).ldelim();
-            }
-        }
-        if (message.devDependencies && message.devDependencies !== $util.emptyObject) {
-            for (var keys = Object.keys(message.devDependencies), i = 0; i < keys.length; ++i) {
-                writer.uint32(122).fork().uint32(10).string(keys[i]).uint32(18).string(message.devDependencies[keys[i]]).ldelim();
-            }
-        }
-        if (message.types !== undefined && message.types !== "") {
-            writer.uint32(138).string(message.types);
-        }
-        if (message.cliDependencies) {
-            for (var i = 0; i < message.cliDependencies.length; ++i) {
-                writer.uint32(146).string(message.cliDependencies[i]);
-            }
-        }
+        if (message.name !== undefined && message.name !== "")
+            writer.uint32(/* id 1, wireType 2 =*/10).string(message.name);
+        if (message.version !== undefined && message.version !== "")
+            writer.uint32(/* id 2, wireType 2 =*/18).string(message.version);
+        if (message.description !== undefined && message.description !== "")
+            writer.uint32(/* id 3, wireType 2 =*/26).string(message.description);
+        if (message.author !== undefined && message.author !== "")
+            writer.uint32(/* id 4, wireType 2 =*/34).string(message.author);
+        if (message.license !== undefined && message.license !== "")
+            writer.uint32(/* id 5, wireType 2 =*/42).string(message.license);
+        if (message.repository !== undefined && message.repository !== null)
+            $types[5].encode(message.repository, writer.uint32(/* id 6, wireType 2 =*/50).fork()).ldelim();
+        if (message.bugs !== undefined && message.bugs !== "")
+            writer.uint32(/* id 7, wireType 2 =*/58).string(message.bugs);
+        if (message.homepage !== undefined && message.homepage !== "")
+            writer.uint32(/* id 8, wireType 2 =*/66).string(message.homepage);
+        if (message.keywords)
+            for (var i = 0; i < message.keywords.length; ++i)
+                writer.uint32(/* id 9, wireType 2 =*/74).string(message.keywords[i]);
+        if (message.main !== undefined && message.main !== "")
+            writer.uint32(/* id 10, wireType 2 =*/82).string(message.main);
+        if (message.bin && message.bin !== $util.emptyObject)
+            for (var keys = Object.keys(message.bin), i = 0; i < keys.length; ++i)
+                writer.uint32(/* id 11, wireType 2 =*/90).fork().uint32(/* id 1, wireType 2 =*/10).string(keys[i]).uint32(/* id 2, wireType 2 =*/18).string(message.bin[keys[i]]).ldelim();
+        if (message.scripts && message.scripts !== $util.emptyObject)
+            for (var keys = Object.keys(message.scripts), i = 0; i < keys.length; ++i)
+                writer.uint32(/* id 12, wireType 2 =*/98).fork().uint32(/* id 1, wireType 2 =*/10).string(keys[i]).uint32(/* id 2, wireType 2 =*/18).string(message.scripts[keys[i]]).ldelim();
+        if (message.dependencies && message.dependencies !== $util.emptyObject)
+            for (var keys = Object.keys(message.dependencies), i = 0; i < keys.length; ++i)
+                writer.uint32(/* id 13, wireType 2 =*/106).fork().uint32(/* id 1, wireType 2 =*/10).string(keys[i]).uint32(/* id 2, wireType 2 =*/18).string(message.dependencies[keys[i]]).ldelim();
+        if (message.optionalDependencies && message.optionalDependencies !== $util.emptyObject)
+            for (var keys = Object.keys(message.optionalDependencies), i = 0; i < keys.length; ++i)
+                writer.uint32(/* id 14, wireType 2 =*/114).fork().uint32(/* id 1, wireType 2 =*/10).string(keys[i]).uint32(/* id 2, wireType 2 =*/18).string(message.optionalDependencies[keys[i]]).ldelim();
+        if (message.devDependencies && message.devDependencies !== $util.emptyObject)
+            for (var keys = Object.keys(message.devDependencies), i = 0; i < keys.length; ++i)
+                writer.uint32(/* id 15, wireType 2 =*/122).fork().uint32(/* id 1, wireType 2 =*/10).string(keys[i]).uint32(/* id 2, wireType 2 =*/18).string(message.devDependencies[keys[i]]).ldelim();
+        if (message.types !== undefined && message.types !== "")
+            writer.uint32(/* id 17, wireType 2 =*/138).string(message.types);
+        if (message.cliDependencies)
+            for (var i = 0; i < message.cliDependencies.length; ++i)
+                writer.uint32(/* id 18, wireType 2 =*/146).string(message.cliDependencies[i]);
         return writer;
     };
 
@@ -236,122 +211,97 @@ $root.Package = (function() {
 
     /**
      * Decodes a Package message from the specified reader or buffer.
-     * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
      * @param {number} [length] Message length if known beforehand
      * @returns {Package} Package
      */
-    Package.decode = function decode(reader, len) {
-        if (!(reader instanceof $Reader)) {
+    Package.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
             reader = $Reader.create(reader);
-        }
-        var end = len === undefined ? reader.len : reader.pos + len, message = new $root.Package();
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Package();
         while (reader.pos < end) {
             var tag = reader.uint32();
             switch (tag >>> 3) {
             case 1:
                 message.name = reader.string();
                 break;
-
             case 2:
                 message.version = reader.string();
                 break;
-
             case 3:
                 message.description = reader.string();
                 break;
-
             case 4:
                 message.author = reader.string();
                 break;
-
             case 5:
                 message.license = reader.string();
                 break;
-
             case 6:
                 message.repository = $types[5].decode(reader, reader.uint32());
                 break;
-
             case 7:
                 message.bugs = reader.string();
                 break;
-
             case 8:
                 message.homepage = reader.string();
                 break;
-
             case 9:
-                if (!(message.keywords && message.keywords.length)) {
+                if (!(message.keywords && message.keywords.length))
                     message.keywords = [];
-                }
                 message.keywords.push(reader.string());
                 break;
-
             case 10:
                 message.main = reader.string();
                 break;
-
             case 11:
                 reader.skip().pos++;
-                if (message.bin === $util.emptyObject) {
+                if (message.bin === $util.emptyObject)
                     message.bin = {};
-                }
                 var key = reader.string();
                 reader.pos++;
                 message.bin[typeof key === "object" ? $util.longToHash(key) : key] = reader.string();
                 break;
-
             case 12:
                 reader.skip().pos++;
-                if (message.scripts === $util.emptyObject) {
+                if (message.scripts === $util.emptyObject)
                     message.scripts = {};
-                }
                 var key = reader.string();
                 reader.pos++;
                 message.scripts[typeof key === "object" ? $util.longToHash(key) : key] = reader.string();
                 break;
-
             case 13:
                 reader.skip().pos++;
-                if (message.dependencies === $util.emptyObject) {
+                if (message.dependencies === $util.emptyObject)
                     message.dependencies = {};
-                }
                 var key = reader.string();
                 reader.pos++;
                 message.dependencies[typeof key === "object" ? $util.longToHash(key) : key] = reader.string();
                 break;
-
             case 14:
                 reader.skip().pos++;
-                if (message.optionalDependencies === $util.emptyObject) {
+                if (message.optionalDependencies === $util.emptyObject)
                     message.optionalDependencies = {};
-                }
                 var key = reader.string();
                 reader.pos++;
                 message.optionalDependencies[typeof key === "object" ? $util.longToHash(key) : key] = reader.string();
                 break;
-
             case 15:
                 reader.skip().pos++;
-                if (message.devDependencies === $util.emptyObject) {
+                if (message.devDependencies === $util.emptyObject)
                     message.devDependencies = {};
-                }
                 var key = reader.string();
                 reader.pos++;
                 message.devDependencies[typeof key === "object" ? $util.longToHash(key) : key] = reader.string();
                 break;
-
             case 17:
                 message.types = reader.string();
                 break;
-
             case 18:
-                if (!(message.cliDependencies && message.cliDependencies.length)) {
+                if (!(message.cliDependencies && message.cliDependencies.length))
                     message.cliDependencies = [];
-                }
                 message.cliDependencies.push(reader.string());
                 break;
-
             default:
                 reader.skipType(tag & 7);
                 break;
@@ -362,12 +312,13 @@ $root.Package = (function() {
 
     /**
      * Decodes a Package message from the specified reader or buffer, length delimited.
-     * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
      * @returns {Package} Package
      */
-    Package.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-        readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
-        return this.decode(readerOrBuffer, readerOrBuffer.uint32());
+    Package.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader(reader);
+        return this.decode(reader, reader.uint32());
     };
 
     /**
@@ -376,131 +327,91 @@ $root.Package = (function() {
      * @returns {?string} `null` if valid, otherwise the reason why it is not
      */
     Package.verify = function verify(message) {
-        if (message.name !== undefined) {
-            if (!$util.isString(message.name)) {
+        if (message.name !== undefined)
+            if (!$util.isString(message.name))
                 return "name: string expected";
-            }
-        }
-        if (message.version !== undefined) {
-            if (!$util.isString(message.version)) {
+        if (message.version !== undefined)
+            if (!$util.isString(message.version))
                 return "version: string expected";
-            }
-        }
-        if (message.description !== undefined) {
-            if (!$util.isString(message.description)) {
+        if (message.description !== undefined)
+            if (!$util.isString(message.description))
                 return "description: string expected";
-            }
-        }
-        if (message.author !== undefined) {
-            if (!$util.isString(message.author)) {
+        if (message.author !== undefined)
+            if (!$util.isString(message.author))
                 return "author: string expected";
-            }
-        }
-        if (message.license !== undefined) {
-            if (!$util.isString(message.license)) {
+        if (message.license !== undefined)
+            if (!$util.isString(message.license))
                 return "license: string expected";
-            }
-        }
         if (message.repository !== undefined && message.repository !== null) {
-            var err = $types[5].verify(message.repository);
-            if (err) {
-                return "repository." + err;
-            }
+            var error = $types[5].verify(message.repository);
+            if (error)
+                return "repository." + error;
         }
-        if (message.bugs !== undefined) {
-            if (!$util.isString(message.bugs)) {
+        if (message.bugs !== undefined)
+            if (!$util.isString(message.bugs))
                 return "bugs: string expected";
-            }
-        }
-        if (message.homepage !== undefined) {
-            if (!$util.isString(message.homepage)) {
+        if (message.homepage !== undefined)
+            if (!$util.isString(message.homepage))
                 return "homepage: string expected";
-            }
-        }
         if (message.keywords !== undefined) {
-            if (!Array.isArray(message.keywords)) {
+            if (!Array.isArray(message.keywords))
                 return "keywords: array expected";
-            }
-            for (var i = 0; i < message.keywords.length; ++i) {
-                if (!$util.isString(message.keywords[i])) {
+            for (var i = 0; i < message.keywords.length; ++i)
+                if (!$util.isString(message.keywords[i]))
                     return "keywords: string[] expected";
-                }
-            }
         }
-        if (message.main !== undefined) {
-            if (!$util.isString(message.main)) {
+        if (message.main !== undefined)
+            if (!$util.isString(message.main))
                 return "main: string expected";
-            }
-        }
         if (message.bin !== undefined) {
-            if (!$util.isObject(message.bin)) {
+            if (!$util.isObject(message.bin))
                 return "bin: object expected";
-            }
             var key = Object.keys(message.bin);
-            for (var i = 0; i < key.length; ++i) {
-                if (!$util.isString(message.bin[key[i]])) {
+            for (var i = 0; i < key.length; ++i)
+                if (!$util.isString(message.bin[key[i]]))
                     return "bin: string{key:string} expected";
-                }
-            }
         }
         if (message.scripts !== undefined) {
-            if (!$util.isObject(message.scripts)) {
+            if (!$util.isObject(message.scripts))
                 return "scripts: object expected";
-            }
             var key = Object.keys(message.scripts);
-            for (var i = 0; i < key.length; ++i) {
-                if (!$util.isString(message.scripts[key[i]])) {
+            for (var i = 0; i < key.length; ++i)
+                if (!$util.isString(message.scripts[key[i]]))
                     return "scripts: string{key:string} expected";
-                }
-            }
         }
         if (message.dependencies !== undefined) {
-            if (!$util.isObject(message.dependencies)) {
+            if (!$util.isObject(message.dependencies))
                 return "dependencies: object expected";
-            }
             var key = Object.keys(message.dependencies);
-            for (var i = 0; i < key.length; ++i) {
-                if (!$util.isString(message.dependencies[key[i]])) {
+            for (var i = 0; i < key.length; ++i)
+                if (!$util.isString(message.dependencies[key[i]]))
                     return "dependencies: string{key:string} expected";
-                }
-            }
         }
         if (message.optionalDependencies !== undefined) {
-            if (!$util.isObject(message.optionalDependencies)) {
+            if (!$util.isObject(message.optionalDependencies))
                 return "optionalDependencies: object expected";
-            }
             var key = Object.keys(message.optionalDependencies);
-            for (var i = 0; i < key.length; ++i) {
-                if (!$util.isString(message.optionalDependencies[key[i]])) {
+            for (var i = 0; i < key.length; ++i)
+                if (!$util.isString(message.optionalDependencies[key[i]]))
                     return "optionalDependencies: string{key:string} expected";
-                }
-            }
         }
         if (message.devDependencies !== undefined) {
-            if (!$util.isObject(message.devDependencies)) {
+            if (!$util.isObject(message.devDependencies))
                 return "devDependencies: object expected";
-            }
             var key = Object.keys(message.devDependencies);
-            for (var i = 0; i < key.length; ++i) {
-                if (!$util.isString(message.devDependencies[key[i]])) {
+            for (var i = 0; i < key.length; ++i)
+                if (!$util.isString(message.devDependencies[key[i]]))
                     return "devDependencies: string{key:string} expected";
-                }
-            }
         }
-        if (message.types !== undefined) {
-            if (!$util.isString(message.types)) {
+        if (message.types !== undefined)
+            if (!$util.isString(message.types))
                 return "types: string expected";
-            }
-        }
         if (message.cliDependencies !== undefined) {
-            if (!Array.isArray(message.cliDependencies)) {
+            if (!Array.isArray(message.cliDependencies))
                 return "cliDependencies: array expected";
-            }
-            for (var i = 0; i < message.cliDependencies.length; ++i) {
-                if (!$util.isString(message.cliDependencies[i])) {
+            for (var i = 0; i < message.cliDependencies.length; ++i)
+                if (!$util.isString(message.cliDependencies[i]))
                     return "cliDependencies: string[] expected";
-                }
-            }
         }
         return null;
     };
@@ -512,77 +423,60 @@ $root.Package = (function() {
      */
     Package.fromObject = function fromObject(object) {
         var message = new $root.Package();
-        if (object.name !== undefined && object.name !== null) {
+        if (object.name !== undefined && object.name !== null)
             message.name = String(object.name);
-        }
-        if (object.version !== undefined && object.version !== null) {
+        if (object.version !== undefined && object.version !== null)
             message.version = String(object.version);
-        }
-        if (object.description !== undefined && object.description !== null) {
+        if (object.description !== undefined && object.description !== null)
             message.description = String(object.description);
-        }
-        if (object.author !== undefined && object.author !== null) {
+        if (object.author !== undefined && object.author !== null)
             message.author = String(object.author);
-        }
-        if (object.license !== undefined && object.license !== null) {
+        if (object.license !== undefined && object.license !== null)
             message.license = String(object.license);
-        }
-        if (object.repository !== undefined && object.repository !== null) {
+        if (object.repository !== undefined && object.repository !== null)
             message.repository = $types[5].fromObject(object.repository);
-        }
-        if (object.bugs !== undefined && object.bugs !== null) {
+        if (object.bugs !== undefined && object.bugs !== null)
             message.bugs = String(object.bugs);
-        }
-        if (object.homepage !== undefined && object.homepage !== null) {
+        if (object.homepage !== undefined && object.homepage !== null)
             message.homepage = String(object.homepage);
-        }
         if (object.keywords) {
             message.keywords = [];
-            for (var i = 0; i < object.keywords.length; ++i) {
+            for (var i = 0; i < object.keywords.length; ++i)
                 message.keywords[i] = String(object.keywords[i]);
-            }
         }
-        if (object.main !== undefined && object.main !== null) {
+        if (object.main !== undefined && object.main !== null)
             message.main = String(object.main);
-        }
         if (object.bin) {
             message.bin = {};
-            for (var keys = Object.keys(object.bin), i = 0; i < keys.length; ++i) {
+            for (var keys = Object.keys(object.bin), i = 0; i < keys.length; ++i)
                 message.bin[keys[i]] = String(object.bin[keys[i]]);
-            }
         }
         if (object.scripts) {
             message.scripts = {};
-            for (var keys = Object.keys(object.scripts), i = 0; i < keys.length; ++i) {
+            for (var keys = Object.keys(object.scripts), i = 0; i < keys.length; ++i)
                 message.scripts[keys[i]] = String(object.scripts[keys[i]]);
-            }
         }
         if (object.dependencies) {
             message.dependencies = {};
-            for (var keys = Object.keys(object.dependencies), i = 0; i < keys.length; ++i) {
+            for (var keys = Object.keys(object.dependencies), i = 0; i < keys.length; ++i)
                 message.dependencies[keys[i]] = String(object.dependencies[keys[i]]);
-            }
         }
         if (object.optionalDependencies) {
             message.optionalDependencies = {};
-            for (var keys = Object.keys(object.optionalDependencies), i = 0; i < keys.length; ++i) {
+            for (var keys = Object.keys(object.optionalDependencies), i = 0; i < keys.length; ++i)
                 message.optionalDependencies[keys[i]] = String(object.optionalDependencies[keys[i]]);
-            }
         }
         if (object.devDependencies) {
             message.devDependencies = {};
-            for (var keys = Object.keys(object.devDependencies), i = 0; i < keys.length; ++i) {
+            for (var keys = Object.keys(object.devDependencies), i = 0; i < keys.length; ++i)
                 message.devDependencies[keys[i]] = String(object.devDependencies[keys[i]]);
-            }
         }
-        if (object.types !== undefined && object.types !== null) {
+        if (object.types !== undefined && object.types !== null)
             message.types = String(object.types);
-        }
         if (object.cliDependencies) {
             message.cliDependencies = [];
-            for (var i = 0; i < object.cliDependencies.length; ++i) {
+            for (var i = 0; i < object.cliDependencies.length; ++i)
                 message.cliDependencies[i] = String(object.cliDependencies[i]);
-            }
         }
         return message;
     };
@@ -602,9 +496,8 @@ $root.Package = (function() {
      * @returns {Object.<string,*>} Plain object
      */
     Package.toObject = function toObject(message, options) {
-        if (!options) {
+        if (!options)
             options = {};
-        }
         var object = {};
         if (options.arrays || options.defaults) {
             object.keywords = [];
@@ -629,132 +522,89 @@ $root.Package = (function() {
             object.main = "";
             object.types = "";
         }
-        for (var keys = Object.keys(message), i = 0; i < keys.length; ++i) {
-            switch (keys[i]) {
-            case "name":
-                if (message.name !== undefined && message.name !== null) {
+        for (var keys = Object.keys(message), i = 0; i < keys.length; ++i)
+            if (message[keys[i]] !== undefined && message[keys[i]] !== null)
+                switch (keys[i]) {
+                case "name":
                     object.name = message.name;
-                }
-                break;
-
-            case "version":
-                if (message.version !== undefined && message.version !== null) {
+                    break;
+                case "version":
                     object.version = message.version;
-                }
-                break;
-
-            case "description":
-                if (message.description !== undefined && message.description !== null) {
+                    break;
+                case "description":
                     object.description = message.description;
-                }
-                break;
-
-            case "author":
-                if (message.author !== undefined && message.author !== null) {
+                    break;
+                case "author":
                     object.author = message.author;
-                }
-                break;
-
-            case "license":
-                if (message.license !== undefined && message.license !== null) {
+                    break;
+                case "license":
                     object.license = message.license;
-                }
-                break;
-
-            case "repository":
-                if (message.repository !== undefined && message.repository !== null) {
+                    break;
+                case "repository":
                     object.repository = $types[5].toObject(message.repository, options);
-                }
-                break;
-
-            case "bugs":
-                if (message.bugs !== undefined && message.bugs !== null) {
+                    break;
+                case "bugs":
                     object.bugs = message.bugs;
-                }
-                break;
-
-            case "homepage":
-                if (message.homepage !== undefined && message.homepage !== null) {
+                    break;
+                case "homepage":
                     object.homepage = message.homepage;
-                }
-                break;
-
-            case "keywords":
-                if (message.keywords.length) {
-                    object.keywords = [];
-                    for (var j = 0; j < message.keywords.length; ++j) {
-                        object.keywords[j] = message.keywords[j];
+                    break;
+                case "keywords":
+                    if (message.keywords.length) {
+                        object.keywords = [];
+                        for (var j = 0; j < message.keywords.length; ++j)
+                            object.keywords[j] = message.keywords[j];
                     }
-                }
-                break;
-
-            case "main":
-                if (message.main !== undefined && message.main !== null) {
+                    break;
+                case "main":
                     object.main = message.main;
-                }
-                break;
-
-            case "bin":
-                if (message.bin && message.bin !== $util.emptyObject) {
-                    object.bin = {};
-                    for (var keys2 = Object.keys(message.bin), j = 0; j < keys2.length; ++j) {
-                        object.bin[keys2[j]] = message.bin[keys2[j]];
+                    break;
+                case "bin":
+                    if (message.bin !== $util.emptyObject) {
+                        object.bin = {};
+                        for (var keys2 = Object.keys(message.bin), j = 0; j < keys2.length; ++j)
+                            object.bin[keys2[j]] = message.bin[keys2[j]];
                     }
-                }
-                break;
-
-            case "scripts":
-                if (message.scripts && message.scripts !== $util.emptyObject) {
-                    object.scripts = {};
-                    for (var keys2 = Object.keys(message.scripts), j = 0; j < keys2.length; ++j) {
-                        object.scripts[keys2[j]] = message.scripts[keys2[j]];
+                    break;
+                case "scripts":
+                    if (message.scripts !== $util.emptyObject) {
+                        object.scripts = {};
+                        for (var keys2 = Object.keys(message.scripts), j = 0; j < keys2.length; ++j)
+                            object.scripts[keys2[j]] = message.scripts[keys2[j]];
                     }
-                }
-                break;
-
-            case "dependencies":
-                if (message.dependencies && message.dependencies !== $util.emptyObject) {
-                    object.dependencies = {};
-                    for (var keys2 = Object.keys(message.dependencies), j = 0; j < keys2.length; ++j) {
-                        object.dependencies[keys2[j]] = message.dependencies[keys2[j]];
+                    break;
+                case "dependencies":
+                    if (message.dependencies !== $util.emptyObject) {
+                        object.dependencies = {};
+                        for (var keys2 = Object.keys(message.dependencies), j = 0; j < keys2.length; ++j)
+                            object.dependencies[keys2[j]] = message.dependencies[keys2[j]];
                     }
-                }
-                break;
-
-            case "optionalDependencies":
-                if (message.optionalDependencies && message.optionalDependencies !== $util.emptyObject) {
-                    object.optionalDependencies = {};
-                    for (var keys2 = Object.keys(message.optionalDependencies), j = 0; j < keys2.length; ++j) {
-                        object.optionalDependencies[keys2[j]] = message.optionalDependencies[keys2[j]];
+                    break;
+                case "optionalDependencies":
+                    if (message.optionalDependencies !== $util.emptyObject) {
+                        object.optionalDependencies = {};
+                        for (var keys2 = Object.keys(message.optionalDependencies), j = 0; j < keys2.length; ++j)
+                            object.optionalDependencies[keys2[j]] = message.optionalDependencies[keys2[j]];
                     }
-                }
-                break;
-
-            case "devDependencies":
-                if (message.devDependencies && message.devDependencies !== $util.emptyObject) {
-                    object.devDependencies = {};
-                    for (var keys2 = Object.keys(message.devDependencies), j = 0; j < keys2.length; ++j) {
-                        object.devDependencies[keys2[j]] = message.devDependencies[keys2[j]];
+                    break;
+                case "devDependencies":
+                    if (message.devDependencies !== $util.emptyObject) {
+                        object.devDependencies = {};
+                        for (var keys2 = Object.keys(message.devDependencies), j = 0; j < keys2.length; ++j)
+                            object.devDependencies[keys2[j]] = message.devDependencies[keys2[j]];
                     }
-                }
-                break;
-
-            case "types":
-                if (message.types !== undefined && message.types !== null) {
+                    break;
+                case "types":
                     object.types = message.types;
-                }
-                break;
-
-            case "cliDependencies":
-                if (message.cliDependencies.length) {
-                    object.cliDependencies = [];
-                    for (var j = 0; j < message.cliDependencies.length; ++j) {
-                        object.cliDependencies[j] = message.cliDependencies[j];
+                    break;
+                case "cliDependencies":
+                    if (message.cliDependencies.length) {
+                        object.cliDependencies = [];
+                        for (var j = 0; j < message.cliDependencies.length; ++j)
+                            object.cliDependencies[j] = message.cliDependencies[j];
                     }
+                    break;
                 }
-                break;
-            }
-        }
         return object;
     };
 
@@ -819,15 +669,12 @@ $root.Package = (function() {
          * @returns {$protobuf.Writer} Writer
          */
         Repository.encode = function encode(message, writer) {
-            if (!writer) {
+            if (!writer)
                 writer = $Writer.create();
-            }
-            if (message.type !== undefined && message.type !== "") {
-                writer.uint32(10).string(message.type);
-            }
-            if (message.url !== undefined && message.url !== "") {
-                writer.uint32(18).string(message.url);
-            }
+            if (message.type !== undefined && message.type !== "")
+                writer.uint32(/* id 1, wireType 2 =*/10).string(message.type);
+            if (message.url !== undefined && message.url !== "")
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.url);
             return writer;
         };
 
@@ -843,26 +690,23 @@ $root.Package = (function() {
 
         /**
          * Decodes a Repository message from the specified reader or buffer.
-         * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
          * @param {number} [length] Message length if known beforehand
          * @returns {Package.Repository} Repository
          */
-        Repository.decode = function decode(reader, len) {
-            if (!(reader instanceof $Reader)) {
+        Repository.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            }
-            var end = len === undefined ? reader.len : reader.pos + len, message = new $root.Package.Repository();
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Package.Repository();
             while (reader.pos < end) {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
                 case 1:
                     message.type = reader.string();
                     break;
-
                 case 2:
                     message.url = reader.string();
                     break;
-
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -873,12 +717,13 @@ $root.Package = (function() {
 
         /**
          * Decodes a Repository message from the specified reader or buffer, length delimited.
-         * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
          * @returns {Package.Repository} Repository
          */
-        Repository.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-            readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
-            return this.decode(readerOrBuffer, readerOrBuffer.uint32());
+        Repository.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader(reader);
+            return this.decode(reader, reader.uint32());
         };
 
         /**
@@ -887,16 +732,12 @@ $root.Package = (function() {
          * @returns {?string} `null` if valid, otherwise the reason why it is not
          */
         Repository.verify = function verify(message) {
-            if (message.type !== undefined) {
-                if (!$util.isString(message.type)) {
+            if (message.type !== undefined)
+                if (!$util.isString(message.type))
                     return "type: string expected";
-                }
-            }
-            if (message.url !== undefined) {
-                if (!$util.isString(message.url)) {
+            if (message.url !== undefined)
+                if (!$util.isString(message.url))
                     return "url: string expected";
-                }
-            }
             return null;
         };
 
@@ -907,12 +748,10 @@ $root.Package = (function() {
          */
         Repository.fromObject = function fromObject(object) {
             var message = new $root.Package.Repository();
-            if (object.type !== undefined && object.type !== null) {
+            if (object.type !== undefined && object.type !== null)
                 message.type = String(object.type);
-            }
-            if (object.url !== undefined && object.url !== null) {
+            if (object.url !== undefined && object.url !== null)
                 message.url = String(object.url);
-            }
             return message;
         };
 
@@ -931,29 +770,23 @@ $root.Package = (function() {
          * @returns {Object.<string,*>} Plain object
          */
         Repository.toObject = function toObject(message, options) {
-            if (!options) {
+            if (!options)
                 options = {};
-            }
             var object = {};
             if (options.defaults) {
                 object.type = "";
                 object.url = "";
             }
-            for (var keys = Object.keys(message), i = 0; i < keys.length; ++i) {
-                switch (keys[i]) {
-                case "type":
-                    if (message.type !== undefined && message.type !== null) {
+            for (var keys = Object.keys(message), i = 0; i < keys.length; ++i)
+                if (message[keys[i]] !== undefined && message[keys[i]] !== null)
+                    switch (keys[i]) {
+                    case "type":
                         object.type = message.type;
-                    }
-                    break;
-
-                case "url":
-                    if (message.url !== undefined && message.url !== null) {
+                        break;
+                    case "url":
                         object.url = message.url;
+                        break;
                     }
-                    break;
-                }
-            }
             return object;
         };
 

@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.5.0 (c) 2016, Daniel Wirtz
- * Compiled Sat, 14 Jan 2017 22:52:07 UTC
+ * Compiled Sun, 15 Jan 2017 00:55:02 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -854,7 +854,7 @@ Class.prototype = Message;
  * Decodes a message of this type.
  * @name Class#decode
  * @function
- * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode
+ * @param {Reader|Uint8Array} reader Reader or buffer to decode
  * @returns {Message} Decoded message
  */
 
@@ -862,7 +862,7 @@ Class.prototype = Message;
  * Decodes a message of this type preceeded by its length as a varint.
  * @name Class#decodeDelimited
  * @function
- * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode
+ * @param {Reader|Uint8Array} reader Reader or buffer to decode
  * @returns {Message} Decoded message
  */
 
@@ -2165,22 +2165,22 @@ Message.encodeDelimited = function encodeDelimited(message, writer) {
  * Decodes a message of this type.
  * @name Message.decode
  * @function
- * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode
+ * @param {Reader|Uint8Array} reader Reader or buffer to decode
  * @returns {Message} Decoded message
  */
-Message.decode = function decode(readerOrBuffer) {
-    return this.$type.decode(readerOrBuffer);
+Message.decode = function decode(reader) {
+    return this.$type.decode(reader);
 };
 
 /**
  * Decodes a message of this type preceeded by its length as a varint.
  * @name Message.decodeDelimited
  * @function
- * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode
+ * @param {Reader|Uint8Array} reader Reader or buffer to decode
  * @returns {Message} Decoded message
  */
-Message.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-    return this.$type.decodeDelimited(readerOrBuffer);
+Message.decodeDelimited = function decodeDelimited(reader) {
+    return this.$type.decodeDelimited(reader);
 };
 
 /**
@@ -5682,22 +5682,23 @@ TypePrototype.encodeDelimited = function encodeDelimited(message, writer) {
 
 /**
  * Decodes a message of this type.
- * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+ * @param {Reader|Uint8Array} reader Reader or buffer to decode from
  * @param {number} [length] Length of the message, if known beforehand
  * @returns {Message} Decoded message
  */
-TypePrototype.decode = function decode_setup(readerOrBuffer, length) {
-    return this.setup().decode(readerOrBuffer, length); // overrides this method
+TypePrototype.decode = function decode_setup(reader, length) {
+    return this.setup().decode(reader, length); // overrides this method
 };
 
 /**
  * Decodes a message of this type preceeded by its byte length as a varint.
- * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+ * @param {Reader|Uint8Array} reader Reader or buffer to decode from
  * @returns {Message} Decoded message
  */
-TypePrototype.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-    readerOrBuffer = readerOrBuffer instanceof Reader ? readerOrBuffer : Reader.create(readerOrBuffer);
-    return this.decode(readerOrBuffer, readerOrBuffer.uint32());
+TypePrototype.decodeDelimited = function decodeDelimited(reader) {
+    if (!(reader instanceof Reader))
+        reader = Reader.create(reader);
+    return this.decode(reader, reader.uint32());
 };
 
 /**

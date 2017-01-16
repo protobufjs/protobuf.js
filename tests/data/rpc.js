@@ -78,7 +78,7 @@ $root.MyService = (function() {
      * @param {MyService_myMethod_Callback} callback Node-style callback called with the error, if any, and MyResponse
      * @returns {undefined}
      */
-    MyService.prototype["myMethod"] = function myMethod(request, callback) {
+    MyService.prototype.myMethod = function myMethod(request, callback) {
         var requestData;
         try {
             requestData = (this.requestDelimited ? $root.MyRequest.encodeDelimited(request) : $root.MyRequest.encode(request)).finish();
@@ -144,12 +144,10 @@ $root.MyRequest = (function() {
      * @returns {$protobuf.Writer} Writer
      */
     MyRequest.encode = function encode(message, writer) {
-        if (!writer) {
+        if (!writer)
             writer = $Writer.create();
-        }
-        if (message.path !== undefined && message.path !== "") {
-            writer.uint32(10).string(message.path);
-        }
+        if (message.path !== undefined && message.path !== "")
+            writer.uint32(/* id 1, wireType 2 =*/10).string(message.path);
         return writer;
     };
 
@@ -165,22 +163,20 @@ $root.MyRequest = (function() {
 
     /**
      * Decodes a MyRequest message from the specified reader or buffer.
-     * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
      * @param {number} [length] Message length if known beforehand
      * @returns {MyRequest} MyRequest
      */
-    MyRequest.decode = function decode(reader, len) {
-        if (!(reader instanceof $Reader)) {
+    MyRequest.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
             reader = $Reader.create(reader);
-        }
-        var end = len === undefined ? reader.len : reader.pos + len, message = new $root.MyRequest();
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.MyRequest();
         while (reader.pos < end) {
             var tag = reader.uint32();
             switch (tag >>> 3) {
             case 1:
                 message.path = reader.string();
                 break;
-
             default:
                 reader.skipType(tag & 7);
                 break;
@@ -191,12 +187,13 @@ $root.MyRequest = (function() {
 
     /**
      * Decodes a MyRequest message from the specified reader or buffer, length delimited.
-     * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
      * @returns {MyRequest} MyRequest
      */
-    MyRequest.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-        readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
-        return this.decode(readerOrBuffer, readerOrBuffer.uint32());
+    MyRequest.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader(reader);
+        return this.decode(reader, reader.uint32());
     };
 
     /**
@@ -205,11 +202,9 @@ $root.MyRequest = (function() {
      * @returns {?string} `null` if valid, otherwise the reason why it is not
      */
     MyRequest.verify = function verify(message) {
-        if (message.path !== undefined) {
-            if (!$util.isString(message.path)) {
+        if (message.path !== undefined)
+            if (!$util.isString(message.path))
                 return "path: string expected";
-            }
-        }
         return null;
     };
 
@@ -220,9 +215,8 @@ $root.MyRequest = (function() {
      */
     MyRequest.fromObject = function fromObject(object) {
         var message = new $root.MyRequest();
-        if (object.path !== undefined && object.path !== null) {
+        if (object.path !== undefined && object.path !== null)
             message.path = String(object.path);
-        }
         return message;
     };
 
@@ -241,22 +235,18 @@ $root.MyRequest = (function() {
      * @returns {Object.<string,*>} Plain object
      */
     MyRequest.toObject = function toObject(message, options) {
-        if (!options) {
+        if (!options)
             options = {};
-        }
         var object = {};
-        if (options.defaults) {
+        if (options.defaults)
             object.path = "";
-        }
-        for (var keys = Object.keys(message), i = 0; i < keys.length; ++i) {
-            switch (keys[i]) {
-            case "path":
-                if (message.path !== undefined && message.path !== null) {
+        for (var keys = Object.keys(message), i = 0; i < keys.length; ++i)
+            if (message[keys[i]] !== undefined && message[keys[i]] !== null)
+                switch (keys[i]) {
+                case "path":
                     object.path = message.path;
+                    break;
                 }
-                break;
-            }
-        }
         return object;
     };
 
@@ -318,12 +308,10 @@ $root.MyResponse = (function() {
      * @returns {$protobuf.Writer} Writer
      */
     MyResponse.encode = function encode(message, writer) {
-        if (!writer) {
+        if (!writer)
             writer = $Writer.create();
-        }
-        if (message.status !== undefined && message.status !== 0) {
-            writer.uint32(16).int32(message.status);
-        }
+        if (message.status !== undefined && message.status !== 0)
+            writer.uint32(/* id 2, wireType 0 =*/16).int32(message.status);
         return writer;
     };
 
@@ -339,22 +327,20 @@ $root.MyResponse = (function() {
 
     /**
      * Decodes a MyResponse message from the specified reader or buffer.
-     * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
      * @param {number} [length] Message length if known beforehand
      * @returns {MyResponse} MyResponse
      */
-    MyResponse.decode = function decode(reader, len) {
-        if (!(reader instanceof $Reader)) {
+    MyResponse.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
             reader = $Reader.create(reader);
-        }
-        var end = len === undefined ? reader.len : reader.pos + len, message = new $root.MyResponse();
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.MyResponse();
         while (reader.pos < end) {
             var tag = reader.uint32();
             switch (tag >>> 3) {
             case 2:
                 message.status = reader.int32();
                 break;
-
             default:
                 reader.skipType(tag & 7);
                 break;
@@ -365,12 +351,13 @@ $root.MyResponse = (function() {
 
     /**
      * Decodes a MyResponse message from the specified reader or buffer, length delimited.
-     * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
      * @returns {MyResponse} MyResponse
      */
-    MyResponse.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-        readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
-        return this.decode(readerOrBuffer, readerOrBuffer.uint32());
+    MyResponse.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader(reader);
+        return this.decode(reader, reader.uint32());
     };
 
     /**
@@ -379,11 +366,9 @@ $root.MyResponse = (function() {
      * @returns {?string} `null` if valid, otherwise the reason why it is not
      */
     MyResponse.verify = function verify(message) {
-        if (message.status !== undefined) {
-            if (!$util.isInteger(message.status)) {
+        if (message.status !== undefined)
+            if (!$util.isInteger(message.status))
                 return "status: integer expected";
-            }
-        }
         return null;
     };
 
@@ -394,9 +379,8 @@ $root.MyResponse = (function() {
      */
     MyResponse.fromObject = function fromObject(object) {
         var message = new $root.MyResponse();
-        if (object.status !== undefined && object.status !== null) {
+        if (object.status !== undefined && object.status !== null)
             message.status = object.status | 0;
-        }
         return message;
     };
 
@@ -415,22 +399,18 @@ $root.MyResponse = (function() {
      * @returns {Object.<string,*>} Plain object
      */
     MyResponse.toObject = function toObject(message, options) {
-        if (!options) {
+        if (!options)
             options = {};
-        }
         var object = {};
-        if (options.defaults) {
+        if (options.defaults)
             object.status = 0;
-        }
-        for (var keys = Object.keys(message), i = 0; i < keys.length; ++i) {
-            switch (keys[i]) {
-            case "status":
-                if (message.status !== undefined && message.status !== null) {
+        for (var keys = Object.keys(message), i = 0; i < keys.length; ++i)
+            if (message[keys[i]] !== undefined && message[keys[i]] !== null)
+                switch (keys[i]) {
+                case "status":
                     object.status = message.status;
+                    break;
                 }
-                break;
-            }
-        }
         return object;
     };
 

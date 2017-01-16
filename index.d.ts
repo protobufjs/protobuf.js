@@ -78,19 +78,19 @@ export class Class {
      * Decodes a message of this type.
      * @name Class#decode
      * @function
-     * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode
+     * @param {Reader|Uint8Array} reader Reader or buffer to decode
      * @returns {Message} Decoded message
      */
-    decode(readerOrBuffer: (Reader|Uint8Array)): Message;
+    decode(reader: (Reader|Uint8Array)): Message;
 
     /**
      * Decodes a message of this type preceeded by its length as a varint.
      * @name Class#decodeDelimited
      * @function
-     * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode
+     * @param {Reader|Uint8Array} reader Reader or buffer to decode
      * @returns {Message} Decoded message
      */
-    decodeDelimited(readerOrBuffer: (Reader|Uint8Array)): Message;
+    decodeDelimited(reader: (Reader|Uint8Array)): Message;
 
     /**
      * Verifies a message of this type.
@@ -574,19 +574,19 @@ export class Message {
      * Decodes a message of this type.
      * @name Message.decode
      * @function
-     * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode
+     * @param {Reader|Uint8Array} reader Reader or buffer to decode
      * @returns {Message} Decoded message
      */
-    static decode(readerOrBuffer: (Reader|Uint8Array)): Message;
+    static decode(reader: (Reader|Uint8Array)): Message;
 
     /**
      * Decodes a message of this type preceeded by its length as a varint.
      * @name Message.decodeDelimited
      * @function
-     * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode
+     * @param {Reader|Uint8Array} reader Reader or buffer to decode
      * @returns {Message} Decoded message
      */
-    static decodeDelimited(readerOrBuffer: (Reader|Uint8Array)): Message;
+    static decodeDelimited(reader: (Reader|Uint8Array)): Message;
 
     /**
      * Verifies a message of this type.
@@ -1671,18 +1671,18 @@ export class Type extends NamespaceBase {
 
     /**
      * Decodes a message of this type.
-     * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+     * @param {Reader|Uint8Array} reader Reader or buffer to decode from
      * @param {number} [length] Length of the message, if known beforehand
      * @returns {Message} Decoded message
      */
-    decode(readerOrBuffer: (Reader|Uint8Array), length?: number): Message;
+    decode(reader: (Reader|Uint8Array), length?: number): Message;
 
     /**
      * Decodes a message of this type preceeded by its byte length as a varint.
-     * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+     * @param {Reader|Uint8Array} reader Reader or buffer to decode from
      * @returns {Message} Decoded message
      */
-    decodeDelimited(readerOrBuffer: (Reader|Uint8Array)): Message;
+    decodeDelimited(reader: (Reader|Uint8Array)): Message;
 
     /**
      * Verifies that field values are valid and that required fields are present.

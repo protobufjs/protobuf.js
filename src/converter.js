@@ -232,33 +232,33 @@ converter.toObject = function toObject(mtype) {
     ("}");
     } gen
     ("for(var ks=Object.keys(m),i=0;i<ks.length;++i){")
-        ("switch(ks[i]){");
+        ("if(m[ks[i]]!==undefined&&m[ks[i]]!==null){")
+            ("switch(ks[i]){");
     for (var i = 0; i < fields.length; ++i) {
         var field = fields[i],
             prop  = field._prop; gen
-        ("case%j:", field.name);
+            ("case%j:", field.name);
         if (field.map) { gen
-            ("if(m%s&&m%s!==util.emptyObject){", prop, prop)
-                ("d%s={}", prop)
-                ("for(var ks2=Object.keys(m%s),j=0;j<ks2.length;++j){", prop);
+                ("if(m%s!==util.emptyObject){", prop, prop)
+                    ("d%s={}", prop)
+                    ("for(var ks2=Object.keys(m%s),j=0;j<ks2.length;++j){", prop);
             genValuePartial_toObject(gen, field, i, prop + "[ks2[j]]")
-                ("}")
-            ("}");
+                    ("}")
+                ("}");
         } else if (field.repeated) { gen
-            ("if(m%s.length){", prop)
-                ("d%s=[]", prop)
-                ("for(var j=0;j<m%s.length;++j){", prop);
+                ("if(m%s.length){", prop)
+                    ("d%s=[]", prop)
+                    ("for(var j=0;j<m%s.length;++j){", prop);
             genValuePartial_toObject(gen, field, i, prop + "[j]")
-                ("}")
-            ("}");
-        } else { gen
-            ("if(m%s!==undefined&&m%s!==null){", prop, prop);
-            genValuePartial_toObject(gen, field, i, prop)
-            ("}");
-        } gen
-            ("break");
+                    ("}")
+                ("}");
+        } else
+            genValuePartial_toObject(gen, field, i, prop);
+        gen
+                ("break");
     }
     return gen
+            ("}")
         ("}")
     ("}")
     ("return d");

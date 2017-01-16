@@ -58,22 +58,22 @@ Message.encodeDelimited = function encodeDelimited(message, writer) {
  * Decodes a message of this type.
  * @name Message.decode
  * @function
- * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode
+ * @param {Reader|Uint8Array} reader Reader or buffer to decode
  * @returns {Message} Decoded message
  */
-Message.decode = function decode(readerOrBuffer) {
-    return this.$type.decode(readerOrBuffer);
+Message.decode = function decode(reader) {
+    return this.$type.decode(reader);
 };
 
 /**
  * Decodes a message of this type preceeded by its length as a varint.
  * @name Message.decodeDelimited
  * @function
- * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode
+ * @param {Reader|Uint8Array} reader Reader or buffer to decode
  * @returns {Message} Decoded message
  */
-Message.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-    return this.$type.decodeDelimited(readerOrBuffer);
+Message.decodeDelimited = function decodeDelimited(reader) {
+    return this.$type.decodeDelimited(reader);
 };
 
 /**

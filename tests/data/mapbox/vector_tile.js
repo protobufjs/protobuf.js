@@ -66,14 +66,11 @@ $root.vector_tile = (function() {
          * @returns {$protobuf.Writer} Writer
          */
         Tile.encode = function encode(message, writer) {
-            if (!writer) {
+            if (!writer)
                 writer = $Writer.create();
-            }
-            if (message.layers) {
-                for (var i = 0; i < message.layers.length; ++i) {
-                    $types[0].encode(message.layers[i], writer.uint32(26).fork()).ldelim();
-                }
-            }
+            if (message.layers)
+                for (var i = 0; i < message.layers.length; ++i)
+                    $types[0].encode(message.layers[i], writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
             return writer;
         };
 
@@ -89,25 +86,22 @@ $root.vector_tile = (function() {
 
         /**
          * Decodes a Tile message from the specified reader or buffer.
-         * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
          * @param {number} [length] Message length if known beforehand
          * @returns {vector_tile.Tile} Tile
          */
-        Tile.decode = function decode(reader, len) {
-            if (!(reader instanceof $Reader)) {
+        Tile.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            }
-            var end = len === undefined ? reader.len : reader.pos + len, message = new $root.vector_tile.Tile();
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.vector_tile.Tile();
             while (reader.pos < end) {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
                 case 3:
-                    if (!(message.layers && message.layers.length)) {
+                    if (!(message.layers && message.layers.length))
                         message.layers = [];
-                    }
                     message.layers.push($types[0].decode(reader, reader.uint32()));
                     break;
-
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -118,12 +112,13 @@ $root.vector_tile = (function() {
 
         /**
          * Decodes a Tile message from the specified reader or buffer, length delimited.
-         * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
          * @returns {vector_tile.Tile} Tile
          */
-        Tile.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-            readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
-            return this.decode(readerOrBuffer, readerOrBuffer.uint32());
+        Tile.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader(reader);
+            return this.decode(reader, reader.uint32());
         };
 
         /**
@@ -133,14 +128,12 @@ $root.vector_tile = (function() {
          */
         Tile.verify = function verify(message) {
             if (message.layers !== undefined) {
-                if (!Array.isArray(message.layers)) {
+                if (!Array.isArray(message.layers))
                     return "layers: array expected";
-                }
                 for (var i = 0; i < message.layers.length; ++i) {
-                    var err = $types[0].verify(message.layers[i]);
-                    if (err) {
-                        return "layers." + err;
-                    }
+                    var error = $types[0].verify(message.layers[i]);
+                    if (error)
+                        return "layers." + error;
                 }
             }
             return null;
@@ -155,9 +148,8 @@ $root.vector_tile = (function() {
             var message = new $root.vector_tile.Tile();
             if (object.layers) {
                 message.layers = [];
-                for (var i = 0; i < object.layers.length; ++i) {
+                for (var i = 0; i < object.layers.length; ++i)
                     message.layers[i] = $types[0].fromObject(object.layers[i]);
-                }
             }
             return message;
         };
@@ -177,25 +169,22 @@ $root.vector_tile = (function() {
          * @returns {Object.<string,*>} Plain object
          */
         Tile.toObject = function toObject(message, options) {
-            if (!options) {
+            if (!options)
                 options = {};
-            }
             var object = {};
-            if (options.arrays || options.defaults) {
+            if (options.arrays || options.defaults)
                 object.layers = [];
-            }
-            for (var keys = Object.keys(message), i = 0; i < keys.length; ++i) {
-                switch (keys[i]) {
-                case "layers":
-                    if (message.layers.length) {
-                        object.layers = [];
-                        for (var j = 0; j < message.layers.length; ++j) {
-                            object.layers[j] = $types[0].toObject(message.layers[j], options);
+            for (var keys = Object.keys(message), i = 0; i < keys.length; ++i)
+                if (message[keys[i]] !== undefined && message[keys[i]] !== null)
+                    switch (keys[i]) {
+                    case "layers":
+                        if (message.layers.length) {
+                            object.layers = [];
+                            for (var j = 0; j < message.layers.length; ++j)
+                                object.layers[j] = $types[0].toObject(message.layers[j], options);
                         }
+                        break;
                     }
-                    break;
-                }
-            }
             return object;
         };
 
@@ -310,30 +299,22 @@ $root.vector_tile = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             Value.encode = function encode(message, writer) {
-                if (!writer) {
+                if (!writer)
                     writer = $Writer.create();
-                }
-                if (message.stringValue !== undefined && message.stringValue !== "") {
-                    writer.uint32(10).string(message.stringValue);
-                }
-                if (message.floatValue !== undefined && message.floatValue !== 0) {
-                    writer.uint32(21).float(message.floatValue);
-                }
-                if (message.doubleValue !== undefined && message.doubleValue !== 0) {
-                    writer.uint32(25).double(message.doubleValue);
-                }
-                if (message.intValue !== undefined && message.intValue !== null && $util.longNe(message.intValue, 0, 0)) {
-                    writer.uint32(32).int64(message.intValue);
-                }
-                if (message.uintValue !== undefined && message.uintValue !== null && $util.longNe(message.uintValue, 0, 0)) {
-                    writer.uint32(40).uint64(message.uintValue);
-                }
-                if (message.sintValue !== undefined && message.sintValue !== null && $util.longNe(message.sintValue, 0, 0)) {
-                    writer.uint32(48).sint64(message.sintValue);
-                }
-                if (message.boolValue !== undefined && message.boolValue !== false) {
-                    writer.uint32(56).bool(message.boolValue);
-                }
+                if (message.stringValue !== undefined && message.stringValue !== "")
+                    writer.uint32(/* id 1, wireType 2 =*/10).string(message.stringValue);
+                if (message.floatValue !== undefined && message.floatValue !== 0)
+                    writer.uint32(/* id 2, wireType 5 =*/21).float(message.floatValue);
+                if (message.doubleValue !== undefined && message.doubleValue !== 0)
+                    writer.uint32(/* id 3, wireType 1 =*/25).double(message.doubleValue);
+                if (message.intValue !== undefined && message.intValue !== null && $util.longNe(message.intValue, 0, 0))
+                    writer.uint32(/* id 4, wireType 0 =*/32).int64(message.intValue);
+                if (message.uintValue !== undefined && message.uintValue !== null && $util.longNe(message.uintValue, 0, 0))
+                    writer.uint32(/* id 5, wireType 0 =*/40).uint64(message.uintValue);
+                if (message.sintValue !== undefined && message.sintValue !== null && $util.longNe(message.sintValue, 0, 0))
+                    writer.uint32(/* id 6, wireType 0 =*/48).sint64(message.sintValue);
+                if (message.boolValue !== undefined && message.boolValue !== false)
+                    writer.uint32(/* id 7, wireType 0 =*/56).bool(message.boolValue);
                 return writer;
             };
 
@@ -349,46 +330,38 @@ $root.vector_tile = (function() {
 
             /**
              * Decodes a Value message from the specified reader or buffer.
-             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {vector_tile.Tile.Value} Value
              */
-            Value.decode = function decode(reader, len) {
-                if (!(reader instanceof $Reader)) {
+            Value.decode = function decode(reader, length) {
+                if (!(reader instanceof $Reader))
                     reader = $Reader.create(reader);
-                }
-                var end = len === undefined ? reader.len : reader.pos + len, message = new $root.vector_tile.Tile.Value();
+                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.vector_tile.Tile.Value();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     switch (tag >>> 3) {
                     case 1:
                         message.stringValue = reader.string();
                         break;
-
                     case 2:
                         message.floatValue = reader.float();
                         break;
-
                     case 3:
                         message.doubleValue = reader.double();
                         break;
-
                     case 4:
                         message.intValue = reader.int64();
                         break;
-
                     case 5:
                         message.uintValue = reader.uint64();
                         break;
-
                     case 6:
                         message.sintValue = reader.sint64();
                         break;
-
                     case 7:
                         message.boolValue = reader.bool();
                         break;
-
                     default:
                         reader.skipType(tag & 7);
                         break;
@@ -399,12 +372,13 @@ $root.vector_tile = (function() {
 
             /**
              * Decodes a Value message from the specified reader or buffer, length delimited.
-             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @returns {vector_tile.Tile.Value} Value
              */
-            Value.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-                readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
-                return this.decode(readerOrBuffer, readerOrBuffer.uint32());
+            Value.decodeDelimited = function decodeDelimited(reader) {
+                if (!(reader instanceof $Reader))
+                    reader = $Reader(reader);
+                return this.decode(reader, reader.uint32());
             };
 
             /**
@@ -413,41 +387,27 @@ $root.vector_tile = (function() {
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             Value.verify = function verify(message) {
-                if (message.stringValue !== undefined) {
-                    if (!$util.isString(message.stringValue)) {
+                if (message.stringValue !== undefined)
+                    if (!$util.isString(message.stringValue))
                         return "stringValue: string expected";
-                    }
-                }
-                if (message.floatValue !== undefined) {
-                    if (typeof message.floatValue !== "number") {
+                if (message.floatValue !== undefined)
+                    if (typeof message.floatValue !== "number")
                         return "floatValue: number expected";
-                    }
-                }
-                if (message.doubleValue !== undefined) {
-                    if (typeof message.doubleValue !== "number") {
+                if (message.doubleValue !== undefined)
+                    if (typeof message.doubleValue !== "number")
                         return "doubleValue: number expected";
-                    }
-                }
-                if (message.intValue !== undefined) {
-                    if (!$util.isInteger(message.intValue) && !(message.intValue && $util.isInteger(message.intValue.low) && $util.isInteger(message.intValue.high))) {
+                if (message.intValue !== undefined)
+                    if (!$util.isInteger(message.intValue) && !(message.intValue && $util.isInteger(message.intValue.low) && $util.isInteger(message.intValue.high)))
                         return "intValue: integer|Long expected";
-                    }
-                }
-                if (message.uintValue !== undefined) {
-                    if (!$util.isInteger(message.uintValue) && !(message.uintValue && $util.isInteger(message.uintValue.low) && $util.isInteger(message.uintValue.high))) {
+                if (message.uintValue !== undefined)
+                    if (!$util.isInteger(message.uintValue) && !(message.uintValue && $util.isInteger(message.uintValue.low) && $util.isInteger(message.uintValue.high)))
                         return "uintValue: integer|Long expected";
-                    }
-                }
-                if (message.sintValue !== undefined) {
-                    if (!$util.isInteger(message.sintValue) && !(message.sintValue && $util.isInteger(message.sintValue.low) && $util.isInteger(message.sintValue.high))) {
+                if (message.sintValue !== undefined)
+                    if (!$util.isInteger(message.sintValue) && !(message.sintValue && $util.isInteger(message.sintValue.low) && $util.isInteger(message.sintValue.high)))
                         return "sintValue: integer|Long expected";
-                    }
-                }
-                if (message.boolValue !== undefined) {
-                    if (typeof message.boolValue !== "boolean") {
+                if (message.boolValue !== undefined)
+                    if (typeof message.boolValue !== "boolean")
                         return "boolValue: boolean expected";
-                    }
-                }
                 return null;
             };
 
@@ -458,69 +418,41 @@ $root.vector_tile = (function() {
              */
             Value.fromObject = function fromObject(object) {
                 var message = new $root.vector_tile.Tile.Value();
-                if (object.stringValue !== undefined && object.stringValue !== null) {
+                if (object.stringValue !== undefined && object.stringValue !== null)
                     message.stringValue = String(object.stringValue);
-                }
-                if (object.floatValue !== undefined && object.floatValue !== null) {
+                if (object.floatValue !== undefined && object.floatValue !== null)
                     message.floatValue = Number(object.floatValue);
-                }
-                if (object.doubleValue !== undefined && object.doubleValue !== null) {
+                if (object.doubleValue !== undefined && object.doubleValue !== null)
                     message.doubleValue = Number(object.doubleValue);
-                }
-                if (object.intValue !== undefined && object.intValue !== null) {
-                    if ($util.Long) {
+                if (object.intValue !== undefined && object.intValue !== null)
+                    if ($util.Long)
                         (message.intValue = $util.Long.fromValue(object.intValue)).unsigned = false;
-                    } else {
-                        if (typeof object.intValue === "string") {
-                            message.intValue = parseInt(object.intValue, 10);
-                        } else {
-                            if (typeof object.intValue === "number") {
-                                message.intValue = object.intValue;
-                            } else {
-                                if (typeof object.intValue === "object") {
-                                    message.intValue = new $util.LongBits(object.intValue.low, object.intValue.high).toNumber();
-                                }
-                            }
-                        }
-                    }
-                }
-                if (object.uintValue !== undefined && object.uintValue !== null) {
-                    if ($util.Long) {
+                    else if (typeof object.intValue === "string")
+                        message.intValue = parseInt(object.intValue, 10);
+                    else if (typeof object.intValue === "number")
+                        message.intValue = object.intValue;
+                    else if (typeof object.intValue === "object")
+                        message.intValue = new $util.LongBits(object.intValue.low, object.intValue.high).toNumber();
+                if (object.uintValue !== undefined && object.uintValue !== null)
+                    if ($util.Long)
                         (message.uintValue = $util.Long.fromValue(object.uintValue)).unsigned = true;
-                    } else {
-                        if (typeof object.uintValue === "string") {
-                            message.uintValue = parseInt(object.uintValue, 10);
-                        } else {
-                            if (typeof object.uintValue === "number") {
-                                message.uintValue = object.uintValue;
-                            } else {
-                                if (typeof object.uintValue === "object") {
-                                    message.uintValue = new $util.LongBits(object.uintValue.low, object.uintValue.high).toNumber(true);
-                                }
-                            }
-                        }
-                    }
-                }
-                if (object.sintValue !== undefined && object.sintValue !== null) {
-                    if ($util.Long) {
+                    else if (typeof object.uintValue === "string")
+                        message.uintValue = parseInt(object.uintValue, 10);
+                    else if (typeof object.uintValue === "number")
+                        message.uintValue = object.uintValue;
+                    else if (typeof object.uintValue === "object")
+                        message.uintValue = new $util.LongBits(object.uintValue.low, object.uintValue.high).toNumber(true);
+                if (object.sintValue !== undefined && object.sintValue !== null)
+                    if ($util.Long)
                         (message.sintValue = $util.Long.fromValue(object.sintValue)).unsigned = false;
-                    } else {
-                        if (typeof object.sintValue === "string") {
-                            message.sintValue = parseInt(object.sintValue, 10);
-                        } else {
-                            if (typeof object.sintValue === "number") {
-                                message.sintValue = object.sintValue;
-                            } else {
-                                if (typeof object.sintValue === "object") {
-                                    message.sintValue = new $util.LongBits(object.sintValue.low, object.sintValue.high).toNumber();
-                                }
-                            }
-                        }
-                    }
-                }
-                if (object.boolValue !== undefined && object.boolValue !== null) {
+                    else if (typeof object.sintValue === "string")
+                        message.sintValue = parseInt(object.sintValue, 10);
+                    else if (typeof object.sintValue === "number")
+                        message.sintValue = object.sintValue;
+                    else if (typeof object.sintValue === "object")
+                        message.sintValue = new $util.LongBits(object.sintValue.low, object.sintValue.high).toNumber();
+                if (object.boolValue !== undefined && object.boolValue !== null)
                     message.boolValue = Boolean(object.boolValue);
-                }
                 return message;
             };
 
@@ -539,9 +471,8 @@ $root.vector_tile = (function() {
              * @returns {Object.<string,*>} Plain object
              */
             Value.toObject = function toObject(message, options) {
-                if (!options) {
+                if (!options)
                     options = {};
-                }
                 var object = {};
                 if (options.defaults) {
                     object.stringValue = "";
@@ -550,80 +481,54 @@ $root.vector_tile = (function() {
                     if ($util.Long) {
                         var long = new $util.Long(0, 0, false);
                         object.intValue = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-                    } else {
+                    } else
                         object.intValue = options.longs === String ? "0" : 0;
-                    }
                     if ($util.Long) {
                         var long = new $util.Long(0, 0, true);
                         object.uintValue = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-                    } else {
+                    } else
                         object.uintValue = options.longs === String ? "0" : 0;
-                    }
                     if ($util.Long) {
                         var long = new $util.Long(0, 0, false);
                         object.sintValue = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-                    } else {
+                    } else
                         object.sintValue = options.longs === String ? "0" : 0;
-                    }
                     object.boolValue = false;
                 }
-                for (var keys = Object.keys(message), i = 0; i < keys.length; ++i) {
-                    switch (keys[i]) {
-                    case "stringValue":
-                        if (message.stringValue !== undefined && message.stringValue !== null) {
+                for (var keys = Object.keys(message), i = 0; i < keys.length; ++i)
+                    if (message[keys[i]] !== undefined && message[keys[i]] !== null)
+                        switch (keys[i]) {
+                        case "stringValue":
                             object.stringValue = message.stringValue;
-                        }
-                        break;
-
-                    case "floatValue":
-                        if (message.floatValue !== undefined && message.floatValue !== null) {
+                            break;
+                        case "floatValue":
                             object.floatValue = message.floatValue;
-                        }
-                        break;
-
-                    case "doubleValue":
-                        if (message.doubleValue !== undefined && message.doubleValue !== null) {
+                            break;
+                        case "doubleValue":
                             object.doubleValue = message.doubleValue;
-                        }
-                        break;
-
-                    case "intValue":
-                        if (message.intValue !== undefined && message.intValue !== null) {
-                            if (typeof message.intValue === "number") {
+                            break;
+                        case "intValue":
+                            if (typeof message.intValue === "number")
                                 object.intValue = options.longs === String ? String(message.intValue) : message.intValue;
-                            } else {
+                            else
                                 object.intValue = options.longs === String ? $util.Long.prototype.toString.call(message.intValue) : options.longs === Number ? new $util.LongBits(message.intValue.low, message.intValue.high).toNumber() : message.intValue;
-                            }
-                        }
-                        break;
-
-                    case "uintValue":
-                        if (message.uintValue !== undefined && message.uintValue !== null) {
-                            if (typeof message.uintValue === "number") {
+                            break;
+                        case "uintValue":
+                            if (typeof message.uintValue === "number")
                                 object.uintValue = options.longs === String ? String(message.uintValue) : message.uintValue;
-                            } else {
+                            else
                                 object.uintValue = options.longs === String ? $util.Long.prototype.toString.call(message.uintValue) : options.longs === Number ? new $util.LongBits(message.uintValue.low, message.uintValue.high).toNumber(true) : message.uintValue;
-                            }
-                        }
-                        break;
-
-                    case "sintValue":
-                        if (message.sintValue !== undefined && message.sintValue !== null) {
-                            if (typeof message.sintValue === "number") {
+                            break;
+                        case "sintValue":
+                            if (typeof message.sintValue === "number")
                                 object.sintValue = options.longs === String ? String(message.sintValue) : message.sintValue;
-                            } else {
+                            else
                                 object.sintValue = options.longs === String ? $util.Long.prototype.toString.call(message.sintValue) : options.longs === Number ? new $util.LongBits(message.sintValue.low, message.sintValue.high).toNumber() : message.sintValue;
-                            }
-                        }
-                        break;
-
-                    case "boolValue":
-                        if (message.boolValue !== undefined && message.boolValue !== null) {
+                            break;
+                        case "boolValue":
                             object.boolValue = message.boolValue;
+                            break;
                         }
-                        break;
-                    }
-                }
                 return object;
             };
 
@@ -708,27 +613,22 @@ $root.vector_tile = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             Feature.encode = function encode(message, writer) {
-                if (!writer) {
+                if (!writer)
                     writer = $Writer.create();
-                }
-                if (message.id !== undefined && message.id !== null && $util.longNe(message.id, 0, 0)) {
-                    writer.uint32(8).uint64(message.id);
-                }
+                if (message.id !== undefined && message.id !== null && $util.longNe(message.id, 0, 0))
+                    writer.uint32(/* id 1, wireType 0 =*/8).uint64(message.id);
                 if (message.tags && message.tags.length) {
-                    writer.uint32(18).fork();
-                    for (var i = 0; i < message.tags.length; ++i) {
+                    writer.uint32(/* id 2, wireType 2 =*/18).fork();
+                    for (var i = 0; i < message.tags.length; ++i)
                         writer.uint32(message.tags[i]);
-                    }
                     writer.ldelim();
                 }
-                if (message.type !== undefined && message.type !== undefined) {
-                    writer.uint32(24).uint32(message.type);
-                }
+                if (message.type !== undefined && message.type !== undefined)
+                    writer.uint32(/* id 3, wireType 0 =*/24).uint32(message.type);
                 if (message.geometry && message.geometry.length) {
-                    writer.uint32(34).fork();
-                    for (var i = 0; i < message.geometry.length; ++i) {
+                    writer.uint32(/* id 4, wireType 2 =*/34).fork();
+                    for (var i = 0; i < message.geometry.length; ++i)
                         writer.uint32(message.geometry[i]);
-                    }
                     writer.ldelim();
                 }
                 return writer;
@@ -746,54 +646,43 @@ $root.vector_tile = (function() {
 
             /**
              * Decodes a Feature message from the specified reader or buffer.
-             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {vector_tile.Tile.Feature} Feature
              */
-            Feature.decode = function decode(reader, len) {
-                if (!(reader instanceof $Reader)) {
+            Feature.decode = function decode(reader, length) {
+                if (!(reader instanceof $Reader))
                     reader = $Reader.create(reader);
-                }
-                var end = len === undefined ? reader.len : reader.pos + len, message = new $root.vector_tile.Tile.Feature();
+                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.vector_tile.Tile.Feature();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     switch (tag >>> 3) {
                     case 1:
                         message.id = reader.uint64();
                         break;
-
                     case 2:
-                        if (!(message.tags && message.tags.length)) {
+                        if (!(message.tags && message.tags.length))
                             message.tags = [];
-                        }
                         if ((tag & 7) === 2) {
                             var end2 = reader.uint32() + reader.pos;
-                            while (reader.pos < end2) {
+                            while (reader.pos < end2)
                                 message.tags.push(reader.uint32());
-                            }
-                        } else {
+                        } else
                             message.tags.push(reader.uint32());
-                        }
                         break;
-
                     case 3:
                         message.type = reader.uint32();
                         break;
-
                     case 4:
-                        if (!(message.geometry && message.geometry.length)) {
+                        if (!(message.geometry && message.geometry.length))
                             message.geometry = [];
-                        }
                         if ((tag & 7) === 2) {
                             var end2 = reader.uint32() + reader.pos;
-                            while (reader.pos < end2) {
+                            while (reader.pos < end2)
                                 message.geometry.push(reader.uint32());
-                            }
-                        } else {
+                        } else
                             message.geometry.push(reader.uint32());
-                        }
                         break;
-
                     default:
                         reader.skipType(tag & 7);
                         break;
@@ -804,12 +693,13 @@ $root.vector_tile = (function() {
 
             /**
              * Decodes a Feature message from the specified reader or buffer, length delimited.
-             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @returns {vector_tile.Tile.Feature} Feature
              */
-            Feature.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-                readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
-                return this.decode(readerOrBuffer, readerOrBuffer.uint32());
+            Feature.decodeDelimited = function decodeDelimited(reader) {
+                if (!(reader instanceof $Reader))
+                    reader = $Reader(reader);
+                return this.decode(reader, reader.uint32());
             };
 
             /**
@@ -818,42 +708,32 @@ $root.vector_tile = (function() {
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             Feature.verify = function verify(message) {
-                if (message.id !== undefined) {
-                    if (!$util.isInteger(message.id) && !(message.id && $util.isInteger(message.id.low) && $util.isInteger(message.id.high))) {
+                if (message.id !== undefined)
+                    if (!$util.isInteger(message.id) && !(message.id && $util.isInteger(message.id.low) && $util.isInteger(message.id.high)))
                         return "id: integer|Long expected";
-                    }
-                }
                 if (message.tags !== undefined) {
-                    if (!Array.isArray(message.tags)) {
+                    if (!Array.isArray(message.tags))
                         return "tags: array expected";
-                    }
-                    for (var i = 0; i < message.tags.length; ++i) {
-                        if (!$util.isInteger(message.tags[i])) {
+                    for (var i = 0; i < message.tags.length; ++i)
+                        if (!$util.isInteger(message.tags[i]))
                             return "tags: integer[] expected";
-                        }
-                    }
                 }
-                if (message.type !== undefined) {
+                if (message.type !== undefined)
                     switch (message.type) {
                     default:
                         return "type: enum value expected";
-
                     case 0:
                     case 1:
                     case 2:
                     case 3:
                         break;
                     }
-                }
                 if (message.geometry !== undefined) {
-                    if (!Array.isArray(message.geometry)) {
+                    if (!Array.isArray(message.geometry))
                         return "geometry: array expected";
-                    }
-                    for (var i = 0; i < message.geometry.length; ++i) {
-                        if (!$util.isInteger(message.geometry[i])) {
+                    for (var i = 0; i < message.geometry.length; ++i)
+                        if (!$util.isInteger(message.geometry[i]))
                             return "geometry: integer[] expected";
-                        }
-                    }
                 }
                 return null;
             };
@@ -865,45 +745,33 @@ $root.vector_tile = (function() {
              */
             Feature.fromObject = function fromObject(object) {
                 var message = new $root.vector_tile.Tile.Feature();
-                if (object.id !== undefined && object.id !== null) {
-                    if ($util.Long) {
+                if (object.id !== undefined && object.id !== null)
+                    if ($util.Long)
                         (message.id = $util.Long.fromValue(object.id)).unsigned = true;
-                    } else {
-                        if (typeof object.id === "string") {
-                            message.id = parseInt(object.id, 10);
-                        } else {
-                            if (typeof object.id === "number") {
-                                message.id = object.id;
-                            } else {
-                                if (typeof object.id === "object") {
-                                    message.id = new $util.LongBits(object.id.low, object.id.high).toNumber(true);
-                                }
-                            }
-                        }
-                    }
-                }
+                    else if (typeof object.id === "string")
+                        message.id = parseInt(object.id, 10);
+                    else if (typeof object.id === "number")
+                        message.id = object.id;
+                    else if (typeof object.id === "object")
+                        message.id = new $util.LongBits(object.id.low, object.id.high).toNumber(true);
                 if (object.tags) {
                     message.tags = [];
-                    for (var i = 0; i < object.tags.length; ++i) {
+                    for (var i = 0; i < object.tags.length; ++i)
                         message.tags[i] = object.tags[i] >>> 0;
-                    }
                 }
                 switch (object.type) {
                 case "UNKNOWN":
                 case 0:
                     message.type = 0;
                     break;
-
                 case "POINT":
                 case 1:
                     message.type = 1;
                     break;
-
                 case "LINESTRING":
                 case 2:
                     message.type = 2;
                     break;
-
                 case "POLYGON":
                 case 3:
                     message.type = 3;
@@ -911,9 +779,8 @@ $root.vector_tile = (function() {
                 }
                 if (object.geometry) {
                     message.geometry = [];
-                    for (var i = 0; i < object.geometry.length; ++i) {
+                    for (var i = 0; i < object.geometry.length; ++i)
                         message.geometry[i] = object.geometry[i] >>> 0;
-                    }
                 }
                 return message;
             };
@@ -933,9 +800,8 @@ $root.vector_tile = (function() {
              * @returns {Object.<string,*>} Plain object
              */
             Feature.toObject = function toObject(message, options) {
-                if (!options) {
+                if (!options)
                     options = {};
-                }
                 var object = {};
                 if (options.arrays || options.defaults) {
                     object.tags = [];
@@ -945,48 +811,37 @@ $root.vector_tile = (function() {
                     if ($util.Long) {
                         var long = new $util.Long(0, 0, true);
                         object.id = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-                    } else {
+                    } else
                         object.id = options.longs === String ? "0" : 0;
-                    }
                     object.type = options.enums === String ? undefined : undefined;
                 }
-                for (var keys = Object.keys(message), i = 0; i < keys.length; ++i) {
-                    switch (keys[i]) {
-                    case "id":
-                        if (message.id !== undefined && message.id !== null) {
-                            if (typeof message.id === "number") {
+                for (var keys = Object.keys(message), i = 0; i < keys.length; ++i)
+                    if (message[keys[i]] !== undefined && message[keys[i]] !== null)
+                        switch (keys[i]) {
+                        case "id":
+                            if (typeof message.id === "number")
                                 object.id = options.longs === String ? String(message.id) : message.id;
-                            } else {
+                            else
                                 object.id = options.longs === String ? $util.Long.prototype.toString.call(message.id) : options.longs === Number ? new $util.LongBits(message.id.low, message.id.high).toNumber(true) : message.id;
+                            break;
+                        case "tags":
+                            if (message.tags.length) {
+                                object.tags = [];
+                                for (var j = 0; j < message.tags.length; ++j)
+                                    object.tags[j] = message.tags[j];
                             }
-                        }
-                        break;
-
-                    case "tags":
-                        if (message.tags.length) {
-                            object.tags = [];
-                            for (var j = 0; j < message.tags.length; ++j) {
-                                object.tags[j] = message.tags[j];
-                            }
-                        }
-                        break;
-
-                    case "type":
-                        if (message.type !== undefined && message.type !== null) {
+                            break;
+                        case "type":
                             object.type = options.enums === String ? $types[2][message.type] : message.type;
-                        }
-                        break;
-
-                    case "geometry":
-                        if (message.geometry.length) {
-                            object.geometry = [];
-                            for (var j = 0; j < message.geometry.length; ++j) {
-                                object.geometry[j] = message.geometry[j];
+                            break;
+                        case "geometry":
+                            if (message.geometry.length) {
+                                object.geometry = [];
+                                for (var j = 0; j < message.geometry.length; ++j)
+                                    object.geometry[j] = message.geometry[j];
                             }
+                            break;
                         }
-                        break;
-                    }
-                }
                 return object;
             };
 
@@ -1084,29 +939,21 @@ $root.vector_tile = (function() {
              * @returns {$protobuf.Writer} Writer
              */
             Layer.encode = function encode(message, writer) {
-                if (!writer) {
+                if (!writer)
                     writer = $Writer.create();
-                }
-                writer.uint32(120).uint32(message.version);
-                writer.uint32(10).string(message.name);
-                if (message.features) {
-                    for (var i = 0; i < message.features.length; ++i) {
-                        $types[2].encode(message.features[i], writer.uint32(18).fork()).ldelim();
-                    }
-                }
-                if (message.keys) {
-                    for (var i = 0; i < message.keys.length; ++i) {
-                        writer.uint32(26).string(message.keys[i]);
-                    }
-                }
-                if (message.values) {
-                    for (var i = 0; i < message.values.length; ++i) {
-                        $types[4].encode(message.values[i], writer.uint32(34).fork()).ldelim();
-                    }
-                }
-                if (message.extent !== undefined && message.extent !== 4096) {
-                    writer.uint32(40).uint32(message.extent);
-                }
+                writer.uint32(/* id 15, wireType 0 =*/120).uint32(message.version);
+                writer.uint32(/* id 1, wireType 2 =*/10).string(message.name);
+                if (message.features)
+                    for (var i = 0; i < message.features.length; ++i)
+                        $types[2].encode(message.features[i], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
+                if (message.keys)
+                    for (var i = 0; i < message.keys.length; ++i)
+                        writer.uint32(/* id 3, wireType 2 =*/26).string(message.keys[i]);
+                if (message.values)
+                    for (var i = 0; i < message.values.length; ++i)
+                        $types[4].encode(message.values[i], writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
+                if (message.extent !== undefined && message.extent !== 4096)
+                    writer.uint32(/* id 5, wireType 0 =*/40).uint32(message.extent);
                 return writer;
             };
 
@@ -1122,51 +969,41 @@ $root.vector_tile = (function() {
 
             /**
              * Decodes a Layer message from the specified reader or buffer.
-             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {vector_tile.Tile.Layer} Layer
              */
-            Layer.decode = function decode(reader, len) {
-                if (!(reader instanceof $Reader)) {
+            Layer.decode = function decode(reader, length) {
+                if (!(reader instanceof $Reader))
                     reader = $Reader.create(reader);
-                }
-                var end = len === undefined ? reader.len : reader.pos + len, message = new $root.vector_tile.Tile.Layer();
+                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.vector_tile.Tile.Layer();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     switch (tag >>> 3) {
                     case 15:
                         message.version = reader.uint32();
                         break;
-
                     case 1:
                         message.name = reader.string();
                         break;
-
                     case 2:
-                        if (!(message.features && message.features.length)) {
+                        if (!(message.features && message.features.length))
                             message.features = [];
-                        }
                         message.features.push($types[2].decode(reader, reader.uint32()));
                         break;
-
                     case 3:
-                        if (!(message.keys && message.keys.length)) {
+                        if (!(message.keys && message.keys.length))
                             message.keys = [];
-                        }
                         message.keys.push(reader.string());
                         break;
-
                     case 4:
-                        if (!(message.values && message.values.length)) {
+                        if (!(message.values && message.values.length))
                             message.values = [];
-                        }
                         message.values.push($types[4].decode(reader, reader.uint32()));
                         break;
-
                     case 5:
                         message.extent = reader.uint32();
                         break;
-
                     default:
                         reader.skipType(tag & 7);
                         break;
@@ -1177,12 +1014,13 @@ $root.vector_tile = (function() {
 
             /**
              * Decodes a Layer message from the specified reader or buffer, length delimited.
-             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @returns {vector_tile.Tile.Layer} Layer
              */
-            Layer.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-                readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
-                return this.decode(readerOrBuffer, readerOrBuffer.uint32());
+            Layer.decodeDelimited = function decodeDelimited(reader) {
+                if (!(reader instanceof $Reader))
+                    reader = $Reader(reader);
+                return this.decode(reader, reader.uint32());
             };
 
             /**
@@ -1191,49 +1029,38 @@ $root.vector_tile = (function() {
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             Layer.verify = function verify(message) {
-                if (!$util.isInteger(message.version)) {
+                if (!$util.isInteger(message.version))
                     return "version: integer expected";
-                }
-                if (!$util.isString(message.name)) {
+                if (!$util.isString(message.name))
                     return "name: string expected";
-                }
                 if (message.features !== undefined) {
-                    if (!Array.isArray(message.features)) {
+                    if (!Array.isArray(message.features))
                         return "features: array expected";
-                    }
                     for (var i = 0; i < message.features.length; ++i) {
-                        var err = $types[2].verify(message.features[i]);
-                        if (err) {
-                            return "features." + err;
-                        }
+                        var error = $types[2].verify(message.features[i]);
+                        if (error)
+                            return "features." + error;
                     }
                 }
                 if (message.keys !== undefined) {
-                    if (!Array.isArray(message.keys)) {
+                    if (!Array.isArray(message.keys))
                         return "keys: array expected";
-                    }
-                    for (var i = 0; i < message.keys.length; ++i) {
-                        if (!$util.isString(message.keys[i])) {
+                    for (var i = 0; i < message.keys.length; ++i)
+                        if (!$util.isString(message.keys[i]))
                             return "keys: string[] expected";
-                        }
-                    }
                 }
                 if (message.values !== undefined) {
-                    if (!Array.isArray(message.values)) {
+                    if (!Array.isArray(message.values))
                         return "values: array expected";
-                    }
                     for (var i = 0; i < message.values.length; ++i) {
-                        var err = $types[4].verify(message.values[i]);
-                        if (err) {
-                            return "values." + err;
-                        }
+                        var error = $types[4].verify(message.values[i]);
+                        if (error)
+                            return "values." + error;
                     }
                 }
-                if (message.extent !== undefined) {
-                    if (!$util.isInteger(message.extent)) {
+                if (message.extent !== undefined)
+                    if (!$util.isInteger(message.extent))
                         return "extent: integer expected";
-                    }
-                }
                 return null;
             };
 
@@ -1244,33 +1071,27 @@ $root.vector_tile = (function() {
              */
             Layer.fromObject = function fromObject(object) {
                 var message = new $root.vector_tile.Tile.Layer();
-                if (object.version !== undefined && object.version !== null) {
+                if (object.version !== undefined && object.version !== null)
                     message.version = object.version >>> 0;
-                }
-                if (object.name !== undefined && object.name !== null) {
+                if (object.name !== undefined && object.name !== null)
                     message.name = String(object.name);
-                }
                 if (object.features) {
                     message.features = [];
-                    for (var i = 0; i < object.features.length; ++i) {
+                    for (var i = 0; i < object.features.length; ++i)
                         message.features[i] = $types[2].fromObject(object.features[i]);
-                    }
                 }
                 if (object.keys) {
                     message.keys = [];
-                    for (var i = 0; i < object.keys.length; ++i) {
+                    for (var i = 0; i < object.keys.length; ++i)
                         message.keys[i] = String(object.keys[i]);
-                    }
                 }
                 if (object.values) {
                     message.values = [];
-                    for (var i = 0; i < object.values.length; ++i) {
+                    for (var i = 0; i < object.values.length; ++i)
                         message.values[i] = $types[4].fromObject(object.values[i]);
-                    }
                 }
-                if (object.extent !== undefined && object.extent !== null) {
+                if (object.extent !== undefined && object.extent !== null)
                     message.extent = object.extent >>> 0;
-                }
                 return message;
             };
 
@@ -1289,9 +1110,8 @@ $root.vector_tile = (function() {
              * @returns {Object.<string,*>} Plain object
              */
             Layer.toObject = function toObject(message, options) {
-                if (!options) {
+                if (!options)
                     options = {};
-                }
                 var object = {};
                 if (options.arrays || options.defaults) {
                     object.features = [];
@@ -1303,54 +1123,40 @@ $root.vector_tile = (function() {
                     object.name = "";
                     object.extent = 4096;
                 }
-                for (var keys = Object.keys(message), i = 0; i < keys.length; ++i) {
-                    switch (keys[i]) {
-                    case "version":
-                        if (message.version !== undefined && message.version !== null) {
+                for (var keys = Object.keys(message), i = 0; i < keys.length; ++i)
+                    if (message[keys[i]] !== undefined && message[keys[i]] !== null)
+                        switch (keys[i]) {
+                        case "version":
                             object.version = message.version;
-                        }
-                        break;
-
-                    case "name":
-                        if (message.name !== undefined && message.name !== null) {
+                            break;
+                        case "name":
                             object.name = message.name;
-                        }
-                        break;
-
-                    case "features":
-                        if (message.features.length) {
-                            object.features = [];
-                            for (var j = 0; j < message.features.length; ++j) {
-                                object.features[j] = $types[2].toObject(message.features[j], options);
+                            break;
+                        case "features":
+                            if (message.features.length) {
+                                object.features = [];
+                                for (var j = 0; j < message.features.length; ++j)
+                                    object.features[j] = $types[2].toObject(message.features[j], options);
                             }
-                        }
-                        break;
-
-                    case "keys":
-                        if (message.keys.length) {
-                            object.keys = [];
-                            for (var j = 0; j < message.keys.length; ++j) {
-                                object.keys[j] = message.keys[j];
+                            break;
+                        case "keys":
+                            if (message.keys.length) {
+                                object.keys = [];
+                                for (var j = 0; j < message.keys.length; ++j)
+                                    object.keys[j] = message.keys[j];
                             }
-                        }
-                        break;
-
-                    case "values":
-                        if (message.values.length) {
-                            object.values = [];
-                            for (var j = 0; j < message.values.length; ++j) {
-                                object.values[j] = $types[4].toObject(message.values[j], options);
+                            break;
+                        case "values":
+                            if (message.values.length) {
+                                object.values = [];
+                                for (var j = 0; j < message.values.length; ++j)
+                                    object.values[j] = $types[4].toObject(message.values[j], options);
                             }
-                        }
-                        break;
-
-                    case "extent":
-                        if (message.extent !== undefined && message.extent !== null) {
+                            break;
+                        case "extent":
                             object.extent = message.extent;
+                            break;
                         }
-                        break;
-                    }
-                }
                 return object;
             };
 

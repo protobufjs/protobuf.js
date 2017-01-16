@@ -68,18 +68,14 @@ $root.Test1 = (function() {
      * @returns {$protobuf.Writer} Writer
      */
     Test1.encode = function encode(message, writer) {
-        if (!writer) {
+        if (!writer)
             writer = $Writer.create();
-        }
-        if (message.field1 !== undefined && message.field1 !== "") {
-            writer.uint32(10).string(message.field1);
-        }
-        if (message.field2 !== undefined && message.field2 !== 0) {
-            writer.uint32(16).uint32(message.field2);
-        }
-        if (message.field3 !== undefined && message.field3 !== false) {
-            writer.uint32(24).bool(message.field3);
-        }
+        if (message.field1 !== undefined && message.field1 !== "")
+            writer.uint32(/* id 1, wireType 2 =*/10).string(message.field1);
+        if (message.field2 !== undefined && message.field2 !== 0)
+            writer.uint32(/* id 2, wireType 0 =*/16).uint32(message.field2);
+        if (message.field3 !== undefined && message.field3 !== false)
+            writer.uint32(/* id 3, wireType 0 =*/24).bool(message.field3);
         return writer;
     };
 
@@ -95,30 +91,26 @@ $root.Test1 = (function() {
 
     /**
      * Decodes a Test1 message from the specified reader or buffer.
-     * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
      * @param {number} [length] Message length if known beforehand
      * @returns {Test1} Test1
      */
-    Test1.decode = function decode(reader, len) {
-        if (!(reader instanceof $Reader)) {
+    Test1.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
             reader = $Reader.create(reader);
-        }
-        var end = len === undefined ? reader.len : reader.pos + len, message = new $root.Test1();
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Test1();
         while (reader.pos < end) {
             var tag = reader.uint32();
             switch (tag >>> 3) {
             case 1:
                 message.field1 = reader.string();
                 break;
-
             case 2:
                 message.field2 = reader.uint32();
                 break;
-
             case 3:
                 message.field3 = reader.bool();
                 break;
-
             default:
                 reader.skipType(tag & 7);
                 break;
@@ -129,12 +121,13 @@ $root.Test1 = (function() {
 
     /**
      * Decodes a Test1 message from the specified reader or buffer, length delimited.
-     * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
      * @returns {Test1} Test1
      */
-    Test1.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-        readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
-        return this.decode(readerOrBuffer, readerOrBuffer.uint32());
+    Test1.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader(reader);
+        return this.decode(reader, reader.uint32());
     };
 
     /**
@@ -143,21 +136,15 @@ $root.Test1 = (function() {
      * @returns {?string} `null` if valid, otherwise the reason why it is not
      */
     Test1.verify = function verify(message) {
-        if (message.field1 !== undefined) {
-            if (!$util.isString(message.field1)) {
+        if (message.field1 !== undefined)
+            if (!$util.isString(message.field1))
                 return "field1: string expected";
-            }
-        }
-        if (message.field2 !== undefined) {
-            if (!$util.isInteger(message.field2)) {
+        if (message.field2 !== undefined)
+            if (!$util.isInteger(message.field2))
                 return "field2: integer expected";
-            }
-        }
-        if (message.field3 !== undefined) {
-            if (typeof message.field3 !== "boolean") {
+        if (message.field3 !== undefined)
+            if (typeof message.field3 !== "boolean")
                 return "field3: boolean expected";
-            }
-        }
         return null;
     };
 
@@ -168,15 +155,12 @@ $root.Test1 = (function() {
      */
     Test1.fromObject = function fromObject(object) {
         var message = new $root.Test1();
-        if (object.field1 !== undefined && object.field1 !== null) {
+        if (object.field1 !== undefined && object.field1 !== null)
             message.field1 = String(object.field1);
-        }
-        if (object.field2 !== undefined && object.field2 !== null) {
+        if (object.field2 !== undefined && object.field2 !== null)
             message.field2 = object.field2 >>> 0;
-        }
-        if (object.field3 !== undefined && object.field3 !== null) {
+        if (object.field3 !== undefined && object.field3 !== null)
             message.field3 = Boolean(object.field3);
-        }
         return message;
     };
 
@@ -195,36 +179,27 @@ $root.Test1 = (function() {
      * @returns {Object.<string,*>} Plain object
      */
     Test1.toObject = function toObject(message, options) {
-        if (!options) {
+        if (!options)
             options = {};
-        }
         var object = {};
         if (options.defaults) {
             object.field1 = "";
             object.field2 = 0;
             object.field3 = false;
         }
-        for (var keys = Object.keys(message), i = 0; i < keys.length; ++i) {
-            switch (keys[i]) {
-            case "field1":
-                if (message.field1 !== undefined && message.field1 !== null) {
+        for (var keys = Object.keys(message), i = 0; i < keys.length; ++i)
+            if (message[keys[i]] !== undefined && message[keys[i]] !== null)
+                switch (keys[i]) {
+                case "field1":
                     object.field1 = message.field1;
-                }
-                break;
-
-            case "field2":
-                if (message.field2 !== undefined && message.field2 !== null) {
+                    break;
+                case "field2":
                     object.field2 = message.field2;
-                }
-                break;
-
-            case "field3":
-                if (message.field3 !== undefined && message.field3 !== null) {
+                    break;
+                case "field3":
                     object.field3 = message.field3;
+                    break;
                 }
-                break;
-            }
-        }
         return object;
     };
 
@@ -280,9 +255,8 @@ $root.Test2 = (function() {
      * @returns {$protobuf.Writer} Writer
      */
     Test2.encode = function encode(message, writer) {
-        if (!writer) {
+        if (!writer)
             writer = $Writer.create();
-        }
         return writer;
     };
 
@@ -298,15 +272,14 @@ $root.Test2 = (function() {
 
     /**
      * Decodes a Test2 message from the specified reader or buffer.
-     * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
      * @param {number} [length] Message length if known beforehand
      * @returns {Test2} Test2
      */
-    Test2.decode = function decode(reader, len) {
-        if (!(reader instanceof $Reader)) {
+    Test2.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
             reader = $Reader.create(reader);
-        }
-        var end = len === undefined ? reader.len : reader.pos + len, message = new $root.Test2();
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Test2();
         while (reader.pos < end) {
             var tag = reader.uint32();
             switch (tag >>> 3) {
@@ -320,12 +293,13 @@ $root.Test2 = (function() {
 
     /**
      * Decodes a Test2 message from the specified reader or buffer, length delimited.
-     * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
      * @returns {Test2} Test2
      */
-    Test2.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-        readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
-        return this.decode(readerOrBuffer, readerOrBuffer.uint32());
+    Test2.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader(reader);
+        return this.decode(reader, reader.uint32());
     };
 
     /**

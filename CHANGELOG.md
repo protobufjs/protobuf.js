@@ -1,3 +1,37 @@
+# [6.5.0](https://github.com/dcodeIO/protobuf.js/releases/tag/6.5.0)
+
+## Breaking
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/3946e0fefea415f52a16ea7a74109ff40eee9643) Initial upgrade of converters to real generated functions, see [#620](https://github.com/dcodeIO/protobuf.js/issues/620)<br />
+
+## Fixed
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/c7e14b1d684aaba2080195cc83900288c5019bbc) Use common utility for virtual oneof getters and setters in both reflection and static code, see [#644](https://github.com/dcodeIO/protobuf.js/issues/644)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/508984b7ff9529906be282375d36fdbada66b8e6) Use Type.toObject/Message.toObject within converters, see [#641](https://github.com/dcodeIO/protobuf.js/issues/641)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/5bca18f2d32e8687986e23edade7c2aeb6b6bac1) Generate null/undefined assertion in fromObject if actually NOT an enum, see [#620](https://github.com/dcodeIO/protobuf.js/issues/620)<br />
+
+## New
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/cda5c5452fa0797f1e4c375471aef96f844711f1) Removed scoping iifes from generated static code<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/def7b45fb9b5e01028cfa3bf2ecd8272575feb4d) Removed even more clutter from generated static code<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/dbd19fd9d3a57d033aad1d7173f7f66db8f8db3e) Removed various clutter from generated static code<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/340d6aa82ac17c4a761c681fa71d5a0955032c8b) Now also parses comments, sets them on reflected objects and re-uses them when generating static code, see [#640](https://github.com/dcodeIO/protobuf.js/issues/640)<br />
+
+## CLI
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/1cc8a2460c7e161c9bc58fa441ec88e752df409c) Made sure that static target's replacement regexes don't match fields<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/d4272dbf5d0b2577af8efb74a94d246e2e0d728e) Also accept (trailing) triple-slash comments for compatibility with protoc-gen-doc, see [#640](https://github.com/dcodeIO/protobuf.js/issues/640)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/508984b7ff9529906be282375d36fdbada66b8e6) Replace all occurencies of types[%d].values in static code, see [#641](https://github.com/dcodeIO/protobuf.js/issues/641)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/0a3862b75fa60ef732e0cd36d623f025acc2fb45) Use semver to validate that CLI dependencies actually satisfy the required version, see [#637](https://github.com/dcodeIO/protobuf.js/issues/637)<br />
+
+## Docs
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/9e360ea6a74d41307483e51f18769df7f5b047b9) Added a hint on documenting .proto files for static code<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/d2a97bb818474645cf7ce1832952b2c3c739b234) Documented internally used codegen partials for what it's worth<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/a08ee2305a8d29290b8203c187a4a453898e8f6f) Updated docs to reflect recent updates<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/079388ca65dfd581d74188a6ae49cfa01b103809) Updated converter documentation<br />
+
+## Other
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/c280a4a18c6d81c3468177b2ea58ae3bc4f25e73) Removed now useless trailing comment checks, see [#640](https://github.com/dcodeIO/protobuf.js/issues/640)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/3f6ffd01c3cb7d7fc4129c45dc803abb5211a1fd) Restrict comment parsing for static code to explicit /**-blocks because old protos may generate a lot of nonsense otherwise, see [#640](https://github.com/dcodeIO/protobuf.js/issues/640)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/a4954ed2b63e349c96acc5c471241a5abb79854d) Added semver to dev/cli dependencies<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/44167db494c49d9e4b561a66ad9ce2d8ed865a21) Ensured that pbjs' beautify does not break regular expressions in generated verify functions<br />
+
 # [6.4.6](https://github.com/dcodeIO/protobuf.js/releases/tag/6.4.6)
 
 ## Fixed

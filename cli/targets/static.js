@@ -1,9 +1,12 @@
 "use strict";
 module.exports = static_target;
 
-var protobuf = require("../.."),
-    cliUtil  = require("../util"),
-    UglifyJS = require("uglify-js");
+var protobuf   = require("../.."),
+    cliUtil    = require("../util"),
+    UglifyJS   = require("uglify-js"),
+    esprima    = require("esprima"),
+    escodegen  = require("escodegen"),
+    estraverse = require("estraverse");
 
 var Type      = protobuf.Type,
     Service   = protobuf.Service,
@@ -139,33 +142,63 @@ function buildNamespace(ref, ns) {
     }
 }
 
-function beautify(code) {
-    return UglifyJS.minify(code
+var reduceableBlockStatements = {
+    IfStatement: true,
+    ForStatement: true,
+    WhileStatement: true
+};
+
+function beautifyCode(code) {
+    // Rename short vars
+    code = code
         .replace(/\b(?!\\)r\b/g, "reader")
         .replace(/\b(?!\\)w\b/g, "writer")
         .replace(/\b(?!\\)m\b/g, "message")
         .replace(/\b(?!\\)t\b/g, "tag")
-        .replace(/\b(?!\\)l\b/g, "len")
+        .replace(/\b(?!\\)l\b/g, "length")
         .replace(/\b(?!\\)c\b/g, "end")
         .replace(/\b(?!\\)c2\b/g, "end2")
         .replace(/\b(?!\\)k\b/g, "key")
         .replace(/\b(?!\\)ks\b/g, "keys")
         .replace(/\b(?!\\)ks2\b/g, "keys2")
-        .replace(/\b(?!\\)e\b/g, "err")
+        .replace(/\b(?!\\)e\b/g, "error")
         .replace(/\b(?!\\)f\b/g, "impl")
         .replace(/\b(?!\\)o\b/g, "options")
         .replace(/\b(?!\\)d\b/g, "object")
-        .replace(/\b(?!\\)n\b/g, "long"),
-        {
-            fromString: true,
-            compress: false,
-            mangle: false,
-            output: {
-                beautify: true,
-                bracketize: true
-            }
+        .replace(/\b(?!\\)n\b/g, "long");
+    // Add semicolons
+    code = UglifyJS.minify(code, {
+        fromString: true,
+        compress: false,
+        mangle: false,
+        output: {
+            beautify: true
         }
-    ).code.replace(/ {4}/g, "\t");
+    }).code;
+    // Properly beautify
+    var ast = esprima.parse(code);
+    estraverse.replace(ast, {
+        enter: function(node, parent) {
+            // remove braces around block statements with a single child
+            if (node.type === "BlockStatement" && reduceableBlockStatements[parent.type] && node.body.length === 1)
+                return node.body[0];
+            return undefined;
+        }
+    });
+    code = escodegen.generate(ast, {
+        format: {
+            newline: "\r\n",
+            quotes: "double"
+        }
+    });
+    // Add id, wireType comments
+    if (config.comments)
+        code = code.replace(/\.uint32\((\d+)\)/g, function($0, $1) {
+            var id = $1 >>> 3,
+                wireType = $1 & 7;
+            return ".uint32(/* id " + id + ", wireType " + wireType + " =*/" + $1 + ")";
+        });
+    return code;
 }
 
 function buildFunction(type, functionName, gen, scope) {
@@ -178,7 +211,9 @@ function buildFunction(type, functionName, gen, scope) {
         .replace(/\b(?!\.)types\[\b/g, "$types[");
 
     if (config.beautify)
-        code = beautify(code);
+        code = beautifyCode(code);
+    
+    code = code.replace(/ {4}/g, "\t");
 
     var hasScope = scope && Object.keys(scope).length;
 
@@ -366,8 +401,8 @@ function buildType(ref, type) {
         push("");
         pushComment([
             "Encodes the specified " + type.name + " message.",
-            "@param {" + fullName + "|Object} message " + type.name + " message or plain object to encode",
-            "@param {$protobuf.Writer} [writer] Writer to encode to",
+            "@param {" + fullName + "|Object} " + (config.beautify ? "message" : "m") + " " + type.name + " message or plain object to encode",
+            "@param {$protobuf.Writer} [" + (config.beautify ? "writer" : "w") + "] Writer to encode to",
             "@returns {$protobuf.Writer} Writer"
         ]);
         buildFunction(type, "encode", protobuf.encoder(type));
@@ -394,8 +429,8 @@ function buildType(ref, type) {
         push("");
         pushComment([
             "Decodes " + aOrAn(type.name) + " message from the specified reader or buffer.",
-            "@param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from",
-            "@param {number} [length] Message length if known beforehand",
+            "@param {$protobuf.Reader|Uint8Array} " + (config.beautify ? "reader" : "r") + " Reader or buffer to decode from",
+            "@param {number} [" + (config.beautify ? "length" : "l") + "] Message length if known beforehand",
             "@returns {" + fullName + "} " + type.name
         ]);
         buildFunction(type, "decode", protobuf.decoder(type));
@@ -404,13 +439,16 @@ function buildType(ref, type) {
             push("");
             pushComment([
                 "Decodes " + aOrAn(type.name) + " message from the specified reader or buffer, length delimited.",
-                "@param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from",
+                "@param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from",
                 "@returns {" + fullName + "} " + type.name
             ]);
-            push(name(type.name) + ".decodeDelimited = function decodeDelimited(readerOrBuffer) {");
+            push(name(type.name) + ".decodeDelimited = function decodeDelimited(reader) {");
             ++indent;
-            push("readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);");
-            push("return this.decode(readerOrBuffer, readerOrBuffer.uint32());");
+                push("if (!(reader instanceof $Reader))");
+                ++indent;
+                    push("reader = $Reader(reader);");
+                --indent;
+                push("return this.decode(reader, reader.uint32());");
             --indent;
             push("};");
 
@@ -421,7 +459,7 @@ function buildType(ref, type) {
         push("");
         pushComment([
             "Verifies " + aOrAn(type.name) + " message.",
-            "@param {" + fullName + "|Object} message " + type.name + " message or plain object to verify",
+            "@param {" + fullName + "|Object} " + (config.beautify ? "message" : "m") + " " + type.name + " message or plain object to verify",
             "@returns {?string} `null` if valid, otherwise the reason why it is not"
         ]);
         buildFunction(type, "verify", protobuf.verifier(type));
@@ -432,7 +470,7 @@ function buildType(ref, type) {
         push("");
         pushComment([
             "Creates " + aOrAn(type.name) + " message from a plain object. Also converts values to their respective internal types.",
-            "@param {Object.<string,*>} object Plain object",
+            "@param {Object.<string,*>} " + (config.beautify ? "object" : "d") + " Plain object",
             "@returns {" + fullName + "} " + type.name
         ]);
         buildFunction(type, "fromObject", protobuf.converter.fromObject(type));
@@ -449,8 +487,8 @@ function buildType(ref, type) {
         push("");
         pushComment([
             "Creates a plain object from " + aOrAn(type.name) + " message. Also converts values to other types if specified.",
-            "@param {" + fullName + "} message " + type.name,
-            "@param {$protobuf.ConversionOptions} [options] Conversion options",
+            "@param {" + fullName + "} " + (config.beautify ? "message" : "m") + " " + type.name,
+            "@param {$protobuf.ConversionOptions} [" + (config.beautify ? "options" : "o") + "] Conversion options",
             "@returns {Object.<string,*>} Plain object"
         ]);
         buildFunction(type, "toObject", protobuf.converter.toObject(type));
@@ -561,7 +599,7 @@ function buildService(ref, service) {
             "@param {" + cbName + "} callback Node-style callback called with the error, if any, and " + method.resolvedResponseType.name,
             "@returns {undefined}"
         ]);
-        push(name(service.name) + ".prototype[" + JSON.stringify(lcName) + "] = function " + name(lcName) + "(request, callback) {");
+        push(name(service.name) + ".prototype" + util.safeProp(lcName) + " = function " + name(lcName) + "(request, callback) {");
             ++indent;
             push("var requestData;");
             push("try {");

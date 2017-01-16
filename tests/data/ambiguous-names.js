@@ -52,12 +52,10 @@ $root.A = (function() {
      * @returns {$protobuf.Writer} Writer
      */
     A.encode = function encode(message, writer) {
-        if (!writer) {
+        if (!writer)
             writer = $Writer.create();
-        }
-        if (message.whatever !== undefined && message.whatever !== "") {
-            writer.uint32(10).string(message.whatever);
-        }
+        if (message.whatever !== undefined && message.whatever !== "")
+            writer.uint32(/* id 1, wireType 2 =*/10).string(message.whatever);
         return writer;
     };
 
@@ -73,22 +71,20 @@ $root.A = (function() {
 
     /**
      * Decodes a A message from the specified reader or buffer.
-     * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
      * @param {number} [length] Message length if known beforehand
      * @returns {A} A
      */
-    A.decode = function decode(reader, len) {
-        if (!(reader instanceof $Reader)) {
+    A.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
             reader = $Reader.create(reader);
-        }
-        var end = len === undefined ? reader.len : reader.pos + len, message = new $root.A();
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.A();
         while (reader.pos < end) {
             var tag = reader.uint32();
             switch (tag >>> 3) {
             case 1:
                 message.whatever = reader.string();
                 break;
-
             default:
                 reader.skipType(tag & 7);
                 break;
@@ -99,12 +95,13 @@ $root.A = (function() {
 
     /**
      * Decodes a A message from the specified reader or buffer, length delimited.
-     * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
      * @returns {A} A
      */
-    A.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-        readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
-        return this.decode(readerOrBuffer, readerOrBuffer.uint32());
+    A.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader(reader);
+        return this.decode(reader, reader.uint32());
     };
 
     /**
@@ -113,11 +110,9 @@ $root.A = (function() {
      * @returns {?string} `null` if valid, otherwise the reason why it is not
      */
     A.verify = function verify(message) {
-        if (message.whatever !== undefined) {
-            if (!$util.isString(message.whatever)) {
+        if (message.whatever !== undefined)
+            if (!$util.isString(message.whatever))
                 return "whatever: string expected";
-            }
-        }
         return null;
     };
 
@@ -128,9 +123,8 @@ $root.A = (function() {
      */
     A.fromObject = function fromObject(object) {
         var message = new $root.A();
-        if (object.whatever !== undefined && object.whatever !== null) {
+        if (object.whatever !== undefined && object.whatever !== null)
             message.whatever = String(object.whatever);
-        }
         return message;
     };
 
@@ -149,22 +143,18 @@ $root.A = (function() {
      * @returns {Object.<string,*>} Plain object
      */
     A.toObject = function toObject(message, options) {
-        if (!options) {
+        if (!options)
             options = {};
-        }
         var object = {};
-        if (options.defaults) {
+        if (options.defaults)
             object.whatever = "";
-        }
-        for (var keys = Object.keys(message), i = 0; i < keys.length; ++i) {
-            switch (keys[i]) {
-            case "whatever":
-                if (message.whatever !== undefined && message.whatever !== null) {
+        for (var keys = Object.keys(message), i = 0; i < keys.length; ++i)
+            if (message[keys[i]] !== undefined && message[keys[i]] !== null)
+                switch (keys[i]) {
+                case "whatever":
                     object.whatever = message.whatever;
+                    break;
                 }
-                break;
-            }
-        }
         return object;
     };
 
@@ -231,12 +221,10 @@ $root.B = (function() {
      * @returns {$protobuf.Writer} Writer
      */
     B.encode = function encode(message, writer) {
-        if (!writer) {
+        if (!writer)
             writer = $Writer.create();
-        }
-        if (message.A !== undefined && message.A !== null) {
-            $types[0].encode(message.A, writer.uint32(10).fork()).ldelim();
-        }
+        if (message.A !== undefined && message.A !== null)
+            $types[0].encode(message.A, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
         return writer;
     };
 
@@ -252,22 +240,20 @@ $root.B = (function() {
 
     /**
      * Decodes a B message from the specified reader or buffer.
-     * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
      * @param {number} [length] Message length if known beforehand
      * @returns {B} B
      */
-    B.decode = function decode(reader, len) {
-        if (!(reader instanceof $Reader)) {
+    B.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
             reader = $Reader.create(reader);
-        }
-        var end = len === undefined ? reader.len : reader.pos + len, message = new $root.B();
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.B();
         while (reader.pos < end) {
             var tag = reader.uint32();
             switch (tag >>> 3) {
             case 1:
                 message.A = $types[0].decode(reader, reader.uint32());
                 break;
-
             default:
                 reader.skipType(tag & 7);
                 break;
@@ -278,12 +264,13 @@ $root.B = (function() {
 
     /**
      * Decodes a B message from the specified reader or buffer, length delimited.
-     * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
      * @returns {B} B
      */
-    B.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-        readerOrBuffer = readerOrBuffer instanceof $Reader ? readerOrBuffer : $Reader(readerOrBuffer);
-        return this.decode(readerOrBuffer, readerOrBuffer.uint32());
+    B.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader(reader);
+        return this.decode(reader, reader.uint32());
     };
 
     /**
@@ -293,10 +280,9 @@ $root.B = (function() {
      */
     B.verify = function verify(message) {
         if (message.A !== undefined && message.A !== null) {
-            var err = $types[0].verify(message.A);
-            if (err) {
-                return "A." + err;
-            }
+            var error = $types[0].verify(message.A);
+            if (error)
+                return "A." + error;
         }
         return null;
     };
@@ -308,9 +294,8 @@ $root.B = (function() {
      */
     B.fromObject = function fromObject(object) {
         var message = new $root.B();
-        if (object.A !== undefined && object.A !== null) {
+        if (object.A !== undefined && object.A !== null)
             message.A = $types[0].fromObject(object.A);
-        }
         return message;
     };
 
@@ -329,22 +314,18 @@ $root.B = (function() {
      * @returns {Object.<string,*>} Plain object
      */
     B.toObject = function toObject(message, options) {
-        if (!options) {
+        if (!options)
             options = {};
-        }
         var object = {};
-        if (options.defaults) {
+        if (options.defaults)
             object.A = null;
-        }
-        for (var keys = Object.keys(message), i = 0; i < keys.length; ++i) {
-            switch (keys[i]) {
-            case "A":
-                if (message.A !== undefined && message.A !== null) {
+        for (var keys = Object.keys(message), i = 0; i < keys.length; ++i)
+            if (message[keys[i]] !== undefined && message[keys[i]] !== null)
+                switch (keys[i]) {
+                case "A":
                     object.A = $types[0].toObject(message.A, options);
+                    break;
                 }
-                break;
-            }
-        }
         return object;
     };
 

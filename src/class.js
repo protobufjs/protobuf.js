@@ -134,7 +134,7 @@ Class.prototype = Message;
  * Decodes a message of this type.
  * @name Class#decode
  * @function
- * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode
+ * @param {Reader|Uint8Array} reader Reader or buffer to decode
  * @returns {Message} Decoded message
  */
 
@@ -142,7 +142,7 @@ Class.prototype = Message;
  * Decodes a message of this type preceeded by its length as a varint.
  * @name Class#decodeDelimited
  * @function
- * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode
+ * @param {Reader|Uint8Array} reader Reader or buffer to decode
  * @returns {Message} Decoded message
  */
 
