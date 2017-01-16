@@ -31,7 +31,7 @@ function decoder(mtype) {
     for (var i = 0; i < fields.length; ++i) {
         var field = fields[i].resolve(),
             type  = field.resolvedType instanceof Enum ? "uint32" : field.type,
-            ref   = "m" + field._prop; gen
+            ref   = "m" + util.safeProp(field.name); gen
             ("case %d:", field.id);
 
         // Map fields

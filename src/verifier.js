@@ -125,7 +125,7 @@ function verifier(mtype) {
 
     for (var i = 0; i < fields.length; ++i) {
         var field = fields[i].resolve(),
-            ref   = "m" + field._prop;
+            ref   = "m" + util.safeProp(field.name);
 
         // map fields
         if (field.map) { gen

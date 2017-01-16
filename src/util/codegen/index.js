@@ -79,7 +79,7 @@ function codegen() {
      * @inner
      */
     function str(name) {
-        return "function " + (name ? name.replace(/[^\w_$]/g, "_") : "") + "(" + params.join(", ") + ") {\n" + src.join("\n") + "\n}";
+        return "function" + (name ? " " + name.replace(/[^\w_$]/g, "_") : "") + "(" + params.join(",") + ") {\n" + src.join("\n") + "\n}";
     }
 
     gen.str = str;
@@ -121,17 +121,21 @@ function sprintf(format) {
     for (; i < arguments.length;)
         args.push(arguments[i++]);
     i = 0;
-    return format.replace(/%([djs])/g, function($0, $1) {
-        var arg = args[i++];
+    format = format.replace(/%([dfjps])/g, function($0, $1) {
         switch ($1) {
-            case "j":
-                return JSON.stringify(arg);
             case "d":
-                return Number(arg);
+                return Math.floor(args[i++]);
+            case "f":
+                return Number(args[i++]);
+            case "j":
+                return JSON.stringify(args[i++]);
             default:
-                return String(arg);
+                return args[i++];
         }
     });
+    if (i !== args.length)
+        throw Error("argument count mismatch");
+    return format;
 }
 
 codegen.sprintf   = sprintf;

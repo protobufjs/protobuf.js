@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.5.0 (c) 2016, Daniel Wirtz
- * Compiled Mon, 16 Jan 2017 18:22:03 UTC
+ * Compiled Mon, 16 Jan 2017 22:27:47 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -259,7 +259,7 @@ function codegen() {
      * @inner
      */
     function str(name) {
-        return "function " + (name ? name.replace(/[^\w_$]/g, "_") : "") + "(" + params.join(", ") + ") {\n" + src.join("\n") + "\n}";
+        return "function" + (name ? " " + name.replace(/[^\w_$]/g, "_") : "") + "(" + params.join(",") + ") {\n" + src.join("\n") + "\n}";
     }
 
     gen.str = str;
@@ -301,17 +301,21 @@ function sprintf(format) {
     for (; i < arguments.length;)
         args.push(arguments[i++]);
     i = 0;
-    return format.replace(/%([djs])/g, function($0, $1) {
-        var arg = args[i++];
+    format = format.replace(/%([dfjs])/g, function($0, $1) {
         switch ($1) {
-            case "j":
-                return JSON.stringify(arg);
             case "d":
-                return Number(arg);
+                return Math.floor(args[i++]);
+            case "f":
+                return Number(args[i++]);
+            case "j":
+                return JSON.stringify(args[i++]);
             default:
-                return String(arg);
+                return args[i++];
         }
     });
+    if (i !== args.length)
+        throw Error("argument count mismatch");
+    return format;
 }
 
 codegen.sprintf   = sprintf;
@@ -946,7 +950,7 @@ function genValuePartial_fromObject(gen, field, fieldIndex, prop) {
                 break;
             case "bytes": gen
                 ("if(typeof d%s===\"string\")", prop)
-                    ("util.base64.decode(d%s,m%s=util.newBuffer(util.base64.length(d%s)),0)", prop, prop, prop, prop)
+                    ("util.base64.decode(d%s,m%s=util.newBuffer(util.base64.length(d%s)),0)", prop, prop, prop)
                 ("else if(d%s&&d%s.length)", prop, prop)
                     ("m%s=d%s", prop, prop);
                 break;
@@ -979,11 +983,11 @@ converter.fromObject = function fromObject(mtype) {
     ("var m=new(this.ctor)");
     for (var i = 0; i < fields.length; ++i) {
         var field  = fields[i].resolve(),
-            prop   = field._prop;
+            prop   = util.safeProp(field.name);
 
         // Map fields
         if (field.map) { gen
-    ("if(d%s){", prop, prop)
+    ("if(d%s){", prop)
         ("m%s={}", prop)
         ("for(var ks=Object.keys(d%s),i=0;i<ks.length;++i){", prop);
             genValuePartial_fromObject(gen, field, i, prop + "[ks[i]]")
@@ -1073,7 +1077,7 @@ converter.toObject = function toObject(mtype) {
     if (repeatedFields.length) { gen
     ("if(o.arrays||o.defaults){");
         repeatedFields.forEach(function(field) { gen
-        ("d%s=[]", field._prop);
+        ("d%s=[]", util.safeProp(field.name));
         }); gen
     ("}");
     }
@@ -1081,7 +1085,7 @@ converter.toObject = function toObject(mtype) {
     if (mapFields.length) { gen
     ("if(o.objects||o.defaults){");
         mapFields.forEach(function(field) { gen
-        ("d%s={}", field._prop);
+        ("d%s={}", util.safeProp(field.name));
         }); gen
     ("}");
     }
@@ -1089,29 +1093,30 @@ converter.toObject = function toObject(mtype) {
     if (otherFields.length) { gen
     ("if(o.defaults){");
         otherFields.forEach(function(field) {
+            var prop = util.safeProp(field.name);
             if (field.resolvedType instanceof Enum) gen
-        ("d%s=o.enums===String?%j:%j", field._prop, field.resolvedType.valuesById[field.typeDefault], field.typeDefault);
+        ("d%s=o.enums===String?%j:%j", prop, field.resolvedType.valuesById[field.typeDefault], field.typeDefault);
             else if (field.long) gen
         ("if(util.Long){")
             ("var n=new util.Long(%d,%d,%j)", field.typeDefault.low, field.typeDefault.high, field.typeDefault.unsigned)
-            ("d%s=o.longs===String?n.toString():o.longs===Number?n.toNumber():n", field._prop)
+            ("d%s=o.longs===String?n.toString():o.longs===Number?n.toNumber():n", prop)
         ("}else")
-            ("d%s=o.longs===String?%j:%d", field._prop, field.typeDefault.toString(), field.typeDefault.toNumber());
+            ("d%s=o.longs===String?%j:%d", prop, field.typeDefault.toString(), field.typeDefault.toNumber());
             else if (field.bytes) gen
-        ("d%s=o.bytes===String?%j:%s", field._prop, String.fromCharCode.apply(String, field.typeDefault), "[" + Array.prototype.slice.call(field.typeDefault).join(",") + "]");
+        ("d%s=o.bytes===String?%j:%s", prop, String.fromCharCode.apply(String, field.typeDefault), "[" + Array.prototype.slice.call(field.typeDefault).join(",") + "]");
             else gen
-        ("d%s=%j", field._prop, field.typeDefault); // also messages (=null)
+        ("d%s=%j", prop, field.typeDefault); // also messages (=null)
         }); gen
     ("}");
     }
     for (var i = 0; i < fields.length; ++i) {
         var field = fields[i],
-            prop  = field._prop; gen
+            prop  = util.safeProp(field.name); gen
     ("if(m.hasOwnProperty(%j)&&m%s!==undefined&&m%s!==null){", field.name, prop, prop);
         if (field.map) { gen
         ("d%s={}", prop)
         ("for(var ks2=Object.keys(m%s),j=0;j<ks2.length;++j){", prop);
-        genValuePartial_toObject(gen, field, i, prop + "[ks2[j]]")
+            genValuePartial_toObject(gen, field, i, prop + "[ks2[j]]")
         ("}");
         } else if (field.repeated) { gen
         ("d%s=[]", prop)
@@ -1162,7 +1167,7 @@ function decoder(mtype) {
     for (var i = 0; i < fields.length; ++i) {
         var field = fields[i].resolve(),
             type  = field.resolvedType instanceof Enum ? "uint32" : field.type,
-            ref   = "m" + field._prop; gen
+            ref   = "m" + util.safeProp(field.name); gen
             ("case %d:", field.id);
 
         // Map fields
@@ -1264,7 +1269,7 @@ function encoder(mtype) {
             continue;
         var type     = field.resolvedType instanceof Enum ? "uint32" : field.type,
             wireType = types.basic[type];
-            ref      = "m" + field._prop;
+            ref      = "m" + util.safeProp(field.name);
 
         // Map fields
         if (field.map) {
@@ -1290,7 +1295,7 @@ function encoder(mtype) {
         ("w.uint32(%d).fork()", (field.id << 3 | 2) >>> 0)
         ("for(var i=0;i<%s.length;++i)", ref)
             ("w.%s(%s[i])", type, ref)
-        ("w.ldelim()", field.id)
+        ("w.ldelim()")
     ("}");
 
             // Non-packed
@@ -1331,13 +1336,13 @@ function encoder(mtype) {
     // oneofs
     for (var i = 0; i < oneofs.length; ++i) {
         var oneof = oneofs[i]; gen
-        ("switch(%s){", "m" + oneof._prop);
+        ("switch(%s){", "m" + util.safeProp(oneof.name));
         var oneofFields = oneof.fieldsArray;
         for (var j = 0; j < oneofFields.length; ++j) {
             var field    = oneofFields[j],
                 type     = field.resolvedType instanceof Enum ? "uint32" : field.type,
                 wireType = types.basic[type];
-                ref      = "m" + field._prop; gen
+                ref      = "m" + util.safeProp(field.name); gen
             ("case%j:", field.name);
             if (wireType === undefined)
                 genTypePartial(gen, field, fields.indexOf(field), ref);
@@ -1652,13 +1657,6 @@ function Field(name, id, type, rule, extend, options) {
      * @private
      */
     this._packed = null;
-
-    /**
-     * Safe property accessor on messages used by codegen.
-     * @type {string}
-     * @private
-     */
-    this._prop = util.safeProp(this.name);
 }
 
 /**
@@ -2799,8 +2797,7 @@ var OneOfPrototype = ReflectionObject.extend(OneOf);
 
 OneOf.className = "OneOf";
 
-var Field = require(16),
-    util  = require(31);
+var Field = require(16);
 
 /**
  * Constructs a new oneof instance.
@@ -2834,13 +2831,6 @@ function OneOf(name, fieldNames, options) {
      * @private
      */
     this._fieldsArray = [];
-
-    /**
-     * Safe property accessor on messages used by codegen.
-     * @type {string}
-     * @private
-     */
-    this._prop = util.safeProp(this.name);
 }
 
 /**
@@ -2976,7 +2966,7 @@ OneOfPrototype.onRemove = function onRemove(parent) {
     ReflectionObject.prototype.onRemove.call(this, parent);
 };
 
-},{"16":16,"21":21,"31":31}],23:[function(require,module,exports){
+},{"16":16,"21":21}],23:[function(require,module,exports){
 "use strict";
 module.exports = Reader;
 
@@ -5398,7 +5388,7 @@ function verifier(mtype) {
 
     for (var i = 0; i < fields.length; ++i) {
         var field = fields[i].resolve(),
-            ref   = "m" + field._prop;
+            ref   = "m" + util.safeProp(field.name);
 
         // map fields
         if (field.map) { gen
@@ -5453,12 +5443,10 @@ var LongBits  = util.LongBits,
 /**
  * Constructs a new writer operation instance.
  * @classdesc Scheduled writer operation.
- * @memberof Writer
  * @constructor
  * @param {function(*, Uint8Array, number)} fn Function to call
  * @param {number} len Value byte length
  * @param {*} val Value to write
- * @private
  * @ignore
  */
 function Op(fn, len, val) {
@@ -5625,19 +5613,39 @@ function writeVarint32(val, buf, pos) {
 }
 
 /**
+ * Constructs a new varint writer operation instance.
+ * @classdesc Scheduled varint writer operation.
+ * @extends Op
+ * @constructor
+ * @param {number} len Value byte length
+ * @param {number} val Value to write
+ * @ignore
+ */
+function VarintOp(len, val) {
+    this.len = len;
+    this.next = undefined;
+    this.val = val;
+}
+
+VarintOp.prototype = Object.create(Op.prototype);
+VarintOp.prototype.fn = writeVarint32;
+
+/**
  * Writes an unsigned 32 bit value as a varint.
  * @param {number} value Value to write
  * @returns {Writer} `this`
  */
 WriterPrototype.uint32 = function write_uint32(value) {
-    value = value >>> 0;
-    return this.push(writeVarint32,
-          value < 128       ? 1
+    // here, the call to this.push has been inlined and a varint specific Op subclass is used.
+    // uint32 is by far the most frequently used operation and benefits significantly from this.
+    this.len += (this.tail = this.tail.next = new VarintOp((value = value >>> 0)
+                < 128       ? 1
         : value < 16384     ? 2
         : value < 2097152   ? 3
         : value < 268435456 ? 4
-        :                     5
-    , value);
+        :                     5,
+    value)).len;
+    return this;
 };
 
 /**

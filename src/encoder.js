@@ -40,7 +40,7 @@ function encoder(mtype) {
             continue;
         var type     = field.resolvedType instanceof Enum ? "uint32" : field.type,
             wireType = types.basic[type];
-            ref      = "m" + field._prop;
+            ref      = "m" + util.safeProp(field.name);
 
         // Map fields
         if (field.map) {
@@ -66,7 +66,7 @@ function encoder(mtype) {
         ("w.uint32(%d).fork()", (field.id << 3 | 2) >>> 0)
         ("for(var i=0;i<%s.length;++i)", ref)
             ("w.%s(%s[i])", type, ref)
-        ("w.ldelim()", field.id)
+        ("w.ldelim()")
     ("}");
 
             // Non-packed
@@ -107,13 +107,13 @@ function encoder(mtype) {
     // oneofs
     for (var i = 0; i < oneofs.length; ++i) {
         var oneof = oneofs[i]; gen
-        ("switch(%s){", "m" + oneof._prop);
+        ("switch(%s){", "m" + util.safeProp(oneof.name));
         var oneofFields = oneof.fieldsArray;
         for (var j = 0; j < oneofFields.length; ++j) {
             var field    = oneofFields[j],
                 type     = field.resolvedType instanceof Enum ? "uint32" : field.type,
                 wireType = types.basic[type];
-                ref      = "m" + field._prop; gen
+                ref      = "m" + util.safeProp(field.name); gen
             ("case%j:", field.name);
             if (wireType === undefined)
                 genTypePartial(gen, field, fields.indexOf(field), ref);

@@ -69,7 +69,7 @@ function genValuePartial_fromObject(gen, field, fieldIndex, prop) {
                 break;
             case "bytes": gen
                 ("if(typeof d%s===\"string\")", prop)
-                    ("util.base64.decode(d%s,m%s=util.newBuffer(util.base64.length(d%s)),0)", prop, prop, prop, prop)
+                    ("util.base64.decode(d%s,m%s=util.newBuffer(util.base64.length(d%s)),0)", prop, prop, prop)
                 ("else if(d%s&&d%s.length)", prop, prop)
                     ("m%s=d%s", prop, prop);
                 break;
@@ -102,11 +102,11 @@ converter.fromObject = function fromObject(mtype) {
     ("var m=new(this.ctor)");
     for (var i = 0; i < fields.length; ++i) {
         var field  = fields[i].resolve(),
-            prop   = field._prop;
+            prop   = util.safeProp(field.name);
 
         // Map fields
         if (field.map) { gen
-    ("if(d%s){", prop, prop)
+    ("if(d%s){", prop)
         ("m%s={}", prop)
         ("for(var ks=Object.keys(d%s),i=0;i<ks.length;++i){", prop);
             genValuePartial_fromObject(gen, field, i, prop + "[ks[i]]")
@@ -196,7 +196,7 @@ converter.toObject = function toObject(mtype) {
     if (repeatedFields.length) { gen
     ("if(o.arrays||o.defaults){");
         repeatedFields.forEach(function(field) { gen
-        ("d%s=[]", field._prop);
+        ("d%s=[]", util.safeProp(field.name));
         }); gen
     ("}");
     }
@@ -204,7 +204,7 @@ converter.toObject = function toObject(mtype) {
     if (mapFields.length) { gen
     ("if(o.objects||o.defaults){");
         mapFields.forEach(function(field) { gen
-        ("d%s={}", field._prop);
+        ("d%s={}", util.safeProp(field.name));
         }); gen
     ("}");
     }
@@ -212,29 +212,30 @@ converter.toObject = function toObject(mtype) {
     if (otherFields.length) { gen
     ("if(o.defaults){");
         otherFields.forEach(function(field) {
+            var prop = util.safeProp(field.name);
             if (field.resolvedType instanceof Enum) gen
-        ("d%s=o.enums===String?%j:%j", field._prop, field.resolvedType.valuesById[field.typeDefault], field.typeDefault);
+        ("d%s=o.enums===String?%j:%j", prop, field.resolvedType.valuesById[field.typeDefault], field.typeDefault);
             else if (field.long) gen
         ("if(util.Long){")
             ("var n=new util.Long(%d,%d,%j)", field.typeDefault.low, field.typeDefault.high, field.typeDefault.unsigned)
-            ("d%s=o.longs===String?n.toString():o.longs===Number?n.toNumber():n", field._prop)
+            ("d%s=o.longs===String?n.toString():o.longs===Number?n.toNumber():n", prop)
         ("}else")
-            ("d%s=o.longs===String?%j:%d", field._prop, field.typeDefault.toString(), field.typeDefault.toNumber());
+            ("d%s=o.longs===String?%j:%d", prop, field.typeDefault.toString(), field.typeDefault.toNumber());
             else if (field.bytes) gen
-        ("d%s=o.bytes===String?%j:%s", field._prop, String.fromCharCode.apply(String, field.typeDefault), "[" + Array.prototype.slice.call(field.typeDefault).join(",") + "]");
+        ("d%s=o.bytes===String?%j:%s", prop, String.fromCharCode.apply(String, field.typeDefault), "[" + Array.prototype.slice.call(field.typeDefault).join(",") + "]");
             else gen
-        ("d%s=%j", field._prop, field.typeDefault); // also messages (=null)
+        ("d%s=%j", prop, field.typeDefault); // also messages (=null)
         }); gen
     ("}");
     }
     for (var i = 0; i < fields.length; ++i) {
         var field = fields[i],
-            prop  = field._prop; gen
+            prop  = util.safeProp(field.name); gen
     ("if(m.hasOwnProperty(%j)&&m%s!==undefined&&m%s!==null){", field.name, prop, prop);
         if (field.map) { gen
         ("d%s={}", prop)
         ("for(var ks2=Object.keys(m%s),j=0;j<ks2.length;++j){", prop);
-        genValuePartial_toObject(gen, field, i, prop + "[ks2[j]]")
+            genValuePartial_toObject(gen, field, i, prop + "[ks2[j]]")
         ("}");
         } else if (field.repeated) { gen
         ("d%s=[]", prop)

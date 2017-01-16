@@ -8,8 +8,7 @@ var OneOfPrototype = ReflectionObject.extend(OneOf);
 
 OneOf.className = "OneOf";
 
-var Field = require("./field"),
-    util  = require("./util");
+var Field = require("./field");
 
 /**
  * Constructs a new oneof instance.
@@ -43,13 +42,6 @@ function OneOf(name, fieldNames, options) {
      * @private
      */
     this._fieldsArray = [];
-
-    /**
-     * Safe property accessor on messages used by codegen.
-     * @type {string}
-     * @private
-     */
-    this._prop = util.safeProp(this.name);
 }
 
 /**

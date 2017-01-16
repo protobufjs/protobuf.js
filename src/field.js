@@ -158,13 +158,6 @@ function Field(name, id, type, rule, extend, options) {
      * @private
      */
     this._packed = null;
-
-    /**
-     * Safe property accessor on messages used by codegen.
-     * @type {string}
-     * @private
-     */
-    this._prop = util.safeProp(this.name);
 }
 
 /**

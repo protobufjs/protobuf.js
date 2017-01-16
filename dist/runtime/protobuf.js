@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.5.0 (c) 2016, Daniel Wirtz
- * Compiled Mon, 16 Jan 2017 18:22:03 UTC
+ * Compiled Mon, 16 Jan 2017 22:27:47 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -1352,12 +1352,10 @@ var LongBits  = util.LongBits,
 /**
  * Constructs a new writer operation instance.
  * @classdesc Scheduled writer operation.
- * @memberof Writer
  * @constructor
  * @param {function(*, Uint8Array, number)} fn Function to call
  * @param {number} len Value byte length
  * @param {*} val Value to write
- * @private
  * @ignore
  */
 function Op(fn, len, val) {
@@ -1524,19 +1522,39 @@ function writeVarint32(val, buf, pos) {
 }
 
 /**
+ * Constructs a new varint writer operation instance.
+ * @classdesc Scheduled varint writer operation.
+ * @extends Op
+ * @constructor
+ * @param {number} len Value byte length
+ * @param {number} val Value to write
+ * @ignore
+ */
+function VarintOp(len, val) {
+    this.len = len;
+    this.next = undefined;
+    this.val = val;
+}
+
+VarintOp.prototype = Object.create(Op.prototype);
+VarintOp.prototype.fn = writeVarint32;
+
+/**
  * Writes an unsigned 32 bit value as a varint.
  * @param {number} value Value to write
  * @returns {Writer} `this`
  */
 WriterPrototype.uint32 = function write_uint32(value) {
-    value = value >>> 0;
-    return this.push(writeVarint32,
-          value < 128       ? 1
+    // here, the call to this.push has been inlined and a varint specific Op subclass is used.
+    // uint32 is by far the most frequently used operation and benefits significantly from this.
+    this.len += (this.tail = this.tail.next = new VarintOp((value = value >>> 0)
+                < 128       ? 1
         : value < 16384     ? 2
         : value < 2097152   ? 3
         : value < 268435456 ? 4
-        :                     5
-    , value);
+        :                     5,
+    value)).len;
+    return this;
 };
 
 /**
