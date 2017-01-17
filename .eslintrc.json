@@ -8,9 +8,9 @@
         "Float32Array": true,
         "Float64Array": true,
         "define": true,
+        "global": true,
         "XMLHttpRequest": true,
-        "Promise": true,
-        "dcodeIO": true
+        "Promise": true
     },
     "parserOptions": {
         "ecmaVersion": 5

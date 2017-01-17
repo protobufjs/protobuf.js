@@ -1,5 +1,5 @@
 "use strict";
-var protobuf = exports;
+var protobuf = global.protobuf = exports;
 
 /**
  * A node-style callback as used by {@link load} and {@link Root#load}.
@@ -126,14 +126,6 @@ protobuf.configure        = configure;
 function configure() {
     protobuf.Reader._configure();
 }
-
-/* istanbul ignore next */
-if (typeof window !== "undefined" && window)
-    window.protobuf = protobuf;
-else if (typeof self !== "undefined" && self)
-    self.protobuf = protobuf;
-else
-    this.protobuf = protobuf; // eslint-disable-line no-invalid-this
 
 /* istanbul ignore next */
 if (typeof define === "function" && define.amd)

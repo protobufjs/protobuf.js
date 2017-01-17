@@ -1,10 +1,10 @@
 /*!
  * protobuf.js v6.5.0 (c) 2016, Daniel Wirtz
- * Compiled Tue, 17 Jan 2017 04:07:33 UTC
+ * Compiled Tue, 17 Jan 2017 04:40:35 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+!function(global,undefined){"use strict";(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 "use strict";
 
 /**
@@ -315,7 +315,7 @@ utf8.write = function utf8_write(string, buffer, offset) {
 // This file exports just the bare minimum required to work with statically generated code.
 // Can be used as a drop-in replacement for the full library as it has the same general structure.
 "use strict";
-var protobuf = exports;
+var protobuf = global.protobuf = exports;
 
 protobuf.Writer       = require(10);
 protobuf.BufferWriter = require(11);
@@ -328,13 +328,6 @@ protobuf.configure    = configure;
 function configure() {
     protobuf.Reader._configure();
 }
-
-if (typeof window !== "undefined" && window)
-    window.protobuf = protobuf;
-else if (typeof self !== "undefined" && self)
-    self.protobuf = protobuf;
-else
-    this.protobuf = protobuf; // eslint-disable-line no-invalid-this
 
 if (typeof define === "function" && define.amd)
     define(["long"], function(Long) {
@@ -1137,7 +1130,7 @@ util.emptyObject = Object.freeze ? Object.freeze({}) : /* istanbul ignore next *
  * @memberof util
  * @type {boolean}
  */
-util.isNode = typeof process !== "undefined" && Boolean(process.versions && process.versions.node);
+util.isNode = Boolean(global.process && global.process.versions && global.process.versions.node);
 
 /**
  * Tests if the specified value is an integer.
@@ -1225,7 +1218,7 @@ util.LongBits = require(8);
  * Long.js's Long class if available.
  * @type {?function(new: Long)}
  */
-util.Long = typeof dcodeIO !== "undefined" && /* istanbul ignore next */ dcodeIO && /* istanbul ignore next */ dcodeIO.Long || util.inquire("long");
+util.Long = /* istanbul ignore next */ global.dcodeIO && /* istanbul ignore next */ global.dcodeIO.Long || util.inquire("long");
 
 /**
  * Converts a number or long to an 8 characters long hash string.
@@ -1980,5 +1973,5 @@ BufferWriterPrototype.string = function write_string_buffer(value) {
 
 },{"10":10,"9":9}]},{},[5])
 
-
+}(typeof window==="object"&&window||typeof self==="object"&&self||this);
 //# sourceMappingURL=protobuf.js.map

@@ -43,6 +43,12 @@ function bundle(options) {
     if (options.exclude)
         options.exclude.forEach(bundler.exclude, bundler);
     return bundler
+    .plugin(require("browserify-wrap"), {
+        // + global object for convenience
+        // + undefined var and global strict-mode for uglify
+        prefix: "!function(global,undefined){\"use strict\";",
+        suffix: "}(typeof window===\"object\"&&window||typeof self===\"object\"&&self||this);"
+    })
     .plugin(require("bundle-collapser/plugin"))
     .bundle()
     .pipe(source(options.compress ? "protobuf.min.js" : "protobuf.js"))
@@ -52,6 +58,10 @@ function bundle(options) {
                 gulpif(options.compress, uglify({
                     mangleProperties: {
                         regex: /^_/
+                    },
+                    mangle: {
+                        eval: true,
+                        toplevel: false
                     },
                     compress: {
                         unused: true,

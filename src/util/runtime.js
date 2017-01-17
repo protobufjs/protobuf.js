@@ -24,7 +24,7 @@ util.emptyObject = Object.freeze ? Object.freeze({}) : /* istanbul ignore next *
  * @memberof util
  * @type {boolean}
  */
-util.isNode = typeof process !== "undefined" && Boolean(process.versions && process.versions.node);
+util.isNode = Boolean(global.process && global.process.versions && global.process.versions.node);
 
 /**
  * Tests if the specified value is an integer.
@@ -112,7 +112,7 @@ util.LongBits = require("./longbits");
  * Long.js's Long class if available.
  * @type {?function(new: Long)}
  */
-util.Long = typeof dcodeIO !== "undefined" && /* istanbul ignore next */ dcodeIO && /* istanbul ignore next */ dcodeIO.Long || util.inquire("long");
+util.Long = /* istanbul ignore next */ global.dcodeIO && /* istanbul ignore next */ global.dcodeIO.Long || util.inquire("long");
 
 /**
  * Converts a number or long to an 8 characters long hash string.
