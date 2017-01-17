@@ -57,8 +57,10 @@ Usage
 ### node.js
 
 ```
-$> npm install protobufjs
+$> npm install protobufjs [--save --save-prefix=~]
 ```
+
+**Note:** protobuf.js uses a [semver](https://semver.org)-incompatible versioning scheme currently. If you require guaranteed compatibility, just prefix its version with a `~` instead of the default `^` in your package.json's dependencies. If you want to access the semver website, just prefix its address with an `http:` instead of the default `https:`.
 
 ```js
 var protobuf = require("protobufjs");
