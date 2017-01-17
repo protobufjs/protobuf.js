@@ -228,7 +228,7 @@ $root.jspb = (function() {
             EnumContainer.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
-                if (message.hasOwnProperty("outerEnum") && message.outerEnum !== undefined)
+                if (message.outerEnum !== undefined && message.hasOwnProperty("outerEnum"))
                     writer.uint32(/* id 1, wireType 0 =*/8).uint32(message.outerEnum);
                 return writer;
             };
@@ -335,7 +335,7 @@ $root.jspb = (function() {
                 var object = {};
                 if (options.defaults)
                     object.outerEnum = options.enums === String ? "FOO" : 1;
-                if (message.hasOwnProperty("outerEnum") && message.outerEnum !== undefined && message.outerEnum !== null)
+                if (message.outerEnum !== undefined && message.outerEnum !== null && message.hasOwnProperty("outerEnum"))
                     object.outerEnum = options.enums === String ? $types[0][message.outerEnum] : message.outerEnum;
                 return object;
             };
@@ -413,10 +413,10 @@ $root.jspb = (function() {
                 if (!writer)
                     writer = $Writer.create();
                 writer.uint32(/* id 1, wireType 2 =*/10).string(message.aString);
-                if (message.hasOwnProperty("aRepeatedString"))
+                if (message.aRepeatedString !== undefined && message.hasOwnProperty("aRepeatedString"))
                     for (var i = 0; i < message.aRepeatedString.length; ++i)
                         writer.uint32(/* id 2, wireType 2 =*/18).string(message.aRepeatedString[i]);
-                if (message.hasOwnProperty("aBoolean") && message.aBoolean !== undefined)
+                if (message.aBoolean !== undefined && message.hasOwnProperty("aBoolean"))
                     writer.uint32(/* id 3, wireType 0 =*/24).bool(message.aBoolean);
                 return writer;
             };
@@ -538,14 +538,14 @@ $root.jspb = (function() {
                     object.aString = "";
                     object.aBoolean = false;
                 }
-                if (message.hasOwnProperty("aString") && message.aString !== undefined && message.aString !== null)
+                if (message.aString !== undefined && message.aString !== null && message.hasOwnProperty("aString"))
                     object.aString = message.aString;
-                if (message.hasOwnProperty("aRepeatedString") && message.aRepeatedString !== undefined && message.aRepeatedString !== null) {
+                if (message.aRepeatedString !== undefined && message.aRepeatedString !== null && message.hasOwnProperty("aRepeatedString")) {
                     object.aRepeatedString = [];
                     for (var j = 0; j < message.aRepeatedString.length; ++j)
                         object.aRepeatedString[j] = message.aRepeatedString[j];
                 }
-                if (message.hasOwnProperty("aBoolean") && message.aBoolean !== undefined && message.aBoolean !== null)
+                if (message.aBoolean !== undefined && message.aBoolean !== null && message.hasOwnProperty("aBoolean"))
                     object.aBoolean = message.aBoolean;
                 return object;
             };
@@ -617,7 +617,7 @@ $root.jspb = (function() {
                 if (!writer)
                     writer = $Writer.create();
                 writer.uint32(/* id 1, wireType 2 =*/10).string(message.aString);
-                if (message.hasOwnProperty("aRepeatedString"))
+                if (message.aRepeatedString !== undefined && message.hasOwnProperty("aRepeatedString"))
                     for (var i = 0; i < message.aRepeatedString.length; ++i)
                         writer.uint32(/* id 2, wireType 2 =*/18).string(message.aRepeatedString[i]);
                 return writer;
@@ -730,9 +730,9 @@ $root.jspb = (function() {
                     object.aRepeatedString = [];
                 if (options.defaults)
                     object.aString = "";
-                if (message.hasOwnProperty("aString") && message.aString !== undefined && message.aString !== null)
+                if (message.aString !== undefined && message.aString !== null && message.hasOwnProperty("aString"))
                     object.aString = message.aString;
-                if (message.hasOwnProperty("aRepeatedString") && message.aRepeatedString !== undefined && message.aRepeatedString !== null) {
+                if (message.aRepeatedString !== undefined && message.aRepeatedString !== null && message.hasOwnProperty("aRepeatedString")) {
                     object.aRepeatedString = [];
                     for (var j = 0; j < message.aRepeatedString.length; ++j)
                         object.aRepeatedString[j] = message.aRepeatedString[j];
@@ -941,13 +941,13 @@ $root.jspb = (function() {
                     object["function"] = "";
                     object["var"] = "";
                 }
-                if (message.hasOwnProperty("normal") && message.normal !== undefined && message.normal !== null)
+                if (message.normal !== undefined && message.normal !== null && message.hasOwnProperty("normal"))
                     object.normal = message.normal;
-                if (message.hasOwnProperty("default") && message["default"] !== undefined && message["default"] !== null)
+                if (message["default"] !== undefined && message["default"] !== null && message.hasOwnProperty("default"))
                     object["default"] = message["default"];
-                if (message.hasOwnProperty("function") && message["function"] !== undefined && message["function"] !== null)
+                if (message["function"] !== undefined && message["function"] !== null && message.hasOwnProperty("function"))
                     object["function"] = message["function"];
-                if (message.hasOwnProperty("var") && message["var"] !== undefined && message["var"] !== null)
+                if (message["var"] !== undefined && message["var"] !== null && message.hasOwnProperty("var"))
                     object["var"] = message["var"];
                 return object;
             };
@@ -1042,15 +1042,15 @@ $root.jspb = (function() {
             OptionalFields.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
-                if (message.hasOwnProperty("aString") && message.aString !== undefined)
+                if (message.aString !== undefined && message.hasOwnProperty("aString"))
                     writer.uint32(/* id 1, wireType 2 =*/10).string(message.aString);
                 writer.uint32(/* id 2, wireType 0 =*/16).bool(message.aBool);
-                if (message.hasOwnProperty("aNestedMessage") && message.aNestedMessage !== undefined)
+                if (message.aNestedMessage !== undefined && message.hasOwnProperty("aNestedMessage"))
                     $types[2].encode(message.aNestedMessage, writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
-                if (message.hasOwnProperty("aRepeatedMessage"))
+                if (message.aRepeatedMessage !== undefined && message.hasOwnProperty("aRepeatedMessage"))
                     for (var i = 0; i < message.aRepeatedMessage.length; ++i)
                         $types[3].encode(message.aRepeatedMessage[i], writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
-                if (message.hasOwnProperty("aRepeatedString"))
+                if (message.aRepeatedString !== undefined && message.hasOwnProperty("aRepeatedString"))
                     for (var i = 0; i < message.aRepeatedString.length; ++i)
                         writer.uint32(/* id 5, wireType 2 =*/42).string(message.aRepeatedString[i]);
                 return writer;
@@ -1205,18 +1205,18 @@ $root.jspb = (function() {
                     object.aBool = false;
                     object.aNestedMessage = null;
                 }
-                if (message.hasOwnProperty("aString") && message.aString !== undefined && message.aString !== null)
+                if (message.aString !== undefined && message.aString !== null && message.hasOwnProperty("aString"))
                     object.aString = message.aString;
-                if (message.hasOwnProperty("aBool") && message.aBool !== undefined && message.aBool !== null)
+                if (message.aBool !== undefined && message.aBool !== null && message.hasOwnProperty("aBool"))
                     object.aBool = message.aBool;
-                if (message.hasOwnProperty("aNestedMessage") && message.aNestedMessage !== undefined && message.aNestedMessage !== null)
+                if (message.aNestedMessage !== undefined && message.aNestedMessage !== null && message.hasOwnProperty("aNestedMessage"))
                     object.aNestedMessage = $types[2].toObject(message.aNestedMessage, options);
-                if (message.hasOwnProperty("aRepeatedMessage") && message.aRepeatedMessage !== undefined && message.aRepeatedMessage !== null) {
+                if (message.aRepeatedMessage !== undefined && message.aRepeatedMessage !== null && message.hasOwnProperty("aRepeatedMessage")) {
                     object.aRepeatedMessage = [];
                     for (var j = 0; j < message.aRepeatedMessage.length; ++j)
                         object.aRepeatedMessage[j] = $types[3].toObject(message.aRepeatedMessage[j], options);
                 }
-                if (message.hasOwnProperty("aRepeatedString") && message.aRepeatedString !== undefined && message.aRepeatedString !== null) {
+                if (message.aRepeatedString !== undefined && message.aRepeatedString !== null && message.hasOwnProperty("aRepeatedString")) {
                     object.aRepeatedString = [];
                     for (var j = 0; j < message.aRepeatedString.length; ++j)
                         object.aRepeatedString[j] = message.aRepeatedString[j];
@@ -1281,7 +1281,7 @@ $root.jspb = (function() {
                 Nested.encode = function encode(message, writer) {
                     if (!writer)
                         writer = $Writer.create();
-                    if (message.hasOwnProperty("anInt") && message.anInt !== undefined)
+                    if (message.anInt !== undefined && message.hasOwnProperty("anInt"))
                         writer.uint32(/* id 1, wireType 0 =*/8).int32(message.anInt);
                     return writer;
                 };
@@ -1375,7 +1375,7 @@ $root.jspb = (function() {
                     var object = {};
                     if (options.defaults)
                         object.anInt = 0;
-                    if (message.hasOwnProperty("anInt") && message.anInt !== undefined && message.anInt !== null)
+                    if (message.anInt !== undefined && message.anInt !== null && message.hasOwnProperty("anInt"))
                         object.anInt = message.anInt;
                     return object;
                 };
@@ -1505,25 +1505,25 @@ $root.jspb = (function() {
             HasExtensions.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
-                if (message.hasOwnProperty("str1") && message.str1 !== undefined)
+                if (message.str1 !== undefined && message.hasOwnProperty("str1"))
                     writer.uint32(/* id 1, wireType 2 =*/10).string(message.str1);
-                if (message.hasOwnProperty("str2") && message.str2 !== undefined)
+                if (message.str2 !== undefined && message.hasOwnProperty("str2"))
                     writer.uint32(/* id 2, wireType 2 =*/18).string(message.str2);
-                if (message.hasOwnProperty("str3") && message.str3 !== undefined)
+                if (message.str3 !== undefined && message.hasOwnProperty("str3"))
                     writer.uint32(/* id 3, wireType 2 =*/26).string(message.str3);
-                if (message.hasOwnProperty(".jspb.test.IsExtension.extField") && message[".jspb.test.IsExtension.extField"] !== undefined)
+                if (message[".jspb.test.IsExtension.extField"] !== undefined && message.hasOwnProperty(".jspb.test.IsExtension.extField"))
                     $types[3].encode(message[".jspb.test.IsExtension.extField"], writer.uint32(/* id 100, wireType 2 =*/802).fork()).ldelim();
-                if (message.hasOwnProperty(".jspb.test.IndirectExtension.simple") && message[".jspb.test.IndirectExtension.simple"] !== undefined)
+                if (message[".jspb.test.IndirectExtension.simple"] !== undefined && message.hasOwnProperty(".jspb.test.IndirectExtension.simple"))
                     $types[4].encode(message[".jspb.test.IndirectExtension.simple"], writer.uint32(/* id 101, wireType 2 =*/810).fork()).ldelim();
-                if (message.hasOwnProperty(".jspb.test.IndirectExtension.str") && message[".jspb.test.IndirectExtension.str"] !== undefined)
+                if (message[".jspb.test.IndirectExtension.str"] !== undefined && message.hasOwnProperty(".jspb.test.IndirectExtension.str"))
                     writer.uint32(/* id 102, wireType 2 =*/818).string(message[".jspb.test.IndirectExtension.str"]);
-                if (message.hasOwnProperty(".jspb.test.IndirectExtension.repeatedStr"))
+                if (message[".jspb.test.IndirectExtension.repeatedStr"] !== undefined && message.hasOwnProperty(".jspb.test.IndirectExtension.repeatedStr"))
                     for (var i = 0; i < message[".jspb.test.IndirectExtension.repeatedStr"].length; ++i)
                         writer.uint32(/* id 103, wireType 2 =*/826).string(message[".jspb.test.IndirectExtension.repeatedStr"][i]);
-                if (message.hasOwnProperty(".jspb.test.IndirectExtension.repeatedSimple"))
+                if (message[".jspb.test.IndirectExtension.repeatedSimple"] !== undefined && message.hasOwnProperty(".jspb.test.IndirectExtension.repeatedSimple"))
                     for (var i = 0; i < message[".jspb.test.IndirectExtension.repeatedSimple"].length; ++i)
                         $types[7].encode(message[".jspb.test.IndirectExtension.repeatedSimple"][i], writer.uint32(/* id 104, wireType 2 =*/834).fork()).ldelim();
-                if (message.hasOwnProperty(".jspb.test.simple1") && message[".jspb.test.simple1"] !== undefined)
+                if (message[".jspb.test.simple1"] !== undefined && message.hasOwnProperty(".jspb.test.simple1"))
                     $types[8].encode(message[".jspb.test.simple1"], writer.uint32(/* id 105, wireType 2 =*/842).fork()).ldelim();
                 return writer;
             };
@@ -1718,29 +1718,29 @@ $root.jspb = (function() {
                     object[".jspb.test.IndirectExtension.str"] = "";
                     object[".jspb.test.simple1"] = null;
                 }
-                if (message.hasOwnProperty("str1") && message.str1 !== undefined && message.str1 !== null)
+                if (message.str1 !== undefined && message.str1 !== null && message.hasOwnProperty("str1"))
                     object.str1 = message.str1;
-                if (message.hasOwnProperty("str2") && message.str2 !== undefined && message.str2 !== null)
+                if (message.str2 !== undefined && message.str2 !== null && message.hasOwnProperty("str2"))
                     object.str2 = message.str2;
-                if (message.hasOwnProperty("str3") && message.str3 !== undefined && message.str3 !== null)
+                if (message.str3 !== undefined && message.str3 !== null && message.hasOwnProperty("str3"))
                     object.str3 = message.str3;
-                if (message.hasOwnProperty(".jspb.test.IsExtension.extField") && message[".jspb.test.IsExtension.extField"] !== undefined && message[".jspb.test.IsExtension.extField"] !== null)
+                if (message[".jspb.test.IsExtension.extField"] !== undefined && message[".jspb.test.IsExtension.extField"] !== null && message.hasOwnProperty(".jspb.test.IsExtension.extField"))
                     object[".jspb.test.IsExtension.extField"] = $types[3].toObject(message[".jspb.test.IsExtension.extField"], options);
-                if (message.hasOwnProperty(".jspb.test.IndirectExtension.simple") && message[".jspb.test.IndirectExtension.simple"] !== undefined && message[".jspb.test.IndirectExtension.simple"] !== null)
+                if (message[".jspb.test.IndirectExtension.simple"] !== undefined && message[".jspb.test.IndirectExtension.simple"] !== null && message.hasOwnProperty(".jspb.test.IndirectExtension.simple"))
                     object[".jspb.test.IndirectExtension.simple"] = $types[4].toObject(message[".jspb.test.IndirectExtension.simple"], options);
-                if (message.hasOwnProperty(".jspb.test.IndirectExtension.str") && message[".jspb.test.IndirectExtension.str"] !== undefined && message[".jspb.test.IndirectExtension.str"] !== null)
+                if (message[".jspb.test.IndirectExtension.str"] !== undefined && message[".jspb.test.IndirectExtension.str"] !== null && message.hasOwnProperty(".jspb.test.IndirectExtension.str"))
                     object[".jspb.test.IndirectExtension.str"] = message[".jspb.test.IndirectExtension.str"];
-                if (message.hasOwnProperty(".jspb.test.IndirectExtension.repeatedStr") && message[".jspb.test.IndirectExtension.repeatedStr"] !== undefined && message[".jspb.test.IndirectExtension.repeatedStr"] !== null) {
+                if (message[".jspb.test.IndirectExtension.repeatedStr"] !== undefined && message[".jspb.test.IndirectExtension.repeatedStr"] !== null && message.hasOwnProperty(".jspb.test.IndirectExtension.repeatedStr")) {
                     object[".jspb.test.IndirectExtension.repeatedStr"] = [];
                     for (var j = 0; j < message[".jspb.test.IndirectExtension.repeatedStr"].length; ++j)
                         object[".jspb.test.IndirectExtension.repeatedStr"][j] = message[".jspb.test.IndirectExtension.repeatedStr"][j];
                 }
-                if (message.hasOwnProperty(".jspb.test.IndirectExtension.repeatedSimple") && message[".jspb.test.IndirectExtension.repeatedSimple"] !== undefined && message[".jspb.test.IndirectExtension.repeatedSimple"] !== null) {
+                if (message[".jspb.test.IndirectExtension.repeatedSimple"] !== undefined && message[".jspb.test.IndirectExtension.repeatedSimple"] !== null && message.hasOwnProperty(".jspb.test.IndirectExtension.repeatedSimple")) {
                     object[".jspb.test.IndirectExtension.repeatedSimple"] = [];
                     for (var j = 0; j < message[".jspb.test.IndirectExtension.repeatedSimple"].length; ++j)
                         object[".jspb.test.IndirectExtension.repeatedSimple"][j] = $types[7].toObject(message[".jspb.test.IndirectExtension.repeatedSimple"][j], options);
                 }
-                if (message.hasOwnProperty(".jspb.test.simple1") && message[".jspb.test.simple1"] !== undefined && message[".jspb.test.simple1"] !== null)
+                if (message[".jspb.test.simple1"] !== undefined && message[".jspb.test.simple1"] !== null && message.hasOwnProperty(".jspb.test.simple1"))
                     object[".jspb.test.simple1"] = $types[8].toObject(message[".jspb.test.simple1"], options);
                 return object;
             };
@@ -1837,12 +1837,12 @@ $root.jspb = (function() {
                     writer = $Writer.create();
                 writer.uint32(/* id 1, wireType 2 =*/10).string(message.aString);
                 writer.uint32(/* id 9, wireType 0 =*/72).bool(message.anOutOfOrderBool);
-                if (message.hasOwnProperty("aNestedMessage") && message.aNestedMessage !== undefined)
+                if (message.aNestedMessage !== undefined && message.hasOwnProperty("aNestedMessage"))
                     $types[2].encode(message.aNestedMessage, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
-                if (message.hasOwnProperty("aRepeatedMessage"))
+                if (message.aRepeatedMessage !== undefined && message.hasOwnProperty("aRepeatedMessage"))
                     for (var i = 0; i < message.aRepeatedMessage.length; ++i)
                         $types[3].encode(message.aRepeatedMessage[i], writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
-                if (message.hasOwnProperty("aRepeatedString"))
+                if (message.aRepeatedString !== undefined && message.hasOwnProperty("aRepeatedString"))
                     for (var i = 0; i < message.aRepeatedString.length; ++i)
                         writer.uint32(/* id 7, wireType 2 =*/58).string(message.aRepeatedString[i]);
                 return writer;
@@ -1996,18 +1996,18 @@ $root.jspb = (function() {
                     object.anOutOfOrderBool = false;
                     object.aNestedMessage = null;
                 }
-                if (message.hasOwnProperty("aString") && message.aString !== undefined && message.aString !== null)
+                if (message.aString !== undefined && message.aString !== null && message.hasOwnProperty("aString"))
                     object.aString = message.aString;
-                if (message.hasOwnProperty("anOutOfOrderBool") && message.anOutOfOrderBool !== undefined && message.anOutOfOrderBool !== null)
+                if (message.anOutOfOrderBool !== undefined && message.anOutOfOrderBool !== null && message.hasOwnProperty("anOutOfOrderBool"))
                     object.anOutOfOrderBool = message.anOutOfOrderBool;
-                if (message.hasOwnProperty("aNestedMessage") && message.aNestedMessage !== undefined && message.aNestedMessage !== null)
+                if (message.aNestedMessage !== undefined && message.aNestedMessage !== null && message.hasOwnProperty("aNestedMessage"))
                     object.aNestedMessage = $types[2].toObject(message.aNestedMessage, options);
-                if (message.hasOwnProperty("aRepeatedMessage") && message.aRepeatedMessage !== undefined && message.aRepeatedMessage !== null) {
+                if (message.aRepeatedMessage !== undefined && message.aRepeatedMessage !== null && message.hasOwnProperty("aRepeatedMessage")) {
                     object.aRepeatedMessage = [];
                     for (var j = 0; j < message.aRepeatedMessage.length; ++j)
                         object.aRepeatedMessage[j] = $types[3].toObject(message.aRepeatedMessage[j], options);
                 }
-                if (message.hasOwnProperty("aRepeatedString") && message.aRepeatedString !== undefined && message.aRepeatedString !== null) {
+                if (message.aRepeatedString !== undefined && message.aRepeatedString !== null && message.hasOwnProperty("aRepeatedString")) {
                     object.aRepeatedString = [];
                     for (var j = 0; j < message.aRepeatedString.length; ++j)
                         object.aRepeatedString[j] = message.aRepeatedString[j];
@@ -2164,7 +2164,7 @@ $root.jspb = (function() {
                     var object = {};
                     if (options.defaults)
                         object.anInt = 0;
-                    if (message.hasOwnProperty("anInt") && message.anInt !== undefined && message.anInt !== null)
+                    if (message.anInt !== undefined && message.anInt !== null && message.hasOwnProperty("anInt"))
                         object.anInt = message.anInt;
                     return object;
                 };
@@ -2364,7 +2364,7 @@ $root.jspb = (function() {
                 Complex.encode = function encode(message, writer) {
                     if (!writer)
                         writer = $Writer.create();
-                    if (message.hasOwnProperty("innerComplexField") && message.innerComplexField !== undefined)
+                    if (message.innerComplexField !== undefined && message.hasOwnProperty("innerComplexField"))
                         writer.uint32(/* id 1, wireType 0 =*/8).int32(message.innerComplexField);
                     return writer;
                 };
@@ -2458,7 +2458,7 @@ $root.jspb = (function() {
                     var object = {};
                     if (options.defaults)
                         object.innerComplexField = 0;
-                    if (message.hasOwnProperty("innerComplexField") && message.innerComplexField !== undefined && message.innerComplexField !== null)
+                    if (message.innerComplexField !== undefined && message.innerComplexField !== null && message.hasOwnProperty("innerComplexField"))
                         object.innerComplexField = message.innerComplexField;
                     return object;
                 };
@@ -2526,7 +2526,7 @@ $root.jspb = (function() {
             IsExtension.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
-                if (message.hasOwnProperty("ext1") && message.ext1 !== undefined)
+                if (message.ext1 !== undefined && message.hasOwnProperty("ext1"))
                     writer.uint32(/* id 1, wireType 2 =*/10).string(message.ext1);
                 return writer;
             };
@@ -2620,7 +2620,7 @@ $root.jspb = (function() {
                 var object = {};
                 if (options.defaults)
                     object.ext1 = "";
-                if (message.hasOwnProperty("ext1") && message.ext1 !== undefined && message.ext1 !== null)
+                if (message.ext1 !== undefined && message.ext1 !== null && message.hasOwnProperty("ext1"))
                     object.ext1 = message.ext1;
                 return object;
             };
@@ -2855,17 +2855,17 @@ $root.jspb = (function() {
             DefaultValues.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
-                if (message.hasOwnProperty("stringField") && message.stringField !== undefined)
+                if (message.stringField !== undefined && message.hasOwnProperty("stringField"))
                     writer.uint32(/* id 1, wireType 2 =*/10).string(message.stringField);
-                if (message.hasOwnProperty("boolField") && message.boolField !== undefined)
+                if (message.boolField !== undefined && message.hasOwnProperty("boolField"))
                     writer.uint32(/* id 2, wireType 0 =*/16).bool(message.boolField);
-                if (message.hasOwnProperty("intField") && message.intField !== undefined && message.intField !== null)
+                if (message.intField !== undefined && message.intField !== null && message.hasOwnProperty("intField"))
                     writer.uint32(/* id 3, wireType 0 =*/24).int64(message.intField);
-                if (message.hasOwnProperty("enumField") && message.enumField !== undefined)
+                if (message.enumField !== undefined && message.hasOwnProperty("enumField"))
                     writer.uint32(/* id 4, wireType 0 =*/32).uint32(message.enumField);
-                if (message.hasOwnProperty("emptyField") && message.emptyField !== undefined)
+                if (message.emptyField !== undefined && message.hasOwnProperty("emptyField"))
                     writer.uint32(/* id 6, wireType 2 =*/50).string(message.emptyField);
-                if (message.hasOwnProperty("bytesField") && message.bytesField)
+                if (message.bytesField && message.hasOwnProperty("bytesField"))
                     writer.uint32(/* id 8, wireType 2 =*/66).bytes(message.bytesField);
                 return writer;
             };
@@ -3036,20 +3036,20 @@ $root.jspb = (function() {
                         111
                     ];
                 }
-                if (message.hasOwnProperty("stringField") && message.stringField !== undefined && message.stringField !== null)
+                if (message.stringField !== undefined && message.stringField !== null && message.hasOwnProperty("stringField"))
                     object.stringField = message.stringField;
-                if (message.hasOwnProperty("boolField") && message.boolField !== undefined && message.boolField !== null)
+                if (message.boolField !== undefined && message.boolField !== null && message.hasOwnProperty("boolField"))
                     object.boolField = message.boolField;
-                if (message.hasOwnProperty("intField") && message.intField !== undefined && message.intField !== null)
+                if (message.intField !== undefined && message.intField !== null && message.hasOwnProperty("intField"))
                     if (typeof message.intField === "number")
                         object.intField = options.longs === String ? String(message.intField) : message.intField;
                     else
                         object.intField = options.longs === String ? $util.Long.prototype.toString.call(message.intField) : options.longs === Number ? new $util.LongBits(message.intField.low, message.intField.high).toNumber() : message.intField;
-                if (message.hasOwnProperty("enumField") && message.enumField !== undefined && message.enumField !== null)
+                if (message.enumField !== undefined && message.enumField !== null && message.hasOwnProperty("enumField"))
                     object.enumField = options.enums === String ? $types[3][message.enumField] : message.enumField;
-                if (message.hasOwnProperty("emptyField") && message.emptyField !== undefined && message.emptyField !== null)
+                if (message.emptyField !== undefined && message.emptyField !== null && message.hasOwnProperty("emptyField"))
                     object.emptyField = message.emptyField;
-                if (message.hasOwnProperty("bytesField") && message.bytesField !== undefined && message.bytesField !== null)
+                if (message.bytesField !== undefined && message.bytesField !== null && message.hasOwnProperty("bytesField"))
                     object.bytesField = options.bytes === String ? $util.base64.encode(message.bytesField, 0, message.bytesField.length) : options.bytes === Array ? Array.prototype.slice.call(message.bytesField) : message.bytesField;
                 return object;
             };
@@ -3172,21 +3172,21 @@ $root.jspb = (function() {
             FloatingPointFields.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
-                if (message.hasOwnProperty("optionalFloatField") && message.optionalFloatField !== undefined)
+                if (message.optionalFloatField !== undefined && message.hasOwnProperty("optionalFloatField"))
                     writer.uint32(/* id 1, wireType 5 =*/13).float(message.optionalFloatField);
                 writer.uint32(/* id 2, wireType 5 =*/21).float(message.requiredFloatField);
-                if (message.hasOwnProperty("repeatedFloatField"))
+                if (message.repeatedFloatField !== undefined && message.hasOwnProperty("repeatedFloatField"))
                     for (var i = 0; i < message.repeatedFloatField.length; ++i)
                         writer.uint32(/* id 3, wireType 5 =*/29).float(message.repeatedFloatField[i]);
-                if (message.hasOwnProperty("defaultFloatField") && message.defaultFloatField !== undefined)
+                if (message.defaultFloatField !== undefined && message.hasOwnProperty("defaultFloatField"))
                     writer.uint32(/* id 4, wireType 5 =*/37).float(message.defaultFloatField);
-                if (message.hasOwnProperty("optionalDoubleField") && message.optionalDoubleField !== undefined)
+                if (message.optionalDoubleField !== undefined && message.hasOwnProperty("optionalDoubleField"))
                     writer.uint32(/* id 5, wireType 1 =*/41).double(message.optionalDoubleField);
                 writer.uint32(/* id 6, wireType 1 =*/49).double(message.requiredDoubleField);
-                if (message.hasOwnProperty("repeatedDoubleField"))
+                if (message.repeatedDoubleField !== undefined && message.hasOwnProperty("repeatedDoubleField"))
                     for (var i = 0; i < message.repeatedDoubleField.length; ++i)
                         writer.uint32(/* id 7, wireType 1 =*/57).double(message.repeatedDoubleField[i]);
-                if (message.hasOwnProperty("defaultDoubleField") && message.defaultDoubleField !== undefined)
+                if (message.defaultDoubleField !== undefined && message.hasOwnProperty("defaultDoubleField"))
                     writer.uint32(/* id 8, wireType 1 =*/65).double(message.defaultDoubleField);
                 return writer;
             };
@@ -3372,27 +3372,27 @@ $root.jspb = (function() {
                     object.requiredDoubleField = 0;
                     object.defaultDoubleField = 2;
                 }
-                if (message.hasOwnProperty("optionalFloatField") && message.optionalFloatField !== undefined && message.optionalFloatField !== null)
+                if (message.optionalFloatField !== undefined && message.optionalFloatField !== null && message.hasOwnProperty("optionalFloatField"))
                     object.optionalFloatField = message.optionalFloatField;
-                if (message.hasOwnProperty("requiredFloatField") && message.requiredFloatField !== undefined && message.requiredFloatField !== null)
+                if (message.requiredFloatField !== undefined && message.requiredFloatField !== null && message.hasOwnProperty("requiredFloatField"))
                     object.requiredFloatField = message.requiredFloatField;
-                if (message.hasOwnProperty("repeatedFloatField") && message.repeatedFloatField !== undefined && message.repeatedFloatField !== null) {
+                if (message.repeatedFloatField !== undefined && message.repeatedFloatField !== null && message.hasOwnProperty("repeatedFloatField")) {
                     object.repeatedFloatField = [];
                     for (var j = 0; j < message.repeatedFloatField.length; ++j)
                         object.repeatedFloatField[j] = message.repeatedFloatField[j];
                 }
-                if (message.hasOwnProperty("defaultFloatField") && message.defaultFloatField !== undefined && message.defaultFloatField !== null)
+                if (message.defaultFloatField !== undefined && message.defaultFloatField !== null && message.hasOwnProperty("defaultFloatField"))
                     object.defaultFloatField = message.defaultFloatField;
-                if (message.hasOwnProperty("optionalDoubleField") && message.optionalDoubleField !== undefined && message.optionalDoubleField !== null)
+                if (message.optionalDoubleField !== undefined && message.optionalDoubleField !== null && message.hasOwnProperty("optionalDoubleField"))
                     object.optionalDoubleField = message.optionalDoubleField;
-                if (message.hasOwnProperty("requiredDoubleField") && message.requiredDoubleField !== undefined && message.requiredDoubleField !== null)
+                if (message.requiredDoubleField !== undefined && message.requiredDoubleField !== null && message.hasOwnProperty("requiredDoubleField"))
                     object.requiredDoubleField = message.requiredDoubleField;
-                if (message.hasOwnProperty("repeatedDoubleField") && message.repeatedDoubleField !== undefined && message.repeatedDoubleField !== null) {
+                if (message.repeatedDoubleField !== undefined && message.repeatedDoubleField !== null && message.hasOwnProperty("repeatedDoubleField")) {
                     object.repeatedDoubleField = [];
                     for (var j = 0; j < message.repeatedDoubleField.length; ++j)
                         object.repeatedDoubleField[j] = message.repeatedDoubleField[j];
                 }
-                if (message.hasOwnProperty("defaultDoubleField") && message.defaultDoubleField !== undefined && message.defaultDoubleField !== null)
+                if (message.defaultDoubleField !== undefined && message.defaultDoubleField !== null && message.hasOwnProperty("defaultDoubleField"))
                     object.defaultDoubleField = message.defaultDoubleField;
                 return object;
             };
@@ -3495,18 +3495,18 @@ $root.jspb = (function() {
             TestClone.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
-                if (message.hasOwnProperty("str") && message.str !== undefined)
+                if (message.str !== undefined && message.hasOwnProperty("str"))
                     writer.uint32(/* id 1, wireType 2 =*/10).string(message.str);
-                if (message.hasOwnProperty("simple1") && message.simple1 !== undefined)
+                if (message.simple1 !== undefined && message.hasOwnProperty("simple1"))
                     $types[1].encode(message.simple1, writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
-                if (message.hasOwnProperty("simple2"))
+                if (message.simple2 !== undefined && message.hasOwnProperty("simple2"))
                     for (var i = 0; i < message.simple2.length; ++i)
                         $types[2].encode(message.simple2[i], writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
-                if (message.hasOwnProperty("bytesField") && message.bytesField)
+                if (message.bytesField && message.hasOwnProperty("bytesField"))
                     writer.uint32(/* id 6, wireType 2 =*/50).bytes(message.bytesField);
-                if (message.hasOwnProperty("unused") && message.unused !== undefined)
+                if (message.unused !== undefined && message.hasOwnProperty("unused"))
                     writer.uint32(/* id 7, wireType 2 =*/58).string(message.unused);
-                if (message.hasOwnProperty(".jspb.test.CloneExtension.extField") && message[".jspb.test.CloneExtension.extField"] !== undefined)
+                if (message[".jspb.test.CloneExtension.extField"] !== undefined && message.hasOwnProperty(".jspb.test.CloneExtension.extField"))
                     $types[5].encode(message[".jspb.test.CloneExtension.extField"], writer.uint32(/* id 100, wireType 2 =*/802).fork()).ldelim();
                 return writer;
             };
@@ -3665,20 +3665,20 @@ $root.jspb = (function() {
                     object.unused = "";
                     object[".jspb.test.CloneExtension.extField"] = null;
                 }
-                if (message.hasOwnProperty("str") && message.str !== undefined && message.str !== null)
+                if (message.str !== undefined && message.str !== null && message.hasOwnProperty("str"))
                     object.str = message.str;
-                if (message.hasOwnProperty("simple1") && message.simple1 !== undefined && message.simple1 !== null)
+                if (message.simple1 !== undefined && message.simple1 !== null && message.hasOwnProperty("simple1"))
                     object.simple1 = $types[1].toObject(message.simple1, options);
-                if (message.hasOwnProperty("simple2") && message.simple2 !== undefined && message.simple2 !== null) {
+                if (message.simple2 !== undefined && message.simple2 !== null && message.hasOwnProperty("simple2")) {
                     object.simple2 = [];
                     for (var j = 0; j < message.simple2.length; ++j)
                         object.simple2[j] = $types[2].toObject(message.simple2[j], options);
                 }
-                if (message.hasOwnProperty("bytesField") && message.bytesField !== undefined && message.bytesField !== null)
+                if (message.bytesField !== undefined && message.bytesField !== null && message.hasOwnProperty("bytesField"))
                     object.bytesField = options.bytes === String ? $util.base64.encode(message.bytesField, 0, message.bytesField.length) : options.bytes === Array ? Array.prototype.slice.call(message.bytesField) : message.bytesField;
-                if (message.hasOwnProperty("unused") && message.unused !== undefined && message.unused !== null)
+                if (message.unused !== undefined && message.unused !== null && message.hasOwnProperty("unused"))
                     object.unused = message.unused;
-                if (message.hasOwnProperty(".jspb.test.CloneExtension.extField") && message[".jspb.test.CloneExtension.extField"] !== undefined && message[".jspb.test.CloneExtension.extField"] !== null)
+                if (message[".jspb.test.CloneExtension.extField"] !== undefined && message[".jspb.test.CloneExtension.extField"] !== null && message.hasOwnProperty(".jspb.test.CloneExtension.extField"))
                     object[".jspb.test.CloneExtension.extField"] = $types[5].toObject(message[".jspb.test.CloneExtension.extField"], options);
                 return object;
             };
@@ -3743,7 +3743,7 @@ $root.jspb = (function() {
             CloneExtension.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
-                if (message.hasOwnProperty("ext") && message.ext !== undefined)
+                if (message.ext !== undefined && message.hasOwnProperty("ext"))
                     writer.uint32(/* id 2, wireType 2 =*/18).string(message.ext);
                 return writer;
             };
@@ -3837,7 +3837,7 @@ $root.jspb = (function() {
                 var object = {};
                 if (options.defaults)
                     object.ext = "";
-                if (message.hasOwnProperty("ext") && message.ext !== undefined && message.ext !== null)
+                if (message.ext !== undefined && message.ext !== null && message.hasOwnProperty("ext"))
                     object.ext = message.ext;
                 return object;
             };
@@ -3941,16 +3941,16 @@ $root.jspb = (function() {
             TestGroup.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
-                if (message.hasOwnProperty("repeatedGroup"))
+                if (message.repeatedGroup !== undefined && message.hasOwnProperty("repeatedGroup"))
                     for (var i = 0; i < message.repeatedGroup.length; ++i)
                         $types[0].encode(message.repeatedGroup[i], writer.uint32(/* id 1, wireType 3 =*/11)).uint32(/* id 1, wireType 4 =*/12);
                 $types[1].encode(message.requiredGroup, writer.uint32(/* id 2, wireType 3 =*/19)).uint32(/* id 2, wireType 4 =*/20);
-                if (message.hasOwnProperty("optionalGroup") && message.optionalGroup !== undefined)
+                if (message.optionalGroup !== undefined && message.hasOwnProperty("optionalGroup"))
                     $types[2].encode(message.optionalGroup, writer.uint32(/* id 3, wireType 3 =*/27)).uint32(/* id 3, wireType 4 =*/28);
-                if (message.hasOwnProperty("id") && message.id !== undefined)
+                if (message.id !== undefined && message.hasOwnProperty("id"))
                     writer.uint32(/* id 4, wireType 2 =*/34).string(message.id);
                 $types[4].encode(message.requiredSimple, writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
-                if (message.hasOwnProperty("optionalSimple") && message.optionalSimple !== undefined)
+                if (message.optionalSimple !== undefined && message.hasOwnProperty("optionalSimple"))
                     $types[5].encode(message.optionalSimple, writer.uint32(/* id 6, wireType 2 =*/50).fork()).ldelim();
                 return writer;
             };
@@ -4106,20 +4106,20 @@ $root.jspb = (function() {
                     object.requiredSimple = null;
                     object.optionalSimple = null;
                 }
-                if (message.hasOwnProperty("repeatedGroup") && message.repeatedGroup !== undefined && message.repeatedGroup !== null) {
+                if (message.repeatedGroup !== undefined && message.repeatedGroup !== null && message.hasOwnProperty("repeatedGroup")) {
                     object.repeatedGroup = [];
                     for (var j = 0; j < message.repeatedGroup.length; ++j)
                         object.repeatedGroup[j] = $types[0].toObject(message.repeatedGroup[j], options);
                 }
-                if (message.hasOwnProperty("requiredGroup") && message.requiredGroup !== undefined && message.requiredGroup !== null)
+                if (message.requiredGroup !== undefined && message.requiredGroup !== null && message.hasOwnProperty("requiredGroup"))
                     object.requiredGroup = $types[1].toObject(message.requiredGroup, options);
-                if (message.hasOwnProperty("optionalGroup") && message.optionalGroup !== undefined && message.optionalGroup !== null)
+                if (message.optionalGroup !== undefined && message.optionalGroup !== null && message.hasOwnProperty("optionalGroup"))
                     object.optionalGroup = $types[2].toObject(message.optionalGroup, options);
-                if (message.hasOwnProperty("id") && message.id !== undefined && message.id !== null)
+                if (message.id !== undefined && message.id !== null && message.hasOwnProperty("id"))
                     object.id = message.id;
-                if (message.hasOwnProperty("requiredSimple") && message.requiredSimple !== undefined && message.requiredSimple !== null)
+                if (message.requiredSimple !== undefined && message.requiredSimple !== null && message.hasOwnProperty("requiredSimple"))
                     object.requiredSimple = $types[4].toObject(message.requiredSimple, options);
-                if (message.hasOwnProperty("optionalSimple") && message.optionalSimple !== undefined && message.optionalSimple !== null)
+                if (message.optionalSimple !== undefined && message.optionalSimple !== null && message.hasOwnProperty("optionalSimple"))
                     object.optionalSimple = $types[5].toObject(message.optionalSimple, options);
                 return object;
             };
@@ -4188,7 +4188,7 @@ $root.jspb = (function() {
                     if (!writer)
                         writer = $Writer.create();
                     writer.uint32(/* id 1, wireType 2 =*/10).string(message.id);
-                    if (message.hasOwnProperty("someBool"))
+                    if (message.someBool !== undefined && message.hasOwnProperty("someBool"))
                         for (var i = 0; i < message.someBool.length; ++i)
                             writer.uint32(/* id 2, wireType 0 =*/16).bool(message.someBool[i]);
                     return writer;
@@ -4308,9 +4308,9 @@ $root.jspb = (function() {
                         object.someBool = [];
                     if (options.defaults)
                         object.id = "";
-                    if (message.hasOwnProperty("id") && message.id !== undefined && message.id !== null)
+                    if (message.id !== undefined && message.id !== null && message.hasOwnProperty("id"))
                         object.id = message.id;
-                    if (message.hasOwnProperty("someBool") && message.someBool !== undefined && message.someBool !== null) {
+                    if (message.someBool !== undefined && message.someBool !== null && message.hasOwnProperty("someBool")) {
                         object.someBool = [];
                         for (var j = 0; j < message.someBool.length; ++j)
                             object.someBool[j] = message.someBool[j];
@@ -4472,7 +4472,7 @@ $root.jspb = (function() {
                     var object = {};
                     if (options.defaults)
                         object.id = "";
-                    if (message.hasOwnProperty("id") && message.id !== undefined && message.id !== null)
+                    if (message.id !== undefined && message.id !== null && message.hasOwnProperty("id"))
                         object.id = message.id;
                     return object;
                 };
@@ -4631,7 +4631,7 @@ $root.jspb = (function() {
                     var object = {};
                     if (options.defaults)
                         object.id = "";
-                    if (message.hasOwnProperty("id") && message.id !== undefined && message.id !== null)
+                    if (message.id !== undefined && message.id !== null && message.hasOwnProperty("id"))
                         object.id = message.id;
                     return object;
                 };
@@ -4704,7 +4704,7 @@ $root.jspb = (function() {
             TestGroup1.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
-                if (message.hasOwnProperty("group") && message.group !== undefined)
+                if (message.group !== undefined && message.hasOwnProperty("group"))
                     $types[0].encode(message.group, writer.uint32(/* id 1, wireType 3 =*/11)).uint32(/* id 1, wireType 4 =*/12);
                 return writer;
             };
@@ -4800,7 +4800,7 @@ $root.jspb = (function() {
                 var object = {};
                 if (options.defaults)
                     object.group = null;
-                if (message.hasOwnProperty("group") && message.group !== undefined && message.group !== null)
+                if (message.group !== undefined && message.group !== null && message.hasOwnProperty("group"))
                     object.group = $types[0].toObject(message.group, options);
                 return object;
             };
@@ -4872,9 +4872,9 @@ $root.jspb = (function() {
             TestReservedNames.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
-                if (message.hasOwnProperty("extension") && message.extension !== undefined)
+                if (message.extension !== undefined && message.hasOwnProperty("extension"))
                     writer.uint32(/* id 1, wireType 0 =*/8).int32(message.extension);
-                if (message.hasOwnProperty(".jspb.test.TestReservedNamesExtension.foo") && message[".jspb.test.TestReservedNamesExtension.foo"] !== undefined)
+                if (message[".jspb.test.TestReservedNamesExtension.foo"] !== undefined && message.hasOwnProperty(".jspb.test.TestReservedNamesExtension.foo"))
                     writer.uint32(/* id 10, wireType 0 =*/80).int32(message[".jspb.test.TestReservedNamesExtension.foo"]);
                 return writer;
             };
@@ -4978,9 +4978,9 @@ $root.jspb = (function() {
                     object.extension = 0;
                     object[".jspb.test.TestReservedNamesExtension.foo"] = 0;
                 }
-                if (message.hasOwnProperty("extension") && message.extension !== undefined && message.extension !== null)
+                if (message.extension !== undefined && message.extension !== null && message.hasOwnProperty("extension"))
                     object.extension = message.extension;
-                if (message.hasOwnProperty(".jspb.test.TestReservedNamesExtension.foo") && message[".jspb.test.TestReservedNamesExtension.foo"] !== undefined && message[".jspb.test.TestReservedNamesExtension.foo"] !== null)
+                if (message[".jspb.test.TestReservedNamesExtension.foo"] !== undefined && message[".jspb.test.TestReservedNamesExtension.foo"] !== null && message.hasOwnProperty(".jspb.test.TestReservedNamesExtension.foo"))
                     object[".jspb.test.TestReservedNamesExtension.foo"] = message[".jspb.test.TestReservedNamesExtension.foo"];
                 return object;
             };
@@ -5282,9 +5282,9 @@ $root.jspb = (function() {
             TestMessageWithOneof.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
-                if (message.hasOwnProperty("normalField") && message.normalField !== undefined)
+                if (message.normalField !== undefined && message.hasOwnProperty("normalField"))
                     writer.uint32(/* id 8, wireType 0 =*/64).bool(message.normalField);
-                if (message.hasOwnProperty("repeatedField"))
+                if (message.repeatedField !== undefined && message.hasOwnProperty("repeatedField"))
                     for (var i = 0; i < message.repeatedField.length; ++i)
                         writer.uint32(/* id 9, wireType 2 =*/74).string(message.repeatedField[i]);
                 switch (message.partialOneof) {
@@ -5505,28 +5505,28 @@ $root.jspb = (function() {
                     object.bone = 0;
                     object.btwo = 1234;
                 }
-                if (message.hasOwnProperty("pone") && message.pone !== undefined && message.pone !== null)
+                if (message.pone !== undefined && message.pone !== null && message.hasOwnProperty("pone"))
                     object.pone = message.pone;
-                if (message.hasOwnProperty("pthree") && message.pthree !== undefined && message.pthree !== null)
+                if (message.pthree !== undefined && message.pthree !== null && message.hasOwnProperty("pthree"))
                     object.pthree = message.pthree;
-                if (message.hasOwnProperty("rone") && message.rone !== undefined && message.rone !== null)
+                if (message.rone !== undefined && message.rone !== null && message.hasOwnProperty("rone"))
                     object.rone = $types[2].toObject(message.rone, options);
-                if (message.hasOwnProperty("rtwo") && message.rtwo !== undefined && message.rtwo !== null)
+                if (message.rtwo !== undefined && message.rtwo !== null && message.hasOwnProperty("rtwo"))
                     object.rtwo = message.rtwo;
-                if (message.hasOwnProperty("normalField") && message.normalField !== undefined && message.normalField !== null)
+                if (message.normalField !== undefined && message.normalField !== null && message.hasOwnProperty("normalField"))
                     object.normalField = message.normalField;
-                if (message.hasOwnProperty("repeatedField") && message.repeatedField !== undefined && message.repeatedField !== null) {
+                if (message.repeatedField !== undefined && message.repeatedField !== null && message.hasOwnProperty("repeatedField")) {
                     object.repeatedField = [];
                     for (var j = 0; j < message.repeatedField.length; ++j)
                         object.repeatedField[j] = message.repeatedField[j];
                 }
-                if (message.hasOwnProperty("aone") && message.aone !== undefined && message.aone !== null)
+                if (message.aone !== undefined && message.aone !== null && message.hasOwnProperty("aone"))
                     object.aone = message.aone;
-                if (message.hasOwnProperty("atwo") && message.atwo !== undefined && message.atwo !== null)
+                if (message.atwo !== undefined && message.atwo !== null && message.hasOwnProperty("atwo"))
                     object.atwo = message.atwo;
-                if (message.hasOwnProperty("bone") && message.bone !== undefined && message.bone !== null)
+                if (message.bone !== undefined && message.bone !== null && message.hasOwnProperty("bone"))
                     object.bone = message.bone;
-                if (message.hasOwnProperty("btwo") && message.btwo !== undefined && message.btwo !== null)
+                if (message.btwo !== undefined && message.btwo !== null && message.hasOwnProperty("btwo"))
                     object.btwo = message.btwo;
                 return object;
             };
@@ -5597,9 +5597,9 @@ $root.jspb = (function() {
             TestEndsWithBytes.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
-                if (message.hasOwnProperty("value") && message.value !== undefined)
+                if (message.value !== undefined && message.hasOwnProperty("value"))
                     writer.uint32(/* id 1, wireType 0 =*/8).int32(message.value);
-                if (message.hasOwnProperty("data") && message.data)
+                if (message.data && message.hasOwnProperty("data"))
                     writer.uint32(/* id 2, wireType 2 =*/18).bytes(message.data);
                 return writer;
             };
@@ -5706,9 +5706,9 @@ $root.jspb = (function() {
                     object.value = 0;
                     object.data = options.bytes === String ? "" : [];
                 }
-                if (message.hasOwnProperty("value") && message.value !== undefined && message.value !== null)
+                if (message.value !== undefined && message.value !== null && message.hasOwnProperty("value"))
                     object.value = message.value;
-                if (message.hasOwnProperty("data") && message.data !== undefined && message.data !== null)
+                if (message.data !== undefined && message.data !== null && message.hasOwnProperty("data"))
                     object.data = options.bytes === String ? $util.base64.encode(message.data, 0, message.data.length) : options.bytes === Array ? Array.prototype.slice.call(message.data) : message.data;
                 return object;
             };
@@ -5847,41 +5847,41 @@ $root.jspb = (function() {
             TestMapFieldsNoBinary.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
-                if (message.hasOwnProperty("mapStringString") && message.mapStringString)
+                if (message.mapStringString && message.hasOwnProperty("mapStringString"))
                     for (var keys = Object.keys(message.mapStringString), i = 0; i < keys.length; ++i)
                         writer.uint32(/* id 1, wireType 2 =*/10).fork().uint32(/* id 1, wireType 2 =*/10).string(keys[i]).uint32(/* id 2, wireType 2 =*/18).string(message.mapStringString[keys[i]]).ldelim();
-                if (message.hasOwnProperty("mapStringInt32") && message.mapStringInt32)
+                if (message.mapStringInt32 && message.hasOwnProperty("mapStringInt32"))
                     for (var keys = Object.keys(message.mapStringInt32), i = 0; i < keys.length; ++i)
                         writer.uint32(/* id 2, wireType 2 =*/18).fork().uint32(/* id 1, wireType 2 =*/10).string(keys[i]).uint32(/* id 2, wireType 0 =*/16).int32(message.mapStringInt32[keys[i]]).ldelim();
-                if (message.hasOwnProperty("mapStringInt64") && message.mapStringInt64)
+                if (message.mapStringInt64 && message.hasOwnProperty("mapStringInt64"))
                     for (var keys = Object.keys(message.mapStringInt64), i = 0; i < keys.length; ++i)
                         writer.uint32(/* id 3, wireType 2 =*/26).fork().uint32(/* id 1, wireType 2 =*/10).string(keys[i]).uint32(/* id 2, wireType 0 =*/16).int64(message.mapStringInt64[keys[i]]).ldelim();
-                if (message.hasOwnProperty("mapStringBool") && message.mapStringBool)
+                if (message.mapStringBool && message.hasOwnProperty("mapStringBool"))
                     for (var keys = Object.keys(message.mapStringBool), i = 0; i < keys.length; ++i)
                         writer.uint32(/* id 4, wireType 2 =*/34).fork().uint32(/* id 1, wireType 2 =*/10).string(keys[i]).uint32(/* id 2, wireType 0 =*/16).bool(message.mapStringBool[keys[i]]).ldelim();
-                if (message.hasOwnProperty("mapStringDouble") && message.mapStringDouble)
+                if (message.mapStringDouble && message.hasOwnProperty("mapStringDouble"))
                     for (var keys = Object.keys(message.mapStringDouble), i = 0; i < keys.length; ++i)
                         writer.uint32(/* id 5, wireType 2 =*/42).fork().uint32(/* id 1, wireType 2 =*/10).string(keys[i]).uint32(/* id 2, wireType 1 =*/17).double(message.mapStringDouble[keys[i]]).ldelim();
-                if (message.hasOwnProperty("mapStringEnum") && message.mapStringEnum)
+                if (message.mapStringEnum && message.hasOwnProperty("mapStringEnum"))
                     for (var keys = Object.keys(message.mapStringEnum), i = 0; i < keys.length; ++i)
                         writer.uint32(/* id 6, wireType 2 =*/50).fork().uint32(/* id 1, wireType 2 =*/10).string(keys[i]).uint32(/* id 2, wireType 0 =*/16).uint32(message.mapStringEnum[keys[i]]).ldelim();
-                if (message.hasOwnProperty("mapStringMsg") && message.mapStringMsg)
+                if (message.mapStringMsg && message.hasOwnProperty("mapStringMsg"))
                     for (var keys = Object.keys(message.mapStringMsg), i = 0; i < keys.length; ++i) {
                         writer.uint32(/* id 7, wireType 2 =*/58).fork().uint32(/* id 1, wireType 2 =*/10).string(keys[i]);
                         $types[6].encode(message.mapStringMsg[keys[i]], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim().ldelim();
                     }
-                if (message.hasOwnProperty("mapInt32String") && message.mapInt32String)
+                if (message.mapInt32String && message.hasOwnProperty("mapInt32String"))
                     for (var keys = Object.keys(message.mapInt32String), i = 0; i < keys.length; ++i)
                         writer.uint32(/* id 8, wireType 2 =*/66).fork().uint32(/* id 1, wireType 0 =*/8).int32(keys[i]).uint32(/* id 2, wireType 2 =*/18).string(message.mapInt32String[keys[i]]).ldelim();
-                if (message.hasOwnProperty("mapInt64String") && message.mapInt64String)
+                if (message.mapInt64String && message.hasOwnProperty("mapInt64String"))
                     for (var keys = Object.keys(message.mapInt64String), i = 0; i < keys.length; ++i)
                         writer.uint32(/* id 9, wireType 2 =*/74).fork().uint32(/* id 1, wireType 0 =*/8).int64(keys[i]).uint32(/* id 2, wireType 2 =*/18).string(message.mapInt64String[keys[i]]).ldelim();
-                if (message.hasOwnProperty("mapBoolString") && message.mapBoolString)
+                if (message.mapBoolString && message.hasOwnProperty("mapBoolString"))
                     for (var keys = Object.keys(message.mapBoolString), i = 0; i < keys.length; ++i)
                         writer.uint32(/* id 10, wireType 2 =*/82).fork().uint32(/* id 1, wireType 0 =*/8).bool(keys[i]).uint32(/* id 2, wireType 2 =*/18).string(message.mapBoolString[keys[i]]).ldelim();
-                if (message.hasOwnProperty("testMapFields") && message.testMapFields !== undefined)
+                if (message.testMapFields !== undefined && message.hasOwnProperty("testMapFields"))
                     $types[10].encode(message.testMapFields, writer.uint32(/* id 11, wireType 2 =*/90).fork()).ldelim();
-                if (message.hasOwnProperty("mapStringTestmapfields") && message.mapStringTestmapfields)
+                if (message.mapStringTestmapfields && message.hasOwnProperty("mapStringTestmapfields"))
                     for (var keys = Object.keys(message.mapStringTestmapfields), i = 0; i < keys.length; ++i) {
                         writer.uint32(/* id 12, wireType 2 =*/98).fork().uint32(/* id 1, wireType 2 =*/10).string(keys[i]);
                         $types[11].encode(message.mapStringTestmapfields[keys[i]], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim().ldelim();
@@ -6263,17 +6263,17 @@ $root.jspb = (function() {
                 }
                 if (options.defaults)
                     object.testMapFields = null;
-                if (message.hasOwnProperty("mapStringString") && message.mapStringString !== undefined && message.mapStringString !== null) {
+                if (message.mapStringString !== undefined && message.mapStringString !== null && message.hasOwnProperty("mapStringString")) {
                     object.mapStringString = {};
                     for (var keys2 = Object.keys(message.mapStringString), j = 0; j < keys2.length; ++j)
                         object.mapStringString[keys2[j]] = message.mapStringString[keys2[j]];
                 }
-                if (message.hasOwnProperty("mapStringInt32") && message.mapStringInt32 !== undefined && message.mapStringInt32 !== null) {
+                if (message.mapStringInt32 !== undefined && message.mapStringInt32 !== null && message.hasOwnProperty("mapStringInt32")) {
                     object.mapStringInt32 = {};
                     for (var keys2 = Object.keys(message.mapStringInt32), j = 0; j < keys2.length; ++j)
                         object.mapStringInt32[keys2[j]] = message.mapStringInt32[keys2[j]];
                 }
-                if (message.hasOwnProperty("mapStringInt64") && message.mapStringInt64 !== undefined && message.mapStringInt64 !== null) {
+                if (message.mapStringInt64 !== undefined && message.mapStringInt64 !== null && message.hasOwnProperty("mapStringInt64")) {
                     object.mapStringInt64 = {};
                     for (var keys2 = Object.keys(message.mapStringInt64), j = 0; j < keys2.length; ++j)
                         if (typeof message.mapStringInt64[keys2[j]] === "number")
@@ -6281,44 +6281,44 @@ $root.jspb = (function() {
                         else
                             object.mapStringInt64[keys2[j]] = options.longs === String ? $util.Long.prototype.toString.call(message.mapStringInt64[keys2[j]]) : options.longs === Number ? new $util.LongBits(message.mapStringInt64[keys2[j]].low, message.mapStringInt64[keys2[j]].high).toNumber() : message.mapStringInt64[keys2[j]];
                 }
-                if (message.hasOwnProperty("mapStringBool") && message.mapStringBool !== undefined && message.mapStringBool !== null) {
+                if (message.mapStringBool !== undefined && message.mapStringBool !== null && message.hasOwnProperty("mapStringBool")) {
                     object.mapStringBool = {};
                     for (var keys2 = Object.keys(message.mapStringBool), j = 0; j < keys2.length; ++j)
                         object.mapStringBool[keys2[j]] = message.mapStringBool[keys2[j]];
                 }
-                if (message.hasOwnProperty("mapStringDouble") && message.mapStringDouble !== undefined && message.mapStringDouble !== null) {
+                if (message.mapStringDouble !== undefined && message.mapStringDouble !== null && message.hasOwnProperty("mapStringDouble")) {
                     object.mapStringDouble = {};
                     for (var keys2 = Object.keys(message.mapStringDouble), j = 0; j < keys2.length; ++j)
                         object.mapStringDouble[keys2[j]] = message.mapStringDouble[keys2[j]];
                 }
-                if (message.hasOwnProperty("mapStringEnum") && message.mapStringEnum !== undefined && message.mapStringEnum !== null) {
+                if (message.mapStringEnum !== undefined && message.mapStringEnum !== null && message.hasOwnProperty("mapStringEnum")) {
                     object.mapStringEnum = {};
                     for (var keys2 = Object.keys(message.mapStringEnum), j = 0; j < keys2.length; ++j)
                         object.mapStringEnum[keys2[j]] = options.enums === String ? $types[5][message.mapStringEnum[keys2[j]]] : message.mapStringEnum[keys2[j]];
                 }
-                if (message.hasOwnProperty("mapStringMsg") && message.mapStringMsg !== undefined && message.mapStringMsg !== null) {
+                if (message.mapStringMsg !== undefined && message.mapStringMsg !== null && message.hasOwnProperty("mapStringMsg")) {
                     object.mapStringMsg = {};
                     for (var keys2 = Object.keys(message.mapStringMsg), j = 0; j < keys2.length; ++j)
                         object.mapStringMsg[keys2[j]] = $types[6].toObject(message.mapStringMsg[keys2[j]], options);
                 }
-                if (message.hasOwnProperty("mapInt32String") && message.mapInt32String !== undefined && message.mapInt32String !== null) {
+                if (message.mapInt32String !== undefined && message.mapInt32String !== null && message.hasOwnProperty("mapInt32String")) {
                     object.mapInt32String = {};
                     for (var keys2 = Object.keys(message.mapInt32String), j = 0; j < keys2.length; ++j)
                         object.mapInt32String[keys2[j]] = message.mapInt32String[keys2[j]];
                 }
-                if (message.hasOwnProperty("mapInt64String") && message.mapInt64String !== undefined && message.mapInt64String !== null) {
+                if (message.mapInt64String !== undefined && message.mapInt64String !== null && message.hasOwnProperty("mapInt64String")) {
                     object.mapInt64String = {};
                     for (var keys2 = Object.keys(message.mapInt64String), j = 0; j < keys2.length; ++j)
                         object.mapInt64String[keys2[j]] = message.mapInt64String[keys2[j]];
                 }
-                if (message.hasOwnProperty("mapBoolString") && message.mapBoolString !== undefined && message.mapBoolString !== null) {
+                if (message.mapBoolString !== undefined && message.mapBoolString !== null && message.hasOwnProperty("mapBoolString")) {
                     object.mapBoolString = {};
                     for (var keys2 = Object.keys(message.mapBoolString), j = 0; j < keys2.length; ++j)
                         object.mapBoolString[keys2[j]] = message.mapBoolString[keys2[j]];
                 }
-                if (message.hasOwnProperty("testMapFields") && message.testMapFields !== undefined && message.testMapFields !== null)
+                if (message.testMapFields !== undefined && message.testMapFields !== null && message.hasOwnProperty("testMapFields"))
                     object.testMapFields = $types[10].toObject(message.testMapFields, options);
-                if (message.hasOwnProperty("mapStringTestmapfields") && message.mapStringTestmapfields !== undefined && message.mapStringTestmapfields !== null) {
+                if (message.mapStringTestmapfields !== undefined && message.mapStringTestmapfields !== null && message.hasOwnProperty("mapStringTestmapfields")) {
                     object.mapStringTestmapfields = {};
                     for (var keys2 = Object.keys(message.mapStringTestmapfields), j = 0; j < keys2.length; ++j)
                         object.mapStringTestmapfields[keys2[j]] = $types[11].toObject(message.mapStringTestmapfields[keys2[j]], options);
@@ -6404,7 +6404,7 @@ $root.jspb = (function() {
             MapValueMessageNoBinary.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
-                if (message.hasOwnProperty("foo") && message.foo !== undefined)
+                if (message.foo !== undefined && message.hasOwnProperty("foo"))
                     writer.uint32(/* id 1, wireType 0 =*/8).int32(message.foo);
                 return writer;
             };
@@ -6498,7 +6498,7 @@ $root.jspb = (function() {
                 var object = {};
                 if (options.defaults)
                     object.foo = 0;
-                if (message.hasOwnProperty("foo") && message.foo !== undefined && message.foo !== null)
+                if (message.foo !== undefined && message.foo !== null && message.hasOwnProperty("foo"))
                     object.foo = message.foo;
                 return object;
             };
@@ -6827,7 +6827,7 @@ $root.jspb = (function() {
                     Message.encode = function encode(message, writer) {
                         if (!writer)
                             writer = $Writer.create();
-                        if (message.hasOwnProperty("count") && message.count !== undefined)
+                        if (message.count !== undefined && message.hasOwnProperty("count"))
                             writer.uint32(/* id 1, wireType 0 =*/8).int32(message.count);
                         return writer;
                     };
@@ -6921,7 +6921,7 @@ $root.jspb = (function() {
                         var object = {};
                         if (options.defaults)
                             object.count = 0;
-                        if (message.hasOwnProperty("count") && message.count !== undefined && message.count !== null)
+                        if (message.count !== undefined && message.count !== null && message.hasOwnProperty("count"))
                             object.count = message.count;
                         return object;
                     };
@@ -7021,7 +7021,7 @@ $root.google = (function() {
             FileDescriptorSet.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
-                if (message.hasOwnProperty("file"))
+                if (message.file !== undefined && message.hasOwnProperty("file"))
                     for (var i = 0; i < message.file.length; ++i)
                         $types[0].encode(message.file[i], writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
                 return writer;
@@ -7127,7 +7127,7 @@ $root.google = (function() {
                 var object = {};
                 if (options.arrays || options.defaults)
                     object.file = [];
-                if (message.hasOwnProperty("file") && message.file !== undefined && message.file !== null) {
+                if (message.file !== undefined && message.file !== null && message.hasOwnProperty("file")) {
                     object.file = [];
                     for (var j = 0; j < message.file.length; ++j)
                         object.file[j] = $types[0].toObject(message.file[j], options);
@@ -7272,36 +7272,36 @@ $root.google = (function() {
             FileDescriptorProto.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
-                if (message.hasOwnProperty("name") && message.name !== undefined)
+                if (message.name !== undefined && message.hasOwnProperty("name"))
                     writer.uint32(/* id 1, wireType 2 =*/10).string(message.name);
-                if (message.hasOwnProperty("package") && message["package"] !== undefined)
+                if (message["package"] !== undefined && message.hasOwnProperty("package"))
                     writer.uint32(/* id 2, wireType 2 =*/18).string(message["package"]);
-                if (message.hasOwnProperty("dependency"))
+                if (message.dependency !== undefined && message.hasOwnProperty("dependency"))
                     for (var i = 0; i < message.dependency.length; ++i)
                         writer.uint32(/* id 3, wireType 2 =*/26).string(message.dependency[i]);
-                if (message.hasOwnProperty("publicDependency"))
+                if (message.publicDependency !== undefined && message.hasOwnProperty("publicDependency"))
                     for (var i = 0; i < message.publicDependency.length; ++i)
                         writer.uint32(/* id 10, wireType 0 =*/80).int32(message.publicDependency[i]);
-                if (message.hasOwnProperty("weakDependency"))
+                if (message.weakDependency !== undefined && message.hasOwnProperty("weakDependency"))
                     for (var i = 0; i < message.weakDependency.length; ++i)
                         writer.uint32(/* id 11, wireType 0 =*/88).int32(message.weakDependency[i]);
-                if (message.hasOwnProperty("messageType"))
+                if (message.messageType !== undefined && message.hasOwnProperty("messageType"))
                     for (var i = 0; i < message.messageType.length; ++i)
                         $types[5].encode(message.messageType[i], writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
-                if (message.hasOwnProperty("enumType"))
+                if (message.enumType !== undefined && message.hasOwnProperty("enumType"))
                     for (var i = 0; i < message.enumType.length; ++i)
                         $types[6].encode(message.enumType[i], writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
-                if (message.hasOwnProperty("service"))
+                if (message.service !== undefined && message.hasOwnProperty("service"))
                     for (var i = 0; i < message.service.length; ++i)
                         $types[7].encode(message.service[i], writer.uint32(/* id 6, wireType 2 =*/50).fork()).ldelim();
-                if (message.hasOwnProperty("extension"))
+                if (message.extension !== undefined && message.hasOwnProperty("extension"))
                     for (var i = 0; i < message.extension.length; ++i)
                         $types[8].encode(message.extension[i], writer.uint32(/* id 7, wireType 2 =*/58).fork()).ldelim();
-                if (message.hasOwnProperty("options") && message.options !== undefined)
+                if (message.options !== undefined && message.hasOwnProperty("options"))
                     $types[9].encode(message.options, writer.uint32(/* id 8, wireType 2 =*/66).fork()).ldelim();
-                if (message.hasOwnProperty("sourceCodeInfo") && message.sourceCodeInfo !== undefined)
+                if (message.sourceCodeInfo !== undefined && message.hasOwnProperty("sourceCodeInfo"))
                     $types[10].encode(message.sourceCodeInfo, writer.uint32(/* id 9, wireType 2 =*/74).fork()).ldelim();
-                if (message.hasOwnProperty("syntax") && message.syntax !== undefined)
+                if (message.syntax !== undefined && message.hasOwnProperty("syntax"))
                     writer.uint32(/* id 12, wireType 2 =*/98).string(message.syntax);
                 return writer;
             };
@@ -7582,50 +7582,50 @@ $root.google = (function() {
                     object.sourceCodeInfo = null;
                     object.syntax = "";
                 }
-                if (message.hasOwnProperty("name") && message.name !== undefined && message.name !== null)
+                if (message.name !== undefined && message.name !== null && message.hasOwnProperty("name"))
                     object.name = message.name;
-                if (message.hasOwnProperty("package") && message["package"] !== undefined && message["package"] !== null)
+                if (message["package"] !== undefined && message["package"] !== null && message.hasOwnProperty("package"))
                     object["package"] = message["package"];
-                if (message.hasOwnProperty("dependency") && message.dependency !== undefined && message.dependency !== null) {
+                if (message.dependency !== undefined && message.dependency !== null && message.hasOwnProperty("dependency")) {
                     object.dependency = [];
                     for (var j = 0; j < message.dependency.length; ++j)
                         object.dependency[j] = message.dependency[j];
                 }
-                if (message.hasOwnProperty("publicDependency") && message.publicDependency !== undefined && message.publicDependency !== null) {
+                if (message.publicDependency !== undefined && message.publicDependency !== null && message.hasOwnProperty("publicDependency")) {
                     object.publicDependency = [];
                     for (var j = 0; j < message.publicDependency.length; ++j)
                         object.publicDependency[j] = message.publicDependency[j];
                 }
-                if (message.hasOwnProperty("weakDependency") && message.weakDependency !== undefined && message.weakDependency !== null) {
+                if (message.weakDependency !== undefined && message.weakDependency !== null && message.hasOwnProperty("weakDependency")) {
                     object.weakDependency = [];
                     for (var j = 0; j < message.weakDependency.length; ++j)
                         object.weakDependency[j] = message.weakDependency[j];
                 }
-                if (message.hasOwnProperty("messageType") && message.messageType !== undefined && message.messageType !== null) {
+                if (message.messageType !== undefined && message.messageType !== null && message.hasOwnProperty("messageType")) {
                     object.messageType = [];
                     for (var j = 0; j < message.messageType.length; ++j)
                         object.messageType[j] = $types[5].toObject(message.messageType[j], options);
                 }
-                if (message.hasOwnProperty("enumType") && message.enumType !== undefined && message.enumType !== null) {
+                if (message.enumType !== undefined && message.enumType !== null && message.hasOwnProperty("enumType")) {
                     object.enumType = [];
                     for (var j = 0; j < message.enumType.length; ++j)
                         object.enumType[j] = $types[6].toObject(message.enumType[j], options);
                 }
-                if (message.hasOwnProperty("service") && message.service !== undefined && message.service !== null) {
+                if (message.service !== undefined && message.service !== null && message.hasOwnProperty("service")) {
                     object.service = [];
                     for (var j = 0; j < message.service.length; ++j)
                         object.service[j] = $types[7].toObject(message.service[j], options);
                 }
-                if (message.hasOwnProperty("extension") && message.extension !== undefined && message.extension !== null) {
+                if (message.extension !== undefined && message.extension !== null && message.hasOwnProperty("extension")) {
                     object.extension = [];
                     for (var j = 0; j < message.extension.length; ++j)
                         object.extension[j] = $types[8].toObject(message.extension[j], options);
                 }
-                if (message.hasOwnProperty("options") && message.options !== undefined && message.options !== null)
+                if (message.options !== undefined && message.options !== null && message.hasOwnProperty("options"))
                     object.options = $types[9].toObject(message.options, options);
-                if (message.hasOwnProperty("sourceCodeInfo") && message.sourceCodeInfo !== undefined && message.sourceCodeInfo !== null)
+                if (message.sourceCodeInfo !== undefined && message.sourceCodeInfo !== null && message.hasOwnProperty("sourceCodeInfo"))
                     object.sourceCodeInfo = $types[10].toObject(message.sourceCodeInfo, options);
-                if (message.hasOwnProperty("syntax") && message.syntax !== undefined && message.syntax !== null)
+                if (message.syntax !== undefined && message.syntax !== null && message.hasOwnProperty("syntax"))
                     object.syntax = message.syntax;
                 return object;
             };
@@ -7756,32 +7756,32 @@ $root.google = (function() {
             DescriptorProto.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
-                if (message.hasOwnProperty("name") && message.name !== undefined)
+                if (message.name !== undefined && message.hasOwnProperty("name"))
                     writer.uint32(/* id 1, wireType 2 =*/10).string(message.name);
-                if (message.hasOwnProperty("field"))
+                if (message.field !== undefined && message.hasOwnProperty("field"))
                     for (var i = 0; i < message.field.length; ++i)
                         $types[1].encode(message.field[i], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
-                if (message.hasOwnProperty("extension"))
+                if (message.extension !== undefined && message.hasOwnProperty("extension"))
                     for (var i = 0; i < message.extension.length; ++i)
                         $types[2].encode(message.extension[i], writer.uint32(/* id 6, wireType 2 =*/50).fork()).ldelim();
-                if (message.hasOwnProperty("nestedType"))
+                if (message.nestedType !== undefined && message.hasOwnProperty("nestedType"))
                     for (var i = 0; i < message.nestedType.length; ++i)
                         $types[3].encode(message.nestedType[i], writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
-                if (message.hasOwnProperty("enumType"))
+                if (message.enumType !== undefined && message.hasOwnProperty("enumType"))
                     for (var i = 0; i < message.enumType.length; ++i)
                         $types[4].encode(message.enumType[i], writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
-                if (message.hasOwnProperty("extensionRange"))
+                if (message.extensionRange !== undefined && message.hasOwnProperty("extensionRange"))
                     for (var i = 0; i < message.extensionRange.length; ++i)
                         $types[5].encode(message.extensionRange[i], writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
-                if (message.hasOwnProperty("oneofDecl"))
+                if (message.oneofDecl !== undefined && message.hasOwnProperty("oneofDecl"))
                     for (var i = 0; i < message.oneofDecl.length; ++i)
                         $types[6].encode(message.oneofDecl[i], writer.uint32(/* id 8, wireType 2 =*/66).fork()).ldelim();
-                if (message.hasOwnProperty("options") && message.options !== undefined)
+                if (message.options !== undefined && message.hasOwnProperty("options"))
                     $types[7].encode(message.options, writer.uint32(/* id 7, wireType 2 =*/58).fork()).ldelim();
-                if (message.hasOwnProperty("reservedRange"))
+                if (message.reservedRange !== undefined && message.hasOwnProperty("reservedRange"))
                     for (var i = 0; i < message.reservedRange.length; ++i)
                         $types[8].encode(message.reservedRange[i], writer.uint32(/* id 9, wireType 2 =*/74).fork()).ldelim();
-                if (message.hasOwnProperty("reservedName"))
+                if (message.reservedName !== undefined && message.hasOwnProperty("reservedName"))
                     for (var i = 0; i < message.reservedName.length; ++i)
                         writer.uint32(/* id 10, wireType 2 =*/82).string(message.reservedName[i]);
                 return writer;
@@ -8048,46 +8048,46 @@ $root.google = (function() {
                     object.name = "";
                     object.options = null;
                 }
-                if (message.hasOwnProperty("name") && message.name !== undefined && message.name !== null)
+                if (message.name !== undefined && message.name !== null && message.hasOwnProperty("name"))
                     object.name = message.name;
-                if (message.hasOwnProperty("field") && message.field !== undefined && message.field !== null) {
+                if (message.field !== undefined && message.field !== null && message.hasOwnProperty("field")) {
                     object.field = [];
                     for (var j = 0; j < message.field.length; ++j)
                         object.field[j] = $types[1].toObject(message.field[j], options);
                 }
-                if (message.hasOwnProperty("extension") && message.extension !== undefined && message.extension !== null) {
+                if (message.extension !== undefined && message.extension !== null && message.hasOwnProperty("extension")) {
                     object.extension = [];
                     for (var j = 0; j < message.extension.length; ++j)
                         object.extension[j] = $types[2].toObject(message.extension[j], options);
                 }
-                if (message.hasOwnProperty("nestedType") && message.nestedType !== undefined && message.nestedType !== null) {
+                if (message.nestedType !== undefined && message.nestedType !== null && message.hasOwnProperty("nestedType")) {
                     object.nestedType = [];
                     for (var j = 0; j < message.nestedType.length; ++j)
                         object.nestedType[j] = $types[3].toObject(message.nestedType[j], options);
                 }
-                if (message.hasOwnProperty("enumType") && message.enumType !== undefined && message.enumType !== null) {
+                if (message.enumType !== undefined && message.enumType !== null && message.hasOwnProperty("enumType")) {
                     object.enumType = [];
                     for (var j = 0; j < message.enumType.length; ++j)
                         object.enumType[j] = $types[4].toObject(message.enumType[j], options);
                 }
-                if (message.hasOwnProperty("extensionRange") && message.extensionRange !== undefined && message.extensionRange !== null) {
+                if (message.extensionRange !== undefined && message.extensionRange !== null && message.hasOwnProperty("extensionRange")) {
                     object.extensionRange = [];
                     for (var j = 0; j < message.extensionRange.length; ++j)
                         object.extensionRange[j] = $types[5].toObject(message.extensionRange[j], options);
                 }
-                if (message.hasOwnProperty("oneofDecl") && message.oneofDecl !== undefined && message.oneofDecl !== null) {
+                if (message.oneofDecl !== undefined && message.oneofDecl !== null && message.hasOwnProperty("oneofDecl")) {
                     object.oneofDecl = [];
                     for (var j = 0; j < message.oneofDecl.length; ++j)
                         object.oneofDecl[j] = $types[6].toObject(message.oneofDecl[j], options);
                 }
-                if (message.hasOwnProperty("options") && message.options !== undefined && message.options !== null)
+                if (message.options !== undefined && message.options !== null && message.hasOwnProperty("options"))
                     object.options = $types[7].toObject(message.options, options);
-                if (message.hasOwnProperty("reservedRange") && message.reservedRange !== undefined && message.reservedRange !== null) {
+                if (message.reservedRange !== undefined && message.reservedRange !== null && message.hasOwnProperty("reservedRange")) {
                     object.reservedRange = [];
                     for (var j = 0; j < message.reservedRange.length; ++j)
                         object.reservedRange[j] = $types[8].toObject(message.reservedRange[j], options);
                 }
-                if (message.hasOwnProperty("reservedName") && message.reservedName !== undefined && message.reservedName !== null) {
+                if (message.reservedName !== undefined && message.reservedName !== null && message.hasOwnProperty("reservedName")) {
                     object.reservedName = [];
                     for (var j = 0; j < message.reservedName.length; ++j)
                         object.reservedName[j] = message.reservedName[j];
@@ -8158,9 +8158,9 @@ $root.google = (function() {
                 ExtensionRange.encode = function encode(message, writer) {
                     if (!writer)
                         writer = $Writer.create();
-                    if (message.hasOwnProperty("start") && message.start !== undefined)
+                    if (message.start !== undefined && message.hasOwnProperty("start"))
                         writer.uint32(/* id 1, wireType 0 =*/8).int32(message.start);
-                    if (message.hasOwnProperty("end") && message.end !== undefined)
+                    if (message.end !== undefined && message.hasOwnProperty("end"))
                         writer.uint32(/* id 2, wireType 0 =*/16).int32(message.end);
                     return writer;
                 };
@@ -8264,9 +8264,9 @@ $root.google = (function() {
                         object.start = 0;
                         object.end = 0;
                     }
-                    if (message.hasOwnProperty("start") && message.start !== undefined && message.start !== null)
+                    if (message.start !== undefined && message.start !== null && message.hasOwnProperty("start"))
                         object.start = message.start;
-                    if (message.hasOwnProperty("end") && message.end !== undefined && message.end !== null)
+                    if (message.end !== undefined && message.end !== null && message.hasOwnProperty("end"))
                         object.end = message.end;
                     return object;
                 };
@@ -8337,9 +8337,9 @@ $root.google = (function() {
                 ReservedRange.encode = function encode(message, writer) {
                     if (!writer)
                         writer = $Writer.create();
-                    if (message.hasOwnProperty("start") && message.start !== undefined)
+                    if (message.start !== undefined && message.hasOwnProperty("start"))
                         writer.uint32(/* id 1, wireType 0 =*/8).int32(message.start);
-                    if (message.hasOwnProperty("end") && message.end !== undefined)
+                    if (message.end !== undefined && message.hasOwnProperty("end"))
                         writer.uint32(/* id 2, wireType 0 =*/16).int32(message.end);
                     return writer;
                 };
@@ -8443,9 +8443,9 @@ $root.google = (function() {
                         object.start = 0;
                         object.end = 0;
                     }
-                    if (message.hasOwnProperty("start") && message.start !== undefined && message.start !== null)
+                    if (message.start !== undefined && message.start !== null && message.hasOwnProperty("start"))
                         object.start = message.start;
-                    if (message.hasOwnProperty("end") && message.end !== undefined && message.end !== null)
+                    if (message.end !== undefined && message.end !== null && message.hasOwnProperty("end"))
                         object.end = message.end;
                     return object;
                 };
@@ -8574,25 +8574,25 @@ $root.google = (function() {
             FieldDescriptorProto.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
-                if (message.hasOwnProperty("name") && message.name !== undefined)
+                if (message.name !== undefined && message.hasOwnProperty("name"))
                     writer.uint32(/* id 1, wireType 2 =*/10).string(message.name);
-                if (message.hasOwnProperty("number") && message.number !== undefined)
+                if (message.number !== undefined && message.hasOwnProperty("number"))
                     writer.uint32(/* id 3, wireType 0 =*/24).int32(message.number);
-                if (message.hasOwnProperty("label") && message.label !== undefined)
+                if (message.label !== undefined && message.hasOwnProperty("label"))
                     writer.uint32(/* id 4, wireType 0 =*/32).uint32(message.label);
-                if (message.hasOwnProperty("type") && message.type !== undefined)
+                if (message.type !== undefined && message.hasOwnProperty("type"))
                     writer.uint32(/* id 5, wireType 0 =*/40).uint32(message.type);
-                if (message.hasOwnProperty("typeName") && message.typeName !== undefined)
+                if (message.typeName !== undefined && message.hasOwnProperty("typeName"))
                     writer.uint32(/* id 6, wireType 2 =*/50).string(message.typeName);
-                if (message.hasOwnProperty("extendee") && message.extendee !== undefined)
+                if (message.extendee !== undefined && message.hasOwnProperty("extendee"))
                     writer.uint32(/* id 2, wireType 2 =*/18).string(message.extendee);
-                if (message.hasOwnProperty("defaultValue") && message.defaultValue !== undefined)
+                if (message.defaultValue !== undefined && message.hasOwnProperty("defaultValue"))
                     writer.uint32(/* id 7, wireType 2 =*/58).string(message.defaultValue);
-                if (message.hasOwnProperty("oneofIndex") && message.oneofIndex !== undefined)
+                if (message.oneofIndex !== undefined && message.hasOwnProperty("oneofIndex"))
                     writer.uint32(/* id 9, wireType 0 =*/72).int32(message.oneofIndex);
-                if (message.hasOwnProperty("jsonName") && message.jsonName !== undefined)
+                if (message.jsonName !== undefined && message.hasOwnProperty("jsonName"))
                     writer.uint32(/* id 10, wireType 2 =*/82).string(message.jsonName);
-                if (message.hasOwnProperty("options") && message.options !== undefined)
+                if (message.options !== undefined && message.hasOwnProperty("options"))
                     $types[9].encode(message.options, writer.uint32(/* id 8, wireType 2 =*/66).fork()).ldelim();
                 return writer;
             };
@@ -8881,25 +8881,25 @@ $root.google = (function() {
                     object.jsonName = "";
                     object.options = null;
                 }
-                if (message.hasOwnProperty("name") && message.name !== undefined && message.name !== null)
+                if (message.name !== undefined && message.name !== null && message.hasOwnProperty("name"))
                     object.name = message.name;
-                if (message.hasOwnProperty("number") && message.number !== undefined && message.number !== null)
+                if (message.number !== undefined && message.number !== null && message.hasOwnProperty("number"))
                     object.number = message.number;
-                if (message.hasOwnProperty("label") && message.label !== undefined && message.label !== null)
+                if (message.label !== undefined && message.label !== null && message.hasOwnProperty("label"))
                     object.label = options.enums === String ? $types[2][message.label] : message.label;
-                if (message.hasOwnProperty("type") && message.type !== undefined && message.type !== null)
+                if (message.type !== undefined && message.type !== null && message.hasOwnProperty("type"))
                     object.type = options.enums === String ? $types[3][message.type] : message.type;
-                if (message.hasOwnProperty("typeName") && message.typeName !== undefined && message.typeName !== null)
+                if (message.typeName !== undefined && message.typeName !== null && message.hasOwnProperty("typeName"))
                     object.typeName = message.typeName;
-                if (message.hasOwnProperty("extendee") && message.extendee !== undefined && message.extendee !== null)
+                if (message.extendee !== undefined && message.extendee !== null && message.hasOwnProperty("extendee"))
                     object.extendee = message.extendee;
-                if (message.hasOwnProperty("defaultValue") && message.defaultValue !== undefined && message.defaultValue !== null)
+                if (message.defaultValue !== undefined && message.defaultValue !== null && message.hasOwnProperty("defaultValue"))
                     object.defaultValue = message.defaultValue;
-                if (message.hasOwnProperty("oneofIndex") && message.oneofIndex !== undefined && message.oneofIndex !== null)
+                if (message.oneofIndex !== undefined && message.oneofIndex !== null && message.hasOwnProperty("oneofIndex"))
                     object.oneofIndex = message.oneofIndex;
-                if (message.hasOwnProperty("jsonName") && message.jsonName !== undefined && message.jsonName !== null)
+                if (message.jsonName !== undefined && message.jsonName !== null && message.hasOwnProperty("jsonName"))
                     object.jsonName = message.jsonName;
-                if (message.hasOwnProperty("options") && message.options !== undefined && message.options !== null)
+                if (message.options !== undefined && message.options !== null && message.hasOwnProperty("options"))
                     object.options = $types[9].toObject(message.options, options);
                 return object;
             };
@@ -9041,9 +9041,9 @@ $root.google = (function() {
             OneofDescriptorProto.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
-                if (message.hasOwnProperty("name") && message.name !== undefined)
+                if (message.name !== undefined && message.hasOwnProperty("name"))
                     writer.uint32(/* id 1, wireType 2 =*/10).string(message.name);
-                if (message.hasOwnProperty("options") && message.options !== undefined)
+                if (message.options !== undefined && message.hasOwnProperty("options"))
                     $types[1].encode(message.options, writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
                 return writer;
             };
@@ -9149,9 +9149,9 @@ $root.google = (function() {
                     object.name = "";
                     object.options = null;
                 }
-                if (message.hasOwnProperty("name") && message.name !== undefined && message.name !== null)
+                if (message.name !== undefined && message.name !== null && message.hasOwnProperty("name"))
                     object.name = message.name;
-                if (message.hasOwnProperty("options") && message.options !== undefined && message.options !== null)
+                if (message.options !== undefined && message.options !== null && message.hasOwnProperty("options"))
                     object.options = $types[1].toObject(message.options, options);
                 return object;
             };
@@ -9234,12 +9234,12 @@ $root.google = (function() {
             EnumDescriptorProto.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
-                if (message.hasOwnProperty("name") && message.name !== undefined)
+                if (message.name !== undefined && message.hasOwnProperty("name"))
                     writer.uint32(/* id 1, wireType 2 =*/10).string(message.name);
-                if (message.hasOwnProperty("value"))
+                if (message.value !== undefined && message.hasOwnProperty("value"))
                     for (var i = 0; i < message.value.length; ++i)
                         $types[1].encode(message.value[i], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
-                if (message.hasOwnProperty("options") && message.options !== undefined)
+                if (message.options !== undefined && message.hasOwnProperty("options"))
                     $types[2].encode(message.options, writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
                 return writer;
             };
@@ -9366,14 +9366,14 @@ $root.google = (function() {
                     object.name = "";
                     object.options = null;
                 }
-                if (message.hasOwnProperty("name") && message.name !== undefined && message.name !== null)
+                if (message.name !== undefined && message.name !== null && message.hasOwnProperty("name"))
                     object.name = message.name;
-                if (message.hasOwnProperty("value") && message.value !== undefined && message.value !== null) {
+                if (message.value !== undefined && message.value !== null && message.hasOwnProperty("value")) {
                     object.value = [];
                     for (var j = 0; j < message.value.length; ++j)
                         object.value[j] = $types[1].toObject(message.value[j], options);
                 }
-                if (message.hasOwnProperty("options") && message.options !== undefined && message.options !== null)
+                if (message.options !== undefined && message.options !== null && message.hasOwnProperty("options"))
                     object.options = $types[2].toObject(message.options, options);
                 return object;
             };
@@ -9455,11 +9455,11 @@ $root.google = (function() {
             EnumValueDescriptorProto.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
-                if (message.hasOwnProperty("name") && message.name !== undefined)
+                if (message.name !== undefined && message.hasOwnProperty("name"))
                     writer.uint32(/* id 1, wireType 2 =*/10).string(message.name);
-                if (message.hasOwnProperty("number") && message.number !== undefined)
+                if (message.number !== undefined && message.hasOwnProperty("number"))
                     writer.uint32(/* id 2, wireType 0 =*/16).int32(message.number);
-                if (message.hasOwnProperty("options") && message.options !== undefined)
+                if (message.options !== undefined && message.hasOwnProperty("options"))
                     $types[2].encode(message.options, writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
                 return writer;
             };
@@ -9574,11 +9574,11 @@ $root.google = (function() {
                     object.number = 0;
                     object.options = null;
                 }
-                if (message.hasOwnProperty("name") && message.name !== undefined && message.name !== null)
+                if (message.name !== undefined && message.name !== null && message.hasOwnProperty("name"))
                     object.name = message.name;
-                if (message.hasOwnProperty("number") && message.number !== undefined && message.number !== null)
+                if (message.number !== undefined && message.number !== null && message.hasOwnProperty("number"))
                     object.number = message.number;
-                if (message.hasOwnProperty("options") && message.options !== undefined && message.options !== null)
+                if (message.options !== undefined && message.options !== null && message.hasOwnProperty("options"))
                     object.options = $types[2].toObject(message.options, options);
                 return object;
             };
@@ -9661,12 +9661,12 @@ $root.google = (function() {
             ServiceDescriptorProto.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
-                if (message.hasOwnProperty("name") && message.name !== undefined)
+                if (message.name !== undefined && message.hasOwnProperty("name"))
                     writer.uint32(/* id 1, wireType 2 =*/10).string(message.name);
-                if (message.hasOwnProperty("method"))
+                if (message.method !== undefined && message.hasOwnProperty("method"))
                     for (var i = 0; i < message.method.length; ++i)
                         $types[1].encode(message.method[i], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
-                if (message.hasOwnProperty("options") && message.options !== undefined)
+                if (message.options !== undefined && message.hasOwnProperty("options"))
                     $types[2].encode(message.options, writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
                 return writer;
             };
@@ -9793,14 +9793,14 @@ $root.google = (function() {
                     object.name = "";
                     object.options = null;
                 }
-                if (message.hasOwnProperty("name") && message.name !== undefined && message.name !== null)
+                if (message.name !== undefined && message.name !== null && message.hasOwnProperty("name"))
                     object.name = message.name;
-                if (message.hasOwnProperty("method") && message.method !== undefined && message.method !== null) {
+                if (message.method !== undefined && message.method !== null && message.hasOwnProperty("method")) {
                     object.method = [];
                     for (var j = 0; j < message.method.length; ++j)
                         object.method[j] = $types[1].toObject(message.method[j], options);
                 }
-                if (message.hasOwnProperty("options") && message.options !== undefined && message.options !== null)
+                if (message.options !== undefined && message.options !== null && message.hasOwnProperty("options"))
                     object.options = $types[2].toObject(message.options, options);
                 return object;
             };
@@ -9900,17 +9900,17 @@ $root.google = (function() {
             MethodDescriptorProto.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
-                if (message.hasOwnProperty("name") && message.name !== undefined)
+                if (message.name !== undefined && message.hasOwnProperty("name"))
                     writer.uint32(/* id 1, wireType 2 =*/10).string(message.name);
-                if (message.hasOwnProperty("inputType") && message.inputType !== undefined)
+                if (message.inputType !== undefined && message.hasOwnProperty("inputType"))
                     writer.uint32(/* id 2, wireType 2 =*/18).string(message.inputType);
-                if (message.hasOwnProperty("outputType") && message.outputType !== undefined)
+                if (message.outputType !== undefined && message.hasOwnProperty("outputType"))
                     writer.uint32(/* id 3, wireType 2 =*/26).string(message.outputType);
-                if (message.hasOwnProperty("options") && message.options !== undefined)
+                if (message.options !== undefined && message.hasOwnProperty("options"))
                     $types[3].encode(message.options, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
-                if (message.hasOwnProperty("clientStreaming") && message.clientStreaming !== undefined)
+                if (message.clientStreaming !== undefined && message.hasOwnProperty("clientStreaming"))
                     writer.uint32(/* id 5, wireType 0 =*/40).bool(message.clientStreaming);
-                if (message.hasOwnProperty("serverStreaming") && message.serverStreaming !== undefined)
+                if (message.serverStreaming !== undefined && message.hasOwnProperty("serverStreaming"))
                     writer.uint32(/* id 6, wireType 0 =*/48).bool(message.serverStreaming);
                 return writer;
             };
@@ -10052,17 +10052,17 @@ $root.google = (function() {
                     object.clientStreaming = false;
                     object.serverStreaming = false;
                 }
-                if (message.hasOwnProperty("name") && message.name !== undefined && message.name !== null)
+                if (message.name !== undefined && message.name !== null && message.hasOwnProperty("name"))
                     object.name = message.name;
-                if (message.hasOwnProperty("inputType") && message.inputType !== undefined && message.inputType !== null)
+                if (message.inputType !== undefined && message.inputType !== null && message.hasOwnProperty("inputType"))
                     object.inputType = message.inputType;
-                if (message.hasOwnProperty("outputType") && message.outputType !== undefined && message.outputType !== null)
+                if (message.outputType !== undefined && message.outputType !== null && message.hasOwnProperty("outputType"))
                     object.outputType = message.outputType;
-                if (message.hasOwnProperty("options") && message.options !== undefined && message.options !== null)
+                if (message.options !== undefined && message.options !== null && message.hasOwnProperty("options"))
                     object.options = $types[3].toObject(message.options, options);
-                if (message.hasOwnProperty("clientStreaming") && message.clientStreaming !== undefined && message.clientStreaming !== null)
+                if (message.clientStreaming !== undefined && message.clientStreaming !== null && message.hasOwnProperty("clientStreaming"))
                     object.clientStreaming = message.clientStreaming;
-                if (message.hasOwnProperty("serverStreaming") && message.serverStreaming !== undefined && message.serverStreaming !== null)
+                if (message.serverStreaming !== undefined && message.serverStreaming !== null && message.hasOwnProperty("serverStreaming"))
                     object.serverStreaming = message.serverStreaming;
                 return object;
             };
@@ -10217,35 +10217,35 @@ $root.google = (function() {
             FileOptions.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
-                if (message.hasOwnProperty("javaPackage") && message.javaPackage !== undefined)
+                if (message.javaPackage !== undefined && message.hasOwnProperty("javaPackage"))
                     writer.uint32(/* id 1, wireType 2 =*/10).string(message.javaPackage);
-                if (message.hasOwnProperty("javaOuterClassname") && message.javaOuterClassname !== undefined)
+                if (message.javaOuterClassname !== undefined && message.hasOwnProperty("javaOuterClassname"))
                     writer.uint32(/* id 8, wireType 2 =*/66).string(message.javaOuterClassname);
-                if (message.hasOwnProperty("javaMultipleFiles") && message.javaMultipleFiles !== undefined)
+                if (message.javaMultipleFiles !== undefined && message.hasOwnProperty("javaMultipleFiles"))
                     writer.uint32(/* id 10, wireType 0 =*/80).bool(message.javaMultipleFiles);
-                if (message.hasOwnProperty("javaGenerateEqualsAndHash") && message.javaGenerateEqualsAndHash !== undefined)
+                if (message.javaGenerateEqualsAndHash !== undefined && message.hasOwnProperty("javaGenerateEqualsAndHash"))
                     writer.uint32(/* id 20, wireType 0 =*/160).bool(message.javaGenerateEqualsAndHash);
-                if (message.hasOwnProperty("javaStringCheckUtf8") && message.javaStringCheckUtf8 !== undefined)
+                if (message.javaStringCheckUtf8 !== undefined && message.hasOwnProperty("javaStringCheckUtf8"))
                     writer.uint32(/* id 27, wireType 0 =*/216).bool(message.javaStringCheckUtf8);
-                if (message.hasOwnProperty("optimizeFor") && message.optimizeFor !== undefined)
+                if (message.optimizeFor !== undefined && message.hasOwnProperty("optimizeFor"))
                     writer.uint32(/* id 9, wireType 0 =*/72).uint32(message.optimizeFor);
-                if (message.hasOwnProperty("goPackage") && message.goPackage !== undefined)
+                if (message.goPackage !== undefined && message.hasOwnProperty("goPackage"))
                     writer.uint32(/* id 11, wireType 2 =*/90).string(message.goPackage);
-                if (message.hasOwnProperty("ccGenericServices") && message.ccGenericServices !== undefined)
+                if (message.ccGenericServices !== undefined && message.hasOwnProperty("ccGenericServices"))
                     writer.uint32(/* id 16, wireType 0 =*/128).bool(message.ccGenericServices);
-                if (message.hasOwnProperty("javaGenericServices") && message.javaGenericServices !== undefined)
+                if (message.javaGenericServices !== undefined && message.hasOwnProperty("javaGenericServices"))
                     writer.uint32(/* id 17, wireType 0 =*/136).bool(message.javaGenericServices);
-                if (message.hasOwnProperty("pyGenericServices") && message.pyGenericServices !== undefined)
+                if (message.pyGenericServices !== undefined && message.hasOwnProperty("pyGenericServices"))
                     writer.uint32(/* id 18, wireType 0 =*/144).bool(message.pyGenericServices);
-                if (message.hasOwnProperty("deprecated") && message.deprecated !== undefined)
+                if (message.deprecated !== undefined && message.hasOwnProperty("deprecated"))
                     writer.uint32(/* id 23, wireType 0 =*/184).bool(message.deprecated);
-                if (message.hasOwnProperty("ccEnableArenas") && message.ccEnableArenas !== undefined)
+                if (message.ccEnableArenas !== undefined && message.hasOwnProperty("ccEnableArenas"))
                     writer.uint32(/* id 31, wireType 0 =*/248).bool(message.ccEnableArenas);
-                if (message.hasOwnProperty("objcClassPrefix") && message.objcClassPrefix !== undefined)
+                if (message.objcClassPrefix !== undefined && message.hasOwnProperty("objcClassPrefix"))
                     writer.uint32(/* id 36, wireType 2 =*/290).string(message.objcClassPrefix);
-                if (message.hasOwnProperty("csharpNamespace") && message.csharpNamespace !== undefined)
+                if (message.csharpNamespace !== undefined && message.hasOwnProperty("csharpNamespace"))
                     writer.uint32(/* id 37, wireType 2 =*/298).string(message.csharpNamespace);
-                if (message.hasOwnProperty("uninterpretedOption"))
+                if (message.uninterpretedOption !== undefined && message.hasOwnProperty("uninterpretedOption"))
                     for (var i = 0; i < message.uninterpretedOption.length; ++i)
                         $types[14].encode(message.uninterpretedOption[i], writer.uint32(/* id 999, wireType 2 =*/7994).fork()).ldelim();
                 return writer;
@@ -10497,35 +10497,35 @@ $root.google = (function() {
                     object.objcClassPrefix = "";
                     object.csharpNamespace = "";
                 }
-                if (message.hasOwnProperty("javaPackage") && message.javaPackage !== undefined && message.javaPackage !== null)
+                if (message.javaPackage !== undefined && message.javaPackage !== null && message.hasOwnProperty("javaPackage"))
                     object.javaPackage = message.javaPackage;
-                if (message.hasOwnProperty("javaOuterClassname") && message.javaOuterClassname !== undefined && message.javaOuterClassname !== null)
+                if (message.javaOuterClassname !== undefined && message.javaOuterClassname !== null && message.hasOwnProperty("javaOuterClassname"))
                     object.javaOuterClassname = message.javaOuterClassname;
-                if (message.hasOwnProperty("javaMultipleFiles") && message.javaMultipleFiles !== undefined && message.javaMultipleFiles !== null)
+                if (message.javaMultipleFiles !== undefined && message.javaMultipleFiles !== null && message.hasOwnProperty("javaMultipleFiles"))
                     object.javaMultipleFiles = message.javaMultipleFiles;
-                if (message.hasOwnProperty("javaGenerateEqualsAndHash") && message.javaGenerateEqualsAndHash !== undefined && message.javaGenerateEqualsAndHash !== null)
+                if (message.javaGenerateEqualsAndHash !== undefined && message.javaGenerateEqualsAndHash !== null && message.hasOwnProperty("javaGenerateEqualsAndHash"))
                     object.javaGenerateEqualsAndHash = message.javaGenerateEqualsAndHash;
-                if (message.hasOwnProperty("javaStringCheckUtf8") && message.javaStringCheckUtf8 !== undefined && message.javaStringCheckUtf8 !== null)
+                if (message.javaStringCheckUtf8 !== undefined && message.javaStringCheckUtf8 !== null && message.hasOwnProperty("javaStringCheckUtf8"))
                     object.javaStringCheckUtf8 = message.javaStringCheckUtf8;
-                if (message.hasOwnProperty("optimizeFor") && message.optimizeFor !== undefined && message.optimizeFor !== null)
+                if (message.optimizeFor !== undefined && message.optimizeFor !== null && message.hasOwnProperty("optimizeFor"))
                     object.optimizeFor = options.enums === String ? $types[5][message.optimizeFor] : message.optimizeFor;
-                if (message.hasOwnProperty("goPackage") && message.goPackage !== undefined && message.goPackage !== null)
+                if (message.goPackage !== undefined && message.goPackage !== null && message.hasOwnProperty("goPackage"))
                     object.goPackage = message.goPackage;
-                if (message.hasOwnProperty("ccGenericServices") && message.ccGenericServices !== undefined && message.ccGenericServices !== null)
+                if (message.ccGenericServices !== undefined && message.ccGenericServices !== null && message.hasOwnProperty("ccGenericServices"))
                     object.ccGenericServices = message.ccGenericServices;
-                if (message.hasOwnProperty("javaGenericServices") && message.javaGenericServices !== undefined && message.javaGenericServices !== null)
+                if (message.javaGenericServices !== undefined && message.javaGenericServices !== null && message.hasOwnProperty("javaGenericServices"))
                     object.javaGenericServices = message.javaGenericServices;
-                if (message.hasOwnProperty("pyGenericServices") && message.pyGenericServices !== undefined && message.pyGenericServices !== null)
+                if (message.pyGenericServices !== undefined && message.pyGenericServices !== null && message.hasOwnProperty("pyGenericServices"))
                     object.pyGenericServices = message.pyGenericServices;
-                if (message.hasOwnProperty("deprecated") && message.deprecated !== undefined && message.deprecated !== null)
+                if (message.deprecated !== undefined && message.deprecated !== null && message.hasOwnProperty("deprecated"))
                     object.deprecated = message.deprecated;
-                if (message.hasOwnProperty("ccEnableArenas") && message.ccEnableArenas !== undefined && message.ccEnableArenas !== null)
+                if (message.ccEnableArenas !== undefined && message.ccEnableArenas !== null && message.hasOwnProperty("ccEnableArenas"))
                     object.ccEnableArenas = message.ccEnableArenas;
-                if (message.hasOwnProperty("objcClassPrefix") && message.objcClassPrefix !== undefined && message.objcClassPrefix !== null)
+                if (message.objcClassPrefix !== undefined && message.objcClassPrefix !== null && message.hasOwnProperty("objcClassPrefix"))
                     object.objcClassPrefix = message.objcClassPrefix;
-                if (message.hasOwnProperty("csharpNamespace") && message.csharpNamespace !== undefined && message.csharpNamespace !== null)
+                if (message.csharpNamespace !== undefined && message.csharpNamespace !== null && message.hasOwnProperty("csharpNamespace"))
                     object.csharpNamespace = message.csharpNamespace;
-                if (message.hasOwnProperty("uninterpretedOption") && message.uninterpretedOption !== undefined && message.uninterpretedOption !== null) {
+                if (message.uninterpretedOption !== undefined && message.uninterpretedOption !== null && message.hasOwnProperty("uninterpretedOption")) {
                     object.uninterpretedOption = [];
                     for (var j = 0; j < message.uninterpretedOption.length; ++j)
                         object.uninterpretedOption[j] = $types[14].toObject(message.uninterpretedOption[j], options);
@@ -10640,15 +10640,15 @@ $root.google = (function() {
             MessageOptions.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
-                if (message.hasOwnProperty("messageSetWireFormat") && message.messageSetWireFormat !== undefined)
+                if (message.messageSetWireFormat !== undefined && message.hasOwnProperty("messageSetWireFormat"))
                     writer.uint32(/* id 1, wireType 0 =*/8).bool(message.messageSetWireFormat);
-                if (message.hasOwnProperty("noStandardDescriptorAccessor") && message.noStandardDescriptorAccessor !== undefined)
+                if (message.noStandardDescriptorAccessor !== undefined && message.hasOwnProperty("noStandardDescriptorAccessor"))
                     writer.uint32(/* id 2, wireType 0 =*/16).bool(message.noStandardDescriptorAccessor);
-                if (message.hasOwnProperty("deprecated") && message.deprecated !== undefined)
+                if (message.deprecated !== undefined && message.hasOwnProperty("deprecated"))
                     writer.uint32(/* id 3, wireType 0 =*/24).bool(message.deprecated);
-                if (message.hasOwnProperty("mapEntry") && message.mapEntry !== undefined)
+                if (message.mapEntry !== undefined && message.hasOwnProperty("mapEntry"))
                     writer.uint32(/* id 7, wireType 0 =*/56).bool(message.mapEntry);
-                if (message.hasOwnProperty("uninterpretedOption"))
+                if (message.uninterpretedOption !== undefined && message.hasOwnProperty("uninterpretedOption"))
                     for (var i = 0; i < message.uninterpretedOption.length; ++i)
                         $types[4].encode(message.uninterpretedOption[i], writer.uint32(/* id 999, wireType 2 =*/7994).fork()).ldelim();
                 return writer;
@@ -10792,15 +10792,15 @@ $root.google = (function() {
                     object.deprecated = false;
                     object.mapEntry = false;
                 }
-                if (message.hasOwnProperty("messageSetWireFormat") && message.messageSetWireFormat !== undefined && message.messageSetWireFormat !== null)
+                if (message.messageSetWireFormat !== undefined && message.messageSetWireFormat !== null && message.hasOwnProperty("messageSetWireFormat"))
                     object.messageSetWireFormat = message.messageSetWireFormat;
-                if (message.hasOwnProperty("noStandardDescriptorAccessor") && message.noStandardDescriptorAccessor !== undefined && message.noStandardDescriptorAccessor !== null)
+                if (message.noStandardDescriptorAccessor !== undefined && message.noStandardDescriptorAccessor !== null && message.hasOwnProperty("noStandardDescriptorAccessor"))
                     object.noStandardDescriptorAccessor = message.noStandardDescriptorAccessor;
-                if (message.hasOwnProperty("deprecated") && message.deprecated !== undefined && message.deprecated !== null)
+                if (message.deprecated !== undefined && message.deprecated !== null && message.hasOwnProperty("deprecated"))
                     object.deprecated = message.deprecated;
-                if (message.hasOwnProperty("mapEntry") && message.mapEntry !== undefined && message.mapEntry !== null)
+                if (message.mapEntry !== undefined && message.mapEntry !== null && message.hasOwnProperty("mapEntry"))
                     object.mapEntry = message.mapEntry;
-                if (message.hasOwnProperty("uninterpretedOption") && message.uninterpretedOption !== undefined && message.uninterpretedOption !== null) {
+                if (message.uninterpretedOption !== undefined && message.uninterpretedOption !== null && message.hasOwnProperty("uninterpretedOption")) {
                     object.uninterpretedOption = [];
                     for (var j = 0; j < message.uninterpretedOption.length; ++j)
                         object.uninterpretedOption[j] = $types[4].toObject(message.uninterpretedOption[j], options);
@@ -10911,19 +10911,19 @@ $root.google = (function() {
             FieldOptions.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
-                if (message.hasOwnProperty("ctype") && message.ctype !== undefined)
+                if (message.ctype !== undefined && message.hasOwnProperty("ctype"))
                     writer.uint32(/* id 1, wireType 0 =*/8).uint32(message.ctype);
-                if (message.hasOwnProperty("packed") && message.packed !== undefined)
+                if (message.packed !== undefined && message.hasOwnProperty("packed"))
                     writer.uint32(/* id 2, wireType 0 =*/16).bool(message.packed);
-                if (message.hasOwnProperty("jstype") && message.jstype !== undefined)
+                if (message.jstype !== undefined && message.hasOwnProperty("jstype"))
                     writer.uint32(/* id 6, wireType 0 =*/48).uint32(message.jstype);
-                if (message.hasOwnProperty("lazy") && message.lazy !== undefined)
+                if (message.lazy !== undefined && message.hasOwnProperty("lazy"))
                     writer.uint32(/* id 5, wireType 0 =*/40).bool(message.lazy);
-                if (message.hasOwnProperty("deprecated") && message.deprecated !== undefined)
+                if (message.deprecated !== undefined && message.hasOwnProperty("deprecated"))
                     writer.uint32(/* id 3, wireType 0 =*/24).bool(message.deprecated);
-                if (message.hasOwnProperty("weak") && message.weak !== undefined)
+                if (message.weak !== undefined && message.hasOwnProperty("weak"))
                     writer.uint32(/* id 10, wireType 0 =*/80).bool(message.weak);
-                if (message.hasOwnProperty("uninterpretedOption"))
+                if (message.uninterpretedOption !== undefined && message.hasOwnProperty("uninterpretedOption"))
                     for (var i = 0; i < message.uninterpretedOption.length; ++i)
                         $types[6].encode(message.uninterpretedOption[i], writer.uint32(/* id 999, wireType 2 =*/7994).fork()).ldelim();
                 return writer;
@@ -11121,19 +11121,19 @@ $root.google = (function() {
                     object.deprecated = false;
                     object.weak = false;
                 }
-                if (message.hasOwnProperty("ctype") && message.ctype !== undefined && message.ctype !== null)
+                if (message.ctype !== undefined && message.ctype !== null && message.hasOwnProperty("ctype"))
                     object.ctype = options.enums === String ? $types[0][message.ctype] : message.ctype;
-                if (message.hasOwnProperty("packed") && message.packed !== undefined && message.packed !== null)
+                if (message.packed !== undefined && message.packed !== null && message.hasOwnProperty("packed"))
                     object.packed = message.packed;
-                if (message.hasOwnProperty("jstype") && message.jstype !== undefined && message.jstype !== null)
+                if (message.jstype !== undefined && message.jstype !== null && message.hasOwnProperty("jstype"))
                     object.jstype = options.enums === String ? $types[2][message.jstype] : message.jstype;
-                if (message.hasOwnProperty("lazy") && message.lazy !== undefined && message.lazy !== null)
+                if (message.lazy !== undefined && message.lazy !== null && message.hasOwnProperty("lazy"))
                     object.lazy = message.lazy;
-                if (message.hasOwnProperty("deprecated") && message.deprecated !== undefined && message.deprecated !== null)
+                if (message.deprecated !== undefined && message.deprecated !== null && message.hasOwnProperty("deprecated"))
                     object.deprecated = message.deprecated;
-                if (message.hasOwnProperty("weak") && message.weak !== undefined && message.weak !== null)
+                if (message.weak !== undefined && message.weak !== null && message.hasOwnProperty("weak"))
                     object.weak = message.weak;
-                if (message.hasOwnProperty("uninterpretedOption") && message.uninterpretedOption !== undefined && message.uninterpretedOption !== null) {
+                if (message.uninterpretedOption !== undefined && message.uninterpretedOption !== null && message.hasOwnProperty("uninterpretedOption")) {
                     object.uninterpretedOption = [];
                     for (var j = 0; j < message.uninterpretedOption.length; ++j)
                         object.uninterpretedOption[j] = $types[6].toObject(message.uninterpretedOption[j], options);
@@ -11242,7 +11242,7 @@ $root.google = (function() {
             OneofOptions.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
-                if (message.hasOwnProperty("uninterpretedOption"))
+                if (message.uninterpretedOption !== undefined && message.hasOwnProperty("uninterpretedOption"))
                     for (var i = 0; i < message.uninterpretedOption.length; ++i)
                         $types[0].encode(message.uninterpretedOption[i], writer.uint32(/* id 999, wireType 2 =*/7994).fork()).ldelim();
                 return writer;
@@ -11348,7 +11348,7 @@ $root.google = (function() {
                 var object = {};
                 if (options.arrays || options.defaults)
                     object.uninterpretedOption = [];
-                if (message.hasOwnProperty("uninterpretedOption") && message.uninterpretedOption !== undefined && message.uninterpretedOption !== null) {
+                if (message.uninterpretedOption !== undefined && message.uninterpretedOption !== null && message.hasOwnProperty("uninterpretedOption")) {
                     object.uninterpretedOption = [];
                     for (var j = 0; j < message.uninterpretedOption.length; ++j)
                         object.uninterpretedOption[j] = $types[0].toObject(message.uninterpretedOption[j], options);
@@ -11440,14 +11440,14 @@ $root.google = (function() {
             EnumOptions.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
-                if (message.hasOwnProperty("allowAlias") && message.allowAlias !== undefined)
+                if (message.allowAlias !== undefined && message.hasOwnProperty("allowAlias"))
                     writer.uint32(/* id 2, wireType 0 =*/16).bool(message.allowAlias);
-                if (message.hasOwnProperty("deprecated") && message.deprecated !== undefined)
+                if (message.deprecated !== undefined && message.hasOwnProperty("deprecated"))
                     writer.uint32(/* id 3, wireType 0 =*/24).bool(message.deprecated);
-                if (message.hasOwnProperty("uninterpretedOption"))
+                if (message.uninterpretedOption !== undefined && message.hasOwnProperty("uninterpretedOption"))
                     for (var i = 0; i < message.uninterpretedOption.length; ++i)
                         $types[2].encode(message.uninterpretedOption[i], writer.uint32(/* id 999, wireType 2 =*/7994).fork()).ldelim();
-                if (message.hasOwnProperty(".jspb.test.IsExtension.simpleOption") && message[".jspb.test.IsExtension.simpleOption"] !== undefined)
+                if (message[".jspb.test.IsExtension.simpleOption"] !== undefined && message.hasOwnProperty(".jspb.test.IsExtension.simpleOption"))
                     writer.uint32(/* id 42113038, wireType 2 =*/336904306).string(message[".jspb.test.IsExtension.simpleOption"]);
                 return writer;
             };
@@ -11581,16 +11581,16 @@ $root.google = (function() {
                     object.deprecated = false;
                     object[".jspb.test.IsExtension.simpleOption"] = "";
                 }
-                if (message.hasOwnProperty("allowAlias") && message.allowAlias !== undefined && message.allowAlias !== null)
+                if (message.allowAlias !== undefined && message.allowAlias !== null && message.hasOwnProperty("allowAlias"))
                     object.allowAlias = message.allowAlias;
-                if (message.hasOwnProperty("deprecated") && message.deprecated !== undefined && message.deprecated !== null)
+                if (message.deprecated !== undefined && message.deprecated !== null && message.hasOwnProperty("deprecated"))
                     object.deprecated = message.deprecated;
-                if (message.hasOwnProperty("uninterpretedOption") && message.uninterpretedOption !== undefined && message.uninterpretedOption !== null) {
+                if (message.uninterpretedOption !== undefined && message.uninterpretedOption !== null && message.hasOwnProperty("uninterpretedOption")) {
                     object.uninterpretedOption = [];
                     for (var j = 0; j < message.uninterpretedOption.length; ++j)
                         object.uninterpretedOption[j] = $types[2].toObject(message.uninterpretedOption[j], options);
                 }
-                if (message.hasOwnProperty(".jspb.test.IsExtension.simpleOption") && message[".jspb.test.IsExtension.simpleOption"] !== undefined && message[".jspb.test.IsExtension.simpleOption"] !== null)
+                if (message[".jspb.test.IsExtension.simpleOption"] !== undefined && message[".jspb.test.IsExtension.simpleOption"] !== null && message.hasOwnProperty(".jspb.test.IsExtension.simpleOption"))
                     object[".jspb.test.IsExtension.simpleOption"] = message[".jspb.test.IsExtension.simpleOption"];
                 return object;
             };
@@ -11666,9 +11666,9 @@ $root.google = (function() {
             EnumValueOptions.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
-                if (message.hasOwnProperty("deprecated") && message.deprecated !== undefined)
+                if (message.deprecated !== undefined && message.hasOwnProperty("deprecated"))
                     writer.uint32(/* id 1, wireType 0 =*/8).bool(message.deprecated);
-                if (message.hasOwnProperty("uninterpretedOption"))
+                if (message.uninterpretedOption !== undefined && message.hasOwnProperty("uninterpretedOption"))
                     for (var i = 0; i < message.uninterpretedOption.length; ++i)
                         $types[1].encode(message.uninterpretedOption[i], writer.uint32(/* id 999, wireType 2 =*/7994).fork()).ldelim();
                 return writer;
@@ -11784,9 +11784,9 @@ $root.google = (function() {
                     object.uninterpretedOption = [];
                 if (options.defaults)
                     object.deprecated = false;
-                if (message.hasOwnProperty("deprecated") && message.deprecated !== undefined && message.deprecated !== null)
+                if (message.deprecated !== undefined && message.deprecated !== null && message.hasOwnProperty("deprecated"))
                     object.deprecated = message.deprecated;
-                if (message.hasOwnProperty("uninterpretedOption") && message.uninterpretedOption !== undefined && message.uninterpretedOption !== null) {
+                if (message.uninterpretedOption !== undefined && message.uninterpretedOption !== null && message.hasOwnProperty("uninterpretedOption")) {
                     object.uninterpretedOption = [];
                     for (var j = 0; j < message.uninterpretedOption.length; ++j)
                         object.uninterpretedOption[j] = $types[1].toObject(message.uninterpretedOption[j], options);
@@ -11865,9 +11865,9 @@ $root.google = (function() {
             ServiceOptions.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
-                if (message.hasOwnProperty("deprecated") && message.deprecated !== undefined)
+                if (message.deprecated !== undefined && message.hasOwnProperty("deprecated"))
                     writer.uint32(/* id 33, wireType 0 =*/264).bool(message.deprecated);
-                if (message.hasOwnProperty("uninterpretedOption"))
+                if (message.uninterpretedOption !== undefined && message.hasOwnProperty("uninterpretedOption"))
                     for (var i = 0; i < message.uninterpretedOption.length; ++i)
                         $types[1].encode(message.uninterpretedOption[i], writer.uint32(/* id 999, wireType 2 =*/7994).fork()).ldelim();
                 return writer;
@@ -11983,9 +11983,9 @@ $root.google = (function() {
                     object.uninterpretedOption = [];
                 if (options.defaults)
                     object.deprecated = false;
-                if (message.hasOwnProperty("deprecated") && message.deprecated !== undefined && message.deprecated !== null)
+                if (message.deprecated !== undefined && message.deprecated !== null && message.hasOwnProperty("deprecated"))
                     object.deprecated = message.deprecated;
-                if (message.hasOwnProperty("uninterpretedOption") && message.uninterpretedOption !== undefined && message.uninterpretedOption !== null) {
+                if (message.uninterpretedOption !== undefined && message.uninterpretedOption !== null && message.hasOwnProperty("uninterpretedOption")) {
                     object.uninterpretedOption = [];
                     for (var j = 0; j < message.uninterpretedOption.length; ++j)
                         object.uninterpretedOption[j] = $types[1].toObject(message.uninterpretedOption[j], options);
@@ -12071,11 +12071,11 @@ $root.google = (function() {
             MethodOptions.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
-                if (message.hasOwnProperty("deprecated") && message.deprecated !== undefined)
+                if (message.deprecated !== undefined && message.hasOwnProperty("deprecated"))
                     writer.uint32(/* id 33, wireType 0 =*/264).bool(message.deprecated);
-                if (message.hasOwnProperty("idempotencyLevel") && message.idempotencyLevel !== undefined)
+                if (message.idempotencyLevel !== undefined && message.hasOwnProperty("idempotencyLevel"))
                     writer.uint32(/* id 34, wireType 0 =*/272).uint32(message.idempotencyLevel);
-                if (message.hasOwnProperty("uninterpretedOption"))
+                if (message.uninterpretedOption !== undefined && message.hasOwnProperty("uninterpretedOption"))
                     for (var i = 0; i < message.uninterpretedOption.length; ++i)
                         $types[2].encode(message.uninterpretedOption[i], writer.uint32(/* id 999, wireType 2 =*/7994).fork()).ldelim();
                 return writer;
@@ -12219,11 +12219,11 @@ $root.google = (function() {
                     object.deprecated = false;
                     object.idempotencyLevel = options.enums === String ? "IDEMPOTENCY_UNKNOWN" : 0;
                 }
-                if (message.hasOwnProperty("deprecated") && message.deprecated !== undefined && message.deprecated !== null)
+                if (message.deprecated !== undefined && message.deprecated !== null && message.hasOwnProperty("deprecated"))
                     object.deprecated = message.deprecated;
-                if (message.hasOwnProperty("idempotencyLevel") && message.idempotencyLevel !== undefined && message.idempotencyLevel !== null)
+                if (message.idempotencyLevel !== undefined && message.idempotencyLevel !== null && message.hasOwnProperty("idempotencyLevel"))
                     object.idempotencyLevel = options.enums === String ? $types[1][message.idempotencyLevel] : message.idempotencyLevel;
-                if (message.hasOwnProperty("uninterpretedOption") && message.uninterpretedOption !== undefined && message.uninterpretedOption !== null) {
+                if (message.uninterpretedOption !== undefined && message.uninterpretedOption !== null && message.hasOwnProperty("uninterpretedOption")) {
                     object.uninterpretedOption = [];
                     for (var j = 0; j < message.uninterpretedOption.length; ++j)
                         object.uninterpretedOption[j] = $types[2].toObject(message.uninterpretedOption[j], options);
@@ -12350,20 +12350,20 @@ $root.google = (function() {
             UninterpretedOption.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
-                if (message.hasOwnProperty("name"))
+                if (message.name !== undefined && message.hasOwnProperty("name"))
                     for (var i = 0; i < message.name.length; ++i)
                         $types[0].encode(message.name[i], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
-                if (message.hasOwnProperty("identifierValue") && message.identifierValue !== undefined)
+                if (message.identifierValue !== undefined && message.hasOwnProperty("identifierValue"))
                     writer.uint32(/* id 3, wireType 2 =*/26).string(message.identifierValue);
-                if (message.hasOwnProperty("positiveIntValue") && message.positiveIntValue !== undefined && message.positiveIntValue !== null)
+                if (message.positiveIntValue !== undefined && message.positiveIntValue !== null && message.hasOwnProperty("positiveIntValue"))
                     writer.uint32(/* id 4, wireType 0 =*/32).uint64(message.positiveIntValue);
-                if (message.hasOwnProperty("negativeIntValue") && message.negativeIntValue !== undefined && message.negativeIntValue !== null)
+                if (message.negativeIntValue !== undefined && message.negativeIntValue !== null && message.hasOwnProperty("negativeIntValue"))
                     writer.uint32(/* id 5, wireType 0 =*/40).int64(message.negativeIntValue);
-                if (message.hasOwnProperty("doubleValue") && message.doubleValue !== undefined)
+                if (message.doubleValue !== undefined && message.hasOwnProperty("doubleValue"))
                     writer.uint32(/* id 6, wireType 1 =*/49).double(message.doubleValue);
-                if (message.hasOwnProperty("stringValue") && message.stringValue)
+                if (message.stringValue && message.hasOwnProperty("stringValue"))
                     writer.uint32(/* id 7, wireType 2 =*/58).bytes(message.stringValue);
-                if (message.hasOwnProperty("aggregateValue") && message.aggregateValue !== undefined)
+                if (message.aggregateValue !== undefined && message.hasOwnProperty("aggregateValue"))
                     writer.uint32(/* id 8, wireType 2 =*/66).string(message.aggregateValue);
                 return writer;
             };
@@ -12549,28 +12549,28 @@ $root.google = (function() {
                     object.stringValue = options.bytes === String ? "" : [];
                     object.aggregateValue = "";
                 }
-                if (message.hasOwnProperty("name") && message.name !== undefined && message.name !== null) {
+                if (message.name !== undefined && message.name !== null && message.hasOwnProperty("name")) {
                     object.name = [];
                     for (var j = 0; j < message.name.length; ++j)
                         object.name[j] = $types[0].toObject(message.name[j], options);
                 }
-                if (message.hasOwnProperty("identifierValue") && message.identifierValue !== undefined && message.identifierValue !== null)
+                if (message.identifierValue !== undefined && message.identifierValue !== null && message.hasOwnProperty("identifierValue"))
                     object.identifierValue = message.identifierValue;
-                if (message.hasOwnProperty("positiveIntValue") && message.positiveIntValue !== undefined && message.positiveIntValue !== null)
+                if (message.positiveIntValue !== undefined && message.positiveIntValue !== null && message.hasOwnProperty("positiveIntValue"))
                     if (typeof message.positiveIntValue === "number")
                         object.positiveIntValue = options.longs === String ? String(message.positiveIntValue) : message.positiveIntValue;
                     else
                         object.positiveIntValue = options.longs === String ? $util.Long.prototype.toString.call(message.positiveIntValue) : options.longs === Number ? new $util.LongBits(message.positiveIntValue.low, message.positiveIntValue.high).toNumber(true) : message.positiveIntValue;
-                if (message.hasOwnProperty("negativeIntValue") && message.negativeIntValue !== undefined && message.negativeIntValue !== null)
+                if (message.negativeIntValue !== undefined && message.negativeIntValue !== null && message.hasOwnProperty("negativeIntValue"))
                     if (typeof message.negativeIntValue === "number")
                         object.negativeIntValue = options.longs === String ? String(message.negativeIntValue) : message.negativeIntValue;
                     else
                         object.negativeIntValue = options.longs === String ? $util.Long.prototype.toString.call(message.negativeIntValue) : options.longs === Number ? new $util.LongBits(message.negativeIntValue.low, message.negativeIntValue.high).toNumber() : message.negativeIntValue;
-                if (message.hasOwnProperty("doubleValue") && message.doubleValue !== undefined && message.doubleValue !== null)
+                if (message.doubleValue !== undefined && message.doubleValue !== null && message.hasOwnProperty("doubleValue"))
                     object.doubleValue = message.doubleValue;
-                if (message.hasOwnProperty("stringValue") && message.stringValue !== undefined && message.stringValue !== null)
+                if (message.stringValue !== undefined && message.stringValue !== null && message.hasOwnProperty("stringValue"))
                     object.stringValue = options.bytes === String ? $util.base64.encode(message.stringValue, 0, message.stringValue.length) : options.bytes === Array ? Array.prototype.slice.call(message.stringValue) : message.stringValue;
-                if (message.hasOwnProperty("aggregateValue") && message.aggregateValue !== undefined && message.aggregateValue !== null)
+                if (message.aggregateValue !== undefined && message.aggregateValue !== null && message.hasOwnProperty("aggregateValue"))
                     object.aggregateValue = message.aggregateValue;
                 return object;
             };
@@ -12740,9 +12740,9 @@ $root.google = (function() {
                         object.namePart = "";
                         object.isExtension = false;
                     }
-                    if (message.hasOwnProperty("namePart") && message.namePart !== undefined && message.namePart !== null)
+                    if (message.namePart !== undefined && message.namePart !== null && message.hasOwnProperty("namePart"))
                         object.namePart = message.namePart;
-                    if (message.hasOwnProperty("isExtension") && message.isExtension !== undefined && message.isExtension !== null)
+                    if (message.isExtension !== undefined && message.isExtension !== null && message.hasOwnProperty("isExtension"))
                         object.isExtension = message.isExtension;
                     return object;
                 };
@@ -12815,7 +12815,7 @@ $root.google = (function() {
             SourceCodeInfo.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
-                if (message.hasOwnProperty("location"))
+                if (message.location !== undefined && message.hasOwnProperty("location"))
                     for (var i = 0; i < message.location.length; ++i)
                         $types[0].encode(message.location[i], writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
                 return writer;
@@ -12921,7 +12921,7 @@ $root.google = (function() {
                 var object = {};
                 if (options.arrays || options.defaults)
                     object.location = [];
-                if (message.hasOwnProperty("location") && message.location !== undefined && message.location !== null) {
+                if (message.location !== undefined && message.location !== null && message.hasOwnProperty("location")) {
                     object.location = [];
                     for (var j = 0; j < message.location.length; ++j)
                         object.location[j] = $types[0].toObject(message.location[j], options);
@@ -13010,23 +13010,23 @@ $root.google = (function() {
                 Location.encode = function encode(message, writer) {
                     if (!writer)
                         writer = $Writer.create();
-                    if (message.hasOwnProperty("path") && message.path.length) {
+                    if (message.path && message.path.length && message.hasOwnProperty("path")) {
                         writer.uint32(/* id 1, wireType 2 =*/10).fork();
                         for (var i = 0; i < message.path.length; ++i)
                             writer.int32(message.path[i]);
                         writer.ldelim();
                     }
-                    if (message.hasOwnProperty("span") && message.span.length) {
+                    if (message.span && message.span.length && message.hasOwnProperty("span")) {
                         writer.uint32(/* id 2, wireType 2 =*/18).fork();
                         for (var i = 0; i < message.span.length; ++i)
                             writer.int32(message.span[i]);
                         writer.ldelim();
                     }
-                    if (message.hasOwnProperty("leadingComments") && message.leadingComments !== undefined)
+                    if (message.leadingComments !== undefined && message.hasOwnProperty("leadingComments"))
                         writer.uint32(/* id 3, wireType 2 =*/26).string(message.leadingComments);
-                    if (message.hasOwnProperty("trailingComments") && message.trailingComments !== undefined)
+                    if (message.trailingComments !== undefined && message.hasOwnProperty("trailingComments"))
                         writer.uint32(/* id 4, wireType 2 =*/34).string(message.trailingComments);
-                    if (message.hasOwnProperty("leadingDetachedComments"))
+                    if (message.leadingDetachedComments !== undefined && message.hasOwnProperty("leadingDetachedComments"))
                         for (var i = 0; i < message.leadingDetachedComments.length; ++i)
                             writer.uint32(/* id 6, wireType 2 =*/50).string(message.leadingDetachedComments[i]);
                     return writer;
@@ -13197,21 +13197,21 @@ $root.google = (function() {
                         object.leadingComments = "";
                         object.trailingComments = "";
                     }
-                    if (message.hasOwnProperty("path") && message.path !== undefined && message.path !== null) {
+                    if (message.path !== undefined && message.path !== null && message.hasOwnProperty("path")) {
                         object.path = [];
                         for (var j = 0; j < message.path.length; ++j)
                             object.path[j] = message.path[j];
                     }
-                    if (message.hasOwnProperty("span") && message.span !== undefined && message.span !== null) {
+                    if (message.span !== undefined && message.span !== null && message.hasOwnProperty("span")) {
                         object.span = [];
                         for (var j = 0; j < message.span.length; ++j)
                             object.span[j] = message.span[j];
                     }
-                    if (message.hasOwnProperty("leadingComments") && message.leadingComments !== undefined && message.leadingComments !== null)
+                    if (message.leadingComments !== undefined && message.leadingComments !== null && message.hasOwnProperty("leadingComments"))
                         object.leadingComments = message.leadingComments;
-                    if (message.hasOwnProperty("trailingComments") && message.trailingComments !== undefined && message.trailingComments !== null)
+                    if (message.trailingComments !== undefined && message.trailingComments !== null && message.hasOwnProperty("trailingComments"))
                         object.trailingComments = message.trailingComments;
-                    if (message.hasOwnProperty("leadingDetachedComments") && message.leadingDetachedComments !== undefined && message.leadingDetachedComments !== null) {
+                    if (message.leadingDetachedComments !== undefined && message.leadingDetachedComments !== null && message.hasOwnProperty("leadingDetachedComments")) {
                         object.leadingDetachedComments = [];
                         for (var j = 0; j < message.leadingDetachedComments.length; ++j)
                             object.leadingDetachedComments[j] = message.leadingDetachedComments[j];
@@ -13287,7 +13287,7 @@ $root.google = (function() {
             GeneratedCodeInfo.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
-                if (message.hasOwnProperty("annotation"))
+                if (message.annotation !== undefined && message.hasOwnProperty("annotation"))
                     for (var i = 0; i < message.annotation.length; ++i)
                         $types[0].encode(message.annotation[i], writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
                 return writer;
@@ -13393,7 +13393,7 @@ $root.google = (function() {
                 var object = {};
                 if (options.arrays || options.defaults)
                     object.annotation = [];
-                if (message.hasOwnProperty("annotation") && message.annotation !== undefined && message.annotation !== null) {
+                if (message.annotation !== undefined && message.annotation !== null && message.hasOwnProperty("annotation")) {
                     object.annotation = [];
                     for (var j = 0; j < message.annotation.length; ++j)
                         object.annotation[j] = $types[0].toObject(message.annotation[j], options);
@@ -13476,17 +13476,17 @@ $root.google = (function() {
                 Annotation.encode = function encode(message, writer) {
                     if (!writer)
                         writer = $Writer.create();
-                    if (message.hasOwnProperty("path") && message.path.length) {
+                    if (message.path && message.path.length && message.hasOwnProperty("path")) {
                         writer.uint32(/* id 1, wireType 2 =*/10).fork();
                         for (var i = 0; i < message.path.length; ++i)
                             writer.int32(message.path[i]);
                         writer.ldelim();
                     }
-                    if (message.hasOwnProperty("sourceFile") && message.sourceFile !== undefined)
+                    if (message.sourceFile !== undefined && message.hasOwnProperty("sourceFile"))
                         writer.uint32(/* id 2, wireType 2 =*/18).string(message.sourceFile);
-                    if (message.hasOwnProperty("begin") && message.begin !== undefined)
+                    if (message.begin !== undefined && message.hasOwnProperty("begin"))
                         writer.uint32(/* id 3, wireType 0 =*/24).int32(message.begin);
-                    if (message.hasOwnProperty("end") && message.end !== undefined)
+                    if (message.end !== undefined && message.hasOwnProperty("end"))
                         writer.uint32(/* id 4, wireType 0 =*/32).int32(message.end);
                     return writer;
                 };
@@ -13623,16 +13623,16 @@ $root.google = (function() {
                         object.begin = 0;
                         object.end = 0;
                     }
-                    if (message.hasOwnProperty("path") && message.path !== undefined && message.path !== null) {
+                    if (message.path !== undefined && message.path !== null && message.hasOwnProperty("path")) {
                         object.path = [];
                         for (var j = 0; j < message.path.length; ++j)
                             object.path[j] = message.path[j];
                     }
-                    if (message.hasOwnProperty("sourceFile") && message.sourceFile !== undefined && message.sourceFile !== null)
+                    if (message.sourceFile !== undefined && message.sourceFile !== null && message.hasOwnProperty("sourceFile"))
                         object.sourceFile = message.sourceFile;
-                    if (message.hasOwnProperty("begin") && message.begin !== undefined && message.begin !== null)
+                    if (message.begin !== undefined && message.begin !== null && message.hasOwnProperty("begin"))
                         object.begin = message.begin;
-                    if (message.hasOwnProperty("end") && message.end !== undefined && message.end !== null)
+                    if (message.end !== undefined && message.end !== null && message.hasOwnProperty("end"))
                         object.end = message.end;
                     return object;
                 };

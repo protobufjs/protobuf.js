@@ -70,11 +70,11 @@ $root.Test1 = (function() {
     Test1.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.hasOwnProperty("field1") && message.field1 !== undefined)
+        if (message.field1 !== undefined && message.hasOwnProperty("field1"))
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.field1);
-        if (message.hasOwnProperty("field2") && message.field2 !== undefined)
+        if (message.field2 !== undefined && message.hasOwnProperty("field2"))
             writer.uint32(/* id 2, wireType 0 =*/16).uint32(message.field2);
-        if (message.hasOwnProperty("field3") && message.field3 !== undefined)
+        if (message.field3 !== undefined && message.hasOwnProperty("field3"))
             writer.uint32(/* id 3, wireType 0 =*/24).bool(message.field3);
         return writer;
     };
@@ -187,11 +187,11 @@ $root.Test1 = (function() {
             object.field2 = 0;
             object.field3 = false;
         }
-        if (message.hasOwnProperty("field1") && message.field1 !== undefined && message.field1 !== null)
+        if (message.field1 !== undefined && message.field1 !== null && message.hasOwnProperty("field1"))
             object.field1 = message.field1;
-        if (message.hasOwnProperty("field2") && message.field2 !== undefined && message.field2 !== null)
+        if (message.field2 !== undefined && message.field2 !== null && message.hasOwnProperty("field2"))
             object.field2 = message.field2;
-        if (message.hasOwnProperty("field3") && message.field3 !== undefined && message.field3 !== null)
+        if (message.field3 !== undefined && message.field3 !== null && message.hasOwnProperty("field3"))
             object.field3 = message.field3;
         return object;
     };

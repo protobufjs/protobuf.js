@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.5.0 (c) 2016, Daniel Wirtz
- * Compiled Mon, 16 Jan 2017 22:43:15 UTC
+ * Compiled Tue, 17 Jan 2017 01:08:43 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -312,11 +312,10 @@ utf8.write = function utf8_write(string, buffer, offset) {
 };
 
 },{}],5:[function(require,module,exports){
-(function (global){
 // This file exports just the bare minimum required to work with statically generated code.
 // Can be used as a drop-in replacement for the full library as it has the same general structure.
 "use strict";
-var protobuf = global.protobuf = exports;
+var protobuf = exports;
 
 protobuf.Writer       = require(10);
 protobuf.BufferWriter = require(11);
@@ -330,7 +329,15 @@ function configure() {
     protobuf.Reader._configure();
 }
 
-// Be nice to AMD
+if (typeof window !== "undefined")
+    window.protobuf = protobuf;
+else if (typeof global !== "undefined")
+    global.protobuf = protobuf;
+else if (typeof self !== "undefined")
+    self.protobuf = protobuf;
+else
+    this.protobuf = protobuf; // eslint-disable-line no-invalid-this
+
 if (typeof define === "function" && define.amd)
     define(["long"], function(Long) {
         if (Long) {
@@ -339,8 +346,6 @@ if (typeof define === "function" && define.amd)
         }
         return protobuf;
     });
-
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
 },{"10":10,"11":11,"6":6,"7":7,"9":9}],6:[function(require,module,exports){
 "use strict";
@@ -896,7 +901,6 @@ BufferReaderPrototype.string = function read_string_buffer() {
 
 },{"6":6,"9":9}],8:[function(require,module,exports){
 "use strict";
-
 module.exports = LongBits;
 
 var util = require(9);
@@ -1109,9 +1113,7 @@ LongBitsPrototype.length = function length() {
 };
 
 },{"9":9}],9:[function(require,module,exports){
-(function (global){
 "use strict";
-
 var util = exports;
 
 util.base64   = require(1);
@@ -1137,7 +1139,7 @@ util.emptyObject = Object.freeze ? Object.freeze({}) : {};
  * @memberof util
  * @type {boolean}
  */
-util.isNode = Boolean(global.process && global.process.versions && global.process.versions.node);
+util.isNode = typeof process !== "undefined" && Boolean(process.versions && process.versions.node);
 
 /**
  * Tests if the specified value is an integer.
@@ -1224,7 +1226,7 @@ util.LongBits = require(8);
  * Long.js's Long class if available.
  * @type {?function(new: Long)}
  */
-util.Long = global.dcodeIO && global.dcodeIO.Long || util.inquire("long");
+util.Long = typeof dcodeIO !== "undefined" && dcodeIO && dcodeIO.Long || util.inquire("long");
 
 /**
  * Converts a number or long to an 8 characters long hash string.
@@ -1334,8 +1336,6 @@ util.toJSONOptions = {
     enums: String,
     bytes: String
 };
-
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
 },{"1":1,"2":2,"3":3,"4":4,"8":8}],10:[function(require,module,exports){
 "use strict";

@@ -4,17 +4,20 @@
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/3946e0fefea415f52a16ea7a74109ff40eee9643) Initial upgrade of converters to real generated functions, see [#620](https://github.com/dcodeIO/protobuf.js/issues/620)<br />
 
 ## Fixed
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/08cda241a3e095f3123f8a991bfd80aa3eae9400) An enum's default value present as a string looks up using typeDefault, not defaultValue which is an array if repeated<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/c7e14b1d684aaba2080195cc83900288c5019bbc) Use common utility for virtual oneof getters and setters in both reflection and static code, see [#644](https://github.com/dcodeIO/protobuf.js/issues/644)<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/508984b7ff9529906be282375d36fdbada66b8e6) Use Type.toObject/Message.toObject within converters, see [#641](https://github.com/dcodeIO/protobuf.js/issues/641)<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/5bca18f2d32e8687986e23edade7c2aeb6b6bac1) Generate null/undefined assertion in fromObject if actually NOT an enum, see [#620](https://github.com/dcodeIO/protobuf.js/issues/620)<br />
 
 ## New
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/9b090bb1673aeb9b8f1d7162316fce4d7a3348f0) Switched to own property-aware encoders for compatibility, see [#639](https://github.com/dcodeIO/protobuf.js/issues/639)<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/cda5c5452fa0797f1e4c375471aef96f844711f1) Removed scoping iifes from generated static code<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/def7b45fb9b5e01028cfa3bf2ecd8272575feb4d) Removed even more clutter from generated static code<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/dbd19fd9d3a57d033aad1d7173f7f66db8f8db3e) Removed various clutter from generated static code<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/340d6aa82ac17c4a761c681fa71d5a0955032c8b) Now also parses comments, sets them on reflected objects and re-uses them when generating static code, see [#640](https://github.com/dcodeIO/protobuf.js/issues/640)<br />
 
 ## CLI
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/3cb82628159db4d2aa721b63619b16aadc5f1981) Further improved generated static code style<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/1cc8a2460c7e161c9bc58fa441ec88e752df409c) Made sure that static target's replacement regexes don't match fields<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/d4272dbf5d0b2577af8efb74a94d246e2e0d728e) Also accept (trailing) triple-slash comments for compatibility with protoc-gen-doc, see [#640](https://github.com/dcodeIO/protobuf.js/issues/640)<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/508984b7ff9529906be282375d36fdbada66b8e6) Replace all occurencies of types[%d].values in static code, see [#641](https://github.com/dcodeIO/protobuf.js/issues/641)<br />
@@ -27,6 +30,11 @@
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/079388ca65dfd581d74188a6ae49cfa01b103809) Updated converter documentation<br />
 
 ## Other
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/2c94b641fc5700c8781ac0b9fe796debac8d6893) Call hasOwnProperty builtin as late as possible decreasing the probability of having to call it at all (perf)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/818bcacde267be70a75e689f480a3caad6f80cf7) Slightly hardened codegen sprintf<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/818bcacde267be70a75e689f480a3caad6f80cf7) Significantly improved uint32 write performance<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/b5daa272407cb31945fd38c34bbef7c9edd1db1c) Cleaned up test case data and removed unused files<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/f46ee79b0a5b9dfd3176d8dfbb430cfaca8ed150) Updated dist files and types to reflect recent changes<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/c280a4a18c6d81c3468177b2ea58ae3bc4f25e73) Removed now useless trailing comment checks, see [#640](https://github.com/dcodeIO/protobuf.js/issues/640)<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/3f6ffd01c3cb7d7fc4129c45dc803abb5211a1fd) Restrict comment parsing for static code to explicit /**-blocks because old protos may generate a lot of nonsense otherwise, see [#640](https://github.com/dcodeIO/protobuf.js/issues/640)<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/a4954ed2b63e349c96acc5c471241a5abb79854d) Added semver to dev/cli dependencies<br />

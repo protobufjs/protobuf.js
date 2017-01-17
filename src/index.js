@@ -1,5 +1,5 @@
 "use strict";
-var protobuf = global.protobuf = exports;
+var protobuf = exports;
 
 /**
  * A node-style callback as used by {@link load} and {@link Root#load}.
@@ -128,7 +128,16 @@ function configure() {
 }
 
 /* istanbul ignore next */
-// Be nice to AMD
+if (typeof window !== "undefined")
+    window.protobuf = protobuf;
+else if (typeof global !== "undefined")
+    global.protobuf = protobuf;
+else if (typeof self !== "undefined")
+    self.protobuf = protobuf;
+else
+    this.protobuf = protobuf; // eslint-disable-line no-invalid-this
+
+/* istanbul ignore next */
 if (typeof define === "function" && define.amd)
     define(["long"], function(Long) {
         if (Long) {

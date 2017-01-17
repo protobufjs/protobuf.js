@@ -35,12 +35,11 @@ function bundle(options) {
         throw TypeError("missing options");
     var bundler = browserify({
         entries: options.entry,
+        insertGlobalVars: false,
+        detectGlobals: false,
         debug: true
     })
-    bundler
-    .external("long")
-    .exclude("process")
-    .exclude("_process");
+    .external("long");
     if (options.exclude)
         options.exclude.forEach(bundler.exclude, bundler);
     return bundler
@@ -53,6 +52,11 @@ function bundle(options) {
                 gulpif(options.compress, uglify({
                     mangleProperties: {
                         regex: /^_/
+                    },
+                    compress: {
+                        unused: true,
+                        keep_fargs: false,
+                        unsafe: true
                     }
                 }))
             )

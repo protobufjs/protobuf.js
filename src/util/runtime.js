@@ -1,5 +1,4 @@
 "use strict";
-
 var util = exports;
 
 util.base64   = require("@protobufjs/base64");
@@ -25,7 +24,7 @@ util.emptyObject = Object.freeze ? Object.freeze({}) : {};
  * @memberof util
  * @type {boolean}
  */
-util.isNode = Boolean(global.process && global.process.versions && global.process.versions.node);
+util.isNode = typeof process !== "undefined" && Boolean(process.versions && process.versions.node);
 
 /**
  * Tests if the specified value is an integer.
@@ -112,7 +111,7 @@ util.LongBits = require("./longbits");
  * Long.js's Long class if available.
  * @type {?function(new: Long)}
  */
-util.Long = global.dcodeIO && global.dcodeIO.Long || util.inquire("long");
+util.Long = typeof dcodeIO !== "undefined" && dcodeIO && dcodeIO.Long || util.inquire("long");
 
 /**
  * Converts a number or long to an 8 characters long hash string.

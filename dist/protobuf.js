@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.5.0 (c) 2016, Daniel Wirtz
- * Compiled Mon, 16 Jan 2017 22:43:15 UTC
+ * Compiled Tue, 17 Jan 2017 01:08:43 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -5990,7 +5990,6 @@ util.ucFirst = function ucFirst(str) {
 
 },{"1":1,"3":3,"36":36,"4":4,"5":5,"6":6,"8":8}],35:[function(require,module,exports){
 "use strict";
-
 module.exports = LongBits;
 
 var util = require(36);
@@ -6203,9 +6202,7 @@ LongBitsPrototype.length = function length() {
 };
 
 },{"36":36}],36:[function(require,module,exports){
-(function (global){
 "use strict";
-
 var util = exports;
 
 util.base64   = require(2);
@@ -6231,7 +6228,7 @@ util.emptyObject = Object.freeze ? Object.freeze({}) : {};
  * @memberof util
  * @type {boolean}
  */
-util.isNode = Boolean(global.process && global.process.versions && global.process.versions.node);
+util.isNode = typeof process !== "undefined" && Boolean(process.versions && process.versions.node);
 
 /**
  * Tests if the specified value is an integer.
@@ -6318,7 +6315,7 @@ util.LongBits = require(35);
  * Long.js's Long class if available.
  * @type {?function(new: Long)}
  */
-util.Long = global.dcodeIO && global.dcodeIO.Long || util.inquire("long");
+util.Long = typeof dcodeIO !== "undefined" && dcodeIO && dcodeIO.Long || util.inquire("long");
 
 /**
  * Converts a number or long to an 8 characters long hash string.
@@ -6428,8 +6425,6 @@ util.toJSONOptions = {
     enums: String,
     bytes: String
 };
-
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
 },{"10":10,"2":2,"35":35,"7":7,"9":9}],37:[function(require,module,exports){
 "use strict";
@@ -7244,9 +7239,8 @@ BufferWriterPrototype.string = function write_string_buffer(value) {
 };
 
 },{"36":36,"38":38}],40:[function(require,module,exports){
-(function (global){
 "use strict";
-var protobuf = global.protobuf = exports;
+var protobuf = exports;
 
 /**
  * A node-style callback as used by {@link load} and {@link Root#load}.
@@ -7375,7 +7369,16 @@ function configure() {
 }
 
 /* istanbul ignore next */
-// Be nice to AMD
+if (typeof window !== "undefined")
+    window.protobuf = protobuf;
+else if (typeof global !== "undefined")
+    global.protobuf = protobuf;
+else if (typeof self !== "undefined")
+    self.protobuf = protobuf;
+else
+    this.protobuf = protobuf; // eslint-disable-line no-invalid-this
+
+/* istanbul ignore next */
 if (typeof define === "function" && define.amd)
     define(["long"], function(Long) {
         if (Long) {
@@ -7384,8 +7387,6 @@ if (typeof define === "function" && define.amd)
         }
         return protobuf;
     });
-
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
 },{"11":11,"12":12,"13":13,"14":14,"15":15,"16":16,"17":17,"18":18,"19":19,"20":20,"21":21,"22":22,"23":23,"24":24,"25":25,"26":26,"27":27,"28":28,"30":30,"31":31,"32":32,"33":33,"34":34,"37":37,"38":38,"39":39}]},{},[40])
 

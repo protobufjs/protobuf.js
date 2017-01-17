@@ -1,7 +1,7 @@
 // This file exports just the bare minimum required to work with statically generated code.
 // Can be used as a drop-in replacement for the full library as it has the same general structure.
 "use strict";
-var protobuf = global.protobuf = exports;
+var protobuf = exports;
 
 protobuf.Writer       = require("../src/writer");
 protobuf.BufferWriter = require("../src/writer_buffer");
@@ -15,7 +15,15 @@ function configure() {
     protobuf.Reader._configure();
 }
 
-// Be nice to AMD
+if (typeof window !== "undefined")
+    window.protobuf = protobuf;
+else if (typeof global !== "undefined")
+    global.protobuf = protobuf;
+else if (typeof self !== "undefined")
+    self.protobuf = protobuf;
+else
+    this.protobuf = protobuf; // eslint-disable-line no-invalid-this
+
 if (typeof define === "function" && define.amd)
     define(["long"], function(Long) {
         if (Long) {

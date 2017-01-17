@@ -146,7 +146,7 @@ $root.MyRequest = (function() {
     MyRequest.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.hasOwnProperty("path") && message.path !== undefined)
+        if (message.path !== undefined && message.hasOwnProperty("path"))
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.path);
         return writer;
     };
@@ -240,7 +240,7 @@ $root.MyRequest = (function() {
         var object = {};
         if (options.defaults)
             object.path = "";
-        if (message.hasOwnProperty("path") && message.path !== undefined && message.path !== null)
+        if (message.path !== undefined && message.path !== null && message.hasOwnProperty("path"))
             object.path = message.path;
         return object;
     };
@@ -305,7 +305,7 @@ $root.MyResponse = (function() {
     MyResponse.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.hasOwnProperty("status") && message.status !== undefined)
+        if (message.status !== undefined && message.hasOwnProperty("status"))
             writer.uint32(/* id 2, wireType 0 =*/16).int32(message.status);
         return writer;
     };
@@ -399,7 +399,7 @@ $root.MyResponse = (function() {
         var object = {};
         if (options.defaults)
             object.status = 0;
-        if (message.hasOwnProperty("status") && message.status !== undefined && message.status !== null)
+        if (message.status !== undefined && message.status !== null && message.hasOwnProperty("status"))
             object.status = message.status;
         return object;
     };

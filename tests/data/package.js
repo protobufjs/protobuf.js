@@ -155,45 +155,45 @@ $root.Package = (function() {
     Package.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.hasOwnProperty("name") && message.name !== undefined)
+        if (message.name !== undefined && message.hasOwnProperty("name"))
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.name);
-        if (message.hasOwnProperty("version") && message.version !== undefined)
+        if (message.version !== undefined && message.hasOwnProperty("version"))
             writer.uint32(/* id 2, wireType 2 =*/18).string(message.version);
-        if (message.hasOwnProperty("description") && message.description !== undefined)
+        if (message.description !== undefined && message.hasOwnProperty("description"))
             writer.uint32(/* id 3, wireType 2 =*/26).string(message.description);
-        if (message.hasOwnProperty("author") && message.author !== undefined)
+        if (message.author !== undefined && message.hasOwnProperty("author"))
             writer.uint32(/* id 4, wireType 2 =*/34).string(message.author);
-        if (message.hasOwnProperty("license") && message.license !== undefined)
+        if (message.license !== undefined && message.hasOwnProperty("license"))
             writer.uint32(/* id 5, wireType 2 =*/42).string(message.license);
-        if (message.hasOwnProperty("repository") && message.repository !== undefined)
+        if (message.repository !== undefined && message.hasOwnProperty("repository"))
             $types[5].encode(message.repository, writer.uint32(/* id 6, wireType 2 =*/50).fork()).ldelim();
-        if (message.hasOwnProperty("bugs") && message.bugs !== undefined)
+        if (message.bugs !== undefined && message.hasOwnProperty("bugs"))
             writer.uint32(/* id 7, wireType 2 =*/58).string(message.bugs);
-        if (message.hasOwnProperty("homepage") && message.homepage !== undefined)
+        if (message.homepage !== undefined && message.hasOwnProperty("homepage"))
             writer.uint32(/* id 8, wireType 2 =*/66).string(message.homepage);
-        if (message.hasOwnProperty("keywords"))
+        if (message.keywords !== undefined && message.hasOwnProperty("keywords"))
             for (var i = 0; i < message.keywords.length; ++i)
                 writer.uint32(/* id 9, wireType 2 =*/74).string(message.keywords[i]);
-        if (message.hasOwnProperty("main") && message.main !== undefined)
+        if (message.main !== undefined && message.hasOwnProperty("main"))
             writer.uint32(/* id 10, wireType 2 =*/82).string(message.main);
-        if (message.hasOwnProperty("bin") && message.bin)
+        if (message.bin && message.hasOwnProperty("bin"))
             for (var keys = Object.keys(message.bin), i = 0; i < keys.length; ++i)
                 writer.uint32(/* id 11, wireType 2 =*/90).fork().uint32(/* id 1, wireType 2 =*/10).string(keys[i]).uint32(/* id 2, wireType 2 =*/18).string(message.bin[keys[i]]).ldelim();
-        if (message.hasOwnProperty("scripts") && message.scripts)
+        if (message.scripts && message.hasOwnProperty("scripts"))
             for (var keys = Object.keys(message.scripts), i = 0; i < keys.length; ++i)
                 writer.uint32(/* id 12, wireType 2 =*/98).fork().uint32(/* id 1, wireType 2 =*/10).string(keys[i]).uint32(/* id 2, wireType 2 =*/18).string(message.scripts[keys[i]]).ldelim();
-        if (message.hasOwnProperty("dependencies") && message.dependencies)
+        if (message.dependencies && message.hasOwnProperty("dependencies"))
             for (var keys = Object.keys(message.dependencies), i = 0; i < keys.length; ++i)
                 writer.uint32(/* id 13, wireType 2 =*/106).fork().uint32(/* id 1, wireType 2 =*/10).string(keys[i]).uint32(/* id 2, wireType 2 =*/18).string(message.dependencies[keys[i]]).ldelim();
-        if (message.hasOwnProperty("optionalDependencies") && message.optionalDependencies)
+        if (message.optionalDependencies && message.hasOwnProperty("optionalDependencies"))
             for (var keys = Object.keys(message.optionalDependencies), i = 0; i < keys.length; ++i)
                 writer.uint32(/* id 14, wireType 2 =*/114).fork().uint32(/* id 1, wireType 2 =*/10).string(keys[i]).uint32(/* id 2, wireType 2 =*/18).string(message.optionalDependencies[keys[i]]).ldelim();
-        if (message.hasOwnProperty("devDependencies") && message.devDependencies)
+        if (message.devDependencies && message.hasOwnProperty("devDependencies"))
             for (var keys = Object.keys(message.devDependencies), i = 0; i < keys.length; ++i)
                 writer.uint32(/* id 15, wireType 2 =*/122).fork().uint32(/* id 1, wireType 2 =*/10).string(keys[i]).uint32(/* id 2, wireType 2 =*/18).string(message.devDependencies[keys[i]]).ldelim();
-        if (message.hasOwnProperty("types") && message.types !== undefined)
+        if (message.types !== undefined && message.hasOwnProperty("types"))
             writer.uint32(/* id 17, wireType 2 =*/138).string(message.types);
-        if (message.hasOwnProperty("cliDependencies"))
+        if (message.cliDependencies !== undefined && message.hasOwnProperty("cliDependencies"))
             for (var i = 0; i < message.cliDependencies.length; ++i)
                 writer.uint32(/* id 18, wireType 2 =*/146).string(message.cliDependencies[i]);
         return writer;
@@ -522,57 +522,57 @@ $root.Package = (function() {
             object.main = "";
             object.types = "";
         }
-        if (message.hasOwnProperty("name") && message.name !== undefined && message.name !== null)
+        if (message.name !== undefined && message.name !== null && message.hasOwnProperty("name"))
             object.name = message.name;
-        if (message.hasOwnProperty("version") && message.version !== undefined && message.version !== null)
+        if (message.version !== undefined && message.version !== null && message.hasOwnProperty("version"))
             object.version = message.version;
-        if (message.hasOwnProperty("description") && message.description !== undefined && message.description !== null)
+        if (message.description !== undefined && message.description !== null && message.hasOwnProperty("description"))
             object.description = message.description;
-        if (message.hasOwnProperty("author") && message.author !== undefined && message.author !== null)
+        if (message.author !== undefined && message.author !== null && message.hasOwnProperty("author"))
             object.author = message.author;
-        if (message.hasOwnProperty("license") && message.license !== undefined && message.license !== null)
+        if (message.license !== undefined && message.license !== null && message.hasOwnProperty("license"))
             object.license = message.license;
-        if (message.hasOwnProperty("repository") && message.repository !== undefined && message.repository !== null)
+        if (message.repository !== undefined && message.repository !== null && message.hasOwnProperty("repository"))
             object.repository = $types[5].toObject(message.repository, options);
-        if (message.hasOwnProperty("bugs") && message.bugs !== undefined && message.bugs !== null)
+        if (message.bugs !== undefined && message.bugs !== null && message.hasOwnProperty("bugs"))
             object.bugs = message.bugs;
-        if (message.hasOwnProperty("homepage") && message.homepage !== undefined && message.homepage !== null)
+        if (message.homepage !== undefined && message.homepage !== null && message.hasOwnProperty("homepage"))
             object.homepage = message.homepage;
-        if (message.hasOwnProperty("keywords") && message.keywords !== undefined && message.keywords !== null) {
+        if (message.keywords !== undefined && message.keywords !== null && message.hasOwnProperty("keywords")) {
             object.keywords = [];
             for (var j = 0; j < message.keywords.length; ++j)
                 object.keywords[j] = message.keywords[j];
         }
-        if (message.hasOwnProperty("main") && message.main !== undefined && message.main !== null)
+        if (message.main !== undefined && message.main !== null && message.hasOwnProperty("main"))
             object.main = message.main;
-        if (message.hasOwnProperty("bin") && message.bin !== undefined && message.bin !== null) {
+        if (message.bin !== undefined && message.bin !== null && message.hasOwnProperty("bin")) {
             object.bin = {};
             for (var keys2 = Object.keys(message.bin), j = 0; j < keys2.length; ++j)
                 object.bin[keys2[j]] = message.bin[keys2[j]];
         }
-        if (message.hasOwnProperty("scripts") && message.scripts !== undefined && message.scripts !== null) {
+        if (message.scripts !== undefined && message.scripts !== null && message.hasOwnProperty("scripts")) {
             object.scripts = {};
             for (var keys2 = Object.keys(message.scripts), j = 0; j < keys2.length; ++j)
                 object.scripts[keys2[j]] = message.scripts[keys2[j]];
         }
-        if (message.hasOwnProperty("dependencies") && message.dependencies !== undefined && message.dependencies !== null) {
+        if (message.dependencies !== undefined && message.dependencies !== null && message.hasOwnProperty("dependencies")) {
             object.dependencies = {};
             for (var keys2 = Object.keys(message.dependencies), j = 0; j < keys2.length; ++j)
                 object.dependencies[keys2[j]] = message.dependencies[keys2[j]];
         }
-        if (message.hasOwnProperty("optionalDependencies") && message.optionalDependencies !== undefined && message.optionalDependencies !== null) {
+        if (message.optionalDependencies !== undefined && message.optionalDependencies !== null && message.hasOwnProperty("optionalDependencies")) {
             object.optionalDependencies = {};
             for (var keys2 = Object.keys(message.optionalDependencies), j = 0; j < keys2.length; ++j)
                 object.optionalDependencies[keys2[j]] = message.optionalDependencies[keys2[j]];
         }
-        if (message.hasOwnProperty("devDependencies") && message.devDependencies !== undefined && message.devDependencies !== null) {
+        if (message.devDependencies !== undefined && message.devDependencies !== null && message.hasOwnProperty("devDependencies")) {
             object.devDependencies = {};
             for (var keys2 = Object.keys(message.devDependencies), j = 0; j < keys2.length; ++j)
                 object.devDependencies[keys2[j]] = message.devDependencies[keys2[j]];
         }
-        if (message.hasOwnProperty("types") && message.types !== undefined && message.types !== null)
+        if (message.types !== undefined && message.types !== null && message.hasOwnProperty("types"))
             object.types = message.types;
-        if (message.hasOwnProperty("cliDependencies") && message.cliDependencies !== undefined && message.cliDependencies !== null) {
+        if (message.cliDependencies !== undefined && message.cliDependencies !== null && message.hasOwnProperty("cliDependencies")) {
             object.cliDependencies = [];
             for (var j = 0; j < message.cliDependencies.length; ++j)
                 object.cliDependencies[j] = message.cliDependencies[j];
@@ -643,9 +643,9 @@ $root.Package = (function() {
         Repository.encode = function encode(message, writer) {
             if (!writer)
                 writer = $Writer.create();
-            if (message.hasOwnProperty("type") && message.type !== undefined)
+            if (message.type !== undefined && message.hasOwnProperty("type"))
                 writer.uint32(/* id 1, wireType 2 =*/10).string(message.type);
-            if (message.hasOwnProperty("url") && message.url !== undefined)
+            if (message.url !== undefined && message.hasOwnProperty("url"))
                 writer.uint32(/* id 2, wireType 2 =*/18).string(message.url);
             return writer;
         };
@@ -749,9 +749,9 @@ $root.Package = (function() {
                 object.type = "";
                 object.url = "";
             }
-            if (message.hasOwnProperty("type") && message.type !== undefined && message.type !== null)
+            if (message.type !== undefined && message.type !== null && message.hasOwnProperty("type"))
                 object.type = message.type;
-            if (message.hasOwnProperty("url") && message.url !== undefined && message.url !== null)
+            if (message.url !== undefined && message.url !== null && message.hasOwnProperty("url"))
                 object.url = message.url;
             return object;
         };

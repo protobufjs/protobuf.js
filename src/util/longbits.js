@@ -1,5 +1,4 @@
 "use strict";
-
 module.exports = LongBits;
 
 var util = require("../util/runtime");

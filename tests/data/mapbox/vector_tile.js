@@ -68,7 +68,7 @@ $root.vector_tile = (function() {
         Tile.encode = function encode(message, writer) {
             if (!writer)
                 writer = $Writer.create();
-            if (message.hasOwnProperty("layers"))
+            if (message.layers !== undefined && message.hasOwnProperty("layers"))
                 for (var i = 0; i < message.layers.length; ++i)
                     $types[0].encode(message.layers[i], writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
             return writer;
@@ -174,7 +174,7 @@ $root.vector_tile = (function() {
             var object = {};
             if (options.arrays || options.defaults)
                 object.layers = [];
-            if (message.hasOwnProperty("layers") && message.layers !== undefined && message.layers !== null) {
+            if (message.layers !== undefined && message.layers !== null && message.hasOwnProperty("layers")) {
                 object.layers = [];
                 for (var j = 0; j < message.layers.length; ++j)
                     object.layers[j] = $types[0].toObject(message.layers[j], options);
@@ -295,19 +295,19 @@ $root.vector_tile = (function() {
             Value.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
-                if (message.hasOwnProperty("stringValue") && message.stringValue !== undefined)
+                if (message.stringValue !== undefined && message.hasOwnProperty("stringValue"))
                     writer.uint32(/* id 1, wireType 2 =*/10).string(message.stringValue);
-                if (message.hasOwnProperty("floatValue") && message.floatValue !== undefined)
+                if (message.floatValue !== undefined && message.hasOwnProperty("floatValue"))
                     writer.uint32(/* id 2, wireType 5 =*/21).float(message.floatValue);
-                if (message.hasOwnProperty("doubleValue") && message.doubleValue !== undefined)
+                if (message.doubleValue !== undefined && message.hasOwnProperty("doubleValue"))
                     writer.uint32(/* id 3, wireType 1 =*/25).double(message.doubleValue);
-                if (message.hasOwnProperty("intValue") && message.intValue !== undefined && message.intValue !== null)
+                if (message.intValue !== undefined && message.intValue !== null && message.hasOwnProperty("intValue"))
                     writer.uint32(/* id 4, wireType 0 =*/32).int64(message.intValue);
-                if (message.hasOwnProperty("uintValue") && message.uintValue !== undefined && message.uintValue !== null)
+                if (message.uintValue !== undefined && message.uintValue !== null && message.hasOwnProperty("uintValue"))
                     writer.uint32(/* id 5, wireType 0 =*/40).uint64(message.uintValue);
-                if (message.hasOwnProperty("sintValue") && message.sintValue !== undefined && message.sintValue !== null)
+                if (message.sintValue !== undefined && message.sintValue !== null && message.hasOwnProperty("sintValue"))
                     writer.uint32(/* id 6, wireType 0 =*/48).sint64(message.sintValue);
-                if (message.hasOwnProperty("boolValue") && message.boolValue !== undefined)
+                if (message.boolValue !== undefined && message.hasOwnProperty("boolValue"))
                     writer.uint32(/* id 7, wireType 0 =*/56).bool(message.boolValue);
                 return writer;
             };
@@ -489,28 +489,28 @@ $root.vector_tile = (function() {
                         object.sintValue = options.longs === String ? "0" : 0;
                     object.boolValue = false;
                 }
-                if (message.hasOwnProperty("stringValue") && message.stringValue !== undefined && message.stringValue !== null)
+                if (message.stringValue !== undefined && message.stringValue !== null && message.hasOwnProperty("stringValue"))
                     object.stringValue = message.stringValue;
-                if (message.hasOwnProperty("floatValue") && message.floatValue !== undefined && message.floatValue !== null)
+                if (message.floatValue !== undefined && message.floatValue !== null && message.hasOwnProperty("floatValue"))
                     object.floatValue = message.floatValue;
-                if (message.hasOwnProperty("doubleValue") && message.doubleValue !== undefined && message.doubleValue !== null)
+                if (message.doubleValue !== undefined && message.doubleValue !== null && message.hasOwnProperty("doubleValue"))
                     object.doubleValue = message.doubleValue;
-                if (message.hasOwnProperty("intValue") && message.intValue !== undefined && message.intValue !== null)
+                if (message.intValue !== undefined && message.intValue !== null && message.hasOwnProperty("intValue"))
                     if (typeof message.intValue === "number")
                         object.intValue = options.longs === String ? String(message.intValue) : message.intValue;
                     else
                         object.intValue = options.longs === String ? $util.Long.prototype.toString.call(message.intValue) : options.longs === Number ? new $util.LongBits(message.intValue.low, message.intValue.high).toNumber() : message.intValue;
-                if (message.hasOwnProperty("uintValue") && message.uintValue !== undefined && message.uintValue !== null)
+                if (message.uintValue !== undefined && message.uintValue !== null && message.hasOwnProperty("uintValue"))
                     if (typeof message.uintValue === "number")
                         object.uintValue = options.longs === String ? String(message.uintValue) : message.uintValue;
                     else
                         object.uintValue = options.longs === String ? $util.Long.prototype.toString.call(message.uintValue) : options.longs === Number ? new $util.LongBits(message.uintValue.low, message.uintValue.high).toNumber(true) : message.uintValue;
-                if (message.hasOwnProperty("sintValue") && message.sintValue !== undefined && message.sintValue !== null)
+                if (message.sintValue !== undefined && message.sintValue !== null && message.hasOwnProperty("sintValue"))
                     if (typeof message.sintValue === "number")
                         object.sintValue = options.longs === String ? String(message.sintValue) : message.sintValue;
                     else
                         object.sintValue = options.longs === String ? $util.Long.prototype.toString.call(message.sintValue) : options.longs === Number ? new $util.LongBits(message.sintValue.low, message.sintValue.high).toNumber() : message.sintValue;
-                if (message.hasOwnProperty("boolValue") && message.boolValue !== undefined && message.boolValue !== null)
+                if (message.boolValue !== undefined && message.boolValue !== null && message.hasOwnProperty("boolValue"))
                     object.boolValue = message.boolValue;
                 return object;
             };
@@ -598,17 +598,17 @@ $root.vector_tile = (function() {
             Feature.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
-                if (message.hasOwnProperty("id") && message.id !== undefined && message.id !== null)
+                if (message.id !== undefined && message.id !== null && message.hasOwnProperty("id"))
                     writer.uint32(/* id 1, wireType 0 =*/8).uint64(message.id);
-                if (message.hasOwnProperty("tags") && message.tags.length) {
+                if (message.tags && message.tags.length && message.hasOwnProperty("tags")) {
                     writer.uint32(/* id 2, wireType 2 =*/18).fork();
                     for (var i = 0; i < message.tags.length; ++i)
                         writer.uint32(message.tags[i]);
                     writer.ldelim();
                 }
-                if (message.hasOwnProperty("type") && message.type !== undefined)
+                if (message.type !== undefined && message.hasOwnProperty("type"))
                     writer.uint32(/* id 3, wireType 0 =*/24).uint32(message.type);
-                if (message.hasOwnProperty("geometry") && message.geometry.length) {
+                if (message.geometry && message.geometry.length && message.hasOwnProperty("geometry")) {
                     writer.uint32(/* id 4, wireType 2 =*/34).fork();
                     for (var i = 0; i < message.geometry.length; ++i)
                         writer.uint32(message.geometry[i]);
@@ -798,19 +798,19 @@ $root.vector_tile = (function() {
                         object.id = options.longs === String ? "0" : 0;
                     object.type = options.enums === String ? "UNKNOWN" : 0;
                 }
-                if (message.hasOwnProperty("id") && message.id !== undefined && message.id !== null)
+                if (message.id !== undefined && message.id !== null && message.hasOwnProperty("id"))
                     if (typeof message.id === "number")
                         object.id = options.longs === String ? String(message.id) : message.id;
                     else
                         object.id = options.longs === String ? $util.Long.prototype.toString.call(message.id) : options.longs === Number ? new $util.LongBits(message.id.low, message.id.high).toNumber(true) : message.id;
-                if (message.hasOwnProperty("tags") && message.tags !== undefined && message.tags !== null) {
+                if (message.tags !== undefined && message.tags !== null && message.hasOwnProperty("tags")) {
                     object.tags = [];
                     for (var j = 0; j < message.tags.length; ++j)
                         object.tags[j] = message.tags[j];
                 }
-                if (message.hasOwnProperty("type") && message.type !== undefined && message.type !== null)
+                if (message.type !== undefined && message.type !== null && message.hasOwnProperty("type"))
                     object.type = options.enums === String ? $types[2][message.type] : message.type;
-                if (message.hasOwnProperty("geometry") && message.geometry !== undefined && message.geometry !== null) {
+                if (message.geometry !== undefined && message.geometry !== null && message.hasOwnProperty("geometry")) {
                     object.geometry = [];
                     for (var j = 0; j < message.geometry.length; ++j)
                         object.geometry[j] = message.geometry[j];
@@ -916,16 +916,16 @@ $root.vector_tile = (function() {
                     writer = $Writer.create();
                 writer.uint32(/* id 15, wireType 0 =*/120).uint32(message.version);
                 writer.uint32(/* id 1, wireType 2 =*/10).string(message.name);
-                if (message.hasOwnProperty("features"))
+                if (message.features !== undefined && message.hasOwnProperty("features"))
                     for (var i = 0; i < message.features.length; ++i)
                         $types[2].encode(message.features[i], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
-                if (message.hasOwnProperty("keys"))
+                if (message.keys !== undefined && message.hasOwnProperty("keys"))
                     for (var i = 0; i < message.keys.length; ++i)
                         writer.uint32(/* id 3, wireType 2 =*/26).string(message.keys[i]);
-                if (message.hasOwnProperty("values"))
+                if (message.values !== undefined && message.hasOwnProperty("values"))
                     for (var i = 0; i < message.values.length; ++i)
                         $types[4].encode(message.values[i], writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
-                if (message.hasOwnProperty("extent") && message.extent !== undefined)
+                if (message.extent !== undefined && message.hasOwnProperty("extent"))
                     writer.uint32(/* id 5, wireType 0 =*/40).uint32(message.extent);
                 return writer;
             };
@@ -1096,26 +1096,26 @@ $root.vector_tile = (function() {
                     object.name = "";
                     object.extent = 4096;
                 }
-                if (message.hasOwnProperty("version") && message.version !== undefined && message.version !== null)
+                if (message.version !== undefined && message.version !== null && message.hasOwnProperty("version"))
                     object.version = message.version;
-                if (message.hasOwnProperty("name") && message.name !== undefined && message.name !== null)
+                if (message.name !== undefined && message.name !== null && message.hasOwnProperty("name"))
                     object.name = message.name;
-                if (message.hasOwnProperty("features") && message.features !== undefined && message.features !== null) {
+                if (message.features !== undefined && message.features !== null && message.hasOwnProperty("features")) {
                     object.features = [];
                     for (var j = 0; j < message.features.length; ++j)
                         object.features[j] = $types[2].toObject(message.features[j], options);
                 }
-                if (message.hasOwnProperty("keys") && message.keys !== undefined && message.keys !== null) {
+                if (message.keys !== undefined && message.keys !== null && message.hasOwnProperty("keys")) {
                     object.keys = [];
                     for (var j = 0; j < message.keys.length; ++j)
                         object.keys[j] = message.keys[j];
                 }
-                if (message.hasOwnProperty("values") && message.values !== undefined && message.values !== null) {
+                if (message.values !== undefined && message.values !== null && message.hasOwnProperty("values")) {
                     object.values = [];
                     for (var j = 0; j < message.values.length; ++j)
                         object.values[j] = $types[4].toObject(message.values[j], options);
                 }
-                if (message.hasOwnProperty("extent") && message.extent !== undefined && message.extent !== null)
+                if (message.extent !== undefined && message.extent !== null && message.hasOwnProperty("extent"))
                     object.extent = message.extent;
                 return object;
             };
