@@ -8,6 +8,7 @@ message Message {\
         string str = 1;\
         int32 num = 2;\
     }\
+    bool other = 3;\
 }";
 
 tape.test("oneofs", function(test) {
@@ -17,7 +18,8 @@ tape.test("oneofs", function(test) {
 
     var message = Message.create({
         str: "a",
-        num: 1
+        num: 1,
+        other: false
     });
 
     test.equal(message.num, 1, "should initialize the last value");
@@ -40,6 +42,7 @@ tape.test("oneofs", function(test) {
     test.equal(message.kind, "num", "should reference the new value");
     test.equal(message.hasOwnProperty("num"), true, "should have the new value on the instance, not just the prototype");
 
+    delete message.other;
     var buf = Message.encode(message).finish();
     test.equal(buf.length, 2, "should write a total of 2 bytes");
     test.equal(buf[0], 16, "should write id 1, wireType 0");

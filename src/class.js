@@ -27,12 +27,10 @@ function create(type, ctor) {
     if (!Type)
         Type = require("./type");
 
-    /* istanbul ignore next */
     if (!(type instanceof Type))
         throw TypeError("type must be a Type");
 
     if (ctor) {
-        /* istanbul ignore next */
         if (typeof ctor !== "function")
             throw TypeError("ctor must be a function");
     } else

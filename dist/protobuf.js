@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.5.0 (c) 2016, Daniel Wirtz
- * Compiled Tue, 17 Jan 2017 01:08:43 UTC
+ * Compiled Tue, 17 Jan 2017 04:07:33 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -751,12 +751,10 @@ function create(type, ctor) {
     if (!Type)
         Type = require(32);
 
-    /* istanbul ignore next */
     if (!(type instanceof Type))
         throw TypeError("type must be a Type");
 
     if (ctor) {
-        /* istanbul ignore next */
         if (typeof ctor !== "function")
             throw TypeError("ctor must be a function");
     } else
@@ -1178,9 +1176,9 @@ function genValuePartial_fromObject(gen, field, fieldIndex, prop) {
             case "bool": gen
                 ("m%s=Boolean(d%s)", prop, prop);
                 break;
-            default: gen /* bool, uint32, string etc. */
+            /* default: gen
                 ("m%s=d%s", prop, prop);
-                break;
+                break; */
         }
     }
     return gen;
@@ -1389,13 +1387,12 @@ function decoder(mtype) {
             ("case %d:", field.id);
 
         // Map fields
-        if (field.map) {
+        if (field.map) { gen
 
-            var keyType = field.resolvedKeyType /* only valid is enum */ ? "uint32" : field.keyType; gen
                 ("r.skip().pos++") // assumes id 1 + key wireType
                 ("if(%s===util.emptyObject)", ref)
                     ("%s={}", ref)
-                ("var k=r.%s()", keyType)
+                ("var k=r.%s()", field.keyType)
                 ("r.pos++"); // assumes id 2 + value wireType
             if (types.basic[type] === undefined) gen
                 ("%s[typeof k===\"object\"?util.longToHash(k):k]=types[%d].decode(r,r.uint32())", ref, i); // can't be groups
@@ -1491,10 +1488,10 @@ function encoder(mtype) {
 
         // Map fields
         if (field.map) {
-            var keyType = field.resolvedKeyType /* only valid is enum */ ? "uint32" : field.keyType; gen
+            gen
     ("if(%s&&m.hasOwnProperty(%j)){", ref, field.name)
         ("for(var ks=Object.keys(%s),i=0;i<ks.length;++i){", ref)
-            ("w.uint32(%d).fork().uint32(%d).%s(ks[i])", (field.id << 3 | 2) >>> 0, 8 | types.mapKey[keyType], keyType);
+            ("w.uint32(%d).fork().uint32(%d).%s(ks[i])", (field.id << 3 | 2) >>> 0, 8 | types.mapKey[field.keyType], field.keyType);
             if (wireType === undefined) gen
             ("types[%d].encode(%s[ks[i]],w.uint32(18).fork()).ldelim().ldelim()", i, ref); // can't be groups
             else gen
@@ -1625,14 +1622,7 @@ function Enum(name, values, options) {
 
     var self = this;
     Object.keys(values || {}).forEach(function(key) {
-        var val;
-        if (typeof values[key] === "number")
-            val = values[key];
-        else {
-            val = parseInt(key, 10);
-            key = values[key];
-        }
-        self.valuesById[self.values[key] = val] = key;
+        self.valuesById[self.values[key] = values[key]] = key;
     });
 }
 
@@ -1703,9 +1693,11 @@ EnumPrototype.add = function(name, id, comment) {
  * @throws {Error} If `name` is not a name of this enum
  */
 EnumPrototype.remove = function(name) {
+    /* istanbul ignore next */
     if (!util.isString(name))
         throw TypeError("name must be a string");
     var val = this.values[name];
+    /* istanbul ignore next */
     if (val === undefined)
         throw Error("'" + name + "' is not a name of " + this);
     delete this.valuesById[val];
@@ -5760,8 +5752,7 @@ var s = [
     "sfixed64", // 11
     "bool",     // 12
     "string",   // 13
-    "bytes",    // 14
-    "message"   // 15
+    "bytes"     // 14
 ];
 
 function bake(values, offset) {
@@ -6215,13 +6206,13 @@ util.pool     = require(9);
  * @memberof util
  * @type {Array.<*>}
  */
-util.emptyArray = Object.freeze ? Object.freeze([]) : [];
+util.emptyArray = Object.freeze ? Object.freeze([]) : /* istanbul ignore next */ [];
 
 /**
  * An immutable empty object.
  * @type {Object}
  */
-util.emptyObject = Object.freeze ? Object.freeze({}) : {};
+util.emptyObject = Object.freeze ? Object.freeze({}) : /* istanbul ignore next */ {};
 
 /**
  * Whether running within node or not.
@@ -6236,7 +6227,7 @@ util.isNode = typeof process !== "undefined" && Boolean(process.versions && proc
  * @param {*} value Value to test
  * @returns {boolean} `true` if the value is an integer
  */
-util.isInteger = Number.isInteger || function isInteger(value) {
+util.isInteger = Number.isInteger || /* istanbul ignore next */ function isInteger(value) {
     return typeof value === "number" && isFinite(value) && Math.floor(value) === value;
 };
 
@@ -6280,8 +6271,8 @@ util.Buffer = (function() {
 
         return Buffer;
 
-    /* istanbul ignore next */
     } catch (e) {
+        /* istanbul ignore next */
         return null;
     }
 })();
@@ -6292,6 +6283,7 @@ util.Buffer = (function() {
  * @returns {Uint8Array} Buffer
  */
 util.newBuffer = function newBuffer(sizeOrArray) {
+    /* istanbul ignore next */
     return typeof sizeOrArray === "number"
         ? util.Buffer
             ? util.Buffer.allocUnsafe(sizeOrArray) // polyfilled
@@ -6307,7 +6299,7 @@ util.newBuffer = function newBuffer(sizeOrArray) {
  * Array implementation used in the browser. `Uint8Array` if supported, otherwise `Array`.
  * @type {?function(new: Uint8Array, *)}
  */
-util.Array = typeof Uint8Array === "undefined" ? Array : Uint8Array;
+util.Array = typeof Uint8Array !== "undefined" ? Uint8Array /* istanbul ignore next */ : Array;
 
 util.LongBits = require(35);
 
@@ -6315,7 +6307,7 @@ util.LongBits = require(35);
  * Long.js's Long class if available.
  * @type {?function(new: Long)}
  */
-util.Long = typeof dcodeIO !== "undefined" && dcodeIO && dcodeIO.Long || util.inquire("long");
+util.Long = typeof dcodeIO !== "undefined" && /* istanbul ignore next */ dcodeIO && /* istanbul ignore next */ dcodeIO.Long || util.inquire("long");
 
 /**
  * Converts a number or long to an 8 characters long hash string.
@@ -6349,10 +6341,9 @@ util.longFromHash = function longFromHash(hash, unsigned) {
  * @returns {Object.<string,*>} Destination object
  */
 util.merge = function merge(dst, src, ifNotSet) { // used by converters
-    if (src)
-        for (var keys = Object.keys(src), i = 0; i < keys.length; ++i)
-            if (dst[keys[i]] === undefined || !ifNotSet)
-                dst[keys[i]] = src[keys[i]];
+    for (var keys = Object.keys(src), i = 0; i < keys.length; ++i)
+        if (dst[keys[i]] === undefined || !ifNotSet)
+            dst[keys[i]] = src[keys[i]];
     return dst;
 };
 
@@ -6371,11 +6362,10 @@ util.oneOfGetter = function getOneOf(fieldNames) {
      * @this Object
      * @ignore
      */
-    return function() {
+    return function() { // eslint-disable-line consistent-return
         for (var keys = Object.keys(this), i = keys.length - 1; i > -1; --i)
             if (fieldMap[keys[i]] === 1 && this[keys[i]] !== undefined && this[keys[i]] !== null)
                 return keys[i];
-        return undefined;
     };
 };
 
@@ -6411,7 +6401,7 @@ util.lazyResolve = function lazyResolve(root, lazyTypes) {
                 ptr  = root;
             while (path.length)
                 ptr = ptr[path.shift()];
-            types[index] = ptr || null;
+            types[index] = ptr;
         });
     });
 };
@@ -7369,11 +7359,9 @@ function configure() {
 }
 
 /* istanbul ignore next */
-if (typeof window !== "undefined")
+if (typeof window !== "undefined" && window)
     window.protobuf = protobuf;
-else if (typeof global !== "undefined")
-    global.protobuf = protobuf;
-else if (typeof self !== "undefined")
+else if (typeof self !== "undefined" && self)
     self.protobuf = protobuf;
 else
     this.protobuf = protobuf; // eslint-disable-line no-invalid-this

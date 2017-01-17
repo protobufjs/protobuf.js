@@ -23,8 +23,7 @@ var s = [
     "sfixed64", // 11
     "bool",     // 12
     "string",   // 13
-    "bytes",    // 14
-    "message"   // 15
+    "bytes"     // 14
 ];
 
 function bake(values, offset) {

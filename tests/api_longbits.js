@@ -20,7 +20,11 @@ tape.test("longbits", function(test) {
         test.same(zero.toLong(), Long.ZERO, "should equal Long.ZERO (signed)");
         test.same(zero.toLong(true), Long.UZERO, "should equal Long.UZERO (unsigned)");
         test.equal(zero.toHash(), "\0\0\0\0\0\0\0\0", "should convert to a binary hash of 8x0");
+        test.equal(protobuf.util.longToHash(0), "\0\0\0\0\0\0\0\0", "should convert to a binary hash of 8x0 (number 0 through util.longToHash)");
         test.equal(LongBits.fromHash("\0\0\0\0\0\0\0\0"), zero, "should be returned for a binary hash of 8x0");
+        protobuf.util.Long = null;
+        test.equal(protobuf.util.longFromHash("\0\0\0\0\0\0\0\0"), 0, "should be returned for a binary hash of 8x0 (number 0 through util.longFromHash)");
+        protobuf.util.Long = Long;
         test.end();
     });
 
@@ -48,7 +52,8 @@ tape.test("longbits", function(test) {
         { low: -1, high: -1, unsigned: false, length: 10 },
         { low: -1, high: -1, unsigned: true, length: 10 },
         { low: 0, high: 1 << 31, unsigned: false, length: 10 },
-        { low: 0, high: 1 << 31, unsigned: true, length: 10 }
+        { low: 0, high: 1 << 31, unsigned: true, length: 10 },
+        { low: 0, high: -1, unsigned: false, length: 10 }
     ]
     .forEach(function(value) {
         var long = Long.fromValue(value);
@@ -64,8 +69,14 @@ tape.test("longbits", function(test) {
         test.same(bits.toLong(value.unsigned), long, long + " should convert to an equal Long");
         var comp = String.fromCharCode.apply(String, long.toBytesLE());
         test.equal(bits.toHash(), comp, long + " should convert to an equal hash");
-        test.same(bits, LongBits.fromHash(comp), long + " should convert back to an equal value");
+        test.equal(protobuf.util.longToHash(long), comp, long + " should convert to an equal hash through util.longToHash");
+        test.same(LongBits.fromHash(comp), bits, long + " should convert back to an equal value");
+        test.same(protobuf.util.longFromHash(comp, long.unsigned), long, long + " should convert back to an equal value through util.longFromHash");
     });
+
+    var num = -4294967296 * 4294967296;
+    var bits = LongBits.fromNumber(num);
+    test.same(bits, { lo: 0, hi: 0 }, "lo and hi should properly overflow when converting " + num);
 
     test.end();
 });

@@ -2,7 +2,7 @@ var tape = require("tape");
 
 var protobuf = require("..");
 
-tape.test("empty inner message fields", function(test) {
+tape.test("empty inner fields", function(test) {
     var root = protobuf.Root.fromJSON({
         nested: {
             Inner: {

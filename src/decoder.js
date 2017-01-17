@@ -35,13 +35,12 @@ function decoder(mtype) {
             ("case %d:", field.id);
 
         // Map fields
-        if (field.map) {
+        if (field.map) { gen
 
-            var keyType = field.resolvedKeyType /* only valid is enum */ ? "uint32" : field.keyType; gen
                 ("r.skip().pos++") // assumes id 1 + key wireType
                 ("if(%s===util.emptyObject)", ref)
                     ("%s={}", ref)
-                ("var k=r.%s()", keyType)
+                ("var k=r.%s()", field.keyType)
                 ("r.pos++"); // assumes id 2 + value wireType
             if (types.basic[type] === undefined) gen
                 ("%s[typeof k===\"object\"?util.longToHash(k):k]=types[%d].decode(r,r.uint32())", ref, i); // can't be groups

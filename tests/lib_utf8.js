@@ -1,7 +1,8 @@
 var tape = require("tape");
 
-var protobuf = require(".."),
-    utf8 = require("../src/util/utf8");
+var protobuf = require("..");
+
+var utf8 = protobuf.util.utf8;
 
 var size = 1000000;
 

@@ -46,14 +46,7 @@ function Enum(name, values, options) {
 
     var self = this;
     Object.keys(values || {}).forEach(function(key) {
-        var val;
-        if (typeof values[key] === "number")
-            val = values[key];
-        else {
-            val = parseInt(key, 10);
-            key = values[key];
-        }
-        self.valuesById[self.values[key] = val] = key;
+        self.valuesById[self.values[key] = values[key]] = key;
     });
 }
 
@@ -124,9 +117,11 @@ EnumPrototype.add = function(name, id, comment) {
  * @throws {Error} If `name` is not a name of this enum
  */
 EnumPrototype.remove = function(name) {
+    /* istanbul ignore next */
     if (!util.isString(name))
         throw TypeError("name must be a string");
     var val = this.values[name];
+    /* istanbul ignore next */
     if (val === undefined)
         throw Error("'" + name + "' is not a name of " + this);
     delete this.valuesById[val];

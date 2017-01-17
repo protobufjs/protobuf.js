@@ -128,11 +128,9 @@ function configure() {
 }
 
 /* istanbul ignore next */
-if (typeof window !== "undefined")
+if (typeof window !== "undefined" && window)
     window.protobuf = protobuf;
-else if (typeof global !== "undefined")
-    global.protobuf = protobuf;
-else if (typeof self !== "undefined")
+else if (typeof self !== "undefined" && self)
     self.protobuf = protobuf;
 else
     this.protobuf = protobuf; // eslint-disable-line no-invalid-this

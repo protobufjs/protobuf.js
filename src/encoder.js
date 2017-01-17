@@ -44,10 +44,10 @@ function encoder(mtype) {
 
         // Map fields
         if (field.map) {
-            var keyType = field.resolvedKeyType /* only valid is enum */ ? "uint32" : field.keyType; gen
+            gen
     ("if(%s&&m.hasOwnProperty(%j)){", ref, field.name)
         ("for(var ks=Object.keys(%s),i=0;i<ks.length;++i){", ref)
-            ("w.uint32(%d).fork().uint32(%d).%s(ks[i])", (field.id << 3 | 2) >>> 0, 8 | types.mapKey[keyType], keyType);
+            ("w.uint32(%d).fork().uint32(%d).%s(ks[i])", (field.id << 3 | 2) >>> 0, 8 | types.mapKey[field.keyType], field.keyType);
             if (wireType === undefined) gen
             ("types[%d].encode(%s[ks[i]],w.uint32(18).fork()).ldelim().ldelim()", i, ref); // can't be groups
             else gen

@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.5.0 (c) 2016, Daniel Wirtz
- * Compiled Tue, 17 Jan 2017 01:08:43 UTC
+ * Compiled Tue, 17 Jan 2017 04:07:33 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -329,11 +329,9 @@ function configure() {
     protobuf.Reader._configure();
 }
 
-if (typeof window !== "undefined")
+if (typeof window !== "undefined" && window)
     window.protobuf = protobuf;
-else if (typeof global !== "undefined")
-    global.protobuf = protobuf;
-else if (typeof self !== "undefined")
+else if (typeof self !== "undefined" && self)
     self.protobuf = protobuf;
 else
     this.protobuf = protobuf; // eslint-disable-line no-invalid-this
@@ -1126,13 +1124,13 @@ util.pool     = require(3);
  * @memberof util
  * @type {Array.<*>}
  */
-util.emptyArray = Object.freeze ? Object.freeze([]) : [];
+util.emptyArray = Object.freeze ? Object.freeze([]) : /* istanbul ignore next */ [];
 
 /**
  * An immutable empty object.
  * @type {Object}
  */
-util.emptyObject = Object.freeze ? Object.freeze({}) : {};
+util.emptyObject = Object.freeze ? Object.freeze({}) : /* istanbul ignore next */ {};
 
 /**
  * Whether running within node or not.
@@ -1147,7 +1145,7 @@ util.isNode = typeof process !== "undefined" && Boolean(process.versions && proc
  * @param {*} value Value to test
  * @returns {boolean} `true` if the value is an integer
  */
-util.isInteger = Number.isInteger || function isInteger(value) {
+util.isInteger = Number.isInteger || /* istanbul ignore next */ function isInteger(value) {
     return typeof value === "number" && isFinite(value) && Math.floor(value) === value;
 };
 
@@ -1191,8 +1189,8 @@ util.Buffer = (function() {
 
         return Buffer;
 
-    /* istanbul ignore next */
     } catch (e) {
+        /* istanbul ignore next */
         return null;
     }
 })();
@@ -1203,6 +1201,7 @@ util.Buffer = (function() {
  * @returns {Uint8Array} Buffer
  */
 util.newBuffer = function newBuffer(sizeOrArray) {
+    /* istanbul ignore next */
     return typeof sizeOrArray === "number"
         ? util.Buffer
             ? util.Buffer.allocUnsafe(sizeOrArray) // polyfilled
@@ -1218,7 +1217,7 @@ util.newBuffer = function newBuffer(sizeOrArray) {
  * Array implementation used in the browser. `Uint8Array` if supported, otherwise `Array`.
  * @type {?function(new: Uint8Array, *)}
  */
-util.Array = typeof Uint8Array === "undefined" ? Array : Uint8Array;
+util.Array = typeof Uint8Array !== "undefined" ? Uint8Array /* istanbul ignore next */ : Array;
 
 util.LongBits = require(8);
 
@@ -1226,7 +1225,7 @@ util.LongBits = require(8);
  * Long.js's Long class if available.
  * @type {?function(new: Long)}
  */
-util.Long = typeof dcodeIO !== "undefined" && dcodeIO && dcodeIO.Long || util.inquire("long");
+util.Long = typeof dcodeIO !== "undefined" && /* istanbul ignore next */ dcodeIO && /* istanbul ignore next */ dcodeIO.Long || util.inquire("long");
 
 /**
  * Converts a number or long to an 8 characters long hash string.
@@ -1260,10 +1259,9 @@ util.longFromHash = function longFromHash(hash, unsigned) {
  * @returns {Object.<string,*>} Destination object
  */
 util.merge = function merge(dst, src, ifNotSet) { // used by converters
-    if (src)
-        for (var keys = Object.keys(src), i = 0; i < keys.length; ++i)
-            if (dst[keys[i]] === undefined || !ifNotSet)
-                dst[keys[i]] = src[keys[i]];
+    for (var keys = Object.keys(src), i = 0; i < keys.length; ++i)
+        if (dst[keys[i]] === undefined || !ifNotSet)
+            dst[keys[i]] = src[keys[i]];
     return dst;
 };
 
@@ -1282,11 +1280,10 @@ util.oneOfGetter = function getOneOf(fieldNames) {
      * @this Object
      * @ignore
      */
-    return function() {
+    return function() { // eslint-disable-line consistent-return
         for (var keys = Object.keys(this), i = keys.length - 1; i > -1; --i)
             if (fieldMap[keys[i]] === 1 && this[keys[i]] !== undefined && this[keys[i]] !== null)
                 return keys[i];
-        return undefined;
     };
 };
 
@@ -1322,7 +1319,7 @@ util.lazyResolve = function lazyResolve(root, lazyTypes) {
                 ptr  = root;
             while (path.length)
                 ptr = ptr[path.shift()];
-            types[index] = ptr || null;
+            types[index] = ptr;
         });
     });
 };

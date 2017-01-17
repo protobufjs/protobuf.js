@@ -79,9 +79,9 @@ function genValuePartial_fromObject(gen, field, fieldIndex, prop) {
             case "bool": gen
                 ("m%s=Boolean(d%s)", prop, prop);
                 break;
-            default: gen /* bool, uint32, string etc. */
+            /* default: gen
                 ("m%s=d%s", prop, prop);
-                break;
+                break; */
         }
     }
     return gen;
