@@ -159,6 +159,8 @@
             
                 <li data-name="util.Long"><a href="util.html#.Long">Long</a></li>
             
+                <li data-name="util.toJSONOptions"><a href="util.html#.toJSONOptions">toJSONOptions</a></li>
+            
             </ul>
             <ul class="typedefs itemMembers">
             
@@ -166,8 +168,6 @@
             <ul class="methods itemMembers">
             
             <span class="subtitle">Methods</span>
-            
-                <li data-name="util.arrayNe"><a href="util.html#.arrayNe">arrayNe</a></li>
             
                 <li data-name="util.asPromise"><a href="util.html#.asPromise">asPromise</a></li>
             
@@ -185,17 +185,21 @@
             
                 <li data-name="util.isString"><a href="util.html#.isString">isString</a></li>
             
+                <li data-name="util.lazyResolve"><a href="util.html#.lazyResolve">lazyResolve</a></li>
+            
                 <li data-name="util.lcFirst"><a href="util.html#.lcFirst">lcFirst</a></li>
             
                 <li data-name="util.longFromHash"><a href="util.html#.longFromHash">longFromHash</a></li>
-            
-                <li data-name="util.longNe"><a href="util.html#.longNe">longNe</a></li>
             
                 <li data-name="util.longToHash"><a href="util.html#.longToHash">longToHash</a></li>
             
                 <li data-name="util.merge"><a href="util.html#.merge">merge</a></li>
             
                 <li data-name="util.newBuffer"><a href="util.html#.newBuffer">newBuffer</a></li>
+            
+                <li data-name="util.oneOfGetter"><a href="util.html#.oneOfGetter">oneOfGetter</a></li>
+            
+                <li data-name="util.oneOfSetter"><a href="util.html#.oneOfSetter">oneOfSetter</a></li>
             
                 <li data-name="util.pool"><a href="util.html#.pool">pool</a></li>
             
@@ -2099,110 +2103,20 @@
     
 </dd>
 
-        </dl>
-    
-    
-    
-        <h3 class="subsection-title">Methods</h3>
         
-        <dl>
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id=".arrayNe">
-            
-            util.arrayNe<span class="signature">(a, b)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ boolean }</span>
-        </h4>
-    
-        
-        <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js">util/runtime.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js#L115">line 115</a>
-        </div>
-        
+        <h4 class="name" id=".toJSONOptions">util.toJSONOptions <span class="type-signature type">{ <a href="global.html#ConversionOptions">ConversionOptions</a> }</span></h4>
     </div>
-
+    
     
 </dt>
 <dd>
     
-    
     <div class="description">
-        <p>Tests if two arrays are not equal.</p>
+        <p>Default conversion options used for toJSON implementations.</p>
     </div>
-    
-
-    
-    
-    
-    
-    
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>a</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;*></span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                <p>Array 1</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>b</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;*></span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                <p>Array 2</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
     
     
     
@@ -2232,48 +2146,15 @@
 
     
     
-
-    
-
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Type</th>
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-    <tbody>
-    
-        <tr>
-            
-            <td class="type">
-            
-                        boolean
-                        
-                    
-            </td>
-            <td class="description last"><code>true</code> if not equal, otherwise <code>false</code></td>
-        </tr>
-    
-    </tbody>
-</table>
-
-    
-    
-    
 </dd>
 
+        </dl>
+    
+    
+    
+        <h3 class="subsection-title">Methods</h3>
         
+        <dl>
             
 <dt>
     <div class="nameContainer">
@@ -3233,7 +3114,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js">util/runtime.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js#L36">line 36</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js">util/runtime.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js#L35">line 35</a>
         </div>
         
     </div>
@@ -3378,7 +3259,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js">util/runtime.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js#L54">line 54</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js">util/runtime.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js#L53">line 53</a>
         </div>
         
     </div>
@@ -3523,7 +3404,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js">util/runtime.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js#L45">line 45</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js">util/runtime.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js#L44">line 44</a>
         </div>
         
     </div>
@@ -3647,6 +3528,174 @@
                     
             </td>
             <td class="description last"><code>true</code> if the value is a string</td>
+        </tr>
+    
+    </tbody>
+</table>
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id=".lazyResolve">
+            
+            util.lazyResolve<span class="signature">(root, lazyTypes)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ undefined }</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js">util/runtime.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js#L202">line 202</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Lazily resolves fully qualified type names against the specified root.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>root</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Root.html">Root</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>Root instanceof</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>lazyTypes</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object.&lt;number, (string|<a href="ReflectionObject.html">ReflectionObject</a>)></span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>Type names</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Type</th>
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    
+        <tr>
+            
+            <td class="type">
+            
+                        undefined
+                        
+                    
+            </td>
+            <td class="description last"></td>
         </tr>
     
     </tbody>
@@ -3813,7 +3862,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js">util/runtime.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js#L148">line 148</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js">util/runtime.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js#L134">line 134</a>
         </div>
         
     </div>
@@ -4001,203 +4050,6 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id=".longNe">
-            
-            util.longNe<span class="signature">(val, lo, hi)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ boolean }</span>
-        </h4>
-    
-        
-        <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js">util/runtime.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js#L162">line 162</a>
-        </div>
-        
-    </div>
-
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>Tests if a possibily long value equals the specified low and high bits.</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>val</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-|
-
-<span class="param-type">string</span>
-|
-
-<span class="param-type"><a href="global.html#Long">Long</a></span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                <p>Value to test</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>lo</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                <p>Low bits to test against</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>hi</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                <p>High bits to test against</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Type</th>
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-    <tbody>
-    
-        <tr>
-            
-            <td class="type">
-            
-                        boolean
-                        
-                    
-            </td>
-            <td class="description last"><code>true</code> if not equal</td>
-        </tr>
-    
-    </tbody>
-</table>
-
-    
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer">
         <h4 class="name" id=".longToHash">
             
             util.longToHash<span class="signature">(value)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ string }</span>
@@ -4205,7 +4057,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js">util/runtime.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js#L136">line 136</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js">util/runtime.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js#L122">line 122</a>
         </div>
         
     </div>
@@ -4353,7 +4205,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js">util/runtime.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js#L176">line 176</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js">util/runtime.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js#L148">line 148</a>
         </div>
         
     </div>
@@ -4577,7 +4429,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js">util/runtime.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js#L91">line 91</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js">util/runtime.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js#L90">line 90</a>
         </div>
         
     </div>
@@ -4719,6 +4571,296 @@
                     
             </td>
             <td class="description last">Buffer</td>
+        </tr>
+    
+    </tbody>
+</table>
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id=".oneOfGetter">
+            
+            util.oneOfGetter<span class="signature">(fieldNames)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ function }</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js">util/runtime.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js#L160">line 160</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Builds a getter for a oneof's present field name.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>fieldNames</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;string></span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>Field names</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Type</th>
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    
+        <tr>
+            
+            <td class="type">
+            
+                        function
+                        
+                    
+            </td>
+            <td class="description last">Unbound getter</td>
+        </tr>
+    
+    </tbody>
+</table>
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id=".oneOfSetter">
+            
+            util.oneOfSetter<span class="signature">(fieldNames)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ function }</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js">util/runtime.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js#L182">line 182</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Builds a setter for a oneof's present field name.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>fieldNames</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;string></span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>Field names</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Type</th>
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    
+        <tr>
+            
+            <td class="type">
+            
+                        function
+                        
+                    
+            </td>
+            <td class="description last">Unbound setter</td>
         </tr>
     
     </tbody>

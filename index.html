@@ -159,6 +159,8 @@
             
                 <li data-name="util.Long"><a href="util.html#.Long">Long</a></li>
             
+                <li data-name="util.toJSONOptions"><a href="util.html#.toJSONOptions">toJSONOptions</a></li>
+            
             </ul>
             <ul class="typedefs itemMembers">
             
@@ -166,8 +168,6 @@
             <ul class="methods itemMembers">
             
             <span class="subtitle">Methods</span>
-            
-                <li data-name="util.arrayNe"><a href="util.html#.arrayNe">arrayNe</a></li>
             
                 <li data-name="util.asPromise"><a href="util.html#.asPromise">asPromise</a></li>
             
@@ -185,17 +185,21 @@
             
                 <li data-name="util.isString"><a href="util.html#.isString">isString</a></li>
             
+                <li data-name="util.lazyResolve"><a href="util.html#.lazyResolve">lazyResolve</a></li>
+            
                 <li data-name="util.lcFirst"><a href="util.html#.lcFirst">lcFirst</a></li>
             
                 <li data-name="util.longFromHash"><a href="util.html#.longFromHash">longFromHash</a></li>
-            
-                <li data-name="util.longNe"><a href="util.html#.longNe">longNe</a></li>
             
                 <li data-name="util.longToHash"><a href="util.html#.longToHash">longToHash</a></li>
             
                 <li data-name="util.merge"><a href="util.html#.merge">merge</a></li>
             
                 <li data-name="util.newBuffer"><a href="util.html#.newBuffer">newBuffer</a></li>
+            
+                <li data-name="util.oneOfGetter"><a href="util.html#.oneOfGetter">oneOfGetter</a></li>
+            
+                <li data-name="util.oneOfSetter"><a href="util.html#.oneOfSetter">oneOfSetter</a></li>
             
                 <li data-name="util.pool"><a href="util.html#.pool">pool</a></li>
             
@@ -1912,7 +1916,7 @@ usage: pbjs [options] file1.proto file2.json ...  (or)  other | pbjs [options] -
 <pre class="prettyprint source lang-js"><code>var root = protobuf.Root.fromJSON(require(&quot;./bundle.json&quot;));</code></pre><p>or load it the usual way:</p>
 <pre class="prettyprint source lang-js"><code>protobuf.load(&quot;bundle.json&quot;, function(err, root) {
     ...
-});</code></pre><p><strong>ProTip!</strong> Documenting your .proto files with <code>/** ... */</code>-blocks or trailing <code>/// ...</code> lines translates to generated static code.</p>
+});</code></pre><p><strong>ProTip!</strong> Documenting your .proto files with <code>/** ... */</code>-blocks or (trailing) <code>/// ...</code> lines translates to generated static code.</p>
 <h3 id="generating-typescript-definitions-from-static-modules">Generating TypeScript definitions from static modules</h3>
 <p>Likewise, the <code>pbts</code> command line utility can be used to generate TypeScript definitions from <code>pbjs</code>-generated static modules.</p>
 <pre class="prettyprint source"><code>Generates TypeScript definitions from annotated JavaScript files.
@@ -1936,7 +1940,7 @@ pbjs.main([ &quot;--target&quot;, &quot;json-module&quot;, &quot;path/to/myproto
         throw err;
     // do something with output
 });</code></pre><h3 id="descriptors-vs-static-modules">Descriptors vs. static modules</h3>
-<p>While .proto and JSON files require the full library (about 17.5kb gzipped), pretty much all code but the relatively short descriptors is shared and all features including reflection and the parser are available.</p>
+<p>While .proto and JSON files require the full library (about 18.5kb gzipped), pretty much all code but the relatively short descriptors is shared and all features including reflection and the parser are available.</p>
 <p>Static code, on the other hand, requires just the minimal runtime (about 5.5kb gzipped), but generates additional, albeit editable, source code without any reflection features.</p>
 <p>There is no difference performance-wise as the code generated statically is pretty much the same as generated at runtime.</p>
 <p>Additionally, JSON modules can be used with TypeScript definitions generated for their static counterparts as long as the following conditions are met:</p>
@@ -1949,37 +1953,45 @@ pbjs.main([ &quot;--target&quot;, &quot;json-module&quot;, &quot;path/to/myproto
 <p>The package includes a benchmark that tries to compare performance to native JSON as far as this is possible. On an i7-2600K running node 6.9.1 it yields:</p>
 <pre class="prettyprint source"><code>benchmarking encoding performance ...
 
-Type.encode to buffer x 521,803 ops/sec ±0.84% (88 runs sampled)
-JSON.stringify to string x 300,362 ops/sec ±1.11% (86 runs sampled)
-JSON.stringify to buffer x 169,413 ops/sec ±1.49% (86 runs sampled)
+Type.encode to buffer x 547,361 ops/sec ±0.27% (94 runs sampled)
+JSON.stringify to string x 310,848 ops/sec ±0.73% (92 runs sampled)
+JSON.stringify to buffer x 173,608 ops/sec ±1.51% (86 runs sampled)
 
       Type.encode to buffer was fastest
-   JSON.stringify to string was 42.6% slower
-   JSON.stringify to buffer was 67.7% slower
+   JSON.stringify to string was 43.5% slower
+   JSON.stringify to buffer was 68.7% slower
 
 benchmarking decoding performance ...
 
-Type.decode from buffer x 1,325,308 ops/sec ±1.46% (88 runs sampled)
-JSON.parse from string x 283,907 ops/sec ±1.39% (86 runs sampled)
-JSON.parse from buffer x 255,372 ops/sec ±1.28% (88 runs sampled)
+Type.decode from buffer x 1,294,378 ops/sec ±0.86% (90 runs sampled)
+JSON.parse from string x 291,944 ops/sec ±0.72% (92 runs sampled)
+JSON.parse from buffer x 256,325 ops/sec ±1.50% (90 runs sampled)
 
     Type.decode from buffer was fastest
-     JSON.parse from string was 78.6% slower
-     JSON.parse from buffer was 80.7% slower
+     JSON.parse from string was 77.4% slower
+     JSON.parse from buffer was 80.3% slower
 
 benchmarking combined performance ...
 
-Type to/from buffer x 269,719 ops/sec ±0.87% (91 runs sampled)
-JSON to/from string x 122,878 ops/sec ±1.59% (87 runs sampled)
-JSON to/from buffer x 89,310 ops/sec ±1.01% (88 runs sampled)
+Type to/from buffer x 254,126 ops/sec ±1.13% (91 runs sampled)
+JSON to/from string x 122,896 ops/sec ±1.29% (90 runs sampled)
+JSON to/from buffer x 88,005 ops/sec ±0.87% (89 runs sampled)
 
         Type to/from buffer was fastest
-        JSON to/from string was 54.8% slower
-        JSON to/from buffer was 66.9% slower
+        JSON to/from string was 51.7% slower
+        JSON to/from buffer was 65.3% slower
 
 benchmarking verifying performance ...
 
-Type.verify x 5,857,856 ops/sec ±0.82% (91 runs sampled)</code></pre><p>Note that JSON is a native binding nowadays and as such is about as fast as it possibly can get. So, how can protobuf.js be faster?</p>
+Type.verify x 6,246,765 ops/sec ±2.00% (87 runs sampled)
+
+benchmarking message from object performance ...
+
+Type.fromObject x 2,892,973 ops/sec ±0.70% (92 runs sampled)
+
+benchmarking message to object performance ...
+
+Type.toObject x 3,601,738 ops/sec ±0.72% (93 runs sampled)</code></pre><p>Note that JSON is a native binding nowadays and as such is about as fast as it possibly can get. So, how can protobuf.js be faster?</p>
 <ul>
 <li>The benchmark is <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/bench/index.js">somewhat flawed</a>.</li>
 <li>Reader and writer interfaces configure themselves according to the environment to eliminate redundant conditionals.</li>
