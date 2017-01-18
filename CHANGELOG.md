@@ -1,3 +1,15 @@
+# [6.5.1](https://github.com/dcodeIO/protobuf.js/releases/tag/6.5.1)
+
+## CLI
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/9719fd2fa8fd97899c54712a238091e8fd1c57b2) Reuse module paths when looking up cli dependencies, see [#648](https://github.com/dcodeIO/protobuf.js/issues/648)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/6302655d1304cf662f556be5d9fe7a016fcedc3c) Check actual module directories to determine if cli dependencies are present and bootstrap semver, see [#648](https://github.com/dcodeIO/protobuf.js/issues/648)<br />
+
+## Docs
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/dfc7c4323bf98fb26ddcfcfbb6896a6d6e8450a4) Added a note on semver-incompatibility, see [#649](https://github.com/dcodeIO/protobuf.js/issues/649)<br />
+
+## Other
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/49053ffa0ea8a4ba5ae048706dba1ab6f3bc803b) Coverage progress<br />
+
 # [6.5.0](https://github.com/dcodeIO/protobuf.js/releases/tag/6.5.0) ([release](https://github.com/dcodeIO/protobuf.js/releases/tag/6.5.0))
 
 ## Breaking
