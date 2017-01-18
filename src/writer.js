@@ -150,6 +150,7 @@ Writer.alloc = function alloc(size) {
 };
 
 // Use Uint8Array buffer pool in the browser, just like node does with buffers
+/* istanbul ignore else */
 if (util.Array !== Array)
     Writer.alloc = util.pool(Writer.alloc, util.Array.prototype.subarray);
 

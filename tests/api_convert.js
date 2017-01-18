@@ -111,6 +111,9 @@ tape.test("convert", function(test) {
                 var msgLongsToNumber = msg.toObject({ longs: Number }),
                     msgLongsToString = msg.toObject({ longs: String });
 
+                test.same(Message.ctor.toObject(msg, { longs: Number}), msgLongsToNumber, "should convert the same using the static and the instance method");
+                test.same(Message.ctor.toObject(msg, { longs: String}), msgLongsToString, "should convert the same using the static and the instance method");
+
                 test.equal(msgLongsToNumber.uint64Val, 1, "longs to numbers");
                 test.equal(msgLongsToString.uint64Val, "1", "longs to strings");
                 test.same(msgLongsToNumber.int64Map, { a: 2, b: 3}, "long map values to numbers");
@@ -131,7 +134,7 @@ tape.test("convert", function(test) {
 
         test.test("Message.fromObject", function(test) {
            
-            var msg = Message.fromObject({
+            var obj = {
                 uint64Val: 1,
                 uint64Repeated: [1, "2"],
                 bytesVal: "MTEx",
@@ -142,7 +145,11 @@ tape.test("convert", function(test) {
                     a: 2,
                     b: "3"
                 }
-            });
+            };
+            var msg = Message.fromObject(obj);
+
+            test.same(Message.ctor.fromObject(obj), msg, "should convert the same using the static and the instance method");
+
             var buf = protobuf.util.newBuffer(3);
             buf[0] = buf[1] = buf[2] = 49; // "111"
 
@@ -154,6 +161,18 @@ tape.test("convert", function(test) {
             test.same(msg.enumRepeated, [ 2, 2 ], "should set enumRepeated from a number and a string");
             test.same(msg.int64Map, { a: { low: 2, high: 0, unsigned: false }, b: { low: 3, high: 0, unsigned: false } }, "should set int64Map from a number and a string");
 
+            test.end();
+        });
+
+        test.test("Message#toJSON", function(test) {
+            var msg = Message.create();
+            test.plan(1);
+            msg.$type = {
+                toObject: function(obj, opt) {
+                    test.same(opt, protobuf.util.toJSONOptions, "should use toJSONOptions with toJSON");
+                }
+            };
+            msg.toJSON();
             test.end();
         });
         

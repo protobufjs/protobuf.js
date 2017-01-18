@@ -97,6 +97,8 @@ RootPrototype.load = function load(filename, options, callback) {
             return;
         var cb = callback;
         callback = null;
+        if (sync)
+            throw err;
         cb(err, root);
     }
 

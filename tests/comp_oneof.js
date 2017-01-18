@@ -7,8 +7,13 @@ message Message {\
     oneof kind {\
         string str = 1;\
         int32 num = 2;\
+        Type enm = 4;\
     }\
     bool other = 3;\
+}\
+enum Type {\
+    ONE = 1;\
+    TWO = 2;\
 }";
 
 tape.test("oneofs", function(test) {

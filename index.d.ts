@@ -1071,14 +1071,14 @@ export class OneOf extends ReflectionObject {
     static fromJSON(name: string, json: { [k: string]: any }): MapField;
 
     /**
-     * Adds a field to this oneof.
+     * Adds a field to this oneof and removes it from its current parent, if any.
      * @param {Field} field Field to add
      * @returns {OneOf} `this`
      */
     add(field: Field): OneOf;
 
     /**
-     * Removes a field from this oneof.
+     * Removes a field from this oneof and puts it back to the oneof's parent.
      * @param {Field} field Field to remove
      * @returns {OneOf} `this`
      */

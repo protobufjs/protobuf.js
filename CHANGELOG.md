@@ -1,4 +1,4 @@
-# [6.5.0](https://github.com/dcodeIO/protobuf.js/releases/tag/6.5.0)
+# [6.5.0](https://github.com/dcodeIO/protobuf.js/releases/tag/6.5.0) ([release](https://github.com/dcodeIO/protobuf.js/releases/tag/6.5.0))
 
 ## Breaking
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/3946e0fefea415f52a16ea7a74109ff40eee9643) Initial upgrade of converters to real generated functions, see [#620](https://github.com/dcodeIO/protobuf.js/issues/620)<br />
@@ -116,7 +116,7 @@
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/0643f93f5c0d96ed0ece5b47f54993ac3a827f1b) Some cleanup and added a logo<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/169638382de9efe35a1079c5f2045c33b858059a) use $protobuf.Long<br />
 
-# [6.4.0](https://github.com/dcodeIO/protobuf.js/releases/tag/6.4.0)
+# [6.4.0](https://github.com/dcodeIO/protobuf.js/releases/tag/6.4.0) ([release](https://github.com/dcodeIO/protobuf.js/releases/tag/6.4.0))
 
 ## Breaking
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/a017bf8a2dbdb7f9e7ce4c026bb6845174feb3b1) Dropped IE8 support<br />

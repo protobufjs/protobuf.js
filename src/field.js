@@ -126,7 +126,7 @@ function Field(name, id, type, rule, extend, options) {
      * Whether this field's value should be treated as a long.
      * @type {boolean}
      */
-    this.long = util.Long ? types.long[type] !== undefined : false;
+    this.long = util.Long ? types.long[type] !== undefined : /* istanbul ignore next */ false;
 
     /**
      * Whether this field's value is a buffer.
@@ -237,9 +237,8 @@ FieldPrototype.resolve = function resolve() {
             Type = require("./type");
         if (this.resolvedType = this.parent.lookup(this.type, Type))
             this.typeDefault = null;
-        else if (this.resolvedType = this.parent.lookup(this.type, Enum))
+        else /* istanbul ignore else */ if (this.resolvedType = this.parent.lookup(this.type, Enum))
             this.typeDefault = this.resolvedType.values[Object.keys(this.resolvedType.values)[0]]; // first defined
-        /* istanbul ignore next */
         else
             throw Error("unresolvable field type: " + this.type);
     }
@@ -254,6 +253,7 @@ FieldPrototype.resolve = function resolve() {
     // convert to internal data type if necesssary
     if (this.long) {
         this.typeDefault = util.Long.fromNumber(this.typeDefault, this.type.charAt(0) === "u");
+        /* istanbul ignore else */
         if (Object.freeze)
             Object.freeze(this.typeDefault); // long instances are meant to be immutable anyway (i.e. use small int cache that even requires it)
     } else if (this.bytes && typeof this.typeDefault === "string") {

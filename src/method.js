@@ -115,11 +115,11 @@ Method.fromJSON = function fromJSON(name, json) {
  */
 MethodPrototype.toJSON = function toJSON() {
     return {
-        type           : this.type !== "rpc" && this.type || undefined,
+        type           : this.type !== "rpc" && /* istanbul ignore next */ this.type || undefined,
         requestType    : this.requestType,
-        requestStream  : this.requestStream || undefined,
+        requestStream  : this.requestStream,
         responseType   : this.responseType,
-        responseStream : this.responseStream || undefined,
+        responseStream : this.responseStream,
         options        : this.options
     };
 };

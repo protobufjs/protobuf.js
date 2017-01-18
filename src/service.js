@@ -58,6 +58,7 @@ Service.testJSON = function testJSON(json) {
  */
 Service.fromJSON = function fromJSON(name, json) {
     var service = new Service(name, json.options);
+    /* istanbul ignore else */
     if (json.methods)
         Object.keys(json.methods).forEach(function(methodName) {
             service.add(Method.fromJSON(methodName, json.methods[methodName]));

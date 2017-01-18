@@ -160,6 +160,7 @@ NamespacePrototype.toJSON = function toJSON() {
  */
 NamespacePrototype.addJSON = function addJSON(nestedJson) {
     var ns = this;
+    /* istanbul ignore else */
     if (nestedJson) {
         if (!nestedTypes)
             initNested();
@@ -168,6 +169,7 @@ NamespacePrototype.addJSON = function addJSON(nestedJson) {
             for (var j = 0; j < nestedTypes.length; ++j)
                 if (nestedTypes[j].testJSON(nested))
                     return ns.add(nestedTypes[j].fromJSON(nestedName, nested));
+            /* istanbul ignore next */
             throw TypeError("nested." + nestedName + " must be JSON for " + nestedError);
         });
     }
@@ -206,9 +208,9 @@ NamespacePrototype.getEnum = function getEnum(name) {
  * @throws {Error} If there is already a nested object with this name
  */
 NamespacePrototype.add = function add(object) {
+    /* istanbul ignore next */
     if (!nestedTypes)
         initNested();
-
     /* istanbul ignore next */
     if (!object || nestedTypes.indexOf(object.constructor) < 0)
         throw TypeError("object must be " + nestedError);
@@ -298,6 +300,7 @@ NamespacePrototype.define = function define(path, json) {
  * @override
  */
 NamespacePrototype.resolve = function resolve() {
+
     /* istanbul ignore next */
     if (!Type)
         Type = require("./type");
@@ -313,7 +316,7 @@ NamespacePrototype.resolve = function resolve() {
         if (/^[A-Z]/.test(nested[i].name)) {
             if (nested[i] instanceof Type || nested[i] instanceof Service)
                 this[nested[i].name] = nested[i];
-            else if (nested[i] instanceof Enum)
+            else /* istanbul ignore else */ if (nested[i] instanceof Enum)
                 this[nested[i].name] = nested[i].values;
             else
                 continue;

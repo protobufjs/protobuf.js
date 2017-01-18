@@ -103,7 +103,7 @@ function addFieldsToParent(oneof) {
 }
 
 /**
- * Adds a field to this oneof.
+ * Adds a field to this oneof and removes it from its current parent, if any.
  * @param {Field} field Field to add
  * @returns {OneOf} `this`
  */
@@ -112,8 +112,7 @@ OneOfPrototype.add = function add(field) {
     /* istanbul ignore next */
     if (!(field instanceof Field))
         throw TypeError("field must be a Field");
-
-    if (field.parent)
+    if (field.parent && field.parent !== this.parent)
         field.parent.remove(field);
     this.oneof.push(field.name);
     this._fieldsArray.push(field);
@@ -123,7 +122,7 @@ OneOfPrototype.add = function add(field) {
 };
 
 /**
- * Removes a field from this oneof.
+ * Removes a field from this oneof and puts it back to the oneof's parent.
  * @param {Field} field Field to remove
  * @returns {OneOf} `this`
  */
@@ -140,10 +139,9 @@ OneOfPrototype.remove = function remove(field) {
 
     this._fieldsArray.splice(index, 1);
     index = this.oneof.indexOf(field.name);
-    if (index > -1)
+    /* istanbul ignore else */
+    if (index > -1) // theoretical
         this.oneof.splice(index, 1);
-    if (field.parent)
-        field.parent.remove(field);
     field.partOf = null;
     return this;
 };

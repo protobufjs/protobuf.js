@@ -13,6 +13,7 @@ tape.test("bench.proto and bench.json", function(test) {
         var data = require("../bench/bench.json");
 
         test.equal(Test.verify(data), null, "should verify our test data");
+        test.equal(Test.ctor.verify(data), null, "should verify our test data (static)");
 
         var decoded = Test.decode(Test.encode(data).finish());
         test.deepEqual(decoded, data, "should reproduce the original data when encoded and decoded again");

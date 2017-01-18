@@ -1,6 +1,6 @@
 /*!
- * protobuf.js v6.5.0 (c) 2016, Daniel Wirtz
- * Compiled Tue, 17 Jan 2017 04:40:35 UTC
+ * protobuf.js v6.5.1 (c) 2016, Daniel Wirtz
+ * Compiled Wed, 18 Jan 2017 00:05:57 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -1835,7 +1835,7 @@ function Field(name, id, type, rule, extend, options) {
      * Whether this field's value should be treated as a long.
      * @type {boolean}
      */
-    this.long = util.Long ? types.long[type] !== undefined : false;
+    this.long = util.Long ? types.long[type] !== undefined : /* istanbul ignore next */ false;
 
     /**
      * Whether this field's value is a buffer.
@@ -1946,9 +1946,8 @@ FieldPrototype.resolve = function resolve() {
             Type = require(32);
         if (this.resolvedType = this.parent.lookup(this.type, Type))
             this.typeDefault = null;
-        else if (this.resolvedType = this.parent.lookup(this.type, Enum))
+        else /* istanbul ignore else */ if (this.resolvedType = this.parent.lookup(this.type, Enum))
             this.typeDefault = this.resolvedType.values[Object.keys(this.resolvedType.values)[0]]; // first defined
-        /* istanbul ignore next */
         else
             throw Error("unresolvable field type: " + this.type);
     }
@@ -1963,6 +1962,7 @@ FieldPrototype.resolve = function resolve() {
     // convert to internal data type if necesssary
     if (this.long) {
         this.typeDefault = util.Long.fromNumber(this.typeDefault, this.type.charAt(0) === "u");
+        /* istanbul ignore else */
         if (Object.freeze)
             Object.freeze(this.typeDefault); // long instances are meant to be immutable anyway (i.e. use small int cache that even requires it)
     } else if (this.bytes && typeof this.typeDefault === "string") {
@@ -2335,11 +2335,11 @@ Method.fromJSON = function fromJSON(name, json) {
  */
 MethodPrototype.toJSON = function toJSON() {
     return {
-        type           : this.type !== "rpc" && this.type || undefined,
+        type           : this.type !== "rpc" && /* istanbul ignore next */ this.type || undefined,
         requestType    : this.requestType,
-        requestStream  : this.requestStream || undefined,
+        requestStream  : this.requestStream,
         responseType   : this.responseType,
-        responseStream : this.responseStream || undefined,
+        responseStream : this.responseStream,
         options        : this.options
     };
 };
@@ -2524,6 +2524,7 @@ NamespacePrototype.toJSON = function toJSON() {
  */
 NamespacePrototype.addJSON = function addJSON(nestedJson) {
     var ns = this;
+    /* istanbul ignore else */
     if (nestedJson) {
         if (!nestedTypes)
             initNested();
@@ -2532,6 +2533,7 @@ NamespacePrototype.addJSON = function addJSON(nestedJson) {
             for (var j = 0; j < nestedTypes.length; ++j)
                 if (nestedTypes[j].testJSON(nested))
                     return ns.add(nestedTypes[j].fromJSON(nestedName, nested));
+            /* istanbul ignore next */
             throw TypeError("nested." + nestedName + " must be JSON for " + nestedError);
         });
     }
@@ -2570,9 +2572,9 @@ NamespacePrototype.getEnum = function getEnum(name) {
  * @throws {Error} If there is already a nested object with this name
  */
 NamespacePrototype.add = function add(object) {
+    /* istanbul ignore next */
     if (!nestedTypes)
         initNested();
-
     /* istanbul ignore next */
     if (!object || nestedTypes.indexOf(object.constructor) < 0)
         throw TypeError("object must be " + nestedError);
@@ -2662,6 +2664,7 @@ NamespacePrototype.define = function define(path, json) {
  * @override
  */
 NamespacePrototype.resolve = function resolve() {
+
     /* istanbul ignore next */
     if (!Type)
         Type = require(32);
@@ -2677,7 +2680,7 @@ NamespacePrototype.resolve = function resolve() {
         if (/^[A-Z]/.test(nested[i].name)) {
             if (nested[i] instanceof Type || nested[i] instanceof Service)
                 this[nested[i].name] = nested[i];
-            else if (nested[i] instanceof Enum)
+            else /* istanbul ignore else */ if (nested[i] instanceof Enum)
                 this[nested[i].name] = nested[i].values;
             else
                 continue;
@@ -3102,7 +3105,7 @@ function addFieldsToParent(oneof) {
 }
 
 /**
- * Adds a field to this oneof.
+ * Adds a field to this oneof and removes it from its current parent, if any.
  * @param {Field} field Field to add
  * @returns {OneOf} `this`
  */
@@ -3111,8 +3114,7 @@ OneOfPrototype.add = function add(field) {
     /* istanbul ignore next */
     if (!(field instanceof Field))
         throw TypeError("field must be a Field");
-
-    if (field.parent)
+    if (field.parent && field.parent !== this.parent)
         field.parent.remove(field);
     this.oneof.push(field.name);
     this._fieldsArray.push(field);
@@ -3122,7 +3124,7 @@ OneOfPrototype.add = function add(field) {
 };
 
 /**
- * Removes a field from this oneof.
+ * Removes a field from this oneof and puts it back to the oneof's parent.
  * @param {Field} field Field to remove
  * @returns {OneOf} `this`
  */
@@ -3139,10 +3141,9 @@ OneOfPrototype.remove = function remove(field) {
 
     this._fieldsArray.splice(index, 1);
     index = this.oneof.indexOf(field.name);
-    if (index > -1)
+    /* istanbul ignore else */
+    if (index > -1) // theoretical
         this.oneof.splice(index, 1);
-    if (field.parent)
-        field.parent.remove(field);
     field.partOf = null;
     return this;
 };
@@ -4528,6 +4529,8 @@ RootPrototype.load = function load(filename, options, callback) {
             return;
         var cb = callback;
         callback = null;
+        if (sync)
+            throw err;
         cb(err, root);
     }
 
@@ -4865,6 +4868,7 @@ Service.testJSON = function testJSON(json) {
  */
 Service.fromJSON = function fromJSON(name, json) {
     var service = new Service(name, json.options);
+    /* istanbul ignore else */
     if (json.methods)
         Object.keys(json.methods).forEach(function(methodName) {
             service.add(Method.fromJSON(methodName, json.methods[methodName]));
@@ -5578,10 +5582,19 @@ TypePrototype.add = function add(object) {
 TypePrototype.remove = function remove(object) {
     if (object instanceof Field && object.extend === undefined) {
         // See Type#add for the reason why extension fields are excluded here.
-        if (this.fields[object.name] !== object)
+        if (!this.fields || this.fields[object.name] !== object)
             throw Error(object + " is not a member of " + this);
         delete this.fields[object.name];
-        object.message = null;
+        object.parent = null;
+        object.onRemove(this);
+        return clearCache(this);
+    }
+    if (object instanceof OneOf) {
+        if (!this.oneofs || this.oneofs[object.name] !== object)
+            throw Error(object + " is not a member of " + this);
+        delete this.oneofs[object.name];
+        object.parent = null;
+        object.onRemove(this);
         return clearCache(this);
     }
     return NamespacePrototype.remove.call(this, object);
@@ -6737,6 +6750,7 @@ Writer.alloc = function alloc(size) {
 };
 
 // Use Uint8Array buffer pool in the browser, just like node does with buffers
+/* istanbul ignore else */
 if (util.Array !== Array)
     Writer.alloc = util.pool(Writer.alloc, util.Array.prototype.subarray);
 

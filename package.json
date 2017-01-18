@@ -1,6 +1,6 @@
 {
   "name": "protobufjs",
-  "version": "6.5.0",
+  "version": "6.5.1",
   "description": "Protocol Buffers for JavaScript (& TypeScript).",
   "author": "Daniel Wirtz <dcode+protobufjs@dcode.io>",
   "license": "BSD-3-Clause",
@@ -28,7 +28,7 @@
     "bench": "node bench",
     "build": "gulp",
     "changelog": "node scripts/changelog -w",
-    "coverage": "istanbul cover node_modules/tape/bin/tape tests/*.js",
+    "coverage": "istanbul cover node_modules/tape/bin/tape tests/*.js tests/node/*.js",
     "docs": "jsdoc -c jsdoc.docs.json -R README.md",
     "lint": "eslint src runtime",
     "pages": "node scripts/pages",

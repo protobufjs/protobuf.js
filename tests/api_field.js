@@ -1,0 +1,47 @@
+var tape = require("tape");
+
+var protobuf = require("..");
+
+tape.test("fields", function(test) {
+    var root = new protobuf.Root(),
+        type,
+        field = new protobuf.Field("a", 1, "uint32", /* rule */ undefined, /* skipped extend, */ /* options */ {});
+
+    test.same(field.toJSON(), {
+        rule: undefined,
+        type: "uint32",
+        id: 1,
+        extend: undefined,
+        options: {}
+    }, "should export to JSON");
+
+    root
+    .add(
+        type = new protobuf.Type("Test").add(
+            field = new protobuf.Field("a", 1, "Enm", /* skipped rule and extend, */ { "default": "ONE" })
+        )
+    ).add(
+        new protobuf.Enum("Enm", { "ONE": 1, "TWO": 2 })
+    )
+    .resolveAll();
+
+    test.ok(field.resolvedType instanceof protobuf.Enum, "should resolve to an enum");
+    test.equal(field.typeDefault, 1, "should recognize enum default values as strings");
+
+    field.resolved = false;
+    field.options["default"] = 2;
+    field.resolve();
+    test.equal(field.typeDefault, 2, "should recognize enum default values as numbers");
+
+    type.add(field = new protobuf.Field("b", 2, "bytes", { default: "dGVzdA=="}));
+    field.resolve();
+
+    test.same(Array.prototype.slice.call(field.typeDefault), "test".split("").map(function(c) { return c.charCodeAt(0); }), "should recognize bytes default values as base64 encoded strings");
+
+    field.resolved = false;
+    field.options["default"] = "teststr"; // quirk: length not a multiple of 4 if using a subset of base64 chars
+    field.resolve();
+    test.same(Array.prototype.slice.call(field.typeDefault), "teststr".split("").map(function(c) { return c.charCodeAt(0); }), "should recognize bytes default values as strings");
+
+    test.end();
+});

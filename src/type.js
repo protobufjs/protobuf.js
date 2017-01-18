@@ -301,10 +301,19 @@ TypePrototype.add = function add(object) {
 TypePrototype.remove = function remove(object) {
     if (object instanceof Field && object.extend === undefined) {
         // See Type#add for the reason why extension fields are excluded here.
-        if (this.fields[object.name] !== object)
+        if (!this.fields || this.fields[object.name] !== object)
             throw Error(object + " is not a member of " + this);
         delete this.fields[object.name];
-        object.message = null;
+        object.parent = null;
+        object.onRemove(this);
+        return clearCache(this);
+    }
+    if (object instanceof OneOf) {
+        if (!this.oneofs || this.oneofs[object.name] !== object)
+            throw Error(object + " is not a member of " + this);
+        delete this.oneofs[object.name];
+        object.parent = null;
+        object.onRemove(this);
         return clearCache(this);
     }
     return NamespacePrototype.remove.call(this, object);

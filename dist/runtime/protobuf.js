@@ -1,6 +1,6 @@
 /*!
- * protobuf.js v6.5.0 (c) 2016, Daniel Wirtz
- * Compiled Tue, 17 Jan 2017 04:40:35 UTC
+ * protobuf.js v6.5.1 (c) 2016, Daniel Wirtz
+ * Compiled Wed, 18 Jan 2017 00:05:57 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -1480,6 +1480,7 @@ Writer.alloc = function alloc(size) {
 };
 
 // Use Uint8Array buffer pool in the browser, just like node does with buffers
+/* istanbul ignore else */
 if (util.Array !== Array)
     Writer.alloc = util.pool(Writer.alloc, util.Array.prototype.subarray);
 
