@@ -43,6 +43,12 @@ $root.Package = (function() {
     Package.prototype.version = "";
 
     /**
+     * Package versionScheme.
+     * @type {string}
+     */
+    Package.prototype.versionScheme = "";
+
+    /**
      * Package description.
      * @type {string}
      */
@@ -134,7 +140,7 @@ $root.Package = (function() {
 
     // Lazily resolved type references
     var $types = {
-        5: "Package.Repository"
+        6: "Package.Repository"
     }; $lazyTypes.push($types);
 
     /**
@@ -159,6 +165,8 @@ $root.Package = (function() {
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.name);
         if (message.version !== undefined && message.hasOwnProperty("version"))
             writer.uint32(/* id 2, wireType 2 =*/18).string(message.version);
+        if (message.versionScheme !== undefined && message.hasOwnProperty("versionScheme"))
+            writer.uint32(/* id 19, wireType 2 =*/154).string(message.versionScheme);
         if (message.description !== undefined && message.hasOwnProperty("description"))
             writer.uint32(/* id 3, wireType 2 =*/26).string(message.description);
         if (message.author !== undefined && message.hasOwnProperty("author"))
@@ -166,7 +174,7 @@ $root.Package = (function() {
         if (message.license !== undefined && message.hasOwnProperty("license"))
             writer.uint32(/* id 5, wireType 2 =*/42).string(message.license);
         if (message.repository !== undefined && message.hasOwnProperty("repository"))
-            $types[5].encode(message.repository, writer.uint32(/* id 6, wireType 2 =*/50).fork()).ldelim();
+            $types[6].encode(message.repository, writer.uint32(/* id 6, wireType 2 =*/50).fork()).ldelim();
         if (message.bugs !== undefined && message.hasOwnProperty("bugs"))
             writer.uint32(/* id 7, wireType 2 =*/58).string(message.bugs);
         if (message.homepage !== undefined && message.hasOwnProperty("homepage"))
@@ -228,6 +236,9 @@ $root.Package = (function() {
             case 2:
                 message.version = reader.string();
                 break;
+            case 19:
+                message.versionScheme = reader.string();
+                break;
             case 3:
                 message.description = reader.string();
                 break;
@@ -238,7 +249,7 @@ $root.Package = (function() {
                 message.license = reader.string();
                 break;
             case 6:
-                message.repository = $types[5].decode(reader, reader.uint32());
+                message.repository = $types[6].decode(reader, reader.uint32());
                 break;
             case 7:
                 message.bugs = reader.string();
@@ -333,6 +344,9 @@ $root.Package = (function() {
         if (message.version !== undefined)
             if (!$util.isString(message.version))
                 return "version: string expected";
+        if (message.versionScheme !== undefined)
+            if (!$util.isString(message.versionScheme))
+                return "versionScheme: string expected";
         if (message.description !== undefined)
             if (!$util.isString(message.description))
                 return "description: string expected";
@@ -343,7 +357,7 @@ $root.Package = (function() {
             if (!$util.isString(message.license))
                 return "license: string expected";
         if (message.repository !== undefined && message.repository !== null) {
-            var error = $types[5].verify(message.repository);
+            var error = $types[6].verify(message.repository);
             if (error)
                 return "repository." + error;
         }
@@ -427,6 +441,8 @@ $root.Package = (function() {
             message.name = String(object.name);
         if (object.version !== undefined && object.version !== null)
             message.version = String(object.version);
+        if (object.versionScheme !== undefined && object.versionScheme !== null)
+            message.versionScheme = String(object.versionScheme);
         if (object.description !== undefined && object.description !== null)
             message.description = String(object.description);
         if (object.author !== undefined && object.author !== null)
@@ -434,7 +450,7 @@ $root.Package = (function() {
         if (object.license !== undefined && object.license !== null)
             message.license = String(object.license);
         if (object.repository !== undefined && object.repository !== null)
-            message.repository = $types[5].fromObject(object.repository);
+            message.repository = $types[6].fromObject(object.repository);
         if (object.bugs !== undefined && object.bugs !== null)
             message.bugs = String(object.bugs);
         if (object.homepage !== undefined && object.homepage !== null)
@@ -513,6 +529,7 @@ $root.Package = (function() {
         if (options.defaults) {
             object.name = "";
             object.version = "";
+            object.versionScheme = "";
             object.description = "";
             object.author = "";
             object.license = "";
@@ -526,6 +543,8 @@ $root.Package = (function() {
             object.name = message.name;
         if (message.version !== undefined && message.version !== null && message.hasOwnProperty("version"))
             object.version = message.version;
+        if (message.versionScheme !== undefined && message.versionScheme !== null && message.hasOwnProperty("versionScheme"))
+            object.versionScheme = message.versionScheme;
         if (message.description !== undefined && message.description !== null && message.hasOwnProperty("description"))
             object.description = message.description;
         if (message.author !== undefined && message.author !== null && message.hasOwnProperty("author"))
@@ -533,7 +552,7 @@ $root.Package = (function() {
         if (message.license !== undefined && message.license !== null && message.hasOwnProperty("license"))
             object.license = message.license;
         if (message.repository !== undefined && message.repository !== null && message.hasOwnProperty("repository"))
-            object.repository = $types[5].toObject(message.repository, options);
+            object.repository = $types[6].toObject(message.repository, options);
         if (message.bugs !== undefined && message.bugs !== null && message.hasOwnProperty("bugs"))
             object.bugs = message.bugs;
         if (message.homepage !== undefined && message.homepage !== null && message.hasOwnProperty("homepage"))

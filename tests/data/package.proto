@@ -3,6 +3,7 @@ syntax = "proto3";
 message Package {
     string name = 1;
     string version = 2;
+    string versionScheme = 19;
     string description = 3;
     string author = 4;
     string license = 5;

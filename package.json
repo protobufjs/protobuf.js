@@ -1,6 +1,7 @@
 {
   "name": "protobufjs",
   "version": "6.5.1",
+  "versionScheme": "~",
   "description": "Protocol Buffers for JavaScript (& TypeScript).",
   "author": "Daniel Wirtz <dcode+protobufjs@dcode.io>",
   "license": "BSD-3-Clause",
@@ -33,6 +34,7 @@
     "lint": "eslint src runtime",
     "pages": "node scripts/pages",
     "prepublish": "node scripts/prepublish",
+    "postinstall": "node scripts/postinstall",
     "prof": "node bench/prof",
     "test": "tape -r ./lib/tape-adapter tests/*.js tests/node/*.js | tap-spec",
     "types": "node bin/pbts --main --global protobuf --out index.d.ts src && tsc tests/comp_typescript.ts --lib es2015 --noEmit --strictNullChecks && tsc tests/data/test.ts --lib es2015 --noEmit --strictNullChecks",

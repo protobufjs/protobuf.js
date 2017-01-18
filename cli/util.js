@@ -108,6 +108,7 @@ exports.setup = function() {
             install.push(name + "@" + version);
         }
     });
+    require("../scripts/postinstall"); // emit postinstall warning, if any
     if (!install.length)
         return;
     modInstall(install);
