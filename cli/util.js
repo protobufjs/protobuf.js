@@ -71,15 +71,10 @@ exports.inspect = function inspect(object, indent) {
     return sb.join("\n");
 };
 
-var paths = [
-    path.resolve(__dirname, "..", "node_modules"),
-    path.resolve(__dirname, "node_modules")
-];
-
 function modExists(name, version) {
-    for (var i = 0; i < paths.length; ++i) {
+    for (var i = 0; i < module.paths.length; ++i) {
         try {
-            var pkg = JSON.parse(fs.readFileSync(path.join(paths[i], name, "package.json")));
+            var pkg = JSON.parse(fs.readFileSync(path.join(module.paths[i], name, "package.json")));
             return semver
                 ? semver.satisfies(pkg.version, version)
                 : parseInt(pkg.version, 10) === parseInt(version.replace(/^[\^~]/, ""), 10); // used for semver only
