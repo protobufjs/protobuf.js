@@ -1,6 +1,6 @@
 # <p align="center"><img alt="protobuf.js" src="https://github.com/dcodeIO/protobuf.js/raw/master/pbjs.png" width="120" height="104" /></p>
 
-[![][travis-image]][travis-url] [![][david-image]][david-url] [![][npm-dl-image]][npm-url] [![][npm-image]][npm-url] [![][paypal-image]][paypal-url]
+[![][travis-image]][travis-url] [![][coverage-image]][coverage-url] [![][downloads-image]][npm-url] [![][npm-image]][npm-url] [![][donate-image]][donate-url]
 
 **Protocol Buffers** are a language-neutral, platform-neutral, extensible way of serializing structured data for use in communications protocols, data storage, and more, originally designed at Google ([see](https://developers.google.com/protocol-buffers/)).
 
@@ -8,13 +8,13 @@
 
 [travis-image]: https://img.shields.io/travis/dcodeIO/protobuf.js.svg
 [travis-url]: https://travis-ci.org/dcodeIO/protobuf.js
-[david-url]: https://david-dm.org/dcodeIO/protobuf.js
-[david-image]: https://img.shields.io/david/dcodeIO/protobuf.js.svg
+[coverage-image]: https://coveralls.io/repos/github/dcodeIO/protobuf.js/badge.svg?branch=master
+[coverage-url]: https://coveralls.io/github/dcodeIO/protobuf.js?branch=master
 [npm-image]: https://img.shields.io/npm/v/protobufjs.svg
 [npm-url]: https://npmjs.org/package/protobufjs
-[npm-dl-image]: https://img.shields.io/npm/dm/protobufjs.svg
-[paypal-image]: https://img.shields.io/badge/donate-feels%20good%2C%20I%20promise-333333.svg
-[paypal-url]: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=dcode%40dcode.io&item_name=Open%20Source%20Software%20Contribution&item_number=dcodeIO%2Fprotobuf.js
+[downloads-image]: https://img.shields.io/npm/dm/protobufjs.svg
+[donate-image]: https://img.shields.io/badge/donate-%E2%9D%A4-ff2244.svg
+[donate-url]: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=dcode%40dcode.io&item_name=Open%20Source%20Software%20Contribution&item_number=dcodeIO%2Fprotobuf.js
 
 **Recommended read:** [Changes in protobuf.js 6.0](https://github.com/dcodeIO/protobuf.js/wiki/Changes-in-protobuf.js-6.0)
 

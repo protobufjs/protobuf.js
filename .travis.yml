@@ -24,3 +24,7 @@ matrix:
     script: 
       - travis_wait npm run zuul
       - sleep 3
+  include:
+  - node_js: 6
+    script:
+      - npm run coverage
