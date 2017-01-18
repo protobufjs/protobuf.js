@@ -2,7 +2,7 @@
 var fs            = require("fs"),
     path          = require("path"),
     child_process = require("child_process"),
-    Module        = require("module");
+    semver;
 
 var protobuf = require("..");
 
@@ -71,38 +71,53 @@ exports.inspect = function inspect(object, indent) {
     return sb.join("\n");
 };
 
-exports.setup = function() {
-    // this one is important. without it, this folder won't be searched anymore.
-    try { fs.mkdirSync(path.join(__dirname, "node_modules")); } catch (e) {}
+var paths = [
+    path.resolve(__dirname, "..", "node_modules"),
+    path.resolve(__dirname, "node_modules")
+];
 
-    // find out which modules are missing
-    var pkg = require(path.join(__dirname, "..", "package.json"));
-    var install = [];
-    var semver;
-    pkg.cliDependencies.forEach(function(name) {
-        var version = pkg.dependencies[name] || pkg.devDependencies[name];
+function modExists(name, version) {
+    for (var i = 0; i < paths.length; ++i) {
         try {
-            var mPath = require.resolve(name + "/package.json"); // jsdoc has no main file
-            var mPkg  = JSON.parse(fs.readFileSync(mPath));
-            if (semver && !semver.satisfies(mPkg.version, version))
-                throw Error(mPkg.version + " is outdated");
-        } catch (e) {
-            process.stderr.write("installing " + name + "@" + version + " (" + e.message + ")\n");
-            install.push(version ? name + "@" + version : name);
-        }
-        if (name === "semver")
-            semver = require("semver");
-    });
-    if (!install.length) {
-        try { fs.rmdirSync(path.join(__dirname, "node_modules")); } catch (e) {}
-        return;
+            var pkg = JSON.parse(fs.readFileSync(path.join(paths[i], name, "package.json")));
+            return semver
+                ? semver.satisfies(pkg.version, version)
+                : parseInt(pkg.version, 10) === parseInt(version.replace(/^[\^~]/, ""), 10); // used for semver only
+        } catch (e) {}
     }
+    return false;
+}
 
-    // if any are missing, install them. this relies on an empty package.json in cli/.
+function modInstall(install) {
+    if (typeof install === "string")
+        install = [ install ];
     child_process.execSync("npm --silent install " + install.join(" "), {
         cwd: __dirname,
         stdio: "ignore"
     });
+}
+
+exports.setup = function() {
+    var pkg = require(path.join(__dirname, "..", "package.json"));
+    var version = pkg.dependencies["semver"] || pkg.devDependencies["semver"];
+    if (!modExists("semver", version)) {
+        process.stderr.write("installing semver@" + version + "\n");
+        modInstall("semver@" + version);
+    }
+    semver = require("semver"); // used from now on for version comparison
+    var install = [];
+    pkg.cliDependencies.forEach(function(name) {
+        if (name === "semver")
+            return;
+        version = pkg.dependencies[name] || pkg.devDependencies[name];
+        if (!modExists(name, version)) {
+            process.stderr.write("installing " + name + "@" + version + "\n");
+            install.push(name + "@" + version);
+        }
+    });
+    if (!install.length)
+        return;
+    modInstall(install);
 };
 
 exports.wrap = function(OUTPUT, options) {
