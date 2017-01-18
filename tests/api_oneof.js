@@ -16,7 +16,7 @@ message Test {\
     bool c = 3;\
 }";
 
-tape.test("oneofs", function(test) {
+tape.test("reflected oneofs", function(test) {
 
     test.ok(protobuf.OneOf.testJSON(def), "should recognize a oneof definition as JSON");
 

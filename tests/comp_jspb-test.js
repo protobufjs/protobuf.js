@@ -1,7 +1,7 @@
 var tape = require("tape");
 var protobuf  = require("..");
 
-tape.test("jspb test.proto", function(test) {
+tape.test("jspb test proto", function(test) {
     var existingRoot = new protobuf.Root();
     protobuf.load("tests/data/test.proto", existingRoot, function(err, root) {
         if (err)

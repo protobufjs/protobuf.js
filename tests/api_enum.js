@@ -2,7 +2,7 @@ var tape = require("tape");
 
 var protobuf = require("..");
 
-tape.test("enums", function(test) {
+tape.test("reflected enums", function(test) {
     var enm = new protobuf.Enum("Test", {
         a: 1,
         b: 2

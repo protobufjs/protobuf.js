@@ -4,7 +4,7 @@ var protobuf = require("..");
 
 var proto = "message Something {}";
 
-tape.test("classes", function(test) {
+tape.test("reflected classes", function(test) {
 
     var root = protobuf.parse(proto).root,
         Something = root.lookup("Something");
@@ -21,7 +21,7 @@ tape.test("classes", function(test) {
         protobuf.Class.create(Something, "a");
     }, TypeError, "Class.create should throw if second argument is not a function");
 
-    test.test("should construct equally using Class.create or new Class", function(test) {
+    test.test(test.name + " - should construct equally using Class.create or new Class", function(test) {
         var proto1 = new protobuf.Class(Something),
             proto2 = protobuf.Class.create(Something);
         for (var key in proto1) {

@@ -100,7 +100,7 @@ Object.defineProperties(ReflectionObjectPrototype, {
  * @returns {Object.<string,*>} JSON object
  * @abstract
  */
-ReflectionObjectPrototype.toJSON = function toJSON() {
+ReflectionObjectPrototype.toJSON = /* istanbul ignore next */ function toJSON() {
     throw Error(); // not implemented, shouldn't happen
 };
 
@@ -127,9 +127,12 @@ ReflectionObjectPrototype.onAdd = function onAdd(parent) {
  * @returns {undefined}
  */
 ReflectionObjectPrototype.onRemove = function onRemove(parent) {
-    var root = parent.root;
+
+    /* istanbul ignore next */
     if (!Root)
         Root = require("./root");
+
+    var root = parent.root;
     if (root instanceof Root)
         root._handleRemove(this);
     this.parent = null;
@@ -143,8 +146,11 @@ ReflectionObjectPrototype.onRemove = function onRemove(parent) {
 ReflectionObjectPrototype.resolve = function resolve() {
     if (this.resolved)
         return this;
+
+    /* istanbul ignore next */
     if (!Root)
         Root = require("./root");
+
     if (this.root instanceof Root)
         this.resolved = true; // only if part of a root
     return this;

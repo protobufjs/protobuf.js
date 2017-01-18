@@ -14,7 +14,7 @@ var msg = {
     a: [1,2,3]
 };
 
-tape.test("packed repeated", function(test) {
+tape.test("packed repeated values", function(test) {
     var root1 = protobuf.parse(proto1).root,
         root2 = protobuf.parse(proto2).root;
     var Test1 = root1.lookup("Test"),

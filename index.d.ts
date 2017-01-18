@@ -1529,6 +1529,7 @@ type TokenizerHandle = { [k: string]: any };
  * Tokenizes the given .proto source and returns an object with useful utility functions.
  * @param {string} source Source contents
  * @returns {TokenizerHandle} Tokenizer handle
+ * @property {function(string):string} unescape Unescapes a string
  */
 export function tokenize(source: string): TokenizerHandle;
 

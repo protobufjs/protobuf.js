@@ -1,6 +1,6 @@
 # <p align="center"><img alt="protobuf.js" src="https://github.com/dcodeIO/protobuf.js/raw/master/pbjs.png" width="120" height="104" /></p>
 
-[![][travis-image]][travis-url] [![][coverage-image]][coverage-url] [![][downloads-image]][npm-url] [![][npm-image]][npm-url] [![][donate-image]][donate-url]
+[![][travis-image]][travis-url] [![][coverage-image]][coverage-url] [![][npm-image]][npm-url] [![][downloads-image]][npm-url] [![][donate-image]][donate-url]
 
 **Protocol Buffers** are a language-neutral, platform-neutral, extensible way of serializing structured data for use in communications protocols, data storage, and more, originally designed at Google ([see](https://developers.google.com/protocol-buffers/)).
 
@@ -13,7 +13,7 @@
 [npm-image]: https://img.shields.io/npm/v/protobufjs.svg
 [npm-url]: https://npmjs.org/package/protobufjs
 [downloads-image]: https://img.shields.io/npm/dm/protobufjs.svg
-[donate-image]: https://img.shields.io/badge/donate-%E2%9D%A4-ff2244.svg
+[donate-image]: https://img.shields.io/badge/donate-❤-ff2244.svg
 [donate-url]: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=dcode%40dcode.io&item_name=Open%20Source%20Software%20Contribution&item_number=dcodeIO%2Fprotobuf.js
 
 **Recommended read:** [Changes in protobuf.js 6.0](https://github.com/dcodeIO/protobuf.js/wiki/Changes-in-protobuf.js-6.0)

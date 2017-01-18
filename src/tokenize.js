@@ -5,6 +5,12 @@ var delimRe        = /[\s{}=;:[\],'"()<>]/g,
     stringDoubleRe = /(?:"([^"\\]*(?:\\.[^"\\]*)*)")/g,
     stringSingleRe = /(?:'([^'\\]*(?:\\.[^'\\]*)*)')/g;
 
+/**
+ * Unescapes a string.
+ * @param {string} str String to unescape
+ * @returns {string} Unescaped string
+ * @ignore
+ */
 function unescape(str) {
     return str.replace(/\\(.?)/g, function($0, $1) {
         switch ($1) {
@@ -18,6 +24,8 @@ function unescape(str) {
         }
     });
 }
+
+tokenize.unescape = unescape;
 
 /**
  * Handle object returned from {@link tokenize}.
@@ -34,6 +42,7 @@ function unescape(str) {
  * Tokenizes the given .proto source and returns an object with useful utility functions.
  * @param {string} source Source contents
  * @returns {TokenizerHandle} Tokenizer handle
+ * @property {function(string):string} unescape Unescapes a string
  */
 function tokenize(source) {
     /* eslint-disable callback-return */

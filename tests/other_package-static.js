@@ -12,7 +12,7 @@ tape.test("package.json (static)", function(test) {
 
     var myPackage = new Package(pkg);
 
-    test.test("runtime message", function(test) {
+    test.test(test.name + " - runtime message", function(test) {
 
         test.ok(myPackage instanceof Package, "should extend Package");
         test.deepEqual(myPackage, pkg, "should have equal contents");
@@ -20,7 +20,7 @@ tape.test("package.json (static)", function(test) {
         test.end();
     });
 
-    test.test("decoded message", function(test) {
+    test.test(test.name + " - decoded message", function(test) {
 
         var decoded = Package.decode(Package.encode(myPackage).finish());
 

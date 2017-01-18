@@ -2,7 +2,7 @@ var tape = require("tape");
 
 var protobuf = require("..");
 
-tape.test("fields", function(test) {
+tape.test("reflected fields", function(test) {
     var root = new protobuf.Root(),
         type,
         field = new protobuf.Field("a", 1, "uint32", /* rule */ undefined, /* skipped extend, */ /* options */ {});

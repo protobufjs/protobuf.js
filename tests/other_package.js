@@ -3,7 +3,7 @@ var tape = require("tape");
 var protobuf = require(".."),
     pkg = require("../package.json");
 
-tape.test("package.json", function(test) {
+tape.test("package.json (reflected)", function(test) {
 
     protobuf.load("tests/data/package.proto", function(err, root) {
         if (err)
@@ -14,7 +14,7 @@ tape.test("package.json", function(test) {
             
         var myPackage = Package.create(pkg);
 
-        test.test("runtime message", function(test) {
+        test.test(test.name + " - runtime message", function(test) {
 
             test.ok(myPackage instanceof protobuf.Message, "should extend Message");
             test.equal(myPackage.$type, Package, "should reference Package as its reflected type");
@@ -23,7 +23,7 @@ tape.test("package.json", function(test) {
             test.end();
         });
 
-        test.test("decoded message", function(test) {
+        test.test(test.name + " - decoded message", function(test) {
 
             var writer = Package.encode(myPackage);
             var buf = writer.finish();

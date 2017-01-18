@@ -6,7 +6,7 @@ var Long = protobuf.util.Long;
 
 tape.test("longbits", function(test) {
 
-    test.test("zero", function(test) {
+    test.test(test.name + " - zero", function(test) {
         var zero = LongBits.zero;
         test.equal(zero.lo, 0, "should have low bits of 0");
         test.equal(zero.hi, 0, "should have high bits of 0");

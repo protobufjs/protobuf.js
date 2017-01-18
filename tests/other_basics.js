@@ -21,7 +21,7 @@ tape.test("google.protobuf.Any type", function(test) {
             value: valueBuffer
         });
 
-        test.test("instances", function(test) {
+        test.test(test.name + " - instances", function(test) {
 
             test.ok(any instanceof protobuf.Message, "should extend Message");
             test.deepEqual(any, {
@@ -40,7 +40,7 @@ tape.test("google.protobuf.Any type", function(test) {
                 test.equal(buf.length, 14        , "14 bytes in total");
             }
 
-            test.test("should encode", function(test) {
+            test.test(test.name + " - should encode", function(test) {
                 
                 writer = Any.encode(any);
                 buf = writer.finish();
@@ -50,7 +50,7 @@ tape.test("google.protobuf.Any type", function(test) {
                 test.end();
             });
 
-            test.test("should decode", function(test) {
+            test.test(test.name + " - should decode", function(test) {
 
                 var msg = Any.decode(buf);
 
@@ -59,7 +59,7 @@ tape.test("google.protobuf.Any type", function(test) {
                 test.end();
             });
 
-            test.test("should encodeDelimited", function(test) {
+            test.test(test.name + " - should encodeDelimited", function(test) {
 
                 writer = Any.encodeDelimited(any);
                 buf = writer.finish();
@@ -74,7 +74,7 @@ tape.test("google.protobuf.Any type", function(test) {
                 test.end();
             });
 
-            test.test("should decodeDelimited", function(test) {
+            test.test(test.name + " - should decodeDelimited", function(test) {
 
                 var msg = Any.decodeDelimited(buf);
                 test.deepEqual(msg, any, "an equal message");

@@ -18,13 +18,13 @@ tape.test("runtime services", function(test) {
 
         function rpc(method, requestData, callback) {
             if (++timesCalled < 3) {
-                test.test("should call the rpc impl with", function(test) {
+                test.test(test.name + " - should call the rpc impl with", function(test) {
                     test.equal(method, MyMethod, "the reflected method");
                     test.ok(requestData.length, "a buffer");
                     test.ok(typeof callback === "function", "a callback function");
                     test.end();
                 });
-                test.test("should call with a buffer that contains", function(test) {
+                test.test(test.name + " - should call with a buffer that contains", function(test) {
                     test.equal(requestData[0], 3, "ldelim 3");
                     test.equal(requestData[1], 10, "id 1, wireType 2");
                     test.equal(requestData[2], 1, "length 1");

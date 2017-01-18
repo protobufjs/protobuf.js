@@ -15,7 +15,7 @@ tape.test("reusing", function(test) {
     var A = root.lookup("A"),
         B = root.lookup("B");
 
-    test.test("a writer should write", function(test) {
+    test.test(test.name + " - a writer should write", function(test) {
 
         var writer = protobuf.Writer.create();
 
@@ -39,7 +39,7 @@ tape.test("reusing", function(test) {
 
         var reader = protobuf.Reader.create(buffer);
 
-        test.test("and a reader should", function(test) {
+        test.test(test.name + " - and a reader should", function(test) {
 
             var a = A.decodeDelimited(reader);
             test.deepEqual(a, { a: 1 }, "read back the first message");

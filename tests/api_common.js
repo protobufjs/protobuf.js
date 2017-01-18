@@ -2,7 +2,7 @@ var tape = require("tape");
 
 var protobuf = require("..");
 
-tape.test("common", function(test) {
+tape.test("common types", function(test) {
 
     protobuf.common("google/protobuf/foo.proto", {
         nested: {

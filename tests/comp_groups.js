@@ -38,7 +38,7 @@ tape.test("legacy groups", function(test) {
     // NOTE: fromJSON alone does not add the sister-field.
     // The parser does this explicitly and the field is part of the exported JSON itself.
 
-    test.test("should encode required", (function(Test, msg) { return function(test) {
+    test.test(test.name + " - should encode required", (function(Test, msg) { return function(test) {
         var buf = Test.encode(msg).finish();
         test.equal(buf.length, 4, "a total of 4 bytes");
         test.equal(buf[0], 1 << 3 | 3, "id 1, wireType 3");
@@ -60,7 +60,7 @@ tape.test("legacy groups", function(test) {
         }]
     };
 
-    test.test("should encode repeated", (function(Test, msg) { return function(test) {
+    test.test(test.name + " - should encode repeated", (function(Test, msg) { return function(test) {
         var buf = Test.encode(msg).finish();
         test.equal(buf.length, 8, "a total of 8 bytes");
         test.equal(buf[0], 1 << 3 | 3, "id 1, wireType 3");

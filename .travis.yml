@@ -27,4 +27,4 @@ matrix:
   include:
   - node_js: 6
     script:
-      - npm run coverage
+      - npm run coverage-ci

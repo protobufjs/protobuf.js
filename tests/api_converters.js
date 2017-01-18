@@ -2,7 +2,7 @@ var tape = require("tape");
 
 var protobuf  = require("..");
 
-tape.test("convert", function(test) {
+tape.test("converters", function(test) {
 
     protobuf.load("tests/data/convert.proto", function(err, root) {
         if (err)
@@ -10,9 +10,9 @@ tape.test("convert", function(test) {
 
         var Message = root.lookup("Message");
 
-        test.test("Message#toObject", function(test) {
+        test.test(test.name + " - Message#toObject", function(test) {
 
-            test.test("called with defaults = true", function(test) {
+            test.test(test.name + " - called with defaults = true", function(test) {
                 var obj = Message.create().toObject({ defaults: true });
 
                 test.equal(obj.stringVal, "", "should set stringVal");
@@ -32,7 +32,7 @@ tape.test("convert", function(test) {
                 test.end();
             });
 
-            test.test("called with defaults = undefined", function(test) {
+            test.test(test.name + " - called with defaults = undefined", function(test) {
                 var obj = Message.create().toObject();
 
                 test.equal(obj.stringVal, undefined, "should not set stringVal");
@@ -52,7 +52,7 @@ tape.test("convert", function(test) {
                 test.end();
             });
 
-            test.test("called with arrays = true", function(test) {
+            test.test(test.name + " - called with arrays = true", function(test) {
                 var obj = Message.create().toObject({ arrays: true });
 
                 test.equal(obj.stringVal, undefined, "should not set stringVal");
@@ -72,7 +72,7 @@ tape.test("convert", function(test) {
                 test.end();
             });
 
-            test.test("called with objects = true", function(test) {
+            test.test(test.name + " - called with objects = true", function(test) {
                 var obj = Message.create().toObject({ objects: true });
 
                 test.equal(obj.stringVal, undefined, "should not set stringVal");
@@ -92,7 +92,7 @@ tape.test("convert", function(test) {
                 test.end();
             });
 
-            test.test("should convert", function(test) {
+            test.test(test.name + " - should convert", function(test) {
                 var buf = protobuf.util.newBuffer(3);
                 buf[0] = buf[1] = buf[2] = 49; // "111"
                 var msg = Message.create({
@@ -132,7 +132,7 @@ tape.test("convert", function(test) {
             test.end();
         });
 
-        test.test("Message.fromObject", function(test) {
+        test.test(test.name + " - Message.fromObject", function(test) {
            
             var obj = {
                 uint64Val: 1,
@@ -164,7 +164,7 @@ tape.test("convert", function(test) {
             test.end();
         });
 
-        test.test("Message#toJSON", function(test) {
+        test.test(test.name + " - Message#toJSON", function(test) {
             var msg = Message.create();
             test.plan(1);
             msg.$type = {

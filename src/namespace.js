@@ -224,6 +224,7 @@ NamespacePrototype.add = function add(object) {
         var prev = this.get(object.name);
         if (prev) {
             // initNested above already initializes Type and Service
+            /* istanbul ignore else */
             if (prev instanceof Namespace && object instanceof Namespace && !(prev instanceof Type || prev instanceof Service)) {
                 // replace plain namespace but keep existing nested elements and options
                 var nested = prev.nestedArray;
@@ -234,7 +235,6 @@ NamespacePrototype.add = function add(object) {
                     this.nested = {};
                 object.setOptions(prev.options, true);
 
-            /* istanbul ignore next */
             } else
                 throw Error("duplicate name '" + object.name + "' in " + this);
         }
@@ -274,23 +274,26 @@ NamespacePrototype.remove = function remove(object) {
  * @returns {Namespace} Pointer to the last namespace created or `this` if path is empty
  */
 NamespacePrototype.define = function define(path, json) {
-    if (util.isString(path))
+
+    if (util.isString(path)) {
         path = path.split(".");
-    else if (!Array.isArray(path)) {
-        json = path;
-        path = undefined;
-    }
+    /* istanbul ignore next */
+    } else if (!Array.isArray(path))
+        throw TypeError("illegal path");
+    if (path && path.length && path[0] === "")
+        throw Error("path must be relative");
+
     var ptr = this;
-    if (path)
-        while (path.length > 0) {
-            var part = path.shift();
-            if (ptr.nested && ptr.nested[part]) {
-                ptr = ptr.nested[part];
-                if (!(ptr instanceof Namespace))
-                    throw Error("path conflicts with non-namespace objects");
-            } else
-                ptr.add(ptr = new Namespace(part));
-        }
+    while (path.length > 0) {
+        var part = path.shift();
+        if (ptr.nested && ptr.nested[part]) {
+            ptr = ptr.nested[part];
+            /* istanbul ignore next */
+            if (!(ptr instanceof Namespace))
+                throw Error("path conflicts with non-namespace objects");
+        } else
+            ptr.add(ptr = new Namespace(part));
+    }
     if (json)
         ptr.addJSON(json);
     return ptr;
@@ -348,21 +351,32 @@ NamespacePrototype.resolveAll = function resolveAll() {
  * @returns {?ReflectionObject} Looked up object or `null` if none could be found
  */
 NamespacePrototype.lookup = function lookup(path, filterType, parentAlreadyChecked) {
+
+    /* istanbul ignore next */
     if (typeof filterType === "boolean") {
         parentAlreadyChecked = filterType;
         filterType = undefined;
     }
-    if (util.isString(path) && path.length)
+
+    if (util.isString(path) && path.length) {
+        if (path === ".")
+            return this.root;
         path = path.split(".");
-    else if (!path.length)
-        return null;
+    } else if (!path.length)
+        return this;
+
     // Start at root if path is absolute
     if (path[0] === "")
         return this.root.lookup(path.slice(1), filterType);
     // Test if the first part matches any nested object, and if so, traverse if path contains more
     var found = this.get(path[0]);
-    if (found && path.length === 1 && (!filterType || found instanceof filterType) || found instanceof Namespace && (found = found.lookup(path.slice(1), filterType, true)))
-        return found;
+    if (found) {
+        if (path.length === 1) {
+            if (!filterType || found instanceof filterType)
+                return found;
+        } else if (found instanceof Namespace && (found = found.lookup(path.slice(1), filterType, true)))
+            return found;
+    }
     // If there hasn't been a match, try again at the parent
     if (this.parent === null || parentAlreadyChecked)
         return null;

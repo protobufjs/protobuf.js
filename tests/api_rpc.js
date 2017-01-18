@@ -16,7 +16,7 @@ service MyService {\
   };\
 }";
 
-tape.test("services", function(test) {
+tape.test("reflected services", function(test) {
     var root = protobuf.parse(proto).root;
 
     var myservice = root.lookup("myservice").resolveAll(),

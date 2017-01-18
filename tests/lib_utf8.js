@@ -6,7 +6,7 @@ var utf8 = protobuf.util.utf8;
 
 var size = 1000000;
 
-tape.test("utf8", function(test) {
+tape.test("utf8 micromodule", function(test) {
 
     if (protobuf.util.isNode) {
 
@@ -17,7 +17,7 @@ tape.test("utf8", function(test) {
             data += data;
         data = data.substring(0, size);
 
-        test.test("write", function(test) {
+        test.test(test.name + " - write", function(test) {
 
             len = utf8.length(data);
             buf = protobuf.util.newBuffer(len);
@@ -36,7 +36,7 @@ tape.test("utf8", function(test) {
 
         });
 
-        test.test("read", function(test) {
+        test.test(test.name + " - read", function(test) {
 
             var comp = utf8.read(buf, 0, buf.length);
             test.equal(comp, data, "should read back the original data");

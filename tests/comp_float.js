@@ -6,7 +6,7 @@ var tape = require("tape");
 
 var protobuf = require("..");
 
-tape.test("floats", function(test) {
+tape.test("float values", function(test) {
 
     // The following assertions were meant to validate that using float literals instead of pre-calculated
     // vars is safe. Turned out that these tests pass on all platforms except Edge 13/14 (which doesn't even
@@ -25,7 +25,7 @@ tape.test("floats", function(test) {
         -4096.5,
     ];
 
-    test.test("using 32 bits", function(test) {
+    test.test(test.name + " - using 32 bits", function(test) {
         common.concat([
             3.4028234663852886e+38,
             1.1754943508222875e-38,
@@ -41,7 +41,7 @@ tape.test("floats", function(test) {
         test.end();
     });
 
-    test.test("using 64 bits", function(test) {
+    test.test(test.name + " - using 64 bits", function(test) {
         common.concat([
             1.7976931348623157e+308,
             2.2250738585072014e-308,

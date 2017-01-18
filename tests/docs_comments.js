@@ -2,7 +2,7 @@ var tape = require("tape");
 
 var protobuf = require("..");
 
-tape.test("comments", function(test) {
+tape.test("proto comments", function(test) {
     protobuf.load("tests/data/comments.proto", function(err, root) {
         if (err)
             throw test.fail(err.message);

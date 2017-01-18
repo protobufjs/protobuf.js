@@ -2,7 +2,7 @@ var tape = require("tape");
 
 var protobuf = require("..");
 
-tape.test("base64", function(test) {
+tape.test("base64 micromodule", function(test) {
 
     var strings = {
         "": "",

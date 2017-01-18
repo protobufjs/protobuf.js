@@ -10,7 +10,7 @@ var def = {
     options: undefined
 };
 
-tape.test("map fields", function(test) {
+tape.test("reflected map fields", function(test) {
 
     test.ok(protobuf.MapField.testJSON(def), "should recognize a mapfield definition as JSON");
 

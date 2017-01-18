@@ -57,7 +57,7 @@ tape.test("maps", function(test) {
     var Inner = root.lookup("Inner"),
         Outer = root.lookup("Outer");
 
-    test.test("randomly generated", function(test) {
+    test.test(test.name + " - randomly generated", function(test) {
 
         var outer = { value: randomMap() };
         var buf = Outer.encode(outer).finish();
@@ -68,7 +68,7 @@ tape.test("maps", function(test) {
         test.end();
     });
 
-    test.test("specifically crafted", function(test) {
+    test.test(test.name + " - specifically crafted", function(test) {
 
         var outer = {
             value: {
@@ -96,7 +96,7 @@ tape.test("maps", function(test) {
 });
 
 function verifyEncode(test, buf) {
-    test.test("should encode", function(test) {
+    test.test(test.name + " - should encode", function(test) {
         test.equal(buf.length, 32, "a total of 30 bytes");
 
         // first kv:

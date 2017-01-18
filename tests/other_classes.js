@@ -24,7 +24,7 @@ tape.test("google.protobuf.Any class", function(test) {
             value: valueBuffer
         });
 
-        test.test("instances", function(test) {
+        test.test(test.name + " - instances", function(test) {
 
             test.ok(any instanceof protobuf.Message, "should extend Message");
             test.ok(any instanceof Any, "should extend the custom class");
@@ -35,7 +35,7 @@ tape.test("google.protobuf.Any class", function(test) {
 
             var buf;
 
-            test.test("should encode", function(test) {
+            test.test(test.name + " - should encode", function(test) {
 
                 buf = Any.encode(any).finish();
 
@@ -48,7 +48,7 @@ tape.test("google.protobuf.Any class", function(test) {
                 test.end();
             });
 
-            test.test("should decode", function(test) {
+            test.test(test.name + " - should decode", function(test) {
 
                 msg = Any.decode(buf);
                 test.ok(msg instanceof Any, "to an object that extends the custom class");
@@ -57,7 +57,7 @@ tape.test("google.protobuf.Any class", function(test) {
                 test.end();
             });
 
-            test.test("should encodeDelimited", function(test) {
+            test.test(test.name + " - should encodeDelimited", function(test) {
 
                 buf = Any.encodeDelimited(any).finish();
 
@@ -71,7 +71,7 @@ tape.test("google.protobuf.Any class", function(test) {
                 test.end();
             });
 
-            test.test("should decodeDelimited", function(test) {
+            test.test(test.name + " - should decodeDelimited", function(test) {
 
                 msg = Any.decodeDelimited(buf);
                 test.ok(msg instanceof Any, "to an object that extends the custom class");
