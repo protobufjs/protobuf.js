@@ -48,6 +48,7 @@ function Reader(buffer) {
  */
 Reader.create = util.Buffer
     ? function create_buffer_setup(buffer) {
+        /* istanbul ignore next */
         if (!BufferReader)
             BufferReader = require("./reader_buffer");
         return (Reader.create = function create_buffer(buffer) {
@@ -64,7 +65,7 @@ Reader.create = util.Buffer
 /** @alias Reader.prototype */
 var ReaderPrototype = Reader.prototype;
 
-ReaderPrototype._slice = util.Array.prototype.subarray || util.Array.prototype.slice;
+ReaderPrototype._slice = util.Array.prototype.subarray || /* istanbul ignore next */ util.Array.prototype.slice;
 
 /**
  * Reads a varint as an unsigned 32 bit value.
@@ -451,8 +452,8 @@ ReaderPrototype.skip = function skip(length) {
             throw indexOutOfRange(this, length);
         this.pos += length;
     } else {
+        /* istanbul ignore next */
         do {
-            /* istanbul ignore next */
             if (this.pos >= this.len)
                 throw indexOutOfRange(this);
         } while (this.buf[this.pos++] & 128);

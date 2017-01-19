@@ -25,7 +25,7 @@ util.fs = util.inquire("fs");
  * @returns {Array.<*>} Converted array
  */
 util.toArray = function toArray(object) {
-    return object ? Object.values ? Object.values(object) : Object.keys(object).map(function(key) {
+    return object ? Object.keys(object).map(function(key) {
         return object[key];
     }) : [];
 };

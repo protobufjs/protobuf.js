@@ -19,8 +19,13 @@ tape.test("util", function(test) {
         test.end();
     });
 
-    tape.test(test.name + " - codegen", function(test) {
-        test.equal(protobuf.util.codegen.supported, true, "should be supported");
+    test.test(test.name + " - lcFirst", function(test) {
+        test.equal(util.lcFirst("ABC"), "aBC", "should convert the first character to lower case");
+        test.end();
+    });
+
+    test.test(test.name + " - ucFirst", function(test) {
+        test.equal(util.ucFirst("abc"), "Abc", "should convert the first character to upper case");
         test.end();
     });
 

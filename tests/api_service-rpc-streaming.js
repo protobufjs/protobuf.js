@@ -45,20 +45,25 @@ tape.test("runtime services", function(test) {
         }
         
         MyService = root.lookup("MyService");
-        var service = MyService.create(rpc, true, false);
-        
-        service.myMethod(MyRequest.create({
-            path: "/"
-        }), function(err, response) {
-            if (err)
-                return test.fail(err.message);
-            test.ok(response instanceof MyResponse.ctor, "should return an instance of MyResponse");
-            test.deepEqual(response, {
-                status: 200
-            }, "should return status 200");
 
-            // Same, but ended client-side
-            service = MyService.create(rpc, true, false);
+        test.test(test.name + " - closed server-side", function(test) {
+            var service = MyService.create(rpc, true, false);
+            service.myMethod(MyRequest.create({
+                path: "/"
+            }), function(err, response) {
+                if (err)
+                    return test.fail(err.message);
+                test.ok(response instanceof MyResponse.ctor, "should return an instance of MyResponse");
+                test.deepEqual(response, {
+                    status: 200
+                }, "should return status 200");
+
+                test.end();
+            });
+        });
+
+        test.test(test.name + " - closed client-side", function(test) {
+            var service = MyService.create(rpc, true, false);
             service.myMethod(MyRequest.create({
                 path: "/"
             }), function(err, response) {
@@ -70,9 +75,16 @@ tape.test("runtime services", function(test) {
                 }, "should return status 400");
                 service.end(); // ended client-side
 
-                test.end();
+                test.throws(function() {
+                    service.myMethod(MyRequest.create({ path: "/" }));
+                }, Error, "should throw if already ended");
+                service.myMethod(MyRequest.create({ path: "/" }), function(err) {
+                    test.ok(err, "should return an error if already ended");
+                    test.end();
+                });
             });
         });
-    });
 
+        test.end();
+    });
 });

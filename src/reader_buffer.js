@@ -20,6 +20,7 @@ function BufferReader(buffer) {
     Reader.call(this, buffer);
 }
 
+/* istanbul ignore else */
 if (util.Buffer)
     BufferReaderPrototype._slice = util.Buffer.prototype.slice;
 

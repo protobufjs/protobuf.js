@@ -9,6 +9,7 @@ var delimRe        = /[\s{}=;:[\],'"()<>]/g,
  * Unescapes a string.
  * @param {string} str String to unescape
  * @returns {string} Unescaped string
+ * @property {Object.<string,string>} map Special characters map
  * @ignore
  */
 function unescape(str) {
@@ -17,13 +18,18 @@ function unescape(str) {
             case "\\":
             case "":
                 return $1;
-            case "0":
-                return "\u0000";
             default:
-                return $1;
+                return unescape.map[$1] || "";
         }
     });
 }
+
+unescape.map = {
+    "0": "\0",
+    "r": "\r",
+    "n": "\n",
+    "t": "\t"
+};
 
 tokenize.unescape = unescape;
 
@@ -161,7 +167,7 @@ function tokenize(source) {
                         if (curr === "\n")
                             ++line;
                         if (++offset === length)
-                            return null;
+                            throw illegal("comment");
                         prev = curr;
                         curr = charAt(offset);
                     } while (prev !== "*" || curr !== "/");
@@ -174,8 +180,8 @@ function tokenize(source) {
             }
         } while (repeat);
 
-        if (offset === length)
-            return null;
+        // offset !== length if we got here
+
         var end = offset;
         delimRe.lastIndex = 0;
         var delim = delimRe.test(charAt(end++));

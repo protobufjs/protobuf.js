@@ -129,6 +129,7 @@ function Writer() {
  */
 Writer.create = util.Buffer
     ? function create_buffer_setup() {
+        /* istanbul ignore next */
         if (!BufferWriter)
             BufferWriter = require("./writer_buffer");
         return (Writer.create = function create_buffer() {
@@ -480,14 +481,14 @@ var writeBytes = util.Array.prototype.set
  */
 WriterPrototype.bytes = function write_bytes(value) {
     var len = value.length >>> 0;
-    if (typeof value === "string" && len) {
+    if (!len)
+        return this.push(writeByte, 1, 0);
+    if (typeof value === "string") {
         var buf = Writer.alloc(len = base64.length(value));
         base64.decode(value, buf, 0);
         value = buf;
     }
-    return len
-        ? this.uint32(len).push(writeBytes, len, value)
-        : this.push(writeByte, 1, 0);
+    return this.uint32(len).push(writeBytes, len, value);
 };
 
 /**

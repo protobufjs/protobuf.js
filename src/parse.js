@@ -89,13 +89,11 @@ function parse(source, root, options) {
         syntax,
         isProto3 = false;
 
-    if (!root)
-        root = new Root();
-
     var ptr = root;
 
     var applyCase = options.keepCase ? function(name) { return name; } : camelCase;
 
+    /* istanbul ignore next */
     function illegal(token, name) {
         var filename = parse.filename;
         parse.filename = null;
@@ -106,6 +104,7 @@ function parse(source, root, options) {
         var values = [],
             token;
         do {
+            /* istanbul ignore next */
             if ((token = next()) !== "\"" && token !== "'")
                 throw illegal(token);
             values.push(next());
@@ -132,6 +131,7 @@ function parse(source, root, options) {
         } catch (e) {
             if (acceptTypeRef && isTypeRef(token))
                 return token;
+            /* istanbul ignore next */
             throw illegal(token, "value");
         }
     }
@@ -165,6 +165,7 @@ function parse(source, root, options) {
             return sign * parseInt(token, 8);
         if (/^(?!e)[0-9]*(?:\.[0-9]*)?(?:[e][+-]?[0-9]+)?$/.test(tokenLower))
             return sign * parseFloat(token);
+        /* istanbul ignore next */
         throw illegal(token, "number");
     }
 
@@ -174,6 +175,7 @@ function parse(source, root, options) {
             case "max": return 536870911;
             case "0": return 0;
         }
+        /* istanbul ignore next */
         if (token.charAt(0) === "-" && !acceptNegative)
             throw illegal(token, "id");
         if (/^-?[1-9][0-9]*$/.test(token))
@@ -182,13 +184,16 @@ function parse(source, root, options) {
             return parseInt(token, 16);
         if (/^-?0[0-7]+$/.test(token))
             return parseInt(token, 8);
+        /* istanbul ignore next */
         throw illegal(token, "id");
     }
 
     function parsePackage() {
+        /* istanbul ignore next */
         if (pkg !== undefined)
             throw illegal("package");
         pkg = next();
+        /* istanbul ignore next */
         if (!isTypeRef(pkg))
             throw illegal(pkg, "name");
         ptr = ptr.define(pkg);
@@ -219,6 +224,7 @@ function parse(source, root, options) {
         skip("=");
         syntax = lower(readString());
         isProto3 = syntax === "proto3";
+        /* istanbul ignore next */
         if (!isProto3 && syntax !== "proto2")
             throw illegal(syntax, "syntax");
         skip(";");
@@ -253,6 +259,7 @@ function parse(source, root, options) {
 
     function parseType(parent, token) {
         var name = next();
+        /* istanbul ignore next */
         if (!isName(name))
             throw illegal(name, "type name");
         var type = new Type(name);
@@ -287,6 +294,7 @@ function parse(source, root, options) {
                         break;
 
                     default:
+                        /* istanbul ignore next */
                         if (!isProto3 || !isTypeRef(token))
                             throw illegal(token);
                         push(token);
@@ -306,9 +314,11 @@ function parse(source, root, options) {
             parseGroup(parent, rule);
             return;
         }
+        /* istanbul ignore next */
         if (!isTypeRef(type))
             throw illegal(type, "type");
         var name = next();
+        /* istanbul ignore next */
         if (!isName(name))
             throw illegal(name, "name");
         name = applyCase(name);
@@ -328,6 +338,7 @@ function parse(source, root, options) {
 
     function parseGroup(parent, rule) {
         var name = next();
+        /* istanbul ignore next */
         if (!isName(name))
             throw illegal(name, "name");
         var fieldName = util.lcFirst(name);

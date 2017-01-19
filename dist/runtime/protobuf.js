@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.5.1 (c) 2016, Daniel Wirtz
- * Compiled Wed, 18 Jan 2017 16:46:33 UTC
+ * Compiled Thu, 19 Jan 2017 01:19:24 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -389,6 +389,7 @@ function Reader(buffer) {
  */
 Reader.create = util.Buffer
     ? function create_buffer_setup(buffer) {
+        /* istanbul ignore next */
         if (!BufferReader)
             BufferReader = require(7);
         return (Reader.create = function create_buffer(buffer) {
@@ -405,7 +406,7 @@ Reader.create = util.Buffer
 /** @alias Reader.prototype */
 var ReaderPrototype = Reader.prototype;
 
-ReaderPrototype._slice = util.Array.prototype.subarray || util.Array.prototype.slice;
+ReaderPrototype._slice = util.Array.prototype.subarray || /* istanbul ignore next */ util.Array.prototype.slice;
 
 /**
  * Reads a varint as an unsigned 32 bit value.
@@ -792,8 +793,8 @@ ReaderPrototype.skip = function skip(length) {
             throw indexOutOfRange(this, length);
         this.pos += length;
     } else {
+        /* istanbul ignore next */
         do {
-            /* istanbul ignore next */
             if (this.pos >= this.len)
                 throw indexOutOfRange(this);
         } while (this.buf[this.pos++] & 128);
@@ -879,6 +880,7 @@ function BufferReader(buffer) {
     Reader.call(this, buffer);
 }
 
+/* istanbul ignore else */
 if (util.Buffer)
     BufferReaderPrototype._slice = util.Buffer.prototype.slice;
 
@@ -1459,6 +1461,7 @@ function Writer() {
  */
 Writer.create = util.Buffer
     ? function create_buffer_setup() {
+        /* istanbul ignore next */
         if (!BufferWriter)
             BufferWriter = require(11);
         return (Writer.create = function create_buffer() {
@@ -1810,14 +1813,14 @@ var writeBytes = util.Array.prototype.set
  */
 WriterPrototype.bytes = function write_bytes(value) {
     var len = value.length >>> 0;
-    if (typeof value === "string" && len) {
+    if (!len)
+        return this.push(writeByte, 1, 0);
+    if (typeof value === "string") {
         var buf = Writer.alloc(len = base64.length(value));
         base64.decode(value, buf, 0);
         value = buf;
     }
-    return len
-        ? this.uint32(len).push(writeBytes, len, value)
-        : this.push(writeByte, 1, 0);
+    return this.uint32(len).push(writeBytes, len, value);
 };
 
 /**

@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.5.1 (c) 2016, Daniel Wirtz
- * Compiled Wed, 18 Jan 2017 16:46:33 UTC
+ * Compiled Thu, 19 Jan 2017 01:19:24 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -3289,13 +3289,11 @@ function parse(source, root, options) {
         syntax,
         isProto3 = false;
 
-    if (!root)
-        root = new Root();
-
     var ptr = root;
 
     var applyCase = options.keepCase ? function(name) { return name; } : camelCase;
 
+    /* istanbul ignore next */
     function illegal(token, name) {
         var filename = parse.filename;
         parse.filename = null;
@@ -3306,6 +3304,7 @@ function parse(source, root, options) {
         var values = [],
             token;
         do {
+            /* istanbul ignore next */
             if ((token = next()) !== "\"" && token !== "'")
                 throw illegal(token);
             values.push(next());
@@ -3332,6 +3331,7 @@ function parse(source, root, options) {
         } catch (e) {
             if (acceptTypeRef && isTypeRef(token))
                 return token;
+            /* istanbul ignore next */
             throw illegal(token, "value");
         }
     }
@@ -3365,6 +3365,7 @@ function parse(source, root, options) {
             return sign * parseInt(token, 8);
         if (/^(?!e)[0-9]*(?:\.[0-9]*)?(?:[e][+-]?[0-9]+)?$/.test(tokenLower))
             return sign * parseFloat(token);
+        /* istanbul ignore next */
         throw illegal(token, "number");
     }
 
@@ -3374,6 +3375,7 @@ function parse(source, root, options) {
             case "max": return 536870911;
             case "0": return 0;
         }
+        /* istanbul ignore next */
         if (token.charAt(0) === "-" && !acceptNegative)
             throw illegal(token, "id");
         if (/^-?[1-9][0-9]*$/.test(token))
@@ -3382,13 +3384,16 @@ function parse(source, root, options) {
             return parseInt(token, 16);
         if (/^-?0[0-7]+$/.test(token))
             return parseInt(token, 8);
+        /* istanbul ignore next */
         throw illegal(token, "id");
     }
 
     function parsePackage() {
+        /* istanbul ignore next */
         if (pkg !== undefined)
             throw illegal("package");
         pkg = next();
+        /* istanbul ignore next */
         if (!isTypeRef(pkg))
             throw illegal(pkg, "name");
         ptr = ptr.define(pkg);
@@ -3419,6 +3424,7 @@ function parse(source, root, options) {
         skip("=");
         syntax = lower(readString());
         isProto3 = syntax === "proto3";
+        /* istanbul ignore next */
         if (!isProto3 && syntax !== "proto2")
             throw illegal(syntax, "syntax");
         skip(";");
@@ -3453,6 +3459,7 @@ function parse(source, root, options) {
 
     function parseType(parent, token) {
         var name = next();
+        /* istanbul ignore next */
         if (!isName(name))
             throw illegal(name, "type name");
         var type = new Type(name);
@@ -3487,6 +3494,7 @@ function parse(source, root, options) {
                         break;
 
                     default:
+                        /* istanbul ignore next */
                         if (!isProto3 || !isTypeRef(token))
                             throw illegal(token);
                         push(token);
@@ -3506,9 +3514,11 @@ function parse(source, root, options) {
             parseGroup(parent, rule);
             return;
         }
+        /* istanbul ignore next */
         if (!isTypeRef(type))
             throw illegal(type, "type");
         var name = next();
+        /* istanbul ignore next */
         if (!isName(name))
             throw illegal(name, "name");
         name = applyCase(name);
@@ -3528,6 +3538,7 @@ function parse(source, root, options) {
 
     function parseGroup(parent, rule) {
         var name = next();
+        /* istanbul ignore next */
         if (!isName(name))
             throw illegal(name, "name");
         var fieldName = util.lcFirst(name);
@@ -3948,6 +3959,7 @@ function Reader(buffer) {
  */
 Reader.create = util.Buffer
     ? function create_buffer_setup(buffer) {
+        /* istanbul ignore next */
         if (!BufferReader)
             BufferReader = require(26);
         return (Reader.create = function create_buffer(buffer) {
@@ -3964,7 +3976,7 @@ Reader.create = util.Buffer
 /** @alias Reader.prototype */
 var ReaderPrototype = Reader.prototype;
 
-ReaderPrototype._slice = util.Array.prototype.subarray || util.Array.prototype.slice;
+ReaderPrototype._slice = util.Array.prototype.subarray || /* istanbul ignore next */ util.Array.prototype.slice;
 
 /**
  * Reads a varint as an unsigned 32 bit value.
@@ -4351,8 +4363,8 @@ ReaderPrototype.skip = function skip(length) {
             throw indexOutOfRange(this, length);
         this.pos += length;
     } else {
+        /* istanbul ignore next */
         do {
-            /* istanbul ignore next */
             if (this.pos >= this.len)
                 throw indexOutOfRange(this);
         } while (this.buf[this.pos++] & 128);
@@ -4438,6 +4450,7 @@ function BufferReader(buffer) {
     Reader.call(this, buffer);
 }
 
+/* istanbul ignore else */
 if (util.Buffer)
     BufferReaderPrototype._slice = util.Buffer.prototype.slice;
 
@@ -4920,7 +4933,7 @@ ServicePrototype.toJSON = function toJSON() {
     var inherited = NamespacePrototype.toJSON.call(this);
     return {
         options : inherited && inherited.options || undefined,
-        methods : Namespace.arrayToJSON(this.methodsArray) || {},
+        methods : Namespace.arrayToJSON(this.methodsArray) || /* istanbul ignore next */ {},
         nested  : inherited && inherited.nested || undefined
     };
 };
@@ -5004,8 +5017,12 @@ ServicePrototype.create = function create(rpcImpl, requestDelimited, responseDel
     var rpcService = new rpc.Service(rpcImpl);
     this.methodsArray.forEach(function(method) {
         rpcService[util.lcFirst(method.name)] = function callVirtual(request, /* optional */ callback) {
-            if (!rpcService.$rpc) // already ended?
-                return;
+            if (!rpcService.$rpc) {
+                var err4 = Error("already ended");
+                if (callback)
+                    return callback(err4);
+                throw err4;
+            }
 
             /* istanbul ignore next */
             if (!request)
@@ -5017,14 +5034,16 @@ ServicePrototype.create = function create(rpcImpl, requestDelimited, responseDel
                 requestData = (requestDelimited ? method.resolvedRequestType.encodeDelimited(request) : method.resolvedRequestType.encode(request)).finish();
             } catch (err) {
                 (typeof setImmediate === "function" ? setImmediate : setTimeout)(function() { callback(err); });
-                return;
+                return undefined;
             }
             // Calls the custom RPC implementation with the reflected method and binary request data
             // and expects the rpc implementation to call its callback with the binary response data.
-            rpcImpl(method, requestData, function(err, responseData) {
-                if (err) {
-                    rpcService.emit("error", err, method);
-                    return callback ? callback(err) : undefined;
+            return rpcImpl(method, requestData, function(err2, responseData) {
+                if (err2) {
+                    rpcService.emit("error", err2, method);
+                    if (callback)
+                        return callback(err2);
+                    throw err2;
                 }
                 if (responseData === null) {
                     rpcService.end(/* endedByRPC */ true);
@@ -5033,9 +5052,11 @@ ServicePrototype.create = function create(rpcImpl, requestDelimited, responseDel
                 var response;
                 try {
                     response = responseDelimited ? method.resolvedResponseType.decodeDelimited(responseData) : method.resolvedResponseType.decode(responseData);
-                } catch (err2) {
-                    rpcService.emit("error", err2, method);
-                    return callback ? callback("error", err2) : undefined;
+                } catch (err3) {
+                    rpcService.emit("error", err3, method);
+                    if (callback)
+                        return callback("error", err3);
+                    throw err3;
                 }
                 rpcService.emit("data", response, method);
                 return callback ? callback(null, response) : undefined;
@@ -5057,6 +5078,7 @@ var delimRe        = /[\s{}=;:[\],'"()<>]/g,
  * Unescapes a string.
  * @param {string} str String to unescape
  * @returns {string} Unescaped string
+ * @property {Object.<string,string>} map Special characters map
  * @ignore
  */
 function unescape(str) {
@@ -5065,13 +5087,18 @@ function unescape(str) {
             case "\\":
             case "":
                 return $1;
-            case "0":
-                return "\u0000";
             default:
-                return $1;
+                return unescape.map[$1] || "";
         }
     });
 }
+
+unescape.map = {
+    "0": "\0",
+    "r": "\r",
+    "n": "\n",
+    "t": "\t"
+};
 
 tokenize.unescape = unescape;
 
@@ -5209,7 +5236,7 @@ function tokenize(source) {
                         if (curr === "\n")
                             ++line;
                         if (++offset === length)
-                            return null;
+                            throw illegal("comment");
                         prev = curr;
                         curr = charAt(offset);
                     } while (prev !== "*" || curr !== "/");
@@ -5222,8 +5249,8 @@ function tokenize(source) {
             }
         } while (repeat);
 
-        if (offset === length)
-            return null;
+        // offset !== length if we got here
+
         var end = offset;
         delimRe.lastIndex = 0;
         var delim = delimRe.test(charAt(end++));
@@ -5989,7 +6016,7 @@ util.fs = util.inquire("fs");
  * @returns {Array.<*>} Converted array
  */
 util.toArray = function toArray(object) {
-    return object ? Object.values ? Object.values(object) : Object.keys(object).map(function(key) {
+    return object ? Object.keys(object).map(function(key) {
         return object[key];
     }) : [];
 };
@@ -6758,6 +6785,7 @@ function Writer() {
  */
 Writer.create = util.Buffer
     ? function create_buffer_setup() {
+        /* istanbul ignore next */
         if (!BufferWriter)
             BufferWriter = require(39);
         return (Writer.create = function create_buffer() {
@@ -7109,14 +7137,14 @@ var writeBytes = util.Array.prototype.set
  */
 WriterPrototype.bytes = function write_bytes(value) {
     var len = value.length >>> 0;
-    if (typeof value === "string" && len) {
+    if (!len)
+        return this.push(writeByte, 1, 0);
+    if (typeof value === "string") {
         var buf = Writer.alloc(len = base64.length(value));
         base64.decode(value, buf, 0);
         value = buf;
     }
-    return len
-        ? this.uint32(len).push(writeBytes, len, value)
-        : this.push(writeByte, 1, 0);
+    return this.uint32(len).push(writeBytes, len, value);
 };
 
 /**
