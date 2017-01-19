@@ -223,9 +223,8 @@ function buildFunction(type, functionName, gen, scope) {
                 delete scope[key];
         });
 
-    // enclose all but the first and last line in an iife returning our properly scoped function
     var lines = code.split(/\n/g);
-    if (hasScope)
+    if (hasScope) // enclose in an iife
         push(name(type.name) + "." + functionName + " = (function(" + Object.keys(scope).join(", ") + ") { return " + lines[0]);
     else
         push(name(type.name) + "." + functionName + " = " + lines[0]);

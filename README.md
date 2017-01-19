@@ -4,7 +4,7 @@
     <a href="https://coveralls.io/github/dcodeIO/protobuf.js"><img src="https://coveralls.io/repos/github/dcodeIO/protobuf.js/badge.svg?branch=master" alt=""></a>
     <a href="https://npmjs.org/package/protobufjs"><img src="https://img.shields.io/npm/v/protobufjs.svg" alt=""></a>
     <a href="https://npmjs.org/package/protobufjs"><img src="https://img.shields.io/npm/dm/protobufjs.svg" alt=""></a>
-    <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=dcode%40dcode.io&item_name=Open%20Source%20Software%20Contribution&item_number=dcodeIO%2Fprotobuf.js"><img alt="donate ❤" src="https://img.shields.io/badge/donate-❤-ff2244.svg"></a>
+    <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=dcode%40dcode.io&item_name=Open%20Source%20Software%20Donation&item_number=dcodeIO%2Fprotobuf.js"><img alt="donate ❤" src="https://img.shields.io/badge/donate-❤-ff2244.svg"></a>
 </p>
 
 **Protocol Buffers** are a language-neutral, platform-neutral, extensible way of serializing structured data for use in communications protocols, data storage, and more, originally designed at Google ([see](https://developers.google.com/protocol-buffers/)).
@@ -302,6 +302,14 @@ protobuf.load("bundle.json", function(err, root) {
 });
 ```
 
+As you might have noticed, `pbjs` is also capable of generating static code. For example
+
+```
+$> pbjs -t static-module -w commonjs -o compiled.js file1.proto file2.proto
+```
+
+will generate static code for definitions within `file1.proto` and `file2.proto` to a CommonJS module `compiled.js`, which then can be used with just the [minimal runtime](https://github.com/dcodeIO/protobuf.js/tree/master/dist/runtime).
+
 **ProTip!** Documenting your .proto files with `/** ... */`-blocks or (trailing) `/// ...` lines translates to generated static code.
 
 ### Generating TypeScript definitions from static modules
@@ -324,6 +332,34 @@ Generates TypeScript definitions from annotated JavaScript files.
 usage: pbts [options] file1.js file2.js ...  (or)  other | pbts [options] -
 ```
 
+Picking up on the example above, the following not just generates static code to a CommonJS module `compiled.js` but also its respective TypeScript definitions to `compiled.d.ts`:
+
+```
+$> pbjs -t static-module -w commonjs -o compiled.js file1.proto file2.proto
+$> pbts -o compiled.d.ts compiled.js
+```
+
+Additionally, TypeScript definitions of static modules are compatible with reflection, as long as the following conditions are met:
+
+1. Use `SomeMessage.create(...)` instead of `new SomeMessage(...)` because reflection objects do not provide a constructor.
+2. Types, services and enums must start with an uppercase letter to become available as properties of the reflected types as well (i.e. to be able to use `MyMessage.MyEnum` instead of `root.lookup("MyMessage.MyEnum")`).
+3. When using a TypeScript definition with custom code, `resolveAll()` must be called once on the root instance to populate these additional properties (JSON modules do this automatically).
+
+For example, the following generates a `bundle.json` and a `bundle.d.ts`, but no static code:
+
+```
+$> pbjs -t json-module -w commonjs -o bundle.json file1.proto file2.proto
+$> pbjs -t static-module file1.proto file2.proto | pbts -o bundle.d.ts -
+```
+
+### On reflection vs. static code
+
+While using .proto files requires the [full library](https://github.com/dcodeIO/protobuf.js/tree/master/dist) (about 18.5kb gzipped) or JSON just the [noparse library](https://github.com/dcodeIO/protobuf.js/tree/master/dist/noparse) (about 15.5kb gzipped), pretty much all code but the relatively short descriptors is shared and all features including reflection and the parser are available.
+
+Static code, on the other hand, requires just the [minimal runtime](https://github.com/dcodeIO/protobuf.js/tree/master/dist/runtime) (about 5.5kb gzipped), but generates additional, albeit editable, source code without any reflection features.
+
+There is no significant difference performance-wise as the code generated statically is pretty much the same as generated at runtime and both are largely interchangeable as seen in the previous section.
+
 ### Using pbjs and pbts programmatically
 
 Both utilities can be used programmatically by providing command line arguments and a callback to their respective `main` functions:
@@ -337,20 +373,6 @@ pbjs.main([ "--target", "json-module", "path/to/myproto.proto" ], function(err, 
     // do something with output
 });
 ```
-
-### Descriptors vs. static modules
-
-While .proto and JSON files require the full library (about 18.5kb gzipped), pretty much all code but the relatively short descriptors is shared and all features including reflection and the parser are available.
-
-Static code, on the other hand, requires just the minimal runtime (about 5.5kb gzipped), but generates additional, albeit editable, source code without any reflection features.
-
-There is no difference performance-wise as the code generated statically is pretty much the same as generated at runtime.
-
-Additionally, JSON modules can be used with TypeScript definitions generated for their static counterparts as long as the following conditions are met:
-
-1. Use `SomeMessage.create(...)` instead of `new SomeMessage(...)` (reflection does not provide such a constructor).
-2. Types, services and enums must start with an uppercase letter to become available as properties of the reflected types as well.
-3. When using a TypeScript definition with custom code, `resolveAll()` must be called once on the root instance to populate these additional properties (JSON modules do this automatically).
 
 Performance
 -----------
