@@ -149,6 +149,7 @@ tape.test("converters", function(test) {
             var msg = Message.fromObject(obj);
 
             test.same(Message.ctor.fromObject(obj), msg, "should convert the same using the static and the instance method");
+            test.equal(Message.fromObject(msg), msg, "should just return the object if already a runtime message");
 
             var buf = protobuf.util.newBuffer(3);
             buf[0] = buf[1] = buf[2] = 49; // "111"

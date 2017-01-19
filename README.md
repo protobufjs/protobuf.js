@@ -1,4 +1,4 @@
-<h1 align="center"><img alt="protobuf.js" src="https://github.com/dcodeIO/protobuf.js/raw/master/pbjs.png" width="120" height="104" /></h1>
+<h1><p align="center"><img alt="protobuf.js" src="https://github.com/dcodeIO/protobuf.js/raw/master/pbjs.png" width="120" height="104" /></p></h1>
 <p align="center">
     <a href="https://travis-ci.org/dcodeIO/protobuf.js"><img src="https://travis-ci.org/dcodeIO/protobuf.js.svg?branch=master" alt=""></a>
     <a href="https://coveralls.io/github/dcodeIO/protobuf.js"><img src="https://coveralls.io/repos/github/dcodeIO/protobuf.js/badge.svg?branch=master" alt=""></a>
