@@ -203,12 +203,12 @@ function beautifyCode(code) {
 
 function buildFunction(type, functionName, gen, scope) {
     var code = gen.str(functionName)
-        .replace(/\(this.ctor\)/g, " $root" + type.fullName) // types: construct directly instead of using reflected ctor
-        .replace(/(types\[\d+])(\.values)/g, "$1")           // enums: use types[N] instead of reflected types[N].values
-        .replace(/\b(?!\.)Writer\b/g, "$Writer")             // use common aliases instead of binding through an iife
-        .replace(/\b(?!\.)Reader\b/g, "$Reader")             // "
-        .replace(/\b(?!\.)util\.\b/g, "$util.")              // "
-        .replace(/\b(?!\.)types\[\b/g, "$types[");           // "
+        .replace(/this\.ctor/g, " $root" + type.fullName) // types: construct directly instead of using reflected ctor
+        .replace(/(types\[\d+])(\.values)/g, "$1")        // enums: use types[N] instead of reflected types[N].values
+        .replace(/\b(?!\.)Writer\b/g, "$Writer")          // use common aliases instead of binding through an iife
+        .replace(/\b(?!\.)Reader\b/g, "$Reader")          // "
+        .replace(/\b(?!\.)util\.\b/g, "$util.")           // "
+        .replace(/\b(?!\.)types\[\b/g, "$types[");        // "
 
     if (config.beautify)
         code = beautifyCode(code);

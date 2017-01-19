@@ -305,6 +305,8 @@ $root.Message = (function() {
      * @returns {Message} Message
      */
     Message.fromObject = function fromObject(object) {
+        if (object instanceof $root.Message)
+            return object;
         var message = new $root.Message();
         if (object.stringVal !== undefined && object.stringVal !== null)
             message.stringVal = String(object.stringVal);

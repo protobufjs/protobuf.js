@@ -214,6 +214,8 @@ $root.MyRequest = (function() {
      * @returns {MyRequest} MyRequest
      */
     MyRequest.fromObject = function fromObject(object) {
+        if (object instanceof $root.MyRequest)
+            return object;
         var message = new $root.MyRequest();
         if (object.path !== undefined && object.path !== null)
             message.path = String(object.path);
@@ -373,6 +375,8 @@ $root.MyResponse = (function() {
      * @returns {MyResponse} MyResponse
      */
     MyResponse.fromObject = function fromObject(object) {
+        if (object instanceof $root.MyResponse)
+            return object;
         var message = new $root.MyResponse();
         if (object.status !== undefined && object.status !== null)
             message.status = object.status | 0;

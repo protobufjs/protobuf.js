@@ -154,6 +154,8 @@ $root.Test1 = (function() {
      * @returns {Test1} Test1
      */
     Test1.fromObject = function fromObject(object) {
+        if (object instanceof $root.Test1)
+            return object;
         var message = new $root.Test1();
         if (object.field1 !== undefined && object.field1 !== null)
             message.field1 = String(object.field1);
@@ -309,7 +311,9 @@ $root.Test2 = (function() {
      * @param {Object.<string,*>} object Plain object
      * @returns {Test2} Test2
      */
-    Test2.fromObject = function fromObject() {
+    Test2.fromObject = function fromObject(object) {
+        if (object instanceof $root.Test2)
+            return object;
         return new $root.Test2();
     };
 

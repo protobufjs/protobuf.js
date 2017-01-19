@@ -96,10 +96,13 @@ function genValuePartial_fromObject(gen, field, fieldIndex, prop) {
 converter.fromObject = function fromObject(mtype) {
     /* eslint-disable no-unexpected-multiline, block-scoped-var, no-redeclare */
     var fields = mtype.fieldsArray;
-    if (!fields.length)
-        return util.codegen()("return new(this.ctor)");
     var gen = util.codegen("d")
-    ("var m=new(this.ctor)");
+    ("if(d instanceof this.ctor)")
+        ("return d");
+    if (!fields.length) return gen
+    ("return new this.ctor");
+    gen
+    ("var m=new this.ctor");
     for (var i = 0; i < fields.length; ++i) {
         var field  = fields[i].resolve(),
             prop   = util.safeProp(field.name);

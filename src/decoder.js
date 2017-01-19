@@ -19,7 +19,7 @@ function decoder(mtype) {
     var gen = util.codegen("r", "l")
     ("if(!(r instanceof Reader))")
         ("r=Reader.create(r)")
-    ("var c=l===undefined?r.len:r.pos+l,m=new(this.ctor)")
+    ("var c=l===undefined?r.len:r.pos+l,m=new this.ctor")
     ("while(r.pos<c){")
         ("var t=r.uint32()");
     if (mtype.group) gen

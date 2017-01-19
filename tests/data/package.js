@@ -436,6 +436,8 @@ $root.Package = (function() {
      * @returns {Package} Package
      */
     Package.fromObject = function fromObject(object) {
+        if (object instanceof $root.Package)
+            return object;
         var message = new $root.Package();
         if (object.name !== undefined && object.name !== null)
             message.name = String(object.name);
@@ -738,6 +740,8 @@ $root.Package = (function() {
          * @returns {Package.Repository} Repository
          */
         Repository.fromObject = function fromObject(object) {
+            if (object instanceof $root.Package.Repository)
+                return object;
             var message = new $root.Package.Repository();
             if (object.type !== undefined && object.type !== null)
                 message.type = String(object.type);

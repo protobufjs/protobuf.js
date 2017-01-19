@@ -1,6 +1,6 @@
 /*!
- * protobuf.js v6.5.2 (c) 2016, Daniel Wirtz
- * Compiled Thu, 19 Jan 2017 16:30:55 UTC
+ * protobuf.js v6.5.3 (c) 2016, Daniel Wirtz
+ * Compiled Thu, 19 Jan 2017 22:21:49 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -1193,10 +1193,13 @@ function genValuePartial_fromObject(gen, field, fieldIndex, prop) {
 converter.fromObject = function fromObject(mtype) {
     /* eslint-disable no-unexpected-multiline, block-scoped-var, no-redeclare */
     var fields = mtype.fieldsArray;
-    if (!fields.length)
-        return util.codegen()("return new(this.ctor)");
     var gen = util.codegen("d")
-    ("var m=new(this.ctor)");
+    ("if(d instanceof this.ctor)")
+        ("return d");
+    if (!fields.length) return gen
+    ("return new this.ctor");
+    gen
+    ("var m=new this.ctor");
     for (var i = 0; i < fields.length; ++i) {
         var field  = fields[i].resolve(),
             prop   = util.safeProp(field.name);
@@ -1371,7 +1374,7 @@ function decoder(mtype) {
     var gen = util.codegen("r", "l")
     ("if(!(r instanceof Reader))")
         ("r=Reader.create(r)")
-    ("var c=l===undefined?r.len:r.pos+l,m=new(this.ctor)")
+    ("var c=l===undefined?r.len:r.pos+l,m=new this.ctor")
     ("while(r.pos<c){")
         ("var t=r.uint32()");
     if (mtype.group) gen

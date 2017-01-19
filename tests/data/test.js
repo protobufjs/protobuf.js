@@ -125,7 +125,9 @@ $root.jspb = (function() {
              * @param {Object.<string,*>} object Plain object
              * @returns {jspb.test.Empty} Empty
              */
-            Empty.fromObject = function fromObject() {
+            Empty.fromObject = function fromObject(object) {
+                if (object instanceof $root.jspb.test.Empty)
+                    return object;
                 return new $root.jspb.test.Empty();
             };
 
@@ -301,6 +303,8 @@ $root.jspb = (function() {
              * @returns {jspb.test.EnumContainer} EnumContainer
              */
             EnumContainer.fromObject = function fromObject(object) {
+                if (object instanceof $root.jspb.test.EnumContainer)
+                    return object;
                 var message = new $root.jspb.test.EnumContainer();
                 switch (object.outerEnum) {
                 case "FOO":
@@ -501,6 +505,8 @@ $root.jspb = (function() {
              * @returns {jspb.test.Simple1} Simple1
              */
             Simple1.fromObject = function fromObject(object) {
+                if (object instanceof $root.jspb.test.Simple1)
+                    return object;
                 var message = new $root.jspb.test.Simple1();
                 if (object.aString !== undefined && object.aString !== null)
                     message.aString = String(object.aString);
@@ -697,6 +703,8 @@ $root.jspb = (function() {
              * @returns {jspb.test.Simple2} Simple2
              */
             Simple2.fromObject = function fromObject(object) {
+                if (object instanceof $root.jspb.test.Simple2)
+                    return object;
                 var message = new $root.jspb.test.Simple2();
                 if (object.aString !== undefined && object.aString !== null)
                     message.aString = String(object.aString);
@@ -905,6 +913,8 @@ $root.jspb = (function() {
              * @returns {jspb.test.SpecialCases} SpecialCases
              */
             SpecialCases.fromObject = function fromObject(object) {
+                if (object instanceof $root.jspb.test.SpecialCases)
+                    return object;
                 var message = new $root.jspb.test.SpecialCases();
                 if (object.normal !== undefined && object.normal !== null)
                     message.normal = String(object.normal);
@@ -1158,6 +1168,8 @@ $root.jspb = (function() {
              * @returns {jspb.test.OptionalFields} OptionalFields
              */
             OptionalFields.fromObject = function fromObject(object) {
+                if (object instanceof $root.jspb.test.OptionalFields)
+                    return object;
                 var message = new $root.jspb.test.OptionalFields();
                 if (object.aString !== undefined && object.aString !== null)
                     message.aString = String(object.aString);
@@ -1349,6 +1361,8 @@ $root.jspb = (function() {
                  * @returns {jspb.test.OptionalFields.Nested} Nested
                  */
                 Nested.fromObject = function fromObject(object) {
+                    if (object instanceof $root.jspb.test.OptionalFields.Nested)
+                        return object;
                     var message = new $root.jspb.test.OptionalFields.Nested();
                     if (object.anInt !== undefined && object.anInt !== null)
                         message.anInt = object.anInt | 0;
@@ -1659,6 +1673,8 @@ $root.jspb = (function() {
              * @returns {jspb.test.HasExtensions} HasExtensions
              */
             HasExtensions.fromObject = function fromObject(object) {
+                if (object instanceof $root.jspb.test.HasExtensions)
+                    return object;
                 var message = new $root.jspb.test.HasExtensions();
                 if (object.str1 !== undefined && object.str1 !== null)
                     message.str1 = String(object.str1);
@@ -1949,6 +1965,8 @@ $root.jspb = (function() {
              * @returns {jspb.test.Complex} Complex
              */
             Complex.fromObject = function fromObject(object) {
+                if (object instanceof $root.jspb.test.Complex)
+                    return object;
                 var message = new $root.jspb.test.Complex();
                 if (object.aString !== undefined && object.aString !== null)
                     message.aString = String(object.aString);
@@ -2138,6 +2156,8 @@ $root.jspb = (function() {
                  * @returns {jspb.test.Complex.Nested} Nested
                  */
                 Nested.fromObject = function fromObject(object) {
+                    if (object instanceof $root.jspb.test.Complex.Nested)
+                        return object;
                     var message = new $root.jspb.test.Complex.Nested();
                     if (object.anInt !== undefined && object.anInt !== null)
                         message.anInt = object.anInt | 0;
@@ -2285,7 +2305,9 @@ $root.jspb = (function() {
              * @param {Object.<string,*>} object Plain object
              * @returns {jspb.test.OuterMessage} OuterMessage
              */
-            OuterMessage.fromObject = function fromObject() {
+            OuterMessage.fromObject = function fromObject(object) {
+                if (object instanceof $root.jspb.test.OuterMessage)
+                    return object;
                 return new $root.jspb.test.OuterMessage();
             };
 
@@ -2432,6 +2454,8 @@ $root.jspb = (function() {
                  * @returns {jspb.test.OuterMessage.Complex} Complex
                  */
                 Complex.fromObject = function fromObject(object) {
+                    if (object instanceof $root.jspb.test.OuterMessage.Complex)
+                        return object;
                     var message = new $root.jspb.test.OuterMessage.Complex();
                     if (object.innerComplexField !== undefined && object.innerComplexField !== null)
                         message.innerComplexField = object.innerComplexField | 0;
@@ -2594,6 +2618,8 @@ $root.jspb = (function() {
              * @returns {jspb.test.IsExtension} IsExtension
              */
             IsExtension.fromObject = function fromObject(object) {
+                if (object instanceof $root.jspb.test.IsExtension)
+                    return object;
                 var message = new $root.jspb.test.IsExtension();
                 if (object.ext1 !== undefined && object.ext1 !== null)
                     message.ext1 = String(object.ext1);
@@ -2738,7 +2764,9 @@ $root.jspb = (function() {
              * @param {Object.<string,*>} object Plain object
              * @returns {jspb.test.IndirectExtension} IndirectExtension
              */
-            IndirectExtension.fromObject = function fromObject() {
+            IndirectExtension.fromObject = function fromObject(object) {
+                if (object instanceof $root.jspb.test.IndirectExtension)
+                    return object;
                 return new $root.jspb.test.IndirectExtension();
             };
 
@@ -2800,7 +2828,7 @@ $root.jspb = (function() {
              * DefaultValues stringField.
              * @type {string}
              */
-            DefaultValues.prototype.stringField = "default<>'\"abc";
+            DefaultValues.prototype.stringField = "default<>abc";
 
             /**
              * DefaultValues boolField.
@@ -2968,6 +2996,8 @@ $root.jspb = (function() {
              * @returns {jspb.test.DefaultValues} DefaultValues
              */
             DefaultValues.fromObject = function fromObject(object) {
+                if (object instanceof $root.jspb.test.DefaultValues)
+                    return object;
                 var message = new $root.jspb.test.DefaultValues();
                 if (object.stringField !== undefined && object.stringField !== null)
                     message.stringField = String(object.stringField);
@@ -3021,7 +3051,7 @@ $root.jspb = (function() {
                     options = {};
                 var object = {};
                 if (options.defaults) {
-                    object.stringField = "default<>'\"abc";
+                    object.stringField = "default<>abc";
                     object.boolField = true;
                     if ($util.Long) {
                         var long = new $util.Long(11, 0, false);
@@ -3316,6 +3346,8 @@ $root.jspb = (function() {
              * @returns {jspb.test.FloatingPointFields} FloatingPointFields
              */
             FloatingPointFields.fromObject = function fromObject(object) {
+                if (object instanceof $root.jspb.test.FloatingPointFields)
+                    return object;
                 var message = new $root.jspb.test.FloatingPointFields();
                 if (object.optionalFloatField !== undefined && object.optionalFloatField !== null)
                     message.optionalFloatField = Number(object.optionalFloatField);
@@ -3616,6 +3648,8 @@ $root.jspb = (function() {
              * @returns {jspb.test.TestClone} TestClone
              */
             TestClone.fromObject = function fromObject(object) {
+                if (object instanceof $root.jspb.test.TestClone)
+                    return object;
                 var message = new $root.jspb.test.TestClone();
                 if (object.str !== undefined && object.str !== null)
                     message.str = String(object.str);
@@ -3811,6 +3845,8 @@ $root.jspb = (function() {
              * @returns {jspb.test.CloneExtension} CloneExtension
              */
             CloneExtension.fromObject = function fromObject(object) {
+                if (object instanceof $root.jspb.test.CloneExtension)
+                    return object;
                 var message = new $root.jspb.test.CloneExtension();
                 if (object.ext !== undefined && object.ext !== null)
                     message.ext = String(object.ext);
@@ -4060,6 +4096,8 @@ $root.jspb = (function() {
              * @returns {jspb.test.TestGroup} TestGroup
              */
             TestGroup.fromObject = function fromObject(object) {
+                if (object instanceof $root.jspb.test.TestGroup)
+                    return object;
                 var message = new $root.jspb.test.TestGroup();
                 if (object.repeatedGroup) {
                     message.repeatedGroup = [];
@@ -4275,6 +4313,8 @@ $root.jspb = (function() {
                  * @returns {jspb.test.TestGroup.RepeatedGroup} RepeatedGroup
                  */
                 RepeatedGroup.fromObject = function fromObject(object) {
+                    if (object instanceof $root.jspb.test.TestGroup.RepeatedGroup)
+                        return object;
                     var message = new $root.jspb.test.TestGroup.RepeatedGroup();
                     if (object.id !== undefined && object.id !== null)
                         message.id = String(object.id);
@@ -4446,6 +4486,8 @@ $root.jspb = (function() {
                  * @returns {jspb.test.TestGroup.RequiredGroup} RequiredGroup
                  */
                 RequiredGroup.fromObject = function fromObject(object) {
+                    if (object instanceof $root.jspb.test.TestGroup.RequiredGroup)
+                        return object;
                     var message = new $root.jspb.test.TestGroup.RequiredGroup();
                     if (object.id !== undefined && object.id !== null)
                         message.id = String(object.id);
@@ -4605,6 +4647,8 @@ $root.jspb = (function() {
                  * @returns {jspb.test.TestGroup.OptionalGroup} OptionalGroup
                  */
                 OptionalGroup.fromObject = function fromObject(object) {
+                    if (object instanceof $root.jspb.test.TestGroup.OptionalGroup)
+                        return object;
                     var message = new $root.jspb.test.TestGroup.OptionalGroup();
                     if (object.id !== undefined && object.id !== null)
                         message.id = String(object.id);
@@ -4774,6 +4818,8 @@ $root.jspb = (function() {
              * @returns {jspb.test.TestGroup1} TestGroup1
              */
             TestGroup1.fromObject = function fromObject(object) {
+                if (object instanceof $root.jspb.test.TestGroup1)
+                    return object;
                 var message = new $root.jspb.test.TestGroup1();
                 if (object.group !== undefined && object.group !== null)
                     message.group = $types[0].fromObject(object.group);
@@ -4948,6 +4994,8 @@ $root.jspb = (function() {
              * @returns {jspb.test.TestReservedNames} TestReservedNames
              */
             TestReservedNames.fromObject = function fromObject(object) {
+                if (object instanceof $root.jspb.test.TestReservedNames)
+                    return object;
                 var message = new $root.jspb.test.TestReservedNames();
                 if (object.extension !== undefined && object.extension !== null)
                     message.extension = object.extension | 0;
@@ -5098,7 +5146,9 @@ $root.jspb = (function() {
              * @param {Object.<string,*>} object Plain object
              * @returns {jspb.test.TestReservedNamesExtension} TestReservedNamesExtension
              */
-            TestReservedNamesExtension.fromObject = function fromObject() {
+            TestReservedNamesExtension.fromObject = function fromObject(object) {
+                if (object instanceof $root.jspb.test.TestReservedNamesExtension)
+                    return object;
                 return new $root.jspb.test.TestReservedNamesExtension();
             };
 
@@ -5447,6 +5497,8 @@ $root.jspb = (function() {
              * @returns {jspb.test.TestMessageWithOneof} TestMessageWithOneof
              */
             TestMessageWithOneof.fromObject = function fromObject(object) {
+                if (object instanceof $root.jspb.test.TestMessageWithOneof)
+                    return object;
                 var message = new $root.jspb.test.TestMessageWithOneof();
                 if (object.pone !== undefined && object.pone !== null)
                     message.pone = String(object.pone);
@@ -5673,6 +5725,8 @@ $root.jspb = (function() {
              * @returns {jspb.test.TestEndsWithBytes} TestEndsWithBytes
              */
             TestEndsWithBytes.fromObject = function fromObject(object) {
+                if (object instanceof $root.jspb.test.TestEndsWithBytes)
+                    return object;
                 var message = new $root.jspb.test.TestEndsWithBytes();
                 if (object.value !== undefined && object.value !== null)
                     message.value = object.value | 0;
@@ -6149,6 +6203,8 @@ $root.jspb = (function() {
              * @returns {jspb.test.TestMapFieldsNoBinary} TestMapFieldsNoBinary
              */
             TestMapFieldsNoBinary.fromObject = function fromObject(object) {
+                if (object instanceof $root.jspb.test.TestMapFieldsNoBinary)
+                    return object;
                 var message = new $root.jspb.test.TestMapFieldsNoBinary();
                 if (object.mapStringString) {
                     message.mapStringString = {};
@@ -6472,6 +6528,8 @@ $root.jspb = (function() {
              * @returns {jspb.test.MapValueMessageNoBinary} MapValueMessageNoBinary
              */
             MapValueMessageNoBinary.fromObject = function fromObject(object) {
+                if (object instanceof $root.jspb.test.MapValueMessageNoBinary)
+                    return object;
                 var message = new $root.jspb.test.MapValueMessageNoBinary();
                 if (object.foo !== undefined && object.foo !== null)
                     message.foo = object.foo | 0;
@@ -6616,7 +6674,9 @@ $root.jspb = (function() {
              * @param {Object.<string,*>} object Plain object
              * @returns {jspb.test.Deeply} Deeply
              */
-            Deeply.fromObject = function fromObject() {
+            Deeply.fromObject = function fromObject(object) {
+                if (object instanceof $root.jspb.test.Deeply)
+                    return object;
                 return new $root.jspb.test.Deeply();
             };
 
@@ -6748,7 +6808,9 @@ $root.jspb = (function() {
                  * @param {Object.<string,*>} object Plain object
                  * @returns {jspb.test.Deeply.Nested} Nested
                  */
-                Nested.fromObject = function fromObject() {
+                Nested.fromObject = function fromObject(object) {
+                    if (object instanceof $root.jspb.test.Deeply.Nested)
+                        return object;
                     return new $root.jspb.test.Deeply.Nested();
                 };
 
@@ -6895,6 +6957,8 @@ $root.jspb = (function() {
                      * @returns {jspb.test.Deeply.Nested.Message} Message
                      */
                     Message.fromObject = function fromObject(object) {
+                        if (object instanceof $root.jspb.test.Deeply.Nested.Message)
+                            return object;
                         var message = new $root.jspb.test.Deeply.Nested.Message();
                         if (object.count !== undefined && object.count !== null)
                             message.count = object.count | 0;
@@ -7098,6 +7162,8 @@ $root.google = (function() {
              * @returns {google.protobuf.FileDescriptorSet} FileDescriptorSet
              */
             FileDescriptorSet.fromObject = function fromObject(object) {
+                if (object instanceof $root.google.protobuf.FileDescriptorSet)
+                    return object;
                 var message = new $root.google.protobuf.FileDescriptorSet();
                 if (object.file) {
                     message.file = [];
@@ -7499,6 +7565,8 @@ $root.google = (function() {
              * @returns {google.protobuf.FileDescriptorProto} FileDescriptorProto
              */
             FileDescriptorProto.fromObject = function fromObject(object) {
+                if (object instanceof $root.google.protobuf.FileDescriptorProto)
+                    return object;
                 var message = new $root.google.protobuf.FileDescriptorProto();
                 if (object.name !== undefined && object.name !== null)
                     message.name = String(object.name);
@@ -7968,6 +8036,8 @@ $root.google = (function() {
              * @returns {google.protobuf.DescriptorProto} DescriptorProto
              */
             DescriptorProto.fromObject = function fromObject(object) {
+                if (object instanceof $root.google.protobuf.DescriptorProto)
+                    return object;
                 var message = new $root.google.protobuf.DescriptorProto();
                 if (object.name !== undefined && object.name !== null)
                     message.name = String(object.name);
@@ -8234,6 +8304,8 @@ $root.google = (function() {
                  * @returns {google.protobuf.DescriptorProto.ExtensionRange} ExtensionRange
                  */
                 ExtensionRange.fromObject = function fromObject(object) {
+                    if (object instanceof $root.google.protobuf.DescriptorProto.ExtensionRange)
+                        return object;
                     var message = new $root.google.protobuf.DescriptorProto.ExtensionRange();
                     if (object.start !== undefined && object.start !== null)
                         message.start = object.start | 0;
@@ -8413,6 +8485,8 @@ $root.google = (function() {
                  * @returns {google.protobuf.DescriptorProto.ReservedRange} ReservedRange
                  */
                 ReservedRange.fromObject = function fromObject(object) {
+                    if (object instanceof $root.google.protobuf.DescriptorProto.ReservedRange)
+                        return object;
                     var message = new $root.google.protobuf.DescriptorProto.ReservedRange();
                     if (object.start !== undefined && object.start !== null)
                         message.start = object.start | 0;
@@ -8743,6 +8817,8 @@ $root.google = (function() {
              * @returns {google.protobuf.FieldDescriptorProto} FieldDescriptorProto
              */
             FieldDescriptorProto.fromObject = function fromObject(object) {
+                if (object instanceof $root.google.protobuf.FieldDescriptorProto)
+                    return object;
                 var message = new $root.google.protobuf.FieldDescriptorProto();
                 if (object.name !== undefined && object.name !== null)
                     message.name = String(object.name);
@@ -9119,6 +9195,8 @@ $root.google = (function() {
              * @returns {google.protobuf.OneofDescriptorProto} OneofDescriptorProto
              */
             OneofDescriptorProto.fromObject = function fromObject(object) {
+                if (object instanceof $root.google.protobuf.OneofDescriptorProto)
+                    return object;
                 var message = new $root.google.protobuf.OneofDescriptorProto();
                 if (object.name !== undefined && object.name !== null)
                     message.name = String(object.name);
@@ -9329,6 +9407,8 @@ $root.google = (function() {
              * @returns {google.protobuf.EnumDescriptorProto} EnumDescriptorProto
              */
             EnumDescriptorProto.fromObject = function fromObject(object) {
+                if (object instanceof $root.google.protobuf.EnumDescriptorProto)
+                    return object;
                 var message = new $root.google.protobuf.EnumDescriptorProto();
                 if (object.name !== undefined && object.name !== null)
                     message.name = String(object.name);
@@ -9541,6 +9621,8 @@ $root.google = (function() {
              * @returns {google.protobuf.EnumValueDescriptorProto} EnumValueDescriptorProto
              */
             EnumValueDescriptorProto.fromObject = function fromObject(object) {
+                if (object instanceof $root.google.protobuf.EnumValueDescriptorProto)
+                    return object;
                 var message = new $root.google.protobuf.EnumValueDescriptorProto();
                 if (object.name !== undefined && object.name !== null)
                     message.name = String(object.name);
@@ -9756,6 +9838,8 @@ $root.google = (function() {
              * @returns {google.protobuf.ServiceDescriptorProto} ServiceDescriptorProto
              */
             ServiceDescriptorProto.fromObject = function fromObject(object) {
+                if (object instanceof $root.google.protobuf.ServiceDescriptorProto)
+                    return object;
                 var message = new $root.google.protobuf.ServiceDescriptorProto();
                 if (object.name !== undefined && object.name !== null)
                     message.name = String(object.name);
@@ -10010,6 +10094,8 @@ $root.google = (function() {
              * @returns {google.protobuf.MethodDescriptorProto} MethodDescriptorProto
              */
             MethodDescriptorProto.fromObject = function fromObject(object) {
+                if (object instanceof $root.google.protobuf.MethodDescriptorProto)
+                    return object;
                 var message = new $root.google.protobuf.MethodDescriptorProto();
                 if (object.name !== undefined && object.name !== null)
                     message.name = String(object.name);
@@ -10412,6 +10498,8 @@ $root.google = (function() {
              * @returns {google.protobuf.FileOptions} FileOptions
              */
             FileOptions.fromObject = function fromObject(object) {
+                if (object instanceof $root.google.protobuf.FileOptions)
+                    return object;
                 var message = new $root.google.protobuf.FileOptions();
                 if (object.javaPackage !== undefined && object.javaPackage !== null)
                     message.javaPackage = String(object.javaPackage);
@@ -10749,6 +10837,8 @@ $root.google = (function() {
              * @returns {google.protobuf.MessageOptions} MessageOptions
              */
             MessageOptions.fromObject = function fromObject(object) {
+                if (object instanceof $root.google.protobuf.MessageOptions)
+                    return object;
                 var message = new $root.google.protobuf.MessageOptions();
                 if (object.messageSetWireFormat !== undefined && object.messageSetWireFormat !== null)
                     message.messageSetWireFormat = Boolean(object.messageSetWireFormat);
@@ -11048,6 +11138,8 @@ $root.google = (function() {
              * @returns {google.protobuf.FieldOptions} FieldOptions
              */
             FieldOptions.fromObject = function fromObject(object) {
+                if (object instanceof $root.google.protobuf.FieldOptions)
+                    return object;
                 var message = new $root.google.protobuf.FieldOptions();
                 switch (object.ctype) {
                 case "STRING":
@@ -11319,6 +11411,8 @@ $root.google = (function() {
              * @returns {google.protobuf.OneofOptions} OneofOptions
              */
             OneofOptions.fromObject = function fromObject(object) {
+                if (object instanceof $root.google.protobuf.OneofOptions)
+                    return object;
                 var message = new $root.google.protobuf.OneofOptions();
                 if (object.uninterpretedOption) {
                     message.uninterpretedOption = [];
@@ -11541,6 +11635,8 @@ $root.google = (function() {
              * @returns {google.protobuf.EnumOptions} EnumOptions
              */
             EnumOptions.fromObject = function fromObject(object) {
+                if (object instanceof $root.google.protobuf.EnumOptions)
+                    return object;
                 var message = new $root.google.protobuf.EnumOptions();
                 if (object.allowAlias !== undefined && object.allowAlias !== null)
                     message.allowAlias = Boolean(object.allowAlias);
@@ -11751,6 +11847,8 @@ $root.google = (function() {
              * @returns {google.protobuf.EnumValueOptions} EnumValueOptions
              */
             EnumValueOptions.fromObject = function fromObject(object) {
+                if (object instanceof $root.google.protobuf.EnumValueOptions)
+                    return object;
                 var message = new $root.google.protobuf.EnumValueOptions();
                 if (object.deprecated !== undefined && object.deprecated !== null)
                     message.deprecated = Boolean(object.deprecated);
@@ -11950,6 +12048,8 @@ $root.google = (function() {
              * @returns {google.protobuf.ServiceOptions} ServiceOptions
              */
             ServiceOptions.fromObject = function fromObject(object) {
+                if (object instanceof $root.google.protobuf.ServiceOptions)
+                    return object;
                 var message = new $root.google.protobuf.ServiceOptions();
                 if (object.deprecated !== undefined && object.deprecated !== null)
                     message.deprecated = Boolean(object.deprecated);
@@ -12170,6 +12270,8 @@ $root.google = (function() {
              * @returns {google.protobuf.MethodOptions} MethodOptions
              */
             MethodOptions.fromObject = function fromObject(object) {
+                if (object instanceof $root.google.protobuf.MethodOptions)
+                    return object;
                 var message = new $root.google.protobuf.MethodOptions();
                 if (object.deprecated !== undefined && object.deprecated !== null)
                     message.deprecated = Boolean(object.deprecated);
@@ -12475,6 +12577,8 @@ $root.google = (function() {
              * @returns {google.protobuf.UninterpretedOption} UninterpretedOption
              */
             UninterpretedOption.fromObject = function fromObject(object) {
+                if (object instanceof $root.google.protobuf.UninterpretedOption)
+                    return object;
                 var message = new $root.google.protobuf.UninterpretedOption();
                 if (object.name) {
                     message.name = [];
@@ -12710,6 +12814,8 @@ $root.google = (function() {
                  * @returns {google.protobuf.UninterpretedOption.NamePart} NamePart
                  */
                 NamePart.fromObject = function fromObject(object) {
+                    if (object instanceof $root.google.protobuf.UninterpretedOption.NamePart)
+                        return object;
                     var message = new $root.google.protobuf.UninterpretedOption.NamePart();
                     if (object.namePart !== undefined && object.namePart !== null)
                         message.namePart = String(object.namePart);
@@ -12892,6 +12998,8 @@ $root.google = (function() {
              * @returns {google.protobuf.SourceCodeInfo} SourceCodeInfo
              */
             SourceCodeInfo.fromObject = function fromObject(object) {
+                if (object instanceof $root.google.protobuf.SourceCodeInfo)
+                    return object;
                 var message = new $root.google.protobuf.SourceCodeInfo();
                 if (object.location) {
                     message.location = [];
@@ -13147,6 +13255,8 @@ $root.google = (function() {
                  * @returns {google.protobuf.SourceCodeInfo.Location} Location
                  */
                 Location.fromObject = function fromObject(object) {
+                    if (object instanceof $root.google.protobuf.SourceCodeInfo.Location)
+                        return object;
                     var message = new $root.google.protobuf.SourceCodeInfo.Location();
                     if (object.path) {
                         message.path = [];
@@ -13364,6 +13474,8 @@ $root.google = (function() {
              * @returns {google.protobuf.GeneratedCodeInfo} GeneratedCodeInfo
              */
             GeneratedCodeInfo.fromObject = function fromObject(object) {
+                if (object instanceof $root.google.protobuf.GeneratedCodeInfo)
+                    return object;
                 var message = new $root.google.protobuf.GeneratedCodeInfo();
                 if (object.annotation) {
                     message.annotation = [];
@@ -13583,6 +13695,8 @@ $root.google = (function() {
                  * @returns {google.protobuf.GeneratedCodeInfo.Annotation} Annotation
                  */
                 Annotation.fromObject = function fromObject(object) {
+                    if (object instanceof $root.google.protobuf.GeneratedCodeInfo.Annotation)
+                        return object;
                     var message = new $root.google.protobuf.GeneratedCodeInfo.Annotation();
                     if (object.path) {
                         message.path = [];

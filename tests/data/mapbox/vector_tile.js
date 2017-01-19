@@ -145,6 +145,8 @@ $root.vector_tile = (function() {
          * @returns {vector_tile.Tile} Tile
          */
         Tile.fromObject = function fromObject(object) {
+            if (object instanceof $root.vector_tile.Tile)
+                return object;
             var message = new $root.vector_tile.Tile();
             if (object.layers) {
                 message.layers = [];
@@ -411,6 +413,8 @@ $root.vector_tile = (function() {
              * @returns {vector_tile.Tile.Value} Value
              */
             Value.fromObject = function fromObject(object) {
+                if (object instanceof $root.vector_tile.Tile.Value)
+                    return object;
                 var message = new $root.vector_tile.Tile.Value();
                 if (object.stringValue !== undefined && object.stringValue !== null)
                     message.stringValue = String(object.stringValue);
@@ -727,6 +731,8 @@ $root.vector_tile = (function() {
              * @returns {vector_tile.Tile.Feature} Feature
              */
             Feature.fromObject = function fromObject(object) {
+                if (object instanceof $root.vector_tile.Tile.Feature)
+                    return object;
                 var message = new $root.vector_tile.Tile.Feature();
                 if (object.id !== undefined && object.id !== null)
                     if ($util.Long)
@@ -1043,6 +1049,8 @@ $root.vector_tile = (function() {
              * @returns {vector_tile.Tile.Layer} Layer
              */
             Layer.fromObject = function fromObject(object) {
+                if (object instanceof $root.vector_tile.Tile.Layer)
+                    return object;
                 var message = new $root.vector_tile.Tile.Layer();
                 if (object.version !== undefined && object.version !== null)
                     message.version = object.version >>> 0;
