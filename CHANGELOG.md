@@ -1,3 +1,8 @@
+# [6.5.3](https://github.com/dcodeIO/protobuf.js/releases/tag/6.5.3)
+
+## Other
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/799d0303bf289bb720f2b27af59e44c3197f3fb7) In fromObject, check if object is already a runtime message, see [#652](https://github.com/dcodeIO/protobuf.js/issues/652)<br />
+
 # [6.5.2](https://github.com/dcodeIO/protobuf.js/releases/tag/6.5.2)
 
 ## Docs
