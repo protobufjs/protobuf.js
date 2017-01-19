@@ -1,3 +1,17 @@
+# [6.5.2](https://github.com/dcodeIO/protobuf.js/releases/tag/6.5.2)
+
+## Docs
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/8cff92fe3b7ddb1930371edb4937cd0db9216e52) Added coverage reporting<br />
+
+## CLI
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/cbaaae99b4e39a859664df0e6d20f0491169f489) Added version scheme warning to everything CLI so that we don't need this overly explicit in README<br />
+
+## Other
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/6877b3399f1a4c33568221bffb4e298b01b14439) Coverage progress, 100%<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/711a9eb55cb796ec1e51af7d56ef2ebbd5903063) Coverage progress<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/e7526283ee4dd82231235afefbfad6af54ba8970) Attempted to fix badges once and for all<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/5aa296c901c2b460ee3be4530ede394e2a45e0ea) Coverage progress<br />
+
 # [6.5.1](https://github.com/dcodeIO/protobuf.js/releases/tag/6.5.1)
 
 ## CLI

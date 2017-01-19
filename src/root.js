@@ -124,10 +124,9 @@ RootPrototype.load = function load(filename, options, callback) {
             }
         } catch (err) {
             finish(err);
-            return;
         }
         if (!sync && !queued)
-            finish(null, self);
+            finish(null, self); // only once anyway
     }
 
     // Fetches a single file

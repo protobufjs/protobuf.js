@@ -105,7 +105,6 @@ function parse(source, root, options) {
             token;
         /* istanbul ignore next */
         do {
-            // istanbul ignore next is not working here
             if ((token = next()) !== "\"" && token !== "'")
                 throw illegal(token);
             values.push(next());
