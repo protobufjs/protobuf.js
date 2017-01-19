@@ -1,0 +1,53 @@
+package uncommon;
+
+import public 'common.proto';
+
+syntax = 'proto3';
+
+option java_package = 'com.google.protobuf';
+
+message Test;
+
+message Test2 {
+    float hex = 0x1 [default=0x1];
+    float oct = 02 [default=02];
+    float zero = 3 [default=0];
+    float inf = 4 [default=inf];
+    float nan = 5 [default=nan];
+
+    /** pre */
+    repeated group lower = 6 {}; /// post
+
+    /** pre */
+    map<string,string> ambiguousComments = 7; /// post
+
+    /** pre */
+    oneof kind;
+    oneof kind2; /// post
+
+    /** pre */
+    oneof kind3 {
+        option (custom) = ""; /// post
+    };
+
+    option (custom) = -42;
+
+    extend Test;
+    extend Test{};
+    extend Test{required int32 a=1;} // not validated by the parser
+};
+
+enum Test3;
+
+enum Test4{
+    option (custom).foo = "";
+};
+
+service Test5;
+
+service Test6 { option (custom).bar = "";
+    rpc DoSomething(stream DoSomethingRequest) returns (stream DoSomethingResponse){ option (custom).foo2 = ""; };
+    /** pre */
+    rpc DoSomethingElse(   stream DoSomethingRequest  ) returns (DoSomethingResponse); /// post
+    rpc DoSomethingEntirelyDifferent(DoSomethingRequest  ) returns (   stream DoSomethingResponse ); /// post
+};

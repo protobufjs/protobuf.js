@@ -3,6 +3,10 @@ var tape = require("tape");
 var protobuf = require("..");
 
 tape.test("reflection objects", function(test) {
+
+    test.throws(function() { new protobuf.ReflectionObject(null); }, TypeError, "should throw on construction if name is not a string");
+    test.throws(function() { new protobuf.ReflectionObject("name", true); }, TypeError, "should throw on construction if options is not an object if not omitted");
+
     var obj = new protobuf.ReflectionObject("Test");
 
     obj.resolve();

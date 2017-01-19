@@ -39,6 +39,44 @@ tape.test("reflected services", function(test) {
     }
 
     var service = MyService.create(rpcImpl);
+
+    test.throws(function() {
+        service.doSomething();
+    }, TypeError, "should throw if request is false-ish");
+
+    test.test(test.name + " - should propagate errors from rpcImpl", function(test) {
+        var err = Error();
+        var service2 = MyService.create(function(method, requestData, callback) { callback(err); });
+        test.plan(2);
+        var count = 0;
+        service2.on("error", function(err2) {
+            test.equal(err2, err, "should emit the exact error");
+            if (++count === 2)
+                test.end();
+        });
+        service2.doSomething({}, function(err2) {
+            test.equal(err2, err, "should return the exact error");
+            if (++count === 2)
+                test.end();
+        });
+    });
+
+    test.test(test.name + " - should return errors from decoding", function(test) {
+        var service2 = MyService.create(function(method, requestData, callback) { callback(null, protobuf.util.newBuffer(0) ); }, true, true);
+        test.plan(2);
+        var count = 0;
+        service2.on("error", function(err2) {
+            test.ok(err2, "should emit the error");
+            if (++count === 2)
+                test.end();
+        });
+        service2.doSomething({}, function(err2) {
+            test.ok(err2, "should return the error");
+            if (++count === 2)
+                test.end();
+        });
+    });
+
     var dataEmitted = false;
     service.on("data", function(responseData) {
         dataEmitted = true;
@@ -58,5 +96,5 @@ tape.test("reflected services", function(test) {
         test.ok(dataEmitted, "should have emitted the data event");
         service.end();
     });
-
+    
 });

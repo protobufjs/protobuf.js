@@ -45,10 +45,9 @@ Type.fromJSON = function fromJSON(name, json) {
     var type = new Type(name, json.options);
     type.extensions = json.extensions;
     type.reserved = json.reserved;
-    if (json.fields)
-        Object.keys(json.fields).forEach(function(fieldName) {
-            type.add(Field.fromJSON(fieldName, json.fields[fieldName]));
-        });
+    Object.keys(json.fields).forEach(function(fieldName) {
+        type.add(Field.fromJSON(fieldName, json.fields[fieldName]));
+    });
     if (json.oneofs)
         Object.keys(json.oneofs).forEach(function(oneOfName) {
             type.add(OneOf.fromJSON(oneOfName, json.oneofs[oneOfName]));
@@ -62,6 +61,7 @@ Type.fromJSON = function fromJSON(name, json) {
                     return;
                 }
             }
+            /* istanbul ignore next */
             throw Error("invalid nested object in " + type + ": " + nestedName);
         });
     if (json.extensions && json.extensions.length)
@@ -153,6 +153,7 @@ Object.defineProperties(TypePrototype, {
      */
     fieldsById: {
         get: function() {
+            /* istanbul ignore next */
             if (this._fieldsById)
                 return this._fieldsById;
             this._fieldsById = {};
@@ -266,12 +267,14 @@ TypePrototype.get = function get(name) {
  * @throws {Error} If there is already a nested object with this name or, if a field, when there is already a field with this id
  */
 TypePrototype.add = function add(object) {
+    /* istanbul ignore next */
     if (this.get(object.name))
         throw Error("duplicate name '" + object.name + "' in " + this);
     if (object instanceof Field && object.extend === undefined) {
         // NOTE: Extension fields aren't actual fields on the declaring type, but nested objects.
         // The root object takes care of adding distinct sister-fields to the respective extended
         // type instead.
+        /* istanbul ignore next */
         if (this.fieldsById[object.id])
             throw Error("duplicate id " + object.id + " in " + this);
         if (object.parent)
@@ -301,6 +304,7 @@ TypePrototype.add = function add(object) {
 TypePrototype.remove = function remove(object) {
     if (object instanceof Field && object.extend === undefined) {
         // See Type#add for the reason why extension fields are excluded here.
+        /* istanbul ignore next */
         if (!this.fields || this.fields[object.name] !== object)
             throw Error(object + " is not a member of " + this);
         delete this.fields[object.name];
@@ -309,6 +313,7 @@ TypePrototype.remove = function remove(object) {
         return clearCache(this);
     }
     if (object instanceof OneOf) {
+        /* istanbul ignore next */
         if (!this.oneofs || this.oneofs[object.name] !== object)
             throw Error(object + " is not a member of " + this);
         delete this.oneofs[object.name];

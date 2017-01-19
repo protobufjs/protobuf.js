@@ -18,10 +18,8 @@ var Root; // cyclic
  */
 function ReflectionObject(name, options) {
 
-    /* istanbul ignore next */
     if (!util.isString(name))
         throw TypeError("name must be a string");
-    /* istanbul ignore next */
     if (options && !util.isObject(options))
         throw TypeError("options must be an object");
 

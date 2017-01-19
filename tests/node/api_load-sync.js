@@ -11,5 +11,27 @@ tape.test("load sync", function(test) {
         protobuf.loadSync("tests/data/__NOTFOUND__", root);
     }, Error, "should throw if not found");
 
+    var isNode = protobuf.util.isNode;
+    try {
+        protobuf.util.isNode = false;
+        test.throws(function() {
+            protobuf.loadSync("tests/data/common.proto");
+        }, "should throw when not running under node");
+    } finally {
+        protobuf.util.isNode = isNode;
+    }
+
+    test.throws(function() {
+        protobuf.loadSync("tests/data/invalid.proto");
+    }, Error, "should throw when trying to load an invalid proto");
+
+    test.throws(function() {
+        protobuf.loadSync("tests/data/invalid.json");
+    }, Error, "should throw when trying to load invalid json");
+
+    root = protobuf.loadSync("tests/data/weak.proto");
+    test.ok(root.files.indexOf("tests/data/NOT_FOUND") > -1, "should ignore missing weak protos and remember them");
+    test.ok(root.files.indexOf("google/protobuf/any.proto") > -1, "should still load other protos when ignoring weak protos");
+
     test.end();
 });

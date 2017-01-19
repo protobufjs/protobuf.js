@@ -93,6 +93,7 @@ RootPrototype.load = function load(filename, options, callback) {
 
     // Finishes loading by calling the callback (exactly once)
     function finish(err, root) {
+        /* istanbul ignore next */
         if (!callback)
             return;
         var cb = callback;
@@ -122,8 +123,6 @@ RootPrototype.load = function load(filename, options, callback) {
                     });
             }
         } catch (err) {
-            if (sync)
-                throw err;
             finish(err);
             return;
         }
@@ -142,7 +141,7 @@ RootPrototype.load = function load(filename, options, callback) {
                 filename = altname;
         }
 
-        // Skip if already loaded
+        // Skip if already loaded / attempted
         if (self.files.indexOf(filename) > -1)
             return;
         self.files.push(filename);
@@ -176,11 +175,14 @@ RootPrototype.load = function load(filename, options, callback) {
             ++queued;
             util.fetch(filename, function(err, source) {
                 --queued;
+                /* istanbul ignore next */
                 if (!callback)
                     return; // terminated meanwhile
                 if (err) {
                     if (!weak)
                         finish(err);
+                    else if (!queued)
+                        finish(null, self);
                     return;
                 }
                 process(filename, source);
@@ -308,6 +310,7 @@ RootPrototype._handleRemove = function handleRemove(object) {
         // If a deferred declaring extension field, cancel the extension
         if (object.extend !== undefined && !object.extensionField) {
             var index = this.deferred.indexOf(object);
+            /* istanbul ignore else */
             if (index > -1)
                 this.deferred.splice(index, 1);
         }

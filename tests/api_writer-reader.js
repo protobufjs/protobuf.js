@@ -52,6 +52,11 @@ tape.test("writer & reader", function(test) {
 
     // uint64, int64, sint64
 
+    protobuf.util.merge(values, [
+        [ 549755813887, [ 255, 255, 255, 255, 255, 15 ] ],
+        [ 140737488355327, [ 255, 255, 255, 255, 255, 255, 31 ] ]
+    ]);
+
     test.ok(protobuf.util.Long, "should use long.js");
     values.forEach(function(val) {
         var longVal = protobuf.util.Long.fromNumber(val[0], false);
@@ -83,6 +88,8 @@ tape.test("writer & reader", function(test) {
     test.ok(expect("bytes", [1,2,3], [3,1,2,3]), "should write [1,2,3] as bytes prefixed with its length as a varint and read it back equally");
     test.ok(expect("bytes", [], [0]), "should write [] as bytes prefixed with its length as a varint and read it back equally");
     test.ok(expect("bytes", "MTIz", [3,49,50,51]), "should write MTIz as bytes prefixed with its length as a varint and read it back equally");
+
+    // skipType
 
     test.test(test.name + " - should allow to skip", function(test) {
         var reader = Reader.create(Writer.create()
@@ -126,24 +133,30 @@ function expect(type, value, expected, WriterToTest) {
             console.error("actual", Array.prototype.slice.call(actual), "!= expected", expected);
             return false;
         }
-    var reader = Reader.create(actual);
-    var actualValue = reader[type]();
-    if (typeof actualValue === "object") { // buffer
-        var buf;
-        if (typeof value === "string") { // initial value is a base64 encoded string
-            buf = protobuf.util.newBuffer(protobuf.util.base64.length(value));
-            protobuf.util.base64.decode(value, buf, 0);
-        } else
-            buf = value;
-        if (buf.length !== actualValue.length)
-            return false;
-        for (var j = 0; j < buf.length; ++j)
-            if (actualValue[j] !== buf[j])
+    var longActual = protobuf.util.newBuffer(20);
+    for (var l = 0; l < actual.length; ++l)
+        longActual[l] = actual[l];
+    [ actual, longActual ] // also test readLongVarint fast route
+    .forEach(function(actual) {
+        var reader = Reader.create(actual);
+        var actualValue = reader[type]();
+        if (typeof actualValue === "object") { // buffer
+            var buf;
+            if (typeof value === "string") { // initial value is a base64 encoded string
+                buf = protobuf.util.newBuffer(protobuf.util.base64.length(value));
+                protobuf.util.base64.decode(value, buf, 0);
+            } else
+                buf = value;
+            if (buf.length !== actualValue.length)
                 return false;
-    } else if (actualValue !== value) {
-        console.error("actual value", actualValue, "!= expected", value);
-        return false;
-    }
+            for (var j = 0; j < buf.length; ++j)
+                if (actualValue[j] !== buf[j])
+                    return false;
+        } else if (actualValue !== value) {
+            console.error("actual value", actualValue, "!= expected", value);
+            return false;
+        }
+    });
     // also test browser writer if running under node
     if (WriterToTest !== protobuf.Writer) {
         if (!expect(type, value, expected, Writer)) {

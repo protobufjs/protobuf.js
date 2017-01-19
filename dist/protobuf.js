@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.5.1 (c) 2016, Daniel Wirtz
- * Compiled Thu, 19 Jan 2017 01:19:24 UTC
+ * Compiled Thu, 19 Jan 2017 16:20:49 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -2831,10 +2831,8 @@ var Root; // cyclic
  */
 function ReflectionObject(name, options) {
 
-    /* istanbul ignore next */
     if (!util.isString(name))
         throw TypeError("name must be a string");
-    /* istanbul ignore next */
     if (options && !util.isObject(options))
         throw TypeError("options must be an object");
 
@@ -3303,8 +3301,9 @@ function parse(source, root, options) {
     function readString() {
         var values = [],
             token;
+        /* istanbul ignore next */
         do {
-            /* istanbul ignore next */
+            // istanbul ignore next is not working here
             if ((token = next()) !== "\"" && token !== "'")
                 throw illegal(token);
             values.push(next());
@@ -3329,6 +3328,7 @@ function parse(source, root, options) {
         try {
             return parseNumber(token);
         } catch (e) {
+            /* istanbul ignore else */
             if (acceptTypeRef && isTypeRef(token))
                 return token;
             /* istanbul ignore next */
@@ -3382,6 +3382,7 @@ function parse(source, root, options) {
             return parseInt(token, 10);
         if (/^-?0[x][0-9a-f]+$/.test(tokenLower))
             return parseInt(token, 16);
+        /* istanbul ignore else */
         if (/^-?0[0-7]+$/.test(token))
             return parseInt(token, 8);
         /* istanbul ignore next */
@@ -3699,21 +3700,15 @@ function parse(source, root, options) {
                 if (!isName(token))
                     throw illegal(token, "name");
 
-                if (skip(":", true))
-                    setOption(parent, name + "." + token, readValue(true));
-                else
-                    parseOptionValue(parent, name + "." + token);
+                skip(":");
+                // if (skip(":", true))
+                    parent.setOption(name + "." + token, readValue(true));
+                // else
+                //     parseOptionValue(parent, name + "." + token);
             }
         } else
-            setOption(parent, name, readValue(true));
+            parent.setOption(name, readValue(true));
         // Does not enforce a delimiter to be universal
-    }
-
-    function setOption(parent, name, value) {
-        if (parent.setOption)
-            parent.setOption(name, value);
-        else
-            parent[name] = value;
     }
 
     function parseInlineOptions(parent) {
@@ -3770,15 +3765,14 @@ function parse(source, root, options) {
         var requestType, requestStream,
             responseType, responseStream;
         skip("(");
-        var st;
-        if (skip(st = "stream", true))
+        if (skip("stream", true))
             requestStream = true;
         /* istanbul ignore next */
         if (!isTypeRef(token = next()))
             throw illegal(token);
         requestType = token;
         skip(")"); skip("returns"); skip("(");
-        if (skip(st, true))
+        if (skip("stream", true))
             responseStream = true;
         /* istanbul ignore next */
         if (!isTypeRef(token = next()))
@@ -3877,6 +3871,7 @@ function parse(source, root, options) {
                 break;
 
             default:
+                /* istanbul ignore else */
                 if (parseCommon(ptr, token)) {
                     head = false;
                     continue;
@@ -4025,7 +4020,7 @@ function readLongVarint() {
     var bits = new LongBits(0 >>> 0, 0 >>> 0);
     var i = 0;
     if (this.len - this.pos > 4) { // fast route (lo)
-        for (i = 0; i < 4; ++i) {
+        for (; i < 4; ++i) {
             // 1st..4th
             bits.lo = (bits.lo | (this.buf[this.pos] & 127) << i * 7) >>> 0;
             if (this.buf[this.pos++] < 128)
@@ -4036,34 +4031,30 @@ function readLongVarint() {
         bits.hi = (bits.hi | (this.buf[this.pos] & 127) >>  4) >>> 0;
         if (this.buf[this.pos++] < 128)
             return bits;
+        i = 0;
     } else {
-        for (i = 0; i < 4; ++i) {
+        for (; i < 3; ++i) {
             /* istanbul ignore next */
             if (this.pos >= this.len)
                 throw indexOutOfRange(this);
-            // 1st..4th
+            // 1st..3th
             bits.lo = (bits.lo | (this.buf[this.pos] & 127) << i * 7) >>> 0;
             if (this.buf[this.pos++] < 128)
                 return bits;
         }
-        /* istanbul ignore next */
-        if (this.pos >= this.len)
-            throw indexOutOfRange(this);
-        // 5th
-        bits.lo = (bits.lo | (this.buf[this.pos] & 127) << 28) >>> 0;
-        bits.hi = (bits.hi | (this.buf[this.pos] & 127) >>  4) >>> 0;
-        if (this.buf[this.pos++] < 128)
-            return bits;
+        // 4th
+        bits.lo = (bits.lo | (this.buf[this.pos++] & 127) << i * 7) >>> 0;
+        return bits;
     }
     if (this.len - this.pos > 4) { // fast route (hi)
-        for (i = 0; i < 5; ++i) {
+        for (; i < 5; ++i) {
             // 6th..10th
             bits.hi = (bits.hi | (this.buf[this.pos] & 127) << i * 7 + 3) >>> 0;
             if (this.buf[this.pos++] < 128)
                 return bits;
         }
     } else {
-        for (i = 0; i < 5; ++i) {
+        for (; i < 5; ++i) {
             /* istanbul ignore next */
             if (this.pos >= this.len)
                 throw indexOutOfRange(this);
@@ -4073,6 +4064,7 @@ function readLongVarint() {
                 return bits;
         }
     }
+    /* istanbul ignore next */
     throw Error("invalid varint encoding");
 }
 
@@ -4558,6 +4550,7 @@ RootPrototype.load = function load(filename, options, callback) {
 
     // Finishes loading by calling the callback (exactly once)
     function finish(err, root) {
+        /* istanbul ignore next */
         if (!callback)
             return;
         var cb = callback;
@@ -4587,8 +4580,6 @@ RootPrototype.load = function load(filename, options, callback) {
                     });
             }
         } catch (err) {
-            if (sync)
-                throw err;
             finish(err);
             return;
         }
@@ -4607,7 +4598,7 @@ RootPrototype.load = function load(filename, options, callback) {
                 filename = altname;
         }
 
-        // Skip if already loaded
+        // Skip if already loaded / attempted
         if (self.files.indexOf(filename) > -1)
             return;
         self.files.push(filename);
@@ -4641,11 +4632,14 @@ RootPrototype.load = function load(filename, options, callback) {
             ++queued;
             util.fetch(filename, function(err, source) {
                 --queued;
+                /* istanbul ignore next */
                 if (!callback)
                     return; // terminated meanwhile
                 if (err) {
                     if (!weak)
                         finish(err);
+                    else if (!queued)
+                        finish(null, self);
                     return;
                 }
                 process(filename, source);
@@ -4773,6 +4767,7 @@ RootPrototype._handleRemove = function handleRemove(object) {
         // If a deferred declaring extension field, cancel the extension
         if (object.extend !== undefined && !object.extensionField) {
             var index = this.deferred.indexOf(object);
+            /* istanbul ignore else */
             if (index > -1)
                 this.deferred.splice(index, 1);
         }
@@ -5023,27 +5018,21 @@ ServicePrototype.create = function create(rpcImpl, requestDelimited, responseDel
                     return callback(err4);
                 throw err4;
             }
-
-            /* istanbul ignore next */
             if (!request)
                 throw TypeError("request must not be null");
-
             method.resolve();
-            var requestData;
-            try {
-                requestData = (requestDelimited ? method.resolvedRequestType.encodeDelimited(request) : method.resolvedRequestType.encode(request)).finish();
-            } catch (err) {
-                (typeof setImmediate === "function" ? setImmediate : setTimeout)(function() { callback(err); });
-                return undefined;
-            }
+            var requestData = (requestDelimited ? method.resolvedRequestType.encodeDelimited(request) : method.resolvedRequestType.encode(request)).finish(); // never throws if request is true-ish
+
             // Calls the custom RPC implementation with the reflected method and binary request data
             // and expects the rpc implementation to call its callback with the binary response data.
-            return rpcImpl(method, requestData, function(err2, responseData) {
-                if (err2) {
-                    rpcService.emit("error", err2, method);
+            return rpcImpl(method, requestData, function(err, responseData) {
+                if (err) {
+                    rpcService.emit("error", err, method);
+                    /* istanbul ignore else */
                     if (callback)
-                        return callback(err2);
-                    throw err2;
+                        return callback(err);
+                    /* istanbul ignore next */
+                    throw err;
                 }
                 if (responseData === null) {
                     rpcService.end(/* endedByRPC */ true);
@@ -5052,14 +5041,20 @@ ServicePrototype.create = function create(rpcImpl, requestDelimited, responseDel
                 var response;
                 try {
                     response = responseDelimited ? method.resolvedResponseType.decodeDelimited(responseData) : method.resolvedResponseType.decode(responseData);
-                } catch (err3) {
-                    rpcService.emit("error", err3, method);
+                } catch (err2) {
+                    rpcService.emit("error", err2, method);
+                    /* istanbul ignore else */
                     if (callback)
-                        return callback("error", err3);
-                    throw err3;
+                        return callback("error", err2);
+                    /* istanbul ignore next */
+                    throw err2;
                 }
                 rpcService.emit("data", response, method);
-                return callback ? callback(null, response) : undefined;
+                /* istanbul ignore else */
+                if (callback)
+                    return callback(null, response);
+                /* istanbul ignore next */
+                return undefined;
             });
         };
     });
@@ -5382,10 +5377,9 @@ Type.fromJSON = function fromJSON(name, json) {
     var type = new Type(name, json.options);
     type.extensions = json.extensions;
     type.reserved = json.reserved;
-    if (json.fields)
-        Object.keys(json.fields).forEach(function(fieldName) {
-            type.add(Field.fromJSON(fieldName, json.fields[fieldName]));
-        });
+    Object.keys(json.fields).forEach(function(fieldName) {
+        type.add(Field.fromJSON(fieldName, json.fields[fieldName]));
+    });
     if (json.oneofs)
         Object.keys(json.oneofs).forEach(function(oneOfName) {
             type.add(OneOf.fromJSON(oneOfName, json.oneofs[oneOfName]));
@@ -5399,6 +5393,7 @@ Type.fromJSON = function fromJSON(name, json) {
                     return;
                 }
             }
+            /* istanbul ignore next */
             throw Error("invalid nested object in " + type + ": " + nestedName);
         });
     if (json.extensions && json.extensions.length)
@@ -5490,6 +5485,7 @@ Object.defineProperties(TypePrototype, {
      */
     fieldsById: {
         get: function() {
+            /* istanbul ignore next */
             if (this._fieldsById)
                 return this._fieldsById;
             this._fieldsById = {};
@@ -5603,12 +5599,14 @@ TypePrototype.get = function get(name) {
  * @throws {Error} If there is already a nested object with this name or, if a field, when there is already a field with this id
  */
 TypePrototype.add = function add(object) {
+    /* istanbul ignore next */
     if (this.get(object.name))
         throw Error("duplicate name '" + object.name + "' in " + this);
     if (object instanceof Field && object.extend === undefined) {
         // NOTE: Extension fields aren't actual fields on the declaring type, but nested objects.
         // The root object takes care of adding distinct sister-fields to the respective extended
         // type instead.
+        /* istanbul ignore next */
         if (this.fieldsById[object.id])
             throw Error("duplicate id " + object.id + " in " + this);
         if (object.parent)
@@ -5638,6 +5636,7 @@ TypePrototype.add = function add(object) {
 TypePrototype.remove = function remove(object) {
     if (object instanceof Field && object.extend === undefined) {
         // See Type#add for the reason why extension fields are excluded here.
+        /* istanbul ignore next */
         if (!this.fields || this.fields[object.name] !== object)
             throw Error(object + " is not a member of " + this);
         delete this.fields[object.name];
@@ -5646,6 +5645,7 @@ TypePrototype.remove = function remove(object) {
         return clearCache(this);
     }
     if (object instanceof OneOf) {
+        /* istanbul ignore next */
         if (!this.oneofs || this.oneofs[object.name] !== object)
             throw Error(object + " is not a member of " + this);
         delete this.oneofs[object.name];

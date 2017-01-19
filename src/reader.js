@@ -114,7 +114,7 @@ function readLongVarint() {
     var bits = new LongBits(0 >>> 0, 0 >>> 0);
     var i = 0;
     if (this.len - this.pos > 4) { // fast route (lo)
-        for (i = 0; i < 4; ++i) {
+        for (; i < 4; ++i) {
             // 1st..4th
             bits.lo = (bits.lo | (this.buf[this.pos] & 127) << i * 7) >>> 0;
             if (this.buf[this.pos++] < 128)
@@ -125,34 +125,30 @@ function readLongVarint() {
         bits.hi = (bits.hi | (this.buf[this.pos] & 127) >>  4) >>> 0;
         if (this.buf[this.pos++] < 128)
             return bits;
+        i = 0;
     } else {
-        for (i = 0; i < 4; ++i) {
+        for (; i < 3; ++i) {
             /* istanbul ignore next */
             if (this.pos >= this.len)
                 throw indexOutOfRange(this);
-            // 1st..4th
+            // 1st..3th
             bits.lo = (bits.lo | (this.buf[this.pos] & 127) << i * 7) >>> 0;
             if (this.buf[this.pos++] < 128)
                 return bits;
         }
-        /* istanbul ignore next */
-        if (this.pos >= this.len)
-            throw indexOutOfRange(this);
-        // 5th
-        bits.lo = (bits.lo | (this.buf[this.pos] & 127) << 28) >>> 0;
-        bits.hi = (bits.hi | (this.buf[this.pos] & 127) >>  4) >>> 0;
-        if (this.buf[this.pos++] < 128)
-            return bits;
+        // 4th
+        bits.lo = (bits.lo | (this.buf[this.pos++] & 127) << i * 7) >>> 0;
+        return bits;
     }
     if (this.len - this.pos > 4) { // fast route (hi)
-        for (i = 0; i < 5; ++i) {
+        for (; i < 5; ++i) {
             // 6th..10th
             bits.hi = (bits.hi | (this.buf[this.pos] & 127) << i * 7 + 3) >>> 0;
             if (this.buf[this.pos++] < 128)
                 return bits;
         }
     } else {
-        for (i = 0; i < 5; ++i) {
+        for (; i < 5; ++i) {
             /* istanbul ignore next */
             if (this.pos >= this.len)
                 throw indexOutOfRange(this);
@@ -162,6 +158,7 @@ function readLongVarint() {
                 return bits;
         }
     }
+    /* istanbul ignore next */
     throw Error("invalid varint encoding");
 }
 

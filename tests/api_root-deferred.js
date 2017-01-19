@@ -28,5 +28,12 @@ tape.test("extension fields", function(test) {
     extensionField = extendedType.get(declaringField.fullName);
     test.equal(extensionField, declaringField.extensionField, "should become instantly available if their extended type is knwon");
 
+    root.add(type = new Type("Test"));
+    type.add(declaringField);
+    test.throws(function() {
+        root.resolveAll();
+    }, Error, "should throw on resolveAll if there are unresolvable extensions");
+    type.remove(declaringField);
+
     test.end();
 });

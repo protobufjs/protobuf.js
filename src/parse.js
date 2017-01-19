@@ -103,8 +103,9 @@ function parse(source, root, options) {
     function readString() {
         var values = [],
             token;
+        /* istanbul ignore next */
         do {
-            /* istanbul ignore next */
+            // istanbul ignore next is not working here
             if ((token = next()) !== "\"" && token !== "'")
                 throw illegal(token);
             values.push(next());
@@ -129,6 +130,7 @@ function parse(source, root, options) {
         try {
             return parseNumber(token);
         } catch (e) {
+            /* istanbul ignore else */
             if (acceptTypeRef && isTypeRef(token))
                 return token;
             /* istanbul ignore next */
@@ -182,6 +184,7 @@ function parse(source, root, options) {
             return parseInt(token, 10);
         if (/^-?0[x][0-9a-f]+$/.test(tokenLower))
             return parseInt(token, 16);
+        /* istanbul ignore else */
         if (/^-?0[0-7]+$/.test(token))
             return parseInt(token, 8);
         /* istanbul ignore next */
@@ -499,21 +502,15 @@ function parse(source, root, options) {
                 if (!isName(token))
                     throw illegal(token, "name");
 
-                if (skip(":", true))
-                    setOption(parent, name + "." + token, readValue(true));
-                else
-                    parseOptionValue(parent, name + "." + token);
+                skip(":");
+                // if (skip(":", true))
+                    parent.setOption(name + "." + token, readValue(true));
+                // else
+                //     parseOptionValue(parent, name + "." + token);
             }
         } else
-            setOption(parent, name, readValue(true));
+            parent.setOption(name, readValue(true));
         // Does not enforce a delimiter to be universal
-    }
-
-    function setOption(parent, name, value) {
-        if (parent.setOption)
-            parent.setOption(name, value);
-        else
-            parent[name] = value;
     }
 
     function parseInlineOptions(parent) {
@@ -570,15 +567,14 @@ function parse(source, root, options) {
         var requestType, requestStream,
             responseType, responseStream;
         skip("(");
-        var st;
-        if (skip(st = "stream", true))
+        if (skip("stream", true))
             requestStream = true;
         /* istanbul ignore next */
         if (!isTypeRef(token = next()))
             throw illegal(token);
         requestType = token;
         skip(")"); skip("returns"); skip("(");
-        if (skip(st, true))
+        if (skip("stream", true))
             responseStream = true;
         /* istanbul ignore next */
         if (!isTypeRef(token = next()))
@@ -677,6 +673,7 @@ function parse(source, root, options) {
                 break;
 
             default:
+                /* istanbul ignore else */
                 if (parseCommon(ptr, token)) {
                     head = false;
                     continue;
