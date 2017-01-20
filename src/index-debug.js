@@ -4,8 +4,10 @@
 "use strict";
 var protobuf = module.exports = require("./index");
 
-// Count number of calls to any generated function
-protobuf.util.codegen = (function(codegen) { return function codegen_debug() {
+var codegen = protobuf.util.codegen;
+
+// Counts number of calls to any generated function
+function codegen_debug() {
     codegen_debug.supported = codegen.supported;
     codegen_debug.verbose = codegen.verbose;
     var gen = codegen.apply(null, Array.prototype.slice.call(arguments));
@@ -13,13 +15,31 @@ protobuf.util.codegen = (function(codegen) { return function codegen_debug() {
         return str.apply(null, Array.prototype.slice.call(arguments)).replace(/function ([^(]+)\(([^)]*)\) {/g, "function $1($2) {\n\t$1.calls=($1.calls|0)+1");
     };})(gen.str);
     return gen;
-};})(protobuf.util.codegen);
+}
 
 /**
  * Debugging utility functions. Only present in debug builds.
  * @namespace
  */
 var debug = protobuf.debug = {};
+
+/**
+ * Enables debugging extensions.
+ * @returns {undefined}
+ */
+debug.enable = function enable() {
+    protobuf.util.codegen = codegen_debug;
+    return protobuf;
+};
+
+/**
+ * Disables debugging extensions.
+ * @returns {undefined}
+ */
+debug.disable = function disable() {
+    protobuf.util.codegen = codegen;
+    return protobuf;
+};
 
 /**
  * Returns a list of unused types within the specified root.
@@ -30,7 +50,7 @@ debug.unusedTypes = function unusedTypes(ns) {
 
     /* istanbul ignore next */
     if (!(ns instanceof protobuf.Namespace))
-        throw TypeError("ns must be a namespace");
+        throw TypeError("ns must be a Namespace");
     /* istanbul ignore next */
     if (!ns.nested)
         return [];

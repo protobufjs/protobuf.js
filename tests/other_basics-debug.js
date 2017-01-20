@@ -3,6 +3,7 @@ var tape = require("tape");
 var protobuf = require("../debug");
 
 tape.test("google.protobuf.Any type", function(test) {
+    protobuf.debug.enable();
     protobuf.load("tests/data/common.proto", function(err, root) {
         if (err)
             return test.fail(err.message);
@@ -93,6 +94,8 @@ tape.test("google.protobuf.Any type", function(test) {
                     ".google.protobuf.ListValue",
                     ".google.protobuf.Timestamp"
                 ], "should recognize unused types (all but .google.protobuf.Any)");
+                
+                protobuf.debug.disable();
                 test.end();
             });
 
