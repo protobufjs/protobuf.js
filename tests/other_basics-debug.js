@@ -1,6 +1,6 @@
 var tape = require("tape");
 
-var protobuf = require("..");
+var protobuf = require("../debug");
 
 tape.test("google.protobuf.Any type", function(test) {
     protobuf.load("tests/data/common.proto", function(err, root) {
@@ -79,6 +79,20 @@ tape.test("google.protobuf.Any type", function(test) {
                 var msg = Any.decodeDelimited(buf);
                 test.deepEqual(msg, any, "an equal message");
 
+                test.end();
+            });
+
+            test.test(test.name + " - debug", function(test) {
+                var unused = protobuf.debug.unusedTypes(root).map(function(type) { return type.fullName; });
+                test.same(unused, [
+                    ".Something",
+                    ".google.protobuf.Duration",
+                    ".google.protobuf.Empty",
+                    ".google.protobuf.Struct",
+                    ".google.protobuf.Value",
+                    ".google.protobuf.ListValue",
+                    ".google.protobuf.Timestamp"
+                ], "should recognize unused types (all but .google.protobuf.Any)");
                 test.end();
             });
 
