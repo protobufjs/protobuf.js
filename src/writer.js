@@ -1,7 +1,7 @@
 "use strict";
 module.exports = Writer;
 
-var util      = require("./util/runtime");
+var util      = require("./util/minimal");
 
 var BufferWriter; // cyclic
 

@@ -7,7 +7,7 @@ var Writer = require("./writer");
 var BufferWriterPrototype = BufferWriter.prototype = Object.create(Writer.prototype);
 BufferWriterPrototype.constructor = BufferWriter;
 
-var util = require("./util/runtime");
+var util = require("./util/minimal");
 
 var Buffer = util.Buffer;
 

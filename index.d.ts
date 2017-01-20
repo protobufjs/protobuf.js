@@ -393,6 +393,13 @@ export class Field extends ReflectionObject {
 }
 
 /**
+ * Build type, one of `"full"`, `"light"` or `"minimal"`.
+ * @name build
+ * @type {string}
+ */
+export var build: string;
+
+/**
  * A node-style callback as used by {@link load} and {@link Root#load}.
  * @typedef LoadCallback
  * @type {function}
@@ -2212,48 +2219,6 @@ export namespace util {
     }
 
     /**
-     * A minimal path module to resolve Unix, Windows and URL paths alike.
-     * @memberof util
-     * @namespace
-     */
-    namespace path {
-
-        /**
-         * Tests if the specified path is absolute.
-         * @param {string} path Path to test
-         * @returns {boolean} `true` if path is absolute
-         */
-        function isAbsolute(path: string): boolean;
-
-        /**
-         * Normalizes the specified path.
-         * @param {string} path Path to normalize
-         * @returns {string} Normalized path
-         */
-        function normalize(path: string): string;
-
-        /**
-         * Resolves the specified include path against the specified origin path.
-         * @param {string} originPath Path to the origin file
-         * @param {string} includePath Include path relative to origin path
-         * @param {boolean} [alreadyNormalized=false] `true` if both paths are already known to be normalized
-         * @returns {string} Path to the include file
-         */
-        function resolve(originPath: string, includePath: string, alreadyNormalized?: boolean): string;
-    }
-
-    /**
-     * A general purpose buffer pool.
-     * @memberof util
-     * @function
-     * @param {PoolAllocator} alloc Allocator
-     * @param {PoolSlicer} slice Slicer
-     * @param {number} [size=8192] Slab size
-     * @returns {PoolAllocator} Pooled allocator
-     */
-    function pool(alloc: PoolAllocator, slice: PoolSlicer, size?: number): PoolAllocator;
-
-    /**
      * An immuable empty array.
      * @memberof util
      * @type {Array.<*>}
@@ -2371,6 +2336,48 @@ export namespace util {
      * @type {ConversionOptions}
      */
     var toJSONOptions: ConversionOptions;
+
+    /**
+     * A minimal path module to resolve Unix, Windows and URL paths alike.
+     * @memberof util
+     * @namespace
+     */
+    namespace path {
+
+        /**
+         * Tests if the specified path is absolute.
+         * @param {string} path Path to test
+         * @returns {boolean} `true` if path is absolute
+         */
+        function isAbsolute(path: string): boolean;
+
+        /**
+         * Normalizes the specified path.
+         * @param {string} path Path to normalize
+         * @returns {string} Normalized path
+         */
+        function normalize(path: string): string;
+
+        /**
+         * Resolves the specified include path against the specified origin path.
+         * @param {string} originPath Path to the origin file
+         * @param {string} includePath Include path relative to origin path
+         * @param {boolean} [alreadyNormalized=false] `true` if both paths are already known to be normalized
+         * @returns {string} Path to the include file
+         */
+        function resolve(originPath: string, includePath: string, alreadyNormalized?: boolean): string;
+    }
+
+    /**
+     * A general purpose buffer pool.
+     * @memberof util
+     * @function
+     * @param {PoolAllocator} alloc Allocator
+     * @param {PoolSlicer} slice Slicer
+     * @param {number} [size=8192] Slab size
+     * @returns {PoolAllocator} Pooled allocator
+     */
+    function pool(alloc: PoolAllocator, slice: PoolSlicer, size?: number): PoolAllocator;
 
     /**
      * A minimal UTF8 implementation for number arrays.

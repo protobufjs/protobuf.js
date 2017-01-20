@@ -1,7 +1,7 @@
 "use strict";
 module.exports = Reader;
 
-var util      = require("./util/runtime");
+var util      = require("./util/minimal");
 
 var BufferReader; // cyclic
 

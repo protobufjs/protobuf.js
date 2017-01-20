@@ -1,7 +1,7 @@
 /*eslint-disable block-scoped-var, no-redeclare, no-control-regex, no-prototype-builtins*/
 "use strict";
 
-var $protobuf = require("../../../runtime");
+var $protobuf = require("../../../minimal");
 
 // Common aliases
 var $Reader = $protobuf.Reader,

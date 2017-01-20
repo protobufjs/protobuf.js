@@ -7,7 +7,7 @@ var Reader = require("./reader");
 var BufferReaderPrototype = BufferReader.prototype = Object.create(Reader.prototype);
 BufferReaderPrototype.constructor = BufferReader;
 
-var util = require("./util/runtime");
+var util = require("./util/minimal");
 
 /**
  * Constructs a new buffer reader instance.

@@ -1,7 +1,7 @@
 "use strict";
 module.exports = LongBits;
 
-var util = require("../util/runtime");
+var util = require("../util/minimal");
 
 /**
  * Any compatible Long instance.

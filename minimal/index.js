@@ -1,14 +1,18 @@
-// This file exports just the bare minimum required to work with statically generated code.
-// Can be used as a drop-in replacement for the full library as it has the same general structure.
 "use strict";
 var protobuf = global.protobuf = exports;
 
+protobuf.build = "minimal";
+
+protobuf.roots = {};
+
+// Serialization
 protobuf.Writer       = require("../src/writer");
 protobuf.BufferWriter = require("../src/writer_buffer");
 protobuf.Reader       = require("../src/reader");
 protobuf.BufferReader = require("../src/reader_buffer");
-protobuf.util         = require("../src/util/runtime");
-protobuf.roots        = {};
+
+// Utility
+protobuf.util         = require("../src/util/minimal");
 protobuf.configure    = configure;
 
 function configure() {

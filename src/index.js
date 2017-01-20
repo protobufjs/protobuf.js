@@ -2,6 +2,13 @@
 var protobuf = global.protobuf = exports;
 
 /**
+ * Build type, one of `"full"`, `"light"` or `"minimal"`.
+ * @name build
+ * @type {string}
+ */
+protobuf.build = "full";
+
+/**
  * A node-style callback as used by {@link load} and {@link Root#load}.
  * @typedef LoadCallback
  * @type {function}
@@ -79,12 +86,10 @@ protobuf.loadSync = loadSync;
  */
 protobuf.roots = {};
 
-// Parser (if not excluded)
-try {
-    protobuf.tokenize     = require("./tokenize");
-    protobuf.parse        = require("./parse");
-    protobuf.common       = require("./common");
-} catch (e) {} // eslint-disable-line no-empty
+// Parser
+protobuf.tokenize         = require("./tokenize");
+protobuf.parse            = require("./parse");
+protobuf.common           = require("./common");
 
 // Serialization
 protobuf.Writer           = require("./writer");
@@ -126,6 +131,8 @@ protobuf.configure        = configure;
 function configure() {
     protobuf.Reader._configure();
 }
+
+protobuf.Root._configure(protobuf.parse, protobuf.common);
 
 /* istanbul ignore next */
 if (typeof define === "function" && define.amd)

@@ -23,8 +23,8 @@ var fs   = require("fs"),
     ], function(err) {
         if (err)
             throw err;
-        var pathToRuntime = path.relative(path.dirname(out), "runtime").replace(/\\/g, "/");
-        fs.writeFileSync(out, fs.readFileSync(out).toString("utf8").replace(/"protobufjs\/runtime"/g, JSON.stringify(pathToRuntime)), "utf8");
+        var pathToProtobufjs = path.relative(path.dirname(out), "minimal").replace(/\\/g, "/");
+        fs.writeFileSync(out, fs.readFileSync(out).toString("utf8").replace(/"protobufjs\/minimal"/g, JSON.stringify(pathToProtobufjs)), "utf8");
         process.stdout.write("pbjs: " + file + " -> " + out + "\n");
     })
 });

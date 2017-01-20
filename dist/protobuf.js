@@ -1,6 +1,6 @@
 /*!
- * protobuf.js v6.5.3 (c) 2016, Daniel Wirtz
- * Compiled Thu, 19 Jan 2017 22:21:49 UTC
+ * protobuf.js v6.6.0 (c) 2016, Daniel Wirtz
+ * Compiled Fri, 20 Jan 2017 01:48:12 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -4522,14 +4522,6 @@ RootPrototype.resolvePath = util.path.resolve;
 /* istanbul ignore next */
 function SYNC() {} // eslint-disable-line no-empty-function
 
-var initParser = function() {
-    try { // excluded in noparse builds
-        parse  = require(24);
-        common = require(12);
-    } catch (e) {} // eslint-disable-line no-empty
-    initParser = null;
-};
-
 /**
  * Loads one or multiple .proto or preprocessed .json files into this root namespace and calls the callback.
  * @param {string|string[]} filename Names of one or multiple files to load
@@ -4538,8 +4530,6 @@ var initParser = function() {
  * @returns {undefined}
  */
 RootPrototype.load = function load(filename, options, callback) {
-    if (initParser)
-        initParser();
     if (typeof options === "function") {
         callback = options;
         options = undefined;
@@ -4784,7 +4774,12 @@ RootPrototype._handleRemove = function handleRemove(object) {
     }
 };
 
-},{"12":12,"17":17,"21":21,"24":24,"34":34}],28:[function(require,module,exports){
+Root._configure = function(_parse, _common) {
+    parse = _parse;
+    common = _common;
+};
+
+},{"17":17,"21":21,"34":34}],28:[function(require,module,exports){
 "use strict";
 
 /**
@@ -7305,6 +7300,13 @@ BufferWriterPrototype.string = function write_string_buffer(value) {
 var protobuf = global.protobuf = exports;
 
 /**
+ * Build type, one of `"full"`, `"light"` or `"minimal"`.
+ * @name build
+ * @type {string}
+ */
+protobuf.build = "full";
+
+/**
  * A node-style callback as used by {@link load} and {@link Root#load}.
  * @typedef LoadCallback
  * @type {function}
@@ -7382,12 +7384,10 @@ protobuf.loadSync = loadSync;
  */
 protobuf.roots = {};
 
-// Parser (if not excluded)
-try {
-    protobuf.tokenize     = require(31);
-    protobuf.parse        = require(24);
-    protobuf.common       = require(12);
-} catch (e) {} // eslint-disable-line no-empty
+// Parser
+protobuf.tokenize         = require(31);
+protobuf.parse            = require(24);
+protobuf.common           = require(12);
 
 // Serialization
 protobuf.Writer           = require(38);
@@ -7429,6 +7429,8 @@ protobuf.configure        = configure;
 function configure() {
     protobuf.Reader._configure();
 }
+
+protobuf.Root._configure(protobuf.parse, protobuf.common);
 
 /* istanbul ignore next */
 if (typeof define === "function" && define.amd)

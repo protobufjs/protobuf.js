@@ -63,14 +63,6 @@ RootPrototype.resolvePath = util.path.resolve;
 /* istanbul ignore next */
 function SYNC() {} // eslint-disable-line no-empty-function
 
-var initParser = function() {
-    try { // excluded in noparse builds
-        parse  = require("./parse");
-        common = require("./common");
-    } catch (e) {} // eslint-disable-line no-empty
-    initParser = null;
-};
-
 /**
  * Loads one or multiple .proto or preprocessed .json files into this root namespace and calls the callback.
  * @param {string|string[]} filename Names of one or multiple files to load
@@ -79,8 +71,6 @@ var initParser = function() {
  * @returns {undefined}
  */
 RootPrototype.load = function load(filename, options, callback) {
-    if (initParser)
-        initParser();
     if (typeof options === "function") {
         callback = options;
         options = undefined;
@@ -323,4 +313,9 @@ RootPrototype._handleRemove = function handleRemove(object) {
         for (var i = 0; i < nested.length; ++i) // recurse into the namespace
             this._handleRemove(nested[i]);
     }
+};
+
+Root._configure = function(_parse, _common) {
+    parse = _parse;
+    common = _common;
 };

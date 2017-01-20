@@ -4,7 +4,7 @@
  * Various utility functions.
  * @namespace
  */
-var util = module.exports = require("./util/runtime");
+var util = module.exports = require("./util/minimal");
 
 util.asPromise    = require("@protobufjs/aspromise");
 util.codegen      = require("@protobufjs/codegen");
