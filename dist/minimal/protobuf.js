@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.6.0 (c) 2016, Daniel Wirtz
- * Compiled Fri, 20 Jan 2017 23:38:36 UTC
+ * Compiled Fri, 20 Jan 2017 23:52:47 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -455,13 +455,14 @@ protobuf.build = "minimal";
 protobuf.roots = {};
 
 // Serialization
-protobuf.Writer       = require(12);
-protobuf.BufferWriter = require(13);
+protobuf.Writer       = require(14);
+protobuf.BufferWriter = require(15);
 protobuf.Reader       = require(8);
 protobuf.BufferReader = require(9);
 
 // Utility
-protobuf.util         = require(11);
+protobuf.util         = require(13);
+protobuf.rpc          = require(10);
 protobuf.configure    = configure;
 
 /* istanbul ignore next */
@@ -485,11 +486,11 @@ if (typeof define === "function" && define.amd)
         return protobuf;
     });
 
-},{"11":11,"12":12,"13":13,"8":8,"9":9}],8:[function(require,module,exports){
+},{"10":10,"13":13,"14":14,"15":15,"8":8,"9":9}],8:[function(require,module,exports){
 "use strict";
 module.exports = Reader;
 
-var util      = require(11);
+var util      = require(13);
 
 var BufferReader; // cyclic
 
@@ -1001,7 +1002,7 @@ Reader._configure = configure;
 
 configure();
 
-},{"11":11,"9":9}],9:[function(require,module,exports){
+},{"13":13,"9":9}],9:[function(require,module,exports){
 "use strict";
 module.exports = BufferReader;
 
@@ -1011,7 +1012,7 @@ var Reader = require(8);
 var BufferReaderPrototype = BufferReader.prototype = Object.create(Reader.prototype);
 BufferReaderPrototype.constructor = BufferReader;
 
-var util = require(11);
+var util = require(13);
 
 /**
  * Constructs a new buffer reader instance.
@@ -1036,11 +1037,94 @@ BufferReaderPrototype.string = function read_string_buffer() {
     return this.buf.utf8Slice(this.pos, this.pos = Math.min(this.pos + len, this.len));
 };
 
-},{"11":11,"8":8}],10:[function(require,module,exports){
+},{"13":13,"8":8}],10:[function(require,module,exports){
+"use strict";
+
+/**
+ * Streaming RPC helpers.
+ * @namespace
+ */
+var rpc = exports;
+
+rpc.Service = require(11);
+
+},{"11":11}],11:[function(require,module,exports){
+"use strict";
+module.exports = Service;
+
+var EventEmitter = require(13).EventEmitter;
+
+/**
+ * A service method callback as used by {@link ServiceMethod}.
+ * @typedef ServiceMethodCallback
+ * @type {function}
+ * @param {?Error} error Error, if any
+ * @param {?Message} [response] Response message or `null` if service has been terminated server-side
+ * @returns {undefined}
+ */
+
+/**
+ * A service method part of an {@link rpc.Service} as created by {@link Service.create}.
+ * @typedef ServiceMethod
+ * @type {function}
+ * @param {Message|Object} request Request message or plain object
+ * @param {ServiceMethodCallback} [callback] Node-style callback called with the error, if any, and the response message
+ * @returns {Promise<Message>} Promise if `callback` has been omitted, otherwise `undefined`
+ */
+
+/**
+ * A service method mixin.
+ * @typedef ServiceMethodMixin
+ * @type {Object.<string,ServiceMethod>}
+ */
+
+// Mixed in methods are not directly supported by TypeScript because they cannot be statically
+// typed. Instead, either use a TypeScript definition of a static module to work around it, or use:
+//
+//   (myService["myMethod"] as protobuf.ServiceMethod)(...)
+//
+
+/**
+ * Constructs a new RPC service instance.
+ * @classdesc An RPC service as returned by {@link Service#create}.
+ * @exports rpc.Service
+ * @extends util.EventEmitter
+ * @augments ServiceMethodMixin
+ * @constructor
+ * @param {RPCImpl} rpcImpl RPC implementation
+ */
+function Service(rpcImpl) {
+    EventEmitter.call(this);
+
+    /**
+     * RPC implementation. Becomes `null` once the service is ended.
+     * @type {?RPCImpl}
+     */
+    this.$rpc = rpcImpl;
+}
+
+(Service.prototype = Object.create(EventEmitter.prototype)).constructor = Service;
+
+/**
+ * Ends this service and emits the `end` event.
+ * @param {boolean} [endedByRPC=false] Whether the service has been ended by the RPC implementation.
+ * @returns {rpc.Service} `this`
+ */
+Service.prototype.end = function end(endedByRPC) {
+    if (this.$rpc) {
+        if (!endedByRPC) // signal end to rpcImpl
+            this.$rpc(null, null, null);
+        this.$rpc = null;
+        this.emit("end").off();
+    }
+    return this;
+};
+
+},{"13":13}],12:[function(require,module,exports){
 "use strict";
 module.exports = LongBits;
 
-var util = require(11);
+var util = require(13);
 
 /**
  * Any compatible Long instance.
@@ -1249,7 +1333,7 @@ LongBitsPrototype.length = function length() {
          : part2 < 128 ? 9 : 10;
 };
 
-},{"11":11}],11:[function(require,module,exports){
+},{"13":13}],13:[function(require,module,exports){
 "use strict";
 var util = exports;
 
@@ -1360,7 +1444,7 @@ util.newBuffer = function newBuffer(sizeOrArray) {
  */
 util.Array = typeof Uint8Array !== "undefined" ? Uint8Array /* istanbul ignore next */ : Array;
 
-util.LongBits = require(10);
+util.LongBits = require(12);
 
 /**
  * Long.js's Long class if available.
@@ -1475,11 +1559,11 @@ util.toJSONOptions = {
     bytes: String
 };
 
-},{"1":1,"10":10,"2":2,"3":3,"4":4,"5":5,"6":6}],12:[function(require,module,exports){
+},{"1":1,"12":12,"2":2,"3":3,"4":4,"5":5,"6":6}],14:[function(require,module,exports){
 "use strict";
 module.exports = Writer;
 
-var util      = require(11);
+var util      = require(13);
 
 var BufferWriter; // cyclic
 
@@ -1609,7 +1693,7 @@ Writer.create = util.Buffer
     ? function create_buffer_setup() {
         /* istanbul ignore next */
         if (!BufferWriter)
-            BufferWriter = require(13);
+            BufferWriter = require(15);
         return (Writer.create = function create_buffer() {
             return new BufferWriter();
         })();
@@ -2044,17 +2128,17 @@ WriterPrototype.finish = function finish() {
     return buf;
 };
 
-},{"11":11,"13":13}],13:[function(require,module,exports){
+},{"13":13,"15":15}],15:[function(require,module,exports){
 "use strict";
 module.exports = BufferWriter;
 
 // extends Writer
-var Writer = require(12);
+var Writer = require(14);
 /** @alias BufferWriter.prototype */
 var BufferWriterPrototype = BufferWriter.prototype = Object.create(Writer.prototype);
 BufferWriterPrototype.constructor = BufferWriter;
 
-var util = require(11);
+var util = require(13);
 
 var Buffer = util.Buffer;
 
@@ -2121,7 +2205,7 @@ BufferWriterPrototype.string = function write_string_buffer(value) {
     return this;
 };
 
-},{"11":11,"12":12}]},{},[7])
+},{"13":13,"14":14}]},{},[7])
 
 }(typeof window==="object"&&window||typeof self==="object"&&self||this);
 //# sourceMappingURL=protobuf.js.map

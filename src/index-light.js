@@ -95,5 +95,4 @@ protobuf.Message          = require("./message");
 
 // Utility
 protobuf.types            = require("./types");
-protobuf.rpc              = require("./rpc");
 protobuf.util             = require("./util");

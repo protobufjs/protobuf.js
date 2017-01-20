@@ -38,20 +38,14 @@ $root.MyService = (function() {
     /**
      * Constructs a new MyService service.
      * @exports MyService
-     * @extends $protobuf.util.EventEmitter
+     * @extends $protobuf.rpc.Service
      * @constructor
-     * @param {RPCImpl} rpc RPC implementation
+     * @param {RPCImpl} rpcImpl RPC implementation
      * @param {boolean} [requestDelimited=false] Whether requests are length-delimited
      * @param {boolean} [responseDelimited=false] Whether responses are length-delimited
      */
-    function MyService(rpc, requestDelimited, responseDelimited) {
-        $util.EventEmitter.call(this);
-
-        /**
-         * RPC implementation.
-         * @type {RPCImpl}
-         */
-        this.rpc = rpc;
+    function MyService(rpcImpl, requestDelimited, responseDelimited) {
+        $protobuf.rpc.Service.call(this, rpcImpl);
 
         /**
          * Whether requests are length-delimited.
@@ -66,10 +60,10 @@ $root.MyService = (function() {
         this.responseDelimited = Boolean(responseDelimited);
     }
 
-    (MyService.prototype = Object.create($util.EventEmitter.prototype)).constructor = MyService;
+    (MyService.prototype = Object.create($protobuf.rpc.Service.prototype)).constructor = MyService;
 
     /**
-     * Creates a runtime service using the specified rpc implementation.
+     * Creates new MyService service using the specified rpc implementation.
      * @param {RPCImpl} rpcImpl RPC implementation
      * @param {boolean} [requestDelimited=false] Whether requests are length-delimited
      * @param {boolean} [responseDelimited=false] Whether responses are length-delimited

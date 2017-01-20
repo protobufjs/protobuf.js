@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.6.0 (c) 2016, Daniel Wirtz
- * Compiled Fri, 20 Jan 2017 23:38:36 UTC
+ * Compiled Fri, 20 Jan 2017 23:52:47 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -1882,10 +1882,9 @@ protobuf.Message          = require(20);
 
 // Utility
 protobuf.types            = require(32);
-protobuf.rpc              = require(28);
 protobuf.util             = require(33);
 
-},{"11":11,"12":12,"13":13,"14":14,"15":15,"16":16,"18":18,"19":19,"20":20,"21":21,"22":22,"23":23,"24":24,"27":27,"28":28,"30":30,"31":31,"32":32,"33":33,"36":36}],18:[function(require,module,exports){
+},{"11":11,"12":12,"13":13,"14":14,"15":15,"16":16,"18":18,"19":19,"20":20,"21":21,"22":22,"23":23,"24":24,"27":27,"30":30,"31":31,"32":32,"33":33,"36":36}],18:[function(require,module,exports){
 "use strict";
 var protobuf = global.protobuf = exports;
 
@@ -1913,6 +1912,7 @@ protobuf.BufferReader = require(26);
 
 // Utility
 protobuf.util         = require(35);
+protobuf.rpc          = require(28);
 protobuf.configure    = configure;
 
 /* istanbul ignore next */
@@ -1936,7 +1936,7 @@ if (typeof define === "function" && define.amd)
         return protobuf;
     });
 
-},{"25":25,"26":26,"35":35,"37":37,"38":38}],19:[function(require,module,exports){
+},{"25":25,"26":26,"28":28,"35":35,"37":37,"38":38}],19:[function(require,module,exports){
 "use strict";
 module.exports = MapField;
 
@@ -4012,7 +4012,7 @@ rpc.Service = require(29);
 "use strict";
 module.exports = Service;
 
-var EventEmitter = require(33).EventEmitter;
+var EventEmitter = require(35).EventEmitter;
 
 /**
  * A service method callback as used by {@link ServiceMethod}.
@@ -4080,7 +4080,7 @@ Service.prototype.end = function end(endedByRPC) {
     return this;
 };
 
-},{"33":33}],30:[function(require,module,exports){
+},{"35":35}],30:[function(require,module,exports){
 "use strict";
 module.exports = Service;
 

@@ -1,7 +1,7 @@
 "use strict";
 module.exports = Service;
 
-var EventEmitter = require("../util").EventEmitter;
+var EventEmitter = require("../util/minimal").EventEmitter;
 
 /**
  * A service method callback as used by {@link ServiceMethod}.

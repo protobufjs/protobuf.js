@@ -550,22 +550,15 @@ function buildService(ref, service) {
         "Constructs a new " + service.name + " service.",
         service.comment ? "@classdesc " + service.comment : null,
         "@exports " + fullName,
-        "@extends $protobuf.util.EventEmitter",
+        "@extends $protobuf.rpc.Service",
         "@constructor",
-        "@param {RPCImpl} rpc RPC implementation",
+        "@param {RPCImpl} rpcImpl RPC implementation",
         "@param {boolean} [requestDelimited=false] Whether requests are length-delimited",
-        "@param {boolean} [responseDelimited=false] Whether responses are length-delimited",
+        "@param {boolean} [responseDelimited=false] Whether responses are length-delimited"
     ]);
-    push("function " + name(service.name) + "(rpc, requestDelimited, responseDelimited) {");
+    push("function " + name(service.name) + "(rpcImpl, requestDelimited, responseDelimited) {");
     ++indent;
-    push("$util.EventEmitter.call(this);");
-    
-    push("");
-    pushComment([
-        "RPC implementation.",
-        "@type {RPCImpl}"
-    ]);
-    push("this.rpc = rpc;");
+    push("$protobuf.rpc.Service.call(this, rpcImpl);");
     push("");
     pushComment([
         "Whether requests are length-delimited.",
@@ -581,12 +574,12 @@ function buildService(ref, service) {
     --indent;
     push("}");
     push("");
-    push("(" + name(service.name) + ".prototype = Object.create($util.EventEmitter.prototype)).constructor = " + name(service.name) + ";");
+    push("(" + name(service.name) + ".prototype = Object.create($protobuf.rpc.Service.prototype)).constructor = " + name(service.name) + ";");
 
     if (config.create) {
         push("");
         pushComment([
-            "Creates a runtime service using the specified rpc implementation.",
+            "Creates new " + service.name + " service using the specified rpc implementation.",
             "@param {RPCImpl} rpcImpl RPC implementation",
             "@param {boolean} [requestDelimited=false] Whether requests are length-delimited",
             "@param {boolean} [responseDelimited=false] Whether responses are length-delimited",
