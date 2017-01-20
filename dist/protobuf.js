@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.6.0 (c) 2016, Daniel Wirtz
- * Compiled Fri, 20 Jan 2017 15:14:09 UTC
+ * Compiled Fri, 20 Jan 2017 16:41:11 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -1131,6 +1131,8 @@ function genValuePartial_fromObject(gen, field, fieldIndex, prop) {
             }); gen
             ("}");
         } else gen
+            ("if(typeof d%s!==\"object\")", prop)
+                ("throw TypeError(%j)", field.fullName + ": object expected")
             ("m%s=types[%d].fromObject(d%s)", prop, fieldIndex, prop);
     } else {
         var isUnsigned = false;
@@ -1167,7 +1169,7 @@ function genValuePartial_fromObject(gen, field, fieldIndex, prop) {
             case "bytes": gen
                 ("if(typeof d%s===\"string\")", prop)
                     ("util.base64.decode(d%s,m%s=util.newBuffer(util.base64.length(d%s)),0)", prop, prop, prop)
-                ("else if(d%s&&d%s.length)", prop, prop)
+                ("else if(d%s.length)", prop)
                     ("m%s=d%s", prop, prop);
                 break;
             case "string": gen
@@ -1207,6 +1209,8 @@ converter.fromObject = function fromObject(mtype) {
         // Map fields
         if (field.map) { gen
     ("if(d%s){", prop)
+        ("if(typeof d%s!==\"object\")", prop)
+            ("throw TypeError(%j)", field.fullName + ": object expected")
         ("m%s={}", prop)
         ("for(var ks=Object.keys(d%s),i=0;i<ks.length;++i){", prop);
             genValuePartial_fromObject(gen, field, i, prop + "[ks[i]]")
@@ -1216,6 +1220,8 @@ converter.fromObject = function fromObject(mtype) {
         // Repeated fields
         } else if (field.repeated) { gen
     ("if(d%s){", prop)
+        ("if(!Array.isArray(d%s))", prop)
+            ("throw TypeError(%j)", field.fullName + ": array expected")
         ("m%s=[]", prop)
         ("for(var i=0;i<d%s.length;++i){", prop);
             genValuePartial_fromObject(gen, field, i, prop + "[i]")

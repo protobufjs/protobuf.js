@@ -451,13 +451,18 @@ $root.Package = (function() {
             message.author = String(object.author);
         if (object.license !== undefined && object.license !== null)
             message.license = String(object.license);
-        if (object.repository !== undefined && object.repository !== null)
+        if (object.repository !== undefined && object.repository !== null) {
+            if (typeof object.repository !== "object")
+                throw TypeError(".Package.repository: object expected");
             message.repository = $types[6].fromObject(object.repository);
+        }
         if (object.bugs !== undefined && object.bugs !== null)
             message.bugs = String(object.bugs);
         if (object.homepage !== undefined && object.homepage !== null)
             message.homepage = String(object.homepage);
         if (object.keywords) {
+            if (!Array.isArray(object.keywords))
+                throw TypeError(".Package.keywords: array expected");
             message.keywords = [];
             for (var i = 0; i < object.keywords.length; ++i)
                 message.keywords[i] = String(object.keywords[i]);
@@ -465,26 +470,36 @@ $root.Package = (function() {
         if (object.main !== undefined && object.main !== null)
             message.main = String(object.main);
         if (object.bin) {
+            if (typeof object.bin !== "object")
+                throw TypeError(".Package.bin: object expected");
             message.bin = {};
             for (var keys = Object.keys(object.bin), i = 0; i < keys.length; ++i)
                 message.bin[keys[i]] = String(object.bin[keys[i]]);
         }
         if (object.scripts) {
+            if (typeof object.scripts !== "object")
+                throw TypeError(".Package.scripts: object expected");
             message.scripts = {};
             for (var keys = Object.keys(object.scripts), i = 0; i < keys.length; ++i)
                 message.scripts[keys[i]] = String(object.scripts[keys[i]]);
         }
         if (object.dependencies) {
+            if (typeof object.dependencies !== "object")
+                throw TypeError(".Package.dependencies: object expected");
             message.dependencies = {};
             for (var keys = Object.keys(object.dependencies), i = 0; i < keys.length; ++i)
                 message.dependencies[keys[i]] = String(object.dependencies[keys[i]]);
         }
         if (object.optionalDependencies) {
+            if (typeof object.optionalDependencies !== "object")
+                throw TypeError(".Package.optionalDependencies: object expected");
             message.optionalDependencies = {};
             for (var keys = Object.keys(object.optionalDependencies), i = 0; i < keys.length; ++i)
                 message.optionalDependencies[keys[i]] = String(object.optionalDependencies[keys[i]]);
         }
         if (object.devDependencies) {
+            if (typeof object.devDependencies !== "object")
+                throw TypeError(".Package.devDependencies: object expected");
             message.devDependencies = {};
             for (var keys = Object.keys(object.devDependencies), i = 0; i < keys.length; ++i)
                 message.devDependencies[keys[i]] = String(object.devDependencies[keys[i]]);
@@ -492,6 +507,8 @@ $root.Package = (function() {
         if (object.types !== undefined && object.types !== null)
             message.types = String(object.types);
         if (object.cliDependencies) {
+            if (!Array.isArray(object.cliDependencies))
+                throw TypeError(".Package.cliDependencies: array expected");
             message.cliDependencies = [];
             for (var i = 0; i < object.cliDependencies.length; ++i)
                 message.cliDependencies[i] = String(object.cliDependencies[i]);

@@ -149,9 +149,14 @@ $root.vector_tile = (function() {
                 return object;
             var message = new $root.vector_tile.Tile();
             if (object.layers) {
+                if (!Array.isArray(object.layers))
+                    throw TypeError(".vector_tile.Tile.layers: array expected");
                 message.layers = [];
-                for (var i = 0; i < object.layers.length; ++i)
+                for (var i = 0; i < object.layers.length; ++i) {
+                    if (typeof object.layers[i] !== "object")
+                        throw TypeError(".vector_tile.Tile.layers: object expected");
                     message.layers[i] = $types[0].fromObject(object.layers[i]);
+                }
             }
             return message;
         };
@@ -744,6 +749,8 @@ $root.vector_tile = (function() {
                     else if (typeof object.id === "object")
                         message.id = new $util.LongBits(object.id.low, object.id.high).toNumber(true);
                 if (object.tags) {
+                    if (!Array.isArray(object.tags))
+                        throw TypeError(".vector_tile.Tile.Feature.tags: array expected");
                     message.tags = [];
                     for (var i = 0; i < object.tags.length; ++i)
                         message.tags[i] = object.tags[i] >>> 0;
@@ -767,6 +774,8 @@ $root.vector_tile = (function() {
                     break;
                 }
                 if (object.geometry) {
+                    if (!Array.isArray(object.geometry))
+                        throw TypeError(".vector_tile.Tile.Feature.geometry: array expected");
                     message.geometry = [];
                     for (var i = 0; i < object.geometry.length; ++i)
                         message.geometry[i] = object.geometry[i] >>> 0;
@@ -1057,19 +1066,31 @@ $root.vector_tile = (function() {
                 if (object.name !== undefined && object.name !== null)
                     message.name = String(object.name);
                 if (object.features) {
+                    if (!Array.isArray(object.features))
+                        throw TypeError(".vector_tile.Tile.Layer.features: array expected");
                     message.features = [];
-                    for (var i = 0; i < object.features.length; ++i)
+                    for (var i = 0; i < object.features.length; ++i) {
+                        if (typeof object.features[i] !== "object")
+                            throw TypeError(".vector_tile.Tile.Layer.features: object expected");
                         message.features[i] = $types[2].fromObject(object.features[i]);
+                    }
                 }
                 if (object.keys) {
+                    if (!Array.isArray(object.keys))
+                        throw TypeError(".vector_tile.Tile.Layer.keys: array expected");
                     message.keys = [];
                     for (var i = 0; i < object.keys.length; ++i)
                         message.keys[i] = String(object.keys[i]);
                 }
                 if (object.values) {
+                    if (!Array.isArray(object.values))
+                        throw TypeError(".vector_tile.Tile.Layer.values: array expected");
                     message.values = [];
-                    for (var i = 0; i < object.values.length; ++i)
+                    for (var i = 0; i < object.values.length; ++i) {
+                        if (typeof object.values[i] !== "object")
+                            throw TypeError(".vector_tile.Tile.Layer.values: object expected");
                         message.values[i] = $types[4].fromObject(object.values[i]);
+                    }
                 }
                 if (object.extent !== undefined && object.extent !== null)
                     message.extent = object.extent >>> 0;

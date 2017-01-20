@@ -311,6 +311,8 @@ $root.Message = (function() {
         if (object.stringVal !== undefined && object.stringVal !== null)
             message.stringVal = String(object.stringVal);
         if (object.stringRepeated) {
+            if (!Array.isArray(object.stringRepeated))
+                throw TypeError(".Message.stringRepeated: array expected");
             message.stringRepeated = [];
             for (var i = 0; i < object.stringRepeated.length; ++i)
                 message.stringRepeated[i] = String(object.stringRepeated[i]);
@@ -325,6 +327,8 @@ $root.Message = (function() {
             else if (typeof object.uint64Val === "object")
                 message.uint64Val = new $util.LongBits(object.uint64Val.low, object.uint64Val.high).toNumber(true);
         if (object.uint64Repeated) {
+            if (!Array.isArray(object.uint64Repeated))
+                throw TypeError(".Message.uint64Repeated: array expected");
             message.uint64Repeated = [];
             for (var i = 0; i < object.uint64Repeated.length; ++i)
                 if ($util.Long)
@@ -339,14 +343,16 @@ $root.Message = (function() {
         if (object.bytesVal !== undefined && object.bytesVal !== null)
             if (typeof object.bytesVal === "string")
                 $util.base64.decode(object.bytesVal, message.bytesVal = $util.newBuffer($util.base64.length(object.bytesVal)), 0);
-            else if (object.bytesVal && object.bytesVal.length)
+            else if (object.bytesVal.length)
                 message.bytesVal = object.bytesVal;
         if (object.bytesRepeated) {
+            if (!Array.isArray(object.bytesRepeated))
+                throw TypeError(".Message.bytesRepeated: array expected");
             message.bytesRepeated = [];
             for (var i = 0; i < object.bytesRepeated.length; ++i)
                 if (typeof object.bytesRepeated[i] === "string")
                     $util.base64.decode(object.bytesRepeated[i], message.bytesRepeated[i] = $util.newBuffer($util.base64.length(object.bytesRepeated[i])), 0);
-                else if (object.bytesRepeated[i] && object.bytesRepeated[i].length)
+                else if (object.bytesRepeated[i].length)
                     message.bytesRepeated[i] = object.bytesRepeated[i];
         }
         switch (object.enumVal) {
@@ -360,6 +366,8 @@ $root.Message = (function() {
             break;
         }
         if (object.enumRepeated) {
+            if (!Array.isArray(object.enumRepeated))
+                throw TypeError(".Message.enumRepeated: array expected");
             message.enumRepeated = [];
             for (var i = 0; i < object.enumRepeated.length; ++i)
                 switch (object.enumRepeated[i]) {
@@ -375,6 +383,8 @@ $root.Message = (function() {
                 }
         }
         if (object.int64Map) {
+            if (typeof object.int64Map !== "object")
+                throw TypeError(".Message.int64Map: object expected");
             message.int64Map = {};
             for (var keys = Object.keys(object.int64Map), i = 0; i < keys.length; ++i)
                 if ($util.Long)

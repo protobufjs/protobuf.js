@@ -511,6 +511,8 @@ $root.jspb = (function() {
                 if (object.aString !== undefined && object.aString !== null)
                     message.aString = String(object.aString);
                 if (object.aRepeatedString) {
+                    if (!Array.isArray(object.aRepeatedString))
+                        throw TypeError(".jspb.test.Simple1.aRepeatedString: array expected");
                     message.aRepeatedString = [];
                     for (var i = 0; i < object.aRepeatedString.length; ++i)
                         message.aRepeatedString[i] = String(object.aRepeatedString[i]);
@@ -709,6 +711,8 @@ $root.jspb = (function() {
                 if (object.aString !== undefined && object.aString !== null)
                     message.aString = String(object.aString);
                 if (object.aRepeatedString) {
+                    if (!Array.isArray(object.aRepeatedString))
+                        throw TypeError(".jspb.test.Simple2.aRepeatedString: array expected");
                     message.aRepeatedString = [];
                     for (var i = 0; i < object.aRepeatedString.length; ++i)
                         message.aRepeatedString[i] = String(object.aRepeatedString[i]);
@@ -1175,14 +1179,24 @@ $root.jspb = (function() {
                     message.aString = String(object.aString);
                 if (object.aBool !== undefined && object.aBool !== null)
                     message.aBool = Boolean(object.aBool);
-                if (object.aNestedMessage !== undefined && object.aNestedMessage !== null)
+                if (object.aNestedMessage !== undefined && object.aNestedMessage !== null) {
+                    if (typeof object.aNestedMessage !== "object")
+                        throw TypeError(".jspb.test.OptionalFields.aNestedMessage: object expected");
                     message.aNestedMessage = $types[2].fromObject(object.aNestedMessage);
+                }
                 if (object.aRepeatedMessage) {
+                    if (!Array.isArray(object.aRepeatedMessage))
+                        throw TypeError(".jspb.test.OptionalFields.aRepeatedMessage: array expected");
                     message.aRepeatedMessage = [];
-                    for (var i = 0; i < object.aRepeatedMessage.length; ++i)
+                    for (var i = 0; i < object.aRepeatedMessage.length; ++i) {
+                        if (typeof object.aRepeatedMessage[i] !== "object")
+                            throw TypeError(".jspb.test.OptionalFields.aRepeatedMessage: object expected");
                         message.aRepeatedMessage[i] = $types[3].fromObject(object.aRepeatedMessage[i]);
+                    }
                 }
                 if (object.aRepeatedString) {
+                    if (!Array.isArray(object.aRepeatedString))
+                        throw TypeError(".jspb.test.OptionalFields.aRepeatedString: array expected");
                     message.aRepeatedString = [];
                     for (var i = 0; i < object.aRepeatedString.length; ++i)
                         message.aRepeatedString[i] = String(object.aRepeatedString[i]);
@@ -1682,24 +1696,40 @@ $root.jspb = (function() {
                     message.str2 = String(object.str2);
                 if (object.str3 !== undefined && object.str3 !== null)
                     message.str3 = String(object.str3);
-                if (object[".jspb.test.IsExtension.extField"] !== undefined && object[".jspb.test.IsExtension.extField"] !== null)
+                if (object[".jspb.test.IsExtension.extField"] !== undefined && object[".jspb.test.IsExtension.extField"] !== null) {
+                    if (typeof object[".jspb.test.IsExtension.extField"] !== "object")
+                        throw TypeError(".jspb.test.HasExtensions..jspb.test.IsExtension.extField: object expected");
                     message[".jspb.test.IsExtension.extField"] = $types[3].fromObject(object[".jspb.test.IsExtension.extField"]);
-                if (object[".jspb.test.IndirectExtension.simple"] !== undefined && object[".jspb.test.IndirectExtension.simple"] !== null)
+                }
+                if (object[".jspb.test.IndirectExtension.simple"] !== undefined && object[".jspb.test.IndirectExtension.simple"] !== null) {
+                    if (typeof object[".jspb.test.IndirectExtension.simple"] !== "object")
+                        throw TypeError(".jspb.test.HasExtensions..jspb.test.IndirectExtension.simple: object expected");
                     message[".jspb.test.IndirectExtension.simple"] = $types[4].fromObject(object[".jspb.test.IndirectExtension.simple"]);
+                }
                 if (object[".jspb.test.IndirectExtension.str"] !== undefined && object[".jspb.test.IndirectExtension.str"] !== null)
                     message[".jspb.test.IndirectExtension.str"] = String(object[".jspb.test.IndirectExtension.str"]);
                 if (object[".jspb.test.IndirectExtension.repeatedStr"]) {
+                    if (!Array.isArray(object[".jspb.test.IndirectExtension.repeatedStr"]))
+                        throw TypeError(".jspb.test.HasExtensions..jspb.test.IndirectExtension.repeatedStr: array expected");
                     message[".jspb.test.IndirectExtension.repeatedStr"] = [];
                     for (var i = 0; i < object[".jspb.test.IndirectExtension.repeatedStr"].length; ++i)
                         message[".jspb.test.IndirectExtension.repeatedStr"][i] = String(object[".jspb.test.IndirectExtension.repeatedStr"][i]);
                 }
                 if (object[".jspb.test.IndirectExtension.repeatedSimple"]) {
+                    if (!Array.isArray(object[".jspb.test.IndirectExtension.repeatedSimple"]))
+                        throw TypeError(".jspb.test.HasExtensions..jspb.test.IndirectExtension.repeatedSimple: array expected");
                     message[".jspb.test.IndirectExtension.repeatedSimple"] = [];
-                    for (var i = 0; i < object[".jspb.test.IndirectExtension.repeatedSimple"].length; ++i)
+                    for (var i = 0; i < object[".jspb.test.IndirectExtension.repeatedSimple"].length; ++i) {
+                        if (typeof object[".jspb.test.IndirectExtension.repeatedSimple"][i] !== "object")
+                            throw TypeError(".jspb.test.HasExtensions..jspb.test.IndirectExtension.repeatedSimple: object expected");
                         message[".jspb.test.IndirectExtension.repeatedSimple"][i] = $types[7].fromObject(object[".jspb.test.IndirectExtension.repeatedSimple"][i]);
+                    }
                 }
-                if (object[".jspb.test.simple1"] !== undefined && object[".jspb.test.simple1"] !== null)
+                if (object[".jspb.test.simple1"] !== undefined && object[".jspb.test.simple1"] !== null) {
+                    if (typeof object[".jspb.test.simple1"] !== "object")
+                        throw TypeError(".jspb.test.HasExtensions..jspb.test.simple1: object expected");
                     message[".jspb.test.simple1"] = $types[8].fromObject(object[".jspb.test.simple1"]);
+                }
                 return message;
             };
 
@@ -1972,14 +2002,24 @@ $root.jspb = (function() {
                     message.aString = String(object.aString);
                 if (object.anOutOfOrderBool !== undefined && object.anOutOfOrderBool !== null)
                     message.anOutOfOrderBool = Boolean(object.anOutOfOrderBool);
-                if (object.aNestedMessage !== undefined && object.aNestedMessage !== null)
+                if (object.aNestedMessage !== undefined && object.aNestedMessage !== null) {
+                    if (typeof object.aNestedMessage !== "object")
+                        throw TypeError(".jspb.test.Complex.aNestedMessage: object expected");
                     message.aNestedMessage = $types[2].fromObject(object.aNestedMessage);
+                }
                 if (object.aRepeatedMessage) {
+                    if (!Array.isArray(object.aRepeatedMessage))
+                        throw TypeError(".jspb.test.Complex.aRepeatedMessage: array expected");
                     message.aRepeatedMessage = [];
-                    for (var i = 0; i < object.aRepeatedMessage.length; ++i)
+                    for (var i = 0; i < object.aRepeatedMessage.length; ++i) {
+                        if (typeof object.aRepeatedMessage[i] !== "object")
+                            throw TypeError(".jspb.test.Complex.aRepeatedMessage: object expected");
                         message.aRepeatedMessage[i] = $types[3].fromObject(object.aRepeatedMessage[i]);
+                    }
                 }
                 if (object.aRepeatedString) {
+                    if (!Array.isArray(object.aRepeatedString))
+                        throw TypeError(".jspb.test.Complex.aRepeatedString: array expected");
                     message.aRepeatedString = [];
                     for (var i = 0; i < object.aRepeatedString.length; ++i)
                         message.aRepeatedString[i] = String(object.aRepeatedString[i]);
@@ -3027,7 +3067,7 @@ $root.jspb = (function() {
                 if (object.bytesField !== undefined && object.bytesField !== null)
                     if (typeof object.bytesField === "string")
                         $util.base64.decode(object.bytesField, message.bytesField = $util.newBuffer($util.base64.length(object.bytesField)), 0);
-                    else if (object.bytesField && object.bytesField.length)
+                    else if (object.bytesField.length)
                         message.bytesField = object.bytesField;
                 return message;
             };
@@ -3354,6 +3394,8 @@ $root.jspb = (function() {
                 if (object.requiredFloatField !== undefined && object.requiredFloatField !== null)
                     message.requiredFloatField = Number(object.requiredFloatField);
                 if (object.repeatedFloatField) {
+                    if (!Array.isArray(object.repeatedFloatField))
+                        throw TypeError(".jspb.test.FloatingPointFields.repeatedFloatField: array expected");
                     message.repeatedFloatField = [];
                     for (var i = 0; i < object.repeatedFloatField.length; ++i)
                         message.repeatedFloatField[i] = Number(object.repeatedFloatField[i]);
@@ -3365,6 +3407,8 @@ $root.jspb = (function() {
                 if (object.requiredDoubleField !== undefined && object.requiredDoubleField !== null)
                     message.requiredDoubleField = Number(object.requiredDoubleField);
                 if (object.repeatedDoubleField) {
+                    if (!Array.isArray(object.repeatedDoubleField))
+                        throw TypeError(".jspb.test.FloatingPointFields.repeatedDoubleField: array expected");
                     message.repeatedDoubleField = [];
                     for (var i = 0; i < object.repeatedDoubleField.length; ++i)
                         message.repeatedDoubleField[i] = Number(object.repeatedDoubleField[i]);
@@ -3653,22 +3697,33 @@ $root.jspb = (function() {
                 var message = new $root.jspb.test.TestClone();
                 if (object.str !== undefined && object.str !== null)
                     message.str = String(object.str);
-                if (object.simple1 !== undefined && object.simple1 !== null)
+                if (object.simple1 !== undefined && object.simple1 !== null) {
+                    if (typeof object.simple1 !== "object")
+                        throw TypeError(".jspb.test.TestClone.simple1: object expected");
                     message.simple1 = $types[1].fromObject(object.simple1);
+                }
                 if (object.simple2) {
+                    if (!Array.isArray(object.simple2))
+                        throw TypeError(".jspb.test.TestClone.simple2: array expected");
                     message.simple2 = [];
-                    for (var i = 0; i < object.simple2.length; ++i)
+                    for (var i = 0; i < object.simple2.length; ++i) {
+                        if (typeof object.simple2[i] !== "object")
+                            throw TypeError(".jspb.test.TestClone.simple2: object expected");
                         message.simple2[i] = $types[2].fromObject(object.simple2[i]);
+                    }
                 }
                 if (object.bytesField !== undefined && object.bytesField !== null)
                     if (typeof object.bytesField === "string")
                         $util.base64.decode(object.bytesField, message.bytesField = $util.newBuffer($util.base64.length(object.bytesField)), 0);
-                    else if (object.bytesField && object.bytesField.length)
+                    else if (object.bytesField.length)
                         message.bytesField = object.bytesField;
                 if (object.unused !== undefined && object.unused !== null)
                     message.unused = String(object.unused);
-                if (object[".jspb.test.CloneExtension.extField"] !== undefined && object[".jspb.test.CloneExtension.extField"] !== null)
+                if (object[".jspb.test.CloneExtension.extField"] !== undefined && object[".jspb.test.CloneExtension.extField"] !== null) {
+                    if (typeof object[".jspb.test.CloneExtension.extField"] !== "object")
+                        throw TypeError(".jspb.test.TestClone..jspb.test.CloneExtension.extField: object expected");
                     message[".jspb.test.CloneExtension.extField"] = $types[5].fromObject(object[".jspb.test.CloneExtension.extField"]);
+                }
                 return message;
             };
 
@@ -4100,20 +4155,37 @@ $root.jspb = (function() {
                     return object;
                 var message = new $root.jspb.test.TestGroup();
                 if (object.repeatedGroup) {
+                    if (!Array.isArray(object.repeatedGroup))
+                        throw TypeError(".jspb.test.TestGroup.repeatedGroup: array expected");
                     message.repeatedGroup = [];
-                    for (var i = 0; i < object.repeatedGroup.length; ++i)
+                    for (var i = 0; i < object.repeatedGroup.length; ++i) {
+                        if (typeof object.repeatedGroup[i] !== "object")
+                            throw TypeError(".jspb.test.TestGroup.repeatedGroup: object expected");
                         message.repeatedGroup[i] = $types[0].fromObject(object.repeatedGroup[i]);
+                    }
                 }
-                if (object.requiredGroup !== undefined && object.requiredGroup !== null)
+                if (object.requiredGroup !== undefined && object.requiredGroup !== null) {
+                    if (typeof object.requiredGroup !== "object")
+                        throw TypeError(".jspb.test.TestGroup.requiredGroup: object expected");
                     message.requiredGroup = $types[1].fromObject(object.requiredGroup);
-                if (object.optionalGroup !== undefined && object.optionalGroup !== null)
+                }
+                if (object.optionalGroup !== undefined && object.optionalGroup !== null) {
+                    if (typeof object.optionalGroup !== "object")
+                        throw TypeError(".jspb.test.TestGroup.optionalGroup: object expected");
                     message.optionalGroup = $types[2].fromObject(object.optionalGroup);
+                }
                 if (object.id !== undefined && object.id !== null)
                     message.id = String(object.id);
-                if (object.requiredSimple !== undefined && object.requiredSimple !== null)
+                if (object.requiredSimple !== undefined && object.requiredSimple !== null) {
+                    if (typeof object.requiredSimple !== "object")
+                        throw TypeError(".jspb.test.TestGroup.requiredSimple: object expected");
                     message.requiredSimple = $types[4].fromObject(object.requiredSimple);
-                if (object.optionalSimple !== undefined && object.optionalSimple !== null)
+                }
+                if (object.optionalSimple !== undefined && object.optionalSimple !== null) {
+                    if (typeof object.optionalSimple !== "object")
+                        throw TypeError(".jspb.test.TestGroup.optionalSimple: object expected");
                     message.optionalSimple = $types[5].fromObject(object.optionalSimple);
+                }
                 return message;
             };
 
@@ -4319,6 +4391,8 @@ $root.jspb = (function() {
                     if (object.id !== undefined && object.id !== null)
                         message.id = String(object.id);
                     if (object.someBool) {
+                        if (!Array.isArray(object.someBool))
+                            throw TypeError(".jspb.test.TestGroup.RepeatedGroup.someBool: array expected");
                         message.someBool = [];
                         for (var i = 0; i < object.someBool.length; ++i)
                             message.someBool[i] = Boolean(object.someBool[i]);
@@ -4821,8 +4895,11 @@ $root.jspb = (function() {
                 if (object instanceof $root.jspb.test.TestGroup1)
                     return object;
                 var message = new $root.jspb.test.TestGroup1();
-                if (object.group !== undefined && object.group !== null)
+                if (object.group !== undefined && object.group !== null) {
+                    if (typeof object.group !== "object")
+                        throw TypeError(".jspb.test.TestGroup1.group: object expected");
                     message.group = $types[0].fromObject(object.group);
+                }
                 return message;
             };
 
@@ -5504,13 +5581,18 @@ $root.jspb = (function() {
                     message.pone = String(object.pone);
                 if (object.pthree !== undefined && object.pthree !== null)
                     message.pthree = String(object.pthree);
-                if (object.rone !== undefined && object.rone !== null)
+                if (object.rone !== undefined && object.rone !== null) {
+                    if (typeof object.rone !== "object")
+                        throw TypeError(".jspb.test.TestMessageWithOneof.rone: object expected");
                     message.rone = $types[2].fromObject(object.rone);
+                }
                 if (object.rtwo !== undefined && object.rtwo !== null)
                     message.rtwo = String(object.rtwo);
                 if (object.normalField !== undefined && object.normalField !== null)
                     message.normalField = Boolean(object.normalField);
                 if (object.repeatedField) {
+                    if (!Array.isArray(object.repeatedField))
+                        throw TypeError(".jspb.test.TestMessageWithOneof.repeatedField: array expected");
                     message.repeatedField = [];
                     for (var i = 0; i < object.repeatedField.length; ++i)
                         message.repeatedField[i] = String(object.repeatedField[i]);
@@ -5733,7 +5815,7 @@ $root.jspb = (function() {
                 if (object.data !== undefined && object.data !== null)
                     if (typeof object.data === "string")
                         $util.base64.decode(object.data, message.data = $util.newBuffer($util.base64.length(object.data)), 0);
-                    else if (object.data && object.data.length)
+                    else if (object.data.length)
                         message.data = object.data;
                 return message;
             };
@@ -6207,16 +6289,22 @@ $root.jspb = (function() {
                     return object;
                 var message = new $root.jspb.test.TestMapFieldsNoBinary();
                 if (object.mapStringString) {
+                    if (typeof object.mapStringString !== "object")
+                        throw TypeError(".jspb.test.TestMapFieldsNoBinary.mapStringString: object expected");
                     message.mapStringString = {};
                     for (var keys = Object.keys(object.mapStringString), i = 0; i < keys.length; ++i)
                         message.mapStringString[keys[i]] = String(object.mapStringString[keys[i]]);
                 }
                 if (object.mapStringInt32) {
+                    if (typeof object.mapStringInt32 !== "object")
+                        throw TypeError(".jspb.test.TestMapFieldsNoBinary.mapStringInt32: object expected");
                     message.mapStringInt32 = {};
                     for (var keys = Object.keys(object.mapStringInt32), i = 0; i < keys.length; ++i)
                         message.mapStringInt32[keys[i]] = object.mapStringInt32[keys[i]] | 0;
                 }
                 if (object.mapStringInt64) {
+                    if (typeof object.mapStringInt64 !== "object")
+                        throw TypeError(".jspb.test.TestMapFieldsNoBinary.mapStringInt64: object expected");
                     message.mapStringInt64 = {};
                     for (var keys = Object.keys(object.mapStringInt64), i = 0; i < keys.length; ++i)
                         if ($util.Long)
@@ -6229,16 +6317,22 @@ $root.jspb = (function() {
                             message.mapStringInt64[keys[i]] = new $util.LongBits(object.mapStringInt64[keys[i]].low, object.mapStringInt64[keys[i]].high).toNumber();
                 }
                 if (object.mapStringBool) {
+                    if (typeof object.mapStringBool !== "object")
+                        throw TypeError(".jspb.test.TestMapFieldsNoBinary.mapStringBool: object expected");
                     message.mapStringBool = {};
                     for (var keys = Object.keys(object.mapStringBool), i = 0; i < keys.length; ++i)
                         message.mapStringBool[keys[i]] = Boolean(object.mapStringBool[keys[i]]);
                 }
                 if (object.mapStringDouble) {
+                    if (typeof object.mapStringDouble !== "object")
+                        throw TypeError(".jspb.test.TestMapFieldsNoBinary.mapStringDouble: object expected");
                     message.mapStringDouble = {};
                     for (var keys = Object.keys(object.mapStringDouble), i = 0; i < keys.length; ++i)
                         message.mapStringDouble[keys[i]] = Number(object.mapStringDouble[keys[i]]);
                 }
                 if (object.mapStringEnum) {
+                    if (typeof object.mapStringEnum !== "object")
+                        throw TypeError(".jspb.test.TestMapFieldsNoBinary.mapStringEnum: object expected");
                     message.mapStringEnum = {};
                     for (var keys = Object.keys(object.mapStringEnum), i = 0; i < keys.length; ++i)
                         switch (object.mapStringEnum[keys[i]]) {
@@ -6257,31 +6351,50 @@ $root.jspb = (function() {
                         }
                 }
                 if (object.mapStringMsg) {
+                    if (typeof object.mapStringMsg !== "object")
+                        throw TypeError(".jspb.test.TestMapFieldsNoBinary.mapStringMsg: object expected");
                     message.mapStringMsg = {};
-                    for (var keys = Object.keys(object.mapStringMsg), i = 0; i < keys.length; ++i)
+                    for (var keys = Object.keys(object.mapStringMsg), i = 0; i < keys.length; ++i) {
+                        if (typeof object.mapStringMsg[keys[i]] !== "object")
+                            throw TypeError(".jspb.test.TestMapFieldsNoBinary.mapStringMsg: object expected");
                         message.mapStringMsg[keys[i]] = $types[6].fromObject(object.mapStringMsg[keys[i]]);
+                    }
                 }
                 if (object.mapInt32String) {
+                    if (typeof object.mapInt32String !== "object")
+                        throw TypeError(".jspb.test.TestMapFieldsNoBinary.mapInt32String: object expected");
                     message.mapInt32String = {};
                     for (var keys = Object.keys(object.mapInt32String), i = 0; i < keys.length; ++i)
                         message.mapInt32String[keys[i]] = String(object.mapInt32String[keys[i]]);
                 }
                 if (object.mapInt64String) {
+                    if (typeof object.mapInt64String !== "object")
+                        throw TypeError(".jspb.test.TestMapFieldsNoBinary.mapInt64String: object expected");
                     message.mapInt64String = {};
                     for (var keys = Object.keys(object.mapInt64String), i = 0; i < keys.length; ++i)
                         message.mapInt64String[keys[i]] = String(object.mapInt64String[keys[i]]);
                 }
                 if (object.mapBoolString) {
+                    if (typeof object.mapBoolString !== "object")
+                        throw TypeError(".jspb.test.TestMapFieldsNoBinary.mapBoolString: object expected");
                     message.mapBoolString = {};
                     for (var keys = Object.keys(object.mapBoolString), i = 0; i < keys.length; ++i)
                         message.mapBoolString[keys[i]] = String(object.mapBoolString[keys[i]]);
                 }
-                if (object.testMapFields !== undefined && object.testMapFields !== null)
+                if (object.testMapFields !== undefined && object.testMapFields !== null) {
+                    if (typeof object.testMapFields !== "object")
+                        throw TypeError(".jspb.test.TestMapFieldsNoBinary.testMapFields: object expected");
                     message.testMapFields = $types[10].fromObject(object.testMapFields);
+                }
                 if (object.mapStringTestmapfields) {
+                    if (typeof object.mapStringTestmapfields !== "object")
+                        throw TypeError(".jspb.test.TestMapFieldsNoBinary.mapStringTestmapfields: object expected");
                     message.mapStringTestmapfields = {};
-                    for (var keys = Object.keys(object.mapStringTestmapfields), i = 0; i < keys.length; ++i)
+                    for (var keys = Object.keys(object.mapStringTestmapfields), i = 0; i < keys.length; ++i) {
+                        if (typeof object.mapStringTestmapfields[keys[i]] !== "object")
+                            throw TypeError(".jspb.test.TestMapFieldsNoBinary.mapStringTestmapfields: object expected");
                         message.mapStringTestmapfields[keys[i]] = $types[11].fromObject(object.mapStringTestmapfields[keys[i]]);
+                    }
                 }
                 return message;
             };
@@ -7166,9 +7279,14 @@ $root.google = (function() {
                     return object;
                 var message = new $root.google.protobuf.FileDescriptorSet();
                 if (object.file) {
+                    if (!Array.isArray(object.file))
+                        throw TypeError(".google.protobuf.FileDescriptorSet.file: array expected");
                     message.file = [];
-                    for (var i = 0; i < object.file.length; ++i)
+                    for (var i = 0; i < object.file.length; ++i) {
+                        if (typeof object.file[i] !== "object")
+                            throw TypeError(".google.protobuf.FileDescriptorSet.file: object expected");
                         message.file[i] = $types[0].fromObject(object.file[i]);
+                    }
                 }
                 return message;
             };
@@ -7573,44 +7691,76 @@ $root.google = (function() {
                 if (object["package"] !== undefined && object["package"] !== null)
                     message["package"] = String(object["package"]);
                 if (object.dependency) {
+                    if (!Array.isArray(object.dependency))
+                        throw TypeError(".google.protobuf.FileDescriptorProto.dependency: array expected");
                     message.dependency = [];
                     for (var i = 0; i < object.dependency.length; ++i)
                         message.dependency[i] = String(object.dependency[i]);
                 }
                 if (object.publicDependency) {
+                    if (!Array.isArray(object.publicDependency))
+                        throw TypeError(".google.protobuf.FileDescriptorProto.publicDependency: array expected");
                     message.publicDependency = [];
                     for (var i = 0; i < object.publicDependency.length; ++i)
                         message.publicDependency[i] = object.publicDependency[i] | 0;
                 }
                 if (object.weakDependency) {
+                    if (!Array.isArray(object.weakDependency))
+                        throw TypeError(".google.protobuf.FileDescriptorProto.weakDependency: array expected");
                     message.weakDependency = [];
                     for (var i = 0; i < object.weakDependency.length; ++i)
                         message.weakDependency[i] = object.weakDependency[i] | 0;
                 }
                 if (object.messageType) {
+                    if (!Array.isArray(object.messageType))
+                        throw TypeError(".google.protobuf.FileDescriptorProto.messageType: array expected");
                     message.messageType = [];
-                    for (var i = 0; i < object.messageType.length; ++i)
+                    for (var i = 0; i < object.messageType.length; ++i) {
+                        if (typeof object.messageType[i] !== "object")
+                            throw TypeError(".google.protobuf.FileDescriptorProto.messageType: object expected");
                         message.messageType[i] = $types[5].fromObject(object.messageType[i]);
+                    }
                 }
                 if (object.enumType) {
+                    if (!Array.isArray(object.enumType))
+                        throw TypeError(".google.protobuf.FileDescriptorProto.enumType: array expected");
                     message.enumType = [];
-                    for (var i = 0; i < object.enumType.length; ++i)
+                    for (var i = 0; i < object.enumType.length; ++i) {
+                        if (typeof object.enumType[i] !== "object")
+                            throw TypeError(".google.protobuf.FileDescriptorProto.enumType: object expected");
                         message.enumType[i] = $types[6].fromObject(object.enumType[i]);
+                    }
                 }
                 if (object.service) {
+                    if (!Array.isArray(object.service))
+                        throw TypeError(".google.protobuf.FileDescriptorProto.service: array expected");
                     message.service = [];
-                    for (var i = 0; i < object.service.length; ++i)
+                    for (var i = 0; i < object.service.length; ++i) {
+                        if (typeof object.service[i] !== "object")
+                            throw TypeError(".google.protobuf.FileDescriptorProto.service: object expected");
                         message.service[i] = $types[7].fromObject(object.service[i]);
+                    }
                 }
                 if (object.extension) {
+                    if (!Array.isArray(object.extension))
+                        throw TypeError(".google.protobuf.FileDescriptorProto.extension: array expected");
                     message.extension = [];
-                    for (var i = 0; i < object.extension.length; ++i)
+                    for (var i = 0; i < object.extension.length; ++i) {
+                        if (typeof object.extension[i] !== "object")
+                            throw TypeError(".google.protobuf.FileDescriptorProto.extension: object expected");
                         message.extension[i] = $types[8].fromObject(object.extension[i]);
+                    }
                 }
-                if (object.options !== undefined && object.options !== null)
+                if (object.options !== undefined && object.options !== null) {
+                    if (typeof object.options !== "object")
+                        throw TypeError(".google.protobuf.FileDescriptorProto.options: object expected");
                     message.options = $types[9].fromObject(object.options);
-                if (object.sourceCodeInfo !== undefined && object.sourceCodeInfo !== null)
+                }
+                if (object.sourceCodeInfo !== undefined && object.sourceCodeInfo !== null) {
+                    if (typeof object.sourceCodeInfo !== "object")
+                        throw TypeError(".google.protobuf.FileDescriptorProto.sourceCodeInfo: object expected");
                     message.sourceCodeInfo = $types[10].fromObject(object.sourceCodeInfo);
+                }
                 if (object.syntax !== undefined && object.syntax !== null)
                     message.syntax = String(object.syntax);
                 return message;
@@ -8042,43 +8192,83 @@ $root.google = (function() {
                 if (object.name !== undefined && object.name !== null)
                     message.name = String(object.name);
                 if (object.field) {
+                    if (!Array.isArray(object.field))
+                        throw TypeError(".google.protobuf.DescriptorProto.field: array expected");
                     message.field = [];
-                    for (var i = 0; i < object.field.length; ++i)
+                    for (var i = 0; i < object.field.length; ++i) {
+                        if (typeof object.field[i] !== "object")
+                            throw TypeError(".google.protobuf.DescriptorProto.field: object expected");
                         message.field[i] = $types[1].fromObject(object.field[i]);
+                    }
                 }
                 if (object.extension) {
+                    if (!Array.isArray(object.extension))
+                        throw TypeError(".google.protobuf.DescriptorProto.extension: array expected");
                     message.extension = [];
-                    for (var i = 0; i < object.extension.length; ++i)
+                    for (var i = 0; i < object.extension.length; ++i) {
+                        if (typeof object.extension[i] !== "object")
+                            throw TypeError(".google.protobuf.DescriptorProto.extension: object expected");
                         message.extension[i] = $types[2].fromObject(object.extension[i]);
+                    }
                 }
                 if (object.nestedType) {
+                    if (!Array.isArray(object.nestedType))
+                        throw TypeError(".google.protobuf.DescriptorProto.nestedType: array expected");
                     message.nestedType = [];
-                    for (var i = 0; i < object.nestedType.length; ++i)
+                    for (var i = 0; i < object.nestedType.length; ++i) {
+                        if (typeof object.nestedType[i] !== "object")
+                            throw TypeError(".google.protobuf.DescriptorProto.nestedType: object expected");
                         message.nestedType[i] = $types[3].fromObject(object.nestedType[i]);
+                    }
                 }
                 if (object.enumType) {
+                    if (!Array.isArray(object.enumType))
+                        throw TypeError(".google.protobuf.DescriptorProto.enumType: array expected");
                     message.enumType = [];
-                    for (var i = 0; i < object.enumType.length; ++i)
+                    for (var i = 0; i < object.enumType.length; ++i) {
+                        if (typeof object.enumType[i] !== "object")
+                            throw TypeError(".google.protobuf.DescriptorProto.enumType: object expected");
                         message.enumType[i] = $types[4].fromObject(object.enumType[i]);
+                    }
                 }
                 if (object.extensionRange) {
+                    if (!Array.isArray(object.extensionRange))
+                        throw TypeError(".google.protobuf.DescriptorProto.extensionRange: array expected");
                     message.extensionRange = [];
-                    for (var i = 0; i < object.extensionRange.length; ++i)
+                    for (var i = 0; i < object.extensionRange.length; ++i) {
+                        if (typeof object.extensionRange[i] !== "object")
+                            throw TypeError(".google.protobuf.DescriptorProto.extensionRange: object expected");
                         message.extensionRange[i] = $types[5].fromObject(object.extensionRange[i]);
+                    }
                 }
                 if (object.oneofDecl) {
+                    if (!Array.isArray(object.oneofDecl))
+                        throw TypeError(".google.protobuf.DescriptorProto.oneofDecl: array expected");
                     message.oneofDecl = [];
-                    for (var i = 0; i < object.oneofDecl.length; ++i)
+                    for (var i = 0; i < object.oneofDecl.length; ++i) {
+                        if (typeof object.oneofDecl[i] !== "object")
+                            throw TypeError(".google.protobuf.DescriptorProto.oneofDecl: object expected");
                         message.oneofDecl[i] = $types[6].fromObject(object.oneofDecl[i]);
+                    }
                 }
-                if (object.options !== undefined && object.options !== null)
+                if (object.options !== undefined && object.options !== null) {
+                    if (typeof object.options !== "object")
+                        throw TypeError(".google.protobuf.DescriptorProto.options: object expected");
                     message.options = $types[7].fromObject(object.options);
+                }
                 if (object.reservedRange) {
+                    if (!Array.isArray(object.reservedRange))
+                        throw TypeError(".google.protobuf.DescriptorProto.reservedRange: array expected");
                     message.reservedRange = [];
-                    for (var i = 0; i < object.reservedRange.length; ++i)
+                    for (var i = 0; i < object.reservedRange.length; ++i) {
+                        if (typeof object.reservedRange[i] !== "object")
+                            throw TypeError(".google.protobuf.DescriptorProto.reservedRange: object expected");
                         message.reservedRange[i] = $types[8].fromObject(object.reservedRange[i]);
+                    }
                 }
                 if (object.reservedName) {
+                    if (!Array.isArray(object.reservedName))
+                        throw TypeError(".google.protobuf.DescriptorProto.reservedName: array expected");
                     message.reservedName = [];
                     for (var i = 0; i < object.reservedName.length; ++i)
                         message.reservedName[i] = String(object.reservedName[i]);
@@ -8922,8 +9112,11 @@ $root.google = (function() {
                     message.oneofIndex = object.oneofIndex | 0;
                 if (object.jsonName !== undefined && object.jsonName !== null)
                     message.jsonName = String(object.jsonName);
-                if (object.options !== undefined && object.options !== null)
+                if (object.options !== undefined && object.options !== null) {
+                    if (typeof object.options !== "object")
+                        throw TypeError(".google.protobuf.FieldDescriptorProto.options: object expected");
                     message.options = $types[9].fromObject(object.options);
+                }
                 return message;
             };
 
@@ -9200,8 +9393,11 @@ $root.google = (function() {
                 var message = new $root.google.protobuf.OneofDescriptorProto();
                 if (object.name !== undefined && object.name !== null)
                     message.name = String(object.name);
-                if (object.options !== undefined && object.options !== null)
+                if (object.options !== undefined && object.options !== null) {
+                    if (typeof object.options !== "object")
+                        throw TypeError(".google.protobuf.OneofDescriptorProto.options: object expected");
                     message.options = $types[1].fromObject(object.options);
+                }
                 return message;
             };
 
@@ -9413,12 +9609,20 @@ $root.google = (function() {
                 if (object.name !== undefined && object.name !== null)
                     message.name = String(object.name);
                 if (object.value) {
+                    if (!Array.isArray(object.value))
+                        throw TypeError(".google.protobuf.EnumDescriptorProto.value: array expected");
                     message.value = [];
-                    for (var i = 0; i < object.value.length; ++i)
+                    for (var i = 0; i < object.value.length; ++i) {
+                        if (typeof object.value[i] !== "object")
+                            throw TypeError(".google.protobuf.EnumDescriptorProto.value: object expected");
                         message.value[i] = $types[1].fromObject(object.value[i]);
+                    }
                 }
-                if (object.options !== undefined && object.options !== null)
+                if (object.options !== undefined && object.options !== null) {
+                    if (typeof object.options !== "object")
+                        throw TypeError(".google.protobuf.EnumDescriptorProto.options: object expected");
                     message.options = $types[2].fromObject(object.options);
+                }
                 return message;
             };
 
@@ -9628,8 +9832,11 @@ $root.google = (function() {
                     message.name = String(object.name);
                 if (object.number !== undefined && object.number !== null)
                     message.number = object.number | 0;
-                if (object.options !== undefined && object.options !== null)
+                if (object.options !== undefined && object.options !== null) {
+                    if (typeof object.options !== "object")
+                        throw TypeError(".google.protobuf.EnumValueDescriptorProto.options: object expected");
                     message.options = $types[2].fromObject(object.options);
+                }
                 return message;
             };
 
@@ -9844,12 +10051,20 @@ $root.google = (function() {
                 if (object.name !== undefined && object.name !== null)
                     message.name = String(object.name);
                 if (object.method) {
+                    if (!Array.isArray(object.method))
+                        throw TypeError(".google.protobuf.ServiceDescriptorProto.method: array expected");
                     message.method = [];
-                    for (var i = 0; i < object.method.length; ++i)
+                    for (var i = 0; i < object.method.length; ++i) {
+                        if (typeof object.method[i] !== "object")
+                            throw TypeError(".google.protobuf.ServiceDescriptorProto.method: object expected");
                         message.method[i] = $types[1].fromObject(object.method[i]);
+                    }
                 }
-                if (object.options !== undefined && object.options !== null)
+                if (object.options !== undefined && object.options !== null) {
+                    if (typeof object.options !== "object")
+                        throw TypeError(".google.protobuf.ServiceDescriptorProto.options: object expected");
                     message.options = $types[2].fromObject(object.options);
+                }
                 return message;
             };
 
@@ -10103,8 +10318,11 @@ $root.google = (function() {
                     message.inputType = String(object.inputType);
                 if (object.outputType !== undefined && object.outputType !== null)
                     message.outputType = String(object.outputType);
-                if (object.options !== undefined && object.options !== null)
+                if (object.options !== undefined && object.options !== null) {
+                    if (typeof object.options !== "object")
+                        throw TypeError(".google.protobuf.MethodDescriptorProto.options: object expected");
                     message.options = $types[3].fromObject(object.options);
+                }
                 if (object.clientStreaming !== undefined && object.clientStreaming !== null)
                     message.clientStreaming = Boolean(object.clientStreaming);
                 if (object.serverStreaming !== undefined && object.serverStreaming !== null)
@@ -10542,9 +10760,14 @@ $root.google = (function() {
                 if (object.csharpNamespace !== undefined && object.csharpNamespace !== null)
                     message.csharpNamespace = String(object.csharpNamespace);
                 if (object.uninterpretedOption) {
+                    if (!Array.isArray(object.uninterpretedOption))
+                        throw TypeError(".google.protobuf.FileOptions.uninterpretedOption: array expected");
                     message.uninterpretedOption = [];
-                    for (var i = 0; i < object.uninterpretedOption.length; ++i)
+                    for (var i = 0; i < object.uninterpretedOption.length; ++i) {
+                        if (typeof object.uninterpretedOption[i] !== "object")
+                            throw TypeError(".google.protobuf.FileOptions.uninterpretedOption: object expected");
                         message.uninterpretedOption[i] = $types[14].fromObject(object.uninterpretedOption[i]);
+                    }
                 }
                 return message;
             };
@@ -10849,9 +11072,14 @@ $root.google = (function() {
                 if (object.mapEntry !== undefined && object.mapEntry !== null)
                     message.mapEntry = Boolean(object.mapEntry);
                 if (object.uninterpretedOption) {
+                    if (!Array.isArray(object.uninterpretedOption))
+                        throw TypeError(".google.protobuf.MessageOptions.uninterpretedOption: array expected");
                     message.uninterpretedOption = [];
-                    for (var i = 0; i < object.uninterpretedOption.length; ++i)
+                    for (var i = 0; i < object.uninterpretedOption.length; ++i) {
+                        if (typeof object.uninterpretedOption[i] !== "object")
+                            throw TypeError(".google.protobuf.MessageOptions.uninterpretedOption: object expected");
                         message.uninterpretedOption[i] = $types[4].fromObject(object.uninterpretedOption[i]);
+                    }
                 }
                 return message;
             };
@@ -11178,9 +11406,14 @@ $root.google = (function() {
                 if (object.weak !== undefined && object.weak !== null)
                     message.weak = Boolean(object.weak);
                 if (object.uninterpretedOption) {
+                    if (!Array.isArray(object.uninterpretedOption))
+                        throw TypeError(".google.protobuf.FieldOptions.uninterpretedOption: array expected");
                     message.uninterpretedOption = [];
-                    for (var i = 0; i < object.uninterpretedOption.length; ++i)
+                    for (var i = 0; i < object.uninterpretedOption.length; ++i) {
+                        if (typeof object.uninterpretedOption[i] !== "object")
+                            throw TypeError(".google.protobuf.FieldOptions.uninterpretedOption: object expected");
                         message.uninterpretedOption[i] = $types[6].fromObject(object.uninterpretedOption[i]);
+                    }
                 }
                 return message;
             };
@@ -11415,9 +11648,14 @@ $root.google = (function() {
                     return object;
                 var message = new $root.google.protobuf.OneofOptions();
                 if (object.uninterpretedOption) {
+                    if (!Array.isArray(object.uninterpretedOption))
+                        throw TypeError(".google.protobuf.OneofOptions.uninterpretedOption: array expected");
                     message.uninterpretedOption = [];
-                    for (var i = 0; i < object.uninterpretedOption.length; ++i)
+                    for (var i = 0; i < object.uninterpretedOption.length; ++i) {
+                        if (typeof object.uninterpretedOption[i] !== "object")
+                            throw TypeError(".google.protobuf.OneofOptions.uninterpretedOption: object expected");
                         message.uninterpretedOption[i] = $types[0].fromObject(object.uninterpretedOption[i]);
+                    }
                 }
                 return message;
             };
@@ -11643,9 +11881,14 @@ $root.google = (function() {
                 if (object.deprecated !== undefined && object.deprecated !== null)
                     message.deprecated = Boolean(object.deprecated);
                 if (object.uninterpretedOption) {
+                    if (!Array.isArray(object.uninterpretedOption))
+                        throw TypeError(".google.protobuf.EnumOptions.uninterpretedOption: array expected");
                     message.uninterpretedOption = [];
-                    for (var i = 0; i < object.uninterpretedOption.length; ++i)
+                    for (var i = 0; i < object.uninterpretedOption.length; ++i) {
+                        if (typeof object.uninterpretedOption[i] !== "object")
+                            throw TypeError(".google.protobuf.EnumOptions.uninterpretedOption: object expected");
                         message.uninterpretedOption[i] = $types[2].fromObject(object.uninterpretedOption[i]);
+                    }
                 }
                 if (object[".jspb.test.IsExtension.simpleOption"] !== undefined && object[".jspb.test.IsExtension.simpleOption"] !== null)
                     message[".jspb.test.IsExtension.simpleOption"] = String(object[".jspb.test.IsExtension.simpleOption"]);
@@ -11853,9 +12096,14 @@ $root.google = (function() {
                 if (object.deprecated !== undefined && object.deprecated !== null)
                     message.deprecated = Boolean(object.deprecated);
                 if (object.uninterpretedOption) {
+                    if (!Array.isArray(object.uninterpretedOption))
+                        throw TypeError(".google.protobuf.EnumValueOptions.uninterpretedOption: array expected");
                     message.uninterpretedOption = [];
-                    for (var i = 0; i < object.uninterpretedOption.length; ++i)
+                    for (var i = 0; i < object.uninterpretedOption.length; ++i) {
+                        if (typeof object.uninterpretedOption[i] !== "object")
+                            throw TypeError(".google.protobuf.EnumValueOptions.uninterpretedOption: object expected");
                         message.uninterpretedOption[i] = $types[1].fromObject(object.uninterpretedOption[i]);
+                    }
                 }
                 return message;
             };
@@ -12054,9 +12302,14 @@ $root.google = (function() {
                 if (object.deprecated !== undefined && object.deprecated !== null)
                     message.deprecated = Boolean(object.deprecated);
                 if (object.uninterpretedOption) {
+                    if (!Array.isArray(object.uninterpretedOption))
+                        throw TypeError(".google.protobuf.ServiceOptions.uninterpretedOption: array expected");
                     message.uninterpretedOption = [];
-                    for (var i = 0; i < object.uninterpretedOption.length; ++i)
+                    for (var i = 0; i < object.uninterpretedOption.length; ++i) {
+                        if (typeof object.uninterpretedOption[i] !== "object")
+                            throw TypeError(".google.protobuf.ServiceOptions.uninterpretedOption: object expected");
                         message.uninterpretedOption[i] = $types[1].fromObject(object.uninterpretedOption[i]);
+                    }
                 }
                 return message;
             };
@@ -12290,9 +12543,14 @@ $root.google = (function() {
                     break;
                 }
                 if (object.uninterpretedOption) {
+                    if (!Array.isArray(object.uninterpretedOption))
+                        throw TypeError(".google.protobuf.MethodOptions.uninterpretedOption: array expected");
                     message.uninterpretedOption = [];
-                    for (var i = 0; i < object.uninterpretedOption.length; ++i)
+                    for (var i = 0; i < object.uninterpretedOption.length; ++i) {
+                        if (typeof object.uninterpretedOption[i] !== "object")
+                            throw TypeError(".google.protobuf.MethodOptions.uninterpretedOption: object expected");
                         message.uninterpretedOption[i] = $types[2].fromObject(object.uninterpretedOption[i]);
+                    }
                 }
                 return message;
             };
@@ -12581,9 +12839,14 @@ $root.google = (function() {
                     return object;
                 var message = new $root.google.protobuf.UninterpretedOption();
                 if (object.name) {
+                    if (!Array.isArray(object.name))
+                        throw TypeError(".google.protobuf.UninterpretedOption.name: array expected");
                     message.name = [];
-                    for (var i = 0; i < object.name.length; ++i)
+                    for (var i = 0; i < object.name.length; ++i) {
+                        if (typeof object.name[i] !== "object")
+                            throw TypeError(".google.protobuf.UninterpretedOption.name: object expected");
                         message.name[i] = $types[0].fromObject(object.name[i]);
+                    }
                 }
                 if (object.identifierValue !== undefined && object.identifierValue !== null)
                     message.identifierValue = String(object.identifierValue);
@@ -12610,7 +12873,7 @@ $root.google = (function() {
                 if (object.stringValue !== undefined && object.stringValue !== null)
                     if (typeof object.stringValue === "string")
                         $util.base64.decode(object.stringValue, message.stringValue = $util.newBuffer($util.base64.length(object.stringValue)), 0);
-                    else if (object.stringValue && object.stringValue.length)
+                    else if (object.stringValue.length)
                         message.stringValue = object.stringValue;
                 if (object.aggregateValue !== undefined && object.aggregateValue !== null)
                     message.aggregateValue = String(object.aggregateValue);
@@ -13002,9 +13265,14 @@ $root.google = (function() {
                     return object;
                 var message = new $root.google.protobuf.SourceCodeInfo();
                 if (object.location) {
+                    if (!Array.isArray(object.location))
+                        throw TypeError(".google.protobuf.SourceCodeInfo.location: array expected");
                     message.location = [];
-                    for (var i = 0; i < object.location.length; ++i)
+                    for (var i = 0; i < object.location.length; ++i) {
+                        if (typeof object.location[i] !== "object")
+                            throw TypeError(".google.protobuf.SourceCodeInfo.location: object expected");
                         message.location[i] = $types[0].fromObject(object.location[i]);
+                    }
                 }
                 return message;
             };
@@ -13259,11 +13527,15 @@ $root.google = (function() {
                         return object;
                     var message = new $root.google.protobuf.SourceCodeInfo.Location();
                     if (object.path) {
+                        if (!Array.isArray(object.path))
+                            throw TypeError(".google.protobuf.SourceCodeInfo.Location.path: array expected");
                         message.path = [];
                         for (var i = 0; i < object.path.length; ++i)
                             message.path[i] = object.path[i] | 0;
                     }
                     if (object.span) {
+                        if (!Array.isArray(object.span))
+                            throw TypeError(".google.protobuf.SourceCodeInfo.Location.span: array expected");
                         message.span = [];
                         for (var i = 0; i < object.span.length; ++i)
                             message.span[i] = object.span[i] | 0;
@@ -13273,6 +13545,8 @@ $root.google = (function() {
                     if (object.trailingComments !== undefined && object.trailingComments !== null)
                         message.trailingComments = String(object.trailingComments);
                     if (object.leadingDetachedComments) {
+                        if (!Array.isArray(object.leadingDetachedComments))
+                            throw TypeError(".google.protobuf.SourceCodeInfo.Location.leadingDetachedComments: array expected");
                         message.leadingDetachedComments = [];
                         for (var i = 0; i < object.leadingDetachedComments.length; ++i)
                             message.leadingDetachedComments[i] = String(object.leadingDetachedComments[i]);
@@ -13478,9 +13752,14 @@ $root.google = (function() {
                     return object;
                 var message = new $root.google.protobuf.GeneratedCodeInfo();
                 if (object.annotation) {
+                    if (!Array.isArray(object.annotation))
+                        throw TypeError(".google.protobuf.GeneratedCodeInfo.annotation: array expected");
                     message.annotation = [];
-                    for (var i = 0; i < object.annotation.length; ++i)
+                    for (var i = 0; i < object.annotation.length; ++i) {
+                        if (typeof object.annotation[i] !== "object")
+                            throw TypeError(".google.protobuf.GeneratedCodeInfo.annotation: object expected");
                         message.annotation[i] = $types[0].fromObject(object.annotation[i]);
+                    }
                 }
                 return message;
             };
@@ -13699,6 +13978,8 @@ $root.google = (function() {
                         return object;
                     var message = new $root.google.protobuf.GeneratedCodeInfo.Annotation();
                     if (object.path) {
+                        if (!Array.isArray(object.path))
+                            throw TypeError(".google.protobuf.GeneratedCodeInfo.Annotation.path: array expected");
                         message.path = [];
                         for (var i = 0; i < object.path.length; ++i)
                             message.path[i] = object.path[i] | 0;
