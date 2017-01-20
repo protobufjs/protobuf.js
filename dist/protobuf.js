@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.6.0 (c) 2016, Daniel Wirtz
- * Compiled Fri, 20 Jan 2017 02:44:11 UTC
+ * Compiled Fri, 20 Jan 2017 03:04:02 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -2119,6 +2119,7 @@ protobuf.BufferReader = require(29);
 protobuf.util         = require(39);
 protobuf.configure    = configure;
 
+/* istanbul ignore next */
 /**
  * Reconfigures the library according to the environment.
  * @returns {undefined}
@@ -2129,6 +2130,7 @@ function configure() {
 
 // assumes that loading "long" / define itself is asynchronous so that other builds can safely
 // continue populating `protobuf`. will see a BOOM eventually if this assumption is wrong:
+/* istanbul ignore next */
 if (typeof define === "function" && define.amd)
     define(["long"], function(Long) {
         if (Long) {
