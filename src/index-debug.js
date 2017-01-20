@@ -2,7 +2,7 @@
 // might eventually become a starting point for a real debug build.
 
 "use strict";
-var protobuf = module.exports = require(".");
+var protobuf = module.exports = require("./index");
 
 // Count number of calls to any generated function
 protobuf.util.codegen = (function(codegen) { return function codegen_debug() {
