@@ -1,41 +1,10 @@
 /*!
  * protobuf.js v6.6.0 (c) 2016, Daniel Wirtz
- * Compiled Fri, 20 Jan 2017 01:48:12 UTC
+ * Compiled Fri, 20 Jan 2017 02:44:11 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
 !function(global,undefined){"use strict";(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-"use strict";
-var protobuf = global.protobuf = exports;
-
-protobuf.build = "minimal";
-
-protobuf.roots = {};
-
-// Serialization
-protobuf.Writer       = require(10);
-protobuf.BufferWriter = require(11);
-protobuf.Reader       = require(6);
-protobuf.BufferReader = require(7);
-
-// Utility
-protobuf.util         = require(9);
-protobuf.configure    = configure;
-
-function configure() {
-    protobuf.Reader._configure();
-}
-
-if (typeof define === "function" && define.amd)
-    define(["long"], function(Long) {
-        if (Long) {
-            protobuf.util.Long = Long;
-            configure();
-        }
-        return protobuf;
-    });
-
-},{"10":10,"11":11,"6":6,"7":7,"9":9}],2:[function(require,module,exports){
 "use strict";
 
 /**
@@ -166,7 +135,7 @@ base64.test = function test(string) {
     return /^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/.test(string);
 };
 
-},{}],3:[function(require,module,exports){
+},{}],2:[function(require,module,exports){
 "use strict";
 module.exports = inquire;
 
@@ -185,7 +154,7 @@ function inquire(moduleName) {
     return null;
 }
 
-},{}],4:[function(require,module,exports){
+},{}],3:[function(require,module,exports){
 "use strict";
 module.exports = pool;
 
@@ -235,7 +204,7 @@ function pool(alloc, slice, size) {
     };
 }
 
-},{}],5:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 "use strict";
 
 /**
@@ -342,7 +311,56 @@ utf8.write = function utf8_write(string, buffer, offset) {
     return offset - start;
 };
 
-},{}],6:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
+"use strict";
+var protobuf = global.protobuf = exports;
+
+/**
+ * Build type, one of `"full"`, `"light"` or `"minimal"`.
+ * @name build
+ * @type {string}
+ */
+protobuf.build = "minimal";
+
+/**
+ * Named roots.
+ * This is where pbjs stores generated structures (the option `-r, --root` specifies a name).
+ * Can also be used manually to make roots available accross modules.
+ * @name roots
+ * @type {Object.<string,Root>}
+ */
+protobuf.roots = {};
+
+// Serialization
+protobuf.Writer       = require(10);
+protobuf.BufferWriter = require(11);
+protobuf.Reader       = require(6);
+protobuf.BufferReader = require(7);
+
+// Utility
+protobuf.util         = require(9);
+protobuf.configure    = configure;
+
+/**
+ * Reconfigures the library according to the environment.
+ * @returns {undefined}
+ */
+function configure() {
+    protobuf.Reader._configure();
+}
+
+// assumes that loading "long" / define itself is asynchronous so that other builds can safely
+// continue populating `protobuf`. will see a BOOM eventually if this assumption is wrong:
+if (typeof define === "function" && define.amd)
+    define(["long"], function(Long) {
+        if (Long) {
+            protobuf.util.Long = Long;
+            configure();
+        }
+        return protobuf;
+    });
+
+},{"10":10,"11":11,"6":6,"7":7,"9":9}],6:[function(require,module,exports){
 "use strict";
 module.exports = Reader;
 
@@ -1110,10 +1128,10 @@ LongBitsPrototype.length = function length() {
 "use strict";
 var util = exports;
 
-util.base64   = require(2);
-util.inquire  = require(3);
-util.utf8     = require(5);
-util.pool     = require(4);
+util.base64   = require(1);
+util.inquire  = require(2);
+util.utf8     = require(4);
+util.pool     = require(3);
 
 /**
  * An immuable empty array.
@@ -1330,7 +1348,7 @@ util.toJSONOptions = {
     bytes: String
 };
 
-},{"2":2,"3":3,"4":4,"5":5,"8":8}],10:[function(require,module,exports){
+},{"1":1,"2":2,"3":3,"4":4,"8":8}],10:[function(require,module,exports){
 "use strict";
 module.exports = Writer;
 
@@ -1976,7 +1994,7 @@ BufferWriterPrototype.string = function write_string_buffer(value) {
     return this;
 };
 
-},{"10":10,"9":9}]},{},[1])
+},{"10":10,"9":9}]},{},[5])
 
 }(typeof window==="object"&&window||typeof self==="object"&&self||this);
 //# sourceMappingURL=protobuf.js.map

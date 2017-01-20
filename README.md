@@ -79,7 +79,7 @@ The `protobuf` namespace will always be available globally / also supports AMD l
 
 Additionally, the library is compiled in different versions. Which one to use depends on whether size is a factor and your use case:
 
-| Build   | Folder                       | How to require                  | Description
+| Build   | Downloads                    | How to require                  | Description
 |---------|------------------------------|---------------------------------|-------------
 | full    | [dist][dist-full]            | `require("protobufjs")`         | All features. Works with everything.
 | light   | [dist/light][dist-light]     | `require("protobufjs/light")`   | All features except tokenizer, parser and bundled common types. Works with reflection, JSON definitions and static code.

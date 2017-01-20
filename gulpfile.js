@@ -23,8 +23,8 @@ function defineTask(name, entry, target) {
     defaultTask.push(name + "-bundle", name + "-minify", name + "-compress");
 }
 
-defineTask("full"   , "./src"    , "./dist"        );
-defineTask("light"  , "./light"  , "./dist/light"  );
-defineTask("minimal", "./minimal", "./dist/minimal");
+defineTask("full"   , "./src/index"        , "./dist"        );
+defineTask("light"  , "./src/index-light"  , "./dist/light"  );
+defineTask("minimal", "./src/index-minimal", "./dist/minimal");
 
 gulp.task("default", defaultTask);

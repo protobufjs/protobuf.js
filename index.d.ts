@@ -393,13 +393,6 @@ export class Field extends ReflectionObject {
 }
 
 /**
- * Build type, one of `"full"`, `"light"` or `"minimal"`.
- * @name build
- * @type {string}
- */
-export var build: string;
-
-/**
  * A node-style callback as used by {@link load} and {@link Root#load}.
  * @typedef LoadCallback
  * @type {function}
@@ -452,6 +445,13 @@ export function load(filename: (string|string[]), root?: Root): Promise<Root>;
  * @see {@link Root#loadSync}
  */
 export function loadSync(filename: (string|string[]), root?: Root): Root;
+
+/**
+ * Build type, one of `"full"`, `"light"` or `"minimal"`.
+ * @name build
+ * @type {string}
+ */
+export var build: string;
 
 /**
  * Named roots.
