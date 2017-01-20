@@ -14,6 +14,22 @@ tape.test("reflected enums", function(test) {
         2: "b"
     }, "should also expose their values by id");
 
+    test.throws(function() {
+        enm.add(2, 2);
+    }, TypeError, "should throw if name is not a string");
+
+    test.throws(function() {
+        enm.add("c", 1.5);
+    }, TypeError, "should throw if id is not an integer");
+
+    test.throws(function() {
+        enm.add("b", 2);
+    }, Error, "should throw if name is a duplicate");
+
+    test.throws(function() {
+        enm.add("c", 2);
+    }, Error, "should throw if id is a duplicate");
+
     enm.add("c", 3);
     test.same(enm.values, {
         a: 1,
@@ -25,6 +41,14 @@ tape.test("reflected enums", function(test) {
         2: "b",
         3: "c"
     }, "should also expose any new values by id");
+
+    test.throws(function() {
+        enm.remove(1);
+    }, TypeError, "should throw if name is not a string");
+
+    test.throws(function() {
+        enm.remove("d");
+    }, Error, "should throw if name is not present");
 
     enm.remove("b");
     test.same(enm.values, {

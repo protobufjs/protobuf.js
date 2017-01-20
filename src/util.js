@@ -6,12 +6,10 @@
  */
 var util = module.exports = require("./util/minimal");
 
-util.asPromise    = require("@protobufjs/aspromise");
-util.codegen      = require("@protobufjs/codegen");
-util.EventEmitter = require("@protobufjs/eventemitter");
-util.extend       = require("@protobufjs/extend");
-util.fetch        = require("@protobufjs/fetch");
-util.path         = require("@protobufjs/path");
+util.codegen = require("@protobufjs/codegen");
+util.extend  = require("@protobufjs/extend");
+util.fetch   = require("@protobufjs/fetch");
+util.path    = require("@protobufjs/path");
 
 /**
  * Node's fs module if available.

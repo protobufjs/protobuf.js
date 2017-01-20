@@ -20,7 +20,7 @@ $root.MyService = (function() {
      * RPC implementation passed to services performing a service request on network level, i.e. by utilizing http requests or websockets.
      * @typedef RPCImpl
      * @type {function}
-     * @param {$protobuf.Method} method Reflected method being called
+     * @param {function} method Method being called
      * @param {Uint8Array} requestData Request data
      * @param {RPCCallback} callback Callback function
      * @returns {undefined}
@@ -38,12 +38,14 @@ $root.MyService = (function() {
     /**
      * Constructs a new MyService service.
      * @exports MyService
+     * @extends $protobuf.util.EventEmitter
      * @constructor
      * @param {RPCImpl} rpc RPC implementation
      * @param {boolean} [requestDelimited=false] Whether requests are length-delimited
      * @param {boolean} [responseDelimited=false] Whether responses are length-delimited
      */
     function MyService(rpc, requestDelimited, responseDelimited) {
+        $util.EventEmitter.call(this);
 
         /**
          * RPC implementation.
@@ -64,12 +66,25 @@ $root.MyService = (function() {
         this.responseDelimited = Boolean(responseDelimited);
     }
 
+    (MyService.prototype = Object.create($util.EventEmitter.prototype)).constructor = MyService;
+
+    /**
+     * Creates a runtime service using the specified rpc implementation.
+     * @param {RPCImpl} rpcImpl RPC implementation
+     * @param {boolean} [requestDelimited=false] Whether requests are length-delimited
+     * @param {boolean} [responseDelimited=false] Whether responses are length-delimited
+     * @returns {MyService} RPC service. Useful where requests and/or responses are streamed.
+     */
+    MyService.create = function create(rpcImpl, requestDelimited, responseDelimited) {
+        return new this(rpcImpl, requestDelimited, responseDelimited);
+    };
+
     /**
      * Callback as used by {@link MyService#myMethod}.
      * @typedef MyService_myMethod_Callback
      * @type {function}
      * @param {?Error} error Error, if any
-     * @param {MyResponse} [response] MyResponse
+     * @param {MyResponse} [response] MyResponse or `null` if the service has been terminated server-side
      */
 
     /**
@@ -79,29 +94,47 @@ $root.MyService = (function() {
      * @returns {undefined}
      */
     MyService.prototype.myMethod = function myMethod(request, callback) {
-        var requestData;
-        try {
-            requestData = (this.requestDelimited ? $root.MyRequest.encodeDelimited(request) : $root.MyRequest.encode(request)).finish();
-        } catch (err) {
-            (typeof setImmediate === "function" ? setImmediate : setTimeout)(function() { callback(err); });
-            return;
-        }
-        var self = this;
-        this.rpc(myMethod, requestData, function(err, responseData) {
+        if (!request)
+            throw TypeError("request must be specified");
+        if (!callback)
+            return $util.asPromise(myMethod, this, request);
+        var $self = this;
+        this.rpc(myMethod, (this.requestDelimited
+            ? $root.MyRequest.encodeDelimited(request)
+            : $root.MyRequest.encode(request)
+        ).finish(), function $rpcCallback(err, response) {
             if (err) {
-                callback(err);
-                return;
+                $self.emit("error", err, myMethod);
+                return callback(err);
             }
-            var response;
-            try {
-                response = self.responseDelimited ? $root.MyResponse.decodeDelimited(responseData) : $root.MyResponse.decode(responseData);
-            } catch (err2) {
-                callback(err2);
-                return;
+            if (response === null) {
+                $self.end(true);
+                return undefined;
             }
-            callback(null, response);
+            if (!(response instanceof $root.MyResponse)) {
+                try {
+                    response = $self.responseDelimited
+                        ? $root.MyResponse.decodeDelimited(response)
+                        : $root.MyResponse.decode(response);
+                } catch (err2) {
+                    $self.emit("error", err2, myMethod);
+                    return callback(err2);
+                }
+            }
+            $self.emit("data", response, myMethod);
+            return callback(null, response);
         });
+        return undefined;
     };
+
+    /**
+     * Calls MyMethod.
+     * @name MyService#myMethod
+     * @function
+     * @param {MyRequest|Object} request MyRequest message or plain object
+     * @returns {Promise<MyResponse>} Promise
+     * @variation 2
+     */
 
     return MyService;
 })();

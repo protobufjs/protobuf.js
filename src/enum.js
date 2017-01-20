@@ -91,21 +91,21 @@ EnumPrototype.toJSON = function toJSON() {
  */
 EnumPrototype.add = function(name, id, comment) {
 
-    /* istanbul ignore next */
     if (!util.isString(name))
         throw TypeError("name must be a string");
-    /* istanbul ignore next */
+
     if (!util.isInteger(id))
         throw TypeError("id must be an integer");
-    /* istanbul ignore next */
+
     if (this.values[name] !== undefined)
-        throw Error("duplicate name '" + name + "' in " + this);
-    /* istanbul ignore next */
+        throw Error("duplicate name");
+
     if (this.valuesById[id] !== undefined)
-        throw Error("duplicate id " + id + " in " + this);
+        throw Error("duplicate id");
 
     this.valuesById[this.values[name] = id] = name;
     this.comments[name] = comment || null;
+
     return this;
 };
 
@@ -117,15 +117,17 @@ EnumPrototype.add = function(name, id, comment) {
  * @throws {Error} If `name` is not a name of this enum
  */
 EnumPrototype.remove = function(name) {
-    /* istanbul ignore next */
+
     if (!util.isString(name))
         throw TypeError("name must be a string");
+
     var val = this.values[name];
-    /* istanbul ignore next */
     if (val === undefined)
-        throw Error("'" + name + "' is not a name of " + this);
+        throw Error("name does not exist");
+
     delete this.valuesById[val];
     delete this.values[name];
     delete this.comments[name];
+
     return this;
 };

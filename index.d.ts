@@ -1423,6 +1423,33 @@ export class Root extends NamespaceBase {
 }
 
 /**
+ * A service method callback as used by {@link ServiceMethod}.
+ * @typedef ServiceMethodCallback
+ * @type {function}
+ * @param {?Error} error Error, if any
+ * @param {?Message} [response] Response message or `null` if service has been terminated server-side
+ * @returns {undefined}
+ */
+type ServiceMethodCallback = (error: Error, response?: Message) => void;
+
+/**
+ * A service method part of an {@link rpc.Service} as created by {@link Service.create}.
+ * @typedef ServiceMethod
+ * @type {function}
+ * @param {Message|Object} request Request message or plain object
+ * @param {ServiceMethodCallback} [callback] Node-style callback called with the error, if any, and the response message
+ * @returns {Promise<Message>} Promise if `callback` has been omitted, otherwise `undefined`
+ */
+type ServiceMethod = (request: (Message|Object), callback?: ServiceMethodCallback) => Promise<Message>;
+
+/**
+ * A service method mixin.
+ * @typedef ServiceMethodMixin
+ * @type {Object.<string,ServiceMethod>}
+ */
+type ServiceMethodMixin = { [k: string]: ServiceMethod };
+
+/**
  * Streaming RPC helpers.
  * @namespace
  */
@@ -1433,6 +1460,7 @@ export namespace rpc {
      * @classdesc An RPC service as returned by {@link Service#create}.
      * @exports rpc.Service
      * @extends util.EventEmitter
+     * @augments ServiceMethodMixin
      * @constructor
      * @param {RPCImpl} rpcImpl RPC implementation
      */
@@ -1443,6 +1471,7 @@ export namespace rpc {
          * @classdesc An RPC service as returned by {@link Service#create}.
          * @exports rpc.Service
          * @extends util.EventEmitter
+         * @augments ServiceMethodMixin
          * @constructor
          * @param {RPCImpl} rpcImpl RPC implementation
          */
@@ -1517,12 +1546,12 @@ export class Service extends NamespaceBase {
 
     /**
      * Creates a runtime service using the specified rpc implementation.
-     * @param {function(Method, Uint8Array, function)} rpcImpl {@link RPCImpl|RPC implementation}
+     * @param {RPCImpl} rpcImpl {@link RPCImpl|RPC implementation}
      * @param {boolean} [requestDelimited=false] Whether requests are length-delimited
      * @param {boolean} [responseDelimited=false] Whether responses are length-delimited
-     * @returns {rpc.Service} Runtime RPC service. Useful where requests and/or responses are streamed.
+     * @returns {rpc.Service} RPC service. Useful where requests and/or responses are streamed.
      */
-    create(rpcImpl: () => any, requestDelimited?: boolean, responseDelimited?: boolean): rpc.Service;
+    create(rpcImpl: RPCImpl, requestDelimited?: boolean, responseDelimited?: boolean): rpc.Service;
 }
 
 /**
@@ -1541,10 +1570,10 @@ type RPCImpl = (method: Method, requestData: Uint8Array, callback: RPCCallback) 
  * @typedef RPCCallback
  * @type {function}
  * @param {?Error} error Error, if any, otherwise `null`
- * @param {Uint8Array} [responseData] Response data or `null` to signal end of stream, if there hasn't been an error
+ * @param {?Uint8Array} [response] Response data or `null` to signal end of stream, if there hasn't been an error
  * @returns {undefined}
  */
-type RPCCallback = (error: Error, responseData?: Uint8Array) => void;
+type RPCCallback = (error: Error, response?: Uint8Array) => void;
 
 /**
  * Handle object returned from {@link tokenize}.

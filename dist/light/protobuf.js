@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.6.0 (c) 2016, Daniel Wirtz
- * Compiled Fri, 20 Jan 2017 16:41:11 UTC
+ * Compiled Fri, 20 Jan 2017 23:38:36 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -1458,21 +1458,21 @@ EnumPrototype.toJSON = function toJSON() {
  */
 EnumPrototype.add = function(name, id, comment) {
 
-    /* istanbul ignore next */
     if (!util.isString(name))
         throw TypeError("name must be a string");
-    /* istanbul ignore next */
+
     if (!util.isInteger(id))
         throw TypeError("id must be an integer");
-    /* istanbul ignore next */
+
     if (this.values[name] !== undefined)
-        throw Error("duplicate name '" + name + "' in " + this);
-    /* istanbul ignore next */
+        throw Error("duplicate name");
+
     if (this.valuesById[id] !== undefined)
-        throw Error("duplicate id " + id + " in " + this);
+        throw Error("duplicate id");
 
     this.valuesById[this.values[name] = id] = name;
     this.comments[name] = comment || null;
+
     return this;
 };
 
@@ -1484,16 +1484,18 @@ EnumPrototype.add = function(name, id, comment) {
  * @throws {Error} If `name` is not a name of this enum
  */
 EnumPrototype.remove = function(name) {
-    /* istanbul ignore next */
+
     if (!util.isString(name))
         throw TypeError("name must be a string");
+
     var val = this.values[name];
-    /* istanbul ignore next */
     if (val === undefined)
-        throw Error("'" + name + "' is not a name of " + this);
+        throw Error("name does not exist");
+
     delete this.valuesById[val];
     delete this.values[name];
     delete this.comments[name];
+
     return this;
 };
 
@@ -1508,9 +1510,9 @@ var FieldPrototype = ReflectionObject.extend(Field);
 
 Field.className = "Field";
 
-var Enum      = require(15),
-    types     = require(32),
-    util      = require(33);
+var Enum  = require(15),
+    types = require(32),
+    util  = require(33);
 
 var Type,     // cyclic
     MapField; // cyclic
@@ -1528,6 +1530,7 @@ var Type,     // cyclic
  * @param {Object.<string,*>} [options] Declared options
  */
 function Field(name, id, type, rule, extend, options) {
+
     if (util.isObject(rule)) {
         options = rule;
         rule = extend = undefined;
@@ -1535,20 +1538,20 @@ function Field(name, id, type, rule, extend, options) {
         options = extend;
         extend = undefined;
     }
+
     ReflectionObject.call(this, name, options);
 
-    /* istanbul ignore next */
     if (!util.isInteger(id) || id < 0)
         throw TypeError("id must be a non-negative integer");
-    /* istanbul ignore next */
+
     if (!util.isString(type))
         throw TypeError("type must be a string");
-    /* istanbul ignore next */
-    if (extend !== undefined && !util.isString(extend))
-        throw TypeError("extend must be a string");
-    /* istanbul ignore next */
+
     if (rule !== undefined && !/^required|optional|repeated$/.test(rule = rule.toString().toLowerCase()))
         throw TypeError("rule must be a string rule");
+
+    if (extend !== undefined && !util.isString(extend))
+        throw TypeError("extend must be a string");
 
     /**
      * Field rule, if any.
@@ -1728,16 +1731,19 @@ FieldPrototype.toJSON = function toJSON() {
  * @throws {Error} If any reference cannot be resolved
  */
 FieldPrototype.resolve = function resolve() {
+
     if (this.resolved)
         return this;
 
-    if ((this.typeDefault = types.defaults[this.type]) === undefined) {
-        // if not a basic type, resolve it
+    if ((this.typeDefault = types.defaults[this.type]) === undefined) { // if not a basic type, resolve it
+
+        /* istanbul ignore if */
         if (!Type)
             Type = require(31);
+
         if (this.resolvedType = this.parent.lookup(this.type, Type))
             this.typeDefault = null;
-        else /* istanbul ignore else */ if (this.resolvedType = this.parent.lookup(this.type, Enum))
+        else if (this.resolvedType = this.parent.lookup(this.type, Enum))
             this.typeDefault = this.resolvedType.values[Object.keys(this.resolvedType.values)[0]]; // first defined
         else
             throw Error("unresolvable field type: " + this.type);
@@ -1753,9 +1759,11 @@ FieldPrototype.resolve = function resolve() {
     // convert to internal data type if necesssary
     if (this.long) {
         this.typeDefault = util.Long.fromNumber(this.typeDefault, this.type.charAt(0) === "u");
+
         /* istanbul ignore else */
         if (Object.freeze)
             Object.freeze(this.typeDefault); // long instances are meant to be immutable anyway (i.e. use small int cache that even requires it)
+
     } else if (this.bytes && typeof this.typeDefault === "string") {
         var buf;
         if (util.base64.test(this.typeDefault))
@@ -1765,11 +1773,11 @@ FieldPrototype.resolve = function resolve() {
         this.typeDefault = buf;
     }
 
-    // account for maps and repeated fields
+    // take special care of maps and repeated fields
     if (this.map)
-        this.defaultValue = {};
+        this.defaultValue = util.emptyObject;
     else if (this.repeated)
-        this.defaultValue = [];
+        this.defaultValue = util.emptyArray;
     else
         this.defaultValue = this.typeDefault;
 
@@ -2291,13 +2299,14 @@ MethodPrototype.toJSON = function toJSON() {
  * @override
  */
 MethodPrototype.resolve = function resolve() {
+
+    /* istanbul ignore if */
     if (this.resolved)
         return this;
-
-    /* istanbul ignore next */
+    /* istanbul ignore if */
     if (!(this.resolvedRequestType = this.parent.lookup(this.requestType, Type)))
         throw Error("unresolvable request type: " + this.requestType);
-    /* istanbul ignore next */
+    /* istanbul ignore if */
     if (!(this.resolvedResponseType = this.parent.lookup(this.responseType, Type)))
         throw Error("unresolvable response type: " + this.requestType);
 
@@ -2736,6 +2745,7 @@ function ReflectionObject(name, options) {
 
     if (!util.isString(name))
         throw TypeError("name must be a string");
+
     if (options && !util.isObject(options))
         throw TypeError("options must be an object");
 
@@ -4005,10 +4015,41 @@ module.exports = Service;
 var EventEmitter = require(33).EventEmitter;
 
 /**
+ * A service method callback as used by {@link ServiceMethod}.
+ * @typedef ServiceMethodCallback
+ * @type {function}
+ * @param {?Error} error Error, if any
+ * @param {?Message} [response] Response message or `null` if service has been terminated server-side
+ * @returns {undefined}
+ */
+
+/**
+ * A service method part of an {@link rpc.Service} as created by {@link Service.create}.
+ * @typedef ServiceMethod
+ * @type {function}
+ * @param {Message|Object} request Request message or plain object
+ * @param {ServiceMethodCallback} [callback] Node-style callback called with the error, if any, and the response message
+ * @returns {Promise<Message>} Promise if `callback` has been omitted, otherwise `undefined`
+ */
+
+/**
+ * A service method mixin.
+ * @typedef ServiceMethodMixin
+ * @type {Object.<string,ServiceMethod>}
+ */
+
+// Mixed in methods are not directly supported by TypeScript because they cannot be statically
+// typed. Instead, either use a TypeScript definition of a static module to work around it, or use:
+//
+//   (myService["myMethod"] as protobuf.ServiceMethod)(...)
+//
+
+/**
  * Constructs a new RPC service instance.
  * @classdesc An RPC service as returned by {@link Service#create}.
  * @exports rpc.Service
  * @extends util.EventEmitter
+ * @augments ServiceMethodMixin
  * @constructor
  * @param {RPCImpl} rpcImpl RPC implementation
  */
@@ -4201,64 +4242,54 @@ ServicePrototype.remove = function remove(object) {
  * @typedef RPCCallback
  * @type {function}
  * @param {?Error} error Error, if any, otherwise `null`
- * @param {Uint8Array} [responseData] Response data or `null` to signal end of stream, if there hasn't been an error
+ * @param {?Uint8Array} [response] Response data or `null` to signal end of stream, if there hasn't been an error
  * @returns {undefined}
  */
 
 /**
  * Creates a runtime service using the specified rpc implementation.
- * @param {function(Method, Uint8Array, function)} rpcImpl {@link RPCImpl|RPC implementation}
+ * @param {RPCImpl} rpcImpl {@link RPCImpl|RPC implementation}
  * @param {boolean} [requestDelimited=false] Whether requests are length-delimited
  * @param {boolean} [responseDelimited=false] Whether responses are length-delimited
- * @returns {rpc.Service} Runtime RPC service. Useful where requests and/or responses are streamed.
+ * @returns {rpc.Service} RPC service. Useful where requests and/or responses are streamed.
  */
 ServicePrototype.create = function create(rpcImpl, requestDelimited, responseDelimited) {
     var rpcService = new rpc.Service(rpcImpl);
     this.methodsArray.forEach(function(method) {
         rpcService[util.lcFirst(method.name)] = function callVirtual(request, /* optional */ callback) {
-            if (!rpcService.$rpc) {
-                var err4 = Error("already ended");
-                if (callback)
-                    return callback(err4);
-                throw err4;
-            }
             if (!request)
-                throw TypeError("request must not be null");
-            method.resolve();
-            var requestData = (requestDelimited ? method.resolvedRequestType.encodeDelimited(request) : method.resolvedRequestType.encode(request)).finish(); // never throws if request is true-ish
+                throw TypeError("request must be specified");
+            if (!callback)
+                return util.asPromise(callVirtual, this, request);
+            if (!rpcService.$rpc)
+                return callback(Error("already ended"));
 
             // Calls the custom RPC implementation with the reflected method and binary request data
             // and expects the rpc implementation to call its callback with the binary response data.
-            return rpcImpl(method, requestData, function(err, responseData) {
+            return rpcImpl(method, (requestDelimited
+                ? method.resolvedRequestType.encodeDelimited(request)
+                : method.resolvedRequestType.encode(request)
+            ).finish(), function rpcCallback(err, response) {
                 if (err) {
                     rpcService.emit("error", err, method);
-                    /* istanbul ignore else */
-                    if (callback)
-                        return callback(err);
-                    /* istanbul ignore next */
-                    throw err;
+                    return callback(err);
                 }
-                if (responseData === null) {
+                if (response === null) {
                     rpcService.end(/* endedByRPC */ true);
                     return undefined;
                 }
-                var response;
-                try {
-                    response = responseDelimited ? method.resolvedResponseType.decodeDelimited(responseData) : method.resolvedResponseType.decode(responseData);
-                } catch (err2) {
-                    rpcService.emit("error", err2, method);
-                    /* istanbul ignore else */
-                    if (callback)
+                if (!(response instanceof method.resolvedResponseType.ctor)) {
+                    try {
+                        response = responseDelimited
+                            ? method.resolvedResponseType.decodeDelimited(response)
+                            : method.resolvedResponseType.decode(response);
+                    } catch (err2) {
+                        rpcService.emit("error", err2, method);
                         return callback("error", err2);
-                    /* istanbul ignore next */
-                    throw err2;
+                    }
                 }
                 rpcService.emit("data", response, method);
-                /* istanbul ignore else */
-                if (callback)
-                    return callback(null, response);
-                /* istanbul ignore next */
-                return undefined;
+                return callback(null, response);
             });
         };
     });
@@ -4933,12 +4964,10 @@ types.packed = bake([
  */
 var util = module.exports = require(35);
 
-util.asPromise    = require(1);
-util.codegen      = require(3);
-util.EventEmitter = require(4);
-util.extend       = require(5);
-util.fetch        = require(6);
-util.path         = require(8);
+util.codegen = require(3);
+util.extend  = require(5);
+util.fetch   = require(6);
+util.path    = require(8);
 
 /**
  * Node's fs module if available.
@@ -4984,7 +5013,7 @@ util.ucFirst = function ucFirst(str) {
     return str.charAt(0).toUpperCase() + str.substring(1);
 };
 
-},{"1":1,"3":3,"35":35,"4":4,"5":5,"6":6,"8":8}],34:[function(require,module,exports){
+},{"3":3,"35":35,"5":5,"6":6,"8":8}],34:[function(require,module,exports){
 "use strict";
 module.exports = LongBits;
 
@@ -5201,10 +5230,12 @@ LongBitsPrototype.length = function length() {
 "use strict";
 var util = exports;
 
-util.base64   = require(2);
-util.inquire  = require(7);
-util.utf8     = require(10);
-util.pool     = require(9);
+util.asPromise    = require(1);
+util.base64       = require(2);
+util.EventEmitter = require(4);
+util.inquire      = require(7);
+util.utf8         = require(10);
+util.pool         = require(9);
 
 /**
  * An immuable empty array.
@@ -5421,7 +5452,7 @@ util.toJSONOptions = {
     bytes: String
 };
 
-},{"10":10,"2":2,"34":34,"7":7,"9":9}],36:[function(require,module,exports){
+},{"1":1,"10":10,"2":2,"34":34,"4":4,"7":7,"9":9}],36:[function(require,module,exports){
 "use strict";
 module.exports = verifier;
 

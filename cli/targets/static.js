@@ -528,7 +528,7 @@ function buildService(ref, service) {
              "RPC implementation passed to services performing a service request on network level, i.e. by utilizing http requests or websockets.",
              "@typedef RPCImpl",
              "@type {function}",
-             "@param {$protobuf.Method} method Reflected method being called",
+             "@param {function} method Method being called",
              "@param {Uint8Array} requestData Request data",
              "@param {RPCCallback} callback Callback function",
              "@returns {undefined}"
@@ -550,13 +550,15 @@ function buildService(ref, service) {
         "Constructs a new " + service.name + " service.",
         service.comment ? "@classdesc " + service.comment : null,
         "@exports " + fullName,
+        "@extends $protobuf.util.EventEmitter",
         "@constructor",
         "@param {RPCImpl} rpc RPC implementation",
         "@param {boolean} [requestDelimited=false] Whether requests are length-delimited",
-        "@param {boolean} [responseDelimited=false] Whether responses are length-delimited"
+        "@param {boolean} [responseDelimited=false] Whether responses are length-delimited",
     ]);
     push("function " + name(service.name) + "(rpc, requestDelimited, responseDelimited) {");
     ++indent;
+    push("$util.EventEmitter.call(this);");
     
     push("");
     pushComment([
@@ -578,6 +580,24 @@ function buildService(ref, service) {
     push("this.responseDelimited = Boolean(responseDelimited);");
     --indent;
     push("}");
+    push("");
+    push("(" + name(service.name) + ".prototype = Object.create($util.EventEmitter.prototype)).constructor = " + name(service.name) + ";");
+
+    if (config.create) {
+        push("");
+        pushComment([
+            "Creates a runtime service using the specified rpc implementation.",
+            "@param {RPCImpl} rpcImpl RPC implementation",
+            "@param {boolean} [requestDelimited=false] Whether requests are length-delimited",
+            "@param {boolean} [responseDelimited=false] Whether responses are length-delimited",
+            "@returns {" + name(service.name) + "} RPC service. Useful where requests and/or responses are streamed."
+        ]);
+        push(name(service.name) + ".create = function create(rpcImpl, requestDelimited, responseDelimited) {");
+            ++indent;
+            push("return new this(rpcImpl, requestDelimited, responseDelimited);");
+            --indent;
+        push("};");
+    }
 
     service.methodsArray.forEach(function(method) {
         method.resolve();
@@ -589,7 +609,7 @@ function buildService(ref, service) {
             "@typedef " + cbName,
             "@type {function}",
             "@param {?Error} error Error, if any",
-            "@param {" + method.resolvedResponseType.fullName.substring(1) + "} [response] " + method.resolvedResponseType.name
+            "@param {" + method.resolvedResponseType.fullName.substring(1) + "} [response] " + method.resolvedResponseType.name + " or `null` if the service has been terminated server-side"
         ]);
         push("");
         pushComment([
@@ -600,42 +620,69 @@ function buildService(ref, service) {
         ]);
         push(name(service.name) + ".prototype" + util.safeProp(lcName) + " = function " + name(lcName) + "(request, callback) {");
             ++indent;
-            push("var requestData;");
-            push("try {");
+            push("if (!request)");
                 ++indent;
-                push("requestData = (this.requestDelimited ? $root" + name(method.resolvedRequestType.fullName) + ".encodeDelimited(request) : $root" + name(method.resolvedRequestType.fullName) + ".encode(request)).finish();");
+                push("throw TypeError(\"request must be specified\");");
                 --indent;
-            push("} catch (err) {");
+            push("if (!callback)");
                 ++indent;
-                push("(typeof setImmediate === \"function\" ? setImmediate : setTimeout)(function() { callback(err); });");
-                push("return;");
+                push("return $util.asPromise(" + name(lcName) + ", this, request);");
                 --indent;
-            push("}");
-            push("var self = this;");
-            push("this.rpc(" + name(lcName) + ", requestData, function(err, responseData) {");
+            push("var $self = this;");
+            push("this.rpc(" + name(lcName) + ", (this.requestDelimited");
+                ++indent;
+                push("? $root" + method.resolvedRequestType.fullName + ".encodeDelimited(request)");
+                push(": $root" + method.resolvedRequestType.fullName + ".encode(request)");
+                --indent;
+            push(").finish(), function $rpcCallback(err, response) {");
                 ++indent;
                 push("if (err) {");
                     ++indent;
-                    push("callback(err);");
-                    push("return;");
+                    push("$self.emit(\"error\", err, " + name(lcName) + ");");
+                    push("return callback(err);");
                     --indent;
                 push("}");
-                push("var response;");
-                push("try {");
+                push("if (response === null) {");
                     ++indent;
-                    push("response = self.responseDelimited ? $root" + name(method.resolvedResponseType.fullName) + ".decodeDelimited(responseData) : $root" + name(method.resolvedResponseType.fullName) + ".decode(responseData);");
-                    --indent;
-                push("} catch (err2) {");
-                    ++indent;
-                    push("callback(err2);");
-                    push("return;");
+                    push("$self.end(true);");
+                    push("return undefined;");
                     --indent;
                 push("}");
-                push("callback(null, response);");
+                push("if (!(response instanceof $root" + method.resolvedResponseType.fullName + ")) {");
+                    ++indent;
+                    push("try {");
+                        ++indent;
+                        push("response = $self.responseDelimited");
+                            ++indent;
+                            push("? $root" + method.resolvedResponseType.fullName + ".decodeDelimited(response)");
+                            push(": $root" + method.resolvedResponseType.fullName + ".decode(response);");
+                            --indent;
+                        --indent;
+                    push("} catch (err2) {");
+                        ++indent;
+                        push("$self.emit(\"error\", err2, " + name(lcName) + ");");
+                        push("return callback(err2);");
+                        --indent;
+                    push("}");
+                    --indent;
+                push("}");
+                push("$self.emit(\"data\", response, " + name(lcName) + ");");
+                push("return callback(null, response);");
                 --indent;
             push("});");
+            push("return undefined;");
         --indent;
         push("};");
+        if (config.comments)
+            push("");
+        pushComment([
+            method.comment || "Calls " + method.name + ".",
+            "@name " + name(service.name) + "#" + lcName,
+            "@function",
+            "@param {" + method.resolvedRequestType.fullName.substring(1) + "|Object} request " + method.resolvedRequestType.name + " message or plain object",
+            "@returns {Promise<"+method.resolvedResponseType.fullName.substring(1)+">} Promise",
+            "@variation 2"
+        ]);
     });
 }
 

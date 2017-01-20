@@ -20,6 +20,7 @@ function ReflectionObject(name, options) {
 
     if (!util.isString(name))
         throw TypeError("name must be a string");
+
     if (options && !util.isObject(options))
         throw TypeError("options must be an object");
 

@@ -128,13 +128,14 @@ MethodPrototype.toJSON = function toJSON() {
  * @override
  */
 MethodPrototype.resolve = function resolve() {
+
+    /* istanbul ignore if */
     if (this.resolved)
         return this;
-
-    /* istanbul ignore next */
+    /* istanbul ignore if */
     if (!(this.resolvedRequestType = this.parent.lookup(this.requestType, Type)))
         throw Error("unresolvable request type: " + this.requestType);
-    /* istanbul ignore next */
+    /* istanbul ignore if */
     if (!(this.resolvedResponseType = this.parent.lookup(this.responseType, Type)))
         throw Error("unresolvable response type: " + this.requestType);
 

@@ -1,10 +1,12 @@
 "use strict";
 var util = exports;
 
-util.base64   = require("@protobufjs/base64");
-util.inquire  = require("@protobufjs/inquire");
-util.utf8     = require("@protobufjs/utf8");
-util.pool     = require("@protobufjs/pool");
+util.asPromise    = require("@protobufjs/aspromise");
+util.base64       = require("@protobufjs/base64");
+util.EventEmitter = require("@protobufjs/eventemitter");
+util.inquire      = require("@protobufjs/inquire");
+util.utf8         = require("@protobufjs/utf8");
+util.pool         = require("@protobufjs/pool");
 
 /**
  * An immuable empty array.

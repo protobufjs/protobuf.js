@@ -8,9 +8,9 @@ var FieldPrototype = ReflectionObject.extend(Field);
 
 Field.className = "Field";
 
-var Enum      = require("./enum"),
-    types     = require("./types"),
-    util      = require("./util");
+var Enum  = require("./enum"),
+    types = require("./types"),
+    util  = require("./util");
 
 var Type,     // cyclic
     MapField; // cyclic
@@ -28,6 +28,7 @@ var Type,     // cyclic
  * @param {Object.<string,*>} [options] Declared options
  */
 function Field(name, id, type, rule, extend, options) {
+
     if (util.isObject(rule)) {
         options = rule;
         rule = extend = undefined;
@@ -35,20 +36,20 @@ function Field(name, id, type, rule, extend, options) {
         options = extend;
         extend = undefined;
     }
+
     ReflectionObject.call(this, name, options);
 
-    /* istanbul ignore next */
     if (!util.isInteger(id) || id < 0)
         throw TypeError("id must be a non-negative integer");
-    /* istanbul ignore next */
+
     if (!util.isString(type))
         throw TypeError("type must be a string");
-    /* istanbul ignore next */
-    if (extend !== undefined && !util.isString(extend))
-        throw TypeError("extend must be a string");
-    /* istanbul ignore next */
+
     if (rule !== undefined && !/^required|optional|repeated$/.test(rule = rule.toString().toLowerCase()))
         throw TypeError("rule must be a string rule");
+
+    if (extend !== undefined && !util.isString(extend))
+        throw TypeError("extend must be a string");
 
     /**
      * Field rule, if any.
@@ -228,16 +229,19 @@ FieldPrototype.toJSON = function toJSON() {
  * @throws {Error} If any reference cannot be resolved
  */
 FieldPrototype.resolve = function resolve() {
+
     if (this.resolved)
         return this;
 
-    if ((this.typeDefault = types.defaults[this.type]) === undefined) {
-        // if not a basic type, resolve it
+    if ((this.typeDefault = types.defaults[this.type]) === undefined) { // if not a basic type, resolve it
+
+        /* istanbul ignore if */
         if (!Type)
             Type = require("./type");
+
         if (this.resolvedType = this.parent.lookup(this.type, Type))
             this.typeDefault = null;
-        else /* istanbul ignore else */ if (this.resolvedType = this.parent.lookup(this.type, Enum))
+        else if (this.resolvedType = this.parent.lookup(this.type, Enum))
             this.typeDefault = this.resolvedType.values[Object.keys(this.resolvedType.values)[0]]; // first defined
         else
             throw Error("unresolvable field type: " + this.type);
@@ -253,9 +257,11 @@ FieldPrototype.resolve = function resolve() {
     // convert to internal data type if necesssary
     if (this.long) {
         this.typeDefault = util.Long.fromNumber(this.typeDefault, this.type.charAt(0) === "u");
+
         /* istanbul ignore else */
         if (Object.freeze)
             Object.freeze(this.typeDefault); // long instances are meant to be immutable anyway (i.e. use small int cache that even requires it)
+
     } else if (this.bytes && typeof this.typeDefault === "string") {
         var buf;
         if (util.base64.test(this.typeDefault))
@@ -265,11 +271,11 @@ FieldPrototype.resolve = function resolve() {
         this.typeDefault = buf;
     }
 
-    // account for maps and repeated fields
+    // take special care of maps and repeated fields
     if (this.map)
-        this.defaultValue = {};
+        this.defaultValue = util.emptyObject;
     else if (this.repeated)
-        this.defaultValue = [];
+        this.defaultValue = util.emptyArray;
     else
         this.defaultValue = this.typeDefault;
 

@@ -75,9 +75,9 @@ tape.test("runtime services", function(test) {
                 }, "should return status 400");
                 service.end(); // ended client-side
 
-                test.throws(function() {
-                    service.myMethod(MyRequest.create({ path: "/" }));
-                }, Error, "should throw if already ended");
+                if (typeof Promise !== "undefined")
+                    test.ok(service.myMethod(MyRequest.create({ path: "/" })) instanceof Promise, "should return a promise if callback has been omitted");
+
                 service.myMethod(MyRequest.create({ path: "/" }), function(err) {
                     test.ok(err, "should return an error if already ended");
                     test.end();

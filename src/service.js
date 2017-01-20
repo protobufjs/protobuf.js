@@ -159,64 +159,54 @@ ServicePrototype.remove = function remove(object) {
  * @typedef RPCCallback
  * @type {function}
  * @param {?Error} error Error, if any, otherwise `null`
- * @param {Uint8Array} [responseData] Response data or `null` to signal end of stream, if there hasn't been an error
+ * @param {?Uint8Array} [response] Response data or `null` to signal end of stream, if there hasn't been an error
  * @returns {undefined}
  */
 
 /**
  * Creates a runtime service using the specified rpc implementation.
- * @param {function(Method, Uint8Array, function)} rpcImpl {@link RPCImpl|RPC implementation}
+ * @param {RPCImpl} rpcImpl {@link RPCImpl|RPC implementation}
  * @param {boolean} [requestDelimited=false] Whether requests are length-delimited
  * @param {boolean} [responseDelimited=false] Whether responses are length-delimited
- * @returns {rpc.Service} Runtime RPC service. Useful where requests and/or responses are streamed.
+ * @returns {rpc.Service} RPC service. Useful where requests and/or responses are streamed.
  */
 ServicePrototype.create = function create(rpcImpl, requestDelimited, responseDelimited) {
     var rpcService = new rpc.Service(rpcImpl);
     this.methodsArray.forEach(function(method) {
         rpcService[util.lcFirst(method.name)] = function callVirtual(request, /* optional */ callback) {
-            if (!rpcService.$rpc) {
-                var err4 = Error("already ended");
-                if (callback)
-                    return callback(err4);
-                throw err4;
-            }
             if (!request)
-                throw TypeError("request must not be null");
-            method.resolve();
-            var requestData = (requestDelimited ? method.resolvedRequestType.encodeDelimited(request) : method.resolvedRequestType.encode(request)).finish(); // never throws if request is true-ish
+                throw TypeError("request must be specified");
+            if (!callback)
+                return util.asPromise(callVirtual, this, request);
+            if (!rpcService.$rpc)
+                return callback(Error("already ended"));
 
             // Calls the custom RPC implementation with the reflected method and binary request data
             // and expects the rpc implementation to call its callback with the binary response data.
-            return rpcImpl(method, requestData, function(err, responseData) {
+            return rpcImpl(method, (requestDelimited
+                ? method.resolvedRequestType.encodeDelimited(request)
+                : method.resolvedRequestType.encode(request)
+            ).finish(), function rpcCallback(err, response) {
                 if (err) {
                     rpcService.emit("error", err, method);
-                    /* istanbul ignore else */
-                    if (callback)
-                        return callback(err);
-                    /* istanbul ignore next */
-                    throw err;
+                    return callback(err);
                 }
-                if (responseData === null) {
+                if (response === null) {
                     rpcService.end(/* endedByRPC */ true);
                     return undefined;
                 }
-                var response;
-                try {
-                    response = responseDelimited ? method.resolvedResponseType.decodeDelimited(responseData) : method.resolvedResponseType.decode(responseData);
-                } catch (err2) {
-                    rpcService.emit("error", err2, method);
-                    /* istanbul ignore else */
-                    if (callback)
+                if (!(response instanceof method.resolvedResponseType.ctor)) {
+                    try {
+                        response = responseDelimited
+                            ? method.resolvedResponseType.decodeDelimited(response)
+                            : method.resolvedResponseType.decode(response);
+                    } catch (err2) {
+                        rpcService.emit("error", err2, method);
                         return callback("error", err2);
-                    /* istanbul ignore next */
-                    throw err2;
+                    }
                 }
                 rpcService.emit("data", response, method);
-                /* istanbul ignore else */
-                if (callback)
-                    return callback(null, response);
-                /* istanbul ignore next */
-                return undefined;
+                return callback(null, response);
             });
         };
     });

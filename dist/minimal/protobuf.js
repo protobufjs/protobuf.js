@@ -1,10 +1,52 @@
 /*!
  * protobuf.js v6.6.0 (c) 2016, Daniel Wirtz
- * Compiled Fri, 20 Jan 2017 16:41:11 UTC
+ * Compiled Fri, 20 Jan 2017 23:38:36 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
 !function(global,undefined){"use strict";(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+"use strict";
+module.exports = asPromise;
+
+/**
+ * Returns a promise from a node-style callback function.
+ * @memberof util
+ * @param {function(?Error, ...*)} fn Function to call
+ * @param {*} ctx Function context
+ * @param {...*} params Function arguments
+ * @returns {Promise<*>} Promisified function
+ */
+function asPromise(fn, ctx/*, varargs */) {
+    var params = [];
+    for (var i = 2; i < arguments.length;)
+        params.push(arguments[i++]);
+    var pending = true;
+    return new Promise(function asPromiseExecutor(resolve, reject) {
+        params.push(function asPromiseCallback(err/*, varargs */) {
+            if (pending) {
+                pending = false;
+                if (err)
+                    reject(err);
+                else {
+                    var args = [];
+                    for (var i = 1; i < arguments.length;)
+                        args.push(arguments[i++]);
+                    resolve.apply(null, args);
+                }
+            }
+        });
+        try {
+            fn.apply(ctx || this, params); // eslint-disable-line no-invalid-this
+        } catch (err) {
+            if (pending) {
+                pending = false;
+                reject(err);
+            }
+        }
+    });
+}
+
+},{}],2:[function(require,module,exports){
 "use strict";
 
 /**
@@ -135,7 +177,88 @@ base64.test = function test(string) {
     return /^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/.test(string);
 };
 
-},{}],2:[function(require,module,exports){
+},{}],3:[function(require,module,exports){
+"use strict";
+module.exports = EventEmitter;
+
+/**
+ * Constructs a new event emitter instance.
+ * @classdesc A minimal event emitter.
+ * @memberof util
+ * @constructor
+ */
+function EventEmitter() {
+
+    /**
+     * Registered listeners.
+     * @type {Object.<string,*>}
+     * @private
+     */
+    this._listeners = {};
+}
+
+/** @alias util.EventEmitter.prototype */
+var EventEmitterPrototype = EventEmitter.prototype;
+
+/**
+ * Registers an event listener.
+ * @param {string} evt Event name
+ * @param {function} fn Listener
+ * @param {*} [ctx] Listener context
+ * @returns {util.EventEmitter} `this`
+ */
+EventEmitterPrototype.on = function on(evt, fn, ctx) {
+    (this._listeners[evt] || (this._listeners[evt] = [])).push({
+        fn  : fn,
+        ctx : ctx || this
+    });
+    return this;
+};
+
+/**
+ * Removes an event listener or any matching listeners if arguments are omitted.
+ * @param {string} [evt] Event name. Removes all listeners if omitted.
+ * @param {function} [fn] Listener to remove. Removes all listeners of `evt` if omitted.
+ * @returns {util.EventEmitter} `this`
+ */
+EventEmitterPrototype.off = function off(evt, fn) {
+    if (evt === undefined)
+        this._listeners = {};
+    else {
+        if (fn === undefined)
+            this._listeners[evt] = [];
+        else {
+            var listeners = this._listeners[evt];
+            for (var i = 0; i < listeners.length;)
+                if (listeners[i].fn === fn)
+                    listeners.splice(i, 1);
+                else
+                    ++i;
+        }
+    }
+    return this;
+};
+
+/**
+ * Emits an event by calling its listeners with the specified arguments.
+ * @param {string} evt Event name
+ * @param {...*} args Arguments
+ * @returns {util.EventEmitter} `this`
+ */
+EventEmitterPrototype.emit = function emit(evt) {
+    var listeners = this._listeners[evt];
+    if (listeners) {
+        var args = [],
+            i = 1;
+        for (; i < arguments.length;)
+            args.push(arguments[i++]);
+        for (i = 0; i < listeners.length;)
+            listeners[i].fn.apply(listeners[i++].ctx, args);
+    }
+    return this;
+};
+
+},{}],4:[function(require,module,exports){
 "use strict";
 module.exports = inquire;
 
@@ -154,7 +277,7 @@ function inquire(moduleName) {
     return null;
 }
 
-},{}],3:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 "use strict";
 module.exports = pool;
 
@@ -204,7 +327,7 @@ function pool(alloc, slice, size) {
     };
 }
 
-},{}],4:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 "use strict";
 
 /**
@@ -311,7 +434,7 @@ utf8.write = function utf8_write(string, buffer, offset) {
     return offset - start;
 };
 
-},{}],5:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 "use strict";
 var protobuf = global.protobuf = exports;
 
@@ -332,13 +455,13 @@ protobuf.build = "minimal";
 protobuf.roots = {};
 
 // Serialization
-protobuf.Writer       = require(10);
-protobuf.BufferWriter = require(11);
-protobuf.Reader       = require(6);
-protobuf.BufferReader = require(7);
+protobuf.Writer       = require(12);
+protobuf.BufferWriter = require(13);
+protobuf.Reader       = require(8);
+protobuf.BufferReader = require(9);
 
 // Utility
-protobuf.util         = require(9);
+protobuf.util         = require(11);
 protobuf.configure    = configure;
 
 /* istanbul ignore next */
@@ -362,11 +485,11 @@ if (typeof define === "function" && define.amd)
         return protobuf;
     });
 
-},{"10":10,"11":11,"6":6,"7":7,"9":9}],6:[function(require,module,exports){
+},{"11":11,"12":12,"13":13,"8":8,"9":9}],8:[function(require,module,exports){
 "use strict";
 module.exports = Reader;
 
-var util      = require(9);
+var util      = require(11);
 
 var BufferReader; // cyclic
 
@@ -415,7 +538,7 @@ Reader.create = util.Buffer
     ? function create_buffer_setup(buffer) {
         /* istanbul ignore next */
         if (!BufferReader)
-            BufferReader = require(7);
+            BufferReader = require(9);
         return (Reader.create = function create_buffer(buffer) {
             return util.Buffer.isBuffer(buffer)
                 ? new BufferReader(buffer)
@@ -878,17 +1001,17 @@ Reader._configure = configure;
 
 configure();
 
-},{"7":7,"9":9}],7:[function(require,module,exports){
+},{"11":11,"9":9}],9:[function(require,module,exports){
 "use strict";
 module.exports = BufferReader;
 
 // extends Reader
-var Reader = require(6);
+var Reader = require(8);
 /** @alias BufferReader.prototype */
 var BufferReaderPrototype = BufferReader.prototype = Object.create(Reader.prototype);
 BufferReaderPrototype.constructor = BufferReader;
 
-var util = require(9);
+var util = require(11);
 
 /**
  * Constructs a new buffer reader instance.
@@ -913,11 +1036,11 @@ BufferReaderPrototype.string = function read_string_buffer() {
     return this.buf.utf8Slice(this.pos, this.pos = Math.min(this.pos + len, this.len));
 };
 
-},{"6":6,"9":9}],8:[function(require,module,exports){
+},{"11":11,"8":8}],10:[function(require,module,exports){
 "use strict";
 module.exports = LongBits;
 
-var util = require(9);
+var util = require(11);
 
 /**
  * Any compatible Long instance.
@@ -1126,14 +1249,16 @@ LongBitsPrototype.length = function length() {
          : part2 < 128 ? 9 : 10;
 };
 
-},{"9":9}],9:[function(require,module,exports){
+},{"11":11}],11:[function(require,module,exports){
 "use strict";
 var util = exports;
 
-util.base64   = require(1);
-util.inquire  = require(2);
-util.utf8     = require(4);
-util.pool     = require(3);
+util.asPromise    = require(1);
+util.base64       = require(2);
+util.EventEmitter = require(3);
+util.inquire      = require(4);
+util.utf8         = require(6);
+util.pool         = require(5);
 
 /**
  * An immuable empty array.
@@ -1235,7 +1360,7 @@ util.newBuffer = function newBuffer(sizeOrArray) {
  */
 util.Array = typeof Uint8Array !== "undefined" ? Uint8Array /* istanbul ignore next */ : Array;
 
-util.LongBits = require(8);
+util.LongBits = require(10);
 
 /**
  * Long.js's Long class if available.
@@ -1350,11 +1475,11 @@ util.toJSONOptions = {
     bytes: String
 };
 
-},{"1":1,"2":2,"3":3,"4":4,"8":8}],10:[function(require,module,exports){
+},{"1":1,"10":10,"2":2,"3":3,"4":4,"5":5,"6":6}],12:[function(require,module,exports){
 "use strict";
 module.exports = Writer;
 
-var util      = require(9);
+var util      = require(11);
 
 var BufferWriter; // cyclic
 
@@ -1484,7 +1609,7 @@ Writer.create = util.Buffer
     ? function create_buffer_setup() {
         /* istanbul ignore next */
         if (!BufferWriter)
-            BufferWriter = require(11);
+            BufferWriter = require(13);
         return (Writer.create = function create_buffer() {
             return new BufferWriter();
         })();
@@ -1919,17 +2044,17 @@ WriterPrototype.finish = function finish() {
     return buf;
 };
 
-},{"11":11,"9":9}],11:[function(require,module,exports){
+},{"11":11,"13":13}],13:[function(require,module,exports){
 "use strict";
 module.exports = BufferWriter;
 
 // extends Writer
-var Writer = require(10);
+var Writer = require(12);
 /** @alias BufferWriter.prototype */
 var BufferWriterPrototype = BufferWriter.prototype = Object.create(Writer.prototype);
 BufferWriterPrototype.constructor = BufferWriter;
 
-var util = require(9);
+var util = require(11);
 
 var Buffer = util.Buffer;
 
@@ -1996,7 +2121,7 @@ BufferWriterPrototype.string = function write_string_buffer(value) {
     return this;
 };
 
-},{"10":10,"9":9}]},{},[5])
+},{"11":11,"12":12}]},{},[7])
 
 }(typeof window==="object"&&window||typeof self==="object"&&self||this);
 //# sourceMappingURL=protobuf.js.map
