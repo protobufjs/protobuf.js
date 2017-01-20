@@ -7,7 +7,7 @@ json_module.description = "JSON representation as a module"
 
 function json_module(root, options, callback) {
     try {
-        var output = "var $root = protobuf.Root.fromJSON(" + JSON.stringify(root, null, 2).replace(/^(?!$)/mg, "    ").trim() + ").resolveAll();";
+        var output = "var $root = protobuf.Root.fromJSON(" + JSON.stringify(root, null, 2).replace(/^(?!$)/mg, "    ").trim() + ");";
         output = util.wrap(output, options);
         process.nextTick(function() {
             callback(null, output);

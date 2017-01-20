@@ -5,7 +5,7 @@ var fs   = require("fs"),
 
 // A profiling stub to measure encoding / decoding performance using benchmark data.
 
-var commands = ["encode", "decode", "encode-browser", "decode-browser"];
+var commands = ["encode", "decode", "encode-browser", "decode-browser", "fromjson"];
 if (commands.indexOf(process.argv[2]) < 0) { // 0: node, 1: prof.js
     process.stderr.write("usage: " + path.basename(process.argv[1]) + " <" + commands.join("|") + "> [iterations=10000000]\n");
     return;
@@ -48,6 +48,7 @@ var root, Test, data, count;
 if (process.argv.indexOf("--alt") < 0) {
     root = protobuf.parse(fs.readFileSync(require.resolve("../bench/bench.proto")).toString("utf8")).root;
     Test = root.lookup("Test");
+    json = JSON.stringify(root);
     data = require("../bench/bench.json");
     count = 10000000;
     process.stdout.write("bench.proto");
@@ -58,6 +59,7 @@ if (process.argv.indexOf("--alt") < 0) {
     count = 1000;
     process.stdout.write("vector_tile.proto");
 }
+var json = JSON.stringify(root);
 
 if (process.argv.length > 3 && /^\d+$/.test(process.argv[3]))
     count = parseInt(process.argv[3], 10);
@@ -83,5 +85,9 @@ switch (process.argv[2]) {
         var buf = Test.encode(data).finish();
         for (var j = 0; j < count; ++j)
             Test.decode(buf);
+        break;
+    case "fromjson":
+        for (var k = 0; k < 100000000; ++k)
+            protobuf.Root.fromJSON(json).resolveAll();
         break;
 }

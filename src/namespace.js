@@ -114,20 +114,10 @@ function Namespace(name, options) {
      * @private
      */
     this._nestedArray = null;
-
-    /**
-     * Properties to remove when cache is cleared.
-     * @type {Array.<string>}
-     * @private
-     */
-    this._clearProperties = [];
 }
 
 function clearCache(namespace) {
     namespace._nestedArray = null;
-    for (var i = 0; i < namespace._clearProperties.length; ++i)
-        delete namespace[namespace._clearProperties[i]];
-    namespace._clearProperties = [];
     return namespace;
 }
 
@@ -300,37 +290,7 @@ NamespacePrototype.define = function define(path, json) {
 };
 
 /**
- * @override
- */
-NamespacePrototype.resolve = function resolve() {
-
-    /* istanbul ignore next */
-    if (!Type)
-        Type = require("./type");
-    /* istanbul ignore next */
-    if (!Service)
-        Type = require("./service");
-
-    // Add uppercased (and thus conflict-free) nested types, services and enums as properties
-    // of the type just like static code does. This allows using a .d.ts generated for a static
-    // module with reflection-based solutions where the condition is met.
-    var nested = this.nestedArray;
-    for (var i = 0; i < nested.length; ++i)
-        if (/^[A-Z]/.test(nested[i].name)) {
-            if (nested[i] instanceof Type || nested[i] instanceof Service)
-                this[nested[i].name] = nested[i];
-            else /* istanbul ignore else */ if (nested[i] instanceof Enum)
-                this[nested[i].name] = nested[i].values;
-            else
-                continue;
-            this._clearProperties.push(nested[i].name);
-        }
-
-    return ReflectionObject.prototype.resolve.call(this);
-};
-
-/**
- * Resolves this namespace's and all its nested objects' type references. Useful to validate a reflection tree.
+ * Resolves this namespace's and all its nested objects' type references. Useful to validate a reflection tree, but comes at a cost.
  * @returns {Namespace} `this`
  */
 NamespacePrototype.resolveAll = function resolveAll() {

@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.6.0 (c) 2016, Daniel Wirtz
- * Compiled Fri, 20 Jan 2017 03:04:02 UTC
+ * Compiled Fri, 20 Jan 2017 15:14:09 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -2646,20 +2646,10 @@ function Namespace(name, options) {
      * @private
      */
     this._nestedArray = null;
-
-    /**
-     * Properties to remove when cache is cleared.
-     * @type {Array.<string>}
-     * @private
-     */
-    this._clearProperties = [];
 }
 
 function clearCache(namespace) {
     namespace._nestedArray = null;
-    for (var i = 0; i < namespace._clearProperties.length; ++i)
-        delete namespace[namespace._clearProperties[i]];
-    namespace._clearProperties = [];
     return namespace;
 }
 
@@ -2832,37 +2822,7 @@ NamespacePrototype.define = function define(path, json) {
 };
 
 /**
- * @override
- */
-NamespacePrototype.resolve = function resolve() {
-
-    /* istanbul ignore next */
-    if (!Type)
-        Type = require(35);
-    /* istanbul ignore next */
-    if (!Service)
-        Type = require(33);
-
-    // Add uppercased (and thus conflict-free) nested types, services and enums as properties
-    // of the type just like static code does. This allows using a .d.ts generated for a static
-    // module with reflection-based solutions where the condition is met.
-    var nested = this.nestedArray;
-    for (var i = 0; i < nested.length; ++i)
-        if (/^[A-Z]/.test(nested[i].name)) {
-            if (nested[i] instanceof Type || nested[i] instanceof Service)
-                this[nested[i].name] = nested[i];
-            else /* istanbul ignore else */ if (nested[i] instanceof Enum)
-                this[nested[i].name] = nested[i].values;
-            else
-                continue;
-            this._clearProperties.push(nested[i].name);
-        }
-
-    return ReflectionObject.prototype.resolve.call(this);
-};
-
-/**
- * Resolves this namespace's and all its nested objects' type references. Useful to validate a reflection tree.
+ * Resolves this namespace's and all its nested objects' type references. Useful to validate a reflection tree, but comes at a cost.
  * @returns {Namespace} `this`
  */
 NamespacePrototype.resolveAll = function resolveAll() {
@@ -4632,8 +4592,9 @@ var RootPrototype = Namespace.extend(Root);
 
 Root.className = "Root";
 
-var Field  = require(17),
-    util   = require(37);
+var Field   = require(17),
+    Enum    = require(16),
+    util    = require(37);
 
 var parse,  // cyclic, might be excluded
     common; // might be excluded
@@ -4885,6 +4846,9 @@ function handleExtension(field) {
     return false;
 }
 
+// only uppercased (and thus conflict-free) children are exposed, see below
+var exposeRe = /^[A-Z]/;
+
 /**
  * Called when any object is added to this root or its sub-namespaces.
  * @param {ReflectionObject} object Object added
@@ -4903,13 +4867,21 @@ RootPrototype._handleAdd = function handleAdd(object) {
             ++i;
     this.deferred = newDeferred;
     // Handle new declaring extension fields without a sister field yet
-    if (object instanceof Field && object.extend !== undefined && !object.extensionField && !handleExtension(object) && this.deferred.indexOf(object) < 0)
-        this.deferred.push(object);
-    else if (object instanceof Namespace) {
+    if (object instanceof Field) {
+        if (object.extend !== undefined && !object.extensionField && !handleExtension(object) && this.deferred.indexOf(object) < 0)
+            this.deferred.push(object);
+    } else if (object instanceof Namespace) {
         var nested = object.nestedArray;
         for (i = 0; i < nested.length; ++i) // recurse into the namespace
             this._handleAdd(nested[i]);
-    }
+        if (exposeRe.test(object.name))
+            object.parent[object.name] = object; // expose namespace as property of its parent
+    } else if (object instanceof Enum && exposeRe.test(object.name))
+        object.parent[object.name] = object.values; // expose enum values as property of its parent
+
+    // The above also adds uppercased (and thus conflict-free) nested types, services and enums as
+    // properties of namespaces just like static code does. This allows using a .d.ts generated for
+    // a static module with reflection-based solutions where the condition is met.
 };
 
 /**
@@ -4936,7 +4908,10 @@ RootPrototype._handleRemove = function handleRemove(object) {
         var nested = object.nestedArray;
         for (var i = 0; i < nested.length; ++i) // recurse into the namespace
             this._handleRemove(nested[i]);
-    }
+        if (exposeRe.test(object.name))
+            delete object.parent[object.name]; // unexpose namespaces
+    } else if (object instanceof Enum && exposeRe.test(object.name))
+        delete object.parent[object.name]; // unexpose enum values
 };
 
 Root._configure = function(_parse, _common) {
@@ -4944,7 +4919,7 @@ Root._configure = function(_parse, _common) {
     common = _common;
 };
 
-},{"17":17,"24":24,"37":37}],31:[function(require,module,exports){
+},{"16":16,"17":17,"24":24,"37":37}],31:[function(require,module,exports){
 "use strict";
 
 /**

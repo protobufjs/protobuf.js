@@ -393,6 +393,32 @@ export class Field extends ReflectionObject {
 }
 
 /**
+ * Debugging utility functions. Only present in debug builds.
+ * @namespace
+ */
+export namespace debug {
+
+    /**
+     * Returns a list of unused types within the specified root.
+     * @param {NamespaceBase} ns Namespace to search
+     * @returns {Type[]} Unused types
+     */
+    function unusedTypes(ns: NamespaceBase): Type[];
+
+    /**
+     * Enables debugging extensions.
+     * @returns {undefined}
+     */
+    function enable(): void;
+
+    /**
+     * Disables debugging extensions.
+     * @returns {undefined}
+     */
+    function disable(): void;
+}
+
+/**
  * A node-style callback as used by {@link load} and {@link Root#load}.
  * @typedef LoadCallback
  * @type {function}
@@ -858,7 +884,7 @@ export abstract class NamespaceBase extends ReflectionObject {
     define(path: (string|string[]), json?: any): Namespace;
 
     /**
-     * Resolves this namespace's and all its nested objects' type references. Useful to validate a reflection tree.
+     * Resolves this namespace's and all its nested objects' type references. Useful to validate a reflection tree, but comes at a cost.
      * @returns {Namespace} `this`
      */
     resolveAll(): Namespace;

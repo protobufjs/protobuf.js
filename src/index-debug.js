@@ -4,6 +4,12 @@
 "use strict";
 var protobuf = module.exports = require("./index");
 
+/**
+ * Debugging utility functions. Only present in debug builds.
+ * @namespace
+ */
+var debug = protobuf.debug = {};
+
 var codegen = protobuf.util.codegen;
 
 // Counts number of calls to any generated function
@@ -16,30 +22,6 @@ function codegen_debug() {
     };})(gen.str);
     return gen;
 }
-
-/**
- * Debugging utility functions. Only present in debug builds.
- * @namespace
- */
-var debug = protobuf.debug = {};
-
-/**
- * Enables debugging extensions.
- * @returns {undefined}
- */
-debug.enable = function enable() {
-    protobuf.util.codegen = codegen_debug;
-    return protobuf;
-};
-
-/**
- * Disables debugging extensions.
- * @returns {undefined}
- */
-debug.disable = function disable() {
-    protobuf.util.codegen = codegen;
-    return protobuf;
-};
 
 /**
  * Returns a list of unused types within the specified root.
@@ -70,4 +52,20 @@ debug.unusedTypes = function unusedTypes(ns) {
             Array.prototype.push.apply(unused, unusedTypes(nested));
     });
     return unused;
+};
+
+/**
+ * Enables debugging extensions.
+ * @returns {undefined}
+ */
+debug.enable = function enable() {
+    protobuf.util.codegen = codegen_debug;
+};
+
+/**
+ * Disables debugging extensions.
+ * @returns {undefined}
+ */
+debug.disable = function disable() {
+    protobuf.util.codegen = codegen;
 };

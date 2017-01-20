@@ -8,8 +8,9 @@ var RootPrototype = Namespace.extend(Root);
 
 Root.className = "Root";
 
-var Field  = require("./field"),
-    util   = require("./util");
+var Field   = require("./field"),
+    Enum    = require("./enum"),
+    util    = require("./util");
 
 var parse,  // cyclic, might be excluded
     common; // might be excluded
@@ -261,6 +262,9 @@ function handleExtension(field) {
     return false;
 }
 
+// only uppercased (and thus conflict-free) children are exposed, see below
+var exposeRe = /^[A-Z]/;
+
 /**
  * Called when any object is added to this root or its sub-namespaces.
  * @param {ReflectionObject} object Object added
@@ -279,13 +283,21 @@ RootPrototype._handleAdd = function handleAdd(object) {
             ++i;
     this.deferred = newDeferred;
     // Handle new declaring extension fields without a sister field yet
-    if (object instanceof Field && object.extend !== undefined && !object.extensionField && !handleExtension(object) && this.deferred.indexOf(object) < 0)
-        this.deferred.push(object);
-    else if (object instanceof Namespace) {
+    if (object instanceof Field) {
+        if (object.extend !== undefined && !object.extensionField && !handleExtension(object) && this.deferred.indexOf(object) < 0)
+            this.deferred.push(object);
+    } else if (object instanceof Namespace) {
         var nested = object.nestedArray;
         for (i = 0; i < nested.length; ++i) // recurse into the namespace
             this._handleAdd(nested[i]);
-    }
+        if (exposeRe.test(object.name))
+            object.parent[object.name] = object; // expose namespace as property of its parent
+    } else if (object instanceof Enum && exposeRe.test(object.name))
+        object.parent[object.name] = object.values; // expose enum values as property of its parent
+
+    // The above also adds uppercased (and thus conflict-free) nested types, services and enums as
+    // properties of namespaces just like static code does. This allows using a .d.ts generated for
+    // a static module with reflection-based solutions where the condition is met.
 };
 
 /**
@@ -312,7 +324,10 @@ RootPrototype._handleRemove = function handleRemove(object) {
         var nested = object.nestedArray;
         for (var i = 0; i < nested.length; ++i) // recurse into the namespace
             this._handleRemove(nested[i]);
-    }
+        if (exposeRe.test(object.name))
+            delete object.parent[object.name]; // unexpose namespaces
+    } else if (object instanceof Enum && exposeRe.test(object.name))
+        delete object.parent[object.name]; // unexpose enum values
 };
 
 Root._configure = function(_parse, _common) {
