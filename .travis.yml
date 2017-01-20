@@ -21,9 +21,8 @@ branches:
 matrix:
   include:
   - node_js: 6
-    script: 
-      - travis_wait npm run zuul
-      - sleep 3
+    script:
+      - 'if [ "$SAUCE_USERNAME" ]; then travis_wait npm run zuul; sleep 3; fi'
   include:
   - node_js: 6
     script:
