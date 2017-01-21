@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.6.0 (c) 2016, Daniel Wirtz
- * Compiled Sat, 21 Jan 2017 22:47:16 UTC
+ * Compiled Sat, 21 Jan 2017 23:50:58 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -731,23 +731,14 @@ var Message = require(20),
 var Type; // cyclic
 
 /**
- * Constructs a class instance, which is also a {@link Message} prototype.
+ * Constructs a new message prototype for the specified reflected type and sets up its constructor.
  * @classdesc Runtime class providing the tools to create your own custom classes.
  * @constructor
- * @param {Type} type Reflected type
- */
-function Class(type) {
-    return create(type);
-}
-
-/**
- * Constructs a new message prototype for the specified reflected type and sets up its constructor.
- * @memberof Class
  * @param {Type} type Reflected message type
  * @param {*} [ctor] Custom constructor to set up, defaults to create a generic one if omitted
  * @returns {Message} Message prototype
  */
-function create(type, ctor) {
+function Class(type, ctor) {
     if (!Type)
         Type = require(31);
 
@@ -803,7 +794,14 @@ function create(type, ctor) {
     return prototype;
 }
 
-Class.create = create;
+/**
+ * Constructs a new message prototype for the specified reflected type and sets up its constructor.
+ * @function
+ * @param {Type} type Reflected message type
+ * @param {*} [ctor] Custom constructor to set up, defaults to create a generic one if omitted
+ * @returns {Message} Message prototype
+ */
+Class.create = Class;
 
 // Static methods on Message are instance methods on Class and vice versa
 Class.prototype = Message;
@@ -4565,7 +4563,7 @@ Object.defineProperties(TypePrototype, {
      */
     ctor: {
         get: function() {
-            return this._ctor || (this._ctor = Class.create(this).constructor);
+            return this._ctor || (this._ctor = Class(this).constructor);
         },
         set: function(ctor) {
             if (ctor && !(ctor.prototype instanceof Message))

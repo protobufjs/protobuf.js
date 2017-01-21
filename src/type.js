@@ -203,7 +203,7 @@ Object.defineProperties(TypePrototype, {
      */
     ctor: {
         get: function() {
-            return this._ctor || (this._ctor = Class.create(this).constructor);
+            return this._ctor || (this._ctor = Class(this).constructor);
         },
         set: function(ctor) {
             if (ctor && !(ctor.prototype instanceof Message))

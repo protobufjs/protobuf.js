@@ -9,9 +9,7 @@ tape.test("reflected classes", function(test) {
     var root = protobuf.parse(proto).root,
         Something = root.lookup("Something");
 
-    test.throws(function() {
-        new protobuf.Class("a");
-    }, TypeError, "new Class should throw if first argument is not a Type");
+    test.equal(protobuf.Class.create, protobuf.Class, "Class.create should be an alias of Class (constructor)");
 
     test.throws(function() {
         protobuf.Class.create("a");

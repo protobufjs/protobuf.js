@@ -1,24 +1,28 @@
 export as namespace protobuf;
 
 /**
- * Constructs a class instance, which is also a {@link Message} prototype.
+ * Constructs a new message prototype for the specified reflected type and sets up its constructor.
  * @classdesc Runtime class providing the tools to create your own custom classes.
  * @constructor
- * @param {Type} type Reflected type
+ * @param {Type} type Reflected message type
+ * @param {*} [ctor] Custom constructor to set up, defaults to create a generic one if omitted
+ * @returns {Message} Message prototype
  */
 export class Class {
 
     /**
-     * Constructs a class instance, which is also a {@link Message} prototype.
+     * Constructs a new message prototype for the specified reflected type and sets up its constructor.
      * @classdesc Runtime class providing the tools to create your own custom classes.
      * @constructor
-     * @param {Type} type Reflected type
+     * @param {Type} type Reflected message type
+     * @param {*} [ctor] Custom constructor to set up, defaults to create a generic one if omitted
+     * @returns {Message} Message prototype
      */
-    constructor(type: Type);
+    constructor(type: Type, ctor?: any);
 
     /**
      * Constructs a new message prototype for the specified reflected type and sets up its constructor.
-     * @memberof Class
+     * @function
      * @param {Type} type Reflected message type
      * @param {*} [ctor] Custom constructor to set up, defaults to create a generic one if omitted
      * @returns {Message} Message prototype
