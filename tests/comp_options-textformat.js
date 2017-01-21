@@ -13,11 +13,13 @@ extend google.protobuf.FieldOptions {\
 }\
 message Test {\
   string value = 1 [(my_options) = { a: \"foo\" b: \"bar\" }];\
+  string value2 = 2 [(my_options) = { a: \"foo\" b { c: \"bar\" } }];\
 }";
 
 tape.test("options in textformat", function(test) {
     var root = protobuf.parse(proto).root;
     var Test = root.lookup("Test");
     test.same(Test.fields.value.options, { "(my_options).a": "foo", "(my_options).b": "bar" }, "should parse correctly");
+    test.same(Test.fields.value2.options, { "(my_options).a": "foo", "(my_options).b.c": "bar" }, "should parse correctly when nested");
     test.end();
 });

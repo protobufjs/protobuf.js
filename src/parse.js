@@ -494,22 +494,26 @@ function parse(source, root, options) {
     }
 
     function parseOptionValue(parent, name) {
-        if (skip("{", true)) {
-            while ((token = next()) !== "}") {
-
-                /* istanbul ignore next */
-                if (!isName(token))
+        if (skip("{", true)) { // { a: "foo" b { c: "bar" } }
+            /* istanbul ignore next */
+            do {
+                if (!isName(token = next()))
                     throw illegal(token, "name");
-
-                skip(":");
-                // if (skip(":", true))
-                    parent.setOption(name + "." + token, readValue(true));
-                // else
-                //     parseOptionValue(parent, name + "." + token);
-            }
+                if (peek() === "{")
+                    parseOptionValue(parent, name + "." + token);
+                else {
+                    skip(":");
+                    setOption(parent, name + "." + token, readValue(true));
+                }
+            } while (!skip("}", true));
         } else
-            parent.setOption(name, readValue(true));
+            setOption(parent, name, readValue(true));
         // Does not enforce a delimiter to be universal
+    }
+
+    function setOption(parent, name, value) {
+        if (parent.setOption)
+            parent.setOption(name, value);
     }
 
     function parseInlineOptions(parent) {

@@ -41,6 +41,8 @@ enum Test3;
 
 enum Test4{
     option (custom).foo = "";
+    ONE = 1 [foo="bar"];
+    TWO = 2 [(my_options) = { a: "foo" b { c: "bar" } }];
 };
 
 service Test5;

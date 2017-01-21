@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.6.0 (c) 2016, Daniel Wirtz
- * Compiled Sat, 21 Jan 2017 18:41:01 UTC
+ * Compiled Sat, 21 Jan 2017 22:47:16 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -3850,22 +3850,26 @@ function parse(source, root, options) {
     }
 
     function parseOptionValue(parent, name) {
-        if (skip("{", true)) {
-            while ((token = next()) !== "}") {
-
-                /* istanbul ignore next */
-                if (!isName(token))
+        if (skip("{", true)) { // { a: "foo" b { c: "bar" } }
+            /* istanbul ignore next */
+            do {
+                if (!isName(token = next()))
                     throw illegal(token, "name");
-
-                skip(":");
-                // if (skip(":", true))
-                    parent.setOption(name + "." + token, readValue(true));
-                // else
-                //     parseOptionValue(parent, name + "." + token);
-            }
+                if (peek() === "{")
+                    parseOptionValue(parent, name + "." + token);
+                else {
+                    skip(":");
+                    setOption(parent, name + "." + token, readValue(true));
+                }
+            } while (!skip("}", true));
         } else
-            parent.setOption(name, readValue(true));
+            setOption(parent, name, readValue(true));
         // Does not enforce a delimiter to be universal
+    }
+
+    function setOption(parent, name, value) {
+        if (parent.setOption)
+            parent.setOption(name, value);
     }
 
     function parseInlineOptions(parent) {
