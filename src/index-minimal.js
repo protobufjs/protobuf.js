@@ -14,6 +14,14 @@ protobuf.build = "minimal";
  * Can also be used manually to make roots available accross modules.
  * @name roots
  * @type {Object.<string,Root>}
+ * @example
+ * // pbjs -r myroot -o compiled.js ...
+ * 
+ * // in another module:
+ * require("./compiled.js");
+ * 
+ * // in any subsequent module:
+ * var root = protobuf.roots["myroot"];
  */
 protobuf.roots = {};
 

@@ -7,6 +7,7 @@ util.EventEmitter = require("@protobufjs/eventemitter");
 util.inquire      = require("@protobufjs/inquire");
 util.utf8         = require("@protobufjs/utf8");
 util.pool         = require("@protobufjs/pool");
+util.LongBits     = require("./longbits");
 
 /**
  * An immuable empty array.
@@ -108,8 +109,6 @@ util.newBuffer = function newBuffer(sizeOrArray) {
  */
 util.Array = typeof Uint8Array !== "undefined" ? Uint8Array /* istanbul ignore next */ : Array;
 
-util.LongBits = require("./longbits");
-
 /**
  * Long.js's Long class if available.
  * @type {?function(new: Long)}
@@ -155,6 +154,15 @@ util.merge = function merge(dst, src, ifNotSet) { // used by converters
 };
 
 /**
+ * Converts the first character of a string to lower case.
+ * @param {string} str String to convert
+ * @returns {string} Converted string
+ */
+util.lcFirst = function lcFirst(str) {
+    return str.charAt(0).toLowerCase() + str.substring(1);
+};
+
+/**
  * Builds a getter for a oneof's present field name.
  * @param {string[]} fieldNames Field names
  * @returns {function():string|undefined} Unbound getter
@@ -164,6 +172,7 @@ util.oneOfGetter = function getOneOf(fieldNames) {
     fieldNames.forEach(function(name) {
         fieldMap[name] = 1;
     });
+
     /**
      * @returns {string|undefined} Set field name, if any
      * @this Object
@@ -182,6 +191,7 @@ util.oneOfGetter = function getOneOf(fieldNames) {
  * @returns {function(?string):undefined} Unbound setter
  */
 util.oneOfSetter = function setOneOf(fieldNames) {
+
     /**
      * @param {string} name Field name
      * @returns {undefined}

@@ -17,54 +17,23 @@ var $root = {};
 $root.MyService = (function() {
 
     /**
-     * RPC implementation passed to services performing a service request on network level, i.e. by utilizing http requests or websockets.
-     * @typedef RPCImpl
-     * @type {function}
-     * @param {function} method Method being called
-     * @param {Uint8Array} requestData Request data
-     * @param {RPCCallback} callback Callback function
-     * @returns {undefined}
-     */
-
-    /**
-     * Node-style callback as used by {@link RPCImpl}.
-     * @typedef RPCCallback
-     * @type {function}
-     * @param {?Error} error Error, if any, otherwise `null`
-     * @param {Uint8Array} [responseData] Response data or `null` to signal end of stream, if there hasn't been an error
-     * @returns {undefined}
-     */
-
-    /**
      * Constructs a new MyService service.
      * @exports MyService
      * @extends $protobuf.rpc.Service
      * @constructor
-     * @param {RPCImpl} rpcImpl RPC implementation
+     * @param {$protobuf.RPCImpl} rpcImpl RPC implementation
      * @param {boolean} [requestDelimited=false] Whether requests are length-delimited
      * @param {boolean} [responseDelimited=false] Whether responses are length-delimited
      */
     function MyService(rpcImpl, requestDelimited, responseDelimited) {
-        $protobuf.rpc.Service.call(this, rpcImpl);
-
-        /**
-         * Whether requests are length-delimited.
-         * @type {boolean}
-         */
-        this.requestDelimited = Boolean(requestDelimited);
-
-        /**
-         * Whether responses are length-delimited.
-         * @type {boolean}
-         */
-        this.responseDelimited = Boolean(responseDelimited);
+        $protobuf.rpc.Service.call(this, rpcImpl, requestDelimited, responseDelimited);
     }
 
     (MyService.prototype = Object.create($protobuf.rpc.Service.prototype)).constructor = MyService;
 
     /**
      * Creates new MyService service using the specified rpc implementation.
-     * @param {RPCImpl} rpcImpl RPC implementation
+     * @param {$protobuf.RPCImpl} rpcImpl RPC implementation
      * @param {boolean} [requestDelimited=false] Whether requests are length-delimited
      * @param {boolean} [responseDelimited=false] Whether responses are length-delimited
      * @returns {MyService} RPC service. Useful where requests and/or responses are streamed.
@@ -78,7 +47,7 @@ $root.MyService = (function() {
      * @typedef MyService_myMethod_Callback
      * @type {function}
      * @param {?Error} error Error, if any
-     * @param {MyResponse} [response] MyResponse or `null` if the service has been terminated server-side
+     * @param {MyResponse} [response] MyResponse
      */
 
     /**
@@ -88,37 +57,7 @@ $root.MyService = (function() {
      * @returns {undefined}
      */
     MyService.prototype.myMethod = function myMethod(request, callback) {
-        if (!request)
-            throw TypeError("request must be specified");
-        if (!callback)
-            return $util.asPromise(myMethod, this, request);
-        var $self = this;
-        this.rpc(myMethod, (this.requestDelimited
-            ? $root.MyRequest.encodeDelimited(request)
-            : $root.MyRequest.encode(request)
-        ).finish(), function $rpcCallback(err, response) {
-            if (err) {
-                $self.emit("error", err, myMethod);
-                return callback(err);
-            }
-            if (response === null) {
-                $self.end(true);
-                return undefined;
-            }
-            if (!(response instanceof $root.MyResponse)) {
-                try {
-                    response = $self.responseDelimited
-                        ? $root.MyResponse.decodeDelimited(response)
-                        : $root.MyResponse.decode(response);
-                } catch (err2) {
-                    $self.emit("error", err2, myMethod);
-                    return callback(err2);
-                }
-            }
-            $self.emit("data", response, myMethod);
-            return callback(null, response);
-        });
-        return undefined;
+        return this.rpcCall(myMethod, $root.MyRequest, $root.MyResponse, request, callback);
     };
 
     /**
@@ -252,6 +191,7 @@ $root.MyRequest = (function() {
     /**
      * Creates a MyRequest message from a plain object. Also converts values to their respective internal types.
      * This is an alias of {@link MyRequest.fromObject}.
+     * @function
      * @param {Object.<string,*>} object Plain object
      * @returns {MyRequest} MyRequest
      */
@@ -413,6 +353,7 @@ $root.MyResponse = (function() {
     /**
      * Creates a MyResponse message from a plain object. Also converts values to their respective internal types.
      * This is an alias of {@link MyResponse.fromObject}.
+     * @function
      * @param {Object.<string,*>} object Plain object
      * @returns {MyResponse} MyResponse
      */

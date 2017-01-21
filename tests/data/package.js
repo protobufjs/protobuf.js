@@ -519,6 +519,7 @@ $root.Package = (function() {
     /**
      * Creates a Package message from a plain object. Also converts values to their respective internal types.
      * This is an alias of {@link Package.fromObject}.
+     * @function
      * @param {Object.<string,*>} object Plain object
      * @returns {Package} Package
      */
@@ -770,6 +771,7 @@ $root.Package = (function() {
         /**
          * Creates a Repository message from a plain object. Also converts values to their respective internal types.
          * This is an alias of {@link Package.Repository.fromObject}.
+         * @function
          * @param {Object.<string,*>} object Plain object
          * @returns {Package.Repository} Repository
          */

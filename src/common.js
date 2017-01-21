@@ -13,6 +13,12 @@ module.exports = common;
  * @property {Object.<string,*>} google/protobuf/struct.proto Struct, Value, NullValue and ListValue
  * @property {Object.<string,*>} google/protobuf/timestamp.proto Timestamp
  * @property {Object.<string,*>} google/protobuf/wrappers.proto Wrappers
+ * @example
+ * // manually provides descriptor.proto (assumes google/protobuf/ namespace and .proto extension)
+ * protobuf.common("descriptor", descriptorJson);
+ * 
+ * // manually provides a custom definition (uses my.foo namespace)
+ * protobuf.common("my/foo/bar.proto", myFooBarJson);
  */
 function common(name, json) {
     if (!/\/|\./.test(name)) {

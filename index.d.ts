@@ -114,6 +114,12 @@ export class Class {
  * @property {Object.<string,*>} google/protobuf/struct.proto Struct, Value, NullValue and ListValue
  * @property {Object.<string,*>} google/protobuf/timestamp.proto Timestamp
  * @property {Object.<string,*>} google/protobuf/wrappers.proto Wrappers
+ * @example
+ * // manually provides descriptor.proto (assumes google/protobuf/ namespace and .proto extension)
+ * protobuf.common("descriptor", descriptorJson);
+ *
+ * // manually provides a custom definition (uses my.foo namespace)
+ * protobuf.common("my/foo/bar.proto", myFooBarJson);
  */
 export function common(name: string, json: { [k: string]: any }): void;
 
@@ -485,6 +491,14 @@ export var build: string;
  * Can also be used manually to make roots available accross modules.
  * @name roots
  * @type {Object.<string,Root>}
+ * @example
+ * // pbjs -r myroot -o compiled.js ...
+ *
+ * // in another module:
+ * require("./compiled.js");
+ *
+ * // in any subsequent module:
+ * var root = protobuf.roots["myroot"];
  */
 export var roots: { [k: string]: Root };
 
@@ -1423,46 +1437,55 @@ export class Root extends NamespaceBase {
 }
 
 /**
- * A service method callback as used by {@link ServiceMethod}.
- * @typedef ServiceMethodCallback
- * @type {function}
- * @param {?Error} error Error, if any
- * @param {?Message} [response] Response message or `null` if service has been terminated server-side
- * @returns {undefined}
- */
-type ServiceMethodCallback = (error: Error, response?: Message) => void;
-
-/**
- * A service method part of an {@link rpc.Service} as created by {@link Service.create}.
- * @typedef ServiceMethod
- * @type {function}
- * @param {Message|Object} request Request message or plain object
- * @param {ServiceMethodCallback} [callback] Node-style callback called with the error, if any, and the response message
- * @returns {Promise<Message>} Promise if `callback` has been omitted, otherwise `undefined`
- */
-type ServiceMethod = (request: (Message|Object), callback?: ServiceMethodCallback) => Promise<Message>;
-
-/**
- * A service method mixin.
- * @typedef ServiceMethodMixin
- * @type {Object.<string,ServiceMethod>}
- */
-type ServiceMethodMixin = { [k: string]: ServiceMethod };
-
-/**
  * Streaming RPC helpers.
  * @namespace
  */
 export namespace rpc {
 
     /**
+     * A service method callback as used by {@link rpc.ServiceMethod|ServiceMethod}.
+     *
+     * Differs from {@link RPCImplCallback} in that it is an actual callback of a service method which may not return `response = null`.
+     * @typedef rpc.ServiceMethodCallback
+     * @type {function}
+     * @param {?Error} error Error, if any
+     * @param {?Message} [response] Response message
+     * @returns {undefined}
+     */
+    type ServiceMethodCallback = (error: Error, response?: Message) => void;
+
+    /**
+     * A service method part of an {@link rpc.ServiceMethodMixin|ServiceMethodMixin} and thus {@link rpc.Service} as created by {@link Service.create}.
+     * @typedef rpc.ServiceMethod
+     * @type {function}
+     * @param {Message|Object} request Request message or plain object
+     * @param {rpc.ServiceMethodCallback} [callback] Node-style callback called with the error, if any, and the response message
+     * @returns {Promise<Message>} Promise if `callback` has been omitted, otherwise `undefined`
+     */
+    type ServiceMethod = (request: (Message|Object), callback?: rpc.ServiceMethodCallback) => Promise<Message>;
+
+    /**
+     * A service method mixin.
+     *
+     * When using TypeScript, mixed in service methods are only supported directly with a type definition of a static module (used with reflection). Otherwise, explicit casting is required.
+     * @typedef rpc.ServiceMethodMixin
+     * @type {Object.<string,rpc.ServiceMethod>}
+     * @example
+     * // Explicit casting with TypeScript
+     * (myRpcService["myMethod"] as protobuf.rpc.ServiceMethod)(...)
+     */
+    type ServiceMethodMixin = { [k: string]: rpc.ServiceMethod };
+
+    /**
      * Constructs a new RPC service instance.
      * @classdesc An RPC service as returned by {@link Service#create}.
      * @exports rpc.Service
      * @extends util.EventEmitter
-     * @augments ServiceMethodMixin
+     * @augments rpc.ServiceMethodMixin
      * @constructor
      * @param {RPCImpl} rpcImpl RPC implementation
+     * @param {boolean} [requestDelimited=false] Whether requests are length-delimited
+     * @param {boolean} [responseDelimited=false] Whether responses are length-delimited
      */
     class Service extends util.EventEmitter {
 
@@ -1471,17 +1494,42 @@ export namespace rpc {
          * @classdesc An RPC service as returned by {@link Service#create}.
          * @exports rpc.Service
          * @extends util.EventEmitter
-         * @augments ServiceMethodMixin
+         * @augments rpc.ServiceMethodMixin
          * @constructor
          * @param {RPCImpl} rpcImpl RPC implementation
+         * @param {boolean} [requestDelimited=false] Whether requests are length-delimited
+         * @param {boolean} [responseDelimited=false] Whether responses are length-delimited
          */
-        constructor(rpcImpl: RPCImpl);
+        constructor(rpcImpl: RPCImpl, requestDelimited?: boolean, responseDelimited?: boolean);
 
         /**
          * RPC implementation. Becomes `null` once the service is ended.
          * @type {?RPCImpl}
          */
-        $rpc: RPCImpl;
+        rpcImpl: RPCImpl;
+
+        /**
+         * Whether requests are length-delimited.
+         * @type {boolean}
+         */
+        requestDelimited: boolean;
+
+        /**
+         * Whether responses are length-delimited.
+         * @type {boolean}
+         */
+        responseDelimited: boolean;
+
+        /**
+         * Calls a service method through {@link rpc.Service#rpcImpl|rpcImpl}.
+         * @param {Method|rpc.ServiceMethod} method Reflected or static method
+         * @param {function} requestCtor Request constructor
+         * @param {function} responseCtor Response constructor
+         * @param {Message|Object} request Request message or plain object
+         * @param {rpc.ServiceMethodCallback} callback Service callback
+         * @returns {undefined}
+         */
+        rpcCall(method: (Method|rpc.ServiceMethod), requestCtor: () => any, responseCtor: () => any, request: (Message|Object), callback: rpc.ServiceMethodCallback): void;
 
         /**
          * Ends this service and emits the `end` event.
@@ -1491,6 +1539,35 @@ export namespace rpc {
         end(endedByRPC?: boolean): rpc.Service;
     }
 }
+
+/**
+ * RPC implementation passed to {@link Service#create} performing a service request on network level, i.e. by utilizing http requests or websockets.
+ * @typedef RPCImpl
+ * @type {function}
+ * @param {Method|rpc.ServiceMethod} method Reflected or static method being called
+ * @param {Uint8Array} requestData Request data
+ * @param {RPCImplCallback} callback Callback function
+ * @returns {undefined}
+ * @example
+ * function rpcImpl(method, requestData, callback) {
+ *     if (protobuf.util.lcFirst(method.name) !== "myMethod") // compatible with static code
+ *         throw Error("no such method");
+ *     asynchronouslyObtainAResponse(requestData, function(err, responseData) {
+ *         callback(err, responseData);
+ *     });
+ * }
+ */
+type RPCImpl = (method: (Method|rpc.ServiceMethod), requestData: Uint8Array, callback: RPCImplCallback) => void;
+
+/**
+ * Node-style callback as used by {@link RPCImpl}.
+ * @typedef RPCImplCallback
+ * @type {function}
+ * @param {?Error} error Error, if any, otherwise `null`
+ * @param {?Uint8Array} [response] Response data or `null` to signal end of stream, if there hasn't been an error
+ * @returns {undefined}
+ */
+type RPCImplCallback = (error: Error, response?: Uint8Array) => void;
 
 /**
  * Constructs a new service instance.
@@ -1546,34 +1623,13 @@ export class Service extends NamespaceBase {
 
     /**
      * Creates a runtime service using the specified rpc implementation.
-     * @param {RPCImpl} rpcImpl {@link RPCImpl|RPC implementation}
+     * @param {RPCImpl} rpcImpl RPC implementation
      * @param {boolean} [requestDelimited=false] Whether requests are length-delimited
      * @param {boolean} [responseDelimited=false] Whether responses are length-delimited
      * @returns {rpc.Service} RPC service. Useful where requests and/or responses are streamed.
      */
     create(rpcImpl: RPCImpl, requestDelimited?: boolean, responseDelimited?: boolean): rpc.Service;
 }
-
-/**
- * RPC implementation passed to {@link Service#create} performing a service request on network level, i.e. by utilizing http requests or websockets.
- * @typedef RPCImpl
- * @type {function}
- * @param {Method} method Reflected method being called
- * @param {Uint8Array} requestData Request data
- * @param {RPCCallback} callback Callback function
- * @returns {undefined}
- */
-type RPCImpl = (method: Method, requestData: Uint8Array, callback: RPCCallback) => void;
-
-/**
- * Node-style callback as used by {@link RPCImpl}.
- * @typedef RPCCallback
- * @type {function}
- * @param {?Error} error Error, if any, otherwise `null`
- * @param {?Uint8Array} [response] Response data or `null` to signal end of stream, if there hasn't been an error
- * @returns {undefined}
- */
-type RPCCallback = (error: Error, response?: Uint8Array) => void;
 
 /**
  * Handle object returned from {@link tokenize}.
@@ -2365,6 +2421,13 @@ export namespace util {
     function merge(dst: { [k: string]: any }, src: { [k: string]: any }, ifNotSet?: boolean): { [k: string]: any };
 
     /**
+     * Converts the first character of a string to lower case.
+     * @param {string} str String to convert
+     * @returns {string} Converted string
+     */
+    function lcFirst(str: string): string;
+
+    /**
      * Builds a getter for a oneof's present field name.
      * @param {string[]} fieldNames Field names
      * @returns {function():string|undefined} Unbound getter
@@ -2486,13 +2549,6 @@ export namespace util {
      * @returns {string} Safe accessor
      */
     function safeProp(prop: string): string;
-
-    /**
-     * Converts the first character of a string to lower case.
-     * @param {string} str String to convert
-     * @returns {string} Converted string
-     */
-    function lcFirst(str: string): string;
 
     /**
      * Converts the first character of a string to upper case.

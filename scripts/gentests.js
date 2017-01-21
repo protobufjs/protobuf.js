@@ -35,7 +35,8 @@ var fs   = require("fs"),
 });
 
 [
-    "tests/data/test.js"
+    "tests/data/test.js",
+    "tests/data/rpc.js"
 ]
 .forEach(function(file) {
     var out = file.replace(/\.js$/, ".d.ts");

@@ -17,7 +17,6 @@ var Type      = protobuf.Type,
 var out = [];
 var indent = 0;
 var config = {};
-var firstService = true;
 
 static_target.description = "Static code without reflection";
 
@@ -53,7 +52,6 @@ function static_target(root, options, callback) {
         out = [];
         indent = 0;
         config = {};
-        firstService = true;
     }
 }
 
@@ -478,6 +476,7 @@ function buildType(ref, type) {
         pushComment([
             "Creates " + aOrAn(type.name) + " message from a plain object. Also converts values to their respective internal types.",
             "This is an alias of {@link " + fullName + ".fromObject}.",
+            "@function",
             "@param {Object.<string,*>} object Plain object",
             "@returns {" + fullName + "} " + type.name
         ]);
@@ -520,31 +519,6 @@ function buildType(ref, type) {
 function buildService(ref, service) {
     var fullName = service.fullName.substring(1);
 
-    if (firstService) {
-        firstService = false;
-
-        push("");
-        pushComment([
-             "RPC implementation passed to services performing a service request on network level, i.e. by utilizing http requests or websockets.",
-             "@typedef RPCImpl",
-             "@type {function}",
-             "@param {function} method Method being called",
-             "@param {Uint8Array} requestData Request data",
-             "@param {RPCCallback} callback Callback function",
-             "@returns {undefined}"
-        ]);
-
-        push("");
-        pushComment([
-             "Node-style callback as used by {@link RPCImpl}.",
-             "@typedef RPCCallback",
-             "@type {function}",
-             "@param {?Error} error Error, if any, otherwise `null`",
-             "@param {Uint8Array} [responseData] Response data or `null` to signal end of stream, if there hasn't been an error",
-             "@returns {undefined}"
-        ]);
-    }
-
     push("");
     pushComment([
         "Constructs a new " + service.name + " service.",
@@ -552,25 +526,13 @@ function buildService(ref, service) {
         "@exports " + fullName,
         "@extends $protobuf.rpc.Service",
         "@constructor",
-        "@param {RPCImpl} rpcImpl RPC implementation",
+        "@param {$protobuf.RPCImpl} rpcImpl RPC implementation",
         "@param {boolean} [requestDelimited=false] Whether requests are length-delimited",
         "@param {boolean} [responseDelimited=false] Whether responses are length-delimited"
     ]);
     push("function " + name(service.name) + "(rpcImpl, requestDelimited, responseDelimited) {");
     ++indent;
-    push("$protobuf.rpc.Service.call(this, rpcImpl);");
-    push("");
-    pushComment([
-        "Whether requests are length-delimited.",
-        "@type {boolean}"
-    ]);
-    push("this.requestDelimited = Boolean(requestDelimited);");
-    push("");
-    pushComment([
-        "Whether responses are length-delimited.",
-        "@type {boolean}"
-    ]);
-    push("this.responseDelimited = Boolean(responseDelimited);");
+    push("$protobuf.rpc.Service.call(this, rpcImpl, requestDelimited, responseDelimited);");
     --indent;
     push("}");
     push("");
@@ -580,7 +542,7 @@ function buildService(ref, service) {
         push("");
         pushComment([
             "Creates new " + service.name + " service using the specified rpc implementation.",
-            "@param {RPCImpl} rpcImpl RPC implementation",
+            "@param {$protobuf.RPCImpl} rpcImpl RPC implementation",
             "@param {boolean} [requestDelimited=false] Whether requests are length-delimited",
             "@param {boolean} [responseDelimited=false] Whether responses are length-delimited",
             "@returns {" + name(service.name) + "} RPC service. Useful where requests and/or responses are streamed."
@@ -599,10 +561,11 @@ function buildService(ref, service) {
         var cbName = name(service.name) + "_" + name(lcName) + "_Callback";
         pushComment([
             "Callback as used by {@link " + name(service.name) + "#" + name(lcName) + "}.",
+            // This is a more specialized version of protobuf.rpc.ServiceCallback
             "@typedef " + cbName,
             "@type {function}",
             "@param {?Error} error Error, if any",
-            "@param {" + method.resolvedResponseType.fullName.substring(1) + "} [response] " + method.resolvedResponseType.name + " or `null` if the service has been terminated server-side"
+            "@param {" + method.resolvedResponseType.fullName.substring(1) + "} [response] " + method.resolvedResponseType.name
         ]);
         push("");
         pushComment([
@@ -613,58 +576,8 @@ function buildService(ref, service) {
         ]);
         push(name(service.name) + ".prototype" + util.safeProp(lcName) + " = function " + name(lcName) + "(request, callback) {");
             ++indent;
-            push("if (!request)");
-                ++indent;
-                push("throw TypeError(\"request must be specified\");");
-                --indent;
-            push("if (!callback)");
-                ++indent;
-                push("return $util.asPromise(" + name(lcName) + ", this, request);");
-                --indent;
-            push("var $self = this;");
-            push("this.rpc(" + name(lcName) + ", (this.requestDelimited");
-                ++indent;
-                push("? $root" + method.resolvedRequestType.fullName + ".encodeDelimited(request)");
-                push(": $root" + method.resolvedRequestType.fullName + ".encode(request)");
-                --indent;
-            push(").finish(), function $rpcCallback(err, response) {");
-                ++indent;
-                push("if (err) {");
-                    ++indent;
-                    push("$self.emit(\"error\", err, " + name(lcName) + ");");
-                    push("return callback(err);");
-                    --indent;
-                push("}");
-                push("if (response === null) {");
-                    ++indent;
-                    push("$self.end(true);");
-                    push("return undefined;");
-                    --indent;
-                push("}");
-                push("if (!(response instanceof $root" + method.resolvedResponseType.fullName + ")) {");
-                    ++indent;
-                    push("try {");
-                        ++indent;
-                        push("response = $self.responseDelimited");
-                            ++indent;
-                            push("? $root" + method.resolvedResponseType.fullName + ".decodeDelimited(response)");
-                            push(": $root" + method.resolvedResponseType.fullName + ".decode(response);");
-                            --indent;
-                        --indent;
-                    push("} catch (err2) {");
-                        ++indent;
-                        push("$self.emit(\"error\", err2, " + name(lcName) + ");");
-                        push("return callback(err2);");
-                        --indent;
-                    push("}");
-                    --indent;
-                push("}");
-                push("$self.emit(\"data\", response, " + name(lcName) + ");");
-                push("return callback(null, response);");
-                --indent;
-            push("});");
-            push("return undefined;");
-        --indent;
+            push("return this.rpcCall(" + name(lcName) + ", $root" + method.resolvedRequestType.fullName + ", $root" + method.resolvedResponseType.fullName + ", request, callback);");
+            --indent;
         push("};");
         if (config.comments)
             push("");

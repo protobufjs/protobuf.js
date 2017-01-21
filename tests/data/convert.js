@@ -402,6 +402,7 @@ $root.Message = (function() {
     /**
      * Creates a Message message from a plain object. Also converts values to their respective internal types.
      * This is an alias of {@link Message.fromObject}.
+     * @function
      * @param {Object.<string,*>} object Plain object
      * @returns {Message} Message
      */

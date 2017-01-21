@@ -25,6 +25,10 @@ tape.test("reflected services", function(test) {
         DoSomethingResponse = myservice.DoSomethingResponse,
         DoSomething = MyService.get("DoSomething");
 
+    test.throws(function() {
+        MyService.create();
+    }, TypeError, "should throw if rpcImpl is not specified");
+
     function rpcImpl(method, requestData, callback) {
         if (requestData) {
             test.equal(method, DoSomething, "rpcImpl should reference the correct method");
@@ -42,11 +46,28 @@ tape.test("reflected services", function(test) {
 
     test.throws(function() {
         service.doSomething();
-    }, TypeError, "should throw if request is false-ish");
+    }, TypeError, "should throw if request is not specified");
 
     test.test(test.name + " - should propagate errors from rpcImpl", function(test) {
         var err = Error();
         var service2 = MyService.create(function(method, requestData, callback) { callback(err); });
+        test.plan(2);
+        var count = 0;
+        service2.on("error", function(err2) {
+            test.equal(err2, err, "should emit the exact error");
+            if (++count === 2)
+                test.end();
+        });
+        service2.doSomething({}, function(err2) {
+            test.equal(err2, err, "should return the exact error");
+            if (++count === 2)
+                test.end();
+        });
+    });
+
+    test.test(test.name + " - should catch errors within rpcImpl", function(test) {
+        var err = Error();
+        var service2 = MyService.create(function(method, requestData, callback) { throw err; });
         test.plan(2);
         var count = 0;
         service2.on("error", function(err2) {

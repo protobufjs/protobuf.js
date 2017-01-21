@@ -90,7 +90,7 @@
 
         // Variables
         "init-declarations": 0,             // because no-undef-init is on and we actually want undefineds
-        "no-catch-shadow": 1,
+        "no-catch-shadow": 0,               // no IE8 support anyway
         "no-label-var": 1,
         "no-restricted-globals": 1,
         "no-return-assign": 0,              // can make sense.

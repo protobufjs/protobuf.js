@@ -169,6 +169,7 @@ $root.Test1 = (function() {
     /**
      * Creates a Test1 message from a plain object. Also converts values to their respective internal types.
      * This is an alias of {@link Test1.fromObject}.
+     * @function
      * @param {Object.<string,*>} object Plain object
      * @returns {Test1} Test1
      */
@@ -320,6 +321,7 @@ $root.Test2 = (function() {
     /**
      * Creates a Test2 message from a plain object. Also converts values to their respective internal types.
      * This is an alias of {@link Test2.fromObject}.
+     * @function
      * @param {Object.<string,*>} object Plain object
      * @returns {Test2} Test2
      */

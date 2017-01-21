@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.6.0 (c) 2016, Daniel Wirtz
- * Compiled Fri, 20 Jan 2017 23:52:47 UTC
+ * Compiled Sat, 21 Jan 2017 18:41:01 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -892,6 +892,12 @@ module.exports = common;
  * @property {Object.<string,*>} google/protobuf/struct.proto Struct, Value, NullValue and ListValue
  * @property {Object.<string,*>} google/protobuf/timestamp.proto Timestamp
  * @property {Object.<string,*>} google/protobuf/wrappers.proto Wrappers
+ * @example
+ * // manually provides descriptor.proto (assumes google/protobuf/ namespace and .proto extension)
+ * protobuf.common("descriptor", descriptorJson);
+ * 
+ * // manually provides a custom definition (uses my.foo namespace)
+ * protobuf.common("my/foo/bar.proto", myFooBarJson);
  */
 function common(name, json) {
     if (!/\/|\./.test(name)) {
@@ -2119,6 +2125,14 @@ protobuf.build = "minimal";
  * Can also be used manually to make roots available accross modules.
  * @name roots
  * @type {Object.<string,Root>}
+ * @example
+ * // pbjs -r myroot -o compiled.js ...
+ * 
+ * // in another module:
+ * require("./compiled.js");
+ * 
+ * // in any subsequent module:
+ * var root = protobuf.roots["myroot"];
  */
 protobuf.roots = {};
 
@@ -4944,64 +4958,169 @@ Root._configure = function(_parse, _common) {
  */
 var rpc = exports;
 
+/**
+ * RPC implementation passed to {@link Service#create} performing a service request on network level, i.e. by utilizing http requests or websockets.
+ * @typedef RPCImpl
+ * @type {function}
+ * @param {Method|rpc.ServiceMethod} method Reflected or static method being called
+ * @param {Uint8Array} requestData Request data
+ * @param {RPCImplCallback} callback Callback function
+ * @returns {undefined}
+ * @example
+ * function rpcImpl(method, requestData, callback) {
+ *     if (protobuf.util.lcFirst(method.name) !== "myMethod") // compatible with static code
+ *         throw Error("no such method");
+ *     asynchronouslyObtainAResponse(requestData, function(err, responseData) {
+ *         callback(err, responseData);
+ *     });
+ * }
+ */
+
+/**
+ * Node-style callback as used by {@link RPCImpl}.
+ * @typedef RPCImplCallback
+ * @type {function}
+ * @param {?Error} error Error, if any, otherwise `null`
+ * @param {?Uint8Array} [response] Response data or `null` to signal end of stream, if there hasn't been an error
+ * @returns {undefined}
+ */
+
 rpc.Service = require(32);
 
 },{"32":32}],32:[function(require,module,exports){
 "use strict";
 module.exports = Service;
 
-var EventEmitter = require(39).EventEmitter;
+var util = require(39);
 
 /**
- * A service method callback as used by {@link ServiceMethod}.
- * @typedef ServiceMethodCallback
+ * A service method callback as used by {@link rpc.ServiceMethod|ServiceMethod}.
+ * 
+ * Differs from {@link RPCImplCallback} in that it is an actual callback of a service method which may not return `response = null`.
+ * @typedef rpc.ServiceMethodCallback
  * @type {function}
  * @param {?Error} error Error, if any
- * @param {?Message} [response] Response message or `null` if service has been terminated server-side
+ * @param {?Message} [response] Response message
  * @returns {undefined}
  */
 
 /**
- * A service method part of an {@link rpc.Service} as created by {@link Service.create}.
- * @typedef ServiceMethod
+ * A service method part of an {@link rpc.ServiceMethodMixin|ServiceMethodMixin} and thus {@link rpc.Service} as created by {@link Service.create}.
+ * @typedef rpc.ServiceMethod
  * @type {function}
  * @param {Message|Object} request Request message or plain object
- * @param {ServiceMethodCallback} [callback] Node-style callback called with the error, if any, and the response message
+ * @param {rpc.ServiceMethodCallback} [callback] Node-style callback called with the error, if any, and the response message
  * @returns {Promise<Message>} Promise if `callback` has been omitted, otherwise `undefined`
  */
 
 /**
  * A service method mixin.
- * @typedef ServiceMethodMixin
- * @type {Object.<string,ServiceMethod>}
+ * 
+ * When using TypeScript, mixed in service methods are only supported directly with a type definition of a static module (used with reflection). Otherwise, explicit casting is required.
+ * @typedef rpc.ServiceMethodMixin
+ * @type {Object.<string,rpc.ServiceMethod>}
+ * @example
+ * // Explicit casting with TypeScript
+ * (myRpcService["myMethod"] as protobuf.rpc.ServiceMethod)(...)
  */
-
-// Mixed in methods are not directly supported by TypeScript because they cannot be statically
-// typed. Instead, either use a TypeScript definition of a static module to work around it, or use:
-//
-//   (myService["myMethod"] as protobuf.ServiceMethod)(...)
-//
 
 /**
  * Constructs a new RPC service instance.
  * @classdesc An RPC service as returned by {@link Service#create}.
  * @exports rpc.Service
  * @extends util.EventEmitter
- * @augments ServiceMethodMixin
+ * @augments rpc.ServiceMethodMixin
  * @constructor
  * @param {RPCImpl} rpcImpl RPC implementation
+ * @param {boolean} [requestDelimited=false] Whether requests are length-delimited
+ * @param {boolean} [responseDelimited=false] Whether responses are length-delimited
  */
-function Service(rpcImpl) {
-    EventEmitter.call(this);
+function Service(rpcImpl, requestDelimited, responseDelimited) {
+
+    if (typeof rpcImpl !== "function")
+        throw TypeError("rpcImpl must be a function");
+
+    util.EventEmitter.call(this);
 
     /**
      * RPC implementation. Becomes `null` once the service is ended.
      * @type {?RPCImpl}
      */
-    this.$rpc = rpcImpl;
+    this.rpcImpl = rpcImpl;
+
+    /**
+     * Whether requests are length-delimited.
+     * @type {boolean}
+     */
+    this.requestDelimited = Boolean(requestDelimited);
+
+    /**
+     * Whether responses are length-delimited.
+     * @type {boolean}
+     */
+    this.responseDelimited = Boolean(responseDelimited);
 }
 
-(Service.prototype = Object.create(EventEmitter.prototype)).constructor = Service;
+(Service.prototype = Object.create(util.EventEmitter.prototype)).constructor = Service;
+
+/**
+ * Calls a service method through {@link rpc.Service#rpcImpl|rpcImpl}.
+ * @param {Method|rpc.ServiceMethod} method Reflected or static method
+ * @param {function} requestCtor Request constructor
+ * @param {function} responseCtor Response constructor
+ * @param {Message|Object} request Request message or plain object
+ * @param {rpc.ServiceMethodCallback} callback Service callback
+ * @returns {undefined}
+ */
+Service.prototype.rpcCall = function rpcCall(method, requestCtor, responseCtor, request, callback) {
+
+    if (!request)
+        throw TypeError("request must be specified");
+
+    var self = this;
+    if (!callback)
+        return util.asPromise(rpcCall, self, method, requestCtor, responseCtor, request);
+
+    if (!self.rpcImpl) {
+        setTimeout(function() { callback(Error("already ended")); }, 0);
+        return undefined;
+    }
+
+    try {
+        return self.rpcImpl(
+            method,
+            requestCtor[self.requestDelimited ? "encodeDelimited" : "encode"](request).finish(),
+            function rpcCallback(err, response) {
+
+                if (err) {
+                    self.emit("error", err, method);
+                    return callback(err);
+                }
+
+                if (response === null) {
+                    self.end(/* endedByRPC */ true);
+                    return undefined;
+                }
+
+                if (!(response instanceof responseCtor)) {
+                    try {
+                        response = responseCtor[self.responseDelimited ? "decodeDelimited" : "decode"](response);
+                    } catch (err) {
+                        self.emit("error", err, method);
+                        return callback("error", err);
+                    }
+                }
+
+                self.emit("data", response, method);
+                return callback(null, response);
+            }
+        );
+    } catch (err) {
+        self.emit("error", err, method);
+        setTimeout(function() { callback(err); }, 0);
+        return undefined;
+    }
+};
 
 /**
  * Ends this service and emits the `end` event.
@@ -5009,10 +5128,10 @@ function Service(rpcImpl) {
  * @returns {rpc.Service} `this`
  */
 Service.prototype.end = function end(endedByRPC) {
-    if (this.$rpc) {
+    if (this.rpcImpl) {
         if (!endedByRPC) // signal end to rpcImpl
-            this.$rpc(null, null, null);
-        this.$rpc = null;
+            this.rpcImpl(null, null, null);
+        this.rpcImpl = null;
         this.emit("end").off();
     }
     return this;
@@ -5166,70 +5285,20 @@ ServicePrototype.remove = function remove(object) {
 };
 
 /**
- * RPC implementation passed to {@link Service#create} performing a service request on network level, i.e. by utilizing http requests or websockets.
- * @typedef RPCImpl
- * @type {function}
- * @param {Method} method Reflected method being called
- * @param {Uint8Array} requestData Request data
- * @param {RPCCallback} callback Callback function
- * @returns {undefined}
- */
-
-/**
- * Node-style callback as used by {@link RPCImpl}.
- * @typedef RPCCallback
- * @type {function}
- * @param {?Error} error Error, if any, otherwise `null`
- * @param {?Uint8Array} [response] Response data or `null` to signal end of stream, if there hasn't been an error
- * @returns {undefined}
- */
-
-/**
  * Creates a runtime service using the specified rpc implementation.
- * @param {RPCImpl} rpcImpl {@link RPCImpl|RPC implementation}
+ * @param {RPCImpl} rpcImpl RPC implementation
  * @param {boolean} [requestDelimited=false] Whether requests are length-delimited
  * @param {boolean} [responseDelimited=false] Whether responses are length-delimited
  * @returns {rpc.Service} RPC service. Useful where requests and/or responses are streamed.
  */
 ServicePrototype.create = function create(rpcImpl, requestDelimited, responseDelimited) {
-    var rpcService = new rpc.Service(rpcImpl);
+    var rpcService = new rpc.Service(rpcImpl, requestDelimited, responseDelimited);
     this.methodsArray.forEach(function(method) {
-        rpcService[util.lcFirst(method.name)] = function callVirtual(request, /* optional */ callback) {
-            if (!request)
-                throw TypeError("request must be specified");
-            if (!callback)
-                return util.asPromise(callVirtual, this, request);
-            if (!rpcService.$rpc)
-                return callback(Error("already ended"));
-
-            // Calls the custom RPC implementation with the reflected method and binary request data
-            // and expects the rpc implementation to call its callback with the binary response data.
-            return rpcImpl(method, (requestDelimited
-                ? method.resolvedRequestType.encodeDelimited(request)
-                : method.resolvedRequestType.encode(request)
-            ).finish(), function rpcCallback(err, response) {
-                if (err) {
-                    rpcService.emit("error", err, method);
-                    return callback(err);
-                }
-                if (response === null) {
-                    rpcService.end(/* endedByRPC */ true);
-                    return undefined;
-                }
-                if (!(response instanceof method.resolvedResponseType.ctor)) {
-                    try {
-                        response = responseDelimited
-                            ? method.resolvedResponseType.decodeDelimited(response)
-                            : method.resolvedResponseType.decode(response);
-                    } catch (err2) {
-                        rpcService.emit("error", err2, method);
-                        return callback("error", err2);
-                    }
-                }
-                rpcService.emit("data", response, method);
-                return callback(null, response);
-            });
-        };
+        rpcService[util.lcFirst(method.resolve().name)] = util.codegen("r","c")("return this.rpcCall(m,q,s,r,c)").eof(util.lcFirst(method.name), {
+            m: method,
+            q: method.resolvedRequestType.ctor,
+            s: method.resolvedResponseType.ctor
+        });
     });
     return rpcService;
 };
@@ -6202,15 +6271,6 @@ util.safeProp = function safeProp(prop) {
 };
 
 /**
- * Converts the first character of a string to lower case.
- * @param {string} str String to convert
- * @returns {string} Converted string
- */
-util.lcFirst = function lcFirst(str) {
-    return str.charAt(0).toLowerCase() + str.substring(1);
-};
-
-/**
  * Converts the first character of a string to upper case.
  * @param {string} str String to convert
  * @returns {string} Converted string
@@ -6442,6 +6502,7 @@ util.EventEmitter = require(4);
 util.inquire      = require(7);
 util.utf8         = require(10);
 util.pool         = require(9);
+util.LongBits     = require(38);
 
 /**
  * An immuable empty array.
@@ -6543,8 +6604,6 @@ util.newBuffer = function newBuffer(sizeOrArray) {
  */
 util.Array = typeof Uint8Array !== "undefined" ? Uint8Array /* istanbul ignore next */ : Array;
 
-util.LongBits = require(38);
-
 /**
  * Long.js's Long class if available.
  * @type {?function(new: Long)}
@@ -6590,6 +6649,15 @@ util.merge = function merge(dst, src, ifNotSet) { // used by converters
 };
 
 /**
+ * Converts the first character of a string to lower case.
+ * @param {string} str String to convert
+ * @returns {string} Converted string
+ */
+util.lcFirst = function lcFirst(str) {
+    return str.charAt(0).toLowerCase() + str.substring(1);
+};
+
+/**
  * Builds a getter for a oneof's present field name.
  * @param {string[]} fieldNames Field names
  * @returns {function():string|undefined} Unbound getter
@@ -6599,6 +6667,7 @@ util.oneOfGetter = function getOneOf(fieldNames) {
     fieldNames.forEach(function(name) {
         fieldMap[name] = 1;
     });
+
     /**
      * @returns {string|undefined} Set field name, if any
      * @this Object
@@ -6617,6 +6686,7 @@ util.oneOfGetter = function getOneOf(fieldNames) {
  * @returns {function(?string):undefined} Unbound setter
  */
 util.oneOfSetter = function setOneOf(fieldNames) {
+
     /**
      * @param {string} name Field name
      * @returns {undefined}

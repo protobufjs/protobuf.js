@@ -38,15 +38,6 @@ util.safeProp = function safeProp(prop) {
 };
 
 /**
- * Converts the first character of a string to lower case.
- * @param {string} str String to convert
- * @returns {string} Converted string
- */
-util.lcFirst = function lcFirst(str) {
-    return str.charAt(0).toLowerCase() + str.substring(1);
-};
-
-/**
  * Converts the first character of a string to upper case.
  * @param {string} str String to convert
  * @returns {string} Converted string

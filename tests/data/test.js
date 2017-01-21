@@ -134,6 +134,7 @@ $root.jspb = (function() {
             /**
              * Creates an Empty message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link jspb.test.Empty.fromObject}.
+             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {jspb.test.Empty} Empty
              */
@@ -322,6 +323,7 @@ $root.jspb = (function() {
             /**
              * Creates an EnumContainer message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link jspb.test.EnumContainer.fromObject}.
+             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {jspb.test.EnumContainer} EnumContainer
              */
@@ -525,6 +527,7 @@ $root.jspb = (function() {
             /**
              * Creates a Simple1 message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link jspb.test.Simple1.fromObject}.
+             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {jspb.test.Simple1} Simple1
              */
@@ -723,6 +726,7 @@ $root.jspb = (function() {
             /**
              * Creates a Simple2 message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link jspb.test.Simple2.fromObject}.
+             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {jspb.test.Simple2} Simple2
              */
@@ -934,6 +938,7 @@ $root.jspb = (function() {
             /**
              * Creates a SpecialCases message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link jspb.test.SpecialCases.fromObject}.
+             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {jspb.test.SpecialCases} SpecialCases
              */
@@ -1207,6 +1212,7 @@ $root.jspb = (function() {
             /**
              * Creates an OptionalFields message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link jspb.test.OptionalFields.fromObject}.
+             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {jspb.test.OptionalFields} OptionalFields
              */
@@ -1386,6 +1392,7 @@ $root.jspb = (function() {
                 /**
                  * Creates a Nested message from a plain object. Also converts values to their respective internal types.
                  * This is an alias of {@link jspb.test.OptionalFields.Nested.fromObject}.
+                 * @function
                  * @param {Object.<string,*>} object Plain object
                  * @returns {jspb.test.OptionalFields.Nested} Nested
                  */
@@ -1736,6 +1743,7 @@ $root.jspb = (function() {
             /**
              * Creates a HasExtensions message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link jspb.test.HasExtensions.fromObject}.
+             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {jspb.test.HasExtensions} HasExtensions
              */
@@ -2030,6 +2038,7 @@ $root.jspb = (function() {
             /**
              * Creates a Complex message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link jspb.test.Complex.fromObject}.
+             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {jspb.test.Complex} Complex
              */
@@ -2207,6 +2216,7 @@ $root.jspb = (function() {
                 /**
                  * Creates a Nested message from a plain object. Also converts values to their respective internal types.
                  * This is an alias of {@link jspb.test.Complex.Nested.fromObject}.
+                 * @function
                  * @param {Object.<string,*>} object Plain object
                  * @returns {jspb.test.Complex.Nested} Nested
                  */
@@ -2354,6 +2364,7 @@ $root.jspb = (function() {
             /**
              * Creates an OuterMessage message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link jspb.test.OuterMessage.fromObject}.
+             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {jspb.test.OuterMessage} OuterMessage
              */
@@ -2505,6 +2516,7 @@ $root.jspb = (function() {
                 /**
                  * Creates a Complex message from a plain object. Also converts values to their respective internal types.
                  * This is an alias of {@link jspb.test.OuterMessage.Complex.fromObject}.
+                 * @function
                  * @param {Object.<string,*>} object Plain object
                  * @returns {jspb.test.OuterMessage.Complex} Complex
                  */
@@ -2669,6 +2681,7 @@ $root.jspb = (function() {
             /**
              * Creates an IsExtension message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link jspb.test.IsExtension.fromObject}.
+             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {jspb.test.IsExtension} IsExtension
              */
@@ -2813,6 +2826,7 @@ $root.jspb = (function() {
             /**
              * Creates an IndirectExtension message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link jspb.test.IndirectExtension.fromObject}.
+             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {jspb.test.IndirectExtension} IndirectExtension
              */
@@ -3075,6 +3089,7 @@ $root.jspb = (function() {
             /**
              * Creates a DefaultValues message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link jspb.test.DefaultValues.fromObject}.
+             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {jspb.test.DefaultValues} DefaultValues
              */
@@ -3421,6 +3436,7 @@ $root.jspb = (function() {
             /**
              * Creates a FloatingPointFields message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link jspb.test.FloatingPointFields.fromObject}.
+             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {jspb.test.FloatingPointFields} FloatingPointFields
              */
@@ -3730,6 +3746,7 @@ $root.jspb = (function() {
             /**
              * Creates a TestClone message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link jspb.test.TestClone.fromObject}.
+             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {jspb.test.TestClone} TestClone
              */
@@ -3911,6 +3928,7 @@ $root.jspb = (function() {
             /**
              * Creates a CloneExtension message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link jspb.test.CloneExtension.fromObject}.
+             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {jspb.test.CloneExtension} CloneExtension
              */
@@ -4192,6 +4210,7 @@ $root.jspb = (function() {
             /**
              * Creates a TestGroup message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link jspb.test.TestGroup.fromObject}.
+             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {jspb.test.TestGroup} TestGroup
              */
@@ -4403,6 +4422,7 @@ $root.jspb = (function() {
                 /**
                  * Creates a RepeatedGroup message from a plain object. Also converts values to their respective internal types.
                  * This is an alias of {@link jspb.test.TestGroup.RepeatedGroup.fromObject}.
+                 * @function
                  * @param {Object.<string,*>} object Plain object
                  * @returns {jspb.test.TestGroup.RepeatedGroup} RepeatedGroup
                  */
@@ -4571,6 +4591,7 @@ $root.jspb = (function() {
                 /**
                  * Creates a RequiredGroup message from a plain object. Also converts values to their respective internal types.
                  * This is an alias of {@link jspb.test.TestGroup.RequiredGroup.fromObject}.
+                 * @function
                  * @param {Object.<string,*>} object Plain object
                  * @returns {jspb.test.TestGroup.RequiredGroup} RequiredGroup
                  */
@@ -4732,6 +4753,7 @@ $root.jspb = (function() {
                 /**
                  * Creates an OptionalGroup message from a plain object. Also converts values to their respective internal types.
                  * This is an alias of {@link jspb.test.TestGroup.OptionalGroup.fromObject}.
+                 * @function
                  * @param {Object.<string,*>} object Plain object
                  * @returns {jspb.test.TestGroup.OptionalGroup} OptionalGroup
                  */
@@ -4906,6 +4928,7 @@ $root.jspb = (function() {
             /**
              * Creates a TestGroup1 message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link jspb.test.TestGroup1.fromObject}.
+             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {jspb.test.TestGroup1} TestGroup1
              */
@@ -5084,6 +5107,7 @@ $root.jspb = (function() {
             /**
              * Creates a TestReservedNames message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link jspb.test.TestReservedNames.fromObject}.
+             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {jspb.test.TestReservedNames} TestReservedNames
              */
@@ -5232,6 +5256,7 @@ $root.jspb = (function() {
             /**
              * Creates a TestReservedNamesExtension message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link jspb.test.TestReservedNamesExtension.fromObject}.
+             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {jspb.test.TestReservedNamesExtension} TestReservedNamesExtension
              */
@@ -5611,6 +5636,7 @@ $root.jspb = (function() {
             /**
              * Creates a TestMessageWithOneof message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link jspb.test.TestMessageWithOneof.fromObject}.
+             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {jspb.test.TestMessageWithOneof} TestMessageWithOneof
              */
@@ -5823,6 +5849,7 @@ $root.jspb = (function() {
             /**
              * Creates a TestEndsWithBytes message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link jspb.test.TestEndsWithBytes.fromObject}.
+             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {jspb.test.TestEndsWithBytes} TestEndsWithBytes
              */
@@ -6402,6 +6429,7 @@ $root.jspb = (function() {
             /**
              * Creates a TestMapFieldsNoBinary message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link jspb.test.TestMapFieldsNoBinary.fromObject}.
+             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {jspb.test.TestMapFieldsNoBinary} TestMapFieldsNoBinary
              */
@@ -6652,6 +6680,7 @@ $root.jspb = (function() {
             /**
              * Creates a MapValueMessageNoBinary message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link jspb.test.MapValueMessageNoBinary.fromObject}.
+             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {jspb.test.MapValueMessageNoBinary} MapValueMessageNoBinary
              */
@@ -6796,6 +6825,7 @@ $root.jspb = (function() {
             /**
              * Creates a Deeply message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link jspb.test.Deeply.fromObject}.
+             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {jspb.test.Deeply} Deeply
              */
@@ -6930,6 +6960,7 @@ $root.jspb = (function() {
                 /**
                  * Creates a Nested message from a plain object. Also converts values to their respective internal types.
                  * This is an alias of {@link jspb.test.Deeply.Nested.fromObject}.
+                 * @function
                  * @param {Object.<string,*>} object Plain object
                  * @returns {jspb.test.Deeply.Nested} Nested
                  */
@@ -7081,6 +7112,7 @@ $root.jspb = (function() {
                     /**
                      * Creates a Message message from a plain object. Also converts values to their respective internal types.
                      * This is an alias of {@link jspb.test.Deeply.Nested.Message.fromObject}.
+                     * @function
                      * @param {Object.<string,*>} object Plain object
                      * @returns {jspb.test.Deeply.Nested.Message} Message
                      */
@@ -7294,6 +7326,7 @@ $root.google = (function() {
             /**
              * Creates a FileDescriptorSet message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link google.protobuf.FileDescriptorSet.fromObject}.
+             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {google.protobuf.FileDescriptorSet} FileDescriptorSet
              */
@@ -7769,6 +7802,7 @@ $root.google = (function() {
             /**
              * Creates a FileDescriptorProto message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link google.protobuf.FileDescriptorProto.fromObject}.
+             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {google.protobuf.FileDescriptorProto} FileDescriptorProto
              */
@@ -8279,6 +8313,7 @@ $root.google = (function() {
             /**
              * Creates a DescriptorProto message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link google.protobuf.DescriptorProto.fromObject}.
+             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {google.protobuf.DescriptorProto} DescriptorProto
              */
@@ -8507,6 +8542,7 @@ $root.google = (function() {
                 /**
                  * Creates an ExtensionRange message from a plain object. Also converts values to their respective internal types.
                  * This is an alias of {@link google.protobuf.DescriptorProto.ExtensionRange.fromObject}.
+                 * @function
                  * @param {Object.<string,*>} object Plain object
                  * @returns {google.protobuf.DescriptorProto.ExtensionRange} ExtensionRange
                  */
@@ -8688,6 +8724,7 @@ $root.google = (function() {
                 /**
                  * Creates a ReservedRange message from a plain object. Also converts values to their respective internal types.
                  * This is an alias of {@link google.protobuf.DescriptorProto.ReservedRange.fromObject}.
+                 * @function
                  * @param {Object.<string,*>} object Plain object
                  * @returns {google.protobuf.DescriptorProto.ReservedRange} ReservedRange
                  */
@@ -9123,6 +9160,7 @@ $root.google = (function() {
             /**
              * Creates a FieldDescriptorProto message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link google.protobuf.FieldDescriptorProto.fromObject}.
+             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {google.protobuf.FieldDescriptorProto} FieldDescriptorProto
              */
@@ -9404,6 +9442,7 @@ $root.google = (function() {
             /**
              * Creates an OneofDescriptorProto message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link google.protobuf.OneofDescriptorProto.fromObject}.
+             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {google.protobuf.OneofDescriptorProto} OneofDescriptorProto
              */
@@ -9629,6 +9668,7 @@ $root.google = (function() {
             /**
              * Creates an EnumDescriptorProto message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link google.protobuf.EnumDescriptorProto.fromObject}.
+             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {google.protobuf.EnumDescriptorProto} EnumDescriptorProto
              */
@@ -9843,6 +9883,7 @@ $root.google = (function() {
             /**
              * Creates an EnumValueDescriptorProto message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link google.protobuf.EnumValueDescriptorProto.fromObject}.
+             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {google.protobuf.EnumValueDescriptorProto} EnumValueDescriptorProto
              */
@@ -10071,6 +10112,7 @@ $root.google = (function() {
             /**
              * Creates a ServiceDescriptorProto message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link google.protobuf.ServiceDescriptorProto.fromObject}.
+             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {google.protobuf.ServiceDescriptorProto} ServiceDescriptorProto
              */
@@ -10333,6 +10375,7 @@ $root.google = (function() {
             /**
              * Creates a MethodDescriptorProto message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link google.protobuf.MethodDescriptorProto.fromObject}.
+             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {google.protobuf.MethodDescriptorProto} MethodDescriptorProto
              */
@@ -10775,6 +10818,7 @@ $root.google = (function() {
             /**
              * Creates a FileOptions message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link google.protobuf.FileOptions.fromObject}.
+             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {google.protobuf.FileOptions} FileOptions
              */
@@ -11087,6 +11131,7 @@ $root.google = (function() {
             /**
              * Creates a MessageOptions message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link google.protobuf.MessageOptions.fromObject}.
+             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {google.protobuf.MessageOptions} MessageOptions
              */
@@ -11421,6 +11466,7 @@ $root.google = (function() {
             /**
              * Creates a FieldOptions message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link google.protobuf.FieldOptions.fromObject}.
+             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {google.protobuf.FieldOptions} FieldOptions
              */
@@ -11663,6 +11709,7 @@ $root.google = (function() {
             /**
              * Creates an OneofOptions message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link google.protobuf.OneofOptions.fromObject}.
+             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {google.protobuf.OneofOptions} OneofOptions
              */
@@ -11898,6 +11945,7 @@ $root.google = (function() {
             /**
              * Creates an EnumOptions message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link google.protobuf.EnumOptions.fromObject}.
+             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {google.protobuf.EnumOptions} EnumOptions
              */
@@ -12111,6 +12159,7 @@ $root.google = (function() {
             /**
              * Creates an EnumValueOptions message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link google.protobuf.EnumValueOptions.fromObject}.
+             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {google.protobuf.EnumValueOptions} EnumValueOptions
              */
@@ -12317,6 +12366,7 @@ $root.google = (function() {
             /**
              * Creates a ServiceOptions message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link google.protobuf.ServiceOptions.fromObject}.
+             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {google.protobuf.ServiceOptions} ServiceOptions
              */
@@ -12558,6 +12608,7 @@ $root.google = (function() {
             /**
              * Creates a MethodOptions message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link google.protobuf.MethodOptions.fromObject}.
+             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {google.protobuf.MethodOptions} MethodOptions
              */
@@ -12883,6 +12934,7 @@ $root.google = (function() {
             /**
              * Creates an UninterpretedOption message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link google.protobuf.UninterpretedOption.fromObject}.
+             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {google.protobuf.UninterpretedOption} UninterpretedOption
              */
@@ -13090,6 +13142,7 @@ $root.google = (function() {
                 /**
                  * Creates a NamePart message from a plain object. Also converts values to their respective internal types.
                  * This is an alias of {@link google.protobuf.UninterpretedOption.NamePart.fromObject}.
+                 * @function
                  * @param {Object.<string,*>} object Plain object
                  * @returns {google.protobuf.UninterpretedOption.NamePart} NamePart
                  */
@@ -13280,6 +13333,7 @@ $root.google = (function() {
             /**
              * Creates a SourceCodeInfo message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link google.protobuf.SourceCodeInfo.fromObject}.
+             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {google.protobuf.SourceCodeInfo} SourceCodeInfo
              */
@@ -13557,6 +13611,7 @@ $root.google = (function() {
                 /**
                  * Creates a Location message from a plain object. Also converts values to their respective internal types.
                  * This is an alias of {@link google.protobuf.SourceCodeInfo.Location.fromObject}.
+                 * @function
                  * @param {Object.<string,*>} object Plain object
                  * @returns {google.protobuf.SourceCodeInfo.Location} Location
                  */
@@ -13767,6 +13822,7 @@ $root.google = (function() {
             /**
              * Creates a GeneratedCodeInfo message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link google.protobuf.GeneratedCodeInfo.fromObject}.
+             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {google.protobuf.GeneratedCodeInfo} GeneratedCodeInfo
              */
@@ -13996,6 +14052,7 @@ $root.google = (function() {
                 /**
                  * Creates an Annotation message from a plain object. Also converts values to their respective internal types.
                  * This is an alias of {@link google.protobuf.GeneratedCodeInfo.Annotation.fromObject}.
+                 * @function
                  * @param {Object.<string,*>} object Plain object
                  * @returns {google.protobuf.GeneratedCodeInfo.Annotation} Annotation
                  */

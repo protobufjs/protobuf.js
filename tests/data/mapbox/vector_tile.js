@@ -164,6 +164,7 @@ $root.vector_tile = (function() {
         /**
          * Creates a Tile message from a plain object. Also converts values to their respective internal types.
          * This is an alias of {@link vector_tile.Tile.fromObject}.
+         * @function
          * @param {Object.<string,*>} object Plain object
          * @returns {vector_tile.Tile} Tile
          */
@@ -462,6 +463,7 @@ $root.vector_tile = (function() {
             /**
              * Creates a Value message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link vector_tile.Tile.Value.fromObject}.
+             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {vector_tile.Tile.Value} Value
              */
@@ -786,6 +788,7 @@ $root.vector_tile = (function() {
             /**
              * Creates a Feature message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link vector_tile.Tile.Feature.fromObject}.
+             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {vector_tile.Tile.Feature} Feature
              */
@@ -1100,6 +1103,7 @@ $root.vector_tile = (function() {
             /**
              * Creates a Layer message from a plain object. Also converts values to their respective internal types.
              * This is an alias of {@link vector_tile.Tile.Layer.fromObject}.
+             * @function
              * @param {Object.<string,*>} object Plain object
              * @returns {vector_tile.Tile.Layer} Layer
              */
