@@ -27,8 +27,8 @@ function genTypePartial(gen, field, fieldIndex, ref) {
  */
 function encoder(mtype) {
     /* eslint-disable no-unexpected-multiline, block-scoped-var, no-redeclare */
-    var fields = mtype.fieldsArray;
-    var oneofs = mtype.oneofsArray;
+    var fields = mtype.fieldsArray,
+        oneofs = mtype.oneofsArray;
     var gen = util.codegen("m", "w")
     ("if(!w)")
         ("w=Writer.create()");
@@ -108,9 +108,8 @@ function encoder(mtype) {
     for (var i = 0; i < oneofs.length; ++i) {
         var oneof = oneofs[i]; gen
         ("switch(%s){", "m" + util.safeProp(oneof.name));
-        var oneofFields = oneof.fieldsArray;
-        for (var j = 0; j < oneofFields.length; ++j) {
-            var field    = oneofFields[j],
+        for (var j = 0; j < /* initializes */ oneof.fieldsArray.length; ++j) {
+            var field    = oneof._fieldsArray[j],
                 type     = field.resolvedType instanceof Enum ? "uint32" : field.type,
                 wireType = types.basic[type];
                 ref      = "m" + util.safeProp(field.name); gen

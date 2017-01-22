@@ -3,10 +3,7 @@ module.exports = Enum;
 
 // extends ReflectionObject
 var ReflectionObject = require("./object");
-/** @alias Enum.prototype */
-var EnumPrototype = ReflectionObject.extend(Enum);
-
-Enum.className = "Enum";
+((Enum.prototype = Object.create(ReflectionObject.prototype)).constructor = Enum).className = "Enum";
 
 var util = require("./util");
 
@@ -44,10 +41,9 @@ function Enum(name, values, options) {
     // compatible enum. This is used by pbts to write actual enum definitions that work for
     // static and reflection code alike instead of emitting generic object definitions.
 
-    var self = this;
-    Object.keys(values || {}).forEach(function(key) {
-        self.valuesById[self.values[key] = values[key]] = key;
-    });
+    if (values)
+        for (var keys = Object.keys(values), i = 0; i < keys.length; ++i)
+            this.valuesById[ this.values[keys[i]] = values[keys[i]] ] = keys[i];
 }
 
 /**
@@ -73,7 +69,7 @@ Enum.fromJSON = function fromJSON(name, json) {
 /**
  * @override
  */
-EnumPrototype.toJSON = function toJSON() {
+Enum.prototype.toJSON = function toJSON() {
     return {
         options : this.options,
         values  : this.values
@@ -89,7 +85,7 @@ EnumPrototype.toJSON = function toJSON() {
  * @throws {TypeError} If arguments are invalid
  * @throws {Error} If there is already a value with this name or id
  */
-EnumPrototype.add = function(name, id, comment) {
+Enum.prototype.add = function(name, id, comment) {
 
     if (!util.isString(name))
         throw TypeError("name must be a string");
@@ -116,7 +112,7 @@ EnumPrototype.add = function(name, id, comment) {
  * @throws {TypeError} If arguments are invalid
  * @throws {Error} If `name` is not a name of this enum
  */
-EnumPrototype.remove = function(name) {
+Enum.prototype.remove = function(name) {
 
     if (!util.isString(name))
         throw TypeError("name must be a string");

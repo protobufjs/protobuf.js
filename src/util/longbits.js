@@ -37,9 +37,6 @@ function LongBits(lo, hi) { // make sure to always call this with unsigned 32bit
     this.hi = hi;
 }
 
-/** @alias util.LongBits.prototype */
-var LongBitsPrototype = LongBits.prototype;
-
 /**
  * Zero bits.
  * @memberof util.LongBits
@@ -106,7 +103,7 @@ LongBits.from = function from(value) {
  * @param {boolean} [unsigned=false] Whether unsigned or not
  * @returns {number} Possibly unsafe number
  */
-LongBitsPrototype.toNumber = function toNumber(unsigned) {
+LongBits.prototype.toNumber = function toNumber(unsigned) {
     if (!unsigned && this.hi >>> 31) {
         var lo = ~this.lo + 1 >>> 0,
             hi = ~this.hi     >>> 0;
@@ -122,7 +119,7 @@ LongBitsPrototype.toNumber = function toNumber(unsigned) {
  * @param {boolean} [unsigned=false] Whether unsigned or not
  * @returns {Long} Long
  */
-LongBitsPrototype.toLong = function toLong(unsigned) {
+LongBits.prototype.toLong = function toLong(unsigned) {
     return util.Long
         ? new util.Long(this.lo | 0, this.hi | 0, Boolean(unsigned))
         /* istanbul ignore next */
@@ -156,7 +153,7 @@ LongBits.fromHash = function fromHash(hash) {
  * Converts this long bits to a 8 characters long hash.
  * @returns {string} Hash
  */
-LongBitsPrototype.toHash = function toHash() {
+LongBits.prototype.toHash = function toHash() {
     return String.fromCharCode(
         this.lo        & 255,
         this.lo >>> 8  & 255,
@@ -173,7 +170,7 @@ LongBitsPrototype.toHash = function toHash() {
  * Zig-zag encodes this long bits.
  * @returns {util.LongBits} `this`
  */
-LongBitsPrototype.zzEncode = function zzEncode() {
+LongBits.prototype.zzEncode = function zzEncode() {
     var mask =   this.hi >> 31;
     this.hi  = ((this.hi << 1 | this.lo >>> 31) ^ mask) >>> 0;
     this.lo  = ( this.lo << 1                   ^ mask) >>> 0;
@@ -184,7 +181,7 @@ LongBitsPrototype.zzEncode = function zzEncode() {
  * Zig-zag decodes this long bits.
  * @returns {util.LongBits} `this`
  */
-LongBitsPrototype.zzDecode = function zzDecode() {
+LongBits.prototype.zzDecode = function zzDecode() {
     var mask = -(this.lo & 1);
     this.lo  = ((this.lo >>> 1 | this.hi << 31) ^ mask) >>> 0;
     this.hi  = ( this.hi >>> 1                  ^ mask) >>> 0;
@@ -195,7 +192,7 @@ LongBitsPrototype.zzDecode = function zzDecode() {
  * Calculates the length of this longbits when encoded as a varint.
  * @returns {number} Length
  */
-LongBitsPrototype.length = function length() {
+LongBits.prototype.length = function length() {
     var part0 =  this.lo,
         part1 = (this.lo >>> 28 | this.hi << 4) >>> 0,
         part2 =  this.hi >>> 24;

@@ -3,9 +3,7 @@ module.exports = BufferWriter;
 
 // extends Writer
 var Writer = require("./writer");
-/** @alias BufferWriter.prototype */
-var BufferWriterPrototype = BufferWriter.prototype = Object.create(Writer.prototype);
-BufferWriterPrototype.constructor = BufferWriter;
+(BufferWriter.prototype = Object.create(Writer.prototype)).constructor = BufferWriter;
 
 var util = require("./util/minimal");
 
@@ -46,7 +44,7 @@ var writeBytesBuffer = Buffer && Buffer.prototype instanceof Uint8Array && Buffe
 /**
  * @override
  */
-BufferWriterPrototype.bytes = function write_bytes_buffer(value) {
+BufferWriter.prototype.bytes = function write_bytes_buffer(value) {
     if (typeof value === "string")
         value = Buffer.from(value, "base64"); // polyfilled
     var len = value.length >>> 0;
@@ -66,7 +64,7 @@ function writeStringBuffer(val, buf, pos) {
 /**
  * @override
  */
-BufferWriterPrototype.string = function write_string_buffer(value) {
+BufferWriter.prototype.string = function write_string_buffer(value) {
     var len = Buffer.byteLength(value);
     this.uint32(len);
     if (len)

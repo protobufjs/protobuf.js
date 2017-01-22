@@ -1,10 +1,9 @@
 "use strict";
 module.exports = ReflectionObject;
 
-var util = require("./util");
-
 ReflectionObject.className = "ReflectionObject";
-ReflectionObject.extend = util.extend;
+
+var util = require("./util");
 
 var Root; // cyclic
 
@@ -55,10 +54,7 @@ function ReflectionObject(name, options) {
     this.comment = null;
 }
 
-/** @alias ReflectionObject.prototype */
-var ReflectionObjectPrototype = ReflectionObject.prototype;
-
-Object.defineProperties(ReflectionObjectPrototype, {
+Object.defineProperties(ReflectionObject.prototype, {
 
     /**
      * Reference to the root namespace.
@@ -99,7 +95,7 @@ Object.defineProperties(ReflectionObjectPrototype, {
  * @returns {Object.<string,*>} JSON object
  * @abstract
  */
-ReflectionObjectPrototype.toJSON = /* istanbul ignore next */ function toJSON() {
+ReflectionObject.prototype.toJSON = /* istanbul ignore next */ function toJSON() {
     throw Error(); // not implemented, shouldn't happen
 };
 
@@ -108,7 +104,7 @@ ReflectionObjectPrototype.toJSON = /* istanbul ignore next */ function toJSON() 
  * @param {ReflectionObject} parent Parent added to
  * @returns {undefined}
  */
-ReflectionObjectPrototype.onAdd = function onAdd(parent) {
+ReflectionObject.prototype.onAdd = function onAdd(parent) {
     if (this.parent && this.parent !== parent)
         this.parent.remove(this);
     this.parent = parent;
@@ -125,7 +121,7 @@ ReflectionObjectPrototype.onAdd = function onAdd(parent) {
  * @param {ReflectionObject} parent Parent removed from
  * @returns {undefined}
  */
-ReflectionObjectPrototype.onRemove = function onRemove(parent) {
+ReflectionObject.prototype.onRemove = function onRemove(parent) {
 
     /* istanbul ignore next */
     if (!Root)
@@ -142,7 +138,7 @@ ReflectionObjectPrototype.onRemove = function onRemove(parent) {
  * Resolves this objects type references.
  * @returns {ReflectionObject} `this`
  */
-ReflectionObjectPrototype.resolve = function resolve() {
+ReflectionObject.prototype.resolve = function resolve() {
     if (this.resolved)
         return this;
 
@@ -160,7 +156,7 @@ ReflectionObjectPrototype.resolve = function resolve() {
  * @param {string} name Option name
  * @returns {*} Option value or `undefined` if not set
  */
-ReflectionObjectPrototype.getOption = function getOption(name) {
+ReflectionObject.prototype.getOption = function getOption(name) {
     if (this.options)
         return this.options[name];
     return undefined;
@@ -173,7 +169,7 @@ ReflectionObjectPrototype.getOption = function getOption(name) {
  * @param {boolean} [ifNotSet] Sets the option only if it isn't currently set
  * @returns {ReflectionObject} `this`
  */
-ReflectionObjectPrototype.setOption = function setOption(name, value, ifNotSet) {
+ReflectionObject.prototype.setOption = function setOption(name, value, ifNotSet) {
     if (!ifNotSet || !this.options || this.options[name] === undefined)
         (this.options || (this.options = {}))[name] = value;
     return this;
@@ -185,11 +181,10 @@ ReflectionObjectPrototype.setOption = function setOption(name, value, ifNotSet) 
  * @param {boolean} [ifNotSet] Sets an option only if it isn't currently set
  * @returns {ReflectionObject} `this`
  */
-ReflectionObjectPrototype.setOptions = function setOptions(options, ifNotSet) {
+ReflectionObject.prototype.setOptions = function setOptions(options, ifNotSet) {
     if (options)
-        Object.keys(options).forEach(function(name) {
-            this.setOption(name, options[name], ifNotSet);
-        }, this);
+        for (var keys = Object.keys(options), i = 0; i < keys.length; ++i)
+            this.setOption(keys[i], options[keys[i]], ifNotSet);
     return this;
 };
 
@@ -197,7 +192,7 @@ ReflectionObjectPrototype.setOptions = function setOptions(options, ifNotSet) {
  * Converts this instance to its string representation.
  * @returns {string} Class name[, space, full name]
  */
-ReflectionObjectPrototype.toString = function toString() {
+ReflectionObject.prototype.toString = function toString() {
     var className = this.constructor.className,
         fullName  = this.fullName;
     if (fullName.length)

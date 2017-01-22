@@ -3,9 +3,7 @@ module.exports = BufferReader;
 
 // extends Reader
 var Reader = require("./reader");
-/** @alias BufferReader.prototype */
-var BufferReaderPrototype = BufferReader.prototype = Object.create(Reader.prototype);
-BufferReaderPrototype.constructor = BufferReader;
+(BufferReader.prototype = Object.create(Reader.prototype)).constructor = BufferReader;
 
 var util = require("./util/minimal");
 
@@ -22,12 +20,12 @@ function BufferReader(buffer) {
 
 /* istanbul ignore else */
 if (util.Buffer)
-    BufferReaderPrototype._slice = util.Buffer.prototype.slice;
+    BufferReader.prototype._slice = util.Buffer.prototype.slice;
 
 /**
  * @override
  */
-BufferReaderPrototype.string = function read_string_buffer() {
+BufferReader.prototype.string = function read_string_buffer() {
     var len = this.uint32(); // modifies pos
     return this.buf.utf8Slice(this.pos, this.pos = Math.min(this.pos + len, this.len));
 };

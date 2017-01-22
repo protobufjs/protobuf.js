@@ -26,48 +26,50 @@ function Class(type, ctor) {
             throw TypeError("ctor must be a function");
     } else
         // create named constructor functions (codegen is required anyway)
-        ctor = util.codegen("p")("return ctor.call(this,p)").eof(type.name, {
-            ctor: Message
+        ctor = util.codegen("p")("return c.call(this,p)").eof(type.name, {
+            c: Message
         });
 
     // Let's pretend...
     ctor.constructor = Class;
 
     // new Class() -> Message.prototype
-    var prototype = ctor.prototype = new Message();
-    prototype.constructor = ctor;
+    (ctor.prototype = new Message()).constructor = ctor;
 
     // Static methods on Message are instance methods on Class and vice versa
     util.merge(ctor, Message, true);
 
     // Classes and messages reference their reflected type
     ctor.$type = type;
-    prototype.$type = type;
+    ctor.prototype.$type = type;
 
     // Messages have non-enumerable default values on their prototype
-    type.fieldsArray.forEach(function(field) {
+    var i = 0;
+    for (; i < /* initializes */ type.fieldsArray.length; ++i) {
         // objects on the prototype must be immmutable. users must assign a new object instance and
         // cannot use Array#push on empty arrays on the prototype for example, as this would modify
         // the value on the prototype for ALL messages of this type. Hence, these objects are frozen.
-        prototype[field.name] = Array.isArray(field.resolve().defaultValue)
+        ctor.prototype[type._fieldsArray[i].name] = Array.isArray(type._fieldsArray[i].resolve().defaultValue)
             ? util.emptyArray
-            : util.isObject(field.defaultValue) && !field.long
+            : util.isObject(type._fieldsArray[i].defaultValue) && !type._fieldsArray[i].long
               ? util.emptyObject
-              : field.defaultValue;
-    });
+              : type._fieldsArray[i].defaultValue;
+    }
 
     // Messages have non-enumerable getters and setters for each virtual oneof field
-    type.oneofsArray.forEach(function(oneof) {
-        Object.defineProperty(prototype, oneof.resolve().name, {
-            get: util.oneOfGetter(oneof.oneof),
-            set: util.oneOfSetter(oneof.oneof)
-        });
-    });
+    var ctorProperties = {};
+    for (i = 0; i < /* initializes */ type.oneofsArray.length; ++i)
+        ctorProperties[type._oneofsArray[i].resolve().name] = {
+            get: util.oneOfGetter(type._oneofsArray[i].oneof),
+            set: util.oneOfSetter(type._oneofsArray[i].oneof)
+        };
+    if (i)
+        Object.defineProperties(ctor.prototype, ctorProperties);
 
     // Register
     type.ctor = ctor;
 
-    return prototype;
+    return ctor.prototype;
 }
 
 /**

@@ -6,7 +6,7 @@ var Root = protobuf.Root;
 
 var def = {
     nested: {},
-    options: undefined
+    options: { javaPackage: "com.something" }
 };
 
 tape.test("reflected roots", function(test) {

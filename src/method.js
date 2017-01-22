@@ -3,10 +3,7 @@ module.exports = Method;
 
 // extends ReflectionObject
 var ReflectionObject = require("./object");
-/** @alias Method.prototype */
-var MethodPrototype = ReflectionObject.extend(Method);
-
-Method.className = "Method";
+((Method.prototype = Object.create(ReflectionObject.prototype)).constructor = Method).className = "Method";
 
 var Type = require("./type"),
     util = require("./util");
@@ -25,6 +22,7 @@ var Type = require("./type"),
  * @param {Object.<string,*>} [options] Declared options
  */
 function Method(name, type, requestType, responseType, requestStream, responseStream, options) {
+
     /* istanbul ignore next */
     if (util.isObject(requestStream)) {
         options = requestStream;
@@ -113,7 +111,7 @@ Method.fromJSON = function fromJSON(name, json) {
 /**
  * @override
  */
-MethodPrototype.toJSON = function toJSON() {
+Method.prototype.toJSON = function toJSON() {
     return {
         type           : this.type !== "rpc" && /* istanbul ignore next */ this.type || undefined,
         requestType    : this.requestType,
@@ -127,7 +125,7 @@ MethodPrototype.toJSON = function toJSON() {
 /**
  * @override
  */
-MethodPrototype.resolve = function resolve() {
+Method.prototype.resolve = function resolve() {
 
     /* istanbul ignore if */
     if (this.resolved)

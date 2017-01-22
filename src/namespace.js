@@ -3,10 +3,7 @@ module.exports = Namespace;
 
 // extends ReflectionObject
 var ReflectionObject = require("./object");
-/** @alias NamespaceBase.prototype */
-var NamespacePrototype = ReflectionObject.extend(Namespace);
-
-Namespace.className = "Namespace";
+((Namespace.prototype = Object.create(ReflectionObject.prototype)).constructor = Namespace).className = "Namespace";
 
 var Enum    = require("./enum"),
     Field   = require("./field"),
@@ -15,21 +12,11 @@ var Enum    = require("./enum"),
 var Type,    // cyclic
     Service; // cyclic
 
-var nestedTypes, // contains cyclics
-    nestedError;
-
-function initNested() {
-
-    /* istanbul ignore next */
-    if (!Type)
-        Type = require("./type");
-    /* istanbul ignore next */
-    if (!Service)
-        Service = require("./service");
-
-    nestedTypes = [ Enum, Type, Service, Field, Namespace ];
-    nestedError = "one of " + nestedTypes.map(function(ctor) { return ctor.name; }).join(", ");
-}
+var initNestedTypes = function() {
+    Type    = require("./type");
+    Service = require("./service");
+    initNestedTypes = null;
+};
 
 /**
  * Constructs a new namespace instance.
@@ -127,7 +114,7 @@ function clearCache(namespace) {
  * @type {ReflectionObject[]}
  * @readonly
  */
-Object.defineProperty(NamespacePrototype, "nestedArray", {
+Object.defineProperty(Namespace.prototype, "nestedArray", {
     get: function() {
         return this._nestedArray || (this._nestedArray = util.toArray(this.nested));
     }
@@ -136,7 +123,7 @@ Object.defineProperty(NamespacePrototype, "nestedArray", {
 /**
  * @override
  */
-NamespacePrototype.toJSON = function toJSON() {
+Namespace.prototype.toJSON = function toJSON() {
     return {
         options : this.options,
         nested  : arrayToJSON(this.nestedArray)
@@ -148,20 +135,24 @@ NamespacePrototype.toJSON = function toJSON() {
  * @param {Object.<string,*>} nestedJson Nested JSON
  * @returns {Namespace} `this`
  */
-NamespacePrototype.addJSON = function addJSON(nestedJson) {
+Namespace.prototype.addJSON = function addJSON(nestedJson) {
     var ns = this;
     /* istanbul ignore else */
     if (nestedJson) {
-        if (!nestedTypes)
-            initNested();
-        Object.keys(nestedJson).forEach(function(nestedName) {
-            var nested = nestedJson[nestedName];
-            for (var j = 0; j < nestedTypes.length; ++j)
-                if (nestedTypes[j].testJSON(nested))
-                    return ns.add(nestedTypes[j].fromJSON(nestedName, nested));
-            /* istanbul ignore next */
-            throw TypeError("nested." + nestedName + " must be JSON for " + nestedError);
-        });
+        if (initNestedTypes)
+            initNestedTypes();
+        for (var names = Object.keys(nestedJson), i = 0, nested; i < names.length; ++i)
+            ns.add( // most to least likely
+                ( Type.testJSON(nested = nestedJson[names[i]])
+                ? Type.fromJSON
+                : Enum.testJSON(nested)
+                ? Enum.fromJSON
+                : Service.testJSON(nested)
+                ? Service.fromJSON
+                : Field.testJSON(nested) // only valid is an extension field
+                ? Field.fromJSON
+                : Namespace.fromJSON )(names[i], nested)
+            );
     }
     return this;
 };
@@ -171,7 +162,7 @@ NamespacePrototype.addJSON = function addJSON(nestedJson) {
  * @param {string} name Nested object name
  * @returns {?ReflectionObject} The reflection object or `null` if it doesn't exist
  */
-NamespacePrototype.get = function get(name) {
+Namespace.prototype.get = function get(name) {
     if (this.nested === undefined) // prevents deopt
         return null;
     return this.nested[name] || null;
@@ -184,7 +175,7 @@ NamespacePrototype.get = function get(name) {
  * @returns {Object.<string,number>} Enum values
  * @throws {Error} If there is no such enum
  */
-NamespacePrototype.getEnum = function getEnum(name) {
+Namespace.prototype.getEnum = function getEnum(name) {
     if (this.nested && this.nested[name] instanceof Enum)
         return this.nested[name].values;
     throw Error("no such enum");
@@ -197,16 +188,13 @@ NamespacePrototype.getEnum = function getEnum(name) {
  * @throws {TypeError} If arguments are invalid
  * @throws {Error} If there is already a nested object with this name
  */
-NamespacePrototype.add = function add(object) {
+Namespace.prototype.add = function add(object) {
     /* istanbul ignore next */
-    if (!nestedTypes)
-        initNested();
-    /* istanbul ignore next */
-    if (!object || nestedTypes.indexOf(object.constructor) < 0)
-        throw TypeError("object must be " + nestedError);
-    /* istanbul ignore next */
-    if (object instanceof Field && object.extend === undefined)
-        throw TypeError("object must be an extension field when not part of a type");
+    if (initNestedTypes)
+        initNestedTypes();
+
+    if (!(object instanceof Field && object.extend !== undefined || object instanceof Type || object instanceof Enum || object instanceof Service || object instanceof Namespace))
+        throw TypeError("object must be a valid nested object");
 
     if (!this.nested)
         this.nested = {};
@@ -214,7 +202,6 @@ NamespacePrototype.add = function add(object) {
         var prev = this.get(object.name);
         if (prev) {
             // initNested above already initializes Type and Service
-            /* istanbul ignore else */
             if (prev instanceof Namespace && object instanceof Namespace && !(prev instanceof Type || prev instanceof Service)) {
                 // replace plain namespace but keep existing nested elements and options
                 var nested = prev.nestedArray;
@@ -241,18 +228,17 @@ NamespacePrototype.add = function add(object) {
  * @throws {TypeError} If arguments are invalid
  * @throws {Error} If `object` is not a member of this namespace
  */
-NamespacePrototype.remove = function remove(object) {
+Namespace.prototype.remove = function remove(object) {
 
-    /* istanbul ignore next */
     if (!(object instanceof ReflectionObject))
         throw TypeError("object must be a ReflectionObject");
-    /* istanbul ignore next */
-    if (object.parent !== this || !this.nested)
+    if (object.parent !== this)
         throw Error(object + " is not a member of " + this);
 
     delete this.nested[object.name];
     if (!Object.keys(this.nested).length)
         this.nested = undefined;
+
     object.onRemove(this);
     return clearCache(this);
 };
@@ -263,12 +249,11 @@ NamespacePrototype.remove = function remove(object) {
  * @param {*} [json] Nested types to create from JSON
  * @returns {Namespace} Pointer to the last namespace created or `this` if path is empty
  */
-NamespacePrototype.define = function define(path, json) {
+Namespace.prototype.define = function define(path, json) {
 
-    if (util.isString(path)) {
+    if (util.isString(path))
         path = path.split(".");
-    /* istanbul ignore next */
-    } else if (!Array.isArray(path))
+    else if (!Array.isArray(path))
         throw TypeError("illegal path");
     if (path && path.length && path[0] === "")
         throw Error("path must be relative");
@@ -278,7 +263,6 @@ NamespacePrototype.define = function define(path, json) {
         var part = path.shift();
         if (ptr.nested && ptr.nested[part]) {
             ptr = ptr.nested[part];
-            /* istanbul ignore next */
             if (!(ptr instanceof Namespace))
                 throw Error("path conflicts with non-namespace objects");
         } else
@@ -293,14 +277,14 @@ NamespacePrototype.define = function define(path, json) {
  * Resolves this namespace's and all its nested objects' type references. Useful to validate a reflection tree, but comes at a cost.
  * @returns {Namespace} `this`
  */
-NamespacePrototype.resolveAll = function resolveAll() {
+Namespace.prototype.resolveAll = function resolveAll() {
     var nested = this.nestedArray, i = 0;
     while (i < nested.length)
         if (nested[i] instanceof Namespace)
             nested[i++].resolveAll();
         else
             nested[i++].resolve();
-    return NamespacePrototype.resolve.call(this);
+    return this.resolve();
 };
 
 /**
@@ -310,7 +294,7 @@ NamespacePrototype.resolveAll = function resolveAll() {
  * @param {boolean} [parentAlreadyChecked=false] If known, whether the parent has already been checked
  * @returns {?ReflectionObject} Looked up object or `null` if none could be found
  */
-NamespacePrototype.lookup = function lookup(path, filterType, parentAlreadyChecked) {
+Namespace.prototype.lookup = function lookup(path, filterType, parentAlreadyChecked) {
 
     /* istanbul ignore next */
     if (typeof filterType === "boolean") {
@@ -361,11 +345,11 @@ NamespacePrototype.lookup = function lookup(path, filterType, parentAlreadyCheck
  * @returns {Type} Looked up type
  * @throws {Error} If `path` does not point to a type
  */
-NamespacePrototype.lookupType = function lookupType(path) {
+Namespace.prototype.lookupType = function lookupType(path) {
 
     /* istanbul ignore next */
-    if (!Type)
-        Type = require("./type");
+    if (initNestedTypes)
+        initNestedTypes();
 
     var found = this.lookup(path, Type);
     if (!found)
@@ -380,11 +364,11 @@ NamespacePrototype.lookupType = function lookupType(path) {
  * @returns {Service} Looked up service
  * @throws {Error} If `path` does not point to a service
  */
-NamespacePrototype.lookupService = function lookupService(path) {
+Namespace.prototype.lookupService = function lookupService(path) {
 
     /* istanbul ignore next */
-    if (!Service)
-        Service = require("./service");
+    if (initNestedTypes)
+        initNestedTypes();
 
     var found = this.lookup(path, Service);
     if (!found)
@@ -399,7 +383,7 @@ NamespacePrototype.lookupService = function lookupService(path) {
  * @returns {Object.<string,number>} Enum values
  * @throws {Error} If `path` does not point to an enum
  */
-NamespacePrototype.lookupEnum = function lookupEnum(path) {
+Namespace.prototype.lookupEnum = function lookupEnum(path) {
     var found = this.lookup(path, Enum);
     if (!found)
         throw Error("no such enum");

@@ -7,7 +7,6 @@
 var util = module.exports = require("./util/minimal");
 
 util.codegen = require("@protobufjs/codegen");
-util.extend  = require("@protobufjs/extend");
 util.fetch   = require("@protobufjs/fetch");
 util.path    = require("@protobufjs/path");
 
@@ -23,9 +22,11 @@ util.fs = util.inquire("fs");
  * @returns {Array.<*>} Converted array
  */
 util.toArray = function toArray(object) {
-    return object ? Object.keys(object).map(function(key) {
-        return object[key];
-    }) : [];
+    var array = [];
+    if (object)
+        for (var keys = Object.keys(object), i = 0; i < keys.length; ++i)
+            array.push(object[keys[i]]);
+    return array;
 };
 
 /**

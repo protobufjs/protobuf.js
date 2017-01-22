@@ -1391,6 +1391,14 @@ export class Root extends NamespaceBase {
     files: string[];
 
     /**
+     * Tests if the specified JSON object describes not another reflection object.
+     * @function
+     * @param {*} json JSON object
+     * @returns {boolean} `true` if the object describes not another reflection object
+     */
+    static testJSON(json: any): boolean;
+
+    /**
      * Loads a JSON definition into a root namespace.
      * @param {Object.<string,*>} json JSON definition
      * @param {Root} [root] Root namespace, defaults to create a new one if omitted

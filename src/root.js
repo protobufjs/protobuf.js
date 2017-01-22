@@ -3,10 +3,7 @@ module.exports = Root;
 
 // extends Namespace
 var Namespace = require("./namespace");
-/** @alias Root.prototype */
-var RootPrototype = Namespace.extend(Root);
-
-Root.className = "Root";
+((Root.prototype = Object.create(Namespace.prototype)).constructor = Root).className = "Root";
 
 var Field   = require("./field"),
     Enum    = require("./enum"),
@@ -39,6 +36,14 @@ function Root(options) {
 }
 
 /**
+ * Tests if the specified JSON object describes not another reflection object.
+ * @function
+ * @param {*} json JSON object
+ * @returns {boolean} `true` if the object describes not another reflection object
+ */
+Root.testJSON = Namespace.testJSON;
+
+/**
  * Loads a JSON definition into a root namespace.
  * @param {Object.<string,*>} json JSON definition
  * @param {Root} [root] Root namespace, defaults to create a new one if omitted
@@ -47,7 +52,9 @@ function Root(options) {
 Root.fromJSON = function fromJSON(json, root) {
     if (!root)
         root = new Root();
-    return root.setOptions(json.options).addJSON(json.nested);
+    if (json.options)
+        root.setOptions(json.options);
+    return root.addJSON(json.nested);
 };
 
 /**
@@ -58,7 +65,7 @@ Root.fromJSON = function fromJSON(json, root) {
  * @param {string} target The file name being imported
  * @returns {string} Resolved path to `target`
  */
-RootPrototype.resolvePath = util.path.resolve;
+Root.prototype.resolvePath = util.path.resolve;
 
 // A symbol-like function to safely signal synchronous loading
 /* istanbul ignore next */
@@ -71,7 +78,7 @@ function SYNC() {} // eslint-disable-line no-empty-function
  * @param {LoadCallback} callback Callback function
  * @returns {undefined}
  */
-RootPrototype.load = function load(filename, options, callback) {
+Root.prototype.load = function load(filename, options, callback) {
     if (typeof options === "function") {
         callback = options;
         options = undefined;
@@ -103,15 +110,14 @@ RootPrototype.load = function load(filename, options, callback) {
                 self.setOptions(source.options).addJSON(source.nested);
             else {
                 parse.filename = filename;
-                var parsed = parse(source, self, options);
+                var parsed = parse(source, self, options),
+                    i = 0;
                 if (parsed.imports)
-                    parsed.imports.forEach(function(name) {
-                        fetch(self.resolvePath(filename, name));
-                    });
+                    for (; i < parsed.imports.length; ++i)
+                        fetch(self.resolvePath(filename, parsed.imports[i]));
                 if (parsed.weakImports)
-                    parsed.weakImports.forEach(function(name) {
-                        fetch(self.resolvePath(filename, name), true);
-                    });
+                    for (i = 0; i < parsed.weakImports.length; ++i)
+                        fetch(self.resolvePath(filename, parsed.weakImports[i]), true);
             }
         } catch (err) {
             finish(err);
@@ -185,9 +191,8 @@ RootPrototype.load = function load(filename, options, callback) {
     // references anymore, so we can load everything in parallel
     if (util.isString(filename))
         filename = [ filename ];
-    filename.forEach(function(filename) {
-        fetch(self.resolvePath("", filename));
-    });
+    for (var i = 0; i < filename.length; ++i)
+        fetch(self.resolvePath("", filename[i]));
 
     if (sync)
         return self;
@@ -226,7 +231,7 @@ RootPrototype.load = function load(filename, options, callback) {
  * @returns {Root} Root namespace
  * @throws {Error} If synchronous fetching is not supported (i.e. in browsers) or if a file's syntax is invalid
  */
-RootPrototype.loadSync = function loadSync(filename, options) {
+Root.prototype.loadSync = function loadSync(filename, options) {
     if (!util.isNode)
         throw Error("not supported");
     return this.load(filename, options, SYNC);
@@ -235,7 +240,7 @@ RootPrototype.loadSync = function loadSync(filename, options) {
 /**
  * @override
  */
-RootPrototype.resolveAll = function resolveAll() {
+Root.prototype.resolveAll = function resolveAll() {
     if (this.deferred.length)
         throw Error("unresolvable extensions: " + this.deferred.map(function(field) {
             return "'extend " + field.extend + "' in " + field.parent.fullName;
@@ -271,7 +276,7 @@ var exposeRe = /^[A-Z]/;
  * @returns {undefined}
  * @private
  */
-RootPrototype._handleAdd = function handleAdd(object) {
+Root.prototype._handleAdd = function handleAdd(object) {
     // Try to handle any deferred extensions
     var newDeferred = this.deferred.slice();
     this.deferred = []; // because the loop calls handleAdd
@@ -306,7 +311,7 @@ RootPrototype._handleAdd = function handleAdd(object) {
  * @returns {undefined}
  * @private
  */
-RootPrototype._handleRemove = function handleRemove(object) {
+Root.prototype._handleRemove = function handleRemove(object) {
     if (object instanceof Field) {
         // If a deferred declaring extension field, cancel the extension
         if (object.extend !== undefined && !object.extensionField) {

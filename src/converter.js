@@ -20,18 +20,17 @@ var Enum = require("./enum"),
 function genValuePartial_fromObject(gen, field, fieldIndex, prop) {
     /* eslint-disable no-unexpected-multiline, block-scoped-var, no-redeclare */
     if (field.resolvedType) {
-        if (field.resolvedType instanceof Enum) {
-            var values = field.resolvedType.values; gen
+        if (field.resolvedType instanceof Enum) { gen
             ("switch(d%s){", prop);
-            Object.keys(values).forEach(function(key) {
-                if (field.repeated && values[key] === field.typeDefault) gen
+            for (var values = field.resolvedType.values, keys = Object.keys(values), i = 0; i < keys.length; ++i) {
+                if (field.repeated && values[keys[i]] === field.typeDefault) gen
                 ("default:");
                 gen
-                ("case%j:", key)
-                ("case %j:", values[key])
-                    ("m%s=%j", prop, values[key])
+                ("case%j:", keys[i])
+                ("case %j:", values[keys[i]])
+                    ("m%s=%j", prop, values[keys[i]])
                     ("break");
-            }); gen
+            } gen
             ("}");
         } else gen
             ("if(typeof d%s!==\"object\")", prop)
@@ -201,27 +200,40 @@ converter.toObject = function toObject(mtype) {
     ("if(!o)")
         ("o={}")
     ("var d={}");
-    var repeatedFields = fields.filter(function(field) { return field.resolve().repeated; });
+
+    var repeatedFields = [],
+        mapFields = [],
+        otherFields = [],
+        i = 0;
+    for (; i < fields.length; ++i)
+        if (fields[i].resolve().repeated)
+            repeatedFields.push(fields[i]);
+        else if (fields[i].map)
+            mapFields.push(fields[i]);
+        else
+            otherFields.push(fields[i]);
+
     if (repeatedFields.length) { gen
     ("if(o.arrays||o.defaults){");
-        repeatedFields.forEach(function(field) { gen
-        ("d%s=[]", util.safeProp(field.name));
-        }); gen
+        for (i = 0; i < repeatedFields.length; ++i) gen
+        ("d%s=[]", util.safeProp(repeatedFields[i].name));
+        gen
     ("}");
     }
-    var mapFields = fields.filter(function(field) { return field.map; });
+
     if (mapFields.length) { gen
     ("if(o.objects||o.defaults){");
-        mapFields.forEach(function(field) { gen
-        ("d%s={}", util.safeProp(field.name));
-        }); gen
+        for (i = 0; i < mapFields.length; ++i) gen
+        ("d%s={}", util.safeProp(mapFields[i].name));
+        gen
     ("}");
     }
-    var otherFields = fields.filter(function(field) { return !(field.repeated || field.map); });
+
     if (otherFields.length) { gen
     ("if(o.defaults){");
-        otherFields.forEach(function(field) {
-            var prop = util.safeProp(field.name);
+        for (i = 0, field; i < otherFields.length; ++i) {
+            var field = otherFields[i],
+                prop  = util.safeProp(field.name);
             if (field.resolvedType instanceof Enum) gen
         ("d%s=o.enums===String?%j:%j", prop, field.resolvedType.valuesById[field.typeDefault], field.typeDefault);
             else if (field.long) gen
@@ -234,10 +246,10 @@ converter.toObject = function toObject(mtype) {
         ("d%s=o.bytes===String?%j:%s", prop, String.fromCharCode.apply(String, field.typeDefault), "[" + Array.prototype.slice.call(field.typeDefault).join(",") + "]");
             else gen
         ("d%s=%j", prop, field.typeDefault); // also messages (=null)
-        }); gen
+        } gen
     ("}");
     }
-    for (var i = 0; i < fields.length; ++i) {
+    for (i = 0, field; i < fields.length; ++i) {
         var field = fields[i],
             prop  = util.safeProp(field.name); gen
     ("if(m%s!==undefined&&m%s!==null&&m.hasOwnProperty(%j)){", prop, prop, field.name);

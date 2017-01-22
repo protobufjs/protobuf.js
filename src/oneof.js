@@ -3,10 +3,7 @@ module.exports = OneOf;
 
 // extends ReflectionObject
 var ReflectionObject = require("./object");
-/** @alias OneOf.prototype */
-var OneOfPrototype = ReflectionObject.extend(OneOf);
-
-OneOf.className = "OneOf";
+((OneOf.prototype = Object.create(ReflectionObject.prototype)).constructor = OneOf).className = "OneOf";
 
 var Field = require("./field");
 
@@ -50,7 +47,7 @@ function OneOf(name, fieldNames, options) {
  * @type {Field[]}
  * @readonly
  */
-Object.defineProperty(OneOfPrototype, "fieldsArray", {
+Object.defineProperty(OneOf.prototype, "fieldsArray", {
     get: function() {
         return this._fieldsArray;
     }
@@ -79,7 +76,7 @@ OneOf.fromJSON = function fromJSON(name, json) {
 /**
  * @override
  */
-OneOfPrototype.toJSON = function toJSON() {
+OneOf.prototype.toJSON = function toJSON() {
     return {
         oneof   : this.oneof,
         options : this.options
@@ -94,12 +91,10 @@ OneOfPrototype.toJSON = function toJSON() {
  * @ignore
  */
 function addFieldsToParent(oneof) {
-    if (oneof.parent) {
-        oneof._fieldsArray.forEach(function(field) {
-            if (!field.parent)
-                oneof.parent.add(field);
-        });
-    }
+    if (oneof.parent)
+        for (var i = 0; i < oneof._fieldsArray.length; ++i)
+            if (!oneof._fieldsArray[i].parent)
+                oneof.parent.add(oneof._fieldsArray[i]);
 }
 
 /**
@@ -107,7 +102,7 @@ function addFieldsToParent(oneof) {
  * @param {Field} field Field to add
  * @returns {OneOf} `this`
  */
-OneOfPrototype.add = function add(field) {
+OneOf.prototype.add = function add(field) {
 
     /* istanbul ignore next */
     if (!(field instanceof Field))
@@ -126,7 +121,7 @@ OneOfPrototype.add = function add(field) {
  * @param {Field} field Field to remove
  * @returns {OneOf} `this`
  */
-OneOfPrototype.remove = function remove(field) {
+OneOf.prototype.remove = function remove(field) {
 
     /* istanbul ignore next */
     if (!(field instanceof Field))
@@ -149,17 +144,17 @@ OneOfPrototype.remove = function remove(field) {
 /**
  * @override
  */
-OneOfPrototype.onAdd = function onAdd(parent) {
+OneOf.prototype.onAdd = function onAdd(parent) {
     ReflectionObject.prototype.onAdd.call(this, parent);
     var self = this;
     // Collect present fields
-    this.oneof.forEach(function(fieldName) {
-        var field = parent.get(fieldName);
+    for (var i = 0; i < this.oneof.length; ++i) {
+        var field = parent.get(this.oneof[i]);
         if (field && !field.partOf) {
             field.partOf = self;
             self._fieldsArray.push(field);
         }
-    });
+    }
     // Add not yet present fields
     addFieldsToParent(this);
 };
@@ -167,10 +162,9 @@ OneOfPrototype.onAdd = function onAdd(parent) {
 /**
  * @override
  */
-OneOfPrototype.onRemove = function onRemove(parent) {
-    this._fieldsArray.forEach(function(field) {
-        if (field.parent)
+OneOf.prototype.onRemove = function onRemove(parent) {
+    for (var i = 0, field; i < this._fieldsArray.length; ++i)
+        if ((field = this._fieldsArray[i]).parent)
             field.parent.remove(field);
-    });
     ReflectionObject.prototype.onRemove.call(this, parent);
 };

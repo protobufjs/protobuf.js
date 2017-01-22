@@ -17,9 +17,6 @@ function EventEmitter() {
     this._listeners = {};
 }
 
-/** @alias util.EventEmitter.prototype */
-var EventEmitterPrototype = EventEmitter.prototype;
-
 /**
  * Registers an event listener.
  * @param {string} evt Event name
@@ -27,7 +24,7 @@ var EventEmitterPrototype = EventEmitter.prototype;
  * @param {*} [ctx] Listener context
  * @returns {util.EventEmitter} `this`
  */
-EventEmitterPrototype.on = function on(evt, fn, ctx) {
+EventEmitter.prototype.on = function on(evt, fn, ctx) {
     (this._listeners[evt] || (this._listeners[evt] = [])).push({
         fn  : fn,
         ctx : ctx || this
@@ -41,7 +38,7 @@ EventEmitterPrototype.on = function on(evt, fn, ctx) {
  * @param {function} [fn] Listener to remove. Removes all listeners of `evt` if omitted.
  * @returns {util.EventEmitter} `this`
  */
-EventEmitterPrototype.off = function off(evt, fn) {
+EventEmitter.prototype.off = function off(evt, fn) {
     if (evt === undefined)
         this._listeners = {};
     else {
@@ -65,7 +62,7 @@ EventEmitterPrototype.off = function off(evt, fn) {
  * @param {...*} args Arguments
  * @returns {util.EventEmitter} `this`
  */
-EventEmitterPrototype.emit = function emit(evt) {
+EventEmitter.prototype.emit = function emit(evt) {
     var listeners = this._listeners[evt];
     if (listeners) {
         var args = [],

@@ -3,10 +3,7 @@ module.exports = Field;
 
 // extends ReflectionObject
 var ReflectionObject = require("./object");
-/** @alias Field.prototype */
-var FieldPrototype = ReflectionObject.extend(Field);
-
-Field.className = "Field";
+((Field.prototype = Object.create(ReflectionObject.prototype)).constructor = Field).className = "Field";
 
 var Enum  = require("./enum"),
     types = require("./types"),
@@ -167,7 +164,7 @@ function Field(name, id, type, rule, extend, options) {
  * @type {boolean}
  * @readonly
  */
-Object.defineProperty(FieldPrototype, "packed", {
+Object.defineProperty(Field.prototype, "packed", {
     get: function() {
         // defaults to packed=true if not explicity set to false
         if (this._packed === null)
@@ -179,7 +176,7 @@ Object.defineProperty(FieldPrototype, "packed", {
 /**
  * @override
  */
-FieldPrototype.setOption = function setOption(name, value, ifNotSet) {
+Field.prototype.setOption = function setOption(name, value, ifNotSet) {
     if (name === "packed")
         this._packed = null;
     return ReflectionObject.prototype.setOption.call(this, name, value, ifNotSet);
@@ -213,7 +210,7 @@ Field.fromJSON = function fromJSON(name, json) {
 /**
  * @override
  */
-FieldPrototype.toJSON = function toJSON() {
+Field.prototype.toJSON = function toJSON() {
     return {
         rule    : this.rule !== "optional" && this.rule || undefined,
         type    : this.type,
@@ -228,7 +225,7 @@ FieldPrototype.toJSON = function toJSON() {
  * @returns {Field} `this`
  * @throws {Error} If any reference cannot be resolved
  */
-FieldPrototype.resolve = function resolve() {
+Field.prototype.resolve = function resolve() {
 
     if (this.resolved)
         return this;

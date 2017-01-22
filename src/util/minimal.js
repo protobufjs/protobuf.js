@@ -169,9 +169,8 @@ util.lcFirst = function lcFirst(str) {
  */
 util.oneOfGetter = function getOneOf(fieldNames) {
     var fieldMap = {};
-    fieldNames.forEach(function(name) {
-        fieldMap[name] = 1;
-    });
+    for (var i = 0; i < fieldNames.length; ++i)
+        fieldMap[fieldNames[i]] = 1;
 
     /**
      * @returns {string|undefined} Set field name, if any
@@ -212,15 +211,15 @@ util.oneOfSetter = function setOneOf(fieldNames) {
  * @returns {undefined}
  */
 util.lazyResolve = function lazyResolve(root, lazyTypes) {
-    lazyTypes.forEach(function(types) {
-        Object.keys(types).forEach(function(index) {
-            var path = types[index |= 0].split("."),
+    for (var i = 0; i < lazyTypes.length; ++i) {
+        for (var keys = Object.keys(lazyTypes[i]), j = 0; j < keys.length; ++j) {
+            var path = lazyTypes[i][keys[j]].split("."),
                 ptr  = root;
             while (path.length)
                 ptr = ptr[path.shift()];
-            types[index] = ptr;
-        });
-    });
+            lazyTypes[i][keys[j]] = ptr;
+        }
+    }
 };
 
 /**

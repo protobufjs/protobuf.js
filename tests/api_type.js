@@ -59,5 +59,38 @@ tape.test("reflected types", function(test) {
         type.ctor = MyMessage;
     }, "should not throw when registering a constructor that extends Message");
 
+    type = protobuf.Type.fromJSON("My", {
+        fields: {
+            a: {
+                type: "string",
+                id: 1
+            }
+        },
+        nested: {
+            Type: { fields: {} },
+            Enum: { values: {} },
+            Service: { methods: {} },
+            extensionField: { type: "string", id: 1000, extend: "Message" },
+            Other: { nested: {} }
+        }
+    });
+    test.same(type.toJSON(), {
+        fields: {
+            a: { extend: undefined, id: 1, options: undefined, rule: undefined, type: "string" }
+        },
+        oneofs: undefined,
+        extensions: undefined,
+        reserved: undefined,
+        group: undefined,
+        nested: {
+            Type: { extensions: undefined, fields: {}, group: undefined, nested: undefined, oneofs: undefined, options: undefined, reserved: undefined },
+            Enum: { options: undefined, values: {} },
+            Service: { methods: {}, nested: undefined, options: undefined },
+            extensionField: { extend: "Message", id: 1000, options: undefined, rule: undefined, type: "string" },
+            Other: { nested: undefined, options: undefined }
+        },
+        options: undefined
+    }, "should create from Field, Type, Enum, Service, extension Field and Namespace JSON");
+
     test.end();
 });

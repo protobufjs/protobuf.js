@@ -113,12 +113,12 @@ function tokenize(source) {
     function setComment(start, end) {
         commentType = source.charAt(start++);
         commentLine = line;
-        commentText = source
+        var lines = source
             .substring(start, end)
-            .split(/\n/g)
-            .map(function(line) {
-                return line.replace(/ *[*/]+ */, "").trim();
-            })
+            .split(/\n/g);
+        for (var i = 0; i < lines.length; ++i)
+            lines[i] = lines[i].replace(/ *[*/]+ */, "").trim();
+        commentText = lines
             .join("\n")
             .trim();
     }

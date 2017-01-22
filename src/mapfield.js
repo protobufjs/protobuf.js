@@ -3,12 +3,7 @@ module.exports = MapField;
 
 // extends Field
 var Field = require("./field");
-/** @alias Field.prototype */
-var FieldPrototype = Field.prototype;
-/** @alias MapField.prototype */
-var MapFieldPrototype = Field.extend(MapField);
-
-MapField.className = "MapField";
+((MapField.prototype = Object.create(Field.prototype)).constructor = MapField).className = "MapField";
 
 var types   = require("./types"),
     util    = require("./util");
@@ -70,7 +65,7 @@ MapField.fromJSON = function fromJSON(name, json) {
 /**
  * @override
  */
-MapFieldPrototype.toJSON = function toJSON() {
+MapField.prototype.toJSON = function toJSON() {
     return {
         keyType : this.keyType,
         type    : this.type,
@@ -83,7 +78,7 @@ MapFieldPrototype.toJSON = function toJSON() {
 /**
  * @override
  */
-MapFieldPrototype.resolve = function resolve() {
+MapField.prototype.resolve = function resolve() {
     if (this.resolved)
         return this;
 
@@ -91,5 +86,5 @@ MapFieldPrototype.resolve = function resolve() {
     if (types.mapKey[this.keyType] === undefined)
         throw Error("invalid key type: " + this.keyType);
 
-    return FieldPrototype.resolve.call(this);
+    return Field.prototype.resolve.call(this);
 };

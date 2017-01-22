@@ -62,17 +62,14 @@ Reader.create = util.Buffer
         return new Reader(buffer);
     };
 
-/** @alias Reader.prototype */
-var ReaderPrototype = Reader.prototype;
-
-ReaderPrototype._slice = util.Array.prototype.subarray || /* istanbul ignore next */ util.Array.prototype.slice;
+Reader.prototype._slice = util.Array.prototype.subarray || /* istanbul ignore next */ util.Array.prototype.slice;
 
 /**
  * Reads a varint as an unsigned 32 bit value.
  * @function
  * @returns {number} Value read
  */
-ReaderPrototype.uint32 = (function read_uint32_setup() {
+Reader.prototype.uint32 = (function read_uint32_setup() {
     var value = 4294967295; // optimizer type-hint, tends to deopt otherwise (?!)
     return function read_uint32() {
         value = (         this.buf[this.pos] & 127       ) >>> 0; if (this.buf[this.pos++] < 128) return value;
@@ -94,7 +91,7 @@ ReaderPrototype.uint32 = (function read_uint32_setup() {
  * Reads a varint as a signed 32 bit value.
  * @returns {number} Value read
  */
-ReaderPrototype.int32 = function read_int32() {
+Reader.prototype.int32 = function read_int32() {
     return this.uint32() | 0;
 };
 
@@ -102,7 +99,7 @@ ReaderPrototype.int32 = function read_int32() {
  * Reads a zig-zag encoded varint as a signed 32 bit value.
  * @returns {number} Value read
  */
-ReaderPrototype.sint32 = function read_sint32() {
+Reader.prototype.sint32 = function read_sint32() {
     var value = this.uint32();
     return value >>> 1 ^ -(value & 1) | 0;
 };
@@ -216,7 +213,7 @@ function read_sint64_number() {
  * Reads a varint as a boolean.
  * @returns {boolean} Value read
  */
-ReaderPrototype.bool = function read_bool() {
+Reader.prototype.bool = function read_bool() {
     return this.uint32() !== 0;
 };
 
@@ -231,7 +228,7 @@ function readFixed32(buf, end) {
  * Reads fixed 32 bits as a number.
  * @returns {number} Value read
  */
-ReaderPrototype.fixed32 = function read_fixed32() {
+Reader.prototype.fixed32 = function read_fixed32() {
 
     /* istanbul ignore next */
     if (this.pos + 4 > this.len)
@@ -244,7 +241,7 @@ ReaderPrototype.fixed32 = function read_fixed32() {
  * Reads zig-zag encoded fixed 32 bits as a number.
  * @returns {number} Value read
  */
-ReaderPrototype.sfixed32 = function read_sfixed32() {
+Reader.prototype.sfixed32 = function read_sfixed32() {
     var value = this.fixed32();
     return value >>> 1 ^ -(value & 1);
 };
@@ -336,7 +333,7 @@ var readFloat = typeof Float32Array !== "undefined"
  * @function
  * @returns {number} Value read
  */
-ReaderPrototype.float = function read_float() {
+Reader.prototype.float = function read_float() {
 
     /* istanbul ignore next */
     if (this.pos + 4 > this.len)
@@ -398,7 +395,7 @@ var readDouble = typeof Float64Array !== "undefined"
  * @function
  * @returns {number} Value read
  */
-ReaderPrototype.double = function read_double() {
+Reader.prototype.double = function read_double() {
 
     /* istanbul ignore next */
     if (this.pos + 8 > this.len)
@@ -413,7 +410,7 @@ ReaderPrototype.double = function read_double() {
  * Reads a sequence of bytes preceeded by its length as a varint.
  * @returns {Uint8Array} Value read
  */
-ReaderPrototype.bytes = function read_bytes() {
+Reader.prototype.bytes = function read_bytes() {
     var length = this.uint32(),
         start  = this.pos,
         end    = this.pos + length;
@@ -432,7 +429,7 @@ ReaderPrototype.bytes = function read_bytes() {
  * Reads a string preceeded by its byte length as a varint.
  * @returns {string} Value read
  */
-ReaderPrototype.string = function read_string() {
+Reader.prototype.string = function read_string() {
     var bytes = this.bytes();
     return utf8.read(bytes, 0, bytes.length);
 };
@@ -442,7 +439,7 @@ ReaderPrototype.string = function read_string() {
  * @param {number} [length] Length if known, otherwise a varint is assumed
  * @returns {Reader} `this`
  */
-ReaderPrototype.skip = function skip(length) {
+Reader.prototype.skip = function skip(length) {
     if (typeof length === "number") {
         /* istanbul ignore next */
         if (this.pos + length > this.len)
@@ -463,7 +460,7 @@ ReaderPrototype.skip = function skip(length) {
  * @param {number} wireType Wire type received
  * @returns {Reader} `this`
  */
-ReaderPrototype.skipType = function(wireType) {
+Reader.prototype.skipType = function(wireType) {
     switch (wireType) {
         case 0:
             this.skip();
@@ -495,17 +492,17 @@ ReaderPrototype.skipType = function(wireType) {
 function configure() {
     /* istanbul ignore else */
     if (util.Long) {
-        ReaderPrototype.int64 = read_int64_long;
-        ReaderPrototype.uint64 = read_uint64_long;
-        ReaderPrototype.sint64 = read_sint64_long;
-        ReaderPrototype.fixed64 = read_fixed64_long;
-        ReaderPrototype.sfixed64 = read_sfixed64_long;
+        Reader.prototype.int64 = read_int64_long;
+        Reader.prototype.uint64 = read_uint64_long;
+        Reader.prototype.sint64 = read_sint64_long;
+        Reader.prototype.fixed64 = read_fixed64_long;
+        Reader.prototype.sfixed64 = read_sfixed64_long;
     } else {
-        ReaderPrototype.int64 = read_int64_number;
-        ReaderPrototype.uint64 = read_uint64_number;
-        ReaderPrototype.sint64 = read_sint64_number;
-        ReaderPrototype.fixed64 = read_fixed64_number;
-        ReaderPrototype.sfixed64 = read_sfixed64_number;
+        Reader.prototype.int64 = read_int64_number;
+        Reader.prototype.uint64 = read_uint64_number;
+        Reader.prototype.sint64 = read_sint64_number;
+        Reader.prototype.fixed64 = read_fixed64_number;
+        Reader.prototype.sfixed64 = read_sfixed64_number;
     }
 }
 

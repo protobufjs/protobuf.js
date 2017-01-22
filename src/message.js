@@ -13,11 +13,9 @@ var util = require("./util");
  * @see {@link Class.create}
  */
 function Message(properties) {
-    if (properties) {
-        var keys = Object.keys(properties);
-        for (var i = 0; i < keys.length; ++i)
+    if (properties)
+        for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
             this[keys[i]] = properties[keys[i]];
-    }
 }
 
 /**

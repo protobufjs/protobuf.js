@@ -3,12 +3,7 @@ module.exports = Service;
 
 // extends Namespace
 var Namespace = require("./namespace");
-/** @alias Namespace.prototype */
-var NamespacePrototype = Namespace.prototype;
-/** @alias Service.prototype */
-var ServicePrototype = Namespace.extend(Service);
-
-Service.className = "Service";
+((Service.prototype = Object.create(Namespace.prototype)).constructor = Service).className = "Service";
 
 var Method = require("./method"),
     util   = require("./util"),
@@ -60,9 +55,8 @@ Service.fromJSON = function fromJSON(name, json) {
     var service = new Service(name, json.options);
     /* istanbul ignore else */
     if (json.methods)
-        Object.keys(json.methods).forEach(function(methodName) {
-            service.add(Method.fromJSON(methodName, json.methods[methodName]));
-        });
+        for (var names = Object.keys(json.methods), i = 0; i < names.length; ++i)
+            service.add(Method.fromJSON(names[i], json.methods[names[i]]));
     return service;
 };
 
@@ -72,7 +66,7 @@ Service.fromJSON = function fromJSON(name, json) {
  * @type {Method[]}
  * @readonly
  */
-Object.defineProperty(ServicePrototype, "methodsArray", {
+Object.defineProperty(Service.prototype, "methodsArray", {
     get: function() {
         return this._methodsArray || (this._methodsArray = util.toArray(this.methods));
     }
@@ -86,8 +80,8 @@ function clearCache(service) {
 /**
  * @override
  */
-ServicePrototype.toJSON = function toJSON() {
-    var inherited = NamespacePrototype.toJSON.call(this);
+Service.prototype.toJSON = function toJSON() {
+    var inherited = Namespace.prototype.toJSON.call(this);
     return {
         options : inherited && inherited.options || undefined,
         methods : Namespace.arrayToJSON(this.methodsArray) || /* istanbul ignore next */ {},
@@ -98,24 +92,24 @@ ServicePrototype.toJSON = function toJSON() {
 /**
  * @override
  */
-ServicePrototype.get = function get(name) {
-    return NamespacePrototype.get.call(this, name) || this.methods[name] || null;
+Service.prototype.get = function get(name) {
+    return Namespace.prototype.get.call(this, name) || this.methods[name] || null;
 };
 
 /**
  * @override
  */
-ServicePrototype.resolveAll = function resolveAll() {
+Service.prototype.resolveAll = function resolveAll() {
     var methods = this.methodsArray;
     for (var i = 0; i < methods.length; ++i)
         methods[i].resolve();
-    return NamespacePrototype.resolve.call(this);
+    return Namespace.prototype.resolve.call(this);
 };
 
 /**
  * @override
  */
-ServicePrototype.add = function add(object) {
+Service.prototype.add = function add(object) {
     /* istanbul ignore next */
     if (this.get(object.name))
         throw Error("duplicate name '" + object.name + "' in " + this);
@@ -124,13 +118,13 @@ ServicePrototype.add = function add(object) {
         object.parent = this;
         return clearCache(this);
     }
-    return NamespacePrototype.add.call(this, object);
+    return Namespace.prototype.add.call(this, object);
 };
 
 /**
  * @override
  */
-ServicePrototype.remove = function remove(object) {
+Service.prototype.remove = function remove(object) {
     if (object instanceof Method) {
 
         /* istanbul ignore next */
@@ -141,7 +135,7 @@ ServicePrototype.remove = function remove(object) {
         object.parent = null;
         return clearCache(this);
     }
-    return NamespacePrototype.remove.call(this, object);
+    return Namespace.prototype.remove.call(this, object);
 };
 
 /**
@@ -151,14 +145,14 @@ ServicePrototype.remove = function remove(object) {
  * @param {boolean} [responseDelimited=false] Whether responses are length-delimited
  * @returns {rpc.Service} RPC service. Useful where requests and/or responses are streamed.
  */
-ServicePrototype.create = function create(rpcImpl, requestDelimited, responseDelimited) {
+Service.prototype.create = function create(rpcImpl, requestDelimited, responseDelimited) {
     var rpcService = new rpc.Service(rpcImpl, requestDelimited, responseDelimited);
-    this.methodsArray.forEach(function(method) {
-        rpcService[util.lcFirst(method.resolve().name)] = util.codegen("r","c")("return this.rpcCall(m,q,s,r,c)").eof(util.lcFirst(method.name), {
-            m: method,
-            q: method.resolvedRequestType.ctor,
-            s: method.resolvedResponseType.ctor
+    for (var i = 0; i < /* initializes */ this.methodsArray.length; ++i) {
+        rpcService[util.lcFirst(this._methodsArray[i].resolve().name)] = util.codegen("r","c")("return this.rpcCall(m,q,s,r,c)").eof(util.lcFirst(this._methodsArray[i].name), {
+            m: this._methodsArray[i],
+            q: this._methodsArray[i].resolvedRequestType.ctor,
+            s: this._methodsArray[i].resolvedResponseType.ctor
         });
-    });
+    }
     return rpcService;
 };

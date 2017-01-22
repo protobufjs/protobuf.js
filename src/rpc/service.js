@@ -3,6 +3,9 @@ module.exports = Service;
 
 var util = require("../util/minimal");
 
+// Extends EventEmitter
+(Service.prototype = Object.create(util.EventEmitter.prototype)).constructor = Service;
+
 /**
  * A service method callback as used by {@link rpc.ServiceMethod|ServiceMethod}.
  * 
@@ -70,8 +73,6 @@ function Service(rpcImpl, requestDelimited, responseDelimited) {
      */
     this.responseDelimited = Boolean(responseDelimited);
 }
-
-(Service.prototype = Object.create(util.EventEmitter.prototype)).constructor = Service;
 
 /**
  * Calls a service method through {@link rpc.Service#rpcImpl|rpcImpl}.

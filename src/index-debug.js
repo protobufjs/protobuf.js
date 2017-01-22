@@ -38,8 +38,8 @@ debug.unusedTypes = function unusedTypes(ns) {
         return [];
 
     var unused = [];
-    Object.keys(ns.nested).forEach(function(name) {
-        var nested = ns.nested[name];
+    for (var names = Object.keys(ns.nested), i = 0; i < names.length; ++i) {
+        var nested = ns.nested[names[i]];
         if (nested instanceof protobuf.Type) {
             var calls = (nested.encode.calls|0)
                       + (nested.decode.calls|0)
@@ -50,7 +50,7 @@ debug.unusedTypes = function unusedTypes(ns) {
                 unused.push(nested);
         } else if (nested instanceof protobuf.Namespace)
             Array.prototype.push.apply(unused, unusedTypes(nested));
-    });
+    }
     return unused;
 };
 
