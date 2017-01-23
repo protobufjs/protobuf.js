@@ -18,8 +18,6 @@ message Test {\
 
 tape.test("reflected oneofs", function(test) {
 
-    test.ok(protobuf.OneOf.testJSON(def), "should recognize a oneof definition as JSON");
-
     var oneof = protobuf.OneOf.fromJSON("kind", {
         oneof: ["a", "b"],
         options: {}

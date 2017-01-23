@@ -43,15 +43,6 @@ function MapField(name, id, keyType, type, options) {
 }
 
 /**
- * Tests if the specified JSON object describes a map field.
- * @param {*} json JSON object to test
- * @returns {boolean} `true` if the object describes a field
- */
-MapField.testJSON = function testJSON(json) {
-    return Field.testJSON(json) && json.keyType !== undefined;
-};
-
-/**
  * Constructs a map field from JSON.
  * @param {string} name Field name
  * @param {Object.<string,*>} json JSON object

@@ -19,9 +19,6 @@ var methodDef = {
 
 tape.test("reflected services", function(test) {
 
-    test.equal(protobuf.Service.testJSON(def), true, "should recognize services as JSON");
-    test.equal(protobuf.Method.testJSON(methodDef), true, "should recognize methods as JSON");
-
     var MyService = protobuf.Service.fromJSON("MyService", def);
     test.same(MyService.toJSON(), def, "should construct without methods from and convert back to JSON");
 

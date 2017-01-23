@@ -29,23 +29,6 @@ var initNestedTypes = function() {
  */
 
 /**
- * Tests if the specified JSON object describes not another reflection object.
- * @memberof Namespace
- * @param {*} json JSON object
- * @returns {boolean} `true` if the object describes not another reflection object
- */
-Namespace.testJSON = function testJSON(json) {
-    return Boolean(json
-        && !json.fields                   // Type
-        && !json.values                   // Enum
-        && json.id === undefined          // Field, MapField
-        && !json.oneof                    // OneOf
-        && !json.methods                  // Service
-        && json.requestType === undefined // Method
-    );
-};
-
-/**
  * Constructs a namespace from JSON.
  * @memberof Namespace
  * @function
@@ -141,18 +124,20 @@ Namespace.prototype.addJSON = function addJSON(nestedJson) {
     if (nestedJson) {
         if (initNestedTypes)
             initNestedTypes();
-        for (var names = Object.keys(nestedJson), i = 0, nested; i < names.length; ++i)
+        for (var names = Object.keys(nestedJson), i = 0, nested; i < names.length; ++i) {
+            nested = nestedJson[names[i]];
             ns.add( // most to least likely
-                ( Type.testJSON(nested = nestedJson[names[i]])
+                ( nested.fields
                 ? Type.fromJSON
-                : Enum.testJSON(nested)
+                : nested.values
                 ? Enum.fromJSON
-                : Service.testJSON(nested)
+                : nested.methods
                 ? Service.fromJSON
-                : Field.testJSON(nested) // only valid is an extension field
+                : typeof nested.id !== "undefined"
                 ? Field.fromJSON
                 : Namespace.fromJSON )(names[i], nested)
             );
+        }
     }
     return this;
 };

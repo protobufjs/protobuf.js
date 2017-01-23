@@ -16,7 +16,6 @@ message Msg {}\
 service Svc {}";
 
 tape.test("reflected namespaces", function(test) {
-    test.ok(protobuf.Namespace.testJSON(def), "should recognize namespaces as JSON");
 
     var ns = protobuf.Namespace.fromJSON("ns", def);
     test.same(ns.toJSON(), def, "should construct from and convert back to JSON");

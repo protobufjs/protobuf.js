@@ -47,15 +47,6 @@ function Enum(name, values, options) {
 }
 
 /**
- * Tests if the specified JSON object describes an enum.
- * @param {*} json JSON object to test
- * @returns {boolean} `true` if the object describes an enum
- */
-Enum.testJSON = function testJSON(json) {
-    return Boolean(json && json.values);
-};
-
-/**
  * Creates an enum from JSON.
  * @param {string} name Enum name
  * @param {Object.<string,*>} json JSON object

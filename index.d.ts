@@ -204,13 +204,6 @@ export class Enum extends ReflectionObject {
     comments: { [k: string]: string };
 
     /**
-     * Tests if the specified JSON object describes an enum.
-     * @param {*} json JSON object to test
-     * @returns {boolean} `true` if the object describes an enum
-     */
-    static testJSON(json: any): boolean;
-
-    /**
      * Creates an enum from JSON.
      * @param {string} name Enum name
      * @param {Object.<string,*>} json JSON object
@@ -379,13 +372,6 @@ export class Field extends ReflectionObject {
     readonly packed: boolean;
 
     /**
-     * Tests if the specified JSON object describes a field.
-     * @param {*} json Any JSON object to test
-     * @returns {boolean} `true` if the object describes a field
-     */
-    static testJSON(json: any): boolean;
-
-    /**
      * Constructs a field from JSON.
      * @param {string} name Field name
      * @param {Object.<string,*>} json JSON object
@@ -549,13 +535,6 @@ export class MapField extends Field {
      * @type {?ReflectionObject}
      */
     resolvedKeyType: ReflectionObject;
-
-    /**
-     * Tests if the specified JSON object describes a map field.
-     * @param {*} json JSON object to test
-     * @returns {boolean} `true` if the object describes a field
-     */
-    static testJSON(json: any): boolean;
 
     /**
      * Constructs a map field from JSON.
@@ -759,13 +738,6 @@ export class Method extends ReflectionObject {
     resolvedResponseType: Type;
 
     /**
-     * Tests if the specified JSON object describes a service method.
-     * @param {*} json JSON object
-     * @returns {boolean} `true` if the object describes a map field
-     */
-    static testJSON(json: any): boolean;
-
-    /**
      * Constructs a service method from JSON.
      * @param {string} name Method name
      * @param {Object.<string,*>} json JSON object
@@ -796,14 +768,6 @@ export class Namespace extends NamespaceBase {
      * @param {Object.<string,*>} [options] Declared options
      */
     constructor(name: string, options?: { [k: string]: any });
-
-    /**
-     * Tests if the specified JSON object describes not another reflection object.
-     * @memberof Namespace
-     * @param {*} json JSON object
-     * @returns {boolean} `true` if the object describes not another reflection object
-     */
-    static testJSON(json: any): boolean;
 
     /**
      * Constructs a namespace from JSON.
@@ -1106,13 +1070,6 @@ export class OneOf extends ReflectionObject {
     readonly fieldsArray: Field[];
 
     /**
-     * Tests if the specified JSON object describes a oneof.
-     * @param {*} json JSON object
-     * @returns {boolean} `true` if the object describes a oneof
-     */
-    static testJSON(json: any): boolean;
-
-    /**
      * Constructs a oneof from JSON.
      * @param {string} name Oneof name
      * @param {Object.<string,*>} json JSON object
@@ -1391,14 +1348,6 @@ export class Root extends NamespaceBase {
     files: string[];
 
     /**
-     * Tests if the specified JSON object describes not another reflection object.
-     * @function
-     * @param {*} json JSON object
-     * @returns {boolean} `true` if the object describes not another reflection object
-     */
-    static testJSON(json: any): boolean;
-
-    /**
      * Loads a JSON definition into a root namespace.
      * @param {Object.<string,*>} json JSON definition
      * @param {Root} [root] Root namespace, defaults to create a new one if omitted
@@ -1610,13 +1559,6 @@ export class Service extends NamespaceBase {
     methods: { [k: string]: Method };
 
     /**
-     * Tests if the specified JSON object describes a service.
-     * @param {*} json JSON object to test
-     * @returns {boolean} `true` if the object describes a service
-     */
-    static testJSON(json: any): boolean;
-
-    /**
      * Constructs a service from JSON.
      * @param {string} name Service name
      * @param {Object.<string,*>} json JSON object
@@ -1682,13 +1624,6 @@ export class Type extends NamespaceBase {
      * @param {Object.<string,*>} [options] Declared options
      */
     constructor(name: string, options?: { [k: string]: any });
-
-    /**
-     * Tests if the specified JSON object describes a message type.
-     * @param {*} json JSON object to test
-     * @returns {boolean} `true` if the object describes a message type
-     */
-    static testJSON(json: any): boolean;
 
     /**
      * Creates a type from JSON.

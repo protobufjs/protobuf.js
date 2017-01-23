@@ -36,15 +36,6 @@ function Service(name, options) {
 }
 
 /**
- * Tests if the specified JSON object describes a service.
- * @param {*} json JSON object to test
- * @returns {boolean} `true` if the object describes a service
- */
-Service.testJSON = function testJSON(json) {
-    return Boolean(json && json.methods);
-};
-
-/**
  * Constructs a service from JSON.
  * @param {string} name Service name
  * @param {Object.<string,*>} json JSON object

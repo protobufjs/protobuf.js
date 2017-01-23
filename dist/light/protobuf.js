@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.6.0 (c) 2016, Daniel Wirtz
- * Compiled Sun, 22 Jan 2017 20:04:49 UTC
+ * Compiled Mon, 23 Jan 2017 16:59:28 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -1403,15 +1403,6 @@ function Enum(name, values, options) {
 }
 
 /**
- * Tests if the specified JSON object describes an enum.
- * @param {*} json JSON object to test
- * @returns {boolean} `true` if the object describes an enum
- */
-Enum.testJSON = function testJSON(json) {
-    return Boolean(json && json.values);
-};
-
-/**
  * Creates an enum from JSON.
  * @param {string} name Enum name
  * @param {Object.<string,*>} json JSON object
@@ -1667,15 +1658,6 @@ Field.prototype.setOption = function setOption(name, value, ifNotSet) {
     if (name === "packed")
         this._packed = null;
     return ReflectionObject.prototype.setOption.call(this, name, value, ifNotSet);
-};
-
-/**
- * Tests if the specified JSON object describes a field.
- * @param {*} json Any JSON object to test
- * @returns {boolean} `true` if the object describes a field
- */
-Field.testJSON = function testJSON(json) {
-    return Boolean(json && json.id !== undefined);
 };
 
 /**
@@ -1972,15 +1954,6 @@ function MapField(name, id, keyType, type, options) {
 }
 
 /**
- * Tests if the specified JSON object describes a map field.
- * @param {*} json JSON object to test
- * @returns {boolean} `true` if the object describes a field
- */
-MapField.testJSON = function testJSON(json) {
-    return Field.testJSON(json) && json.keyType !== undefined;
-};
-
-/**
  * Constructs a map field from JSON.
  * @param {string} name Field name
  * @param {Object.<string,*>} json JSON object
@@ -2243,15 +2216,6 @@ function Method(name, type, requestType, responseType, requestStream, responseSt
 }
 
 /**
- * Tests if the specified JSON object describes a service method.
- * @param {*} json JSON object
- * @returns {boolean} `true` if the object describes a map field
- */
-Method.testJSON = function testJSON(json) {
-    return Boolean(json && json.requestType !== undefined);
-};
-
-/**
  * Constructs a service method from JSON.
  * @param {string} name Method name
  * @param {Object.<string,*>} json JSON object
@@ -2324,23 +2288,6 @@ var initNestedTypes = function() {
  * @param {string} name Namespace name
  * @param {Object.<string,*>} [options] Declared options
  */
-
-/**
- * Tests if the specified JSON object describes not another reflection object.
- * @memberof Namespace
- * @param {*} json JSON object
- * @returns {boolean} `true` if the object describes not another reflection object
- */
-Namespace.testJSON = function testJSON(json) {
-    return Boolean(json
-        && !json.fields                   // Type
-        && !json.values                   // Enum
-        && json.id === undefined          // Field, MapField
-        && !json.oneof                    // OneOf
-        && !json.methods                  // Service
-        && json.requestType === undefined // Method
-    );
-};
 
 /**
  * Constructs a namespace from JSON.
@@ -2438,18 +2385,20 @@ Namespace.prototype.addJSON = function addJSON(nestedJson) {
     if (nestedJson) {
         if (initNestedTypes)
             initNestedTypes();
-        for (var names = Object.keys(nestedJson), i = 0, nested; i < names.length; ++i)
+        for (var names = Object.keys(nestedJson), i = 0, nested; i < names.length; ++i) {
+            nested = nestedJson[names[i]];
             ns.add( // most to least likely
-                ( Type.testJSON(nested = nestedJson[names[i]])
+                ( nested.fields
                 ? Type.fromJSON
-                : Enum.testJSON(nested)
+                : nested.values
                 ? Enum.fromJSON
-                : Service.testJSON(nested)
+                : nested.methods
                 ? Service.fromJSON
-                : Field.testJSON(nested) // only valid is an extension field
+                : typeof nested.id !== "undefined"
                 ? Field.fromJSON
                 : Namespace.fromJSON )(names[i], nested)
             );
+        }
     }
     return this;
 };
@@ -2945,15 +2894,6 @@ Object.defineProperty(OneOf.prototype, "fieldsArray", {
         return this._fieldsArray;
     }
 });
-
-/**
- * Tests if the specified JSON object describes a oneof.
- * @param {*} json JSON object
- * @returns {boolean} `true` if the object describes a oneof
- */
-OneOf.testJSON = function testJSON(json) {
-    return Boolean(json.oneof);
-};
 
 /**
  * Constructs a oneof from JSON.
@@ -3647,14 +3587,6 @@ function Root(options) {
 }
 
 /**
- * Tests if the specified JSON object describes not another reflection object.
- * @function
- * @param {*} json JSON object
- * @returns {boolean} `true` if the object describes not another reflection object
- */
-Root.testJSON = Namespace.testJSON;
-
-/**
  * Loads a JSON definition into a root namespace.
  * @param {Object.<string,*>} json JSON definition
  * @param {Root} [root] Root namespace, defaults to create a new one if omitted
@@ -4179,15 +4111,6 @@ function Service(name, options) {
 }
 
 /**
- * Tests if the specified JSON object describes a service.
- * @param {*} json JSON object to test
- * @returns {boolean} `true` if the object describes a service
- */
-Service.testJSON = function testJSON(json) {
-    return Boolean(json && json.methods);
-};
-
-/**
  * Constructs a service from JSON.
  * @param {string} name Service name
  * @param {Object.<string,*>} json JSON object
@@ -4323,15 +4246,6 @@ var Enum      = require(14),
     converter = require(11);
 
 /**
- * Tests if the specified JSON object describes a message type.
- * @param {*} json JSON object to test
- * @returns {boolean} `true` if the object describes a message type
- */
-Type.testJSON = function testJSON(json) {
-    return Boolean(json && json.fields);
-};
-
-/**
  * Creates a type from JSON.
  * @param {string} name Message name
  * @param {Object.<string,*>} json JSON object
@@ -4352,13 +4266,13 @@ Type.fromJSON = function fromJSON(name, json) {
         for (names = Object.keys(json.nested), i = 0; i < names.length; ++i) {
             var nested = json.nested[names[i]];
             type.add( // most to least likely
-                ( Field.testJSON(nested)
+                ( typeof nested.id !== "undefined"
                 ? Field.fromJSON
-                : Type.testJSON(nested)
+                : nested.fields
                 ? Type.fromJSON
-                : Enum.testJSON(nested)
+                : nested.values
                 ? Enum.fromJSON
-                : Service.testJSON(nested)
+                : nested.methods
                 ? Service.fromJSON
                 : Namespace.fromJSON )(names[i], nested)
             );

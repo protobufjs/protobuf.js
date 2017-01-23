@@ -54,15 +54,6 @@ Object.defineProperty(OneOf.prototype, "fieldsArray", {
 });
 
 /**
- * Tests if the specified JSON object describes a oneof.
- * @param {*} json JSON object
- * @returns {boolean} `true` if the object describes a oneof
- */
-OneOf.testJSON = function testJSON(json) {
-    return Boolean(json.oneof);
-};
-
-/**
  * Constructs a oneof from JSON.
  * @param {string} name Oneof name
  * @param {Object.<string,*>} json JSON object

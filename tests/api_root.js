@@ -11,8 +11,6 @@ var def = {
 
 tape.test("reflected roots", function(test) {
 
-    test.equal(Root.testJSON, protobuf.Namespace.testJSON, "should inherit testJSON via NamespaceBase");
-
     var root = Root.fromJSON(def);
     test.ok(root instanceof Root, "should construct from JSON");
 

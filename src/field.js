@@ -183,15 +183,6 @@ Field.prototype.setOption = function setOption(name, value, ifNotSet) {
 };
 
 /**
- * Tests if the specified JSON object describes a field.
- * @param {*} json Any JSON object to test
- * @returns {boolean} `true` if the object describes a field
- */
-Field.testJSON = function testJSON(json) {
-    return Boolean(json && json.id !== undefined);
-};
-
-/**
  * Constructs a field from JSON.
  * @param {string} name Field name
  * @param {Object.<string,*>} json JSON object

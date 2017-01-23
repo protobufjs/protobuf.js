@@ -89,15 +89,6 @@ function Method(name, type, requestType, responseType, requestStream, responseSt
 }
 
 /**
- * Tests if the specified JSON object describes a service method.
- * @param {*} json JSON object
- * @returns {boolean} `true` if the object describes a map field
- */
-Method.testJSON = function testJSON(json) {
-    return Boolean(json && json.requestType !== undefined);
-};
-
-/**
  * Constructs a service method from JSON.
  * @param {string} name Method name
  * @param {Object.<string,*>} json JSON object

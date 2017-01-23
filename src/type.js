@@ -20,15 +20,6 @@ var Enum      = require("./enum"),
     converter = require("./converter");
 
 /**
- * Tests if the specified JSON object describes a message type.
- * @param {*} json JSON object to test
- * @returns {boolean} `true` if the object describes a message type
- */
-Type.testJSON = function testJSON(json) {
-    return Boolean(json && json.fields);
-};
-
-/**
  * Creates a type from JSON.
  * @param {string} name Message name
  * @param {Object.<string,*>} json JSON object
@@ -49,13 +40,13 @@ Type.fromJSON = function fromJSON(name, json) {
         for (names = Object.keys(json.nested), i = 0; i < names.length; ++i) {
             var nested = json.nested[names[i]];
             type.add( // most to least likely
-                ( Field.testJSON(nested)
+                ( typeof nested.id !== "undefined"
                 ? Field.fromJSON
-                : Type.testJSON(nested)
+                : nested.fields
                 ? Type.fromJSON
-                : Enum.testJSON(nested)
+                : nested.values
                 ? Enum.fromJSON
-                : Service.testJSON(nested)
+                : nested.methods
                 ? Service.fromJSON
                 : Namespace.fromJSON )(names[i], nested)
             );

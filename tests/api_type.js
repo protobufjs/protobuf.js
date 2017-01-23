@@ -41,7 +41,6 @@ var def2 = {
 
 tape.test("reflected types", function(test) {
 
-    test.ok(protobuf.Type.testJSON(def), "should recognize types as JSON");
     var type = protobuf.Type.fromJSON("Test", def);
     test.same(type.toJSON(), def, "should construct from and convert back to JSON");
     type = protobuf.Type.fromJSON("Test", def2);

@@ -12,8 +12,6 @@ var def = {
 
 tape.test("reflected map fields", function(test) {
 
-    test.ok(protobuf.MapField.testJSON(def), "should recognize a mapfield definition as JSON");
-
     var field = protobuf.MapField.fromJSON("a", def);
     test.same(field.toJSON(), def, "should construct from and convert back to JSON");
 
