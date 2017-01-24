@@ -1,3 +1,8 @@
+# [6.6.1](https://github.com/dcodeIO/protobuf.js/releases/tag/6.6.1)
+
+## Fixed
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/039ac77b062ee6ebf4ec84a5e6c6ece221e63401) Properly set up reflection when using light build<br />
+
 # [6.6.0](https://github.com/dcodeIO/protobuf.js/releases/tag/6.6.0) ([release](https://github.com/dcodeIO/protobuf.js/releases/tag/6.6.0))
 
 ## Breaking
