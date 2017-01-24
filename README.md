@@ -357,7 +357,7 @@ $> pbjs -t static-module file1.proto file2.proto | pbts -o bundle.d.ts -
 
 While using .proto files requires the [full library][dist-full] (about 18.5kb gzipped) or JSON at least the [light library][dist-light] (about 15.5kb gzipped), pretty much all code but the relatively short descriptors is shared and all features including reflection and the parser are available.
 
-Static code, on the other hand, requires just the [minimal library][dist-minimal] (about 5.5kb gzipped), but generates additional, albeit editable, source code without any reflection features.
+Static code, on the other hand, requires just the [minimal library][dist-minimal] (about 6kb gzipped), but generates additional, albeit editable, source code without any reflection features.
 
 There is no significant difference performance-wise as the code generated statically is pretty much the same as generated at runtime and both are largely interchangeable as seen in the previous section.
 

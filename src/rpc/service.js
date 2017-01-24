@@ -18,7 +18,7 @@ var util = require("../util/minimal");
  */
 
 /**
- * A service method part of an {@link rpc.ServiceMethodMixin|ServiceMethodMixin} and thus {@link rpc.Service} as created by {@link Service.create}.
+ * A service method part of a {@link rpc.ServiceMethodMixin|ServiceMethodMixin} and thus {@link rpc.Service} as created by {@link Service.create}.
  * @typedef rpc.ServiceMethod
  * @type {function}
  * @param {Message|Object} request Request message or plain object
