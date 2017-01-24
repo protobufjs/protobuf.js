@@ -1,3 +1,43 @@
+# [6.6.0](https://github.com/dcodeIO/protobuf.js/releases/tag/6.6.0)
+
+## Breaking
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/cdfe6bfba27fa1a1d0e61887597ad4bb16d7e5ed) Inlined / refactored away .testJSON, see [#653](https://github.com/dcodeIO/protobuf.js/issues/653)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/6a483a529ef9345ed217a23394a136db0d9f7771) Refactored util.extend away<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/27b16351f3286468e539c2ab382de4b52667cf5e) Reflected and statically generated services use common utility, now work exactly the same<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/dca26badfb843a597f81e98738e2fda3f66c7341) fromObject now throws for entirely bogus values (repeated, map and inner message fields), fixes [#601](https://github.com/dcodeIO/protobuf.js/issues/601)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/4bff9c356ef5c10b4aa34d1921a3b513e03dbb3d) Cleaned up library distributions, now is full / light / minimal with proper browserify support for each<br />
+
+## Fixed
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/301f7762ef724229cd1df51e496eed8cfd2f10eb) Do not randomly remove slashes from comments, fixes [#656](https://github.com/dcodeIO/protobuf.js/issues/656)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/ef7be352baaec26bdcdce01a71fbee47bbdeec15) Properly parse nested textformat options, also tackles [#655](https://github.com/dcodeIO/protobuf.js/issues/655)<br />
+
+## New
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/b4f4f48f1949876ae92808b0a5ca5f2b29cc011c) Relieved the requirement to call .resolveAll() on roots in order to populate static code-compatible properties, see [#653](https://github.com/dcodeIO/protobuf.js/issues/653)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/56c8ec4196d461383c3e1f271da02553d877ae81) Added a (highly experimental) debug build as a starting point for [#653](https://github.com/dcodeIO/protobuf.js/issues/653)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/c5d291f9bab045385c5938ba0f6cdf50a315461f) Full build depends on light build depends on minimal build, shares all relevant code<br />
+
+## CLI
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/735da4315a98a6960f3b5089115e308548b91c07) Also reuse specified root in pbjs for JSON modules, see [#653](https://github.com/dcodeIO/protobuf.js/issues/653)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/3a056244d3acf339722d56549469a8df018e682e) Reuse specified root name in pbjs to be able to split definitions over multiple files more easily, see [#653](https://github.com/dcodeIO/protobuf.js/issues/653)<br />
+
+## Docs
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/28ddf756ab83cc890761ef2bd84a0788d2ad040d) Improved pbjs/pbts examples, better covers reflection with definitions for static modules<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/6f0b44aea6cf72d23042810f05a7cede85239eb3) Fixed centered formatting on npm<br />
+
+## Other
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/dd96dcdacb8eae94942f7016b8dc37a2569fe420) Various other minor improvements / assertions refactored away, see [#653](https://github.com/dcodeIO/protobuf.js/issues/653)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/3317a76fb56b9b31bb07ad672d6bdda94b79b6c3) Fixed some common reflection deopt sites, see [#653](https://github.com/dcodeIO/protobuf.js/issues/653)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/6a483a529ef9345ed217a23394a136db0d9f7771) Reflection performance pass, see [#653](https://github.com/dcodeIO/protobuf.js/issues/653)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/6a483a529ef9345ed217a23394a136db0d9f7771) Added TS definitions to alternative builds' index files<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/6a483a529ef9345ed217a23394a136db0d9f7771) Removed unnecessary prototype aliases, improves gzip ratio<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/641625fd64aca55b1163845e6787b58054ac36ec) Unified behaviour of and docs on Class constructor / Class.create<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/7299929b37267af2100237d4f8b4ed8610b9f7e1) Statically generated services actually inherit from rpc.Service<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/f4cf75e4e4192910b52dd5864a32ee138bd4e508) Do not try to run sauce tests for PRs<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/33da148e2b750ce06591c1c66ce4c46ccecc3c8f) Added utility to enable/disable debugging extensions to experimental debug build<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/fdb1a729ae5f8ab762c51699bc4bb721102ef0c8) Fixed node 0.12 tests<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/6bc5bb4a7649d6b91a5944a9ae20178d004c8856) Fixed coverage<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/6f0b44aea6cf72d23042810f05a7cede85239eb3) Added a test case for [#652](https://github.com/dcodeIO/protobuf.js/issues/652)<br />
+
 # [6.5.3](https://github.com/dcodeIO/protobuf.js/releases/tag/6.5.3)
 
 ## Other
