@@ -2144,15 +2144,6 @@ export namespace util {
     }
 
     /**
-     * Lets the specified constructor extend `this` class.
-     * @memberof util
-     * @param {*} ctor Extending constructor
-     * @returns {Object.<string,*>} Constructor prototype
-     * @this Function
-     */
-    function extend(this: Function, ctor: any): { [k: string]: any };
-
-    /**
      * Fetches the contents of a file.
      * @memberof util
      * @param {string} path File path or url

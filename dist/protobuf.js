@@ -1,6 +1,6 @@
 /*!
- * protobuf.js v6.6.0 (c) 2016, Daniel Wirtz
- * Compiled Tue, 24 Jan 2017 04:03:36 UTC
+ * protobuf.js v6.6.1 (c) 2016, Daniel Wirtz
+ * Compiled Tue, 24 Jan 2017 13:05:54 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -2067,6 +2067,11 @@ protobuf.Message          = require(21);
 protobuf.types            = require(35);
 protobuf.util             = require(36);
 
+// Configure reflection
+protobuf.ReflectionObject._configure(protobuf.Root);
+protobuf.Namespace._configure(protobuf.Type, protobuf.Service);
+protobuf.Root._configure(protobuf.Type);
+
 },{"10":10,"12":12,"13":13,"14":14,"15":15,"16":16,"18":18,"20":20,"21":21,"22":22,"23":23,"24":24,"25":25,"29":29,"32":32,"34":34,"35":35,"36":36,"39":39}],18:[function(require,module,exports){
 "use strict";
 var protobuf = global.protobuf = exports;
@@ -2127,6 +2132,7 @@ if (typeof define === "function" && define.amd)
         return protobuf;
     });
 
+// Configure serialization
 protobuf.Writer._configure(protobuf.BufferWriter);
 configure();
 
@@ -2141,8 +2147,7 @@ protobuf.tokenize         = require(33);
 protobuf.parse            = require(26);
 protobuf.common           = require(11);
 
-protobuf.ReflectionObject._configure(protobuf.Root);
-protobuf.Namespace._configure(protobuf.Type, protobuf.Service);
+// Configure parser
 protobuf.Root._configure(protobuf.Type, protobuf.parse, protobuf.common);
 
 },{"11":11,"17":17,"26":26,"33":33}],20:[function(require,module,exports){

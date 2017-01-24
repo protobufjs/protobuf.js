@@ -1,6 +1,6 @@
 /*!
- * protobuf.js v6.6.0 (c) 2016, Daniel Wirtz
- * Compiled Tue, 24 Jan 2017 04:03:36 UTC
+ * protobuf.js v6.6.1 (c) 2016, Daniel Wirtz
+ * Compiled Tue, 24 Jan 2017 13:05:54 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -494,6 +494,7 @@ if (typeof define === "function" && define.amd)
         return protobuf;
     });
 
+// Configure serialization
 protobuf.Writer._configure(protobuf.BufferWriter);
 configure();
 

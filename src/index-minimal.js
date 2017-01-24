@@ -57,5 +57,6 @@ if (typeof define === "function" && define.amd)
         return protobuf;
     });
 
+// Configure serialization
 protobuf.Writer._configure(protobuf.BufferWriter);
 configure();

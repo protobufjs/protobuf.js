@@ -96,3 +96,8 @@ protobuf.Message          = require("./message");
 // Utility
 protobuf.types            = require("./types");
 protobuf.util             = require("./util");
+
+// Configure reflection
+protobuf.ReflectionObject._configure(protobuf.Root);
+protobuf.Namespace._configure(protobuf.Type, protobuf.Service);
+protobuf.Root._configure(protobuf.Type);

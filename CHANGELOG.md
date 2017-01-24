@@ -1,4 +1,4 @@
-# [6.6.0](https://github.com/dcodeIO/protobuf.js/releases/tag/6.6.0)
+# [6.6.0](https://github.com/dcodeIO/protobuf.js/releases/tag/6.6.0) ([release](https://github.com/dcodeIO/protobuf.js/releases/tag/6.6.0))
 
 ## Breaking
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/cdfe6bfba27fa1a1d0e61887597ad4bb16d7e5ed) Inlined / refactored away .testJSON, see [#653](https://github.com/dcodeIO/protobuf.js/issues/653)<br />

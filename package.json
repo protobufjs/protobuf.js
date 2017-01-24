@@ -1,6 +1,6 @@
 {
   "name": "protobufjs",
-  "version": "6.6.0",
+  "version": "6.6.1",
   "versionScheme": "~",
   "description": "Protocol Buffers for JavaScript (& TypeScript).",
   "author": "Daniel Wirtz <dcode+protobufjs@dcode.io>",
@@ -31,7 +31,7 @@
     "changelog": "node scripts/changelog -w",
     "coverage": "istanbul cover node_modules/tape/bin/tape tests/*.js tests/node/*.js",
     "coverage-ci": "npm run coverage && cat coverage/lcov.info | coveralls",
-    "docs": "jsdoc -c jsdoc.docs.json -R README.md -P package.json --verbose --pedantic",
+    "docs": "jsdoc -c jsdoc.docs.json -R README.md --verbose --pedantic",
     "lint": "eslint src",
     "pages": "node scripts/pages",
     "prepublish": "node scripts/prepublish",
