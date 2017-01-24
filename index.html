@@ -80,6 +80,35 @@
             </ul>
         </li>
     
+        <li class="item" data-name="debug">
+            <span class="title">
+                <a href="debug.html">debug</a>
+                
+                <span class="static">static</span>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="debug.disable"><a href="debug.html#.disable">disable</a></li>
+            
+                <li data-name="debug.enable"><a href="debug.html#.enable">enable</a></li>
+            
+                <li data-name="debug.unusedTypes"><a href="debug.html#.unusedTypes">unusedTypes</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
         <li class="item" data-name="rpc">
             <span class="title">
                 <a href="rpc.html">rpc</a>
@@ -91,6 +120,14 @@
             
             </ul>
             <ul class="typedefs itemMembers">
+            
+            <span class="subtitle">Typedefs</span>
+            
+                <li data-name="rpc.ServiceMethod"><a href="rpc.html#.ServiceMethod">ServiceMethod</a></li>
+            
+                <li data-name="rpc.ServiceMethodCallback"><a href="rpc.html#.ServiceMethodCallback">ServiceMethodCallback</a></li>
+            
+                <li data-name="rpc.ServiceMethodMixin"><a href="rpc.html#.ServiceMethodMixin">ServiceMethodMixin</a></li>
             
             </ul>
             <ul class="methods itemMembers">
@@ -1309,7 +1346,11 @@
             
             <span class="subtitle">Members</span>
             
-                <li data-name="rpc.Service#$rpc"><a href="rpc.Service.html#$rpc">$rpc</a></li>
+                <li data-name="rpc.Service#requestDelimited"><a href="rpc.Service.html#requestDelimited">requestDelimited</a></li>
+            
+                <li data-name="rpc.Service#responseDelimited"><a href="rpc.Service.html#responseDelimited">responseDelimited</a></li>
+            
+                <li data-name="rpc.Service#rpcImpl"><a href="rpc.Service.html#rpcImpl">rpcImpl</a></li>
             
             </ul>
             <ul class="typedefs itemMembers">
@@ -1326,6 +1367,8 @@
                 <li data-name="rpc.Service#off"><a href="rpc.Service.html#off">off</a></li>
             
                 <li data-name="rpc.Service#on"><a href="rpc.Service.html#on">on</a></li>
+            
+                <li data-name="rpc.Service#rpcCall"><a href="rpc.Service.html#rpcCall">rpcCall</a></li>
             
             </ul>
             <ul class="events itemMembers">
@@ -1727,8 +1770,8 @@
 
 
     <section>
-        <article class="readme"><p><h1 align="center"><img alt="protobuf.js" src="https://github.com/dcodeIO/protobuf.js/raw/master/pbjs.png" width="120" height="104" /></h1></p>
-<p align="center"><br>    <a target="_blank" href="https://travis-ci.org/dcodeIO/protobuf.js"><img src="https://travis-ci.org/dcodeIO/protobuf.js.svg?branch=master" alt=""></a><br>    <a target="_blank" href="https://coveralls.io/github/dcodeIO/protobuf.js"><img src="https://coveralls.io/repos/github/dcodeIO/protobuf.js/badge.svg?branch=master" alt=""></a><br>    <a target="_blank" href="https://npmjs.org/package/protobufjs"><img src="https://img.shields.io/npm/v/protobufjs.svg" alt=""></a><br>    <a target="_blank" href="https://npmjs.org/package/protobufjs"><img src="https://img.shields.io/npm/dm/protobufjs.svg" alt=""></a><br>    <a target="_blank" href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=dcode%40dcode.io&item_name=Open%20Source%20Software%20Contribution&item_number=dcodeIO%2Fprotobuf.js"><img alt="donate ❤" src="https://img.shields.io/badge/donate-❤-ff2244.svg"></a><br></p>
+        <article class="readme"><p><h1><p align="center"><img alt="protobuf.js" src="https://github.com/dcodeIO/protobuf.js/raw/master/pbjs.png" width="120" height="104" /></p></h1></p>
+<p align="center"><a target="_blank" href="https://travis-ci.org/dcodeIO/protobuf.js"><img src="https://travis-ci.org/dcodeIO/protobuf.js.svg?branch=master" alt=""></a> <a target="_blank" href="https://coveralls.io/github/dcodeIO/protobuf.js"><img src="https://coveralls.io/repos/github/dcodeIO/protobuf.js/badge.svg?branch=master" alt=""></a> <a target="_blank" href="https://npmjs.org/package/protobufjs"><img src="https://img.shields.io/npm/v/protobufjs.svg" alt=""></a> <a target="_blank" href="https://npmjs.org/package/protobufjs"><img src="https://img.shields.io/npm/dm/protobufjs.svg" alt=""></a> <a target="_blank" href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=dcode%40dcode.io&item_name=Open%20Source%20Software%20Donation&item_number=dcodeIO%2Fprotobuf.js"><img alt="donate ❤" src="https://img.shields.io/badge/donate-❤-ff2244.svg"></a></p>
 
 <p><strong>Protocol Buffers</strong> are a language-neutral, platform-neutral, extensible way of serializing structured data for use in communications protocols, data storage, and more, originally designed at Google (<a target="_blank" href="https://developers.google.com/protocol-buffers/">see</a>).</p>
 <p><strong>protobuf.js</strong> is a pure JavaScript implementation with TypeScript support for node and the browser. It's super easy to use, blazingly fast and works out of the box on .proto files!</p>
@@ -1767,6 +1810,37 @@
 <pre class="prettyprint source"><code>&lt;script src=&quot;//cdn.rawgit.com/dcodeIO/protobuf.js/6.X.X/dist/protobuf.min.js&quot;>&lt;/script></code></pre><p><strong>NOTE:</strong> Remember to replace the version tag with the exact <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/tags">release</a> your project depends upon.</p>
 <p>Or <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/tree/master/dist">download</a> the library.</p>
 <p>The <code>protobuf</code> namespace will always be available globally / also supports AMD loaders.</p>
+<p>Additionally, the library is compiled in different versions. Which one to use depends on whether size is a factor and your use case:</p>
+<table>
+<thead>
+<tr>
+<th>Build</th>
+<th>Downloads</th>
+<th>How to require</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>full</td>
+<td><a target="_blank" href="https://github.com/dcodeIO/protobuf.js/tree/master/dist">dist</a></td>
+<td><code>require(&quot;protobufjs&quot;)</code></td>
+<td>All features. Works with everything.</td>
+</tr>
+<tr>
+<td>light</td>
+<td><a target="_blank" href="https://github.com/dcodeIO/protobuf.js/tree/master/dist/light">dist/light</a></td>
+<td><code>require(&quot;protobufjs/light&quot;)</code></td>
+<td>All features except tokenizer, parser and bundled common types. Works with reflection, JSON definitions and static code.</td>
+</tr>
+<tr>
+<td>minimal</td>
+<td><a target="_blank" href="https://github.com/dcodeIO/protobuf.js/tree/master/dist/minimal">dist/minimal</a></td>
+<td><code>require(&quot;protobufjs/minimal&quot;)</code></td>
+<td>Just enough to run statically generated code. Works with static code only.</td>
+</tr>
+</tbody>
+</table>
 <h2 id="examples">Examples</h2>
 <h3 id="using-proto-files">Using .proto files</h3>
 <pre class="prettyprint source lang-protobuf"><code>// awesome.proto
@@ -1824,7 +1898,7 @@ var message = new AwesomeMessage({ awesomeField: &quot;AwesomeString&quot; });
 
 // Continue at &quot;Encode a message&quot; above</code></pre><p>Custom classes are automatically populated with static <code>encode</code>, <code>encodeDelimited</code>, <code>decode</code>, <code>decodeDelimited</code> and <code>verify</code> methods and reference their reflected type via the <code>$type</code> property. Note that there are no methods (just <code>$type</code>) on instances by default as method names might conflict with field names.</p>
 <h3 id="using-the-reader-writer-interface-directly">Using the Reader/Writer interface directly</h3>
-<p>While only useful for the adventurous cherishing an aversion to <a target="_blank" href="https://github.com/dcodeIO/protobuf.js#command-line">generated static code</a>, it's also possible to use the Reader/Writer interface directly depending just on the <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/tree/master/dist/runtime">minimal runtime</a> (<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/examples/reader-writer.js">basic example</a>).</p>
+<p>While only useful for the adventurous cherishing an aversion to <a target="_blank" href="https://github.com/dcodeIO/protobuf.js#command-line">generated static code</a>, it's also possible to use the Reader/Writer interface directly depending just on the <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/tree/master/dist/minimal">minimal library</a> (<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/examples/reader-writer.js">basic example</a>).</p>
 <p>Easy ways to obtain example code snippets are either setting <code>protobuf.util.codegen.verbose = true</code> while watching the magic as it happens, or simply inspecting generated static code.</p>
 <h3 id="using-services">Using services</h3>
 <pre class="prettyprint source lang-protobuf"><code>// greeter.proto
@@ -1917,7 +1991,9 @@ usage: pbjs [options] file1.proto file2.json ...  (or)  other | pbjs [options] -
 <pre class="prettyprint source lang-js"><code>var root = protobuf.Root.fromJSON(require(&quot;./bundle.json&quot;));</code></pre><p>or load it the usual way:</p>
 <pre class="prettyprint source lang-js"><code>protobuf.load(&quot;bundle.json&quot;, function(err, root) {
     ...
-});</code></pre><p><strong>ProTip!</strong> Documenting your .proto files with <code>/** ... */</code>-blocks or (trailing) <code>/// ...</code> lines translates to generated static code.</p>
+});</code></pre><p>As you might have noticed, <code>pbjs</code> is also capable of generating static code. For example</p>
+<pre class="prettyprint source"><code>$> pbjs -t static-module -w commonjs -o compiled.js file1.proto file2.proto</code></pre><p>will generate static code for definitions within <code>file1.proto</code> and <code>file2.proto</code> to a CommonJS module <code>compiled.js</code>, which then can be used with just the <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/tree/master/dist/minimal">minimal library</a>.</p>
+<p><strong>ProTip!</strong> Documenting your .proto files with <code>/** ... */</code>-blocks or (trailing) <code>/// ...</code> lines translates to generated static code.</p>
 <h3 id="generating-typescript-definitions-from-static-modules">Generating TypeScript definitions from static modules</h3>
 <p>Likewise, the <code>pbts</code> command line utility can be used to generate TypeScript definitions from <code>pbjs</code>-generated static modules.</p>
 <pre class="prettyprint source"><code>Generates TypeScript definitions from annotated JavaScript files.
@@ -1932,7 +2008,20 @@ usage: pbjs [options] file1.proto file2.json ...  (or)  other | pbjs [options] -
 
   --no-comments   Does not output any JSDoc comments.
 
-usage: pbts [options] file1.js file2.js ...  (or)  other | pbts [options] -</code></pre><h3 id="using-pbjs-and-pbts-programmatically">Using pbjs and pbts programmatically</h3>
+usage: pbts [options] file1.js file2.js ...  (or)  other | pbts [options] -</code></pre><p>Picking up on the example above, the following not just generates static code to a CommonJS module <code>compiled.js</code> but also its respective TypeScript definitions to <code>compiled.d.ts</code>:</p>
+<pre class="prettyprint source"><code>$> pbjs -t static-module -w commonjs -o compiled.js file1.proto file2.proto
+$> pbts -o compiled.d.ts compiled.js</code></pre><p>Additionally, TypeScript definitions of static modules are compatible with reflection, as long as the following conditions are met:</p>
+<ol>
+<li>Instead of using <code>new SomeMessage(...)</code>, always use <code>SomeMessage.create(...)</code> because reflection objects do not provide a constructor.</li>
+<li>Types, services and enums must start with an uppercase letter to become available as properties of the reflected types as well (i.e. to be able to use <code>MyMessage.MyEnum</code> instead of <code>root.lookup(&quot;MyMessage.MyEnum&quot;)</code>).</li>
+</ol>
+<p>For example, the following generates a <code>bundle.json</code> and a <code>bundle.d.ts</code>, but no static code:</p>
+<pre class="prettyprint source"><code>$> pbjs -t json-module -w commonjs -o bundle.json file1.proto file2.proto
+$> pbjs -t static-module file1.proto file2.proto | pbts -o bundle.d.ts -</code></pre><h3 id="on-reflection-vs-static-code">On reflection vs. static code</h3>
+<p>While using .proto files requires the <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/tree/master/dist">full library</a> (about 18.5kb gzipped) or JSON at least the <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/tree/master/dist/light">light library</a> (about 15.5kb gzipped), pretty much all code but the relatively short descriptors is shared and all features including reflection and the parser are available.</p>
+<p>Static code, on the other hand, requires just the <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/tree/master/dist/minimal">minimal library</a> (about 5.5kb gzipped), but generates additional, albeit editable, source code without any reflection features.</p>
+<p>There is no significant difference performance-wise as the code generated statically is pretty much the same as generated at runtime and both are largely interchangeable as seen in the previous section.</p>
+<h3 id="using-pbjs-and-pbts-programmatically">Using pbjs and pbts programmatically</h3>
 <p>Both utilities can be used programmatically by providing command line arguments and a callback to their respective <code>main</code> functions:</p>
 <pre class="prettyprint source lang-js"><code>var pbjs = require(&quot;protobufjs/cli/pbjs&quot;);
 
@@ -1940,17 +2029,7 @@ pbjs.main([ &quot;--target&quot;, &quot;json-module&quot;, &quot;path/to/myproto
     if (err)
         throw err;
     // do something with output
-});</code></pre><h3 id="descriptors-vs-static-modules">Descriptors vs. static modules</h3>
-<p>While .proto and JSON files require the full library (about 18.5kb gzipped), pretty much all code but the relatively short descriptors is shared and all features including reflection and the parser are available.</p>
-<p>Static code, on the other hand, requires just the minimal runtime (about 5.5kb gzipped), but generates additional, albeit editable, source code without any reflection features.</p>
-<p>There is no difference performance-wise as the code generated statically is pretty much the same as generated at runtime.</p>
-<p>Additionally, JSON modules can be used with TypeScript definitions generated for their static counterparts as long as the following conditions are met:</p>
-<ol>
-<li>Use <code>SomeMessage.create(...)</code> instead of <code>new SomeMessage(...)</code> (reflection does not provide such a constructor).</li>
-<li>Types, services and enums must start with an uppercase letter to become available as properties of the reflected types as well.</li>
-<li>When using a TypeScript definition with custom code, <code>resolveAll()</code> must be called once on the root instance to populate these additional properties (JSON modules do this automatically).</li>
-</ol>
-<h2 id="performance">Performance</h2>
+});</code></pre><h2 id="performance">Performance</h2>
 <p>The package includes a benchmark that tries to compare performance to native JSON as far as this is possible. On an i7-2600K running node 6.9.1 it yields:</p>
 <pre class="prettyprint source"><code>benchmarking encoding performance ...
 
@@ -2017,7 +2096,7 @@ Type.toObject x 3,601,738 ops/sec ±0.72% (93 runs sampled)</code></pre><p>Note 
 <p>To build the library or its components yourself, clone it from GitHub and install the development dependencies:</p>
 <pre class="prettyprint source"><code>$> git clone https://github.com/dcodeIO/protobuf.js.git
 $> cd protobuf.js
-$> npm install</code></pre><p>Building the development and production versions with their respective source maps to <code>dist/</code>:</p>
+$> npm install</code></pre><p>Building the respective development and production versions with their respective source maps to <code>dist/</code>:</p>
 <pre class="prettyprint source"><code>$> npm run build</code></pre><p>Building the documentation to <code>docs/</code>:</p>
 <pre class="prettyprint source"><code>$> npm run docs</code></pre><p>Building the TypeScript definition to <code>index.d.ts</code>:</p>
 <pre class="prettyprint source"><code>$> npm run types</code></pre><h3 id="browserify-integration">Browserify integration</h3>

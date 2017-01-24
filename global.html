@@ -80,6 +80,35 @@
             </ul>
         </li>
     
+        <li class="item" data-name="debug">
+            <span class="title">
+                <a href="debug.html">debug</a>
+                
+                <span class="static">static</span>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="debug.disable"><a href="debug.html#.disable">disable</a></li>
+            
+                <li data-name="debug.enable"><a href="debug.html#.enable">enable</a></li>
+            
+                <li data-name="debug.unusedTypes"><a href="debug.html#.unusedTypes">unusedTypes</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
         <li class="item" data-name="rpc">
             <span class="title">
                 <a href="rpc.html">rpc</a>
@@ -91,6 +120,14 @@
             
             </ul>
             <ul class="typedefs itemMembers">
+            
+            <span class="subtitle">Typedefs</span>
+            
+                <li data-name="rpc.ServiceMethod"><a href="rpc.html#.ServiceMethod">ServiceMethod</a></li>
+            
+                <li data-name="rpc.ServiceMethodCallback"><a href="rpc.html#.ServiceMethodCallback">ServiceMethodCallback</a></li>
+            
+                <li data-name="rpc.ServiceMethodMixin"><a href="rpc.html#.ServiceMethodMixin">ServiceMethodMixin</a></li>
             
             </ul>
             <ul class="methods itemMembers">
@@ -1309,7 +1346,11 @@
             
             <span class="subtitle">Members</span>
             
-                <li data-name="rpc.Service#$rpc"><a href="rpc.Service.html#$rpc">$rpc</a></li>
+                <li data-name="rpc.Service#requestDelimited"><a href="rpc.Service.html#requestDelimited">requestDelimited</a></li>
+            
+                <li data-name="rpc.Service#responseDelimited"><a href="rpc.Service.html#responseDelimited">responseDelimited</a></li>
+            
+                <li data-name="rpc.Service#rpcImpl"><a href="rpc.Service.html#rpcImpl">rpcImpl</a></li>
             
             </ul>
             <ul class="typedefs itemMembers">
@@ -1326,6 +1367,8 @@
                 <li data-name="rpc.Service#off"><a href="rpc.Service.html#off">off</a></li>
             
                 <li data-name="rpc.Service#on"><a href="rpc.Service.html#on">on</a></li>
+            
+                <li data-name="rpc.Service#rpcCall"><a href="rpc.Service.html#rpcCall">rpcCall</a></li>
             
             </ul>
             <ul class="events itemMembers">
@@ -1767,6 +1810,51 @@
             
 <dt>
     <div class="nameContainer">
+        <h4 class="name" id="build">build <span class="type-signature type">{ string }</span></h4>
+    </div>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Build type, one of <code>&quot;full&quot;</code>, <code>&quot;light&quot;</code> or <code>&quot;minimal&quot;</code>.</p>
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
         <h4 class="name" id="roots">roots <span class="type-signature type">{ Object&lt;string, <a href="Root.html">Root</a>> }</span></h4>
     </div>
     
@@ -1806,6 +1894,14 @@
 
     
     
+        <h5>Example</h5>
+        
+
+    
+    <pre class="prettyprint"><code>// pbjs -r myroot -o compiled.js ...// in another module:require("./compiled.js");// in any subsequent module:var root = protobuf.roots["myroot"];</code></pre>
+    
+
+    
 </dd>
 
         </dl>
@@ -1825,7 +1921,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/common.js">common.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/common.js#L17">line 17</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/common.js">common.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/common.js#L23">line 23</a>
         </div>
         
     </div>
@@ -2146,6 +2242,14 @@
     
     
     
+        <h5>Example</h5>
+        
+
+    
+    <pre class="prettyprint"><code>// manually provides descriptor.proto (assumes google/protobuf/ namespace and .proto extension)protobuf.common("descriptor", descriptorJson);// manually provides a custom definition (uses my/package/ namespace)protobuf.common("my/package/base.proto", baseJson);</code></pre>
+    
+
+    
 </dd>
 
         
@@ -2159,7 +2263,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/index.js">index.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/index.js#L126">line 126</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/index-minimal.js">index-minimal.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/index-minimal.js#L44">line 44</a>
         </div>
         
     </div>
@@ -2608,7 +2712,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/index.js">index.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/index.js#L21">line 21</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/index-light.js">index-light.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/index-light.js#L23">line 23</a>
         </div>
         
     </div>
@@ -2809,7 +2913,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/index.js">index.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/index.js#L31">line 31</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/index-light.js">index-light.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/index-light.js#L32">line 32</a>
         </div>
         
     </div>
@@ -2987,7 +3091,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/index.js">index.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/index.js#L43">line 43</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/index-light.js">index-light.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/index-light.js#L44">line 44</a>
         </div>
         
     </div>
@@ -3177,7 +3281,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/index.js">index.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/index.js#L65">line 65</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/index-light.js">index-light.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/index-light.js#L66">line 66</a>
         </div>
         
     </div>
@@ -5031,7 +5135,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/index.js">index.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/index.js#L4">line 4</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/index-light.js">index-light.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/index-light.js#L6">line 6</a>
         </div>
         
     </div>
@@ -5979,14 +6083,14 @@
                 
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="RPCCallback">
+        <h4 class="name" id="RPCImpl">
             
-            RPCCallback<span class="signature">(error, <span class="optional">responseData</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ undefined }</span>
+            RPCImpl<span class="signature">(method, requestData, callback)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ undefined }</span>
         </h4>
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/service.js">service.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/service.js#L157">line 157</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/rpc.js">rpc.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/rpc.js#L9">line 9</a>
         </div>
         
     </div>
@@ -5997,7 +6101,7 @@
     
     
     <div class="description">
-        <p>Node-style callback as used by <a href="global.html#RPCImpl">RPCImpl</a>.</p>
+        <p>RPC implementation passed to <a href="Service.html#create">Service#create</a> performing a service request on network level, i.e. by utilizing http requests or websockets.</p>
     </div>
     
 
@@ -6028,13 +6132,16 @@
 	
         <tr>
             
-                <td class="name"><code>error</code></td>
+                <td class="name"><code>method</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type">Error</span>
+<span class="param-type"><a href="Method.html">Method</a></span>
+|
+
+<span class="param-type"><a href="rpc.html#.ServiceMethod">rpc.ServiceMethod</a></span>
 
 
             
@@ -6044,21 +6151,14 @@
             
             <td class="description last">
                 
-                    
-                    
-                        <span class="nullable">nullable</span>
-                    
-                        
-                    
-                
-                <p>Error, if any, otherwise <code>null</code></p></td>
+                <p>Reflected or static method being called</p></td>
         </tr>
 	
 	
 	
         <tr>
             
-                <td class="name"><code>responseData</code></td>
+                <td class="name"><code>requestData</code></td>
             
             
             <td class="type">
@@ -6074,14 +6174,30 @@
             
             <td class="description last">
                 
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
+                <p>Request data</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+            
+            <td class="type">
+            
                 
-                <p>Response data or <code>null</code> to signal end of stream, if there hasn't been an error</p></td>
+<span class="param-type"><a href="global.html#RPCImplCallback">RPCImplCallback</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>Callback function</p></td>
         </tr>
 	
 	
@@ -6155,20 +6271,28 @@
     
     
     
+        <h5>Example</h5>
+        
+
+    
+    <pre class="prettyprint"><code>function rpcImpl(method, requestData, callback) {    if (protobuf.util.lcFirst(method.name) !== "myMethod") // compatible with static code        throw Error("no such method");    asynchronouslyObtainAResponse(requestData, function(err, responseData) {        callback(err, responseData);    });}</code></pre>
+    
+
+    
 </dd>
 
             
                 
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="RPCImpl">
+        <h4 class="name" id="RPCImplCallback">
             
-            RPCImpl<span class="signature">(method, requestData, callback)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ undefined }</span>
+            RPCImplCallback<span class="signature">(error, <span class="optional">response</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ undefined }</span>
         </h4>
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/service.js">service.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/service.js#L147">line 147</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/rpc.js">rpc.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/rpc.js#L27">line 27</a>
         </div>
         
     </div>
@@ -6179,7 +6303,7 @@
     
     
     <div class="description">
-        <p>RPC implementation passed to <a href="Service.html#create">Service#create</a> performing a service request on network level, i.e. by utilizing http requests or websockets.</p>
+        <p>Node-style callback as used by <a href="global.html#RPCImpl">RPCImpl</a>.</p>
     </div>
     
 
@@ -6210,13 +6334,13 @@
 	
         <tr>
             
-                <td class="name"><code>method</code></td>
+                <td class="name"><code>error</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type"><a href="Method.html">Method</a></span>
+<span class="param-type">Error</span>
 
 
             
@@ -6226,14 +6350,21 @@
             
             <td class="description last">
                 
-                <p>Reflected method being called</p></td>
+                    
+                    
+                        <span class="nullable">nullable</span>
+                    
+                        
+                    
+                
+                <p>Error, if any, otherwise <code>null</code></p></td>
         </tr>
 	
 	
 	
         <tr>
             
-                <td class="name"><code>requestData</code></td>
+                <td class="name"><code>response</code></td>
             
             
             <td class="type">
@@ -6249,30 +6380,16 @@
             
             <td class="description last">
                 
-                <p>Request data</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>callback</code></td>
-            
-            
-            <td class="type">
-            
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        <span class="nullable">nullable</span>
+                    
+                        
+                    
                 
-<span class="param-type"><a href="global.html#RPCCallback">RPCCallback</a></span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                <p>Callback function</p></td>
+                <p>Response data or <code>null</code> to signal end of stream, if there hasn't been an error</p></td>
         </tr>
 	
 	

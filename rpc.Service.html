@@ -80,6 +80,35 @@
             </ul>
         </li>
     
+        <li class="item" data-name="debug">
+            <span class="title">
+                <a href="debug.html">debug</a>
+                
+                <span class="static">static</span>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="debug.disable"><a href="debug.html#.disable">disable</a></li>
+            
+                <li data-name="debug.enable"><a href="debug.html#.enable">enable</a></li>
+            
+                <li data-name="debug.unusedTypes"><a href="debug.html#.unusedTypes">unusedTypes</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
         <li class="item" data-name="rpc">
             <span class="title">
                 <a href="rpc.html">rpc</a>
@@ -91,6 +120,14 @@
             
             </ul>
             <ul class="typedefs itemMembers">
+            
+            <span class="subtitle">Typedefs</span>
+            
+                <li data-name="rpc.ServiceMethod"><a href="rpc.html#.ServiceMethod">ServiceMethod</a></li>
+            
+                <li data-name="rpc.ServiceMethodCallback"><a href="rpc.html#.ServiceMethodCallback">ServiceMethodCallback</a></li>
+            
+                <li data-name="rpc.ServiceMethodMixin"><a href="rpc.html#.ServiceMethodMixin">ServiceMethodMixin</a></li>
             
             </ul>
             <ul class="methods itemMembers">
@@ -1309,7 +1346,11 @@
             
             <span class="subtitle">Members</span>
             
-                <li data-name="rpc.Service#$rpc"><a href="rpc.Service.html#$rpc">$rpc</a></li>
+                <li data-name="rpc.Service#requestDelimited"><a href="rpc.Service.html#requestDelimited">requestDelimited</a></li>
+            
+                <li data-name="rpc.Service#responseDelimited"><a href="rpc.Service.html#responseDelimited">responseDelimited</a></li>
+            
+                <li data-name="rpc.Service#rpcImpl"><a href="rpc.Service.html#rpcImpl">rpcImpl</a></li>
             
             </ul>
             <ul class="typedefs itemMembers">
@@ -1326,6 +1367,8 @@
                 <li data-name="rpc.Service#off"><a href="rpc.Service.html#off">off</a></li>
             
                 <li data-name="rpc.Service#on"><a href="rpc.Service.html#on">on</a></li>
+            
+                <li data-name="rpc.Service#rpcCall"><a href="rpc.Service.html#rpcCall">rpcCall</a></li>
             
             </ul>
             <ul class="events itemMembers">
@@ -1727,12 +1770,12 @@
     <div class="nameContainer">
         <h4 class="name" id="Service">
             
-            new rpc.Service<span class="signature">(rpcImpl)</span>
+            new rpc.Service<span class="signature">(rpcImpl, <span class="optional">requestDelimited</span>, <span class="optional">responseDelimited</span>)</span>
         </h4>
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/rpc/service.js">rpc/service.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/rpc/service.js#L14">line 14</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/rpc/service.js">rpc/service.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/rpc/service.js#L48">line 48</a>
         </div>
         
     </div>
@@ -1764,6 +1807,8 @@
 		<th>Type</th>
 		
 		
+		<th>Default</th>
+		
 		
 		<th class="last">Description</th>
 	</tr>
@@ -1787,10 +1832,91 @@
             </td>
             
             
+                <td class="default">
+                
+                </td>
+            
             
             <td class="description last">
                 
+                    
+                    
+                        
+                    
+                
                 <p>RPC implementation</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>requestDelimited</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+            
+            
+                <td class="default">
+                
+                    false
+                
+                </td>
+            
+            
+            <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
+                
+                <p>Whether requests are length-delimited</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>responseDelimited</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+            
+            
+                <td class="default">
+                
+                    false
+                
+                </td>
+            
+            
+            <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
+                
+                <p>Whether responses are length-delimited</p></td>
         </tr>
 	
 	
@@ -1845,6 +1971,8 @@
         
         <ul>
             <li><a href="util.EventEmitter.html">util.EventEmitter</a></li>
+        
+            <li><a href="rpc.html#.ServiceMethodMixin">rpc.ServiceMethodMixin</a></li>
         </ul>
     
     
@@ -1863,7 +1991,97 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="$rpc">$rpc <span class="type-signature ">nullable</span><span class="type-signature type">{ <a href="global.html#RPCImpl">RPCImpl</a> }</span></h4>
+        <h4 class="name" id="requestDelimited">requestDelimited <span class="type-signature type">{ boolean }</span></h4>
+    </div>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Whether requests are length-delimited.</p>
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="responseDelimited">responseDelimited <span class="type-signature type">{ boolean }</span></h4>
+    </div>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Whether responses are length-delimited.</p>
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="rpcImpl">rpcImpl <span class="type-signature ">nullable</span><span class="type-signature type">{ <a href="global.html#RPCImpl">RPCImpl</a> }</span></h4>
     </div>
     
     
@@ -2103,7 +2321,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/rpc/service.js">rpc/service.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/rpc/service.js#L31">line 31</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/rpc/service.js">rpc/service.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/rpc/service.js#L135">line 135</a>
         </div>
         
     </div>
@@ -2636,6 +2854,249 @@
                     
             </td>
             <td class="description last"><code>this</code></td>
+        </tr>
+    
+    </tbody>
+</table>
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="rpcCall">
+            
+            rpcCall<span class="signature">(method, requestCtor, responseCtor, request, callback)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ undefined }</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/rpc/service.js">rpc/service.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/rpc/service.js#L81">line 81</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Calls a service method through <a href="rpc.Service.html#rpcImpl">rpcImpl</a>.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>method</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Method.html">Method</a></span>
+|
+
+<span class="param-type"><a href="rpc.html#.ServiceMethod">rpc.ServiceMethod</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>Reflected or static method</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>requestCtor</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>Request constructor</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>responseCtor</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>Response constructor</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>request</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Message.html">Message</a></span>
+|
+
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>Request message or plain object</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="rpc.html#.ServiceMethodCallback">rpc.ServiceMethodCallback</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>Service callback</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Type</th>
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    
+        <tr>
+            
+            <td class="type">
+            
+                        undefined
+                        
+                    
+            </td>
+            <td class="description last"></td>
         </tr>
     
     </tbody>
