@@ -93,17 +93,6 @@ function aOrAn(name) {
         : "a ") + name;
 }
 
-// generate dot-notation property accessors where possible. this saves a few chars (i.e. m.hello
-// instead of m["hello"]) but has no measurable performance impact (on V8). not present within the
-// library itself because the reserved words check requires a rather longish regex.
-util.safeProp = (function(safeProp) {
-    return function safeProp_dn(name) {
-        return !/^[$\w]+$/.test(name) || cliUtil.reserved(name)
-            ? safeProp(name)
-            : "." + name;
-    }
-})(util.safeProp);
-
 function buildNamespace(ref, ns) {
     if (!ns)
         return;

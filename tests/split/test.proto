@@ -1,0 +1,15 @@
+option (foo) = "bar";
+
+package com;
+
+message Outer {
+    optional Inner inner = 1;
+    optional Other other = 2;
+
+    message Inner {
+    }
+}
+
+message Other {
+    required uint32 var = 1;
+}

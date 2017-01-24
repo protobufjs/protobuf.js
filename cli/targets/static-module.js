@@ -6,9 +6,7 @@ module.exports = static_module_target;
 // - CommonJS modules depend on the minimal build for reduced package size with browserify.
 // - AMD and global scope depend on the full library for now.
 
-var path = require("path"),
-    fs   = require("fs"),
-    util = require("../util");
+var util = require("../util");
 
 var protobuf = require("../..");
 
