@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.6.0 (c) 2016, Daniel Wirtz
- * Compiled Tue, 24 Jan 2017 00:42:15 UTC
+ * Compiled Tue, 24 Jan 2017 00:47:58 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -5304,7 +5304,7 @@ function tokenize(source) {
             .substring(start, end)
             .split(/\n/g);
         for (var i = 0; i < lines.length; ++i)
-            lines[i] = lines[i].replace(/ *[*/]+ */, "").trim();
+            lines[i] = lines[i].replace(/^ *[*/]+ */, "").trim();
         commentText = lines
             .join("\n")
             .trim();

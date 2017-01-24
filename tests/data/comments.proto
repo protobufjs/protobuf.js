@@ -20,7 +20,7 @@ message Test1 {
     // Field with no comment.
     uint32 field2 = 2;
 
-    bool field3 = 3; /// Field with a comment.
+    bool field3 = 3; /// Field with a comment and a <a href="http://example.com/foo/">link</a>
 }
 
 // Message

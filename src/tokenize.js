@@ -117,7 +117,7 @@ function tokenize(source) {
             .substring(start, end)
             .split(/\n/g);
         for (var i = 0; i < lines.length; ++i)
-            lines[i] = lines[i].replace(/ *[*/]+ */, "").trim();
+            lines[i] = lines[i].replace(/^ *[*/]+ */, "").trim();
         commentText = lines
             .join("\n")
             .trim();
