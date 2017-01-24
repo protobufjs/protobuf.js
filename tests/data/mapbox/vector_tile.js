@@ -12,7 +12,7 @@ var $Reader = $protobuf.Reader,
 var $lazyTypes = [];
 
 // Exported root namespace
-var $root = $protobuf.roots["test_vector_tile"] || ($protobuf.roots["test_vector_tile"] = {});
+var $root = $protobuf.roots.test_vector_tile || ($protobuf.roots.test_vector_tile = {});
 
 $root.vector_tile = (function() {
 
@@ -32,11 +32,9 @@ $root.vector_tile = (function() {
          * @param {Object} [properties] Properties to set
          */
         function Tile(properties) {
-            if (properties) {
-                var keys = Object.keys(properties);
-                for (var i = 0; i < keys.length; ++i)
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     this[keys[i]] = properties[keys[i]];
-            }
         }
 
         /**
@@ -236,11 +234,9 @@ $root.vector_tile = (function() {
              * @param {Object} [properties] Properties to set
              */
             function Value(properties) {
-                if (properties) {
-                    var keys = Object.keys(properties);
-                    for (var i = 0; i < keys.length; ++i)
+                if (properties)
+                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         this[keys[i]] = properties[keys[i]];
-                }
             }
 
             /**
@@ -555,11 +551,9 @@ $root.vector_tile = (function() {
              * @param {Object} [properties] Properties to set
              */
             function Feature(properties) {
-                if (properties) {
-                    var keys = Object.keys(properties);
-                    for (var i = 0; i < keys.length; ++i)
+                if (properties)
+                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         this[keys[i]] = properties[keys[i]];
-                }
             }
 
             /**
@@ -865,11 +859,9 @@ $root.vector_tile = (function() {
              * @param {Object} [properties] Properties to set
              */
             function Layer(properties) {
-                if (properties) {
-                    var keys = Object.keys(properties);
-                    for (var i = 0; i < keys.length; ++i)
+                if (properties)
+                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         this[keys[i]] = properties[keys[i]];
-                }
             }
 
             /**

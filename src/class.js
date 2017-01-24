@@ -53,7 +53,7 @@ function Class(type, ctor) {
             ? util.emptyArray
             : util.isObject(type._fieldsArray[i].defaultValue) && !type._fieldsArray[i].long
               ? util.emptyObject
-              : type._fieldsArray[i].defaultValue;
+              : type._fieldsArray[i].defaultValue; // if a long, it is frozen when initialized
     }
 
     // Messages have non-enumerable getters and setters for each virtual oneof field

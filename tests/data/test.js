@@ -12,7 +12,7 @@ var $Reader = $protobuf.Reader,
 var $lazyTypes = [];
 
 // Exported root namespace
-var $root = $protobuf.roots["test_test"] || ($protobuf.roots["test_test"] = {});
+var $root = $protobuf.roots.test_test || ($protobuf.roots.test_test = {});
 
 $root.jspb = (function() {
 
@@ -41,11 +41,9 @@ $root.jspb = (function() {
              * @param {Object} [properties] Properties to set
              */
             function Empty(properties) {
-                if (properties) {
-                    var keys = Object.keys(properties);
-                    for (var i = 0; i < keys.length; ++i)
+                if (properties)
+                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         this[keys[i]] = properties[keys[i]];
-                }
             }
 
             /**
@@ -195,11 +193,9 @@ $root.jspb = (function() {
              * @param {Object} [properties] Properties to set
              */
             function EnumContainer(properties) {
-                if (properties) {
-                    var keys = Object.keys(properties);
-                    for (var i = 0; i < keys.length; ++i)
+                if (properties)
+                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         this[keys[i]] = properties[keys[i]];
-                }
             }
 
             /**
@@ -375,11 +371,9 @@ $root.jspb = (function() {
              * @param {Object} [properties] Properties to set
              */
             function Simple1(properties) {
-                if (properties) {
-                    var keys = Object.keys(properties);
-                    for (var i = 0; i < keys.length; ++i)
+                if (properties)
+                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         this[keys[i]] = properties[keys[i]];
-                }
             }
 
             /**
@@ -590,11 +584,9 @@ $root.jspb = (function() {
              * @param {Object} [properties] Properties to set
              */
             function Simple2(properties) {
-                if (properties) {
-                    var keys = Object.keys(properties);
-                    for (var i = 0; i < keys.length; ++i)
+                if (properties)
+                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         this[keys[i]] = properties[keys[i]];
-                }
             }
 
             /**
@@ -785,11 +777,9 @@ $root.jspb = (function() {
              * @param {Object} [properties] Properties to set
              */
             function SpecialCases(properties) {
-                if (properties) {
-                    var keys = Object.keys(properties);
-                    for (var i = 0; i < keys.length; ++i)
+                if (properties)
+                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         this[keys[i]] = properties[keys[i]];
-                }
             }
 
             /**
@@ -1000,11 +990,9 @@ $root.jspb = (function() {
              * @param {Object} [properties] Properties to set
              */
             function OptionalFields(properties) {
-                if (properties) {
-                    var keys = Object.keys(properties);
-                    for (var i = 0; i < keys.length; ++i)
+                if (properties)
+                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         this[keys[i]] = properties[keys[i]];
-                }
             }
 
             /**
@@ -1282,11 +1270,9 @@ $root.jspb = (function() {
                  * @param {Object} [properties] Properties to set
                  */
                 function Nested(properties) {
-                    if (properties) {
-                        var keys = Object.keys(properties);
-                        for (var i = 0; i < keys.length; ++i)
+                    if (properties)
+                        for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                             this[keys[i]] = properties[keys[i]];
-                    }
                 }
 
                 /**
@@ -1447,11 +1433,9 @@ $root.jspb = (function() {
              * @param {Object} [properties] Properties to set
              */
             function HasExtensions(properties) {
-                if (properties) {
-                    var keys = Object.keys(properties);
-                    for (var i = 0; i < keys.length; ++i)
+                if (properties)
+                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         this[keys[i]] = properties[keys[i]];
-                }
             }
 
             /**
@@ -1828,11 +1812,9 @@ $root.jspb = (function() {
              * @param {Object} [properties] Properties to set
              */
             function Complex(properties) {
-                if (properties) {
-                    var keys = Object.keys(properties);
-                    for (var i = 0; i < keys.length; ++i)
+                if (properties)
+                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         this[keys[i]] = properties[keys[i]];
-                }
             }
 
             /**
@@ -2108,11 +2090,9 @@ $root.jspb = (function() {
                  * @param {Object} [properties] Properties to set
                  */
                 function Nested(properties) {
-                    if (properties) {
-                        var keys = Object.keys(properties);
-                        for (var i = 0; i < keys.length; ++i)
+                    if (properties)
+                        for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                             this[keys[i]] = properties[keys[i]];
-                    }
                 }
 
                 /**
@@ -2271,11 +2251,9 @@ $root.jspb = (function() {
              * @param {Object} [properties] Properties to set
              */
             function OuterMessage(properties) {
-                if (properties) {
-                    var keys = Object.keys(properties);
-                    for (var i = 0; i < keys.length; ++i)
+                if (properties)
+                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         this[keys[i]] = properties[keys[i]];
-                }
             }
 
             /**
@@ -2406,11 +2384,9 @@ $root.jspb = (function() {
                  * @param {Object} [properties] Properties to set
                  */
                 function Complex(properties) {
-                    if (properties) {
-                        var keys = Object.keys(properties);
-                        for (var i = 0; i < keys.length; ++i)
+                    if (properties)
+                        for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                             this[keys[i]] = properties[keys[i]];
-                    }
                 }
 
                 /**
@@ -2571,11 +2547,9 @@ $root.jspb = (function() {
              * @param {Object} [properties] Properties to set
              */
             function IsExtension(properties) {
-                if (properties) {
-                    var keys = Object.keys(properties);
-                    for (var i = 0; i < keys.length; ++i)
+                if (properties)
+                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         this[keys[i]] = properties[keys[i]];
-                }
             }
 
             /**
@@ -2733,11 +2707,9 @@ $root.jspb = (function() {
              * @param {Object} [properties] Properties to set
              */
             function IndirectExtension(properties) {
-                if (properties) {
-                    var keys = Object.keys(properties);
-                    for (var i = 0; i < keys.length; ++i)
+                if (properties)
+                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         this[keys[i]] = properties[keys[i]];
-                }
             }
 
             /**
@@ -2871,11 +2843,9 @@ $root.jspb = (function() {
              * @param {Object} [properties] Properties to set
              */
             function DefaultValues(properties) {
-                if (properties) {
-                    var keys = Object.keys(properties);
-                    for (var i = 0; i < keys.length; ++i)
+                if (properties)
+                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         this[keys[i]] = properties[keys[i]];
-                }
             }
 
             /**
@@ -3184,11 +3154,9 @@ $root.jspb = (function() {
              * @param {Object} [properties] Properties to set
              */
             function FloatingPointFields(properties) {
-                if (properties) {
-                    var keys = Object.keys(properties);
-                    for (var i = 0; i < keys.length; ++i)
+                if (properties)
+                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         this[keys[i]] = properties[keys[i]];
-                }
             }
 
             /**
@@ -3518,11 +3486,9 @@ $root.jspb = (function() {
              * @param {Object} [properties] Properties to set
              */
             function TestClone(properties) {
-                if (properties) {
-                    var keys = Object.keys(properties);
-                    for (var i = 0; i < keys.length; ++i)
+                if (properties)
+                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         this[keys[i]] = properties[keys[i]];
-                }
             }
 
             /**
@@ -3818,11 +3784,9 @@ $root.jspb = (function() {
              * @param {Object} [properties] Properties to set
              */
             function CloneExtension(properties) {
-                if (properties) {
-                    var keys = Object.keys(properties);
-                    for (var i = 0; i < keys.length; ++i)
+                if (properties)
+                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         this[keys[i]] = properties[keys[i]];
-                }
             }
 
             /**
@@ -3980,11 +3944,9 @@ $root.jspb = (function() {
              * @param {Object} [properties] Properties to set
              */
             function TestGroup(properties) {
-                if (properties) {
-                    var keys = Object.keys(properties);
-                    for (var i = 0; i < keys.length; ++i)
+                if (properties)
+                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         this[keys[i]] = properties[keys[i]];
-                }
             }
 
             /**
@@ -4279,11 +4241,9 @@ $root.jspb = (function() {
                  * @param {Object} [properties] Properties to set
                  */
                 function RepeatedGroup(properties) {
-                    if (properties) {
-                        var keys = Object.keys(properties);
-                        for (var i = 0; i < keys.length; ++i)
+                    if (properties)
+                        for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                             this[keys[i]] = properties[keys[i]];
-                    }
                 }
 
                 /**
@@ -4481,11 +4441,9 @@ $root.jspb = (function() {
                  * @param {Object} [properties] Properties to set
                  */
                 function RequiredGroup(properties) {
-                    if (properties) {
-                        var keys = Object.keys(properties);
-                        for (var i = 0; i < keys.length; ++i)
+                    if (properties)
+                        for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                             this[keys[i]] = properties[keys[i]];
-                    }
                 }
 
                 /**
@@ -4643,11 +4601,9 @@ $root.jspb = (function() {
                  * @param {Object} [properties] Properties to set
                  */
                 function OptionalGroup(properties) {
-                    if (properties) {
-                        var keys = Object.keys(properties);
-                        for (var i = 0; i < keys.length; ++i)
+                    if (properties)
+                        for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                             this[keys[i]] = properties[keys[i]];
-                    }
                 }
 
                 /**
@@ -4808,11 +4764,9 @@ $root.jspb = (function() {
              * @param {Object} [properties] Properties to set
              */
             function TestGroup1(properties) {
-                if (properties) {
-                    var keys = Object.keys(properties);
-                    for (var i = 0; i < keys.length; ++i)
+                if (properties)
+                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         this[keys[i]] = properties[keys[i]];
-                }
             }
 
             /**
@@ -4980,11 +4934,9 @@ $root.jspb = (function() {
              * @param {Object} [properties] Properties to set
              */
             function TestReservedNames(properties) {
-                if (properties) {
-                    var keys = Object.keys(properties);
-                    for (var i = 0; i < keys.length; ++i)
+                if (properties)
+                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         this[keys[i]] = properties[keys[i]];
-                }
             }
 
             /**
@@ -5163,11 +5115,9 @@ $root.jspb = (function() {
              * @param {Object} [properties] Properties to set
              */
             function TestReservedNamesExtension(properties) {
-                if (properties) {
-                    var keys = Object.keys(properties);
-                    for (var i = 0; i < keys.length; ++i)
+                if (properties)
+                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         this[keys[i]] = properties[keys[i]];
-                }
             }
 
             /**
@@ -5301,11 +5251,9 @@ $root.jspb = (function() {
              * @param {Object} [properties] Properties to set
              */
             function TestMessageWithOneof(properties) {
-                if (properties) {
-                    var keys = Object.keys(properties);
-                    for (var i = 0; i < keys.length; ++i)
+                if (properties)
+                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         this[keys[i]] = properties[keys[i]];
-                }
             }
 
             /**
@@ -5720,11 +5668,9 @@ $root.jspb = (function() {
              * @param {Object} [properties] Properties to set
              */
             function TestEndsWithBytes(properties) {
-                if (properties) {
-                    var keys = Object.keys(properties);
-                    for (var i = 0; i < keys.length; ++i)
+                if (properties)
+                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         this[keys[i]] = properties[keys[i]];
-                }
             }
 
             /**
@@ -5905,11 +5851,9 @@ $root.jspb = (function() {
              * @param {Object} [properties] Properties to set
              */
             function TestMapFieldsNoBinary(properties) {
-                if (properties) {
-                    var keys = Object.keys(properties);
-                    for (var i = 0; i < keys.length; ++i)
+                if (properties)
+                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         this[keys[i]] = properties[keys[i]];
-                }
             }
 
             /**
@@ -6570,11 +6514,9 @@ $root.jspb = (function() {
              * @param {Object} [properties] Properties to set
              */
             function MapValueMessageNoBinary(properties) {
-                if (properties) {
-                    var keys = Object.keys(properties);
-                    for (var i = 0; i < keys.length; ++i)
+                if (properties)
+                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         this[keys[i]] = properties[keys[i]];
-                }
             }
 
             /**
@@ -6732,11 +6674,9 @@ $root.jspb = (function() {
              * @param {Object} [properties] Properties to set
              */
             function Deeply(properties) {
-                if (properties) {
-                    var keys = Object.keys(properties);
-                    for (var i = 0; i < keys.length; ++i)
+                if (properties)
+                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         this[keys[i]] = properties[keys[i]];
-                }
             }
 
             /**
@@ -6867,11 +6807,9 @@ $root.jspb = (function() {
                  * @param {Object} [properties] Properties to set
                  */
                 function Nested(properties) {
-                    if (properties) {
-                        var keys = Object.keys(properties);
-                        for (var i = 0; i < keys.length; ++i)
+                    if (properties)
+                        for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                             this[keys[i]] = properties[keys[i]];
-                    }
                 }
 
                 /**
@@ -7002,11 +6940,9 @@ $root.jspb = (function() {
                      * @param {Object} [properties] Properties to set
                      */
                     function Message(properties) {
-                        if (properties) {
-                            var keys = Object.keys(properties);
-                            for (var i = 0; i < keys.length; ++i)
+                        if (properties)
+                            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                                 this[keys[i]] = properties[keys[i]];
-                        }
                     }
 
                     /**
@@ -7194,11 +7130,9 @@ $root.google = (function() {
              * @param {Object} [properties] Properties to set
              */
             function FileDescriptorSet(properties) {
-                if (properties) {
-                    var keys = Object.keys(properties);
-                    for (var i = 0; i < keys.length; ++i)
+                if (properties)
+                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         this[keys[i]] = properties[keys[i]];
-                }
             }
 
             /**
@@ -7381,11 +7315,9 @@ $root.google = (function() {
              * @param {Object} [properties] Properties to set
              */
             function FileDescriptorProto(properties) {
-                if (properties) {
-                    var keys = Object.keys(properties);
-                    for (var i = 0; i < keys.length; ++i)
+                if (properties)
+                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         this[keys[i]] = properties[keys[i]];
-                }
             }
 
             /**
@@ -7911,11 +7843,9 @@ $root.google = (function() {
              * @param {Object} [properties] Properties to set
              */
             function DescriptorProto(properties) {
-                if (properties) {
-                    var keys = Object.keys(properties);
-                    for (var i = 0; i < keys.length; ++i)
+                if (properties)
+                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         this[keys[i]] = properties[keys[i]];
-                }
             }
 
             /**
@@ -8416,11 +8346,9 @@ $root.google = (function() {
                  * @param {Object} [properties] Properties to set
                  */
                 function ExtensionRange(properties) {
-                    if (properties) {
-                        var keys = Object.keys(properties);
-                        for (var i = 0; i < keys.length; ++i)
+                    if (properties)
+                        for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                             this[keys[i]] = properties[keys[i]];
-                    }
                 }
 
                 /**
@@ -8598,11 +8526,9 @@ $root.google = (function() {
                  * @param {Object} [properties] Properties to set
                  */
                 function ReservedRange(properties) {
-                    if (properties) {
-                        var keys = Object.keys(properties);
-                        for (var i = 0; i < keys.length; ++i)
+                    if (properties)
+                        for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                             this[keys[i]] = properties[keys[i]];
-                    }
                 }
 
                 /**
@@ -8783,11 +8709,9 @@ $root.google = (function() {
              * @param {Object} [properties] Properties to set
              */
             function FieldDescriptorProto(properties) {
-                if (properties) {
-                    var keys = Object.keys(properties);
-                    for (var i = 0; i < keys.length; ++i)
+                if (properties)
+                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         this[keys[i]] = properties[keys[i]];
-                }
             }
 
             /**
@@ -9306,11 +9230,9 @@ $root.google = (function() {
              * @param {Object} [properties] Properties to set
              */
             function OneofDescriptorProto(properties) {
-                if (properties) {
-                    var keys = Object.keys(properties);
-                    for (var i = 0; i < keys.length; ++i)
+                if (properties)
+                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         this[keys[i]] = properties[keys[i]];
-                }
             }
 
             /**
@@ -9498,11 +9420,9 @@ $root.google = (function() {
              * @param {Object} [properties] Properties to set
              */
             function EnumDescriptorProto(properties) {
-                if (properties) {
-                    var keys = Object.keys(properties);
-                    for (var i = 0; i < keys.length; ++i)
+                if (properties)
+                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         this[keys[i]] = properties[keys[i]];
-                }
             }
 
             /**
@@ -9731,11 +9651,9 @@ $root.google = (function() {
              * @param {Object} [properties] Properties to set
              */
             function EnumValueDescriptorProto(properties) {
-                if (properties) {
-                    var keys = Object.keys(properties);
-                    for (var i = 0; i < keys.length; ++i)
+                if (properties)
+                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         this[keys[i]] = properties[keys[i]];
-                }
             }
 
             /**
@@ -9942,11 +9860,9 @@ $root.google = (function() {
              * @param {Object} [properties] Properties to set
              */
             function ServiceDescriptorProto(properties) {
-                if (properties) {
-                    var keys = Object.keys(properties);
-                    for (var i = 0; i < keys.length; ++i)
+                if (properties)
+                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         this[keys[i]] = properties[keys[i]];
-                }
             }
 
             /**
@@ -10175,11 +10091,9 @@ $root.google = (function() {
              * @param {Object} [properties] Properties to set
              */
             function MethodDescriptorProto(properties) {
-                if (properties) {
-                    var keys = Object.keys(properties);
-                    for (var i = 0; i < keys.length; ++i)
+                if (properties)
+                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         this[keys[i]] = properties[keys[i]];
-                }
             }
 
             /**
@@ -10443,11 +10357,9 @@ $root.google = (function() {
              * @param {Object} [properties] Properties to set
              */
             function FileOptions(properties) {
-                if (properties) {
-                    var keys = Object.keys(properties);
-                    for (var i = 0; i < keys.length; ++i)
+                if (properties)
+                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         this[keys[i]] = properties[keys[i]];
-                }
             }
 
             /**
@@ -10935,11 +10847,9 @@ $root.google = (function() {
              * @param {Object} [properties] Properties to set
              */
             function MessageOptions(properties) {
-                if (properties) {
-                    var keys = Object.keys(properties);
-                    for (var i = 0; i < keys.length; ++i)
+                if (properties)
+                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         this[keys[i]] = properties[keys[i]];
-                }
             }
 
             /**
@@ -11200,11 +11110,9 @@ $root.google = (function() {
              * @param {Object} [properties] Properties to set
              */
             function FieldOptions(properties) {
-                if (properties) {
-                    var keys = Object.keys(properties);
-                    for (var i = 0; i < keys.length; ++i)
+                if (properties)
+                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         this[keys[i]] = properties[keys[i]];
-                }
             }
 
             /**
@@ -11577,11 +11485,9 @@ $root.google = (function() {
              * @param {Object} [properties] Properties to set
              */
             function OneofOptions(properties) {
-                if (properties) {
-                    var keys = Object.keys(properties);
-                    for (var i = 0; i < keys.length; ++i)
+                if (properties)
+                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         this[keys[i]] = properties[keys[i]];
-                }
             }
 
             /**
@@ -11764,11 +11670,9 @@ $root.google = (function() {
              * @param {Object} [properties] Properties to set
              */
             function EnumOptions(properties) {
-                if (properties) {
-                    var keys = Object.keys(properties);
-                    for (var i = 0; i < keys.length; ++i)
+                if (properties)
+                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         this[keys[i]] = properties[keys[i]];
-                }
             }
 
             /**
@@ -12011,11 +11915,9 @@ $root.google = (function() {
              * @param {Object} [properties] Properties to set
              */
             function EnumValueOptions(properties) {
-                if (properties) {
-                    var keys = Object.keys(properties);
-                    for (var i = 0; i < keys.length; ++i)
+                if (properties)
+                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         this[keys[i]] = properties[keys[i]];
-                }
             }
 
             /**
@@ -12218,11 +12120,9 @@ $root.google = (function() {
              * @param {Object} [properties] Properties to set
              */
             function ServiceOptions(properties) {
-                if (properties) {
-                    var keys = Object.keys(properties);
-                    for (var i = 0; i < keys.length; ++i)
+                if (properties)
+                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         this[keys[i]] = properties[keys[i]];
-                }
             }
 
             /**
@@ -12425,11 +12325,9 @@ $root.google = (function() {
              * @param {Object} [properties] Properties to set
              */
             function MethodOptions(properties) {
-                if (properties) {
-                    var keys = Object.keys(properties);
-                    for (var i = 0; i < keys.length; ++i)
+                if (properties)
+                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         this[keys[i]] = properties[keys[i]];
-                }
             }
 
             /**
@@ -12689,11 +12587,9 @@ $root.google = (function() {
              * @param {Object} [properties] Properties to set
              */
             function UninterpretedOption(properties) {
-                if (properties) {
-                    var keys = Object.keys(properties);
-                    for (var i = 0; i < keys.length; ++i)
+                if (properties)
+                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         this[keys[i]] = properties[keys[i]];
-                }
             }
 
             /**
@@ -13020,11 +12916,9 @@ $root.google = (function() {
                  * @param {Object} [properties] Properties to set
                  */
                 function NamePart(properties) {
-                    if (properties) {
-                        var keys = Object.keys(properties);
-                        for (var i = 0; i < keys.length; ++i)
+                    if (properties)
+                        for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                             this[keys[i]] = properties[keys[i]];
-                    }
                 }
 
                 /**
@@ -13201,11 +13095,9 @@ $root.google = (function() {
              * @param {Object} [properties] Properties to set
              */
             function SourceCodeInfo(properties) {
-                if (properties) {
-                    var keys = Object.keys(properties);
-                    for (var i = 0; i < keys.length; ++i)
+                if (properties)
+                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         this[keys[i]] = properties[keys[i]];
-                }
             }
 
             /**
@@ -13385,11 +13277,9 @@ $root.google = (function() {
                  * @param {Object} [properties] Properties to set
                  */
                 function Location(properties) {
-                    if (properties) {
-                        var keys = Object.keys(properties);
-                        for (var i = 0; i < keys.length; ++i)
+                    if (properties)
+                        for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                             this[keys[i]] = properties[keys[i]];
-                    }
                 }
 
                 /**
@@ -13690,11 +13580,9 @@ $root.google = (function() {
              * @param {Object} [properties] Properties to set
              */
             function GeneratedCodeInfo(properties) {
-                if (properties) {
-                    var keys = Object.keys(properties);
-                    for (var i = 0; i < keys.length; ++i)
+                if (properties)
+                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         this[keys[i]] = properties[keys[i]];
-                }
             }
 
             /**
@@ -13874,11 +13762,9 @@ $root.google = (function() {
                  * @param {Object} [properties] Properties to set
                  */
                 function Annotation(properties) {
-                    if (properties) {
-                        var keys = Object.keys(properties);
-                        for (var i = 0; i < keys.length; ++i)
+                    if (properties)
+                        for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                             this[keys[i]] = properties[keys[i]];
-                    }
                 }
 
                 /**

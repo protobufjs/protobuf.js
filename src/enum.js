@@ -19,7 +19,7 @@ var util = require("./util");
 function Enum(name, values, options) {
     ReflectionObject.call(this, name, options);
 
-    if (values && !util.isObject(values))
+    if (values && typeof values !== "object")
         throw TypeError("values must be an object");
 
     /**

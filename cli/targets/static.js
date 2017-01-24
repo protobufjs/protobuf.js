@@ -39,8 +39,8 @@ function static_target(root, options, callback) {
             else
                 push("// Exported root namespace");
         }
-        var rootName = config.root || "default";
-        push("var $root = $protobuf.roots[" + JSON.stringify(rootName) + "] || ($protobuf.roots[" + JSON.stringify(rootName) + "] = {});");
+        var rootProp = cliUtil.safeProp(config.root || "default");
+        push("var $root = $protobuf.roots" + rootProp + " || ($protobuf.roots" + rootProp + " = {});");
         buildNamespace(null, root);
         push("");
         if (config.comments)
@@ -274,15 +274,13 @@ function buildType(ref, type) {
     ]);
     push("function " + name(type.name) + "(properties) {");
         ++indent;
-        push("if (properties) {");
+        push("if (properties)");
             ++indent;
-            push("var keys = Object.keys(properties);");
-            push("for (var i = 0; i < keys.length; ++i)");
+            push("for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)");
                 ++indent;
                 push("this[keys[i]] = properties[keys[i]];");
                 --indent;
             --indent;
-        push("}");
         --indent;
     push("}");
 

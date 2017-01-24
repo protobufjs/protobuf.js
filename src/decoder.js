@@ -15,7 +15,6 @@ var Enum    = require("./enum"),
  */
 function decoder(mtype) {
     /* eslint-disable no-unexpected-multiline */
-    var fields = mtype.fieldsArray;
     var gen = util.codegen("r", "l")
     ("if(!(r instanceof Reader))")
         ("r=Reader.create(r)")
@@ -28,8 +27,8 @@ function decoder(mtype) {
     gen
         ("switch(t>>>3){");
 
-    for (var i = 0; i < fields.length; ++i) {
-        var field = fields[i].resolve(),
+    for (var i = 0; i < /* initializes */ mtype.fieldsArray.length; ++i) {
+        var field = mtype._fieldsArray[i].resolve(),
             type  = field.resolvedType instanceof Enum ? "uint32" : field.type,
             ref   = "m" + util.safeProp(field.name); gen
             ("case %d:", field.id);

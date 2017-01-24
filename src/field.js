@@ -176,7 +176,7 @@ Object.defineProperty(Field.prototype, "packed", {
  * @override
  */
 Field.prototype.setOption = function setOption(name, value, ifNotSet) {
-    if (name === "packed")
+    if (name === "packed") // clear cached before setting
         this._packed = null;
     return ReflectionObject.prototype.setOption.call(this, name, value, ifNotSet);
 };

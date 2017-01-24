@@ -24,7 +24,7 @@ function OneOf(name, fieldNames, options) {
     ReflectionObject.call(this, name, options);
 
     /* istanbul ignore next */
-    if (fieldNames && !Array.isArray(fieldNames))
+    if (!(fieldNames === undefined || Array.isArray(fieldNames)))
         throw TypeError("fieldNames must be an Array");
 
     /**
@@ -34,24 +34,12 @@ function OneOf(name, fieldNames, options) {
     this.oneof = fieldNames || []; // toJSON, marker
 
     /**
-     * Fields that belong to this oneof and are possibly not yet added to its parent.
+     * Fields that belong to this oneof as an array for iteration.
      * @type {Field[]}
-     * @private
+     * @readonly
      */
-    this._fieldsArray = [];
+    this.fieldsArray = []; // declared readonly for conformance, possibly not yet added to parent
 }
-
-/**
- * Fields that belong to this oneof as an array for iteration.
- * @name OneOf#fieldsArray
- * @type {Field[]}
- * @readonly
- */
-Object.defineProperty(OneOf.prototype, "fieldsArray", {
-    get: function() {
-        return this._fieldsArray;
-    }
-});
 
 /**
  * Constructs a oneof from JSON.
@@ -83,9 +71,9 @@ OneOf.prototype.toJSON = function toJSON() {
  */
 function addFieldsToParent(oneof) {
     if (oneof.parent)
-        for (var i = 0; i < oneof._fieldsArray.length; ++i)
-            if (!oneof._fieldsArray[i].parent)
-                oneof.parent.add(oneof._fieldsArray[i]);
+        for (var i = 0; i < oneof.fieldsArray.length; ++i)
+            if (!oneof.fieldsArray[i].parent)
+                oneof.parent.add(oneof.fieldsArray[i]);
 }
 
 /**
@@ -101,7 +89,7 @@ OneOf.prototype.add = function add(field) {
     if (field.parent && field.parent !== this.parent)
         field.parent.remove(field);
     this.oneof.push(field.name);
-    this._fieldsArray.push(field);
+    this.fieldsArray.push(field);
     field.partOf = this; // field.parent remains null
     addFieldsToParent(this);
     return this;
@@ -118,12 +106,12 @@ OneOf.prototype.remove = function remove(field) {
     if (!(field instanceof Field))
         throw TypeError("field must be a Field");
 
-    var index = this._fieldsArray.indexOf(field);
+    var index = this.fieldsArray.indexOf(field);
     /* istanbul ignore next */
     if (index < 0)
         throw Error(field + " is not a member of " + this);
 
-    this._fieldsArray.splice(index, 1);
+    this.fieldsArray.splice(index, 1);
     index = this.oneof.indexOf(field.name);
     /* istanbul ignore else */
     if (index > -1) // theoretical
@@ -143,7 +131,7 @@ OneOf.prototype.onAdd = function onAdd(parent) {
         var field = parent.get(this.oneof[i]);
         if (field && !field.partOf) {
             field.partOf = self;
-            self._fieldsArray.push(field);
+            self.fieldsArray.push(field);
         }
     }
     // Add not yet present fields
@@ -154,8 +142,8 @@ OneOf.prototype.onAdd = function onAdd(parent) {
  * @override
  */
 OneOf.prototype.onRemove = function onRemove(parent) {
-    for (var i = 0, field; i < this._fieldsArray.length; ++i)
-        if ((field = this._fieldsArray[i]).parent)
+    for (var i = 0, field; i < this.fieldsArray.length; ++i)
+        if ((field = this.fieldsArray[i]).parent)
             field.parent.remove(field);
     ReflectionObject.prototype.onRemove.call(this, parent);
 };

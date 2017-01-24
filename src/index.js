@@ -8,4 +8,6 @@ protobuf.tokenize         = require("./tokenize");
 protobuf.parse            = require("./parse");
 protobuf.common           = require("./common");
 
-protobuf.Root._configure(protobuf.parse, protobuf.common);
+protobuf.ReflectionObject._configure(protobuf.Root);
+protobuf.Namespace._configure(protobuf.Type, protobuf.Service);
+protobuf.Root._configure(protobuf.Type, protobuf.parse, protobuf.common);

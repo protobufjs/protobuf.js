@@ -12,7 +12,7 @@ var $Reader = $protobuf.Reader,
 var $lazyTypes = [];
 
 // Exported root namespace
-var $root = $protobuf.roots["test_convert"] || ($protobuf.roots["test_convert"] = {});
+var $root = $protobuf.roots.test_convert || ($protobuf.roots.test_convert = {});
 
 $root.Message = (function() {
 
@@ -23,11 +23,9 @@ $root.Message = (function() {
      * @param {Object} [properties] Properties to set
      */
     function Message(properties) {
-        if (properties) {
-            var keys = Object.keys(properties);
-            for (var i = 0; i < keys.length; ++i)
+        if (properties)
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                 this[keys[i]] = properties[keys[i]];
-        }
     }
 
     /**

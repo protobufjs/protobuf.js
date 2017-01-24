@@ -48,9 +48,6 @@ function Reader(buffer) {
  */
 Reader.create = util.Buffer
     ? function create_buffer_setup(buffer) {
-        /* istanbul ignore next */
-        if (!BufferReader)
-            BufferReader = require("./reader_buffer");
         return (Reader.create = function create_buffer(buffer) {
             return util.Buffer.isBuffer(buffer)
                 ? new BufferReader(buffer)
@@ -489,7 +486,9 @@ Reader.prototype.skipType = function(wireType) {
     return this;
 };
 
-function configure() {
+Reader._configure = function(BufferReader_) {
+    BufferReader = BufferReader_;
+
     /* istanbul ignore else */
     if (util.Long) {
         Reader.prototype.int64 = read_int64_long;
@@ -504,8 +503,4 @@ function configure() {
         Reader.prototype.fixed64 = read_fixed64_number;
         Reader.prototype.sfixed64 = read_sfixed64_number;
     }
-}
-
-Reader._configure = configure;
-
-configure();
+};

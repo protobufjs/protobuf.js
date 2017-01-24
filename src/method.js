@@ -5,8 +5,7 @@ module.exports = Method;
 var ReflectionObject = require("./object");
 ((Method.prototype = Object.create(ReflectionObject.prototype)).constructor = Method).className = "Method";
 
-var Type = require("./type"),
-    util = require("./util");
+var util = require("./util");
 
 /**
  * Constructs a new service method instance.
@@ -34,7 +33,7 @@ function Method(name, type, requestType, responseType, requestStream, responseSt
     }
 
     /* istanbul ignore next */
-    if (type && !util.isString(type))
+    if (!(type === undefined || util.isString(type)))
         throw TypeError("type must be a string");
     /* istanbul ignore next */
     if (!util.isString(requestType))
@@ -121,12 +120,9 @@ Method.prototype.resolve = function resolve() {
     /* istanbul ignore if */
     if (this.resolved)
         return this;
-    /* istanbul ignore if */
-    if (!(this.resolvedRequestType = this.parent.lookup(this.requestType, Type)))
-        throw Error("unresolvable request type: " + this.requestType);
-    /* istanbul ignore if */
-    if (!(this.resolvedResponseType = this.parent.lookup(this.responseType, Type)))
-        throw Error("unresolvable response type: " + this.requestType);
+
+    this.resolvedRequestType = this.parent.lookupType(this.requestType);
+    this.resolvedResponseType = this.parent.lookupType(this.responseType);
 
     return ReflectionObject.prototype.resolve.call(this);
 };

@@ -10,13 +10,7 @@ var Enum     = require("./enum"),
     util     = require("./util");
 
 var Type,    // cyclic
-    Service; // cyclic
-
-var initNestedTypes = function() {
-    Type    = require("./type");
-    Service = require("./service");
-    initNestedTypes = null;
-};
+    Service; // "
 
 /**
  * Constructs a new namespace instance.
@@ -122,8 +116,6 @@ Namespace.prototype.addJSON = function addJSON(nestedJson) {
     var ns = this;
     /* istanbul ignore else */
     if (nestedJson) {
-        if (initNestedTypes)
-            initNestedTypes();
         for (var names = Object.keys(nestedJson), i = 0, nested; i < names.length; ++i) {
             nested = nestedJson[names[i]];
             ns.add( // most to least likely
@@ -173,9 +165,6 @@ Namespace.prototype.getEnum = function getEnum(name) {
  * @throws {Error} If there is already a nested object with this name
  */
 Namespace.prototype.add = function add(object) {
-    /* istanbul ignore next */
-    if (initNestedTypes)
-        initNestedTypes();
 
     if (!(object instanceof Field && object.extend !== undefined || object instanceof Type || object instanceof Enum || object instanceof Service || object instanceof Namespace))
         throw TypeError("object must be a valid nested object");
@@ -185,7 +174,6 @@ Namespace.prototype.add = function add(object) {
     else {
         var prev = this.get(object.name);
         if (prev) {
-            // initNested above already initializes Type and Service
             if (prev instanceof Namespace && object instanceof Namespace && !(prev instanceof Type || prev instanceof Service)) {
                 // replace plain namespace but keep existing nested elements and options
                 var nested = prev.nestedArray;
@@ -330,11 +318,6 @@ Namespace.prototype.lookup = function lookup(path, filterType, parentAlreadyChec
  * @throws {Error} If `path` does not point to a type
  */
 Namespace.prototype.lookupType = function lookupType(path) {
-
-    /* istanbul ignore next */
-    if (initNestedTypes)
-        initNestedTypes();
-
     var found = this.lookup(path, Type);
     if (!found)
         throw Error("no such type");
@@ -349,11 +332,6 @@ Namespace.prototype.lookupType = function lookupType(path) {
  * @throws {Error} If `path` does not point to a service
  */
 Namespace.prototype.lookupService = function lookupService(path) {
-
-    /* istanbul ignore next */
-    if (initNestedTypes)
-        initNestedTypes();
-
     var found = this.lookup(path, Service);
     if (!found)
         throw Error("no such service");
@@ -372,4 +350,9 @@ Namespace.prototype.lookupEnum = function lookupEnum(path) {
     if (!found)
         throw Error("no such enum");
     return found.values;
+};
+
+Namespace._configure = function(Type_, Service_) {
+    Type    = Type_;
+    Service = Service_;
 };

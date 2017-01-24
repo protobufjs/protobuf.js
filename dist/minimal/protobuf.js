@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.6.0 (c) 2016, Daniel Wirtz
- * Compiled Tue, 24 Jan 2017 00:47:58 UTC
+ * Compiled Tue, 24 Jan 2017 04:03:36 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -479,7 +479,7 @@ protobuf.configure    = configure;
  * @returns {undefined}
  */
 function configure() {
-    protobuf.Reader._configure();
+    protobuf.Reader._configure(protobuf.BufferReader);
 }
 
 // assumes that loading "long" / define itself is asynchronous so that other builds can safely
@@ -493,6 +493,9 @@ if (typeof define === "function" && define.amd)
         }
         return protobuf;
     });
+
+protobuf.Writer._configure(protobuf.BufferWriter);
+configure();
 
 },{"10":10,"13":13,"14":14,"15":15,"8":8,"9":9}],8:[function(require,module,exports){
 "use strict";
@@ -545,9 +548,6 @@ function Reader(buffer) {
  */
 Reader.create = util.Buffer
     ? function create_buffer_setup(buffer) {
-        /* istanbul ignore next */
-        if (!BufferReader)
-            BufferReader = require(9);
         return (Reader.create = function create_buffer(buffer) {
             return util.Buffer.isBuffer(buffer)
                 ? new BufferReader(buffer)
@@ -986,7 +986,9 @@ Reader.prototype.skipType = function(wireType) {
     return this;
 };
 
-function configure() {
+Reader._configure = function(BufferReader_) {
+    BufferReader = BufferReader_;
+
     /* istanbul ignore else */
     if (util.Long) {
         Reader.prototype.int64 = read_int64_long;
@@ -1001,13 +1003,9 @@ function configure() {
         Reader.prototype.fixed64 = read_fixed64_number;
         Reader.prototype.sfixed64 = read_sfixed64_number;
     }
-}
+};
 
-Reader._configure = configure;
-
-configure();
-
-},{"13":13,"9":9}],9:[function(require,module,exports){
+},{"13":13}],9:[function(require,module,exports){
 "use strict";
 module.exports = BufferReader;
 
@@ -1806,9 +1804,6 @@ function Writer() {
  */
 Writer.create = util.Buffer
     ? function create_buffer_setup() {
-        /* istanbul ignore next */
-        if (!BufferWriter)
-            BufferWriter = require(15);
         return (Writer.create = function create_buffer() {
             return new BufferWriter();
         })();
@@ -2240,7 +2235,11 @@ Writer.prototype.finish = function finish() {
     return buf;
 };
 
-},{"13":13,"15":15}],15:[function(require,module,exports){
+Writer._configure = function(BufferWriter_) {
+    BufferWriter = BufferWriter_;
+};
+
+},{"13":13}],15:[function(require,module,exports){
 "use strict";
 module.exports = BufferWriter;
 

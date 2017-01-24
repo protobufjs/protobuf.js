@@ -24,9 +24,8 @@ function genVerifyValue(gen, field, fieldIndex, ref) {
             ("switch(%s){", ref)
                 ("default:")
                     ("return%j", invalid(field, "enum value"));
-            var values = util.toArray(field.resolvedType.values);
-            for (var j = 0; j < values.length; ++j) gen
-                ("case %d:", values[j]);
+            for (var keys = Object.keys(field.resolvedType.values), j = 0; j < keys.length; ++j) gen
+                ("case %d:", field.resolvedType.values[keys[j]]);
             gen
                     ("break")
             ("}");
@@ -118,13 +117,13 @@ function genVerifyKey(gen, field, ref) {
  */
 function verifier(mtype) {
     /* eslint-disable no-unexpected-multiline */
-    var fields = mtype.fieldsArray;
-    if (!fields.length)
+
+    if (/* initializes */ !mtype.fieldsArray.length)
         return util.codegen()("return null");
     var gen = util.codegen("m");
 
-    for (var i = 0; i < fields.length; ++i) {
-        var field = fields[i].resolve(),
+    for (var i = 0; i < mtype._fieldsArray.length; ++i) {
+        var field = mtype._fieldsArray[i].resolve(),
             ref   = "m" + util.safeProp(field.name);
 
         // map fields

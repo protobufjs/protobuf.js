@@ -1063,7 +1063,6 @@ export class OneOf extends ReflectionObject {
 
     /**
      * Fields that belong to this oneof as an array for iteration.
-     * @name OneOf#fieldsArray
      * @type {Field[]}
      * @readonly
      */

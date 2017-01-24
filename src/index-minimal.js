@@ -42,7 +42,7 @@ protobuf.configure    = configure;
  * @returns {undefined}
  */
 function configure() {
-    protobuf.Reader._configure();
+    protobuf.Reader._configure(protobuf.BufferReader);
 }
 
 // assumes that loading "long" / define itself is asynchronous so that other builds can safely
@@ -56,3 +56,6 @@ if (typeof define === "function" && define.amd)
         }
         return protobuf;
     });
+
+protobuf.Writer._configure(protobuf.BufferWriter);
+configure();

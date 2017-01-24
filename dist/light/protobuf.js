@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.6.0 (c) 2016, Daniel Wirtz
- * Compiled Tue, 24 Jan 2017 00:47:58 UTC
+ * Compiled Tue, 24 Jan 2017 04:03:36 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -755,7 +755,7 @@ function Class(type, ctor) {
             ? util.emptyArray
             : util.isObject(type._fieldsArray[i].defaultValue) && !type._fieldsArray[i].long
               ? util.emptyObject
-              : type._fieldsArray[i].defaultValue;
+              : type._fieldsArray[i].defaultValue; // if a long, it is frozen when initialized
     }
 
     // Messages have non-enumerable getters and setters for each virtual oneof field
@@ -1148,7 +1148,6 @@ var Enum    = require(14),
  */
 function decoder(mtype) {
     /* eslint-disable no-unexpected-multiline */
-    var fields = mtype.fieldsArray;
     var gen = util.codegen("r", "l")
     ("if(!(r instanceof Reader))")
         ("r=Reader.create(r)")
@@ -1161,8 +1160,8 @@ function decoder(mtype) {
     gen
         ("switch(t>>>3){");
 
-    for (var i = 0; i < fields.length; ++i) {
-        var field = fields[i].resolve(),
+    for (var i = 0; i < /* initializes */ mtype.fieldsArray.length; ++i) {
+        var field = mtype._fieldsArray[i].resolve(),
             type  = field.resolvedType instanceof Enum ? "uint32" : field.type,
             ref   = "m" + util.safeProp(field.name); gen
             ("case %d:", field.id);
@@ -1252,15 +1251,13 @@ function genTypePartial(gen, field, fieldIndex, ref) {
  */
 function encoder(mtype) {
     /* eslint-disable no-unexpected-multiline, block-scoped-var, no-redeclare */
-    var fields = mtype.fieldsArray,
-        oneofs = mtype.oneofsArray;
     var gen = util.codegen("m", "w")
     ("if(!w)")
         ("w=Writer.create()");
 
     var i, ref;
-    for (var i = 0; i < fields.length; ++i) {
-        var field    = fields[i].resolve();
+    for (var i = 0; i < /* initializes */ mtype.fieldsArray.length; ++i) {
+        var field    = mtype._fieldsArray[i].resolve();
         if (field.partOf) // see below for oneofs
             continue;
         var type     = field.resolvedType instanceof Enum ? "uint32" : field.type,
@@ -1330,17 +1327,17 @@ function encoder(mtype) {
     }
 
     // oneofs
-    for (var i = 0; i < oneofs.length; ++i) {
-        var oneof = oneofs[i]; gen
+    for (var i = 0; i < /* initializes */ mtype.oneofsArray.length; ++i) {
+        var oneof = mtype._oneofsArray[i]; gen
         ("switch(%s){", "m" + util.safeProp(oneof.name));
-        for (var j = 0; j < /* initializes */ oneof.fieldsArray.length; ++j) {
-            var field    = oneof._fieldsArray[j],
+        for (var j = 0; j < /* direct */ oneof.fieldsArray.length; ++j) {
+            var field    = oneof.fieldsArray[j],
                 type     = field.resolvedType instanceof Enum ? "uint32" : field.type,
                 wireType = types.basic[type];
                 ref      = "m" + util.safeProp(field.name); gen
             ("case%j:", field.name);
             if (wireType === undefined)
-                genTypePartial(gen, field, fields.indexOf(field), ref);
+                genTypePartial(gen, field, mtype._fieldsArray.indexOf(field), ref);
             else gen
                 ("w.uint32(%d).%s(%s)", (field.id << 3 | wireType) >>> 0, type, ref);
             gen
@@ -1375,7 +1372,7 @@ var util = require(32);
 function Enum(name, values, options) {
     ReflectionObject.call(this, name, options);
 
-    if (values && !util.isObject(values))
+    if (values && typeof values !== "object")
         throw TypeError("values must be an object");
 
     /**
@@ -1658,7 +1655,7 @@ Object.defineProperty(Field.prototype, "packed", {
  * @override
  */
 Field.prototype.setOption = function setOption(name, value, ifNotSet) {
-    if (name === "packed")
+    if (name === "packed") // clear cached before setting
         this._packed = null;
     return ReflectionObject.prototype.setOption.call(this, name, value, ifNotSet);
 };
@@ -1891,7 +1888,7 @@ protobuf.configure    = configure;
  * @returns {undefined}
  */
 function configure() {
-    protobuf.Reader._configure();
+    protobuf.Reader._configure(protobuf.BufferReader);
 }
 
 // assumes that loading "long" / define itself is asynchronous so that other builds can safely
@@ -1905,6 +1902,9 @@ if (typeof define === "function" && define.amd)
         }
         return protobuf;
     });
+
+protobuf.Writer._configure(protobuf.BufferWriter);
+configure();
 
 },{"24":24,"25":25,"27":27,"34":34,"36":36,"37":37}],18:[function(require,module,exports){
 "use strict";
@@ -2130,8 +2130,7 @@ module.exports = Method;
 var ReflectionObject = require(22);
 ((Method.prototype = Object.create(ReflectionObject.prototype)).constructor = Method).className = "Method";
 
-var Type = require(30),
-    util = require(32);
+var util = require(32);
 
 /**
  * Constructs a new service method instance.
@@ -2159,7 +2158,7 @@ function Method(name, type, requestType, responseType, requestStream, responseSt
     }
 
     /* istanbul ignore next */
-    if (type && !util.isString(type))
+    if (!(type === undefined || util.isString(type)))
         throw TypeError("type must be a string");
     /* istanbul ignore next */
     if (!util.isString(requestType))
@@ -2246,17 +2245,14 @@ Method.prototype.resolve = function resolve() {
     /* istanbul ignore if */
     if (this.resolved)
         return this;
-    /* istanbul ignore if */
-    if (!(this.resolvedRequestType = this.parent.lookup(this.requestType, Type)))
-        throw Error("unresolvable request type: " + this.requestType);
-    /* istanbul ignore if */
-    if (!(this.resolvedResponseType = this.parent.lookup(this.responseType, Type)))
-        throw Error("unresolvable response type: " + this.requestType);
+
+    this.resolvedRequestType = this.parent.lookupType(this.requestType);
+    this.resolvedResponseType = this.parent.lookupType(this.responseType);
 
     return ReflectionObject.prototype.resolve.call(this);
 };
 
-},{"22":22,"30":30,"32":32}],21:[function(require,module,exports){
+},{"22":22,"32":32}],21:[function(require,module,exports){
 "use strict";
 module.exports = Namespace;
 
@@ -2269,13 +2265,7 @@ var Enum     = require(14),
     util     = require(32);
 
 var Type,    // cyclic
-    Service; // cyclic
-
-var initNestedTypes = function() {
-    Type    = require(30);
-    Service = require(29);
-    initNestedTypes = null;
-};
+    Service; // "
 
 /**
  * Constructs a new namespace instance.
@@ -2381,8 +2371,6 @@ Namespace.prototype.addJSON = function addJSON(nestedJson) {
     var ns = this;
     /* istanbul ignore else */
     if (nestedJson) {
-        if (initNestedTypes)
-            initNestedTypes();
         for (var names = Object.keys(nestedJson), i = 0, nested; i < names.length; ++i) {
             nested = nestedJson[names[i]];
             ns.add( // most to least likely
@@ -2432,9 +2420,6 @@ Namespace.prototype.getEnum = function getEnum(name) {
  * @throws {Error} If there is already a nested object with this name
  */
 Namespace.prototype.add = function add(object) {
-    /* istanbul ignore next */
-    if (initNestedTypes)
-        initNestedTypes();
 
     if (!(object instanceof Field && object.extend !== undefined || object instanceof Type || object instanceof Enum || object instanceof Service || object instanceof Namespace))
         throw TypeError("object must be a valid nested object");
@@ -2444,7 +2429,6 @@ Namespace.prototype.add = function add(object) {
     else {
         var prev = this.get(object.name);
         if (prev) {
-            // initNested above already initializes Type and Service
             if (prev instanceof Namespace && object instanceof Namespace && !(prev instanceof Type || prev instanceof Service)) {
                 // replace plain namespace but keep existing nested elements and options
                 var nested = prev.nestedArray;
@@ -2589,11 +2573,6 @@ Namespace.prototype.lookup = function lookup(path, filterType, parentAlreadyChec
  * @throws {Error} If `path` does not point to a type
  */
 Namespace.prototype.lookupType = function lookupType(path) {
-
-    /* istanbul ignore next */
-    if (initNestedTypes)
-        initNestedTypes();
-
     var found = this.lookup(path, Type);
     if (!found)
         throw Error("no such type");
@@ -2608,11 +2587,6 @@ Namespace.prototype.lookupType = function lookupType(path) {
  * @throws {Error} If `path` does not point to a service
  */
 Namespace.prototype.lookupService = function lookupService(path) {
-
-    /* istanbul ignore next */
-    if (initNestedTypes)
-        initNestedTypes();
-
     var found = this.lookup(path, Service);
     if (!found)
         throw Error("no such service");
@@ -2633,7 +2607,12 @@ Namespace.prototype.lookupEnum = function lookupEnum(path) {
     return found.values;
 };
 
-},{"14":14,"15":15,"22":22,"29":29,"30":30,"32":32}],22:[function(require,module,exports){
+Namespace._configure = function(Type_, Service_) {
+    Type    = Type_;
+    Service = Service_;
+};
+
+},{"14":14,"15":15,"22":22,"32":32}],22:[function(require,module,exports){
 "use strict";
 module.exports = ReflectionObject;
 
@@ -2746,8 +2725,6 @@ ReflectionObject.prototype.onAdd = function onAdd(parent) {
     this.parent = parent;
     this.resolved = false;
     var root = parent.root;
-    if (!Root)
-        Root = require(26);
     if (root instanceof Root)
         root._handleAdd(this);
 };
@@ -2758,11 +2735,6 @@ ReflectionObject.prototype.onAdd = function onAdd(parent) {
  * @returns {undefined}
  */
 ReflectionObject.prototype.onRemove = function onRemove(parent) {
-
-    /* istanbul ignore next */
-    if (!Root)
-        Root = require(26);
-
     var root = parent.root;
     if (root instanceof Root)
         root._handleRemove(this);
@@ -2777,11 +2749,6 @@ ReflectionObject.prototype.onRemove = function onRemove(parent) {
 ReflectionObject.prototype.resolve = function resolve() {
     if (this.resolved)
         return this;
-
-    /* istanbul ignore next */
-    if (!Root)
-        Root = require(26);
-
     if (this.root instanceof Root)
         this.resolved = true; // only if part of a root
     return this;
@@ -2836,7 +2803,11 @@ ReflectionObject.prototype.toString = function toString() {
     return className;
 };
 
-},{"26":26,"32":32}],23:[function(require,module,exports){
+ReflectionObject._configure = function(Root_) {
+    Root = Root_;
+};
+
+},{"32":32}],23:[function(require,module,exports){
 "use strict";
 module.exports = OneOf;
 
@@ -2863,7 +2834,7 @@ function OneOf(name, fieldNames, options) {
     ReflectionObject.call(this, name, options);
 
     /* istanbul ignore next */
-    if (fieldNames && !Array.isArray(fieldNames))
+    if (!(fieldNames === undefined || Array.isArray(fieldNames)))
         throw TypeError("fieldNames must be an Array");
 
     /**
@@ -2873,24 +2844,12 @@ function OneOf(name, fieldNames, options) {
     this.oneof = fieldNames || []; // toJSON, marker
 
     /**
-     * Fields that belong to this oneof and are possibly not yet added to its parent.
+     * Fields that belong to this oneof as an array for iteration.
      * @type {Field[]}
-     * @private
+     * @readonly
      */
-    this._fieldsArray = [];
+    this.fieldsArray = []; // declared readonly for conformance, possibly not yet added to parent
 }
-
-/**
- * Fields that belong to this oneof as an array for iteration.
- * @name OneOf#fieldsArray
- * @type {Field[]}
- * @readonly
- */
-Object.defineProperty(OneOf.prototype, "fieldsArray", {
-    get: function() {
-        return this._fieldsArray;
-    }
-});
 
 /**
  * Constructs a oneof from JSON.
@@ -2922,9 +2881,9 @@ OneOf.prototype.toJSON = function toJSON() {
  */
 function addFieldsToParent(oneof) {
     if (oneof.parent)
-        for (var i = 0; i < oneof._fieldsArray.length; ++i)
-            if (!oneof._fieldsArray[i].parent)
-                oneof.parent.add(oneof._fieldsArray[i]);
+        for (var i = 0; i < oneof.fieldsArray.length; ++i)
+            if (!oneof.fieldsArray[i].parent)
+                oneof.parent.add(oneof.fieldsArray[i]);
 }
 
 /**
@@ -2940,7 +2899,7 @@ OneOf.prototype.add = function add(field) {
     if (field.parent && field.parent !== this.parent)
         field.parent.remove(field);
     this.oneof.push(field.name);
-    this._fieldsArray.push(field);
+    this.fieldsArray.push(field);
     field.partOf = this; // field.parent remains null
     addFieldsToParent(this);
     return this;
@@ -2957,12 +2916,12 @@ OneOf.prototype.remove = function remove(field) {
     if (!(field instanceof Field))
         throw TypeError("field must be a Field");
 
-    var index = this._fieldsArray.indexOf(field);
+    var index = this.fieldsArray.indexOf(field);
     /* istanbul ignore next */
     if (index < 0)
         throw Error(field + " is not a member of " + this);
 
-    this._fieldsArray.splice(index, 1);
+    this.fieldsArray.splice(index, 1);
     index = this.oneof.indexOf(field.name);
     /* istanbul ignore else */
     if (index > -1) // theoretical
@@ -2982,7 +2941,7 @@ OneOf.prototype.onAdd = function onAdd(parent) {
         var field = parent.get(this.oneof[i]);
         if (field && !field.partOf) {
             field.partOf = self;
-            self._fieldsArray.push(field);
+            self.fieldsArray.push(field);
         }
     }
     // Add not yet present fields
@@ -2993,8 +2952,8 @@ OneOf.prototype.onAdd = function onAdd(parent) {
  * @override
  */
 OneOf.prototype.onRemove = function onRemove(parent) {
-    for (var i = 0, field; i < this._fieldsArray.length; ++i)
-        if ((field = this._fieldsArray[i]).parent)
+    for (var i = 0, field; i < this.fieldsArray.length; ++i)
+        if ((field = this.fieldsArray[i]).parent)
             field.parent.remove(field);
     ReflectionObject.prototype.onRemove.call(this, parent);
 };
@@ -3050,9 +3009,6 @@ function Reader(buffer) {
  */
 Reader.create = util.Buffer
     ? function create_buffer_setup(buffer) {
-        /* istanbul ignore next */
-        if (!BufferReader)
-            BufferReader = require(25);
         return (Reader.create = function create_buffer(buffer) {
             return util.Buffer.isBuffer(buffer)
                 ? new BufferReader(buffer)
@@ -3491,7 +3447,9 @@ Reader.prototype.skipType = function(wireType) {
     return this;
 };
 
-function configure() {
+Reader._configure = function(BufferReader_) {
+    BufferReader = BufferReader_;
+
     /* istanbul ignore else */
     if (util.Long) {
         Reader.prototype.int64 = read_int64_long;
@@ -3506,13 +3464,9 @@ function configure() {
         Reader.prototype.fixed64 = read_fixed64_number;
         Reader.prototype.sfixed64 = read_sfixed64_number;
     }
-}
+};
 
-Reader._configure = configure;
-
-configure();
-
-},{"25":25,"34":34}],25:[function(require,module,exports){
+},{"34":34}],25:[function(require,module,exports){
 "use strict";
 module.exports = BufferReader;
 
@@ -3558,8 +3512,8 @@ var Field   = require(15),
     util    = require(32);
 
 var Type,   // cyclic
-    parse,  // cyclic, might be excluded
-    common; // might be excluded
+    parse,  // might be excluded
+    common; // "
 
 /**
  * Constructs a new root namespace instance.
@@ -3832,10 +3786,6 @@ Root.prototype._handleAdd = function _handleAdd(object) {
 
     } else /* everything else is a namespace */ {
 
-        /* istanbul ignore next */
-        if (!Type)
-            Type = require(30);
-
         if (object instanceof Type) // Try to handle any deferred extensions
             for (var i = 0; i < this.deferred.length;)
                 if (tryHandleExtension(this, this.deferred[i]))
@@ -3890,12 +3840,13 @@ Root.prototype._handleRemove = function _handleRemove(object) {
     }
 };
 
-Root._configure = function(_parse, _common) {
-    parse = _parse;
-    common = _common;
+Root._configure = function(Type_, parse_, common_) {
+    Type = Type_;
+    parse = parse_;
+    common = common_;
 };
 
-},{"14":14,"15":15,"21":21,"30":30,"32":32}],27:[function(require,module,exports){
+},{"14":14,"15":15,"21":21,"32":32}],27:[function(require,module,exports){
 "use strict";
 
 /**
@@ -5415,9 +5366,8 @@ function genVerifyValue(gen, field, fieldIndex, ref) {
             ("switch(%s){", ref)
                 ("default:")
                     ("return%j", invalid(field, "enum value"));
-            var values = util.toArray(field.resolvedType.values);
-            for (var j = 0; j < values.length; ++j) gen
-                ("case %d:", values[j]);
+            for (var keys = Object.keys(field.resolvedType.values), j = 0; j < keys.length; ++j) gen
+                ("case %d:", field.resolvedType.values[keys[j]]);
             gen
                     ("break")
             ("}");
@@ -5509,13 +5459,13 @@ function genVerifyKey(gen, field, ref) {
  */
 function verifier(mtype) {
     /* eslint-disable no-unexpected-multiline */
-    var fields = mtype.fieldsArray;
-    if (!fields.length)
+
+    if (/* initializes */ !mtype.fieldsArray.length)
         return util.codegen()("return null");
     var gen = util.codegen("m");
 
-    for (var i = 0; i < fields.length; ++i) {
-        var field = fields[i].resolve(),
+    for (var i = 0; i < mtype._fieldsArray.length; ++i) {
+        var field = mtype._fieldsArray[i].resolve(),
             ref   = "m" + util.safeProp(field.name);
 
         // map fields
@@ -5688,9 +5638,6 @@ function Writer() {
  */
 Writer.create = util.Buffer
     ? function create_buffer_setup() {
-        /* istanbul ignore next */
-        if (!BufferWriter)
-            BufferWriter = require(37);
         return (Writer.create = function create_buffer() {
             return new BufferWriter();
         })();
@@ -6122,7 +6069,11 @@ Writer.prototype.finish = function finish() {
     return buf;
 };
 
-},{"34":34,"37":37}],37:[function(require,module,exports){
+Writer._configure = function(BufferWriter_) {
+    BufferWriter = BufferWriter_;
+};
+
+},{"34":34}],37:[function(require,module,exports){
 "use strict";
 module.exports = BufferWriter;
 

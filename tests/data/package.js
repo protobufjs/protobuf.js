@@ -12,7 +12,7 @@ var $Reader = $protobuf.Reader,
 var $lazyTypes = [];
 
 // Exported root namespace
-var $root = $protobuf.roots["test_package"] || ($protobuf.roots["test_package"] = {});
+var $root = $protobuf.roots.test_package || ($protobuf.roots.test_package = {});
 
 $root.Package = (function() {
 
@@ -23,11 +23,9 @@ $root.Package = (function() {
      * @param {Object} [properties] Properties to set
      */
     function Package(properties) {
-        if (properties) {
-            var keys = Object.keys(properties);
-            for (var i = 0; i < keys.length; ++i)
+        if (properties)
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                 this[keys[i]] = properties[keys[i]];
-        }
     }
 
     /**
@@ -645,11 +643,9 @@ $root.Package = (function() {
          * @param {Object} [properties] Properties to set
          */
         function Repository(properties) {
-            if (properties) {
-                var keys = Object.keys(properties);
-                for (var i = 0; i < keys.length; ++i)
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     this[keys[i]] = properties[keys[i]];
-            }
         }
 
         /**

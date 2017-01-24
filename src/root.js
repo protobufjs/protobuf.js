@@ -10,8 +10,8 @@ var Field   = require("./field"),
     util    = require("./util");
 
 var Type,   // cyclic
-    parse,  // cyclic, might be excluded
-    common; // might be excluded
+    parse,  // might be excluded
+    common; // "
 
 /**
  * Constructs a new root namespace instance.
@@ -284,10 +284,6 @@ Root.prototype._handleAdd = function _handleAdd(object) {
 
     } else /* everything else is a namespace */ {
 
-        /* istanbul ignore next */
-        if (!Type)
-            Type = require("./type");
-
         if (object instanceof Type) // Try to handle any deferred extensions
             for (var i = 0; i < this.deferred.length;)
                 if (tryHandleExtension(this, this.deferred[i]))
@@ -342,7 +338,8 @@ Root.prototype._handleRemove = function _handleRemove(object) {
     }
 };
 
-Root._configure = function(_parse, _common) {
-    parse = _parse;
-    common = _common;
+Root._configure = function(Type_, parse_, common_) {
+    Type = Type_;
+    parse = parse_;
+    common = common_;
 };

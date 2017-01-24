@@ -12,7 +12,7 @@ var $Reader = $protobuf.Reader,
 var $lazyTypes = [];
 
 // Exported root namespace
-var $root = $protobuf.roots["test_comments"] || ($protobuf.roots["test_comments"] = {});
+var $root = $protobuf.roots.test_comments || ($protobuf.roots.test_comments = {});
 
 $root.Test1 = (function() {
 
@@ -27,11 +27,9 @@ $root.Test1 = (function() {
      * @param {Object} [properties] Properties to set
      */
     function Test1(properties) {
-        if (properties) {
-            var keys = Object.keys(properties);
-            for (var i = 0; i < keys.length; ++i)
+        if (properties)
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                 this[keys[i]] = properties[keys[i]];
-        }
     }
 
     /**
@@ -228,11 +226,9 @@ $root.Test2 = (function() {
      * @param {Object} [properties] Properties to set
      */
     function Test2(properties) {
-        if (properties) {
-            var keys = Object.keys(properties);
-            for (var i = 0; i < keys.length; ++i)
+        if (properties)
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                 this[keys[i]] = properties[keys[i]];
-        }
     }
 
     /**

@@ -12,7 +12,7 @@ var $Reader = $protobuf.Reader,
 var $lazyTypes = [];
 
 // Exported root namespace
-var $root = $protobuf.roots["test_rpc"] || ($protobuf.roots["test_rpc"] = {});
+var $root = $protobuf.roots.test_rpc || ($protobuf.roots.test_rpc = {});
 
 $root.MyService = (function() {
 
@@ -81,11 +81,9 @@ $root.MyRequest = (function() {
      * @param {Object} [properties] Properties to set
      */
     function MyRequest(properties) {
-        if (properties) {
-            var keys = Object.keys(properties);
-            for (var i = 0; i < keys.length; ++i)
+        if (properties)
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                 this[keys[i]] = properties[keys[i]];
-        }
     }
 
     /**
@@ -243,11 +241,9 @@ $root.MyResponse = (function() {
      * @param {Object} [properties] Properties to set
      */
     function MyResponse(properties) {
-        if (properties) {
-            var keys = Object.keys(properties);
-            for (var i = 0; i < keys.length; ++i)
+        if (properties)
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                 this[keys[i]] = properties[keys[i]];
-        }
     }
 
     /**

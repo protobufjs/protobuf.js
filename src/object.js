@@ -110,8 +110,6 @@ ReflectionObject.prototype.onAdd = function onAdd(parent) {
     this.parent = parent;
     this.resolved = false;
     var root = parent.root;
-    if (!Root)
-        Root = require("./root");
     if (root instanceof Root)
         root._handleAdd(this);
 };
@@ -122,11 +120,6 @@ ReflectionObject.prototype.onAdd = function onAdd(parent) {
  * @returns {undefined}
  */
 ReflectionObject.prototype.onRemove = function onRemove(parent) {
-
-    /* istanbul ignore next */
-    if (!Root)
-        Root = require("./root");
-
     var root = parent.root;
     if (root instanceof Root)
         root._handleRemove(this);
@@ -141,11 +134,6 @@ ReflectionObject.prototype.onRemove = function onRemove(parent) {
 ReflectionObject.prototype.resolve = function resolve() {
     if (this.resolved)
         return this;
-
-    /* istanbul ignore next */
-    if (!Root)
-        Root = require("./root");
-
     if (this.root instanceof Root)
         this.resolved = true; // only if part of a root
     return this;
@@ -198,4 +186,8 @@ ReflectionObject.prototype.toString = function toString() {
     if (fullName.length)
         return className + " " + fullName;
     return className;
+};
+
+ReflectionObject._configure = function(Root_) {
+    Root = Root_;
 };

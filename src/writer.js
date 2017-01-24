@@ -129,9 +129,6 @@ function Writer() {
  */
 Writer.create = util.Buffer
     ? function create_buffer_setup() {
-        /* istanbul ignore next */
-        if (!BufferWriter)
-            BufferWriter = require("./writer_buffer");
         return (Writer.create = function create_buffer() {
             return new BufferWriter();
         })();
@@ -561,4 +558,8 @@ Writer.prototype.finish = function finish() {
     }
     // this.head = this.tail = null;
     return buf;
+};
+
+Writer._configure = function(BufferWriter_) {
+    BufferWriter = BufferWriter_;
 };
