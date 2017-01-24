@@ -3,5 +3,5 @@ define(["protobuf"], function($protobuf) {
 
     %OUTPUT%
 
-    return $protobuf.roots[%ROOT%] = $root;
+    return $root;
 });

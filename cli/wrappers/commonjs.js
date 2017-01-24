@@ -4,4 +4,4 @@ var $protobuf = require(%DEPENDENCY%);
 
 %OUTPUT%
 
-module.exports = $protobuf.roots[%ROOT%] = $root;
+module.exports = $root;

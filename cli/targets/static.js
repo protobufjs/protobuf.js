@@ -39,7 +39,8 @@ function static_target(root, options, callback) {
             else
                 push("// Exported root namespace");
         }
-        push("var $root = {};");
+        var rootName = config.root || "default";
+        push("var $root = $protobuf.roots[" + JSON.stringify(rootName) + "] || ($protobuf.roots[" + JSON.stringify(rootName) + "] = {});");
         buildNamespace(null, root);
         push("");
         if (config.comments)

@@ -12,7 +12,7 @@ var $Reader = $protobuf.Reader,
 var $lazyTypes = [];
 
 // Exported root namespace
-var $root = {};
+var $root = $protobuf.roots["test_vector_tile"] || ($protobuf.roots["test_vector_tile"] = {});
 
 $root.vector_tile = (function() {
 
@@ -1182,4 +1182,4 @@ $root.vector_tile = (function() {
 // Resolve lazy type references to actual types
 $util.lazyResolve($root, $lazyTypes);
 
-module.exports = $protobuf.roots["test_vector_tile"] = $root;
+module.exports = $root;

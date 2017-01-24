@@ -12,7 +12,7 @@ var $Reader = $protobuf.Reader,
 var $lazyTypes = [];
 
 // Exported root namespace
-var $root = {};
+var $root = $protobuf.roots["test_comments"] || ($protobuf.roots["test_comments"] = {});
 
 $root.Test1 = (function() {
 
@@ -47,7 +47,7 @@ $root.Test1 = (function() {
     Test1.prototype.field2 = 0;
 
     /**
-     * Field with a comment.
+     * Field with a comment and a <a href="http://example.com/foo/">link</a>
      * @type {boolean}
      */
     Test1.prototype.field3 = false;
@@ -377,4 +377,4 @@ $root.Test3 = (function() {
 // Resolve lazy type references to actual types
 $util.lazyResolve($root, $lazyTypes);
 
-module.exports = $protobuf.roots["test_comments"] = $root;
+module.exports = $root;

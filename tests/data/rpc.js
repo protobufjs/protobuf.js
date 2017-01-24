@@ -12,7 +12,7 @@ var $Reader = $protobuf.Reader,
 var $lazyTypes = [];
 
 // Exported root namespace
-var $root = {};
+var $root = $protobuf.roots["test_rpc"] || ($protobuf.roots["test_rpc"] = {});
 
 $root.MyService = (function() {
 
@@ -399,4 +399,4 @@ $root.MyResponse = (function() {
 // Resolve lazy type references to actual types
 $util.lazyResolve($root, $lazyTypes);
 
-module.exports = $protobuf.roots["test_rpc"] = $root;
+module.exports = $root;

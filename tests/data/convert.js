@@ -12,7 +12,7 @@ var $Reader = $protobuf.Reader,
 var $lazyTypes = [];
 
 // Exported root namespace
-var $root = {};
+var $root = $protobuf.roots["test_convert"] || ($protobuf.roots["test_convert"] = {});
 
 $root.Message = (function() {
 
@@ -520,4 +520,4 @@ $root.Message = (function() {
 // Resolve lazy type references to actual types
 $util.lazyResolve($root, $lazyTypes);
 
-module.exports = $protobuf.roots["test_convert"] = $root;
+module.exports = $root;
