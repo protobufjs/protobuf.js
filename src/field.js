@@ -9,8 +9,7 @@ var Enum  = require("./enum"),
     types = require("./types"),
     util  = require("./util");
 
-var Type,     // cyclic
-    MapField; // cyclic
+var Type; // cyclic
 
 /**
  * Constructs a new message field instance. Note that {@link MapField|map fields} have their own class.
@@ -190,11 +189,6 @@ Field.prototype.setOption = function setOption(name, value, ifNotSet) {
  * @throws {TypeError} If arguments are invalid
  */
 Field.fromJSON = function fromJSON(name, json) {
-    if (json.keyType !== undefined) {
-        if (!MapField)
-            MapField = require("./mapfield");
-        return MapField.fromJSON(name, json);
-    }
     return new Field(name, json.id, json.type, json.rule, json.extend, json.options);
 };
 

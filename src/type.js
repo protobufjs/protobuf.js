@@ -8,6 +8,7 @@ var Namespace = require("./namespace");
 var Enum      = require("./enum"),
     OneOf     = require("./oneof"),
     Field     = require("./field"),
+    MapField  = require("./mapfield"),
     Service   = require("./service"),
     Class     = require("./class"),
     Message   = require("./message"),
@@ -32,7 +33,11 @@ Type.fromJSON = function fromJSON(name, json) {
     var names = Object.keys(json.fields),
         i = 0;
     for (; i < names.length; ++i)
-        type.add(Field.fromJSON(names[i], json.fields[names[i]]));
+        type.add(
+            ( typeof json.fields[names[i]].keyType !== "undefined"
+            ? MapField.fromJSON
+            : Field.fromJSON )(names[i], json.fields[names[i]])
+        );
     if (json.oneofs)
         for (names = Object.keys(json.oneofs), i = 0; i < names.length; ++i)
             type.add(OneOf.fromJSON(names[i], json.oneofs[names[i]]));
@@ -40,13 +45,13 @@ Type.fromJSON = function fromJSON(name, json) {
         for (names = Object.keys(json.nested), i = 0; i < names.length; ++i) {
             var nested = json.nested[names[i]];
             type.add( // most to least likely
-                ( typeof nested.id !== "undefined"
+                ( nested.id !== undefined
                 ? Field.fromJSON
-                : nested.fields
+                : nested.fields !== undefined
                 ? Type.fromJSON
-                : nested.values
+                : nested.values !== undefined
                 ? Enum.fromJSON
-                : nested.methods
+                : nested.methods !== undefined
                 ? Service.fromJSON
                 : Namespace.fromJSON )(names[i], nested)
             );
@@ -242,7 +247,10 @@ Type.prototype.resolveAll = function resolveAll() {
  * @override
  */
 Type.prototype.get = function get(name) {
-    return Namespace.prototype.get.call(this, name) || this.fields && this.fields[name] || this.oneofs && this.oneofs[name] || null;
+    return this.fields[name]
+        || this.oneofs && this.oneofs[name]
+        || this.nested && this.nested[name]
+        || null;
 };
 
 /**
@@ -253,16 +261,18 @@ Type.prototype.get = function get(name) {
  * @throws {Error} If there is already a nested object with this name or, if a field, when there is already a field with this id
  */
 Type.prototype.add = function add(object) {
-    /* istanbul ignore next */
+
     if (this.get(object.name))
         throw Error("duplicate name '" + object.name + "' in " + this);
+
     if (object instanceof Field && object.extend === undefined) {
         // NOTE: Extension fields aren't actual fields on the declaring type, but nested objects.
         // The root object takes care of adding distinct sister-fields to the respective extended
         // type instead.
-        /* istanbul ignore next */
+
         if (this.fieldsById[object.id])
             throw Error("duplicate id " + object.id + " in " + this);
+
         if (object.parent)
             object.parent.remove(object);
         this.fields[object.name] = object;

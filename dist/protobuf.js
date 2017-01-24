@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.6.0 (c) 2016, Daniel Wirtz
- * Compiled Mon, 23 Jan 2017 16:59:28 UTC
+ * Compiled Tue, 24 Jan 2017 00:42:15 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -1599,6 +1599,9 @@ var util = require(36);
 function Enum(name, values, options) {
     ReflectionObject.call(this, name, options);
 
+    if (values && !util.isObject(values))
+        throw TypeError("values must be an object");
+
     /**
      * Enum values by id.
      * @type {Object.<number,string>}
@@ -1657,6 +1660,7 @@ Enum.prototype.toJSON = function toJSON() {
  * @throws {Error} If there is already a value with this name or id
  */
 Enum.prototype.add = function(name, id, comment) {
+    // utilized by the parser but not by .fromJSON
 
     if (!util.isString(name))
         throw TypeError("name must be a string");
@@ -1711,8 +1715,7 @@ var Enum  = require(15),
     types = require(35),
     util  = require(36);
 
-var Type,     // cyclic
-    MapField; // cyclic
+var Type; // cyclic
 
 /**
  * Constructs a new message field instance. Note that {@link MapField|map fields} have their own class.
@@ -1892,11 +1895,6 @@ Field.prototype.setOption = function setOption(name, value, ifNotSet) {
  * @throws {TypeError} If arguments are invalid
  */
 Field.fromJSON = function fromJSON(name, json) {
-    if (json.keyType !== undefined) {
-        if (!MapField)
-            MapField = require(20);
-        return MapField.fromJSON(name, json);
-    }
     return new Field(name, json.id, json.type, json.rule, json.extend, json.options);
 };
 
@@ -1972,7 +1970,7 @@ Field.prototype.resolve = function resolve() {
     return ReflectionObject.prototype.resolve.call(this);
 };
 
-},{"15":15,"20":20,"24":24,"34":34,"35":35,"36":36}],17:[function(require,module,exports){
+},{"15":15,"24":24,"34":34,"35":35,"36":36}],17:[function(require,module,exports){
 "use strict";
 var protobuf = module.exports = require(18);
 
@@ -2503,9 +2501,9 @@ module.exports = Namespace;
 var ReflectionObject = require(24);
 ((Namespace.prototype = Object.create(ReflectionObject.prototype)).constructor = Namespace).className = "Namespace";
 
-var Enum    = require(15),
-    Field   = require(16),
-    util    = require(36);
+var Enum     = require(15),
+    Field    = require(16),
+    util     = require(36);
 
 var Type,    // cyclic
     Service; // cyclic
@@ -2625,13 +2623,13 @@ Namespace.prototype.addJSON = function addJSON(nestedJson) {
         for (var names = Object.keys(nestedJson), i = 0, nested; i < names.length; ++i) {
             nested = nestedJson[names[i]];
             ns.add( // most to least likely
-                ( nested.fields
+                ( nested.fields !== undefined
                 ? Type.fromJSON
-                : nested.values
+                : nested.values !== undefined
                 ? Enum.fromJSON
-                : nested.methods
+                : nested.methods !== undefined
                 ? Service.fromJSON
-                : typeof nested.id !== "undefined"
+                : nested.id !== undefined
                 ? Field.fromJSON
                 : Namespace.fromJSON )(names[i], nested)
             );
@@ -2646,9 +2644,8 @@ Namespace.prototype.addJSON = function addJSON(nestedJson) {
  * @returns {?ReflectionObject} The reflection object or `null` if it doesn't exist
  */
 Namespace.prototype.get = function get(name) {
-    if (this.nested === undefined) // prevents deopt
-        return null;
-    return this.nested[name] || null;
+    return this.nested && this.nested[name]
+        || null;
 };
 
 /**
@@ -4508,7 +4505,8 @@ var Field   = require(16),
     Enum    = require(15),
     util    = require(36);
 
-var parse,  // cyclic, might be excluded
+var Type,   // cyclic
+    parse,  // cyclic, might be excluded
     common; // might be excluded
 
 /**
@@ -4739,14 +4737,18 @@ Root.prototype.resolveAll = function resolveAll() {
     return Namespace.prototype.resolveAll.call(this);
 };
 
+// only uppercased (and thus conflict-free) children are exposed, see below
+var exposeRe = /^[A-Z]/;
+
 /**
  * Handles a deferred declaring extension field by creating a sister field to represent it within its extended type.
+ * @param {Root} root Root instance
  * @param {Field} field Declaring extension field witin the declaring type
  * @returns {boolean} `true` if successfully added to the extended type, `false` otherwise
  * @inner
  * @ignore
  */
-function handleExtension(field) {
+function tryHandleExtension(root, field) {   
     var extendedType = field.parent.lookup(field.extend);
     if (extendedType) {
         var sisterField = new Field(field.fullName, field.id, field.type, field.rule, undefined, field.options);
@@ -4758,38 +4760,41 @@ function handleExtension(field) {
     return false;
 }
 
-// only uppercased (and thus conflict-free) children are exposed, see below
-var exposeRe = /^[A-Z]/;
-
 /**
  * Called when any object is added to this root or its sub-namespaces.
  * @param {ReflectionObject} object Object added
  * @returns {undefined}
  * @private
  */
-Root.prototype._handleAdd = function handleAdd(object) {
-    // Try to handle any deferred extensions
-    var newDeferred = this.deferred.slice();
-    this.deferred = []; // because the loop calls handleAdd
-    var i = 0;
-    while (i < newDeferred.length)
-        if (handleExtension(newDeferred[i]))
-            newDeferred.splice(i, 1);
-        else
-            ++i;
-    this.deferred = newDeferred;
-    // Handle new declaring extension fields without a sister field yet
+Root.prototype._handleAdd = function _handleAdd(object) {
     if (object instanceof Field) {
-        if (object.extend !== undefined && !object.extensionField && !handleExtension(object) && this.deferred.indexOf(object) < 0)
-            this.deferred.push(object);
-    } else if (object instanceof Namespace) {
-        var nested = object.nestedArray;
-        for (i = 0; i < nested.length; ++i) // recurse into the namespace
-            this._handleAdd(nested[i]);
+
+        if (/* an extension field (implies not part of a oneof) */ object.extend !== undefined && /* not already handled */ !object.extensionField)
+            if (!tryHandleExtension(this, object))
+                this.deferred.push(object);
+
+    } else if (object instanceof Enum) {
+
+        if (exposeRe.test(object.name))
+            object.parent[object.name] = object.values; // expose enum values as property of its parent
+
+    } else /* everything else is a namespace */ {
+
+        /* istanbul ignore next */
+        if (!Type)
+            Type = require(34);
+
+        if (object instanceof Type) // Try to handle any deferred extensions
+            for (var i = 0; i < this.deferred.length;)
+                if (tryHandleExtension(this, this.deferred[i]))
+                    this.deferred.splice(i, 1);
+                else
+                    ++i;
+        for (var j = 0; j < /* initializes */ object.nestedArray.length; ++j) // recurse into the namespace
+            this._handleAdd(object._nestedArray[j]);
         if (exposeRe.test(object.name))
             object.parent[object.name] = object; // expose namespace as property of its parent
-    } else if (object instanceof Enum && exposeRe.test(object.name))
-        object.parent[object.name] = object.values; // expose enum values as property of its parent
+    }
 
     // The above also adds uppercased (and thus conflict-free) nested types, services and enums as
     // properties of namespaces just like static code does. This allows using a .d.ts generated for
@@ -4802,28 +4807,35 @@ Root.prototype._handleAdd = function handleAdd(object) {
  * @returns {undefined}
  * @private
  */
-Root.prototype._handleRemove = function handleRemove(object) {
+Root.prototype._handleRemove = function _handleRemove(object) {
     if (object instanceof Field) {
-        // If a deferred declaring extension field, cancel the extension
-        if (object.extend !== undefined && !object.extensionField) {
-            var index = this.deferred.indexOf(object);
-            /* istanbul ignore else */
-            if (index > -1)
-                this.deferred.splice(index, 1);
+
+        if (/* an extension field */ object.extend !== undefined) {
+            if (/* already handled */ object.extensionField) { // remove its sister field
+                object.extensionField.parent.remove(object.extensionField);
+                object.extensionField = null;
+            } else { // cancel the extension
+                var index = this.deferred.indexOf(object);
+                /* istanbul ignore else */
+                if (index > -1)
+                    this.deferred.splice(index, 1);
+            }
         }
-        // If a declaring extension field with a sister field, remove its sister field
-        if (object.extensionField) {
-            object.extensionField.parent.remove(object.extensionField);
-            object.extensionField = null;
-        }
+
+    } else if (object instanceof Enum) {
+
+        if (exposeRe.test(object.name))
+            delete object.parent[object.name]; // unexpose enum values
+
     } else if (object instanceof Namespace) {
-        var nested = object.nestedArray;
-        for (var i = 0; i < nested.length; ++i) // recurse into the namespace
-            this._handleRemove(nested[i]);
+
+        for (var i = 0; i < /* initializes */ object.nestedArray.length; ++i) // recurse into the namespace
+            this._handleRemove(object._nestedArray[i]);
+
         if (exposeRe.test(object.name))
             delete object.parent[object.name]; // unexpose namespaces
-    } else if (object instanceof Enum && exposeRe.test(object.name))
-        delete object.parent[object.name]; // unexpose enum values
+
+    }
 };
 
 Root._configure = function(_parse, _common) {
@@ -4831,7 +4843,7 @@ Root._configure = function(_parse, _common) {
     common = _common;
 };
 
-},{"15":15,"16":16,"23":23,"36":36}],30:[function(require,module,exports){
+},{"15":15,"16":16,"23":23,"34":34,"36":36}],30:[function(require,module,exports){
 "use strict";
 
 /**
@@ -5107,7 +5119,8 @@ Service.prototype.toJSON = function toJSON() {
  * @override
  */
 Service.prototype.get = function get(name) {
-    return Namespace.prototype.get.call(this, name) || this.methods[name] || null;
+    return this.methods[name]
+        || Namespace.prototype.get.call(this, name);
 };
 
 /**
@@ -5450,6 +5463,7 @@ var Namespace = require(23);
 var Enum      = require(15),
     OneOf     = require(25),
     Field     = require(16),
+    MapField  = require(20),
     Service   = require(32),
     Class     = require(10),
     Message   = require(21),
@@ -5474,7 +5488,11 @@ Type.fromJSON = function fromJSON(name, json) {
     var names = Object.keys(json.fields),
         i = 0;
     for (; i < names.length; ++i)
-        type.add(Field.fromJSON(names[i], json.fields[names[i]]));
+        type.add(
+            ( typeof json.fields[names[i]].keyType !== "undefined"
+            ? MapField.fromJSON
+            : Field.fromJSON )(names[i], json.fields[names[i]])
+        );
     if (json.oneofs)
         for (names = Object.keys(json.oneofs), i = 0; i < names.length; ++i)
             type.add(OneOf.fromJSON(names[i], json.oneofs[names[i]]));
@@ -5482,13 +5500,13 @@ Type.fromJSON = function fromJSON(name, json) {
         for (names = Object.keys(json.nested), i = 0; i < names.length; ++i) {
             var nested = json.nested[names[i]];
             type.add( // most to least likely
-                ( typeof nested.id !== "undefined"
+                ( nested.id !== undefined
                 ? Field.fromJSON
-                : nested.fields
+                : nested.fields !== undefined
                 ? Type.fromJSON
-                : nested.values
+                : nested.values !== undefined
                 ? Enum.fromJSON
-                : nested.methods
+                : nested.methods !== undefined
                 ? Service.fromJSON
                 : Namespace.fromJSON )(names[i], nested)
             );
@@ -5684,7 +5702,10 @@ Type.prototype.resolveAll = function resolveAll() {
  * @override
  */
 Type.prototype.get = function get(name) {
-    return Namespace.prototype.get.call(this, name) || this.fields && this.fields[name] || this.oneofs && this.oneofs[name] || null;
+    return this.fields[name]
+        || this.oneofs && this.oneofs[name]
+        || this.nested && this.nested[name]
+        || null;
 };
 
 /**
@@ -5695,16 +5716,18 @@ Type.prototype.get = function get(name) {
  * @throws {Error} If there is already a nested object with this name or, if a field, when there is already a field with this id
  */
 Type.prototype.add = function add(object) {
-    /* istanbul ignore next */
+
     if (this.get(object.name))
         throw Error("duplicate name '" + object.name + "' in " + this);
+
     if (object instanceof Field && object.extend === undefined) {
         // NOTE: Extension fields aren't actual fields on the declaring type, but nested objects.
         // The root object takes care of adding distinct sister-fields to the respective extended
         // type instead.
-        /* istanbul ignore next */
+
         if (this.fieldsById[object.id])
             throw Error("duplicate id " + object.id + " in " + this);
+
         if (object.parent)
             object.parent.remove(object);
         this.fields[object.name] = object;
@@ -5893,7 +5916,7 @@ Type.prototype.toObject = function toObject(message, options) {
     return this.setup().toObject(message, options);
 };
 
-},{"10":10,"12":12,"13":13,"14":14,"15":15,"16":16,"21":21,"23":23,"25":25,"27":27,"32":32,"36":36,"39":39,"40":40}],35:[function(require,module,exports){
+},{"10":10,"12":12,"13":13,"14":14,"15":15,"16":16,"20":20,"21":21,"23":23,"25":25,"27":27,"32":32,"36":36,"39":39,"40":40}],35:[function(require,module,exports){
 "use strict";
 
 /**
@@ -6227,7 +6250,7 @@ LongBits.fromNumber = function fromNumber(value) {
 LongBits.from = function from(value) {
     if (typeof value === "number")
         return LongBits.fromNumber(value);
-    if (typeof value === "string") {
+    if (util.isString(value)) {
         /* istanbul ignore else */
         if (util.Long)
             value = util.Long.fromString(value);
@@ -7232,7 +7255,7 @@ Writer.prototype.bytes = function write_bytes(value) {
     var len = value.length >>> 0;
     if (!len)
         return this.push(writeByte, 1, 0);
-    if (typeof value === "string") {
+    if (util.isString(value)) {
         var buf = Writer.alloc(len = base64.length(value));
         base64.decode(value, buf, 0);
         value = buf;
@@ -7363,7 +7386,7 @@ var writeBytesBuffer = Buffer && Buffer.prototype instanceof Uint8Array && Buffe
  * @override
  */
 BufferWriter.prototype.bytes = function write_bytes_buffer(value) {
-    if (typeof value === "string")
+    if (util.isString(value))
         value = Buffer.from(value, "base64"); // polyfilled
     var len = value.length >>> 0;
     this.uint32(len);

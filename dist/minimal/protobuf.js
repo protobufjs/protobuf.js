@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.6.0 (c) 2016, Daniel Wirtz
- * Compiled Mon, 23 Jan 2017 16:59:28 UTC
+ * Compiled Tue, 24 Jan 2017 00:42:15 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -1320,7 +1320,7 @@ LongBits.fromNumber = function fromNumber(value) {
 LongBits.from = function from(value) {
     if (typeof value === "number")
         return LongBits.fromNumber(value);
-    if (typeof value === "string") {
+    if (util.isString(value)) {
         /* istanbul ignore else */
         if (util.Long)
             value = util.Long.fromString(value);
@@ -2157,7 +2157,7 @@ Writer.prototype.bytes = function write_bytes(value) {
     var len = value.length >>> 0;
     if (!len)
         return this.push(writeByte, 1, 0);
-    if (typeof value === "string") {
+    if (util.isString(value)) {
         var buf = Writer.alloc(len = base64.length(value));
         base64.decode(value, buf, 0);
         value = buf;
@@ -2288,7 +2288,7 @@ var writeBytesBuffer = Buffer && Buffer.prototype instanceof Uint8Array && Buffe
  * @override
  */
 BufferWriter.prototype.bytes = function write_bytes_buffer(value) {
-    if (typeof value === "string")
+    if (util.isString(value))
         value = Buffer.from(value, "base64"); // polyfilled
     var len = value.length >>> 0;
     this.uint32(len);

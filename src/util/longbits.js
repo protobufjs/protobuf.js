@@ -88,7 +88,7 @@ LongBits.fromNumber = function fromNumber(value) {
 LongBits.from = function from(value) {
     if (typeof value === "number")
         return LongBits.fromNumber(value);
-    if (typeof value === "string") {
+    if (util.isString(value)) {
         /* istanbul ignore else */
         if (util.Long)
             value = util.Long.fromString(value);

@@ -84,7 +84,8 @@ Service.prototype.toJSON = function toJSON() {
  * @override
  */
 Service.prototype.get = function get(name) {
-    return Namespace.prototype.get.call(this, name) || this.methods[name] || null;
+    return this.methods[name]
+        || Namespace.prototype.get.call(this, name);
 };
 
 /**

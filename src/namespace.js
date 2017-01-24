@@ -5,9 +5,9 @@ module.exports = Namespace;
 var ReflectionObject = require("./object");
 ((Namespace.prototype = Object.create(ReflectionObject.prototype)).constructor = Namespace).className = "Namespace";
 
-var Enum    = require("./enum"),
-    Field   = require("./field"),
-    util    = require("./util");
+var Enum     = require("./enum"),
+    Field    = require("./field"),
+    util     = require("./util");
 
 var Type,    // cyclic
     Service; // cyclic
@@ -127,13 +127,13 @@ Namespace.prototype.addJSON = function addJSON(nestedJson) {
         for (var names = Object.keys(nestedJson), i = 0, nested; i < names.length; ++i) {
             nested = nestedJson[names[i]];
             ns.add( // most to least likely
-                ( nested.fields
+                ( nested.fields !== undefined
                 ? Type.fromJSON
-                : nested.values
+                : nested.values !== undefined
                 ? Enum.fromJSON
-                : nested.methods
+                : nested.methods !== undefined
                 ? Service.fromJSON
-                : typeof nested.id !== "undefined"
+                : nested.id !== undefined
                 ? Field.fromJSON
                 : Namespace.fromJSON )(names[i], nested)
             );
@@ -148,9 +148,8 @@ Namespace.prototype.addJSON = function addJSON(nestedJson) {
  * @returns {?ReflectionObject} The reflection object or `null` if it doesn't exist
  */
 Namespace.prototype.get = function get(name) {
-    if (this.nested === undefined) // prevents deopt
-        return null;
-    return this.nested[name] || null;
+    return this.nested && this.nested[name]
+        || null;
 };
 
 /**

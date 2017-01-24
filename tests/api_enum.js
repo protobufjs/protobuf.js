@@ -9,6 +9,10 @@ tape.test("reflected enums", function(test) {
         b: 2
     });
 
+    test.throws(function() {
+        new protobuf.Enum("Test", true);
+    }, TypeError, "should throw if values is specified but not an object");
+
     test.same(enm.valuesById, {
         1: "a",
         2: "b"

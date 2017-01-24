@@ -91,5 +91,13 @@ tape.test("reflected types", function(test) {
         options: undefined
     }, "should create from Field, Type, Enum, Service, extension Field and Namespace JSON");
 
+    test.throws(function() {
+        type.add(new protobuf.Enum("Enum"));
+    }, Error, "should throw when trying to add duplicate names");
+
+    test.throws(function() {
+        type.add(new protobuf.Field("c", 1, "uint32"));
+    }, Error, "should throw when trying to add duplicate ids");
+
     test.end();
 });

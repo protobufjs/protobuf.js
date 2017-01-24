@@ -19,6 +19,9 @@ var util = require("./util");
 function Enum(name, values, options) {
     ReflectionObject.call(this, name, options);
 
+    if (values && !util.isObject(values))
+        throw TypeError("values must be an object");
+
     /**
      * Enum values by id.
      * @type {Object.<number,string>}
@@ -77,6 +80,7 @@ Enum.prototype.toJSON = function toJSON() {
  * @throws {Error} If there is already a value with this name or id
  */
 Enum.prototype.add = function(name, id, comment) {
+    // utilized by the parser but not by .fromJSON
 
     if (!util.isString(name))
         throw TypeError("name must be a string");

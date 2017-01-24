@@ -45,7 +45,7 @@ var writeBytesBuffer = Buffer && Buffer.prototype instanceof Uint8Array && Buffe
  * @override
  */
 BufferWriter.prototype.bytes = function write_bytes_buffer(value) {
-    if (typeof value === "string")
+    if (util.isString(value))
         value = Buffer.from(value, "base64"); // polyfilled
     var len = value.length >>> 0;
     this.uint32(len);

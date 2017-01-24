@@ -44,7 +44,21 @@ var protobuf = require("..");
 
 // protobuf.util.codegen.verbose = true;
 
-var root, Test, data, count;
+var root, json;
+
+if (process.argv[2] === "fromjson") {
+    json = require("../tests/data/test.json");
+    if (process.argv.indexOf("--resolve") < 0)
+        for (var k = 0; k < 10000; ++k)
+            protobuf.Root.fromJSON(json);
+    else
+        for (var l = 0; l < 10000; ++l)
+            protobuf.Root.fromJSON(json).resolveAll();
+    return;
+}
+
+var Test, data, count;
+
 if (process.argv.indexOf("--alt") < 0) {
     root = protobuf.parse(fs.readFileSync(require.resolve("../bench/bench.proto")).toString("utf8")).root;
     Test = root.lookup("Test");
@@ -59,7 +73,6 @@ if (process.argv.indexOf("--alt") < 0) {
     count = 1000;
     process.stdout.write("vector_tile.proto");
 }
-var json = JSON.stringify(root);
 
 if (process.argv.length > 3 && /^\d+$/.test(process.argv[3]))
     count = parseInt(process.argv[3], 10);
@@ -85,9 +98,5 @@ switch (process.argv[2]) {
         var buf = Test.encode(data).finish();
         for (var j = 0; j < count; ++j)
             Test.decode(buf);
-        break;
-    case "fromjson":
-        for (var k = 0; k < 100000000; ++k)
-            protobuf.Root.fromJSON(json).resolveAll();
         break;
 }

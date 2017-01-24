@@ -9,7 +9,8 @@ var Field   = require("./field"),
     Enum    = require("./enum"),
     util    = require("./util");
 
-var parse,  // cyclic, might be excluded
+var Type,   // cyclic
+    parse,  // cyclic, might be excluded
     common; // might be excluded
 
 /**
@@ -240,14 +241,18 @@ Root.prototype.resolveAll = function resolveAll() {
     return Namespace.prototype.resolveAll.call(this);
 };
 
+// only uppercased (and thus conflict-free) children are exposed, see below
+var exposeRe = /^[A-Z]/;
+
 /**
  * Handles a deferred declaring extension field by creating a sister field to represent it within its extended type.
+ * @param {Root} root Root instance
  * @param {Field} field Declaring extension field witin the declaring type
  * @returns {boolean} `true` if successfully added to the extended type, `false` otherwise
  * @inner
  * @ignore
  */
-function handleExtension(field) {
+function tryHandleExtension(root, field) {   
     var extendedType = field.parent.lookup(field.extend);
     if (extendedType) {
         var sisterField = new Field(field.fullName, field.id, field.type, field.rule, undefined, field.options);
@@ -259,38 +264,41 @@ function handleExtension(field) {
     return false;
 }
 
-// only uppercased (and thus conflict-free) children are exposed, see below
-var exposeRe = /^[A-Z]/;
-
 /**
  * Called when any object is added to this root or its sub-namespaces.
  * @param {ReflectionObject} object Object added
  * @returns {undefined}
  * @private
  */
-Root.prototype._handleAdd = function handleAdd(object) {
-    // Try to handle any deferred extensions
-    var newDeferred = this.deferred.slice();
-    this.deferred = []; // because the loop calls handleAdd
-    var i = 0;
-    while (i < newDeferred.length)
-        if (handleExtension(newDeferred[i]))
-            newDeferred.splice(i, 1);
-        else
-            ++i;
-    this.deferred = newDeferred;
-    // Handle new declaring extension fields without a sister field yet
+Root.prototype._handleAdd = function _handleAdd(object) {
     if (object instanceof Field) {
-        if (object.extend !== undefined && !object.extensionField && !handleExtension(object) && this.deferred.indexOf(object) < 0)
-            this.deferred.push(object);
-    } else if (object instanceof Namespace) {
-        var nested = object.nestedArray;
-        for (i = 0; i < nested.length; ++i) // recurse into the namespace
-            this._handleAdd(nested[i]);
+
+        if (/* an extension field (implies not part of a oneof) */ object.extend !== undefined && /* not already handled */ !object.extensionField)
+            if (!tryHandleExtension(this, object))
+                this.deferred.push(object);
+
+    } else if (object instanceof Enum) {
+
+        if (exposeRe.test(object.name))
+            object.parent[object.name] = object.values; // expose enum values as property of its parent
+
+    } else /* everything else is a namespace */ {
+
+        /* istanbul ignore next */
+        if (!Type)
+            Type = require("./type");
+
+        if (object instanceof Type) // Try to handle any deferred extensions
+            for (var i = 0; i < this.deferred.length;)
+                if (tryHandleExtension(this, this.deferred[i]))
+                    this.deferred.splice(i, 1);
+                else
+                    ++i;
+        for (var j = 0; j < /* initializes */ object.nestedArray.length; ++j) // recurse into the namespace
+            this._handleAdd(object._nestedArray[j]);
         if (exposeRe.test(object.name))
             object.parent[object.name] = object; // expose namespace as property of its parent
-    } else if (object instanceof Enum && exposeRe.test(object.name))
-        object.parent[object.name] = object.values; // expose enum values as property of its parent
+    }
 
     // The above also adds uppercased (and thus conflict-free) nested types, services and enums as
     // properties of namespaces just like static code does. This allows using a .d.ts generated for
@@ -303,28 +311,35 @@ Root.prototype._handleAdd = function handleAdd(object) {
  * @returns {undefined}
  * @private
  */
-Root.prototype._handleRemove = function handleRemove(object) {
+Root.prototype._handleRemove = function _handleRemove(object) {
     if (object instanceof Field) {
-        // If a deferred declaring extension field, cancel the extension
-        if (object.extend !== undefined && !object.extensionField) {
-            var index = this.deferred.indexOf(object);
-            /* istanbul ignore else */
-            if (index > -1)
-                this.deferred.splice(index, 1);
+
+        if (/* an extension field */ object.extend !== undefined) {
+            if (/* already handled */ object.extensionField) { // remove its sister field
+                object.extensionField.parent.remove(object.extensionField);
+                object.extensionField = null;
+            } else { // cancel the extension
+                var index = this.deferred.indexOf(object);
+                /* istanbul ignore else */
+                if (index > -1)
+                    this.deferred.splice(index, 1);
+            }
         }
-        // If a declaring extension field with a sister field, remove its sister field
-        if (object.extensionField) {
-            object.extensionField.parent.remove(object.extensionField);
-            object.extensionField = null;
-        }
+
+    } else if (object instanceof Enum) {
+
+        if (exposeRe.test(object.name))
+            delete object.parent[object.name]; // unexpose enum values
+
     } else if (object instanceof Namespace) {
-        var nested = object.nestedArray;
-        for (var i = 0; i < nested.length; ++i) // recurse into the namespace
-            this._handleRemove(nested[i]);
+
+        for (var i = 0; i < /* initializes */ object.nestedArray.length; ++i) // recurse into the namespace
+            this._handleRemove(object._nestedArray[i]);
+
         if (exposeRe.test(object.name))
             delete object.parent[object.name]; // unexpose namespaces
-    } else if (object instanceof Enum && exposeRe.test(object.name))
-        delete object.parent[object.name]; // unexpose enum values
+
+    }
 };
 
 Root._configure = function(_parse, _common) {
