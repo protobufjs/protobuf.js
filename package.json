@@ -45,15 +45,15 @@
     "release": "npm run make && npm run changelog"
   },
   "dependencies": {
-    "@protobufjs/aspromise": "^1.0.5",
-    "@protobufjs/base64": "^1.0.5",
+    "@protobufjs/aspromise": "^1.1.1",
+    "@protobufjs/base64": "^1.1.1",
     "@protobufjs/codegen": "^1.0.8",
-    "@protobufjs/eventemitter": "^1.0.5",
+    "@protobufjs/eventemitter": "^1.1.0",
     "@protobufjs/fetch": "^1.0.4",
-    "@protobufjs/inquire": "^1.0.2",
-    "@protobufjs/path": "^1.0.2",
-    "@protobufjs/pool": "^1.0.5",
-    "@protobufjs/utf8": "^1.0.7"
+    "@protobufjs/inquire": "^1.1.0",
+    "@protobufjs/path": "^1.1.1",
+    "@protobufjs/pool": "^1.1.0",
+    "@protobufjs/utf8": "^1.1.0"
   },
   "optionalDependencies": {
     "long": "^3.2.0",

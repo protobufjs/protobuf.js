@@ -8,4 +8,4 @@ export = asPromise;
  * @param {...*} params Function arguments
  * @returns {Promise<*>} Promisified function
  */
-function asPromise(fn: () => any, ctx: any, ...params: any[]): Promise<any>;
+declare function asPromise(fn: () => any, ctx: any, ...params: any[]): Promise<any>;
