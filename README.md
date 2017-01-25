@@ -346,16 +346,16 @@ Additionally, TypeScript definitions of static modules are compatible with refle
 1. Instead of using `new SomeMessage(...)`, always use `SomeMessage.create(...)` because reflection objects do not provide a constructor.
 2. Types, services and enums must start with an uppercase letter to become available as properties of the reflected types as well (i.e. to be able to use `MyMessage.MyEnum` instead of `root.lookup("MyMessage.MyEnum")`).
 
-For example, the following generates a `bundle.json` and a `bundle.d.ts`, but no static code:
+For example, the following generates a JSON module `bundle.js` and a `bundle.d.ts`, but no static code:
 
 ```
-$> pbjs -t json-module -w commonjs -o bundle.json file1.proto file2.proto
+$> pbjs -t json-module -w commonjs -o bundle.js file1.proto file2.proto
 $> pbjs -t static-module file1.proto file2.proto | pbts -o bundle.d.ts -
 ```
 
 ### On reflection vs. static code
 
-While using .proto files requires the [full library][dist-full] (about 18.5kb gzipped) or JSON at least the [light library][dist-light] (about 15.5kb gzipped), pretty much all code but the relatively short descriptors is shared and all features including reflection and the parser are available.
+While using .proto files directly requires the [full library][dist-full] (about 18.5kb gzipped) respectively pure reflection/JSON the [light library][dist-light] (about 15.5kb gzipped), pretty much all code but the relatively short descriptors is shared.
 
 Static code, on the other hand, requires just the [minimal library][dist-minimal] (about 6kb gzipped), but generates additional, albeit editable, source code without any reflection features.
 
