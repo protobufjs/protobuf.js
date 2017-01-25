@@ -15,6 +15,6 @@ branches:
 matrix:
   include:
   - node_js: 6
-    script: if [ -n "$SAUCE_USERNAME" ]; then travis_wait npm run zuul; sleep 3; fi
+    script: set -e; if [ -n "$SAUCE_USERNAME" ]; then travis_wait npm run zuul; sleep 3; fi
   - node_js: 6
     script: npm run coverage-ci
