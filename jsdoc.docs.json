@@ -4,7 +4,16 @@
     },
     "source": {
         "include": [
-            "./src/"
+            "./src/",
+            "./lib/aspromise/index.js",
+            "./lib/base64/index.js",
+            "./lib/codegen/index.js",
+            "./lib/eventemitter/index.js",
+            "./lib/fetch/index.js",
+            "./lib/inquire/index.js",
+            "./lib/path/index.js",
+            "./lib/pool/index.js",
+            "./lib/utf8/index.js"
         ],
         "exclude": [],
         "includePattern": ".+\\.js(doc)?$",

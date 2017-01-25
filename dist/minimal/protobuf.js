@@ -1,6 +1,6 @@
 /*!
- * protobuf.js v6.6.1 (c) 2016, Daniel Wirtz
- * Compiled Tue, 24 Jan 2017 13:05:54 UTC
+ * protobuf.js v6.6.2 (c) 2016, Daniel Wirtz
+ * Compiled Wed, 25 Jan 2017 03:35:23 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -1098,7 +1098,7 @@ var util = require(13);
  */
 
 /**
- * A service method part of an {@link rpc.ServiceMethodMixin|ServiceMethodMixin} and thus {@link rpc.Service} as created by {@link Service.create}.
+ * A service method part of a {@link rpc.ServiceMethodMixin|ServiceMethodMixin} and thus {@link rpc.Service} as created by {@link Service.create}.
  * @typedef rpc.ServiceMethod
  * @type {function}
  * @param {Message|Object} request Request message or plain object
@@ -1448,6 +1448,7 @@ util.EventEmitter = require(3);
 util.inquire      = require(4);
 util.utf8         = require(6);
 util.pool         = require(5);
+
 util.LongBits     = require(12);
 
 /**

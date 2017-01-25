@@ -1,6 +1,6 @@
 /*!
- * protobuf.js v6.6.1 (c) 2016, Daniel Wirtz
- * Compiled Tue, 24 Jan 2017 13:05:54 UTC
+ * protobuf.js v6.6.2 (c) 2016, Daniel Wirtz
+ * Compiled Wed, 25 Jan 2017 03:35:23 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -1311,7 +1311,7 @@ function encoder(mtype) {
 
                 if (field.long) gen
     ("if(%s!==undefined&&%s!==null&&m.hasOwnProperty(%j))", ref, ref, field.name);
-                else if (field.bytes) gen
+                else if (field.bytes || field.resolvedType && !(field.resolvedType instanceof Enum)) gen
     ("if(%s&&m.hasOwnProperty(%j))", ref, field.name);
                 else gen
     ("if(%s!==undefined&&m.hasOwnProperty(%j))", ref, field.name);
@@ -3911,7 +3911,7 @@ var util = require(34);
  */
 
 /**
- * A service method part of an {@link rpc.ServiceMethodMixin|ServiceMethodMixin} and thus {@link rpc.Service} as created by {@link Service.create}.
+ * A service method part of a {@link rpc.ServiceMethodMixin|ServiceMethodMixin} and thus {@link rpc.Service} as created by {@link Service.create}.
  * @typedef rpc.ServiceMethod
  * @type {function}
  * @param {Message|Object} request Request message or plain object
@@ -5120,6 +5120,7 @@ util.EventEmitter = require(4);
 util.inquire      = require(6);
 util.utf8         = require(9);
 util.pool         = require(8);
+
 util.LongBits     = require(33);
 
 /**

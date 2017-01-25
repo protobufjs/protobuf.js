@@ -1415,7 +1415,7 @@ export namespace rpc {
     type ServiceMethodCallback = (error: Error, response?: Message) => void;
 
     /**
-     * A service method part of an {@link rpc.ServiceMethodMixin|ServiceMethodMixin} and thus {@link rpc.Service} as created by {@link Service.create}.
+     * A service method part of a {@link rpc.ServiceMethodMixin|ServiceMethodMixin} and thus {@link rpc.Service} as created by {@link Service.create}.
      * @typedef rpc.ServiceMethod
      * @type {function}
      * @param {Message|Object} request Request message or plain object
@@ -1973,28 +1973,6 @@ export namespace types {
 }
 
 /**
- * A codegen instance as returned by {@link codegen}, that also is a sprintf-like appender function.
- * @typedef Codegen
- * @type {function}
- * @param {string} format Format string
- * @param {...*} args Replacements
- * @returns {Codegen} Itself
- * @property {function(string=):string} str Stringifies the so far generated function source.
- * @property {function(string=, Object=):function} eof Ends generation and builds the function whilst applying a scope.
- */
-type Codegen = (format: string, ...args: any[]) => Codegen;
-
-/**
- * Node-style callback as used by {@link util.fetch}.
- * @typedef FetchCallback
- * @type {function}
- * @param {?Error} error Error, if any, otherwise `null`
- * @param {string} [contents] File contents, if there hasn't been an error
- * @returns {undefined}
- */
-type FetchCallback = (error: Error, contents?: string) => void;
-
-/**
  * Any compatible Long instance.
  *
  * This is a minimal stand-alone definition of a Long instance. The actual type is that exported by long.js.
@@ -2012,153 +1990,10 @@ interface Long {
 }
 
 /**
- * An allocator as used by {@link util.pool}.
- * @typedef PoolAllocator
- * @type {function}
- * @param {number} size Buffer size
- * @returns {Uint8Array} Buffer
- */
-type PoolAllocator = (size: number) => Uint8Array;
-
-/**
- * A slicer as used by {@link util.pool}.
- * @typedef PoolSlicer
- * @type {function}
- * @param {number} start Start offset
- * @param {number} end End offset
- * @returns {Uint8Array} Buffer slice
- * @this {Uint8Array}
- */
-type PoolSlicer = (this: Uint8Array, start: number, end: number) => Uint8Array;
-
-/**
  * Various utility functions.
  * @namespace
  */
 export namespace util {
-
-    /**
-     * Returns a promise from a node-style callback function.
-     * @memberof util
-     * @param {function(?Error, ...*)} fn Function to call
-     * @param {*} ctx Function context
-     * @param {...*} params Function arguments
-     * @returns {Promise<*>} Promisified function
-     */
-    function asPromise(fn: () => any, ctx: any, ...params: any[]): Promise<any>;
-
-    /**
-     * A minimal base64 implementation for number arrays.
-     * @memberof util
-     * @namespace
-     */
-    namespace base64 {
-
-        /**
-         * Calculates the byte length of a base64 encoded string.
-         * @param {string} string Base64 encoded string
-         * @returns {number} Byte length
-         */
-        function length(string: string): number;
-
-        /**
-         * Encodes a buffer to a base64 encoded string.
-         * @param {Uint8Array} buffer Source buffer
-         * @param {number} start Source start
-         * @param {number} end Source end
-         * @returns {string} Base64 encoded string
-         */
-        function encode(buffer: Uint8Array, start: number, end: number): string;
-
-        /**
-         * Decodes a base64 encoded string to a buffer.
-         * @param {string} string Source string
-         * @param {Uint8Array} buffer Destination buffer
-         * @param {number} offset Destination offset
-         * @returns {number} Number of bytes written
-         * @throws {Error} If encoding is invalid
-         */
-        function decode(string: string, buffer: Uint8Array, offset: number): number;
-
-        /**
-         * Tests if the specified string appears to be base64 encoded.
-         * @param {string} string String to test
-         * @returns {boolean} `true` if probably base64 encoded, otherwise false
-         */
-        function test(string: string): boolean;
-    }
-
-    /**
-     * A closure for generating functions programmatically.
-     * @memberof util
-     * @namespace
-     * @function
-     * @param {...string} params Function parameter names
-     * @returns {Codegen} Codegen instance
-     * @property {boolean} supported Whether code generation is supported by the environment.
-     * @property {boolean} verbose=false When set to true, codegen will log generated code to console. Useful for debugging.
-     * @property {function(string, ...*):string} sprintf Underlying sprintf implementation
-     */
-    function codegen(...params: string[]): Codegen;
-
-    /**
-     * Constructs a new event emitter instance.
-     * @classdesc A minimal event emitter.
-     * @memberof util
-     * @constructor
-     */
-    class EventEmitter {
-
-        /**
-         * Constructs a new event emitter instance.
-         * @classdesc A minimal event emitter.
-         * @memberof util
-         * @constructor
-         */
-        constructor();
-
-        /**
-         * Registers an event listener.
-         * @param {string} evt Event name
-         * @param {function} fn Listener
-         * @param {*} [ctx] Listener context
-         * @returns {util.EventEmitter} `this`
-         */
-        on(evt: string, fn: () => any, ctx?: any): util.EventEmitter;
-
-        /**
-         * Removes an event listener or any matching listeners if arguments are omitted.
-         * @param {string} [evt] Event name. Removes all listeners if omitted.
-         * @param {function} [fn] Listener to remove. Removes all listeners of `evt` if omitted.
-         * @returns {util.EventEmitter} `this`
-         */
-        off(evt?: string, fn?: () => any): util.EventEmitter;
-
-        /**
-         * Emits an event by calling its listeners with the specified arguments.
-         * @param {string} evt Event name
-         * @param {...*} args Arguments
-         * @returns {util.EventEmitter} `this`
-         */
-        emit(evt: string, ...args: any[]): util.EventEmitter;
-    }
-
-    /**
-     * Fetches the contents of a file.
-     * @memberof util
-     * @param {string} path File path or url
-     * @param {FetchCallback} [callback] Callback function
-     * @returns {Promise<string>|undefined} A Promise if `callback` has been omitted
-     */
-    function fetch(path: string, callback?: FetchCallback): (Promise<string>|undefined);
-
-    /**
-     * Requires a module only if available.
-     * @memberof util
-     * @param {string} moduleName Module to require
-     * @returns {?Object} Required module if available and not empty, otherwise `null`
-     */
-    function inquire(moduleName: string): Object;
 
     /**
      * Constructs new long bits.
@@ -2393,6 +2228,156 @@ export namespace util {
     var toJSONOptions: ConversionOptions;
 
     /**
+     * Node's fs module if available.
+     * @type {Object.<string,*>}
+     */
+    var fs: { [k: string]: any };
+
+    /**
+     * Converts an object's values to an array.
+     * @param {Object.<string,*>} object Object to convert
+     * @returns {Array.<*>} Converted array
+     */
+    function toArray(object: { [k: string]: any }): any[];
+
+    /**
+     * Returns a safe property accessor for the specified properly name.
+     * @param {string} prop Property name
+     * @returns {string} Safe accessor
+     */
+    function safeProp(prop: string): string;
+
+    /**
+     * Converts the first character of a string to upper case.
+     * @param {string} str String to convert
+     * @returns {string} Converted string
+     */
+    function ucFirst(str: string): string;
+
+    /**
+     * Returns a promise from a node-style callback function.
+     * @memberof util
+     * @param {function(?Error, ...*)} fn Function to call
+     * @param {*} ctx Function context
+     * @param {...*} params Function arguments
+     * @returns {Promise<*>} Promisified function
+     */
+    function asPromise(fn: () => any, ctx: any, ...params: any[]): Promise<any>;
+
+    /**
+     * A minimal base64 implementation for number arrays.
+     * @memberof util
+     * @namespace
+     */
+    namespace base64 {
+
+        /**
+         * Calculates the byte length of a base64 encoded string.
+         * @param {string} string Base64 encoded string
+         * @returns {number} Byte length
+         */
+        function length(string: string): number;
+
+        /**
+         * Encodes a buffer to a base64 encoded string.
+         * @param {Uint8Array} buffer Source buffer
+         * @param {number} start Source start
+         * @param {number} end Source end
+         * @returns {string} Base64 encoded string
+         */
+        function encode(buffer: Uint8Array, start: number, end: number): string;
+
+        /**
+         * Decodes a base64 encoded string to a buffer.
+         * @param {string} string Source string
+         * @param {Uint8Array} buffer Destination buffer
+         * @param {number} offset Destination offset
+         * @returns {number} Number of bytes written
+         * @throws {Error} If encoding is invalid
+         */
+        function decode(string: string, buffer: Uint8Array, offset: number): number;
+
+        /**
+         * Tests if the specified string appears to be base64 encoded.
+         * @param {string} string String to test
+         * @returns {boolean} `true` if probably base64 encoded, otherwise false
+         */
+        function test(string: string): boolean;
+    }
+
+    /**
+     * A closure for generating functions programmatically.
+     * @memberof util
+     * @namespace
+     * @function
+     * @param {...string} params Function parameter names
+     * @returns {Codegen} Codegen instance
+     * @property {boolean} supported Whether code generation is supported by the environment.
+     * @property {boolean} verbose=false When set to true, codegen will log generated code to console. Useful for debugging.
+     * @property {function(string, ...*):string} sprintf Underlying sprintf implementation
+     */
+    function codegen(...params: string[]): Codegen;
+
+    /**
+     * Constructs a new event emitter instance.
+     * @classdesc A minimal event emitter.
+     * @memberof util
+     * @constructor
+     */
+    class EventEmitter {
+
+        /**
+         * Constructs a new event emitter instance.
+         * @classdesc A minimal event emitter.
+         * @memberof util
+         * @constructor
+         */
+        constructor();
+
+        /**
+         * Registers an event listener.
+         * @param {string} evt Event name
+         * @param {function} fn Listener
+         * @param {*} [ctx] Listener context
+         * @returns {util.EventEmitter} `this`
+         */
+        on(evt: string, fn: () => any, ctx?: any): util.EventEmitter;
+
+        /**
+         * Removes an event listener or any matching listeners if arguments are omitted.
+         * @param {string} [evt] Event name. Removes all listeners if omitted.
+         * @param {function} [fn] Listener to remove. Removes all listeners of `evt` if omitted.
+         * @returns {util.EventEmitter} `this`
+         */
+        off(evt?: string, fn?: () => any): util.EventEmitter;
+
+        /**
+         * Emits an event by calling its listeners with the specified arguments.
+         * @param {string} evt Event name
+         * @param {...*} args Arguments
+         * @returns {util.EventEmitter} `this`
+         */
+        emit(evt: string, ...args: any[]): util.EventEmitter;
+    }
+
+    /**
+     * Fetches the contents of a file.
+     * @memberof util
+     * @param {string} path File path or url
+     * @param {FetchCallback} [callback] Callback function
+     * @returns {Promise<string>|undefined} A Promise if `callback` has been omitted
+     */
+    function fetch(path: string, callback?: FetchCallback): (Promise<string>|undefined);
+
+    /**
+     * Requires a module only if available.
+     * @memberof util
+     * @param {string} moduleName Module to require
+     * @returns {?Object} Required module if available and not empty, otherwise `null`
+     */
+    function inquire(moduleName: string): Object;
+
+    /**
      * A minimal path module to resolve Unix, Windows and URL paths alike.
      * @memberof util
      * @namespace
@@ -2466,33 +2451,6 @@ export namespace util {
          */
         function write(string: string, buffer: Uint8Array, offset: number): number;
     }
-
-    /**
-     * Node's fs module if available.
-     * @type {Object.<string,*>}
-     */
-    var fs: { [k: string]: any };
-
-    /**
-     * Converts an object's values to an array.
-     * @param {Object.<string,*>} object Object to convert
-     * @returns {Array.<*>} Converted array
-     */
-    function toArray(object: { [k: string]: any }): any[];
-
-    /**
-     * Returns a safe property accessor for the specified properly name.
-     * @param {string} prop Property name
-     * @returns {string} Safe accessor
-     */
-    function safeProp(prop: string): string;
-
-    /**
-     * Converts the first character of a string to upper case.
-     * @param {string} str String to convert
-     * @returns {string} Converted string
-     */
-    function ucFirst(str: string): string;
 }
 
 /**
@@ -2726,3 +2684,45 @@ export class BufferWriter extends Writer {
      */
     static alloc(size: number): Uint8Array;
 }
+
+/**
+ * A codegen instance as returned by {@link codegen}, that also is a sprintf-like appender function.
+ * @typedef Codegen
+ * @type {function}
+ * @param {string} format Format string
+ * @param {...*} args Replacements
+ * @returns {Codegen} Itself
+ * @property {function(string=):string} str Stringifies the so far generated function source.
+ * @property {function(string=, Object=):function} eof Ends generation and builds the function whilst applying a scope.
+ */
+type Codegen = (format: string, ...args: any[]) => Codegen;
+
+/**
+ * Node-style callback as used by {@link util.fetch}.
+ * @typedef FetchCallback
+ * @type {function}
+ * @param {?Error} error Error, if any, otherwise `null`
+ * @param {string} [contents] File contents, if there hasn't been an error
+ * @returns {undefined}
+ */
+type FetchCallback = (error: Error, contents?: string) => void;
+
+/**
+ * An allocator as used by {@link util.pool}.
+ * @typedef PoolAllocator
+ * @type {function}
+ * @param {number} size Buffer size
+ * @returns {Uint8Array} Buffer
+ */
+type PoolAllocator = (size: number) => Uint8Array;
+
+/**
+ * A slicer as used by {@link util.pool}.
+ * @typedef PoolSlicer
+ * @type {function}
+ * @param {number} start Start offset
+ * @param {number} end End offset
+ * @returns {Uint8Array} Buffer slice
+ * @this {Uint8Array}
+ */
+type PoolSlicer = (this: Uint8Array, start: number, end: number) => Uint8Array;

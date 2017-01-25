@@ -7,6 +7,7 @@ util.EventEmitter = require("@protobufjs/eventemitter");
 util.inquire      = require("@protobufjs/inquire");
 util.utf8         = require("@protobufjs/utf8");
 util.pool         = require("@protobufjs/pool");
+
 util.LongBits     = require("./longbits");
 
 /**
