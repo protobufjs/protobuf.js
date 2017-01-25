@@ -1,1 +1,2 @@
-require("../lib/aspromise/tests");
+if (typeof Promise !== "undefined")
+    require("../lib/aspromise/tests");
