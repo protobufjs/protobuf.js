@@ -2365,9 +2365,10 @@ export namespace util {
      * @memberof util
      * @param {string} path File path or url
      * @param {FetchCallback} [callback] Callback function
-     * @returns {Promise<string>|undefined} A Promise if `callback` has been omitted
+     * @returns {Promise<string>} A Promise if `callback` has been omitted, otherwise `undefined`
+     * @property {function(string, FetchCallback=):Promise<string>} xhr XHR/browser fetch with an identical signature
      */
-    function fetch(path: string, callback?: FetchCallback): (Promise<string>|undefined);
+    function fetch(path: string, callback?: FetchCallback): Promise<string>;
 
     /**
      * Requires a module only if available.

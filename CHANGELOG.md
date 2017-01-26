@@ -1,3 +1,16 @@
+# [6.6.2](https://github.com/dcodeIO/protobuf.js/releases/tag/6.6.2)
+
+## Fixed
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/2b12fb7db9d4eaa3b76b7198539946e97db684c4) Make sure to check optional inner messages for null when encoding, see [#658](https://github.com/dcodeIO/protobuf.js/issues/658)<br />
+
+## Other
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/9044178c052299670108f10621d6e9b3d56e8a40) Travis should exit with the respective error when running sauce tests<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/73721f12072d77263e72a3b27cd5cf9409db9f8b) Moved checks whether a test case is applicable to parent case<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/3fcd88c3f9b1a084b06cab2d5881cb5bb895869d) Added eventemitter tests and updated micromodule dependencies (so far)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/2db4305ca67d003d57aa14eb23f25eb6c3672034) Added lib/path tests and updated a few dependencies<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/2b12fb7db9d4eaa3b76b7198539946e97db684c4) Moved micro modules to lib so they can have their own tests etc.<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/b6dfa9f0a4c899b5c217d60d1c2bb835e06b2122) Updated travis<br />
+
 # [6.6.1](https://github.com/dcodeIO/protobuf.js/releases/tag/6.6.1)
 
 ## Fixed

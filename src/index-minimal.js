@@ -1,5 +1,5 @@
 "use strict";
-var protobuf = global.protobuf = exports;
+var protobuf = exports;
 
 /**
  * Build type, one of `"full"`, `"light"` or `"minimal"`.
@@ -44,18 +44,6 @@ protobuf.configure    = configure;
 function configure() {
     protobuf.Reader._configure(protobuf.BufferReader);
 }
-
-// assumes that loading "long" / define itself is asynchronous so that other builds can safely
-// continue populating `protobuf`. will see a BOOM eventually if this assumption is wrong:
-/* istanbul ignore next */
-if (typeof define === "function" && define.amd)
-    define(["long"], function(Long) {
-        if (Long) {
-            protobuf.util.Long = Long;
-            configure();
-        }
-        return protobuf;
-    });
 
 // Configure serialization
 protobuf.Writer._configure(protobuf.BufferWriter);

@@ -1,10 +1,39 @@
 /*!
  * protobuf.js v6.6.2 (c) 2016, Daniel Wirtz
- * Compiled Wed, 25 Jan 2017 03:35:23 UTC
+ * Compiled Thu, 26 Jan 2017 16:36:58 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
-!function(global,undefined){"use strict";(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function(global,undefined){"use strict";(function prelude(modules, cache, entries) {
+
+    // This is the prelude used to bundle protobuf.js for the browser. Wraps up the CommonJS
+    // sources through a conflict-free require shim and is again wrapped within an iife that
+    // provides a unified `global` and a minification-friendly `undefined` var plus a global
+    // "use strict" directive so that minification can remove the directives of each module.
+
+    function $require(name) {
+        var $module = cache[name];
+        if (!$module)
+            modules[name][0].call($module = cache[name] = { exports: {} }, $require, $module, $module.exports);
+        return $module.exports;
+    }
+
+    // Expose globally
+    var protobuf = global.protobuf = $require(entries[0]);
+
+    // Be nice to AMD
+    if (typeof define === "function" && define.amd)
+        define(["long"], function(Long) {
+            protobuf.util.Long = Long;
+            protobuf.configure();
+            return protobuf;
+        });
+
+    // Be nice to CommonJS
+    if (typeof module === "object" && module && module.exports)
+        module.exports = protobuf;
+
+})/* end of prelude */({1:[function(require,module,exports){
 "use strict";
 module.exports = asPromise;
 
@@ -342,9 +371,6 @@ function EventEmitter() {
     this._listeners = {};
 }
 
-/** @alias util.EventEmitter.prototype */
-var EventEmitterPrototype = EventEmitter.prototype;
-
 /**
  * Registers an event listener.
  * @param {string} evt Event name
@@ -352,7 +378,7 @@ var EventEmitterPrototype = EventEmitter.prototype;
  * @param {*} [ctx] Listener context
  * @returns {util.EventEmitter} `this`
  */
-EventEmitterPrototype.on = function on(evt, fn, ctx) {
+EventEmitter.prototype.on = function on(evt, fn, ctx) {
     (this._listeners[evt] || (this._listeners[evt] = [])).push({
         fn  : fn,
         ctx : ctx || this
@@ -366,7 +392,7 @@ EventEmitterPrototype.on = function on(evt, fn, ctx) {
  * @param {function} [fn] Listener to remove. Removes all listeners of `evt` if omitted.
  * @returns {util.EventEmitter} `this`
  */
-EventEmitterPrototype.off = function off(evt, fn) {
+EventEmitter.prototype.off = function off(evt, fn) {
     if (evt === undefined)
         this._listeners = {};
     else {
@@ -390,7 +416,7 @@ EventEmitterPrototype.off = function off(evt, fn) {
  * @param {...*} args Arguments
  * @returns {util.EventEmitter} `this`
  */
-EventEmitterPrototype.emit = function emit(evt) {
+EventEmitter.prototype.emit = function emit(evt) {
     var listeners = this._listeners[evt];
     if (listeners) {
         var args = [],
@@ -662,7 +688,7 @@ utf8.read = function utf8_read(buffer, start, end) {
             parts.push(String.fromCharCode.apply(String, chunk.slice(0, i)));
         return parts.join("");
     }
-    return i ? String.fromCharCode.apply(String, chunk.slice(0, i)) : "";
+    return String.fromCharCode.apply(String, chunk.slice(0, i));
 };
 
 /**
@@ -2074,7 +2100,7 @@ protobuf.Root._configure(protobuf.Type);
 
 },{"10":10,"12":12,"13":13,"14":14,"15":15,"16":16,"18":18,"20":20,"21":21,"22":22,"23":23,"24":24,"25":25,"29":29,"32":32,"34":34,"35":35,"36":36,"39":39}],18:[function(require,module,exports){
 "use strict";
-var protobuf = global.protobuf = exports;
+var protobuf = exports;
 
 /**
  * Build type, one of `"full"`, `"light"` or `"minimal"`.
@@ -2119,18 +2145,6 @@ protobuf.configure    = configure;
 function configure() {
     protobuf.Reader._configure(protobuf.BufferReader);
 }
-
-// assumes that loading "long" / define itself is asynchronous so that other builds can safely
-// continue populating `protobuf`. will see a BOOM eventually if this assumption is wrong:
-/* istanbul ignore next */
-if (typeof define === "function" && define.amd)
-    define(["long"], function(Long) {
-        if (Long) {
-            protobuf.util.Long = Long;
-            configure();
-        }
-        return protobuf;
-    });
 
 // Configure serialization
 protobuf.Writer._configure(protobuf.BufferWriter);
@@ -7375,5 +7389,5 @@ BufferWriter.prototype.string = function write_string_buffer(value) {
 
 },{"38":38,"40":40}]},{},[19])
 
-}(typeof window==="object"&&window||typeof self==="object"&&self||this);
+})(typeof window==="object"&&window||typeof self==="object"&&self||this);
 //# sourceMappingURL=protobuf.js.map

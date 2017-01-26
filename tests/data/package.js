@@ -171,7 +171,7 @@ $root.Package = (function() {
             writer.uint32(/* id 4, wireType 2 =*/34).string(message.author);
         if (message.license !== undefined && message.hasOwnProperty("license"))
             writer.uint32(/* id 5, wireType 2 =*/42).string(message.license);
-        if (message.repository !== undefined && message.hasOwnProperty("repository"))
+        if (message.repository && message.hasOwnProperty("repository"))
             $types[6].encode(message.repository, writer.uint32(/* id 6, wireType 2 =*/50).fork()).ldelim();
         if (message.bugs !== undefined && message.hasOwnProperty("bugs"))
             writer.uint32(/* id 7, wireType 2 =*/58).string(message.bugs);

@@ -70,7 +70,8 @@ var distPath = path.join(__dirname, "..", "..", "dist");
 
             vm.runInNewContext(dist.data, sandbox = {
                 define: fakeDefine,
-                window: {}
+                window: {},
+                require: undefined
             });
 
             test.ok(sandbox.window.protobuf, "should load the library as a global");

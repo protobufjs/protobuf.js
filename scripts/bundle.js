@@ -1,4 +1,5 @@
 module.exports = bundle;
+var fs         = require("fs");
 
 var browserify = require("browserify");
 
@@ -13,6 +14,7 @@ var vinylfs    = require("vinyl-fs");
 var source     = require("vinyl-source-stream");
 
 var pkg = require(__dirname + "/../package.json");
+
 var license = [
     "/*!",
     " * protobuf.js v${version} (c) 2016, Daniel Wirtz",
@@ -21,6 +23,8 @@ var license = [
     " * see: https://github.com/dcodeIO/protobuf.js for details",
     " */"
 ].join("\n") + "\n";
+
+var prelude = fs.readFileSync(require.resolve("../lib/prelude.js")).toString("utf8");
 
 /**
  * Bundles the library.
@@ -37,7 +41,9 @@ function bundle(options) {
         entries: options.entry,
         insertGlobalVars: false,
         detectGlobals: false,
-        debug: true
+        debug: true,
+        prelude: prelude,
+        preludePath: "./lib/prelude.js"
     })
     .external("long");
     if (options.exclude)
@@ -46,8 +52,8 @@ function bundle(options) {
     .plugin(require("browserify-wrap"), {
         // + global object for convenience
         // + undefined var and global strict-mode for uglify
-        prefix: "!function(global,undefined){\"use strict\";",
-        suffix: "}(typeof window===\"object\"&&window||typeof self===\"object\"&&self||this);"
+        prefix: "(function(global,undefined){\"use strict\";",
+        suffix: "})(typeof window===\"object\"&&window||typeof self===\"object\"&&self||this);"
     })
     .plugin(require("bundle-collapser/plugin"))
     .bundle()
