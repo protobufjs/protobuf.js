@@ -118,7 +118,7 @@ Service.prototype.rpcCall = function rpcCall(method, requestCtor, responseCtor, 
                         response = responseCtor[self.responseDelimited ? "decodeDelimited" : "decode"](response);
                     } catch (err) {
                         self.emit("error", err, method);
-                        return callback("error", err);
+                        return callback(err);
                     }
                 }
 
