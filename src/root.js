@@ -56,7 +56,7 @@ Root.fromJSON = function fromJSON(json, root) {
  * @function
  * @param {string} origin The file name of the importing file
  * @param {string} target The file name being imported
- * @returns {string} Resolved path to `target`
+ * @returns {?string} Resolved path to `target` or `null` to skip the file
  */
 Root.prototype.resolvePath = util.path.resolve;
 
@@ -104,13 +104,16 @@ Root.prototype.load = function load(filename, options, callback) {
             else {
                 parse.filename = filename;
                 var parsed = parse(source, self, options),
+                    resolved,
                     i = 0;
                 if (parsed.imports)
                     for (; i < parsed.imports.length; ++i)
-                        fetch(self.resolvePath(filename, parsed.imports[i]));
+                        if (resolved = self.resolvePath(filename, parsed.imports[i]))
+                            fetch(resolved);
                 if (parsed.weakImports)
                     for (i = 0; i < parsed.weakImports.length; ++i)
-                        fetch(self.resolvePath(filename, parsed.weakImports[i]), true);
+                        if (resolved = self.resolvePath(filename, parsed.weakImports[i]))
+                            fetch(resolved, true);
             }
         } catch (err) {
             finish(err);
@@ -184,8 +187,9 @@ Root.prototype.load = function load(filename, options, callback) {
     // references anymore, so we can load everything in parallel
     if (util.isString(filename))
         filename = [ filename ];
-    for (var i = 0; i < filename.length; ++i)
-        fetch(self.resolvePath("", filename[i]));
+    for (var i = 0, resolved; i < filename.length; ++i)
+        if (resolved = self.resolvePath("", filename[i]))
+            fetch(resolved);
 
     if (sync)
         return self;
