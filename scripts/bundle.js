@@ -13,6 +13,8 @@ var buffer     = require("vinyl-buffer");
 var vinylfs    = require("vinyl-fs");
 var source     = require("vinyl-source-stream");
 
+var zopfli     = require("node-zopfli");
+
 var pkg = require(__dirname + "/../package.json");
 
 var license = [
@@ -85,9 +87,6 @@ function bundle(options) {
     .on("log", gutil.log)
     .on("error", gutil.log);
 }
-
-var fs     = require("fs");
-var zopfli = require("node-zopfli");
 
 /**
  * Compresses a file using zopfli gzip.

@@ -1,7 +1,7 @@
 {
   "name": "@protobufjs/fetch",
   "description": "Fetches the contents of a file accross node and browsers.",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "author": "Daniel Wirtz <dcode+protobufjs@dcode.io>",
   "repository": {
     "type": "git",
