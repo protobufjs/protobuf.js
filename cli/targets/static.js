@@ -136,24 +136,23 @@ var reduceableBlockStatements = {
     WhileStatement: true
 };
 
+var shortVars = {
+    "r": "reader",
+    "w": "writer",
+    "m": "message",
+    "t": "tag",
+    "l": "length",
+    "c": "end", "c2": "end2",
+    "k": "key",
+    "ks": "keys", "ks2": "keys2",
+    "e": "error",
+    "f": "impl",
+    "o": "options",
+    "d": "object",
+    "n": "long"
+};
+
 function beautifyCode(code) {
-    // Rename short vars
-    code = code
-        .replace(/\b(?!\\)r\b/g, "reader")
-        .replace(/\b(?!\\)w\b/g, "writer")
-        .replace(/\b(?!\\)m\b/g, "message")
-        .replace(/\b(?!\\)t\b/g, "tag")
-        .replace(/\b(?!\\)l\b/g, "length")
-        .replace(/\b(?!\\)c\b/g, "end")
-        .replace(/\b(?!\\)c2\b/g, "end2")
-        .replace(/\b(?!\\)k\b/g, "key")
-        .replace(/\b(?!\\)ks\b/g, "keys")
-        .replace(/\b(?!\\)ks2\b/g, "keys2")
-        .replace(/\b(?!\\)e\b/g, "error")
-        .replace(/\b(?!\\)f\b/g, "impl")
-        .replace(/\b(?!\\)o\b/g, "options")
-        .replace(/\b(?!\\)d\b/g, "object")
-        .replace(/\b(?!\\)n\b/g, "long");
     // Add semicolons
     code = UglifyJS.minify(code, {
         fromString: true,
@@ -167,6 +166,12 @@ function beautifyCode(code) {
     var ast = esprima.parse(code);
     estraverse.replace(ast, {
         enter: function(node, parent) {
+            // rename short vars
+            if (node.type === "Identifier" && parent.property !== node && shortVars[node.name])
+                return {
+                    "type": "Identifier",
+                    "name": shortVars[node.name]
+                };
             // remove braces around block statements with a single child
             if (node.type === "BlockStatement" && reduceableBlockStatements[parent.type] && node.body.length === 1)
                 return node.body[0];
