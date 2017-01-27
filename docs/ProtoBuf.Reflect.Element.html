@@ -23,48 +23,52 @@
 
 
 
+
 <section>
 
 <header>
-    <h2>
-        <span class="ancestors"><a href="ProtoBuf.html">ProtoBuf</a><a href="ProtoBuf.Reflect.html">.Reflect</a>.</span>
     
-    Element
-    </h2>
+        <h2>
+            <span class="ancestors"><a href="ProtoBuf.html">ProtoBuf</a><a href="ProtoBuf.Reflect.html">.Reflect</a>.</span>
+        
+        Element
+        </h2>
+        
     
 </header>
 
 <article>
     <div class="container-overview">
     
+        
 
     
-        
-<dt>
+
     <h4 class="name" id="Element"><span class="type-signature"></span>new Element<span class="signature">(type, resolvedType, isMapKey, syntax, name)</span><span class="type-signature"></span></h4>
 
     
-</dt>
-<dd>
 
-    
-    <div class="description">
-        <p>Constructs a new Element implementation that checks and converts values for a
+
+
+<div class="description">
+    <p>Constructs a new Element implementation that checks and converts values for a
 particular field type, as appropriate.</p>
 <p>An Element represents a single value: either the value of a singular field,
 or a value contained in one entry of a repeated field or map field. This
 class does not implement these higher-level concepts; it only encapsulates
 the low-level typechecking and conversion.</p>
-    </div>
-    
+</div>
 
-    
 
-    
 
+
+
+
+
+
+
+    <h5>Parameters:</h5>
     
-        <h5>Parameters:</h5>
-        
 
 <table class="params">
     <thead>
@@ -209,10 +213,20 @@ messages)</p></td>
     
     </tbody>
 </table>
+
+
+
+
+
+
+<dl class="details">
+
     
 
     
-<dl class="details">
+
+    
+
     
 
     
@@ -246,25 +260,22 @@ messages)</p></td>
 </dl>
 
 
-    
 
-    
 
-    
 
-    
 
-    
 
-    
 
-    
-</dd>
+
+
+
+
+
+
+
 
     
     </div>
-
-    
 
     
 
@@ -279,34 +290,41 @@ messages)</p></td>
     
         <h3 class="subsection-title">Members</h3>
 
-        <dl>
+        
             
-<dt>
-    <h4 class="name" id="isMapKey"><span class="type-signature"></span>isMapKey<span class="type-signature"> :boolean</span></h4>
+<h4 class="name" id="isMapKey"><span class="type-signature"></span>isMapKey<span class="type-signature"> :boolean</span></h4>
 
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        <p>Element is a map key.</p>
-    </div>
-    
 
-    
-        <h5>Type:</h5>
-        <ul>
-            <li>
-                
+
+
+<div class="description">
+    <p>Element is a map key.</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
 <span class="param-type">boolean</span>
 
 
-            </li>
-        </ul>
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
     
 
     
-<dl class="details">
+
+    
+
     
 
     
@@ -340,39 +358,45 @@ messages)</p></td>
 </dl>
 
 
-    
 
-    
-</dd>
+
+
 
         
             
-<dt>
-    <h4 class="name" id="name"><span class="type-signature"></span>name<span class="type-signature"> :string</span></h4>
+<h4 class="name" id="name"><span class="type-signature"></span>name<span class="type-signature"> :string</span></h4>
 
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        <p>Name of the field containing this element (for error messages)</p>
-    </div>
-    
 
-    
-        <h5>Type:</h5>
-        <ul>
-            <li>
-                
+
+
+<div class="description">
+    <p>Name of the field containing this element (for error messages)</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
 <span class="param-type">string</span>
 
 
-            </li>
-        </ul>
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
     
 
     
-<dl class="details">
+
+    
+
     
 
     
@@ -406,42 +430,48 @@ messages)</p></td>
 </dl>
 
 
-    
 
-    
-</dd>
+
+
 
         
             
-<dt>
-    <h4 class="name" id="resolvedType"><span class="type-signature"></span>resolvedType<span class="type-signature"> :<a href="ProtoBuf.Reflect.T.html">ProtoBuf.Reflect.T</a>|null</span></h4>
+<h4 class="name" id="resolvedType"><span class="type-signature"></span>resolvedType<span class="type-signature"> :<a href="ProtoBuf.Reflect.T.html">ProtoBuf.Reflect.T</a>|null</span></h4>
 
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        <p>Element type reference to submessage or enum definition, if needed.</p>
-    </div>
-    
 
-    
-        <h5>Type:</h5>
-        <ul>
-            <li>
-                
+
+
+<div class="description">
+    <p>Element type reference to submessage or enum definition, if needed.</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
 <span class="param-type"><a href="ProtoBuf.Reflect.T.html">ProtoBuf.Reflect.T</a></span>
 |
 
 <span class="param-type">null</span>
 
 
-            </li>
-        </ul>
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
     
 
     
-<dl class="details">
+
+    
+
     
 
     
@@ -475,39 +505,45 @@ messages)</p></td>
 </dl>
 
 
-    
 
-    
-</dd>
+
+
 
         
             
-<dt>
-    <h4 class="name" id="syntax"><span class="type-signature"></span>syntax<span class="type-signature"> :string</span></h4>
+<h4 class="name" id="syntax"><span class="type-signature"></span>syntax<span class="type-signature"> :string</span></h4>
 
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        <p>Syntax level of defining message type, e.g., proto2 or proto3.</p>
-    </div>
-    
 
-    
-        <h5>Type:</h5>
-        <ul>
-            <li>
-                
+
+
+<div class="description">
+    <p>Syntax level of defining message type, e.g., proto2 or proto3.</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
 <span class="param-type">string</span>
 
 
-            </li>
-        </ul>
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
     
 
     
-<dl class="details">
+
+    
+
     
 
     
@@ -541,39 +577,45 @@ messages)</p></td>
 </dl>
 
 
-    
 
-    
-</dd>
+
+
 
         
             
-<dt>
-    <h4 class="name" id="type"><span class="type-signature"></span>type<span class="type-signature"> :Object</span></h4>
+<h4 class="name" id="type"><span class="type-signature"></span>type<span class="type-signature"> :Object</span></h4>
 
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        <p>Element type, as a string (e.g., int32).</p>
-    </div>
-    
 
-    
-        <h5>Type:</h5>
-        <ul>
-            <li>
-                
+
+
+<div class="description">
+    <p>Element type, as a string (e.g., int32).</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
 <span class="param-type">Object</span>
 
 
-            </li>
-        </ul>
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
     
 
     
-<dl class="details">
+
+    
+
     
 
     
@@ -607,39 +649,41 @@ messages)</p></td>
 </dl>
 
 
-    
 
-    
-</dd>
 
-        </dl>
+
+
+        
     
 
     
         <h3 class="subsection-title">Methods</h3>
 
-        <dl>
-            
-<dt>
-    <h4 class="name" id="defaultFieldValue"><span class="type-signature">(static) </span>defaultFieldValue<span class="signature">(type)</span><span class="type-signature"> &rarr; {*}</span></h4>
-
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Returns the default value for this field in proto3.</p>
-    </div>
-    
-
-    
-
-    
-
-    
-        <h5>Parameters:</h5>
         
+            
+
+    
+
+    <h4 class="name" id=".defaultFieldValue"><span class="type-signature">(static) </span>defaultFieldValue<span class="signature">(type)</span><span class="type-signature"> &rarr; {*}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Returns the default value for this field in proto3.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
 
 <table class="params">
     <thead>
@@ -688,10 +732,20 @@ messages)</p></td>
     
     </tbody>
 </table>
+
+
+
+
+
+
+<dl class="details">
+
     
 
     
-<dl class="details">
+
+    
+
     
 
     
@@ -725,20 +779,20 @@ messages)</p></td>
 </dl>
 
 
-    
 
-    
 
-    
 
-    
 
-    
 
-    
-    <h5>Returns:</h5>
-    
-            
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
 <div class="param-desc">
     <p>Default value</p>
 </div>
@@ -757,12 +811,11 @@ messages)</p></td>
     </dd>
 </dl>
 
-        
-
     
-</dd>
 
-        </dl>
+
+
+        
     
 
     
@@ -778,13 +831,13 @@ messages)</p></td>
 </div>
 
 <nav>
-    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="ProtoBuf.Builder.html">Builder</a></li><li><a href="ProtoBuf.Builder.Message.html">Message</a></li><li><a href="ProtoBuf.Builder.Service.html">Service</a></li><li><a href="ProtoBuf.DotProto.Parser.html">Parser</a></li><li><a href="ProtoBuf.DotProto.Tokenizer.html">Tokenizer</a></li><li><a href="ProtoBuf.Map.html">Map</a></li><li><a href="ProtoBuf.Reflect.Element.html">Element</a></li><li><a href="ProtoBuf.Reflect.Enum.html">Enum</a></li><li><a href="ProtoBuf.Reflect.Enum.Value.html">Value</a></li><li><a href="ProtoBuf.Reflect.Extension.html">Extension</a></li><li><a href="ProtoBuf.Reflect.Message.html">Message</a></li><li><a href="ProtoBuf.Reflect.Message.ExtensionField.html">ExtensionField</a></li><li><a href="ProtoBuf.Reflect.Message.Field.html">Field</a></li><li><a href="ProtoBuf.Reflect.Message.OneOf.html">OneOf</a></li><li><a href="ProtoBuf.Reflect.Namespace.html">Namespace</a></li><li><a href="ProtoBuf.Reflect.Service.html">Service</a></li><li><a href="ProtoBuf.Reflect.Service.Method.html">Method</a></li><li><a href="ProtoBuf.Reflect.Service.RPCMethod.html">RPCMethod</a></li><li><a href="ProtoBuf.Reflect.T.html">T</a></li></ul><h3>Namespaces</h3><ul><li><a href="ProtoBuf.html">ProtoBuf</a></li><li><a href="ProtoBuf.DotProto.html">DotProto</a></li><li><a href="ProtoBuf.Reflect.html">Reflect</a></li><li><a href="ProtoBuf.Util.html">Util</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="ProtoBuf.Builder.html">Builder</a></li><li><a href="ProtoBuf.Builder.Message.html">Message</a></li><li><a href="ProtoBuf.Builder.Service.html">Service</a></li><li><a href="ProtoBuf.DotProto.Parser.html">Parser</a></li><li><a href="ProtoBuf.DotProto.Tokenizer.html">Tokenizer</a></li><li><a href="ProtoBuf.Map.html">Map</a></li><li><a href="ProtoBuf.Reflect.Element.html">Element</a></li><li><a href="ProtoBuf.Reflect.Enum.html">Enum</a></li><li><a href="ProtoBuf.Reflect.Enum.Value.html">Value</a></li><li><a href="ProtoBuf.Reflect.Extension.html">Extension</a></li><li><a href="ProtoBuf.Reflect.Message.html">Message</a></li><li><a href="ProtoBuf.Reflect.Message.ExtensionField.html">ExtensionField</a></li><li><a href="ProtoBuf.Reflect.Message.Field.html">Field</a></li><li><a href="ProtoBuf.Reflect.Message.OneOf.html">OneOf</a></li><li><a href="ProtoBuf.Reflect.Namespace.html">Namespace</a></li><li><a href="ProtoBuf.Reflect.Service.html">Service</a></li><li><a href="ProtoBuf.Reflect.Service.Method.html">Method</a></li><li><a href="ProtoBuf.Reflect.Service.RPCMethod.html">RPCMethod</a></li><li><a href="ProtoBuf.Reflect.T.html">T</a></li></ul><h3>Namespaces</h3><ul><li><a href="ProtoBuf.html">ProtoBuf</a></li><li><a href="ProtoBuf.DotProto.html">DotProto</a></li><li><a href="ProtoBuf.Reflect.html">Reflect</a></li><li><a href="ProtoBuf.Util.html">Util</a></li></ul>
 </nav>
 
-<br clear="both">
+<br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Sat Oct 29 2016 02:53:19 GMT+0200 (Mitteleuropäische Sommerzeit)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.3</a> on Fri Jan 27 2017 17:03:55 GMT+0100 (Mitteleuropäische Zeit)
 </footer>
 
 <script> prettyPrint(); </script>

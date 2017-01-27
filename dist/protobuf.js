@@ -57,7 +57,7 @@
      * @const
      * @expose
      */
-    ProtoBuf.VERSION = "5.0.1";
+    ProtoBuf.VERSION = "5.0.2";
 
     /**
      * Wire types.
@@ -4657,7 +4657,11 @@
                     root = require("path")['resolve'](root);
                 if (root.indexOf("\\") >= 0 || filename.file.indexOf("\\") >= 0)
                     delim = '\\';
-                var fname = root + delim + filename.file;
+                var fname;
+                if (ProtoBuf.Util.IS_NODE)
+                    fname = require("path")['join'](root, filename.file);
+                else
+                    fname = root + delim + filename.file;
                 if (this.files[fname] === true)
                     return this.reset();
                 this.files[fname] = true;
@@ -4703,7 +4707,10 @@
                         var importFilename = json['imports'][i];
                         if (importFilename === "google/protobuf/descriptor.proto")
                             continue; // Not needed and therefore not used
-                        importFilename = importRoot + delim + importFilename;
+                        if (ProtoBuf.Util.IS_NODE)
+                            importFilename = require("path")['join'](importRoot, importFilename);
+                        else
+                            importFilename = importRoot + delim + importFilename;
                         if (this.files[importFilename] === true)
                             continue; // Already imported
                         if (/\.proto$/i.test(importFilename) && !ProtoBuf.DotProto)       // If this is a light build

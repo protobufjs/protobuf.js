@@ -1,5 +1,6 @@
 {
     "package": "google.protobuf",
+    "syntax": "proto2",
     "options": {
         "java_package": "com.google.protobuf",
         "java_outer_classname": "DescriptorProtos",
@@ -8,6 +9,7 @@
     "messages": [
         {
             "name": "FileDescriptorSet",
+            "syntax": "proto2",
             "fields": [
                 {
                     "rule": "repeated",
@@ -19,6 +21,7 @@
         },
         {
             "name": "FileDescriptorProto",
+            "syntax": "proto2",
             "fields": [
                 {
                     "rule": "optional",
@@ -90,6 +93,7 @@
         },
         {
             "name": "DescriptorProto",
+            "syntax": "proto2",
             "fields": [
                 {
                     "rule": "optional",
@@ -137,6 +141,7 @@
             "messages": [
                 {
                     "name": "ExtensionRange",
+                    "syntax": "proto2",
                     "fields": [
                         {
                             "rule": "optional",
@@ -156,6 +161,7 @@
         },
         {
             "name": "FieldDescriptorProto",
+            "syntax": "proto2",
             "fields": [
                 {
                     "rule": "optional",
@@ -209,6 +215,7 @@
             "enums": [
                 {
                     "name": "Type",
+                    "syntax": "proto2",
                     "values": [
                         {
                             "name": "TYPE_DOUBLE",
@@ -286,6 +293,7 @@
                 },
                 {
                     "name": "Label",
+                    "syntax": "proto2",
                     "values": [
                         {
                             "name": "LABEL_OPTIONAL",
@@ -305,6 +313,7 @@
         },
         {
             "name": "EnumDescriptorProto",
+            "syntax": "proto2",
             "fields": [
                 {
                     "rule": "optional",
@@ -328,6 +337,7 @@
         },
         {
             "name": "EnumValueDescriptorProto",
+            "syntax": "proto2",
             "fields": [
                 {
                     "rule": "optional",
@@ -351,6 +361,7 @@
         },
         {
             "name": "ServiceDescriptorProto",
+            "syntax": "proto2",
             "fields": [
                 {
                     "rule": "optional",
@@ -374,6 +385,7 @@
         },
         {
             "name": "MethodDescriptorProto",
+            "syntax": "proto2",
             "fields": [
                 {
                     "rule": "optional",
@@ -403,6 +415,7 @@
         },
         {
             "name": "FileOptions",
+            "syntax": "proto2",
             "fields": [
                 {
                     "rule": "optional",
@@ -492,6 +505,7 @@
             "enums": [
                 {
                     "name": "OptimizeMode",
+                    "syntax": "proto2",
                     "values": [
                         {
                             "name": "SPEED",
@@ -511,6 +525,7 @@
         },
         {
             "name": "MessageOptions",
+            "syntax": "proto2",
             "fields": [
                 {
                     "rule": "optional",
@@ -546,6 +561,7 @@
         },
         {
             "name": "FieldOptions",
+            "syntax": "proto2",
             "fields": [
                 {
                     "rule": "optional",
@@ -611,6 +627,7 @@
             "enums": [
                 {
                     "name": "CType",
+                    "syntax": "proto2",
                     "values": [
                         {
                             "name": "STRING",
@@ -630,6 +647,7 @@
         },
         {
             "name": "EnumOptions",
+            "syntax": "proto2",
             "fields": [
                 {
                     "rule": "optional",
@@ -656,6 +674,7 @@
         },
         {
             "name": "EnumValueOptions",
+            "syntax": "proto2",
             "fields": [
                 {
                     "rule": "repeated",
@@ -673,6 +692,7 @@
         },
         {
             "name": "ServiceOptions",
+            "syntax": "proto2",
             "fields": [
                 {
                     "rule": "repeated",
@@ -690,6 +710,7 @@
         },
         {
             "name": "MethodOptions",
+            "syntax": "proto2",
             "fields": [
                 {
                     "rule": "repeated",
@@ -707,6 +728,7 @@
         },
         {
             "name": "UninterpretedOption",
+            "syntax": "proto2",
             "fields": [
                 {
                     "rule": "repeated",
@@ -754,6 +776,7 @@
             "messages": [
                 {
                     "name": "NamePart",
+                    "syntax": "proto2",
                     "fields": [
                         {
                             "rule": "required",
@@ -773,6 +796,7 @@
         },
         {
             "name": "SourceCodeInfo",
+            "syntax": "proto2",
             "fields": [
                 {
                     "rule": "repeated",
@@ -784,6 +808,7 @@
             "messages": [
                 {
                     "name": "Location",
+                    "syntax": "proto2",
                     "fields": [
                         {
                             "rule": "repeated",

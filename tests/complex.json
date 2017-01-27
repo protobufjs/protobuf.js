@@ -1,8 +1,10 @@
 {
     "package": "Game.Cars",
+    "syntax": "proto2",
     "messages": [
         {
             "name": "Car",
+            "syntax": "proto2",
             "fields": [
                 {
                     "rule": "required",
@@ -29,6 +31,7 @@
             "messages": [
                 {
                     "name": "Vendor",
+                    "syntax": "proto2",
                     "fields": [
                         {
                             "rule": "required",
@@ -52,6 +55,7 @@
                     "messages": [
                         {
                             "name": "Address",
+                            "syntax": "proto2",
                             "fields": [
                                 {
                                     "rule": "required",
@@ -65,6 +69,7 @@
                 },
                 {
                     "name": "Holder",
+                    "syntax": "proto2",
                     "fields": [
                         {
                             "rule": "optional",
@@ -90,6 +95,7 @@
             "enums": [
                 {
                     "name": "Speed",
+                    "syntax": "proto2",
                     "values": [
                         {
                             "name": "FAST",
