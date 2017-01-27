@@ -212,6 +212,10 @@
             
                 <li data-name="util.fetch"><a href="util.html#.fetch">fetch</a></li>
             
+                <li data-name="util.fetch(2)"><a href="util.html#.fetch2">fetch</a></li>
+            
+                <li data-name="util.fetch(3)"><a href="util.html#.fetch3">fetch</a></li>
+            
                 <li data-name="util.inquire"><a href="util.html#.inquire">inquire</a></li>
             
                 <li data-name="util.isInteger"><a href="util.html#.isInteger">isInteger</a></li>
@@ -1997,11 +2001,11 @@ $> pbts -o compiled.d.ts compiled.js</code></pre><p>Additionally, TypeScript def
 <li>Instead of using <code>new SomeMessage(...)</code>, always use <code>SomeMessage.create(...)</code> because reflection objects do not provide a constructor.</li>
 <li>Types, services and enums must start with an uppercase letter to become available as properties of the reflected types as well (i.e. to be able to use <code>MyMessage.MyEnum</code> instead of <code>root.lookup(&quot;MyMessage.MyEnum&quot;)</code>).</li>
 </ol>
-<p>For example, the following generates a <code>bundle.json</code> and a <code>bundle.d.ts</code>, but no static code:</p>
-<pre class="prettyprint source"><code>$> pbjs -t json-module -w commonjs -o bundle.json file1.proto file2.proto
+<p>For example, the following generates a JSON module <code>bundle.js</code> and a <code>bundle.d.ts</code>, but no static code:</p>
+<pre class="prettyprint source"><code>$> pbjs -t json-module -w commonjs -o bundle.js file1.proto file2.proto
 $> pbjs -t static-module file1.proto file2.proto | pbts -o bundle.d.ts -</code></pre><h3 id="on-reflection-vs-static-code">On reflection vs. static code</h3>
-<p>While using .proto files requires the <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/tree/master/dist">full library</a> (about 18.5kb gzipped) or JSON at least the <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/tree/master/dist/light">light library</a> (about 15.5kb gzipped), pretty much all code but the relatively short descriptors is shared and all features including reflection and the parser are available.</p>
-<p>Static code, on the other hand, requires just the <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/tree/master/dist/minimal">minimal library</a> (about 5.5kb gzipped), but generates additional, albeit editable, source code without any reflection features.</p>
+<p>While using .proto files directly requires the <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/tree/master/dist">full library</a> (about 18.5kb gzipped) respectively pure reflection/JSON the <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/tree/master/dist/light">light library</a> (about 15.5kb gzipped), pretty much all code but the relatively short descriptors is shared.</p>
+<p>Static code, on the other hand, requires just the <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/tree/master/dist/minimal">minimal library</a> (about 6kb gzipped), but generates additional, albeit editable, source code without any reflection features.</p>
 <p>There is no significant difference performance-wise as the code generated statically is pretty much the same as generated at runtime and both are largely interchangeable as seen in the previous section.</p>
 <h3 id="using-pbjs-and-pbts-programmatically">Using pbjs and pbts programmatically</h3>
 <p>Both utilities can be used programmatically by providing command line arguments and a callback to their respective <code>main</code> functions:</p>

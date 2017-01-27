@@ -212,6 +212,10 @@
             
                 <li data-name="util.fetch"><a href="util.html#.fetch">fetch</a></li>
             
+                <li data-name="util.fetch(2)"><a href="util.html#.fetch2">fetch</a></li>
+            
+                <li data-name="util.fetch(3)"><a href="util.html#.fetch3">fetch</a></li>
+            
                 <li data-name="util.inquire"><a href="util.html#.inquire">inquire</a></li>
             
                 <li data-name="util.isInteger"><a href="util.html#.isInteger">isInteger</a></li>
@@ -2190,7 +2194,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/aspromise/index.js">util/aspromise/index.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/aspromise/index.js#L12">line 12</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/lib/aspromise/index.js">lib/aspromise/index.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/lib/aspromise/index.js#L12">line 12</a>
         </div>
         
     </div>
@@ -2398,7 +2402,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/codegen/index.js">util/codegen/index.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/codegen/index.js#L21">line 21</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/lib/codegen/index.js">lib/codegen/index.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/lib/codegen/index.js#L21">line 21</a>
         </div>
         
     </div>
@@ -2658,12 +2662,371 @@
     <div class="nameContainer">
         <h4 class="name" id=".fetch">
             
-            util.fetch<span class="signature">(path, <span class="optional">callback</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ Promise&lt;string> | undefined }</span>
+            util.fetch<span class="signature">(filename, options, callback)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ undefined }</span>
         </h4>
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/fetch/index.js">util/fetch/index.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/fetch/index.js#L25">line 25</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/lib/fetch/index.js">lib/fetch/index.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/lib/fetch/index.js#L34">line 34</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Fetches the contents of a file.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>filename</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>File path or url</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#FetchOptions">FetchOptions</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>Fetch options</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#FetchCallback">FetchCallback</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>Callback function</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Type</th>
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    
+        <tr>
+            
+            <td class="type">
+            
+                        undefined
+                        
+                    
+            </td>
+            <td class="description last"></td>
+        </tr>
+    
+    </tbody>
+</table>
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id=".fetch2">
+            
+            util.fetch(2)<span class="signature">(path, callback)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ undefined }</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/lib/fetch/index.js">lib/fetch/index.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/lib/fetch/index.js#L58">line 58</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Fetches the contents of a file.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>path</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>File path or url</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#FetchCallback">FetchCallback</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>Callback function</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Type</th>
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    
+        <tr>
+            
+            <td class="type">
+            
+                        undefined
+                        
+                    
+            </td>
+            <td class="description last"></td>
+        </tr>
+    
+    </tbody>
+</table>
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id=".fetch3">
+            
+            util.fetch(3)<span class="signature">(path, <span class="optional">options</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ Promise&lt;(string|Uint8Array)> }</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/lib/fetch/index.js">lib/fetch/index.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/lib/fetch/index.js#L68">line 68</a>
         </div>
         
     </div>
@@ -2733,13 +3096,13 @@
 	
         <tr>
             
-                <td class="name"><code>callback</code></td>
+                <td class="name"><code>options</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type"><a href="global.html#FetchCallback">FetchCallback</a></span>
+<span class="param-type"><a href="global.html#FetchOptions">FetchOptions</a></span>
 
 
             
@@ -2756,7 +3119,7 @@
                         
                     
                 
-                <p>Callback function</p></td>
+                <p>Fetch options</p></td>
         </tr>
 	
 	
@@ -2817,14 +3180,11 @@
             
             <td class="type">
             
-                        Promise.&lt;string>
-                         | 
-                    
-                        undefined
+                        Promise.&lt;(string|Uint8Array)>
                         
                     
             </td>
-            <td class="description last">A Promise if <code>callback</code> has been omitted</td>
+            <td class="description last">Promise</td>
         </tr>
     
     </tbody>
@@ -2846,7 +3206,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/inquire/index.js">util/inquire/index.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/inquire/index.js#L10">line 10</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/lib/inquire/index.js">lib/inquire/index.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/lib/inquire/index.js#L10">line 10</a>
         </div>
         
     </div>
@@ -2991,7 +3351,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/minimal.js">util/minimal.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/minimal.js#L38">line 38</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/util/minimal.js">src/util/minimal.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/util/minimal.js#L39">line 39</a>
         </div>
         
     </div>
@@ -3136,7 +3496,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/minimal.js">util/minimal.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/minimal.js#L56">line 56</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/util/minimal.js">src/util/minimal.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/util/minimal.js#L57">line 57</a>
         </div>
         
     </div>
@@ -3281,7 +3641,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/minimal.js">util/minimal.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/minimal.js#L47">line 47</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/util/minimal.js">src/util/minimal.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/util/minimal.js#L48">line 48</a>
         </div>
         
     </div>
@@ -3426,7 +3786,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/minimal.js">util/minimal.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/minimal.js#L213">line 213</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/util/minimal.js">src/util/minimal.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/util/minimal.js#L214">line 214</a>
         </div>
         
     </div>
@@ -3594,7 +3954,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/minimal.js">util/minimal.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/minimal.js#L161">line 161</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/util/minimal.js">src/util/minimal.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/util/minimal.js#L162">line 162</a>
         </div>
         
     </div>
@@ -3739,7 +4099,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/minimal.js">util/minimal.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/minimal.js#L135">line 135</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/util/minimal.js">src/util/minimal.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/util/minimal.js#L136">line 136</a>
         </div>
         
     </div>
@@ -3934,7 +4294,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/minimal.js">util/minimal.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/minimal.js#L123">line 123</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/util/minimal.js">src/util/minimal.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/util/minimal.js#L124">line 124</a>
         </div>
         
     </div>
@@ -4082,7 +4442,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/minimal.js">util/minimal.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/minimal.js#L149">line 149</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/util/minimal.js">src/util/minimal.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/util/minimal.js#L150">line 150</a>
         </div>
         
     </div>
@@ -4306,7 +4666,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/minimal.js">util/minimal.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/minimal.js#L93">line 93</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/util/minimal.js">src/util/minimal.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/util/minimal.js#L94">line 94</a>
         </div>
         
     </div>
@@ -4469,7 +4829,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/minimal.js">util/minimal.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/minimal.js#L170">line 170</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/util/minimal.js">src/util/minimal.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/util/minimal.js#L171">line 171</a>
         </div>
         
     </div>
@@ -4614,7 +4974,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/minimal.js">util/minimal.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/minimal.js#L192">line 192</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/util/minimal.js">src/util/minimal.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/util/minimal.js#L193">line 193</a>
         </div>
         
     </div>
@@ -4759,7 +5119,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/pool/index.js">util/pool/index.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/pool/index.js#L31">line 31</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/lib/pool/index.js">lib/pool/index.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/lib/pool/index.js#L31">line 31</a>
         </div>
         
     </div>
@@ -4983,7 +5343,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L37">line 37</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/util.js">src/util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/util.js#L37">line 37</a>
         </div>
         
     </div>
@@ -5128,7 +5488,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L24">line 24</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/util.js">src/util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/util.js#L24">line 24</a>
         </div>
         
     </div>
@@ -5273,7 +5633,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L46">line 46</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/util.js">src/util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/util.js#L46">line 46</a>
         </div>
         
     </div>
