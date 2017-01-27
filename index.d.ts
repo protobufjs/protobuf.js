@@ -1360,7 +1360,7 @@ export class Root extends NamespaceBase {
      * @function
      * @param {string} origin The file name of the importing file
      * @param {string} target The file name being imported
-     * @returns {string} Resolved path to `target`
+     * @returns {?string} Resolved path to `target` or `null` to skip the file
      */
     resolvePath(origin: string, target: string): string;
 
@@ -2363,12 +2363,34 @@ export namespace util {
     /**
      * Fetches the contents of a file.
      * @memberof util
-     * @param {string} path File path or url
-     * @param {FetchCallback} [callback] Callback function
-     * @returns {Promise<string>} A Promise if `callback` has been omitted, otherwise `undefined`
-     * @property {function(string, FetchCallback=):Promise<string>} xhr XHR/browser fetch with an identical signature
+     * @param {string} filename File path or url
+     * @param {FetchOptions} options Fetch options
+     * @param {FetchCallback} callback Callback function
+     * @returns {undefined}
      */
-    function fetch(path: string, callback?: FetchCallback): Promise<string>;
+    function fetch(filename: string, options: FetchOptions, callback: FetchCallback): void;
+
+    /**
+     * Fetches the contents of a file.
+     * @name util.fetch
+     * @function
+     * @param {string} path File path or url
+     * @param {FetchCallback} callback Callback function
+     * @returns {undefined}
+     * @variation 2
+     */
+    function fetch(path: string, callback: FetchCallback): void;
+
+    /**
+     * Fetches the contents of a file.
+     * @name util.fetch
+     * @function
+     * @param {string} path File path or url
+     * @param {FetchOptions} [options] Fetch options
+     * @returns {Promise<string|Uint8Array>} Promise
+     * @variation 3
+     */
+    function fetch(path: string, options?: FetchOptions): Promise<(string|Uint8Array)>;
 
     /**
      * Requires a module only if available.
@@ -2707,6 +2729,19 @@ type Codegen = (format: string, ...args: any[]) => Codegen;
  * @returns {undefined}
  */
 type FetchCallback = (error: Error, contents?: string) => void;
+
+/**
+ * Options as used by {@link util.fetch}.
+ * @typedef FetchOptions
+ * @type {Object}
+ * @property {boolean} [binary=false] Whether expecting a binary response
+ * @property {boolean} [xhr=false] If `true`, forces the use of XMLHttpRequest
+ */
+
+interface FetchOptions {
+    binary?: boolean;
+    xhr?: boolean;
+}
 
 /**
  * An allocator as used by {@link util.pool}.

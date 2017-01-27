@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.6.2 (c) 2016, Daniel Wirtz
- * Compiled Thu, 26 Jan 2017 16:36:58 UTC
+ * Compiled Fri, 27 Jan 2017 16:11:25 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -448,39 +448,103 @@ var fs = inquire("fs");
  */
 
 /**
+ * Options as used by {@link util.fetch}.
+ * @typedef FetchOptions
+ * @type {Object}
+ * @property {boolean} [binary=false] Whether expecting a binary response
+ * @property {boolean} [xhr=false] If `true`, forces the use of XMLHttpRequest
+ */
+
+/**
  * Fetches the contents of a file.
  * @memberof util
- * @param {string} path File path or url
- * @param {FetchCallback} [callback] Callback function
- * @returns {Promise<string>|undefined} A Promise if `callback` has been omitted
+ * @param {string} filename File path or url
+ * @param {FetchOptions} options Fetch options
+ * @param {FetchCallback} callback Callback function
+ * @returns {undefined}
  */
-function fetch(path, callback) {
+function fetch(filename, options, callback) {
+    if (typeof options === "function") {
+        callback = options;
+        options = {};
+    } else if (!options)
+        options = {};
+
     if (!callback)
-        return asPromise(fetch, this, path); // eslint-disable-line no-invalid-this
-    if (fs && fs.readFile)
-        return fs.readFile(path, "utf8", function fetchReadFileCallback(err, contents) {
+        return asPromise(fetch, this, filename, options); // eslint-disable-line no-invalid-this
+
+    // if a node-like filesystem is present, try it first but fall back to XHR if nothing is found.
+    if (!options.xhr && fs && fs.readFile)
+        return fs.readFile(filename, function fetchReadFileCallback(err, contents) {
             return err && typeof XMLHttpRequest !== "undefined"
-                ? fetch_xhr(path, callback)
-                : callback(err, contents);
+                ? fetch.xhr(filename, options, callback)
+                : err
+                ? callback(err)
+                : callback(null, options.binary ? contents : contents.toString("utf8"));
         });
-    return fetch_xhr(path, callback);
+
+    // use the XHR version otherwise.
+    return fetch.xhr(filename, options, callback);
 }
 
-function fetch_xhr(path, callback) {
+/**
+ * Fetches the contents of a file.
+ * @name util.fetch
+ * @function
+ * @param {string} path File path or url
+ * @param {FetchCallback} callback Callback function
+ * @returns {undefined}
+ * @variation 2
+ */
+
+/**
+ * Fetches the contents of a file.
+ * @name util.fetch
+ * @function
+ * @param {string} path File path or url
+ * @param {FetchOptions} [options] Fetch options
+ * @returns {Promise<string|Uint8Array>} Promise
+ * @variation 3
+ */
+
+/**/
+fetch.xhr = function fetch_xhr(filename, options, callback) {
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange /* works everywhere */ = function fetchOnReadyStateChange() {
-        return xhr.readyState === 4
-            ? xhr.status === 0 || xhr.status === 200
-            ? callback(null, xhr.responseText)
-            : callback(Error("status " + xhr.status))
-            : undefined;
+
+        if (xhr.readyState !== 4)
+            return undefined;
+
         // local cors security errors return status 0 / empty string, too. afaik this cannot be
         // reliably distinguished from an actually empty file for security reasons. feel free
         // to send a pull request if you are aware of a solution.
+        if (xhr.status !== 0 && xhr.status !== 200)
+            return callback(Error("status " + xhr.status));
+
+        // if binary data is expected, make sure that some sort of array is returned, even if
+        // ArrayBuffers are not supported. the binary string fallback, however, is unsafe.
+        if (options.binary) {
+            var buffer = xhr.response;
+            if (!buffer) {
+                buffer = [];
+                for (var i = 0; i < xhr.responseText.length; ++i)
+                    buffer.push(xhr.responseText.charCodeAt(i) & 255);
+            }
+            return callback(null, typeof Uint8Array !== "undefined" ? new Uint8Array(buffer) : buffer);
+        }
+        return callback(null, xhr.responseText);
     };
-    xhr.open("GET", path);
+
+    if (options.binary) {
+        // ref: https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/Sending_and_Receiving_Binary_Data#Receiving_binary_data_in_older_browsers
+        if ("overrideMimeType" in xhr)
+            xhr.overrideMimeType("text/plain; charset=x-user-defined");
+        xhr.responseType = "arraybuffer";
+    }
+
+    xhr.open("GET", filename);
     xhr.send();
-}
+};
 
 },{"1":1,"6":6}],6:[function(require,module,exports){
 "use strict";
@@ -3578,7 +3642,7 @@ Root.fromJSON = function fromJSON(json, root) {
  * @function
  * @param {string} origin The file name of the importing file
  * @param {string} target The file name being imported
- * @returns {string} Resolved path to `target`
+ * @returns {?string} Resolved path to `target` or `null` to skip the file
  */
 Root.prototype.resolvePath = util.path.resolve;
 
@@ -3626,13 +3690,16 @@ Root.prototype.load = function load(filename, options, callback) {
             else {
                 parse.filename = filename;
                 var parsed = parse(source, self, options),
+                    resolved,
                     i = 0;
                 if (parsed.imports)
                     for (; i < parsed.imports.length; ++i)
-                        fetch(self.resolvePath(filename, parsed.imports[i]));
+                        if (resolved = self.resolvePath(filename, parsed.imports[i]))
+                            fetch(resolved);
                 if (parsed.weakImports)
                     for (i = 0; i < parsed.weakImports.length; ++i)
-                        fetch(self.resolvePath(filename, parsed.weakImports[i]), true);
+                        if (resolved = self.resolvePath(filename, parsed.weakImports[i]))
+                            fetch(resolved, true);
             }
         } catch (err) {
             finish(err);
@@ -3706,8 +3773,9 @@ Root.prototype.load = function load(filename, options, callback) {
     // references anymore, so we can load everything in parallel
     if (util.isString(filename))
         filename = [ filename ];
-    for (var i = 0; i < filename.length; ++i)
-        fetch(self.resolvePath("", filename[i]));
+    for (var i = 0, resolved; i < filename.length; ++i)
+        if (resolved = self.resolvePath("", filename[i]))
+            fetch(resolved);
 
     if (sync)
         return self;
@@ -4025,7 +4093,7 @@ Service.prototype.rpcCall = function rpcCall(method, requestCtor, responseCtor, 
                         response = responseCtor[self.responseDelimited ? "decodeDelimited" : "decode"](response);
                     } catch (err) {
                         self.emit("error", err, method);
-                        return callback("error", err);
+                        return callback(err);
                     }
                 }
 

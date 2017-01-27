@@ -381,7 +381,7 @@ $root.Package = (function() {
             var key = Object.keys(message.bin);
             for (var i = 0; i < key.length; ++i)
                 if (!$util.isString(message.bin[key[i]]))
-                    return "bin: string{key:string} expected";
+                    return "bin: string{k:string} expected";
         }
         if (message.scripts !== undefined) {
             if (!$util.isObject(message.scripts))
@@ -389,7 +389,7 @@ $root.Package = (function() {
             var key = Object.keys(message.scripts);
             for (var i = 0; i < key.length; ++i)
                 if (!$util.isString(message.scripts[key[i]]))
-                    return "scripts: string{key:string} expected";
+                    return "scripts: string{k:string} expected";
         }
         if (message.dependencies !== undefined) {
             if (!$util.isObject(message.dependencies))
@@ -397,7 +397,7 @@ $root.Package = (function() {
             var key = Object.keys(message.dependencies);
             for (var i = 0; i < key.length; ++i)
                 if (!$util.isString(message.dependencies[key[i]]))
-                    return "dependencies: string{key:string} expected";
+                    return "dependencies: string{k:string} expected";
         }
         if (message.optionalDependencies !== undefined) {
             if (!$util.isObject(message.optionalDependencies))
@@ -405,7 +405,7 @@ $root.Package = (function() {
             var key = Object.keys(message.optionalDependencies);
             for (var i = 0; i < key.length; ++i)
                 if (!$util.isString(message.optionalDependencies[key[i]]))
-                    return "optionalDependencies: string{key:string} expected";
+                    return "optionalDependencies: string{k:string} expected";
         }
         if (message.devDependencies !== undefined) {
             if (!$util.isObject(message.devDependencies))
@@ -413,7 +413,7 @@ $root.Package = (function() {
             var key = Object.keys(message.devDependencies);
             for (var i = 0; i < key.length; ++i)
                 if (!$util.isString(message.devDependencies[key[i]]))
-                    return "devDependencies: string{key:string} expected";
+                    return "devDependencies: string{k:string} expected";
         }
         if (message.types !== undefined)
             if (!$util.isString(message.types))

@@ -1,9 +1,16 @@
 # [6.6.2](https://github.com/dcodeIO/protobuf.js/releases/tag/6.6.2)
 
 ## Fixed
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/3aea1bf3d4920dc01603fda25b86e6436ae45ec2) Properly replace short vars when beautifying static code, see [#663](https://github.com/dcodeIO/protobuf.js/issues/663)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/b6cf228a82152f72f21b1b307983126395313470) Use custom prelude in order to exclude any module loader code from source (for webpack), see [#658](https://github.com/dcodeIO/protobuf.js/issues/658)<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/2b12fb7db9d4eaa3b76b7198539946e97db684c4) Make sure to check optional inner messages for null when encoding, see [#658](https://github.com/dcodeIO/protobuf.js/issues/658)<br />
 
+## New
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/276a594771329da8334984771cb536de7322d5b4) Initial attempt on a backwards compatible fetch implementation with binary support, see [#661](https://github.com/dcodeIO/protobuf.js/issues/661)<br />
+
 ## Other
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/2d81864fa5c4dac75913456d582e0bea9cf0dd80) Root#resolvePath skips files when returning null, see [#368](https://github.com/dcodeIO/protobuf.js/issues/368)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/aab3ec1a757aff0f11402c3fb943c003f092c1af) Changes callback on failed response decode in rpc service to pass actual error instead of 'error' string<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/9044178c052299670108f10621d6e9b3d56e8a40) Travis should exit with the respective error when running sauce tests<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/73721f12072d77263e72a3b27cd5cf9409db9f8b) Moved checks whether a test case is applicable to parent case<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/3fcd88c3f9b1a084b06cab2d5881cb5bb895869d) Added eventemitter tests and updated micromodule dependencies (so far)<br />

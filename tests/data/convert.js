@@ -292,7 +292,7 @@ $root.Message = (function() {
             var key = Object.keys(message.int64Map);
             for (var i = 0; i < key.length; ++i)
                 if (!$util.isInteger(message.int64Map[key[i]]) && !(message.int64Map[key[i]] && $util.isInteger(message.int64Map[key[i]].low) && $util.isInteger(message.int64Map[key[i]].high)))
-                    return "int64Map: integer|Long{key:string} expected";
+                    return "int64Map: integer|Long{k:string} expected";
         }
         return null;
     };

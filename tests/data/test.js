@@ -6141,7 +6141,7 @@ $root.jspb = (function() {
                     var key = Object.keys(message.mapStringString);
                     for (var i = 0; i < key.length; ++i)
                         if (!$util.isString(message.mapStringString[key[i]]))
-                            return "mapStringString: string{key:string} expected";
+                            return "mapStringString: string{k:string} expected";
                 }
                 if (message.mapStringInt32 !== undefined) {
                     if (!$util.isObject(message.mapStringInt32))
@@ -6149,7 +6149,7 @@ $root.jspb = (function() {
                     var key = Object.keys(message.mapStringInt32);
                     for (var i = 0; i < key.length; ++i)
                         if (!$util.isInteger(message.mapStringInt32[key[i]]))
-                            return "mapStringInt32: integer{key:string} expected";
+                            return "mapStringInt32: integer{k:string} expected";
                 }
                 if (message.mapStringInt64 !== undefined) {
                     if (!$util.isObject(message.mapStringInt64))
@@ -6157,7 +6157,7 @@ $root.jspb = (function() {
                     var key = Object.keys(message.mapStringInt64);
                     for (var i = 0; i < key.length; ++i)
                         if (!$util.isInteger(message.mapStringInt64[key[i]]) && !(message.mapStringInt64[key[i]] && $util.isInteger(message.mapStringInt64[key[i]].low) && $util.isInteger(message.mapStringInt64[key[i]].high)))
-                            return "mapStringInt64: integer|Long{key:string} expected";
+                            return "mapStringInt64: integer|Long{k:string} expected";
                 }
                 if (message.mapStringBool !== undefined) {
                     if (!$util.isObject(message.mapStringBool))
@@ -6165,7 +6165,7 @@ $root.jspb = (function() {
                     var key = Object.keys(message.mapStringBool);
                     for (var i = 0; i < key.length; ++i)
                         if (typeof message.mapStringBool[key[i]] !== "boolean")
-                            return "mapStringBool: boolean{key:string} expected";
+                            return "mapStringBool: boolean{k:string} expected";
                 }
                 if (message.mapStringDouble !== undefined) {
                     if (!$util.isObject(message.mapStringDouble))
@@ -6173,7 +6173,7 @@ $root.jspb = (function() {
                     var key = Object.keys(message.mapStringDouble);
                     for (var i = 0; i < key.length; ++i)
                         if (typeof message.mapStringDouble[key[i]] !== "number")
-                            return "mapStringDouble: number{key:string} expected";
+                            return "mapStringDouble: number{k:string} expected";
                 }
                 if (message.mapStringEnum !== undefined) {
                     if (!$util.isObject(message.mapStringEnum))
@@ -6182,7 +6182,7 @@ $root.jspb = (function() {
                     for (var i = 0; i < key.length; ++i)
                         switch (message.mapStringEnum[key[i]]) {
                         default:
-                            return "mapStringEnum: enum value{key:string} expected";
+                            return "mapStringEnum: enum value{k:string} expected";
                         case 0:
                         case 1:
                         case 2:
@@ -6205,9 +6205,9 @@ $root.jspb = (function() {
                     var key = Object.keys(message.mapInt32String);
                     for (var i = 0; i < key.length; ++i) {
                         if (!/^-?(?:0|[1-9][0-9]*)$/.test(key[i]))
-                            return "mapInt32String: integer key{key:int32} expected";
+                            return "mapInt32String: integer key{k:int32} expected";
                         if (!$util.isString(message.mapInt32String[key[i]]))
-                            return "mapInt32String: string{key:int32} expected";
+                            return "mapInt32String: string{k:int32} expected";
                     }
                 }
                 if (message.mapInt64String !== undefined) {
@@ -6216,9 +6216,9 @@ $root.jspb = (function() {
                     var key = Object.keys(message.mapInt64String);
                     for (var i = 0; i < key.length; ++i) {
                         if (!/^(?:[\x00-\xff]{8}|-?(?:0|[1-9][0-9]*))$/.test(key[i]))
-                            return "mapInt64String: integer|Long key{key:int64} expected";
+                            return "mapInt64String: integer|Long key{k:int64} expected";
                         if (!$util.isString(message.mapInt64String[key[i]]))
-                            return "mapInt64String: string{key:int64} expected";
+                            return "mapInt64String: string{k:int64} expected";
                     }
                 }
                 if (message.mapBoolString !== undefined) {
@@ -6227,9 +6227,9 @@ $root.jspb = (function() {
                     var key = Object.keys(message.mapBoolString);
                     for (var i = 0; i < key.length; ++i) {
                         if (!/^true|false|0|1$/.test(key[i]))
-                            return "mapBoolString: boolean key{key:bool} expected";
+                            return "mapBoolString: boolean key{k:bool} expected";
                         if (!$util.isString(message.mapBoolString[key[i]]))
-                            return "mapBoolString: string{key:bool} expected";
+                            return "mapBoolString: string{k:bool} expected";
                     }
                 }
                 if (message.testMapFields !== undefined && message.testMapFields !== null) {

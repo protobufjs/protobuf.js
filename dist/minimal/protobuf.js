@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.6.2 (c) 2016, Daniel Wirtz
- * Compiled Thu, 26 Jan 2017 16:36:58 UTC
+ * Compiled Fri, 27 Jan 2017 16:11:25 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -1212,7 +1212,7 @@ Service.prototype.rpcCall = function rpcCall(method, requestCtor, responseCtor, 
                         response = responseCtor[self.responseDelimited ? "decodeDelimited" : "decode"](response);
                     } catch (err) {
                         self.emit("error", err, method);
-                        return callback("error", err);
+                        return callback(err);
                     }
                 }
 
