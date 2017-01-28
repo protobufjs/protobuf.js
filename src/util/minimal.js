@@ -1,27 +1,39 @@
 "use strict";
 var util = exports;
 
-util.asPromise    = require("@protobufjs/aspromise");
-util.base64       = require("@protobufjs/base64");
-util.EventEmitter = require("@protobufjs/eventemitter");
-util.inquire      = require("@protobufjs/inquire");
-util.utf8         = require("@protobufjs/utf8");
-util.pool         = require("@protobufjs/pool");
+// used to return a Promise where callback is omitted
+util.asPromise = require("@protobufjs/aspromise");
 
-util.LongBits     = require("./longbits");
+// converts to / from base64 encoded strings
+util.base64 = require("@protobufjs/base64");
+
+// base class of rpc.Service
+util.EventEmitter = require("@protobufjs/eventemitter");
+
+// requires modules optionally and hides the call from bundlers
+util.inquire = require("@protobufjs/inquire");
+
+// convert to / from utf8 encoded strings
+util.utf8 = require("@protobufjs/utf8");
+
+// provides a node-like buffer pool in the browser
+util.pool = require("@protobufjs/pool");
+
+// utility to work with the low and high bits of a 64 bit value
+util.LongBits = require("./longbits");
 
 /**
  * An immuable empty array.
  * @memberof util
  * @type {Array.<*>}
  */
-util.emptyArray = Object.freeze ? Object.freeze([]) : /* istanbul ignore next */ [];
+util.emptyArray = Object.freeze ? Object.freeze([]) : /* istanbul ignore next */ []; // used on prototypes
 
 /**
  * An immutable empty object.
  * @type {Object}
  */
-util.emptyObject = Object.freeze ? Object.freeze({}) : /* istanbul ignore next */ {};
+util.emptyObject = Object.freeze ? Object.freeze({}) : /* istanbul ignore next */ {}; // used on prototypes
 
 /**
  * Whether running within node or not.
@@ -73,8 +85,23 @@ util.Buffer = (function() {
     }
 })();
 
-// Aliases where supported, otherwise polyfills
+/**
+ * Internal alias of or polyfull for Buffer.from.
+ * @type {?function}
+ * @param {string|number[]} value Value
+ * @param {string} [encoding] Encoding if value is a string
+ * @returns {Uint8Array}
+ * @private
+ */
 util._Buffer_from = null;
+
+/**
+ * Internal alias of or polyfill for Buffer.allocUnsafe.
+ * @type {?function}
+ * @param {number} size Buffer size
+ * @returns {Uint8Array}
+ * @private
+ */
 util._Buffer_allocUnsafe = null;
 
 /**
@@ -230,7 +257,7 @@ util._configure = function() {
         util._Buffer_from = util._Buffer_allocUnsafe = null;
         return;
     }
-    // node 4.2.0 - 4.4.7 support makes it impossible to just polyfill these.
+    // because node 4.x buffers are incompatible & immutable
     // see: https://github.com/dcodeIO/protobuf.js/pull/665
     util._Buffer_from = Buffer.from !== Uint8Array.from && Buffer.from ||
         /* istanbul ignore next */
