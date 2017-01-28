@@ -12,6 +12,8 @@ tape.test("converters", function(test) {
 
         test.test(test.name + " - Message#toObject", function(test) {
 
+            test.plan(5);
+
             test.test(test.name + " - called with defaults = true", function(test) {
                 var obj = Message.create().toObject({ defaults: true });
 
@@ -129,7 +131,6 @@ tape.test("converters", function(test) {
                 test.end();
             });
 
-            test.end();
         });
 
         test.test(test.name + " - Message.fromObject", function(test) {
@@ -167,14 +168,13 @@ tape.test("converters", function(test) {
 
         test.test(test.name + " - Message#toJSON", function(test) {
             var msg = Message.create();
-            test.plan(1);
             msg.$type = {
                 toObject: function(obj, opt) {
                     test.same(opt, protobuf.util.toJSONOptions, "should use toJSONOptions with toJSON");
+                    test.end();
                 }
             };
             msg.toJSON();
-            test.end();
         });
         
         test.end();

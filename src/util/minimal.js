@@ -65,26 +65,17 @@ util.isObject = function isObject(value) {
 util.Buffer = (function() {
     try {
         var Buffer = util.inquire("buffer").Buffer;
-
-        /* istanbul ignore next */
-        if (!Buffer.prototype.utf8Write) // refuse to use non-node buffers (performance)
-            return null;
-
-        /* istanbul ignore next */
-        if (!Buffer.from)
-            Buffer.from = function from(value, encoding) { return new Buffer(value, encoding); };
-
-        /* istanbul ignore next */
-        if (!Buffer.allocUnsafe)
-            Buffer.allocUnsafe = function allocUnsafe(size) { return new Buffer(size); };
-
-        return Buffer;
-
+        // refuse to use non-node buffers if not explicitly assigned (perf reasons):
+        return Buffer.prototype.utf8Write ? Buffer : /* istanbul ignore next */ null;
     } catch (e) {
         /* istanbul ignore next */
         return null;
     }
 })();
+
+// Aliases where supported, otherwise polyfills
+util._Buffer_from = null;
+util._Buffer_allocUnsafe = null;
 
 /**
  * Creates a new buffer of whatever type supported by the environment.
@@ -95,10 +86,10 @@ util.newBuffer = function newBuffer(sizeOrArray) {
     /* istanbul ignore next */
     return typeof sizeOrArray === "number"
         ? util.Buffer
-            ? util.Buffer.allocUnsafe(sizeOrArray) // polyfilled
+            ? util._Buffer_allocUnsafe(sizeOrArray)
             : new util.Array(sizeOrArray)
         : util.Buffer
-            ? util.Buffer.from(sizeOrArray) // polyfilled
+            ? util._Buffer_from(sizeOrArray)
             : typeof Uint8Array === "undefined"
                 ? sizeOrArray
                 : new Uint8Array(sizeOrArray);
@@ -224,11 +215,31 @@ util.lazyResolve = function lazyResolve(root, lazyTypes) {
 };
 
 /**
- * Default conversion options used for toJSON implementations.
+ * Default conversion options used for toJSON implementations. Converts longs, enums and bytes to strings.
  * @type {ConversionOptions}
  */
 util.toJSONOptions = {
     longs: String,
     enums: String,
     bytes: String
+};
+
+util._configure = function() {
+    var Buffer = util.Buffer;
+    if (!Buffer) {
+        util._Buffer_from = util._Buffer_allocUnsafe = null;
+        return;
+    }
+    // node 4.2.0 - 4.4.7 support makes it impossible to just polyfill these.
+    // see: https://github.com/dcodeIO/protobuf.js/pull/665
+    util._Buffer_from = Buffer.from !== Uint8Array.from && Buffer.from ||
+        /* istanbul ignore next */
+        function Buffer_from(value, encoding) {
+            return new Buffer(value, encoding);
+        };
+    util._Buffer_allocUnsafe = Buffer.allocUnsafe ||
+        /* istanbul ignore next */
+        function Buffer_allocUnsafe(size) {
+            return new Buffer(size);
+        };
 };

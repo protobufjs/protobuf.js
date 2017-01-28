@@ -8,15 +8,5 @@ docs/
 coverage/
 sandbox/
 examples/
-src/util/aspromise/
-src/util/base64/
-src/util/codegen/
-src/util/eventemitter/
-src/util/extend/
-src/util/fetch/
-src/util/inquire/
-src/util/path/
-src/util/pool/
-src/util/utf8/
 pbjs.png
 pbjs.svg

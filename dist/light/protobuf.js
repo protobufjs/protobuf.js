@@ -1,6 +1,6 @@
 /*!
- * protobuf.js v6.6.2 (c) 2016, Daniel Wirtz
- * Compiled Fri, 27 Jan 2017 16:11:25 UTC
+ * protobuf.js v6.6.3 (c) 2016, Daniel Wirtz
+ * Compiled Sat, 28 Jan 2017 03:34:25 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -1984,6 +1984,7 @@ protobuf.configure    = configure;
  */
 function configure() {
     protobuf.Reader._configure(protobuf.BufferReader);
+    protobuf.util._configure();
 }
 
 // Configure serialization
@@ -5260,26 +5261,17 @@ util.isObject = function isObject(value) {
 util.Buffer = (function() {
     try {
         var Buffer = util.inquire("buffer").Buffer;
-
-        /* istanbul ignore next */
-        if (!Buffer.prototype.utf8Write) // refuse to use non-node buffers (performance)
-            return null;
-
-        /* istanbul ignore next */
-        if (!Buffer.from)
-            Buffer.from = function from(value, encoding) { return new Buffer(value, encoding); };
-
-        /* istanbul ignore next */
-        if (!Buffer.allocUnsafe)
-            Buffer.allocUnsafe = function allocUnsafe(size) { return new Buffer(size); };
-
-        return Buffer;
-
+        // refuse to use non-node buffers if not explicitly assigned (perf reasons):
+        return Buffer.prototype.utf8Write ? Buffer : /* istanbul ignore next */ null;
     } catch (e) {
         /* istanbul ignore next */
         return null;
     }
 })();
+
+// Aliases where supported, otherwise polyfills
+util._Buffer_from = null;
+util._Buffer_allocUnsafe = null;
 
 /**
  * Creates a new buffer of whatever type supported by the environment.
@@ -5290,10 +5282,10 @@ util.newBuffer = function newBuffer(sizeOrArray) {
     /* istanbul ignore next */
     return typeof sizeOrArray === "number"
         ? util.Buffer
-            ? util.Buffer.allocUnsafe(sizeOrArray) // polyfilled
+            ? util._Buffer_allocUnsafe(sizeOrArray)
             : new util.Array(sizeOrArray)
         : util.Buffer
-            ? util.Buffer.from(sizeOrArray) // polyfilled
+            ? util._Buffer_from(sizeOrArray)
             : typeof Uint8Array === "undefined"
                 ? sizeOrArray
                 : new Uint8Array(sizeOrArray);
@@ -5419,13 +5411,33 @@ util.lazyResolve = function lazyResolve(root, lazyTypes) {
 };
 
 /**
- * Default conversion options used for toJSON implementations.
+ * Default conversion options used for toJSON implementations. Converts longs, enums and bytes to strings.
  * @type {ConversionOptions}
  */
 util.toJSONOptions = {
     longs: String,
     enums: String,
     bytes: String
+};
+
+util._configure = function() {
+    var Buffer = util.Buffer;
+    if (!Buffer) {
+        util._Buffer_from = util._Buffer_allocUnsafe = null;
+        return;
+    }
+    // node 4.2.0 - 4.4.7 support makes it impossible to just polyfill these.
+    // see: https://github.com/dcodeIO/protobuf.js/pull/665
+    util._Buffer_from = Buffer.from !== Uint8Array.from && Buffer.from ||
+        /* istanbul ignore next */
+        function Buffer_from(value, encoding) {
+            return new Buffer(value, encoding);
+        };
+    util._Buffer_allocUnsafe = Buffer.allocUnsafe ||
+        /* istanbul ignore next */
+        function Buffer_allocUnsafe(size) {
+            return new Buffer(size);
+        };
 };
 
 },{"1":1,"2":2,"33":33,"4":4,"6":6,"8":8,"9":9}],35:[function(require,module,exports){
@@ -6190,7 +6202,7 @@ function BufferWriter() {
  * @returns {Uint8Array} Buffer
  */
 BufferWriter.alloc = function alloc_buffer(size) {
-    return (BufferWriter.alloc = Buffer.allocUnsafe)(size);
+    return (BufferWriter.alloc = util._Buffer_allocUnsafe)(size);
 };
 
 var writeBytesBuffer = Buffer && Buffer.prototype instanceof Uint8Array && Buffer.prototype.set.name === "set"
@@ -6211,7 +6223,7 @@ var writeBytesBuffer = Buffer && Buffer.prototype instanceof Uint8Array && Buffe
  */
 BufferWriter.prototype.bytes = function write_bytes_buffer(value) {
     if (util.isString(value))
-        value = Buffer.from(value, "base64"); // polyfilled
+        value = util._Buffer_from(value, "base64");
     var len = value.length >>> 0;
     this.uint32(len);
     if (len)

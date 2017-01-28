@@ -2222,7 +2222,7 @@ export namespace util {
     function lazyResolve(root: Root, lazyTypes: { [k: number]: (string|ReflectionObject) }): void;
 
     /**
-     * Default conversion options used for toJSON implementations.
+     * Default conversion options used for toJSON implementations. Converts longs, enums and bytes to strings.
      * @type {ConversionOptions}
      */
     var toJSONOptions: ConversionOptions;

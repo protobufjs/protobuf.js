@@ -4,6 +4,7 @@ var protobuf = require(".."),
     util = protobuf.util;
 
 tape.test("bench.proto and bench.json", function(test) {
+    test.plan(4);
     protobuf.load("bench/bench.proto", undefined, function(err, root) {
         if (err)
             return test.fail(err.message);

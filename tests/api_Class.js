@@ -9,6 +9,8 @@ tape.test("reflected classes", function(test) {
     var root = protobuf.parse(proto).root,
         Something = root.lookup("Something");
 
+    test.plan(4);
+
     test.equal(protobuf.Class.create, protobuf.Class, "Class.create should be an alias of Class (constructor)");
 
     test.throws(function() {
@@ -30,6 +32,4 @@ tape.test("reflected classes", function(test) {
         }
         test.end();
     });
-    
-    test.end();
 });

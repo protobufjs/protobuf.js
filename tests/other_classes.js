@@ -6,6 +6,8 @@ var protobuf = require(".."),
 
 tape.test("google.protobuf.Any class", function(test) {
 
+    test.plan(2);
+
     test.equal(Message, Class.prototype, "requires that prototypes are class instances");
 
     protobuf.load("tests/data/common.proto", function(err, root) {
@@ -82,7 +84,5 @@ tape.test("google.protobuf.Any class", function(test) {
 
             test.end();
         });
-
-        test.end();
     });
 });

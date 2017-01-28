@@ -5,6 +5,8 @@ var protobuf = require(".."),
 
 tape.test("package.json (reflected)", function(test) {
 
+    test.plan(2);
+
     protobuf.load("tests/data/package.proto", function(err, root) {
         if (err)
             return test.fail(err.message);
@@ -37,8 +39,5 @@ tape.test("package.json (reflected)", function(test) {
 
             test.end();
         });
-
-        test.end();
     });
-
 });

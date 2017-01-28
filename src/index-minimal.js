@@ -43,6 +43,7 @@ protobuf.configure    = configure;
  */
 function configure() {
     protobuf.Reader._configure(protobuf.BufferReader);
+    protobuf.util._configure();
 }
 
 // Configure serialization

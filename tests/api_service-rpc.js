@@ -51,7 +51,6 @@ tape.test("reflected services", function(test) {
     test.test(test.name + " - should propagate errors from rpcImpl", function(test) {
         var err = Error();
         var service2 = MyService.create(function(method, requestData, callback) { callback(err); });
-        test.plan(2);
         var count = 0;
         service2.on("error", function(err2) {
             test.equal(err2, err, "should emit the exact error");
@@ -68,7 +67,6 @@ tape.test("reflected services", function(test) {
     test.test(test.name + " - should catch errors within rpcImpl", function(test) {
         var err = Error();
         var service2 = MyService.create(function(method, requestData, callback) { throw err; });
-        test.plan(2);
         var count = 0;
         service2.on("error", function(err2) {
             test.equal(err2, err, "should emit the exact error");
@@ -84,7 +82,6 @@ tape.test("reflected services", function(test) {
 
     test.test(test.name + " - should return errors from decoding", function(test) {
         var service2 = MyService.create(function(method, requestData, callback) { callback(null, protobuf.util.newBuffer(0) ); }, true, true);
-        test.plan(2);
         var count = 0;
         service2.on("error", function(err2) {
             test.ok(err2, "should emit the error");
