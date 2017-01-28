@@ -39,15 +39,10 @@ for (i = 0; i < 500000; ++i)
     Test.verify(data);
 process.stdout.write("\n");
 
-if (!Buffer.from)
-    Buffer.from = function from(str, enc) {
-        return new Buffer(str, enc);
-    };
-
 // give the optimizer some time to do its job
 setTimeout(function() {
     var str    = JSON.stringify(data),
-        strbuf = Buffer.from(str, "utf8");
+        strbuf = protobuf.util._Buffer_from(str, "utf8");
 
     newSuite("encoding")
     .add("Type.encode to buffer", function() {
@@ -57,7 +52,7 @@ setTimeout(function() {
         JSON.stringify(data);
     })
     .add("JSON.stringify to buffer", function() {
-        Buffer.from(JSON.stringify(data), "utf8");
+        protobuf.util._Buffer_from(JSON.stringify(data), "utf8");
     })
     .run();
 
@@ -81,7 +76,7 @@ setTimeout(function() {
         JSON.parse(JSON.stringify(data));
     })
     .add("JSON to/from buffer", function() {
-        JSON.parse(Buffer.from(JSON.stringify(data), "utf8").toString("utf8"));
+        JSON.parse(protobuf.util._Buffer_from(JSON.stringify(data), "utf8").toString("utf8"));
     })
     .run();
 

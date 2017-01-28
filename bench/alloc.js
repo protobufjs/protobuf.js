@@ -2,9 +2,9 @@
 "use strict";
 
 var newSuite = require("./suite"),
-    pool     = require("../src/util/pool");
+    protobuf = require("..");
 
-var poolAlloc = pool(function(size) {
+var poolAlloc = protobuf.util.pool(function(size) {
     return new Uint8Array(size);
 }, Uint8Array.prototype.subarray);
 
