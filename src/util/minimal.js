@@ -70,6 +70,24 @@ util.Buffer = (function() {
         if (!Buffer.prototype.utf8Write) // refuse to use non-node buffers (performance)
             return null;
 
+        // Node 4.2.0 to 4.4.7 Support.  Unfortunatly not 4.0.0 - 4.1.2 compatible
+        // See - https://github.com/nodejs/node/pull/3080 for reference
+        if (Buffer.from && Buffer.from.toString() === Uint8Array.from.toString()) {
+          function PolyBuffer(arg, encoding) {
+            var b = new Buffer(arg, encoding);
+            Object.setPrototypeOf(b, PolyBuffer.prototype);
+            return b;
+          }
+
+          PolyBuffer.from = function(value, encoding) { return new PolyBuffer(value, encoding); };
+          PolyBuffer.allocUnsafe = function allocUnsafe(size) { return new PolyBuffer(size); };
+
+          Object.setPrototypeOf(PolyBuffer.prototype, Buffer.prototype);
+          Object.setPrototypeOf(PolyBuffer, Buffer);
+
+          return PolyBuffer;
+        }
+
         /* istanbul ignore next */
         if (!Buffer.from)
             Buffer.from = function from(value, encoding) { return new Buffer(value, encoding); };
