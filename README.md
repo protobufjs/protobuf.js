@@ -67,11 +67,9 @@ Production:
 
 **NOTE:** Remember to replace the version tag with the exact [release](https://github.com/dcodeIO/protobuf.js/tags) your project depends upon.
 
-Or [download](https://github.com/dcodeIO/protobuf.js/tree/master/dist) the library.
-
 The `protobuf` namespace will always be available globally / also supports AMD loaders.
 
-Additionally, the library is compiled in different versions. Which one to use depends on whether size is a factor and your use case:
+Additionally, the library is compiled in different versions. Which one to use depends on whether bundle size is a factor and your use case:
 
 | Build   | Downloads                    | How to require                  | Description
 |---------|------------------------------|---------------------------------|-------------
@@ -83,6 +81,8 @@ Examples
 --------
 
 ### Using .proto files
+
+It's super easy to load an existing .proto file using the full build, which parses and compiles the definitions to ready to use runtime message classes:
 
 ```protobuf
 // awesome.proto
@@ -129,7 +129,48 @@ protobuf.load("awesome.proto")
     });
 ```
 
+### Using JSON descriptors
+
+The library utilizes a JSON format that is equivalent to a .proto definition (see also: [Command line usage](#command-line)). The following is identical to the .proto definition seen above:
+
+```json
+// awesome.json
+{
+  "nested": {
+    "AwesomeMessage": {
+      "fields": {
+        "awesomeField": {
+          "type": "string",
+          "id": 1
+        }
+      }
+    }
+  }
+}
+```
+
+A JSON descriptor can either be loaded the usual way:
+
+```js
+protobuf.load("awesome.json", function(err, root) {
+    if (err) throw err;
+
+    // Continue at "Obtain a message type" above
+});
+```
+
+Or you can load it inline:
+
+```js
+var root = protobuf.Root.fromJSON(descriptorJson);
+
+// Continue at "Obtain a message type" above
+```
+
+
 ### Using reflection only
+
+Both the full and the light build include full reflection support. You could, for example, define the .proto definitions seen in the example above using just reflection:
 
 ```js
 ...
@@ -145,36 +186,41 @@ var root = new Root().define("awesomepackage").add(AwesomeMessage);
 ...
 ```
 
+Detailed information on the reflection structure is available within the [documentation](#documentation).
+
 ### Using custom classes
+
+You can also extend runtime message classes with your own custom functionality by registering your own class with a reflected message type:
 
 ```js
 ...
 
-// define your own prototypical class
+// Define your own prototypal class
 function AwesomeMessage(properties) {
     protobuf.Message.call(this, properties); // call the super constructor
 }
 
-// register your custom class with its reflected type
+// Register your custom class with its reflected type (*)
 protobuf.Class.create(root.lookup("awesomepackage.AwesomeMessage") /* or use reflection */, AwesomeMessage);
 
-// define your custom functionality
+// Define your custom functionality
 AwesomeMessage.customStaticMethod = function() { ... };
 AwesomeMessage.prototype.customInstanceMethod = function() { ... };
 
-// create a message
-var message = new AwesomeMessage({ awesomeField: "AwesomeString" });
-
-// Continue at "Encode a message" above
+// Continue at "Create a message" above (you can also use the constructor directly)
 ```
 
-Custom classes are automatically populated with static `encode`, `encodeDelimited`, `decode`, `decodeDelimited` and `verify` methods and reference their reflected type via the `$type` property. Note that there are no methods (just `$type`) on instances by default as method names might conflict with field names.
+(*) Besides referencing its reflected type through `AwesomeMessage.$type` and `AwesomeMesage#$type`, the respective custom class is automatically populated with:
+
+* `AwesomeMessage.create`
+* `AwesomeMessage.encode` and `AwesomeMessage.encodeDelimited`
+* `AwesomeMessage.decode` and `AwesomeMessage.decodeDelimited`
+* `AwesomeMessage.verify`
+* `AwesomeMessage.fromObject`, `AwesomeMessage.toObject`, `AwesomeMessage#toObject` and `AwesomeMessage#toJSON`
 
 ### Using the Reader/Writer interface directly
 
-While only useful for the adventurous cherishing an aversion to [generated static code](https://github.com/dcodeIO/protobuf.js#command-line), it's also possible to use the Reader/Writer interface directly depending just on the [minimal library][dist-minimal] ([basic example](https://github.com/dcodeIO/protobuf.js/blob/master/examples/reader-writer.js)).
-
-Easy ways to obtain example code snippets are either setting `protobuf.util.codegen.verbose = true` while watching the magic as it happens, or simply inspecting generated static code.
+While only useful for the adventurous cherishing an aversion to [generated static code](https://github.com/dcodeIO/protobuf.js#command-line), it's also possible to use the Reader/Writer interface directly depending just on the [minimal library][dist-minimal] ([basic example](https://github.com/dcodeIO/protobuf.js/blob/master/examples/reader-writer.js)). Easy ways to obtain example code snippets are either setting `protobuf.util.codegen.verbose = true` while watching the console as code generation happens, or simply inspecting generated static code.
 
 ### Using services
 
@@ -198,11 +244,20 @@ message HelloReply {
 ```js
 ...
 var Greeter = root.lookup("Greeter");
-var greeter = Greeter.create(rpcImpl, false, false); // rpcImpl (see below), requestDelimited?, responseDelimited?
+var greeter = Greeter.create(/* see below */ rpcImpl, /* request delimited? */ false, /* response delimited? */ false);
 
 greeter.sayHello({ name: 'you' }, function(err, response) {
     console.log('Greeting:', response.message);
 });
+```
+
+Services can also be used with promises instead of node-style callbacks:
+
+```js
+greeter.sayHello({ name: 'you' })
+    .then(function(response) {
+        console.log('Greeting:', response.message);
+    });
 ```
 
 To make this work, all you have to do is provide an `rpcImpl`, which is an asynchronous function that takes the reflected service method, the binary HelloRequest and a node-style callback as its parameters. For example:
@@ -260,15 +315,21 @@ var buffer = AwesomeMessage.encode(message).finish();
 Documentation
 -------------
 
+#### Protocol Buffers
 * [Google's Developer Guide](https://developers.google.com/protocol-buffers/docs/overview)
-* [protobuf.js API Documentation](http://dcode.io/protobuf.js/) and [CHANGELOG](https://github.com/dcodeIO/protobuf.js/blob/master/CHANGELOG.md)
+
+#### protobuf.js
+* [API Documentation](http://dcode.io/protobuf.js)
+* [CHANGELOG](https://github.com/dcodeIO/protobuf.js/blob/master/CHANGELOG.md)
 * [Frequently asked questions](https://github.com/dcodeIO/protobuf.js/wiki) on our wiki
-* [More questions and answers](http://stackoverflow.com/questions/tagged/protobuf.js) on StackOverflow
+
+#### Community
+* [Questions and answers](http://stackoverflow.com/questions/tagged/protobuf.js) on StackOverflow
 
 Command line
 ------------
 
-The `pbjs` command line utility can be used to bundle and translate between .proto and .json files.
+The `pbjs` command line utility can be used to bundle and translate between .proto and .json files. It also generates static code.
 
 ```
 Consolidates imports and converts between file formats.
