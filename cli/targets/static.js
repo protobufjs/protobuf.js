@@ -113,7 +113,7 @@ function buildNamespace(ref, ns) {
             "@exports " + ns.fullName.substring(1),
             "@namespace"
         ]);
-        push("var " + name(ns.name) + " = {};");
+        push("var $" + name(ns.name) + " = {};");
     }
 
     ns.nestedArray.forEach(function(nested) {
