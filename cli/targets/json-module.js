@@ -9,7 +9,7 @@ function json_module(root, options, callback) {
     try {       
         var rootProp = util.safeProp(options.root || "default");
         var output = [
-            "var $root = ($protobuf.roots" + rootProp + " || ($protobuf.roots" + rootProp + " = new $protobuf.Root()))\n"
+            (options.es6 ? "const" : "var") + " $root = ($protobuf.roots" + rootProp + " || ($protobuf.roots" + rootProp + " = new $protobuf.Root()))\n"
         ];
         if (root.options) {
             var optionsJson = util.jsonSafeProp(JSON.stringify(root.options, null, 2));

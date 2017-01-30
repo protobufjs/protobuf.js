@@ -31,7 +31,7 @@ exports.main = function(args, callback) {
             lint   : "l"
         },
         string: [ "target", "out", "path", "wrap", "root", "lint" ],
-        boolean: [ "keep-case", "create", "encode", "decode", "verify", "convert", "delimited", "beautify", "comments" ],
+        boolean: [ "keep-case", "create", "encode", "decode", "verify", "convert", "delimited", "beautify", "comments", "es6" ],
         default: {
             target    : "json",
             create    : true,
@@ -42,13 +42,14 @@ exports.main = function(args, callback) {
             delimited : true,
             beautify  : true,
             comments  : true,
+            es6       : null,
             lint      : lintDefault
         }
     });
 
     var target = targets[argv.target],
         files  = argv._,
-        paths  = typeof argv.path === 'string' ? [ argv.path ] : argv.path || [];
+        paths  = typeof argv.path === "string" ? [ argv.path ] : argv.path || [];
 
     if (!files.length) {
         var descs = Object.keys(targets).filter(function(key) { return !targets[key].private; }).map(function(key) {
@@ -77,13 +78,15 @@ exports.main = function(args, callback) {
                 "                  default   Default wrapper supporting both CommonJS and AMD",
                 "                  commonjs  CommonJS wrapper",
                 "                  amd       AMD wrapper",
-                "                  es6       ES6 wrapper",
+                "                  es6       ES6 wrapper (implies --es6)",
                 "",
                 "  -r, --root      Specifies an alternative protobuf.roots name.",
                 "",
                 "  -l, --lint      Linter configuration. Defaults to protobuf.js-compatible rules:",
                 "",
                 "                  " + lintDefault,
+                "",
+                "  --es6           Enables ES6 syntax (const/let instead of var)",
                 "",
                 chalk.bold.gray("  Proto sources only:"),
                 "",
@@ -133,6 +136,10 @@ exports.main = function(args, callback) {
         }
         return filepath;
     };
+
+    // Use es6 syntax if not explicitly specified on the command line and the es6 wrapper is used
+    if (argv.wrap === "es6" && argv.es6 === null)
+        argv.es6 = true;
 
     var parseOptions = {
         "keepCase": argv["keep-case"] || false

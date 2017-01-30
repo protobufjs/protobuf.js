@@ -85,7 +85,7 @@ Examples
 
 ### Using .proto files
 
-It's possible to load existing .proto files using the full library, which parses and compiles the definitions to ready to use reflection-based runtime message classes:
+It's possible to load existing .proto files using the full library, which parses and compiles the definitions to ready to use (reflection-based) message classes:
 
 ```protobuf
 // awesome.proto
@@ -441,7 +441,7 @@ $> pbjs -t static-module -w commonjs -o compiled.js file1.proto file2.proto
 $> pbts -o compiled.d.ts compiled.js
 ```
 
-Additionally, TypeScript definitions of static modules are compatible with reflection, as long as the following conditions are met:
+Additionally, TypeScript definitions of static modules are compatible with their reflection-based counterparts (i.e. as exported by JSON modules), as long as the following conditions are met:
 
 1. Instead of using `new SomeMessage(...)`, always use `SomeMessage.create(...)` because reflection objects do not provide a constructor.
 2. Types, services and enums must start with an uppercase letter to become available as properties of the reflected types as well (i.e. to be able to use `MyMessage.MyEnum` instead of `root.lookup("MyMessage.MyEnum")`).

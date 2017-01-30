@@ -4,9 +4,7 @@
 var $protobuf = require("../../minimal");
 
 // Common aliases
-var $Reader = $protobuf.Reader,
-    $Writer = $protobuf.Writer,
-    $util   = $protobuf.util;
+var $Reader = $protobuf.Reader, $Writer = $protobuf.Writer, $util = $protobuf.util;
 
 // Lazily resolved type references
 var $lazyTypes = [];
@@ -177,8 +175,7 @@ $root.jspb = (function() {
          * @property {number} BAR=2 BAR value
          */
         test.OuterEnum = (function() {
-            var valuesById = {},
-                values = Object.create(valuesById);
+            var valuesById = {}, values = Object.create(valuesById);
             values[valuesById[1] = "FOO"] = 1;
             values[valuesById[2] = "BAR"] = 2;
             return values;
@@ -3135,8 +3132,7 @@ $root.jspb = (function() {
              * @property {number} E2=77 E2 value
              */
             DefaultValues.Enum = (function() {
-                var valuesById = {},
-                    values = Object.create(valuesById);
+                var valuesById = {}, values = Object.create(valuesById);
                 values[valuesById[13] = "E1"] = 13;
                 values[valuesById[77] = "E2"] = 77;
                 return values;
@@ -6497,8 +6493,7 @@ $root.jspb = (function() {
          * @property {number} MAP_VALUE_BAZ_NOBINARY=2 MAP_VALUE_BAZ_NOBINARY value
          */
         test.MapValueEnumNoBinary = (function() {
-            var valuesById = {},
-                values = Object.create(valuesById);
+            var valuesById = {}, values = Object.create(valuesById);
             values[valuesById[0] = "MAP_VALUE_FOO_NOBINARY"] = 0;
             values[valuesById[1] = "MAP_VALUE_BAR_NOBINARY"] = 1;
             values[valuesById[2] = "MAP_VALUE_BAZ_NOBINARY"] = 2;
@@ -9177,8 +9172,7 @@ $root.google = (function() {
              * @property {number} TYPE_SINT64=18 TYPE_SINT64 value
              */
             FieldDescriptorProto.Type = (function() {
-                var valuesById = {},
-                    values = Object.create(valuesById);
+                var valuesById = {}, values = Object.create(valuesById);
                 values[valuesById[1] = "TYPE_DOUBLE"] = 1;
                 values[valuesById[2] = "TYPE_FLOAT"] = 2;
                 values[valuesById[3] = "TYPE_INT64"] = 3;
@@ -9210,8 +9204,7 @@ $root.google = (function() {
              * @property {number} LABEL_REPEATED=3 LABEL_REPEATED value
              */
             FieldDescriptorProto.Label = (function() {
-                var valuesById = {},
-                    values = Object.create(valuesById);
+                var valuesById = {}, values = Object.create(valuesById);
                 values[valuesById[1] = "LABEL_OPTIONAL"] = 1;
                 values[valuesById[2] = "LABEL_REQUIRED"] = 2;
                 values[valuesById[3] = "LABEL_REPEATED"] = 3;
@@ -10827,8 +10820,7 @@ $root.google = (function() {
              * @property {number} LITE_RUNTIME=3 LITE_RUNTIME value
              */
             FileOptions.OptimizeMode = (function() {
-                var valuesById = {},
-                    values = Object.create(valuesById);
+                var valuesById = {}, values = Object.create(valuesById);
                 values[valuesById[1] = "SPEED"] = 1;
                 values[valuesById[2] = "CODE_SIZE"] = 2;
                 values[valuesById[3] = "LITE_RUNTIME"] = 3;
@@ -11447,8 +11439,7 @@ $root.google = (function() {
              * @property {number} STRING_PIECE=2 STRING_PIECE value
              */
             FieldOptions.CType = (function() {
-                var valuesById = {},
-                    values = Object.create(valuesById);
+                var valuesById = {}, values = Object.create(valuesById);
                 values[valuesById[0] = "STRING"] = 0;
                 values[valuesById[1] = "CORD"] = 1;
                 values[valuesById[2] = "STRING_PIECE"] = 2;
@@ -11465,8 +11456,7 @@ $root.google = (function() {
              * @property {number} JS_NUMBER=2 JS_NUMBER value
              */
             FieldOptions.JSType = (function() {
-                var valuesById = {},
-                    values = Object.create(valuesById);
+                var valuesById = {}, values = Object.create(valuesById);
                 values[valuesById[0] = "JS_NORMAL"] = 0;
                 values[valuesById[1] = "JS_STRING"] = 1;
                 values[valuesById[2] = "JS_NUMBER"] = 2;
@@ -12567,8 +12557,7 @@ $root.google = (function() {
              * @property {number} IDEMPOTENT=2 IDEMPOTENT value
              */
             MethodOptions.IdempotencyLevel = (function() {
-                var valuesById = {},
-                    values = Object.create(valuesById);
+                var valuesById = {}, values = Object.create(valuesById);
                 values[valuesById[0] = "IDEMPOTENCY_UNKNOWN"] = 0;
                 values[valuesById[1] = "NO_SIDE_EFFECTS"] = 1;
                 values[valuesById[2] = "IDEMPOTENT"] = 2;

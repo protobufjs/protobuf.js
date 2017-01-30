@@ -4,9 +4,7 @@
 var $protobuf = require("../../minimal");
 
 // Common aliases
-var $Reader = $protobuf.Reader,
-    $Writer = $protobuf.Writer,
-    $util   = $protobuf.util;
+var $Reader = $protobuf.Reader, $Writer = $protobuf.Writer, $util = $protobuf.util;
 
 // Lazily resolved type references
 var $lazyTypes = [];
@@ -362,8 +360,7 @@ $root.Test2 = (function() {
  * @property {number} THREE=3 Value with a comment.
  */
 $root.Test3 = (function() {
-    var valuesById = {},
-        values = Object.create(valuesById);
+    var valuesById = {}, values = Object.create(valuesById);
     values[valuesById[1] = "ONE"] = 1;
     values[valuesById[2] = "TWO"] = 2;
     values[valuesById[3] = "THREE"] = 3;

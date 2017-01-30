@@ -4,9 +4,7 @@
 var $protobuf = require("../../minimal");
 
 // Common aliases
-var $Reader = $protobuf.Reader,
-    $Writer = $protobuf.Writer,
-    $util   = $protobuf.util;
+var $Reader = $protobuf.Reader, $Writer = $protobuf.Writer, $util = $protobuf.util;
 
 // Lazily resolved type references
 var $lazyTypes = [];

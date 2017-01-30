@@ -25,13 +25,11 @@ function static_target(root, options, callback) {
     try {
         if (config.comments)
             push("// Common aliases");
-        push("var $Reader = $protobuf.Reader,");
-        push("    $Writer = $protobuf.Writer,");
-        push("    $util   = $protobuf.util;");
+        push((config.es6 ? "const" : "var") + " $Reader = $protobuf.Reader, $Writer = $protobuf.Writer, $util = $protobuf.util;");
         push("");
         if (config.comments)
             push("// Lazily resolved type references");
-        push("var $lazyTypes = [];");
+        push((config.es6 ? "const" : "var") + " $lazyTypes = [];");
         push("");
         if (config.comments) {
             if (root.comment)
@@ -40,7 +38,7 @@ function static_target(root, options, callback) {
                 push("// Exported root namespace");
         }
         var rootProp = cliUtil.safeProp(config.root || "default");
-        push("var $root = $protobuf.roots" + rootProp + " || ($protobuf.roots" + rootProp + " = {});");
+        push((config.es6 ? "const" : "var") + " $root = $protobuf.roots" + rootProp + " || ($protobuf.roots" + rootProp + " = {});");
         buildNamespace(null, root);
         push("");
         if (config.comments)
@@ -113,7 +111,7 @@ function buildNamespace(ref, ns) {
             "@exports " + ns.fullName.substring(1),
             "@namespace"
         ]);
-        push("var " + name(ns.name) + " = {};");
+        push((config.es6 ? "const" : "var") + " " + name(ns.name) + " = {};");
     }
 
     ns.nestedArray.forEach(function(nested) {
@@ -172,6 +170,11 @@ function beautifyCode(code) {
                     "type": "Identifier",
                     "name": shortVars[node.name]
                 };
+            // replace var with let if es6
+            if (config.es6 && node.type === "VariableDeclaration" && node.kind === "var") {
+                node.kind = "let";
+                return undefined;
+            }
             // remove braces around block statements with a single child
             if (node.type === "BlockStatement" && reduceableBlockStatements[parent.type] && node.body.length === 1)
                 return node.body[0];
@@ -281,7 +284,7 @@ function buildType(ref, type) {
         ++indent;
         push("if (properties)");
             ++indent;
-            push("for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)");
+            push("for (" + (config.es6 ? "let" : "var") + " keys = Object.keys(properties), i = 0; i < keys.length; ++i)");
                 ++indent;
                 push("this[keys[i]] = properties[keys[i]];");
                 --indent;
@@ -327,14 +330,14 @@ function buildType(ref, type) {
     });
 
     // virtual oneof fields
-    var firstOneOf = true;;
+    var firstOneOf = true;
     type.oneofsArray.forEach(function(oneof) {
         if (firstOneOf) {
             firstOneOf = false;
             push("");
             if (config.comments)
                 push("// OneOf field names bound to virtual getters and setters");
-            push("var $oneOfFields;");
+            push((config.es6 ? "let" : "var") + " $oneOfFields;");
         }
         oneof.resolve();
         push("");
@@ -364,7 +367,7 @@ function buildType(ref, type) {
         push("");
         if (config.comments)
             push("// Lazily resolved type references");
-        push("var $types = {");
+        push((config.es6 ? "const" : "var") + " $types = {");
         ++indent;
             types.forEach(function(line, i) {
                 push(line + (i === types.length - 1 ? "" : ","));
@@ -609,8 +612,7 @@ function buildEnum(ref, enm) {
     pushComment(comment);
     push(name(ref) + "." + name(enm.name) + " = (function() {");
     ++indent;
-        push("var valuesById = {},");
-        push("    values = Object.create(valuesById);");
+        push((config.es6 ? "const" : "var") + " valuesById = {}, values = Object.create(valuesById);");
         Object.keys(enm.values).forEach(function(key) {
             var val = enm.values[key];
             push("values[valuesById[" + val + "] = " + JSON.stringify(key) + "] = " + val + ";");
