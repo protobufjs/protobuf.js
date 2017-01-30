@@ -5,17 +5,6 @@
 
 **protobuf.js** is a pure JavaScript implementation with TypeScript support for node and the browser. It's super easy to use, blazingly fast and works out of the box on .proto files!
 
-**Recommended read:** [Changes in protobuf.js 6.0](https://github.com/dcodeIO/protobuf.js/wiki/Changes-in-protobuf.js-6.0)
-
-Features
---------
-* Optimized [for performance](#performance)
-* Excellent [browser support](#compatibility)
-* Managed [TypeScript definitions](#usage-with-typescript)
-* Elaborate [API documentation](#documentation)
-* Convenient [CLI utilities](#command-line)
-* Seamless [browserify integration](#browserify-integration)
-
 Contents
 --------
 
@@ -87,7 +76,7 @@ There is a suitable distribution for each of these:
 |---------|---------|------------------------------|---------------------------------|-------------
 | full    | 18.5kb  | [dist][dist-full]            | `require("protobufjs")`         | All features. Works with everything.
 | light   | 15.5kb  | [dist/light][dist-light]     | `require("protobufjs/light")`   | All features except tokenizer, parser and bundled common types. Works with JSON definitions, pure reflection and static code.
-| minimal | 6.0kb+  | [dist/minimal][dist-minimal] | `require("protobufjs/minimal")` | Just enough to run static code - and nothing else.
+| minimal | 6.0kb+  | [dist/minimal][dist-minimal] | `require("protobufjs/minimal")` | Just enough to run static code. No reflection.
 
 In case of doubt you can just use the full library.
 
@@ -96,7 +85,7 @@ Examples
 
 ### Using .proto files
 
-It's possible to load existing .proto files using the full library, which parses and compiles the definitions to ready to use runtime message classes:
+It's possible to load existing .proto files using the full library, which parses and compiles the definitions to ready to use reflection-based runtime message classes:
 
 ```protobuf
 // awesome.proto
@@ -237,7 +226,7 @@ AwesomeMessage.prototype.customInstanceMethod = function() { ... };
 
 ### Using services
 
-The library also supports services but it doesn't make any assumptions about the actual transport channel. Instead, a user must provide a suitable RPC implementation, which is an asynchronous function that takes the reflected service method, the binary HelloRequest and a node-style callback as its parameters:
+The library also supports services but it doesn't make any assumptions about the actual transport channel. Instead, a user must provide a suitable RPC implementation, which is an asynchronous function that takes the reflected service method, the binary request and a node-style callback as its parameters:
 
 ```js
 function rpcImpl(method, requestData, callback) {
@@ -270,14 +259,14 @@ message HelloReply {
 ```js
 ...
 var Greeter = root.lookup("Greeter");
-var greeter = Greeter.create(/* see below */ rpcImpl, /* request delimited? */ false, /* response delimited? */ false);
+var greeter = Greeter.create(/* see above */ rpcImpl, /* request delimited? */ false, /* response delimited? */ false);
 
 greeter.sayHello({ name: 'you' }, function(err, response) {
     console.log('Greeting:', response.message);
 });
 ```
 
-Services can also be used with promises instead of node-style callbacks:
+Services also support promises:
 
 ```js
 greeter.sayHello({ name: 'you' })
@@ -466,9 +455,9 @@ $> pbjs -t static-module file1.proto file2.proto | pbts -o bundle.d.ts -
 
 ### On reflection vs. static code
 
-While using .proto files directly requires the [full library][dist-full] (about 18.5kb gzipped) respectively pure reflection/JSON the [light library][dist-light] (about 15.5kb gzipped), pretty much all code but the relatively short descriptors is shared.
+While using .proto files directly requires the [full library][dist-full] respectively pure reflection/JSON the [light library][dist-light], pretty much all code but the relatively short descriptors is shared.
 
-Static code, on the other hand, requires just the [minimal library][dist-minimal] (about 6kb gzipped), but generates additional, albeit editable, source code without any reflection features.
+Static code, on the other hand, requires just the [minimal library][dist-minimal], but generates additional, albeit editable, source code without any reflection features.
 
 There is no significant difference performance-wise as the code generated statically is pretty much the same as generated at runtime and both are largely interchangeable as seen in the previous section.
 
