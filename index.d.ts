@@ -2167,9 +2167,9 @@ export namespace util {
     /**
      * Creates a new buffer of whatever type supported by the environment.
      * @param {number|number[]} [sizeOrArray=0] Buffer size or number array
-     * @returns {Uint8Array} Buffer
+     * @returns {Uint8Array|Buffer} Buffer
      */
-    function newBuffer(sizeOrArray?: (number|number[])): Uint8Array;
+    function newBuffer(sizeOrArray?: (number|number[])): (Uint8Array|Buffer);
 
     /**
      * Array implementation used in the browser. `Uint8Array` if supported, otherwise `Array`.
@@ -2721,13 +2721,6 @@ export class BufferWriter extends Writer {
      * @returns {Buffer} Buffer
      */
     static alloc(size: number): Buffer;
-
-    /**
-     * Writes a sequence of bytes.
-     * @param {Buffer|string} value Buffer or base64 encoded string to write
-     * @returns {Writer} `this`
-     */
-    bytes(value: (Buffer|string)): Writer;
 
     /**
      * Finishes the write operation.

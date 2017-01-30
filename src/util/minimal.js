@@ -107,7 +107,7 @@ util._Buffer_allocUnsafe = null;
 /**
  * Creates a new buffer of whatever type supported by the environment.
  * @param {number|number[]} [sizeOrArray=0] Buffer size or number array
- * @returns {Uint8Array} Buffer
+ * @returns {Uint8Array|Buffer} Buffer
  */
 util.newBuffer = function newBuffer(sizeOrArray) {
     /* istanbul ignore next */

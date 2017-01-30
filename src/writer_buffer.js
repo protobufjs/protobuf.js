@@ -42,9 +42,7 @@ var writeBytesBuffer = Buffer && Buffer.prototype instanceof Uint8Array && Buffe
     };
 
 /**
- * Writes a sequence of bytes.
- * @param {Buffer|string} value Buffer or base64 encoded string to write
- * @returns {Writer} `this`
+ * @override
  */
 BufferWriter.prototype.bytes = function write_bytes_buffer(value) {
     if (util.isString(value))

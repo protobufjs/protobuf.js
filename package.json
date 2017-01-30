@@ -53,14 +53,14 @@
     "@protobufjs/inquire": "^1.1.0",
     "@protobufjs/path": "^1.1.1",
     "@protobufjs/pool": "^1.1.0",
-    "@protobufjs/utf8": "^1.1.0"
+    "@protobufjs/utf8": "^1.1.0",
+    "@types/node": "7.0.4"
   },
   "optionalDependencies": {
     "long": "^3.2.0",
     "@types/long": "^3.0.31"
   },
   "devDependencies": {
-    "@types/node": "7.0.4",
     "benchmark": "^2.1.3",
     "browserify": "^14.0.0",
     "browserify-wrap": "^1.0.2",
