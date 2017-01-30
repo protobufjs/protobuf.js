@@ -22,6 +22,9 @@ Contents
 * [Usage](#usage)<br />
   How to include protobuf.js in your project.
 
+* [Distributions](#distributions)<br />
+  A brief introduction to the available distributions and their use cases.
+
 * [Examples](#examples)<br />
   A few examples to get you started.
 
@@ -69,20 +72,31 @@ Production:
 
 The `protobuf` namespace will always be available globally / also supports AMD loaders.
 
-Additionally, the library is compiled in different versions. Which one to use depends on whether bundle size is a factor and your use case:
+Distributions
+-------------
 
-| Build   | Downloads                    | How to require                  | Description
-|---------|------------------------------|---------------------------------|-------------
-| full    | [dist][dist-full]            | `require("protobufjs")`         | All features. Works with everything.
-| light   | [dist/light][dist-light]     | `require("protobufjs/light")`   | All features except tokenizer, parser and bundled common types. Works with reflection, JSON definitions and static code.
-| minimal | [dist/minimal][dist-minimal] | `require("protobufjs/minimal")` | Just enough to run statically generated code. Works with static code only.
+The library supports both reflection-based and code-based use cases:
+
+1. Parsing protocol buffer definitions (.proto files) to reflection
+2. Loading JSON descriptors to reflection
+3. Generating static code without any reflection features
+
+There is a suitable distribution for each of these:
+
+| Build   | GZ Size | Downloads                    | How to require                  | Description
+|---------|---------|------------------------------|---------------------------------|-------------
+| full    | 18.5kb  | [dist][dist-full]            | `require("protobufjs")`         | All features. Works with everything.
+| light   | 15.5kb  | [dist/light][dist-light]     | `require("protobufjs/light")`   | All features except tokenizer, parser and bundled common types. Works with JSON definitions, pure reflection and static code.
+| minimal | 6.0kb+  | [dist/minimal][dist-minimal] | `require("protobufjs/minimal")` | Just enough to run static code - and nothing else.
+
+In case of doubt you can just use the full library.
 
 Examples
 --------
 
 ### Using .proto files
 
-It's super easy to load an existing .proto file using the full build, which parses and compiles the definitions to ready to use runtime message classes:
+It's possible to load existing .proto files using the full library, which parses and compiles the definitions to ready to use runtime message classes:
 
 ```protobuf
 // awesome.proto
@@ -131,7 +145,9 @@ protobuf.load("awesome.proto")
 
 ### Using JSON descriptors
 
-The library utilizes a JSON format that is equivalent to a .proto definition (see also: [Command line usage](#command-line)). The following is identical to the .proto definition seen above:
+The library utilizes a JSON format that is equivalent to a .proto definition (see also: [Command line usage](#command-line)).
+
+The following is identical to the .proto definition seen above, but it can also be used with just the light library because it doesn't require the parser:
 
 ```json
 // awesome.json
@@ -162,15 +178,16 @@ protobuf.load("awesome.json", function(err, root) {
 Or you can load it inline:
 
 ```js
-var root = protobuf.Root.fromJSON(descriptorJson);
+var jsonDescriptor = require("./awesome.json"); // exemplary for node
+
+var root = protobuf.Root.fromJSON(jsonDescriptor);
 
 // Continue at "Obtain a message type" above
 ```
 
-
 ### Using reflection only
 
-Both the full and the light build include full reflection support. You could, for example, define the .proto definitions seen in the example above using just reflection:
+Both the full and the light library include full reflection support. You could, for example, define the .proto definitions seen in the examples above using just reflection:
 
 ```js
 ...
@@ -218,11 +235,20 @@ AwesomeMessage.prototype.customInstanceMethod = function() { ... };
 * `AwesomeMessage.verify`
 * `AwesomeMessage.fromObject`, `AwesomeMessage.toObject`, `AwesomeMessage#toObject` and `AwesomeMessage#toJSON`
 
-### Using the Reader/Writer interface directly
-
-While only useful for the adventurous cherishing an aversion to [generated static code](https://github.com/dcodeIO/protobuf.js#command-line), it's also possible to use the Reader/Writer interface directly depending just on the [minimal library][dist-minimal] ([basic example](https://github.com/dcodeIO/protobuf.js/blob/master/examples/reader-writer.js)). Easy ways to obtain example code snippets are either setting `protobuf.util.codegen.verbose = true` while watching the console as code generation happens, or simply inspecting generated static code.
-
 ### Using services
+
+The library also supports services but it doesn't make any assumptions about the actual transport channel. Instead, a user must provide a suitable RPC implementation, which is an asynchronous function that takes the reflected service method, the binary HelloRequest and a node-style callback as its parameters:
+
+```js
+function rpcImpl(method, requestData, callback) {
+    // perform the request using an HTTP request or a WebSocket for example
+    var responseData = ...;
+    // and call the callback with the binary response afterwards:
+    callback(null, responseData);
+}
+```
+
+Example:
 
 ```protobuf
 // greeter.proto
@@ -258,17 +284,6 @@ greeter.sayHello({ name: 'you' })
     .then(function(response) {
         console.log('Greeting:', response.message);
     });
-```
-
-To make this work, all you have to do is provide an `rpcImpl`, which is an asynchronous function that takes the reflected service method, the binary HelloRequest and a node-style callback as its parameters. For example:
-
-```js
-function rpcImpl(method, requestData, callback) {
-    // perform the request using an HTTP request or a WebSocket for example
-    var responseData = ...;
-    // and call the callback with the binary response afterwards:
-    callback(null, responseData);
-}
 ```
 
 There is also an [example for streaming RPC](https://github.com/dcodeIO/protobuf.js/blob/master/examples/streaming-rpc.js).
