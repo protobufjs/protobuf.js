@@ -43,8 +43,8 @@ function Reader(buffer) {
 /**
  * Creates a new reader using the specified buffer.
  * @function
- * @param {Uint8Array} buffer Buffer to read from
- * @returns {BufferReader|Reader} A {@link BufferReader} if `buffer` is a Buffer, otherwise a {@link Reader}
+ * @param {Uint8Array|Buffer} buffer Buffer to read from
+ * @returns {Reader|BufferReader} A {@link BufferReader} if `buffer` is a Buffer, otherwise a {@link Reader}
  */
 Reader.create = util.Buffer
     ? function create_buffer_setup(buffer) {

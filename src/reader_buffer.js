@@ -16,6 +16,12 @@ var util = require("./util/minimal");
  */
 function BufferReader(buffer) {
     Reader.call(this, buffer);
+
+    /**
+     * Read buffer.
+     * @name BufferReader#buf
+     * @type {Buffer}
+     */
 }
 
 /* istanbul ignore else */
@@ -29,3 +35,10 @@ BufferReader.prototype.string = function read_string_buffer() {
     var len = this.uint32(); // modifies pos
     return this.buf.utf8Slice(this.pos, this.pos = Math.min(this.pos + len, this.len));
 };
+
+/**
+ * Reads a sequence of bytes preceeded by its length as a varint.
+ * @name BufferReader#bytes
+ * @function
+ * @returns {Buffer} Value read
+ */

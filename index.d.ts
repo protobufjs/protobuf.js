@@ -1174,10 +1174,10 @@ export class Reader {
     /**
      * Creates a new reader using the specified buffer.
      * @function
-     * @param {Uint8Array} buffer Buffer to read from
-     * @returns {BufferReader|Reader} A {@link BufferReader} if `buffer` is a Buffer, otherwise a {@link Reader}
+     * @param {Uint8Array|Buffer} buffer Buffer to read from
+     * @returns {Reader|BufferReader} A {@link BufferReader} if `buffer` is a Buffer, otherwise a {@link Reader}
      */
-    static create(buffer: Uint8Array): (BufferReader|Reader);
+    static create(buffer: (Uint8Array|Buffer)): (Reader|BufferReader);
 
     /**
      * Reads a varint as an unsigned 32 bit value.
@@ -1314,6 +1314,21 @@ export class BufferReader extends Reader {
      * @param {Buffer} buffer Buffer to read from
      */
     constructor(buffer: Buffer);
+
+    /**
+     * Read buffer.
+     * @name BufferReader#buf
+     * @type {Buffer}
+     */
+    buf: Buffer;
+
+    /**
+     * Reads a sequence of bytes preceeded by its length as a varint.
+     * @name BufferReader#bytes
+     * @function
+     * @returns {Buffer} Value read
+     */
+    bytes(): Buffer;
 }
 
 /**
@@ -2703,9 +2718,24 @@ export class BufferWriter extends Writer {
     /**
      * Allocates a buffer of the specified size.
      * @param {number} size Buffer size
-     * @returns {Uint8Array} Buffer
+     * @returns {Buffer} Buffer
      */
-    static alloc(size: number): Uint8Array;
+    static alloc(size: number): Buffer;
+
+    /**
+     * Writes a sequence of bytes.
+     * @param {Buffer|string} value Buffer or base64 encoded string to write
+     * @returns {Writer} `this`
+     */
+    bytes(value: (Buffer|string)): Writer;
+
+    /**
+     * Finishes the write operation.
+     * @name BufferWriter#finish
+     * @function
+     * @returns {Buffer} Finished buffer
+     */
+    finish(): Buffer;
 }
 
 /**
