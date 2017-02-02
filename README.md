@@ -3,7 +3,7 @@
 
 **Protocol Buffers** are a language-neutral, platform-neutral, extensible way of serializing structured data for use in communications protocols, data storage, and more, originally designed at Google ([see](https://developers.google.com/protocol-buffers/)).
 
-**protobuf.js** is a pure JavaScript implementation with TypeScript support for node and the browser. It's super easy to use, blazingly fast and works out of the box on .proto files!
+**protobuf.js** is a pure JavaScript implementation with [TypeScript](https://www.typescriptlang.org) support for [node.js](https://nodejs.org) and the browser. It's super easy to use, blazingly fast and works out of the box with [.proto](https://developers.google.com/protocol-buffers/docs/proto) files!
 
 Contents
 --------
@@ -111,7 +111,7 @@ protobuf.load("awesome.proto", function(err, root) {
     // Create a new message
     var message = AwesomeMessage.create({ awesomeField: "AwesomeString" });
 
-    // Encode a message
+    // Encode a message to an Uint8Array (browser) or Buffer (node)
     var buffer = AwesomeMessage.encode(message).finish();
     // ... do something with buffer
 
@@ -119,7 +119,7 @@ protobuf.load("awesome.proto", function(err, root) {
     var buffer = AwesomeMessage.encode({ awesomeField: "AwesomeString" }).finish();
     // ... do something with buffer
 
-    // Decode a buffer
+    // Decode an Uint8Array (browser) or Buffer (node) to a message
     var message = AwesomeMessage.decode(buffer);
     // ... do something with message
 
@@ -219,6 +219,8 @@ AwesomeMessage.prototype.customInstanceMethod = function() { ... };
 
 // Continue at "Create a message" above (you can also use the constructor directly)
 ```
+
+Afterwards, decoded messages of this type are `instanceof AwesomeMessage`.
 
 (*) Besides referencing its reflected type through `AwesomeMessage.$type` and `AwesomeMesage#$type`, the respective custom class is automatically populated with:
 
@@ -390,7 +392,7 @@ Consolidates imports and converts between file formats.
 usage: pbjs [options] file1.proto file2.json ...  (or)  other | pbjs [options] -
 ```
 
-For production environments it is recommended to bundle all your .proto files to a single .json file, which reduces the number of network requests and parser invocations required:
+For production environments it is recommended to bundle all your .proto files to a single .json file, which minimizes the number of network requests and avoids any parser overhead (hint: works with just the [light library](#distributions)):
 
 ```
 $> pbjs -t json file1.proto file2.proto > bundle.json
@@ -410,7 +412,7 @@ protobuf.load("bundle.json", function(err, root) {
 });
 ```
 
-As you might have noticed, `pbjs` is also capable of generating static code. For example
+The `pbjs` utility is also capable of generating static code (hint: works with just the [minimal library](#distributions)). For example
 
 ```
 $> pbjs -t static-module -w commonjs -o compiled.js file1.proto file2.proto
