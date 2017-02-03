@@ -1,6 +1,6 @@
 {
   "name": "protobufjs",
-  "version": "6.6.3",
+  "version": "6.6.4",
   "versionScheme": "~",
   "description": "Protocol Buffers for JavaScript (& TypeScript).",
   "author": "Daniel Wirtz <dcode+protobufjs@dcode.io>",
@@ -13,11 +13,9 @@
   "homepage": "http://dcode.io/protobuf.js",
   "keywords": [
     "protobuf",
-    "protocol",
-    "buffers",
-    "protocol buffers",
+    "protocol-buffers",
     "serialization",
-    "encoding"
+    "typescript"
   ],
   "main": "index.js",
   "types": "index.d.ts",
@@ -69,7 +67,7 @@
     "coveralls": "^2.11.15",
     "escodegen": "^1.8.1",
     "eslint": "^3.14.1",
-    "esprima": "^3.1.3",
+    "espree": "^3.1.3",
     "estraverse": "^4.2.0",
     "gh-pages": "^0.12.0",
     "git-raw-commits": "^1.1.2",
@@ -89,13 +87,11 @@
     "tap-spec": "^4.1.1",
     "tape": "^4.6.3",
     "tmp": "0.0.31",
-    "typescript": "^2.1.5",
+    "typescript": "^2.2.0",
     "uglify-js": "^2.7.5",
     "vinyl-buffer": "^1.0.0",
     "vinyl-fs": "^2.4.4",
-    "vinyl-source-stream": "^1.1.0",
-    "zuul": "^3.11.1",
-    "zuul-ngrok": "^4.0.0"
+    "vinyl-source-stream": "^1.1.0"
   },
   "cliDependencies": [
     "semver",
@@ -105,7 +101,7 @@
     "minimist",
     "tmp",
     "uglify-js",
-    "esprima",
+    "espree",
     "escodegen",
     "estraverse"
   ]

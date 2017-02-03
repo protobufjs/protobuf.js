@@ -4,7 +4,7 @@ module.exports = static_target;
 var protobuf   = require("../.."),
     cliUtil    = require("../util"),
     UglifyJS   = require("uglify-js"),
-    esprima    = require("esprima"),
+    espree     = require("espree"),
     escodegen  = require("escodegen"),
     estraverse = require("estraverse");
 
@@ -161,7 +161,7 @@ function beautifyCode(code) {
         }
     }).code;
     // Properly beautify
-    var ast = esprima.parse(code);
+    var ast = espree.parse(code);
     estraverse.replace(ast, {
         enter: function(node, parent) {
             // rename short vars

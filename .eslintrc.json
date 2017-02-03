@@ -4,6 +4,7 @@
         "browser": true
     },
     "globals": {
+        "ArrayBuffer": true,
         "Uint8Array": true,
         "Float32Array": true,
         "Float64Array": true,

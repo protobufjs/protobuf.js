@@ -1,6 +1,6 @@
 /*!
- * protobuf.js v6.6.3 (c) 2016, Daniel Wirtz
- * Compiled Mon, 30 Jan 2017 18:36:56 UTC
+ * protobuf.js v6.6.4 (c) 2016, Daniel Wirtz
+ * Compiled Fri, 03 Feb 2017 17:27:04 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -1722,6 +1722,7 @@ util.toJSONOptions = {
 
 util._configure = function() {
     var Buffer = util.Buffer;
+    /* istanbul ignore if */
     if (!Buffer) {
         util._Buffer_from = util._Buffer_allocUnsafe = null;
         return;

@@ -24,7 +24,7 @@ tape.test("reusing", function(test) {
         }, writer);
 
         B.encodeDelimited({
-            b: 'a'
+            b: "a"
         }, writer);
 
         var buffer = writer.finish();
@@ -45,7 +45,7 @@ tape.test("reusing", function(test) {
             test.deepEqual(a, { a: 1 }, "read back the first message");
 
             var b = B.decodeDelimited(reader);
-            test.deepEqual(b, { b: 'a' }, "read back the second message");
+            test.deepEqual(b, { b: "a" }, "read back the second message");
 
             test.equal(reader.pos, reader.len, "consume the reader");
 

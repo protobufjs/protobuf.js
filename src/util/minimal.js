@@ -253,6 +253,7 @@ util.toJSONOptions = {
 
 util._configure = function() {
     var Buffer = util.Buffer;
+    /* istanbul ignore if */
     if (!Buffer) {
         util._Buffer_from = util._Buffer_allocUnsafe = null;
         return;

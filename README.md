@@ -418,7 +418,7 @@ The `pbjs` utility is also capable of generating static code (hint: works with j
 $> pbjs -t static-module -w commonjs -o compiled.js file1.proto file2.proto
 ```
 
-will generate static code for definitions within `file1.proto` and `file2.proto` to a CommonJS module `compiled.js`, which then can be used with just the [minimal library](#distributions).
+will generate static code for definitions within `file1.proto` and `file2.proto` to a CommonJS module `compiled.js`.
 
 **ProTip!** Documenting your .proto files with `/** ... */`-blocks or (trailing) `/// ...` lines translates to generated static code.
 
@@ -465,9 +465,9 @@ $> pbjs -t static-module file1.proto file2.proto | pbts -o bundle.d.ts -
 
 ### On reflection vs. static code
 
-While using .proto files directly requires the [full library](#distributions) respectively pure reflection/JSON the [light library](#distributions), pretty much all code but the relatively short descriptors is shared.
+While using .proto files directly requires the full library respectively pure reflection/JSON the light library, pretty much all code but the relatively short descriptors is shared.
 
-Static code, on the other hand, requires just the [minimal library](#distributions), but generates additional, albeit editable, source code without any reflection features.
+Static code, on the other hand, requires just the minimal library, but generates additional, albeit editable, source code without any reflection features.
 
 There is no significant difference performance-wise as the code generated statically is pretty much the same as generated at runtime and both are largely interchangeable as seen in the previous section.
 

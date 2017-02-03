@@ -8,7 +8,7 @@ function defineTask(name, entry, target) {
         entry    : entry,
         target   : target
     }));
-    gulp.task(name + "-minify" , bundle.bind(this, {
+    gulp.task(name + "-minify" , [ name + "-bundle" ], bundle.bind(this, {
         entry    : entry,
         target   : target,
         compress : true

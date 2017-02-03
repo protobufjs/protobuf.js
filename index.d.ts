@@ -1813,7 +1813,6 @@ export class Type extends NamespaceBase {
  * @property {boolean} [arrays=false] Sets empty arrays for missing repeated fields even if `defaults=false`
  * @property {boolean} [objects=false] Sets empty objects for missing map fields even if `defaults=false`
  */
-
 interface ConversionOptions {
     longs?: any;
     enums?: any;
@@ -1997,7 +1996,6 @@ export namespace types {
  * @property {number} high High bits
  * @property {boolean} unsigned Whether unsigned or not
  */
-
 interface Long {
     low: number;
     high: number;
@@ -2760,7 +2758,6 @@ type FetchCallback = (error: Error, contents?: string) => void;
  * @property {boolean} [binary=false] Whether expecting a binary response
  * @property {boolean} [xhr=false] If `true`, forces the use of XMLHttpRequest
  */
-
 interface FetchOptions {
     binary?: boolean;
     xhr?: boolean;
