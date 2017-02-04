@@ -52,6 +52,12 @@ function ReflectionObject(name, options) {
      * @type {?string}
      */
     this.comment = null;
+
+    /**
+     * Defining file name.
+     * @type {?string}
+     */
+    this.filename = null;
 }
 
 Object.defineProperties(ReflectionObject.prototype, {

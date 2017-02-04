@@ -94,9 +94,10 @@ function parse(source, root, options) {
     var applyCase = options.keepCase ? function(name) { return name; } : camelCase;
 
     /* istanbul ignore next */
-    function illegal(token, name) {
+    function illegal(token, name, insideTryCatch) {
         var filename = parse.filename;
-        parse.filename = null;
+        if (!insideTryCatch)
+            parse.filename = null;
         return Error("illegal " + (name || "token") + " '" + token + "' (" + (filename ? filename + ", " : "") + "line " + tn.line() + ")");
     }
 
@@ -127,7 +128,7 @@ function parse(source, root, options) {
                 return false;
         }
         try {
-            return parseNumber(token);
+            return parseNumber(token, /* insideTryCatch */ true);
         } catch (e) {
             /* istanbul ignore else */
             if (acceptTypeRef && isTypeRef(token))
@@ -146,7 +147,7 @@ function parse(source, root, options) {
         return [ start, end ];
     }
 
-    function parseNumber(token) {
+    function parseNumber(token, insideTryCatch) {
         var sign = 1;
         if (token.charAt(0) === "-") {
             sign = -1;
@@ -167,7 +168,7 @@ function parse(source, root, options) {
         if (/^(?!e)[0-9]*(?:\.[0-9]*)?(?:[e][+-]?[0-9]+)?$/.test(tokenLower))
             return sign * parseFloat(token);
         /* istanbul ignore next */
-        throw illegal(token, "number");
+        throw illegal(token, "number", insideTryCatch);
     }
 
     function parseId(token, acceptNegative) {
@@ -266,6 +267,7 @@ function parse(source, root, options) {
             throw illegal(name, "type name");
         var type = new Type(name);
         type.comment = cmnt();
+        type.filename = parse.filename;
         if (skip("{", true)) {
             while ((token = next()) !== "}") {
                 var tokenLower = lower(token);
@@ -328,6 +330,7 @@ function parse(source, root, options) {
         var field = new Field(name, parseId(next()), type, rule, extend),
             trailingLine = tn.line();
         field.comment = cmnt();
+        field.filename = parse.filename;
         parseInlineOptions(field);
         if (!field.comment)
             field.comment = cmnt(trailingLine);
@@ -352,6 +355,7 @@ function parse(source, root, options) {
         type.group = true;
         type.comment = cmnt();
         var field = new Field(fieldName, id, name, rule);
+        type.filename = field.filename = parse.filename;
         skip("{");
         while ((token = next()) !== "}") {
             switch (token = lower(token)) {
@@ -397,6 +401,7 @@ function parse(source, root, options) {
         var field = new MapField(name, parseId(next()), keyType, valueType),
             trailingLine = tn.line();
         field.comment = cmnt();
+        field.filename = parse.filename;
         parseInlineOptions(field);
         if (!field.comment)
             field.comment = cmnt(trailingLine);
@@ -414,6 +419,7 @@ function parse(source, root, options) {
         var oneof = new OneOf(name),
             trailingLine = tn.line();
         oneof.comment = cmnt();
+        oneof.filename = parse.filename;
         if (skip("{", true)) {
             while ((token = next()) !== "}") {
                 if (token === "option") {
@@ -442,6 +448,7 @@ function parse(source, root, options) {
 
         var enm = new Enum(name);
         enm.comment = cmnt();
+        enm.filename = parse.filename;
         if (skip("{", true)) {
             while ((token = next()) !== "}") {
                 if (lower(token) === "option") {
@@ -537,6 +544,7 @@ function parse(source, root, options) {
         var name = token;
         var service = new Service(name);
         service.comment = cmnt();
+        service.filename = parse.filename;
         if (skip("{", true)) {
             while ((token = next()) !== "}") {
                 var tokenLower = lower(token);
@@ -588,6 +596,7 @@ function parse(source, root, options) {
         var method = new Method(name, type, requestType, responseType, requestStream, responseStream),
             trailingLine = tn.line();
         method.comment = cmnt();
+        method.filename = parse.filename;
         if (skip("{", true)) {
             while ((token = next()) !== "}") {
                 var tokenLower = lower(token);

@@ -221,12 +221,13 @@ Field.prototype.resolve = function resolve() {
         if (!Type)
             Type = require("./type");
 
-        if (this.resolvedType = this.parent.lookup(this.type, Type))
+        var scope = this.declaringField ? this.declaringField.parent : this.parent;
+        if (this.resolvedType = scope.lookup(this.type, Type))
             this.typeDefault = null;
-        else if (this.resolvedType = this.parent.lookup(this.type, Enum))
+        else if (this.resolvedType = scope.lookup(this.type, Enum))
             this.typeDefault = this.resolvedType.values[Object.keys(this.resolvedType.values)[0]]; // first defined
         else
-            throw Error("unresolvable field type: " + this.type);
+            throw Error("unresolvable field type: " + this.type + " in " + scope);
     }
 
     // use explicitly set default value if present

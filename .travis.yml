@@ -5,17 +5,19 @@ node_js:
   - 4.3.2
   - 6
   - 7
+branches:
+  only: master
+script: npm test && npm run bench
+
 env: CXX=g++-4.8
 addons:
   apt:
     sources: ubuntu-toolchain-r-test
     packages: g++-4.8
-script: npm test && npm run bench
-branches:
-  only: master
+
 matrix:
   include:
   - node_js: 6
-    script: set -e; if [ -n "$SAUCE_USERNAME" ]; then npm install zuul@3.11.1 zuul-ngrok@4.0.0; travis_wait npm run zuul; sleep 3; fi
+    script: set -e; if [ -n "$SAUCE_USERNAME" ]; then npm install zuul@^3.11.1 zuul-ngrok@^4.0.0; travis_wait npm run zuul; sleep 3; fi
   - node_js: 6
-    script: npm run coverage-ci
+    script: npm install coveralls@^2.11.15; npm run coverage-ci

@@ -33,6 +33,38 @@ exports.requireAll = function requireAll(dirname) {
     return all;
 };
 
+exports.traverse = function traverse(current, fn) {
+    fn(current);
+    if (current.fieldsArray)
+        current.fieldsArray.forEach(function(field) {
+            traverse(field, fn);
+        });
+    if (current.oneofsArray)
+        current.oneofsArray.forEach(function(oneof) {
+            traverse(oneof, fn);
+        });
+    if (current.methodsArray)
+        current.methodsArray.forEach(function(method) {
+            traverse(method, fn);
+        });
+    if (current.nestedArray)
+        current.nestedArray.forEach(function(nested) {
+            traverse(nested, fn);
+        });
+};
+
+exports.traverseResolved = function traverseResolved(current, fn) {
+    fn(current);
+    if (current.resolvedType)
+        traverseResolved(current.resolvedType, fn);
+    if (current.resolvedKeyType)
+        traverseResolved(current.resolvedKeyType, fn);
+    if (current.resolvedRequestType)
+        traverseResolved(current.resolvedRequestType, fn);
+    if (current.resolvedResponseType)
+        traverseResolved(current.resolvedResponseType, fn);
+};
+
 exports.inspect = function inspect(object, indent) {
     if (!object)
         return "";

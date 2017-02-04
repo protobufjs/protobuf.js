@@ -185,6 +185,14 @@
                   "id": 2
                 }
               }
+            },
+            "SourceContext": {
+              "fields": {
+                "fileName": {
+                  "type": "string",
+                  "id": 1
+                }
+              }
             }
           }
         }

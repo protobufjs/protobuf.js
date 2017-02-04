@@ -31,7 +31,7 @@ exports.main = function(args, callback) {
             lint   : "l"
         },
         string: [ "target", "out", "path", "wrap", "root", "lint" ],
-        boolean: [ "keep-case", "create", "encode", "decode", "verify", "convert", "delimited", "beautify", "comments", "es6" ],
+        boolean: [ "keep-case", "create", "encode", "decode", "verify", "convert", "delimited", "beautify", "comments", "es6", "sparse" ],
         default: {
             target    : "json",
             create    : true,
@@ -50,6 +50,9 @@ exports.main = function(args, callback) {
     var target = targets[argv.target],
         files  = argv._,
         paths  = typeof argv.path === "string" ? [ argv.path ] : argv.path || [];
+
+    // protobuf.js package directory contains additional, otherwise non-bundled google types
+    paths.push(path.relative(process.cwd(), path.join(__dirname, "..")) || ".");
 
     if (!files.length) {
         var descs = Object.keys(targets).filter(function(key) { return !targets[key].private; }).map(function(key) {
@@ -70,6 +73,8 @@ exports.main = function(args, callback) {
                 "  -p, --path      Adds a directory to the include path.",
                 "",
                 "  -o, --out       Saves to a file instead of writing to stdout.",
+                "",
+                "  --sparse        Exports only those types referenced from a main file (experimental).",
                 "",
                 chalk.bold.gray("  Module targets only:"),
                 "",
@@ -124,17 +129,33 @@ exports.main = function(args, callback) {
 
     var root = new protobuf.Root();
 
+    var mainFiles = [];
+
     // Search include paths when resolving imports
     root.resolvePath = function pbjsResolvePath(origin, target) {
-        var filepath = protobuf.util.path.resolve(origin, target);
-        if (fs.existsSync(filepath))
-            return filepath;
-        for (var i = 0; i < paths.length; ++i) {
-            var ifilepath = protobuf.util.path.resolve(paths[i] + "/", target);
-            if (fs.existsSync(ifilepath))
-                return ifilepath;
+        var normOrigin = protobuf.util.path.normalize(origin),
+            normTarget = protobuf.util.path.normalize(target);
+        if (!normOrigin)
+            mainFiles.push(normTarget);
+
+        var resolved = protobuf.util.path.resolve(normOrigin, normTarget, true);
+        var idx = resolved.lastIndexOf("google/protobuf/");
+        if (idx > -1) {
+            var altname = resolved.substring(idx);
+            if (altname in protobuf.common)
+                resolved = altname;
         }
-        return filepath;
+
+        if (fs.existsSync(resolved))
+            return resolved;
+
+        for (var i = 0; i < paths.length; ++i) {
+            var iresolved = protobuf.util.path.resolve(paths[i] + "/", target);
+            if (fs.existsSync(iresolved))
+                return iresolved;
+        }
+
+        return resolved;
     };
 
     // Use es6 syntax if not explicitly specified on the command line and the es6 wrapper is used
@@ -153,19 +174,28 @@ exports.main = function(args, callback) {
         });
         process.stdin.on("end", function() {
             var source = Buffer.concat(data).toString("utf8");
-            if (source.charAt(0) !== "{") {
-                protobuf.parse(source, root, parseOptions);
-            } else {
-                var json = JSON.parse(source);
-                root.setOptions(json.options).addJSON(json);
+            try {
+                if (source.charAt(0) !== "{") {
+                    protobuf.parse.filename = "-";
+                    protobuf.parse(source, root, parseOptions);
+                } else {
+                    var json = JSON.parse(source);
+                    root.setOptions(json.options).addJSON(json);
+                }
+                callTarget();
+            } catch (err) {
+                if (callback)
+                    return callback(err);
+                throw err;
             }
-            callTarget();
         });
 
     // Load from disk
     } else {
         try {
-            root.loadSync(files, parseOptions); // sync is deterministic while async is not
+            root.loadSync(files, parseOptions).resolveAll(); // sync is deterministic while async is not
+            if (argv.sparse)
+                sparsify(root);
             callTarget();
         } catch (err) {
             if (callback) {
@@ -174,6 +204,62 @@ exports.main = function(args, callback) {
             }
             throw err;
         }
+    }
+
+    function markReferenced(tobj) {
+        tobj.referenced = true;
+        // also mark a type's fields and oneofs
+        if (tobj.fieldsArray)
+            tobj.fieldsArray.forEach(function(fobj) {
+                fobj.referenced = true;
+            });
+        if (tobj.oneofsArray)
+            tobj.oneofsArray.forEach(function(oobj) {
+                oobj.referenced = true;
+            });
+        // also mark an extension field's extended type, but not its (other) fields
+        if (tobj.extensionField)
+            tobj.extensionField.parent.referenced = true;
+    }
+
+    function sparsify(root) {
+
+        // 1. mark directly or indirectly referenced objects
+        util.traverse(root, function(obj) {
+            if (!obj.filename)
+                return;
+            if (mainFiles.indexOf(obj.filename) > -1)
+                util.traverseResolved(obj, markReferenced);
+        });
+
+        // 2. empty unreferenced objects
+        util.traverse(root, function(obj) {
+            var parent = obj.parent;
+            if (!parent || obj.referenced) // root or referenced
+                return;
+            // remove unreferenced namespaces
+            if (obj instanceof protobuf.Namespace) {
+                var hasReferenced = false;
+                util.traverse(obj, function(iobj) {
+                    if (iobj.referenced)
+                        hasReferenced = true;
+                });
+                if (hasReferenced) { // replace with plain namespace if a namespace subclass
+                    if (obj instanceof protobuf.Type || obj instanceof protobuf.Service) {
+                        var robj = new protobuf.Namespace(obj.name, obj.options);
+                        robj.nested = obj.nested;
+                        parent.add(robj);
+                    }
+                } else // remove completely if nothing inside is referenced
+                    parent.remove(obj);
+
+            // remove everything else unreferenced
+            } else if (!(obj instanceof protobuf.Namespace))
+                parent.remove(obj);
+        });
+
+        // 3. validate that everything is fine
+        root.resolveAll();
     }
 
     function callTarget() {
