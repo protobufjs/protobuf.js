@@ -960,6 +960,12 @@ export abstract class ReflectionObject {
     comment: string;
 
     /**
+     * Defining file name.
+     * @type {?string}
+     */
+    filename: string;
+
+    /**
      * Reference to the root namespace.
      * @name ReflectionObject#root
      * @type {Root}

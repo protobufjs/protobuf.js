@@ -270,7 +270,8 @@ Type.prototype.add = function add(object) {
         // The root object takes care of adding distinct sister-fields to the respective extended
         // type instead.
 
-        if (this.fieldsById[object.id])
+        // avoids calling the getter if not absolutely necessary because it's called quite frequently
+        if (this._fieldsById ? this._fieldsById[object.id] : this.fieldsById[object.id])
             throw Error("duplicate id " + object.id + " in " + this);
 
         if (object.parent)

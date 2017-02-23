@@ -118,11 +118,11 @@ function genVerifyKey(gen, field, ref) {
 function verifier(mtype) {
     /* eslint-disable no-unexpected-multiline */
 
-    if (/* initializes */ !mtype.fieldsArray.length)
-        return util.codegen()("return null");
-    var gen = util.codegen("m");
+    var gen = util.codegen("m")
+    ("if(typeof m!==\"object\"||m===null)")
+        ("return%j", "object expected");
 
-    for (var i = 0; i < mtype._fieldsArray.length; ++i) {
+    for (var i = 0; i < /* initializes */ mtype.fieldsArray.length; ++i) {
         var field = mtype._fieldsArray[i].resolve(),
             ref   = "m" + util.safeProp(field.name);
 

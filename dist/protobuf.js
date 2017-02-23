@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.6.4 (c) 2016, Daniel Wirtz
- * Compiled Fri, 03 Feb 2017 17:27:04 UTC
+ * Compiled Thu, 23 Feb 2017 02:41:46 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -2014,12 +2014,13 @@ Field.prototype.resolve = function resolve() {
         if (!Type)
             Type = require(34);
 
-        if (this.resolvedType = this.parent.lookup(this.type, Type))
+        var scope = this.declaringField ? this.declaringField.parent : this.parent;
+        if (this.resolvedType = scope.lookup(this.type, Type))
             this.typeDefault = null;
-        else if (this.resolvedType = this.parent.lookup(this.type, Enum))
+        else if (this.resolvedType = scope.lookup(this.type, Enum))
             this.typeDefault = this.resolvedType.values[Object.keys(this.resolvedType.values)[0]]; // first defined
         else
-            throw Error("unresolvable field type: " + this.type);
+            throw Error("unresolvable field type: " + this.type + " in " + scope);
     }
 
     // use explicitly set default value if present
@@ -2990,6 +2991,12 @@ function ReflectionObject(name, options) {
      * @type {?string}
      */
     this.comment = null;
+
+    /**
+     * Defining file name.
+     * @type {?string}
+     */
+    this.filename = null;
 }
 
 Object.defineProperties(ReflectionObject.prototype, {
@@ -3378,9 +3385,10 @@ function parse(source, root, options) {
     var applyCase = options.keepCase ? function(name) { return name; } : camelCase;
 
     /* istanbul ignore next */
-    function illegal(token, name) {
+    function illegal(token, name, insideTryCatch) {
         var filename = parse.filename;
-        parse.filename = null;
+        if (!insideTryCatch)
+            parse.filename = null;
         return Error("illegal " + (name || "token") + " '" + token + "' (" + (filename ? filename + ", " : "") + "line " + tn.line() + ")");
     }
 
@@ -3411,7 +3419,7 @@ function parse(source, root, options) {
                 return false;
         }
         try {
-            return parseNumber(token);
+            return parseNumber(token, /* insideTryCatch */ true);
         } catch (e) {
             /* istanbul ignore else */
             if (acceptTypeRef && isTypeRef(token))
@@ -3430,7 +3438,7 @@ function parse(source, root, options) {
         return [ start, end ];
     }
 
-    function parseNumber(token) {
+    function parseNumber(token, insideTryCatch) {
         var sign = 1;
         if (token.charAt(0) === "-") {
             sign = -1;
@@ -3451,7 +3459,7 @@ function parse(source, root, options) {
         if (/^(?!e)[0-9]*(?:\.[0-9]*)?(?:[e][+-]?[0-9]+)?$/.test(tokenLower))
             return sign * parseFloat(token);
         /* istanbul ignore next */
-        throw illegal(token, "number");
+        throw illegal(token, "number", insideTryCatch);
     }
 
     function parseId(token, acceptNegative) {
@@ -3550,6 +3558,7 @@ function parse(source, root, options) {
             throw illegal(name, "type name");
         var type = new Type(name);
         type.comment = cmnt();
+        type.filename = parse.filename;
         if (skip("{", true)) {
             while ((token = next()) !== "}") {
                 var tokenLower = lower(token);
@@ -3612,6 +3621,7 @@ function parse(source, root, options) {
         var field = new Field(name, parseId(next()), type, rule, extend),
             trailingLine = tn.line();
         field.comment = cmnt();
+        field.filename = parse.filename;
         parseInlineOptions(field);
         if (!field.comment)
             field.comment = cmnt(trailingLine);
@@ -3636,6 +3646,7 @@ function parse(source, root, options) {
         type.group = true;
         type.comment = cmnt();
         var field = new Field(fieldName, id, name, rule);
+        type.filename = field.filename = parse.filename;
         skip("{");
         while ((token = next()) !== "}") {
             switch (token = lower(token)) {
@@ -3681,6 +3692,7 @@ function parse(source, root, options) {
         var field = new MapField(name, parseId(next()), keyType, valueType),
             trailingLine = tn.line();
         field.comment = cmnt();
+        field.filename = parse.filename;
         parseInlineOptions(field);
         if (!field.comment)
             field.comment = cmnt(trailingLine);
@@ -3698,6 +3710,7 @@ function parse(source, root, options) {
         var oneof = new OneOf(name),
             trailingLine = tn.line();
         oneof.comment = cmnt();
+        oneof.filename = parse.filename;
         if (skip("{", true)) {
             while ((token = next()) !== "}") {
                 if (token === "option") {
@@ -3726,6 +3739,7 @@ function parse(source, root, options) {
 
         var enm = new Enum(name);
         enm.comment = cmnt();
+        enm.filename = parse.filename;
         if (skip("{", true)) {
             while ((token = next()) !== "}") {
                 if (lower(token) === "option") {
@@ -3821,6 +3835,7 @@ function parse(source, root, options) {
         var name = token;
         var service = new Service(name);
         service.comment = cmnt();
+        service.filename = parse.filename;
         if (skip("{", true)) {
             while ((token = next()) !== "}") {
                 var tokenLower = lower(token);
@@ -3872,6 +3887,7 @@ function parse(source, root, options) {
         var method = new Method(name, type, requestType, responseType, requestStream, responseStream),
             trailingLine = tn.line();
         method.comment = cmnt();
+        method.filename = parse.filename;
         if (skip("{", true)) {
             while ((token = next()) !== "}") {
                 var tokenLower = lower(token);
@@ -5780,7 +5796,8 @@ Type.prototype.add = function add(object) {
         // The root object takes care of adding distinct sister-fields to the respective extended
         // type instead.
 
-        if (this.fieldsById[object.id])
+        // avoids calling the getter if not absolutely necessary because it's called quite frequently
+        if (this._fieldsById ? this._fieldsById[object.id] : this.fieldsById[object.id])
             throw Error("duplicate id " + object.id + " in " + this);
 
         if (object.parent)
@@ -6820,11 +6837,11 @@ function genVerifyKey(gen, field, ref) {
 function verifier(mtype) {
     /* eslint-disable no-unexpected-multiline */
 
-    if (/* initializes */ !mtype.fieldsArray.length)
-        return util.codegen()("return null");
-    var gen = util.codegen("m");
+    var gen = util.codegen("m")
+    ("if(typeof m!==\"object\"||m===null)")
+        ("return%j", "object expected");
 
-    for (var i = 0; i < mtype._fieldsArray.length; ++i) {
+    for (var i = 0; i < /* initializes */ mtype.fieldsArray.length; ++i) {
         var field = mtype._fieldsArray[i].resolve(),
             ref   = "m" + util.safeProp(field.name);
 
