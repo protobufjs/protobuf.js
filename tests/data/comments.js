@@ -32,19 +32,19 @@ $root.Test1 = (function() {
 
     /**
      * Field with a comment.
-     * @type {string}
+     * @type {string|undefined}
      */
     Test1.prototype.field1 = "";
 
     /**
      * Test1 field2.
-     * @type {number}
+     * @type {number|undefined}
      */
     Test1.prototype.field2 = 0;
 
     /**
      * Field with a comment and a <a href="http://example.com/foo/">link</a>
-     * @type {boolean}
+     * @type {boolean|undefined}
      */
     Test1.prototype.field3 = false;
 
@@ -132,6 +132,8 @@ $root.Test1 = (function() {
      * @returns {?string} `null` if valid, otherwise the reason why it is not
      */
     Test1.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
         if (message.field1 !== undefined)
             if (!$util.isString(message.field1))
                 return "field1: string expected";
@@ -297,7 +299,9 @@ $root.Test2 = (function() {
      * @param {Test2|Object} message Test2 message or plain object to verify
      * @returns {?string} `null` if valid, otherwise the reason why it is not
      */
-    Test2.verify = function verify() {
+    Test2.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
         return null;
     };
 
@@ -361,9 +365,9 @@ $root.Test2 = (function() {
  */
 $root.Test3 = (function() {
     var valuesById = {}, values = Object.create(valuesById);
-    values[valuesById[1] = "ONE"] = 1;
-    values[valuesById[2] = "TWO"] = 2;
-    values[valuesById[3] = "THREE"] = 3;
+    values["ONE"] = 1;
+    values["TWO"] = 2;
+    values["THREE"] = 3;
     return values;
 })();
 

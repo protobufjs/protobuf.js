@@ -613,9 +613,15 @@ function buildEnum(ref, enm) {
     push(name(ref) + "." + name(enm.name) + " = (function() {");
     ++indent;
         push((config.es6 ? "const" : "var") + " valuesById = {}, values = Object.create(valuesById);");
+        var aliased = [];
         Object.keys(enm.values).forEach(function(key) {
             var val = enm.values[key];
-            push("values[valuesById[" + val + "] = " + JSON.stringify(key) + "] = " + val + ";");
+            if (aliased.indexOf(val) >= -1)
+                push("values[" + JSON.stringify(key) + "] = " + val + ";");
+            else {
+                push("values[valuesById[" + val + "] = " + JSON.stringify(key) + "] = " + val + ";");
+                aliased.push(val);
+            }
         });
         push("return values;");
     --indent;

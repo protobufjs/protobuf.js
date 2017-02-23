@@ -28,109 +28,109 @@ $root.Package = (function() {
 
     /**
      * Package name.
-     * @type {string}
+     * @type {string|undefined}
      */
     Package.prototype.name = "";
 
     /**
      * Package version.
-     * @type {string}
+     * @type {string|undefined}
      */
     Package.prototype.version = "";
 
     /**
      * Package versionScheme.
-     * @type {string}
+     * @type {string|undefined}
      */
     Package.prototype.versionScheme = "";
 
     /**
      * Package description.
-     * @type {string}
+     * @type {string|undefined}
      */
     Package.prototype.description = "";
 
     /**
      * Package author.
-     * @type {string}
+     * @type {string|undefined}
      */
     Package.prototype.author = "";
 
     /**
      * Package license.
-     * @type {string}
+     * @type {string|undefined}
      */
     Package.prototype.license = "";
 
     /**
      * Package repository.
-     * @type {Package.Repository}
+     * @type {Package.Repository|undefined}
      */
     Package.prototype.repository = null;
 
     /**
      * Package bugs.
-     * @type {string}
+     * @type {string|undefined}
      */
     Package.prototype.bugs = "";
 
     /**
      * Package homepage.
-     * @type {string}
+     * @type {string|undefined}
      */
     Package.prototype.homepage = "";
 
     /**
      * Package keywords.
-     * @type {Array.<string>}
+     * @type {Array.<string>|undefined}
      */
     Package.prototype.keywords = $util.emptyArray;
 
     /**
      * Package main.
-     * @type {string}
+     * @type {string|undefined}
      */
     Package.prototype.main = "";
 
     /**
      * Package bin.
-     * @type {Object.<string,string>}
+     * @type {Object.<string,string>|undefined}
      */
     Package.prototype.bin = $util.emptyObject;
 
     /**
      * Package scripts.
-     * @type {Object.<string,string>}
+     * @type {Object.<string,string>|undefined}
      */
     Package.prototype.scripts = $util.emptyObject;
 
     /**
      * Package dependencies.
-     * @type {Object.<string,string>}
+     * @type {Object.<string,string>|undefined}
      */
     Package.prototype.dependencies = $util.emptyObject;
 
     /**
      * Package optionalDependencies.
-     * @type {Object.<string,string>}
+     * @type {Object.<string,string>|undefined}
      */
     Package.prototype.optionalDependencies = $util.emptyObject;
 
     /**
      * Package devDependencies.
-     * @type {Object.<string,string>}
+     * @type {Object.<string,string>|undefined}
      */
     Package.prototype.devDependencies = $util.emptyObject;
 
     /**
      * Package types.
-     * @type {string}
+     * @type {string|undefined}
      */
     Package.prototype.types = "";
 
     /**
      * Package cliDependencies.
-     * @type {Array.<string>}
+     * @type {Array.<string>|undefined}
      */
     Package.prototype.cliDependencies = $util.emptyArray;
 
@@ -334,6 +334,8 @@ $root.Package = (function() {
      * @returns {?string} `null` if valid, otherwise the reason why it is not
      */
     Package.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
         if (message.name !== undefined)
             if (!$util.isString(message.name))
                 return "name: string expected";
@@ -648,13 +650,13 @@ $root.Package = (function() {
 
         /**
          * Repository type.
-         * @type {string}
+         * @type {string|undefined}
          */
         Repository.prototype.type = "";
 
         /**
          * Repository url.
-         * @type {string}
+         * @type {string|undefined}
          */
         Repository.prototype.url = "";
 
@@ -737,6 +739,8 @@ $root.Package = (function() {
          * @returns {?string} `null` if valid, otherwise the reason why it is not
          */
         Repository.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
             if (message.type !== undefined)
                 if (!$util.isString(message.type))
                     return "type: string expected";

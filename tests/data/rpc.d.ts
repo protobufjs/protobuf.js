@@ -11,7 +11,7 @@ type MyService_myMethod_Callback = (error: Error, response?: MyResponse) => void
 
 export class MyRequest {
     constructor(properties?: Object);
-    path: string;
+    path?: string;
     static create(properties?: Object): MyRequest;
     static encode(message: (MyRequest|Object), writer?: $protobuf.Writer): $protobuf.Writer;
     static encodeDelimited(message: (MyRequest|Object), writer?: $protobuf.Writer): $protobuf.Writer;
@@ -27,7 +27,7 @@ export class MyRequest {
 
 export class MyResponse {
     constructor(properties?: Object);
-    status: number;
+    status?: number;
     static create(properties?: Object): MyResponse;
     static encode(message: (MyResponse|Object), writer?: $protobuf.Writer): $protobuf.Writer;
     static encodeDelimited(message: (MyResponse|Object), writer?: $protobuf.Writer): $protobuf.Writer;

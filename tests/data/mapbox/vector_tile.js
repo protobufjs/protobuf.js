@@ -37,7 +37,7 @@ $root.vector_tile = (function() {
 
         /**
          * Tile layers.
-         * @type {Array.<vector_tile.Tile.Layer>}
+         * @type {Array.<vector_tile.Tile.Layer>|undefined}
          */
         Tile.prototype.layers = $util.emptyArray;
 
@@ -123,6 +123,8 @@ $root.vector_tile = (function() {
          * @returns {?string} `null` if valid, otherwise the reason why it is not
          */
         Tile.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
             if (message.layers !== undefined) {
                 if (!Array.isArray(message.layers))
                     return "layers: array expected";
@@ -215,10 +217,10 @@ $root.vector_tile = (function() {
          */
         Tile.GeomType = (function() {
             var valuesById = {}, values = Object.create(valuesById);
-            values[valuesById[0] = "UNKNOWN"] = 0;
-            values[valuesById[1] = "POINT"] = 1;
-            values[valuesById[2] = "LINESTRING"] = 2;
-            values[valuesById[3] = "POLYGON"] = 3;
+            values["UNKNOWN"] = 0;
+            values["POINT"] = 1;
+            values["LINESTRING"] = 2;
+            values["POLYGON"] = 3;
             return values;
         })();
 
@@ -238,43 +240,43 @@ $root.vector_tile = (function() {
 
             /**
              * Value stringValue.
-             * @type {string}
+             * @type {string|undefined}
              */
             Value.prototype.stringValue = "";
 
             /**
              * Value floatValue.
-             * @type {number}
+             * @type {number|undefined}
              */
             Value.prototype.floatValue = 0;
 
             /**
              * Value doubleValue.
-             * @type {number}
+             * @type {number|undefined}
              */
             Value.prototype.doubleValue = 0;
 
             /**
              * Value intValue.
-             * @type {number|$protobuf.Long}
+             * @type {number|$protobuf.Long|undefined}
              */
             Value.prototype.intValue = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
 
             /**
              * Value uintValue.
-             * @type {number|$protobuf.Long}
+             * @type {number|$protobuf.Long|undefined}
              */
             Value.prototype.uintValue = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
 
             /**
              * Value sintValue.
-             * @type {number|$protobuf.Long}
+             * @type {number|$protobuf.Long|undefined}
              */
             Value.prototype.sintValue = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
 
             /**
              * Value boolValue.
-             * @type {boolean}
+             * @type {boolean|undefined}
              */
             Value.prototype.boolValue = false;
 
@@ -382,6 +384,8 @@ $root.vector_tile = (function() {
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             Value.verify = function verify(message) {
+                if (typeof message !== "object" || message === null)
+                    return "object expected";
                 if (message.stringValue !== undefined)
                     if (!$util.isString(message.stringValue))
                         return "stringValue: string expected";
@@ -555,25 +559,25 @@ $root.vector_tile = (function() {
 
             /**
              * Feature id.
-             * @type {number|$protobuf.Long}
+             * @type {number|$protobuf.Long|undefined}
              */
             Feature.prototype.id = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
 
             /**
              * Feature tags.
-             * @type {Array.<number>}
+             * @type {Array.<number>|undefined}
              */
             Feature.prototype.tags = $util.emptyArray;
 
             /**
              * Feature type.
-             * @type {number}
+             * @type {number|undefined}
              */
             Feature.prototype.type = 0;
 
             /**
              * Feature geometry.
-             * @type {Array.<number>}
+             * @type {Array.<number>|undefined}
              */
             Feature.prototype.geometry = $util.emptyArray;
 
@@ -693,6 +697,8 @@ $root.vector_tile = (function() {
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             Feature.verify = function verify(message) {
+                if (typeof message !== "object" || message === null)
+                    return "object expected";
                 if (message.id !== undefined)
                     if (!$util.isInteger(message.id) && !(message.id && $util.isInteger(message.id.low) && $util.isInteger(message.id.high)))
                         return "id: integer|Long expected";
@@ -875,25 +881,25 @@ $root.vector_tile = (function() {
 
             /**
              * Layer features.
-             * @type {Array.<vector_tile.Tile.Feature>}
+             * @type {Array.<vector_tile.Tile.Feature>|undefined}
              */
             Layer.prototype.features = $util.emptyArray;
 
             /**
              * Layer keys.
-             * @type {Array.<string>}
+             * @type {Array.<string>|undefined}
              */
             Layer.prototype.keys = $util.emptyArray;
 
             /**
              * Layer values.
-             * @type {Array.<vector_tile.Tile.Value>}
+             * @type {Array.<vector_tile.Tile.Value>|undefined}
              */
             Layer.prototype.values = $util.emptyArray;
 
             /**
              * Layer extent.
-             * @type {number}
+             * @type {number|undefined}
              */
             Layer.prototype.extent = 4096;
 
@@ -1009,6 +1015,8 @@ $root.vector_tile = (function() {
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             Layer.verify = function verify(message) {
+                if (typeof message !== "object" || message === null)
+                    return "object expected";
                 if (!$util.isInteger(message.version))
                     return "version: integer expected";
                 if (!$util.isString(message.name))

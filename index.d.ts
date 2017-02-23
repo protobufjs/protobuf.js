@@ -265,7 +265,7 @@ export class Field extends ReflectionObject {
      * Field rule, if any.
      * @type {string|undefined}
      */
-    rule: (string|undefined);
+    rule?: string;
 
     /**
      * Field type.
@@ -283,7 +283,7 @@ export class Field extends ReflectionObject {
      * Extended type if different from parent.
      * @type {string|undefined}
      */
-    extend: (string|undefined);
+    extend?: string;
 
     /**
      * Whether this field is required.
@@ -711,7 +711,7 @@ export class Method extends ReflectionObject {
      * Whether requests are streamed or not.
      * @type {boolean|undefined}
      */
-    requestStream: (boolean|undefined);
+    requestStream?: boolean;
 
     /**
      * Response type.
@@ -723,7 +723,7 @@ export class Method extends ReflectionObject {
      * Whether responses are streamed or not.
      * @type {boolean|undefined}
      */
-    responseStream: (boolean|undefined);
+    responseStream?: boolean;
 
     /**
      * Resolved request type.
@@ -806,7 +806,7 @@ export abstract class NamespaceBase extends ReflectionObject {
      * Nested objects by name.
      * @type {Object.<string,ReflectionObject>|undefined}
      */
-    nested: ({ [k: string]: ReflectionObject }|undefined);
+    nested?: { [k: string]: ReflectionObject };
 
     /**
      * Nested objects of this namespace as an array for iteration.
@@ -933,7 +933,7 @@ export abstract class ReflectionObject {
      * Options.
      * @type {Object.<string,*>|undefined}
      */
-    options: ({ [k: string]: any }|undefined);
+    options?: { [k: string]: any };
 
     /**
      * Unique name within its namespace.

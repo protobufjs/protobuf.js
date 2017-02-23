@@ -28,55 +28,55 @@ $root.Message = (function() {
 
     /**
      * Message stringVal.
-     * @type {string}
+     * @type {string|undefined}
      */
     Message.prototype.stringVal = "";
 
     /**
      * Message stringRepeated.
-     * @type {Array.<string>}
+     * @type {Array.<string>|undefined}
      */
     Message.prototype.stringRepeated = $util.emptyArray;
 
     /**
      * Message uint64Val.
-     * @type {number|$protobuf.Long}
+     * @type {number|$protobuf.Long|undefined}
      */
     Message.prototype.uint64Val = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
 
     /**
      * Message uint64Repeated.
-     * @type {Array.<number|$protobuf.Long>}
+     * @type {Array.<number|$protobuf.Long>|undefined}
      */
     Message.prototype.uint64Repeated = $util.emptyArray;
 
     /**
      * Message bytesVal.
-     * @type {Uint8Array}
+     * @type {Uint8Array|undefined}
      */
     Message.prototype.bytesVal = $util.newBuffer([]);
 
     /**
      * Message bytesRepeated.
-     * @type {Array.<Uint8Array>}
+     * @type {Array.<Uint8Array>|undefined}
      */
     Message.prototype.bytesRepeated = $util.emptyArray;
 
     /**
      * Message enumVal.
-     * @type {number}
+     * @type {number|undefined}
      */
     Message.prototype.enumVal = 1;
 
     /**
      * Message enumRepeated.
-     * @type {Array.<number>}
+     * @type {Array.<number>|undefined}
      */
     Message.prototype.enumRepeated = $util.emptyArray;
 
     /**
      * Message int64Map.
-     * @type {Object.<string,number|$protobuf.Long>}
+     * @type {Object.<string,number|$protobuf.Long>|undefined}
      */
     Message.prototype.int64Map = $util.emptyObject;
 
@@ -234,6 +234,8 @@ $root.Message = (function() {
      * @returns {?string} `null` if valid, otherwise the reason why it is not
      */
     Message.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
         if (message.stringVal !== undefined)
             if (!$util.isString(message.stringVal))
                 return "stringVal: string expected";
@@ -504,8 +506,8 @@ $root.Message = (function() {
      */
     Message.SomeEnum = (function() {
         var valuesById = {}, values = Object.create(valuesById);
-        values[valuesById[1] = "ONE"] = 1;
-        values[valuesById[2] = "TWO"] = 2;
+        values["ONE"] = 1;
+        values["TWO"] = 2;
         return values;
     })();
 

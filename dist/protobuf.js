@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.6.4 (c) 2016, Daniel Wirtz
- * Compiled Thu, 23 Feb 2017 02:41:46 UTC
+ * Compiled Thu, 23 Feb 2017 03:03:02 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -1758,12 +1758,14 @@ Enum.prototype.add = function(name, id, comment) {
     if (this.values[name] !== undefined)
         throw Error("duplicate name");
 
-    if (this.valuesById[id] !== undefined)
-        throw Error("duplicate id");
+    if (this.valuesById[id] !== undefined) {
+        if (!(this.options && this.options.allow_alias))
+            throw Error("duplicate id");
+        this.values[name] = id;
+    } else
+        this.valuesById[this.values[name] = id] = name;
 
-    this.valuesById[this.values[name] = id] = name;
     this.comments[name] = comment || null;
-
     return this;
 };
 
@@ -2029,6 +2031,10 @@ Field.prototype.resolve = function resolve() {
         if (this.resolvedType instanceof Enum && typeof this.typeDefault === "string")
             this.typeDefault = this.resolvedType.values[this.typeDefault];
     }
+
+    // remove unnecessary packed option (parser adds this) if not referencing an enum
+    if (this.options && this.options.packed !== undefined && this.resolvedType && !(this.resolvedType instanceof Enum))
+        delete this.options.packed;
 
     // convert to internal data type if necesssary
     if (this.long) {
@@ -3626,8 +3632,10 @@ function parse(source, root, options) {
         if (!field.comment)
             field.comment = cmnt(trailingLine);
         // JSON defaults to packed=true if not set so we have to set packed=false explicity when
-        // parsing proto2 descriptors without the option, where applicable.
-        if (field.repeated && types.packed[type] !== undefined && !isProto3)
+        // parsing proto2 descriptors without the option, where applicable. This must be done for
+        // any type (not just packable types) because enums also use varint encoding and it is not
+        // yet known whether a type is an enum or not.
+        if (!isProto3 && field.repeated)
             field.setOption("packed", false, /* ifNotSet */ true);
         parent.add(field);
     }

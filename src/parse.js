@@ -335,8 +335,10 @@ function parse(source, root, options) {
         if (!field.comment)
             field.comment = cmnt(trailingLine);
         // JSON defaults to packed=true if not set so we have to set packed=false explicity when
-        // parsing proto2 descriptors without the option, where applicable.
-        if (field.repeated && types.packed[type] !== undefined && !isProto3)
+        // parsing proto2 descriptors without the option, where applicable. This must be done for
+        // any type (not just packable types) because enums also use varint encoding and it is not
+        // yet known whether a type is an enum or not.
+        if (!isProto3 && field.repeated)
             field.setOption("packed", false, /* ifNotSet */ true);
         parent.add(field);
     }

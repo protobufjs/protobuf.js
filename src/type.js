@@ -271,7 +271,7 @@ Type.prototype.add = function add(object) {
         // type instead.
 
         // avoids calling the getter if not absolutely necessary because it's called quite frequently
-        if (this._fieldsById ? this._fieldsById[object.id] : this.fieldsById[object.id])
+        if (this._fieldsById ? /* istanbul ignore next */ this._fieldsById[object.id] : this.fieldsById[object.id])
             throw Error("duplicate id " + object.id + " in " + this);
 
         if (object.parent)

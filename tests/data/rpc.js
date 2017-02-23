@@ -86,7 +86,7 @@ $root.MyRequest = (function() {
 
     /**
      * MyRequest path.
-     * @type {string}
+     * @type {string|undefined}
      */
     MyRequest.prototype.path = "";
 
@@ -164,6 +164,8 @@ $root.MyRequest = (function() {
      * @returns {?string} `null` if valid, otherwise the reason why it is not
      */
     MyRequest.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
         if (message.path !== undefined)
             if (!$util.isString(message.path))
                 return "path: string expected";
@@ -246,7 +248,7 @@ $root.MyResponse = (function() {
 
     /**
      * MyResponse status.
-     * @type {number}
+     * @type {number|undefined}
      */
     MyResponse.prototype.status = 0;
 
@@ -324,6 +326,8 @@ $root.MyResponse = (function() {
      * @returns {?string} `null` if valid, otherwise the reason why it is not
      */
     MyResponse.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
         if (message.status !== undefined)
             if (!$util.isInteger(message.status))
                 return "status: integer expected";

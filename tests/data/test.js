@@ -112,7 +112,9 @@ $root.jspb = (function() {
              * @param {jspb.test.Empty|Object} message Empty message or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            Empty.verify = function verify() {
+            Empty.verify = function verify(message) {
+                if (typeof message !== "object" || message === null)
+                    return "object expected";
                 return null;
             };
 
@@ -176,8 +178,8 @@ $root.jspb = (function() {
          */
         test.OuterEnum = (function() {
             var valuesById = {}, values = Object.create(valuesById);
-            values[valuesById[1] = "FOO"] = 1;
-            values[valuesById[2] = "BAR"] = 2;
+            values["FOO"] = 1;
+            values["BAR"] = 2;
             return values;
         })();
 
@@ -197,7 +199,7 @@ $root.jspb = (function() {
 
             /**
              * EnumContainer outerEnum.
-             * @type {number}
+             * @type {number|undefined}
              */
             EnumContainer.prototype.outerEnum = 1;
 
@@ -280,6 +282,8 @@ $root.jspb = (function() {
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             EnumContainer.verify = function verify(message) {
+                if (typeof message !== "object" || message === null)
+                    return "object expected";
                 if (message.outerEnum !== undefined)
                     switch (message.outerEnum) {
                     default:
@@ -381,13 +385,13 @@ $root.jspb = (function() {
 
             /**
              * Simple1 aRepeatedString.
-             * @type {Array.<string>}
+             * @type {Array.<string>|undefined}
              */
             Simple1.prototype.aRepeatedString = $util.emptyArray;
 
             /**
              * Simple1 aBoolean.
-             * @type {boolean}
+             * @type {boolean|undefined}
              */
             Simple1.prototype.aBoolean = false;
 
@@ -477,6 +481,8 @@ $root.jspb = (function() {
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             Simple1.verify = function verify(message) {
+                if (typeof message !== "object" || message === null)
+                    return "object expected";
                 if (!$util.isString(message.aString))
                     return "aString: string expected";
                 if (message.aRepeatedString !== undefined) {
@@ -594,7 +600,7 @@ $root.jspb = (function() {
 
             /**
              * Simple2 aRepeatedString.
-             * @type {Array.<string>}
+             * @type {Array.<string>|undefined}
              */
             Simple2.prototype.aRepeatedString = $util.emptyArray;
 
@@ -679,6 +685,8 @@ $root.jspb = (function() {
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             Simple2.verify = function verify(message) {
+                if (typeof message !== "object" || message === null)
+                    return "object expected";
                 if (!$util.isString(message.aString))
                     return "aString: string expected";
                 if (message.aRepeatedString !== undefined) {
@@ -891,6 +899,8 @@ $root.jspb = (function() {
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             SpecialCases.verify = function verify(message) {
+                if (typeof message !== "object" || message === null)
+                    return "object expected";
                 if (!$util.isString(message.normal))
                     return "normal: string expected";
                 if (!$util.isString(message["default"]))
@@ -994,7 +1004,7 @@ $root.jspb = (function() {
 
             /**
              * OptionalFields aString.
-             * @type {string}
+             * @type {string|undefined}
              */
             OptionalFields.prototype.aString = "";
 
@@ -1006,19 +1016,19 @@ $root.jspb = (function() {
 
             /**
              * OptionalFields aNestedMessage.
-             * @type {jspb.test.OptionalFields.Nested}
+             * @type {jspb.test.OptionalFields.Nested|undefined}
              */
             OptionalFields.prototype.aNestedMessage = null;
 
             /**
              * OptionalFields aRepeatedMessage.
-             * @type {Array.<jspb.test.OptionalFields.Nested>}
+             * @type {Array.<jspb.test.OptionalFields.Nested>|undefined}
              */
             OptionalFields.prototype.aRepeatedMessage = $util.emptyArray;
 
             /**
              * OptionalFields aRepeatedString.
-             * @type {Array.<string>}
+             * @type {Array.<string>|undefined}
              */
             OptionalFields.prototype.aRepeatedString = $util.emptyArray;
 
@@ -1127,6 +1137,8 @@ $root.jspb = (function() {
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             OptionalFields.verify = function verify(message) {
+                if (typeof message !== "object" || message === null)
+                    return "object expected";
                 if (message.aString !== undefined)
                     if (!$util.isString(message.aString))
                         return "aString: string expected";
@@ -1274,7 +1286,7 @@ $root.jspb = (function() {
 
                 /**
                  * Nested anInt.
-                 * @type {number}
+                 * @type {number|undefined}
                  */
                 Nested.prototype.anInt = 0;
 
@@ -1352,6 +1364,8 @@ $root.jspb = (function() {
                  * @returns {?string} `null` if valid, otherwise the reason why it is not
                  */
                 Nested.verify = function verify(message) {
+                    if (typeof message !== "object" || message === null)
+                        return "object expected";
                     if (message.anInt !== undefined)
                         if (!$util.isInteger(message.anInt))
                             return "anInt: integer expected";
@@ -1437,61 +1451,61 @@ $root.jspb = (function() {
 
             /**
              * HasExtensions str1.
-             * @type {string}
+             * @type {string|undefined}
              */
             HasExtensions.prototype.str1 = "";
 
             /**
              * HasExtensions str2.
-             * @type {string}
+             * @type {string|undefined}
              */
             HasExtensions.prototype.str2 = "";
 
             /**
              * HasExtensions str3.
-             * @type {string}
+             * @type {string|undefined}
              */
             HasExtensions.prototype.str3 = "";
 
             /**
              * HasExtensions .jspb.test.IsExtension.extField.
              * @name jspb.test.HasExtensions#.jspb.test.IsExtension.extField
-             * @type {jspb.test.IsExtension}
+             * @type {jspb.test.IsExtension|undefined}
              */
             HasExtensions.prototype[".jspb.test.IsExtension.extField"] = null;
 
             /**
              * HasExtensions .jspb.test.IndirectExtension.simple.
              * @name jspb.test.HasExtensions#.jspb.test.IndirectExtension.simple
-             * @type {jspb.test.Simple1}
+             * @type {jspb.test.Simple1|undefined}
              */
             HasExtensions.prototype[".jspb.test.IndirectExtension.simple"] = null;
 
             /**
              * HasExtensions .jspb.test.IndirectExtension.str.
              * @name jspb.test.HasExtensions#.jspb.test.IndirectExtension.str
-             * @type {string}
+             * @type {string|undefined}
              */
             HasExtensions.prototype[".jspb.test.IndirectExtension.str"] = "";
 
             /**
              * HasExtensions .jspb.test.IndirectExtension.repeatedStr.
              * @name jspb.test.HasExtensions#.jspb.test.IndirectExtension.repeatedStr
-             * @type {Array.<string>}
+             * @type {Array.<string>|undefined}
              */
             HasExtensions.prototype[".jspb.test.IndirectExtension.repeatedStr"] = $util.emptyArray;
 
             /**
              * HasExtensions .jspb.test.IndirectExtension.repeatedSimple.
              * @name jspb.test.HasExtensions#.jspb.test.IndirectExtension.repeatedSimple
-             * @type {Array.<jspb.test.Simple1>}
+             * @type {Array.<jspb.test.Simple1>|undefined}
              */
             HasExtensions.prototype[".jspb.test.IndirectExtension.repeatedSimple"] = $util.emptyArray;
 
             /**
              * HasExtensions .jspb.test.simple1.
              * @name jspb.test.HasExtensions#.jspb.test.simple1
-             * @type {jspb.test.Simple1}
+             * @type {jspb.test.Simple1|undefined}
              */
             HasExtensions.prototype[".jspb.test.simple1"] = null;
 
@@ -1623,6 +1637,8 @@ $root.jspb = (function() {
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             HasExtensions.verify = function verify(message) {
+                if (typeof message !== "object" || message === null)
+                    return "object expected";
                 if (message.str1 !== undefined)
                     if (!$util.isString(message.str1))
                         return "str1: string expected";
@@ -1828,19 +1844,19 @@ $root.jspb = (function() {
 
             /**
              * Complex aNestedMessage.
-             * @type {jspb.test.Complex.Nested}
+             * @type {jspb.test.Complex.Nested|undefined}
              */
             Complex.prototype.aNestedMessage = null;
 
             /**
              * Complex aRepeatedMessage.
-             * @type {Array.<jspb.test.Complex.Nested>}
+             * @type {Array.<jspb.test.Complex.Nested>|undefined}
              */
             Complex.prototype.aRepeatedMessage = $util.emptyArray;
 
             /**
              * Complex aRepeatedString.
-             * @type {Array.<string>}
+             * @type {Array.<string>|undefined}
              */
             Complex.prototype.aRepeatedString = $util.emptyArray;
 
@@ -1948,6 +1964,8 @@ $root.jspb = (function() {
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             Complex.verify = function verify(message) {
+                if (typeof message !== "object" || message === null)
+                    return "object expected";
                 if (!$util.isString(message.aString))
                     return "aString: string expected";
                 if (typeof message.anOutOfOrderBool !== "boolean")
@@ -2171,6 +2189,8 @@ $root.jspb = (function() {
                  * @returns {?string} `null` if valid, otherwise the reason why it is not
                  */
                 Nested.verify = function verify(message) {
+                    if (typeof message !== "object" || message === null)
+                        return "object expected";
                     if (!$util.isInteger(message.anInt))
                         return "anInt: integer expected";
                     return null;
@@ -2321,7 +2341,9 @@ $root.jspb = (function() {
              * @param {jspb.test.OuterMessage|Object} message OuterMessage message or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            OuterMessage.verify = function verify() {
+            OuterMessage.verify = function verify(message) {
+                if (typeof message !== "object" || message === null)
+                    return "object expected";
                 return null;
             };
 
@@ -2388,7 +2410,7 @@ $root.jspb = (function() {
 
                 /**
                  * Complex innerComplexField.
-                 * @type {number}
+                 * @type {number|undefined}
                  */
                 Complex.prototype.innerComplexField = 0;
 
@@ -2466,6 +2488,8 @@ $root.jspb = (function() {
                  * @returns {?string} `null` if valid, otherwise the reason why it is not
                  */
                 Complex.verify = function verify(message) {
+                    if (typeof message !== "object" || message === null)
+                        return "object expected";
                     if (message.innerComplexField !== undefined)
                         if (!$util.isInteger(message.innerComplexField))
                             return "innerComplexField: integer expected";
@@ -2551,7 +2575,7 @@ $root.jspb = (function() {
 
             /**
              * IsExtension ext1.
-             * @type {string}
+             * @type {string|undefined}
              */
             IsExtension.prototype.ext1 = "";
 
@@ -2629,6 +2653,8 @@ $root.jspb = (function() {
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             IsExtension.verify = function verify(message) {
+                if (typeof message !== "object" || message === null)
+                    return "object expected";
                 if (message.ext1 !== undefined)
                     if (!$util.isString(message.ext1))
                         return "ext1: string expected";
@@ -2777,7 +2803,9 @@ $root.jspb = (function() {
              * @param {jspb.test.IndirectExtension|Object} message IndirectExtension message or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            IndirectExtension.verify = function verify() {
+            IndirectExtension.verify = function verify(message) {
+                if (typeof message !== "object" || message === null)
+                    return "object expected";
                 return null;
             };
 
@@ -2847,37 +2875,37 @@ $root.jspb = (function() {
 
             /**
              * DefaultValues stringField.
-             * @type {string}
+             * @type {string|undefined}
              */
             DefaultValues.prototype.stringField = "default<>abc";
 
             /**
              * DefaultValues boolField.
-             * @type {boolean}
+             * @type {boolean|undefined}
              */
             DefaultValues.prototype.boolField = true;
 
             /**
              * DefaultValues intField.
-             * @type {number|$protobuf.Long}
+             * @type {number|$protobuf.Long|undefined}
              */
             DefaultValues.prototype.intField = $util.Long ? $util.Long.fromBits(11,0,false) : 11;
 
             /**
              * DefaultValues enumField.
-             * @type {number}
+             * @type {number|undefined}
              */
             DefaultValues.prototype.enumField = 13;
 
             /**
              * DefaultValues emptyField.
-             * @type {string}
+             * @type {string|undefined}
              */
             DefaultValues.prototype.emptyField = "";
 
             /**
              * DefaultValues bytesField.
-             * @type {Uint8Array}
+             * @type {Uint8Array|undefined}
              */
             DefaultValues.prototype.bytesField = $util.newBuffer([109,111,111]);
 
@@ -2985,6 +3013,8 @@ $root.jspb = (function() {
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             DefaultValues.verify = function verify(message) {
+                if (typeof message !== "object" || message === null)
+                    return "object expected";
                 if (message.stringField !== undefined)
                     if (!$util.isString(message.stringField))
                         return "stringField: string expected";
@@ -3133,8 +3163,8 @@ $root.jspb = (function() {
              */
             DefaultValues.Enum = (function() {
                 var valuesById = {}, values = Object.create(valuesById);
-                values[valuesById[13] = "E1"] = 13;
-                values[valuesById[77] = "E2"] = 77;
+                values["E1"] = 13;
+                values["E2"] = 77;
                 return values;
             })();
 
@@ -3157,7 +3187,7 @@ $root.jspb = (function() {
 
             /**
              * FloatingPointFields optionalFloatField.
-             * @type {number}
+             * @type {number|undefined}
              */
             FloatingPointFields.prototype.optionalFloatField = 0;
 
@@ -3169,19 +3199,19 @@ $root.jspb = (function() {
 
             /**
              * FloatingPointFields repeatedFloatField.
-             * @type {Array.<number>}
+             * @type {Array.<number>|undefined}
              */
             FloatingPointFields.prototype.repeatedFloatField = $util.emptyArray;
 
             /**
              * FloatingPointFields defaultFloatField.
-             * @type {number}
+             * @type {number|undefined}
              */
             FloatingPointFields.prototype.defaultFloatField = 2;
 
             /**
              * FloatingPointFields optionalDoubleField.
-             * @type {number}
+             * @type {number|undefined}
              */
             FloatingPointFields.prototype.optionalDoubleField = 0;
 
@@ -3193,13 +3223,13 @@ $root.jspb = (function() {
 
             /**
              * FloatingPointFields repeatedDoubleField.
-             * @type {Array.<number>}
+             * @type {Array.<number>|undefined}
              */
             FloatingPointFields.prototype.repeatedDoubleField = $util.emptyArray;
 
             /**
              * FloatingPointFields defaultDoubleField.
-             * @type {number}
+             * @type {number|undefined}
              */
             FloatingPointFields.prototype.defaultDoubleField = 2;
 
@@ -3326,6 +3356,8 @@ $root.jspb = (function() {
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             FloatingPointFields.verify = function verify(message) {
+                if (typeof message !== "object" || message === null)
+                    return "object expected";
                 if (message.optionalFloatField !== undefined)
                     if (typeof message.optionalFloatField !== "number")
                         return "optionalFloatField: number expected";
@@ -3489,38 +3521,38 @@ $root.jspb = (function() {
 
             /**
              * TestClone str.
-             * @type {string}
+             * @type {string|undefined}
              */
             TestClone.prototype.str = "";
 
             /**
              * TestClone simple1.
-             * @type {jspb.test.Simple1}
+             * @type {jspb.test.Simple1|undefined}
              */
             TestClone.prototype.simple1 = null;
 
             /**
              * TestClone simple2.
-             * @type {Array.<jspb.test.Simple1>}
+             * @type {Array.<jspb.test.Simple1>|undefined}
              */
             TestClone.prototype.simple2 = $util.emptyArray;
 
             /**
              * TestClone bytesField.
-             * @type {Uint8Array}
+             * @type {Uint8Array|undefined}
              */
             TestClone.prototype.bytesField = $util.newBuffer([]);
 
             /**
              * TestClone unused.
-             * @type {string}
+             * @type {string|undefined}
              */
             TestClone.prototype.unused = "";
 
             /**
              * TestClone .jspb.test.CloneExtension.extField.
              * @name jspb.test.TestClone#.jspb.test.CloneExtension.extField
-             * @type {jspb.test.CloneExtension}
+             * @type {jspb.test.CloneExtension|undefined}
              */
             TestClone.prototype[".jspb.test.CloneExtension.extField"] = null;
 
@@ -3633,6 +3665,8 @@ $root.jspb = (function() {
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             TestClone.verify = function verify(message) {
+                if (typeof message !== "object" || message === null)
+                    return "object expected";
                 if (message.str !== undefined)
                     if (!$util.isString(message.str))
                         return "str: string expected";
@@ -3787,7 +3821,7 @@ $root.jspb = (function() {
 
             /**
              * CloneExtension ext.
-             * @type {string}
+             * @type {string|undefined}
              */
             CloneExtension.prototype.ext = "";
 
@@ -3865,6 +3899,8 @@ $root.jspb = (function() {
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             CloneExtension.verify = function verify(message) {
+                if (typeof message !== "object" || message === null)
+                    return "object expected";
                 if (message.ext !== undefined)
                     if (!$util.isString(message.ext))
                         return "ext: string expected";
@@ -3947,7 +3983,7 @@ $root.jspb = (function() {
 
             /**
              * TestGroup repeatedGroup.
-             * @type {Array.<jspb.test.TestGroup.RepeatedGroup>}
+             * @type {Array.<jspb.test.TestGroup.RepeatedGroup>|undefined}
              */
             TestGroup.prototype.repeatedGroup = $util.emptyArray;
 
@@ -3959,13 +3995,13 @@ $root.jspb = (function() {
 
             /**
              * TestGroup optionalGroup.
-             * @type {jspb.test.TestGroup.OptionalGroup}
+             * @type {jspb.test.TestGroup.OptionalGroup|undefined}
              */
             TestGroup.prototype.optionalGroup = null;
 
             /**
              * TestGroup id.
-             * @type {string}
+             * @type {string|undefined}
              */
             TestGroup.prototype.id = "";
 
@@ -3977,7 +4013,7 @@ $root.jspb = (function() {
 
             /**
              * TestGroup optionalSimple.
-             * @type {jspb.test.Simple2}
+             * @type {jspb.test.Simple2|undefined}
              */
             TestGroup.prototype.optionalSimple = null;
 
@@ -4090,6 +4126,8 @@ $root.jspb = (function() {
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             TestGroup.verify = function verify(message) {
+                if (typeof message !== "object" || message === null)
+                    return "object expected";
                 if (message.repeatedGroup !== undefined) {
                     if (!Array.isArray(message.repeatedGroup))
                         return "repeatedGroup: array expected";
@@ -4250,7 +4288,7 @@ $root.jspb = (function() {
 
                 /**
                  * RepeatedGroup someBool.
-                 * @type {Array.<boolean>}
+                 * @type {Array.<boolean>|undefined}
                  */
                 RepeatedGroup.prototype.someBool = $util.emptyArray;
 
@@ -4342,6 +4380,8 @@ $root.jspb = (function() {
                  * @returns {?string} `null` if valid, otherwise the reason why it is not
                  */
                 RepeatedGroup.verify = function verify(message) {
+                    if (typeof message !== "object" || message === null)
+                        return "object expected";
                     if (!$util.isString(message.id))
                         return "id: string expected";
                     if (message.someBool !== undefined) {
@@ -4523,6 +4563,8 @@ $root.jspb = (function() {
                  * @returns {?string} `null` if valid, otherwise the reason why it is not
                  */
                 RequiredGroup.verify = function verify(message) {
+                    if (typeof message !== "object" || message === null)
+                        return "object expected";
                     if (!$util.isString(message.id))
                         return "id: string expected";
                     return null;
@@ -4683,6 +4725,8 @@ $root.jspb = (function() {
                  * @returns {?string} `null` if valid, otherwise the reason why it is not
                  */
                 OptionalGroup.verify = function verify(message) {
+                    if (typeof message !== "object" || message === null)
+                        return "object expected";
                     if (!$util.isString(message.id))
                         return "id: string expected";
                     return null;
@@ -4767,7 +4811,7 @@ $root.jspb = (function() {
 
             /**
              * TestGroup1 group.
-             * @type {jspb.test.TestGroup.RepeatedGroup}
+             * @type {jspb.test.TestGroup.RepeatedGroup|undefined}
              */
             TestGroup1.prototype.group = null;
 
@@ -4850,6 +4894,8 @@ $root.jspb = (function() {
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             TestGroup1.verify = function verify(message) {
+                if (typeof message !== "object" || message === null)
+                    return "object expected";
                 if (message.group !== undefined && message.group !== null) {
                     var error = $types[0].verify(message.group);
                     if (error)
@@ -4937,14 +4983,14 @@ $root.jspb = (function() {
 
             /**
              * TestReservedNames extension.
-             * @type {number}
+             * @type {number|undefined}
              */
             TestReservedNames.prototype.extension = 0;
 
             /**
              * TestReservedNames .jspb.test.TestReservedNamesExtension.foo.
              * @name jspb.test.TestReservedNames#.jspb.test.TestReservedNamesExtension.foo
-             * @type {number}
+             * @type {number|undefined}
              */
             TestReservedNames.prototype[".jspb.test.TestReservedNamesExtension.foo"] = 0;
 
@@ -5027,6 +5073,8 @@ $root.jspb = (function() {
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             TestReservedNames.verify = function verify(message) {
+                if (typeof message !== "object" || message === null)
+                    return "object expected";
                 if (message.extension !== undefined)
                     if (!$util.isInteger(message.extension))
                         return "extension: integer expected";
@@ -5184,7 +5232,9 @@ $root.jspb = (function() {
              * @param {jspb.test.TestReservedNamesExtension|Object} message TestReservedNamesExtension message or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            TestReservedNamesExtension.verify = function verify() {
+            TestReservedNamesExtension.verify = function verify(message) {
+                if (typeof message !== "object" || message === null)
+                    return "object expected";
                 return null;
             };
 
@@ -5254,61 +5304,61 @@ $root.jspb = (function() {
 
             /**
              * TestMessageWithOneof pone.
-             * @type {string}
+             * @type {string|undefined}
              */
             TestMessageWithOneof.prototype.pone = "";
 
             /**
              * TestMessageWithOneof pthree.
-             * @type {string}
+             * @type {string|undefined}
              */
             TestMessageWithOneof.prototype.pthree = "";
 
             /**
              * TestMessageWithOneof rone.
-             * @type {jspb.test.TestMessageWithOneof}
+             * @type {jspb.test.TestMessageWithOneof|undefined}
              */
             TestMessageWithOneof.prototype.rone = null;
 
             /**
              * TestMessageWithOneof rtwo.
-             * @type {string}
+             * @type {string|undefined}
              */
             TestMessageWithOneof.prototype.rtwo = "";
 
             /**
              * TestMessageWithOneof normalField.
-             * @type {boolean}
+             * @type {boolean|undefined}
              */
             TestMessageWithOneof.prototype.normalField = false;
 
             /**
              * TestMessageWithOneof repeatedField.
-             * @type {Array.<string>}
+             * @type {Array.<string>|undefined}
              */
             TestMessageWithOneof.prototype.repeatedField = $util.emptyArray;
 
             /**
              * TestMessageWithOneof aone.
-             * @type {number}
+             * @type {number|undefined}
              */
             TestMessageWithOneof.prototype.aone = 1234;
 
             /**
              * TestMessageWithOneof atwo.
-             * @type {number}
+             * @type {number|undefined}
              */
             TestMessageWithOneof.prototype.atwo = 0;
 
             /**
              * TestMessageWithOneof bone.
-             * @type {number}
+             * @type {number|undefined}
              */
             TestMessageWithOneof.prototype.bone = 0;
 
             /**
              * TestMessageWithOneof btwo.
-             * @type {number}
+             * @type {number|undefined}
              */
             TestMessageWithOneof.prototype.btwo = 1234;
 
@@ -5498,6 +5548,8 @@ $root.jspb = (function() {
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             TestMessageWithOneof.verify = function verify(message) {
+                if (typeof message !== "object" || message === null)
+                    return "object expected";
                 if (message.pone !== undefined)
                     if (!$util.isString(message.pone))
                         return "pone: string expected";
@@ -5671,13 +5723,13 @@ $root.jspb = (function() {
 
             /**
              * TestEndsWithBytes value.
-             * @type {number}
+             * @type {number|undefined}
              */
             TestEndsWithBytes.prototype.value = 0;
 
             /**
              * TestEndsWithBytes data.
-             * @type {Uint8Array}
+             * @type {Uint8Array|undefined}
              */
             TestEndsWithBytes.prototype.data = $util.newBuffer([]);
 
@@ -5760,6 +5812,8 @@ $root.jspb = (function() {
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             TestEndsWithBytes.verify = function verify(message) {
+                if (typeof message !== "object" || message === null)
+                    return "object expected";
                 if (message.value !== undefined)
                     if (!$util.isInteger(message.value))
                         return "value: integer expected";
@@ -5854,73 +5908,73 @@ $root.jspb = (function() {
 
             /**
              * TestMapFieldsNoBinary mapStringString.
-             * @type {Object.<string,string>}
+             * @type {Object.<string,string>|undefined}
              */
             TestMapFieldsNoBinary.prototype.mapStringString = $util.emptyObject;
 
             /**
              * TestMapFieldsNoBinary mapStringInt32.
-             * @type {Object.<string,number>}
+             * @type {Object.<string,number>|undefined}
              */
             TestMapFieldsNoBinary.prototype.mapStringInt32 = $util.emptyObject;
 
             /**
              * TestMapFieldsNoBinary mapStringInt64.
-             * @type {Object.<string,number|$protobuf.Long>}
+             * @type {Object.<string,number|$protobuf.Long>|undefined}
              */
             TestMapFieldsNoBinary.prototype.mapStringInt64 = $util.emptyObject;
 
             /**
              * TestMapFieldsNoBinary mapStringBool.
-             * @type {Object.<string,boolean>}
+             * @type {Object.<string,boolean>|undefined}
              */
             TestMapFieldsNoBinary.prototype.mapStringBool = $util.emptyObject;
 
             /**
              * TestMapFieldsNoBinary mapStringDouble.
-             * @type {Object.<string,number>}
+             * @type {Object.<string,number>|undefined}
              */
             TestMapFieldsNoBinary.prototype.mapStringDouble = $util.emptyObject;
 
             /**
              * TestMapFieldsNoBinary mapStringEnum.
-             * @type {Object.<string,number>}
+             * @type {Object.<string,number>|undefined}
              */
             TestMapFieldsNoBinary.prototype.mapStringEnum = $util.emptyObject;
 
             /**
              * TestMapFieldsNoBinary mapStringMsg.
-             * @type {Object.<string,jspb.test.MapValueMessageNoBinary>}
+             * @type {Object.<string,jspb.test.MapValueMessageNoBinary>|undefined}
              */
             TestMapFieldsNoBinary.prototype.mapStringMsg = $util.emptyObject;
 
             /**
              * TestMapFieldsNoBinary mapInt32String.
-             * @type {Object.<string,string>}
+             * @type {Object.<string,string>|undefined}
              */
             TestMapFieldsNoBinary.prototype.mapInt32String = $util.emptyObject;
 
             /**
              * TestMapFieldsNoBinary mapInt64String.
-             * @type {Object.<string,string>}
+             * @type {Object.<string,string>|undefined}
              */
             TestMapFieldsNoBinary.prototype.mapInt64String = $util.emptyObject;
 
             /**
              * TestMapFieldsNoBinary mapBoolString.
-             * @type {Object.<string,string>}
+             * @type {Object.<string,string>|undefined}
              */
             TestMapFieldsNoBinary.prototype.mapBoolString = $util.emptyObject;
 
             /**
              * TestMapFieldsNoBinary testMapFields.
-             * @type {jspb.test.TestMapFieldsNoBinary}
+             * @type {jspb.test.TestMapFieldsNoBinary|undefined}
              */
             TestMapFieldsNoBinary.prototype.testMapFields = null;
 
             /**
              * TestMapFieldsNoBinary mapStringTestmapfields.
-             * @type {Object.<string,jspb.test.TestMapFieldsNoBinary>}
+             * @type {Object.<string,jspb.test.TestMapFieldsNoBinary>|undefined}
              */
             TestMapFieldsNoBinary.prototype.mapStringTestmapfields = $util.emptyObject;
 
@@ -6131,6 +6185,8 @@ $root.jspb = (function() {
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             TestMapFieldsNoBinary.verify = function verify(message) {
+                if (typeof message !== "object" || message === null)
+                    return "object expected";
                 if (message.mapStringString !== undefined) {
                     if (!$util.isObject(message.mapStringString))
                         return "mapStringString: object expected";
@@ -6494,9 +6550,9 @@ $root.jspb = (function() {
          */
         test.MapValueEnumNoBinary = (function() {
             var valuesById = {}, values = Object.create(valuesById);
-            values[valuesById[0] = "MAP_VALUE_FOO_NOBINARY"] = 0;
-            values[valuesById[1] = "MAP_VALUE_BAR_NOBINARY"] = 1;
-            values[valuesById[2] = "MAP_VALUE_BAZ_NOBINARY"] = 2;
+            values["MAP_VALUE_FOO_NOBINARY"] = 0;
+            values["MAP_VALUE_BAR_NOBINARY"] = 1;
+            values["MAP_VALUE_BAZ_NOBINARY"] = 2;
             return values;
         })();
 
@@ -6516,7 +6572,7 @@ $root.jspb = (function() {
 
             /**
              * MapValueMessageNoBinary foo.
-             * @type {number}
+             * @type {number|undefined}
              */
             MapValueMessageNoBinary.prototype.foo = 0;
 
@@ -6594,6 +6650,8 @@ $root.jspb = (function() {
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             MapValueMessageNoBinary.verify = function verify(message) {
+                if (typeof message !== "object" || message === null)
+                    return "object expected";
                 if (message.foo !== undefined)
                     if (!$util.isInteger(message.foo))
                         return "foo: integer expected";
@@ -6742,7 +6800,9 @@ $root.jspb = (function() {
              * @param {jspb.test.Deeply|Object} message Deeply message or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            Deeply.verify = function verify() {
+            Deeply.verify = function verify(message) {
+                if (typeof message !== "object" || message === null)
+                    return "object expected";
                 return null;
             };
 
@@ -6875,7 +6935,9 @@ $root.jspb = (function() {
                  * @param {jspb.test.Deeply.Nested|Object} message Nested message or plain object to verify
                  * @returns {?string} `null` if valid, otherwise the reason why it is not
                  */
-                Nested.verify = function verify() {
+                Nested.verify = function verify(message) {
+                    if (typeof message !== "object" || message === null)
+                        return "object expected";
                     return null;
                 };
 
@@ -6942,7 +7004,7 @@ $root.jspb = (function() {
 
                     /**
                      * Message count.
-                     * @type {number}
+                     * @type {number|undefined}
                      */
                     Message.prototype.count = 0;
 
@@ -7020,6 +7082,8 @@ $root.jspb = (function() {
                      * @returns {?string} `null` if valid, otherwise the reason why it is not
                      */
                     Message.verify = function verify(message) {
+                        if (typeof message !== "object" || message === null)
+                            return "object expected";
                         if (message.count !== undefined)
                             if (!$util.isInteger(message.count))
                                 return "count: integer expected";
@@ -7132,7 +7196,7 @@ $root.google = (function() {
 
             /**
              * FileDescriptorSet file.
-             * @type {Array.<google.protobuf.FileDescriptorProto>}
+             * @type {Array.<google.protobuf.FileDescriptorProto>|undefined}
              */
             FileDescriptorSet.prototype.file = $util.emptyArray;
 
@@ -7218,6 +7282,8 @@ $root.google = (function() {
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             FileDescriptorSet.verify = function verify(message) {
+                if (typeof message !== "object" || message === null)
+                    return "object expected";
                 if (message.file !== undefined) {
                     if (!Array.isArray(message.file))
                         return "file: array expected";
@@ -7317,74 +7383,74 @@ $root.google = (function() {
 
             /**
              * FileDescriptorProto name.
-             * @type {string}
+             * @type {string|undefined}
              */
             FileDescriptorProto.prototype.name = "";
 
             /**
              * FileDescriptorProto package.
              * @name google.protobuf.FileDescriptorProto#package
-             * @type {string}
+             * @type {string|undefined}
              */
             FileDescriptorProto.prototype["package"] = "";
 
             /**
              * FileDescriptorProto dependency.
-             * @type {Array.<string>}
+             * @type {Array.<string>|undefined}
              */
             FileDescriptorProto.prototype.dependency = $util.emptyArray;
 
             /**
              * FileDescriptorProto publicDependency.
-             * @type {Array.<number>}
+             * @type {Array.<number>|undefined}
              */
             FileDescriptorProto.prototype.publicDependency = $util.emptyArray;
 
             /**
              * FileDescriptorProto weakDependency.
-             * @type {Array.<number>}
+             * @type {Array.<number>|undefined}
              */
             FileDescriptorProto.prototype.weakDependency = $util.emptyArray;
 
             /**
              * FileDescriptorProto messageType.
-             * @type {Array.<google.protobuf.DescriptorProto>}
+             * @type {Array.<google.protobuf.DescriptorProto>|undefined}
              */
             FileDescriptorProto.prototype.messageType = $util.emptyArray;
 
             /**
              * FileDescriptorProto enumType.
-             * @type {Array.<google.protobuf.EnumDescriptorProto>}
+             * @type {Array.<google.protobuf.EnumDescriptorProto>|undefined}
              */
             FileDescriptorProto.prototype.enumType = $util.emptyArray;
 
             /**
              * FileDescriptorProto service.
-             * @type {Array.<google.protobuf.ServiceDescriptorProto>}
+             * @type {Array.<google.protobuf.ServiceDescriptorProto>|undefined}
              */
             FileDescriptorProto.prototype.service = $util.emptyArray;
 
             /**
              * FileDescriptorProto extension.
-             * @type {Array.<google.protobuf.FieldDescriptorProto>}
+             * @type {Array.<google.protobuf.FieldDescriptorProto>|undefined}
              */
             FileDescriptorProto.prototype.extension = $util.emptyArray;
 
             /**
              * FileDescriptorProto options.
-             * @type {google.protobuf.FileOptions}
+             * @type {google.protobuf.FileOptions|undefined}
              */
             FileDescriptorProto.prototype.options = null;
 
             /**
              * FileDescriptorProto sourceCodeInfo.
-             * @type {google.protobuf.SourceCodeInfo}
+             * @type {google.protobuf.SourceCodeInfo|undefined}
              */
             FileDescriptorProto.prototype.sourceCodeInfo = null;
 
             /**
              * FileDescriptorProto syntax.
-             * @type {string}
+             * @type {string|undefined}
              */
             FileDescriptorProto.prototype.syntax = "";
 
@@ -7558,6 +7624,8 @@ $root.google = (function() {
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             FileDescriptorProto.verify = function verify(message) {
+                if (typeof message !== "object" || message === null)
+                    return "object expected";
                 if (message.name !== undefined)
                     if (!$util.isString(message.name))
                         return "name: string expected";
@@ -7845,61 +7913,61 @@ $root.google = (function() {
 
             /**
              * DescriptorProto name.
-             * @type {string}
+             * @type {string|undefined}
              */
             DescriptorProto.prototype.name = "";
 
             /**
              * DescriptorProto field.
-             * @type {Array.<google.protobuf.FieldDescriptorProto>}
+             * @type {Array.<google.protobuf.FieldDescriptorProto>|undefined}
              */
             DescriptorProto.prototype.field = $util.emptyArray;
 
             /**
              * DescriptorProto extension.
-             * @type {Array.<google.protobuf.FieldDescriptorProto>}
+             * @type {Array.<google.protobuf.FieldDescriptorProto>|undefined}
              */
             DescriptorProto.prototype.extension = $util.emptyArray;
 
             /**
              * DescriptorProto nestedType.
-             * @type {Array.<google.protobuf.DescriptorProto>}
+             * @type {Array.<google.protobuf.DescriptorProto>|undefined}
              */
             DescriptorProto.prototype.nestedType = $util.emptyArray;
 
             /**
              * DescriptorProto enumType.
-             * @type {Array.<google.protobuf.EnumDescriptorProto>}
+             * @type {Array.<google.protobuf.EnumDescriptorProto>|undefined}
              */
             DescriptorProto.prototype.enumType = $util.emptyArray;
 
             /**
              * DescriptorProto extensionRange.
-             * @type {Array.<google.protobuf.DescriptorProto.ExtensionRange>}
+             * @type {Array.<google.protobuf.DescriptorProto.ExtensionRange>|undefined}
              */
             DescriptorProto.prototype.extensionRange = $util.emptyArray;
 
             /**
              * DescriptorProto oneofDecl.
-             * @type {Array.<google.protobuf.OneofDescriptorProto>}
+             * @type {Array.<google.protobuf.OneofDescriptorProto>|undefined}
              */
             DescriptorProto.prototype.oneofDecl = $util.emptyArray;
 
             /**
              * DescriptorProto options.
-             * @type {google.protobuf.MessageOptions}
+             * @type {google.protobuf.MessageOptions|undefined}
              */
             DescriptorProto.prototype.options = null;
 
             /**
              * DescriptorProto reservedRange.
-             * @type {Array.<google.protobuf.DescriptorProto.ReservedRange>}
+             * @type {Array.<google.protobuf.DescriptorProto.ReservedRange>|undefined}
              */
             DescriptorProto.prototype.reservedRange = $util.emptyArray;
 
             /**
              * DescriptorProto reservedName.
-             * @type {Array.<string>}
+             * @type {Array.<string>|undefined}
              */
             DescriptorProto.prototype.reservedName = $util.emptyArray;
 
@@ -8058,6 +8126,8 @@ $root.google = (function() {
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             DescriptorProto.verify = function verify(message) {
+                if (typeof message !== "object" || message === null)
+                    return "object expected";
                 if (message.name !== undefined)
                     if (!$util.isString(message.name))
                         return "name: string expected";
@@ -8348,13 +8418,13 @@ $root.google = (function() {
 
                 /**
                  * ExtensionRange start.
-                 * @type {number}
+                 * @type {number|undefined}
                  */
                 ExtensionRange.prototype.start = 0;
 
                 /**
                  * ExtensionRange end.
-                 * @type {number}
+                 * @type {number|undefined}
                  */
                 ExtensionRange.prototype.end = 0;
 
@@ -8437,6 +8507,8 @@ $root.google = (function() {
                  * @returns {?string} `null` if valid, otherwise the reason why it is not
                  */
                 ExtensionRange.verify = function verify(message) {
+                    if (typeof message !== "object" || message === null)
+                        return "object expected";
                     if (message.start !== undefined)
                         if (!$util.isInteger(message.start))
                             return "start: integer expected";
@@ -8528,13 +8600,13 @@ $root.google = (function() {
 
                 /**
                  * ReservedRange start.
-                 * @type {number}
+                 * @type {number|undefined}
                  */
                 ReservedRange.prototype.start = 0;
 
                 /**
                  * ReservedRange end.
-                 * @type {number}
+                 * @type {number|undefined}
                  */
                 ReservedRange.prototype.end = 0;
 
@@ -8617,6 +8689,8 @@ $root.google = (function() {
                  * @returns {?string} `null` if valid, otherwise the reason why it is not
                  */
                 ReservedRange.verify = function verify(message) {
+                    if (typeof message !== "object" || message === null)
+                        return "object expected";
                     if (message.start !== undefined)
                         if (!$util.isInteger(message.start))
                             return "start: integer expected";
@@ -8711,61 +8785,61 @@ $root.google = (function() {
 
             /**
              * FieldDescriptorProto name.
-             * @type {string}
+             * @type {string|undefined}
              */
             FieldDescriptorProto.prototype.name = "";
 
             /**
              * FieldDescriptorProto number.
-             * @type {number}
+             * @type {number|undefined}
              */
             FieldDescriptorProto.prototype.number = 0;
 
             /**
              * FieldDescriptorProto label.
-             * @type {number}
+             * @type {number|undefined}
              */
             FieldDescriptorProto.prototype.label = 1;
 
             /**
              * FieldDescriptorProto type.
-             * @type {number}
+             * @type {number|undefined}
              */
             FieldDescriptorProto.prototype.type = 1;
 
             /**
              * FieldDescriptorProto typeName.
-             * @type {string}
+             * @type {string|undefined}
              */
             FieldDescriptorProto.prototype.typeName = "";
 
             /**
              * FieldDescriptorProto extendee.
-             * @type {string}
+             * @type {string|undefined}
              */
             FieldDescriptorProto.prototype.extendee = "";
 
             /**
              * FieldDescriptorProto defaultValue.
-             * @type {string}
+             * @type {string|undefined}
              */
             FieldDescriptorProto.prototype.defaultValue = "";
 
             /**
              * FieldDescriptorProto oneofIndex.
-             * @type {number}
+             * @type {number|undefined}
              */
             FieldDescriptorProto.prototype.oneofIndex = 0;
 
             /**
              * FieldDescriptorProto jsonName.
-             * @type {string}
+             * @type {string|undefined}
              */
             FieldDescriptorProto.prototype.jsonName = "";
 
             /**
              * FieldDescriptorProto options.
-             * @type {google.protobuf.FieldOptions}
+             * @type {google.protobuf.FieldOptions|undefined}
              */
             FieldDescriptorProto.prototype.options = null;
 
@@ -8895,6 +8969,8 @@ $root.google = (function() {
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             FieldDescriptorProto.verify = function verify(message) {
+                if (typeof message !== "object" || message === null)
+                    return "object expected";
                 if (message.name !== undefined)
                     if (!$util.isString(message.name))
                         return "name: string expected";
@@ -9173,24 +9249,24 @@ $root.google = (function() {
              */
             FieldDescriptorProto.Type = (function() {
                 var valuesById = {}, values = Object.create(valuesById);
-                values[valuesById[1] = "TYPE_DOUBLE"] = 1;
-                values[valuesById[2] = "TYPE_FLOAT"] = 2;
-                values[valuesById[3] = "TYPE_INT64"] = 3;
-                values[valuesById[4] = "TYPE_UINT64"] = 4;
-                values[valuesById[5] = "TYPE_INT32"] = 5;
-                values[valuesById[6] = "TYPE_FIXED64"] = 6;
-                values[valuesById[7] = "TYPE_FIXED32"] = 7;
-                values[valuesById[8] = "TYPE_BOOL"] = 8;
-                values[valuesById[9] = "TYPE_STRING"] = 9;
-                values[valuesById[10] = "TYPE_GROUP"] = 10;
-                values[valuesById[11] = "TYPE_MESSAGE"] = 11;
-                values[valuesById[12] = "TYPE_BYTES"] = 12;
-                values[valuesById[13] = "TYPE_UINT32"] = 13;
-                values[valuesById[14] = "TYPE_ENUM"] = 14;
-                values[valuesById[15] = "TYPE_SFIXED32"] = 15;
-                values[valuesById[16] = "TYPE_SFIXED64"] = 16;
-                values[valuesById[17] = "TYPE_SINT32"] = 17;
-                values[valuesById[18] = "TYPE_SINT64"] = 18;
+                values["TYPE_DOUBLE"] = 1;
+                values["TYPE_FLOAT"] = 2;
+                values["TYPE_INT64"] = 3;
+                values["TYPE_UINT64"] = 4;
+                values["TYPE_INT32"] = 5;
+                values["TYPE_FIXED64"] = 6;
+                values["TYPE_FIXED32"] = 7;
+                values["TYPE_BOOL"] = 8;
+                values["TYPE_STRING"] = 9;
+                values["TYPE_GROUP"] = 10;
+                values["TYPE_MESSAGE"] = 11;
+                values["TYPE_BYTES"] = 12;
+                values["TYPE_UINT32"] = 13;
+                values["TYPE_ENUM"] = 14;
+                values["TYPE_SFIXED32"] = 15;
+                values["TYPE_SFIXED64"] = 16;
+                values["TYPE_SINT32"] = 17;
+                values["TYPE_SINT64"] = 18;
                 return values;
             })();
 
@@ -9205,9 +9281,9 @@ $root.google = (function() {
              */
             FieldDescriptorProto.Label = (function() {
                 var valuesById = {}, values = Object.create(valuesById);
-                values[valuesById[1] = "LABEL_OPTIONAL"] = 1;
-                values[valuesById[2] = "LABEL_REQUIRED"] = 2;
-                values[valuesById[3] = "LABEL_REPEATED"] = 3;
+                values["LABEL_OPTIONAL"] = 1;
+                values["LABEL_REQUIRED"] = 2;
+                values["LABEL_REPEATED"] = 3;
                 return values;
             })();
 
@@ -9230,13 +9306,13 @@ $root.google = (function() {
 
             /**
              * OneofDescriptorProto name.
-             * @type {string}
+             * @type {string|undefined}
              */
             OneofDescriptorProto.prototype.name = "";
 
             /**
              * OneofDescriptorProto options.
-             * @type {google.protobuf.OneofOptions}
+             * @type {google.protobuf.OneofOptions|undefined}
              */
             OneofDescriptorProto.prototype.options = null;
 
@@ -9324,6 +9400,8 @@ $root.google = (function() {
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             OneofDescriptorProto.verify = function verify(message) {
+                if (typeof message !== "object" || message === null)
+                    return "object expected";
                 if (message.name !== undefined)
                     if (!$util.isString(message.name))
                         return "name: string expected";
@@ -9420,19 +9498,19 @@ $root.google = (function() {
 
             /**
              * EnumDescriptorProto name.
-             * @type {string}
+             * @type {string|undefined}
              */
             EnumDescriptorProto.prototype.name = "";
 
             /**
              * EnumDescriptorProto value.
-             * @type {Array.<google.protobuf.EnumValueDescriptorProto>}
+             * @type {Array.<google.protobuf.EnumValueDescriptorProto>|undefined}
              */
             EnumDescriptorProto.prototype.value = $util.emptyArray;
 
             /**
              * EnumDescriptorProto options.
-             * @type {google.protobuf.EnumOptions}
+             * @type {google.protobuf.EnumOptions|undefined}
              */
             EnumDescriptorProto.prototype.options = null;
 
@@ -9529,6 +9607,8 @@ $root.google = (function() {
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             EnumDescriptorProto.verify = function verify(message) {
+                if (typeof message !== "object" || message === null)
+                    return "object expected";
                 if (message.name !== undefined)
                     if (!$util.isString(message.name))
                         return "name: string expected";
@@ -9651,19 +9731,19 @@ $root.google = (function() {
 
             /**
              * EnumValueDescriptorProto name.
-             * @type {string}
+             * @type {string|undefined}
              */
             EnumValueDescriptorProto.prototype.name = "";
 
             /**
              * EnumValueDescriptorProto number.
-             * @type {number}
+             * @type {number|undefined}
              */
             EnumValueDescriptorProto.prototype.number = 0;
 
             /**
              * EnumValueDescriptorProto options.
-             * @type {google.protobuf.EnumValueOptions}
+             * @type {google.protobuf.EnumValueOptions|undefined}
              */
             EnumValueDescriptorProto.prototype.options = null;
 
@@ -9756,6 +9836,8 @@ $root.google = (function() {
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             EnumValueDescriptorProto.verify = function verify(message) {
+                if (typeof message !== "object" || message === null)
+                    return "object expected";
                 if (message.name !== undefined)
                     if (!$util.isString(message.name))
                         return "name: string expected";
@@ -9860,19 +9942,19 @@ $root.google = (function() {
 
             /**
              * ServiceDescriptorProto name.
-             * @type {string}
+             * @type {string|undefined}
              */
             ServiceDescriptorProto.prototype.name = "";
 
             /**
              * ServiceDescriptorProto method.
-             * @type {Array.<google.protobuf.MethodDescriptorProto>}
+             * @type {Array.<google.protobuf.MethodDescriptorProto>|undefined}
              */
             ServiceDescriptorProto.prototype.method = $util.emptyArray;
 
             /**
              * ServiceDescriptorProto options.
-             * @type {google.protobuf.ServiceOptions}
+             * @type {google.protobuf.ServiceOptions|undefined}
              */
             ServiceDescriptorProto.prototype.options = null;
 
@@ -9969,6 +10051,8 @@ $root.google = (function() {
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             ServiceDescriptorProto.verify = function verify(message) {
+                if (typeof message !== "object" || message === null)
+                    return "object expected";
                 if (message.name !== undefined)
                     if (!$util.isString(message.name))
                         return "name: string expected";
@@ -10091,37 +10175,37 @@ $root.google = (function() {
 
             /**
              * MethodDescriptorProto name.
-             * @type {string}
+             * @type {string|undefined}
              */
             MethodDescriptorProto.prototype.name = "";
 
             /**
              * MethodDescriptorProto inputType.
-             * @type {string}
+             * @type {string|undefined}
              */
             MethodDescriptorProto.prototype.inputType = "";
 
             /**
              * MethodDescriptorProto outputType.
-             * @type {string}
+             * @type {string|undefined}
              */
             MethodDescriptorProto.prototype.outputType = "";
 
             /**
              * MethodDescriptorProto options.
-             * @type {google.protobuf.MethodOptions}
+             * @type {google.protobuf.MethodOptions|undefined}
              */
             MethodDescriptorProto.prototype.options = null;
 
             /**
              * MethodDescriptorProto clientStreaming.
-             * @type {boolean}
+             * @type {boolean|undefined}
              */
             MethodDescriptorProto.prototype.clientStreaming = false;
 
             /**
              * MethodDescriptorProto serverStreaming.
-             * @type {boolean}
+             * @type {boolean|undefined}
              */
             MethodDescriptorProto.prototype.serverStreaming = false;
 
@@ -10229,6 +10313,8 @@ $root.google = (function() {
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             MethodDescriptorProto.verify = function verify(message) {
+                if (typeof message !== "object" || message === null)
+                    return "object expected";
                 if (message.name !== undefined)
                     if (!$util.isString(message.name))
                         return "name: string expected";
@@ -10357,91 +10443,91 @@ $root.google = (function() {
 
             /**
              * FileOptions javaPackage.
-             * @type {string}
+             * @type {string|undefined}
              */
             FileOptions.prototype.javaPackage = "";
 
             /**
              * FileOptions javaOuterClassname.
-             * @type {string}
+             * @type {string|undefined}
              */
             FileOptions.prototype.javaOuterClassname = "";
 
             /**
              * FileOptions javaMultipleFiles.
-             * @type {boolean}
+             * @type {boolean|undefined}
              */
             FileOptions.prototype.javaMultipleFiles = false;
 
             /**
              * FileOptions javaGenerateEqualsAndHash.
-             * @type {boolean}
+             * @type {boolean|undefined}
              */
             FileOptions.prototype.javaGenerateEqualsAndHash = false;
 
             /**
              * FileOptions javaStringCheckUtf8.
-             * @type {boolean}
+             * @type {boolean|undefined}
              */
             FileOptions.prototype.javaStringCheckUtf8 = false;
 
             /**
              * FileOptions optimizeFor.
-             * @type {number}
+             * @type {number|undefined}
              */
             FileOptions.prototype.optimizeFor = 1;
 
             /**
              * FileOptions goPackage.
-             * @type {string}
+             * @type {string|undefined}
              */
             FileOptions.prototype.goPackage = "";
 
             /**
              * FileOptions ccGenericServices.
-             * @type {boolean}
+             * @type {boolean|undefined}
              */
             FileOptions.prototype.ccGenericServices = false;
 
             /**
              * FileOptions javaGenericServices.
-             * @type {boolean}
+             * @type {boolean|undefined}
              */
             FileOptions.prototype.javaGenericServices = false;
 
             /**
              * FileOptions pyGenericServices.
-             * @type {boolean}
+             * @type {boolean|undefined}
              */
             FileOptions.prototype.pyGenericServices = false;
 
             /**
              * FileOptions deprecated.
-             * @type {boolean}
+             * @type {boolean|undefined}
              */
             FileOptions.prototype.deprecated = false;
 
             /**
              * FileOptions ccEnableArenas.
-             * @type {boolean}
+             * @type {boolean|undefined}
              */
             FileOptions.prototype.ccEnableArenas = false;
 
             /**
              * FileOptions objcClassPrefix.
-             * @type {string}
+             * @type {string|undefined}
              */
             FileOptions.prototype.objcClassPrefix = "";
 
             /**
              * FileOptions csharpNamespace.
-             * @type {string}
+             * @type {string|undefined}
              */
             FileOptions.prototype.csharpNamespace = "";
 
             /**
              * FileOptions uninterpretedOption.
-             * @type {Array.<google.protobuf.UninterpretedOption>}
+             * @type {Array.<google.protobuf.UninterpretedOption>|undefined}
              */
             FileOptions.prototype.uninterpretedOption = $util.emptyArray;
 
@@ -10598,6 +10684,8 @@ $root.google = (function() {
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             FileOptions.verify = function verify(message) {
+                if (typeof message !== "object" || message === null)
+                    return "object expected";
                 if (message.javaPackage !== undefined)
                     if (!$util.isString(message.javaPackage))
                         return "javaPackage: string expected";
@@ -10821,9 +10909,9 @@ $root.google = (function() {
              */
             FileOptions.OptimizeMode = (function() {
                 var valuesById = {}, values = Object.create(valuesById);
-                values[valuesById[1] = "SPEED"] = 1;
-                values[valuesById[2] = "CODE_SIZE"] = 2;
-                values[valuesById[3] = "LITE_RUNTIME"] = 3;
+                values["SPEED"] = 1;
+                values["CODE_SIZE"] = 2;
+                values["LITE_RUNTIME"] = 3;
                 return values;
             })();
 
@@ -10846,31 +10934,31 @@ $root.google = (function() {
 
             /**
              * MessageOptions messageSetWireFormat.
-             * @type {boolean}
+             * @type {boolean|undefined}
              */
             MessageOptions.prototype.messageSetWireFormat = false;
 
             /**
              * MessageOptions noStandardDescriptorAccessor.
-             * @type {boolean}
+             * @type {boolean|undefined}
              */
             MessageOptions.prototype.noStandardDescriptorAccessor = false;
 
             /**
              * MessageOptions deprecated.
-             * @type {boolean}
+             * @type {boolean|undefined}
              */
             MessageOptions.prototype.deprecated = false;
 
             /**
              * MessageOptions mapEntry.
-             * @type {boolean}
+             * @type {boolean|undefined}
              */
             MessageOptions.prototype.mapEntry = false;
 
             /**
              * MessageOptions uninterpretedOption.
-             * @type {Array.<google.protobuf.UninterpretedOption>}
+             * @type {Array.<google.protobuf.UninterpretedOption>|undefined}
              */
             MessageOptions.prototype.uninterpretedOption = $util.emptyArray;
 
@@ -10976,6 +11064,8 @@ $root.google = (function() {
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             MessageOptions.verify = function verify(message) {
+                if (typeof message !== "object" || message === null)
+                    return "object expected";
                 if (message.messageSetWireFormat !== undefined)
                     if (typeof message.messageSetWireFormat !== "boolean")
                         return "messageSetWireFormat: boolean expected";
@@ -11109,43 +11199,43 @@ $root.google = (function() {
 
             /**
              * FieldOptions ctype.
-             * @type {number}
+             * @type {number|undefined}
              */
             FieldOptions.prototype.ctype = 0;
 
             /**
              * FieldOptions packed.
-             * @type {boolean}
+             * @type {boolean|undefined}
              */
             FieldOptions.prototype.packed = false;
 
             /**
              * FieldOptions jstype.
-             * @type {number}
+             * @type {number|undefined}
              */
             FieldOptions.prototype.jstype = 0;
 
             /**
              * FieldOptions lazy.
-             * @type {boolean}
+             * @type {boolean|undefined}
              */
             FieldOptions.prototype.lazy = false;
 
             /**
              * FieldOptions deprecated.
-             * @type {boolean}
+             * @type {boolean|undefined}
              */
             FieldOptions.prototype.deprecated = false;
 
             /**
              * FieldOptions weak.
-             * @type {boolean}
+             * @type {boolean|undefined}
              */
             FieldOptions.prototype.weak = false;
 
             /**
              * FieldOptions uninterpretedOption.
-             * @type {Array.<google.protobuf.UninterpretedOption>}
+             * @type {Array.<google.protobuf.UninterpretedOption>|undefined}
              */
             FieldOptions.prototype.uninterpretedOption = $util.emptyArray;
 
@@ -11263,6 +11353,8 @@ $root.google = (function() {
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             FieldOptions.verify = function verify(message) {
+                if (typeof message !== "object" || message === null)
+                    return "object expected";
                 if (message.ctype !== undefined)
                     switch (message.ctype) {
                     default:
@@ -11440,9 +11532,9 @@ $root.google = (function() {
              */
             FieldOptions.CType = (function() {
                 var valuesById = {}, values = Object.create(valuesById);
-                values[valuesById[0] = "STRING"] = 0;
-                values[valuesById[1] = "CORD"] = 1;
-                values[valuesById[2] = "STRING_PIECE"] = 2;
+                values["STRING"] = 0;
+                values["CORD"] = 1;
+                values["STRING_PIECE"] = 2;
                 return values;
             })();
 
@@ -11457,9 +11549,9 @@ $root.google = (function() {
              */
             FieldOptions.JSType = (function() {
                 var valuesById = {}, values = Object.create(valuesById);
-                values[valuesById[0] = "JS_NORMAL"] = 0;
-                values[valuesById[1] = "JS_STRING"] = 1;
-                values[valuesById[2] = "JS_NUMBER"] = 2;
+                values["JS_NORMAL"] = 0;
+                values["JS_STRING"] = 1;
+                values["JS_NUMBER"] = 2;
                 return values;
             })();
 
@@ -11482,7 +11574,7 @@ $root.google = (function() {
 
             /**
              * OneofOptions uninterpretedOption.
-             * @type {Array.<google.protobuf.UninterpretedOption>}
+             * @type {Array.<google.protobuf.UninterpretedOption>|undefined}
              */
             OneofOptions.prototype.uninterpretedOption = $util.emptyArray;
 
@@ -11568,6 +11660,8 @@ $root.google = (function() {
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             OneofOptions.verify = function verify(message) {
+                if (typeof message !== "object" || message === null)
+                    return "object expected";
                 if (message.uninterpretedOption !== undefined) {
                     if (!Array.isArray(message.uninterpretedOption))
                         return "uninterpretedOption: array expected";
@@ -11667,26 +11761,26 @@ $root.google = (function() {
 
             /**
              * EnumOptions allowAlias.
-             * @type {boolean}
+             * @type {boolean|undefined}
              */
             EnumOptions.prototype.allowAlias = false;
 
             /**
              * EnumOptions deprecated.
-             * @type {boolean}
+             * @type {boolean|undefined}
              */
             EnumOptions.prototype.deprecated = false;
 
             /**
              * EnumOptions uninterpretedOption.
-             * @type {Array.<google.protobuf.UninterpretedOption>}
+             * @type {Array.<google.protobuf.UninterpretedOption>|undefined}
              */
             EnumOptions.prototype.uninterpretedOption = $util.emptyArray;
 
             /**
              * EnumOptions .jspb.test.IsExtension.simpleOption.
              * @name google.protobuf.EnumOptions#.jspb.test.IsExtension.simpleOption
-             * @type {string}
+             * @type {string|undefined}
              */
             EnumOptions.prototype[".jspb.test.IsExtension.simpleOption"] = "";
 
@@ -11787,6 +11881,8 @@ $root.google = (function() {
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             EnumOptions.verify = function verify(message) {
+                if (typeof message !== "object" || message === null)
+                    return "object expected";
                 if (message.allowAlias !== undefined)
                     if (typeof message.allowAlias !== "boolean")
                         return "allowAlias: boolean expected";
@@ -11912,13 +12008,13 @@ $root.google = (function() {
 
             /**
              * EnumValueOptions deprecated.
-             * @type {boolean}
+             * @type {boolean|undefined}
              */
             EnumValueOptions.prototype.deprecated = false;
 
             /**
              * EnumValueOptions uninterpretedOption.
-             * @type {Array.<google.protobuf.UninterpretedOption>}
+             * @type {Array.<google.protobuf.UninterpretedOption>|undefined}
              */
             EnumValueOptions.prototype.uninterpretedOption = $util.emptyArray;
 
@@ -12009,6 +12105,8 @@ $root.google = (function() {
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             EnumValueOptions.verify = function verify(message) {
+                if (typeof message !== "object" || message === null)
+                    return "object expected";
                 if (message.deprecated !== undefined)
                     if (typeof message.deprecated !== "boolean")
                         return "deprecated: boolean expected";
@@ -12117,13 +12215,13 @@ $root.google = (function() {
 
             /**
              * ServiceOptions deprecated.
-             * @type {boolean}
+             * @type {boolean|undefined}
              */
             ServiceOptions.prototype.deprecated = false;
 
             /**
              * ServiceOptions uninterpretedOption.
-             * @type {Array.<google.protobuf.UninterpretedOption>}
+             * @type {Array.<google.protobuf.UninterpretedOption>|undefined}
              */
             ServiceOptions.prototype.uninterpretedOption = $util.emptyArray;
 
@@ -12214,6 +12312,8 @@ $root.google = (function() {
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             ServiceOptions.verify = function verify(message) {
+                if (typeof message !== "object" || message === null)
+                    return "object expected";
                 if (message.deprecated !== undefined)
                     if (typeof message.deprecated !== "boolean")
                         return "deprecated: boolean expected";
@@ -12322,19 +12422,19 @@ $root.google = (function() {
 
             /**
              * MethodOptions deprecated.
-             * @type {boolean}
+             * @type {boolean|undefined}
              */
             MethodOptions.prototype.deprecated = false;
 
             /**
              * MethodOptions idempotencyLevel.
-             * @type {number}
+             * @type {number|undefined}
              */
             MethodOptions.prototype.idempotencyLevel = 0;
 
             /**
              * MethodOptions uninterpretedOption.
-             * @type {Array.<google.protobuf.UninterpretedOption>}
+             * @type {Array.<google.protobuf.UninterpretedOption>|undefined}
              */
             MethodOptions.prototype.uninterpretedOption = $util.emptyArray;
 
@@ -12431,6 +12531,8 @@ $root.google = (function() {
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             MethodOptions.verify = function verify(message) {
+                if (typeof message !== "object" || message === null)
+                    return "object expected";
                 if (message.deprecated !== undefined)
                     if (typeof message.deprecated !== "boolean")
                         return "deprecated: boolean expected";
@@ -12558,9 +12660,9 @@ $root.google = (function() {
              */
             MethodOptions.IdempotencyLevel = (function() {
                 var valuesById = {}, values = Object.create(valuesById);
-                values[valuesById[0] = "IDEMPOTENCY_UNKNOWN"] = 0;
-                values[valuesById[1] = "NO_SIDE_EFFECTS"] = 1;
-                values[valuesById[2] = "IDEMPOTENT"] = 2;
+                values["IDEMPOTENCY_UNKNOWN"] = 0;
+                values["NO_SIDE_EFFECTS"] = 1;
+                values["IDEMPOTENT"] = 2;
                 return values;
             })();
 
@@ -12583,43 +12685,43 @@ $root.google = (function() {
 
             /**
              * UninterpretedOption name.
-             * @type {Array.<google.protobuf.UninterpretedOption.NamePart>}
+             * @type {Array.<google.protobuf.UninterpretedOption.NamePart>|undefined}
              */
             UninterpretedOption.prototype.name = $util.emptyArray;
 
             /**
              * UninterpretedOption identifierValue.
-             * @type {string}
+             * @type {string|undefined}
              */
             UninterpretedOption.prototype.identifierValue = "";
 
             /**
              * UninterpretedOption positiveIntValue.
-             * @type {number|$protobuf.Long}
+             * @type {number|$protobuf.Long|undefined}
              */
             UninterpretedOption.prototype.positiveIntValue = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
 
             /**
              * UninterpretedOption negativeIntValue.
-             * @type {number|$protobuf.Long}
+             * @type {number|$protobuf.Long|undefined}
              */
             UninterpretedOption.prototype.negativeIntValue = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
 
             /**
              * UninterpretedOption doubleValue.
-             * @type {number}
+             * @type {number|undefined}
              */
             UninterpretedOption.prototype.doubleValue = 0;
 
             /**
              * UninterpretedOption stringValue.
-             * @type {Uint8Array}
+             * @type {Uint8Array|undefined}
              */
             UninterpretedOption.prototype.stringValue = $util.newBuffer([]);
 
             /**
              * UninterpretedOption aggregateValue.
-             * @type {string}
+             * @type {string|undefined}
              */
             UninterpretedOption.prototype.aggregateValue = "";
 
@@ -12735,6 +12837,8 @@ $root.google = (function() {
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             UninterpretedOption.verify = function verify(message) {
+                if (typeof message !== "object" || message === null)
+                    return "object expected";
                 if (message.name !== undefined) {
                     if (!Array.isArray(message.name))
                         return "name: array expected";
@@ -12999,6 +13103,8 @@ $root.google = (function() {
                  * @returns {?string} `null` if valid, otherwise the reason why it is not
                  */
                 NamePart.verify = function verify(message) {
+                    if (typeof message !== "object" || message === null)
+                        return "object expected";
                     if (!$util.isString(message.namePart))
                         return "namePart: string expected";
                     if (typeof message.isExtension !== "boolean")
@@ -13091,7 +13197,7 @@ $root.google = (function() {
 
             /**
              * SourceCodeInfo location.
-             * @type {Array.<google.protobuf.SourceCodeInfo.Location>}
+             * @type {Array.<google.protobuf.SourceCodeInfo.Location>|undefined}
              */
             SourceCodeInfo.prototype.location = $util.emptyArray;
 
@@ -13177,6 +13283,8 @@ $root.google = (function() {
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             SourceCodeInfo.verify = function verify(message) {
+                if (typeof message !== "object" || message === null)
+                    return "object expected";
                 if (message.location !== undefined) {
                     if (!Array.isArray(message.location))
                         return "location: array expected";
@@ -13273,31 +13381,31 @@ $root.google = (function() {
 
                 /**
                  * Location path.
-                 * @type {Array.<number>}
+                 * @type {Array.<number>|undefined}
                  */
                 Location.prototype.path = $util.emptyArray;
 
                 /**
                  * Location span.
-                 * @type {Array.<number>}
+                 * @type {Array.<number>|undefined}
                  */
                 Location.prototype.span = $util.emptyArray;
 
                 /**
                  * Location leadingComments.
-                 * @type {string}
+                 * @type {string|undefined}
                  */
                 Location.prototype.leadingComments = "";
 
                 /**
                  * Location trailingComments.
-                 * @type {string}
+                 * @type {string|undefined}
                  */
                 Location.prototype.trailingComments = "";
 
                 /**
                  * Location leadingDetachedComments.
-                 * @type {Array.<string>}
+                 * @type {Array.<string>|undefined}
                  */
                 Location.prototype.leadingDetachedComments = $util.emptyArray;
 
@@ -13420,6 +13528,8 @@ $root.google = (function() {
                  * @returns {?string} `null` if valid, otherwise the reason why it is not
                  */
                 Location.verify = function verify(message) {
+                    if (typeof message !== "object" || message === null)
+                        return "object expected";
                     if (message.path !== undefined) {
                         if (!Array.isArray(message.path))
                             return "path: array expected";
@@ -13576,7 +13686,7 @@ $root.google = (function() {
 
             /**
              * GeneratedCodeInfo annotation.
-             * @type {Array.<google.protobuf.GeneratedCodeInfo.Annotation>}
+             * @type {Array.<google.protobuf.GeneratedCodeInfo.Annotation>|undefined}
              */
             GeneratedCodeInfo.prototype.annotation = $util.emptyArray;
 
@@ -13662,6 +13772,8 @@ $root.google = (function() {
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             GeneratedCodeInfo.verify = function verify(message) {
+                if (typeof message !== "object" || message === null)
+                    return "object expected";
                 if (message.annotation !== undefined) {
                     if (!Array.isArray(message.annotation))
                         return "annotation: array expected";
@@ -13758,25 +13870,25 @@ $root.google = (function() {
 
                 /**
                  * Annotation path.
-                 * @type {Array.<number>}
+                 * @type {Array.<number>|undefined}
                  */
                 Annotation.prototype.path = $util.emptyArray;
 
                 /**
                  * Annotation sourceFile.
-                 * @type {string}
+                 * @type {string|undefined}
                  */
                 Annotation.prototype.sourceFile = "";
 
                 /**
                  * Annotation begin.
-                 * @type {number}
+                 * @type {number|undefined}
                  */
                 Annotation.prototype.begin = 0;
 
                 /**
                  * Annotation end.
-                 * @type {number}
+                 * @type {number|undefined}
                  */
                 Annotation.prototype.end = 0;
 
@@ -13880,6 +13992,8 @@ $root.google = (function() {
                  * @returns {?string} `null` if valid, otherwise the reason why it is not
                  */
                 Annotation.verify = function verify(message) {
+                    if (typeof message !== "object" || message === null)
+                        return "object expected";
                     if (message.path !== undefined) {
                         if (!Array.isArray(message.path))
                             return "path: array expected";

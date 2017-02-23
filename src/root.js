@@ -173,7 +173,7 @@ Root.prototype.load = function load(filename, options, callback) {
                 if (err) {
                     if (!weak)
                         finish(err);
-                    else if (!queued)
+                    else /* istanbul ignore next */ if (!queued) // can't be covered reliably
                         finish(null, self);
                     return;
                 }

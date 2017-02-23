@@ -237,6 +237,10 @@ Field.prototype.resolve = function resolve() {
             this.typeDefault = this.resolvedType.values[this.typeDefault];
     }
 
+    // remove unnecessary packed option (parser adds this) if not referencing an enum
+    if (this.options && this.options.packed !== undefined && this.resolvedType && !(this.resolvedType instanceof Enum))
+        delete this.options.packed;
+
     // convert to internal data type if necesssary
     if (this.long) {
         this.typeDefault = util.Long.fromNumber(this.typeDefault, this.type.charAt(0) === "u");
