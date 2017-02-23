@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.6.4 (c) 2016, Daniel Wirtz
- * Compiled Thu, 23 Feb 2017 03:03:02 UTC
+ * Compiled Thu, 23 Feb 2017 17:02:14 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -601,7 +601,7 @@ path.normalize = function normalize(path) {
         prefix = parts.shift() + "/";
     for (var i = 0; i < parts.length;) {
         if (parts[i] === "..") {
-            if (i > 0)
+            if (i > 0 && parts[i - 1] !== "..")
                 parts.splice(--i, 2);
             else if (absolute)
                 parts.splice(i, 1);
@@ -4746,7 +4746,7 @@ Root.prototype.load = function load(filename, options, callback) {
                 if (err) {
                     if (!weak)
                         finish(err);
-                    else if (!queued)
+                    else /* istanbul ignore next */ if (!queued) // can't be covered reliably
                         finish(null, self);
                     return;
                 }
@@ -5805,7 +5805,7 @@ Type.prototype.add = function add(object) {
         // type instead.
 
         // avoids calling the getter if not absolutely necessary because it's called quite frequently
-        if (this._fieldsById ? this._fieldsById[object.id] : this.fieldsById[object.id])
+        if (this._fieldsById ? /* istanbul ignore next */ this._fieldsById[object.id] : this.fieldsById[object.id])
             throw Error("duplicate id " + object.id + " in " + this);
 
         if (object.parent)

@@ -57,11 +57,13 @@ function proto_target(root, options, callback) {
 
 function push(line) {
     if (line === "")
-        return out.push("");
-    var ind = "";
-    for (var i = 0; i < indent; ++i)
-        ind += "    ";
-    out.push(ind + line);
+        out.push("");
+    else {
+        var ind = "";
+        for (var i = 0; i < indent; ++i)
+            ind += "    ";
+        out.push(ind + line);
+    }
 }
 
 function escape(str) {
@@ -84,6 +86,7 @@ function buildRoot(root) {
     root.resolveAll();
     var pkg = [];
     var ptr = root;
+    var repeat = true;
     do {
         var nested = ptr.nestedArray;
         if (nested.length === 1 && nested[0] instanceof Namespace && !(nested[0] instanceof Type || nested[0] instanceof Service)) {
@@ -91,9 +94,9 @@ function buildRoot(root) {
             if (ptr !== root)
                 pkg.push(ptr.name);
         } else
-            break;
-    } while (true);
-    out.push('syntax = "proto' + syntax + '";');
+            repeat = false;
+    } while (repeat);
+    out.push("syntax = \"proto" + syntax + "\";");
     if (pkg.length)
         out.push("", "package " + pkg.join(".") + ";");
 
@@ -216,14 +219,14 @@ function buildFieldOptions(field) {
     if (!field.options || !(keys = Object.keys(field.options)).length)
         return null;
     var sb = [];
-    Object.keys(field.options).forEach(function(key) {
+    keys.forEach(function(key) {
         var val = field.options[key];
         var wireType = types.packed[field.resolvedType instanceof Enum ? "uint32" : field.type];
         switch (key) {
             case "packed":
                 val = Boolean(val);
                 // skip when not packable or syntax default
-                if (wireType === undefined || (syntax === 3) === val)
+                if (wireType === undefined || syntax === 3 === val)
                     return;
                 break;
             case "default":
