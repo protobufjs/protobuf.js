@@ -147,6 +147,39 @@ function parse(source, root, options) {
         return [ start, end ];
     }
 
+    function readReserved(){
+      var r_list = [];
+      var val;
+      var add_range = false;
+      var i;
+
+      while( !skip( ';', true ) ){
+
+        skip( ",", true );
+
+        if( !skip( 'to', true ) ){
+
+          val = readValue();
+
+          /* add each val between last and val*/
+          if( add_range ){
+            for ( i = r_list[ r_list.length - 1 ] + 1; i < val; i += 1 ){
+              r_list.push( i );
+            }
+            add_range = false;
+          }
+
+          r_list.push( val );
+        }
+        else{
+          /*will need to add each value between last val and next*/
+          add_range = true;
+        }
+      }
+
+      return r_list;
+    }
+
     function parseNumber(token, insideTryCatch) {
         var sign = 1;
         if (token.charAt(0) === "-") {
@@ -294,7 +327,7 @@ function parse(source, root, options) {
                         break;
 
                     case "reserved":
-                        (type.reserved || (type.reserved = [])).push(readRange(type, tokenLower));
+                        (type.reserved || (type.reserved = [])).push(readReserved(type, tokenLower));
                         break;
 
                     default:
