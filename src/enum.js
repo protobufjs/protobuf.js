@@ -91,7 +91,7 @@ Enum.prototype.add = function(name, id, comment) {
     if (this.values[name] !== undefined)
         throw Error("duplicate name");
 
-    if (this.valuesById[id] !== undefined)
+    if (this.valuesById[id] !== undefined && !(this.options && this.options.allow_alias))
         throw Error("duplicate id");
 
     this.valuesById[this.values[name] = id] = name;
