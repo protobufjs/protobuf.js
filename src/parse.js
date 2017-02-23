@@ -336,7 +336,8 @@ function parse(source, root, options) {
             field.comment = cmnt(trailingLine);
         // JSON defaults to packed=true if not set so we have to set packed=false explicity when
         // parsing proto2 descriptors without the option, where applicable.
-        if (field.repeated && types.packed[type] !== undefined && !isProto3)
+        var packed = field.getOption('packed');
+        if (field.repeated && packed === undefined && !isProto3)
             field.setOption("packed", false, /* ifNotSet */ true);
         parent.add(field);
     }
