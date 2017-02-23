@@ -208,7 +208,7 @@ function buildFunction(type, functionName, gen, scope) {
 
     if (config.beautify)
         code = beautifyCode(code);
-    
+
     code = code.replace(/ {4}/g, "\t");
 
     var hasScope = scope && Object.keys(scope).length;
@@ -307,7 +307,7 @@ function buildType(ref, type) {
             pushComment([
                 field.comment || type.name + " " + field.name + ".",
                 prop.charAt(0) !== "." ? "@name " + fullName + "#" + field.name : null,
-                "@type {" + jsType + "}"
+                "@type {" + jsType + (field.optional ? "|undefined": "") + "}"
             ]);
         } else if (firstField) {
             push("");
@@ -389,7 +389,7 @@ function buildType(ref, type) {
             --indent;
         push("};");
     }
-    
+
     if (config.encode) {
         push("");
         pushComment([
