@@ -138,13 +138,15 @@ function parse(source, root, options) {
         }
     }
 
-    function readRange() {
-        var start = parseId(next());
-        var end = start;
-        if (skip("to", true))
-            end = parseId(next());
+    function readRanges(target, acceptStrings) {
+        var token, start;
+        do {
+            if (acceptStrings && ((token = peek()) === "\"" || token === "'"))
+                target.push(readString());
+            else
+                target.push([ start = parseId(next()), skip("to", true) ? parseId(next()) : start ]);
+        } while (skip(",", true));
         skip(";");
-        return [ start, end ];
     }
 
     function parseNumber(token, insideTryCatch) {
@@ -290,11 +292,11 @@ function parse(source, root, options) {
                         break;
 
                     case "extensions":
-                        (type.extensions || (type.extensions = [])).push(readRange(type, tokenLower));
+                        readRanges(type.extensions || (type.extensions = []));
                         break;
 
                     case "reserved":
-                        (type.reserved || (type.reserved = [])).push(readRange(type, tokenLower));
+                        readRanges(type.reserved || (type.reserved = []), true);
                         break;
 
                     default:

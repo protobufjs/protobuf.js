@@ -1673,9 +1673,9 @@ export class Type extends NamespaceBase {
 
     /**
      * Reserved ranges, if any.
-     * @type {number[][]}
+     * @type {Array.<number[]|string>}
      */
-    reserved: number[][];
+    reserved: (number[]|string)[];
 
     /**
      * Message fields by id.
@@ -1725,6 +1725,20 @@ export class Type extends NamespaceBase {
      * @throws {Error} If `object` is not a member of this type
      */
     remove(object: ReflectionObject): Type;
+
+    /**
+     * Tests if the specified id is reserved.
+     * @param {number} id Id to test
+     * @returns {boolean} `true` if reserved, otherwise `false`
+     */
+    isReservedId(id: number): boolean;
+
+    /**
+     * Tests if the specified name is reserved.
+     * @param {string} name Name to test
+     * @returns {boolean} `true` if reserved, otherwise `false`
+     */
+    isReservedName(name: string): boolean;
 
     /**
      * Creates a new message of this type using the specified properties.

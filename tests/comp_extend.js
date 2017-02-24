@@ -7,6 +7,7 @@ message A {\
     message B {\
         message One {\
             extensions 1000 to max;\
+            reserved 900 to 999, 899, \"a\", 'b';\
         }\
     }\
     message C {\

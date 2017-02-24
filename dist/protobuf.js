@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.6.4 (c) 2016, Daniel Wirtz
- * Compiled Thu, 23 Feb 2017 17:02:14 UTC
+ * Compiled Fri, 24 Feb 2017 01:08:57 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -3435,13 +3435,15 @@ function parse(source, root, options) {
         }
     }
 
-    function readRange() {
-        var start = parseId(next());
-        var end = start;
-        if (skip("to", true))
-            end = parseId(next());
+    function readRanges(target, acceptStrings) {
+        var token, start;
+        do {
+            if (acceptStrings && ((token = peek()) === "\"" || token === "'"))
+                target.push(readString());
+            else
+                target.push([ start = parseId(next()), skip("to", true) ? parseId(next()) : start ]);
+        } while (skip(",", true));
         skip(";");
-        return [ start, end ];
     }
 
     function parseNumber(token, insideTryCatch) {
@@ -3587,11 +3589,11 @@ function parse(source, root, options) {
                         break;
 
                     case "extensions":
-                        (type.extensions || (type.extensions = [])).push(readRange(type, tokenLower));
+                        readRanges(type.extensions || (type.extensions = []));
                         break;
 
                     case "reserved":
-                        (type.reserved || (type.reserved = [])).push(readRange(type, tokenLower));
+                        readRanges(type.reserved || (type.reserved = []), true);
                         break;
 
                     default:
@@ -5630,7 +5632,7 @@ function Type(name, options) {
 
     /**
      * Reserved ranges, if any.
-     * @type {number[][]}
+     * @type {Array.<number[]|string>}
      */
     this.reserved = undefined; // toJSON
 
@@ -5807,7 +5809,11 @@ Type.prototype.add = function add(object) {
         // avoids calling the getter if not absolutely necessary because it's called quite frequently
         if (this._fieldsById ? /* istanbul ignore next */ this._fieldsById[object.id] : this.fieldsById[object.id])
             throw Error("duplicate id " + object.id + " in " + this);
-
+        if (this.isReservedId(object.id))
+            throw Error("id " + object.id + " is reserved in " + this);
+        if (this.isReservedName(object.name))
+            throw Error("name '" + object.name + "' is reserved in " + this);
+        
         if (object.parent)
             object.parent.remove(object);
         this.fields[object.name] = object;
@@ -5853,6 +5859,32 @@ Type.prototype.remove = function remove(object) {
         return clearCache(this);
     }
     return Namespace.prototype.remove.call(this, object);
+};
+
+/**
+ * Tests if the specified id is reserved.
+ * @param {number} id Id to test
+ * @returns {boolean} `true` if reserved, otherwise `false`
+ */
+Type.prototype.isReservedId = function isReservedId(id) {
+    if (this.reserved)
+        for (var i = 0; i < this.reserved.length; ++i)
+            if (typeof this.reserved[i] !== "string" && this.reserved[i][0] <= id && this.reserved[i][1] >= id)
+                return true;
+    return false;
+};
+
+/**
+ * Tests if the specified name is reserved.
+ * @param {string} name Name to test
+ * @returns {boolean} `true` if reserved, otherwise `false`
+ */
+Type.prototype.isReservedName = function isReservedName(name) {
+    if (this.reserved)
+        for (var i = 0; i < this.reserved.length; ++i)
+            if (this.reserved[i] === name)
+                return true;
+    return false;
 };
 
 /**

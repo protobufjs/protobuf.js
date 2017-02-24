@@ -24,8 +24,8 @@ var def2 = {
             oneof: ["a"]
         }
     },
-    extensions: [1000, 2000],
-    reserved: [999],
+    extensions: [[1000, 2000]],
+    reserved: [[900, 999], "b"],
     nested: {
         Type: {
             values: { ONE: 1, TWO: 2 }
@@ -65,6 +65,7 @@ tape.test("reflected types", function(test) {
                 id: 1
             }
         },
+        reserved: [[900, 999], "b"],
         nested: {
             Type: { fields: {} },
             Enum: { values: {} },
@@ -79,7 +80,7 @@ tape.test("reflected types", function(test) {
         },
         oneofs: undefined,
         extensions: undefined,
-        reserved: undefined,
+        reserved: [[900, 999], "b"],
         group: undefined,
         nested: {
             Type: { extensions: undefined, fields: {}, group: undefined, nested: undefined, oneofs: undefined, options: undefined, reserved: undefined },
@@ -98,6 +99,15 @@ tape.test("reflected types", function(test) {
     test.throws(function() {
         type.add(new protobuf.Field("c", 1, "uint32"));
     }, Error, "should throw when trying to add duplicate ids");
+
+    test.throws(function() {
+        type.add(new protobuf.Field("c", 900, "uint32"));
+    }, Error, "should throw when trying to add reserved ids");
+
+    test.throws(function() {
+        type.add(new protobuf.Field("b", 2, "uint32"));
+    }, Error, "should throw when trying to add reserved names");
+
 
     test.end();
 });
