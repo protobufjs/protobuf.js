@@ -105,7 +105,7 @@ Reader.prototype.sint32 = function read_sint32() {
 
 function readLongVarint() {
     // tends to deopt with local vars for octet etc.
-    var bits = new LongBits(0 >>> 0, 0 >>> 0);
+    var bits = new LongBits(0, 0);
     var i = 0;
     if (this.len - this.pos > 4) { // fast route (lo)
         for (; i < 4; ++i) {

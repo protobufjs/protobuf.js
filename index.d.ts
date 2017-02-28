@@ -2033,8 +2033,8 @@ export namespace util {
      * @classdesc Helper class for working with the low and high bits of a 64 bit value.
      * @memberof util
      * @constructor
-     * @param {number} lo Low bits
-     * @param {number} hi High bits
+     * @param {number} lo Low bits, unsigned
+     * @param {number} hi High bits, unsigned
      */
     class LongBits {
 
@@ -2043,8 +2043,8 @@ export namespace util {
          * @classdesc Helper class for working with the low and high bits of a 64 bit value.
          * @memberof util
          * @constructor
-         * @param {number} lo Low bits
-         * @param {number} hi High bits
+         * @param {number} lo Low bits, unsigned
+         * @param {number} hi High bits, unsigned
          */
         constructor(lo: number, hi: number);
 

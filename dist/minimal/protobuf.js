@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.6.4 (c) 2016, Daniel Wirtz
- * Compiled Fri, 24 Feb 2017 01:08:57 UTC
+ * Compiled Tue, 28 Feb 2017 02:04:59 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -621,7 +621,7 @@ Reader.prototype.sint32 = function read_sint32() {
 
 function readLongVarint() {
     // tends to deopt with local vars for octet etc.
-    var bits = new LongBits(0 >>> 0, 0 >>> 0);
+    var bits = new LongBits(0, 0);
     var i = 0;
     if (this.len - this.pos > 4) { // fast route (lo)
         for (; i < 4; ++i) {
@@ -1278,22 +1278,25 @@ var util = require(13);
  * @classdesc Helper class for working with the low and high bits of a 64 bit value.
  * @memberof util
  * @constructor
- * @param {number} lo Low bits
- * @param {number} hi High bits
+ * @param {number} lo Low bits, unsigned
+ * @param {number} hi High bits, unsigned
  */
-function LongBits(lo, hi) { // make sure to always call this with unsigned 32bits for proper optimization
+function LongBits(lo, hi) {
+
+    // note that the casts below are theoretically unnecessary as of today, but older statically
+    // generated converter code might still call the ctor with signed 32bits. kept for compat.
 
     /**
      * Low bits.
      * @type {number}
      */
-    this.lo = lo;
+    this.lo = lo >>> 0;
 
     /**
      * High bits.
      * @type {number}
      */
-    this.hi = hi;
+    this.hi = hi >>> 0;
 }
 
 /**
