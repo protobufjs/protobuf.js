@@ -19,8 +19,8 @@ var util = require("../util/minimal");
  * @classdesc Helper class for working with the low and high bits of a 64 bit value.
  * @memberof util
  * @constructor
- * @param {number} lo Low bits, unsigned
- * @param {number} hi High bits, unsigned
+ * @param {number} lo Low 32 bits, unsigned
+ * @param {number} hi High 32 bits, unsigned
  */
 function LongBits(lo, hi) {
 

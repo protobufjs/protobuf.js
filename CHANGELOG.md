@@ -1,3 +1,28 @@
+# [6.6.4](https://github.com/dcodeIO/protobuf.js/releases/tag/6.6.4)
+
+## Fixed
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/88eb7a603a21643d5012a374c7d246f4c27620f3) Made sure that LongBits ctor is always called with unsigned 32 bits + static codegen compat., fixes [#690](https://github.com/dcodeIO/protobuf.js/issues/690)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/50e82fa7759be035a67c7818a1e3ebe0d6f453b6) Properly handle multiple ../.. in path.normalize, see [#688](https://github.com/dcodeIO/protobuf.js/issues/688)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/7c3506b3f0c5a08a887e97313828af0c21effc61) Post-merge, also tackles [#683](https://github.com/dcodeIO/protobuf.js/issues/683) (packed option for repeated enum values)<br />
+
+## New
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/7f3f4600bcae6f2e4dadd5cdb055886193a539b7) Verify accepts non-null objects only, see [#685](https://github.com/dcodeIO/protobuf.js/issues/685)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/d65c22936183d04014d6a8eb880ae0ec33aeba6d) allow_alias enum option was not being honored. This case is now handled and a test case was added<br />
+
+## CLI
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/2ddb76b6e93174787a68f68fb28d26b8ece7cc56) Added an experimental --sparse option to limit pbjs output to actually referenced types within main files<br />
+
+## Docs
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/33d14c97600ed954193301aecbf8492076dd0179) Added explicit hint on Uint8Array to initial example, see [#670](https://github.com/dcodeIO/protobuf.js/issues/670)<br />
+
+## Other
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/cbd4c622912688b47658fea00fd53603049b5104) Ranges and names support for reserved fields, see [#676](https://github.com/dcodeIO/protobuf.js/issues/676)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/487f8922d879955ba22f89b036f897b9753b0355) Updated depdendencies / rebuilt dist files<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/37536e5fa7a15fbc851040e09beb465bc22d9cf3) Use ?: instead of |undefined in .d.ts files<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/f8b415a2fc2d1b1eff19333600a010bcaaebf890) Mark optional fields as possibly being undefined<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/2ddb76b6e93174787a68f68fb28d26b8ece7cc56) Added a few more common google types from google/api, see [#433](https://github.com/dcodeIO/protobuf.js/issues/433)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/d246024f4c7d13ca970c91a757e2f47432a619df) Minor optimizations to dependencies, build process and tsd<br />
+
 # [6.6.3](https://github.com/dcodeIO/protobuf.js/releases/tag/6.6.3)
 
 ## Fixed

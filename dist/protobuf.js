@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.6.4 (c) 2016, Daniel Wirtz
- * Compiled Tue, 28 Feb 2017 02:04:59 UTC
+ * Compiled Tue, 28 Feb 2017 14:18:54 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -6293,8 +6293,8 @@ var util = require(38);
  * @classdesc Helper class for working with the low and high bits of a 64 bit value.
  * @memberof util
  * @constructor
- * @param {number} lo Low bits, unsigned
- * @param {number} hi High bits, unsigned
+ * @param {number} lo Low 32 bits, unsigned
+ * @param {number} hi High 32 bits, unsigned
  */
 function LongBits(lo, hi) {
 
