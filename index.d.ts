@@ -1235,13 +1235,13 @@ export class Reader {
     bool(): boolean;
 
     /**
-     * Reads fixed 32 bits as a number.
+     * Reads fixed 32 bits as an unsigned 32 bit integer.
      * @returns {number} Value read
      */
     fixed32(): number;
 
     /**
-     * Reads zig-zag encoded fixed 32 bits as a number.
+     * Reads fixed 32 bits as a signed 32 bit integer.
      * @returns {number} Value read
      */
     sfixed32(): number;
@@ -2632,21 +2632,22 @@ export class Writer {
     bool(value: boolean): Writer;
 
     /**
-     * Writes a 32 bit value as fixed 32 bits.
+     * Writes an unsigned 32 bit value as fixed 32 bits.
      * @param {number} value Value to write
      * @returns {Writer} `this`
      */
     fixed32(value: number): Writer;
 
     /**
-     * Writes a 32 bit value as fixed 32 bits, zig-zag encoded.
+     * Writes a signed 32 bit value as fixed 32 bits.
+     * @function
      * @param {number} value Value to write
      * @returns {Writer} `this`
      */
     sfixed32(value: number): Writer;
 
     /**
-     * Writes a 64 bit value as fixed 64 bits.
+     * Writes an unsigned 64 bit value as fixed 64 bits.
      * @param {Long|number|string} value Value to write
      * @returns {Writer} `this`
      * @throws {TypeError} If `value` is a string and no long library is present.
@@ -2654,7 +2655,8 @@ export class Writer {
     fixed64(value: (Long|number|string)): Writer;
 
     /**
-     * Writes a 64 bit value as fixed 64 bits, zig-zag encoded.
+     * Writes a signed 64 bit value as fixed 64 bits.
+     * @function
      * @param {Long|number|string} value Value to write
      * @returns {Writer} `this`
      * @throws {TypeError} If `value` is a string and no long library is present.

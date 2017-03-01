@@ -1,6 +1,6 @@
 /*!
- * protobuf.js v6.6.4 (c) 2016, Daniel Wirtz
- * Compiled Tue, 28 Feb 2017 14:18:54 UTC
+ * protobuf.js v6.6.5 (c) 2016, Daniel Wirtz
+ * Compiled Wed, 01 Mar 2017 13:39:31 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -3281,7 +3281,7 @@ function readFixed32(buf, end) {
 }
 
 /**
- * Reads fixed 32 bits as a number.
+ * Reads fixed 32 bits as an unsigned 32 bit integer.
  * @returns {number} Value read
  */
 Reader.prototype.fixed32 = function read_fixed32() {
@@ -3294,12 +3294,16 @@ Reader.prototype.fixed32 = function read_fixed32() {
 };
 
 /**
- * Reads zig-zag encoded fixed 32 bits as a number.
+ * Reads fixed 32 bits as a signed 32 bit integer.
  * @returns {number} Value read
  */
 Reader.prototype.sfixed32 = function read_sfixed32() {
-    var value = this.fixed32();
-    return value >>> 1 ^ -(value & 1);
+
+    /* istanbul ignore next */
+    if (this.pos + 4 > this.len)
+        throw indexOutOfRange(this, 4);
+
+    return readFixed32(this.buf, this.pos += 4) | 0;
 };
 
 /* eslint-disable no-invalid-this */
@@ -3323,12 +3327,12 @@ function read_fixed64_number() {
 }
 
 function read_sfixed64_long() {
-    return readFixed64.call(this).zzDecode().toLong();
+    return readFixed64.call(this).toLong(false);
 }
 
 /* istanbul ignore next */
 function read_sfixed64_number() {
-    return readFixed64.call(this).zzDecode().toNumber();
+    return readFixed64.call(this).toNumber(false);
 }
 
 /* eslint-enable no-invalid-this */
@@ -5994,7 +5998,7 @@ function writeFixed32(val, buf, pos) {
 }
 
 /**
- * Writes a 32 bit value as fixed 32 bits.
+ * Writes an unsigned 32 bit value as fixed 32 bits.
  * @param {number} value Value to write
  * @returns {Writer} `this`
  */
@@ -6003,16 +6007,15 @@ Writer.prototype.fixed32 = function write_fixed32(value) {
 };
 
 /**
- * Writes a 32 bit value as fixed 32 bits, zig-zag encoded.
+ * Writes a signed 32 bit value as fixed 32 bits.
+ * @function
  * @param {number} value Value to write
  * @returns {Writer} `this`
  */
-Writer.prototype.sfixed32 = function write_sfixed32(value) {
-    return this.push(writeFixed32, 4, value << 1 ^ value >> 31);
-};
+Writer.prototype.sfixed32 = Writer.prototype.fixed32;
 
 /**
- * Writes a 64 bit value as fixed 64 bits.
+ * Writes an unsigned 64 bit value as fixed 64 bits.
  * @param {Long|number|string} value Value to write
  * @returns {Writer} `this`
  * @throws {TypeError} If `value` is a string and no long library is present.
@@ -6023,15 +6026,13 @@ Writer.prototype.fixed64 = function write_fixed64(value) {
 };
 
 /**
- * Writes a 64 bit value as fixed 64 bits, zig-zag encoded.
+ * Writes a signed 64 bit value as fixed 64 bits.
+ * @function
  * @param {Long|number|string} value Value to write
  * @returns {Writer} `this`
  * @throws {TypeError} If `value` is a string and no long library is present.
  */
-Writer.prototype.sfixed64 = function write_sfixed64(value) {
-    var bits = LongBits.from(value).zzEncode();
-    return this.push(writeFixed32, 4, bits.lo).push(writeFixed32, 4, bits.hi);
-};
+Writer.prototype.sfixed64 = Writer.prototype.fixed64;
 
 var writeFloat = typeof Float32Array !== "undefined"
     ? (function() {

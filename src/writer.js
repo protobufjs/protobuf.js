@@ -296,7 +296,7 @@ function writeFixed32(val, buf, pos) {
 }
 
 /**
- * Writes a 32 bit value as fixed 32 bits.
+ * Writes an unsigned 32 bit value as fixed 32 bits.
  * @param {number} value Value to write
  * @returns {Writer} `this`
  */
@@ -305,16 +305,15 @@ Writer.prototype.fixed32 = function write_fixed32(value) {
 };
 
 /**
- * Writes a 32 bit value as fixed 32 bits, zig-zag encoded.
+ * Writes a signed 32 bit value as fixed 32 bits.
+ * @function
  * @param {number} value Value to write
  * @returns {Writer} `this`
  */
-Writer.prototype.sfixed32 = function write_sfixed32(value) {
-    return this.push(writeFixed32, 4, value << 1 ^ value >> 31);
-};
+Writer.prototype.sfixed32 = Writer.prototype.fixed32;
 
 /**
- * Writes a 64 bit value as fixed 64 bits.
+ * Writes an unsigned 64 bit value as fixed 64 bits.
  * @param {Long|number|string} value Value to write
  * @returns {Writer} `this`
  * @throws {TypeError} If `value` is a string and no long library is present.
@@ -325,15 +324,13 @@ Writer.prototype.fixed64 = function write_fixed64(value) {
 };
 
 /**
- * Writes a 64 bit value as fixed 64 bits, zig-zag encoded.
+ * Writes a signed 64 bit value as fixed 64 bits.
+ * @function
  * @param {Long|number|string} value Value to write
  * @returns {Writer} `this`
  * @throws {TypeError} If `value` is a string and no long library is present.
  */
-Writer.prototype.sfixed64 = function write_sfixed64(value) {
-    var bits = LongBits.from(value).zzEncode();
-    return this.push(writeFixed32, 4, bits.lo).push(writeFixed32, 4, bits.hi);
-};
+Writer.prototype.sfixed64 = Writer.prototype.fixed64;
 
 var writeFloat = typeof Float32Array !== "undefined"
     ? (function() {

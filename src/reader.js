@@ -222,7 +222,7 @@ function readFixed32(buf, end) {
 }
 
 /**
- * Reads fixed 32 bits as a number.
+ * Reads fixed 32 bits as an unsigned 32 bit integer.
  * @returns {number} Value read
  */
 Reader.prototype.fixed32 = function read_fixed32() {
@@ -235,12 +235,16 @@ Reader.prototype.fixed32 = function read_fixed32() {
 };
 
 /**
- * Reads zig-zag encoded fixed 32 bits as a number.
+ * Reads fixed 32 bits as a signed 32 bit integer.
  * @returns {number} Value read
  */
 Reader.prototype.sfixed32 = function read_sfixed32() {
-    var value = this.fixed32();
-    return value >>> 1 ^ -(value & 1);
+
+    /* istanbul ignore next */
+    if (this.pos + 4 > this.len)
+        throw indexOutOfRange(this, 4);
+
+    return readFixed32(this.buf, this.pos += 4) | 0;
 };
 
 /* eslint-disable no-invalid-this */
@@ -264,12 +268,12 @@ function read_fixed64_number() {
 }
 
 function read_sfixed64_long() {
-    return readFixed64.call(this).zzDecode().toLong();
+    return readFixed64.call(this).toLong(false);
 }
 
 /* istanbul ignore next */
 function read_sfixed64_number() {
-    return readFixed64.call(this).zzDecode().toNumber();
+    return readFixed64.call(this).toNumber(false);
 }
 
 /* eslint-enable no-invalid-this */

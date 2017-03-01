@@ -43,12 +43,19 @@ tape.test("writer & reader", function(test) {
             test.same(Array.prototype.slice.call(buffer), Array.prototype.slice.call(comp), "should write " + val[0] + " as fixed 32 bits");
             test.equal(Reader.create(buffer).fixed32(), val[0], "should read back "+ val[0] + " equally");
 
-            var zzBaseVal = val[0] >>> 1 ^ -(val[0] & 1) | 0;
-            buffer = Writer.create().sfixed32(zzBaseVal).finish();
+            var signedVal = val[0] | 0;
+            buffer = Writer.create().sfixed32(signedVal).finish();
             comp = new Uint8Array(new Uint32Array([ val[0] ]).buffer);
-            test.same(Array.prototype.slice.call(buffer), Array.prototype.slice.call(comp), "should write " + zzBaseVal + " as zig-zag encoded fixed 32 bits");
-            test.equal(Reader.create(buffer).sfixed32(), zzBaseVal, "should read back "+ zzBaseVal + " equally");
+            test.same(Array.prototype.slice.call(buffer), Array.prototype.slice.call(comp), "should write " + signedVal + " as fixed 32 bits (signed)");
+            test.equal(Reader.create(buffer).sfixed32(), signedVal, "should read back "+ signedVal + " equally");
         });
+
+    test.ok(expect("fixed32", 4294967295, [ 255, 255, 255, 255 ]), "should write 4294967295 as fixed 32 bits");
+    test.ok(expect("fixed32", 4294967294, [ 254, 255, 255, 255 ]), "should write 4294967294 as fixed 32 bits");
+    test.ok(expect("fixed32", 4294967296, [ 0, 0, 0, 0 ]), "should write 4294967296 as fixed 32 bits (wrap around to 0)");
+    test.ok(expect("fixed32", 4294967297, [ 1, 0, 0, 0 ]), "should write 4294967297 as fixed 32 bits (wrap around to 1)");
+    test.ok(expect("sfixed32", -1, [ 255, 255, 255, 255 ]), "should write -1 as fixed 32 bits (signed)");
+    test.ok(expect("sfixed32", -2, [ 254, 255, 255, 255 ]), "should write -2 as fixed 32 bits (signed)");
 
     // uint64, int64, sint64
 
