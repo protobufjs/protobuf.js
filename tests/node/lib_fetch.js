@@ -1,1 +1,1 @@
-require("../../lib/fetch/tests");
+require("../../lib/fetch/tests"); // requires fs

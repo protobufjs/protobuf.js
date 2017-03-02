@@ -52,8 +52,6 @@ tape.test("writer & reader", function(test) {
 
     test.ok(expect("fixed32", 4294967295, [ 255, 255, 255, 255 ]), "should write 4294967295 as fixed 32 bits");
     test.ok(expect("fixed32", 4294967294, [ 254, 255, 255, 255 ]), "should write 4294967294 as fixed 32 bits");
-    test.ok(expect("fixed32", 4294967296, [ 0, 0, 0, 0 ]), "should write 4294967296 as fixed 32 bits (wrap around to 0)");
-    test.ok(expect("fixed32", 4294967297, [ 1, 0, 0, 0 ]), "should write 4294967297 as fixed 32 bits (wrap around to 1)");
     test.ok(expect("sfixed32", -1, [ 255, 255, 255, 255 ]), "should write -1 as fixed 32 bits (signed)");
     test.ok(expect("sfixed32", -2, [ 254, 255, 255, 255 ]), "should write -2 as fixed 32 bits (signed)");
 
