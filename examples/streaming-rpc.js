@@ -1,5 +1,6 @@
-/*eslint-disable strict, no-console*/
+// this example demonstrates how to implement streaming rpc for services.
 
+/*eslint-disable strict, no-console*/
 var protobuf = require("..");
 
 // Load a definition with services:

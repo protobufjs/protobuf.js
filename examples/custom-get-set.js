@@ -11,10 +11,12 @@ message MyMessage {\
 
 var root = protobuf.parse(proto, { keepCase: true }).root; // or use Root#load
 
+// converts a string from underscore notation to camel case
 function toCamelCase(str) {
     return str.substring(0,1) + str.substring(1).replace(/_([a-z])(?=[a-z]|$)/g, function($0, $1) { return $1.toUpperCase(); });
 }
 
+// adds a virtual alias property
 function addAliasProperty(type, name, aliasName) {
     if (aliasName !== name)
         Object.defineProperty(type.ctor.prototype, aliasName, {

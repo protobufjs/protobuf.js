@@ -1,7 +1,8 @@
-/*eslint-disable strict, no-console*/
+// this example demonstrates how to use the reader/writer interface directly to read and write the
+// protobuf wire format.
 
-var protobuf = require("../runtime");
-//  protobuf = require("protobufjs/runtime");
+/*eslint-disable strict, no-console*/
+var protobuf = require("../runtime"); // require("protobufjs/runtime");
 
 // writing
 var buffer = protobuf.Writer.create()
