@@ -1,3 +1,16 @@
+# [6.6.5](https://github.com/dcodeIO/protobuf.js/releases/tag/6.6.5)
+
+## Fixed
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/478ee51194878f24be8607e42e5259952607bd44) sfixed64 is not zig-zag encoded, see [#692](https://github.com/dcodeIO/protobuf.js/issues/692)<br />
+
+## CLI
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/7a944538c89492abbed147915acea611f11c03a2) Added a placeholder to cli deps node_modules folder to make sure node can load from it<br />
+
+## Other
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/83142e420eb1167b2162063a092ae8d89c9dd4b2) Restructured a few failing tests<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/367d55523a3ae88f21d47aa96447ec3e943d4620) Traversal example + minimalistic documentation<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/8eeffcbcd027c929e2a76accad588c61dfa2e37c) Added a custom getters/setters example for gRPC<br />
+
 # [6.6.4](https://github.com/dcodeIO/protobuf.js/releases/tag/6.6.4)
 
 ## Fixed
