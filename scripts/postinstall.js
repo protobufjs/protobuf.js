@@ -1,10 +1,13 @@
 var path = require("path"),
+    fs   = require("fs"),
     pkg  = require(path.join(__dirname, "..", "package.json"));
 
+// ensure that there is a node_modules folder for cli dependencies
+try { fs.mkdirSync(path.join(__dirname, "..", "cli", "node_modules")); } catch (e) {/**/}
+
+// check version scheme used by dependents
 if (!pkg.versionScheme)
     return;
-
-var fs = require("fs");
 
 var warn = process.stderr.isTTY
     ? "\x1b[30m\x1b[43mWARN\x1b[0m \x1b[35m" + path.basename(process.argv[1], ".js") + "\x1b[0m"
