@@ -40,6 +40,18 @@ function Reader(buffer) {
     this.len = buffer.length;
 }
 
+var create_array = typeof Uint8Array !== "undefined"
+    ? function create_typed_array(buffer) {
+        if (buffer instanceof Uint8Array || Array.isArray(buffer))
+            return new Reader(buffer);
+        throw Error("illegal buffer");
+    }
+    : function create_array(buffer) {
+        if (Array.isArray(buffer))
+            return new Reader(buffer);
+        throw Error("illegal buffer");
+    };
+
 /**
  * Creates a new reader using the specified buffer.
  * @function
@@ -51,13 +63,12 @@ Reader.create = util.Buffer
         return (Reader.create = function create_buffer(buffer) {
             return util.Buffer.isBuffer(buffer)
                 ? new BufferReader(buffer)
-                : new Reader(buffer);
+                /* istanbul ignore next */
+                : create_array(buffer);
         })(buffer);
     }
     /* istanbul ignore next */
-    : function create_array(buffer) {
-        return new Reader(buffer);
-    };
+    : create_array;
 
 Reader.prototype._slice = util.Array.prototype.subarray || /* istanbul ignore next */ util.Array.prototype.slice;
 

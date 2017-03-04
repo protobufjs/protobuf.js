@@ -1,6 +1,6 @@
 /*!
- * protobuf.js v6.6.5 (c) 2016, Daniel Wirtz
- * Compiled Thu, 02 Mar 2017 18:54:42 UTC
+ * protobuf.js v6.7.0 (c) 2016, Daniel Wirtz
+ * Compiled Sat, 04 Mar 2017 00:53:40 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -3099,6 +3099,18 @@ function Reader(buffer) {
     this.len = buffer.length;
 }
 
+var create_array = typeof Uint8Array !== "undefined"
+    ? function create_typed_array(buffer) {
+        if (buffer instanceof Uint8Array || Array.isArray(buffer))
+            return new Reader(buffer);
+        throw Error("illegal buffer");
+    }
+    : function create_array(buffer) {
+        if (Array.isArray(buffer))
+            return new Reader(buffer);
+        throw Error("illegal buffer");
+    };
+
 /**
  * Creates a new reader using the specified buffer.
  * @function
@@ -3110,13 +3122,12 @@ Reader.create = util.Buffer
         return (Reader.create = function create_buffer(buffer) {
             return util.Buffer.isBuffer(buffer)
                 ? new BufferReader(buffer)
-                : new Reader(buffer);
+                /* istanbul ignore next */
+                : create_array(buffer);
         })(buffer);
     }
     /* istanbul ignore next */
-    : function create_array(buffer) {
-        return new Reader(buffer);
-    };
+    : create_array;
 
 Reader.prototype._slice = util.Array.prototype.subarray || /* istanbul ignore next */ util.Array.prototype.slice;
 
