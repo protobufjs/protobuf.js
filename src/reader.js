@@ -46,6 +46,7 @@ var create_array = typeof Uint8Array !== "undefined"
             return new Reader(buffer);
         throw Error("illegal buffer");
     }
+    /* istanbul ignore next */
     : function create_array(buffer) {
         if (Array.isArray(buffer))
             return new Reader(buffer);

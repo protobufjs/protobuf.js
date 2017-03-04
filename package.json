@@ -28,7 +28,7 @@
     "build": "gulp",
     "changelog": "node scripts/changelog -w",
     "coverage": "istanbul cover node_modules/tape/bin/tape tests/*.js tests/node/*.js",
-    "coverage-ci": "npm run coverage && cat coverage/lcov.info | coveralls",
+    "coverage-ci": "npm run coverage && coveralls < coverage/lcov.info && codeclimate-test-reporter < coverage/lcov.info",
     "docs": "jsdoc -c jsdoc.docs.json -R README.md --verbose --pedantic",
     "lint": "eslint **/*.js",
     "pages": "node scripts/pages",

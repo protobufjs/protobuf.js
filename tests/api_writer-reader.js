@@ -7,6 +7,14 @@ var Writer = protobuf.Writer,
 
 tape.test("writer & reader", function(test) {
 
+    test.throws(function() {
+        Reader.create(1);
+    }, "should throw when creating a Reader from something else than a buffer");
+
+    test.doesNotThrow(function() {
+        Reader.create([]);
+    }, "should not throw when creating a Reader from an array (comp)");
+
     // uint32, int32, sint32
 
     var values = [

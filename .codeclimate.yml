@@ -13,3 +13,4 @@ ratings:
   - "lib/pool/**.js"
   - "lib/utf8/**.js"
 exclude_paths:
+  - "**/tests/**"
