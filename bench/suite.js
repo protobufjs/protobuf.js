@@ -27,7 +27,7 @@ function newSuite(name) {
                 if (fastest.indexOf(bench) === 0)
                     return;
                 var hz = hz = getHz(bench);
-                var percent = (1 - (hz / fastestHz)) * 100;
+                var percent = (1 - hz / fastestHz) * 100;
                 process.stdout.write(chalk.white(pad(bench.name, padSize)) + " was " + chalk.red(percent.toFixed(1) + "% slower") + "\n");
             });
         }

@@ -120,7 +120,7 @@ function readString(bytes) {
         readString(array);
     })
     .add("readString buffer", function() {
-        readString(buffer)
+        readString(buffer);
     })
     .add("toString buffer", function() {
         buffer.toString("utf8", 0, buffer.length);

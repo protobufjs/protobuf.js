@@ -10,9 +10,9 @@ var root = protobuf.Root.fromJSON({
         Greeter: {
             methods: {
                 "SayHello": {
-                    requestType: 'Hello',
+                    requestType: "Hello",
                     requestStream: true,
-                    responseType: 'World',
+                    responseType: "World",
                     responseStream: true
                 }
             }

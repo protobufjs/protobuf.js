@@ -178,13 +178,13 @@ buffer = new Buffer(1000);
         writeString(array, 0, str);
     })
     .add("writeString buffer", function() {
-        writeString(buffer, 0, str)
+        writeString(buffer, 0, str);
     })
     .add("write buffer", function() {
-        buffer.write(str, 0)
+        buffer.write(str, 0);
     })
     .add("utf8Write buffer", function() {
-        buffer.utf8Write(str, 0)
+        buffer.utf8Write(str, 0);
     })
     /* .add("byteLength array", function() {
         byteLength(str)

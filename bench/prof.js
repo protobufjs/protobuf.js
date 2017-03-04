@@ -21,7 +21,7 @@ if (process.execArgv.indexOf("--prof") < 0) {
             fs.unlink(file);
     });
     process.stdout.write("generating profile (may take a while) ...\n");
-    child_process.execSync("node --prof --trace-deopt " + process.execArgv.join(" ") + " " + process.argv.slice(1).join(' '), {
+    child_process.execSync("node --prof --trace-deopt " + process.execArgv.join(" ") + " " + process.argv.slice(1).join(" "), {
         cwd: process.cwd(),
         stdio: "inherit"
     });

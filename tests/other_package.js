@@ -1,3 +1,4 @@
+"use strict";
 var tape = require("tape");
 
 var protobuf = require(".."),
@@ -8,8 +9,10 @@ tape.test("package.json (reflected)", function(test) {
     test.plan(2);
 
     protobuf.load("tests/data/package.proto", function(err, root) {
-        if (err)
-            return test.fail(err.message);
+        if (err) {
+            test.fail(err.message);
+            return;
+        }
         
         var Package = root.lookup("Package"),
             Repository = root.lookup("Package.Repository");

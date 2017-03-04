@@ -4,4 +4,12 @@ engines:
 ratings:
   paths:
   - "src/**.js"
+  - "lib/aspromise/**.js"
+  - "lib/base64/**.js"
+  - "lib/eventemitter/**.js"
+  - "lib/fetch/**.js"
+  - "lib/inquire/**.js"
+  - "lib/path/**.js"
+  - "lib/pool/**.js"
+  - "lib/utf8/**.js"
 exclude_paths:
