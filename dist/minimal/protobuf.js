@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.7.0 (c) 2016, Daniel Wirtz
- * Compiled Sat, 04 Mar 2017 00:53:40 UTC
+ * Compiled Sat, 04 Mar 2017 03:41:04 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -683,33 +683,6 @@ function readLongVarint() {
     throw Error("invalid varint encoding");
 }
 
-function read_int64_long() {
-    return readLongVarint.call(this).toLong();
-}
-
-/* istanbul ignore next */
-function read_int64_number() {
-    return readLongVarint.call(this).toNumber();
-}
-
-function read_uint64_long() {
-    return readLongVarint.call(this).toLong(true);
-}
-
-/* istanbul ignore next */
-function read_uint64_number() {
-    return readLongVarint.call(this).toNumber(true);
-}
-
-function read_sint64_long() {
-    return readLongVarint.call(this).zzDecode().toLong();
-}
-
-/* istanbul ignore next */
-function read_sint64_number() {
-    return readLongVarint.call(this).zzDecode().toNumber();
-}
-
 /* eslint-enable no-invalid-this */
 
 /**
@@ -785,24 +758,6 @@ function readFixed64(/* this: Reader */) {
     return new LongBits(readFixed32(this.buf, this.pos += 4), readFixed32(this.buf, this.pos += 4));
 }
 
-function read_fixed64_long() {
-    return readFixed64.call(this).toLong(true);
-}
-
-/* istanbul ignore next */
-function read_fixed64_number() {
-    return readFixed64.call(this).toNumber(true);
-}
-
-function read_sfixed64_long() {
-    return readFixed64.call(this).toLong(false);
-}
-
-/* istanbul ignore next */
-function read_sfixed64_number() {
-    return readFixed64.call(this).toNumber(false);
-}
-
 /* eslint-enable no-invalid-this */
 
 /**
@@ -834,10 +789,10 @@ var readFloat = typeof Float32Array !== "undefined"
             }
             /* istanbul ignore next */
             : function readFloat_f32_le(buf, pos) {
-                f8b[3] = buf[pos    ];
-                f8b[2] = buf[pos + 1];
-                f8b[1] = buf[pos + 2];
                 f8b[0] = buf[pos + 3];
+                f8b[1] = buf[pos + 2];
+                f8b[2] = buf[pos + 1];
+                f8b[3] = buf[pos    ];
                 return f32[0];
             };
     })()
@@ -891,14 +846,14 @@ var readDouble = typeof Float64Array !== "undefined"
             }
             /* istanbul ignore next */
             : function readDouble_f64_le(buf, pos) {
-                f8b[7] = buf[pos    ];
-                f8b[6] = buf[pos + 1];
-                f8b[5] = buf[pos + 2];
-                f8b[4] = buf[pos + 3];
-                f8b[3] = buf[pos + 4];
-                f8b[2] = buf[pos + 5];
-                f8b[1] = buf[pos + 6];
                 f8b[0] = buf[pos + 7];
+                f8b[1] = buf[pos + 6];
+                f8b[2] = buf[pos + 5];
+                f8b[3] = buf[pos + 4];
+                f8b[4] = buf[pos + 3];
+                f8b[5] = buf[pos + 2];
+                f8b[6] = buf[pos + 1];
+                f8b[7] = buf[pos    ];
                 return f64[0];
             };
     })()
@@ -1020,20 +975,30 @@ Reader.prototype.skipType = function(wireType) {
 Reader._configure = function(BufferReader_) {
     BufferReader = BufferReader_;
 
-    /* istanbul ignore else */
-    if (util.Long) {
-        Reader.prototype.int64 = read_int64_long;
-        Reader.prototype.uint64 = read_uint64_long;
-        Reader.prototype.sint64 = read_sint64_long;
-        Reader.prototype.fixed64 = read_fixed64_long;
-        Reader.prototype.sfixed64 = read_sfixed64_long;
-    } else {
-        Reader.prototype.int64 = read_int64_number;
-        Reader.prototype.uint64 = read_uint64_number;
-        Reader.prototype.sint64 = read_sint64_number;
-        Reader.prototype.fixed64 = read_fixed64_number;
-        Reader.prototype.sfixed64 = read_sfixed64_number;
-    }
+    var fn = util.Long ? "toLong" : "toNumber";
+    util.merge(Reader.prototype, {
+
+        int64: function read_int64() {
+            return readLongVarint.call(this)[fn](false);
+        },
+
+        uint64: function read_uint64() {
+            return readLongVarint.call(this)[fn](true);
+        },
+
+        sint64: function read_sint64() {
+            return readLongVarint.call(this).zzDecode()[fn](false);
+        },
+
+        fixed64: function read_fixed64() {
+            return readFixed64.call(this)[fn](true);
+        },
+
+        sfixed64: function read_sfixed64() {
+            return readFixed64.call(this)[fn](false);
+        }
+
+    });
 };
 
 },{"13":13}],9:[function(require,module,exports){
