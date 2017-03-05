@@ -58,6 +58,7 @@ var create_array = typeof Uint8Array !== "undefined"
  * @function
  * @param {Uint8Array|Buffer} buffer Buffer to read from
  * @returns {Reader|BufferReader} A {@link BufferReader} if `buffer` is a Buffer, otherwise a {@link Reader}
+ * @throws {Error} If `buffer` is not a valid buffer
  */
 Reader.create = util.Buffer
     ? function create_buffer_setup(buffer) {

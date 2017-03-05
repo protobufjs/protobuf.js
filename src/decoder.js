@@ -8,7 +8,7 @@ var Enum    = require("./enum"),
     util    = require("./util");
 
 function missing(field) {
-    return "missing required '" + field.name;
+    return "missing required '" + field.name + "'";
 }
 
 /**

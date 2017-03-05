@@ -128,6 +128,7 @@ $root.MyRequest = (function() {
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
      * @param {number} [length] Message length if known beforehand
      * @returns {MyRequest} MyRequest
+     * @throws {Error} If the payload is invalid or missing required fields
      */
     MyRequest.decode = function decode(reader, length) {
         if (!(reader instanceof $Reader))
@@ -151,6 +152,7 @@ $root.MyRequest = (function() {
      * Decodes a MyRequest message from the specified reader or buffer, length delimited.
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
      * @returns {MyRequest} MyRequest
+     * @throws {Error} If the payload is invalid or missing required fields
      */
     MyRequest.decodeDelimited = function decodeDelimited(reader) {
         if (!(reader instanceof $Reader))
@@ -290,6 +292,7 @@ $root.MyResponse = (function() {
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
      * @param {number} [length] Message length if known beforehand
      * @returns {MyResponse} MyResponse
+     * @throws {Error} If the payload is invalid or missing required fields
      */
     MyResponse.decode = function decode(reader, length) {
         if (!(reader instanceof $Reader))
@@ -313,6 +316,7 @@ $root.MyResponse = (function() {
      * Decodes a MyResponse message from the specified reader or buffer, length delimited.
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
      * @returns {MyResponse} MyResponse
+     * @throws {Error} If the payload is invalid or missing required fields
      */
     MyResponse.decodeDelimited = function decodeDelimited(reader) {
         if (!(reader instanceof $Reader))

@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.7.0 (c) 2016, Daniel Wirtz
- * Compiled Sat, 04 Mar 2017 03:41:04 UTC
+ * Compiled Sun, 05 Mar 2017 22:06:34 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -562,6 +562,7 @@ var create_array = typeof Uint8Array !== "undefined"
             return new Reader(buffer);
         throw Error("illegal buffer");
     }
+    /* istanbul ignore next */
     : function create_array(buffer) {
         if (Array.isArray(buffer))
             return new Reader(buffer);
@@ -573,6 +574,7 @@ var create_array = typeof Uint8Array !== "undefined"
  * @function
  * @param {Uint8Array|Buffer} buffer Buffer to read from
  * @returns {Reader|BufferReader} A {@link BufferReader} if `buffer` is a Buffer, otherwise a {@link Reader}
+ * @throws {Error} If `buffer` is not a valid buffer
  */
 Reader.create = util.Buffer
     ? function create_buffer_setup(buffer) {
@@ -1585,6 +1587,24 @@ util.Array = typeof Uint8Array !== "undefined" ? Uint8Array /* istanbul ignore n
  * @type {?function(new: Long)}
  */
 util.Long = /* istanbul ignore next */ global.dcodeIO && /* istanbul ignore next */ global.dcodeIO.Long || util.inquire("long");
+
+/**
+ * Regular expression used to verify 2 bit (`bool`) map keys.
+ * @type {RegExp}
+ */
+util.key2Re = /^true|false|0|1$/;
+
+/**
+ * Regular expression used to verify 32 bit (`int32` etc.) map keys.
+ * @type {RegExp}
+ */
+util.key32Re = /^-?(?:0|[1-9][0-9]*)$/;
+
+/**
+ * Regular expression used to verify 64 bit (`int64` etc.) map keys.
+ * @type {RegExp}
+ */
+util.key64Re = /^(?:[\\x00-\\xff]{8}|-?(?:0|[1-9][0-9]*))$/;
 
 /**
  * Converts a number or long to an 8 characters long hash string.

@@ -421,6 +421,7 @@ Type.prototype.encodeDelimited = function encodeDelimited(message, writer) {
  * @param {Reader|Uint8Array} reader Reader or buffer to decode from
  * @param {number} [length] Length of the message, if known beforehand
  * @returns {Message} Decoded message
+ * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
  */
 Type.prototype.decode = function decode_setup(reader, length) {
     return this.setup().decode(reader, length); // overrides this method
@@ -430,6 +431,7 @@ Type.prototype.decode = function decode_setup(reader, length) {
  * Decodes a message of this type preceeded by its byte length as a varint.
  * @param {Reader|Uint8Array} reader Reader or buffer to decode from
  * @returns {Message} Decoded message
+ * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
  */
 Type.prototype.decodeDelimited = function decodeDelimited(reader) {
     if (!(reader instanceof Reader))

@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.7.0 (c) 2016, Daniel Wirtz
- * Compiled Sat, 04 Mar 2017 03:41:04 UTC
+ * Compiled Sun, 05 Mar 2017 22:06:34 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -968,12 +968,14 @@ module.exports = common;
  * protobuf.common("my/foo/bar.proto", myFooBarJson);
  */
 function common(name, json) {
-    if (!/\/|\./.test(name)) {
+    if (!commonRe.test(name)) {
         name = "google/protobuf/" + name + ".proto";
         json = { nested: { google: { nested: { protobuf: { nested: json } } } } };
     }
     common[name] = json;
 }
+
+var commonRe = /\/|\./;
 
 // Not provided because of limited use (feel free to discuss or to provide yourself):
 //
@@ -1454,6 +1456,10 @@ var Enum    = require(15),
     types   = require(35),
     util    = require(36);
 
+function missing(field) {
+    return "missing required '" + field.name + "'";
+}
+
 /**
  * Generates a decoder specific to the specified message type.
  * @param {Type} mtype Message type
@@ -1474,7 +1480,8 @@ function decoder(mtype) {
     gen
         ("switch(t>>>3){");
 
-    for (var i = 0; i < /* initializes */ mtype.fieldsArray.length; ++i) {
+    var i = 0;
+    for (; i < /* initializes */ mtype.fieldsArray.length; ++i) {
         var field = mtype._fieldsArray[i].resolve(),
             type  = field.resolvedType instanceof Enum ? "uint32" : field.type,
             ref   = "m" + util.safeProp(field.name); gen
@@ -1524,15 +1531,25 @@ function decoder(mtype) {
                 ("break");
 
     // Unknown fields
-    } return gen
+    } gen
             ("default:")
                 ("r.skipType(t&7)")
                 ("break")
 
         ("}")
-    ("}")
+    ("}");
+
+    // Field presence
+    for (i = 0; i < mtype._fieldsArray.length; ++i) {
+        var rfield = mtype._fieldsArray[i];
+        if (rfield.required) gen
+    ("if(!m.hasOwnProperty(%j))", rfield.name)
+        ("throw Error(%j)", missing(rfield));
+    }
+
+    return gen
     ("return m");
-    /* eslint-enable no-unexpected-multiline */
+    /* eslint-enable no-unexpected-multiline, block-scoped-var */
 }
 
 },{"15":15,"35":35,"36":36}],14:[function(require,module,exports){
@@ -1806,6 +1823,8 @@ var Enum  = require(15),
 
 var Type; // cyclic
 
+var ruleRe = /^required|optional|repeated$/;
+
 /**
  * Constructs a new message field instance. Note that {@link MapField|map fields} have their own class.
  * @classdesc Reflected message field.
@@ -1836,7 +1855,7 @@ function Field(name, id, type, rule, extend, options) {
     if (!util.isString(type))
         throw TypeError("type must be a string");
 
-    if (rule !== undefined && !/^required|optional|repeated$/.test(rule = rule.toString().toLowerCase()))
+    if (rule !== undefined && !ruleRe.test(rule = rule.toString().toLowerCase()))
         throw TypeError("rule must be a string rule");
 
     if (extend !== undefined && !util.isString(extend))
@@ -3313,26 +3332,27 @@ var tokenize  = require(33),
     types     = require(35),
     util      = require(36);
 
-function isName(token) {
-    return /^[a-zA-Z_][a-zA-Z_0-9]*$/.test(token);
-}
-
-function isTypeRef(token) {
-    return /^(?:\.?[a-zA-Z_][a-zA-Z_0-9]*)+$/.test(token);
-}
-
-function isFqTypeRef(token) {
-    return /^(?:\.[a-zA-Z][a-zA-Z_0-9]*)+$/.test(token);
-}
+var base10Re    = /^[1-9][0-9]*$/,
+    base10NegRe = /^-?[1-9][0-9]*$/,
+    base16Re    = /^0[x][0-9a-f]+$/,
+    base16NegRe = /^-?0[x][0-9a-f]+$/,
+    base8Re     = /^0[0-7]+$/,
+    base8NegRe  = /^-?0[0-7]+$/,
+    numberRe    = /^(?!e)[0-9]*(?:\.[0-9]*)?(?:[e][+-]?[0-9]+)?$/,
+    nameRe      = /^[a-zA-Z_][a-zA-Z_0-9]*$/,
+    typeRefRe   = /^(?:\.?[a-zA-Z_][a-zA-Z_0-9]*)+$/,
+    fqTypeRefRe = /^(?:\.[a-zA-Z][a-zA-Z_0-9]*)+$/;
 
 function lower(token) {
     return token === null ? null : token.toLowerCase();
 }
 
+var camelCaseRe = /_([a-z])(?=[a-z]|$)/g;
+
 function camelCase(str) {
     return str.substring(0,1)
          + str.substring(1)
-               .replace(/_([a-z])(?=[a-z]|$)/g, function($0, $1) { return $1.toUpperCase(); });
+               .replace(camelCaseRe, function($0, $1) { return $1.toUpperCase(); });
 }
 
 /**
@@ -3428,7 +3448,7 @@ function parse(source, root, options) {
             return parseNumber(token, /* insideTryCatch */ true);
         } catch (e) {
             /* istanbul ignore else */
-            if (acceptTypeRef && isTypeRef(token))
+            if (acceptTypeRef && typeRefRe.test(token))
                 return token;
             /* istanbul ignore next */
             throw illegal(token, "value");
@@ -3458,13 +3478,13 @@ function parse(source, root, options) {
             case "nan": return NaN;
             case "0": return 0;
         }
-        if (/^[1-9][0-9]*$/.test(token))
+        if (base10Re.test(token))
             return sign * parseInt(token, 10);
-        if (/^0[x][0-9a-f]+$/.test(tokenLower))
+        if (base16Re.test(tokenLower))
             return sign * parseInt(token, 16);
-        if (/^0[0-7]+$/.test(token))
+        if (base8Re.test(token))
             return sign * parseInt(token, 8);
-        if (/^(?!e)[0-9]*(?:\.[0-9]*)?(?:[e][+-]?[0-9]+)?$/.test(tokenLower))
+        if (numberRe.test(tokenLower))
             return sign * parseFloat(token);
         /* istanbul ignore next */
         throw illegal(token, "number", insideTryCatch);
@@ -3479,12 +3499,12 @@ function parse(source, root, options) {
         /* istanbul ignore next */
         if (token.charAt(0) === "-" && !acceptNegative)
             throw illegal(token, "id");
-        if (/^-?[1-9][0-9]*$/.test(token))
+        if (base10NegRe.test(token))
             return parseInt(token, 10);
-        if (/^-?0[x][0-9a-f]+$/.test(tokenLower))
+        if (base16NegRe.test(tokenLower))
             return parseInt(token, 16);
         /* istanbul ignore else */
-        if (/^-?0[0-7]+$/.test(token))
+        if (base8NegRe.test(token))
             return parseInt(token, 8);
         /* istanbul ignore next */
         throw illegal(token, "id");
@@ -3496,7 +3516,7 @@ function parse(source, root, options) {
             throw illegal("package");
         pkg = next();
         /* istanbul ignore next */
-        if (!isTypeRef(pkg))
+        if (!typeRefRe.test(pkg))
             throw illegal(pkg, "name");
         ptr = ptr.define(pkg);
         skip(";");
@@ -3562,7 +3582,7 @@ function parse(source, root, options) {
     function parseType(parent, token) {
         var name = next();
         /* istanbul ignore next */
-        if (!isName(name))
+        if (!nameRe.test(name))
             throw illegal(name, "type name");
         var type = new Type(name);
         type.comment = cmnt();
@@ -3598,7 +3618,7 @@ function parse(source, root, options) {
 
                     default:
                         /* istanbul ignore next */
-                        if (!isProto3 || !isTypeRef(token))
+                        if (!isProto3 || !typeRefRe.test(token))
                             throw illegal(token);
                         push(token);
                         parseField(type, "optional");
@@ -3618,11 +3638,11 @@ function parse(source, root, options) {
             return;
         }
         /* istanbul ignore next */
-        if (!isTypeRef(type))
+        if (!typeRefRe.test(type))
             throw illegal(type, "type");
         var name = next();
         /* istanbul ignore next */
-        if (!isName(name))
+        if (!nameRe.test(name))
             throw illegal(name, "name");
         name = applyCase(name);
         skip("=");
@@ -3645,7 +3665,7 @@ function parse(source, root, options) {
     function parseGroup(parent, rule) {
         var name = next();
         /* istanbul ignore next */
-        if (!isName(name))
+        if (!nameRe.test(name))
             throw illegal(name, "name");
         var fieldName = util.lcFirst(name);
         if (name === fieldName)
@@ -3689,12 +3709,12 @@ function parse(source, root, options) {
         skip(",");
         var valueType = next();
         /* istanbul ignore next */
-        if (!isTypeRef(valueType))
+        if (!typeRefRe.test(valueType))
             throw illegal(valueType, "type");
         skip(">");
         var name = next();
         /* istanbul ignore next */
-        if (!isName(name))
+        if (!nameRe.test(name))
             throw illegal(name, "name");
 
         name = applyCase(name);
@@ -3713,7 +3733,7 @@ function parse(source, root, options) {
         var name = next();
 
         /* istanbul ignore next */
-        if (!isName(name))
+        if (!nameRe.test(name))
             throw illegal(name, "name");
 
         name = applyCase(name);
@@ -3744,7 +3764,7 @@ function parse(source, root, options) {
         var name = next();
 
         /* istanbul ignore next */
-        if (!isName(name))
+        if (!nameRe.test(name))
             throw illegal(name, "name");
 
         var enm = new Enum(name);
@@ -3767,7 +3787,7 @@ function parse(source, root, options) {
     function parseEnumValue(parent, token) {
 
         /* istanbul ignore next */
-        if (!isName(token))
+        if (!nameRe.test(token))
             throw illegal(token, "name");
 
         var name = token;
@@ -3785,14 +3805,14 @@ function parse(source, root, options) {
         var name = next();
 
         /* istanbul ignore next */
-        if (!isTypeRef(name))
+        if (!typeRefRe.test(name))
             throw illegal(name, "name");
 
         if (custom) {
             skip(")");
             name = "(" + name + ")";
             token = peek();
-            if (isFqTypeRef(token)) {
+            if (fqTypeRefRe.test(token)) {
                 name += token;
                 next();
             }
@@ -3805,7 +3825,7 @@ function parse(source, root, options) {
         if (skip("{", true)) { // { a: "foo" b { c: "bar" } }
             /* istanbul ignore next */
             do {
-                if (!isName(token = next()))
+                if (!nameRe.test(token = next()))
                     throw illegal(token, "name");
                 if (peek() === "{")
                     parseOptionValue(parent, name + "." + token);
@@ -3839,7 +3859,7 @@ function parse(source, root, options) {
         token = next();
 
         /* istanbul ignore next */
-        if (!isName(token))
+        if (!nameRe.test(token))
             throw illegal(token, "service name");
 
         var name = token;
@@ -3874,7 +3894,7 @@ function parse(source, root, options) {
         var name = next();
 
         /* istanbul ignore next */
-        if (!isName(name))
+        if (!nameRe.test(name))
             throw illegal(name, "name");
         var requestType, requestStream,
             responseType, responseStream;
@@ -3882,14 +3902,14 @@ function parse(source, root, options) {
         if (skip("stream", true))
             requestStream = true;
         /* istanbul ignore next */
-        if (!isTypeRef(token = next()))
+        if (!typeRefRe.test(token = next()))
             throw illegal(token);
         requestType = token;
         skip(")"); skip("returns"); skip("(");
         if (skip("stream", true))
             responseStream = true;
         /* istanbul ignore next */
-        if (!isTypeRef(token = next()))
+        if (!typeRefRe.test(token = next()))
             throw illegal(token);
 
         responseType = token;
@@ -3925,7 +3945,7 @@ function parse(source, root, options) {
         var reference = next();
 
         /* istanbul ignore next */
-        if (!isTypeRef(reference))
+        if (!typeRefRe.test(reference))
             throw illegal(reference, "reference");
 
         if (skip("{", true)) {
@@ -3939,7 +3959,7 @@ function parse(source, root, options) {
                         break;
                     default:
                         /* istanbul ignore next */
-                        if (!isProto3 || !isTypeRef(token))
+                        if (!isProto3 || !typeRefRe.test(token))
                             throw illegal(token);
                         push(token);
                         parseField(parent, "optional", reference);
@@ -4067,6 +4087,7 @@ var create_array = typeof Uint8Array !== "undefined"
             return new Reader(buffer);
         throw Error("illegal buffer");
     }
+    /* istanbul ignore next */
     : function create_array(buffer) {
         if (Array.isArray(buffer))
             return new Reader(buffer);
@@ -4078,6 +4099,7 @@ var create_array = typeof Uint8Array !== "undefined"
  * @function
  * @param {Uint8Array|Buffer} buffer Buffer to read from
  * @returns {Reader|BufferReader} A {@link BufferReader} if `buffer` is a Buffer, otherwise a {@link Reader}
+ * @throws {Error} If `buffer` is not a valid buffer
  */
 Reader.create = util.Buffer
     ? function create_buffer_setup(buffer) {
@@ -5252,6 +5274,18 @@ var delimRe        = /[\s{}=;:[\],'"()<>]/g,
     stringDoubleRe = /(?:"([^"\\]*(?:\\.[^"\\]*)*)")/g,
     stringSingleRe = /(?:'([^'\\]*(?:\\.[^'\\]*)*)')/g;
 
+var setCommentRe = /^ *[*/]+ */,
+    setCommentSplitRe = /\n/g,
+    whitespaceRe = /\s/,
+    unescapeRe = /\\(.?)/g;
+
+var unescapeMap = {
+    "0": "\0",
+    "r": "\r",
+    "n": "\n",
+    "t": "\t"
+};
+
 /**
  * Unescapes a string.
  * @param {string} str String to unescape
@@ -5260,23 +5294,16 @@ var delimRe        = /[\s{}=;:[\],'"()<>]/g,
  * @ignore
  */
 function unescape(str) {
-    return str.replace(/\\(.?)/g, function($0, $1) {
+    return str.replace(unescapeRe, function($0, $1) {
         switch ($1) {
             case "\\":
             case "":
                 return $1;
             default:
-                return unescape.map[$1] || "";
+                return unescapeMap[$1] || "";
         }
     });
 }
-
-unescape.map = {
-    "0": "\0",
-    "r": "\r",
-    "n": "\n",
-    "t": "\t"
-};
 
 tokenize.unescape = unescape;
 
@@ -5362,9 +5389,9 @@ function tokenize(source) {
         commentLine = line;
         var lines = source
             .substring(start, end)
-            .split(/\n/g);
+            .split(setCommentSplitRe);
         for (var i = 0; i < lines.length; ++i)
-            lines[i] = lines[i].replace(/^ *[*/]+ */, "").trim();
+            lines[i] = lines[i].replace(setCommentRe, "").trim();
         commentText = lines
             .join("\n")
             .trim();
@@ -5389,7 +5416,7 @@ function tokenize(source) {
             if (offset === length)
                 return null;
             repeat = false;
-            while (/\s/.test(curr = charAt(offset))) {
+            while (whitespaceRe.test(curr = charAt(offset))) {
                 if (curr === "\n")
                     ++line;
                 if (++offset === length)
@@ -5937,6 +5964,7 @@ Type.prototype.encodeDelimited = function encodeDelimited(message, writer) {
  * @param {Reader|Uint8Array} reader Reader or buffer to decode from
  * @param {number} [length] Length of the message, if known beforehand
  * @returns {Message} Decoded message
+ * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
  */
 Type.prototype.decode = function decode_setup(reader, length) {
     return this.setup().decode(reader, length); // overrides this method
@@ -5946,6 +5974,7 @@ Type.prototype.decode = function decode_setup(reader, length) {
  * Decodes a message of this type preceeded by its byte length as a varint.
  * @param {Reader|Uint8Array} reader Reader or buffer to decode from
  * @returns {Message} Decoded message
+ * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
  */
 Type.prototype.decodeDelimited = function decodeDelimited(reader) {
     if (!(reader instanceof Reader))
@@ -6233,13 +6262,16 @@ util.toArray = function toArray(object) {
     return array;
 };
 
+var safePropBackslashRe = /\\/g,
+    safePropQuoteRe     = /"/g;
+
 /**
  * Returns a safe property accessor for the specified properly name.
  * @param {string} prop Property name
  * @returns {string} Safe accessor
  */
 util.safeProp = function safeProp(prop) {
-    return "[\"" + prop.replace(/\\/g, "\\\\").replace(/"/g, "\\\"") + "\"]";
+    return "[\"" + prop.replace(safePropBackslashRe, "\\\\").replace(safePropQuoteRe, "\\\"") + "\"]";
 };
 
 /**
@@ -6602,6 +6634,24 @@ util.Array = typeof Uint8Array !== "undefined" ? Uint8Array /* istanbul ignore n
 util.Long = /* istanbul ignore next */ global.dcodeIO && /* istanbul ignore next */ global.dcodeIO.Long || util.inquire("long");
 
 /**
+ * Regular expression used to verify 2 bit (`bool`) map keys.
+ * @type {RegExp}
+ */
+util.key2Re = /^true|false|0|1$/;
+
+/**
+ * Regular expression used to verify 32 bit (`int32` etc.) map keys.
+ * @type {RegExp}
+ */
+util.key32Re = /^-?(?:0|[1-9][0-9]*)$/;
+
+/**
+ * Regular expression used to verify 64 bit (`int64` etc.) map keys.
+ * @type {RegExp}
+ */
+util.key64Re = /^(?:[\\x00-\\xff]{8}|-?(?:0|[1-9][0-9]*))$/;
+
+/**
  * Converts a number or long to an 8 characters long hash string.
  * @param {Long|number} value Value to convert
  * @returns {string} Hash
@@ -6832,7 +6882,7 @@ function genVerifyKey(gen, field, ref) {
         case "sint32":
         case "fixed32":
         case "sfixed32": gen
-            ("if(!/^-?(?:0|[1-9][0-9]*)$/.test(%s))", ref) // it's important not to use any literals here that might be confused with short variable names by pbjs' beautify
+            ("if(!util.key32Re.test(%s))", ref)
                 ("return%j", invalid(field, "integer key"));
             break;
         case "int64":
@@ -6840,11 +6890,11 @@ function genVerifyKey(gen, field, ref) {
         case "sint64":
         case "fixed64":
         case "sfixed64": gen
-            ("if(!/^(?:[\\x00-\\xff]{8}|-?(?:0|[1-9][0-9]*))$/.test(%s))", ref) // see comment above: x is ok, d is not
+            ("if(!util.key64Re.test(%s))", ref) // see comment above: x is ok, d is not
                 ("return%j", invalid(field, "integer|Long key"));
             break;
         case "bool": gen
-            ("if(!/^true|false|0|1$/.test(%s))", ref)
+            ("if(!util.key2Re.test(%s))", ref)
                 ("return%j", invalid(field, "boolean key"));
             break;
     }

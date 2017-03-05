@@ -90,7 +90,7 @@ function genVerifyKey(gen, field, ref) {
         case "sint32":
         case "fixed32":
         case "sfixed32": gen
-            ("if(!/^-?(?:0|[1-9][0-9]*)$/.test(%s))", ref) // it's important not to use any literals here that might be confused with short variable names by pbjs' beautify
+            ("if(!util.key32Re.test(%s))", ref)
                 ("return%j", invalid(field, "integer key"));
             break;
         case "int64":
@@ -98,11 +98,11 @@ function genVerifyKey(gen, field, ref) {
         case "sint64":
         case "fixed64":
         case "sfixed64": gen
-            ("if(!/^(?:[\\x00-\\xff]{8}|-?(?:0|[1-9][0-9]*))$/.test(%s))", ref) // see comment above: x is ok, d is not
+            ("if(!util.key64Re.test(%s))", ref) // see comment above: x is ok, d is not
                 ("return%j", invalid(field, "integer|Long key"));
             break;
         case "bool": gen
-            ("if(!/^true|false|0|1$/.test(%s))", ref)
+            ("if(!util.key2Re.test(%s))", ref)
                 ("return%j", invalid(field, "boolean key"));
             break;
     }

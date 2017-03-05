@@ -1182,6 +1182,7 @@ export class Reader {
      * @function
      * @param {Uint8Array|Buffer} buffer Buffer to read from
      * @returns {Reader|BufferReader} A {@link BufferReader} if `buffer` is a Buffer, otherwise a {@link Reader}
+     * @throws {Error} If `buffer` is not a valid buffer
      */
     static create(buffer: (Uint8Array|Buffer)): (Reader|BufferReader);
 
@@ -1774,6 +1775,7 @@ export class Type extends NamespaceBase {
      * @param {Reader|Uint8Array} reader Reader or buffer to decode from
      * @param {number} [length] Length of the message, if known beforehand
      * @returns {Message} Decoded message
+     * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
      */
     decode(reader: (Reader|Uint8Array), length?: number): Message;
 
@@ -1781,6 +1783,7 @@ export class Type extends NamespaceBase {
      * Decodes a message of this type preceeded by its byte length as a varint.
      * @param {Reader|Uint8Array} reader Reader or buffer to decode from
      * @returns {Message} Decoded message
+     * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
      */
     decodeDelimited(reader: (Reader|Uint8Array)): Message;
 
@@ -2200,6 +2203,24 @@ export namespace util {
      * @type {?function(new: Long)}
      */
     var Long: () => any;
+
+    /**
+     * Regular expression used to verify 2 bit (`bool`) map keys.
+     * @type {RegExp}
+     */
+    var key2Re: RegExp;
+
+    /**
+     * Regular expression used to verify 32 bit (`int32` etc.) map keys.
+     * @type {RegExp}
+     */
+    var key32Re: RegExp;
+
+    /**
+     * Regular expression used to verify 64 bit (`int64` etc.) map keys.
+     * @type {RegExp}
+     */
+    var key64Re: RegExp;
 
     /**
      * Converts a number or long to an 8 characters long hash string.

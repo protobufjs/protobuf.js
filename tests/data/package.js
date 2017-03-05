@@ -218,6 +218,7 @@ $root.Package = (function() {
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
      * @param {number} [length] Message length if known beforehand
      * @returns {Package} Package
+     * @throws {Error} If the payload is invalid or missing required fields
      */
     Package.decode = function decode(reader, length) {
         if (!(reader instanceof $Reader))
@@ -321,6 +322,7 @@ $root.Package = (function() {
      * Decodes a Package message from the specified reader or buffer, length delimited.
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
      * @returns {Package} Package
+     * @throws {Error} If the payload is invalid or missing required fields
      */
     Package.decodeDelimited = function decodeDelimited(reader) {
         if (!(reader instanceof $Reader))
@@ -700,6 +702,7 @@ $root.Package = (function() {
          * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
          * @param {number} [length] Message length if known beforehand
          * @returns {Package.Repository} Repository
+         * @throws {Error} If the payload is invalid or missing required fields
          */
         Repository.decode = function decode(reader, length) {
             if (!(reader instanceof $Reader))
@@ -726,6 +729,7 @@ $root.Package = (function() {
          * Decodes a Repository message from the specified reader or buffer, length delimited.
          * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
          * @returns {Package.Repository} Repository
+         * @throws {Error} If the payload is invalid or missing required fields
          */
         Repository.decodeDelimited = function decodeDelimited(reader) {
             if (!(reader instanceof $Reader))

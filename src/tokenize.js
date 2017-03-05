@@ -5,6 +5,18 @@ var delimRe        = /[\s{}=;:[\],'"()<>]/g,
     stringDoubleRe = /(?:"([^"\\]*(?:\\.[^"\\]*)*)")/g,
     stringSingleRe = /(?:'([^'\\]*(?:\\.[^'\\]*)*)')/g;
 
+var setCommentRe = /^ *[*/]+ */,
+    setCommentSplitRe = /\n/g,
+    whitespaceRe = /\s/,
+    unescapeRe = /\\(.?)/g;
+
+var unescapeMap = {
+    "0": "\0",
+    "r": "\r",
+    "n": "\n",
+    "t": "\t"
+};
+
 /**
  * Unescapes a string.
  * @param {string} str String to unescape
@@ -13,23 +25,16 @@ var delimRe        = /[\s{}=;:[\],'"()<>]/g,
  * @ignore
  */
 function unescape(str) {
-    return str.replace(/\\(.?)/g, function($0, $1) {
+    return str.replace(unescapeRe, function($0, $1) {
         switch ($1) {
             case "\\":
             case "":
                 return $1;
             default:
-                return unescape.map[$1] || "";
+                return unescapeMap[$1] || "";
         }
     });
 }
-
-unescape.map = {
-    "0": "\0",
-    "r": "\r",
-    "n": "\n",
-    "t": "\t"
-};
 
 tokenize.unescape = unescape;
 
@@ -115,9 +120,9 @@ function tokenize(source) {
         commentLine = line;
         var lines = source
             .substring(start, end)
-            .split(/\n/g);
+            .split(setCommentSplitRe);
         for (var i = 0; i < lines.length; ++i)
-            lines[i] = lines[i].replace(/^ *[*/]+ */, "").trim();
+            lines[i] = lines[i].replace(setCommentRe, "").trim();
         commentText = lines
             .join("\n")
             .trim();
@@ -142,7 +147,7 @@ function tokenize(source) {
             if (offset === length)
                 return null;
             repeat = false;
-            while (/\s/.test(curr = charAt(offset))) {
+            while (whitespaceRe.test(curr = charAt(offset))) {
                 if (curr === "\n")
                     ++line;
                 if (++offset === length)

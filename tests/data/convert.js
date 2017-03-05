@@ -151,6 +151,7 @@ $root.Message = (function() {
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
      * @param {number} [length] Message length if known beforehand
      * @returns {Message} Message
+     * @throws {Error} If the payload is invalid or missing required fields
      */
     Message.decode = function decode(reader, length) {
         if (!(reader instanceof $Reader))
@@ -221,6 +222,7 @@ $root.Message = (function() {
      * Decodes a Message message from the specified reader or buffer, length delimited.
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
      * @returns {Message} Message
+     * @throws {Error} If the payload is invalid or missing required fields
      */
     Message.decodeDelimited = function decodeDelimited(reader) {
         if (!(reader instanceof $Reader))

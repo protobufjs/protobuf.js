@@ -11,6 +11,8 @@ var Enum  = require("./enum"),
 
 var Type; // cyclic
 
+var ruleRe = /^required|optional|repeated$/;
+
 /**
  * Constructs a new message field instance. Note that {@link MapField|map fields} have their own class.
  * @classdesc Reflected message field.
@@ -41,7 +43,7 @@ function Field(name, id, type, rule, extend, options) {
     if (!util.isString(type))
         throw TypeError("type must be a string");
 
-    if (rule !== undefined && !/^required|optional|repeated$/.test(rule = rule.toString().toLowerCase()))
+    if (rule !== undefined && !ruleRe.test(rule = rule.toString().toLowerCase()))
         throw TypeError("rule must be a string rule");
 
     if (extend !== undefined && !util.isString(extend))

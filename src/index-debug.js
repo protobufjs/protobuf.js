@@ -12,13 +12,15 @@ var debug = protobuf.debug = {};
 
 var codegen = protobuf.util.codegen;
 
+var debugFnRe = /function ([^(]+)\(([^)]*)\) {/g;
+
 // Counts number of calls to any generated function
 function codegen_debug() {
     codegen_debug.supported = codegen.supported;
     codegen_debug.verbose = codegen.verbose;
     var gen = codegen.apply(null, Array.prototype.slice.call(arguments));
     gen.str = (function(str) { return function str_debug() {
-        return str.apply(null, Array.prototype.slice.call(arguments)).replace(/function ([^(]+)\(([^)]*)\) {/g, "function $1($2) {\n\t$1.calls=($1.calls|0)+1");
+        return str.apply(null, Array.prototype.slice.call(arguments)).replace(debugFnRe, "function $1($2) {\n\t$1.calls=($1.calls|0)+1");
     };})(gen.str);
     return gen;
 }

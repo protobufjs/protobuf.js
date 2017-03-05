@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.7.0 (c) 2016, Daniel Wirtz
- * Compiled Sat, 04 Mar 2017 03:41:04 UTC
+ * Compiled Sun, 05 Mar 2017 22:06:34 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -1230,6 +1230,10 @@ var Enum    = require(14),
     types   = require(31),
     util    = require(32);
 
+function missing(field) {
+    return "missing required '" + field.name + "'";
+}
+
 /**
  * Generates a decoder specific to the specified message type.
  * @param {Type} mtype Message type
@@ -1250,7 +1254,8 @@ function decoder(mtype) {
     gen
         ("switch(t>>>3){");
 
-    for (var i = 0; i < /* initializes */ mtype.fieldsArray.length; ++i) {
+    var i = 0;
+    for (; i < /* initializes */ mtype.fieldsArray.length; ++i) {
         var field = mtype._fieldsArray[i].resolve(),
             type  = field.resolvedType instanceof Enum ? "uint32" : field.type,
             ref   = "m" + util.safeProp(field.name); gen
@@ -1300,15 +1305,25 @@ function decoder(mtype) {
                 ("break");
 
     // Unknown fields
-    } return gen
+    } gen
             ("default:")
                 ("r.skipType(t&7)")
                 ("break")
 
         ("}")
-    ("}")
+    ("}");
+
+    // Field presence
+    for (i = 0; i < mtype._fieldsArray.length; ++i) {
+        var rfield = mtype._fieldsArray[i];
+        if (rfield.required) gen
+    ("if(!m.hasOwnProperty(%j))", rfield.name)
+        ("throw Error(%j)", missing(rfield));
+    }
+
+    return gen
     ("return m");
-    /* eslint-enable no-unexpected-multiline */
+    /* eslint-enable no-unexpected-multiline, block-scoped-var */
 }
 
 },{"14":14,"31":31,"32":32}],13:[function(require,module,exports){
@@ -1582,6 +1597,8 @@ var Enum  = require(14),
 
 var Type; // cyclic
 
+var ruleRe = /^required|optional|repeated$/;
+
 /**
  * Constructs a new message field instance. Note that {@link MapField|map fields} have their own class.
  * @classdesc Reflected message field.
@@ -1612,7 +1629,7 @@ function Field(name, id, type, rule, extend, options) {
     if (!util.isString(type))
         throw TypeError("type must be a string");
 
-    if (rule !== undefined && !/^required|optional|repeated$/.test(rule = rule.toString().toLowerCase()))
+    if (rule !== undefined && !ruleRe.test(rule = rule.toString().toLowerCase()))
         throw TypeError("rule must be a string rule");
 
     if (extend !== undefined && !util.isString(extend))
@@ -3105,6 +3122,7 @@ var create_array = typeof Uint8Array !== "undefined"
             return new Reader(buffer);
         throw Error("illegal buffer");
     }
+    /* istanbul ignore next */
     : function create_array(buffer) {
         if (Array.isArray(buffer))
             return new Reader(buffer);
@@ -3116,6 +3134,7 @@ var create_array = typeof Uint8Array !== "undefined"
  * @function
  * @param {Uint8Array|Buffer} buffer Buffer to read from
  * @returns {Reader|BufferReader} A {@link BufferReader} if `buffer` is a Buffer, otherwise a {@link Reader}
+ * @throws {Error} If `buffer` is not a valid buffer
  */
 Reader.create = util.Buffer
     ? function create_buffer_setup(buffer) {
@@ -4706,6 +4725,7 @@ Type.prototype.encodeDelimited = function encodeDelimited(message, writer) {
  * @param {Reader|Uint8Array} reader Reader or buffer to decode from
  * @param {number} [length] Length of the message, if known beforehand
  * @returns {Message} Decoded message
+ * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
  */
 Type.prototype.decode = function decode_setup(reader, length) {
     return this.setup().decode(reader, length); // overrides this method
@@ -4715,6 +4735,7 @@ Type.prototype.decode = function decode_setup(reader, length) {
  * Decodes a message of this type preceeded by its byte length as a varint.
  * @param {Reader|Uint8Array} reader Reader or buffer to decode from
  * @returns {Message} Decoded message
+ * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
  */
 Type.prototype.decodeDelimited = function decodeDelimited(reader) {
     if (!(reader instanceof Reader))
@@ -5002,13 +5023,16 @@ util.toArray = function toArray(object) {
     return array;
 };
 
+var safePropBackslashRe = /\\/g,
+    safePropQuoteRe     = /"/g;
+
 /**
  * Returns a safe property accessor for the specified properly name.
  * @param {string} prop Property name
  * @returns {string} Safe accessor
  */
 util.safeProp = function safeProp(prop) {
-    return "[\"" + prop.replace(/\\/g, "\\\\").replace(/"/g, "\\\"") + "\"]";
+    return "[\"" + prop.replace(safePropBackslashRe, "\\\\").replace(safePropQuoteRe, "\\\"") + "\"]";
 };
 
 /**
@@ -5371,6 +5395,24 @@ util.Array = typeof Uint8Array !== "undefined" ? Uint8Array /* istanbul ignore n
 util.Long = /* istanbul ignore next */ global.dcodeIO && /* istanbul ignore next */ global.dcodeIO.Long || util.inquire("long");
 
 /**
+ * Regular expression used to verify 2 bit (`bool`) map keys.
+ * @type {RegExp}
+ */
+util.key2Re = /^true|false|0|1$/;
+
+/**
+ * Regular expression used to verify 32 bit (`int32` etc.) map keys.
+ * @type {RegExp}
+ */
+util.key32Re = /^-?(?:0|[1-9][0-9]*)$/;
+
+/**
+ * Regular expression used to verify 64 bit (`int64` etc.) map keys.
+ * @type {RegExp}
+ */
+util.key64Re = /^(?:[\\x00-\\xff]{8}|-?(?:0|[1-9][0-9]*))$/;
+
+/**
  * Converts a number or long to an 8 characters long hash string.
  * @param {Long|number} value Value to convert
  * @returns {string} Hash
@@ -5601,7 +5643,7 @@ function genVerifyKey(gen, field, ref) {
         case "sint32":
         case "fixed32":
         case "sfixed32": gen
-            ("if(!/^-?(?:0|[1-9][0-9]*)$/.test(%s))", ref) // it's important not to use any literals here that might be confused with short variable names by pbjs' beautify
+            ("if(!util.key32Re.test(%s))", ref)
                 ("return%j", invalid(field, "integer key"));
             break;
         case "int64":
@@ -5609,11 +5651,11 @@ function genVerifyKey(gen, field, ref) {
         case "sint64":
         case "fixed64":
         case "sfixed64": gen
-            ("if(!/^(?:[\\x00-\\xff]{8}|-?(?:0|[1-9][0-9]*))$/.test(%s))", ref) // see comment above: x is ok, d is not
+            ("if(!util.key64Re.test(%s))", ref) // see comment above: x is ok, d is not
                 ("return%j", invalid(field, "integer|Long key"));
             break;
         case "bool": gen
-            ("if(!/^true|false|0|1$/.test(%s))", ref)
+            ("if(!util.key2Re.test(%s))", ref)
                 ("return%j", invalid(field, "boolean key"));
             break;
     }

@@ -29,13 +29,16 @@ util.toArray = function toArray(object) {
     return array;
 };
 
+var safePropBackslashRe = /\\/g,
+    safePropQuoteRe     = /"/g;
+
 /**
  * Returns a safe property accessor for the specified properly name.
  * @param {string} prop Property name
  * @returns {string} Safe accessor
  */
 util.safeProp = function safeProp(prop) {
-    return "[\"" + prop.replace(/\\/g, "\\\\").replace(/"/g, "\\\"") + "\"]";
+    return "[\"" + prop.replace(safePropBackslashRe, "\\\\").replace(safePropQuoteRe, "\\\"") + "\"]";
 };
 
 /**

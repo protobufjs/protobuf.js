@@ -103,7 +103,8 @@ message AwesomeMessage {
 
 ```js
 protobuf.load("awesome.proto", function(err, root) {
-    if (err) throw err;
+    if (err)
+        throw err;
 
     // Obtain a message type
     var AwesomeMessage = root.lookup("awesomepackage.AwesomeMessage");
@@ -112,9 +113,9 @@ protobuf.load("awesome.proto", function(err, root) {
     var message = AwesomeMessage.create({ awesomeField: "AwesomeString" });
 
     // Verify the message if necessary (i.e. when possibly incomplete or invalid)
-    var err = AwesomeMessage.verify(message);
-    if (err)
-        throw Error(err);
+    var errMsg = AwesomeMessage.verify(message);
+    if (errMsg)
+        throw Error(errMsg);
 
     // Encode a message to an Uint8Array (browser) or Buffer (node)
     var buffer = AwesomeMessage.encode(message).finish();
@@ -132,7 +133,7 @@ protobuf.load("awesome.proto", function(err, root) {
 });
 ```
 
-**Note** that `Message.encode` does not verify a message but tries to encode whatever is specified, which might result in a runtime error being thrown somewhere down the road. Instead, there is `Message.verify` to explicitly perform verification priorly (only) where necessary to avoid redundant assertions where messages are already known to be valid. `Message.decode` throws if a buffer is invalid.
+**Note** that `Message.encode` does not implicitly verify a message but tries to encode whatever is specified, which might result in a runtime error being thrown somewhere down the road. Instead, there is `Message.verify` to explicitly perform verification priorly where necessary to avoid redundant assertions where messages are already known to be valid. `Message.decode` throws if a buffer is invalid.
 
 Additionally, promise syntax can be used by omitting the callback, if preferred:
 

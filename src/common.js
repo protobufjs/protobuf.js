@@ -21,12 +21,14 @@ module.exports = common;
  * protobuf.common("my/foo/bar.proto", myFooBarJson);
  */
 function common(name, json) {
-    if (!/\/|\./.test(name)) {
+    if (!commonRe.test(name)) {
         name = "google/protobuf/" + name + ".proto";
         json = { nested: { google: { nested: { protobuf: { nested: json } } } } };
     }
     common[name] = json;
 }
+
+var commonRe = /\/|\./;
 
 // Not provided because of limited use (feel free to discuss or to provide yourself):
 //
