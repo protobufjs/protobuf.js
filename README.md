@@ -111,6 +111,11 @@ protobuf.load("awesome.proto", function(err, root) {
     // Create a new message
     var message = AwesomeMessage.create({ awesomeField: "AwesomeString" });
 
+    // Verify the message if necessary (i.e. when possibly incomplete or invalid)
+    var err = AwesomeMessage.verify(message);
+    if (err)
+        throw Error(err);
+
     // Encode a message to an Uint8Array (browser) or Buffer (node)
     var buffer = AwesomeMessage.encode(message).finish();
     // ... do something with buffer
@@ -127,7 +132,9 @@ protobuf.load("awesome.proto", function(err, root) {
 });
 ```
 
-You can also use promises by omitting the callback:
+**Note** that `Message.encode` does not verify a message but tries to encode whatever is specified, which might result in a runtime error being thrown somewhere down the road. Instead, there is `Message.verify` to explicitly perform verification priorly (only) where necessary to avoid redundant assertions where messages are already known to be valid. `Message.decode` throws if a buffer is invalid.
+
+Additionally, promise syntax can be used by omitting the callback, if preferred:
 
 ```js
 protobuf.load("awesome.proto")
