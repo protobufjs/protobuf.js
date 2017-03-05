@@ -22,4 +22,4 @@ matrix:
   - node_js: 6
     script: set -e; if [ -n "$SAUCE_USERNAME" ]; then npm install zuul@^3.11.1 zuul-ngrok@^4.0.0; travis_wait npm run zuul; sleep 3; fi
   - node_js: 6
-    script: npm install coveralls@^2.11.15 codeclimate-test-reporter@^0.4.1; npm run coverage-ci
+    script: npm install codeclimate-test-reporter@^0.4.1; npm run coverage-ci
