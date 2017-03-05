@@ -397,7 +397,7 @@ Type.prototype.setup = function setup() {
 };
 
 /**
- * Encodes a message of this type.
+ * Encodes a message of this type. Does not implicitly {@link Type#verify|verify} messages.
  * @param {Message|Object} message Message instance or plain object
  * @param {Writer} [writer] Writer to encode to
  * @returns {Writer} writer
@@ -407,7 +407,7 @@ Type.prototype.encode = function encode_setup(message, writer) {
 };
 
 /**
- * Encodes a message of this type preceeded by its byte length as a varint.
+ * Encodes a message of this type preceeded by its byte length as a varint. Does not implicitly {@link Type#verify|verify} messages.
  * @param {Message|Object} message Message instance or plain object
  * @param {Writer} [writer] Writer to encode to
  * @returns {Writer} writer

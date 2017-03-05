@@ -100,7 +100,7 @@ $root.MyRequest = (function() {
     };
 
     /**
-     * Encodes the specified MyRequest message.
+     * Encodes the specified MyRequest message. Does not implicitly {@link MyRequest.verify|verify} messages.
      * @param {MyRequest|Object} message MyRequest message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
@@ -114,7 +114,7 @@ $root.MyRequest = (function() {
     };
 
     /**
-     * Encodes the specified MyRequest message, length delimited.
+     * Encodes the specified MyRequest message, length delimited. Does not implicitly {@link MyRequest.verify|verify} messages.
      * @param {MyRequest|Object} message MyRequest message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
@@ -128,7 +128,7 @@ $root.MyRequest = (function() {
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
      * @param {number} [length] Message length if known beforehand
      * @returns {MyRequest} MyRequest
-     * @throws {Error} If the payload is invalid or missing required fields
+     * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
      */
     MyRequest.decode = function decode(reader, length) {
         if (!(reader instanceof $Reader))
@@ -152,7 +152,7 @@ $root.MyRequest = (function() {
      * Decodes a MyRequest message from the specified reader or buffer, length delimited.
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
      * @returns {MyRequest} MyRequest
-     * @throws {Error} If the payload is invalid or missing required fields
+     * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
      */
     MyRequest.decodeDelimited = function decodeDelimited(reader) {
         if (!(reader instanceof $Reader))
@@ -264,7 +264,7 @@ $root.MyResponse = (function() {
     };
 
     /**
-     * Encodes the specified MyResponse message.
+     * Encodes the specified MyResponse message. Does not implicitly {@link MyResponse.verify|verify} messages.
      * @param {MyResponse|Object} message MyResponse message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
@@ -278,7 +278,7 @@ $root.MyResponse = (function() {
     };
 
     /**
-     * Encodes the specified MyResponse message, length delimited.
+     * Encodes the specified MyResponse message, length delimited. Does not implicitly {@link MyResponse.verify|verify} messages.
      * @param {MyResponse|Object} message MyResponse message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
@@ -292,7 +292,7 @@ $root.MyResponse = (function() {
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
      * @param {number} [length] Message length if known beforehand
      * @returns {MyResponse} MyResponse
-     * @throws {Error} If the payload is invalid or missing required fields
+     * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
      */
     MyResponse.decode = function decode(reader, length) {
         if (!(reader instanceof $Reader))
@@ -316,7 +316,7 @@ $root.MyResponse = (function() {
      * Decodes a MyResponse message from the specified reader or buffer, length delimited.
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
      * @returns {MyResponse} MyResponse
-     * @throws {Error} If the payload is invalid or missing required fields
+     * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
      */
     MyResponse.decodeDelimited = function decodeDelimited(reader) {
         if (!(reader instanceof $Reader))

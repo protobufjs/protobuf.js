@@ -393,7 +393,7 @@ function buildType(ref, type) {
     if (config.encode) {
         push("");
         pushComment([
-            "Encodes the specified " + type.name + " message.",
+            "Encodes the specified " + type.name + " message. Does not implicitly {@link " + fullName + ".verify|verify} messages.",
             "@param {" + fullName + "|Object} " + (config.beautify ? "message" : "m") + " " + type.name + " message or plain object to encode",
             "@param {$protobuf.Writer} [" + (config.beautify ? "writer" : "w") + "] Writer to encode to",
             "@returns {$protobuf.Writer} Writer"
@@ -403,7 +403,7 @@ function buildType(ref, type) {
         if (config.delimited) {
             push("");
             pushComment([
-                "Encodes the specified " + type.name + " message, length delimited.",
+                "Encodes the specified " + type.name + " message, length delimited. Does not implicitly {@link " + fullName + ".verify|verify} messages.",
                 "@param {" + fullName + "|Object} message " + type.name + " message or plain object to encode",
                 "@param {$protobuf.Writer} [writer] Writer to encode to",
                 "@returns {$protobuf.Writer} Writer"

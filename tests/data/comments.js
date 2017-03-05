@@ -58,7 +58,7 @@ $root.Test1 = (function() {
     };
 
     /**
-     * Encodes the specified Test1 message.
+     * Encodes the specified Test1 message. Does not implicitly {@link Test1.verify|verify} messages.
      * @param {Test1|Object} message Test1 message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
@@ -76,7 +76,7 @@ $root.Test1 = (function() {
     };
 
     /**
-     * Encodes the specified Test1 message, length delimited.
+     * Encodes the specified Test1 message, length delimited. Does not implicitly {@link Test1.verify|verify} messages.
      * @param {Test1|Object} message Test1 message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
@@ -90,7 +90,7 @@ $root.Test1 = (function() {
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
      * @param {number} [length] Message length if known beforehand
      * @returns {Test1} Test1
-     * @throws {Error} If the payload is invalid or missing required fields
+     * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
      */
     Test1.decode = function decode(reader, length) {
         if (!(reader instanceof $Reader))
@@ -120,7 +120,7 @@ $root.Test1 = (function() {
      * Decodes a Test1 message from the specified reader or buffer, length delimited.
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
      * @returns {Test1} Test1
-     * @throws {Error} If the payload is invalid or missing required fields
+     * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
      */
     Test1.decodeDelimited = function decodeDelimited(reader) {
         if (!(reader instanceof $Reader))
@@ -243,7 +243,7 @@ $root.Test2 = (function() {
     };
 
     /**
-     * Encodes the specified Test2 message.
+     * Encodes the specified Test2 message. Does not implicitly {@link Test2.verify|verify} messages.
      * @param {Test2|Object} message Test2 message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
@@ -255,7 +255,7 @@ $root.Test2 = (function() {
     };
 
     /**
-     * Encodes the specified Test2 message, length delimited.
+     * Encodes the specified Test2 message, length delimited. Does not implicitly {@link Test2.verify|verify} messages.
      * @param {Test2|Object} message Test2 message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
@@ -269,7 +269,7 @@ $root.Test2 = (function() {
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
      * @param {number} [length] Message length if known beforehand
      * @returns {Test2} Test2
-     * @throws {Error} If the payload is invalid or missing required fields
+     * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
      */
     Test2.decode = function decode(reader, length) {
         if (!(reader instanceof $Reader))
@@ -290,7 +290,7 @@ $root.Test2 = (function() {
      * Decodes a Test2 message from the specified reader or buffer, length delimited.
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
      * @returns {Test2} Test2
-     * @throws {Error} If the payload is invalid or missing required fields
+     * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
      */
     Test2.decodeDelimited = function decodeDelimited(reader) {
         if (!(reader instanceof $Reader))

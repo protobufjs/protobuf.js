@@ -96,7 +96,7 @@ $root.Message = (function() {
     };
 
     /**
-     * Encodes the specified Message message.
+     * Encodes the specified Message message. Does not implicitly {@link Message.verify|verify} messages.
      * @param {Message|Object} message Message message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
@@ -137,7 +137,7 @@ $root.Message = (function() {
     };
 
     /**
-     * Encodes the specified Message message, length delimited.
+     * Encodes the specified Message message, length delimited. Does not implicitly {@link Message.verify|verify} messages.
      * @param {Message|Object} message Message message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
@@ -151,7 +151,7 @@ $root.Message = (function() {
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
      * @param {number} [length] Message length if known beforehand
      * @returns {Message} Message
-     * @throws {Error} If the payload is invalid or missing required fields
+     * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
      */
     Message.decode = function decode(reader, length) {
         if (!(reader instanceof $Reader))
@@ -222,7 +222,7 @@ $root.Message = (function() {
      * Decodes a Message message from the specified reader or buffer, length delimited.
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
      * @returns {Message} Message
-     * @throws {Error} If the payload is invalid or missing required fields
+     * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
      */
     Message.decodeDelimited = function decodeDelimited(reader) {
         if (!(reader instanceof $Reader))

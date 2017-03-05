@@ -54,7 +54,7 @@ $root.jspb = (function() {
             };
 
             /**
-             * Encodes the specified Empty message.
+             * Encodes the specified Empty message. Does not implicitly {@link jspb.test.Empty.verify|verify} messages.
              * @param {jspb.test.Empty|Object} message Empty message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -66,7 +66,7 @@ $root.jspb = (function() {
             };
 
             /**
-             * Encodes the specified Empty message, length delimited.
+             * Encodes the specified Empty message, length delimited. Does not implicitly {@link jspb.test.Empty.verify|verify} messages.
              * @param {jspb.test.Empty|Object} message Empty message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -80,7 +80,7 @@ $root.jspb = (function() {
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.Empty} Empty
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             Empty.decode = function decode(reader, length) {
                 if (!(reader instanceof $Reader))
@@ -101,7 +101,7 @@ $root.jspb = (function() {
              * Decodes an Empty message from the specified reader or buffer, length delimited.
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @returns {jspb.test.Empty} Empty
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             Empty.decodeDelimited = function decodeDelimited(reader) {
                 if (!(reader instanceof $Reader))
@@ -220,7 +220,7 @@ $root.jspb = (function() {
             };
 
             /**
-             * Encodes the specified EnumContainer message.
+             * Encodes the specified EnumContainer message. Does not implicitly {@link jspb.test.EnumContainer.verify|verify} messages.
              * @param {jspb.test.EnumContainer|Object} message EnumContainer message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -234,7 +234,7 @@ $root.jspb = (function() {
             };
 
             /**
-             * Encodes the specified EnumContainer message, length delimited.
+             * Encodes the specified EnumContainer message, length delimited. Does not implicitly {@link jspb.test.EnumContainer.verify|verify} messages.
              * @param {jspb.test.EnumContainer|Object} message EnumContainer message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -248,7 +248,7 @@ $root.jspb = (function() {
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.EnumContainer} EnumContainer
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             EnumContainer.decode = function decode(reader, length) {
                 if (!(reader instanceof $Reader))
@@ -272,7 +272,7 @@ $root.jspb = (function() {
              * Decodes an EnumContainer message from the specified reader or buffer, length delimited.
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @returns {jspb.test.EnumContainer} EnumContainer
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             EnumContainer.decodeDelimited = function decodeDelimited(reader) {
                 if (!(reader instanceof $Reader))
@@ -409,7 +409,7 @@ $root.jspb = (function() {
             };
 
             /**
-             * Encodes the specified Simple1 message.
+             * Encodes the specified Simple1 message. Does not implicitly {@link jspb.test.Simple1.verify|verify} messages.
              * @param {jspb.test.Simple1|Object} message Simple1 message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -427,7 +427,7 @@ $root.jspb = (function() {
             };
 
             /**
-             * Encodes the specified Simple1 message, length delimited.
+             * Encodes the specified Simple1 message, length delimited. Does not implicitly {@link jspb.test.Simple1.verify|verify} messages.
              * @param {jspb.test.Simple1|Object} message Simple1 message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -441,7 +441,7 @@ $root.jspb = (function() {
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.Simple1} Simple1
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             Simple1.decode = function decode(reader, length) {
                 if (!(reader instanceof $Reader))
@@ -475,7 +475,7 @@ $root.jspb = (function() {
              * Decodes a Simple1 message from the specified reader or buffer, length delimited.
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @returns {jspb.test.Simple1} Simple1
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             Simple1.decodeDelimited = function decodeDelimited(reader) {
                 if (!(reader instanceof $Reader))
@@ -622,7 +622,7 @@ $root.jspb = (function() {
             };
 
             /**
-             * Encodes the specified Simple2 message.
+             * Encodes the specified Simple2 message. Does not implicitly {@link jspb.test.Simple2.verify|verify} messages.
              * @param {jspb.test.Simple2|Object} message Simple2 message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -638,7 +638,7 @@ $root.jspb = (function() {
             };
 
             /**
-             * Encodes the specified Simple2 message, length delimited.
+             * Encodes the specified Simple2 message, length delimited. Does not implicitly {@link jspb.test.Simple2.verify|verify} messages.
              * @param {jspb.test.Simple2|Object} message Simple2 message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -652,7 +652,7 @@ $root.jspb = (function() {
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.Simple2} Simple2
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             Simple2.decode = function decode(reader, length) {
                 if (!(reader instanceof $Reader))
@@ -683,7 +683,7 @@ $root.jspb = (function() {
              * Decodes a Simple2 message from the specified reader or buffer, length delimited.
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @returns {jspb.test.Simple2} Simple2
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             Simple2.decodeDelimited = function decodeDelimited(reader) {
                 if (!(reader instanceof $Reader))
@@ -836,7 +836,7 @@ $root.jspb = (function() {
             };
 
             /**
-             * Encodes the specified SpecialCases message.
+             * Encodes the specified SpecialCases message. Does not implicitly {@link jspb.test.SpecialCases.verify|verify} messages.
              * @param {jspb.test.SpecialCases|Object} message SpecialCases message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -852,7 +852,7 @@ $root.jspb = (function() {
             };
 
             /**
-             * Encodes the specified SpecialCases message, length delimited.
+             * Encodes the specified SpecialCases message, length delimited. Does not implicitly {@link jspb.test.SpecialCases.verify|verify} messages.
              * @param {jspb.test.SpecialCases|Object} message SpecialCases message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -866,7 +866,7 @@ $root.jspb = (function() {
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.SpecialCases} SpecialCases
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             SpecialCases.decode = function decode(reader, length) {
                 if (!(reader instanceof $Reader))
@@ -907,7 +907,7 @@ $root.jspb = (function() {
              * Decodes a SpecialCases message from the specified reader or buffer, length delimited.
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @returns {jspb.test.SpecialCases} SpecialCases
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             SpecialCases.decodeDelimited = function decodeDelimited(reader) {
                 if (!(reader instanceof $Reader))
@@ -1070,7 +1070,7 @@ $root.jspb = (function() {
             };
 
             /**
-             * Encodes the specified OptionalFields message.
+             * Encodes the specified OptionalFields message. Does not implicitly {@link jspb.test.OptionalFields.verify|verify} messages.
              * @param {jspb.test.OptionalFields|Object} message OptionalFields message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -1093,7 +1093,7 @@ $root.jspb = (function() {
             };
 
             /**
-             * Encodes the specified OptionalFields message, length delimited.
+             * Encodes the specified OptionalFields message, length delimited. Does not implicitly {@link jspb.test.OptionalFields.verify|verify} messages.
              * @param {jspb.test.OptionalFields|Object} message OptionalFields message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -1107,7 +1107,7 @@ $root.jspb = (function() {
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.OptionalFields} OptionalFields
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             OptionalFields.decode = function decode(reader, length) {
                 if (!(reader instanceof $Reader))
@@ -1149,7 +1149,7 @@ $root.jspb = (function() {
              * Decodes an OptionalFields message from the specified reader or buffer, length delimited.
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @returns {jspb.test.OptionalFields} OptionalFields
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             OptionalFields.decodeDelimited = function decodeDelimited(reader) {
                 if (!(reader instanceof $Reader))
@@ -1326,7 +1326,7 @@ $root.jspb = (function() {
                 };
 
                 /**
-                 * Encodes the specified Nested message.
+                 * Encodes the specified Nested message. Does not implicitly {@link jspb.test.OptionalFields.Nested.verify|verify} messages.
                  * @param {jspb.test.OptionalFields.Nested|Object} message Nested message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
@@ -1340,7 +1340,7 @@ $root.jspb = (function() {
                 };
 
                 /**
-                 * Encodes the specified Nested message, length delimited.
+                 * Encodes the specified Nested message, length delimited. Does not implicitly {@link jspb.test.OptionalFields.Nested.verify|verify} messages.
                  * @param {jspb.test.OptionalFields.Nested|Object} message Nested message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
@@ -1354,7 +1354,7 @@ $root.jspb = (function() {
                  * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
                  * @param {number} [length] Message length if known beforehand
                  * @returns {jspb.test.OptionalFields.Nested} Nested
-                 * @throws {Error} If the payload is invalid or missing required fields
+                 * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
                  */
                 Nested.decode = function decode(reader, length) {
                     if (!(reader instanceof $Reader))
@@ -1378,7 +1378,7 @@ $root.jspb = (function() {
                  * Decodes a Nested message from the specified reader or buffer, length delimited.
                  * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
                  * @returns {jspb.test.OptionalFields.Nested} Nested
-                 * @throws {Error} If the payload is invalid or missing required fields
+                 * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
                  */
                 Nested.decodeDelimited = function decodeDelimited(reader) {
                     if (!(reader instanceof $Reader))
@@ -1555,7 +1555,7 @@ $root.jspb = (function() {
             };
 
             /**
-             * Encodes the specified HasExtensions message.
+             * Encodes the specified HasExtensions message. Does not implicitly {@link jspb.test.HasExtensions.verify|verify} messages.
              * @param {jspb.test.HasExtensions|Object} message HasExtensions message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -1587,7 +1587,7 @@ $root.jspb = (function() {
             };
 
             /**
-             * Encodes the specified HasExtensions message, length delimited.
+             * Encodes the specified HasExtensions message, length delimited. Does not implicitly {@link jspb.test.HasExtensions.verify|verify} messages.
              * @param {jspb.test.HasExtensions|Object} message HasExtensions message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -1601,7 +1601,7 @@ $root.jspb = (function() {
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.HasExtensions} HasExtensions
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             HasExtensions.decode = function decode(reader, length) {
                 if (!(reader instanceof $Reader))
@@ -1653,7 +1653,7 @@ $root.jspb = (function() {
              * Decodes a HasExtensions message from the specified reader or buffer, length delimited.
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @returns {jspb.test.HasExtensions} HasExtensions
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             HasExtensions.decodeDelimited = function decodeDelimited(reader) {
                 if (!(reader instanceof $Reader))
@@ -1906,7 +1906,7 @@ $root.jspb = (function() {
             };
 
             /**
-             * Encodes the specified Complex message.
+             * Encodes the specified Complex message. Does not implicitly {@link jspb.test.Complex.verify|verify} messages.
              * @param {jspb.test.Complex|Object} message Complex message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -1928,7 +1928,7 @@ $root.jspb = (function() {
             };
 
             /**
-             * Encodes the specified Complex message, length delimited.
+             * Encodes the specified Complex message, length delimited. Does not implicitly {@link jspb.test.Complex.verify|verify} messages.
              * @param {jspb.test.Complex|Object} message Complex message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -1942,7 +1942,7 @@ $root.jspb = (function() {
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.Complex} Complex
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             Complex.decode = function decode(reader, length) {
                 if (!(reader instanceof $Reader))
@@ -1986,7 +1986,7 @@ $root.jspb = (function() {
              * Decodes a Complex message from the specified reader or buffer, length delimited.
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @returns {jspb.test.Complex} Complex
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             Complex.decodeDelimited = function decodeDelimited(reader) {
                 if (!(reader instanceof $Reader))
@@ -2162,7 +2162,7 @@ $root.jspb = (function() {
                 };
 
                 /**
-                 * Encodes the specified Nested message.
+                 * Encodes the specified Nested message. Does not implicitly {@link jspb.test.Complex.Nested.verify|verify} messages.
                  * @param {jspb.test.Complex.Nested|Object} message Nested message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
@@ -2175,7 +2175,7 @@ $root.jspb = (function() {
                 };
 
                 /**
-                 * Encodes the specified Nested message, length delimited.
+                 * Encodes the specified Nested message, length delimited. Does not implicitly {@link jspb.test.Complex.Nested.verify|verify} messages.
                  * @param {jspb.test.Complex.Nested|Object} message Nested message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
@@ -2189,7 +2189,7 @@ $root.jspb = (function() {
                  * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
                  * @param {number} [length] Message length if known beforehand
                  * @returns {jspb.test.Complex.Nested} Nested
-                 * @throws {Error} If the payload is invalid or missing required fields
+                 * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
                  */
                 Nested.decode = function decode(reader, length) {
                     if (!(reader instanceof $Reader))
@@ -2215,7 +2215,7 @@ $root.jspb = (function() {
                  * Decodes a Nested message from the specified reader or buffer, length delimited.
                  * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
                  * @returns {jspb.test.Complex.Nested} Nested
-                 * @throws {Error} If the payload is invalid or missing required fields
+                 * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
                  */
                 Nested.decodeDelimited = function decodeDelimited(reader) {
                     if (!(reader instanceof $Reader))
@@ -2323,7 +2323,7 @@ $root.jspb = (function() {
             };
 
             /**
-             * Encodes the specified OuterMessage message.
+             * Encodes the specified OuterMessage message. Does not implicitly {@link jspb.test.OuterMessage.verify|verify} messages.
              * @param {jspb.test.OuterMessage|Object} message OuterMessage message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -2335,7 +2335,7 @@ $root.jspb = (function() {
             };
 
             /**
-             * Encodes the specified OuterMessage message, length delimited.
+             * Encodes the specified OuterMessage message, length delimited. Does not implicitly {@link jspb.test.OuterMessage.verify|verify} messages.
              * @param {jspb.test.OuterMessage|Object} message OuterMessage message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -2349,7 +2349,7 @@ $root.jspb = (function() {
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.OuterMessage} OuterMessage
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             OuterMessage.decode = function decode(reader, length) {
                 if (!(reader instanceof $Reader))
@@ -2370,7 +2370,7 @@ $root.jspb = (function() {
              * Decodes an OuterMessage message from the specified reader or buffer, length delimited.
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @returns {jspb.test.OuterMessage} OuterMessage
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             OuterMessage.decodeDelimited = function decodeDelimited(reader) {
                 if (!(reader instanceof $Reader))
@@ -2466,7 +2466,7 @@ $root.jspb = (function() {
                 };
 
                 /**
-                 * Encodes the specified Complex message.
+                 * Encodes the specified Complex message. Does not implicitly {@link jspb.test.OuterMessage.Complex.verify|verify} messages.
                  * @param {jspb.test.OuterMessage.Complex|Object} message Complex message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
@@ -2480,7 +2480,7 @@ $root.jspb = (function() {
                 };
 
                 /**
-                 * Encodes the specified Complex message, length delimited.
+                 * Encodes the specified Complex message, length delimited. Does not implicitly {@link jspb.test.OuterMessage.Complex.verify|verify} messages.
                  * @param {jspb.test.OuterMessage.Complex|Object} message Complex message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
@@ -2494,7 +2494,7 @@ $root.jspb = (function() {
                  * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
                  * @param {number} [length] Message length if known beforehand
                  * @returns {jspb.test.OuterMessage.Complex} Complex
-                 * @throws {Error} If the payload is invalid or missing required fields
+                 * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
                  */
                 Complex.decode = function decode(reader, length) {
                     if (!(reader instanceof $Reader))
@@ -2518,7 +2518,7 @@ $root.jspb = (function() {
                  * Decodes a Complex message from the specified reader or buffer, length delimited.
                  * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
                  * @returns {jspb.test.OuterMessage.Complex} Complex
-                 * @throws {Error} If the payload is invalid or missing required fields
+                 * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
                  */
                 Complex.decodeDelimited = function decodeDelimited(reader) {
                     if (!(reader instanceof $Reader))
@@ -2633,7 +2633,7 @@ $root.jspb = (function() {
             };
 
             /**
-             * Encodes the specified IsExtension message.
+             * Encodes the specified IsExtension message. Does not implicitly {@link jspb.test.IsExtension.verify|verify} messages.
              * @param {jspb.test.IsExtension|Object} message IsExtension message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -2647,7 +2647,7 @@ $root.jspb = (function() {
             };
 
             /**
-             * Encodes the specified IsExtension message, length delimited.
+             * Encodes the specified IsExtension message, length delimited. Does not implicitly {@link jspb.test.IsExtension.verify|verify} messages.
              * @param {jspb.test.IsExtension|Object} message IsExtension message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -2661,7 +2661,7 @@ $root.jspb = (function() {
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.IsExtension} IsExtension
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             IsExtension.decode = function decode(reader, length) {
                 if (!(reader instanceof $Reader))
@@ -2685,7 +2685,7 @@ $root.jspb = (function() {
              * Decodes an IsExtension message from the specified reader or buffer, length delimited.
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @returns {jspb.test.IsExtension} IsExtension
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             IsExtension.decodeDelimited = function decodeDelimited(reader) {
                 if (!(reader instanceof $Reader))
@@ -2791,7 +2791,7 @@ $root.jspb = (function() {
             };
 
             /**
-             * Encodes the specified IndirectExtension message.
+             * Encodes the specified IndirectExtension message. Does not implicitly {@link jspb.test.IndirectExtension.verify|verify} messages.
              * @param {jspb.test.IndirectExtension|Object} message IndirectExtension message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -2803,7 +2803,7 @@ $root.jspb = (function() {
             };
 
             /**
-             * Encodes the specified IndirectExtension message, length delimited.
+             * Encodes the specified IndirectExtension message, length delimited. Does not implicitly {@link jspb.test.IndirectExtension.verify|verify} messages.
              * @param {jspb.test.IndirectExtension|Object} message IndirectExtension message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -2817,7 +2817,7 @@ $root.jspb = (function() {
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.IndirectExtension} IndirectExtension
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             IndirectExtension.decode = function decode(reader, length) {
                 if (!(reader instanceof $Reader))
@@ -2838,7 +2838,7 @@ $root.jspb = (function() {
              * Decodes an IndirectExtension message from the specified reader or buffer, length delimited.
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @returns {jspb.test.IndirectExtension} IndirectExtension
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             IndirectExtension.decodeDelimited = function decodeDelimited(reader) {
                 if (!(reader instanceof $Reader))
@@ -2972,7 +2972,7 @@ $root.jspb = (function() {
             };
 
             /**
-             * Encodes the specified DefaultValues message.
+             * Encodes the specified DefaultValues message. Does not implicitly {@link jspb.test.DefaultValues.verify|verify} messages.
              * @param {jspb.test.DefaultValues|Object} message DefaultValues message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -2996,7 +2996,7 @@ $root.jspb = (function() {
             };
 
             /**
-             * Encodes the specified DefaultValues message, length delimited.
+             * Encodes the specified DefaultValues message, length delimited. Does not implicitly {@link jspb.test.DefaultValues.verify|verify} messages.
              * @param {jspb.test.DefaultValues|Object} message DefaultValues message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -3010,7 +3010,7 @@ $root.jspb = (function() {
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.DefaultValues} DefaultValues
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             DefaultValues.decode = function decode(reader, length) {
                 if (!(reader instanceof $Reader))
@@ -3049,7 +3049,7 @@ $root.jspb = (function() {
              * Decodes a DefaultValues message from the specified reader or buffer, length delimited.
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @returns {jspb.test.DefaultValues} DefaultValues
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             DefaultValues.decodeDelimited = function decodeDelimited(reader) {
                 if (!(reader instanceof $Reader))
@@ -3293,7 +3293,7 @@ $root.jspb = (function() {
             };
 
             /**
-             * Encodes the specified FloatingPointFields message.
+             * Encodes the specified FloatingPointFields message. Does not implicitly {@link jspb.test.FloatingPointFields.verify|verify} messages.
              * @param {jspb.test.FloatingPointFields|Object} message FloatingPointFields message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -3321,7 +3321,7 @@ $root.jspb = (function() {
             };
 
             /**
-             * Encodes the specified FloatingPointFields message, length delimited.
+             * Encodes the specified FloatingPointFields message, length delimited. Does not implicitly {@link jspb.test.FloatingPointFields.verify|verify} messages.
              * @param {jspb.test.FloatingPointFields|Object} message FloatingPointFields message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -3335,7 +3335,7 @@ $root.jspb = (function() {
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.FloatingPointFields} FloatingPointFields
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             FloatingPointFields.decode = function decode(reader, length) {
                 if (!(reader instanceof $Reader))
@@ -3398,7 +3398,7 @@ $root.jspb = (function() {
              * Decodes a FloatingPointFields message from the specified reader or buffer, length delimited.
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @returns {jspb.test.FloatingPointFields} FloatingPointFields
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             FloatingPointFields.decodeDelimited = function decodeDelimited(reader) {
                 if (!(reader instanceof $Reader))
@@ -3629,7 +3629,7 @@ $root.jspb = (function() {
             };
 
             /**
-             * Encodes the specified TestClone message.
+             * Encodes the specified TestClone message. Does not implicitly {@link jspb.test.TestClone.verify|verify} messages.
              * @param {jspb.test.TestClone|Object} message TestClone message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -3654,7 +3654,7 @@ $root.jspb = (function() {
             };
 
             /**
-             * Encodes the specified TestClone message, length delimited.
+             * Encodes the specified TestClone message, length delimited. Does not implicitly {@link jspb.test.TestClone.verify|verify} messages.
              * @param {jspb.test.TestClone|Object} message TestClone message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -3668,7 +3668,7 @@ $root.jspb = (function() {
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.TestClone} TestClone
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             TestClone.decode = function decode(reader, length) {
                 if (!(reader instanceof $Reader))
@@ -3709,7 +3709,7 @@ $root.jspb = (function() {
              * Decodes a TestClone message from the specified reader or buffer, length delimited.
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @returns {jspb.test.TestClone} TestClone
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             TestClone.decodeDelimited = function decodeDelimited(reader) {
                 if (!(reader instanceof $Reader))
@@ -3893,7 +3893,7 @@ $root.jspb = (function() {
             };
 
             /**
-             * Encodes the specified CloneExtension message.
+             * Encodes the specified CloneExtension message. Does not implicitly {@link jspb.test.CloneExtension.verify|verify} messages.
              * @param {jspb.test.CloneExtension|Object} message CloneExtension message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -3907,7 +3907,7 @@ $root.jspb = (function() {
             };
 
             /**
-             * Encodes the specified CloneExtension message, length delimited.
+             * Encodes the specified CloneExtension message, length delimited. Does not implicitly {@link jspb.test.CloneExtension.verify|verify} messages.
              * @param {jspb.test.CloneExtension|Object} message CloneExtension message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -3921,7 +3921,7 @@ $root.jspb = (function() {
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.CloneExtension} CloneExtension
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             CloneExtension.decode = function decode(reader, length) {
                 if (!(reader instanceof $Reader))
@@ -3945,7 +3945,7 @@ $root.jspb = (function() {
              * Decodes a CloneExtension message from the specified reader or buffer, length delimited.
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @returns {jspb.test.CloneExtension} CloneExtension
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             CloneExtension.decodeDelimited = function decodeDelimited(reader) {
                 if (!(reader instanceof $Reader))
@@ -4096,7 +4096,7 @@ $root.jspb = (function() {
             };
 
             /**
-             * Encodes the specified TestGroup message.
+             * Encodes the specified TestGroup message. Does not implicitly {@link jspb.test.TestGroup.verify|verify} messages.
              * @param {jspb.test.TestGroup|Object} message TestGroup message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -4119,7 +4119,7 @@ $root.jspb = (function() {
             };
 
             /**
-             * Encodes the specified TestGroup message, length delimited.
+             * Encodes the specified TestGroup message, length delimited. Does not implicitly {@link jspb.test.TestGroup.verify|verify} messages.
              * @param {jspb.test.TestGroup|Object} message TestGroup message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -4133,7 +4133,7 @@ $root.jspb = (function() {
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.TestGroup} TestGroup
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             TestGroup.decode = function decode(reader, length) {
                 if (!(reader instanceof $Reader))
@@ -4178,7 +4178,7 @@ $root.jspb = (function() {
              * Decodes a TestGroup message from the specified reader or buffer, length delimited.
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @returns {jspb.test.TestGroup} TestGroup
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             TestGroup.decodeDelimited = function decodeDelimited(reader) {
                 if (!(reader instanceof $Reader))
@@ -4368,7 +4368,7 @@ $root.jspb = (function() {
                 };
 
                 /**
-                 * Encodes the specified RepeatedGroup message.
+                 * Encodes the specified RepeatedGroup message. Does not implicitly {@link jspb.test.TestGroup.RepeatedGroup.verify|verify} messages.
                  * @param {jspb.test.TestGroup.RepeatedGroup|Object} message RepeatedGroup message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
@@ -4384,7 +4384,7 @@ $root.jspb = (function() {
                 };
 
                 /**
-                 * Encodes the specified RepeatedGroup message, length delimited.
+                 * Encodes the specified RepeatedGroup message, length delimited. Does not implicitly {@link jspb.test.TestGroup.RepeatedGroup.verify|verify} messages.
                  * @param {jspb.test.TestGroup.RepeatedGroup|Object} message RepeatedGroup message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
@@ -4398,7 +4398,7 @@ $root.jspb = (function() {
                  * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
                  * @param {number} [length] Message length if known beforehand
                  * @returns {jspb.test.TestGroup.RepeatedGroup} RepeatedGroup
-                 * @throws {Error} If the payload is invalid or missing required fields
+                 * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
                  */
                 RepeatedGroup.decode = function decode(reader, length) {
                     if (!(reader instanceof $Reader))
@@ -4436,7 +4436,7 @@ $root.jspb = (function() {
                  * Decodes a RepeatedGroup message from the specified reader or buffer, length delimited.
                  * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
                  * @returns {jspb.test.TestGroup.RepeatedGroup} RepeatedGroup
-                 * @throws {Error} If the payload is invalid or missing required fields
+                 * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
                  */
                 RepeatedGroup.decodeDelimited = function decodeDelimited(reader) {
                     if (!(reader instanceof $Reader))
@@ -4568,7 +4568,7 @@ $root.jspb = (function() {
                 };
 
                 /**
-                 * Encodes the specified RequiredGroup message.
+                 * Encodes the specified RequiredGroup message. Does not implicitly {@link jspb.test.TestGroup.RequiredGroup.verify|verify} messages.
                  * @param {jspb.test.TestGroup.RequiredGroup|Object} message RequiredGroup message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
@@ -4581,7 +4581,7 @@ $root.jspb = (function() {
                 };
 
                 /**
-                 * Encodes the specified RequiredGroup message, length delimited.
+                 * Encodes the specified RequiredGroup message, length delimited. Does not implicitly {@link jspb.test.TestGroup.RequiredGroup.verify|verify} messages.
                  * @param {jspb.test.TestGroup.RequiredGroup|Object} message RequiredGroup message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
@@ -4595,7 +4595,7 @@ $root.jspb = (function() {
                  * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
                  * @param {number} [length] Message length if known beforehand
                  * @returns {jspb.test.TestGroup.RequiredGroup} RequiredGroup
-                 * @throws {Error} If the payload is invalid or missing required fields
+                 * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
                  */
                 RequiredGroup.decode = function decode(reader, length) {
                     if (!(reader instanceof $Reader))
@@ -4623,7 +4623,7 @@ $root.jspb = (function() {
                  * Decodes a RequiredGroup message from the specified reader or buffer, length delimited.
                  * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
                  * @returns {jspb.test.TestGroup.RequiredGroup} RequiredGroup
-                 * @throws {Error} If the payload is invalid or missing required fields
+                 * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
                  */
                 RequiredGroup.decodeDelimited = function decodeDelimited(reader) {
                     if (!(reader instanceof $Reader))
@@ -4734,7 +4734,7 @@ $root.jspb = (function() {
                 };
 
                 /**
-                 * Encodes the specified OptionalGroup message.
+                 * Encodes the specified OptionalGroup message. Does not implicitly {@link jspb.test.TestGroup.OptionalGroup.verify|verify} messages.
                  * @param {jspb.test.TestGroup.OptionalGroup|Object} message OptionalGroup message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
@@ -4747,7 +4747,7 @@ $root.jspb = (function() {
                 };
 
                 /**
-                 * Encodes the specified OptionalGroup message, length delimited.
+                 * Encodes the specified OptionalGroup message, length delimited. Does not implicitly {@link jspb.test.TestGroup.OptionalGroup.verify|verify} messages.
                  * @param {jspb.test.TestGroup.OptionalGroup|Object} message OptionalGroup message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
@@ -4761,7 +4761,7 @@ $root.jspb = (function() {
                  * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
                  * @param {number} [length] Message length if known beforehand
                  * @returns {jspb.test.TestGroup.OptionalGroup} OptionalGroup
-                 * @throws {Error} If the payload is invalid or missing required fields
+                 * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
                  */
                 OptionalGroup.decode = function decode(reader, length) {
                     if (!(reader instanceof $Reader))
@@ -4789,7 +4789,7 @@ $root.jspb = (function() {
                  * Decodes an OptionalGroup message from the specified reader or buffer, length delimited.
                  * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
                  * @returns {jspb.test.TestGroup.OptionalGroup} OptionalGroup
-                 * @throws {Error} If the payload is invalid or missing required fields
+                 * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
                  */
                 OptionalGroup.decodeDelimited = function decodeDelimited(reader) {
                     if (!(reader instanceof $Reader))
@@ -4908,7 +4908,7 @@ $root.jspb = (function() {
             };
 
             /**
-             * Encodes the specified TestGroup1 message.
+             * Encodes the specified TestGroup1 message. Does not implicitly {@link jspb.test.TestGroup1.verify|verify} messages.
              * @param {jspb.test.TestGroup1|Object} message TestGroup1 message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -4922,7 +4922,7 @@ $root.jspb = (function() {
             };
 
             /**
-             * Encodes the specified TestGroup1 message, length delimited.
+             * Encodes the specified TestGroup1 message, length delimited. Does not implicitly {@link jspb.test.TestGroup1.verify|verify} messages.
              * @param {jspb.test.TestGroup1|Object} message TestGroup1 message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -4936,7 +4936,7 @@ $root.jspb = (function() {
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.TestGroup1} TestGroup1
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             TestGroup1.decode = function decode(reader, length) {
                 if (!(reader instanceof $Reader))
@@ -4960,7 +4960,7 @@ $root.jspb = (function() {
              * Decodes a TestGroup1 message from the specified reader or buffer, length delimited.
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @returns {jspb.test.TestGroup1} TestGroup1
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             TestGroup1.decodeDelimited = function decodeDelimited(reader) {
                 if (!(reader instanceof $Reader))
@@ -5084,7 +5084,7 @@ $root.jspb = (function() {
             };
 
             /**
-             * Encodes the specified TestReservedNames message.
+             * Encodes the specified TestReservedNames message. Does not implicitly {@link jspb.test.TestReservedNames.verify|verify} messages.
              * @param {jspb.test.TestReservedNames|Object} message TestReservedNames message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -5100,7 +5100,7 @@ $root.jspb = (function() {
             };
 
             /**
-             * Encodes the specified TestReservedNames message, length delimited.
+             * Encodes the specified TestReservedNames message, length delimited. Does not implicitly {@link jspb.test.TestReservedNames.verify|verify} messages.
              * @param {jspb.test.TestReservedNames|Object} message TestReservedNames message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -5114,7 +5114,7 @@ $root.jspb = (function() {
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.TestReservedNames} TestReservedNames
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             TestReservedNames.decode = function decode(reader, length) {
                 if (!(reader instanceof $Reader))
@@ -5141,7 +5141,7 @@ $root.jspb = (function() {
              * Decodes a TestReservedNames message from the specified reader or buffer, length delimited.
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @returns {jspb.test.TestReservedNames} TestReservedNames
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             TestReservedNames.decodeDelimited = function decodeDelimited(reader) {
                 if (!(reader instanceof $Reader))
@@ -5256,7 +5256,7 @@ $root.jspb = (function() {
             };
 
             /**
-             * Encodes the specified TestReservedNamesExtension message.
+             * Encodes the specified TestReservedNamesExtension message. Does not implicitly {@link jspb.test.TestReservedNamesExtension.verify|verify} messages.
              * @param {jspb.test.TestReservedNamesExtension|Object} message TestReservedNamesExtension message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -5268,7 +5268,7 @@ $root.jspb = (function() {
             };
 
             /**
-             * Encodes the specified TestReservedNamesExtension message, length delimited.
+             * Encodes the specified TestReservedNamesExtension message, length delimited. Does not implicitly {@link jspb.test.TestReservedNamesExtension.verify|verify} messages.
              * @param {jspb.test.TestReservedNamesExtension|Object} message TestReservedNamesExtension message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -5282,7 +5282,7 @@ $root.jspb = (function() {
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.TestReservedNamesExtension} TestReservedNamesExtension
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             TestReservedNamesExtension.decode = function decode(reader, length) {
                 if (!(reader instanceof $Reader))
@@ -5303,7 +5303,7 @@ $root.jspb = (function() {
              * Decodes a TestReservedNamesExtension message from the specified reader or buffer, length delimited.
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @returns {jspb.test.TestReservedNamesExtension} TestReservedNamesExtension
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             TestReservedNamesExtension.decodeDelimited = function decodeDelimited(reader) {
                 if (!(reader instanceof $Reader))
@@ -5504,7 +5504,7 @@ $root.jspb = (function() {
             };
 
             /**
-             * Encodes the specified TestMessageWithOneof message.
+             * Encodes the specified TestMessageWithOneof message. Does not implicitly {@link jspb.test.TestMessageWithOneof.verify|verify} messages.
              * @param {jspb.test.TestMessageWithOneof|Object} message TestMessageWithOneof message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -5553,7 +5553,7 @@ $root.jspb = (function() {
             };
 
             /**
-             * Encodes the specified TestMessageWithOneof message, length delimited.
+             * Encodes the specified TestMessageWithOneof message, length delimited. Does not implicitly {@link jspb.test.TestMessageWithOneof.verify|verify} messages.
              * @param {jspb.test.TestMessageWithOneof|Object} message TestMessageWithOneof message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -5567,7 +5567,7 @@ $root.jspb = (function() {
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.TestMessageWithOneof} TestMessageWithOneof
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             TestMessageWithOneof.decode = function decode(reader, length) {
                 if (!(reader instanceof $Reader))
@@ -5620,7 +5620,7 @@ $root.jspb = (function() {
              * Decodes a TestMessageWithOneof message from the specified reader or buffer, length delimited.
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @returns {jspb.test.TestMessageWithOneof} TestMessageWithOneof
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             TestMessageWithOneof.decodeDelimited = function decodeDelimited(reader) {
                 if (!(reader instanceof $Reader))
@@ -5829,7 +5829,7 @@ $root.jspb = (function() {
             };
 
             /**
-             * Encodes the specified TestEndsWithBytes message.
+             * Encodes the specified TestEndsWithBytes message. Does not implicitly {@link jspb.test.TestEndsWithBytes.verify|verify} messages.
              * @param {jspb.test.TestEndsWithBytes|Object} message TestEndsWithBytes message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -5845,7 +5845,7 @@ $root.jspb = (function() {
             };
 
             /**
-             * Encodes the specified TestEndsWithBytes message, length delimited.
+             * Encodes the specified TestEndsWithBytes message, length delimited. Does not implicitly {@link jspb.test.TestEndsWithBytes.verify|verify} messages.
              * @param {jspb.test.TestEndsWithBytes|Object} message TestEndsWithBytes message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -5859,7 +5859,7 @@ $root.jspb = (function() {
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.TestEndsWithBytes} TestEndsWithBytes
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             TestEndsWithBytes.decode = function decode(reader, length) {
                 if (!(reader instanceof $Reader))
@@ -5886,7 +5886,7 @@ $root.jspb = (function() {
              * Decodes a TestEndsWithBytes message from the specified reader or buffer, length delimited.
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @returns {jspb.test.TestEndsWithBytes} TestEndsWithBytes
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             TestEndsWithBytes.decodeDelimited = function decodeDelimited(reader) {
                 if (!(reader instanceof $Reader))
@@ -6084,7 +6084,7 @@ $root.jspb = (function() {
             };
 
             /**
-             * Encodes the specified TestMapFieldsNoBinary message.
+             * Encodes the specified TestMapFieldsNoBinary message. Does not implicitly {@link jspb.test.TestMapFieldsNoBinary.verify|verify} messages.
              * @param {jspb.test.TestMapFieldsNoBinary|Object} message TestMapFieldsNoBinary message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -6135,7 +6135,7 @@ $root.jspb = (function() {
             };
 
             /**
-             * Encodes the specified TestMapFieldsNoBinary message, length delimited.
+             * Encodes the specified TestMapFieldsNoBinary message, length delimited. Does not implicitly {@link jspb.test.TestMapFieldsNoBinary.verify|verify} messages.
              * @param {jspb.test.TestMapFieldsNoBinary|Object} message TestMapFieldsNoBinary message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -6149,7 +6149,7 @@ $root.jspb = (function() {
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.TestMapFieldsNoBinary} TestMapFieldsNoBinary
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             TestMapFieldsNoBinary.decode = function decode(reader, length) {
                 if (!(reader instanceof $Reader))
@@ -6261,7 +6261,7 @@ $root.jspb = (function() {
              * Decodes a TestMapFieldsNoBinary message from the specified reader or buffer, length delimited.
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @returns {jspb.test.TestMapFieldsNoBinary} TestMapFieldsNoBinary
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             TestMapFieldsNoBinary.decodeDelimited = function decodeDelimited(reader) {
                 if (!(reader instanceof $Reader))
@@ -6676,7 +6676,7 @@ $root.jspb = (function() {
             };
 
             /**
-             * Encodes the specified MapValueMessageNoBinary message.
+             * Encodes the specified MapValueMessageNoBinary message. Does not implicitly {@link jspb.test.MapValueMessageNoBinary.verify|verify} messages.
              * @param {jspb.test.MapValueMessageNoBinary|Object} message MapValueMessageNoBinary message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -6690,7 +6690,7 @@ $root.jspb = (function() {
             };
 
             /**
-             * Encodes the specified MapValueMessageNoBinary message, length delimited.
+             * Encodes the specified MapValueMessageNoBinary message, length delimited. Does not implicitly {@link jspb.test.MapValueMessageNoBinary.verify|verify} messages.
              * @param {jspb.test.MapValueMessageNoBinary|Object} message MapValueMessageNoBinary message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -6704,7 +6704,7 @@ $root.jspb = (function() {
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.MapValueMessageNoBinary} MapValueMessageNoBinary
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             MapValueMessageNoBinary.decode = function decode(reader, length) {
                 if (!(reader instanceof $Reader))
@@ -6728,7 +6728,7 @@ $root.jspb = (function() {
              * Decodes a MapValueMessageNoBinary message from the specified reader or buffer, length delimited.
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @returns {jspb.test.MapValueMessageNoBinary} MapValueMessageNoBinary
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             MapValueMessageNoBinary.decodeDelimited = function decodeDelimited(reader) {
                 if (!(reader instanceof $Reader))
@@ -6834,7 +6834,7 @@ $root.jspb = (function() {
             };
 
             /**
-             * Encodes the specified Deeply message.
+             * Encodes the specified Deeply message. Does not implicitly {@link jspb.test.Deeply.verify|verify} messages.
              * @param {jspb.test.Deeply|Object} message Deeply message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -6846,7 +6846,7 @@ $root.jspb = (function() {
             };
 
             /**
-             * Encodes the specified Deeply message, length delimited.
+             * Encodes the specified Deeply message, length delimited. Does not implicitly {@link jspb.test.Deeply.verify|verify} messages.
              * @param {jspb.test.Deeply|Object} message Deeply message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -6860,7 +6860,7 @@ $root.jspb = (function() {
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.Deeply} Deeply
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             Deeply.decode = function decode(reader, length) {
                 if (!(reader instanceof $Reader))
@@ -6881,7 +6881,7 @@ $root.jspb = (function() {
              * Decodes a Deeply message from the specified reader or buffer, length delimited.
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @returns {jspb.test.Deeply} Deeply
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             Deeply.decodeDelimited = function decodeDelimited(reader) {
                 if (!(reader instanceof $Reader))
@@ -6971,7 +6971,7 @@ $root.jspb = (function() {
                 };
 
                 /**
-                 * Encodes the specified Nested message.
+                 * Encodes the specified Nested message. Does not implicitly {@link jspb.test.Deeply.Nested.verify|verify} messages.
                  * @param {jspb.test.Deeply.Nested|Object} message Nested message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
@@ -6983,7 +6983,7 @@ $root.jspb = (function() {
                 };
 
                 /**
-                 * Encodes the specified Nested message, length delimited.
+                 * Encodes the specified Nested message, length delimited. Does not implicitly {@link jspb.test.Deeply.Nested.verify|verify} messages.
                  * @param {jspb.test.Deeply.Nested|Object} message Nested message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
@@ -6997,7 +6997,7 @@ $root.jspb = (function() {
                  * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
                  * @param {number} [length] Message length if known beforehand
                  * @returns {jspb.test.Deeply.Nested} Nested
-                 * @throws {Error} If the payload is invalid or missing required fields
+                 * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
                  */
                 Nested.decode = function decode(reader, length) {
                     if (!(reader instanceof $Reader))
@@ -7018,7 +7018,7 @@ $root.jspb = (function() {
                  * Decodes a Nested message from the specified reader or buffer, length delimited.
                  * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
                  * @returns {jspb.test.Deeply.Nested} Nested
-                 * @throws {Error} If the payload is invalid or missing required fields
+                 * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
                  */
                 Nested.decodeDelimited = function decodeDelimited(reader) {
                     if (!(reader instanceof $Reader))
@@ -7114,7 +7114,7 @@ $root.jspb = (function() {
                     };
 
                     /**
-                     * Encodes the specified Message message.
+                     * Encodes the specified Message message. Does not implicitly {@link jspb.test.Deeply.Nested.Message.verify|verify} messages.
                      * @param {jspb.test.Deeply.Nested.Message|Object} message Message message or plain object to encode
                      * @param {$protobuf.Writer} [writer] Writer to encode to
                      * @returns {$protobuf.Writer} Writer
@@ -7128,7 +7128,7 @@ $root.jspb = (function() {
                     };
 
                     /**
-                     * Encodes the specified Message message, length delimited.
+                     * Encodes the specified Message message, length delimited. Does not implicitly {@link jspb.test.Deeply.Nested.Message.verify|verify} messages.
                      * @param {jspb.test.Deeply.Nested.Message|Object} message Message message or plain object to encode
                      * @param {$protobuf.Writer} [writer] Writer to encode to
                      * @returns {$protobuf.Writer} Writer
@@ -7142,7 +7142,7 @@ $root.jspb = (function() {
                      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
                      * @param {number} [length] Message length if known beforehand
                      * @returns {jspb.test.Deeply.Nested.Message} Message
-                     * @throws {Error} If the payload is invalid or missing required fields
+                     * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
                      */
                     Message.decode = function decode(reader, length) {
                         if (!(reader instanceof $Reader))
@@ -7166,7 +7166,7 @@ $root.jspb = (function() {
                      * Decodes a Message message from the specified reader or buffer, length delimited.
                      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
                      * @returns {jspb.test.Deeply.Nested.Message} Message
-                     * @throws {Error} If the payload is invalid or missing required fields
+                     * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
                      */
                     Message.decodeDelimited = function decodeDelimited(reader) {
                         if (!(reader instanceof $Reader))
@@ -7313,7 +7313,7 @@ $root.google = (function() {
             };
 
             /**
-             * Encodes the specified FileDescriptorSet message.
+             * Encodes the specified FileDescriptorSet message. Does not implicitly {@link google.protobuf.FileDescriptorSet.verify|verify} messages.
              * @param {google.protobuf.FileDescriptorSet|Object} message FileDescriptorSet message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -7328,7 +7328,7 @@ $root.google = (function() {
             };
 
             /**
-             * Encodes the specified FileDescriptorSet message, length delimited.
+             * Encodes the specified FileDescriptorSet message, length delimited. Does not implicitly {@link google.protobuf.FileDescriptorSet.verify|verify} messages.
              * @param {google.protobuf.FileDescriptorSet|Object} message FileDescriptorSet message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -7342,7 +7342,7 @@ $root.google = (function() {
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.FileDescriptorSet} FileDescriptorSet
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             FileDescriptorSet.decode = function decode(reader, length) {
                 if (!(reader instanceof $Reader))
@@ -7368,7 +7368,7 @@ $root.google = (function() {
              * Decodes a FileDescriptorSet message from the specified reader or buffer, length delimited.
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @returns {google.protobuf.FileDescriptorSet} FileDescriptorSet
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             FileDescriptorSet.decodeDelimited = function decodeDelimited(reader) {
                 if (!(reader instanceof $Reader))
@@ -7574,7 +7574,7 @@ $root.google = (function() {
             };
 
             /**
-             * Encodes the specified FileDescriptorProto message.
+             * Encodes the specified FileDescriptorProto message. Does not implicitly {@link google.protobuf.FileDescriptorProto.verify|verify} messages.
              * @param {google.protobuf.FileDescriptorProto|Object} message FileDescriptorProto message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -7617,7 +7617,7 @@ $root.google = (function() {
             };
 
             /**
-             * Encodes the specified FileDescriptorProto message, length delimited.
+             * Encodes the specified FileDescriptorProto message, length delimited. Does not implicitly {@link google.protobuf.FileDescriptorProto.verify|verify} messages.
              * @param {google.protobuf.FileDescriptorProto|Object} message FileDescriptorProto message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -7631,7 +7631,7 @@ $root.google = (function() {
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.FileDescriptorProto} FileDescriptorProto
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             FileDescriptorProto.decode = function decode(reader, length) {
                 if (!(reader instanceof $Reader))
@@ -7712,7 +7712,7 @@ $root.google = (function() {
              * Decodes a FileDescriptorProto message from the specified reader or buffer, length delimited.
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @returns {google.protobuf.FileDescriptorProto} FileDescriptorProto
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             FileDescriptorProto.decodeDelimited = function decodeDelimited(reader) {
                 if (!(reader instanceof $Reader))
@@ -8095,7 +8095,7 @@ $root.google = (function() {
             };
 
             /**
-             * Encodes the specified DescriptorProto message.
+             * Encodes the specified DescriptorProto message. Does not implicitly {@link google.protobuf.DescriptorProto.verify|verify} messages.
              * @param {google.protobuf.DescriptorProto|Object} message DescriptorProto message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -8135,7 +8135,7 @@ $root.google = (function() {
             };
 
             /**
-             * Encodes the specified DescriptorProto message, length delimited.
+             * Encodes the specified DescriptorProto message, length delimited. Does not implicitly {@link google.protobuf.DescriptorProto.verify|verify} messages.
              * @param {google.protobuf.DescriptorProto|Object} message DescriptorProto message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -8149,7 +8149,7 @@ $root.google = (function() {
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.DescriptorProto} DescriptorProto
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             DescriptorProto.decode = function decode(reader, length) {
                 if (!(reader instanceof $Reader))
@@ -8216,7 +8216,7 @@ $root.google = (function() {
              * Decodes a DescriptorProto message from the specified reader or buffer, length delimited.
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @returns {google.protobuf.DescriptorProto} DescriptorProto
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             DescriptorProto.decodeDelimited = function decodeDelimited(reader) {
                 if (!(reader instanceof $Reader))
@@ -8542,7 +8542,7 @@ $root.google = (function() {
                 };
 
                 /**
-                 * Encodes the specified ExtensionRange message.
+                 * Encodes the specified ExtensionRange message. Does not implicitly {@link google.protobuf.DescriptorProto.ExtensionRange.verify|verify} messages.
                  * @param {google.protobuf.DescriptorProto.ExtensionRange|Object} message ExtensionRange message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
@@ -8558,7 +8558,7 @@ $root.google = (function() {
                 };
 
                 /**
-                 * Encodes the specified ExtensionRange message, length delimited.
+                 * Encodes the specified ExtensionRange message, length delimited. Does not implicitly {@link google.protobuf.DescriptorProto.ExtensionRange.verify|verify} messages.
                  * @param {google.protobuf.DescriptorProto.ExtensionRange|Object} message ExtensionRange message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
@@ -8572,7 +8572,7 @@ $root.google = (function() {
                  * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
                  * @param {number} [length] Message length if known beforehand
                  * @returns {google.protobuf.DescriptorProto.ExtensionRange} ExtensionRange
-                 * @throws {Error} If the payload is invalid or missing required fields
+                 * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
                  */
                 ExtensionRange.decode = function decode(reader, length) {
                     if (!(reader instanceof $Reader))
@@ -8599,7 +8599,7 @@ $root.google = (function() {
                  * Decodes an ExtensionRange message from the specified reader or buffer, length delimited.
                  * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
                  * @returns {google.protobuf.DescriptorProto.ExtensionRange} ExtensionRange
-                 * @throws {Error} If the payload is invalid or missing required fields
+                 * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
                  */
                 ExtensionRange.decodeDelimited = function decodeDelimited(reader) {
                     if (!(reader instanceof $Reader))
@@ -8726,7 +8726,7 @@ $root.google = (function() {
                 };
 
                 /**
-                 * Encodes the specified ReservedRange message.
+                 * Encodes the specified ReservedRange message. Does not implicitly {@link google.protobuf.DescriptorProto.ReservedRange.verify|verify} messages.
                  * @param {google.protobuf.DescriptorProto.ReservedRange|Object} message ReservedRange message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
@@ -8742,7 +8742,7 @@ $root.google = (function() {
                 };
 
                 /**
-                 * Encodes the specified ReservedRange message, length delimited.
+                 * Encodes the specified ReservedRange message, length delimited. Does not implicitly {@link google.protobuf.DescriptorProto.ReservedRange.verify|verify} messages.
                  * @param {google.protobuf.DescriptorProto.ReservedRange|Object} message ReservedRange message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
@@ -8756,7 +8756,7 @@ $root.google = (function() {
                  * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
                  * @param {number} [length] Message length if known beforehand
                  * @returns {google.protobuf.DescriptorProto.ReservedRange} ReservedRange
-                 * @throws {Error} If the payload is invalid or missing required fields
+                 * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
                  */
                 ReservedRange.decode = function decode(reader, length) {
                     if (!(reader instanceof $Reader))
@@ -8783,7 +8783,7 @@ $root.google = (function() {
                  * Decodes a ReservedRange message from the specified reader or buffer, length delimited.
                  * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
                  * @returns {google.protobuf.DescriptorProto.ReservedRange} ReservedRange
-                 * @throws {Error} If the payload is invalid or missing required fields
+                 * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
                  */
                 ReservedRange.decodeDelimited = function decodeDelimited(reader) {
                     if (!(reader instanceof $Reader))
@@ -8968,7 +8968,7 @@ $root.google = (function() {
             };
 
             /**
-             * Encodes the specified FieldDescriptorProto message.
+             * Encodes the specified FieldDescriptorProto message. Does not implicitly {@link google.protobuf.FieldDescriptorProto.verify|verify} messages.
              * @param {google.protobuf.FieldDescriptorProto|Object} message FieldDescriptorProto message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -9000,7 +9000,7 @@ $root.google = (function() {
             };
 
             /**
-             * Encodes the specified FieldDescriptorProto message, length delimited.
+             * Encodes the specified FieldDescriptorProto message, length delimited. Does not implicitly {@link google.protobuf.FieldDescriptorProto.verify|verify} messages.
              * @param {google.protobuf.FieldDescriptorProto|Object} message FieldDescriptorProto message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -9014,7 +9014,7 @@ $root.google = (function() {
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.FieldDescriptorProto} FieldDescriptorProto
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             FieldDescriptorProto.decode = function decode(reader, length) {
                 if (!(reader instanceof $Reader))
@@ -9065,7 +9065,7 @@ $root.google = (function() {
              * Decodes a FieldDescriptorProto message from the specified reader or buffer, length delimited.
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @returns {google.protobuf.FieldDescriptorProto} FieldDescriptorProto
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             FieldDescriptorProto.decodeDelimited = function decodeDelimited(reader) {
                 if (!(reader instanceof $Reader))
@@ -9441,7 +9441,7 @@ $root.google = (function() {
             };
 
             /**
-             * Encodes the specified OneofDescriptorProto message.
+             * Encodes the specified OneofDescriptorProto message. Does not implicitly {@link google.protobuf.OneofDescriptorProto.verify|verify} messages.
              * @param {google.protobuf.OneofDescriptorProto|Object} message OneofDescriptorProto message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -9457,7 +9457,7 @@ $root.google = (function() {
             };
 
             /**
-             * Encodes the specified OneofDescriptorProto message, length delimited.
+             * Encodes the specified OneofDescriptorProto message, length delimited. Does not implicitly {@link google.protobuf.OneofDescriptorProto.verify|verify} messages.
              * @param {google.protobuf.OneofDescriptorProto|Object} message OneofDescriptorProto message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -9471,7 +9471,7 @@ $root.google = (function() {
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.OneofDescriptorProto} OneofDescriptorProto
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             OneofDescriptorProto.decode = function decode(reader, length) {
                 if (!(reader instanceof $Reader))
@@ -9498,7 +9498,7 @@ $root.google = (function() {
              * Decodes an OneofDescriptorProto message from the specified reader or buffer, length delimited.
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @returns {google.protobuf.OneofDescriptorProto} OneofDescriptorProto
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             OneofDescriptorProto.decodeDelimited = function decodeDelimited(reader) {
                 if (!(reader instanceof $Reader))
@@ -9642,7 +9642,7 @@ $root.google = (function() {
             };
 
             /**
-             * Encodes the specified EnumDescriptorProto message.
+             * Encodes the specified EnumDescriptorProto message. Does not implicitly {@link google.protobuf.EnumDescriptorProto.verify|verify} messages.
              * @param {google.protobuf.EnumDescriptorProto|Object} message EnumDescriptorProto message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -9661,7 +9661,7 @@ $root.google = (function() {
             };
 
             /**
-             * Encodes the specified EnumDescriptorProto message, length delimited.
+             * Encodes the specified EnumDescriptorProto message, length delimited. Does not implicitly {@link google.protobuf.EnumDescriptorProto.verify|verify} messages.
              * @param {google.protobuf.EnumDescriptorProto|Object} message EnumDescriptorProto message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -9675,7 +9675,7 @@ $root.google = (function() {
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.EnumDescriptorProto} EnumDescriptorProto
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             EnumDescriptorProto.decode = function decode(reader, length) {
                 if (!(reader instanceof $Reader))
@@ -9707,7 +9707,7 @@ $root.google = (function() {
              * Decodes an EnumDescriptorProto message from the specified reader or buffer, length delimited.
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @returns {google.protobuf.EnumDescriptorProto} EnumDescriptorProto
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             EnumDescriptorProto.decodeDelimited = function decodeDelimited(reader) {
                 if (!(reader instanceof $Reader))
@@ -9876,7 +9876,7 @@ $root.google = (function() {
             };
 
             /**
-             * Encodes the specified EnumValueDescriptorProto message.
+             * Encodes the specified EnumValueDescriptorProto message. Does not implicitly {@link google.protobuf.EnumValueDescriptorProto.verify|verify} messages.
              * @param {google.protobuf.EnumValueDescriptorProto|Object} message EnumValueDescriptorProto message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -9894,7 +9894,7 @@ $root.google = (function() {
             };
 
             /**
-             * Encodes the specified EnumValueDescriptorProto message, length delimited.
+             * Encodes the specified EnumValueDescriptorProto message, length delimited. Does not implicitly {@link google.protobuf.EnumValueDescriptorProto.verify|verify} messages.
              * @param {google.protobuf.EnumValueDescriptorProto|Object} message EnumValueDescriptorProto message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -9908,7 +9908,7 @@ $root.google = (function() {
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.EnumValueDescriptorProto} EnumValueDescriptorProto
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             EnumValueDescriptorProto.decode = function decode(reader, length) {
                 if (!(reader instanceof $Reader))
@@ -9938,7 +9938,7 @@ $root.google = (function() {
              * Decodes an EnumValueDescriptorProto message from the specified reader or buffer, length delimited.
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @returns {google.protobuf.EnumValueDescriptorProto} EnumValueDescriptorProto
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             EnumValueDescriptorProto.decodeDelimited = function decodeDelimited(reader) {
                 if (!(reader instanceof $Reader))
@@ -10090,7 +10090,7 @@ $root.google = (function() {
             };
 
             /**
-             * Encodes the specified ServiceDescriptorProto message.
+             * Encodes the specified ServiceDescriptorProto message. Does not implicitly {@link google.protobuf.ServiceDescriptorProto.verify|verify} messages.
              * @param {google.protobuf.ServiceDescriptorProto|Object} message ServiceDescriptorProto message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -10109,7 +10109,7 @@ $root.google = (function() {
             };
 
             /**
-             * Encodes the specified ServiceDescriptorProto message, length delimited.
+             * Encodes the specified ServiceDescriptorProto message, length delimited. Does not implicitly {@link google.protobuf.ServiceDescriptorProto.verify|verify} messages.
              * @param {google.protobuf.ServiceDescriptorProto|Object} message ServiceDescriptorProto message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -10123,7 +10123,7 @@ $root.google = (function() {
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.ServiceDescriptorProto} ServiceDescriptorProto
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             ServiceDescriptorProto.decode = function decode(reader, length) {
                 if (!(reader instanceof $Reader))
@@ -10155,7 +10155,7 @@ $root.google = (function() {
              * Decodes a ServiceDescriptorProto message from the specified reader or buffer, length delimited.
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @returns {google.protobuf.ServiceDescriptorProto} ServiceDescriptorProto
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             ServiceDescriptorProto.decodeDelimited = function decodeDelimited(reader) {
                 if (!(reader instanceof $Reader))
@@ -10342,7 +10342,7 @@ $root.google = (function() {
             };
 
             /**
-             * Encodes the specified MethodDescriptorProto message.
+             * Encodes the specified MethodDescriptorProto message. Does not implicitly {@link google.protobuf.MethodDescriptorProto.verify|verify} messages.
              * @param {google.protobuf.MethodDescriptorProto|Object} message MethodDescriptorProto message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -10366,7 +10366,7 @@ $root.google = (function() {
             };
 
             /**
-             * Encodes the specified MethodDescriptorProto message, length delimited.
+             * Encodes the specified MethodDescriptorProto message, length delimited. Does not implicitly {@link google.protobuf.MethodDescriptorProto.verify|verify} messages.
              * @param {google.protobuf.MethodDescriptorProto|Object} message MethodDescriptorProto message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -10380,7 +10380,7 @@ $root.google = (function() {
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.MethodDescriptorProto} MethodDescriptorProto
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             MethodDescriptorProto.decode = function decode(reader, length) {
                 if (!(reader instanceof $Reader))
@@ -10419,7 +10419,7 @@ $root.google = (function() {
              * Decodes a MethodDescriptorProto message from the specified reader or buffer, length delimited.
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @returns {google.protobuf.MethodDescriptorProto} MethodDescriptorProto
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             MethodDescriptorProto.decodeDelimited = function decodeDelimited(reader) {
                 if (!(reader instanceof $Reader))
@@ -10667,7 +10667,7 @@ $root.google = (function() {
             };
 
             /**
-             * Encodes the specified FileOptions message.
+             * Encodes the specified FileOptions message. Does not implicitly {@link google.protobuf.FileOptions.verify|verify} messages.
              * @param {google.protobuf.FileOptions|Object} message FileOptions message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -10710,7 +10710,7 @@ $root.google = (function() {
             };
 
             /**
-             * Encodes the specified FileOptions message, length delimited.
+             * Encodes the specified FileOptions message, length delimited. Does not implicitly {@link google.protobuf.FileOptions.verify|verify} messages.
              * @param {google.protobuf.FileOptions|Object} message FileOptions message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -10724,7 +10724,7 @@ $root.google = (function() {
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.FileOptions} FileOptions
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             FileOptions.decode = function decode(reader, length) {
                 if (!(reader instanceof $Reader))
@@ -10792,7 +10792,7 @@ $root.google = (function() {
              * Decodes a FileOptions message from the specified reader or buffer, length delimited.
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @returns {google.protobuf.FileOptions} FileOptions
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             FileOptions.decodeDelimited = function decodeDelimited(reader) {
                 if (!(reader instanceof $Reader))
@@ -11099,7 +11099,7 @@ $root.google = (function() {
             };
 
             /**
-             * Encodes the specified MessageOptions message.
+             * Encodes the specified MessageOptions message. Does not implicitly {@link google.protobuf.MessageOptions.verify|verify} messages.
              * @param {google.protobuf.MessageOptions|Object} message MessageOptions message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -11122,7 +11122,7 @@ $root.google = (function() {
             };
 
             /**
-             * Encodes the specified MessageOptions message, length delimited.
+             * Encodes the specified MessageOptions message, length delimited. Does not implicitly {@link google.protobuf.MessageOptions.verify|verify} messages.
              * @param {google.protobuf.MessageOptions|Object} message MessageOptions message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -11136,7 +11136,7 @@ $root.google = (function() {
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.MessageOptions} MessageOptions
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             MessageOptions.decode = function decode(reader, length) {
                 if (!(reader instanceof $Reader))
@@ -11174,7 +11174,7 @@ $root.google = (function() {
              * Decodes a MessageOptions message from the specified reader or buffer, length delimited.
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @returns {google.protobuf.MessageOptions} MessageOptions
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             MessageOptions.decodeDelimited = function decodeDelimited(reader) {
                 if (!(reader instanceof $Reader))
@@ -11380,7 +11380,7 @@ $root.google = (function() {
             };
 
             /**
-             * Encodes the specified FieldOptions message.
+             * Encodes the specified FieldOptions message. Does not implicitly {@link google.protobuf.FieldOptions.verify|verify} messages.
              * @param {google.protobuf.FieldOptions|Object} message FieldOptions message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -11407,7 +11407,7 @@ $root.google = (function() {
             };
 
             /**
-             * Encodes the specified FieldOptions message, length delimited.
+             * Encodes the specified FieldOptions message, length delimited. Does not implicitly {@link google.protobuf.FieldOptions.verify|verify} messages.
              * @param {google.protobuf.FieldOptions|Object} message FieldOptions message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -11421,7 +11421,7 @@ $root.google = (function() {
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.FieldOptions} FieldOptions
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             FieldOptions.decode = function decode(reader, length) {
                 if (!(reader instanceof $Reader))
@@ -11465,7 +11465,7 @@ $root.google = (function() {
              * Decodes a FieldOptions message from the specified reader or buffer, length delimited.
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @returns {google.protobuf.FieldOptions} FieldOptions
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             FieldOptions.decodeDelimited = function decodeDelimited(reader) {
                 if (!(reader instanceof $Reader))
@@ -11719,7 +11719,7 @@ $root.google = (function() {
             };
 
             /**
-             * Encodes the specified OneofOptions message.
+             * Encodes the specified OneofOptions message. Does not implicitly {@link google.protobuf.OneofOptions.verify|verify} messages.
              * @param {google.protobuf.OneofOptions|Object} message OneofOptions message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -11734,7 +11734,7 @@ $root.google = (function() {
             };
 
             /**
-             * Encodes the specified OneofOptions message, length delimited.
+             * Encodes the specified OneofOptions message, length delimited. Does not implicitly {@link google.protobuf.OneofOptions.verify|verify} messages.
              * @param {google.protobuf.OneofOptions|Object} message OneofOptions message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -11748,7 +11748,7 @@ $root.google = (function() {
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.OneofOptions} OneofOptions
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             OneofOptions.decode = function decode(reader, length) {
                 if (!(reader instanceof $Reader))
@@ -11774,7 +11774,7 @@ $root.google = (function() {
              * Decodes an OneofOptions message from the specified reader or buffer, length delimited.
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @returns {google.protobuf.OneofOptions} OneofOptions
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             OneofOptions.decodeDelimited = function decodeDelimited(reader) {
                 if (!(reader instanceof $Reader))
@@ -11927,7 +11927,7 @@ $root.google = (function() {
             };
 
             /**
-             * Encodes the specified EnumOptions message.
+             * Encodes the specified EnumOptions message. Does not implicitly {@link google.protobuf.EnumOptions.verify|verify} messages.
              * @param {google.protobuf.EnumOptions|Object} message EnumOptions message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -11948,7 +11948,7 @@ $root.google = (function() {
             };
 
             /**
-             * Encodes the specified EnumOptions message, length delimited.
+             * Encodes the specified EnumOptions message, length delimited. Does not implicitly {@link google.protobuf.EnumOptions.verify|verify} messages.
              * @param {google.protobuf.EnumOptions|Object} message EnumOptions message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -11962,7 +11962,7 @@ $root.google = (function() {
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.EnumOptions} EnumOptions
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             EnumOptions.decode = function decode(reader, length) {
                 if (!(reader instanceof $Reader))
@@ -11997,7 +11997,7 @@ $root.google = (function() {
              * Decodes an EnumOptions message from the specified reader or buffer, length delimited.
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @returns {google.protobuf.EnumOptions} EnumOptions
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             EnumOptions.decodeDelimited = function decodeDelimited(reader) {
                 if (!(reader instanceof $Reader))
@@ -12163,7 +12163,7 @@ $root.google = (function() {
             };
 
             /**
-             * Encodes the specified EnumValueOptions message.
+             * Encodes the specified EnumValueOptions message. Does not implicitly {@link google.protobuf.EnumValueOptions.verify|verify} messages.
              * @param {google.protobuf.EnumValueOptions|Object} message EnumValueOptions message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -12180,7 +12180,7 @@ $root.google = (function() {
             };
 
             /**
-             * Encodes the specified EnumValueOptions message, length delimited.
+             * Encodes the specified EnumValueOptions message, length delimited. Does not implicitly {@link google.protobuf.EnumValueOptions.verify|verify} messages.
              * @param {google.protobuf.EnumValueOptions|Object} message EnumValueOptions message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -12194,7 +12194,7 @@ $root.google = (function() {
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.EnumValueOptions} EnumValueOptions
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             EnumValueOptions.decode = function decode(reader, length) {
                 if (!(reader instanceof $Reader))
@@ -12223,7 +12223,7 @@ $root.google = (function() {
              * Decodes an EnumValueOptions message from the specified reader or buffer, length delimited.
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @returns {google.protobuf.EnumValueOptions} EnumValueOptions
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             EnumValueOptions.decodeDelimited = function decodeDelimited(reader) {
                 if (!(reader instanceof $Reader))
@@ -12372,7 +12372,7 @@ $root.google = (function() {
             };
 
             /**
-             * Encodes the specified ServiceOptions message.
+             * Encodes the specified ServiceOptions message. Does not implicitly {@link google.protobuf.ServiceOptions.verify|verify} messages.
              * @param {google.protobuf.ServiceOptions|Object} message ServiceOptions message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -12389,7 +12389,7 @@ $root.google = (function() {
             };
 
             /**
-             * Encodes the specified ServiceOptions message, length delimited.
+             * Encodes the specified ServiceOptions message, length delimited. Does not implicitly {@link google.protobuf.ServiceOptions.verify|verify} messages.
              * @param {google.protobuf.ServiceOptions|Object} message ServiceOptions message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -12403,7 +12403,7 @@ $root.google = (function() {
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.ServiceOptions} ServiceOptions
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             ServiceOptions.decode = function decode(reader, length) {
                 if (!(reader instanceof $Reader))
@@ -12432,7 +12432,7 @@ $root.google = (function() {
              * Decodes a ServiceOptions message from the specified reader or buffer, length delimited.
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @returns {google.protobuf.ServiceOptions} ServiceOptions
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             ServiceOptions.decodeDelimited = function decodeDelimited(reader) {
                 if (!(reader instanceof $Reader))
@@ -12588,7 +12588,7 @@ $root.google = (function() {
             };
 
             /**
-             * Encodes the specified MethodOptions message.
+             * Encodes the specified MethodOptions message. Does not implicitly {@link google.protobuf.MethodOptions.verify|verify} messages.
              * @param {google.protobuf.MethodOptions|Object} message MethodOptions message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -12607,7 +12607,7 @@ $root.google = (function() {
             };
 
             /**
-             * Encodes the specified MethodOptions message, length delimited.
+             * Encodes the specified MethodOptions message, length delimited. Does not implicitly {@link google.protobuf.MethodOptions.verify|verify} messages.
              * @param {google.protobuf.MethodOptions|Object} message MethodOptions message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -12621,7 +12621,7 @@ $root.google = (function() {
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.MethodOptions} MethodOptions
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             MethodOptions.decode = function decode(reader, length) {
                 if (!(reader instanceof $Reader))
@@ -12653,7 +12653,7 @@ $root.google = (function() {
              * Decodes a MethodOptions message from the specified reader or buffer, length delimited.
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @returns {google.protobuf.MethodOptions} MethodOptions
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             MethodOptions.decodeDelimited = function decodeDelimited(reader) {
                 if (!(reader instanceof $Reader))
@@ -12876,7 +12876,7 @@ $root.google = (function() {
             };
 
             /**
-             * Encodes the specified UninterpretedOption message.
+             * Encodes the specified UninterpretedOption message. Does not implicitly {@link google.protobuf.UninterpretedOption.verify|verify} messages.
              * @param {google.protobuf.UninterpretedOption|Object} message UninterpretedOption message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -12903,7 +12903,7 @@ $root.google = (function() {
             };
 
             /**
-             * Encodes the specified UninterpretedOption message, length delimited.
+             * Encodes the specified UninterpretedOption message, length delimited. Does not implicitly {@link google.protobuf.UninterpretedOption.verify|verify} messages.
              * @param {google.protobuf.UninterpretedOption|Object} message UninterpretedOption message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -12917,7 +12917,7 @@ $root.google = (function() {
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.UninterpretedOption} UninterpretedOption
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             UninterpretedOption.decode = function decode(reader, length) {
                 if (!(reader instanceof $Reader))
@@ -12961,7 +12961,7 @@ $root.google = (function() {
              * Decodes an UninterpretedOption message from the specified reader or buffer, length delimited.
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @returns {google.protobuf.UninterpretedOption} UninterpretedOption
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             UninterpretedOption.decodeDelimited = function decodeDelimited(reader) {
                 if (!(reader instanceof $Reader))
@@ -13174,7 +13174,7 @@ $root.google = (function() {
                 };
 
                 /**
-                 * Encodes the specified NamePart message.
+                 * Encodes the specified NamePart message. Does not implicitly {@link google.protobuf.UninterpretedOption.NamePart.verify|verify} messages.
                  * @param {google.protobuf.UninterpretedOption.NamePart|Object} message NamePart message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
@@ -13188,7 +13188,7 @@ $root.google = (function() {
                 };
 
                 /**
-                 * Encodes the specified NamePart message, length delimited.
+                 * Encodes the specified NamePart message, length delimited. Does not implicitly {@link google.protobuf.UninterpretedOption.NamePart.verify|verify} messages.
                  * @param {google.protobuf.UninterpretedOption.NamePart|Object} message NamePart message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
@@ -13202,7 +13202,7 @@ $root.google = (function() {
                  * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
                  * @param {number} [length] Message length if known beforehand
                  * @returns {google.protobuf.UninterpretedOption.NamePart} NamePart
-                 * @throws {Error} If the payload is invalid or missing required fields
+                 * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
                  */
                 NamePart.decode = function decode(reader, length) {
                     if (!(reader instanceof $Reader))
@@ -13233,7 +13233,7 @@ $root.google = (function() {
                  * Decodes a NamePart message from the specified reader or buffer, length delimited.
                  * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
                  * @returns {google.protobuf.UninterpretedOption.NamePart} NamePart
-                 * @throws {Error} If the payload is invalid or missing required fields
+                 * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
                  */
                 NamePart.decodeDelimited = function decodeDelimited(reader) {
                     if (!(reader instanceof $Reader))
@@ -13360,7 +13360,7 @@ $root.google = (function() {
             };
 
             /**
-             * Encodes the specified SourceCodeInfo message.
+             * Encodes the specified SourceCodeInfo message. Does not implicitly {@link google.protobuf.SourceCodeInfo.verify|verify} messages.
              * @param {google.protobuf.SourceCodeInfo|Object} message SourceCodeInfo message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -13375,7 +13375,7 @@ $root.google = (function() {
             };
 
             /**
-             * Encodes the specified SourceCodeInfo message, length delimited.
+             * Encodes the specified SourceCodeInfo message, length delimited. Does not implicitly {@link google.protobuf.SourceCodeInfo.verify|verify} messages.
              * @param {google.protobuf.SourceCodeInfo|Object} message SourceCodeInfo message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -13389,7 +13389,7 @@ $root.google = (function() {
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.SourceCodeInfo} SourceCodeInfo
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             SourceCodeInfo.decode = function decode(reader, length) {
                 if (!(reader instanceof $Reader))
@@ -13415,7 +13415,7 @@ $root.google = (function() {
              * Decodes a SourceCodeInfo message from the specified reader or buffer, length delimited.
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @returns {google.protobuf.SourceCodeInfo} SourceCodeInfo
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             SourceCodeInfo.decodeDelimited = function decodeDelimited(reader) {
                 if (!(reader instanceof $Reader))
@@ -13565,7 +13565,7 @@ $root.google = (function() {
                 };
 
                 /**
-                 * Encodes the specified Location message.
+                 * Encodes the specified Location message. Does not implicitly {@link google.protobuf.SourceCodeInfo.Location.verify|verify} messages.
                  * @param {google.protobuf.SourceCodeInfo.Location|Object} message Location message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
@@ -13596,7 +13596,7 @@ $root.google = (function() {
                 };
 
                 /**
-                 * Encodes the specified Location message, length delimited.
+                 * Encodes the specified Location message, length delimited. Does not implicitly {@link google.protobuf.SourceCodeInfo.Location.verify|verify} messages.
                  * @param {google.protobuf.SourceCodeInfo.Location|Object} message Location message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
@@ -13610,7 +13610,7 @@ $root.google = (function() {
                  * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
                  * @param {number} [length] Message length if known beforehand
                  * @returns {google.protobuf.SourceCodeInfo.Location} Location
-                 * @throws {Error} If the payload is invalid or missing required fields
+                 * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
                  */
                 Location.decode = function decode(reader, length) {
                     if (!(reader instanceof $Reader))
@@ -13662,7 +13662,7 @@ $root.google = (function() {
                  * Decodes a Location message from the specified reader or buffer, length delimited.
                  * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
                  * @returns {google.protobuf.SourceCodeInfo.Location} Location
-                 * @throws {Error} If the payload is invalid or missing required fields
+                 * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
                  */
                 Location.decodeDelimited = function decodeDelimited(reader) {
                     if (!(reader instanceof $Reader))
@@ -13853,7 +13853,7 @@ $root.google = (function() {
             };
 
             /**
-             * Encodes the specified GeneratedCodeInfo message.
+             * Encodes the specified GeneratedCodeInfo message. Does not implicitly {@link google.protobuf.GeneratedCodeInfo.verify|verify} messages.
              * @param {google.protobuf.GeneratedCodeInfo|Object} message GeneratedCodeInfo message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -13868,7 +13868,7 @@ $root.google = (function() {
             };
 
             /**
-             * Encodes the specified GeneratedCodeInfo message, length delimited.
+             * Encodes the specified GeneratedCodeInfo message, length delimited. Does not implicitly {@link google.protobuf.GeneratedCodeInfo.verify|verify} messages.
              * @param {google.protobuf.GeneratedCodeInfo|Object} message GeneratedCodeInfo message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -13882,7 +13882,7 @@ $root.google = (function() {
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.GeneratedCodeInfo} GeneratedCodeInfo
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             GeneratedCodeInfo.decode = function decode(reader, length) {
                 if (!(reader instanceof $Reader))
@@ -13908,7 +13908,7 @@ $root.google = (function() {
              * Decodes a GeneratedCodeInfo message from the specified reader or buffer, length delimited.
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @returns {google.protobuf.GeneratedCodeInfo} GeneratedCodeInfo
-             * @throws {Error} If the payload is invalid or missing required fields
+             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
              */
             GeneratedCodeInfo.decodeDelimited = function decodeDelimited(reader) {
                 if (!(reader instanceof $Reader))
@@ -14052,7 +14052,7 @@ $root.google = (function() {
                 };
 
                 /**
-                 * Encodes the specified Annotation message.
+                 * Encodes the specified Annotation message. Does not implicitly {@link google.protobuf.GeneratedCodeInfo.Annotation.verify|verify} messages.
                  * @param {google.protobuf.GeneratedCodeInfo.Annotation|Object} message Annotation message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
@@ -14076,7 +14076,7 @@ $root.google = (function() {
                 };
 
                 /**
-                 * Encodes the specified Annotation message, length delimited.
+                 * Encodes the specified Annotation message, length delimited. Does not implicitly {@link google.protobuf.GeneratedCodeInfo.Annotation.verify|verify} messages.
                  * @param {google.protobuf.GeneratedCodeInfo.Annotation|Object} message Annotation message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
@@ -14090,7 +14090,7 @@ $root.google = (function() {
                  * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
                  * @param {number} [length] Message length if known beforehand
                  * @returns {google.protobuf.GeneratedCodeInfo.Annotation} Annotation
-                 * @throws {Error} If the payload is invalid or missing required fields
+                 * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
                  */
                 Annotation.decode = function decode(reader, length) {
                     if (!(reader instanceof $Reader))
@@ -14130,7 +14130,7 @@ $root.google = (function() {
                  * Decodes an Annotation message from the specified reader or buffer, length delimited.
                  * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
                  * @returns {google.protobuf.GeneratedCodeInfo.Annotation} Annotation
-                 * @throws {Error} If the payload is invalid or missing required fields
+                 * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
                  */
                 Annotation.decodeDelimited = function decodeDelimited(reader) {
                     if (!(reader instanceof $Reader))
