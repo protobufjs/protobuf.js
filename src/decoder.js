@@ -7,6 +7,10 @@ var Enum    = require("./enum"),
     types   = require("./types"),
     util    = require("./util");
 
+function missing(field) {
+    return "missing required '" + field.name;
+}
+
 /**
  * Generates a decoder specific to the specified message type.
  * @param {Type} mtype Message type
@@ -27,7 +31,8 @@ function decoder(mtype) {
     gen
         ("switch(t>>>3){");
 
-    for (var i = 0; i < /* initializes */ mtype.fieldsArray.length; ++i) {
+    var i = 0;
+    for (; i < /* initializes */ mtype.fieldsArray.length; ++i) {
         var field = mtype._fieldsArray[i].resolve(),
             type  = field.resolvedType instanceof Enum ? "uint32" : field.type,
             ref   = "m" + util.safeProp(field.name); gen
@@ -77,13 +82,23 @@ function decoder(mtype) {
                 ("break");
 
     // Unknown fields
-    } return gen
+    } gen
             ("default:")
                 ("r.skipType(t&7)")
                 ("break")
 
         ("}")
-    ("}")
+    ("}");
+
+    // Field presence
+    for (i = 0; i < mtype._fieldsArray.length; ++i) {
+        var rfield = mtype._fieldsArray[i];
+        if (rfield.required) gen
+    ("if(!m.hasOwnProperty(%j))", rfield.name)
+        ("throw Error(%j)", missing(rfield));
+    }
+
+    return gen
     ("return m");
-    /* eslint-enable no-unexpected-multiline */
+    /* eslint-enable no-unexpected-multiline, block-scoped-var */
 }
