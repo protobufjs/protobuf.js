@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.7.0 (c) 2016, Daniel Wirtz
- * Compiled Sun, 05 Mar 2017 22:06:34 UTC
+ * Compiled Mon, 06 Mar 2017 02:30:38 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -1544,12 +1544,12 @@ function decoder(mtype) {
         var rfield = mtype._fieldsArray[i];
         if (rfield.required) gen
     ("if(!m.hasOwnProperty(%j))", rfield.name)
-        ("throw Error(%j)", missing(rfield));
+        ("throw util.ProtocolError(%j,m)", missing(rfield));
     }
 
     return gen
     ("return m");
-    /* eslint-enable no-unexpected-multiline, block-scoped-var */
+    /* eslint-enable no-unexpected-multiline */
 }
 
 },{"15":15,"35":35,"36":36}],14:[function(require,module,exports){
@@ -2160,7 +2160,7 @@ protobuf.loadSync = loadSync;
 // Serialization
 protobuf.encoder          = require(14);
 protobuf.decoder          = require(13);
-protobuf.verifier         = require(39);
+protobuf.verifier         = require(40);
 protobuf.converter        = require(12);
 
 // Reflection
@@ -2188,7 +2188,7 @@ protobuf.ReflectionObject._configure(protobuf.Root);
 protobuf.Namespace._configure(protobuf.Type, protobuf.Service);
 protobuf.Root._configure(protobuf.Type);
 
-},{"10":10,"12":12,"13":13,"14":14,"15":15,"16":16,"18":18,"20":20,"21":21,"22":22,"23":23,"24":24,"25":25,"29":29,"32":32,"34":34,"35":35,"36":36,"39":39}],18:[function(require,module,exports){
+},{"10":10,"12":12,"13":13,"14":14,"15":15,"16":16,"18":18,"20":20,"21":21,"22":22,"23":23,"24":24,"25":25,"29":29,"32":32,"34":34,"35":35,"36":36,"40":40}],18:[function(require,module,exports){
 "use strict";
 var protobuf = exports;
 
@@ -2217,8 +2217,8 @@ protobuf.build = "minimal";
 protobuf.roots = {};
 
 // Serialization
-protobuf.Writer       = require(40);
-protobuf.BufferWriter = require(41);
+protobuf.Writer       = require(41);
+protobuf.BufferWriter = require(42);
 protobuf.Reader       = require(27);
 protobuf.BufferReader = require(28);
 
@@ -2241,7 +2241,7 @@ function configure() {
 protobuf.Writer._configure(protobuf.BufferWriter);
 configure();
 
-},{"27":27,"28":28,"30":30,"38":38,"40":40,"41":41}],19:[function(require,module,exports){
+},{"27":27,"28":28,"30":30,"38":38,"41":41,"42":42}],19:[function(require,module,exports){
 "use strict";
 var protobuf = module.exports = require(17);
 
@@ -4502,7 +4502,7 @@ Reader.prototype.skipType = function(wireType) {
 Reader._configure = function(BufferReader_) {
     BufferReader = BufferReader_;
 
-    var fn = util.Long ? "toLong" : "toNumber";
+    var fn = util.Long ? "toLong" : /* istanbul ignore next */ "toNumber";
     util.merge(Reader.prototype, {
 
         int64: function read_int64() {
@@ -5556,11 +5556,11 @@ var Enum      = require(15),
     Class     = require(10),
     Message   = require(21),
     Reader    = require(27),
-    Writer    = require(40),
+    Writer    = require(41),
     util      = require(36),
     encoder   = require(14),
     decoder   = require(13),
-    verifier  = require(39),
+    verifier  = require(40),
     converter = require(12);
 
 /**
@@ -5940,7 +5940,7 @@ Type.prototype.setup = function setup() {
 };
 
 /**
- * Encodes a message of this type.
+ * Encodes a message of this type. Does not implicitly {@link Type#verify|verify} messages.
  * @param {Message|Object} message Message instance or plain object
  * @param {Writer} [writer] Writer to encode to
  * @returns {Writer} writer
@@ -5950,7 +5950,7 @@ Type.prototype.encode = function encode_setup(message, writer) {
 };
 
 /**
- * Encodes a message of this type preceeded by its byte length as a varint.
+ * Encodes a message of this type preceeded by its byte length as a varint. Does not implicitly {@link Type#verify|verify} messages.
  * @param {Message|Object} message Message instance or plain object
  * @param {Writer} [writer] Writer to encode to
  * @returns {Writer} writer
@@ -5964,7 +5964,8 @@ Type.prototype.encodeDelimited = function encodeDelimited(message, writer) {
  * @param {Reader|Uint8Array} reader Reader or buffer to decode from
  * @param {number} [length] Length of the message, if known beforehand
  * @returns {Message} Decoded message
- * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
+ * @throws {Error} If the payload is not a reader or valid buffer
+ * @throws {util.ProtocolError} If required fields are missing
  */
 Type.prototype.decode = function decode_setup(reader, length) {
     return this.setup().decode(reader, length); // overrides this method
@@ -5974,7 +5975,8 @@ Type.prototype.decode = function decode_setup(reader, length) {
  * Decodes a message of this type preceeded by its byte length as a varint.
  * @param {Reader|Uint8Array} reader Reader or buffer to decode from
  * @returns {Message} Decoded message
- * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
+ * @throws {Error} If the payload is not a reader or valid buffer
+ * @throws {util.ProtocolError} If required fields are missing
  */
 Type.prototype.decodeDelimited = function decodeDelimited(reader) {
     if (!(reader instanceof Reader))
@@ -6037,7 +6039,7 @@ Type.prototype.toObject = function toObject(message, options) {
     return this.setup().toObject(message, options);
 };
 
-},{"10":10,"12":12,"13":13,"14":14,"15":15,"16":16,"20":20,"21":21,"23":23,"25":25,"27":27,"32":32,"36":36,"39":39,"40":40}],35:[function(require,module,exports){
+},{"10":10,"12":12,"13":13,"14":14,"15":15,"16":16,"20":20,"21":21,"23":23,"25":25,"27":27,"32":32,"36":36,"40":40,"41":41}],35:[function(require,module,exports){
 "use strict";
 
 /**
@@ -6512,7 +6514,7 @@ util.EventEmitter = require(4);
 // requires modules optionally and hides the call from bundlers
 util.inquire = require(6);
 
-// convert to / from utf8 encoded strings
+// converts to / from utf8 encoded strings
 util.utf8 = require(9);
 
 // provides a node-like buffer pool in the browser
@@ -6520,6 +6522,9 @@ util.pool = require(8);
 
 // utility to work with the low and high bits of a 64 bit value
 util.LongBits = require(37);
+
+// error subclass indicating a protocol specifc error
+util.ProtocolError = require(39);
 
 /**
  * An immuable empty array.
@@ -6759,6 +6764,19 @@ util.lazyResolve = function lazyResolve(root, lazyTypes) {
 };
 
 /**
+ * Makes an error object with additional properties.
+ * @param {string} message Error message
+ * @param {Object.<string,*>=} additionalProperties Additional properties
+ * @returns {Error} Error object
+*/
+util.mkError = function mkError(message, additionalProperties) {
+    var err = Error(message);
+    if (additionalProperties)
+        util.merge(err, additionalProperties);
+    return err;
+};
+
+/**
  * Default conversion options used for toJSON implementations. Converts longs, enums and bytes to strings.
  * @type {ConversionOptions}
  */
@@ -6789,7 +6807,46 @@ util._configure = function() {
         };
 };
 
-},{"1":1,"2":2,"37":37,"4":4,"6":6,"8":8,"9":9}],39:[function(require,module,exports){
+},{"1":1,"2":2,"37":37,"39":39,"4":4,"6":6,"8":8,"9":9}],39:[function(require,module,exports){
+"use strict";
+module.exports = ProtocolError;
+
+// extends Error
+(ProtocolError.prototype = Object.create(Error.prototype)).constructor = Error;
+
+/**
+ * Constructs a new protocol error.
+ * @classdesc Error subclass indicating a protocol specifc error.
+ * @memberof util
+ * @extends Error
+ * @constructor
+ * @param {string} messageText Error message text
+ * @param {Message=} messageInstance So far decoded message instance, if applicable
+ * @example
+ * try {
+ *     MyMessage.decode(someBuffer); // throws if required fields are missing
+ * } catch (e) {
+ *     if (e instanceof ProtocolError && e.instance)
+ *         console.log("decoded so far: " + JSON.stringify(e.instance));
+ * }
+ */
+function ProtocolError(messageText, messageInstance) {
+
+    if (!(this instanceof ProtocolError))
+        return new ProtocolError(messageText, messageInstance);
+
+    this.name = "ProtocolError";
+    this.message = messageText;
+    this.stack = (new Error()).stack;
+
+    /**
+     * So far decoded message instance, if applicable.
+     * @type {?Message}
+     */
+    this.instance = messageInstance || null;
+}
+
+},{}],40:[function(require,module,exports){
 "use strict";
 module.exports = verifier;
 
@@ -6956,7 +7013,7 @@ function verifier(mtype) {
     ("return null");
     /* eslint-enable no-unexpected-multiline */
 }
-},{"15":15,"36":36}],40:[function(require,module,exports){
+},{"15":15,"36":36}],41:[function(require,module,exports){
 "use strict";
 module.exports = Writer;
 
@@ -7520,12 +7577,12 @@ Writer._configure = function(BufferWriter_) {
     BufferWriter = BufferWriter_;
 };
 
-},{"38":38}],41:[function(require,module,exports){
+},{"38":38}],42:[function(require,module,exports){
 "use strict";
 module.exports = BufferWriter;
 
 // extends Writer
-var Writer = require(40);
+var Writer = require(41);
 (BufferWriter.prototype = Object.create(Writer.prototype)).constructor = BufferWriter;
 
 var util = require(38);
@@ -7603,7 +7660,7 @@ BufferWriter.prototype.string = function write_string_buffer(value) {
  * @returns {Buffer} Finished buffer
  */
 
-},{"38":38,"40":40}]},{},[19])
+},{"38":38,"41":41}]},{},[19])
 
 })(typeof window==="object"&&window||typeof self==="object"&&self||this);
 //# sourceMappingURL=protobuf.js.map

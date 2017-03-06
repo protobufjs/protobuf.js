@@ -133,7 +133,7 @@ protobuf.load("awesome.proto", function(err, root) {
 });
 ```
 
-**Note:** To avoid redundant assertions where messages are already known to be valid, there is a seperate method for encoding and verification. Hence ...
+**Note:** To avoid redundant assertions where messages are already known to be valid, there is a separate method for encoding and verification.
 
 * `Message.encode` does not implicitly verify a message but tries to encode whatever is specified, possibly resulting in a runtime error being thrown somewhere down the road.
 * `Message.verify` can be used to explicitly perform verification prior to encoding where necessary. Instead of throwing, it returns the error message, if any.

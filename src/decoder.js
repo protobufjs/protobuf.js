@@ -95,10 +95,10 @@ function decoder(mtype) {
         var rfield = mtype._fieldsArray[i];
         if (rfield.required) gen
     ("if(!m.hasOwnProperty(%j))", rfield.name)
-        ("throw Error(%j)", missing(rfield));
+        ("throw util.ProtocolError(%j,m)", missing(rfield));
     }
 
     return gen
     ("return m");
-    /* eslint-enable no-unexpected-multiline, block-scoped-var */
+    /* eslint-enable no-unexpected-multiline */
 }

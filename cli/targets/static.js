@@ -425,7 +425,8 @@ function buildType(ref, type) {
             "@param {$protobuf.Reader|Uint8Array} " + (config.beautify ? "reader" : "r") + " Reader or buffer to decode from",
             "@param {number} [" + (config.beautify ? "length" : "l") + "] Message length if known beforehand",
             "@returns {" + fullName + "} " + type.name,
-            "@throws {Error} If the payload is not a reader or valid buffer or required fields are missing"
+            "@throws {Error} If the payload is not a reader or valid buffer",
+            "@throws {$protobuf.util.ProtocolError} If required fields are missing"
         ]);
         buildFunction(type, "decode", protobuf.decoder(type));
 
@@ -435,7 +436,8 @@ function buildType(ref, type) {
                 "Decodes " + aOrAn(type.name) + " message from the specified reader or buffer, length delimited.",
                 "@param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from",
                 "@returns {" + fullName + "} " + type.name,
-                "@throws {Error} If the payload is not a reader or valid buffer or required fields are missing"
+                "@throws {Error} If the payload is not a reader or valid buffer",
+                "@throws {$protobuf.util.ProtocolError} If required fields are missing"
             ]);
             push(name(type.name) + ".decodeDelimited = function decodeDelimited(reader) {");
             ++indent;

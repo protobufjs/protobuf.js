@@ -461,7 +461,7 @@ Reader.prototype.skipType = function(wireType) {
 Reader._configure = function(BufferReader_) {
     BufferReader = BufferReader_;
 
-    var fn = util.Long ? "toLong" : "toNumber";
+    var fn = util.Long ? "toLong" : /* istanbul ignore next */ "toNumber";
     util.merge(Reader.prototype, {
 
         int64: function read_int64() {

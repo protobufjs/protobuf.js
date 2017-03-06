@@ -1755,7 +1755,7 @@ export class Type extends NamespaceBase {
     setup(): Type;
 
     /**
-     * Encodes a message of this type.
+     * Encodes a message of this type. Does not implicitly {@link Type#verify|verify} messages.
      * @param {Message|Object} message Message instance or plain object
      * @param {Writer} [writer] Writer to encode to
      * @returns {Writer} writer
@@ -1763,7 +1763,7 @@ export class Type extends NamespaceBase {
     encode(message: (Message|Object), writer?: Writer): Writer;
 
     /**
-     * Encodes a message of this type preceeded by its byte length as a varint.
+     * Encodes a message of this type preceeded by its byte length as a varint. Does not implicitly {@link Type#verify|verify} messages.
      * @param {Message|Object} message Message instance or plain object
      * @param {Writer} [writer] Writer to encode to
      * @returns {Writer} writer
@@ -1775,7 +1775,8 @@ export class Type extends NamespaceBase {
      * @param {Reader|Uint8Array} reader Reader or buffer to decode from
      * @param {number} [length] Length of the message, if known beforehand
      * @returns {Message} Decoded message
-     * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {util.ProtocolError} If required fields are missing
      */
     decode(reader: (Reader|Uint8Array), length?: number): Message;
 
@@ -1783,7 +1784,8 @@ export class Type extends NamespaceBase {
      * Decodes a message of this type preceeded by its byte length as a varint.
      * @param {Reader|Uint8Array} reader Reader or buffer to decode from
      * @returns {Message} Decoded message
-     * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {util.ProtocolError} If required fields are missing
      */
     decodeDelimited(reader: (Reader|Uint8Array)): Message;
 
@@ -2276,10 +2278,61 @@ export namespace util {
     function lazyResolve(root: Root, lazyTypes: { [k: number]: (string|ReflectionObject) }): void;
 
     /**
+     * Makes an error object with additional properties.
+     * @param {string} message Error message
+     * @param {Object.<string,*>=} additionalProperties Additional properties
+     * @returns {Error} Error object
+     */
+    function mkError(message: string, additionalProperties?: { [k: string]: any }): Error;
+
+    /**
      * Default conversion options used for toJSON implementations. Converts longs, enums and bytes to strings.
      * @type {ConversionOptions}
      */
     var toJSONOptions: ConversionOptions;
+
+    /**
+     * Constructs a new protocol error.
+     * @classdesc Error subclass indicating a protocol specifc error.
+     * @memberof util
+     * @extends Error
+     * @constructor
+     * @param {string} messageText Error message text
+     * @param {Message=} messageInstance So far decoded message instance, if applicable
+     * @example
+     * try {
+     *     MyMessage.decode(someBuffer); // throws if required fields are missing
+     * } catch (e) {
+     *     if (e instanceof ProtocolError && e.instance)
+     *         console.log("decoded so far: " + JSON.stringify(e.instance));
+     * }
+     */
+    class ProtocolError extends Error {
+
+        /**
+         * Constructs a new protocol error.
+         * @classdesc Error subclass indicating a protocol specifc error.
+         * @memberof util
+         * @extends Error
+         * @constructor
+         * @param {string} messageText Error message text
+         * @param {Message=} messageInstance So far decoded message instance, if applicable
+         * @example
+         * try {
+         *     MyMessage.decode(someBuffer); // throws if required fields are missing
+         * } catch (e) {
+         *     if (e instanceof ProtocolError && e.instance)
+         *         console.log("decoded so far: " + JSON.stringify(e.instance));
+         * }
+         */
+        constructor(messageText: string, messageInstance?: Message);
+
+        /**
+         * So far decoded message instance, if applicable.
+         * @type {?Message}
+         */
+        instance: Message;
+    }
 
     /**
      * Node's fs module if available.

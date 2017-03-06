@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.7.0 (c) 2016, Daniel Wirtz
- * Compiled Sun, 05 Mar 2017 22:06:34 UTC
+ * Compiled Mon, 06 Mar 2017 02:30:38 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -489,8 +489,8 @@ protobuf.build = "minimal";
 protobuf.roots = {};
 
 // Serialization
-protobuf.Writer       = require(14);
-protobuf.BufferWriter = require(15);
+protobuf.Writer       = require(15);
+protobuf.BufferWriter = require(16);
 protobuf.Reader       = require(8);
 protobuf.BufferReader = require(9);
 
@@ -513,7 +513,7 @@ function configure() {
 protobuf.Writer._configure(protobuf.BufferWriter);
 configure();
 
-},{"10":10,"13":13,"14":14,"15":15,"8":8,"9":9}],8:[function(require,module,exports){
+},{"10":10,"13":13,"15":15,"16":16,"8":8,"9":9}],8:[function(require,module,exports){
 "use strict";
 module.exports = Reader;
 
@@ -977,7 +977,7 @@ Reader.prototype.skipType = function(wireType) {
 Reader._configure = function(BufferReader_) {
     BufferReader = BufferReader_;
 
-    var fn = util.Long ? "toLong" : "toNumber";
+    var fn = util.Long ? "toLong" : /* istanbul ignore next */ "toNumber";
     util.merge(Reader.prototype, {
 
         int64: function read_int64() {
@@ -1467,7 +1467,7 @@ util.EventEmitter = require(3);
 // requires modules optionally and hides the call from bundlers
 util.inquire = require(4);
 
-// convert to / from utf8 encoded strings
+// converts to / from utf8 encoded strings
 util.utf8 = require(6);
 
 // provides a node-like buffer pool in the browser
@@ -1475,6 +1475,9 @@ util.pool = require(5);
 
 // utility to work with the low and high bits of a 64 bit value
 util.LongBits = require(12);
+
+// error subclass indicating a protocol specifc error
+util.ProtocolError = require(14);
 
 /**
  * An immuable empty array.
@@ -1714,6 +1717,19 @@ util.lazyResolve = function lazyResolve(root, lazyTypes) {
 };
 
 /**
+ * Makes an error object with additional properties.
+ * @param {string} message Error message
+ * @param {Object.<string,*>=} additionalProperties Additional properties
+ * @returns {Error} Error object
+*/
+util.mkError = function mkError(message, additionalProperties) {
+    var err = Error(message);
+    if (additionalProperties)
+        util.merge(err, additionalProperties);
+    return err;
+};
+
+/**
  * Default conversion options used for toJSON implementations. Converts longs, enums and bytes to strings.
  * @type {ConversionOptions}
  */
@@ -1744,7 +1760,46 @@ util._configure = function() {
         };
 };
 
-},{"1":1,"12":12,"2":2,"3":3,"4":4,"5":5,"6":6}],14:[function(require,module,exports){
+},{"1":1,"12":12,"14":14,"2":2,"3":3,"4":4,"5":5,"6":6}],14:[function(require,module,exports){
+"use strict";
+module.exports = ProtocolError;
+
+// extends Error
+(ProtocolError.prototype = Object.create(Error.prototype)).constructor = Error;
+
+/**
+ * Constructs a new protocol error.
+ * @classdesc Error subclass indicating a protocol specifc error.
+ * @memberof util
+ * @extends Error
+ * @constructor
+ * @param {string} messageText Error message text
+ * @param {Message=} messageInstance So far decoded message instance, if applicable
+ * @example
+ * try {
+ *     MyMessage.decode(someBuffer); // throws if required fields are missing
+ * } catch (e) {
+ *     if (e instanceof ProtocolError && e.instance)
+ *         console.log("decoded so far: " + JSON.stringify(e.instance));
+ * }
+ */
+function ProtocolError(messageText, messageInstance) {
+
+    if (!(this instanceof ProtocolError))
+        return new ProtocolError(messageText, messageInstance);
+
+    this.name = "ProtocolError";
+    this.message = messageText;
+    this.stack = (new Error()).stack;
+
+    /**
+     * So far decoded message instance, if applicable.
+     * @type {?Message}
+     */
+    this.instance = messageInstance || null;
+}
+
+},{}],15:[function(require,module,exports){
 "use strict";
 module.exports = Writer;
 
@@ -2308,12 +2363,12 @@ Writer._configure = function(BufferWriter_) {
     BufferWriter = BufferWriter_;
 };
 
-},{"13":13}],15:[function(require,module,exports){
+},{"13":13}],16:[function(require,module,exports){
 "use strict";
 module.exports = BufferWriter;
 
 // extends Writer
-var Writer = require(14);
+var Writer = require(15);
 (BufferWriter.prototype = Object.create(Writer.prototype)).constructor = BufferWriter;
 
 var util = require(13);
@@ -2391,7 +2446,7 @@ BufferWriter.prototype.string = function write_string_buffer(value) {
  * @returns {Buffer} Finished buffer
  */
 
-},{"13":13,"14":14}]},{},[7])
+},{"13":13,"15":15}]},{},[7])
 
 })(typeof window==="object"&&window||typeof self==="object"&&self||this);
 //# sourceMappingURL=protobuf.js.map

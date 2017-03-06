@@ -13,7 +13,7 @@ util.EventEmitter = require("@protobufjs/eventemitter");
 // requires modules optionally and hides the call from bundlers
 util.inquire = require("@protobufjs/inquire");
 
-// convert to / from utf8 encoded strings
+// converts to / from utf8 encoded strings
 util.utf8 = require("@protobufjs/utf8");
 
 // provides a node-like buffer pool in the browser
@@ -21,6 +21,9 @@ util.pool = require("@protobufjs/pool");
 
 // utility to work with the low and high bits of a 64 bit value
 util.LongBits = require("./longbits");
+
+// error subclass indicating a protocol specifc error
+util.ProtocolError = require("./protocolerror");
 
 /**
  * An immuable empty array.
@@ -257,6 +260,19 @@ util.lazyResolve = function lazyResolve(root, lazyTypes) {
             lazyTypes[i][keys[j]] = ptr;
         }
     }
+};
+
+/**
+ * Makes an error object with additional properties.
+ * @param {string} message Error message
+ * @param {Object.<string,*>=} additionalProperties Additional properties
+ * @returns {Error} Error object
+*/
+util.mkError = function mkError(message, additionalProperties) {
+    var err = Error(message);
+    if (additionalProperties)
+        util.merge(err, additionalProperties);
+    return err;
 };
 
 /**
