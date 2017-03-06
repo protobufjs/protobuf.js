@@ -263,19 +263,6 @@ util.lazyResolve = function lazyResolve(root, lazyTypes) {
 };
 
 /**
- * Makes an error object with additional properties.
- * @param {string} message Error message
- * @param {Object.<string,*>=} additionalProperties Additional properties
- * @returns {Error} Error object
-*/
-util.mkError = function mkError(message, additionalProperties) {
-    var err = Error(message);
-    if (additionalProperties)
-        util.merge(err, additionalProperties);
-    return err;
-};
-
-/**
  * Default conversion options used for toJSON implementations. Converts longs, enums and bytes to strings.
  * @type {ConversionOptions}
  */

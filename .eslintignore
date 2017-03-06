@@ -1,6 +1,6 @@
 bench/*
 bin/*
-cli/*
+cli/wrappers/*
 coverage/*
 dist/*
 docs/*
@@ -10,6 +10,7 @@ lib/prelude.js
 lib/polyfill.js
 lib/tape-adapter.js
 lib/tsd-jsdoc/*
+lib/*/tests/*
 sandbox/*
 scripts/*
-**/tests/*
+tests/*

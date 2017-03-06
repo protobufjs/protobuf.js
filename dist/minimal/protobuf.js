@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.7.0 (c) 2016, Daniel Wirtz
- * Compiled Mon, 06 Mar 2017 02:30:38 UTC
+ * Compiled Mon, 06 Mar 2017 03:35:11 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -1714,19 +1714,6 @@ util.lazyResolve = function lazyResolve(root, lazyTypes) {
             lazyTypes[i][keys[j]] = ptr;
         }
     }
-};
-
-/**
- * Makes an error object with additional properties.
- * @param {string} message Error message
- * @param {Object.<string,*>=} additionalProperties Additional properties
- * @returns {Error} Error object
-*/
-util.mkError = function mkError(message, additionalProperties) {
-    var err = Error(message);
-    if (additionalProperties)
-        util.merge(err, additionalProperties);
-    return err;
 };
 
 /**

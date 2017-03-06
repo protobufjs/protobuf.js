@@ -90,7 +90,8 @@ $root.Test1 = (function() {
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
      * @param {number} [length] Message length if known beforehand
      * @returns {Test1} Test1
-     * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
     Test1.decode = function decode(reader, length) {
         if (!(reader instanceof $Reader))
@@ -120,7 +121,8 @@ $root.Test1 = (function() {
      * Decodes a Test1 message from the specified reader or buffer, length delimited.
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
      * @returns {Test1} Test1
-     * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
     Test1.decodeDelimited = function decodeDelimited(reader) {
         if (!(reader instanceof $Reader))
@@ -269,7 +271,8 @@ $root.Test2 = (function() {
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
      * @param {number} [length] Message length if known beforehand
      * @returns {Test2} Test2
-     * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
     Test2.decode = function decode(reader, length) {
         if (!(reader instanceof $Reader))
@@ -290,7 +293,8 @@ $root.Test2 = (function() {
      * Decodes a Test2 message from the specified reader or buffer, length delimited.
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
      * @returns {Test2} Test2
-     * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
     Test2.decodeDelimited = function decodeDelimited(reader) {
         if (!(reader instanceof $Reader))

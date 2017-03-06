@@ -4,12 +4,12 @@
         define(["protobuf"], factory);
 
     /* CommonJS */ else if (typeof require === 'function' && typeof module === 'object' && module && module.exports)
-        module.exports = factory(require(%DEPENDENCY%));
+        module.exports = factory(require($DEPENDENCY));
 
 })(this, function($protobuf) {
     "use strict";
 
-    %OUTPUT%
+    $OUTPUT;
 
     return $root;
 });

@@ -1,5 +1,5 @@
 import * as $protobuf from "protobufjs";
 
-%OUTPUT%
+$OUTPUT;
 
 export { $root as default };

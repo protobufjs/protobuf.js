@@ -38,9 +38,9 @@ exports.main = function(args, callback) {
 
     if (!files.length) {
         if (callback)
-            callback(Error("usage"));
+            callback(Error("usage")); // eslint-disable-line callback-return
         else
-            console.error([
+            process.stderr.write([
                 "protobuf.js v" + pkg.version + " CLI for TypeScript",
                 "",
                 chalk.bold.white("Generates TypeScript definitions from annotated JavaScript files."),
@@ -59,8 +59,6 @@ exports.main = function(args, callback) {
                 "",
                 "usage: " + chalk.bold.green("pbts") + " [options] file1.js file2.js ..." + chalk.bold.gray("  (or)  ") + "other | " + chalk.bold.green("pbts") + " [options] -"
             ].join("\n"));
-        if (callback)
-            callback(Error("usage"));
         return 1;
     }
 
@@ -113,17 +111,17 @@ exports.main = function(args, callback) {
         child.stderr.pipe(process.stderr);
         child.on("close", function(code) {
             // clean up temporary files, no matter what
-            try { cleanup.forEach(fs.unlinkSync); } catch(e) {} cleanup = [];
+            try { cleanup.forEach(fs.unlinkSync); } catch(e) {/**/} cleanup = [];
 
             if (code) {
-                out = out.join('').replace(/\s*JSDoc \d+\.\d+\.\d+ [^$]+/, "");
+                out = out.join("").replace(/\s*JSDoc \d+\.\d+\.\d+ [^$]+/, "");
                 process.stderr.write(out);
                 var err = Error("code " + code);
-                if (callback)
+                if (callback) {
                     callback(err);
-                else
-                    throw err;
-                return;
+                    return;
+                }
+                throw err;
             }
 
             var output = [];
@@ -137,7 +135,7 @@ exports.main = function(args, callback) {
                     "import * as $protobuf from \"protobufjs\";",
                     ""
                 );
-            output = output.join('\n') + "\n" + out.join('');
+            output = output.join("\n") + "\n" + out.join("");
 
             try {
                 if (argv.out)
@@ -145,12 +143,13 @@ exports.main = function(args, callback) {
                 else
                     process.stdout.write(output, "utf8");
                 if (callback)
-                    callback(null);
+                    callback(null); // eslint-disable-line callback-return
             } catch (err) {
-                if (callback)
+                if (callback) {
                     callback(err);
-                else
-                    throw err;
+                    return;
+                }
+                throw err;
             }
         });
     }

@@ -1,7 +1,7 @@
 "use strict";
 
-var $protobuf = require(%DEPENDENCY%);
+var $protobuf = require($DEPENDENCY);
 
-%OUTPUT%
+$OUTPUT;
 
 module.exports = $root;

@@ -1,8 +1,9 @@
 "use strict";
 var fs            = require("fs"),
     path          = require("path"),
-    child_process = require("child_process"),
-    semver;
+    child_process = require("child_process");
+
+var semver;
 
 var protobuf = require("..");
 
@@ -18,7 +19,7 @@ function basenameCompare(a, b) {
             return 1;
     }
     return a.length < b.length ? -1 : 0;
-};
+}
 
 exports.requireAll = function requireAll(dirname) {
     dirname   = path.join(__dirname, dirname);
@@ -110,7 +111,7 @@ function modExists(name, version) {
             return semver
                 ? semver.satisfies(pkg.version, version)
                 : parseInt(pkg.version, 10) === parseInt(version.replace(/^[\^~]/, ""), 10); // used for semver only
-        } catch (e) {}
+        } catch (e) {/**/}
     }
     return false;
 }
@@ -156,8 +157,8 @@ exports.wrap = function(OUTPUT, options) {
         // otherwise fetch the custom one
         wrap = fs.readFileSync(path.resolve(process.cwd(), name)).toString("utf8");
     }
-    wrap = wrap.replace(/%DEPENDENCY%/g, JSON.stringify(options.dependency || "protobufjs"));
-    wrap = wrap.replace(/( *)%OUTPUT%/, function($0, $1) {
+    wrap = wrap.replace(/\$DEPENDENCY/g, JSON.stringify(options.dependency || "protobufjs"));
+    wrap = wrap.replace(/( *)\$OUTPUT;/, function($0, $1) {
         return $1.length ? OUTPUT.replace(/^/mg, $1) : OUTPUT;
     });
     if (options.lint !== "")
@@ -183,7 +184,7 @@ exports.safeProp = protobuf.util.safeProp = (function(safeProp) {
         return !/^[$\w]+$/.test(name) || exports.reserved(name)
             ? safeProp(name)
             : "." + name;
-    }
+    };
 })(protobuf.util.safeProp);
 
 exports.jsonSafeProp = function(json) {

@@ -85,7 +85,8 @@ $root.vector_tile = (function() {
          * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
          * @param {number} [length] Message length if known beforehand
          * @returns {vector_tile.Tile} Tile
-         * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
         Tile.decode = function decode(reader, length) {
             if (!(reader instanceof $Reader))
@@ -111,7 +112,8 @@ $root.vector_tile = (function() {
          * Decodes a Tile message from the specified reader or buffer, length delimited.
          * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
          * @returns {vector_tile.Tile} Tile
-         * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
         Tile.decodeDelimited = function decodeDelimited(reader) {
             if (!(reader instanceof $Reader))
@@ -332,7 +334,8 @@ $root.vector_tile = (function() {
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {vector_tile.Tile.Value} Value
-             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
              */
             Value.decode = function decode(reader, length) {
                 if (!(reader instanceof $Reader))
@@ -374,7 +377,8 @@ $root.vector_tile = (function() {
              * Decodes a Value message from the specified reader or buffer, length delimited.
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @returns {vector_tile.Tile.Value} Value
-             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
              */
             Value.decodeDelimited = function decodeDelimited(reader) {
                 if (!(reader instanceof $Reader))
@@ -642,7 +646,8 @@ $root.vector_tile = (function() {
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {vector_tile.Tile.Feature} Feature
-             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
              */
             Feature.decode = function decode(reader, length) {
                 if (!(reader instanceof $Reader))
@@ -689,7 +694,8 @@ $root.vector_tile = (function() {
              * Decodes a Feature message from the specified reader or buffer, length delimited.
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @returns {vector_tile.Tile.Feature} Feature
-             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
              */
             Feature.decodeDelimited = function decodeDelimited(reader) {
                 if (!(reader instanceof $Reader))
@@ -964,7 +970,8 @@ $root.vector_tile = (function() {
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {vector_tile.Tile.Layer} Layer
-             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
              */
             Layer.decode = function decode(reader, length) {
                 if (!(reader instanceof $Reader))
@@ -1003,9 +1010,9 @@ $root.vector_tile = (function() {
                     }
                 }
                 if (!message.hasOwnProperty("version"))
-                    throw Error("missing required 'version'");
+                    throw $util.ProtocolError("missing required 'version'", message);
                 if (!message.hasOwnProperty("name"))
-                    throw Error("missing required 'name'");
+                    throw $util.ProtocolError("missing required 'name'", message);
                 return message;
             };
 
@@ -1013,7 +1020,8 @@ $root.vector_tile = (function() {
              * Decodes a Layer message from the specified reader or buffer, length delimited.
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @returns {vector_tile.Tile.Layer} Layer
-             * @throws {Error} If the payload is not a reader or valid buffer or required fields are missing
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
              */
             Layer.decodeDelimited = function decodeDelimited(reader) {
                 if (!(reader instanceof $Reader))

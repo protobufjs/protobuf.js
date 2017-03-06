@@ -46,9 +46,9 @@ function proto_target(root, options, callback) {
     first = false;
     try {
         buildRoot(root);
-        callback(null, out.join('\n'));
+        return callback(null, out.join("\n"));
     } catch (err) {
-        callback(err);
+        return callback(err);
     } finally {
         out = [];
         syntax = 3;
@@ -67,18 +67,18 @@ function push(line) {
 }
 
 function escape(str) {
-    return str.replace(/[\\"']/g, '\\$&')
-              .replace(/\u0000/g, '\\0');
+    return str.replace(/[\\"']/g, "\\$&")
+              .replace(/\u0000/g, "\\0");
 }
 
 function value(v) {
     switch (typeof v) {
-        case 'boolean':
-            return v ? 'true' : 'false';
-        case 'number':
+        case "boolean":
+            return v ? "true" : "false";
+        case "number":
             return v.toString();
         default:
-            return '"' + escape(v + '') + '"';
+            return "\"" + escape(String(v)) + "\"";
     }
 }
 
@@ -178,10 +178,12 @@ function buildType(type) {
 }
 
 function buildField(field, passExtend) {
-    if (field.partOf || field.declaringField || (field.extend !== undefined && !passExtend))
+    if (field.partOf || field.declaringField || !(field.extend === undefined || passExtend))
         return;
-    if (first)
-        first = false, push("");
+    if (first) {
+        first = false;
+        push("");
+    }
     if (field.resolvedType && field.resolvedType.group) {
         buildGroup(field);
         return;
@@ -277,8 +279,10 @@ function buildOneOf(oneof) {
     ++indent; first = true;
     oneof.oneof.forEach(function(fieldName) {
         var field = oneof.parent.get(fieldName);
-        if (first)
-            push(""), first = false;
+        if (first) {
+            first = false;
+            push("");
+        }
         var opts = buildFieldOptions(field);
         push(field.type + " " + underScore(field.name) + " = " + field.id + (opts ? " " + opts : "") + ";");
     });
@@ -301,11 +305,13 @@ function buildMethod(method) {
 
 function buildOptions(object) {
     if (!object.options)
-        return
+        return;
     first = true;
     Object.keys(object.options).forEach(function(key) {
-        if (first)
-            push(""), first = false;
+        if (first) {
+            first = false;
+            push("");
+        }
         var val = object.options[key];
         push("option " + key + " = " + JSON.stringify(val) + ";");
     });

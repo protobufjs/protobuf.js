@@ -2278,14 +2278,6 @@ export namespace util {
     function lazyResolve(root: Root, lazyTypes: { [k: number]: (string|ReflectionObject) }): void;
 
     /**
-     * Makes an error object with additional properties.
-     * @param {string} message Error message
-     * @param {Object.<string,*>=} additionalProperties Additional properties
-     * @returns {Error} Error object
-     */
-    function mkError(message: string, additionalProperties?: { [k: string]: any }): Error;
-
-    /**
      * Default conversion options used for toJSON implementations. Converts longs, enums and bytes to strings.
      * @type {ConversionOptions}
      */

@@ -4,6 +4,7 @@ engines:
 ratings:
   paths:
   - "src/**.js"
+  - "cli/**.js"
   - "lib/aspromise/**.js"
   - "lib/base64/**.js"
   - "lib/eventemitter/**.js"
@@ -14,3 +15,4 @@ ratings:
   - "lib/utf8/**.js"
 exclude_paths:
   - "**/tests/**"
+  - "cli/wrappers/**"

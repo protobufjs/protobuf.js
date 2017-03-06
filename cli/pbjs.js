@@ -19,7 +19,7 @@ var targets  = util.requireAll("./targets");
  * @param {function(?Error)} [callback] Optional completion callback
  * @returns {number|undefined} Exit code, if known
  */
-exports.main = function(args, callback) {
+exports.main = function main(args, callback) {
     var lintDefault = "eslint-disable block-scoped-var, no-redeclare, no-control-regex, no-prototype-builtins";
     var argv = minimist(args, {
         alias: {
@@ -59,16 +59,16 @@ exports.main = function(args, callback) {
             return "                  " + util.pad(key, 14, true) + targets[key].description;
         });
         if (callback)
-            callback(Error("usage"));
+            callback(Error("usage")); // eslint-disable-line callback-return
         else
-            console.error([
+            process.stderr.write([
                 "protobuf.js v" + pkg.version + " CLI for JavaScript",
                 "",
                 chalk.bold.white("Consolidates imports and converts between file formats."),
                 "",
                 "  -t, --target    Specifies the target format. Also accepts a path to require a custom target.",
                 "",
-                descs.join('\n'),
+                descs.join("\n"),
                 "",
                 "  -p, --path      Adds a directory to the include path.",
                 "",
@@ -184,8 +184,10 @@ exports.main = function(args, callback) {
                 }
                 callTarget();
             } catch (err) {
-                if (callback)
-                    return callback(err);
+                if (callback) {
+                    callback(err);
+                    return;
+                }
                 throw err;
             }
         });
@@ -280,4 +282,6 @@ exports.main = function(args, callback) {
                 : undefined;
         });
     }
+
+    return undefined;
 };

@@ -14,8 +14,10 @@ static_module_target.description = "Static code without reflection as a module";
 
 function static_module_target(root, options, callback) {
     require("./static")(root, options, function(err, output) {
-        if (err)
-            return callback(err);
+        if (err) {
+            callback(err);
+            return;
+        }
         try {
             output = util.wrap(output, protobuf.util.merge({ dependency: "protobufjs/minimal" }, options));
         } catch (e) {
