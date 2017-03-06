@@ -4,6 +4,7 @@
 /*eslint-disable strict, no-console*/
 var protobuf = require(".."); // require("protobufjs");
 
+// traverse-types.proto
 var proto = "syntax=\"proto3\";\
 package example;\
 message Foo {\
@@ -17,8 +18,13 @@ message Bar {\
   }\
 }";
 
+// the following is loading a string.
+// in a real application, it'd be more like protobuf.load("traverse-types.proto", ...)
+protobuf.parse.filename = "traverse-types.proto";
+var root = protobuf.parse(proto).root;
+
 function traverseTypes(current, fn) {
-    if (current instanceof protobuf.Type)
+    if (current instanceof protobuf.Type) // and/or protobuf.Enum, protobuf.Service etc.
         fn(current);
     if (current.nestedArray)
         current.nestedArray.forEach(function(nested) {
@@ -26,8 +32,11 @@ function traverseTypes(current, fn) {
         });
 }
 
-var root = protobuf.parse(proto).root;
-
 traverseTypes(root, function(type) {
-    console.log(type.fullName);
+    console.log(
+        type.constructor.className + " " + type.name
+        + "\n  fully qualified name: " + type.fullName
+        + "\n  defined in: " + type.filename
+        + "\n  parent: " + type.parent + " in " + type.parent.filename
+    );
 });
