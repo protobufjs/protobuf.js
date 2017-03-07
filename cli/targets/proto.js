@@ -68,6 +68,8 @@ function push(line) {
 
 function escape(str) {
     return str.replace(/[\\"']/g, "\\$&")
+              .replace(/\r/g, "\\r")
+              .replace(/\n/g, "\\n")
               .replace(/\u0000/g, "\\0");
 }
 
@@ -150,13 +152,17 @@ function buildEnum(enm) {
 
 function buildRanges(keyword, ranges) {
     if (ranges && ranges.length) {
-        push("");
+        var parts = [];
         ranges.forEach(function(range) {
-            if (range[0] === range[1])
-                push(keyword + " " + range[0] + ";");
+            if (typeof range === "string")
+                parts.push("\"" + escape(range) + "\"");
+            else if (range[0] === range[1])
+                parts.push(range[0]);
             else
-                push(keyword + " " + range[0] + " to " + (range[1] === 0x1FFFFFFF ? "max" : range[1]) + ";");
+                parts.push(range[0] + " to " + (range[1] === 0x1FFFFFFF ? "max" : range[1]));
         });
+        push("");
+        push(keyword + " " + parts.join(", "));
     }
 }
 
@@ -178,7 +184,7 @@ function buildType(type) {
 }
 
 function buildField(field, passExtend) {
-    if (field.partOf || field.declaringField || !(field.extend === undefined || passExtend))
+    if (field.partOf || field.declaringField || field.extend !== undefined && !passExtend)
         return;
     if (first) {
         first = false;

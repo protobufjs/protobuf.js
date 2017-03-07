@@ -108,7 +108,8 @@ exports.main = function main(args, callback) {
                 "  --no-beautify   Does not beautify generated code.",
                 "  --no-comments   Does not output any JSDoc comments.",
                 "",
-                "usage: " + chalk.bold.green("pbjs") + " [options] file1.proto file2.json ..." + chalk.gray("  (or)  ") + "other | " + chalk.bold.green("pbjs") + " [options] -"
+                "usage: " + chalk.bold.green("pbjs") + " [options] file1.proto file2.json ..." + chalk.gray("  (or)  ") + "other | " + chalk.bold.green("pbjs") + " [options] -",
+                ""
             ].join("\n"));
         return 1;
     }

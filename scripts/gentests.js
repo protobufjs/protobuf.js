@@ -31,7 +31,7 @@ var fs   = require("fs"),
         } catch (err2) {
             process.stderr.write("ERROR: " + err2.message + "\n");
         }
-    })
+    });
 });
 
 [

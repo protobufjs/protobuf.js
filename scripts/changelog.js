@@ -1,3 +1,5 @@
+"use strict";
+
 var path = require("path"),
     fs   = require("fs");
 
@@ -76,7 +78,7 @@ gitSemverTags(function(err, tags) {
             hash = match[1];
         }
         message.split(";").forEach(function(message) {
-            if (/^(Merge pull request |Post\-merge)/.test(message))
+            if (/^(Merge pull request |Post-merge)/.test(message))
                 return;
             var match = /^(\w+):/i.exec(message = message.trim());
             var category;

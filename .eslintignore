@@ -1,4 +1,3 @@
-bench/*
 bin/*
 cli/wrappers/*
 coverage/*
@@ -12,5 +11,4 @@ lib/tape-adapter.js
 lib/tsd-jsdoc/*
 lib/*/tests/*
 sandbox/*
-scripts/*
 tests/*

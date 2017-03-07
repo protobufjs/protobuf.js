@@ -137,7 +137,7 @@ protobuf.load("awesome.proto", function(err, root) {
 
 * `Message.encode` does not implicitly verify a message but tries to encode whatever is specified, possibly resulting in a runtime error being thrown somewhere down the road.
 * `Message.verify` can be used to explicitly perform verification prior to encoding where necessary. Instead of throwing, it returns the error message, if any.
-* `Message.decode` throws if a buffer is invalid or missing required fields and doesn't require calling `Message.verify` afterwards.
+* `Message.decode` throws if a buffer is invalid or missing required fields (a `protobuf.util.ProtocolError` with an `instance` property set to the so far decoded message in the latter case) and doesn't require calling `Message.verify` afterwards.
 
 Additionally, promise syntax can be used by omitting the callback, if preferred:
 

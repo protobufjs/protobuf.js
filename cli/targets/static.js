@@ -18,7 +18,7 @@ var out = [];
 var indent = 0;
 var config = {};
 
-static_target.description = "Static code without reflection";
+static_target.description = "Static code without reflection (non-functional on its own)";
 
 function static_target(root, options, callback) {
     config = options;

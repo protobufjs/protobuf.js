@@ -1,5 +1,8 @@
+"use strict";
 module.exports = bundle;
-var fs         = require("fs");
+
+var fs         = require("fs"),
+    path       = require("path");
 
 var browserify = require("browserify");
 
@@ -15,8 +18,9 @@ var source     = require("vinyl-source-stream");
 
 var zopfli     = require("node-zopfli");
 
-var pkg = require(__dirname + "/../package.json");
+var pkg = require(path.join(__dirname, "..", "package.json"));
 
+/*eslint-disable no-template-curly-in-string*/
 var license = [
     "/*!",
     " * protobuf.js v${version} (c) 2016, Daniel Wirtz",
@@ -25,6 +29,7 @@ var license = [
     " * see: https://github.com/dcodeIO/protobuf.js for details",
     " */"
 ].join("\n") + "\n";
+/*eslint-enable no-template-curly-in-string*/
 
 var prelude = fs.readFileSync(require.resolve("../lib/prelude.js")).toString("utf8");
 
@@ -35,6 +40,7 @@ var prelude = fs.readFileSync(require.resolve("../lib/prelude.js")).toString("ut
  * @param {string} options.target Target directory
  * @param {boolean} [options.compress=false] Whether to minify or not
  * @param {string[]} [options.exclude] Excluded source files
+ * @returns {undefined}
  */
 function bundle(options) {
     if (!options || !options.entry || !options.target)
@@ -93,6 +99,7 @@ function bundle(options) {
  * @param {string} sourceFile Source file
  * @param {string} destinationFile Destination file
  * @param {function(?Error)} callback Node-style callback
+ * @returns {undefined}
  */
 bundle.compress = function compress(sourceFile, destinationFile, callback) {
     var src = fs.createReadStream(sourceFile);

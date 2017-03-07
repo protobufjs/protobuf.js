@@ -1,3 +1,5 @@
+"use strict";
+
 var path = require("path"),
     fs   = require("fs"),
     pkg  = require(path.join(__dirname, "..", "package.json"));

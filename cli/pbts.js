@@ -57,7 +57,8 @@ exports.main = function(args, callback) {
                 "",
                 "  -m, --main      Whether building the main library without any imports.",
                 "",
-                "usage: " + chalk.bold.green("pbts") + " [options] file1.js file2.js ..." + chalk.bold.gray("  (or)  ") + "other | " + chalk.bold.green("pbts") + " [options] -"
+                "usage: " + chalk.bold.green("pbts") + " [options] file1.js file2.js ..." + chalk.bold.gray("  (or)  ") + "other | " + chalk.bold.green("pbts") + " [options] -",
+                ""
             ].join("\n"));
         return 1;
     }

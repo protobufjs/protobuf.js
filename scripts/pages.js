@@ -1,3 +1,6 @@
+/*eslint-disable no-console*/
+"use strict";
+
 var ghpages = require("gh-pages"),
     path    = require("path");
 

@@ -1,3 +1,4 @@
+---
 engines:
   eslint:
     enabled: true
@@ -13,6 +14,8 @@ ratings:
   - "lib/path/**.js"
   - "lib/pool/**.js"
   - "lib/utf8/**.js"
+  - "**.md"
 exclude_paths:
+  - "dist/**"
   - "**/tests/**"
   - "cli/wrappers/**"
