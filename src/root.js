@@ -78,7 +78,7 @@ Root.prototype.load = function load(filename, options, callback) {
     }
     var self = this;
     if (!callback)
-        return util.asPromise(load, self, filename);
+        return util.asPromise(load, self, filename, options);
     
     var sync = callback === SYNC; // undocumented
 
