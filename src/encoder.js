@@ -32,8 +32,16 @@ function encoder(mtype) {
         ("w=Writer.create()");
 
     var i, ref;
-    for (var i = 0; i < /* initializes */ mtype.fieldsArray.length; ++i) {
-        var field    = mtype._fieldsArray[i].resolve();
+
+    // "when a message is serialized its known fields should be written sequentially by field number"
+    var sortedFields = /* initializes */ mtype.fieldsArray.slice();
+    sortedFields.sort(function(a, b) {
+        return a.id - b.id;
+    });
+
+    for (var i = 0; i < sortedFields.length; ++i) {
+        var field    = sortedFields[i].resolve(),
+            index    = mtype._fieldsArray.indexOf(field);
         if (field.partOf) // see below for oneofs
             continue;
         var type     = field.resolvedType instanceof Enum ? "uint32" : field.type,
@@ -47,7 +55,7 @@ function encoder(mtype) {
         ("for(var ks=Object.keys(%s),i=0;i<ks.length;++i){", ref)
             ("w.uint32(%d).fork().uint32(%d).%s(ks[i])", (field.id << 3 | 2) >>> 0, 8 | types.mapKey[field.keyType], field.keyType);
             if (wireType === undefined) gen
-            ("types[%d].encode(%s[ks[i]],w.uint32(18).fork()).ldelim().ldelim()", i, ref); // can't be groups
+            ("types[%d].encode(%s[ks[i]],w.uint32(18).fork()).ldelim().ldelim()", index, ref); // can't be groups
             else gen
             (".uint32(%d).%s(%s[ks[i]]).ldelim()", 16 | wireType, type, ref);
             gen
@@ -73,7 +81,7 @@ function encoder(mtype) {
     ("if(%s!==undefined&&m.hasOwnProperty(%j)){", ref, field.name)
         ("for(var i=0;i<%s.length;++i)", ref);
                 if (wireType === undefined)
-            genTypePartial(gen, field, i, ref + "[i]");
+            genTypePartial(gen, field, index, ref + "[i]");
                 else gen
             ("w.uint32(%d).%s(%s[i])", (field.id << 3 | wireType) >>> 0, type, ref);
                 gen
@@ -95,7 +103,7 @@ function encoder(mtype) {
             }
 
             if (wireType === undefined)
-        genTypePartial(gen, field, i, ref);
+        genTypePartial(gen, field, index, ref);
             else gen
         ("w.uint32(%d).%s(%s)", (field.id << 3 | wireType) >>> 0, type, ref);
 
