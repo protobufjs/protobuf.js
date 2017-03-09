@@ -1,4 +1,4 @@
 import codegen from ".";
 
-var cg = codegen("f", "a")
+let cg = codegen("f", "a")
     ("s", "a");

@@ -7,7 +7,7 @@ export const proto = {
                 value: {
                     rule: "required",
                     type: "string",
-                    id:1
+                    id: 1
                 }
             }
         }
@@ -21,18 +21,18 @@ export class Hello extends protobuf.Message {
         super(properties);
     }
 
-    foo() {
+    public foo() {
         this["value"] = "hi";
         return this;
     }
 }
 protobuf.Class.create(root.lookupType("Hello"), Hello);
 
-var hello = new Hello();
+let hello = new Hello();
 
-var buf = Hello.encode(hello.foo()).finish();
+let buf = Hello.encode(hello.foo()).finish();
 
-var hello2 = Hello.decode(buf) as Hello;
-console.log(hello2.foo().toObject());
+let hello2 = Hello.decode(buf) as Hello;
+process.stdout.write(JSON.stringify(hello2.foo().toObject(), null, 2));
 
-export var utf8 = protobuf.util.utf8;
+export const utf8 = protobuf.util.utf8;

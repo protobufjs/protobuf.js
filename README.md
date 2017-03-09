@@ -346,7 +346,7 @@ Documentation
 * [Frequently asked questions](https://github.com/dcodeIO/protobuf.js/wiki) on our wiki
 
 #### Community
-* [Questions and answers](http://stackoverflow.com/questions/tagged/protobuf.js) on StackOverflow
+* [Questions and answers](http://stackoverflow.com/search?q=protobuf.js) on StackOverflow
 
 Command line
 ------------

@@ -20,7 +20,7 @@ type FetchCallback = (error: Error, contents?: string) => void;
 
 interface FetchOptions {
     binary?: boolean;
-    xhr?: boolean
+    xhr?: boolean;
 }
 
 /**

@@ -5,6 +5,7 @@ var protobuf = exports;
  * Build type, one of `"full"`, `"light"` or `"minimal"`.
  * @name build
  * @type {string}
+ * @const
  */
 protobuf.build = "minimal";
 

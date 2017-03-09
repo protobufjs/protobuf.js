@@ -27,7 +27,7 @@ export class Class {
      * @param {*} [ctor] Custom constructor to set up, defaults to create a generic one if omitted
      * @returns {Message} Message prototype
      */
-    static create(type: Type, ctor?: any): Message;
+    public static create(type: Type, ctor?: any): Message;
 
     /**
      * Creates a new message of this type from a plain object. Also converts values to their respective internal types.
@@ -36,7 +36,7 @@ export class Class {
      * @param {Object.<string,*>} object Plain object
      * @returns {Message} Message instance
      */
-    fromObject(object: { [k: string]: any }): Message;
+    public fromObject(object: { [k: string]: any }): Message;
 
     /**
      * Creates a new message of this type from a plain object. Also converts values to their respective internal types.
@@ -46,7 +46,7 @@ export class Class {
      * @param {Object.<string,*>} object Plain object
      * @returns {Message} Message instance
      */
-    from(object: { [k: string]: any }): Message;
+    public from(object: { [k: string]: any }): Message;
 
     /**
      * Creates a plain object from a message of this type. Also converts values to other types if specified.
@@ -56,7 +56,7 @@ export class Class {
      * @param {ConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      */
-    toObject(message: Message, options?: ConversionOptions): { [k: string]: any };
+    public toObject(message: Message, options?: ConversionOptions): { [k: string]: any };
 
     /**
      * Encodes a message of this type.
@@ -66,7 +66,7 @@ export class Class {
      * @param {Writer} [writer] Writer to use
      * @returns {Writer} Writer
      */
-    encode(message: (Message|Object), writer?: Writer): Writer;
+    public encode(message: (Message|Object), writer?: Writer): Writer;
 
     /**
      * Encodes a message of this type preceeded by its length as a varint.
@@ -76,7 +76,7 @@ export class Class {
      * @param {Writer} [writer] Writer to use
      * @returns {Writer} Writer
      */
-    encodeDelimited(message: (Message|Object), writer?: Writer): Writer;
+    public encodeDelimited(message: (Message|Object), writer?: Writer): Writer;
 
     /**
      * Decodes a message of this type.
@@ -85,7 +85,7 @@ export class Class {
      * @param {Reader|Uint8Array} reader Reader or buffer to decode
      * @returns {Message} Decoded message
      */
-    decode(reader: (Reader|Uint8Array)): Message;
+    public decode(reader: (Reader|Uint8Array)): Message;
 
     /**
      * Decodes a message of this type preceeded by its length as a varint.
@@ -94,7 +94,7 @@ export class Class {
      * @param {Reader|Uint8Array} reader Reader or buffer to decode
      * @returns {Message} Decoded message
      */
-    decodeDelimited(reader: (Reader|Uint8Array)): Message;
+    public decodeDelimited(reader: (Reader|Uint8Array)): Message;
 
     /**
      * Verifies a message of this type.
@@ -103,7 +103,7 @@ export class Class {
      * @param {Message|Object} message Message or plain object to verify
      * @returns {?string} `null` if valid, otherwise the reason why it is not
      */
-    verify(message: (Message|Object)): string;
+    public verify(message: (Message|Object)): string;
 }
 
 /**
@@ -189,19 +189,19 @@ export class Enum extends ReflectionObject {
      * Enum values by id.
      * @type {Object.<number,string>}
      */
-    valuesById: { [k: number]: string };
+    public valuesById: { [k: number]: string };
 
     /**
      * Enum values by name.
      * @type {Object.<string,number>}
      */
-    values: { [k: string]: number };
+    public values: { [k: string]: number };
 
     /**
      * Value comment texts, if any.
      * @type {Object.<string,string>}
      */
-    comments: { [k: string]: string };
+    public comments: { [k: string]: string };
 
     /**
      * Creates an enum from JSON.
@@ -210,7 +210,7 @@ export class Enum extends ReflectionObject {
      * @returns {Enum} Created enum
      * @throws {TypeError} If arguments are invalid
      */
-    static fromJSON(name: string, json: { [k: string]: any }): Enum;
+    public static fromJSON(name: string, json: { [k: string]: any }): Enum;
 
     /**
      * Adds a value to this enum.
@@ -221,7 +221,7 @@ export class Enum extends ReflectionObject {
      * @throws {TypeError} If arguments are invalid
      * @throws {Error} If there is already a value with this name or id
      */
-    add(name: string, id: number, comment: string): Enum;
+    public add(name: string, id: number, comment: string): Enum;
 
     /**
      * Removes a value from this enum
@@ -230,7 +230,7 @@ export class Enum extends ReflectionObject {
      * @throws {TypeError} If arguments are invalid
      * @throws {Error} If `name` is not a name of this enum
      */
-    remove(name: string): Enum;
+    public remove(name: string): Enum;
 }
 
 /**
@@ -265,103 +265,103 @@ export class Field extends ReflectionObject {
      * Field rule, if any.
      * @type {string|undefined}
      */
-    rule?: string;
+    public rule?: string;
 
     /**
      * Field type.
      * @type {string}
      */
-    type: string;
+    public type: string;
 
     /**
      * Unique field id.
      * @type {number}
      */
-    id: number;
+    public id: number;
 
     /**
      * Extended type if different from parent.
      * @type {string|undefined}
      */
-    extend?: string;
+    public extend?: string;
 
     /**
      * Whether this field is required.
      * @type {boolean}
      */
-    required: boolean;
+    public required: boolean;
 
     /**
      * Whether this field is optional.
      * @type {boolean}
      */
-    optional: boolean;
+    public optional: boolean;
 
     /**
      * Whether this field is repeated.
      * @type {boolean}
      */
-    repeated: boolean;
+    public repeated: boolean;
 
     /**
      * Whether this field is a map or not.
      * @type {boolean}
      */
-    map: boolean;
+    public map: boolean;
 
     /**
      * Message this field belongs to.
      * @type {?Type}
      */
-    message: Type;
+    public message: Type;
 
     /**
      * OneOf this field belongs to, if any,
      * @type {?OneOf}
      */
-    partOf: OneOf;
+    public partOf: OneOf;
 
     /**
      * The field type's default value.
      * @type {*}
      */
-    typeDefault: any;
+    public typeDefault: any;
 
     /**
      * The field's default value on prototypes.
      * @type {*}
      */
-    defaultValue: any;
+    public defaultValue: any;
 
     /**
      * Whether this field's value should be treated as a long.
      * @type {boolean}
      */
-    long: boolean;
+    public long: boolean;
 
     /**
      * Whether this field's value is a buffer.
      * @type {boolean}
      */
-    bytes: boolean;
+    public bytes: boolean;
 
     /**
      * Resolved type if not a basic type.
      * @type {?(Type|Enum)}
      */
-    resolvedType: (Type|Enum);
+    public resolvedType: (Type|Enum);
 
     /**
      * Sister-field within the extended type if a declaring extension field.
      * @type {?Field}
      */
-    extensionField: Field;
+    public extensionField: Field;
 
     /**
      * Sister-field within the declaring namespace if an extended field.
      * @type {?Field}
      */
-    declaringField: Field;
+    public declaringField: Field;
 
     /**
      * Determines whether this field is packed. Only relevant when repeated and working with proto2.
@@ -369,7 +369,7 @@ export class Field extends ReflectionObject {
      * @type {boolean}
      * @readonly
      */
-    readonly packed: boolean;
+    public readonly packed: boolean;
 
     /**
      * Constructs a field from JSON.
@@ -378,14 +378,14 @@ export class Field extends ReflectionObject {
      * @returns {Field} Created field
      * @throws {TypeError} If arguments are invalid
      */
-    static fromJSON(name: string, json: { [k: string]: any }): Field;
+    public static fromJSON(name: string, json: { [k: string]: any }): Field;
 
     /**
      * Resolves this field's type references.
      * @returns {Field} `this`
      * @throws {Error} If any reference cannot be resolved
      */
-    resolve(): Field;
+    public resolve(): Field;
 }
 
 /**
@@ -472,8 +472,9 @@ export function loadSync(filename: (string|string[]), root?: Root): Root;
  * Build type, one of `"full"`, `"light"` or `"minimal"`.
  * @name build
  * @type {string}
+ * @const
  */
-export var build: string;
+export const build: string;
 
 /**
  * Named roots.
@@ -490,7 +491,7 @@ export var build: string;
  * // in any subsequent module:
  * var root = protobuf.roots["myroot"];
  */
-export var roots: { [k: string]: Root };
+export let roots: { [k: string]: Root };
 
 /**
  * Reconfigures the library according to the environment.
@@ -528,13 +529,13 @@ export class MapField extends Field {
      * Key type.
      * @type {string}
      */
-    keyType: string;
+    public keyType: string;
 
     /**
      * Resolved key type if not a basic type.
      * @type {?ReflectionObject}
      */
-    resolvedKeyType: ReflectionObject;
+    public resolvedKeyType: ReflectionObject;
 
     /**
      * Constructs a map field from JSON.
@@ -543,7 +544,7 @@ export class MapField extends Field {
      * @returns {MapField} Created map field
      * @throws {TypeError} If arguments are invalid
      */
-    static fromJSON(name: string, json: { [k: string]: any }): MapField;
+    public static fromJSON(name: string, json: { [k: string]: any }): MapField;
 }
 
 /**
@@ -574,7 +575,7 @@ export class Message {
      * @type {Type}
      * @readonly
      */
-    static readonly $type: Type;
+    public static readonly $type: Type;
 
     /**
      * Reference to the reflected type.
@@ -582,7 +583,7 @@ export class Message {
      * @type {Type}
      * @readonly
      */
-    readonly $type: Type;
+    public readonly $type: Type;
 
     /**
      * Encodes a message of this type.
@@ -590,7 +591,7 @@ export class Message {
      * @param {Writer} [writer] Writer to use
      * @returns {Writer} Writer
      */
-    static encode(message: (Message|Object), writer?: Writer): Writer;
+    public static encode(message: (Message|Object), writer?: Writer): Writer;
 
     /**
      * Encodes a message of this type preceeded by its length as a varint.
@@ -598,7 +599,7 @@ export class Message {
      * @param {Writer} [writer] Writer to use
      * @returns {Writer} Writer
      */
-    static encodeDelimited(message: (Message|Object), writer?: Writer): Writer;
+    public static encodeDelimited(message: (Message|Object), writer?: Writer): Writer;
 
     /**
      * Decodes a message of this type.
@@ -607,7 +608,7 @@ export class Message {
      * @param {Reader|Uint8Array} reader Reader or buffer to decode
      * @returns {Message} Decoded message
      */
-    static decode(reader: (Reader|Uint8Array)): Message;
+    public static decode(reader: (Reader|Uint8Array)): Message;
 
     /**
      * Decodes a message of this type preceeded by its length as a varint.
@@ -616,7 +617,7 @@ export class Message {
      * @param {Reader|Uint8Array} reader Reader or buffer to decode
      * @returns {Message} Decoded message
      */
-    static decodeDelimited(reader: (Reader|Uint8Array)): Message;
+    public static decodeDelimited(reader: (Reader|Uint8Array)): Message;
 
     /**
      * Verifies a message of this type.
@@ -625,14 +626,14 @@ export class Message {
      * @param {Message|Object} message Message or plain object to verify
      * @returns {?string} `null` if valid, otherwise the reason why it is not
      */
-    static verify(message: (Message|Object)): string;
+    public static verify(message: (Message|Object)): string;
 
     /**
      * Creates a new message of this type from a plain object. Also converts values to their respective internal types.
      * @param {Object.<string,*>} object Plain object
      * @returns {Message} Message instance
      */
-    static fromObject(object: { [k: string]: any }): Message;
+    public static fromObject(object: { [k: string]: any }): Message;
 
     /**
      * Creates a new message of this type from a plain object. Also converts values to their respective internal types.
@@ -641,7 +642,7 @@ export class Message {
      * @param {Object.<string,*>} object Plain object
      * @returns {Message} Message instance
      */
-    static from(object: { [k: string]: any }): Message;
+    public static from(object: { [k: string]: any }): Message;
 
     /**
      * Creates a plain object from a message of this type. Also converts values to other types if specified.
@@ -649,20 +650,20 @@ export class Message {
      * @param {ConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      */
-    static toObject(message: Message, options?: ConversionOptions): { [k: string]: any };
+    public static toObject(message: Message, options?: ConversionOptions): { [k: string]: any };
 
     /**
      * Creates a plain object from this message. Also converts values to other types if specified.
      * @param {ConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      */
-    toObject(options?: ConversionOptions): { [k: string]: any };
+    public toObject(options?: ConversionOptions): { [k: string]: any };
 
     /**
      * Converts this message to JSON.
      * @returns {Object.<string,*>} JSON object
      */
-    toJSON(): { [k: string]: any };
+    public toJSON(): { [k: string]: any };
 }
 
 /**
@@ -699,43 +700,43 @@ export class Method extends ReflectionObject {
      * Method type.
      * @type {string}
      */
-    type: string;
+    public type: string;
 
     /**
      * Request type.
      * @type {string}
      */
-    requestType: string;
+    public requestType: string;
 
     /**
      * Whether requests are streamed or not.
      * @type {boolean|undefined}
      */
-    requestStream?: boolean;
+    public requestStream?: boolean;
 
     /**
      * Response type.
      * @type {string}
      */
-    responseType: string;
+    public responseType: string;
 
     /**
      * Whether responses are streamed or not.
      * @type {boolean|undefined}
      */
-    responseStream?: boolean;
+    public responseStream?: boolean;
 
     /**
      * Resolved request type.
      * @type {?Type}
      */
-    resolvedRequestType: Type;
+    public resolvedRequestType: Type;
 
     /**
      * Resolved response type.
      * @type {?Type}
      */
-    resolvedResponseType: Type;
+    public resolvedResponseType: Type;
 
     /**
      * Constructs a service method from JSON.
@@ -744,7 +745,7 @@ export class Method extends ReflectionObject {
      * @returns {Method} Created method
      * @throws {TypeError} If arguments are invalid
      */
-    static fromJSON(name: string, json: { [k: string]: any }): Method;
+    public static fromJSON(name: string, json: { [k: string]: any }): Method;
 }
 
 /**
@@ -778,7 +779,7 @@ export class Namespace extends NamespaceBase {
      * @returns {Namespace} Created namespace
      * @throws {TypeError} If arguments are invalid
      */
-    static fromJSON(name: string, json: { [k: string]: any }): Namespace;
+    public static fromJSON(name: string, json: { [k: string]: any }): Namespace;
 
     /**
      * Converts an array of reflection objects to JSON.
@@ -786,7 +787,7 @@ export class Namespace extends NamespaceBase {
      * @param {ReflectionObject[]} array Object array
      * @returns {Object.<string,*>|undefined} JSON object or `undefined` when array is empty
      */
-    static arrayToJSON(array: ReflectionObject[]): ({ [k: string]: any }|undefined);
+    public static arrayToJSON(array: ReflectionObject[]): ({ [k: string]: any }|undefined);
 }
 
 /**
@@ -806,7 +807,7 @@ export abstract class NamespaceBase extends ReflectionObject {
      * Nested objects by name.
      * @type {Object.<string,ReflectionObject>|undefined}
      */
-    nested?: { [k: string]: ReflectionObject };
+    public nested?: { [k: string]: ReflectionObject };
 
     /**
      * Nested objects of this namespace as an array for iteration.
@@ -814,21 +815,21 @@ export abstract class NamespaceBase extends ReflectionObject {
      * @type {ReflectionObject[]}
      * @readonly
      */
-    readonly nestedArray: ReflectionObject[];
+    public readonly nestedArray: ReflectionObject[];
 
     /**
      * Adds nested elements to this namespace from JSON.
      * @param {Object.<string,*>} nestedJson Nested JSON
      * @returns {Namespace} `this`
      */
-    addJSON(nestedJson: { [k: string]: any }): Namespace;
+    public addJSON(nestedJson: { [k: string]: any }): Namespace;
 
     /**
      * Gets the nested object of the specified name.
      * @param {string} name Nested object name
      * @returns {?ReflectionObject} The reflection object or `null` if it doesn't exist
      */
-    get(name: string): ReflectionObject;
+    public get(name: string): ReflectionObject;
 
     /**
      * Gets the values of the nested {@link Enum|enum} of the specified name.
@@ -837,7 +838,7 @@ export abstract class NamespaceBase extends ReflectionObject {
      * @returns {Object.<string,number>} Enum values
      * @throws {Error} If there is no such enum
      */
-    getEnum(name: string): { [k: string]: number };
+    public getEnum(name: string): { [k: string]: number };
 
     /**
      * Adds a nested object to this namespace.
@@ -846,7 +847,7 @@ export abstract class NamespaceBase extends ReflectionObject {
      * @throws {TypeError} If arguments are invalid
      * @throws {Error} If there is already a nested object with this name
      */
-    add(object: ReflectionObject): Namespace;
+    public add(object: ReflectionObject): Namespace;
 
     /**
      * Removes a nested object from this namespace.
@@ -855,7 +856,7 @@ export abstract class NamespaceBase extends ReflectionObject {
      * @throws {TypeError} If arguments are invalid
      * @throws {Error} If `object` is not a member of this namespace
      */
-    remove(object: ReflectionObject): Namespace;
+    public remove(object: ReflectionObject): Namespace;
 
     /**
      * Defines additial namespaces within this one if not yet existing.
@@ -863,13 +864,13 @@ export abstract class NamespaceBase extends ReflectionObject {
      * @param {*} [json] Nested types to create from JSON
      * @returns {Namespace} Pointer to the last namespace created or `this` if path is empty
      */
-    define(path: (string|string[]), json?: any): Namespace;
+    public define(path: (string|string[]), json?: any): Namespace;
 
     /**
      * Resolves this namespace's and all its nested objects' type references. Useful to validate a reflection tree, but comes at a cost.
      * @returns {Namespace} `this`
      */
-    resolveAll(): Namespace;
+    public resolveAll(): Namespace;
 
     /**
      * Looks up the reflection object at the specified path, relative to this namespace.
@@ -878,7 +879,7 @@ export abstract class NamespaceBase extends ReflectionObject {
      * @param {boolean} [parentAlreadyChecked=false] If known, whether the parent has already been checked
      * @returns {?ReflectionObject} Looked up object or `null` if none could be found
      */
-    lookup(path: (string|string[]), filterType: () => any, parentAlreadyChecked?: boolean): ReflectionObject;
+    public lookup(path: (string|string[]), filterType: () => any, parentAlreadyChecked?: boolean): ReflectionObject;
 
     /**
      * Looks up the reflection object at the specified path, relative to this namespace.
@@ -889,7 +890,7 @@ export abstract class NamespaceBase extends ReflectionObject {
      * @returns {?ReflectionObject} Looked up object or `null` if none could be found
      * @variation 2
      */
-    lookup(path: (string|string[]), parentAlreadyChecked?: boolean): ReflectionObject;
+    public lookup(path: (string|string[]), parentAlreadyChecked?: boolean): ReflectionObject;
 
     /**
      * Looks up the {@link Type|type} at the specified path, relative to this namespace.
@@ -898,7 +899,7 @@ export abstract class NamespaceBase extends ReflectionObject {
      * @returns {Type} Looked up type
      * @throws {Error} If `path` does not point to a type
      */
-    lookupType(path: (string|string[])): Type;
+    public lookupType(path: (string|string[])): Type;
 
     /**
      * Looks up the {@link Service|service} at the specified path, relative to this namespace.
@@ -907,7 +908,7 @@ export abstract class NamespaceBase extends ReflectionObject {
      * @returns {Service} Looked up service
      * @throws {Error} If `path` does not point to a service
      */
-    lookupService(path: (string|string[])): Service;
+    public lookupService(path: (string|string[])): Service;
 
     /**
      * Looks up the values of the {@link Enum|enum} at the specified path, relative to this namespace.
@@ -916,7 +917,7 @@ export abstract class NamespaceBase extends ReflectionObject {
      * @returns {Object.<string,number>} Enum values
      * @throws {Error} If `path` does not point to an enum
      */
-    lookupEnum(path: (string|string[])): { [k: string]: number };
+    public lookupEnum(path: (string|string[])): { [k: string]: number };
 }
 
 /**
@@ -933,37 +934,37 @@ export abstract class ReflectionObject {
      * Options.
      * @type {Object.<string,*>|undefined}
      */
-    options?: { [k: string]: any };
+    public options?: { [k: string]: any };
 
     /**
      * Unique name within its namespace.
      * @type {string}
      */
-    name: string;
+    public name: string;
 
     /**
      * Parent namespace.
      * @type {?Namespace}
      */
-    parent: Namespace;
+    public parent: Namespace;
 
     /**
      * Whether already resolved or not.
      * @type {boolean}
      */
-    resolved: boolean;
+    public resolved: boolean;
 
     /**
      * Comment text, if any.
      * @type {?string}
      */
-    comment: string;
+    public comment: string;
 
     /**
      * Defining file name.
      * @type {?string}
      */
-    filename: string;
+    public filename: string;
 
     /**
      * Reference to the root namespace.
@@ -971,7 +972,7 @@ export abstract class ReflectionObject {
      * @type {Root}
      * @readonly
      */
-    readonly root: Root;
+    public readonly root: Root;
 
     /**
      * Full name including leading dot.
@@ -979,41 +980,41 @@ export abstract class ReflectionObject {
      * @type {string}
      * @readonly
      */
-    readonly fullName: string;
+    public readonly fullName: string;
 
     /**
      * Converts this reflection object to its JSON representation.
      * @returns {Object.<string,*>} JSON object
      * @abstract
      */
-    toJSON(): { [k: string]: any };
+    public toJSON(): { [k: string]: any };
 
     /**
      * Called when this object is added to a parent.
      * @param {ReflectionObject} parent Parent added to
      * @returns {undefined}
      */
-    onAdd(parent: ReflectionObject): void;
+    public onAdd(parent: ReflectionObject): void;
 
     /**
      * Called when this object is removed from a parent.
      * @param {ReflectionObject} parent Parent removed from
      * @returns {undefined}
      */
-    onRemove(parent: ReflectionObject): void;
+    public onRemove(parent: ReflectionObject): void;
 
     /**
      * Resolves this objects type references.
      * @returns {ReflectionObject} `this`
      */
-    resolve(): ReflectionObject;
+    public resolve(): ReflectionObject;
 
     /**
      * Gets an option value.
      * @param {string} name Option name
      * @returns {*} Option value or `undefined` if not set
      */
-    getOption(name: string): any;
+    public getOption(name: string): any;
 
     /**
      * Sets an option.
@@ -1022,7 +1023,7 @@ export abstract class ReflectionObject {
      * @param {boolean} [ifNotSet] Sets the option only if it isn't currently set
      * @returns {ReflectionObject} `this`
      */
-    setOption(name: string, value: any, ifNotSet?: boolean): ReflectionObject;
+    public setOption(name: string, value: any, ifNotSet?: boolean): ReflectionObject;
 
     /**
      * Sets multiple options.
@@ -1030,13 +1031,13 @@ export abstract class ReflectionObject {
      * @param {boolean} [ifNotSet] Sets an option only if it isn't currently set
      * @returns {ReflectionObject} `this`
      */
-    setOptions(options: { [k: string]: any }, ifNotSet?: boolean): ReflectionObject;
+    public setOptions(options: { [k: string]: any }, ifNotSet?: boolean): ReflectionObject;
 
     /**
      * Converts this instance to its string representation.
      * @returns {string} Class name[, space, full name]
      */
-    toString(): string;
+    public toString(): string;
 }
 
 /**
@@ -1065,14 +1066,14 @@ export class OneOf extends ReflectionObject {
      * Field names that belong to this oneof.
      * @type {string[]}
      */
-    oneof: string[];
+    public oneof: string[];
 
     /**
      * Fields that belong to this oneof as an array for iteration.
      * @type {Field[]}
      * @readonly
      */
-    readonly fieldsArray: Field[];
+    public readonly fieldsArray: Field[];
 
     /**
      * Constructs a oneof from JSON.
@@ -1081,21 +1082,21 @@ export class OneOf extends ReflectionObject {
      * @returns {MapField} Created oneof
      * @throws {TypeError} If arguments are invalid
      */
-    static fromJSON(name: string, json: { [k: string]: any }): MapField;
+    public static fromJSON(name: string, json: { [k: string]: any }): MapField;
 
     /**
      * Adds a field to this oneof and removes it from its current parent, if any.
      * @param {Field} field Field to add
      * @returns {OneOf} `this`
      */
-    add(field: Field): OneOf;
+    public add(field: Field): OneOf;
 
     /**
      * Removes a field from this oneof and puts it back to the oneof's parent.
      * @param {Field} field Field to remove
      * @returns {OneOf} `this`
      */
-    remove(field: Field): OneOf;
+    public remove(field: Field): OneOf;
 }
 
 /**
@@ -1163,19 +1164,19 @@ export class Reader {
      * Read buffer.
      * @type {Uint8Array}
      */
-    buf: Uint8Array;
+    public buf: Uint8Array;
 
     /**
      * Read buffer position.
      * @type {number}
      */
-    pos: number;
+    public pos: number;
 
     /**
      * Read buffer length.
      * @type {number}
      */
-    len: number;
+    public len: number;
 
     /**
      * Creates a new reader using the specified buffer.
@@ -1184,26 +1185,26 @@ export class Reader {
      * @returns {Reader|BufferReader} A {@link BufferReader} if `buffer` is a Buffer, otherwise a {@link Reader}
      * @throws {Error} If `buffer` is not a valid buffer
      */
-    static create(buffer: (Uint8Array|Buffer)): (Reader|BufferReader);
+    public static create(buffer: (Uint8Array|Buffer)): (Reader|BufferReader);
 
     /**
      * Reads a varint as an unsigned 32 bit value.
      * @function
      * @returns {number} Value read
      */
-    uint32(): number;
+    public uint32(): number;
 
     /**
      * Reads a varint as a signed 32 bit value.
      * @returns {number} Value read
      */
-    int32(): number;
+    public int32(): number;
 
     /**
      * Reads a zig-zag encoded varint as a signed 32 bit value.
      * @returns {number} Value read
      */
-    sint32(): number;
+    public sint32(): number;
 
     /**
      * Reads a varint as a signed 64 bit value.
@@ -1211,7 +1212,7 @@ export class Reader {
      * @function
      * @returns {Long|number} Value read
      */
-    int64(): (Long|number);
+    public int64(): (Long|number);
 
     /**
      * Reads a varint as an unsigned 64 bit value.
@@ -1219,7 +1220,7 @@ export class Reader {
      * @function
      * @returns {Long|number} Value read
      */
-    uint64(): (Long|number);
+    public uint64(): (Long|number);
 
     /**
      * Reads a zig-zag encoded varint as a signed 64 bit value.
@@ -1227,25 +1228,25 @@ export class Reader {
      * @function
      * @returns {Long|number} Value read
      */
-    sint64(): (Long|number);
+    public sint64(): (Long|number);
 
     /**
      * Reads a varint as a boolean.
      * @returns {boolean} Value read
      */
-    bool(): boolean;
+    public bool(): boolean;
 
     /**
      * Reads fixed 32 bits as an unsigned 32 bit integer.
      * @returns {number} Value read
      */
-    fixed32(): number;
+    public fixed32(): number;
 
     /**
      * Reads fixed 32 bits as a signed 32 bit integer.
      * @returns {number} Value read
      */
-    sfixed32(): number;
+    public sfixed32(): number;
 
     /**
      * Reads fixed 64 bits.
@@ -1253,7 +1254,7 @@ export class Reader {
      * @function
      * @returns {Long|number} Value read
      */
-    fixed64(): (Long|number);
+    public fixed64(): (Long|number);
 
     /**
      * Reads zig-zag encoded fixed 64 bits.
@@ -1261,47 +1262,47 @@ export class Reader {
      * @function
      * @returns {Long|number} Value read
      */
-    sfixed64(): (Long|number);
+    public sfixed64(): (Long|number);
 
     /**
      * Reads a float (32 bit) as a number.
      * @function
      * @returns {number} Value read
      */
-    float(): number;
+    public float(): number;
 
     /**
      * Reads a double (64 bit float) as a number.
      * @function
      * @returns {number} Value read
      */
-    double(): number;
+    public double(): number;
 
     /**
      * Reads a sequence of bytes preceeded by its length as a varint.
      * @returns {Uint8Array} Value read
      */
-    bytes(): Uint8Array;
+    public bytes(): Uint8Array;
 
     /**
      * Reads a string preceeded by its byte length as a varint.
      * @returns {string} Value read
      */
-    string(): string;
+    public string(): string;
 
     /**
      * Skips the specified number of bytes if specified, otherwise skips a varint.
      * @param {number} [length] Length if known, otherwise a varint is assumed
      * @returns {Reader} `this`
      */
-    skip(length?: number): Reader;
+    public skip(length?: number): Reader;
 
     /**
      * Skips the next element of the specified wire type.
      * @param {number} wireType Wire type received
      * @returns {Reader} `this`
      */
-    skipType(wireType: number): Reader;
+    public skipType(wireType: number): Reader;
 }
 
 /**
@@ -1327,7 +1328,7 @@ export class BufferReader extends Reader {
      * @name BufferReader#buf
      * @type {Buffer}
      */
-    buf: Buffer;
+    public buf: Buffer;
 
     /**
      * Reads a sequence of bytes preceeded by its length as a varint.
@@ -1335,7 +1336,7 @@ export class BufferReader extends Reader {
      * @function
      * @returns {Buffer} Value read
      */
-    bytes(): Buffer;
+    public bytes(): Buffer;
 }
 
 /**
@@ -1360,13 +1361,13 @@ export class Root extends NamespaceBase {
      * Deferred extension fields.
      * @type {Field[]}
      */
-    deferred: Field[];
+    public deferred: Field[];
 
     /**
      * Resolved file names of loaded files.
      * @type {string[]}
      */
-    files: string[];
+    public files: string[];
 
     /**
      * Loads a JSON definition into a root namespace.
@@ -1374,7 +1375,7 @@ export class Root extends NamespaceBase {
      * @param {Root} [root] Root namespace, defaults to create a new one if omitted
      * @returns {Root} Root namespace
      */
-    static fromJSON(json: { [k: string]: any }, root?: Root): Root;
+    public static fromJSON(json: { [k: string]: any }, root?: Root): Root;
 
     /**
      * Resolves the path of an imported file, relative to the importing origin.
@@ -1384,7 +1385,7 @@ export class Root extends NamespaceBase {
      * @param {string} target The file name being imported
      * @returns {?string} Resolved path to `target` or `null` to skip the file
      */
-    resolvePath(origin: string, target: string): string;
+    public resolvePath(origin: string, target: string): string;
 
     /**
      * Loads one or multiple .proto or preprocessed .json files into this root namespace and calls the callback.
@@ -1393,7 +1394,7 @@ export class Root extends NamespaceBase {
      * @param {LoadCallback} callback Callback function
      * @returns {undefined}
      */
-    load(filename: (string|string[]), options: ParseOptions, callback: LoadCallback): void;
+    public load(filename: (string|string[]), options: ParseOptions, callback: LoadCallback): void;
 
     /**
      * Loads one or multiple .proto or preprocessed .json files into this root namespace and returns a promise.
@@ -1404,7 +1405,7 @@ export class Root extends NamespaceBase {
      * @returns {Promise<Root>} Promise
      * @variation 3
      */
-    load(filename: (string|string[]), options?: ParseOptions): Promise<Root>;
+    public load(filename: (string|string[]), options?: ParseOptions): Promise<Root>;
 
     /**
      * Synchronously loads one or multiple .proto or preprocessed .json files into this root namespace (node only).
@@ -1415,7 +1416,7 @@ export class Root extends NamespaceBase {
      * @returns {Root} Root namespace
      * @throws {Error} If synchronous fetching is not supported (i.e. in browsers) or if a file's syntax is invalid
      */
-    loadSync(filename: (string|string[]), options?: ParseOptions): Root;
+    public loadSync(filename: (string|string[]), options?: ParseOptions): Root;
 }
 
 /**
@@ -1488,19 +1489,19 @@ export namespace rpc {
          * RPC implementation. Becomes `null` once the service is ended.
          * @type {?RPCImpl}
          */
-        rpcImpl: RPCImpl;
+        public rpcImpl: RPCImpl;
 
         /**
          * Whether requests are length-delimited.
          * @type {boolean}
          */
-        requestDelimited: boolean;
+        public requestDelimited: boolean;
 
         /**
          * Whether responses are length-delimited.
          * @type {boolean}
          */
-        responseDelimited: boolean;
+        public responseDelimited: boolean;
 
         /**
          * Calls a service method through {@link rpc.Service#rpcImpl|rpcImpl}.
@@ -1511,14 +1512,14 @@ export namespace rpc {
          * @param {rpc.ServiceMethodCallback} callback Service callback
          * @returns {undefined}
          */
-        rpcCall(method: (Method|rpc.ServiceMethod), requestCtor: () => any, responseCtor: () => any, request: (Message|Object), callback: rpc.ServiceMethodCallback): void;
+        public rpcCall(method: (Method|rpc.ServiceMethod), requestCtor: () => any, responseCtor: () => any, request: (Message|Object), callback: rpc.ServiceMethodCallback): void;
 
         /**
          * Ends this service and emits the `end` event.
          * @param {boolean} [endedByRPC=false] Whether the service has been ended by the RPC implementation.
          * @returns {rpc.Service} `this`
          */
-        end(endedByRPC?: boolean): rpc.Service;
+        public end(endedByRPC?: boolean): rpc.Service;
     }
 }
 
@@ -1577,7 +1578,7 @@ export class Service extends NamespaceBase {
      * Service methods.
      * @type {Object.<string,Method>}
      */
-    methods: { [k: string]: Method };
+    public methods: { [k: string]: Method };
 
     /**
      * Constructs a service from JSON.
@@ -1586,7 +1587,7 @@ export class Service extends NamespaceBase {
      * @returns {Service} Created service
      * @throws {TypeError} If arguments are invalid
      */
-    static fromJSON(name: string, json: { [k: string]: any }): Service;
+    public static fromJSON(name: string, json: { [k: string]: any }): Service;
 
     /**
      * Methods of this service as an array for iteration.
@@ -1594,7 +1595,7 @@ export class Service extends NamespaceBase {
      * @type {Method[]}
      * @readonly
      */
-    readonly methodsArray: Method[];
+    public readonly methodsArray: Method[];
 
     /**
      * Creates a runtime service using the specified rpc implementation.
@@ -1603,7 +1604,7 @@ export class Service extends NamespaceBase {
      * @param {boolean} [responseDelimited=false] Whether responses are length-delimited
      * @returns {rpc.Service} RPC service. Useful where requests and/or responses are streamed.
      */
-    create(rpcImpl: RPCImpl, requestDelimited?: boolean, responseDelimited?: boolean): rpc.Service;
+    public create(rpcImpl: RPCImpl, requestDelimited?: boolean, responseDelimited?: boolean): rpc.Service;
 }
 
 /**
@@ -1652,31 +1653,31 @@ export class Type extends NamespaceBase {
      * @param {Object.<string,*>} json JSON object
      * @returns {Type} Created message type
      */
-    static fromJSON(name: string, json: { [k: string]: any }): Type;
+    public static fromJSON(name: string, json: { [k: string]: any }): Type;
 
     /**
      * Message fields.
      * @type {Object.<string,Field>}
      */
-    fields: { [k: string]: Field };
+    public fields: { [k: string]: Field };
 
     /**
      * Oneofs declared within this namespace, if any.
      * @type {Object.<string,OneOf>}
      */
-    oneofs: { [k: string]: OneOf };
+    public oneofs: { [k: string]: OneOf };
 
     /**
      * Extension ranges, if any.
      * @type {number[][]}
      */
-    extensions: number[][];
+    public extensions: number[][];
 
     /**
      * Reserved ranges, if any.
      * @type {Array.<number[]|string>}
      */
-    reserved: (number[]|string)[];
+    public reserved: (number[]|string)[];
 
     /**
      * Message fields by id.
@@ -1684,7 +1685,7 @@ export class Type extends NamespaceBase {
      * @type {Object.<number,Field>}
      * @readonly
      */
-    readonly fieldsById: { [k: number]: Field };
+    public readonly fieldsById: { [k: number]: Field };
 
     /**
      * Fields of this message as an array for iteration.
@@ -1692,7 +1693,7 @@ export class Type extends NamespaceBase {
      * @type {Field[]}
      * @readonly
      */
-    readonly fieldsArray: Field[];
+    public readonly fieldsArray: Field[];
 
     /**
      * Oneofs of this message as an array for iteration.
@@ -1700,14 +1701,14 @@ export class Type extends NamespaceBase {
      * @type {OneOf[]}
      * @readonly
      */
-    readonly oneofsArray: OneOf[];
+    public readonly oneofsArray: OneOf[];
 
     /**
      * The registered constructor, if any registered, otherwise a generic constructor.
      * @name Type#ctor
      * @type {Class}
      */
-    ctor: Class;
+    public ctor: Class;
 
     /**
      * Adds a nested object to this type.
@@ -1716,7 +1717,7 @@ export class Type extends NamespaceBase {
      * @throws {TypeError} If arguments are invalid
      * @throws {Error} If there is already a nested object with this name or, if a field, when there is already a field with this id
      */
-    add(object: ReflectionObject): Type;
+    public add(object: ReflectionObject): Type;
 
     /**
      * Removes a nested object from this type.
@@ -1725,34 +1726,34 @@ export class Type extends NamespaceBase {
      * @throws {TypeError} If arguments are invalid
      * @throws {Error} If `object` is not a member of this type
      */
-    remove(object: ReflectionObject): Type;
+    public remove(object: ReflectionObject): Type;
 
     /**
      * Tests if the specified id is reserved.
      * @param {number} id Id to test
      * @returns {boolean} `true` if reserved, otherwise `false`
      */
-    isReservedId(id: number): boolean;
+    public isReservedId(id: number): boolean;
 
     /**
      * Tests if the specified name is reserved.
      * @param {string} name Name to test
      * @returns {boolean} `true` if reserved, otherwise `false`
      */
-    isReservedName(name: string): boolean;
+    public isReservedName(name: string): boolean;
 
     /**
      * Creates a new message of this type using the specified properties.
      * @param {Object.<string,*>} [properties] Properties to set
      * @returns {Message} Runtime message
      */
-    create(properties?: { [k: string]: any }): Message;
+    public create(properties?: { [k: string]: any }): Message;
 
     /**
      * Sets up {@link Type#encode|encode}, {@link Type#decode|decode} and {@link Type#verify|verify}.
      * @returns {Type} `this`
      */
-    setup(): Type;
+    public setup(): Type;
 
     /**
      * Encodes a message of this type. Does not implicitly {@link Type#verify|verify} messages.
@@ -1760,7 +1761,7 @@ export class Type extends NamespaceBase {
      * @param {Writer} [writer] Writer to encode to
      * @returns {Writer} writer
      */
-    encode(message: (Message|Object), writer?: Writer): Writer;
+    public encode(message: (Message|Object), writer?: Writer): Writer;
 
     /**
      * Encodes a message of this type preceeded by its byte length as a varint. Does not implicitly {@link Type#verify|verify} messages.
@@ -1768,7 +1769,7 @@ export class Type extends NamespaceBase {
      * @param {Writer} [writer] Writer to encode to
      * @returns {Writer} writer
      */
-    encodeDelimited(message: (Message|Object), writer?: Writer): Writer;
+    public encodeDelimited(message: (Message|Object), writer?: Writer): Writer;
 
     /**
      * Decodes a message of this type.
@@ -1778,7 +1779,7 @@ export class Type extends NamespaceBase {
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {util.ProtocolError} If required fields are missing
      */
-    decode(reader: (Reader|Uint8Array), length?: number): Message;
+    public decode(reader: (Reader|Uint8Array), length?: number): Message;
 
     /**
      * Decodes a message of this type preceeded by its byte length as a varint.
@@ -1787,21 +1788,21 @@ export class Type extends NamespaceBase {
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {util.ProtocolError} If required fields are missing
      */
-    decodeDelimited(reader: (Reader|Uint8Array)): Message;
+    public decodeDelimited(reader: (Reader|Uint8Array)): Message;
 
     /**
      * Verifies that field values are valid and that required fields are present.
      * @param {Message|Object} message Message to verify
      * @returns {?string} `null` if valid, otherwise the reason why it is not
      */
-    verify(message: (Message|Object)): string;
+    public verify(message: (Message|Object)): string;
 
     /**
      * Creates a new message of this type from a plain object. Also converts values to their respective internal types.
      * @param {Object.<string,*>} object Plain object
      * @returns {Message} Message instance
      */
-    fromObject(object: { [k: string]: any }): Message;
+    public fromObject(object: { [k: string]: any }): Message;
 
     /**
      * Creates a new message of this type from a plain object. Also converts values to their respective internal types.
@@ -1810,7 +1811,7 @@ export class Type extends NamespaceBase {
      * @param {Object.<string,*>} object Plain object
      * @returns {Message} Message instance
      */
-    from(object: { [k: string]: any }): Message;
+    public from(object: { [k: string]: any }): Message;
 
     /**
      * Creates a plain object from a message of this type. Also converts values to other types if specified.
@@ -1818,7 +1819,7 @@ export class Type extends NamespaceBase {
      * @param {ConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      */
-    toObject(message: Message, options?: ConversionOptions): { [k: string]: any };
+    public toObject(message: Message, options?: ConversionOptions): { [k: string]: any };
 }
 
 /**
@@ -1872,7 +1873,7 @@ export namespace types {
      * @property {number} string=2 Ldelim wire type
      * @property {number} bytes=2 Ldelim wire type
      */
-    var basic: {
+    let basic: {
         "double": number,
         "float": number,
         "int32": number,
@@ -1910,7 +1911,7 @@ export namespace types {
      * @property {Array.<number>} bytes=Array(0) Bytes default
      * @property {Message} message=null Message default
      */
-    var defaults: {
+    let defaults: {
         "double": number,
         "float": number,
         "int32": number,
@@ -1938,7 +1939,7 @@ export namespace types {
      * @property {number} fixed64=1 Fixed64 wire type
      * @property {number} sfixed64=1 Fixed64 wire type
      */
-    var long: {
+    let long: {
         "int64": number,
         "uint64": number,
         "sint64": number,
@@ -1962,7 +1963,7 @@ export namespace types {
      * @property {number} bool=0 Varint wire type
      * @property {number} string=2 Ldelim wire type
      */
-    var mapKey: {
+    let mapKey: {
         "int32": number,
         "uint32": number,
         "sint32": number,
@@ -1994,7 +1995,7 @@ export namespace types {
      * @property {number} sfixed64=1 Fixed64 wire type
      * @property {number} bool=0 Varint wire type
      */
-    var packed: {
+    let packed: {
         "double": number,
         "float": number,
         "int32": number,
@@ -2057,86 +2058,86 @@ export namespace util {
          * Low bits.
          * @type {number}
          */
-        lo: number;
+        public lo: number;
 
         /**
          * High bits.
          * @type {number}
          */
-        hi: number;
+        public hi: number;
 
         /**
          * Zero bits.
          * @memberof util.LongBits
          * @type {util.LongBits}
          */
-        static zero: util.LongBits;
+        public static zero: util.LongBits;
 
         /**
          * Zero hash.
          * @memberof util.LongBits
          * @type {string}
          */
-        static zeroHash: string;
+        public static zeroHash: string;
 
         /**
          * Constructs new long bits from the specified number.
          * @param {number} value Value
          * @returns {util.LongBits} Instance
          */
-        static fromNumber(value: number): util.LongBits;
+        public static fromNumber(value: number): util.LongBits;
 
         /**
          * Constructs new long bits from a number, long or string.
          * @param {Long|number|string} value Value
          * @returns {util.LongBits} Instance
          */
-        static from(value: (Long|number|string)): util.LongBits;
+        public static from(value: (Long|number|string)): util.LongBits;
 
         /**
          * Converts this long bits to a possibly unsafe JavaScript number.
          * @param {boolean} [unsigned=false] Whether unsigned or not
          * @returns {number} Possibly unsafe number
          */
-        toNumber(unsigned?: boolean): number;
+        public toNumber(unsigned?: boolean): number;
 
         /**
          * Converts this long bits to a long.
          * @param {boolean} [unsigned=false] Whether unsigned or not
          * @returns {Long} Long
          */
-        toLong(unsigned?: boolean): Long;
+        public toLong(unsigned?: boolean): Long;
 
         /**
          * Constructs new long bits from the specified 8 characters long hash.
          * @param {string} hash Hash
          * @returns {util.LongBits} Bits
          */
-        static fromHash(hash: string): util.LongBits;
+        public static fromHash(hash: string): util.LongBits;
 
         /**
          * Converts this long bits to a 8 characters long hash.
          * @returns {string} Hash
          */
-        toHash(): string;
+        public toHash(): string;
 
         /**
          * Zig-zag encodes this long bits.
          * @returns {util.LongBits} `this`
          */
-        zzEncode(): util.LongBits;
+        public zzEncode(): util.LongBits;
 
         /**
          * Zig-zag decodes this long bits.
          * @returns {util.LongBits} `this`
          */
-        zzDecode(): util.LongBits;
+        public zzDecode(): util.LongBits;
 
         /**
          * Calculates the length of this longbits when encoded as a varint.
          * @returns {number} Length
          */
-        length(): number;
+        public length(): number;
     }
 
     /**
@@ -2144,20 +2145,20 @@ export namespace util {
      * @memberof util
      * @type {Array.<*>}
      */
-    var emptyArray: any[];
+    let emptyArray: any[];
 
     /**
      * An immutable empty object.
      * @type {Object}
      */
-    var emptyObject: Object;
+    let emptyObject: Object;
 
     /**
      * Whether running within node or not.
      * @memberof util
      * @type {boolean}
      */
-    var isNode: boolean;
+    let isNode: boolean;
 
     /**
      * Tests if the specified value is an integer.
@@ -2185,7 +2186,7 @@ export namespace util {
      * Node's Buffer class if available.
      * @type {?function(new: Buffer)}
      */
-    var Buffer: () => any;
+    let Buffer: () => any;
 
     /**
      * Creates a new buffer of whatever type supported by the environment.
@@ -2198,31 +2199,31 @@ export namespace util {
      * Array implementation used in the browser. `Uint8Array` if supported, otherwise `Array`.
      * @type {?function(new: Uint8Array, *)}
      */
-    var Array: () => any;
+    let Array: () => any;
 
     /**
      * Long.js's Long class if available.
      * @type {?function(new: Long)}
      */
-    var Long: () => any;
+    let Long: () => any;
 
     /**
      * Regular expression used to verify 2 bit (`bool`) map keys.
      * @type {RegExp}
      */
-    var key2Re: RegExp;
+    let key2Re: RegExp;
 
     /**
      * Regular expression used to verify 32 bit (`int32` etc.) map keys.
      * @type {RegExp}
      */
-    var key32Re: RegExp;
+    let key32Re: RegExp;
 
     /**
      * Regular expression used to verify 64 bit (`int64` etc.) map keys.
      * @type {RegExp}
      */
-    var key64Re: RegExp;
+    let key64Re: RegExp;
 
     /**
      * Converts a number or long to an 8 characters long hash string.
@@ -2281,7 +2282,7 @@ export namespace util {
      * Default conversion options used for toJSON implementations. Converts longs, enums and bytes to strings.
      * @type {ConversionOptions}
      */
-    var toJSONOptions: ConversionOptions;
+    let toJSONOptions: ConversionOptions;
 
     /**
      * Constructs a new protocol error.
@@ -2323,14 +2324,14 @@ export namespace util {
          * So far decoded message instance, if applicable.
          * @type {?Message}
          */
-        instance: Message;
+        public instance: Message;
     }
 
     /**
      * Node's fs module if available.
      * @type {Object.<string,*>}
      */
-    var fs: { [k: string]: any };
+    let fs: { [k: string]: any };
 
     /**
      * Converts an object's values to an array.
@@ -2440,7 +2441,7 @@ export namespace util {
          * @param {*} [ctx] Listener context
          * @returns {util.EventEmitter} `this`
          */
-        on(evt: string, fn: () => any, ctx?: any): util.EventEmitter;
+        public on(evt: string, fn: () => any, ctx?: any): util.EventEmitter;
 
         /**
          * Removes an event listener or any matching listeners if arguments are omitted.
@@ -2448,7 +2449,7 @@ export namespace util {
          * @param {function} [fn] Listener to remove. Removes all listeners of `evt` if omitted.
          * @returns {util.EventEmitter} `this`
          */
-        off(evt?: string, fn?: () => any): util.EventEmitter;
+        public off(evt?: string, fn?: () => any): util.EventEmitter;
 
         /**
          * Emits an event by calling its listeners with the specified arguments.
@@ -2456,7 +2457,7 @@ export namespace util {
          * @param {...*} args Arguments
          * @returns {util.EventEmitter} `this`
          */
-        emit(evt: string, ...args: any[]): util.EventEmitter;
+        public emit(evt: string, ...args: any[]): util.EventEmitter;
     }
 
     /**
@@ -2600,39 +2601,39 @@ export class Writer {
      * Current length.
      * @type {number}
      */
-    len: number;
+    public len: number;
 
     /**
      * Operations head.
      * @type {Object}
      */
-    head: Object;
+    public head: Object;
 
     /**
      * Operations tail
      * @type {Object}
      */
-    tail: Object;
+    public tail: Object;
 
     /**
      * Linked forked states.
      * @type {?Object}
      */
-    states: Object;
+    public states: Object;
 
     /**
      * Creates a new writer.
      * @function
      * @returns {BufferWriter|Writer} A {@link BufferWriter} when Buffers are supported, otherwise a {@link Writer}
      */
-    static create(): (BufferWriter|Writer);
+    public static create(): (BufferWriter|Writer);
 
     /**
      * Allocates a buffer of the specified size.
      * @param {number} size Buffer size
      * @returns {Uint8Array} Buffer
      */
-    static alloc(size: number): Uint8Array;
+    public static alloc(size: number): Uint8Array;
 
     /**
      * Pushes a new operation to the queue.
@@ -2641,14 +2642,14 @@ export class Writer {
      * @param {number} val Value to write
      * @returns {Writer} `this`
      */
-    push(fn: () => any, len: number, val: number): Writer;
+    public push(fn: () => any, len: number, val: number): Writer;
 
     /**
      * Writes an unsigned 32 bit value as a varint.
      * @param {number} value Value to write
      * @returns {Writer} `this`
      */
-    uint32(value: number): Writer;
+    public uint32(value: number): Writer;
 
     /**
      * Writes a signed 32 bit value as a varint.
@@ -2656,14 +2657,14 @@ export class Writer {
      * @param {number} value Value to write
      * @returns {Writer} `this`
      */
-    int32(value: number): Writer;
+    public int32(value: number): Writer;
 
     /**
      * Writes a 32 bit value as a varint, zig-zag encoded.
      * @param {number} value Value to write
      * @returns {Writer} `this`
      */
-    sint32(value: number): Writer;
+    public sint32(value: number): Writer;
 
     /**
      * Writes an unsigned 64 bit value as a varint.
@@ -2671,7 +2672,7 @@ export class Writer {
      * @returns {Writer} `this`
      * @throws {TypeError} If `value` is a string and no long library is present.
      */
-    uint64(value: (Long|number|string)): Writer;
+    public uint64(value: (Long|number|string)): Writer;
 
     /**
      * Writes a signed 64 bit value as a varint.
@@ -2680,7 +2681,7 @@ export class Writer {
      * @returns {Writer} `this`
      * @throws {TypeError} If `value` is a string and no long library is present.
      */
-    int64(value: (Long|number|string)): Writer;
+    public int64(value: (Long|number|string)): Writer;
 
     /**
      * Writes a signed 64 bit value as a varint, zig-zag encoded.
@@ -2688,21 +2689,21 @@ export class Writer {
      * @returns {Writer} `this`
      * @throws {TypeError} If `value` is a string and no long library is present.
      */
-    sint64(value: (Long|number|string)): Writer;
+    public sint64(value: (Long|number|string)): Writer;
 
     /**
      * Writes a boolish value as a varint.
      * @param {boolean} value Value to write
      * @returns {Writer} `this`
      */
-    bool(value: boolean): Writer;
+    public bool(value: boolean): Writer;
 
     /**
      * Writes an unsigned 32 bit value as fixed 32 bits.
      * @param {number} value Value to write
      * @returns {Writer} `this`
      */
-    fixed32(value: number): Writer;
+    public fixed32(value: number): Writer;
 
     /**
      * Writes a signed 32 bit value as fixed 32 bits.
@@ -2710,7 +2711,7 @@ export class Writer {
      * @param {number} value Value to write
      * @returns {Writer} `this`
      */
-    sfixed32(value: number): Writer;
+    public sfixed32(value: number): Writer;
 
     /**
      * Writes an unsigned 64 bit value as fixed 64 bits.
@@ -2718,7 +2719,7 @@ export class Writer {
      * @returns {Writer} `this`
      * @throws {TypeError} If `value` is a string and no long library is present.
      */
-    fixed64(value: (Long|number|string)): Writer;
+    public fixed64(value: (Long|number|string)): Writer;
 
     /**
      * Writes a signed 64 bit value as fixed 64 bits.
@@ -2727,7 +2728,7 @@ export class Writer {
      * @returns {Writer} `this`
      * @throws {TypeError} If `value` is a string and no long library is present.
      */
-    sfixed64(value: (Long|number|string)): Writer;
+    public sfixed64(value: (Long|number|string)): Writer;
 
     /**
      * Writes a float (32 bit).
@@ -2735,7 +2736,7 @@ export class Writer {
      * @param {number} value Value to write
      * @returns {Writer} `this`
      */
-    float(value: number): Writer;
+    public float(value: number): Writer;
 
     /**
      * Writes a double (64 bit float).
@@ -2743,46 +2744,46 @@ export class Writer {
      * @param {number} value Value to write
      * @returns {Writer} `this`
      */
-    double(value: number): Writer;
+    public double(value: number): Writer;
 
     /**
      * Writes a sequence of bytes.
      * @param {Uint8Array|string} value Buffer or base64 encoded string to write
      * @returns {Writer} `this`
      */
-    bytes(value: (Uint8Array|string)): Writer;
+    public bytes(value: (Uint8Array|string)): Writer;
 
     /**
      * Writes a string.
      * @param {string} value Value to write
      * @returns {Writer} `this`
      */
-    string(value: string): Writer;
+    public string(value: string): Writer;
 
     /**
      * Forks this writer's state by pushing it to a stack.
      * Calling {@link Writer#reset|reset} or {@link Writer#ldelim|ldelim} resets the writer to the previous state.
      * @returns {Writer} `this`
      */
-    fork(): Writer;
+    public fork(): Writer;
 
     /**
      * Resets this instance to the last state.
      * @returns {Writer} `this`
      */
-    reset(): Writer;
+    public reset(): Writer;
 
     /**
      * Resets to the last state and appends the fork state's current write length as a varint followed by its operations.
      * @returns {Writer} `this`
      */
-    ldelim(): Writer;
+    public ldelim(): Writer;
 
     /**
      * Finishes the write operation.
      * @returns {Uint8Array} Finished buffer
      */
-    finish(): Uint8Array;
+    public finish(): Uint8Array;
 }
 
 /**
@@ -2806,7 +2807,7 @@ export class BufferWriter extends Writer {
      * @param {number} size Buffer size
      * @returns {Buffer} Buffer
      */
-    static alloc(size: number): Buffer;
+    public static alloc(size: number): Buffer;
 
     /**
      * Finishes the write operation.
@@ -2814,7 +2815,7 @@ export class BufferWriter extends Writer {
      * @function
      * @returns {Buffer} Finished buffer
      */
-    finish(): Buffer;
+    public finish(): Buffer;
 }
 
 /**

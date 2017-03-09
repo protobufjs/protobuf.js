@@ -1,0 +1,15 @@
+{
+    "extends": "tslint:recommended",
+    "rules": {
+        "array-type": [ true, "array" ],
+        "no-namespace": false,
+        "interface-name": [ true, "never-prefix" ],
+        "max-line-length": [ false ],
+        "trailing-comma": [ true, "never" ],
+        "variable-name": [ false ],
+        "max-classes-per-file": [ false ],
+        "member-ordering": [ false ],
+        "object-literal-sort-keys": false,
+        "no-string-literal": false
+    }
+}

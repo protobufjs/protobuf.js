@@ -23,7 +23,7 @@ declare class EventEmitter {
      * @param {*} [ctx] Listener context
      * @returns {util.EventEmitter} `this`
      */
-    on(evt: string, fn: () => any, ctx?: any): EventEmitter;
+    public on(evt: string, fn: () => any, ctx?: any): EventEmitter;
 
     /**
      * Removes an event listener or any matching listeners if arguments are omitted.
@@ -31,7 +31,7 @@ declare class EventEmitter {
      * @param {function} [fn] Listener to remove. Removes all listeners of `evt` if omitted.
      * @returns {util.EventEmitter} `this`
      */
-    off(evt?: string, fn?: () => any): EventEmitter;
+    public off(evt?: string, fn?: () => any): EventEmitter;
 
     /**
      * Emits an event by calling its listeners with the specified arguments.
@@ -39,5 +39,5 @@ declare class EventEmitter {
      * @param {...*} args Arguments
      * @returns {util.EventEmitter} `this`
      */
-    emit(evt: string, ...args: any[]): EventEmitter;
+    public emit(evt: string, ...args: any[]): EventEmitter;
 }
