@@ -939,7 +939,6 @@ $root.vector_tile = (function() {
             Layer.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
-                writer.uint32(/* id 15, wireType 0 =*/120).uint32(message.version);
                 writer.uint32(/* id 1, wireType 2 =*/10).string(message.name);
                 if (message.features !== undefined && message.hasOwnProperty("features"))
                     for (var i = 0; i < message.features.length; ++i)
@@ -952,6 +951,7 @@ $root.vector_tile = (function() {
                         $types[4].encode(message.values[i], writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
                 if (message.extent !== undefined && message.hasOwnProperty("extent"))
                     writer.uint32(/* id 5, wireType 0 =*/40).uint32(message.extent);
+                writer.uint32(/* id 15, wireType 0 =*/120).uint32(message.version);
                 return writer;
             };
 

@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.7.0 (c) 2016, Daniel Wirtz
- * Compiled Mon, 06 Mar 2017 03:35:11 UTC
+ * Compiled Thu, 09 Mar 2017 16:42:05 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -1556,6 +1556,8 @@ function decoder(mtype) {
 "use strict";
 module.exports = encoder;
 
+encoder.compat = true;
+
 var Enum     = require(15),
     types    = require(35),
     util     = require(36);
@@ -1576,9 +1578,21 @@ function genTypePartial(gen, field, fieldIndex, ref) {
 }
 
 /**
+ * Compares reflected fields by id.
+ * @param {Field} a First field
+ * @param {Field} b Second field
+ * @returns {number} Comparison value
+ * @ignore
+ */
+function compareFieldsById(a, b) {
+    return a.id - b.id;
+}
+
+/**
  * Generates an encoder specific to the specified message type.
  * @param {Type} mtype Message type
  * @returns {Codegen} Codegen instance
+ * @property {boolean} compat=true Generates encoders serializing in ascending field order
  */
 function encoder(mtype) {
     /* eslint-disable no-unexpected-multiline, block-scoped-var, no-redeclare */
@@ -1587,8 +1601,15 @@ function encoder(mtype) {
         ("w=Writer.create()");
 
     var i, ref;
-    for (var i = 0; i < /* initializes */ mtype.fieldsArray.length; ++i) {
-        var field    = mtype._fieldsArray[i].resolve();
+
+    // "when a message is serialized its known fields should be written sequentially by field number"
+    var fields = /* initializes */ mtype.fieldsArray;
+    if (encoder.compat)
+        fields = fields.slice().sort(compareFieldsById);
+
+    for (var i = 0; i < fields.length; ++i) {
+        var field    = fields[i].resolve(),
+            index    = encoder.compat ? mtype._fieldsArray.indexOf(field) : i;
         if (field.partOf) // see below for oneofs
             continue;
         var type     = field.resolvedType instanceof Enum ? "uint32" : field.type,
@@ -1602,7 +1623,7 @@ function encoder(mtype) {
         ("for(var ks=Object.keys(%s),i=0;i<ks.length;++i){", ref)
             ("w.uint32(%d).fork().uint32(%d).%s(ks[i])", (field.id << 3 | 2) >>> 0, 8 | types.mapKey[field.keyType], field.keyType);
             if (wireType === undefined) gen
-            ("types[%d].encode(%s[ks[i]],w.uint32(18).fork()).ldelim().ldelim()", i, ref); // can't be groups
+            ("types[%d].encode(%s[ks[i]],w.uint32(18).fork()).ldelim().ldelim()", index, ref); // can't be groups
             else gen
             (".uint32(%d).%s(%s[ks[i]]).ldelim()", 16 | wireType, type, ref);
             gen
@@ -1628,7 +1649,7 @@ function encoder(mtype) {
     ("if(%s!==undefined&&m.hasOwnProperty(%j)){", ref, field.name)
         ("for(var i=0;i<%s.length;++i)", ref);
                 if (wireType === undefined)
-            genTypePartial(gen, field, i, ref + "[i]");
+            genTypePartial(gen, field, index, ref + "[i]");
                 else gen
             ("w.uint32(%d).%s(%s[i])", (field.id << 3 | wireType) >>> 0, type, ref);
                 gen
@@ -1650,7 +1671,7 @@ function encoder(mtype) {
             }
 
             if (wireType === undefined)
-        genTypePartial(gen, field, i, ref);
+        genTypePartial(gen, field, index, ref);
             else gen
         ("w.uint32(%d).%s(%s)", (field.id << 3 | wireType) >>> 0, type, ref);
 
@@ -2196,6 +2217,7 @@ var protobuf = exports;
  * Build type, one of `"full"`, `"light"` or `"minimal"`.
  * @name build
  * @type {string}
+ * @const
  */
 protobuf.build = "minimal";
 
@@ -4655,7 +4677,7 @@ Root.prototype.load = function load(filename, options, callback) {
     }
     var self = this;
     if (!callback)
-        return util.asPromise(load, self, filename);
+        return util.asPromise(load, self, filename, options);
     
     var sync = callback === SYNC; // undocumented
 
@@ -6807,8 +6829,8 @@ module.exports = ProtocolError;
  * @memberof util
  * @extends Error
  * @constructor
- * @param {string} messageText Error message text
- * @param {Message=} messageInstance So far decoded message instance, if applicable
+ * @param {string} message Error message
+ * @param {Message=} instance So far decoded message instance, if applicable
  * @example
  * try {
  *     MyMessage.decode(someBuffer); // throws if required fields are missing
@@ -6817,21 +6839,56 @@ module.exports = ProtocolError;
  *         console.log("decoded so far: " + JSON.stringify(e.instance));
  * }
  */
-function ProtocolError(messageText, messageInstance) {
+function ProtocolError(message, instance) {
 
     if (!(this instanceof ProtocolError))
-        return new ProtocolError(messageText, messageInstance);
+        return new ProtocolError(message, instance);
 
-    this.name = "ProtocolError";
-    this.message = messageText;
-    this.stack = (new Error()).stack;
+    /**
+     * Underlying plain error.
+     * @type {Error}
+     */
+    this.error = Error(message);
 
     /**
      * So far decoded message instance, if applicable.
      * @type {?Message}
      */
-    this.instance = messageInstance || null;
+    this.instance = instance || null;
 }
+
+/**
+ * Error name (ProtocolError).
+ * @type {string}
+ */
+ProtocolError.prototype.name = "ProtocolError";
+
+Object.defineProperties(ProtocolError.prototype, {
+
+    /**
+     * Error message.
+     * @name util.ProtocolError#message
+     * @type {string}
+     * @readonly
+     */
+    message: {
+        get: function() {
+            return this.error.message;
+        }
+    },
+
+    /**
+     * Stack trace.
+     * @name util.ProtocolError#stack
+     * @type {string}
+     * @readonly
+     */
+    stack: {
+        get: function() {
+            return this.error.stack;
+        }
+    }
+});
 
 },{}],40:[function(require,module,exports){
 "use strict";

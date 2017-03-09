@@ -1,6 +1,8 @@
 "use strict";
 module.exports = encoder;
 
+encoder.compat = true;
+
 var Enum     = require("./enum"),
     types    = require("./types"),
     util     = require("./util");
@@ -21,9 +23,21 @@ function genTypePartial(gen, field, fieldIndex, ref) {
 }
 
 /**
+ * Compares reflected fields by id.
+ * @param {Field} a First field
+ * @param {Field} b Second field
+ * @returns {number} Comparison value
+ * @ignore
+ */
+function compareFieldsById(a, b) {
+    return a.id - b.id;
+}
+
+/**
  * Generates an encoder specific to the specified message type.
  * @param {Type} mtype Message type
  * @returns {Codegen} Codegen instance
+ * @property {boolean} compat=true Generates encoders serializing in ascending field order
  */
 function encoder(mtype) {
     /* eslint-disable no-unexpected-multiline, block-scoped-var, no-redeclare */
@@ -34,14 +48,13 @@ function encoder(mtype) {
     var i, ref;
 
     // "when a message is serialized its known fields should be written sequentially by field number"
-    var sortedFields = /* initializes */ mtype.fieldsArray.slice();
-    sortedFields.sort(function(a, b) {
-        return a.id - b.id;
-    });
+    var fields = /* initializes */ mtype.fieldsArray;
+    if (encoder.compat)
+        fields = fields.slice().sort(compareFieldsById);
 
-    for (var i = 0; i < sortedFields.length; ++i) {
-        var field    = sortedFields[i].resolve(),
-            index    = mtype._fieldsArray.indexOf(field);
+    for (var i = 0; i < fields.length; ++i) {
+        var field    = fields[i].resolve(),
+            index    = encoder.compat ? mtype._fieldsArray.indexOf(field) : i;
         if (field.partOf) // see below for oneofs
             continue;
         var type     = field.resolvedType instanceof Enum ? "uint32" : field.type,

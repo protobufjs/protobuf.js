@@ -160,6 +160,7 @@ export function decoder(mtype: Type): Codegen;
  * Generates an encoder specific to the specified message type.
  * @param {Type} mtype Message type
  * @returns {Codegen} Codegen instance
+ * @property {boolean} compat=true Generates encoders serializing in ascending field order
  */
 export function encoder(mtype: Type): Codegen;
 
@@ -2290,8 +2291,8 @@ export namespace util {
      * @memberof util
      * @extends Error
      * @constructor
-     * @param {string} messageText Error message text
-     * @param {Message=} messageInstance So far decoded message instance, if applicable
+     * @param {string} message Error message
+     * @param {Message=} instance So far decoded message instance, if applicable
      * @example
      * try {
      *     MyMessage.decode(someBuffer); // throws if required fields are missing
@@ -2308,8 +2309,8 @@ export namespace util {
          * @memberof util
          * @extends Error
          * @constructor
-         * @param {string} messageText Error message text
-         * @param {Message=} messageInstance So far decoded message instance, if applicable
+         * @param {string} message Error message
+         * @param {Message=} instance So far decoded message instance, if applicable
          * @example
          * try {
          *     MyMessage.decode(someBuffer); // throws if required fields are missing
@@ -2318,13 +2319,41 @@ export namespace util {
          *         console.log("decoded so far: " + JSON.stringify(e.instance));
          * }
          */
-        constructor(messageText: string, messageInstance?: Message);
+        constructor(message: string, instance?: Message);
+
+        /**
+         * Underlying plain error.
+         * @type {Error}
+         */
+        public error: Error;
 
         /**
          * So far decoded message instance, if applicable.
          * @type {?Message}
          */
         public instance: Message;
+
+        /**
+         * Error name (ProtocolError).
+         * @type {string}
+         */
+        public name: string;
+
+        /**
+         * Error message.
+         * @name util.ProtocolError#message
+         * @type {string}
+         * @readonly
+         */
+        public readonly message: string;
+
+        /**
+         * Stack trace.
+         * @name util.ProtocolError#stack
+         * @type {string}
+         * @readonly
+         */
+        public readonly stack: string;
     }
 
     /**

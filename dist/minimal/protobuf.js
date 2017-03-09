@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.7.0 (c) 2016, Daniel Wirtz
- * Compiled Mon, 06 Mar 2017 03:35:11 UTC
+ * Compiled Thu, 09 Mar 2017 16:42:05 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -468,6 +468,7 @@ var protobuf = exports;
  * Build type, one of `"full"`, `"light"` or `"minimal"`.
  * @name build
  * @type {string}
+ * @const
  */
 protobuf.build = "minimal";
 
@@ -1760,8 +1761,8 @@ module.exports = ProtocolError;
  * @memberof util
  * @extends Error
  * @constructor
- * @param {string} messageText Error message text
- * @param {Message=} messageInstance So far decoded message instance, if applicable
+ * @param {string} message Error message
+ * @param {Message=} instance So far decoded message instance, if applicable
  * @example
  * try {
  *     MyMessage.decode(someBuffer); // throws if required fields are missing
@@ -1770,21 +1771,56 @@ module.exports = ProtocolError;
  *         console.log("decoded so far: " + JSON.stringify(e.instance));
  * }
  */
-function ProtocolError(messageText, messageInstance) {
+function ProtocolError(message, instance) {
 
     if (!(this instanceof ProtocolError))
-        return new ProtocolError(messageText, messageInstance);
+        return new ProtocolError(message, instance);
 
-    this.name = "ProtocolError";
-    this.message = messageText;
-    this.stack = (new Error()).stack;
+    /**
+     * Underlying plain error.
+     * @type {Error}
+     */
+    this.error = Error(message);
 
     /**
      * So far decoded message instance, if applicable.
      * @type {?Message}
      */
-    this.instance = messageInstance || null;
+    this.instance = instance || null;
 }
+
+/**
+ * Error name (ProtocolError).
+ * @type {string}
+ */
+ProtocolError.prototype.name = "ProtocolError";
+
+Object.defineProperties(ProtocolError.prototype, {
+
+    /**
+     * Error message.
+     * @name util.ProtocolError#message
+     * @type {string}
+     * @readonly
+     */
+    message: {
+        get: function() {
+            return this.error.message;
+        }
+    },
+
+    /**
+     * Stack trace.
+     * @name util.ProtocolError#stack
+     * @type {string}
+     * @readonly
+     */
+    stack: {
+        get: function() {
+            return this.error.stack;
+        }
+    }
+});
 
 },{}],15:[function(require,module,exports){
 "use strict";

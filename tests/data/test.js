@@ -1931,7 +1931,6 @@ $root.jspb = (function() {
                 if (!writer)
                     writer = $Writer.create();
                 writer.uint32(/* id 1, wireType 2 =*/10).string(message.aString);
-                writer.uint32(/* id 9, wireType 0 =*/72).bool(message.anOutOfOrderBool);
                 if (message.aNestedMessage && message.hasOwnProperty("aNestedMessage"))
                     $types[2].encode(message.aNestedMessage, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
                 if (message.aRepeatedMessage !== undefined && message.hasOwnProperty("aRepeatedMessage"))
@@ -1940,6 +1939,7 @@ $root.jspb = (function() {
                 if (message.aRepeatedString !== undefined && message.hasOwnProperty("aRepeatedString"))
                     for (var i = 0; i < message.aRepeatedString.length; ++i)
                         writer.uint32(/* id 7, wireType 2 =*/58).string(message.aRepeatedString[i]);
+                writer.uint32(/* id 9, wireType 0 =*/72).bool(message.anOutOfOrderBool);
                 return writer;
             };
 
@@ -7655,12 +7655,6 @@ $root.google = (function() {
                 if (message.dependency !== undefined && message.hasOwnProperty("dependency"))
                     for (var i = 0; i < message.dependency.length; ++i)
                         writer.uint32(/* id 3, wireType 2 =*/26).string(message.dependency[i]);
-                if (message.publicDependency !== undefined && message.hasOwnProperty("publicDependency"))
-                    for (var i = 0; i < message.publicDependency.length; ++i)
-                        writer.uint32(/* id 10, wireType 0 =*/80).int32(message.publicDependency[i]);
-                if (message.weakDependency !== undefined && message.hasOwnProperty("weakDependency"))
-                    for (var i = 0; i < message.weakDependency.length; ++i)
-                        writer.uint32(/* id 11, wireType 0 =*/88).int32(message.weakDependency[i]);
                 if (message.messageType !== undefined && message.hasOwnProperty("messageType"))
                     for (var i = 0; i < message.messageType.length; ++i)
                         $types[5].encode(message.messageType[i], writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
@@ -7677,6 +7671,12 @@ $root.google = (function() {
                     $types[9].encode(message.options, writer.uint32(/* id 8, wireType 2 =*/66).fork()).ldelim();
                 if (message.sourceCodeInfo && message.hasOwnProperty("sourceCodeInfo"))
                     $types[10].encode(message.sourceCodeInfo, writer.uint32(/* id 9, wireType 2 =*/74).fork()).ldelim();
+                if (message.publicDependency !== undefined && message.hasOwnProperty("publicDependency"))
+                    for (var i = 0; i < message.publicDependency.length; ++i)
+                        writer.uint32(/* id 10, wireType 0 =*/80).int32(message.publicDependency[i]);
+                if (message.weakDependency !== undefined && message.hasOwnProperty("weakDependency"))
+                    for (var i = 0; i < message.weakDependency.length; ++i)
+                        writer.uint32(/* id 11, wireType 0 =*/88).int32(message.weakDependency[i]);
                 if (message.syntax !== undefined && message.hasOwnProperty("syntax"))
                     writer.uint32(/* id 12, wireType 2 =*/98).string(message.syntax);
                 return writer;
@@ -8176,9 +8176,6 @@ $root.google = (function() {
                 if (message.field !== undefined && message.hasOwnProperty("field"))
                     for (var i = 0; i < message.field.length; ++i)
                         $types[1].encode(message.field[i], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
-                if (message.extension !== undefined && message.hasOwnProperty("extension"))
-                    for (var i = 0; i < message.extension.length; ++i)
-                        $types[2].encode(message.extension[i], writer.uint32(/* id 6, wireType 2 =*/50).fork()).ldelim();
                 if (message.nestedType !== undefined && message.hasOwnProperty("nestedType"))
                     for (var i = 0; i < message.nestedType.length; ++i)
                         $types[3].encode(message.nestedType[i], writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
@@ -8188,11 +8185,14 @@ $root.google = (function() {
                 if (message.extensionRange !== undefined && message.hasOwnProperty("extensionRange"))
                     for (var i = 0; i < message.extensionRange.length; ++i)
                         $types[5].encode(message.extensionRange[i], writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
+                if (message.extension !== undefined && message.hasOwnProperty("extension"))
+                    for (var i = 0; i < message.extension.length; ++i)
+                        $types[2].encode(message.extension[i], writer.uint32(/* id 6, wireType 2 =*/50).fork()).ldelim();
+                if (message.options && message.hasOwnProperty("options"))
+                    $types[7].encode(message.options, writer.uint32(/* id 7, wireType 2 =*/58).fork()).ldelim();
                 if (message.oneofDecl !== undefined && message.hasOwnProperty("oneofDecl"))
                     for (var i = 0; i < message.oneofDecl.length; ++i)
                         $types[6].encode(message.oneofDecl[i], writer.uint32(/* id 8, wireType 2 =*/66).fork()).ldelim();
-                if (message.options && message.hasOwnProperty("options"))
-                    $types[7].encode(message.options, writer.uint32(/* id 7, wireType 2 =*/58).fork()).ldelim();
                 if (message.reservedRange !== undefined && message.hasOwnProperty("reservedRange"))
                     for (var i = 0; i < message.reservedRange.length; ++i)
                         $types[8].encode(message.reservedRange[i], writer.uint32(/* id 9, wireType 2 =*/74).fork()).ldelim();
@@ -9052,6 +9052,8 @@ $root.google = (function() {
                     writer = $Writer.create();
                 if (message.name !== undefined && message.hasOwnProperty("name"))
                     writer.uint32(/* id 1, wireType 2 =*/10).string(message.name);
+                if (message.extendee !== undefined && message.hasOwnProperty("extendee"))
+                    writer.uint32(/* id 2, wireType 2 =*/18).string(message.extendee);
                 if (message.number !== undefined && message.hasOwnProperty("number"))
                     writer.uint32(/* id 3, wireType 0 =*/24).int32(message.number);
                 if (message.label !== undefined && message.hasOwnProperty("label"))
@@ -9060,16 +9062,14 @@ $root.google = (function() {
                     writer.uint32(/* id 5, wireType 0 =*/40).uint32(message.type);
                 if (message.typeName !== undefined && message.hasOwnProperty("typeName"))
                     writer.uint32(/* id 6, wireType 2 =*/50).string(message.typeName);
-                if (message.extendee !== undefined && message.hasOwnProperty("extendee"))
-                    writer.uint32(/* id 2, wireType 2 =*/18).string(message.extendee);
                 if (message.defaultValue !== undefined && message.hasOwnProperty("defaultValue"))
                     writer.uint32(/* id 7, wireType 2 =*/58).string(message.defaultValue);
+                if (message.options && message.hasOwnProperty("options"))
+                    $types[9].encode(message.options, writer.uint32(/* id 8, wireType 2 =*/66).fork()).ldelim();
                 if (message.oneofIndex !== undefined && message.hasOwnProperty("oneofIndex"))
                     writer.uint32(/* id 9, wireType 0 =*/72).int32(message.oneofIndex);
                 if (message.jsonName !== undefined && message.hasOwnProperty("jsonName"))
                     writer.uint32(/* id 10, wireType 2 =*/82).string(message.jsonName);
-                if (message.options && message.hasOwnProperty("options"))
-                    $types[9].encode(message.options, writer.uint32(/* id 8, wireType 2 =*/66).fork()).ldelim();
                 return writer;
             };
 
@@ -10765,14 +10765,10 @@ $root.google = (function() {
                     writer.uint32(/* id 1, wireType 2 =*/10).string(message.javaPackage);
                 if (message.javaOuterClassname !== undefined && message.hasOwnProperty("javaOuterClassname"))
                     writer.uint32(/* id 8, wireType 2 =*/66).string(message.javaOuterClassname);
-                if (message.javaMultipleFiles !== undefined && message.hasOwnProperty("javaMultipleFiles"))
-                    writer.uint32(/* id 10, wireType 0 =*/80).bool(message.javaMultipleFiles);
-                if (message.javaGenerateEqualsAndHash !== undefined && message.hasOwnProperty("javaGenerateEqualsAndHash"))
-                    writer.uint32(/* id 20, wireType 0 =*/160).bool(message.javaGenerateEqualsAndHash);
-                if (message.javaStringCheckUtf8 !== undefined && message.hasOwnProperty("javaStringCheckUtf8"))
-                    writer.uint32(/* id 27, wireType 0 =*/216).bool(message.javaStringCheckUtf8);
                 if (message.optimizeFor !== undefined && message.hasOwnProperty("optimizeFor"))
                     writer.uint32(/* id 9, wireType 0 =*/72).uint32(message.optimizeFor);
+                if (message.javaMultipleFiles !== undefined && message.hasOwnProperty("javaMultipleFiles"))
+                    writer.uint32(/* id 10, wireType 0 =*/80).bool(message.javaMultipleFiles);
                 if (message.goPackage !== undefined && message.hasOwnProperty("goPackage"))
                     writer.uint32(/* id 11, wireType 2 =*/90).string(message.goPackage);
                 if (message.ccGenericServices !== undefined && message.hasOwnProperty("ccGenericServices"))
@@ -10781,8 +10777,12 @@ $root.google = (function() {
                     writer.uint32(/* id 17, wireType 0 =*/136).bool(message.javaGenericServices);
                 if (message.pyGenericServices !== undefined && message.hasOwnProperty("pyGenericServices"))
                     writer.uint32(/* id 18, wireType 0 =*/144).bool(message.pyGenericServices);
+                if (message.javaGenerateEqualsAndHash !== undefined && message.hasOwnProperty("javaGenerateEqualsAndHash"))
+                    writer.uint32(/* id 20, wireType 0 =*/160).bool(message.javaGenerateEqualsAndHash);
                 if (message.deprecated !== undefined && message.hasOwnProperty("deprecated"))
                     writer.uint32(/* id 23, wireType 0 =*/184).bool(message.deprecated);
+                if (message.javaStringCheckUtf8 !== undefined && message.hasOwnProperty("javaStringCheckUtf8"))
+                    writer.uint32(/* id 27, wireType 0 =*/216).bool(message.javaStringCheckUtf8);
                 if (message.ccEnableArenas !== undefined && message.hasOwnProperty("ccEnableArenas"))
                     writer.uint32(/* id 31, wireType 0 =*/248).bool(message.ccEnableArenas);
                 if (message.objcClassPrefix !== undefined && message.hasOwnProperty("objcClassPrefix"))
@@ -11482,12 +11482,12 @@ $root.google = (function() {
                     writer.uint32(/* id 1, wireType 0 =*/8).uint32(message.ctype);
                 if (message.packed !== undefined && message.hasOwnProperty("packed"))
                     writer.uint32(/* id 2, wireType 0 =*/16).bool(message.packed);
-                if (message.jstype !== undefined && message.hasOwnProperty("jstype"))
-                    writer.uint32(/* id 6, wireType 0 =*/48).uint32(message.jstype);
-                if (message.lazy !== undefined && message.hasOwnProperty("lazy"))
-                    writer.uint32(/* id 5, wireType 0 =*/40).bool(message.lazy);
                 if (message.deprecated !== undefined && message.hasOwnProperty("deprecated"))
                     writer.uint32(/* id 3, wireType 0 =*/24).bool(message.deprecated);
+                if (message.lazy !== undefined && message.hasOwnProperty("lazy"))
+                    writer.uint32(/* id 5, wireType 0 =*/40).bool(message.lazy);
+                if (message.jstype !== undefined && message.hasOwnProperty("jstype"))
+                    writer.uint32(/* id 6, wireType 0 =*/48).uint32(message.jstype);
                 if (message.weak !== undefined && message.hasOwnProperty("weak"))
                     writer.uint32(/* id 10, wireType 0 =*/80).bool(message.weak);
                 if (message.uninterpretedOption !== undefined && message.hasOwnProperty("uninterpretedOption"))

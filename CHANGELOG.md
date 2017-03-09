@@ -1,3 +1,34 @@
+# [6.7.0](https://github.com/dcodeIO/protobuf.js/releases/tag/6.7.0)
+
+## Breaking
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/44a8d3af5da578c2e6bbe0a1b948d469bbe27ca1) Decoder now throws if required fields are missing, see [#695](https://github.com/dcodeIO/protobuf.js/issues/695) / [#696](https://github.com/dcodeIO/protobuf.js/issues/696)<br />
+
+## Fixed
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/3e930b907a834a7da759478b8d3f52fef1da22d8) Retain options argument in Root#load when used with promises, see [#684](https://github.com/dcodeIO/protobuf.js/issues/684)<br />
+
+## New
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/c1ca65dc6987384af6f9fac2fbd7700fcf5765b2) Sequentially serialize fields ordered by id, as of the spec.<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/26d9fadb21a85ca0b5609156c26453ae875e4933) decode throws specific ProtocolError with a reference to the so far decoded message if required fields are missing + example<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/2b5577b238a452ae86aa395fb2ad3a3f45d755dc) Reader.create asserts that `buffer` is a valid buffer, see [#695](https://github.com/dcodeIO/protobuf.js/issues/695)<br />
+
+## Docs
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/2130bc97e44567e766ea8efacb365383c909dbd4) Extended traverse-types example, see [#693](https://github.com/dcodeIO/protobuf.js/issues/693)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/13e4aa3ff274ab42f1302e16fd59d074c5587b5b) Better explain how .verify, .encode and .decode are connected<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/7502dd2dfdaea111e5c1a902c524ad0a51ff9bd4) Documented that Type#encode respectively Message.encode do not implicitly .verify, see [#696](https://github.com/dcodeIO/protobuf.js/issues/696) [ci-skip]<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/e7e123aa0b6c05eb4156a761739e37c008a3cbc1) Documented throwing behavior of Reader.create and Message.decode<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/0fcde32306da77f02cb1ea81ed18a32cee01f17b) Added error handling notes to README, see [#696](https://github.com/dcodeIO/protobuf.js/issues/696)<br />
+
+## Other
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/3ead13e83ecdc8715fbab916f7ccaf3fbfdf59ed) Added tslint<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/364e7d457ed4c11328e609f600a57b7bc4888554) Exclude dist/ from codeclimate checks<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/6e81fcb05f25386e3997399e6596e9d9414f0286) Also lint cli utilities<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/e7e123aa0b6c05eb4156a761739e37c008a3cbc1) Cache any regexp instance (perf)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/d89c45f8af0293fb34e6f12b37ceca49083e1faa) Use code climate badges<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/e70fbe3492c37f009dbaccf910c1e0f81e8f0f44) Updated travis to pipe to codeclimate, coverage<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/a7ab1036906bb7638193a9e991cb62c86108880a) More precise linter configuration<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/58688c178257051ceb2dfea8a63eb6be7dcf1cf1) Added codeclimate<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/4b21e00adc6fae42e6a88deaeb0b7c077c6ca50e) Moved cli deps placeholder creation to post install script<br />
+
 # [6.6.5](https://github.com/dcodeIO/protobuf.js/releases/tag/6.6.5)
 
 ## Fixed

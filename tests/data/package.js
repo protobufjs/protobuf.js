@@ -161,8 +161,6 @@ $root.Package = (function() {
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.name);
         if (message.version !== undefined && message.hasOwnProperty("version"))
             writer.uint32(/* id 2, wireType 2 =*/18).string(message.version);
-        if (message.versionScheme !== undefined && message.hasOwnProperty("versionScheme"))
-            writer.uint32(/* id 19, wireType 2 =*/154).string(message.versionScheme);
         if (message.description !== undefined && message.hasOwnProperty("description"))
             writer.uint32(/* id 3, wireType 2 =*/26).string(message.description);
         if (message.author !== undefined && message.hasOwnProperty("author"))
@@ -200,6 +198,8 @@ $root.Package = (function() {
         if (message.cliDependencies !== undefined && message.hasOwnProperty("cliDependencies"))
             for (var i = 0; i < message.cliDependencies.length; ++i)
                 writer.uint32(/* id 18, wireType 2 =*/146).string(message.cliDependencies[i]);
+        if (message.versionScheme !== undefined && message.hasOwnProperty("versionScheme"))
+            writer.uint32(/* id 19, wireType 2 =*/154).string(message.versionScheme);
         return writer;
     };
 
