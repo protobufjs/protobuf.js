@@ -1,50 +1,58 @@
 {
-    "name": "protobufjs",
-    "version": "3.8.2",
-    "description": "Protocol Buffers for JavaScript. Finally.",
-    "author": "Daniel Wirtz <dcode@dcode.io>",
-    "contributors": [
-        "Frank Xu <yyfrankyy@gmail.com>"
-    ],
-    "main": "index.js",
-    "bin": {
-        "proto2js": "./bin/proto2js",
-        "json2proto": "./bin/json2proto"
-    },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/dcodeIO/ProtoBuf.js.git"
-    },
-    "bugs": {
-        "url": "https://github.com/dcodeIO/ProtoBuf.js/issues"
-    },
-    "keywords": ["net", "buffer", "protobuf", "serialization", "bytebuffer", "websocket", "webrtc"],
-    "dependencies": {
-        "bytebuffer": "~3 >=3.5",
-        "ascli": "~0.3"
-    },
-    "devDependencies": {
-        "testjs": "~1",
-        "metascript": ">=0.18 <1",
-        "closurecompiler": "~1",
-        "jsdoc": "~3.3.0-alpha10"
-    },
-    "license": "Apache-2.0",
-    "engines": {
-        "node": ">=0.8"
-    },
-    "scripts": {
-        "prepublish": "npm test",
-        "test": "node bin/proto2js tests/complex.proto > tests/complex.json && node node_modules/testjs/bin/testjs tests/suite.js",
-        "make": "npm run-script build && npm run-script compile && npm run-script descriptor2json && npm run-script compress && dos2unix bin/proto2js && dos2unix bin/json2proto && npm test && npm run-script jsdoc",
-        "build": "node scripts/build.js",
-        "descriptor2json": "node bin/proto2js src/google/protobuf/descriptor.proto > src/google/protobuf/descriptor.json",
-        "compile": "npm run-script compile-full && npm run-script compile-noparse",
-        "compile-full": "ccjs dist/ProtoBuf.js --create_source_map=dist/ProtoBuf.min.map --compilation_level=SIMPLE_OPTIMIZATIONS > dist/ProtoBuf.min.js",
-        "compile-noparse": "ccjs dist/ProtoBuf.noparse.js --create_source_map=dist/ProtoBuf.noparse.min.map --compilation_level=SIMPLE_OPTIMIZATIONS > dist/ProtoBuf.noparse.min.js",
-        "compress": "npm run-script compress-full && npm run-script compress-noparse",
-        "compress-full": "gzip -c -9 dist/ProtoBuf.min.js > dist/ProtoBuf.min.js.gz",
-        "compress-noparse": "gzip -c -9 dist/ProtoBuf.noparse.min.js > dist/ProtoBuf.noparse.min.js.gz",
-        "jsdoc": "node node_modules/jsdoc/jsdoc.js -c jsdoc.json"
-    }
+  "name": "protobufjs",
+  "version": "3.8.3",
+  "description": "Protocol Buffers for JavaScript. Finally.",
+  "author": "Daniel Wirtz <dcode@dcode.io>",
+  "contributors": [
+    "Frank Xu <yyfrankyy@gmail.com>"
+  ],
+  "main": "index.js",
+  "bin": {
+    "proto2js": "./bin/proto2js",
+    "json2proto": "./bin/json2proto"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dcodeIO/ProtoBuf.js.git"
+  },
+  "bugs": {
+    "url": "https://github.com/dcodeIO/ProtoBuf.js/issues"
+  },
+  "keywords": [
+    "net",
+    "buffer",
+    "protobuf",
+    "serialization",
+    "bytebuffer",
+    "websocket",
+    "webrtc"
+  ],
+  "dependencies": {
+    "bytebuffer": "~3 >=3.5",
+    "ascli": "~0.3"
+  },
+  "devDependencies": {
+    "testjs": "~1",
+    "metascript": ">=0.18 <1",
+    "closurecompiler": "~1",
+    "jsdoc": "~3.3.0-alpha10"
+  },
+  "license": "Apache-2.0",
+  "engines": {
+    "node": ">=0.8"
+  },
+  "scripts": {
+    "prepublish": "npm test",
+    "test": "node bin/proto2js tests/complex.proto > tests/complex.json && node node_modules/testjs/bin/testjs tests/suite.js",
+    "make": "npm run-script build && npm run-script compile && npm run-script descriptor2json && npm run-script compress && dos2unix bin/proto2js && dos2unix bin/json2proto && npm test && npm run-script jsdoc",
+    "build": "node scripts/build.js",
+    "descriptor2json": "node bin/proto2js src/google/protobuf/descriptor.proto > src/google/protobuf/descriptor.json",
+    "compile": "npm run-script compile-full && npm run-script compile-noparse",
+    "compile-full": "ccjs dist/ProtoBuf.js --create_source_map=dist/ProtoBuf.min.map --compilation_level=SIMPLE_OPTIMIZATIONS > dist/ProtoBuf.min.js",
+    "compile-noparse": "ccjs dist/ProtoBuf.noparse.js --create_source_map=dist/ProtoBuf.noparse.min.map --compilation_level=SIMPLE_OPTIMIZATIONS > dist/ProtoBuf.noparse.min.js",
+    "compress": "npm run-script compress-full && npm run-script compress-noparse",
+    "compress-full": "gzip -c -9 dist/ProtoBuf.min.js > dist/ProtoBuf.min.js.gz",
+    "compress-noparse": "gzip -c -9 dist/ProtoBuf.noparse.min.js > dist/ProtoBuf.noparse.min.js.gz",
+    "jsdoc": "node node_modules/jsdoc/jsdoc.js -c jsdoc.json"
+  }
 }
