@@ -49,12 +49,13 @@ function encoder(mtype) {
 
     // "when a message is serialized its known fields should be written sequentially by field number"
     var fields = /* initializes */ mtype.fieldsArray;
+    /* istanbul ignore else */
     if (encoder.compat)
         fields = fields.slice().sort(compareFieldsById);
 
     for (var i = 0; i < fields.length; ++i) {
         var field    = fields[i].resolve(),
-            index    = encoder.compat ? mtype._fieldsArray.indexOf(field) : i;
+            index    = encoder.compat ? mtype._fieldsArray.indexOf(field) : /* istanbul ignore next */ i;
         if (field.partOf) // see below for oneofs
             continue;
         var type     = field.resolvedType instanceof Enum ? "uint32" : field.type,
