@@ -2322,10 +2322,16 @@ export namespace util {
         constructor(message: string, instance?: Message);
 
         /**
-         * Underlying plain error.
-         * @type {Error}
+         * Error message.
+         * @type {string}
          */
-        public error: Error;
+        public message: string;
+
+        /**
+         * Stack trace.
+         * @type {string}
+         */
+        public stack: string;
 
         /**
          * So far decoded message instance, if applicable.
@@ -2338,22 +2344,6 @@ export namespace util {
          * @type {string}
          */
         public name: string;
-
-        /**
-         * Error message.
-         * @name util.ProtocolError#message
-         * @type {string}
-         * @readonly
-         */
-        public readonly message: string;
-
-        /**
-         * Stack trace.
-         * @name util.ProtocolError#stack
-         * @type {string}
-         * @readonly
-         */
-        public readonly stack: string;
     }
 
     /**

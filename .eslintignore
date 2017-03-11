@@ -3,7 +3,6 @@ cli/wrappers/*
 coverage/*
 dist/*
 docs/*
-gulpfile.js
 lib/deep-equal/*
 lib/prelude.js
 lib/polyfill.js
@@ -11,4 +10,5 @@ lib/tape-adapter.js
 lib/tsd-jsdoc/*
 lib/*/tests/*
 sandbox/*
+scripts/*
 tests/*

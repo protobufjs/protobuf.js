@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.7.0 (c) 2016, Daniel Wirtz
- * Compiled Thu, 09 Mar 2017 16:42:05 UTC
+ * Compiled Sat, 11 Mar 2017 04:03:04 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -1777,10 +1777,16 @@ function ProtocolError(message, instance) {
         return new ProtocolError(message, instance);
 
     /**
-     * Underlying plain error.
-     * @type {Error}
+     * Error message.
+     * @type {string}
      */
-    this.error = Error(message);
+    this.message = message;
+
+    /**
+     * Stack trace.
+     * @type {string}
+     */
+    this.stack = Error(message).stack || /* istanbul ignore next */ ""; // not supported in IE9/Safari5
 
     /**
      * So far decoded message instance, if applicable.
@@ -1794,33 +1800,6 @@ function ProtocolError(message, instance) {
  * @type {string}
  */
 ProtocolError.prototype.name = "ProtocolError";
-
-Object.defineProperties(ProtocolError.prototype, {
-
-    /**
-     * Error message.
-     * @name util.ProtocolError#message
-     * @type {string}
-     * @readonly
-     */
-    message: {
-        get: function() {
-            return this.error.message;
-        }
-    },
-
-    /**
-     * Stack trace.
-     * @name util.ProtocolError#stack
-     * @type {string}
-     * @readonly
-     */
-    stack: {
-        get: function() {
-            return this.error.stack;
-        }
-    }
-});
 
 },{}],15:[function(require,module,exports){
 "use strict";

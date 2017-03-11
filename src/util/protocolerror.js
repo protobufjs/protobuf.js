@@ -26,10 +26,16 @@ function ProtocolError(message, instance) {
         return new ProtocolError(message, instance);
 
     /**
-     * Underlying plain error.
-     * @type {Error}
+     * Error message.
+     * @type {string}
      */
-    this.error = Error(message);
+    this.message = message;
+
+    /**
+     * Stack trace.
+     * @type {string}
+     */
+    this.stack = Error(message).stack || /* istanbul ignore next */ ""; // not supported in IE9/Safari5
 
     /**
      * So far decoded message instance, if applicable.
@@ -43,30 +49,3 @@ function ProtocolError(message, instance) {
  * @type {string}
  */
 ProtocolError.prototype.name = "ProtocolError";
-
-Object.defineProperties(ProtocolError.prototype, {
-
-    /**
-     * Error message.
-     * @name util.ProtocolError#message
-     * @type {string}
-     * @readonly
-     */
-    message: {
-        get: function() {
-            return this.error.message;
-        }
-    },
-
-    /**
-     * Stack trace.
-     * @name util.ProtocolError#stack
-     * @type {string}
-     * @readonly
-     */
-    stack: {
-        get: function() {
-            return this.error.stack;
-        }
-    }
-});
