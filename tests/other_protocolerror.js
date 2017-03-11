@@ -28,7 +28,7 @@ tape.test("a protocol error", function(test) {
     } catch (e) {
         test.ok(e instanceof ProtocolError, "should be thrown if a message is missing required fields");
         test.ok(e.message, "should have an error message");
-        test.ok(e.stack, "should have a stack trace");
+        test.ok(typeof e.stack === "string", "should have a stack trace (empty string if not supported)");
         test.equal(e.name, "ProtocolError", "should have the correct name");
         test.same(e.instance, {
             foo: 2
