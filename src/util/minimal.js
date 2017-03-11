@@ -22,9 +22,6 @@ util.pool = require("@protobufjs/pool");
 // utility to work with the low and high bits of a 64 bit value
 util.LongBits = require("./longbits");
 
-// error subclass indicating a protocol specifc error
-util.ProtocolError = require("./protocolerror");
-
 /**
  * An immuable empty array.
  * @memberof util
@@ -181,17 +178,20 @@ util.longFromHash = function longFromHash(hash, unsigned) {
 
 /**
  * Merges the properties of the source object into the destination object.
+ * @memberof util
  * @param {Object.<string,*>} dst Destination object
  * @param {Object.<string,*>} src Source object
  * @param {boolean} [ifNotSet=false] Merges only if the key is not already set
  * @returns {Object.<string,*>} Destination object
  */
-util.merge = function merge(dst, src, ifNotSet) { // used by converters
+function merge(dst, src, ifNotSet) { // used by converters
     for (var keys = Object.keys(src), i = 0; i < keys.length; ++i)
         if (dst[keys[i]] === undefined || !ifNotSet)
             dst[keys[i]] = src[keys[i]];
     return dst;
-};
+}
+
+util.merge = merge;
 
 /**
  * Converts the first character of a string to lower case.
@@ -201,6 +201,61 @@ util.merge = function merge(dst, src, ifNotSet) { // used by converters
 util.lcFirst = function lcFirst(str) {
     return str.charAt(0).toLowerCase() + str.substring(1);
 };
+
+/**
+ * Creates a custom error constructor.
+ * @memberof util
+ * @param {string} name Error name
+ * @returns {function} Custom error constructor
+ */
+function newError(name) {
+
+    function CustomError(message, properties) {
+
+        if (!(this instanceof CustomError))
+            return new CustomError(message, properties);
+
+        Error.call(this, message);
+        Object.defineProperty(this, "message", { get: function() { return message; } });
+        if (Error.captureStackTrace)
+            Error.captureStackTrace(this, CustomError);
+        else
+            Object.defineProperty(this, "stack", { value: (new Error()).stack || "" });
+
+        if (properties)
+            merge(this, properties);
+    }
+
+    (CustomError.prototype = Object.create(Error.prototype)).constructor = CustomError;
+
+    Object.defineProperty(CustomError.prototype, "name", { get: function() { return name; } });
+
+    CustomError.prototype.toString = function toString() {
+        return this.name + ": " + this.message;
+    };
+
+    return CustomError;
+}
+
+util.newError = newError;
+
+/**
+ * Constructs a new protocol error.
+ * @classdesc Error subclass indicating a protocol specifc error.
+ * @memberof util
+ * @extends Error
+ * @constructor
+ * @param {string} message Error message
+ * @param {Object.<string,*>=} properties Additional properties
+ * @example
+ * try {
+ *     MyMessage.decode(someBuffer); // throws if required fields are missing
+ * } catch (e) {
+ *     if (e instanceof ProtocolError && e.instance)
+ *         console.log("decoded so far: " + JSON.stringify(e.instance));
+ * }
+ */
+util.ProtocolError = newError("ProtocolError");
 
 /**
  * Builds a getter for a oneof's present field name.
