@@ -96,7 +96,10 @@ function buildNamespace(ref, ns) {
         return;
     if (ns.name !== "") {
         push("");
-        push(name(ref) + "." + name(ns.name) + " = (function() {");
+        if (!ref && config.es6)
+            push("export const " + name(ns.name) + " = " + name(ref) + "." + name(ns.name) + " = (function() {");
+        else
+            push(name(ref) + "." + name(ns.name) + " = (function() {");
         ++indent;
     }
 
