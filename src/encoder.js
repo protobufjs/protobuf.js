@@ -3,6 +3,9 @@ module.exports = encoder;
 
 encoder.compat = true;
 
+// see cli/pbjs.js
+encoder.defaults = false;
+
 var Enum     = require("./enum"),
     types    = require("./types"),
     util     = require("./util");
@@ -90,9 +93,15 @@ function encoder(mtype) {
     ("}");
 
             // Non-packed
-            } else { gen
+            } else {
+                if(encoder.defaults) { gen
+        ("if(%s!==undefined&&%s.length){", ref, ref);
+                }
+                else { gen
+        ("if(%s!==undefined&&m.hasOwnProperty(%j)){", ref, field.name);
+                }
 
-    ("if(%s!==undefined&&m.hasOwnProperty(%j)){", ref, field.name)
+                gen
         ("for(var i=0;i<%s.length;++i)", ref);
                 if (wireType === undefined)
             genTypePartial(gen, field, index, ref + "[i]");
