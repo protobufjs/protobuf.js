@@ -21,6 +21,13 @@ export class Class {
     constructor(type: Type, ctor?: any);
 
     /**
+     * Generates a constructor function for the specified type.
+     * @param {Type} type Type to use
+     * @returns {Codegen} Codegen instance
+     */
+    public static generate(type: Type): Codegen;
+
+    /**
      * Constructs a new message prototype for the specified reflected type and sets up its constructor.
      * @function
      * @param {Type} type Reflected message type
@@ -2243,6 +2250,7 @@ export namespace util {
 
     /**
      * Merges the properties of the source object into the destination object.
+     * @memberof util
      * @param {Object.<string,*>} dst Destination object
      * @param {Object.<string,*>} src Source object
      * @param {boolean} [ifNotSet=false] Merges only if the key is not already set
@@ -2256,6 +2264,58 @@ export namespace util {
      * @returns {string} Converted string
      */
     function lcFirst(str: string): string;
+
+    /**
+     * Creates a custom error constructor.
+     * @memberof util
+     * @param {string} name Error name
+     * @returns {function} Custom error constructor
+     */
+    function newError(name: string): () => any;
+
+    /**
+     * Constructs a new protocol error.
+     * @classdesc Error subclass indicating a protocol specifc error.
+     * @memberof util
+     * @extends Error
+     * @constructor
+     * @param {string} message Error message
+     * @param {Object.<string,*>=} properties Additional properties
+     * @example
+     * try {
+     *     MyMessage.decode(someBuffer); // throws if required fields are missing
+     * } catch (e) {
+     *     if (e instanceof ProtocolError && e.instance)
+     *         console.log("decoded so far: " + JSON.stringify(e.instance));
+     * }
+     */
+    class ProtocolError extends Error {
+
+        /**
+         * Constructs a new protocol error.
+         * @classdesc Error subclass indicating a protocol specifc error.
+         * @memberof util
+         * @extends Error
+         * @constructor
+         * @param {string} message Error message
+         * @param {Object.<string,*>=} properties Additional properties
+         * @example
+         * try {
+         *     MyMessage.decode(someBuffer); // throws if required fields are missing
+         * } catch (e) {
+         *     if (e instanceof ProtocolError && e.instance)
+         *         console.log("decoded so far: " + JSON.stringify(e.instance));
+         * }
+         */
+        constructor(message: string, properties?: { [k: string]: any });
+
+        /**
+         * So far decoded message instance.
+         * @name util.ProtocolError#instance
+         * @type {Message}
+         */
+        public instance: Message;
+    }
 
     /**
      * Builds a getter for a oneof's present field name.
@@ -2284,67 +2344,6 @@ export namespace util {
      * @type {ConversionOptions}
      */
     let toJSONOptions: ConversionOptions;
-
-    /**
-     * Constructs a new protocol error.
-     * @classdesc Error subclass indicating a protocol specifc error.
-     * @memberof util
-     * @extends Error
-     * @constructor
-     * @param {string} message Error message
-     * @param {Message=} instance So far decoded message instance, if applicable
-     * @example
-     * try {
-     *     MyMessage.decode(someBuffer); // throws if required fields are missing
-     * } catch (e) {
-     *     if (e instanceof ProtocolError && e.instance)
-     *         console.log("decoded so far: " + JSON.stringify(e.instance));
-     * }
-     */
-    class ProtocolError extends Error {
-
-        /**
-         * Constructs a new protocol error.
-         * @classdesc Error subclass indicating a protocol specifc error.
-         * @memberof util
-         * @extends Error
-         * @constructor
-         * @param {string} message Error message
-         * @param {Message=} instance So far decoded message instance, if applicable
-         * @example
-         * try {
-         *     MyMessage.decode(someBuffer); // throws if required fields are missing
-         * } catch (e) {
-         *     if (e instanceof ProtocolError && e.instance)
-         *         console.log("decoded so far: " + JSON.stringify(e.instance));
-         * }
-         */
-        constructor(message: string, instance?: Message);
-
-        /**
-         * Error message.
-         * @type {string}
-         */
-        public message: string;
-
-        /**
-         * Stack trace.
-         * @type {string}
-         */
-        public stack: string;
-
-        /**
-         * So far decoded message instance, if applicable.
-         * @type {?Message}
-         */
-        public instance: Message;
-
-        /**
-         * Error name (ProtocolError).
-         * @type {string}
-         */
-        public name: string;
-    }
 
     /**
      * Node's fs module if available.

@@ -25,10 +25,7 @@ function Class(type, ctor) {
         if (typeof ctor !== "function")
             throw TypeError("ctor must be a function");
     } else
-        // create named constructor functions (codegen is required anyway)
-        ctor = Class.generate(type).eof(type.name, {
-            Message: Message
-        });
+        ctor = Class.generate(type).eof(type.name); // named constructor function (codegen is required anyway)
 
     // Let's pretend...
     ctor.constructor = Class;
@@ -77,8 +74,11 @@ function Class(type, ctor) {
  * @param {Type} type Type to use
  * @returns {Codegen} Codegen instance
  */
-Class.generate = function generate(type) {
+Class.generate = function generate(type) { // eslint-disable-line no-unused-vars
+    /* eslint-disable no-unexpected-multiline */
     var gen = util.codegen("p");
+    // see issue #700: the following would add explicitly initialized mutable object/array fields
+    // so that these aren't just inherited from the prototype. will break test cases.
     /*
     for (var i = 0, field; i < type.fieldsArray.length; ++i)
         if ((field = type._fieldsArray[i]).map) gen
@@ -91,6 +91,7 @@ Class.generate = function generate(type) {
         ("for(var ks=Object.keys(p),i=0;i<ks.length;++i)")
             ("this[ks[i]]=p[ks[i]];")
     ("}");
+    /* eslint-enable no-unexpected-multiline */
 };
 
 /**

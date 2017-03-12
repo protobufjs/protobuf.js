@@ -79,7 +79,7 @@ Root.prototype.load = function load(filename, options, callback) {
     var self = this;
     if (!callback)
         return util.asPromise(load, self, filename, options);
-    
+
     var sync = callback === SYNC; // undocumented
 
     // Finishes loading by calling the callback (exactly once)
@@ -256,7 +256,7 @@ var exposeRe = /^[A-Z]/;
  * @inner
  * @ignore
  */
-function tryHandleExtension(root, field) {   
+function tryHandleExtension(root, field) {
     var extendedType = field.parent.lookup(field.extend);
     if (extendedType) {
         var sisterField = new Field(field.fullName, field.id, field.type, field.rule, undefined, field.options);

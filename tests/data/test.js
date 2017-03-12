@@ -472,7 +472,7 @@ $root.jspb = (function() {
                     }
                 }
                 if (!message.hasOwnProperty("aString"))
-                    throw $util.ProtocolError("missing required 'aString'", message);
+                    throw $util.ProtocolError("missing required 'aString'", { instance: message });
                 return message;
             };
 
@@ -682,7 +682,7 @@ $root.jspb = (function() {
                     }
                 }
                 if (!message.hasOwnProperty("aString"))
-                    throw $util.ProtocolError("missing required 'aString'", message);
+                    throw $util.ProtocolError("missing required 'aString'", { instance: message });
                 return message;
             };
 
@@ -902,13 +902,13 @@ $root.jspb = (function() {
                     }
                 }
                 if (!message.hasOwnProperty("normal"))
-                    throw $util.ProtocolError("missing required 'normal'", message);
+                    throw $util.ProtocolError("missing required 'normal'", { instance: message });
                 if (!message.hasOwnProperty("default"))
-                    throw $util.ProtocolError("missing required 'default'", message);
+                    throw $util.ProtocolError("missing required 'default'", { instance: message });
                 if (!message.hasOwnProperty("function"))
-                    throw $util.ProtocolError("missing required 'function'", message);
+                    throw $util.ProtocolError("missing required 'function'", { instance: message });
                 if (!message.hasOwnProperty("var"))
-                    throw $util.ProtocolError("missing required 'var'", message);
+                    throw $util.ProtocolError("missing required 'var'", { instance: message });
                 return message;
             };
 
@@ -1152,7 +1152,7 @@ $root.jspb = (function() {
                     }
                 }
                 if (!message.hasOwnProperty("aBool"))
-                    throw $util.ProtocolError("missing required 'aBool'", message);
+                    throw $util.ProtocolError("missing required 'aBool'", { instance: message });
                 return message;
             };
 
@@ -1993,9 +1993,9 @@ $root.jspb = (function() {
                     }
                 }
                 if (!message.hasOwnProperty("aString"))
-                    throw $util.ProtocolError("missing required 'aString'", message);
+                    throw $util.ProtocolError("missing required 'aString'", { instance: message });
                 if (!message.hasOwnProperty("anOutOfOrderBool"))
-                    throw $util.ProtocolError("missing required 'anOutOfOrderBool'", message);
+                    throw $util.ProtocolError("missing required 'anOutOfOrderBool'", { instance: message });
                 return message;
             };
 
@@ -2226,7 +2226,7 @@ $root.jspb = (function() {
                         }
                     }
                     if (!message.hasOwnProperty("anInt"))
-                        throw $util.ProtocolError("missing required 'anInt'", message);
+                        throw $util.ProtocolError("missing required 'anInt'", { instance: message });
                     return message;
                 };
 
@@ -3419,9 +3419,9 @@ $root.jspb = (function() {
                     }
                 }
                 if (!message.hasOwnProperty("requiredFloatField"))
-                    throw $util.ProtocolError("missing required 'requiredFloatField'", message);
+                    throw $util.ProtocolError("missing required 'requiredFloatField'", { instance: message });
                 if (!message.hasOwnProperty("requiredDoubleField"))
-                    throw $util.ProtocolError("missing required 'requiredDoubleField'", message);
+                    throw $util.ProtocolError("missing required 'requiredDoubleField'", { instance: message });
                 return message;
             };
 
@@ -4205,9 +4205,9 @@ $root.jspb = (function() {
                     }
                 }
                 if (!message.hasOwnProperty("requiredGroup"))
-                    throw $util.ProtocolError("missing required 'requiredGroup'", message);
+                    throw $util.ProtocolError("missing required 'requiredGroup'", { instance: message });
                 if (!message.hasOwnProperty("requiredSimple"))
-                    throw $util.ProtocolError("missing required 'requiredSimple'", message);
+                    throw $util.ProtocolError("missing required 'requiredSimple'", { instance: message });
                 return message;
             };
 
@@ -4467,7 +4467,7 @@ $root.jspb = (function() {
                         }
                     }
                     if (!message.hasOwnProperty("id"))
-                        throw $util.ProtocolError("missing required 'id'", message);
+                        throw $util.ProtocolError("missing required 'id'", { instance: message });
                     return message;
                 };
 
@@ -4656,7 +4656,7 @@ $root.jspb = (function() {
                         }
                     }
                     if (!message.hasOwnProperty("id"))
-                        throw $util.ProtocolError("missing required 'id'", message);
+                        throw $util.ProtocolError("missing required 'id'", { instance: message });
                     return message;
                 };
 
@@ -4824,7 +4824,7 @@ $root.jspb = (function() {
                         }
                     }
                     if (!message.hasOwnProperty("id"))
-                        throw $util.ProtocolError("missing required 'id'", message);
+                        throw $util.ProtocolError("missing required 'id'", { instance: message });
                     return message;
                 };
 
@@ -13328,9 +13328,9 @@ $root.google = (function() {
                         }
                     }
                     if (!message.hasOwnProperty("namePart"))
-                        throw $util.ProtocolError("missing required 'namePart'", message);
+                        throw $util.ProtocolError("missing required 'namePart'", { instance: message });
                     if (!message.hasOwnProperty("isExtension"))
-                        throw $util.ProtocolError("missing required 'isExtension'", message);
+                        throw $util.ProtocolError("missing required 'isExtension'", { instance: message });
                     return message;
                 };
 

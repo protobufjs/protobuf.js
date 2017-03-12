@@ -2,10 +2,12 @@
 engines:
   eslint:
     enabled: true
+    config:
+      config: config/eslint.json
   tslint:
     enabled: true
     channel: beta
-    config: .tslint.json
+    config: config/tslint.json
 ratings:
   paths:
   - "src/**.js"

@@ -5,7 +5,7 @@ var util = require("../util/minimal");
 
 /**
  * Any compatible Long instance.
- * 
+ *
  * This is a minimal stand-alone definition of a Long instance. The actual type is that exported by long.js.
  * @typedef Long
  * @type {Object}
@@ -70,7 +70,7 @@ LongBits.fromNumber = function fromNumber(value) {
     if (sign)
         value = -value;
     var lo = value >>> 0,
-        hi = (value - lo) / 4294967296 >>> 0; 
+        hi = (value - lo) / 4294967296 >>> 0;
     if (sign) {
         hi = ~hi >>> 0;
         lo = ~lo >>> 0;

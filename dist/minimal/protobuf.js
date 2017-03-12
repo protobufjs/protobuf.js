@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.7.0 (c) 2016, Daniel Wirtz
- * Compiled Sat, 11 Mar 2017 04:03:04 UTC
+ * Compiled Sun, 12 Mar 2017 21:09:56 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -480,18 +480,18 @@ protobuf.build = "minimal";
  * @type {Object.<string,Root>}
  * @example
  * // pbjs -r myroot -o compiled.js ...
- * 
+ *
  * // in another module:
  * require("./compiled.js");
- * 
+ *
  * // in any subsequent module:
  * var root = protobuf.roots["myroot"];
  */
 protobuf.roots = {};
 
 // Serialization
-protobuf.Writer       = require(15);
-protobuf.BufferWriter = require(16);
+protobuf.Writer       = require(14);
+protobuf.BufferWriter = require(15);
 protobuf.Reader       = require(8);
 protobuf.BufferReader = require(9);
 
@@ -514,7 +514,7 @@ function configure() {
 protobuf.Writer._configure(protobuf.BufferWriter);
 configure();
 
-},{"10":10,"13":13,"15":15,"16":16,"8":8,"9":9}],8:[function(require,module,exports){
+},{"10":10,"13":13,"14":14,"15":15,"8":8,"9":9}],8:[function(require,module,exports){
 "use strict";
 module.exports = Reader;
 
@@ -1099,7 +1099,7 @@ var util = require(13);
 
 /**
  * A service method callback as used by {@link rpc.ServiceMethod|ServiceMethod}.
- * 
+ *
  * Differs from {@link RPCImplCallback} in that it is an actual callback of a service method which may not return `response = null`.
  * @typedef rpc.ServiceMethodCallback
  * @type {function}
@@ -1119,7 +1119,7 @@ var util = require(13);
 
 /**
  * A service method mixin.
- * 
+ *
  * When using TypeScript, mixed in service methods are only supported directly with a type definition of a static module (used with reflection). Otherwise, explicit casting is required.
  * @typedef rpc.ServiceMethodMixin
  * @type {Object.<string,rpc.ServiceMethod>}
@@ -1247,7 +1247,7 @@ var util = require(13);
 
 /**
  * Any compatible Long instance.
- * 
+ *
  * This is a minimal stand-alone definition of a Long instance. The actual type is that exported by long.js.
  * @typedef Long
  * @type {Object}
@@ -1312,7 +1312,7 @@ LongBits.fromNumber = function fromNumber(value) {
     if (sign)
         value = -value;
     var lo = value >>> 0,
-        hi = (value - lo) / 4294967296 >>> 0; 
+        hi = (value - lo) / 4294967296 >>> 0;
     if (sign) {
         hi = ~hi >>> 0;
         lo = ~lo >>> 0;
@@ -1477,9 +1477,6 @@ util.pool = require(5);
 // utility to work with the low and high bits of a 64 bit value
 util.LongBits = require(12);
 
-// error subclass indicating a protocol specifc error
-util.ProtocolError = require(14);
-
 /**
  * An immuable empty array.
  * @memberof util
@@ -1636,17 +1633,20 @@ util.longFromHash = function longFromHash(hash, unsigned) {
 
 /**
  * Merges the properties of the source object into the destination object.
+ * @memberof util
  * @param {Object.<string,*>} dst Destination object
  * @param {Object.<string,*>} src Source object
  * @param {boolean} [ifNotSet=false] Merges only if the key is not already set
  * @returns {Object.<string,*>} Destination object
  */
-util.merge = function merge(dst, src, ifNotSet) { // used by converters
+function merge(dst, src, ifNotSet) { // used by converters
     for (var keys = Object.keys(src), i = 0; i < keys.length; ++i)
         if (dst[keys[i]] === undefined || !ifNotSet)
             dst[keys[i]] = src[keys[i]];
     return dst;
-};
+}
+
+util.merge = merge;
 
 /**
  * Converts the first character of a string to lower case.
@@ -1656,6 +1656,71 @@ util.merge = function merge(dst, src, ifNotSet) { // used by converters
 util.lcFirst = function lcFirst(str) {
     return str.charAt(0).toLowerCase() + str.substring(1);
 };
+
+/**
+ * Creates a custom error constructor.
+ * @memberof util
+ * @param {string} name Error name
+ * @returns {function} Custom error constructor
+ */
+function newError(name) {
+
+    function CustomError(message, properties) {
+
+        if (!(this instanceof CustomError))
+            return new CustomError(message, properties);
+
+        // Error.call(this, message);
+        // ^ just returns a new error instance because the ctor can be called as a function
+
+        Object.defineProperty(this, "message", { get: function() { return message; } });
+
+        /* istanbul ignore next */
+        if (Error.captureStackTrace) // node
+            Error.captureStackTrace(this, CustomError);
+        else
+            Object.defineProperty(this, "stack", { value: (new Error()).stack || "" });
+
+        if (properties)
+            merge(this, properties);
+    }
+
+    (CustomError.prototype = Object.create(Error.prototype)).constructor = CustomError;
+
+    Object.defineProperty(CustomError.prototype, "name", { get: function() { return name; } });
+
+    CustomError.prototype.toString = function toString() {
+        return this.name + ": " + this.message;
+    };
+
+    return CustomError;
+}
+
+util.newError = newError;
+
+/**
+ * Constructs a new protocol error.
+ * @classdesc Error subclass indicating a protocol specifc error.
+ * @memberof util
+ * @extends Error
+ * @constructor
+ * @param {string} message Error message
+ * @param {Object.<string,*>=} properties Additional properties
+ * @example
+ * try {
+ *     MyMessage.decode(someBuffer); // throws if required fields are missing
+ * } catch (e) {
+ *     if (e instanceof ProtocolError && e.instance)
+ *         console.log("decoded so far: " + JSON.stringify(e.instance));
+ * }
+ */
+util.ProtocolError = newError("ProtocolError");
+
+/**
+ * So far decoded message instance.
+ * @name util.ProtocolError#instance
+ * @type {Message}
+ */
 
 /**
  * Builds a getter for a oneof's present field name.
@@ -1748,60 +1813,7 @@ util._configure = function() {
         };
 };
 
-},{"1":1,"12":12,"14":14,"2":2,"3":3,"4":4,"5":5,"6":6}],14:[function(require,module,exports){
-"use strict";
-module.exports = ProtocolError;
-
-// extends Error
-(ProtocolError.prototype = Object.create(Error.prototype)).constructor = Error;
-
-/**
- * Constructs a new protocol error.
- * @classdesc Error subclass indicating a protocol specifc error.
- * @memberof util
- * @extends Error
- * @constructor
- * @param {string} message Error message
- * @param {Message=} instance So far decoded message instance, if applicable
- * @example
- * try {
- *     MyMessage.decode(someBuffer); // throws if required fields are missing
- * } catch (e) {
- *     if (e instanceof ProtocolError && e.instance)
- *         console.log("decoded so far: " + JSON.stringify(e.instance));
- * }
- */
-function ProtocolError(message, instance) {
-
-    if (!(this instanceof ProtocolError))
-        return new ProtocolError(message, instance);
-
-    /**
-     * Error message.
-     * @type {string}
-     */
-    this.message = message;
-
-    /**
-     * Stack trace.
-     * @type {string}
-     */
-    this.stack = Error(message).stack || /* istanbul ignore next */ ""; // not supported in IE9/Safari5
-
-    /**
-     * So far decoded message instance, if applicable.
-     * @type {?Message}
-     */
-    this.instance = instance || null;
-}
-
-/**
- * Error name (ProtocolError).
- * @type {string}
- */
-ProtocolError.prototype.name = "ProtocolError";
-
-},{}],15:[function(require,module,exports){
+},{"1":1,"12":12,"2":2,"3":3,"4":4,"5":5,"6":6}],14:[function(require,module,exports){
 "use strict";
 module.exports = Writer;
 
@@ -2365,12 +2377,12 @@ Writer._configure = function(BufferWriter_) {
     BufferWriter = BufferWriter_;
 };
 
-},{"13":13}],16:[function(require,module,exports){
+},{"13":13}],15:[function(require,module,exports){
 "use strict";
 module.exports = BufferWriter;
 
 // extends Writer
-var Writer = require(15);
+var Writer = require(14);
 (BufferWriter.prototype = Object.create(Writer.prototype)).constructor = BufferWriter;
 
 var util = require(13);
@@ -2448,7 +2460,7 @@ BufferWriter.prototype.string = function write_string_buffer(value) {
  * @returns {Buffer} Finished buffer
  */
 
-},{"13":13,"15":15}]},{},[7])
+},{"13":13,"14":14}]},{},[7])
 
 })(typeof window==="object"&&window||typeof self==="object"&&self||this);
 //# sourceMappingURL=protobuf.js.map

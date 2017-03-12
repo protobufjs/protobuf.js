@@ -215,9 +215,13 @@ function newError(name) {
         if (!(this instanceof CustomError))
             return new CustomError(message, properties);
 
-        Error.call(this, message);
+        // Error.call(this, message);
+        // ^ just returns a new error instance because the ctor can be called as a function
+
         Object.defineProperty(this, "message", { get: function() { return message; } });
-        if (Error.captureStackTrace)
+
+        /* istanbul ignore next */
+        if (Error.captureStackTrace) // node
             Error.captureStackTrace(this, CustomError);
         else
             Object.defineProperty(this, "stack", { value: (new Error()).stack || "" });
@@ -256,6 +260,12 @@ util.newError = newError;
  * }
  */
 util.ProtocolError = newError("ProtocolError");
+
+/**
+ * So far decoded message instance.
+ * @name util.ProtocolError#instance
+ * @type {Message}
+ */
 
 /**
  * Builds a getter for a oneof's present field name.

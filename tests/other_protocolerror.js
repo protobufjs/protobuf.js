@@ -30,6 +30,7 @@ tape.test("a protocol error", function(test) {
         test.ok(e.message, "should have an error message");
         test.ok(typeof e.stack === "string", "should have a stack trace (empty string if not supported)");
         test.equal(e.name, "ProtocolError", "should have the correct name");
+        test.ok(/^ProtocolError: /.test(e.toString()), "should correctly convert toString");
         test.same(e.instance, {
             foo: 2
         }, "should still return the so far decoded message");

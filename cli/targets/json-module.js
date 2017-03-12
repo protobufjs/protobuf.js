@@ -6,7 +6,7 @@ var util = require("../util");
 json_module.description = "JSON representation as a module";
 
 function json_module(root, options, callback) {
-    try {       
+    try {
         var rootProp = util.safeProp(options.root || "default");
         var output = [
             (options.es6 ? "const" : "var") + " $root = ($protobuf.roots" + rootProp + " || ($protobuf.roots" + rootProp + " = new $protobuf.Root()))\n"

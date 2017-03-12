@@ -277,7 +277,7 @@ Type.prototype.add = function add(object) {
             throw Error("id " + object.id + " is reserved in " + this);
         if (this.isReservedName(object.name))
             throw Error("name '" + object.name + "' is reserved in " + this);
-        
+
         if (object.parent)
             object.parent.remove(object);
         this.fields[object.name] = object;

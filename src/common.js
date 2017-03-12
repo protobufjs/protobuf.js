@@ -16,7 +16,7 @@ module.exports = common;
  * @example
  * // manually provides descriptor.proto (assumes google/protobuf/ namespace and .proto extension)
  * protobuf.common("descriptor", descriptorJson);
- * 
+ *
  * // manually provides a custom definition (uses my.foo namespace)
  * protobuf.common("my/foo/bar.proto", myFooBarJson);
  */

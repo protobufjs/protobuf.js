@@ -96,7 +96,7 @@ setTimeout(function() {
         Test.fromObject(dataObject);
     })
     .run();
-    
+
     newSuite("message to object")
     .add("Type.toObject", function() {
         Test.toObject(dataMessage);

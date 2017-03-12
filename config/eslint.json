@@ -117,7 +117,10 @@
         // Stylistic Issues
         "semi": 1,                          // maybe next time
         "no-extra-semi": 1,
-        "quotes": 1                         // useful for gzip
+        "quotes": 1,                        // useful for gzip
+        "no-trailing-spaces": 1,
+        "no-unneeded-ternary": 1,
+        "unicode-bom": [2, "never"]
 
         // ECMAScript 6                     // maybe next time
     }

@@ -17,10 +17,10 @@ protobuf.build = "minimal";
  * @type {Object.<string,Root>}
  * @example
  * // pbjs -r myroot -o compiled.js ...
- * 
+ *
  * // in another module:
  * require("./compiled.js");
- * 
+ *
  * // in any subsequent module:
  * var root = protobuf.roots["myroot"];
  */

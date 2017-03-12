@@ -278,7 +278,7 @@ exports.main = function main(args, callback) {
                 else
                     process.stdout.write(output, "utf8");
             }
-            return callback 
+            return callback
                 ? callback(null)
                 : undefined;
         });

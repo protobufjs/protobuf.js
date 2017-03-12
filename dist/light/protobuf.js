@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.7.0 (c) 2016, Daniel Wirtz
- * Compiled Sat, 11 Mar 2017 04:03:04 UTC
+ * Compiled Sun, 12 Mar 2017 21:09:56 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -817,10 +817,7 @@ function Class(type, ctor) {
         if (typeof ctor !== "function")
             throw TypeError("ctor must be a function");
     } else
-        // create named constructor functions (codegen is required anyway)
-        ctor = util.codegen("p")("return c.call(this,p)").eof(type.name, {
-            c: Message
-        });
+        ctor = Class.generate(type).eof(type.name); // named constructor function (codegen is required anyway)
 
     // Let's pretend...
     ctor.constructor = Class;
@@ -863,6 +860,30 @@ function Class(type, ctor) {
 
     return ctor.prototype;
 }
+
+/**
+ * Generates a constructor function for the specified type.
+ * @param {Type} type Type to use
+ * @returns {Codegen} Codegen instance
+ */
+Class.generate = function generate(type) { // eslint-disable-line no-unused-vars
+    /* eslint-disable no-unexpected-multiline */
+    var gen = util.codegen("p");
+    // see issue #700
+    /*
+    for (var i = 0, field; i < type.fieldsArray.length; ++i)
+        if ((field = type._fieldsArray[i]).map) gen
+            ("this%s={}", util.safeProp(field.name));
+        else if (field.repeated) gen
+            ("this%s=[]", util.safeProp(field.name));
+    */
+    return gen
+    ("if(p){")
+        ("for(var ks=Object.keys(p),i=0;i<ks.length;++i)")
+            ("this[ks[i]]=p[ks[i]];")
+    ("}");
+    /* eslint-enable no-unexpected-multiline */
+};
 
 /**
  * Constructs a new message prototype for the specified reflected type and sets up its constructor.
@@ -1318,7 +1339,7 @@ function decoder(mtype) {
         var rfield = mtype._fieldsArray[i];
         if (rfield.required) gen
     ("if(!m.hasOwnProperty(%j))", rfield.name)
-        ("throw util.ProtocolError(%j,m)", missing(rfield));
+        ("throw util.ProtocolError(%j,{instance:m})", missing(rfield));
     }
 
     return gen
@@ -1472,7 +1493,7 @@ function encoder(mtype) {
         } gen
         ("}");
     }
-    
+
     return gen
     ("return w");
     /* eslint-enable no-unexpected-multiline, block-scoped-var, no-redeclare */
@@ -1956,7 +1977,7 @@ protobuf.loadSync = loadSync;
 // Serialization
 protobuf.encoder          = require(13);
 protobuf.decoder          = require(12);
-protobuf.verifier         = require(36);
+protobuf.verifier         = require(35);
 protobuf.converter        = require(11);
 
 // Reflection
@@ -1984,7 +2005,7 @@ protobuf.ReflectionObject._configure(protobuf.Root);
 protobuf.Namespace._configure(protobuf.Type, protobuf.Service);
 protobuf.Root._configure(protobuf.Type);
 
-},{"10":10,"11":11,"12":12,"13":13,"14":14,"15":15,"17":17,"18":18,"19":19,"20":20,"21":21,"22":22,"23":23,"26":26,"29":29,"30":30,"31":31,"32":32,"36":36}],17:[function(require,module,exports){
+},{"10":10,"11":11,"12":12,"13":13,"14":14,"15":15,"17":17,"18":18,"19":19,"20":20,"21":21,"22":22,"23":23,"26":26,"29":29,"30":30,"31":31,"32":32,"35":35}],17:[function(require,module,exports){
 "use strict";
 var protobuf = exports;
 
@@ -2004,18 +2025,18 @@ protobuf.build = "minimal";
  * @type {Object.<string,Root>}
  * @example
  * // pbjs -r myroot -o compiled.js ...
- * 
+ *
  * // in another module:
  * require("./compiled.js");
- * 
+ *
  * // in any subsequent module:
  * var root = protobuf.roots["myroot"];
  */
 protobuf.roots = {};
 
 // Serialization
-protobuf.Writer       = require(37);
-protobuf.BufferWriter = require(38);
+protobuf.Writer       = require(36);
+protobuf.BufferWriter = require(37);
 protobuf.Reader       = require(24);
 protobuf.BufferReader = require(25);
 
@@ -2038,7 +2059,7 @@ function configure() {
 protobuf.Writer._configure(protobuf.BufferWriter);
 configure();
 
-},{"24":24,"25":25,"27":27,"34":34,"37":37,"38":38}],18:[function(require,module,exports){
+},{"24":24,"25":25,"27":27,"34":34,"36":36,"37":37}],18:[function(require,module,exports){
 "use strict";
 module.exports = MapField;
 
@@ -3714,7 +3735,7 @@ Root.prototype.load = function load(filename, options, callback) {
     var self = this;
     if (!callback)
         return util.asPromise(load, self, filename, options);
-    
+
     var sync = callback === SYNC; // undocumented
 
     // Finishes loading by calling the callback (exactly once)
@@ -3891,7 +3912,7 @@ var exposeRe = /^[A-Z]/;
  * @inner
  * @ignore
  */
-function tryHandleExtension(root, field) {   
+function tryHandleExtension(root, field) {
     var extendedType = field.parent.lookup(field.extend);
     if (extendedType) {
         var sisterField = new Field(field.fullName, field.id, field.type, field.rule, undefined, field.options);
@@ -4032,7 +4053,7 @@ var util = require(34);
 
 /**
  * A service method callback as used by {@link rpc.ServiceMethod|ServiceMethod}.
- * 
+ *
  * Differs from {@link RPCImplCallback} in that it is an actual callback of a service method which may not return `response = null`.
  * @typedef rpc.ServiceMethodCallback
  * @type {function}
@@ -4052,7 +4073,7 @@ var util = require(34);
 
 /**
  * A service method mixin.
- * 
+ *
  * When using TypeScript, mixed in service methods are only supported directly with a type definition of a static module (used with reflection). Otherwise, explicit casting is required.
  * @typedef rpc.ServiceMethodMixin
  * @type {Object.<string,rpc.ServiceMethod>}
@@ -4340,11 +4361,11 @@ var Enum      = require(14),
     Class     = require(10),
     Message   = require(19),
     Reader    = require(24),
-    Writer    = require(37),
+    Writer    = require(36),
     util      = require(32),
     encoder   = require(13),
     decoder   = require(12),
-    verifier  = require(36),
+    verifier  = require(35),
     converter = require(11);
 
 /**
@@ -4604,7 +4625,7 @@ Type.prototype.add = function add(object) {
             throw Error("id " + object.id + " is reserved in " + this);
         if (this.isReservedName(object.name))
             throw Error("name '" + object.name + "' is reserved in " + this);
-        
+
         if (object.parent)
             object.parent.remove(object);
         this.fields[object.name] = object;
@@ -4823,7 +4844,7 @@ Type.prototype.toObject = function toObject(message, options) {
     return this.setup().toObject(message, options);
 };
 
-},{"10":10,"11":11,"12":12,"13":13,"14":14,"15":15,"18":18,"19":19,"21":21,"23":23,"24":24,"29":29,"32":32,"36":36,"37":37}],31:[function(require,module,exports){
+},{"10":10,"11":11,"12":12,"13":13,"14":14,"15":15,"18":18,"19":19,"21":21,"23":23,"24":24,"29":29,"32":32,"35":35,"36":36}],31:[function(require,module,exports){
 "use strict";
 
 /**
@@ -5077,7 +5098,7 @@ var util = require(34);
 
 /**
  * Any compatible Long instance.
- * 
+ *
  * This is a minimal stand-alone definition of a Long instance. The actual type is that exported by long.js.
  * @typedef Long
  * @type {Object}
@@ -5142,7 +5163,7 @@ LongBits.fromNumber = function fromNumber(value) {
     if (sign)
         value = -value;
     var lo = value >>> 0,
-        hi = (value - lo) / 4294967296 >>> 0; 
+        hi = (value - lo) / 4294967296 >>> 0;
     if (sign) {
         hi = ~hi >>> 0;
         lo = ~lo >>> 0;
@@ -5307,9 +5328,6 @@ util.pool = require(8);
 // utility to work with the low and high bits of a 64 bit value
 util.LongBits = require(33);
 
-// error subclass indicating a protocol specifc error
-util.ProtocolError = require(35);
-
 /**
  * An immuable empty array.
  * @memberof util
@@ -5466,17 +5484,20 @@ util.longFromHash = function longFromHash(hash, unsigned) {
 
 /**
  * Merges the properties of the source object into the destination object.
+ * @memberof util
  * @param {Object.<string,*>} dst Destination object
  * @param {Object.<string,*>} src Source object
  * @param {boolean} [ifNotSet=false] Merges only if the key is not already set
  * @returns {Object.<string,*>} Destination object
  */
-util.merge = function merge(dst, src, ifNotSet) { // used by converters
+function merge(dst, src, ifNotSet) { // used by converters
     for (var keys = Object.keys(src), i = 0; i < keys.length; ++i)
         if (dst[keys[i]] === undefined || !ifNotSet)
             dst[keys[i]] = src[keys[i]];
     return dst;
-};
+}
+
+util.merge = merge;
 
 /**
  * Converts the first character of a string to lower case.
@@ -5486,6 +5507,71 @@ util.merge = function merge(dst, src, ifNotSet) { // used by converters
 util.lcFirst = function lcFirst(str) {
     return str.charAt(0).toLowerCase() + str.substring(1);
 };
+
+/**
+ * Creates a custom error constructor.
+ * @memberof util
+ * @param {string} name Error name
+ * @returns {function} Custom error constructor
+ */
+function newError(name) {
+
+    function CustomError(message, properties) {
+
+        if (!(this instanceof CustomError))
+            return new CustomError(message, properties);
+
+        // Error.call(this, message);
+        // ^ just returns a new error instance because the ctor can be called as a function
+
+        Object.defineProperty(this, "message", { get: function() { return message; } });
+
+        /* istanbul ignore next */
+        if (Error.captureStackTrace) // node
+            Error.captureStackTrace(this, CustomError);
+        else
+            Object.defineProperty(this, "stack", { value: (new Error()).stack || "" });
+
+        if (properties)
+            merge(this, properties);
+    }
+
+    (CustomError.prototype = Object.create(Error.prototype)).constructor = CustomError;
+
+    Object.defineProperty(CustomError.prototype, "name", { get: function() { return name; } });
+
+    CustomError.prototype.toString = function toString() {
+        return this.name + ": " + this.message;
+    };
+
+    return CustomError;
+}
+
+util.newError = newError;
+
+/**
+ * Constructs a new protocol error.
+ * @classdesc Error subclass indicating a protocol specifc error.
+ * @memberof util
+ * @extends Error
+ * @constructor
+ * @param {string} message Error message
+ * @param {Object.<string,*>=} properties Additional properties
+ * @example
+ * try {
+ *     MyMessage.decode(someBuffer); // throws if required fields are missing
+ * } catch (e) {
+ *     if (e instanceof ProtocolError && e.instance)
+ *         console.log("decoded so far: " + JSON.stringify(e.instance));
+ * }
+ */
+util.ProtocolError = newError("ProtocolError");
+
+/**
+ * So far decoded message instance.
+ * @name util.ProtocolError#instance
+ * @type {Message}
+ */
 
 /**
  * Builds a getter for a oneof's present field name.
@@ -5578,60 +5664,7 @@ util._configure = function() {
         };
 };
 
-},{"1":1,"2":2,"33":33,"35":35,"4":4,"6":6,"8":8,"9":9}],35:[function(require,module,exports){
-"use strict";
-module.exports = ProtocolError;
-
-// extends Error
-(ProtocolError.prototype = Object.create(Error.prototype)).constructor = Error;
-
-/**
- * Constructs a new protocol error.
- * @classdesc Error subclass indicating a protocol specifc error.
- * @memberof util
- * @extends Error
- * @constructor
- * @param {string} message Error message
- * @param {Message=} instance So far decoded message instance, if applicable
- * @example
- * try {
- *     MyMessage.decode(someBuffer); // throws if required fields are missing
- * } catch (e) {
- *     if (e instanceof ProtocolError && e.instance)
- *         console.log("decoded so far: " + JSON.stringify(e.instance));
- * }
- */
-function ProtocolError(message, instance) {
-
-    if (!(this instanceof ProtocolError))
-        return new ProtocolError(message, instance);
-
-    /**
-     * Error message.
-     * @type {string}
-     */
-    this.message = message;
-
-    /**
-     * Stack trace.
-     * @type {string}
-     */
-    this.stack = Error(message).stack || /* istanbul ignore next */ ""; // not supported in IE9/Safari5
-
-    /**
-     * So far decoded message instance, if applicable.
-     * @type {?Message}
-     */
-    this.instance = instance || null;
-}
-
-/**
- * Error name (ProtocolError).
- * @type {string}
- */
-ProtocolError.prototype.name = "ProtocolError";
-
-},{}],36:[function(require,module,exports){
+},{"1":1,"2":2,"33":33,"4":4,"6":6,"8":8,"9":9}],35:[function(require,module,exports){
 "use strict";
 module.exports = verifier;
 
@@ -5798,7 +5831,7 @@ function verifier(mtype) {
     ("return null");
     /* eslint-enable no-unexpected-multiline */
 }
-},{"14":14,"32":32}],37:[function(require,module,exports){
+},{"14":14,"32":32}],36:[function(require,module,exports){
 "use strict";
 module.exports = Writer;
 
@@ -6362,12 +6395,12 @@ Writer._configure = function(BufferWriter_) {
     BufferWriter = BufferWriter_;
 };
 
-},{"34":34}],38:[function(require,module,exports){
+},{"34":34}],37:[function(require,module,exports){
 "use strict";
 module.exports = BufferWriter;
 
 // extends Writer
-var Writer = require(37);
+var Writer = require(36);
 (BufferWriter.prototype = Object.create(Writer.prototype)).constructor = BufferWriter;
 
 var util = require(34);
@@ -6445,7 +6478,7 @@ BufferWriter.prototype.string = function write_string_buffer(value) {
  * @returns {Buffer} Finished buffer
  */
 
-},{"34":34,"37":37}]},{},[16])
+},{"34":34,"36":36}]},{},[16])
 
 })(typeof window==="object"&&window||typeof self==="object"&&self||this);
 //# sourceMappingURL=protobuf.js.map

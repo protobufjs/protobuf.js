@@ -1010,9 +1010,9 @@ $root.vector_tile = (function() {
                     }
                 }
                 if (!message.hasOwnProperty("version"))
-                    throw $util.ProtocolError("missing required 'version'", message);
+                    throw $util.ProtocolError("missing required 'version'", { instance: message });
                 if (!message.hasOwnProperty("name"))
-                    throw $util.ProtocolError("missing required 'name'", message);
+                    throw $util.ProtocolError("missing required 'name'", { instance: message });
                 return message;
             };
 
