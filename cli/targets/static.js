@@ -12,6 +12,7 @@ var Type      = protobuf.Type,
     Service   = protobuf.Service,
     Enum      = protobuf.Enum,
     Namespace = protobuf.Namespace,
+    Class     = protobuf.Class,
     util      = protobuf.util;
 
 var out = [];
@@ -150,7 +151,8 @@ var shortVars = {
     "f": "impl",
     "o": "options",
     "d": "object",
-    "n": "long"
+    "n": "long",
+    "p": "properties"
 };
 
 function beautifyCode(code) {
@@ -214,7 +216,8 @@ function buildFunction(type, functionName, gen, scope) {
 
     code = code.replace(/ {4}/g, "\t");
 
-    var hasScope = scope && Object.keys(scope).length;
+    var hasScope = scope && Object.keys(scope).length,
+        isCtor = functionName === type.name;
 
     if (hasScope) // remove unused scope vars
         Object.keys(scope).forEach(function(key) {
@@ -223,7 +226,9 @@ function buildFunction(type, functionName, gen, scope) {
         });
 
     var lines = code.split(/\n/g);
-    if (hasScope) // enclose in an iife
+    if (isCtor) // constructor
+        push(lines[0]);
+    else if (hasScope) // enclose in an iife
         push(name(type.name) + "." + functionName + " = (function(" + Object.keys(scope).join(", ") + ") { return " + lines[0]);
     else
         push(name(type.name) + "." + functionName + " = " + lines[0]);
@@ -235,7 +240,9 @@ function buildFunction(type, functionName, gen, scope) {
         push(line.trim());
         indent = prev;
     });
-    if (hasScope)
+    if (isCtor)
+        push("}");
+    else if (hasScope)
         push("};})(" + Object.keys(scope).map(function(key) { return scope[key]; }).join(", ") + ");");
     else
         push("};");
@@ -281,19 +288,9 @@ function buildType(ref, type) {
         type.comment ? "@classdesc " + type.comment : null,
         "@exports " + fullName,
         "@constructor",
-        "@param {Object} [properties] Properties to set"
+        "@param {Object} [" + (config.beautify ? "properties" : "p") + "] Properties to set"
     ]);
-    push("function " + name(type.name) + "(properties) {");
-        ++indent;
-        push("if (properties)");
-            ++indent;
-            push("for (" + (config.es6 ? "let" : "var") + " keys = Object.keys(properties), i = 0; i < keys.length; ++i)");
-                ++indent;
-                push("this[keys[i]] = properties[keys[i]];");
-                --indent;
-            --indent;
-        --indent;
-    push("}");
+    buildFunction(type, type.name, Class.generate(type));
 
     // default values
     var firstField = true;

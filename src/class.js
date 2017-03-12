@@ -26,8 +26,8 @@ function Class(type, ctor) {
             throw TypeError("ctor must be a function");
     } else
         // create named constructor functions (codegen is required anyway)
-        ctor = util.codegen("p")("return c.call(this,p)").eof(type.name, {
-            c: Message
+        ctor = Class.generate(type).eof(type.name, {
+            Message: Message
         });
 
     // Let's pretend...
@@ -71,6 +71,27 @@ function Class(type, ctor) {
 
     return ctor.prototype;
 }
+
+/**
+ * Generates a constructor function for the specified type.
+ * @param {Type} type Type to use
+ * @returns {Codegen} Codegen instance
+ */
+Class.generate = function generate(type) {
+    var gen = util.codegen("p");
+    /*
+    for (var i = 0, field; i < type.fieldsArray.length; ++i)
+        if ((field = type._fieldsArray[i]).map) gen
+            ("this%s={}", util.safeProp(field.name));
+        else if (field.repeated) gen
+            ("this%s=[]", util.safeProp(field.name));
+    */
+    return gen
+    ("if(p){")
+        ("for(var ks=Object.keys(p),i=0;i<ks.length;++i)")
+            ("this[ks[i]]=p[ks[i]];")
+    ("}");
+};
 
 /**
  * Constructs a new message prototype for the specified reflected type and sets up its constructor.
