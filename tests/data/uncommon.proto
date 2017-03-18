@@ -45,6 +45,10 @@ enum Test4{
     TWO = 2 [(my_options) = { a: "foo" b { c: "bar" } }];
 };
 
+enum Test4_1{
+    OPTION = 1;
+}
+
 service Test5;
 
 service Test6 { option (custom).bar = "";

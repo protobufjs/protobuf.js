@@ -18,18 +18,14 @@ var tokenize  = require("./tokenize"),
 
 var base10Re    = /^[1-9][0-9]*$/,
     base10NegRe = /^-?[1-9][0-9]*$/,
-    base16Re    = /^0[x][0-9a-f]+$/,
-    base16NegRe = /^-?0[x][0-9a-f]+$/,
+    base16Re    = /^0[x][0-9a-fA-F]+$/,
+    base16NegRe = /^-?0[x][0-9a-fA-F]+$/,
     base8Re     = /^0[0-7]+$/,
     base8NegRe  = /^-?0[0-7]+$/,
-    numberRe    = /^(?!e)[0-9]*(?:\.[0-9]*)?(?:[e][+-]?[0-9]+)?$/,
+    numberRe    = /^(?![eE])[0-9]*(?:\.[0-9]*)?(?:[eE][+-]?[0-9]+)?$/,
     nameRe      = /^[a-zA-Z_][a-zA-Z_0-9]*$/,
     typeRefRe   = /^(?:\.?[a-zA-Z_][a-zA-Z_0-9]*)+$/,
     fqTypeRefRe = /^(?:\.[a-zA-Z][a-zA-Z_0-9]*)+$/;
-
-function lower(token) {
-    return token === null ? null : token.toLowerCase();
-}
 
 var camelCaseRe = /_([a-z])(?=[a-z]|$)/g;
 
@@ -118,14 +114,14 @@ function parse(source, root, options) {
 
     function readValue(acceptTypeRef) {
         var token = next();
-        switch (lower(token)) {
+        switch (token) {
             case "'":
             case "\"":
                 push(token);
                 return readString();
-            case "true":
+            case "true": case "TRUE":
                 return true;
-            case "false":
+            case "false": case "FALSE":
                 return false;
         }
         try {
@@ -156,28 +152,26 @@ function parse(source, root, options) {
             sign = -1;
             token = token.substring(1);
         }
-        var tokenLower = lower(token);
-        switch (tokenLower) {
-            case "inf": return sign * Infinity;
-            case "nan": return NaN;
+        switch (token) {
+            case "inf": case "INF": return sign * Infinity;
+            case "nan": case "NaN": case "NAN": return NaN;
             case "0": return 0;
         }
         if (base10Re.test(token))
             return sign * parseInt(token, 10);
-        if (base16Re.test(tokenLower))
+        if (base16Re.test(token))
             return sign * parseInt(token, 16);
         if (base8Re.test(token))
             return sign * parseInt(token, 8);
-        if (numberRe.test(tokenLower))
+        if (numberRe.test(token))
             return sign * parseFloat(token);
         /* istanbul ignore next */
         throw illegal(token, "number", insideTryCatch);
     }
 
     function parseId(token, acceptNegative) {
-        var tokenLower = lower(token);
-        switch (tokenLower) {
-            case "max": return 536870911;
+        switch (token) {
+            case "max": case "MAX": return 536870911;
             case "0": return 0;
         }
         /* istanbul ignore next */
@@ -185,7 +179,7 @@ function parse(source, root, options) {
             throw illegal(token, "id");
         if (base10NegRe.test(token))
             return parseInt(token, 10);
-        if (base16NegRe.test(tokenLower))
+        if (base16NegRe.test(token))
             return parseInt(token, 16);
         /* istanbul ignore else */
         if (base8NegRe.test(token))
@@ -228,7 +222,7 @@ function parse(source, root, options) {
 
     function parseSyntax() {
         skip("=");
-        syntax = lower(readString());
+        syntax = readString();
         isProto3 = syntax === "proto3";
         /* istanbul ignore next */
         if (!isProto3 && syntax !== "proto2")
@@ -273,23 +267,22 @@ function parse(source, root, options) {
         type.filename = parse.filename;
         if (skip("{", true)) {
             while ((token = next()) !== "}") {
-                var tokenLower = lower(token);
                 if (parseCommon(type, token))
                     continue;
-                switch (tokenLower) {
+                switch (token) {
 
                     case "map":
-                        parseMapField(type, tokenLower);
+                        parseMapField(type, token);
                         break;
 
                     case "required":
                     case "optional":
                     case "repeated":
-                        parseField(type, tokenLower);
+                        parseField(type, token);
                         break;
 
                     case "oneof":
-                        parseOneOf(type, tokenLower);
+                        parseOneOf(type, token);
                         break;
 
                     case "extensions":
@@ -363,7 +356,7 @@ function parse(source, root, options) {
         type.filename = field.filename = parse.filename;
         skip("{");
         while ((token = next()) !== "}") {
-            switch (token = lower(token)) {
+            switch (token) {
                 case "option":
                     parseOption(type, token);
                     skip(";");
@@ -456,7 +449,7 @@ function parse(source, root, options) {
         enm.filename = parse.filename;
         if (skip("{", true)) {
             while ((token = next()) !== "}") {
-                if (lower(token) === "option") {
+                if (token === "option") {
                     parseOption(enm, token);
                     skip(";");
                 } else
@@ -552,14 +545,13 @@ function parse(source, root, options) {
         service.filename = parse.filename;
         if (skip("{", true)) {
             while ((token = next()) !== "}") {
-                var tokenLower = lower(token);
-                switch (tokenLower) {
+                switch (token) {
                     case "option":
-                        parseOption(service, tokenLower);
+                        parseOption(service, token);
                         skip(";");
                         break;
                     case "rpc":
-                        parseMethod(service, tokenLower);
+                        parseMethod(service, token);
                         break;
 
                     /* istanbul ignore next */
@@ -604,10 +596,9 @@ function parse(source, root, options) {
         method.filename = parse.filename;
         if (skip("{", true)) {
             while ((token = next()) !== "}") {
-                var tokenLower = lower(token);
-                switch (tokenLower) {
+                switch (token) {
                     case "option":
-                        parseOption(method, tokenLower);
+                        parseOption(method, token);
                         skip(";");
                         break;
 
@@ -634,12 +625,11 @@ function parse(source, root, options) {
 
         if (skip("{", true)) {
             while ((token = next()) !== "}") {
-                var tokenLower = lower(token);
-                switch (tokenLower) {
+                switch (token) {
                     case "required":
                     case "repeated":
                     case "optional":
-                        parseField(parent, tokenLower, reference);
+                        parseField(parent, token, reference);
                         break;
                     default:
                         /* istanbul ignore next */
@@ -657,8 +647,7 @@ function parse(source, root, options) {
 
     var token;
     while ((token = next()) !== null) {
-        var tokenLower = lower(token);
-        switch (tokenLower) {
+        switch (token) {
 
             case "package":
                 /* istanbul ignore next */
