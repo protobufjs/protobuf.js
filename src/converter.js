@@ -193,7 +193,7 @@ function genValuePartial_toObject(gen, field, fieldIndex, prop) {
  */
 converter.toObject = function toObject(mtype) {
     /* eslint-disable no-unexpected-multiline, block-scoped-var, no-redeclare */
-    var fields = mtype.fieldsArray;
+    var fields = mtype.fieldsArray.sort(util.compareFieldsById);
     if (!fields.length)
         return util.codegen()("return {}");
     var gen = util.codegen("m", "o")
@@ -265,6 +265,9 @@ converter.toObject = function toObject(mtype) {
         ("}");
         } else
         genValuePartial_toObject(gen, field, i, prop);
+        if (field.partOf) gen
+        ("if(o.oneofs)")
+            ("d%s=%j", util.safeProp(field.partOf.name), field.name);
         gen
     ("}");
     }

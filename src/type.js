@@ -484,6 +484,7 @@ Type.prototype.from = Type.prototype.fromObject;
  * @property {boolean} [defaults=false] Also sets default values on the resulting object
  * @property {boolean} [arrays=false] Sets empty arrays for missing repeated fields even if `defaults=false`
  * @property {boolean} [objects=false] Sets empty objects for missing map fields even if `defaults=false`
+ * @property {boolean} [oneofs=false] Includes virtual oneof properties set to the present field's name, if any
  */
 
 /**
