@@ -23,17 +23,6 @@ function genTypePartial(gen, field, fieldIndex, ref) {
 }
 
 /**
- * Compares reflected fields by id.
- * @param {Field} a First field
- * @param {Field} b Second field
- * @returns {number} Comparison value
- * @ignore
- */
-function compareFieldsById(a, b) {
-    return a.id - b.id;
-}
-
-/**
  * Generates an encoder specific to the specified message type.
  * @param {Type} mtype Message type
  * @returns {Codegen} Codegen instance
@@ -51,7 +40,7 @@ function encoder(mtype) {
     var fields = /* initializes */ mtype.fieldsArray;
     /* istanbul ignore else */
     if (encoder.compat)
-        fields = fields.slice().sort(compareFieldsById);
+        fields = fields.slice().sort(util.compareFieldsById);
 
     for (var i = 0; i < fields.length; ++i) {
         var field    = fields[i].resolve(),
