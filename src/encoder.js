@@ -55,10 +55,8 @@ function encoder(mtype) {
 
     for (var i = 0; i < fields.length; ++i) {
         var field    = fields[i].resolve(),
-            index    = encoder.compat ? mtype._fieldsArray.indexOf(field) : /* istanbul ignore next */ i;
-        if (field.partOf) // see below for oneofs
-            continue;
-        var type     = field.resolvedType instanceof Enum ? "uint32" : field.type,
+            index    = encoder.compat ? mtype._fieldsArray.indexOf(field) : /* istanbul ignore next */ i,
+            type     = field.resolvedType instanceof Enum ? "uint32" : field.type,
             wireType = types.basic[type];
             ref      = "m" + util.safeProp(field.name);
 
@@ -122,26 +120,6 @@ function encoder(mtype) {
         ("w.uint32(%d).%s(%s)", (field.id << 3 | wireType) >>> 0, type, ref);
 
         }
-    }
-
-    // oneofs
-    for (var i = 0; i < /* initializes */ mtype.oneofsArray.length; ++i) {
-        var oneof = mtype._oneofsArray[i]; gen
-        ("switch(%s){", "m" + util.safeProp(oneof.name));
-        for (var j = 0; j < /* direct */ oneof.fieldsArray.length; ++j) {
-            var field    = oneof.fieldsArray[j],
-                type     = field.resolvedType instanceof Enum ? "uint32" : field.type,
-                wireType = types.basic[type];
-                ref      = "m" + util.safeProp(field.name); gen
-            ("case%j:", field.name);
-            if (wireType === undefined)
-                genTypePartial(gen, field, mtype._fieldsArray.indexOf(field), ref);
-            else gen
-                ("w.uint32(%d).%s(%s)", (field.id << 3 | wireType) >>> 0, type, ref);
-            gen
-                ("break");
-        } gen
-        ("}");
     }
 
     return gen
