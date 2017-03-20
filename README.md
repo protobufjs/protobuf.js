@@ -87,6 +87,63 @@ In case of doubt you can just use the full library.
 Examples
 --------
 
+### Understanding the toolset
+
+For optimal performance, protobuf.js tries to avoid redundant assertions. Instead, it provides multiple methods, each doing just one thing.
+
+* **Message.verify**(message: *Object*): *?string*<br />
+  explicitly performs verification prior to encoding / converting a plain object (i.e. where data comes from user input). Instead of throwing, it returns the error message as a string, if any.
+
+  ```js
+  var payload = "invalid (not an object)";
+  var err = AwesomeMessage.verify(payload);
+  if (err)
+    throw Error(err);
+  ```
+
+* **Message.encode**(message: *Message|Object*[, writer: *Writer*]): *Writer*<br />
+  is a message specific encoder expecting a valid message. Hence, if your data is already known to be valid, you can skip verification and just call the encoder. It accepts both a runtime message (recommended where messages are reused, i.e. use `.fromObject`) or a valid plain object.
+
+  ```js
+  var buffer = AwesomeMessage.encode(message).finish();
+  ```
+
+* **Message.decode**(reader: *Reader|Uint8Array*): *Message*<br />
+  is a message specific decoder expecting a valid buffer. If required fields are missing, it throws a `protobuf.util.ProtocolError` with an `instance` property set to the so far decoded message - otherwise an `Error`. The result is a runtime message.
+
+  ```js
+  try {
+    var decodedMessage = AwesomeMessage.decode(buffer);
+  } catch (e) {
+      if (e instanceof protobuf.util.ProtocolError) {
+          // e.instance holds the so far decoded message
+      }
+  }
+  ```
+
+* **Message.create**(properties: *Object*): *Message*<br />
+  quickly creates a new runtime message from known to be valid properties without any conversion being performed.
+
+  ```js
+  var message = AwesomeMessage.create({ awesomeField: "AwesomeString" });
+  ```
+
+* **Message.fromObject**(object: *Object*): *Message*<br />
+  converts any plain object to a runtime message. Tries to convert whatever is specified (use `.verify` before if necessary).
+
+  ```js
+  var message = AwesomeMessage.fromObject({ awesomeField: 42 });
+  // converts awesomeField to a string
+  ```
+
+* **Message.toObject**(message: *Message*, options: *ConversionOptions*): *Object*<br />
+  can be used to convert a runtime message to a plain object. See: [ConversionOptions](http://dcode.io/protobuf.js/global.html#ConversionOptions)
+
+  ```js
+  var object = AwesomeMessage.toObject(message, { enums: String, longs: String, bytes: String, defaults: true });
+  // converts enums, longs and bytes to their string representation and includes default values
+  ```
+
 ### Using .proto files
 
 It's possible to load existing .proto files using the full library, which parses and compiles the definitions to ready to use (reflection-based) message classes:
@@ -109,20 +166,19 @@ protobuf.load("awesome.proto", function(err, root) {
     // Obtain a message type
     var AwesomeMessage = root.lookup("awesomepackage.AwesomeMessage");
 
-    // Create a new message
-    var message = AwesomeMessage.create({ awesomeField: "AwesomeString" });
+    // Exemplary payload
+    var payload = { awesomeField: "AwesomeString" };
 
-    // Verify the message if necessary (i.e. when possibly incomplete or invalid)
-    var errMsg = AwesomeMessage.verify(message);
+    // Verify the payload if necessary (i.e. when possibly incomplete or invalid)
+    var errMsg = AwesomeMessage.verify(payload);
     if (errMsg)
         throw Error(errMsg);
 
+    // Create a new message
+    var message = AwesomeMessage.fromObject(payload);
+
     // Encode a message to an Uint8Array (browser) or Buffer (node)
     var buffer = AwesomeMessage.encode(message).finish();
-    // ... do something with buffer
-
-    // Or, encode a plain object
-    var buffer = AwesomeMessage.encode({ awesomeField: "AwesomeString" }).finish();
     // ... do something with buffer
 
     // Decode an Uint8Array (browser) or Buffer (node) to a message
@@ -130,15 +186,16 @@ protobuf.load("awesome.proto", function(err, root) {
     // ... do something with message
 
     // If your application uses length-delimited buffers, there is also encodeDelimited and decodeDelimited.
+
+    // Maybe convert the message back to a plain object
+    var object = AwesomeMessage.toObject(message, {
+        longs: String,
+        enums: String,
+        bytes: String,
+        // see ConversionOptions
+    });
 });
 ```
-
-**Note:** To avoid redundant assertions where messages are already known to be valid, there is a separate method for encoding and verification.
-
-* `Message.verify` can be used to explicitly perform verification prior to encoding any object where necessary. Instead of throwing, it returns the error message, if any.
-* `Message.encode` does not implicitly verify a message but tries to encode whatever is specified, possibly resulting in a runtime error being thrown somewhere down the road.
-* `Message.decode` throws if a buffer is invalid or missing required fields (a `protobuf.util.ProtocolError` with an `instance` property set to the so far decoded message in the latter case) and doesn't require calling `Message.verify` afterwards.
-* `Message.fromObject` and `Message.toObject` safely translate between runtime messages and plain JavaScript objects.
 
 Additionally, promise syntax can be used by omitting the callback, if preferred:
 
@@ -230,7 +287,7 @@ protobuf.Class.create(root.lookup("awesomepackage.AwesomeMessage") /* or use ref
 AwesomeMessage.customStaticMethod = function() { ... };
 AwesomeMessage.prototype.customInstanceMethod = function() { ... };
 
-// Continue at "Create a message" above (you can also use the constructor directly)
+// Continue at "Create a message"
 ```
 
 Afterwards, decoded messages of this type are `instanceof AwesomeMessage`.
