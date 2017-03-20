@@ -340,22 +340,22 @@ $root.Package = (function() {
     Package.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
-        if (message.name !== undefined)
+        if (message.name !== undefined && message.name !== null)
             if (!$util.isString(message.name))
                 return "name: string expected";
-        if (message.version !== undefined)
+        if (message.version !== undefined && message.version !== null)
             if (!$util.isString(message.version))
                 return "version: string expected";
-        if (message.versionScheme !== undefined)
+        if (message.versionScheme !== undefined && message.versionScheme !== null)
             if (!$util.isString(message.versionScheme))
                 return "versionScheme: string expected";
-        if (message.description !== undefined)
+        if (message.description !== undefined && message.description !== null)
             if (!$util.isString(message.description))
                 return "description: string expected";
-        if (message.author !== undefined)
+        if (message.author !== undefined && message.author !== null)
             if (!$util.isString(message.author))
                 return "author: string expected";
-        if (message.license !== undefined)
+        if (message.license !== undefined && message.license !== null)
             if (!$util.isString(message.license))
                 return "license: string expected";
         if (message.repository !== undefined && message.repository !== null) {
@@ -363,10 +363,10 @@ $root.Package = (function() {
             if (error)
                 return "repository." + error;
         }
-        if (message.bugs !== undefined)
+        if (message.bugs !== undefined && message.bugs !== null)
             if (!$util.isString(message.bugs))
                 return "bugs: string expected";
-        if (message.homepage !== undefined)
+        if (message.homepage !== undefined && message.homepage !== null)
             if (!$util.isString(message.homepage))
                 return "homepage: string expected";
         if (message.keywords !== undefined) {
@@ -376,7 +376,7 @@ $root.Package = (function() {
                 if (!$util.isString(message.keywords[i]))
                     return "keywords: string[] expected";
         }
-        if (message.main !== undefined)
+        if (message.main !== undefined && message.main !== null)
             if (!$util.isString(message.main))
                 return "main: string expected";
         if (message.bin !== undefined) {
@@ -419,7 +419,7 @@ $root.Package = (function() {
                 if (!$util.isString(message.devDependencies[key[i]]))
                     return "devDependencies: string{k:string} expected";
         }
-        if (message.types !== undefined)
+        if (message.types !== undefined && message.types !== null)
             if (!$util.isString(message.types))
                 return "types: string expected";
         if (message.cliDependencies !== undefined) {
@@ -551,7 +551,6 @@ $root.Package = (function() {
         if (options.defaults) {
             object.name = "";
             object.version = "";
-            object.versionScheme = "";
             object.description = "";
             object.author = "";
             object.license = "";
@@ -560,13 +559,12 @@ $root.Package = (function() {
             object.homepage = "";
             object.main = "";
             object.types = "";
+            object.versionScheme = "";
         }
         if (message.name !== undefined && message.name !== null && message.hasOwnProperty("name"))
             object.name = message.name;
         if (message.version !== undefined && message.version !== null && message.hasOwnProperty("version"))
             object.version = message.version;
-        if (message.versionScheme !== undefined && message.versionScheme !== null && message.hasOwnProperty("versionScheme"))
-            object.versionScheme = message.versionScheme;
         if (message.description !== undefined && message.description !== null && message.hasOwnProperty("description"))
             object.description = message.description;
         if (message.author !== undefined && message.author !== null && message.hasOwnProperty("author"))
@@ -574,7 +572,7 @@ $root.Package = (function() {
         if (message.license !== undefined && message.license !== null && message.hasOwnProperty("license"))
             object.license = message.license;
         if (message.repository !== undefined && message.repository !== null && message.hasOwnProperty("repository"))
-            object.repository = $types[6].toObject(message.repository, options);
+            object.repository = $types[5].toObject(message.repository, options);
         if (message.bugs !== undefined && message.bugs !== null && message.hasOwnProperty("bugs"))
             object.bugs = message.bugs;
         if (message.homepage !== undefined && message.homepage !== null && message.hasOwnProperty("homepage"))
@@ -618,6 +616,8 @@ $root.Package = (function() {
             for (var j = 0; j < message.cliDependencies.length; ++j)
                 object.cliDependencies[j] = message.cliDependencies[j];
         }
+        if (message.versionScheme !== undefined && message.versionScheme !== null && message.hasOwnProperty("versionScheme"))
+            object.versionScheme = message.versionScheme;
         return object;
     };
 
@@ -749,10 +749,10 @@ $root.Package = (function() {
         Repository.verify = function verify(message) {
             if (typeof message !== "object" || message === null)
                 return "object expected";
-            if (message.type !== undefined)
+            if (message.type !== undefined && message.type !== null)
                 if (!$util.isString(message.type))
                     return "type: string expected";
-            if (message.url !== undefined)
+            if (message.url !== undefined && message.url !== null)
                 if (!$util.isString(message.url))
                     return "url: string expected";
             return null;

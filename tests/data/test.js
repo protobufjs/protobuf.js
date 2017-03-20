@@ -292,7 +292,7 @@ $root.jspb = (function() {
             EnumContainer.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
-                if (message.outerEnum !== undefined)
+                if (message.outerEnum !== undefined && message.outerEnum !== null)
                     switch (message.outerEnum) {
                     default:
                         return "outerEnum: enum value expected";
@@ -506,7 +506,7 @@ $root.jspb = (function() {
                         if (!$util.isString(message.aRepeatedString[i]))
                             return "aRepeatedString: string[] expected";
                 }
-                if (message.aBoolean !== undefined)
+                if (message.aBoolean !== undefined && message.aBoolean !== null)
                     if (typeof message.aBoolean !== "boolean")
                         return "aBoolean: boolean expected";
                 return null;
@@ -1177,7 +1177,7 @@ $root.jspb = (function() {
             OptionalFields.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
-                if (message.aString !== undefined)
+                if (message.aString !== undefined && message.aString !== null)
                     if (!$util.isString(message.aString))
                         return "aString: string expected";
                 if (typeof message.aBool !== "boolean")
@@ -1408,7 +1408,7 @@ $root.jspb = (function() {
                 Nested.verify = function verify(message) {
                     if (typeof message !== "object" || message === null)
                         return "object expected";
-                    if (message.anInt !== undefined)
+                    if (message.anInt !== undefined && message.anInt !== null)
                         if (!$util.isInteger(message.anInt))
                             return "anInt: integer expected";
                     return null;
@@ -1685,13 +1685,13 @@ $root.jspb = (function() {
             HasExtensions.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
-                if (message.str1 !== undefined)
+                if (message.str1 !== undefined && message.str1 !== null)
                     if (!$util.isString(message.str1))
                         return "str1: string expected";
-                if (message.str2 !== undefined)
+                if (message.str2 !== undefined && message.str2 !== null)
                     if (!$util.isString(message.str2))
                         return "str2: string expected";
-                if (message.str3 !== undefined)
+                if (message.str3 !== undefined && message.str3 !== null)
                     if (!$util.isString(message.str3))
                         return "str3: string expected";
                 if (message[".jspb.test.IsExtension.extField"] !== undefined && message[".jspb.test.IsExtension.extField"] !== null) {
@@ -1704,7 +1704,7 @@ $root.jspb = (function() {
                     if (error)
                         return ".jspb.test.IndirectExtension.simple." + error;
                 }
-                if (message[".jspb.test.IndirectExtension.str"] !== undefined)
+                if (message[".jspb.test.IndirectExtension.str"] !== undefined && message[".jspb.test.IndirectExtension.str"] !== null)
                     if (!$util.isString(message[".jspb.test.IndirectExtension.str"]))
                         return ".jspb.test.IndirectExtension.str: string expected";
                 if (message[".jspb.test.IndirectExtension.repeatedStr"] !== undefined) {
@@ -2111,25 +2111,25 @@ $root.jspb = (function() {
                 }
                 if (options.defaults) {
                     object.aString = "";
-                    object.anOutOfOrderBool = false;
                     object.aNestedMessage = null;
+                    object.anOutOfOrderBool = false;
                 }
                 if (message.aString !== undefined && message.aString !== null && message.hasOwnProperty("aString"))
                     object.aString = message.aString;
-                if (message.anOutOfOrderBool !== undefined && message.anOutOfOrderBool !== null && message.hasOwnProperty("anOutOfOrderBool"))
-                    object.anOutOfOrderBool = message.anOutOfOrderBool;
                 if (message.aNestedMessage !== undefined && message.aNestedMessage !== null && message.hasOwnProperty("aNestedMessage"))
-                    object.aNestedMessage = $types[2].toObject(message.aNestedMessage, options);
+                    object.aNestedMessage = $types[1].toObject(message.aNestedMessage, options);
                 if (message.aRepeatedMessage !== undefined && message.aRepeatedMessage !== null && message.hasOwnProperty("aRepeatedMessage")) {
                     object.aRepeatedMessage = [];
                     for (var j = 0; j < message.aRepeatedMessage.length; ++j)
-                        object.aRepeatedMessage[j] = $types[3].toObject(message.aRepeatedMessage[j], options);
+                        object.aRepeatedMessage[j] = $types[2].toObject(message.aRepeatedMessage[j], options);
                 }
                 if (message.aRepeatedString !== undefined && message.aRepeatedString !== null && message.hasOwnProperty("aRepeatedString")) {
                     object.aRepeatedString = [];
                     for (var j = 0; j < message.aRepeatedString.length; ++j)
                         object.aRepeatedString[j] = message.aRepeatedString[j];
                 }
+                if (message.anOutOfOrderBool !== undefined && message.anOutOfOrderBool !== null && message.hasOwnProperty("anOutOfOrderBool"))
+                    object.anOutOfOrderBool = message.anOutOfOrderBool;
                 return object;
             };
 
@@ -2558,7 +2558,7 @@ $root.jspb = (function() {
                 Complex.verify = function verify(message) {
                     if (typeof message !== "object" || message === null)
                         return "object expected";
-                    if (message.innerComplexField !== undefined)
+                    if (message.innerComplexField !== undefined && message.innerComplexField !== null)
                         if (!$util.isInteger(message.innerComplexField))
                             return "innerComplexField: integer expected";
                     return null;
@@ -2727,7 +2727,7 @@ $root.jspb = (function() {
             IsExtension.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
-                if (message.ext1 !== undefined)
+                if (message.ext1 !== undefined && message.ext1 !== null)
                     if (!$util.isString(message.ext1))
                         return "ext1: string expected";
                 return null;
@@ -3095,16 +3095,16 @@ $root.jspb = (function() {
             DefaultValues.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
-                if (message.stringField !== undefined)
+                if (message.stringField !== undefined && message.stringField !== null)
                     if (!$util.isString(message.stringField))
                         return "stringField: string expected";
-                if (message.boolField !== undefined)
+                if (message.boolField !== undefined && message.boolField !== null)
                     if (typeof message.boolField !== "boolean")
                         return "boolField: boolean expected";
-                if (message.intField !== undefined)
+                if (message.intField !== undefined && message.intField !== null)
                     if (!$util.isInteger(message.intField) && !(message.intField && $util.isInteger(message.intField.low) && $util.isInteger(message.intField.high)))
                         return "intField: integer|Long expected";
-                if (message.enumField !== undefined)
+                if (message.enumField !== undefined && message.enumField !== null)
                     switch (message.enumField) {
                     default:
                         return "enumField: enum value expected";
@@ -3112,10 +3112,10 @@ $root.jspb = (function() {
                     case 77:
                         break;
                     }
-                if (message.emptyField !== undefined)
+                if (message.emptyField !== undefined && message.emptyField !== null)
                     if (!$util.isString(message.emptyField))
                         return "emptyField: string expected";
-                if (message.bytesField !== undefined)
+                if (message.bytesField !== undefined && message.bytesField !== null)
                     if (!(message.bytesField && typeof message.bytesField.length === "number" || $util.isString(message.bytesField)))
                         return "bytesField: buffer expected";
                 return null;
@@ -3446,7 +3446,7 @@ $root.jspb = (function() {
             FloatingPointFields.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
-                if (message.optionalFloatField !== undefined)
+                if (message.optionalFloatField !== undefined && message.optionalFloatField !== null)
                     if (typeof message.optionalFloatField !== "number")
                         return "optionalFloatField: number expected";
                 if (typeof message.requiredFloatField !== "number")
@@ -3458,10 +3458,10 @@ $root.jspb = (function() {
                         if (typeof message.repeatedFloatField[i] !== "number")
                             return "repeatedFloatField: number[] expected";
                 }
-                if (message.defaultFloatField !== undefined)
+                if (message.defaultFloatField !== undefined && message.defaultFloatField !== null)
                     if (typeof message.defaultFloatField !== "number")
                         return "defaultFloatField: number expected";
-                if (message.optionalDoubleField !== undefined)
+                if (message.optionalDoubleField !== undefined && message.optionalDoubleField !== null)
                     if (typeof message.optionalDoubleField !== "number")
                         return "optionalDoubleField: number expected";
                 if (typeof message.requiredDoubleField !== "number")
@@ -3473,7 +3473,7 @@ $root.jspb = (function() {
                         if (typeof message.repeatedDoubleField[i] !== "number")
                             return "repeatedDoubleField: number[] expected";
                 }
-                if (message.defaultDoubleField !== undefined)
+                if (message.defaultDoubleField !== undefined && message.defaultDoubleField !== null)
                     if (typeof message.defaultDoubleField !== "number")
                         return "defaultDoubleField: number expected";
                 return null;
@@ -3759,7 +3759,7 @@ $root.jspb = (function() {
             TestClone.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
-                if (message.str !== undefined)
+                if (message.str !== undefined && message.str !== null)
                     if (!$util.isString(message.str))
                         return "str: string expected";
                 if (message.simple1 !== undefined && message.simple1 !== null) {
@@ -3776,10 +3776,10 @@ $root.jspb = (function() {
                             return "simple2." + error;
                     }
                 }
-                if (message.bytesField !== undefined)
+                if (message.bytesField !== undefined && message.bytesField !== null)
                     if (!(message.bytesField && typeof message.bytesField.length === "number" || $util.isString(message.bytesField)))
                         return "bytesField: buffer expected";
-                if (message.unused !== undefined)
+                if (message.unused !== undefined && message.unused !== null)
                     if (!$util.isString(message.unused))
                         return "unused: string expected";
                 if (message[".jspb.test.CloneExtension.extField"] !== undefined && message[".jspb.test.CloneExtension.extField"] !== null) {
@@ -3997,7 +3997,7 @@ $root.jspb = (function() {
             CloneExtension.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
-                if (message.ext !== undefined)
+                if (message.ext !== undefined && message.ext !== null)
                     if (!$util.isString(message.ext))
                         return "ext: string expected";
                 return null;
@@ -4249,7 +4249,7 @@ $root.jspb = (function() {
                     if (error)
                         return "optionalGroup." + error;
                 }
-                if (message.id !== undefined)
+                if (message.id !== undefined && message.id !== null)
                     if (!$util.isString(message.id))
                         return "id: string expected";
                 var error = $types[4].verify(message.requiredSimple);
@@ -5205,10 +5205,10 @@ $root.jspb = (function() {
             TestReservedNames.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
-                if (message.extension !== undefined)
+                if (message.extension !== undefined && message.extension !== null)
                     if (!$util.isInteger(message.extension))
                         return "extension: integer expected";
-                if (message[".jspb.test.TestReservedNamesExtension.foo"] !== undefined)
+                if (message[".jspb.test.TestReservedNamesExtension.foo"] !== undefined && message[".jspb.test.TestReservedNamesExtension.foo"] !== null)
                     if (!$util.isInteger(message[".jspb.test.TestReservedNamesExtension.foo"]))
                         return ".jspb.test.TestReservedNamesExtension.foo: integer expected";
                 return null;
@@ -5672,21 +5672,33 @@ $root.jspb = (function() {
             TestMessageWithOneof.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
-                if (message.pone !== undefined)
+                var properties = {};
+                if (message.pone !== undefined && message.pone !== null) {
+                    properties.partialOneof = 1;
                     if (!$util.isString(message.pone))
                         return "pone: string expected";
-                if (message.pthree !== undefined)
+                }
+                if (message.pthree !== undefined && message.pthree !== null) {
+                    if (properties.partialOneof === 1)
+                        return "partialOneof: multiple values";
+                    properties.partialOneof = 1;
                     if (!$util.isString(message.pthree))
                         return "pthree: string expected";
+                }
                 if (message.rone !== undefined && message.rone !== null) {
+                    properties.recursiveOneof = 1;
                     var error = $types[2].verify(message.rone);
                     if (error)
                         return "rone." + error;
                 }
-                if (message.rtwo !== undefined)
+                if (message.rtwo !== undefined && message.rtwo !== null) {
+                    if (properties.recursiveOneof === 1)
+                        return "recursiveOneof: multiple values";
+                    properties.recursiveOneof = 1;
                     if (!$util.isString(message.rtwo))
                         return "rtwo: string expected";
-                if (message.normalField !== undefined)
+                }
+                if (message.normalField !== undefined && message.normalField !== null)
                     if (typeof message.normalField !== "boolean")
                         return "normalField: boolean expected";
                 if (message.repeatedField !== undefined) {
@@ -5696,18 +5708,30 @@ $root.jspb = (function() {
                         if (!$util.isString(message.repeatedField[i]))
                             return "repeatedField: string[] expected";
                 }
-                if (message.aone !== undefined)
+                if (message.aone !== undefined && message.aone !== null) {
+                    properties.defaultOneofA = 1;
                     if (!$util.isInteger(message.aone))
                         return "aone: integer expected";
-                if (message.atwo !== undefined)
+                }
+                if (message.atwo !== undefined && message.atwo !== null) {
+                    if (properties.defaultOneofA === 1)
+                        return "defaultOneofA: multiple values";
+                    properties.defaultOneofA = 1;
                     if (!$util.isInteger(message.atwo))
                         return "atwo: integer expected";
-                if (message.bone !== undefined)
+                }
+                if (message.bone !== undefined && message.bone !== null) {
+                    properties.defaultOneofB = 1;
                     if (!$util.isInteger(message.bone))
                         return "bone: integer expected";
-                if (message.btwo !== undefined)
+                }
+                if (message.btwo !== undefined && message.btwo !== null) {
+                    if (properties.defaultOneofB === 1)
+                        return "defaultOneofB: multiple values";
+                    properties.defaultOneofB = 1;
                     if (!$util.isInteger(message.btwo))
                         return "btwo: integer expected";
+                }
                 return null;
             };
 
@@ -5783,14 +5807,26 @@ $root.jspb = (function() {
                     object.bone = 0;
                     object.btwo = 1234;
                 }
-                if (message.pone !== undefined && message.pone !== null && message.hasOwnProperty("pone"))
+                if (message.pone !== undefined && message.pone !== null && message.hasOwnProperty("pone")) {
                     object.pone = message.pone;
-                if (message.pthree !== undefined && message.pthree !== null && message.hasOwnProperty("pthree"))
+                    if (options.oneofs)
+                        object.partialOneof = "pone";
+                }
+                if (message.pthree !== undefined && message.pthree !== null && message.hasOwnProperty("pthree")) {
                     object.pthree = message.pthree;
-                if (message.rone !== undefined && message.rone !== null && message.hasOwnProperty("rone"))
+                    if (options.oneofs)
+                        object.partialOneof = "pthree";
+                }
+                if (message.rone !== undefined && message.rone !== null && message.hasOwnProperty("rone")) {
                     object.rone = $types[2].toObject(message.rone, options);
-                if (message.rtwo !== undefined && message.rtwo !== null && message.hasOwnProperty("rtwo"))
+                    if (options.oneofs)
+                        object.recursiveOneof = "rone";
+                }
+                if (message.rtwo !== undefined && message.rtwo !== null && message.hasOwnProperty("rtwo")) {
                     object.rtwo = message.rtwo;
+                    if (options.oneofs)
+                        object.recursiveOneof = "rtwo";
+                }
                 if (message.normalField !== undefined && message.normalField !== null && message.hasOwnProperty("normalField"))
                     object.normalField = message.normalField;
                 if (message.repeatedField !== undefined && message.repeatedField !== null && message.hasOwnProperty("repeatedField")) {
@@ -5798,14 +5834,26 @@ $root.jspb = (function() {
                     for (var j = 0; j < message.repeatedField.length; ++j)
                         object.repeatedField[j] = message.repeatedField[j];
                 }
-                if (message.aone !== undefined && message.aone !== null && message.hasOwnProperty("aone"))
+                if (message.aone !== undefined && message.aone !== null && message.hasOwnProperty("aone")) {
                     object.aone = message.aone;
-                if (message.atwo !== undefined && message.atwo !== null && message.hasOwnProperty("atwo"))
+                    if (options.oneofs)
+                        object.defaultOneofA = "aone";
+                }
+                if (message.atwo !== undefined && message.atwo !== null && message.hasOwnProperty("atwo")) {
                     object.atwo = message.atwo;
-                if (message.bone !== undefined && message.bone !== null && message.hasOwnProperty("bone"))
+                    if (options.oneofs)
+                        object.defaultOneofA = "atwo";
+                }
+                if (message.bone !== undefined && message.bone !== null && message.hasOwnProperty("bone")) {
                     object.bone = message.bone;
-                if (message.btwo !== undefined && message.btwo !== null && message.hasOwnProperty("btwo"))
+                    if (options.oneofs)
+                        object.defaultOneofB = "bone";
+                }
+                if (message.btwo !== undefined && message.btwo !== null && message.hasOwnProperty("btwo")) {
                     object.btwo = message.btwo;
+                    if (options.oneofs)
+                        object.defaultOneofB = "btwo";
+                }
                 return object;
             };
 
@@ -5940,10 +5988,10 @@ $root.jspb = (function() {
             TestEndsWithBytes.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
-                if (message.value !== undefined)
+                if (message.value !== undefined && message.value !== null)
                     if (!$util.isInteger(message.value))
                         return "value: integer expected";
-                if (message.data !== undefined)
+                if (message.data !== undefined && message.data !== null)
                     if (!(message.data && typeof message.data.length === "number" || $util.isString(message.data)))
                         return "data: buffer expected";
                 return null;
@@ -6786,7 +6834,7 @@ $root.jspb = (function() {
             MapValueMessageNoBinary.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
-                if (message.foo !== undefined)
+                if (message.foo !== undefined && message.foo !== null)
                     if (!$util.isInteger(message.foo))
                         return "foo: integer expected";
                 return null;
@@ -7230,7 +7278,7 @@ $root.jspb = (function() {
                     Message.verify = function verify(message) {
                         if (typeof message !== "object" || message === null)
                             return "object expected";
-                        if (message.count !== undefined)
+                        if (message.count !== undefined && message.count !== null)
                             if (!$util.isInteger(message.count))
                                 return "count: integer expected";
                         return null;
@@ -7780,10 +7828,10 @@ $root.google = (function() {
             FileDescriptorProto.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
-                if (message.name !== undefined)
+                if (message.name !== undefined && message.name !== null)
                     if (!$util.isString(message.name))
                         return "name: string expected";
-                if (message["package"] !== undefined)
+                if (message["package"] !== undefined && message["package"] !== null)
                     if (!$util.isString(message["package"]))
                         return "package: string expected";
                 if (message.dependency !== undefined) {
@@ -7853,7 +7901,7 @@ $root.google = (function() {
                     if (error)
                         return "sourceCodeInfo." + error;
                 }
-                if (message.syntax !== undefined)
+                if (message.syntax !== undefined && message.syntax !== null)
                     if (!$util.isString(message.syntax))
                         return "syntax: string expected";
                 return null;
@@ -7969,12 +8017,12 @@ $root.google = (function() {
                 var object = {};
                 if (options.arrays || options.defaults) {
                     object.dependency = [];
-                    object.publicDependency = [];
-                    object.weakDependency = [];
                     object.messageType = [];
                     object.enumType = [];
                     object.service = [];
                     object.extension = [];
+                    object.publicDependency = [];
+                    object.weakDependency = [];
                 }
                 if (options.defaults) {
                     object.name = "";
@@ -7992,6 +8040,30 @@ $root.google = (function() {
                     for (var j = 0; j < message.dependency.length; ++j)
                         object.dependency[j] = message.dependency[j];
                 }
+                if (message.messageType !== undefined && message.messageType !== null && message.hasOwnProperty("messageType")) {
+                    object.messageType = [];
+                    for (var j = 0; j < message.messageType.length; ++j)
+                        object.messageType[j] = $types[3].toObject(message.messageType[j], options);
+                }
+                if (message.enumType !== undefined && message.enumType !== null && message.hasOwnProperty("enumType")) {
+                    object.enumType = [];
+                    for (var j = 0; j < message.enumType.length; ++j)
+                        object.enumType[j] = $types[4].toObject(message.enumType[j], options);
+                }
+                if (message.service !== undefined && message.service !== null && message.hasOwnProperty("service")) {
+                    object.service = [];
+                    for (var j = 0; j < message.service.length; ++j)
+                        object.service[j] = $types[5].toObject(message.service[j], options);
+                }
+                if (message.extension !== undefined && message.extension !== null && message.hasOwnProperty("extension")) {
+                    object.extension = [];
+                    for (var j = 0; j < message.extension.length; ++j)
+                        object.extension[j] = $types[6].toObject(message.extension[j], options);
+                }
+                if (message.options !== undefined && message.options !== null && message.hasOwnProperty("options"))
+                    object.options = $types[7].toObject(message.options, options);
+                if (message.sourceCodeInfo !== undefined && message.sourceCodeInfo !== null && message.hasOwnProperty("sourceCodeInfo"))
+                    object.sourceCodeInfo = $types[8].toObject(message.sourceCodeInfo, options);
                 if (message.publicDependency !== undefined && message.publicDependency !== null && message.hasOwnProperty("publicDependency")) {
                     object.publicDependency = [];
                     for (var j = 0; j < message.publicDependency.length; ++j)
@@ -8002,30 +8074,6 @@ $root.google = (function() {
                     for (var j = 0; j < message.weakDependency.length; ++j)
                         object.weakDependency[j] = message.weakDependency[j];
                 }
-                if (message.messageType !== undefined && message.messageType !== null && message.hasOwnProperty("messageType")) {
-                    object.messageType = [];
-                    for (var j = 0; j < message.messageType.length; ++j)
-                        object.messageType[j] = $types[5].toObject(message.messageType[j], options);
-                }
-                if (message.enumType !== undefined && message.enumType !== null && message.hasOwnProperty("enumType")) {
-                    object.enumType = [];
-                    for (var j = 0; j < message.enumType.length; ++j)
-                        object.enumType[j] = $types[6].toObject(message.enumType[j], options);
-                }
-                if (message.service !== undefined && message.service !== null && message.hasOwnProperty("service")) {
-                    object.service = [];
-                    for (var j = 0; j < message.service.length; ++j)
-                        object.service[j] = $types[7].toObject(message.service[j], options);
-                }
-                if (message.extension !== undefined && message.extension !== null && message.hasOwnProperty("extension")) {
-                    object.extension = [];
-                    for (var j = 0; j < message.extension.length; ++j)
-                        object.extension[j] = $types[8].toObject(message.extension[j], options);
-                }
-                if (message.options !== undefined && message.options !== null && message.hasOwnProperty("options"))
-                    object.options = $types[9].toObject(message.options, options);
-                if (message.sourceCodeInfo !== undefined && message.sourceCodeInfo !== null && message.hasOwnProperty("sourceCodeInfo"))
-                    object.sourceCodeInfo = $types[10].toObject(message.sourceCodeInfo, options);
                 if (message.syntax !== undefined && message.syntax !== null && message.hasOwnProperty("syntax"))
                     object.syntax = message.syntax;
                 return object;
@@ -8286,7 +8334,7 @@ $root.google = (function() {
             DescriptorProto.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
-                if (message.name !== undefined)
+                if (message.name !== undefined && message.name !== null)
                     if (!$util.isString(message.name))
                         return "name: string expected";
                 if (message.field !== undefined) {
@@ -8484,10 +8532,10 @@ $root.google = (function() {
                 var object = {};
                 if (options.arrays || options.defaults) {
                     object.field = [];
-                    object.extension = [];
                     object.nestedType = [];
                     object.enumType = [];
                     object.extensionRange = [];
+                    object.extension = [];
                     object.oneofDecl = [];
                     object.reservedRange = [];
                     object.reservedName = [];
@@ -8503,33 +8551,33 @@ $root.google = (function() {
                     for (var j = 0; j < message.field.length; ++j)
                         object.field[j] = $types[1].toObject(message.field[j], options);
                 }
-                if (message.extension !== undefined && message.extension !== null && message.hasOwnProperty("extension")) {
-                    object.extension = [];
-                    for (var j = 0; j < message.extension.length; ++j)
-                        object.extension[j] = $types[2].toObject(message.extension[j], options);
-                }
                 if (message.nestedType !== undefined && message.nestedType !== null && message.hasOwnProperty("nestedType")) {
                     object.nestedType = [];
                     for (var j = 0; j < message.nestedType.length; ++j)
-                        object.nestedType[j] = $types[3].toObject(message.nestedType[j], options);
+                        object.nestedType[j] = $types[2].toObject(message.nestedType[j], options);
                 }
                 if (message.enumType !== undefined && message.enumType !== null && message.hasOwnProperty("enumType")) {
                     object.enumType = [];
                     for (var j = 0; j < message.enumType.length; ++j)
-                        object.enumType[j] = $types[4].toObject(message.enumType[j], options);
+                        object.enumType[j] = $types[3].toObject(message.enumType[j], options);
                 }
                 if (message.extensionRange !== undefined && message.extensionRange !== null && message.hasOwnProperty("extensionRange")) {
                     object.extensionRange = [];
                     for (var j = 0; j < message.extensionRange.length; ++j)
-                        object.extensionRange[j] = $types[5].toObject(message.extensionRange[j], options);
+                        object.extensionRange[j] = $types[4].toObject(message.extensionRange[j], options);
                 }
+                if (message.extension !== undefined && message.extension !== null && message.hasOwnProperty("extension")) {
+                    object.extension = [];
+                    for (var j = 0; j < message.extension.length; ++j)
+                        object.extension[j] = $types[5].toObject(message.extension[j], options);
+                }
+                if (message.options !== undefined && message.options !== null && message.hasOwnProperty("options"))
+                    object.options = $types[6].toObject(message.options, options);
                 if (message.oneofDecl !== undefined && message.oneofDecl !== null && message.hasOwnProperty("oneofDecl")) {
                     object.oneofDecl = [];
                     for (var j = 0; j < message.oneofDecl.length; ++j)
-                        object.oneofDecl[j] = $types[6].toObject(message.oneofDecl[j], options);
+                        object.oneofDecl[j] = $types[7].toObject(message.oneofDecl[j], options);
                 }
-                if (message.options !== undefined && message.options !== null && message.hasOwnProperty("options"))
-                    object.options = $types[7].toObject(message.options, options);
                 if (message.reservedRange !== undefined && message.reservedRange !== null && message.hasOwnProperty("reservedRange")) {
                     object.reservedRange = [];
                     for (var j = 0; j < message.reservedRange.length; ++j)
@@ -8671,10 +8719,10 @@ $root.google = (function() {
                 ExtensionRange.verify = function verify(message) {
                     if (typeof message !== "object" || message === null)
                         return "object expected";
-                    if (message.start !== undefined)
+                    if (message.start !== undefined && message.start !== null)
                         if (!$util.isInteger(message.start))
                             return "start: integer expected";
-                    if (message.end !== undefined)
+                    if (message.end !== undefined && message.end !== null)
                         if (!$util.isInteger(message.end))
                             return "end: integer expected";
                     return null;
@@ -8857,10 +8905,10 @@ $root.google = (function() {
                 ReservedRange.verify = function verify(message) {
                     if (typeof message !== "object" || message === null)
                         return "object expected";
-                    if (message.start !== undefined)
+                    if (message.start !== undefined && message.start !== null)
                         if (!$util.isInteger(message.start))
                             return "start: integer expected";
-                    if (message.end !== undefined)
+                    if (message.end !== undefined && message.end !== null)
                         if (!$util.isInteger(message.end))
                             return "end: integer expected";
                     return null;
@@ -9141,13 +9189,13 @@ $root.google = (function() {
             FieldDescriptorProto.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
-                if (message.name !== undefined)
+                if (message.name !== undefined && message.name !== null)
                     if (!$util.isString(message.name))
                         return "name: string expected";
-                if (message.number !== undefined)
+                if (message.number !== undefined && message.number !== null)
                     if (!$util.isInteger(message.number))
                         return "number: integer expected";
-                if (message.label !== undefined)
+                if (message.label !== undefined && message.label !== null)
                     switch (message.label) {
                     default:
                         return "label: enum value expected";
@@ -9156,7 +9204,7 @@ $root.google = (function() {
                     case 3:
                         break;
                     }
-                if (message.type !== undefined)
+                if (message.type !== undefined && message.type !== null)
                     switch (message.type) {
                     default:
                         return "type: enum value expected";
@@ -9180,19 +9228,19 @@ $root.google = (function() {
                     case 18:
                         break;
                     }
-                if (message.typeName !== undefined)
+                if (message.typeName !== undefined && message.typeName !== null)
                     if (!$util.isString(message.typeName))
                         return "typeName: string expected";
-                if (message.extendee !== undefined)
+                if (message.extendee !== undefined && message.extendee !== null)
                     if (!$util.isString(message.extendee))
                         return "extendee: string expected";
-                if (message.defaultValue !== undefined)
+                if (message.defaultValue !== undefined && message.defaultValue !== null)
                     if (!$util.isString(message.defaultValue))
                         return "defaultValue: string expected";
-                if (message.oneofIndex !== undefined)
+                if (message.oneofIndex !== undefined && message.oneofIndex !== null)
                     if (!$util.isInteger(message.oneofIndex))
                         return "oneofIndex: integer expected";
-                if (message.jsonName !== undefined)
+                if (message.jsonName !== undefined && message.jsonName !== null)
                     if (!$util.isString(message.jsonName))
                         return "jsonName: string expected";
                 if (message.options !== undefined && message.options !== null) {
@@ -9343,36 +9391,36 @@ $root.google = (function() {
                 var object = {};
                 if (options.defaults) {
                     object.name = "";
+                    object.extendee = "";
                     object.number = 0;
                     object.label = options.enums === String ? "LABEL_OPTIONAL" : 1;
                     object.type = options.enums === String ? "TYPE_DOUBLE" : 1;
                     object.typeName = "";
-                    object.extendee = "";
                     object.defaultValue = "";
+                    object.options = null;
                     object.oneofIndex = 0;
                     object.jsonName = "";
-                    object.options = null;
                 }
                 if (message.name !== undefined && message.name !== null && message.hasOwnProperty("name"))
                     object.name = message.name;
+                if (message.extendee !== undefined && message.extendee !== null && message.hasOwnProperty("extendee"))
+                    object.extendee = message.extendee;
                 if (message.number !== undefined && message.number !== null && message.hasOwnProperty("number"))
                     object.number = message.number;
                 if (message.label !== undefined && message.label !== null && message.hasOwnProperty("label"))
-                    object.label = options.enums === String ? $types[2][message.label] : message.label;
+                    object.label = options.enums === String ? $types[3][message.label] : message.label;
                 if (message.type !== undefined && message.type !== null && message.hasOwnProperty("type"))
-                    object.type = options.enums === String ? $types[3][message.type] : message.type;
+                    object.type = options.enums === String ? $types[4][message.type] : message.type;
                 if (message.typeName !== undefined && message.typeName !== null && message.hasOwnProperty("typeName"))
                     object.typeName = message.typeName;
-                if (message.extendee !== undefined && message.extendee !== null && message.hasOwnProperty("extendee"))
-                    object.extendee = message.extendee;
                 if (message.defaultValue !== undefined && message.defaultValue !== null && message.hasOwnProperty("defaultValue"))
                     object.defaultValue = message.defaultValue;
+                if (message.options !== undefined && message.options !== null && message.hasOwnProperty("options"))
+                    object.options = $types[7].toObject(message.options, options);
                 if (message.oneofIndex !== undefined && message.oneofIndex !== null && message.hasOwnProperty("oneofIndex"))
                     object.oneofIndex = message.oneofIndex;
                 if (message.jsonName !== undefined && message.jsonName !== null && message.hasOwnProperty("jsonName"))
                     object.jsonName = message.jsonName;
-                if (message.options !== undefined && message.options !== null && message.hasOwnProperty("options"))
-                    object.options = $types[9].toObject(message.options, options);
                 return object;
             };
 
@@ -9576,7 +9624,7 @@ $root.google = (function() {
             OneofDescriptorProto.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
-                if (message.name !== undefined)
+                if (message.name !== undefined && message.name !== null)
                     if (!$util.isString(message.name))
                         return "name: string expected";
                 if (message.options !== undefined && message.options !== null) {
@@ -9787,7 +9835,7 @@ $root.google = (function() {
             EnumDescriptorProto.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
-                if (message.name !== undefined)
+                if (message.name !== undefined && message.name !== null)
                     if (!$util.isString(message.name))
                         return "name: string expected";
                 if (message.value !== undefined) {
@@ -10020,10 +10068,10 @@ $root.google = (function() {
             EnumValueDescriptorProto.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
-                if (message.name !== undefined)
+                if (message.name !== undefined && message.name !== null)
                     if (!$util.isString(message.name))
                         return "name: string expected";
-                if (message.number !== undefined)
+                if (message.number !== undefined && message.number !== null)
                     if (!$util.isInteger(message.number))
                         return "number: integer expected";
                 if (message.options !== undefined && message.options !== null) {
@@ -10239,7 +10287,7 @@ $root.google = (function() {
             ServiceDescriptorProto.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
-                if (message.name !== undefined)
+                if (message.name !== undefined && message.name !== null)
                     if (!$util.isString(message.name))
                         return "name: string expected";
                 if (message.method !== undefined) {
@@ -10505,13 +10553,13 @@ $root.google = (function() {
             MethodDescriptorProto.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
-                if (message.name !== undefined)
+                if (message.name !== undefined && message.name !== null)
                     if (!$util.isString(message.name))
                         return "name: string expected";
-                if (message.inputType !== undefined)
+                if (message.inputType !== undefined && message.inputType !== null)
                     if (!$util.isString(message.inputType))
                         return "inputType: string expected";
-                if (message.outputType !== undefined)
+                if (message.outputType !== undefined && message.outputType !== null)
                     if (!$util.isString(message.outputType))
                         return "outputType: string expected";
                 if (message.options !== undefined && message.options !== null) {
@@ -10519,10 +10567,10 @@ $root.google = (function() {
                     if (error)
                         return "options." + error;
                 }
-                if (message.clientStreaming !== undefined)
+                if (message.clientStreaming !== undefined && message.clientStreaming !== null)
                     if (typeof message.clientStreaming !== "boolean")
                         return "clientStreaming: boolean expected";
-                if (message.serverStreaming !== undefined)
+                if (message.serverStreaming !== undefined && message.serverStreaming !== null)
                     if (typeof message.serverStreaming !== "boolean")
                         return "serverStreaming: boolean expected";
                 return null;
@@ -10880,22 +10928,22 @@ $root.google = (function() {
             FileOptions.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
-                if (message.javaPackage !== undefined)
+                if (message.javaPackage !== undefined && message.javaPackage !== null)
                     if (!$util.isString(message.javaPackage))
                         return "javaPackage: string expected";
-                if (message.javaOuterClassname !== undefined)
+                if (message.javaOuterClassname !== undefined && message.javaOuterClassname !== null)
                     if (!$util.isString(message.javaOuterClassname))
                         return "javaOuterClassname: string expected";
-                if (message.javaMultipleFiles !== undefined)
+                if (message.javaMultipleFiles !== undefined && message.javaMultipleFiles !== null)
                     if (typeof message.javaMultipleFiles !== "boolean")
                         return "javaMultipleFiles: boolean expected";
-                if (message.javaGenerateEqualsAndHash !== undefined)
+                if (message.javaGenerateEqualsAndHash !== undefined && message.javaGenerateEqualsAndHash !== null)
                     if (typeof message.javaGenerateEqualsAndHash !== "boolean")
                         return "javaGenerateEqualsAndHash: boolean expected";
-                if (message.javaStringCheckUtf8 !== undefined)
+                if (message.javaStringCheckUtf8 !== undefined && message.javaStringCheckUtf8 !== null)
                     if (typeof message.javaStringCheckUtf8 !== "boolean")
                         return "javaStringCheckUtf8: boolean expected";
-                if (message.optimizeFor !== undefined)
+                if (message.optimizeFor !== undefined && message.optimizeFor !== null)
                     switch (message.optimizeFor) {
                     default:
                         return "optimizeFor: enum value expected";
@@ -10904,28 +10952,28 @@ $root.google = (function() {
                     case 3:
                         break;
                     }
-                if (message.goPackage !== undefined)
+                if (message.goPackage !== undefined && message.goPackage !== null)
                     if (!$util.isString(message.goPackage))
                         return "goPackage: string expected";
-                if (message.ccGenericServices !== undefined)
+                if (message.ccGenericServices !== undefined && message.ccGenericServices !== null)
                     if (typeof message.ccGenericServices !== "boolean")
                         return "ccGenericServices: boolean expected";
-                if (message.javaGenericServices !== undefined)
+                if (message.javaGenericServices !== undefined && message.javaGenericServices !== null)
                     if (typeof message.javaGenericServices !== "boolean")
                         return "javaGenericServices: boolean expected";
-                if (message.pyGenericServices !== undefined)
+                if (message.pyGenericServices !== undefined && message.pyGenericServices !== null)
                     if (typeof message.pyGenericServices !== "boolean")
                         return "pyGenericServices: boolean expected";
-                if (message.deprecated !== undefined)
+                if (message.deprecated !== undefined && message.deprecated !== null)
                     if (typeof message.deprecated !== "boolean")
                         return "deprecated: boolean expected";
-                if (message.ccEnableArenas !== undefined)
+                if (message.ccEnableArenas !== undefined && message.ccEnableArenas !== null)
                     if (typeof message.ccEnableArenas !== "boolean")
                         return "ccEnableArenas: boolean expected";
-                if (message.objcClassPrefix !== undefined)
+                if (message.objcClassPrefix !== undefined && message.objcClassPrefix !== null)
                     if (!$util.isString(message.objcClassPrefix))
                         return "objcClassPrefix: string expected";
-                if (message.csharpNamespace !== undefined)
+                if (message.csharpNamespace !== undefined && message.csharpNamespace !== null)
                     if (!$util.isString(message.csharpNamespace))
                         return "csharpNamespace: string expected";
                 if (message.uninterpretedOption !== undefined) {
@@ -11026,15 +11074,15 @@ $root.google = (function() {
                 if (options.defaults) {
                     object.javaPackage = "";
                     object.javaOuterClassname = "";
-                    object.javaMultipleFiles = false;
-                    object.javaGenerateEqualsAndHash = false;
-                    object.javaStringCheckUtf8 = false;
                     object.optimizeFor = options.enums === String ? "SPEED" : 1;
+                    object.javaMultipleFiles = false;
                     object.goPackage = "";
                     object.ccGenericServices = false;
                     object.javaGenericServices = false;
                     object.pyGenericServices = false;
+                    object.javaGenerateEqualsAndHash = false;
                     object.deprecated = false;
+                    object.javaStringCheckUtf8 = false;
                     object.ccEnableArenas = false;
                     object.objcClassPrefix = "";
                     object.csharpNamespace = "";
@@ -11043,14 +11091,10 @@ $root.google = (function() {
                     object.javaPackage = message.javaPackage;
                 if (message.javaOuterClassname !== undefined && message.javaOuterClassname !== null && message.hasOwnProperty("javaOuterClassname"))
                     object.javaOuterClassname = message.javaOuterClassname;
+                if (message.optimizeFor !== undefined && message.optimizeFor !== null && message.hasOwnProperty("optimizeFor"))
+                    object.optimizeFor = options.enums === String ? $types[2][message.optimizeFor] : message.optimizeFor;
                 if (message.javaMultipleFiles !== undefined && message.javaMultipleFiles !== null && message.hasOwnProperty("javaMultipleFiles"))
                     object.javaMultipleFiles = message.javaMultipleFiles;
-                if (message.javaGenerateEqualsAndHash !== undefined && message.javaGenerateEqualsAndHash !== null && message.hasOwnProperty("javaGenerateEqualsAndHash"))
-                    object.javaGenerateEqualsAndHash = message.javaGenerateEqualsAndHash;
-                if (message.javaStringCheckUtf8 !== undefined && message.javaStringCheckUtf8 !== null && message.hasOwnProperty("javaStringCheckUtf8"))
-                    object.javaStringCheckUtf8 = message.javaStringCheckUtf8;
-                if (message.optimizeFor !== undefined && message.optimizeFor !== null && message.hasOwnProperty("optimizeFor"))
-                    object.optimizeFor = options.enums === String ? $types[5][message.optimizeFor] : message.optimizeFor;
                 if (message.goPackage !== undefined && message.goPackage !== null && message.hasOwnProperty("goPackage"))
                     object.goPackage = message.goPackage;
                 if (message.ccGenericServices !== undefined && message.ccGenericServices !== null && message.hasOwnProperty("ccGenericServices"))
@@ -11059,8 +11103,12 @@ $root.google = (function() {
                     object.javaGenericServices = message.javaGenericServices;
                 if (message.pyGenericServices !== undefined && message.pyGenericServices !== null && message.hasOwnProperty("pyGenericServices"))
                     object.pyGenericServices = message.pyGenericServices;
+                if (message.javaGenerateEqualsAndHash !== undefined && message.javaGenerateEqualsAndHash !== null && message.hasOwnProperty("javaGenerateEqualsAndHash"))
+                    object.javaGenerateEqualsAndHash = message.javaGenerateEqualsAndHash;
                 if (message.deprecated !== undefined && message.deprecated !== null && message.hasOwnProperty("deprecated"))
                     object.deprecated = message.deprecated;
+                if (message.javaStringCheckUtf8 !== undefined && message.javaStringCheckUtf8 !== null && message.hasOwnProperty("javaStringCheckUtf8"))
+                    object.javaStringCheckUtf8 = message.javaStringCheckUtf8;
                 if (message.ccEnableArenas !== undefined && message.ccEnableArenas !== null && message.hasOwnProperty("ccEnableArenas"))
                     object.ccEnableArenas = message.ccEnableArenas;
                 if (message.objcClassPrefix !== undefined && message.objcClassPrefix !== null && message.hasOwnProperty("objcClassPrefix"))
@@ -11264,16 +11312,16 @@ $root.google = (function() {
             MessageOptions.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
-                if (message.messageSetWireFormat !== undefined)
+                if (message.messageSetWireFormat !== undefined && message.messageSetWireFormat !== null)
                     if (typeof message.messageSetWireFormat !== "boolean")
                         return "messageSetWireFormat: boolean expected";
-                if (message.noStandardDescriptorAccessor !== undefined)
+                if (message.noStandardDescriptorAccessor !== undefined && message.noStandardDescriptorAccessor !== null)
                     if (typeof message.noStandardDescriptorAccessor !== "boolean")
                         return "noStandardDescriptorAccessor: boolean expected";
-                if (message.deprecated !== undefined)
+                if (message.deprecated !== undefined && message.deprecated !== null)
                     if (typeof message.deprecated !== "boolean")
                         return "deprecated: boolean expected";
-                if (message.mapEntry !== undefined)
+                if (message.mapEntry !== undefined && message.mapEntry !== null)
                     if (typeof message.mapEntry !== "boolean")
                         return "mapEntry: boolean expected";
                 if (message.uninterpretedOption !== undefined) {
@@ -11557,7 +11605,7 @@ $root.google = (function() {
             FieldOptions.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
-                if (message.ctype !== undefined)
+                if (message.ctype !== undefined && message.ctype !== null)
                     switch (message.ctype) {
                     default:
                         return "ctype: enum value expected";
@@ -11566,10 +11614,10 @@ $root.google = (function() {
                     case 2:
                         break;
                     }
-                if (message.packed !== undefined)
+                if (message.packed !== undefined && message.packed !== null)
                     if (typeof message.packed !== "boolean")
                         return "packed: boolean expected";
-                if (message.jstype !== undefined)
+                if (message.jstype !== undefined && message.jstype !== null)
                     switch (message.jstype) {
                     default:
                         return "jstype: enum value expected";
@@ -11578,13 +11626,13 @@ $root.google = (function() {
                     case 2:
                         break;
                     }
-                if (message.lazy !== undefined)
+                if (message.lazy !== undefined && message.lazy !== null)
                     if (typeof message.lazy !== "boolean")
                         return "lazy: boolean expected";
-                if (message.deprecated !== undefined)
+                if (message.deprecated !== undefined && message.deprecated !== null)
                     if (typeof message.deprecated !== "boolean")
                         return "deprecated: boolean expected";
-                if (message.weak !== undefined)
+                if (message.weak !== undefined && message.weak !== null)
                     if (typeof message.weak !== "boolean")
                         return "weak: boolean expected";
                 if (message.uninterpretedOption !== undefined) {
@@ -11681,21 +11729,21 @@ $root.google = (function() {
                 if (options.defaults) {
                     object.ctype = options.enums === String ? "STRING" : 0;
                     object.packed = false;
-                    object.jstype = options.enums === String ? "JS_NORMAL" : 0;
-                    object.lazy = false;
                     object.deprecated = false;
+                    object.lazy = false;
+                    object.jstype = options.enums === String ? "JS_NORMAL" : 0;
                     object.weak = false;
                 }
                 if (message.ctype !== undefined && message.ctype !== null && message.hasOwnProperty("ctype"))
                     object.ctype = options.enums === String ? $types[0][message.ctype] : message.ctype;
                 if (message.packed !== undefined && message.packed !== null && message.hasOwnProperty("packed"))
                     object.packed = message.packed;
-                if (message.jstype !== undefined && message.jstype !== null && message.hasOwnProperty("jstype"))
-                    object.jstype = options.enums === String ? $types[2][message.jstype] : message.jstype;
-                if (message.lazy !== undefined && message.lazy !== null && message.hasOwnProperty("lazy"))
-                    object.lazy = message.lazy;
                 if (message.deprecated !== undefined && message.deprecated !== null && message.hasOwnProperty("deprecated"))
                     object.deprecated = message.deprecated;
+                if (message.lazy !== undefined && message.lazy !== null && message.hasOwnProperty("lazy"))
+                    object.lazy = message.lazy;
+                if (message.jstype !== undefined && message.jstype !== null && message.hasOwnProperty("jstype"))
+                    object.jstype = options.enums === String ? $types[4][message.jstype] : message.jstype;
                 if (message.weak !== undefined && message.weak !== null && message.hasOwnProperty("weak"))
                     object.weak = message.weak;
                 if (message.uninterpretedOption !== undefined && message.uninterpretedOption !== null && message.hasOwnProperty("uninterpretedOption")) {
@@ -12093,10 +12141,10 @@ $root.google = (function() {
             EnumOptions.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
-                if (message.allowAlias !== undefined)
+                if (message.allowAlias !== undefined && message.allowAlias !== null)
                     if (typeof message.allowAlias !== "boolean")
                         return "allowAlias: boolean expected";
-                if (message.deprecated !== undefined)
+                if (message.deprecated !== undefined && message.deprecated !== null)
                     if (typeof message.deprecated !== "boolean")
                         return "deprecated: boolean expected";
                 if (message.uninterpretedOption !== undefined) {
@@ -12108,7 +12156,7 @@ $root.google = (function() {
                             return "uninterpretedOption." + error;
                     }
                 }
-                if (message[".jspb.test.IsExtension.simpleOption"] !== undefined)
+                if (message[".jspb.test.IsExtension.simpleOption"] !== undefined && message[".jspb.test.IsExtension.simpleOption"] !== null)
                     if (!$util.isString(message[".jspb.test.IsExtension.simpleOption"]))
                         return ".jspb.test.IsExtension.simpleOption: string expected";
                 return null;
@@ -12321,7 +12369,7 @@ $root.google = (function() {
             EnumValueOptions.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
-                if (message.deprecated !== undefined)
+                if (message.deprecated !== undefined && message.deprecated !== null)
                     if (typeof message.deprecated !== "boolean")
                         return "deprecated: boolean expected";
                 if (message.uninterpretedOption !== undefined) {
@@ -12532,7 +12580,7 @@ $root.google = (function() {
             ServiceOptions.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
-                if (message.deprecated !== undefined)
+                if (message.deprecated !== undefined && message.deprecated !== null)
                     if (typeof message.deprecated !== "boolean")
                         return "deprecated: boolean expected";
                 if (message.uninterpretedOption !== undefined) {
@@ -12755,10 +12803,10 @@ $root.google = (function() {
             MethodOptions.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
-                if (message.deprecated !== undefined)
+                if (message.deprecated !== undefined && message.deprecated !== null)
                     if (typeof message.deprecated !== "boolean")
                         return "deprecated: boolean expected";
-                if (message.idempotencyLevel !== undefined)
+                if (message.idempotencyLevel !== undefined && message.idempotencyLevel !== null)
                     switch (message.idempotencyLevel) {
                     default:
                         return "idempotencyLevel: enum value expected";
@@ -13074,22 +13122,22 @@ $root.google = (function() {
                             return "name." + error;
                     }
                 }
-                if (message.identifierValue !== undefined)
+                if (message.identifierValue !== undefined && message.identifierValue !== null)
                     if (!$util.isString(message.identifierValue))
                         return "identifierValue: string expected";
-                if (message.positiveIntValue !== undefined)
+                if (message.positiveIntValue !== undefined && message.positiveIntValue !== null)
                     if (!$util.isInteger(message.positiveIntValue) && !(message.positiveIntValue && $util.isInteger(message.positiveIntValue.low) && $util.isInteger(message.positiveIntValue.high)))
                         return "positiveIntValue: integer|Long expected";
-                if (message.negativeIntValue !== undefined)
+                if (message.negativeIntValue !== undefined && message.negativeIntValue !== null)
                     if (!$util.isInteger(message.negativeIntValue) && !(message.negativeIntValue && $util.isInteger(message.negativeIntValue.low) && $util.isInteger(message.negativeIntValue.high)))
                         return "negativeIntValue: integer|Long expected";
-                if (message.doubleValue !== undefined)
+                if (message.doubleValue !== undefined && message.doubleValue !== null)
                     if (typeof message.doubleValue !== "number")
                         return "doubleValue: number expected";
-                if (message.stringValue !== undefined)
+                if (message.stringValue !== undefined && message.stringValue !== null)
                     if (!(message.stringValue && typeof message.stringValue.length === "number" || $util.isString(message.stringValue)))
                         return "stringValue: buffer expected";
-                if (message.aggregateValue !== undefined)
+                if (message.aggregateValue !== undefined && message.aggregateValue !== null)
                     if (!$util.isString(message.aggregateValue))
                         return "aggregateValue: string expected";
                 return null;
@@ -13786,10 +13834,10 @@ $root.google = (function() {
                             if (!$util.isInteger(message.span[i]))
                                 return "span: integer[] expected";
                     }
-                    if (message.leadingComments !== undefined)
+                    if (message.leadingComments !== undefined && message.leadingComments !== null)
                         if (!$util.isString(message.leadingComments))
                             return "leadingComments: string expected";
-                    if (message.trailingComments !== undefined)
+                    if (message.trailingComments !== undefined && message.trailingComments !== null)
                         if (!$util.isString(message.trailingComments))
                             return "trailingComments: string expected";
                     if (message.leadingDetachedComments !== undefined) {
@@ -14251,13 +14299,13 @@ $root.google = (function() {
                             if (!$util.isInteger(message.path[i]))
                                 return "path: integer[] expected";
                     }
-                    if (message.sourceFile !== undefined)
+                    if (message.sourceFile !== undefined && message.sourceFile !== null)
                         if (!$util.isString(message.sourceFile))
                             return "sourceFile: string expected";
-                    if (message.begin !== undefined)
+                    if (message.begin !== undefined && message.begin !== null)
                         if (!$util.isInteger(message.begin))
                             return "begin: integer expected";
-                    if (message.end !== undefined)
+                    if (message.end !== undefined && message.end !== null)
                         if (!$util.isInteger(message.end))
                             return "end: integer expected";
                     return null;

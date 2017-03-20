@@ -170,7 +170,7 @@ $root.MyRequest = (function() {
     MyRequest.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
-        if (message.path !== undefined)
+        if (message.path !== undefined && message.path !== null)
             if (!$util.isString(message.path))
                 return "path: string expected";
         return null;
@@ -336,7 +336,7 @@ $root.MyResponse = (function() {
     MyResponse.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
-        if (message.status !== undefined)
+        if (message.status !== undefined && message.status !== null)
             if (!$util.isInteger(message.status))
                 return "status: integer expected";
         return null;

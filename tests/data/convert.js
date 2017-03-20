@@ -240,7 +240,7 @@ $root.Message = (function() {
     Message.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
-        if (message.stringVal !== undefined)
+        if (message.stringVal !== undefined && message.stringVal !== null)
             if (!$util.isString(message.stringVal))
                 return "stringVal: string expected";
         if (message.stringRepeated !== undefined) {
@@ -250,7 +250,7 @@ $root.Message = (function() {
                 if (!$util.isString(message.stringRepeated[i]))
                     return "stringRepeated: string[] expected";
         }
-        if (message.uint64Val !== undefined)
+        if (message.uint64Val !== undefined && message.uint64Val !== null)
             if (!$util.isInteger(message.uint64Val) && !(message.uint64Val && $util.isInteger(message.uint64Val.low) && $util.isInteger(message.uint64Val.high)))
                 return "uint64Val: integer|Long expected";
         if (message.uint64Repeated !== undefined) {
@@ -260,7 +260,7 @@ $root.Message = (function() {
                 if (!$util.isInteger(message.uint64Repeated[i]) && !(message.uint64Repeated[i] && $util.isInteger(message.uint64Repeated[i].low) && $util.isInteger(message.uint64Repeated[i].high)))
                     return "uint64Repeated: integer|Long[] expected";
         }
-        if (message.bytesVal !== undefined)
+        if (message.bytesVal !== undefined && message.bytesVal !== null)
             if (!(message.bytesVal && typeof message.bytesVal.length === "number" || $util.isString(message.bytesVal)))
                 return "bytesVal: buffer expected";
         if (message.bytesRepeated !== undefined) {
@@ -270,7 +270,7 @@ $root.Message = (function() {
                 if (!(message.bytesRepeated[i] && typeof message.bytesRepeated[i].length === "number" || $util.isString(message.bytesRepeated[i])))
                     return "bytesRepeated: buffer[] expected";
         }
-        if (message.enumVal !== undefined)
+        if (message.enumVal !== undefined && message.enumVal !== null)
             switch (message.enumVal) {
             default:
                 return "enumVal: enum value expected";

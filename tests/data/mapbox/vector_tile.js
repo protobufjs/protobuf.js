@@ -394,25 +394,25 @@ $root.vector_tile = (function() {
             Value.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
-                if (message.stringValue !== undefined)
+                if (message.stringValue !== undefined && message.stringValue !== null)
                     if (!$util.isString(message.stringValue))
                         return "stringValue: string expected";
-                if (message.floatValue !== undefined)
+                if (message.floatValue !== undefined && message.floatValue !== null)
                     if (typeof message.floatValue !== "number")
                         return "floatValue: number expected";
-                if (message.doubleValue !== undefined)
+                if (message.doubleValue !== undefined && message.doubleValue !== null)
                     if (typeof message.doubleValue !== "number")
                         return "doubleValue: number expected";
-                if (message.intValue !== undefined)
+                if (message.intValue !== undefined && message.intValue !== null)
                     if (!$util.isInteger(message.intValue) && !(message.intValue && $util.isInteger(message.intValue.low) && $util.isInteger(message.intValue.high)))
                         return "intValue: integer|Long expected";
-                if (message.uintValue !== undefined)
+                if (message.uintValue !== undefined && message.uintValue !== null)
                     if (!$util.isInteger(message.uintValue) && !(message.uintValue && $util.isInteger(message.uintValue.low) && $util.isInteger(message.uintValue.high)))
                         return "uintValue: integer|Long expected";
-                if (message.sintValue !== undefined)
+                if (message.sintValue !== undefined && message.sintValue !== null)
                     if (!$util.isInteger(message.sintValue) && !(message.sintValue && $util.isInteger(message.sintValue.low) && $util.isInteger(message.sintValue.high)))
                         return "sintValue: integer|Long expected";
-                if (message.boolValue !== undefined)
+                if (message.boolValue !== undefined && message.boolValue !== null)
                     if (typeof message.boolValue !== "boolean")
                         return "boolValue: boolean expected";
                 return null;
@@ -711,7 +711,7 @@ $root.vector_tile = (function() {
             Feature.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
-                if (message.id !== undefined)
+                if (message.id !== undefined && message.id !== null)
                     if (!$util.isInteger(message.id) && !(message.id && $util.isInteger(message.id.low) && $util.isInteger(message.id.high)))
                         return "id: integer|Long expected";
                 if (message.tags !== undefined) {
@@ -721,7 +721,7 @@ $root.vector_tile = (function() {
                         if (!$util.isInteger(message.tags[i]))
                             return "tags: integer[] expected";
                 }
-                if (message.type !== undefined)
+                if (message.type !== undefined && message.type !== null)
                     switch (message.type) {
                     default:
                         return "type: enum value expected";
@@ -1066,7 +1066,7 @@ $root.vector_tile = (function() {
                             return "values." + error;
                     }
                 }
-                if (message.extent !== undefined)
+                if (message.extent !== undefined && message.extent !== null)
                     if (!$util.isInteger(message.extent))
                         return "extent: integer expected";
                 return null;
@@ -1142,18 +1142,16 @@ $root.vector_tile = (function() {
                     object.values = [];
                 }
                 if (options.defaults) {
-                    object.version = 1;
                     object.name = "";
                     object.extent = 4096;
+                    object.version = 1;
                 }
-                if (message.version !== undefined && message.version !== null && message.hasOwnProperty("version"))
-                    object.version = message.version;
                 if (message.name !== undefined && message.name !== null && message.hasOwnProperty("name"))
                     object.name = message.name;
                 if (message.features !== undefined && message.features !== null && message.hasOwnProperty("features")) {
                     object.features = [];
                     for (var j = 0; j < message.features.length; ++j)
-                        object.features[j] = $types[2].toObject(message.features[j], options);
+                        object.features[j] = $types[1].toObject(message.features[j], options);
                 }
                 if (message.keys !== undefined && message.keys !== null && message.hasOwnProperty("keys")) {
                     object.keys = [];
@@ -1163,10 +1161,12 @@ $root.vector_tile = (function() {
                 if (message.values !== undefined && message.values !== null && message.hasOwnProperty("values")) {
                     object.values = [];
                     for (var j = 0; j < message.values.length; ++j)
-                        object.values[j] = $types[4].toObject(message.values[j], options);
+                        object.values[j] = $types[3].toObject(message.values[j], options);
                 }
                 if (message.extent !== undefined && message.extent !== null && message.hasOwnProperty("extent"))
                     object.extent = message.extent;
+                if (message.version !== undefined && message.version !== null && message.hasOwnProperty("version"))
+                    object.version = message.version;
                 return object;
             };
 

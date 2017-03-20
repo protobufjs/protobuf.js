@@ -138,13 +138,13 @@ $root.Test1 = (function() {
     Test1.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
-        if (message.field1 !== undefined)
+        if (message.field1 !== undefined && message.field1 !== null)
             if (!$util.isString(message.field1))
                 return "field1: string expected";
-        if (message.field2 !== undefined)
+        if (message.field2 !== undefined && message.field2 !== null)
             if (!$util.isInteger(message.field2))
                 return "field2: integer expected";
-        if (message.field3 !== undefined)
+        if (message.field3 !== undefined && message.field3 !== null)
             if (typeof message.field3 !== "boolean")
                 return "field3: boolean expected";
         return null;
