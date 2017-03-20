@@ -157,26 +157,26 @@ $root.Package = (function() {
     Package.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.name !== undefined && message.hasOwnProperty("name"))
+        if (message.name !== undefined && message.name !== null && message.hasOwnProperty("name"))
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.name);
-        if (message.version !== undefined && message.hasOwnProperty("version"))
+        if (message.version !== undefined && message.version !== null && message.hasOwnProperty("version"))
             writer.uint32(/* id 2, wireType 2 =*/18).string(message.version);
-        if (message.description !== undefined && message.hasOwnProperty("description"))
+        if (message.description !== undefined && message.description !== null && message.hasOwnProperty("description"))
             writer.uint32(/* id 3, wireType 2 =*/26).string(message.description);
-        if (message.author !== undefined && message.hasOwnProperty("author"))
+        if (message.author !== undefined && message.author !== null && message.hasOwnProperty("author"))
             writer.uint32(/* id 4, wireType 2 =*/34).string(message.author);
-        if (message.license !== undefined && message.hasOwnProperty("license"))
+        if (message.license !== undefined && message.license !== null && message.hasOwnProperty("license"))
             writer.uint32(/* id 5, wireType 2 =*/42).string(message.license);
         if (message.repository && message.hasOwnProperty("repository"))
             $types[6].encode(message.repository, writer.uint32(/* id 6, wireType 2 =*/50).fork()).ldelim();
-        if (message.bugs !== undefined && message.hasOwnProperty("bugs"))
+        if (message.bugs !== undefined && message.bugs !== null && message.hasOwnProperty("bugs"))
             writer.uint32(/* id 7, wireType 2 =*/58).string(message.bugs);
-        if (message.homepage !== undefined && message.hasOwnProperty("homepage"))
+        if (message.homepage !== undefined && message.homepage !== null && message.hasOwnProperty("homepage"))
             writer.uint32(/* id 8, wireType 2 =*/66).string(message.homepage);
         if (message.keywords !== undefined && message.hasOwnProperty("keywords"))
             for (var i = 0; i < message.keywords.length; ++i)
                 writer.uint32(/* id 9, wireType 2 =*/74).string(message.keywords[i]);
-        if (message.main !== undefined && message.hasOwnProperty("main"))
+        if (message.main !== undefined && message.main !== null && message.hasOwnProperty("main"))
             writer.uint32(/* id 10, wireType 2 =*/82).string(message.main);
         if (message.bin && message.hasOwnProperty("bin"))
             for (var keys = Object.keys(message.bin), i = 0; i < keys.length; ++i)
@@ -193,12 +193,12 @@ $root.Package = (function() {
         if (message.devDependencies && message.hasOwnProperty("devDependencies"))
             for (var keys = Object.keys(message.devDependencies), i = 0; i < keys.length; ++i)
                 writer.uint32(/* id 15, wireType 2 =*/122).fork().uint32(/* id 1, wireType 2 =*/10).string(keys[i]).uint32(/* id 2, wireType 2 =*/18).string(message.devDependencies[keys[i]]).ldelim();
-        if (message.types !== undefined && message.hasOwnProperty("types"))
+        if (message.types !== undefined && message.types !== null && message.hasOwnProperty("types"))
             writer.uint32(/* id 17, wireType 2 =*/138).string(message.types);
         if (message.cliDependencies !== undefined && message.hasOwnProperty("cliDependencies"))
             for (var i = 0; i < message.cliDependencies.length; ++i)
                 writer.uint32(/* id 18, wireType 2 =*/146).string(message.cliDependencies[i]);
-        if (message.versionScheme !== undefined && message.hasOwnProperty("versionScheme"))
+        if (message.versionScheme !== undefined && message.versionScheme !== null && message.hasOwnProperty("versionScheme"))
             writer.uint32(/* id 19, wireType 2 =*/154).string(message.versionScheme);
         return writer;
     };
@@ -682,9 +682,9 @@ $root.Package = (function() {
         Repository.encode = function encode(message, writer) {
             if (!writer)
                 writer = $Writer.create();
-            if (message.type !== undefined && message.hasOwnProperty("type"))
+            if (message.type !== undefined && message.type !== null && message.hasOwnProperty("type"))
                 writer.uint32(/* id 1, wireType 2 =*/10).string(message.type);
-            if (message.url !== undefined && message.hasOwnProperty("url"))
+            if (message.url !== undefined && message.url !== null && message.hasOwnProperty("url"))
                 writer.uint32(/* id 2, wireType 2 =*/18).string(message.url);
             return writer;
         };

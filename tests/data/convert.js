@@ -104,7 +104,7 @@ $root.Message = (function() {
     Message.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.stringVal !== undefined && message.hasOwnProperty("stringVal"))
+        if (message.stringVal !== undefined && message.stringVal !== null && message.hasOwnProperty("stringVal"))
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.stringVal);
         if (message.stringRepeated !== undefined && message.hasOwnProperty("stringRepeated"))
             for (var i = 0; i < message.stringRepeated.length; ++i)
@@ -122,7 +122,7 @@ $root.Message = (function() {
         if (message.bytesRepeated !== undefined && message.hasOwnProperty("bytesRepeated"))
             for (var i = 0; i < message.bytesRepeated.length; ++i)
                 writer.uint32(/* id 6, wireType 2 =*/50).bytes(message.bytesRepeated[i]);
-        if (message.enumVal !== undefined && message.hasOwnProperty("enumVal"))
+        if (message.enumVal !== undefined && message.enumVal !== null && message.hasOwnProperty("enumVal"))
             writer.uint32(/* id 7, wireType 0 =*/56).uint32(message.enumVal);
         if (message.enumRepeated && message.enumRepeated.length && message.hasOwnProperty("enumRepeated")) {
             writer.uint32(/* id 8, wireType 2 =*/66).fork();

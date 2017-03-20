@@ -110,7 +110,7 @@ function encoder(mtype) {
                 else if (field.bytes || field.resolvedType && !(field.resolvedType instanceof Enum)) gen
     ("if(%s&&m.hasOwnProperty(%j))", ref, field.name);
                 else gen
-    ("if(%s!==undefined&&m.hasOwnProperty(%j))", ref, field.name);
+    ("if(%s!==undefined&&%s!==null&&m.hasOwnProperty(%j))", ref, ref, field.name);
 
             }
 

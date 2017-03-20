@@ -108,7 +108,7 @@ $root.MyRequest = (function() {
     MyRequest.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.path !== undefined && message.hasOwnProperty("path"))
+        if (message.path !== undefined && message.path !== null && message.hasOwnProperty("path"))
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.path);
         return writer;
     };
@@ -274,7 +274,7 @@ $root.MyResponse = (function() {
     MyResponse.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.status !== undefined && message.hasOwnProperty("status"))
+        if (message.status !== undefined && message.status !== null && message.hasOwnProperty("status"))
             writer.uint32(/* id 2, wireType 0 =*/16).int32(message.status);
         return writer;
     };

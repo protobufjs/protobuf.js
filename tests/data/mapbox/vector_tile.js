@@ -302,11 +302,11 @@ $root.vector_tile = (function() {
             Value.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
-                if (message.stringValue !== undefined && message.hasOwnProperty("stringValue"))
+                if (message.stringValue !== undefined && message.stringValue !== null && message.hasOwnProperty("stringValue"))
                     writer.uint32(/* id 1, wireType 2 =*/10).string(message.stringValue);
-                if (message.floatValue !== undefined && message.hasOwnProperty("floatValue"))
+                if (message.floatValue !== undefined && message.floatValue !== null && message.hasOwnProperty("floatValue"))
                     writer.uint32(/* id 2, wireType 5 =*/21).float(message.floatValue);
-                if (message.doubleValue !== undefined && message.hasOwnProperty("doubleValue"))
+                if (message.doubleValue !== undefined && message.doubleValue !== null && message.hasOwnProperty("doubleValue"))
                     writer.uint32(/* id 3, wireType 1 =*/25).double(message.doubleValue);
                 if (message.intValue !== undefined && message.intValue !== null && message.hasOwnProperty("intValue"))
                     writer.uint32(/* id 4, wireType 0 =*/32).int64(message.intValue);
@@ -314,7 +314,7 @@ $root.vector_tile = (function() {
                     writer.uint32(/* id 5, wireType 0 =*/40).uint64(message.uintValue);
                 if (message.sintValue !== undefined && message.sintValue !== null && message.hasOwnProperty("sintValue"))
                     writer.uint32(/* id 6, wireType 0 =*/48).sint64(message.sintValue);
-                if (message.boolValue !== undefined && message.hasOwnProperty("boolValue"))
+                if (message.boolValue !== undefined && message.boolValue !== null && message.hasOwnProperty("boolValue"))
                     writer.uint32(/* id 7, wireType 0 =*/56).bool(message.boolValue);
                 return writer;
             };
@@ -620,7 +620,7 @@ $root.vector_tile = (function() {
                         writer.uint32(message.tags[i]);
                     writer.ldelim();
                 }
-                if (message.type !== undefined && message.hasOwnProperty("type"))
+                if (message.type !== undefined && message.type !== null && message.hasOwnProperty("type"))
                     writer.uint32(/* id 3, wireType 0 =*/24).uint32(message.type);
                 if (message.geometry && message.geometry.length && message.hasOwnProperty("geometry")) {
                     writer.uint32(/* id 4, wireType 2 =*/34).fork();
@@ -949,7 +949,7 @@ $root.vector_tile = (function() {
                 if (message.values !== undefined && message.hasOwnProperty("values"))
                     for (var i = 0; i < message.values.length; ++i)
                         $types[4].encode(message.values[i], writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
-                if (message.extent !== undefined && message.hasOwnProperty("extent"))
+                if (message.extent !== undefined && message.extent !== null && message.hasOwnProperty("extent"))
                     writer.uint32(/* id 5, wireType 0 =*/40).uint32(message.extent);
                 writer.uint32(/* id 15, wireType 0 =*/120).uint32(message.version);
                 return writer;
