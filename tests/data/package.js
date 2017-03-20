@@ -18,7 +18,7 @@ $root.Package = (function() {
      * Constructs a new Package.
      * @exports Package
      * @constructor
-     * @param {Object} [properties] Properties to set
+     * @param {Object.<string,*>=} [properties] Properties to set
      */
     function Package(properties) {
         if (properties)
@@ -141,7 +141,7 @@ $root.Package = (function() {
 
     /**
      * Creates a new Package instance using the specified properties.
-     * @param {Object} [properties] Properties to set
+     * @param {Object.<string,*>=} [properties] Properties to set
      * @returns {Package} Package instance
      */
     Package.create = function create(properties) {
@@ -644,7 +644,7 @@ $root.Package = (function() {
          * Constructs a new Repository.
          * @exports Package.Repository
          * @constructor
-         * @param {Object} [properties] Properties to set
+         * @param {Object.<string,*>=} [properties] Properties to set
          */
         function Repository(properties) {
             if (properties)
@@ -666,7 +666,7 @@ $root.Package = (function() {
 
         /**
          * Creates a new Repository instance using the specified properties.
-         * @param {Object} [properties] Properties to set
+         * @param {Object.<string,*>=} [properties] Properties to set
          * @returns {Package.Repository} Repository instance
          */
         Repository.create = function create(properties) {

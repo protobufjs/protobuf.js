@@ -10,9 +10,9 @@ export class MyService extends $protobuf.rpc.Service {
 type MyService_myMethod_Callback = (error: Error, response?: MyResponse) => void;
 
 export class MyRequest {
-    constructor(properties?: Object);
+    constructor(properties?: { [k: string]: any });
     public path?: string;
-    public static create(properties?: Object): MyRequest;
+    public static create(properties?: { [k: string]: any }): MyRequest;
     public static encode(message: (MyRequest|Object), writer?: $protobuf.Writer): $protobuf.Writer;
     public static encodeDelimited(message: (MyRequest|Object), writer?: $protobuf.Writer): $protobuf.Writer;
     public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): MyRequest;
@@ -26,9 +26,9 @@ export class MyRequest {
 }
 
 export class MyResponse {
-    constructor(properties?: Object);
+    constructor(properties?: { [k: string]: any });
     public status?: number;
-    public static create(properties?: Object): MyResponse;
+    public static create(properties?: { [k: string]: any }): MyResponse;
     public static encode(message: (MyResponse|Object), writer?: $protobuf.Writer): $protobuf.Writer;
     public static encodeDelimited(message: (MyResponse|Object), writer?: $protobuf.Writer): $protobuf.Writer;
     public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): MyResponse;

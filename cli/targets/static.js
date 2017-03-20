@@ -288,7 +288,7 @@ function buildType(ref, type) {
         type.comment ? "@classdesc " + type.comment : null,
         "@exports " + fullName,
         "@constructor",
-        "@param {Object} [" + (config.beautify ? "properties" : "p") + "] Properties to set"
+        "@param {Object.<string,*>=} [" + (config.beautify ? "properties" : "p") + "] Properties to set"
     ]);
     buildFunction(type, type.name, Class.generate(type));
 
@@ -380,7 +380,7 @@ function buildType(ref, type) {
         push("");
         pushComment([
             "Creates a new " + type.name + " instance using the specified properties.",
-            "@param {Object} [properties] Properties to set",
+            "@param {Object.<string,*>=} [properties] Properties to set",
             "@returns {" + fullName + "} " + type.name + " instance"
         ]);
         push(name(type.name) + ".create = function create(properties) {");

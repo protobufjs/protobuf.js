@@ -22,7 +22,7 @@ $root.Test1 = (function() {
      * comment.
      * @exports Test1
      * @constructor
-     * @param {Object} [properties] Properties to set
+     * @param {Object.<string,*>=} [properties] Properties to set
      */
     function Test1(properties) {
         if (properties)
@@ -50,7 +50,7 @@ $root.Test1 = (function() {
 
     /**
      * Creates a new Test1 instance using the specified properties.
-     * @param {Object} [properties] Properties to set
+     * @param {Object.<string,*>=} [properties] Properties to set
      * @returns {Test1} Test1 instance
      */
     Test1.create = function create(properties) {
@@ -227,7 +227,7 @@ $root.Test2 = (function() {
      * Constructs a new Test2.
      * @exports Test2
      * @constructor
-     * @param {Object} [properties] Properties to set
+     * @param {Object.<string,*>=} [properties] Properties to set
      */
     function Test2(properties) {
         if (properties)
@@ -237,7 +237,7 @@ $root.Test2 = (function() {
 
     /**
      * Creates a new Test2 instance using the specified properties.
-     * @param {Object} [properties] Properties to set
+     * @param {Object.<string,*>=} [properties] Properties to set
      * @returns {Test2} Test2 instance
      */
     Test2.create = function create(properties) {

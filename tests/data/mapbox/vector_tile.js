@@ -27,7 +27,7 @@ $root.vector_tile = (function() {
          * Constructs a new Tile.
          * @exports vector_tile.Tile
          * @constructor
-         * @param {Object} [properties] Properties to set
+         * @param {Object.<string,*>=} [properties] Properties to set
          */
         function Tile(properties) {
             if (properties)
@@ -48,7 +48,7 @@ $root.vector_tile = (function() {
 
         /**
          * Creates a new Tile instance using the specified properties.
-         * @param {Object} [properties] Properties to set
+         * @param {Object.<string,*>=} [properties] Properties to set
          * @returns {vector_tile.Tile} Tile instance
          */
         Tile.create = function create(properties) {
@@ -234,7 +234,7 @@ $root.vector_tile = (function() {
              * Constructs a new Value.
              * @exports vector_tile.Tile.Value
              * @constructor
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              */
             function Value(properties) {
                 if (properties)
@@ -286,7 +286,7 @@ $root.vector_tile = (function() {
 
             /**
              * Creates a new Value instance using the specified properties.
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              * @returns {vector_tile.Tile.Value} Value instance
              */
             Value.create = function create(properties) {
@@ -557,7 +557,7 @@ $root.vector_tile = (function() {
              * Constructs a new Feature.
              * @exports vector_tile.Tile.Feature
              * @constructor
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              */
             function Feature(properties) {
                 if (properties)
@@ -596,7 +596,7 @@ $root.vector_tile = (function() {
 
             /**
              * Creates a new Feature instance using the specified properties.
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              * @returns {vector_tile.Tile.Feature} Feature instance
              */
             Feature.create = function create(properties) {
@@ -871,7 +871,7 @@ $root.vector_tile = (function() {
              * Constructs a new Layer.
              * @exports vector_tile.Tile.Layer
              * @constructor
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              */
             function Layer(properties) {
                 if (properties)
@@ -923,7 +923,7 @@ $root.vector_tile = (function() {
 
             /**
              * Creates a new Layer instance using the specified properties.
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              * @returns {vector_tile.Tile.Layer} Layer instance
              */
             Layer.create = function create(properties) {

@@ -76,7 +76,7 @@ $root.MyRequest = (function() {
      * Constructs a new MyRequest.
      * @exports MyRequest
      * @constructor
-     * @param {Object} [properties] Properties to set
+     * @param {Object.<string,*>=} [properties] Properties to set
      */
     function MyRequest(properties) {
         if (properties)
@@ -92,7 +92,7 @@ $root.MyRequest = (function() {
 
     /**
      * Creates a new MyRequest instance using the specified properties.
-     * @param {Object} [properties] Properties to set
+     * @param {Object.<string,*>=} [properties] Properties to set
      * @returns {MyRequest} MyRequest instance
      */
     MyRequest.create = function create(properties) {
@@ -242,7 +242,7 @@ $root.MyResponse = (function() {
      * Constructs a new MyResponse.
      * @exports MyResponse
      * @constructor
-     * @param {Object} [properties] Properties to set
+     * @param {Object.<string,*>=} [properties] Properties to set
      */
     function MyResponse(properties) {
         if (properties)
@@ -258,7 +258,7 @@ $root.MyResponse = (function() {
 
     /**
      * Creates a new MyResponse instance using the specified properties.
-     * @param {Object} [properties] Properties to set
+     * @param {Object.<string,*>=} [properties] Properties to set
      * @returns {MyResponse} MyResponse instance
      */
     MyResponse.create = function create(properties) {

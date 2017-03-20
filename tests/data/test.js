@@ -36,7 +36,7 @@ $root.jspb = (function() {
              * Constructs a new Empty.
              * @exports jspb.test.Empty
              * @constructor
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              */
             function Empty(properties) {
                 if (properties)
@@ -46,7 +46,7 @@ $root.jspb = (function() {
 
             /**
              * Creates a new Empty instance using the specified properties.
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              * @returns {jspb.test.Empty} Empty instance
              */
             Empty.create = function create(properties) {
@@ -193,7 +193,7 @@ $root.jspb = (function() {
              * Constructs a new EnumContainer.
              * @exports jspb.test.EnumContainer
              * @constructor
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              */
             function EnumContainer(properties) {
                 if (properties)
@@ -214,7 +214,7 @@ $root.jspb = (function() {
 
             /**
              * Creates a new EnumContainer instance using the specified properties.
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              * @returns {jspb.test.EnumContainer} EnumContainer instance
              */
             EnumContainer.create = function create(properties) {
@@ -377,7 +377,7 @@ $root.jspb = (function() {
              * Constructs a new Simple1.
              * @exports jspb.test.Simple1
              * @constructor
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              */
             function Simple1(properties) {
                 if (properties)
@@ -405,7 +405,7 @@ $root.jspb = (function() {
 
             /**
              * Creates a new Simple1 instance using the specified properties.
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              * @returns {jspb.test.Simple1} Simple1 instance
              */
             Simple1.create = function create(properties) {
@@ -598,7 +598,7 @@ $root.jspb = (function() {
              * Constructs a new Simple2.
              * @exports jspb.test.Simple2
              * @constructor
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              */
             function Simple2(properties) {
                 if (properties)
@@ -620,7 +620,7 @@ $root.jspb = (function() {
 
             /**
              * Creates a new Simple2 instance using the specified properties.
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              * @returns {jspb.test.Simple2} Simple2 instance
              */
             Simple2.create = function create(properties) {
@@ -799,7 +799,7 @@ $root.jspb = (function() {
              * Constructs a new SpecialCases.
              * @exports jspb.test.SpecialCases
              * @constructor
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              */
             function SpecialCases(properties) {
                 if (properties)
@@ -836,7 +836,7 @@ $root.jspb = (function() {
 
             /**
              * Creates a new SpecialCases instance using the specified properties.
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              * @returns {jspb.test.SpecialCases} SpecialCases instance
              */
             SpecialCases.create = function create(properties) {
@@ -1026,7 +1026,7 @@ $root.jspb = (function() {
              * Constructs a new OptionalFields.
              * @exports jspb.test.OptionalFields
              * @constructor
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              */
             function OptionalFields(properties) {
                 if (properties)
@@ -1072,7 +1072,7 @@ $root.jspb = (function() {
 
             /**
              * Creates a new OptionalFields instance using the specified properties.
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              * @returns {jspb.test.OptionalFields} OptionalFields instance
              */
             OptionalFields.create = function create(properties) {
@@ -1314,7 +1314,7 @@ $root.jspb = (function() {
                  * Constructs a new Nested.
                  * @exports jspb.test.OptionalFields.Nested
                  * @constructor
-                 * @param {Object} [properties] Properties to set
+                 * @param {Object.<string,*>=} [properties] Properties to set
                  */
                 function Nested(properties) {
                     if (properties)
@@ -1330,7 +1330,7 @@ $root.jspb = (function() {
 
                 /**
                  * Creates a new Nested instance using the specified properties.
-                 * @param {Object} [properties] Properties to set
+                 * @param {Object.<string,*>=} [properties] Properties to set
                  * @returns {jspb.test.OptionalFields.Nested} Nested instance
                  */
                 Nested.create = function create(properties) {
@@ -1483,7 +1483,7 @@ $root.jspb = (function() {
              * Constructs a new HasExtensions.
              * @exports jspb.test.HasExtensions
              * @constructor
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              */
             function HasExtensions(properties) {
                 if (properties)
@@ -1561,7 +1561,7 @@ $root.jspb = (function() {
 
             /**
              * Creates a new HasExtensions instance using the specified properties.
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              * @returns {jspb.test.HasExtensions} HasExtensions instance
              */
             HasExtensions.create = function create(properties) {
@@ -1868,7 +1868,7 @@ $root.jspb = (function() {
              * Constructs a new Complex.
              * @exports jspb.test.Complex
              * @constructor
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              */
             function Complex(properties) {
                 if (properties)
@@ -1914,7 +1914,7 @@ $root.jspb = (function() {
 
             /**
              * Creates a new Complex instance using the specified properties.
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              * @returns {jspb.test.Complex} Complex instance
              */
             Complex.create = function create(properties) {
@@ -2156,7 +2156,7 @@ $root.jspb = (function() {
                  * Constructs a new Nested.
                  * @exports jspb.test.Complex.Nested
                  * @constructor
-                 * @param {Object} [properties] Properties to set
+                 * @param {Object.<string,*>=} [properties] Properties to set
                  */
                 function Nested(properties) {
                     if (properties)
@@ -2172,7 +2172,7 @@ $root.jspb = (function() {
 
                 /**
                  * Creates a new Nested instance using the specified properties.
-                 * @param {Object} [properties] Properties to set
+                 * @param {Object.<string,*>=} [properties] Properties to set
                  * @returns {jspb.test.Complex.Nested} Nested instance
                  */
                 Nested.create = function create(properties) {
@@ -2325,7 +2325,7 @@ $root.jspb = (function() {
              * Constructs a new OuterMessage.
              * @exports jspb.test.OuterMessage
              * @constructor
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              */
             function OuterMessage(properties) {
                 if (properties)
@@ -2335,7 +2335,7 @@ $root.jspb = (function() {
 
             /**
              * Creates a new OuterMessage instance using the specified properties.
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              * @returns {jspb.test.OuterMessage} OuterMessage instance
              */
             OuterMessage.create = function create(properties) {
@@ -2464,7 +2464,7 @@ $root.jspb = (function() {
                  * Constructs a new Complex.
                  * @exports jspb.test.OuterMessage.Complex
                  * @constructor
-                 * @param {Object} [properties] Properties to set
+                 * @param {Object.<string,*>=} [properties] Properties to set
                  */
                 function Complex(properties) {
                     if (properties)
@@ -2480,7 +2480,7 @@ $root.jspb = (function() {
 
                 /**
                  * Creates a new Complex instance using the specified properties.
-                 * @param {Object} [properties] Properties to set
+                 * @param {Object.<string,*>=} [properties] Properties to set
                  * @returns {jspb.test.OuterMessage.Complex} Complex instance
                  */
                 Complex.create = function create(properties) {
@@ -2633,7 +2633,7 @@ $root.jspb = (function() {
              * Constructs a new IsExtension.
              * @exports jspb.test.IsExtension
              * @constructor
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              */
             function IsExtension(properties) {
                 if (properties)
@@ -2649,7 +2649,7 @@ $root.jspb = (function() {
 
             /**
              * Creates a new IsExtension instance using the specified properties.
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              * @returns {jspb.test.IsExtension} IsExtension instance
              */
             IsExtension.create = function create(properties) {
@@ -2799,7 +2799,7 @@ $root.jspb = (function() {
              * Constructs a new IndirectExtension.
              * @exports jspb.test.IndirectExtension
              * @constructor
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              */
             function IndirectExtension(properties) {
                 if (properties)
@@ -2809,7 +2809,7 @@ $root.jspb = (function() {
 
             /**
              * Creates a new IndirectExtension instance using the specified properties.
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              * @returns {jspb.test.IndirectExtension} IndirectExtension instance
              */
             IndirectExtension.create = function create(properties) {
@@ -2941,7 +2941,7 @@ $root.jspb = (function() {
              * Constructs a new DefaultValues.
              * @exports jspb.test.DefaultValues
              * @constructor
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              */
             function DefaultValues(properties) {
                 if (properties)
@@ -2992,7 +2992,7 @@ $root.jspb = (function() {
 
             /**
              * Creates a new DefaultValues instance using the specified properties.
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              * @returns {jspb.test.DefaultValues} DefaultValues instance
              */
             DefaultValues.create = function create(properties) {
@@ -3257,7 +3257,7 @@ $root.jspb = (function() {
              * Constructs a new FloatingPointFields.
              * @exports jspb.test.FloatingPointFields
              * @constructor
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              */
             function FloatingPointFields(properties) {
                 if (properties)
@@ -3315,7 +3315,7 @@ $root.jspb = (function() {
 
             /**
              * Creates a new FloatingPointFields instance using the specified properties.
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              * @returns {jspb.test.FloatingPointFields} FloatingPointFields instance
              */
             FloatingPointFields.create = function create(properties) {
@@ -3599,7 +3599,7 @@ $root.jspb = (function() {
              * Constructs a new TestClone.
              * @exports jspb.test.TestClone
              * @constructor
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              */
             function TestClone(properties) {
                 if (properties)
@@ -3653,7 +3653,7 @@ $root.jspb = (function() {
 
             /**
              * Creates a new TestClone instance using the specified properties.
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              * @returns {jspb.test.TestClone} TestClone instance
              */
             TestClone.create = function create(properties) {
@@ -3903,7 +3903,7 @@ $root.jspb = (function() {
              * Constructs a new CloneExtension.
              * @exports jspb.test.CloneExtension
              * @constructor
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              */
             function CloneExtension(properties) {
                 if (properties)
@@ -3919,7 +3919,7 @@ $root.jspb = (function() {
 
             /**
              * Creates a new CloneExtension instance using the specified properties.
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              * @returns {jspb.test.CloneExtension} CloneExtension instance
              */
             CloneExtension.create = function create(properties) {
@@ -4069,7 +4069,7 @@ $root.jspb = (function() {
              * Constructs a new TestGroup.
              * @exports jspb.test.TestGroup
              * @constructor
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              */
             function TestGroup(properties) {
                 if (properties)
@@ -4124,7 +4124,7 @@ $root.jspb = (function() {
 
             /**
              * Creates a new TestGroup instance using the specified properties.
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              * @returns {jspb.test.TestGroup} TestGroup instance
              */
             TestGroup.create = function create(properties) {
@@ -4376,7 +4376,7 @@ $root.jspb = (function() {
                  * Constructs a new RepeatedGroup.
                  * @exports jspb.test.TestGroup.RepeatedGroup
                  * @constructor
-                 * @param {Object} [properties] Properties to set
+                 * @param {Object.<string,*>=} [properties] Properties to set
                  */
                 function RepeatedGroup(properties) {
                     if (properties)
@@ -4398,7 +4398,7 @@ $root.jspb = (function() {
 
                 /**
                  * Creates a new RepeatedGroup instance using the specified properties.
-                 * @param {Object} [properties] Properties to set
+                 * @param {Object.<string,*>=} [properties] Properties to set
                  * @returns {jspb.test.TestGroup.RepeatedGroup} RepeatedGroup instance
                  */
                 RepeatedGroup.create = function create(properties) {
@@ -4584,7 +4584,7 @@ $root.jspb = (function() {
                  * Constructs a new RequiredGroup.
                  * @exports jspb.test.TestGroup.RequiredGroup
                  * @constructor
-                 * @param {Object} [properties] Properties to set
+                 * @param {Object.<string,*>=} [properties] Properties to set
                  */
                 function RequiredGroup(properties) {
                     if (properties)
@@ -4600,7 +4600,7 @@ $root.jspb = (function() {
 
                 /**
                  * Creates a new RequiredGroup instance using the specified properties.
-                 * @param {Object} [properties] Properties to set
+                 * @param {Object.<string,*>=} [properties] Properties to set
                  * @returns {jspb.test.TestGroup.RequiredGroup} RequiredGroup instance
                  */
                 RequiredGroup.create = function create(properties) {
@@ -4752,7 +4752,7 @@ $root.jspb = (function() {
                  * Constructs a new OptionalGroup.
                  * @exports jspb.test.TestGroup.OptionalGroup
                  * @constructor
-                 * @param {Object} [properties] Properties to set
+                 * @param {Object.<string,*>=} [properties] Properties to set
                  */
                 function OptionalGroup(properties) {
                     if (properties)
@@ -4768,7 +4768,7 @@ $root.jspb = (function() {
 
                 /**
                  * Creates a new OptionalGroup instance using the specified properties.
-                 * @param {Object} [properties] Properties to set
+                 * @param {Object.<string,*>=} [properties] Properties to set
                  * @returns {jspb.test.TestGroup.OptionalGroup} OptionalGroup instance
                  */
                 OptionalGroup.create = function create(properties) {
@@ -4923,7 +4923,7 @@ $root.jspb = (function() {
              * Constructs a new TestGroup1.
              * @exports jspb.test.TestGroup1
              * @constructor
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              */
             function TestGroup1(properties) {
                 if (properties)
@@ -4944,7 +4944,7 @@ $root.jspb = (function() {
 
             /**
              * Creates a new TestGroup1 instance using the specified properties.
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              * @returns {jspb.test.TestGroup1} TestGroup1 instance
              */
             TestGroup1.create = function create(properties) {
@@ -5099,7 +5099,7 @@ $root.jspb = (function() {
              * Constructs a new TestReservedNames.
              * @exports jspb.test.TestReservedNames
              * @constructor
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              */
             function TestReservedNames(properties) {
                 if (properties)
@@ -5122,7 +5122,7 @@ $root.jspb = (function() {
 
             /**
              * Creates a new TestReservedNames instance using the specified properties.
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              * @returns {jspb.test.TestReservedNames} TestReservedNames instance
              */
             TestReservedNames.create = function create(properties) {
@@ -5286,7 +5286,7 @@ $root.jspb = (function() {
              * Constructs a new TestReservedNamesExtension.
              * @exports jspb.test.TestReservedNamesExtension
              * @constructor
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              */
             function TestReservedNamesExtension(properties) {
                 if (properties)
@@ -5296,7 +5296,7 @@ $root.jspb = (function() {
 
             /**
              * Creates a new TestReservedNamesExtension instance using the specified properties.
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              * @returns {jspb.test.TestReservedNamesExtension} TestReservedNamesExtension instance
              */
             TestReservedNamesExtension.create = function create(properties) {
@@ -5428,7 +5428,7 @@ $root.jspb = (function() {
              * Constructs a new TestMessageWithOneof.
              * @exports jspb.test.TestMessageWithOneof
              * @constructor
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              */
             function TestMessageWithOneof(properties) {
                 if (properties)
@@ -5546,7 +5546,7 @@ $root.jspb = (function() {
 
             /**
              * Creates a new TestMessageWithOneof instance using the specified properties.
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              * @returns {jspb.test.TestMessageWithOneof} TestMessageWithOneof instance
              */
             TestMessageWithOneof.create = function create(properties) {
@@ -5562,43 +5562,27 @@ $root.jspb = (function() {
             TestMessageWithOneof.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
+                if (message.pone !== undefined && message.hasOwnProperty("pone"))
+                    writer.uint32(/* id 3, wireType 2 =*/26).string(message.pone);
+                if (message.pthree !== undefined && message.hasOwnProperty("pthree"))
+                    writer.uint32(/* id 5, wireType 2 =*/42).string(message.pthree);
+                if (message.rone && message.hasOwnProperty("rone"))
+                    $types[2].encode(message.rone, writer.uint32(/* id 6, wireType 2 =*/50).fork()).ldelim();
+                if (message.rtwo !== undefined && message.hasOwnProperty("rtwo"))
+                    writer.uint32(/* id 7, wireType 2 =*/58).string(message.rtwo);
                 if (message.normalField !== undefined && message.hasOwnProperty("normalField"))
                     writer.uint32(/* id 8, wireType 0 =*/64).bool(message.normalField);
                 if (message.repeatedField !== undefined && message.hasOwnProperty("repeatedField"))
                     for (var i = 0; i < message.repeatedField.length; ++i)
                         writer.uint32(/* id 9, wireType 2 =*/74).string(message.repeatedField[i]);
-                switch (message.partialOneof) {
-                case "pone":
-                    writer.uint32(/* id 3, wireType 2 =*/26).string(message.pone);
-                    break;
-                case "pthree":
-                    writer.uint32(/* id 5, wireType 2 =*/42).string(message.pthree);
-                    break;
-                }
-                switch (message.recursiveOneof) {
-                case "rone":
-                    $types[2].encode(message.rone, writer.uint32(/* id 6, wireType 2 =*/50).fork()).ldelim();
-                    break;
-                case "rtwo":
-                    writer.uint32(/* id 7, wireType 2 =*/58).string(message.rtwo);
-                    break;
-                }
-                switch (message.defaultOneofA) {
-                case "aone":
+                if (message.aone !== undefined && message.hasOwnProperty("aone"))
                     writer.uint32(/* id 10, wireType 0 =*/80).int32(message.aone);
-                    break;
-                case "atwo":
+                if (message.atwo !== undefined && message.hasOwnProperty("atwo"))
                     writer.uint32(/* id 11, wireType 0 =*/88).int32(message.atwo);
-                    break;
-                }
-                switch (message.defaultOneofB) {
-                case "bone":
+                if (message.bone !== undefined && message.hasOwnProperty("bone"))
                     writer.uint32(/* id 12, wireType 0 =*/96).int32(message.bone);
-                    break;
-                case "btwo":
+                if (message.btwo !== undefined && message.hasOwnProperty("btwo"))
                     writer.uint32(/* id 13, wireType 0 =*/104).int32(message.btwo);
-                    break;
-                }
                 return writer;
             };
 
@@ -5851,7 +5835,7 @@ $root.jspb = (function() {
              * Constructs a new TestEndsWithBytes.
              * @exports jspb.test.TestEndsWithBytes
              * @constructor
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              */
             function TestEndsWithBytes(properties) {
                 if (properties)
@@ -5873,7 +5857,7 @@ $root.jspb = (function() {
 
             /**
              * Creates a new TestEndsWithBytes instance using the specified properties.
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              * @returns {jspb.test.TestEndsWithBytes} TestEndsWithBytes instance
              */
             TestEndsWithBytes.create = function create(properties) {
@@ -6040,7 +6024,7 @@ $root.jspb = (function() {
              * Constructs a new TestMapFieldsNoBinary.
              * @exports jspb.test.TestMapFieldsNoBinary
              * @constructor
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              */
             function TestMapFieldsNoBinary(properties) {
                 if (properties)
@@ -6130,7 +6114,7 @@ $root.jspb = (function() {
 
             /**
              * Creates a new TestMapFieldsNoBinary instance using the specified properties.
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              * @returns {jspb.test.TestMapFieldsNoBinary} TestMapFieldsNoBinary instance
              */
             TestMapFieldsNoBinary.create = function create(properties) {
@@ -6708,7 +6692,7 @@ $root.jspb = (function() {
              * Constructs a new MapValueMessageNoBinary.
              * @exports jspb.test.MapValueMessageNoBinary
              * @constructor
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              */
             function MapValueMessageNoBinary(properties) {
                 if (properties)
@@ -6724,7 +6708,7 @@ $root.jspb = (function() {
 
             /**
              * Creates a new MapValueMessageNoBinary instance using the specified properties.
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              * @returns {jspb.test.MapValueMessageNoBinary} MapValueMessageNoBinary instance
              */
             MapValueMessageNoBinary.create = function create(properties) {
@@ -6874,7 +6858,7 @@ $root.jspb = (function() {
              * Constructs a new Deeply.
              * @exports jspb.test.Deeply
              * @constructor
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              */
             function Deeply(properties) {
                 if (properties)
@@ -6884,7 +6868,7 @@ $root.jspb = (function() {
 
             /**
              * Creates a new Deeply instance using the specified properties.
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              * @returns {jspb.test.Deeply} Deeply instance
              */
             Deeply.create = function create(properties) {
@@ -7013,7 +6997,7 @@ $root.jspb = (function() {
                  * Constructs a new Nested.
                  * @exports jspb.test.Deeply.Nested
                  * @constructor
-                 * @param {Object} [properties] Properties to set
+                 * @param {Object.<string,*>=} [properties] Properties to set
                  */
                 function Nested(properties) {
                     if (properties)
@@ -7023,7 +7007,7 @@ $root.jspb = (function() {
 
                 /**
                  * Creates a new Nested instance using the specified properties.
-                 * @param {Object} [properties] Properties to set
+                 * @param {Object.<string,*>=} [properties] Properties to set
                  * @returns {jspb.test.Deeply.Nested} Nested instance
                  */
                 Nested.create = function create(properties) {
@@ -7152,7 +7136,7 @@ $root.jspb = (function() {
                      * Constructs a new Message.
                      * @exports jspb.test.Deeply.Nested.Message
                      * @constructor
-                     * @param {Object} [properties] Properties to set
+                     * @param {Object.<string,*>=} [properties] Properties to set
                      */
                     function Message(properties) {
                         if (properties)
@@ -7168,7 +7152,7 @@ $root.jspb = (function() {
 
                     /**
                      * Creates a new Message instance using the specified properties.
-                     * @param {Object} [properties] Properties to set
+                     * @param {Object.<string,*>=} [properties] Properties to set
                      * @returns {jspb.test.Deeply.Nested.Message} Message instance
                      */
                     Message.create = function create(properties) {
@@ -7348,7 +7332,7 @@ $root.google = (function() {
              * Constructs a new FileDescriptorSet.
              * @exports google.protobuf.FileDescriptorSet
              * @constructor
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              */
             function FileDescriptorSet(properties) {
                 if (properties)
@@ -7369,7 +7353,7 @@ $root.google = (function() {
 
             /**
              * Creates a new FileDescriptorSet instance using the specified properties.
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              * @returns {google.protobuf.FileDescriptorSet} FileDescriptorSet instance
              */
             FileDescriptorSet.create = function create(properties) {
@@ -7539,7 +7523,7 @@ $root.google = (function() {
              * Constructs a new FileDescriptorProto.
              * @exports google.protobuf.FileDescriptorProto
              * @constructor
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              */
             function FileDescriptorProto(properties) {
                 if (properties)
@@ -7632,7 +7616,7 @@ $root.google = (function() {
 
             /**
              * Creates a new FileDescriptorProto instance using the specified properties.
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              * @returns {google.protobuf.FileDescriptorProto} FileDescriptorProto instance
              */
             FileDescriptorProto.create = function create(properties) {
@@ -8073,7 +8057,7 @@ $root.google = (function() {
              * Constructs a new DescriptorProto.
              * @exports google.protobuf.DescriptorProto
              * @constructor
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              */
             function DescriptorProto(properties) {
                 if (properties)
@@ -8155,7 +8139,7 @@ $root.google = (function() {
 
             /**
              * Creates a new DescriptorProto instance using the specified properties.
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              * @returns {google.protobuf.DescriptorProto} DescriptorProto instance
              */
             DescriptorProto.create = function create(properties) {
@@ -8582,7 +8566,7 @@ $root.google = (function() {
                  * Constructs a new ExtensionRange.
                  * @exports google.protobuf.DescriptorProto.ExtensionRange
                  * @constructor
-                 * @param {Object} [properties] Properties to set
+                 * @param {Object.<string,*>=} [properties] Properties to set
                  */
                 function ExtensionRange(properties) {
                     if (properties)
@@ -8604,7 +8588,7 @@ $root.google = (function() {
 
                 /**
                  * Creates a new ExtensionRange instance using the specified properties.
-                 * @param {Object} [properties] Properties to set
+                 * @param {Object.<string,*>=} [properties] Properties to set
                  * @returns {google.protobuf.DescriptorProto.ExtensionRange} ExtensionRange instance
                  */
                 ExtensionRange.create = function create(properties) {
@@ -8768,7 +8752,7 @@ $root.google = (function() {
                  * Constructs a new ReservedRange.
                  * @exports google.protobuf.DescriptorProto.ReservedRange
                  * @constructor
-                 * @param {Object} [properties] Properties to set
+                 * @param {Object.<string,*>=} [properties] Properties to set
                  */
                 function ReservedRange(properties) {
                     if (properties)
@@ -8790,7 +8774,7 @@ $root.google = (function() {
 
                 /**
                  * Creates a new ReservedRange instance using the specified properties.
-                 * @param {Object} [properties] Properties to set
+                 * @param {Object.<string,*>=} [properties] Properties to set
                  * @returns {google.protobuf.DescriptorProto.ReservedRange} ReservedRange instance
                  */
                 ReservedRange.create = function create(properties) {
@@ -8957,7 +8941,7 @@ $root.google = (function() {
              * Constructs a new FieldDescriptorProto.
              * @exports google.protobuf.FieldDescriptorProto
              * @constructor
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              */
             function FieldDescriptorProto(properties) {
                 if (properties)
@@ -9034,7 +9018,7 @@ $root.google = (function() {
 
             /**
              * Creates a new FieldDescriptorProto instance using the specified properties.
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              * @returns {google.protobuf.FieldDescriptorProto} FieldDescriptorProto instance
              */
             FieldDescriptorProto.create = function create(properties) {
@@ -9482,7 +9466,7 @@ $root.google = (function() {
              * Constructs a new OneofDescriptorProto.
              * @exports google.protobuf.OneofDescriptorProto
              * @constructor
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              */
             function OneofDescriptorProto(properties) {
                 if (properties)
@@ -9509,7 +9493,7 @@ $root.google = (function() {
 
             /**
              * Creates a new OneofDescriptorProto instance using the specified properties.
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              * @returns {google.protobuf.OneofDescriptorProto} OneofDescriptorProto instance
              */
             OneofDescriptorProto.create = function create(properties) {
@@ -9678,7 +9662,7 @@ $root.google = (function() {
              * Constructs a new EnumDescriptorProto.
              * @exports google.protobuf.EnumDescriptorProto
              * @constructor
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              */
             function EnumDescriptorProto(properties) {
                 if (properties)
@@ -9712,7 +9696,7 @@ $root.google = (function() {
 
             /**
              * Creates a new EnumDescriptorProto instance using the specified properties.
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              * @returns {google.protobuf.EnumDescriptorProto} EnumDescriptorProto instance
              */
             EnumDescriptorProto.create = function create(properties) {
@@ -9915,7 +9899,7 @@ $root.google = (function() {
              * Constructs a new EnumValueDescriptorProto.
              * @exports google.protobuf.EnumValueDescriptorProto
              * @constructor
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              */
             function EnumValueDescriptorProto(properties) {
                 if (properties)
@@ -9948,7 +9932,7 @@ $root.google = (function() {
 
             /**
              * Creates a new EnumValueDescriptorProto instance using the specified properties.
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              * @returns {google.protobuf.EnumValueDescriptorProto} EnumValueDescriptorProto instance
              */
             EnumValueDescriptorProto.create = function create(properties) {
@@ -10130,7 +10114,7 @@ $root.google = (function() {
              * Constructs a new ServiceDescriptorProto.
              * @exports google.protobuf.ServiceDescriptorProto
              * @constructor
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              */
             function ServiceDescriptorProto(properties) {
                 if (properties)
@@ -10164,7 +10148,7 @@ $root.google = (function() {
 
             /**
              * Creates a new ServiceDescriptorProto instance using the specified properties.
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              * @returns {google.protobuf.ServiceDescriptorProto} ServiceDescriptorProto instance
              */
             ServiceDescriptorProto.create = function create(properties) {
@@ -10367,7 +10351,7 @@ $root.google = (function() {
              * Constructs a new MethodDescriptorProto.
              * @exports google.protobuf.MethodDescriptorProto
              * @constructor
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              */
             function MethodDescriptorProto(properties) {
                 if (properties)
@@ -10418,7 +10402,7 @@ $root.google = (function() {
 
             /**
              * Creates a new MethodDescriptorProto instance using the specified properties.
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              * @returns {google.protobuf.MethodDescriptorProto} MethodDescriptorProto instance
              */
             MethodDescriptorProto.create = function create(properties) {
@@ -10639,7 +10623,7 @@ $root.google = (function() {
              * Constructs a new FileOptions.
              * @exports google.protobuf.FileOptions
              * @constructor
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              */
             function FileOptions(properties) {
                 if (properties)
@@ -10745,7 +10729,7 @@ $root.google = (function() {
 
             /**
              * Creates a new FileOptions instance using the specified properties.
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              * @returns {google.protobuf.FileOptions} FileOptions instance
              */
             FileOptions.create = function create(properties) {
@@ -11134,7 +11118,7 @@ $root.google = (function() {
              * Constructs a new MessageOptions.
              * @exports google.protobuf.MessageOptions
              * @constructor
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              */
             function MessageOptions(properties) {
                 if (properties)
@@ -11179,7 +11163,7 @@ $root.google = (function() {
 
             /**
              * Creates a new MessageOptions instance using the specified properties.
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              * @returns {google.protobuf.MessageOptions} MessageOptions instance
              */
             MessageOptions.create = function create(properties) {
@@ -11403,7 +11387,7 @@ $root.google = (function() {
              * Constructs a new FieldOptions.
              * @exports google.protobuf.FieldOptions
              * @constructor
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              */
             function FieldOptions(properties) {
                 if (properties)
@@ -11462,7 +11446,7 @@ $root.google = (function() {
 
             /**
              * Creates a new FieldOptions instance using the specified properties.
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              * @returns {google.protobuf.FieldOptions} FieldOptions instance
              */
             FieldOptions.create = function create(properties) {
@@ -11782,7 +11766,7 @@ $root.google = (function() {
              * Constructs a new OneofOptions.
              * @exports google.protobuf.OneofOptions
              * @constructor
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              */
             function OneofOptions(properties) {
                 if (properties)
@@ -11803,7 +11787,7 @@ $root.google = (function() {
 
             /**
              * Creates a new OneofOptions instance using the specified properties.
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              * @returns {google.protobuf.OneofOptions} OneofOptions instance
              */
             OneofOptions.create = function create(properties) {
@@ -11973,7 +11957,7 @@ $root.google = (function() {
              * Constructs a new EnumOptions.
              * @exports google.protobuf.EnumOptions
              * @constructor
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              */
             function EnumOptions(properties) {
                 if (properties)
@@ -12013,7 +11997,7 @@ $root.google = (function() {
 
             /**
              * Creates a new EnumOptions instance using the specified properties.
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              * @returns {google.protobuf.EnumOptions} EnumOptions instance
              */
             EnumOptions.create = function create(properties) {
@@ -12224,7 +12208,7 @@ $root.google = (function() {
              * Constructs a new EnumValueOptions.
              * @exports google.protobuf.EnumValueOptions
              * @constructor
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              */
             function EnumValueOptions(properties) {
                 if (properties)
@@ -12251,7 +12235,7 @@ $root.google = (function() {
 
             /**
              * Creates a new EnumValueOptions instance using the specified properties.
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              * @returns {google.protobuf.EnumValueOptions} EnumValueOptions instance
              */
             EnumValueOptions.create = function create(properties) {
@@ -12435,7 +12419,7 @@ $root.google = (function() {
              * Constructs a new ServiceOptions.
              * @exports google.protobuf.ServiceOptions
              * @constructor
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              */
             function ServiceOptions(properties) {
                 if (properties)
@@ -12462,7 +12446,7 @@ $root.google = (function() {
 
             /**
              * Creates a new ServiceOptions instance using the specified properties.
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              * @returns {google.protobuf.ServiceOptions} ServiceOptions instance
              */
             ServiceOptions.create = function create(properties) {
@@ -12646,7 +12630,7 @@ $root.google = (function() {
              * Constructs a new MethodOptions.
              * @exports google.protobuf.MethodOptions
              * @constructor
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              */
             function MethodOptions(properties) {
                 if (properties)
@@ -12680,7 +12664,7 @@ $root.google = (function() {
 
             /**
              * Creates a new MethodOptions instance using the specified properties.
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              * @returns {google.protobuf.MethodOptions} MethodOptions instance
              */
             MethodOptions.create = function create(properties) {
@@ -12913,7 +12897,7 @@ $root.google = (function() {
              * Constructs a new UninterpretedOption.
              * @exports google.protobuf.UninterpretedOption
              * @constructor
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              */
             function UninterpretedOption(properties) {
                 if (properties)
@@ -12970,7 +12954,7 @@ $root.google = (function() {
 
             /**
              * Creates a new UninterpretedOption instance using the specified properties.
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              * @returns {google.protobuf.UninterpretedOption} UninterpretedOption instance
              */
             UninterpretedOption.create = function create(properties) {
@@ -13248,7 +13232,7 @@ $root.google = (function() {
                  * Constructs a new NamePart.
                  * @exports google.protobuf.UninterpretedOption.NamePart
                  * @constructor
-                 * @param {Object} [properties] Properties to set
+                 * @param {Object.<string,*>=} [properties] Properties to set
                  */
                 function NamePart(properties) {
                     if (properties)
@@ -13270,7 +13254,7 @@ $root.google = (function() {
 
                 /**
                  * Creates a new NamePart instance using the specified properties.
-                 * @param {Object} [properties] Properties to set
+                 * @param {Object.<string,*>=} [properties] Properties to set
                  * @returns {google.protobuf.UninterpretedOption.NamePart} NamePart instance
                  */
                 NamePart.create = function create(properties) {
@@ -13437,7 +13421,7 @@ $root.google = (function() {
              * Constructs a new SourceCodeInfo.
              * @exports google.protobuf.SourceCodeInfo
              * @constructor
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              */
             function SourceCodeInfo(properties) {
                 if (properties)
@@ -13458,7 +13442,7 @@ $root.google = (function() {
 
             /**
              * Creates a new SourceCodeInfo instance using the specified properties.
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              * @returns {google.protobuf.SourceCodeInfo} SourceCodeInfo instance
              */
             SourceCodeInfo.create = function create(properties) {
@@ -13625,7 +13609,7 @@ $root.google = (function() {
                  * Constructs a new Location.
                  * @exports google.protobuf.SourceCodeInfo.Location
                  * @constructor
-                 * @param {Object} [properties] Properties to set
+                 * @param {Object.<string,*>=} [properties] Properties to set
                  */
                 function Location(properties) {
                     if (properties)
@@ -13665,7 +13649,7 @@ $root.google = (function() {
 
                 /**
                  * Creates a new Location instance using the specified properties.
-                 * @param {Object} [properties] Properties to set
+                 * @param {Object.<string,*>=} [properties] Properties to set
                  * @returns {google.protobuf.SourceCodeInfo.Location} Location instance
                  */
                 Location.create = function create(properties) {
@@ -13934,7 +13918,7 @@ $root.google = (function() {
              * Constructs a new GeneratedCodeInfo.
              * @exports google.protobuf.GeneratedCodeInfo
              * @constructor
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              */
             function GeneratedCodeInfo(properties) {
                 if (properties)
@@ -13955,7 +13939,7 @@ $root.google = (function() {
 
             /**
              * Creates a new GeneratedCodeInfo instance using the specified properties.
-             * @param {Object} [properties] Properties to set
+             * @param {Object.<string,*>=} [properties] Properties to set
              * @returns {google.protobuf.GeneratedCodeInfo} GeneratedCodeInfo instance
              */
             GeneratedCodeInfo.create = function create(properties) {
@@ -14122,7 +14106,7 @@ $root.google = (function() {
                  * Constructs a new Annotation.
                  * @exports google.protobuf.GeneratedCodeInfo.Annotation
                  * @constructor
-                 * @param {Object} [properties] Properties to set
+                 * @param {Object.<string,*>=} [properties] Properties to set
                  */
                 function Annotation(properties) {
                     if (properties)
@@ -14156,7 +14140,7 @@ $root.google = (function() {
 
                 /**
                  * Creates a new Annotation instance using the specified properties.
-                 * @param {Object} [properties] Properties to set
+                 * @param {Object.<string,*>=} [properties] Properties to set
                  * @returns {google.protobuf.GeneratedCodeInfo.Annotation} Annotation instance
                  */
                 Annotation.create = function create(properties) {

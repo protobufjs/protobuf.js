@@ -5,8 +5,8 @@ export namespace jspb {
     namespace test {
 
         class Empty {
-            constructor(properties?: Object);
-            public static create(properties?: Object): jspb.test.Empty;
+            constructor(properties?: { [k: string]: any });
+            public static create(properties?: { [k: string]: any }): jspb.test.Empty;
             public static encode(message: (jspb.test.Empty|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static encodeDelimited(message: (jspb.test.Empty|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.Empty;
@@ -25,9 +25,9 @@ export namespace jspb {
         }
 
         class EnumContainer {
-            constructor(properties?: Object);
+            constructor(properties?: { [k: string]: any });
             public outerEnum?: number;
-            public static create(properties?: Object): jspb.test.EnumContainer;
+            public static create(properties?: { [k: string]: any }): jspb.test.EnumContainer;
             public static encode(message: (jspb.test.EnumContainer|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static encodeDelimited(message: (jspb.test.EnumContainer|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.EnumContainer;
@@ -41,11 +41,11 @@ export namespace jspb {
         }
 
         class Simple1 {
-            constructor(properties?: Object);
+            constructor(properties?: { [k: string]: any });
             public aString: string;
             public aRepeatedString?: string[];
             public aBoolean?: boolean;
-            public static create(properties?: Object): jspb.test.Simple1;
+            public static create(properties?: { [k: string]: any }): jspb.test.Simple1;
             public static encode(message: (jspb.test.Simple1|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static encodeDelimited(message: (jspb.test.Simple1|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.Simple1;
@@ -59,10 +59,10 @@ export namespace jspb {
         }
 
         class Simple2 {
-            constructor(properties?: Object);
+            constructor(properties?: { [k: string]: any });
             public aString: string;
             public aRepeatedString?: string[];
-            public static create(properties?: Object): jspb.test.Simple2;
+            public static create(properties?: { [k: string]: any }): jspb.test.Simple2;
             public static encode(message: (jspb.test.Simple2|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static encodeDelimited(message: (jspb.test.Simple2|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.Simple2;
@@ -76,12 +76,12 @@ export namespace jspb {
         }
 
         class SpecialCases {
-            constructor(properties?: Object);
+            constructor(properties?: { [k: string]: any });
             public normal: string;
             public default: string;
             public function: string;
             public var: string;
-            public static create(properties?: Object): jspb.test.SpecialCases;
+            public static create(properties?: { [k: string]: any }): jspb.test.SpecialCases;
             public static encode(message: (jspb.test.SpecialCases|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static encodeDelimited(message: (jspb.test.SpecialCases|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.SpecialCases;
@@ -95,13 +95,13 @@ export namespace jspb {
         }
 
         class OptionalFields {
-            constructor(properties?: Object);
+            constructor(properties?: { [k: string]: any });
             public aString?: string;
             public aBool: boolean;
             public aNestedMessage?: jspb.test.OptionalFields.Nested;
             public aRepeatedMessage?: jspb.test.OptionalFields.Nested[];
             public aRepeatedString?: string[];
-            public static create(properties?: Object): jspb.test.OptionalFields;
+            public static create(properties?: { [k: string]: any }): jspb.test.OptionalFields;
             public static encode(message: (jspb.test.OptionalFields|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static encodeDelimited(message: (jspb.test.OptionalFields|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.OptionalFields;
@@ -117,9 +117,9 @@ export namespace jspb {
         namespace OptionalFields {
 
             class Nested {
-                constructor(properties?: Object);
+                constructor(properties?: { [k: string]: any });
                 public anInt?: number;
-                public static create(properties?: Object): jspb.test.OptionalFields.Nested;
+                public static create(properties?: { [k: string]: any }): jspb.test.OptionalFields.Nested;
                 public static encode(message: (jspb.test.OptionalFields.Nested|Object), writer?: $protobuf.Writer): $protobuf.Writer;
                 public static encodeDelimited(message: (jspb.test.OptionalFields.Nested|Object), writer?: $protobuf.Writer): $protobuf.Writer;
                 public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.OptionalFields.Nested;
@@ -134,11 +134,11 @@ export namespace jspb {
         }
 
         class HasExtensions {
-            constructor(properties?: Object);
+            constructor(properties?: { [k: string]: any });
             public str1?: string;
             public str2?: string;
             public str3?: string;
-            public static create(properties?: Object): jspb.test.HasExtensions;
+            public static create(properties?: { [k: string]: any }): jspb.test.HasExtensions;
             public static encode(message: (jspb.test.HasExtensions|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static encodeDelimited(message: (jspb.test.HasExtensions|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.HasExtensions;
@@ -152,13 +152,13 @@ export namespace jspb {
         }
 
         class Complex {
-            constructor(properties?: Object);
+            constructor(properties?: { [k: string]: any });
             public aString: string;
             public anOutOfOrderBool: boolean;
             public aNestedMessage?: jspb.test.Complex.Nested;
             public aRepeatedMessage?: jspb.test.Complex.Nested[];
             public aRepeatedString?: string[];
-            public static create(properties?: Object): jspb.test.Complex;
+            public static create(properties?: { [k: string]: any }): jspb.test.Complex;
             public static encode(message: (jspb.test.Complex|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static encodeDelimited(message: (jspb.test.Complex|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.Complex;
@@ -174,9 +174,9 @@ export namespace jspb {
         namespace Complex {
 
             class Nested {
-                constructor(properties?: Object);
+                constructor(properties?: { [k: string]: any });
                 public anInt: number;
-                public static create(properties?: Object): jspb.test.Complex.Nested;
+                public static create(properties?: { [k: string]: any }): jspb.test.Complex.Nested;
                 public static encode(message: (jspb.test.Complex.Nested|Object), writer?: $protobuf.Writer): $protobuf.Writer;
                 public static encodeDelimited(message: (jspb.test.Complex.Nested|Object), writer?: $protobuf.Writer): $protobuf.Writer;
                 public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.Complex.Nested;
@@ -191,8 +191,8 @@ export namespace jspb {
         }
 
         class OuterMessage {
-            constructor(properties?: Object);
-            public static create(properties?: Object): jspb.test.OuterMessage;
+            constructor(properties?: { [k: string]: any });
+            public static create(properties?: { [k: string]: any }): jspb.test.OuterMessage;
             public static encode(message: (jspb.test.OuterMessage|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static encodeDelimited(message: (jspb.test.OuterMessage|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.OuterMessage;
@@ -208,9 +208,9 @@ export namespace jspb {
         namespace OuterMessage {
 
             class Complex {
-                constructor(properties?: Object);
+                constructor(properties?: { [k: string]: any });
                 public innerComplexField?: number;
-                public static create(properties?: Object): jspb.test.OuterMessage.Complex;
+                public static create(properties?: { [k: string]: any }): jspb.test.OuterMessage.Complex;
                 public static encode(message: (jspb.test.OuterMessage.Complex|Object), writer?: $protobuf.Writer): $protobuf.Writer;
                 public static encodeDelimited(message: (jspb.test.OuterMessage.Complex|Object), writer?: $protobuf.Writer): $protobuf.Writer;
                 public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.OuterMessage.Complex;
@@ -225,9 +225,9 @@ export namespace jspb {
         }
 
         class IsExtension {
-            constructor(properties?: Object);
+            constructor(properties?: { [k: string]: any });
             public ext1?: string;
-            public static create(properties?: Object): jspb.test.IsExtension;
+            public static create(properties?: { [k: string]: any }): jspb.test.IsExtension;
             public static encode(message: (jspb.test.IsExtension|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static encodeDelimited(message: (jspb.test.IsExtension|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.IsExtension;
@@ -241,8 +241,8 @@ export namespace jspb {
         }
 
         class IndirectExtension {
-            constructor(properties?: Object);
-            public static create(properties?: Object): jspb.test.IndirectExtension;
+            constructor(properties?: { [k: string]: any });
+            public static create(properties?: { [k: string]: any }): jspb.test.IndirectExtension;
             public static encode(message: (jspb.test.IndirectExtension|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static encodeDelimited(message: (jspb.test.IndirectExtension|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.IndirectExtension;
@@ -256,14 +256,14 @@ export namespace jspb {
         }
 
         class DefaultValues {
-            constructor(properties?: Object);
+            constructor(properties?: { [k: string]: any });
             public stringField?: string;
             public boolField?: boolean;
             public intField?: (number|$protobuf.Long);
             public enumField?: number;
             public emptyField?: string;
             public bytesField?: Uint8Array;
-            public static create(properties?: Object): jspb.test.DefaultValues;
+            public static create(properties?: { [k: string]: any }): jspb.test.DefaultValues;
             public static encode(message: (jspb.test.DefaultValues|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static encodeDelimited(message: (jspb.test.DefaultValues|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.DefaultValues;
@@ -285,7 +285,7 @@ export namespace jspb {
         }
 
         class FloatingPointFields {
-            constructor(properties?: Object);
+            constructor(properties?: { [k: string]: any });
             public optionalFloatField?: number;
             public requiredFloatField: number;
             public repeatedFloatField?: number[];
@@ -294,7 +294,7 @@ export namespace jspb {
             public requiredDoubleField: number;
             public repeatedDoubleField?: number[];
             public defaultDoubleField?: number;
-            public static create(properties?: Object): jspb.test.FloatingPointFields;
+            public static create(properties?: { [k: string]: any }): jspb.test.FloatingPointFields;
             public static encode(message: (jspb.test.FloatingPointFields|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static encodeDelimited(message: (jspb.test.FloatingPointFields|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.FloatingPointFields;
@@ -308,13 +308,13 @@ export namespace jspb {
         }
 
         class TestClone {
-            constructor(properties?: Object);
+            constructor(properties?: { [k: string]: any });
             public str?: string;
             public simple1?: jspb.test.Simple1;
             public simple2?: jspb.test.Simple1[];
             public bytesField?: Uint8Array;
             public unused?: string;
-            public static create(properties?: Object): jspb.test.TestClone;
+            public static create(properties?: { [k: string]: any }): jspb.test.TestClone;
             public static encode(message: (jspb.test.TestClone|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static encodeDelimited(message: (jspb.test.TestClone|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.TestClone;
@@ -328,9 +328,9 @@ export namespace jspb {
         }
 
         class CloneExtension {
-            constructor(properties?: Object);
+            constructor(properties?: { [k: string]: any });
             public ext?: string;
-            public static create(properties?: Object): jspb.test.CloneExtension;
+            public static create(properties?: { [k: string]: any }): jspb.test.CloneExtension;
             public static encode(message: (jspb.test.CloneExtension|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static encodeDelimited(message: (jspb.test.CloneExtension|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.CloneExtension;
@@ -344,14 +344,14 @@ export namespace jspb {
         }
 
         class TestGroup {
-            constructor(properties?: Object);
+            constructor(properties?: { [k: string]: any });
             public repeatedGroup?: jspb.test.TestGroup.RepeatedGroup[];
             public requiredGroup: jspb.test.TestGroup.RequiredGroup;
             public optionalGroup?: jspb.test.TestGroup.OptionalGroup;
             public id?: string;
             public requiredSimple: jspb.test.Simple2;
             public optionalSimple?: jspb.test.Simple2;
-            public static create(properties?: Object): jspb.test.TestGroup;
+            public static create(properties?: { [k: string]: any }): jspb.test.TestGroup;
             public static encode(message: (jspb.test.TestGroup|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static encodeDelimited(message: (jspb.test.TestGroup|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.TestGroup;
@@ -367,10 +367,10 @@ export namespace jspb {
         namespace TestGroup {
 
             class RepeatedGroup {
-                constructor(properties?: Object);
+                constructor(properties?: { [k: string]: any });
                 public id: string;
                 public someBool?: boolean[];
-                public static create(properties?: Object): jspb.test.TestGroup.RepeatedGroup;
+                public static create(properties?: { [k: string]: any }): jspb.test.TestGroup.RepeatedGroup;
                 public static encode(message: (jspb.test.TestGroup.RepeatedGroup|Object), writer?: $protobuf.Writer): $protobuf.Writer;
                 public static encodeDelimited(message: (jspb.test.TestGroup.RepeatedGroup|Object), writer?: $protobuf.Writer): $protobuf.Writer;
                 public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.TestGroup.RepeatedGroup;
@@ -384,9 +384,9 @@ export namespace jspb {
             }
 
             class RequiredGroup {
-                constructor(properties?: Object);
+                constructor(properties?: { [k: string]: any });
                 public id: string;
-                public static create(properties?: Object): jspb.test.TestGroup.RequiredGroup;
+                public static create(properties?: { [k: string]: any }): jspb.test.TestGroup.RequiredGroup;
                 public static encode(message: (jspb.test.TestGroup.RequiredGroup|Object), writer?: $protobuf.Writer): $protobuf.Writer;
                 public static encodeDelimited(message: (jspb.test.TestGroup.RequiredGroup|Object), writer?: $protobuf.Writer): $protobuf.Writer;
                 public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.TestGroup.RequiredGroup;
@@ -400,9 +400,9 @@ export namespace jspb {
             }
 
             class OptionalGroup {
-                constructor(properties?: Object);
+                constructor(properties?: { [k: string]: any });
                 public id: string;
-                public static create(properties?: Object): jspb.test.TestGroup.OptionalGroup;
+                public static create(properties?: { [k: string]: any }): jspb.test.TestGroup.OptionalGroup;
                 public static encode(message: (jspb.test.TestGroup.OptionalGroup|Object), writer?: $protobuf.Writer): $protobuf.Writer;
                 public static encodeDelimited(message: (jspb.test.TestGroup.OptionalGroup|Object), writer?: $protobuf.Writer): $protobuf.Writer;
                 public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.TestGroup.OptionalGroup;
@@ -417,9 +417,9 @@ export namespace jspb {
         }
 
         class TestGroup1 {
-            constructor(properties?: Object);
+            constructor(properties?: { [k: string]: any });
             public group?: jspb.test.TestGroup.RepeatedGroup;
-            public static create(properties?: Object): jspb.test.TestGroup1;
+            public static create(properties?: { [k: string]: any }): jspb.test.TestGroup1;
             public static encode(message: (jspb.test.TestGroup1|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static encodeDelimited(message: (jspb.test.TestGroup1|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.TestGroup1;
@@ -433,9 +433,9 @@ export namespace jspb {
         }
 
         class TestReservedNames {
-            constructor(properties?: Object);
+            constructor(properties?: { [k: string]: any });
             public extension?: number;
-            public static create(properties?: Object): jspb.test.TestReservedNames;
+            public static create(properties?: { [k: string]: any }): jspb.test.TestReservedNames;
             public static encode(message: (jspb.test.TestReservedNames|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static encodeDelimited(message: (jspb.test.TestReservedNames|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.TestReservedNames;
@@ -449,8 +449,8 @@ export namespace jspb {
         }
 
         class TestReservedNamesExtension {
-            constructor(properties?: Object);
-            public static create(properties?: Object): jspb.test.TestReservedNamesExtension;
+            constructor(properties?: { [k: string]: any });
+            public static create(properties?: { [k: string]: any }): jspb.test.TestReservedNamesExtension;
             public static encode(message: (jspb.test.TestReservedNamesExtension|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static encodeDelimited(message: (jspb.test.TestReservedNamesExtension|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.TestReservedNamesExtension;
@@ -464,7 +464,7 @@ export namespace jspb {
         }
 
         class TestMessageWithOneof {
-            constructor(properties?: Object);
+            constructor(properties?: { [k: string]: any });
             public pone?: string;
             public pthree?: string;
             public rone?: jspb.test.TestMessageWithOneof;
@@ -479,7 +479,7 @@ export namespace jspb {
             public recursiveOneof?: string;
             public defaultOneofA?: string;
             public defaultOneofB?: string;
-            public static create(properties?: Object): jspb.test.TestMessageWithOneof;
+            public static create(properties?: { [k: string]: any }): jspb.test.TestMessageWithOneof;
             public static encode(message: (jspb.test.TestMessageWithOneof|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static encodeDelimited(message: (jspb.test.TestMessageWithOneof|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.TestMessageWithOneof;
@@ -493,10 +493,10 @@ export namespace jspb {
         }
 
         class TestEndsWithBytes {
-            constructor(properties?: Object);
+            constructor(properties?: { [k: string]: any });
             public value?: number;
             public data?: Uint8Array;
-            public static create(properties?: Object): jspb.test.TestEndsWithBytes;
+            public static create(properties?: { [k: string]: any }): jspb.test.TestEndsWithBytes;
             public static encode(message: (jspb.test.TestEndsWithBytes|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static encodeDelimited(message: (jspb.test.TestEndsWithBytes|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.TestEndsWithBytes;
@@ -510,7 +510,7 @@ export namespace jspb {
         }
 
         class TestMapFieldsNoBinary {
-            constructor(properties?: Object);
+            constructor(properties?: { [k: string]: any });
             public mapStringString?: { [k: string]: string };
             public mapStringInt32?: { [k: string]: number };
             public mapStringInt64?: { [k: string]: (number|$protobuf.Long) };
@@ -523,7 +523,7 @@ export namespace jspb {
             public mapBoolString?: { [k: string]: string };
             public testMapFields?: jspb.test.TestMapFieldsNoBinary;
             public mapStringTestmapfields?: { [k: string]: jspb.test.TestMapFieldsNoBinary };
-            public static create(properties?: Object): jspb.test.TestMapFieldsNoBinary;
+            public static create(properties?: { [k: string]: any }): jspb.test.TestMapFieldsNoBinary;
             public static encode(message: (jspb.test.TestMapFieldsNoBinary|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static encodeDelimited(message: (jspb.test.TestMapFieldsNoBinary|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.TestMapFieldsNoBinary;
@@ -543,9 +543,9 @@ export namespace jspb {
         }
 
         class MapValueMessageNoBinary {
-            constructor(properties?: Object);
+            constructor(properties?: { [k: string]: any });
             public foo?: number;
-            public static create(properties?: Object): jspb.test.MapValueMessageNoBinary;
+            public static create(properties?: { [k: string]: any }): jspb.test.MapValueMessageNoBinary;
             public static encode(message: (jspb.test.MapValueMessageNoBinary|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static encodeDelimited(message: (jspb.test.MapValueMessageNoBinary|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.MapValueMessageNoBinary;
@@ -559,8 +559,8 @@ export namespace jspb {
         }
 
         class Deeply {
-            constructor(properties?: Object);
-            public static create(properties?: Object): jspb.test.Deeply;
+            constructor(properties?: { [k: string]: any });
+            public static create(properties?: { [k: string]: any }): jspb.test.Deeply;
             public static encode(message: (jspb.test.Deeply|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static encodeDelimited(message: (jspb.test.Deeply|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.Deeply;
@@ -576,8 +576,8 @@ export namespace jspb {
         namespace Deeply {
 
             class Nested {
-                constructor(properties?: Object);
-                public static create(properties?: Object): jspb.test.Deeply.Nested;
+                constructor(properties?: { [k: string]: any });
+                public static create(properties?: { [k: string]: any }): jspb.test.Deeply.Nested;
                 public static encode(message: (jspb.test.Deeply.Nested|Object), writer?: $protobuf.Writer): $protobuf.Writer;
                 public static encodeDelimited(message: (jspb.test.Deeply.Nested|Object), writer?: $protobuf.Writer): $protobuf.Writer;
                 public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.Deeply.Nested;
@@ -593,9 +593,9 @@ export namespace jspb {
             namespace Nested {
 
                 class Message {
-                    constructor(properties?: Object);
+                    constructor(properties?: { [k: string]: any });
                     public count?: number;
-                    public static create(properties?: Object): jspb.test.Deeply.Nested.Message;
+                    public static create(properties?: { [k: string]: any }): jspb.test.Deeply.Nested.Message;
                     public static encode(message: (jspb.test.Deeply.Nested.Message|Object), writer?: $protobuf.Writer): $protobuf.Writer;
                     public static encodeDelimited(message: (jspb.test.Deeply.Nested.Message|Object), writer?: $protobuf.Writer): $protobuf.Writer;
                     public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.Deeply.Nested.Message;
@@ -617,9 +617,9 @@ export namespace google {
     namespace protobuf {
 
         class FileDescriptorSet {
-            constructor(properties?: Object);
+            constructor(properties?: { [k: string]: any });
             public file?: google.protobuf.FileDescriptorProto[];
-            public static create(properties?: Object): google.protobuf.FileDescriptorSet;
+            public static create(properties?: { [k: string]: any }): google.protobuf.FileDescriptorSet;
             public static encode(message: (google.protobuf.FileDescriptorSet|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static encodeDelimited(message: (google.protobuf.FileDescriptorSet|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.FileDescriptorSet;
@@ -633,7 +633,7 @@ export namespace google {
         }
 
         class FileDescriptorProto {
-            constructor(properties?: Object);
+            constructor(properties?: { [k: string]: any });
             public name?: string;
             public package?: string;
             public dependency?: string[];
@@ -646,7 +646,7 @@ export namespace google {
             public options?: google.protobuf.FileOptions;
             public sourceCodeInfo?: google.protobuf.SourceCodeInfo;
             public syntax?: string;
-            public static create(properties?: Object): google.protobuf.FileDescriptorProto;
+            public static create(properties?: { [k: string]: any }): google.protobuf.FileDescriptorProto;
             public static encode(message: (google.protobuf.FileDescriptorProto|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static encodeDelimited(message: (google.protobuf.FileDescriptorProto|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.FileDescriptorProto;
@@ -660,7 +660,7 @@ export namespace google {
         }
 
         class DescriptorProto {
-            constructor(properties?: Object);
+            constructor(properties?: { [k: string]: any });
             public name?: string;
             public field?: google.protobuf.FieldDescriptorProto[];
             public extension?: google.protobuf.FieldDescriptorProto[];
@@ -671,7 +671,7 @@ export namespace google {
             public options?: google.protobuf.MessageOptions;
             public reservedRange?: google.protobuf.DescriptorProto.ReservedRange[];
             public reservedName?: string[];
-            public static create(properties?: Object): google.protobuf.DescriptorProto;
+            public static create(properties?: { [k: string]: any }): google.protobuf.DescriptorProto;
             public static encode(message: (google.protobuf.DescriptorProto|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static encodeDelimited(message: (google.protobuf.DescriptorProto|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.DescriptorProto;
@@ -687,10 +687,10 @@ export namespace google {
         namespace DescriptorProto {
 
             class ExtensionRange {
-                constructor(properties?: Object);
+                constructor(properties?: { [k: string]: any });
                 public start?: number;
                 public end?: number;
-                public static create(properties?: Object): google.protobuf.DescriptorProto.ExtensionRange;
+                public static create(properties?: { [k: string]: any }): google.protobuf.DescriptorProto.ExtensionRange;
                 public static encode(message: (google.protobuf.DescriptorProto.ExtensionRange|Object), writer?: $protobuf.Writer): $protobuf.Writer;
                 public static encodeDelimited(message: (google.protobuf.DescriptorProto.ExtensionRange|Object), writer?: $protobuf.Writer): $protobuf.Writer;
                 public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.DescriptorProto.ExtensionRange;
@@ -704,10 +704,10 @@ export namespace google {
             }
 
             class ReservedRange {
-                constructor(properties?: Object);
+                constructor(properties?: { [k: string]: any });
                 public start?: number;
                 public end?: number;
-                public static create(properties?: Object): google.protobuf.DescriptorProto.ReservedRange;
+                public static create(properties?: { [k: string]: any }): google.protobuf.DescriptorProto.ReservedRange;
                 public static encode(message: (google.protobuf.DescriptorProto.ReservedRange|Object), writer?: $protobuf.Writer): $protobuf.Writer;
                 public static encodeDelimited(message: (google.protobuf.DescriptorProto.ReservedRange|Object), writer?: $protobuf.Writer): $protobuf.Writer;
                 public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.DescriptorProto.ReservedRange;
@@ -722,7 +722,7 @@ export namespace google {
         }
 
         class FieldDescriptorProto {
-            constructor(properties?: Object);
+            constructor(properties?: { [k: string]: any });
             public name?: string;
             public number?: number;
             public label?: number;
@@ -733,7 +733,7 @@ export namespace google {
             public oneofIndex?: number;
             public jsonName?: string;
             public options?: google.protobuf.FieldOptions;
-            public static create(properties?: Object): google.protobuf.FieldDescriptorProto;
+            public static create(properties?: { [k: string]: any }): google.protobuf.FieldDescriptorProto;
             public static encode(message: (google.protobuf.FieldDescriptorProto|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static encodeDelimited(message: (google.protobuf.FieldDescriptorProto|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.FieldDescriptorProto;
@@ -777,10 +777,10 @@ export namespace google {
         }
 
         class OneofDescriptorProto {
-            constructor(properties?: Object);
+            constructor(properties?: { [k: string]: any });
             public name?: string;
             public options?: google.protobuf.OneofOptions;
-            public static create(properties?: Object): google.protobuf.OneofDescriptorProto;
+            public static create(properties?: { [k: string]: any }): google.protobuf.OneofDescriptorProto;
             public static encode(message: (google.protobuf.OneofDescriptorProto|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static encodeDelimited(message: (google.protobuf.OneofDescriptorProto|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.OneofDescriptorProto;
@@ -794,11 +794,11 @@ export namespace google {
         }
 
         class EnumDescriptorProto {
-            constructor(properties?: Object);
+            constructor(properties?: { [k: string]: any });
             public name?: string;
             public value?: google.protobuf.EnumValueDescriptorProto[];
             public options?: google.protobuf.EnumOptions;
-            public static create(properties?: Object): google.protobuf.EnumDescriptorProto;
+            public static create(properties?: { [k: string]: any }): google.protobuf.EnumDescriptorProto;
             public static encode(message: (google.protobuf.EnumDescriptorProto|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static encodeDelimited(message: (google.protobuf.EnumDescriptorProto|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.EnumDescriptorProto;
@@ -812,11 +812,11 @@ export namespace google {
         }
 
         class EnumValueDescriptorProto {
-            constructor(properties?: Object);
+            constructor(properties?: { [k: string]: any });
             public name?: string;
             public number?: number;
             public options?: google.protobuf.EnumValueOptions;
-            public static create(properties?: Object): google.protobuf.EnumValueDescriptorProto;
+            public static create(properties?: { [k: string]: any }): google.protobuf.EnumValueDescriptorProto;
             public static encode(message: (google.protobuf.EnumValueDescriptorProto|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static encodeDelimited(message: (google.protobuf.EnumValueDescriptorProto|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.EnumValueDescriptorProto;
@@ -830,11 +830,11 @@ export namespace google {
         }
 
         class ServiceDescriptorProto {
-            constructor(properties?: Object);
+            constructor(properties?: { [k: string]: any });
             public name?: string;
             public method?: google.protobuf.MethodDescriptorProto[];
             public options?: google.protobuf.ServiceOptions;
-            public static create(properties?: Object): google.protobuf.ServiceDescriptorProto;
+            public static create(properties?: { [k: string]: any }): google.protobuf.ServiceDescriptorProto;
             public static encode(message: (google.protobuf.ServiceDescriptorProto|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static encodeDelimited(message: (google.protobuf.ServiceDescriptorProto|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.ServiceDescriptorProto;
@@ -848,14 +848,14 @@ export namespace google {
         }
 
         class MethodDescriptorProto {
-            constructor(properties?: Object);
+            constructor(properties?: { [k: string]: any });
             public name?: string;
             public inputType?: string;
             public outputType?: string;
             public options?: google.protobuf.MethodOptions;
             public clientStreaming?: boolean;
             public serverStreaming?: boolean;
-            public static create(properties?: Object): google.protobuf.MethodDescriptorProto;
+            public static create(properties?: { [k: string]: any }): google.protobuf.MethodDescriptorProto;
             public static encode(message: (google.protobuf.MethodDescriptorProto|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static encodeDelimited(message: (google.protobuf.MethodDescriptorProto|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.MethodDescriptorProto;
@@ -869,7 +869,7 @@ export namespace google {
         }
 
         class FileOptions {
-            constructor(properties?: Object);
+            constructor(properties?: { [k: string]: any });
             public javaPackage?: string;
             public javaOuterClassname?: string;
             public javaMultipleFiles?: boolean;
@@ -885,7 +885,7 @@ export namespace google {
             public objcClassPrefix?: string;
             public csharpNamespace?: string;
             public uninterpretedOption?: google.protobuf.UninterpretedOption[];
-            public static create(properties?: Object): google.protobuf.FileOptions;
+            public static create(properties?: { [k: string]: any }): google.protobuf.FileOptions;
             public static encode(message: (google.protobuf.FileOptions|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static encodeDelimited(message: (google.protobuf.FileOptions|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.FileOptions;
@@ -908,13 +908,13 @@ export namespace google {
         }
 
         class MessageOptions {
-            constructor(properties?: Object);
+            constructor(properties?: { [k: string]: any });
             public messageSetWireFormat?: boolean;
             public noStandardDescriptorAccessor?: boolean;
             public deprecated?: boolean;
             public mapEntry?: boolean;
             public uninterpretedOption?: google.protobuf.UninterpretedOption[];
-            public static create(properties?: Object): google.protobuf.MessageOptions;
+            public static create(properties?: { [k: string]: any }): google.protobuf.MessageOptions;
             public static encode(message: (google.protobuf.MessageOptions|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static encodeDelimited(message: (google.protobuf.MessageOptions|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.MessageOptions;
@@ -928,7 +928,7 @@ export namespace google {
         }
 
         class FieldOptions {
-            constructor(properties?: Object);
+            constructor(properties?: { [k: string]: any });
             public ctype?: number;
             public packed?: boolean;
             public jstype?: number;
@@ -936,7 +936,7 @@ export namespace google {
             public deprecated?: boolean;
             public weak?: boolean;
             public uninterpretedOption?: google.protobuf.UninterpretedOption[];
-            public static create(properties?: Object): google.protobuf.FieldOptions;
+            public static create(properties?: { [k: string]: any }): google.protobuf.FieldOptions;
             public static encode(message: (google.protobuf.FieldOptions|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static encodeDelimited(message: (google.protobuf.FieldOptions|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.FieldOptions;
@@ -965,9 +965,9 @@ export namespace google {
         }
 
         class OneofOptions {
-            constructor(properties?: Object);
+            constructor(properties?: { [k: string]: any });
             public uninterpretedOption?: google.protobuf.UninterpretedOption[];
-            public static create(properties?: Object): google.protobuf.OneofOptions;
+            public static create(properties?: { [k: string]: any }): google.protobuf.OneofOptions;
             public static encode(message: (google.protobuf.OneofOptions|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static encodeDelimited(message: (google.protobuf.OneofOptions|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.OneofOptions;
@@ -981,11 +981,11 @@ export namespace google {
         }
 
         class EnumOptions {
-            constructor(properties?: Object);
+            constructor(properties?: { [k: string]: any });
             public allowAlias?: boolean;
             public deprecated?: boolean;
             public uninterpretedOption?: google.protobuf.UninterpretedOption[];
-            public static create(properties?: Object): google.protobuf.EnumOptions;
+            public static create(properties?: { [k: string]: any }): google.protobuf.EnumOptions;
             public static encode(message: (google.protobuf.EnumOptions|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static encodeDelimited(message: (google.protobuf.EnumOptions|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.EnumOptions;
@@ -999,10 +999,10 @@ export namespace google {
         }
 
         class EnumValueOptions {
-            constructor(properties?: Object);
+            constructor(properties?: { [k: string]: any });
             public deprecated?: boolean;
             public uninterpretedOption?: google.protobuf.UninterpretedOption[];
-            public static create(properties?: Object): google.protobuf.EnumValueOptions;
+            public static create(properties?: { [k: string]: any }): google.protobuf.EnumValueOptions;
             public static encode(message: (google.protobuf.EnumValueOptions|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static encodeDelimited(message: (google.protobuf.EnumValueOptions|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.EnumValueOptions;
@@ -1016,10 +1016,10 @@ export namespace google {
         }
 
         class ServiceOptions {
-            constructor(properties?: Object);
+            constructor(properties?: { [k: string]: any });
             public deprecated?: boolean;
             public uninterpretedOption?: google.protobuf.UninterpretedOption[];
-            public static create(properties?: Object): google.protobuf.ServiceOptions;
+            public static create(properties?: { [k: string]: any }): google.protobuf.ServiceOptions;
             public static encode(message: (google.protobuf.ServiceOptions|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static encodeDelimited(message: (google.protobuf.ServiceOptions|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.ServiceOptions;
@@ -1033,11 +1033,11 @@ export namespace google {
         }
 
         class MethodOptions {
-            constructor(properties?: Object);
+            constructor(properties?: { [k: string]: any });
             public deprecated?: boolean;
             public idempotencyLevel?: number;
             public uninterpretedOption?: google.protobuf.UninterpretedOption[];
-            public static create(properties?: Object): google.protobuf.MethodOptions;
+            public static create(properties?: { [k: string]: any }): google.protobuf.MethodOptions;
             public static encode(message: (google.protobuf.MethodOptions|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static encodeDelimited(message: (google.protobuf.MethodOptions|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.MethodOptions;
@@ -1060,7 +1060,7 @@ export namespace google {
         }
 
         class UninterpretedOption {
-            constructor(properties?: Object);
+            constructor(properties?: { [k: string]: any });
             public name?: google.protobuf.UninterpretedOption.NamePart[];
             public identifierValue?: string;
             public positiveIntValue?: (number|$protobuf.Long);
@@ -1068,7 +1068,7 @@ export namespace google {
             public doubleValue?: number;
             public stringValue?: Uint8Array;
             public aggregateValue?: string;
-            public static create(properties?: Object): google.protobuf.UninterpretedOption;
+            public static create(properties?: { [k: string]: any }): google.protobuf.UninterpretedOption;
             public static encode(message: (google.protobuf.UninterpretedOption|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static encodeDelimited(message: (google.protobuf.UninterpretedOption|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.UninterpretedOption;
@@ -1084,10 +1084,10 @@ export namespace google {
         namespace UninterpretedOption {
 
             class NamePart {
-                constructor(properties?: Object);
+                constructor(properties?: { [k: string]: any });
                 public namePart: string;
                 public isExtension: boolean;
-                public static create(properties?: Object): google.protobuf.UninterpretedOption.NamePart;
+                public static create(properties?: { [k: string]: any }): google.protobuf.UninterpretedOption.NamePart;
                 public static encode(message: (google.protobuf.UninterpretedOption.NamePart|Object), writer?: $protobuf.Writer): $protobuf.Writer;
                 public static encodeDelimited(message: (google.protobuf.UninterpretedOption.NamePart|Object), writer?: $protobuf.Writer): $protobuf.Writer;
                 public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.UninterpretedOption.NamePart;
@@ -1102,9 +1102,9 @@ export namespace google {
         }
 
         class SourceCodeInfo {
-            constructor(properties?: Object);
+            constructor(properties?: { [k: string]: any });
             public location?: google.protobuf.SourceCodeInfo.Location[];
-            public static create(properties?: Object): google.protobuf.SourceCodeInfo;
+            public static create(properties?: { [k: string]: any }): google.protobuf.SourceCodeInfo;
             public static encode(message: (google.protobuf.SourceCodeInfo|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static encodeDelimited(message: (google.protobuf.SourceCodeInfo|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.SourceCodeInfo;
@@ -1120,13 +1120,13 @@ export namespace google {
         namespace SourceCodeInfo {
 
             class Location {
-                constructor(properties?: Object);
+                constructor(properties?: { [k: string]: any });
                 public path?: number[];
                 public span?: number[];
                 public leadingComments?: string;
                 public trailingComments?: string;
                 public leadingDetachedComments?: string[];
-                public static create(properties?: Object): google.protobuf.SourceCodeInfo.Location;
+                public static create(properties?: { [k: string]: any }): google.protobuf.SourceCodeInfo.Location;
                 public static encode(message: (google.protobuf.SourceCodeInfo.Location|Object), writer?: $protobuf.Writer): $protobuf.Writer;
                 public static encodeDelimited(message: (google.protobuf.SourceCodeInfo.Location|Object), writer?: $protobuf.Writer): $protobuf.Writer;
                 public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.SourceCodeInfo.Location;
@@ -1141,9 +1141,9 @@ export namespace google {
         }
 
         class GeneratedCodeInfo {
-            constructor(properties?: Object);
+            constructor(properties?: { [k: string]: any });
             public annotation?: google.protobuf.GeneratedCodeInfo.Annotation[];
-            public static create(properties?: Object): google.protobuf.GeneratedCodeInfo;
+            public static create(properties?: { [k: string]: any }): google.protobuf.GeneratedCodeInfo;
             public static encode(message: (google.protobuf.GeneratedCodeInfo|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static encodeDelimited(message: (google.protobuf.GeneratedCodeInfo|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.GeneratedCodeInfo;
@@ -1159,12 +1159,12 @@ export namespace google {
         namespace GeneratedCodeInfo {
 
             class Annotation {
-                constructor(properties?: Object);
+                constructor(properties?: { [k: string]: any });
                 public path?: number[];
                 public sourceFile?: string;
                 public begin?: number;
                 public end?: number;
-                public static create(properties?: Object): google.protobuf.GeneratedCodeInfo.Annotation;
+                public static create(properties?: { [k: string]: any }): google.protobuf.GeneratedCodeInfo.Annotation;
                 public static encode(message: (google.protobuf.GeneratedCodeInfo.Annotation|Object), writer?: $protobuf.Writer): $protobuf.Writer;
                 public static encodeDelimited(message: (google.protobuf.GeneratedCodeInfo.Annotation|Object), writer?: $protobuf.Writer): $protobuf.Writer;
                 public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.GeneratedCodeInfo.Annotation;

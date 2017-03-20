@@ -328,7 +328,7 @@ util.lazyResolve = function lazyResolve(root, lazyTypes) {
 };
 
 /**
- * Default conversion options used for toJSON implementations. Converts longs, enums and bytes to strings.
+ * Default conversion options used for {@link Message#toJSON} implementations. Longs, enums and bytes are converted to strings by default.
  * @type {ConversionOptions}
  */
 util.toJSONOptions = {

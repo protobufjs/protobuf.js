@@ -18,7 +18,7 @@ $root.Message = (function() {
      * Constructs a new Message.
      * @exports Message
      * @constructor
-     * @param {Object} [properties] Properties to set
+     * @param {Object.<string,*>=} [properties] Properties to set
      */
     function Message(properties) {
         if (properties)
@@ -88,7 +88,7 @@ $root.Message = (function() {
 
     /**
      * Creates a new Message instance using the specified properties.
-     * @param {Object} [properties] Properties to set
+     * @param {Object.<string,*>=} [properties] Properties to set
      * @returns {Message} Message instance
      */
     Message.create = function create(properties) {
