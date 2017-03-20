@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.7.0 (c) 2016, Daniel Wirtz
- * Compiled Sun, 12 Mar 2017 21:09:56 UTC
+ * Compiled Mon, 20 Mar 2017 22:49:20 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -869,7 +869,8 @@ function Class(type, ctor) {
 Class.generate = function generate(type) { // eslint-disable-line no-unused-vars
     /* eslint-disable no-unexpected-multiline */
     var gen = util.codegen("p");
-    // see issue #700
+    // see issue #700: the following would add explicitly initialized mutable object/array fields
+    // so that these aren't just inherited from the prototype. will break test cases.
     /*
     for (var i = 0, field; i < type.fieldsArray.length; ++i)
         if ((field = type._fieldsArray[i]).map) gen
@@ -1309,7 +1310,7 @@ converter.fromObject = function fromObject(mtype) {
             ("throw TypeError(%j)", field.fullName + ": object expected")
         ("m%s={}", prop)
         ("for(var ks=Object.keys(d%s),i=0;i<ks.length;++i){", prop);
-            genValuePartial_fromObject(gen, field, i, prop + "[ks[i]]")
+            genValuePartial_fromObject(gen, field, /* not sorted */ i, prop + "[ks[i]]")
         ("}")
     ("}");
 
@@ -1320,7 +1321,7 @@ converter.fromObject = function fromObject(mtype) {
             ("throw TypeError(%j)", field.fullName + ": array expected")
         ("m%s=[]", prop)
         ("for(var i=0;i<d%s.length;++i){", prop);
-            genValuePartial_fromObject(gen, field, i, prop + "[i]")
+            genValuePartial_fromObject(gen, field, /* not sorted */ i, prop + "[i]")
         ("}")
     ("}");
 
@@ -1328,7 +1329,7 @@ converter.fromObject = function fromObject(mtype) {
         } else {
             if (!(field.resolvedType instanceof Enum)) gen // no need to test for null/undefined if an enum (uses switch)
     ("if(d%s!==undefined&&d%s!==null){", prop, prop);
-        genValuePartial_fromObject(gen, field, i, prop);
+        genValuePartial_fromObject(gen, field, /* not sorted */ i, prop);
             if (!(field.resolvedType instanceof Enum)) gen
     ("}");
         }
@@ -1387,7 +1388,7 @@ function genValuePartial_toObject(gen, field, fieldIndex, prop) {
  */
 converter.toObject = function toObject(mtype) {
     /* eslint-disable no-unexpected-multiline, block-scoped-var, no-redeclare */
-    var fields = mtype.fieldsArray;
+    var fields = mtype.fieldsArray.sort(util.compareFieldsById);
     if (!fields.length)
         return util.codegen()("return {}");
     var gen = util.codegen("m", "o")
@@ -1450,15 +1451,18 @@ converter.toObject = function toObject(mtype) {
         if (field.map) { gen
         ("d%s={}", prop)
         ("for(var ks2=Object.keys(m%s),j=0;j<ks2.length;++j){", prop);
-            genValuePartial_toObject(gen, field, i, prop + "[ks2[j]]")
+            genValuePartial_toObject(gen, field, /* sorted */ mtype._fieldsArray.indexOf(field), prop + "[ks2[j]]")
         ("}");
         } else if (field.repeated) { gen
         ("d%s=[]", prop)
         ("for(var j=0;j<m%s.length;++j){", prop);
-            genValuePartial_toObject(gen, field, i, prop + "[j]")
+            genValuePartial_toObject(gen, field, /* sorted */ mtype._fieldsArray.indexOf(field), prop + "[j]")
         ("}");
         } else
-        genValuePartial_toObject(gen, field, i, prop);
+        genValuePartial_toObject(gen, field, /* sorted */ mtype._fieldsArray.indexOf(field), prop);
+        if (field.partOf) gen
+        ("if(o.oneofs)")
+            ("d%s=%j", util.safeProp(field.partOf.name), field.name);
         gen
     ("}");
     }
@@ -1599,17 +1603,6 @@ function genTypePartial(gen, field, fieldIndex, ref) {
 }
 
 /**
- * Compares reflected fields by id.
- * @param {Field} a First field
- * @param {Field} b Second field
- * @returns {number} Comparison value
- * @ignore
- */
-function compareFieldsById(a, b) {
-    return a.id - b.id;
-}
-
-/**
  * Generates an encoder specific to the specified message type.
  * @param {Type} mtype Message type
  * @returns {Codegen} Codegen instance
@@ -1627,14 +1620,12 @@ function encoder(mtype) {
     var fields = /* initializes */ mtype.fieldsArray;
     /* istanbul ignore else */
     if (encoder.compat)
-        fields = fields.slice().sort(compareFieldsById);
+        fields = fields.slice().sort(util.compareFieldsById);
 
     for (var i = 0; i < fields.length; ++i) {
         var field    = fields[i].resolve(),
-            index    = encoder.compat ? mtype._fieldsArray.indexOf(field) : /* istanbul ignore next */ i;
-        if (field.partOf) // see below for oneofs
-            continue;
-        var type     = field.resolvedType instanceof Enum ? "uint32" : field.type,
+            index    = encoder.compat ? mtype._fieldsArray.indexOf(field) : /* istanbul ignore next */ i,
+            type     = field.resolvedType instanceof Enum ? "uint32" : field.type,
             wireType = types.basic[type];
             ref      = "m" + util.safeProp(field.name);
 
@@ -1688,7 +1679,7 @@ function encoder(mtype) {
                 else if (field.bytes || field.resolvedType && !(field.resolvedType instanceof Enum)) gen
     ("if(%s&&m.hasOwnProperty(%j))", ref, field.name);
                 else gen
-    ("if(%s!==undefined&&m.hasOwnProperty(%j))", ref, field.name);
+    ("if(%s!==undefined&&%s!==null&&m.hasOwnProperty(%j))", ref, ref, field.name);
 
             }
 
@@ -1698,26 +1689,6 @@ function encoder(mtype) {
         ("w.uint32(%d).%s(%s)", (field.id << 3 | wireType) >>> 0, type, ref);
 
         }
-    }
-
-    // oneofs
-    for (var i = 0; i < /* initializes */ mtype.oneofsArray.length; ++i) {
-        var oneof = mtype._oneofsArray[i]; gen
-        ("switch(%s){", "m" + util.safeProp(oneof.name));
-        for (var j = 0; j < /* direct */ oneof.fieldsArray.length; ++j) {
-            var field    = oneof.fieldsArray[j],
-                type     = field.resolvedType instanceof Enum ? "uint32" : field.type,
-                wireType = types.basic[type];
-                ref      = "m" + util.safeProp(field.name); gen
-            ("case%j:", field.name);
-            if (wireType === undefined)
-                genTypePartial(gen, field, mtype._fieldsArray.indexOf(field), ref);
-            else gen
-                ("w.uint32(%d).%s(%s)", (field.id << 3 | wireType) >>> 0, type, ref);
-            gen
-                ("break");
-        } gen
-        ("}");
     }
 
     return gen
@@ -3378,18 +3349,14 @@ var tokenize  = require(33),
 
 var base10Re    = /^[1-9][0-9]*$/,
     base10NegRe = /^-?[1-9][0-9]*$/,
-    base16Re    = /^0[x][0-9a-f]+$/,
-    base16NegRe = /^-?0[x][0-9a-f]+$/,
+    base16Re    = /^0[x][0-9a-fA-F]+$/,
+    base16NegRe = /^-?0[x][0-9a-fA-F]+$/,
     base8Re     = /^0[0-7]+$/,
     base8NegRe  = /^-?0[0-7]+$/,
-    numberRe    = /^(?!e)[0-9]*(?:\.[0-9]*)?(?:[e][+-]?[0-9]+)?$/,
+    numberRe    = /^(?![eE])[0-9]*(?:\.[0-9]*)?(?:[eE][+-]?[0-9]+)?$/,
     nameRe      = /^[a-zA-Z_][a-zA-Z_0-9]*$/,
     typeRefRe   = /^(?:\.?[a-zA-Z_][a-zA-Z_0-9]*)+$/,
     fqTypeRefRe = /^(?:\.[a-zA-Z][a-zA-Z_0-9]*)+$/;
-
-function lower(token) {
-    return token === null ? null : token.toLowerCase();
-}
 
 var camelCaseRe = /_([a-z])(?=[a-z]|$)/g;
 
@@ -3478,14 +3445,14 @@ function parse(source, root, options) {
 
     function readValue(acceptTypeRef) {
         var token = next();
-        switch (lower(token)) {
+        switch (token) {
             case "'":
             case "\"":
                 push(token);
                 return readString();
-            case "true":
+            case "true": case "TRUE":
                 return true;
-            case "false":
+            case "false": case "FALSE":
                 return false;
         }
         try {
@@ -3516,28 +3483,26 @@ function parse(source, root, options) {
             sign = -1;
             token = token.substring(1);
         }
-        var tokenLower = lower(token);
-        switch (tokenLower) {
-            case "inf": return sign * Infinity;
-            case "nan": return NaN;
+        switch (token) {
+            case "inf": case "INF": return sign * Infinity;
+            case "nan": case "NaN": case "NAN": return NaN;
             case "0": return 0;
         }
         if (base10Re.test(token))
             return sign * parseInt(token, 10);
-        if (base16Re.test(tokenLower))
+        if (base16Re.test(token))
             return sign * parseInt(token, 16);
         if (base8Re.test(token))
             return sign * parseInt(token, 8);
-        if (numberRe.test(tokenLower))
+        if (numberRe.test(token))
             return sign * parseFloat(token);
         /* istanbul ignore next */
         throw illegal(token, "number", insideTryCatch);
     }
 
     function parseId(token, acceptNegative) {
-        var tokenLower = lower(token);
-        switch (tokenLower) {
-            case "max": return 536870911;
+        switch (token) {
+            case "max": case "MAX": return 536870911;
             case "0": return 0;
         }
         /* istanbul ignore next */
@@ -3545,7 +3510,7 @@ function parse(source, root, options) {
             throw illegal(token, "id");
         if (base10NegRe.test(token))
             return parseInt(token, 10);
-        if (base16NegRe.test(tokenLower))
+        if (base16NegRe.test(token))
             return parseInt(token, 16);
         /* istanbul ignore else */
         if (base8NegRe.test(token))
@@ -3588,7 +3553,7 @@ function parse(source, root, options) {
 
     function parseSyntax() {
         skip("=");
-        syntax = lower(readString());
+        syntax = readString();
         isProto3 = syntax === "proto3";
         /* istanbul ignore next */
         if (!isProto3 && syntax !== "proto2")
@@ -3633,23 +3598,22 @@ function parse(source, root, options) {
         type.filename = parse.filename;
         if (skip("{", true)) {
             while ((token = next()) !== "}") {
-                var tokenLower = lower(token);
                 if (parseCommon(type, token))
                     continue;
-                switch (tokenLower) {
+                switch (token) {
 
                     case "map":
-                        parseMapField(type, tokenLower);
+                        parseMapField(type, token);
                         break;
 
                     case "required":
                     case "optional":
                     case "repeated":
-                        parseField(type, tokenLower);
+                        parseField(type, token);
                         break;
 
                     case "oneof":
-                        parseOneOf(type, tokenLower);
+                        parseOneOf(type, token);
                         break;
 
                     case "extensions":
@@ -3723,7 +3687,7 @@ function parse(source, root, options) {
         type.filename = field.filename = parse.filename;
         skip("{");
         while ((token = next()) !== "}") {
-            switch (token = lower(token)) {
+            switch (token) {
                 case "option":
                     parseOption(type, token);
                     skip(";");
@@ -3816,7 +3780,7 @@ function parse(source, root, options) {
         enm.filename = parse.filename;
         if (skip("{", true)) {
             while ((token = next()) !== "}") {
-                if (lower(token) === "option") {
+                if (token === "option") {
                     parseOption(enm, token);
                     skip(";");
                 } else
@@ -3912,14 +3876,13 @@ function parse(source, root, options) {
         service.filename = parse.filename;
         if (skip("{", true)) {
             while ((token = next()) !== "}") {
-                var tokenLower = lower(token);
-                switch (tokenLower) {
+                switch (token) {
                     case "option":
-                        parseOption(service, tokenLower);
+                        parseOption(service, token);
                         skip(";");
                         break;
                     case "rpc":
-                        parseMethod(service, tokenLower);
+                        parseMethod(service, token);
                         break;
 
                     /* istanbul ignore next */
@@ -3964,10 +3927,9 @@ function parse(source, root, options) {
         method.filename = parse.filename;
         if (skip("{", true)) {
             while ((token = next()) !== "}") {
-                var tokenLower = lower(token);
-                switch (tokenLower) {
+                switch (token) {
                     case "option":
-                        parseOption(method, tokenLower);
+                        parseOption(method, token);
                         skip(";");
                         break;
 
@@ -3994,12 +3956,11 @@ function parse(source, root, options) {
 
         if (skip("{", true)) {
             while ((token = next()) !== "}") {
-                var tokenLower = lower(token);
-                switch (tokenLower) {
+                switch (token) {
                     case "required":
                     case "repeated":
                     case "optional":
-                        parseField(parent, tokenLower, reference);
+                        parseField(parent, token, reference);
                         break;
                     default:
                         /* istanbul ignore next */
@@ -4017,8 +3978,7 @@ function parse(source, root, options) {
 
     var token;
     while ((token = next()) !== null) {
-        var tokenLower = lower(token);
-        switch (tokenLower) {
+        switch (token) {
 
             case "package":
                 /* istanbul ignore next */
@@ -6071,6 +6031,7 @@ Type.prototype.from = Type.prototype.fromObject;
  * @property {boolean} [defaults=false] Also sets default values on the resulting object
  * @property {boolean} [arrays=false] Sets empty arrays for missing repeated fields even if `defaults=false`
  * @property {boolean} [objects=false] Sets empty objects for missing map fields even if `defaults=false`
+ * @property {boolean} [oneofs=false] Includes virtual oneof properties set to the present field's name, if any
  */
 
 /**
@@ -6327,6 +6288,16 @@ util.safeProp = function safeProp(prop) {
  */
 util.ucFirst = function ucFirst(str) {
     return str.charAt(0).toUpperCase() + str.substring(1);
+};
+
+/**
+ * Compares reflected fields by id.
+ * @param {Field} a First field
+ * @param {Field} b Second field
+ * @returns {number} Comparison value
+ */
+util.compareFieldsById = function compareFieldsById(a, b) {
+    return a.id - b.id;
 };
 
 },{"3":3,"38":38,"5":5,"7":7}],37:[function(require,module,exports){
@@ -6873,7 +6844,7 @@ util.lazyResolve = function lazyResolve(root, lazyTypes) {
 };
 
 /**
- * Default conversion options used for toJSON implementations. Converts longs, enums and bytes to strings.
+ * Default conversion options used for {@link Message#toJSON} implementations. Longs, enums and bytes are converted to strings by default.
  * @type {ConversionOptions}
  */
 util.toJSONOptions = {
@@ -7027,6 +6998,10 @@ function verifier(mtype) {
     var gen = util.codegen("m")
     ("if(typeof m!==\"object\"||m===null)")
         ("return%j", "object expected");
+    var oneofs = mtype.oneofsArray,
+        seenFirstField = {};
+    if (oneofs.length) gen
+    ("var p={}");
 
     for (var i = 0; i < /* initializes */ mtype.fieldsArray.length; ++i) {
         var field = mtype._fieldsArray[i].resolve(),
@@ -7056,11 +7031,16 @@ function verifier(mtype) {
 
         // required or present fields
         } else {
-            if (!field.required) {
-                if (field.resolvedType && !(field.resolvedType instanceof Enum)) gen
+            if (!field.required) gen
             ("if(%s!==undefined&&%s!==null){", ref, ref);
-                else gen
-            ("if(%s!==undefined){", ref);
+            if (field.partOf) {
+                var oneofProp = util.safeProp(field.partOf.name);
+                if (seenFirstField[field.partOf.name] === 1) gen
+            ("if(p%s===1)", oneofProp)
+                ("return%j", field.partOf.name + ": multiple values");
+                seenFirstField[field.partOf.name] = 1;
+                gen
+            ("p%s=1", oneofProp);
             }
                 genVerifyValue(gen, field, i, ref);
             if (!field.required) gen

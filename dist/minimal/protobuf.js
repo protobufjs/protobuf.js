@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.7.0 (c) 2016, Daniel Wirtz
- * Compiled Sun, 12 Mar 2017 21:09:56 UTC
+ * Compiled Mon, 20 Mar 2017 22:49:20 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -1783,7 +1783,7 @@ util.lazyResolve = function lazyResolve(root, lazyTypes) {
 };
 
 /**
- * Default conversion options used for toJSON implementations. Converts longs, enums and bytes to strings.
+ * Default conversion options used for {@link Message#toJSON} implementations. Longs, enums and bytes are converted to strings by default.
  * @type {ConversionOptions}
  */
 util.toJSONOptions = {

@@ -115,7 +115,7 @@ converter.fromObject = function fromObject(mtype) {
             ("throw TypeError(%j)", field.fullName + ": object expected")
         ("m%s={}", prop)
         ("for(var ks=Object.keys(d%s),i=0;i<ks.length;++i){", prop);
-            genValuePartial_fromObject(gen, field, i, prop + "[ks[i]]")
+            genValuePartial_fromObject(gen, field, /* not sorted */ i, prop + "[ks[i]]")
         ("}")
     ("}");
 
@@ -126,7 +126,7 @@ converter.fromObject = function fromObject(mtype) {
             ("throw TypeError(%j)", field.fullName + ": array expected")
         ("m%s=[]", prop)
         ("for(var i=0;i<d%s.length;++i){", prop);
-            genValuePartial_fromObject(gen, field, i, prop + "[i]")
+            genValuePartial_fromObject(gen, field, /* not sorted */ i, prop + "[i]")
         ("}")
     ("}");
 
@@ -134,7 +134,7 @@ converter.fromObject = function fromObject(mtype) {
         } else {
             if (!(field.resolvedType instanceof Enum)) gen // no need to test for null/undefined if an enum (uses switch)
     ("if(d%s!==undefined&&d%s!==null){", prop, prop);
-        genValuePartial_fromObject(gen, field, i, prop);
+        genValuePartial_fromObject(gen, field, /* not sorted */ i, prop);
             if (!(field.resolvedType instanceof Enum)) gen
     ("}");
         }
@@ -256,15 +256,15 @@ converter.toObject = function toObject(mtype) {
         if (field.map) { gen
         ("d%s={}", prop)
         ("for(var ks2=Object.keys(m%s),j=0;j<ks2.length;++j){", prop);
-            genValuePartial_toObject(gen, field, i, prop + "[ks2[j]]")
+            genValuePartial_toObject(gen, field, /* sorted */ mtype._fieldsArray.indexOf(field), prop + "[ks2[j]]")
         ("}");
         } else if (field.repeated) { gen
         ("d%s=[]", prop)
         ("for(var j=0;j<m%s.length;++j){", prop);
-            genValuePartial_toObject(gen, field, i, prop + "[j]")
+            genValuePartial_toObject(gen, field, /* sorted */ mtype._fieldsArray.indexOf(field), prop + "[j]")
         ("}");
         } else
-        genValuePartial_toObject(gen, field, i, prop);
+        genValuePartial_toObject(gen, field, /* sorted */ mtype._fieldsArray.indexOf(field), prop);
         if (field.partOf) gen
         ("if(o.oneofs)")
             ("d%s=%j", util.safeProp(field.partOf.name), field.name);

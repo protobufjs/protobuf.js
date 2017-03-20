@@ -1846,6 +1846,7 @@ export class Type extends NamespaceBase {
  * @property {boolean} [defaults=false] Also sets default values on the resulting object
  * @property {boolean} [arrays=false] Sets empty arrays for missing repeated fields even if `defaults=false`
  * @property {boolean} [objects=false] Sets empty objects for missing map fields even if `defaults=false`
+ * @property {boolean} [oneofs=false] Includes virtual oneof properties set to the present field's name, if any
  */
 interface ConversionOptions {
     longs?: any;
@@ -1854,6 +1855,7 @@ interface ConversionOptions {
     defaults?: boolean;
     arrays?: boolean;
     objects?: boolean;
+    oneofs?: boolean;
 }
 
 /**
@@ -2340,7 +2342,7 @@ export namespace util {
     function lazyResolve(root: Root, lazyTypes: { [k: number]: (string|ReflectionObject) }): void;
 
     /**
-     * Default conversion options used for toJSON implementations. Converts longs, enums and bytes to strings.
+     * Default conversion options used for {@link Message#toJSON} implementations. Longs, enums and bytes are converted to strings by default.
      * @type {ConversionOptions}
      */
     let toJSONOptions: ConversionOptions;
@@ -2371,6 +2373,14 @@ export namespace util {
      * @returns {string} Converted string
      */
     function ucFirst(str: string): string;
+
+    /**
+     * Compares reflected fields by id.
+     * @param {Field} a First field
+     * @param {Field} b Second field
+     * @returns {number} Comparison value
+     */
+    function compareFieldsById(a: Field, b: Field): number;
 
     /**
      * Returns a promise from a node-style callback function.
