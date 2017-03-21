@@ -86,9 +86,11 @@ In case of doubt you can just use the full library.
 Usage
 -----
 
-For [performance](#performance) reasons, protobuf.js provides multiple methods per message type with each of them doing just one thing. This avoids redundant assertions where messages are already known to be valid but also requires explicit verification where necessary. Note that `Message` refers to any message type below.
+Each message type provides a set of methods with each of them doing just one thing. This is done for [performance](#performance) reasons because it allows to avoid unnecessary operations but also forces a user to perform verification explicitly where necessary (for example when dealing with user input).
 
-* **Message.verify**(message: *Object*): *?string*<br />
+Note that **Message** refers to any message type below.
+
+* **Message.verify**(message: `Object`): `null|string`<br />
   explicitly performs verification prior to encoding / converting a plain object (i.e. where data comes from user input). Instead of throwing, it returns the error message as a string, if any.
 
   ```js
@@ -98,54 +100,66 @@ For [performance](#performance) reasons, protobuf.js provides multiple methods p
     throw Error(err);
   ```
 
-* **Message.encode**(message: *Message|Object*[, writer: *Writer*]): *Writer*<br />
-  is a message specific encoder expecting a valid message. Hence, if your data is already known to be valid, you can skip verification and just call the encoder. It accepts both a runtime message (recommended where messages are reused, i.e. use `.fromObject`) or a valid plain object.
+* **Message.encode**(message: `Message|Object` [, writer: `Writer`]): `Writer`<br />
+  is an automatically generated message specific encoder expecting a valid message or plain object. Note that this methods does not implicitly verify the message and that it's up to the user to make sure that the data can actually be encoded properly.
 
   ```js
   var buffer = AwesomeMessage.encode(message).finish();
   ```
 
-* **Message.encodeDelimited**(message: *Message|Object*[, writer: *Writer*]): *Writer*<br />
-  additionally prepends the length of the message as a varint.
+* **Message.encodeDelimited**(message: `Message|Object` [, writer: `Writer`]): `Writer`<br />
+  works like `Message.encode` but additionally prepends the length of the message as a varint.
 
-* **Message.decode**(reader: *Reader|Uint8Array*): *Message*<br />
-  is a message specific decoder expecting a valid buffer. If required fields are missing, it throws a `util.ProtocolError` with an `instance` property set to the so far decoded message - otherwise an `Error`. The result is a runtime message.
+* **Message.decode**(reader: `Reader|Uint8Array`): `Message`<br />
+  is an automatically generated message specific decoder. If required fields are missing, it throws a `util.ProtocolError` with an `instance` property set to the so far decoded message. If the wire format is invalid, it throws an `Error`. The result is a runtime message.
 
   ```js
   try {
     var decodedMessage = AwesomeMessage.decode(buffer);
   } catch (e) {
       if (e instanceof protobuf.util.ProtocolError) {
-          // e.instance holds the so far decoded message
+        // e.instance holds the so far decoded message
+        // with missing required fields
+      } else {
+        // wire format is invalid
       }
   }
   ```
 
-* **Message.decodeDelimited**(reader: *Reader|Uint8Array*): *Message*<br />
-  additionally reads the length of the meessage prepended as a varint.
+* **Message.decodeDelimited**(reader: `Reader|Uint8Array`): `Message`<br />
+  works like `Message.decode` but additionally reads the length of the message prepended as a varint.
 
-* **Message.create**(properties: *Object*): *Message*<br />
-  quickly creates a new runtime message from known to be valid properties without any conversion being performed.
+* **Message.create**(properties: `Object`): `Message`<br />
+  quickly creates a new runtime message from known to be valid properties without any conversion being performed. Where applicable, it is recommended to prefer `Message.create` over `Message.fromObject`.
 
   ```js
   var message = AwesomeMessage.create({ awesomeField: "AwesomeString" });
   ```
 
-* **Message.fromObject**(object: *Object*): *Message*<br />
-  converts any plain object to a runtime message. Tries to convert whatever is specified (use `.verify` before if necessary).
+* **Message.fromObject**(object: `Object`): `Message`<br />
+  converts any plain object to a runtime message. Tries to convert whatever is specified (use `Message.verify` before if necessary).
 
   ```js
   var message = AwesomeMessage.fromObject({ awesomeField: 42 });
   // converts awesomeField to a string
   ```
 
-* **Message.toObject**(message: *Message*, options: *ConversionOptions*): *Object*<br />
-  can be used to convert a runtime message to a plain object. See: [ConversionOptions](http://dcode.io/protobuf.js/global.html#ConversionOptions)
+* **Message.toObject**(message: `Message` [, options: `ConversionOptions`]): `Object`<br />
+  converts a runtime message to a plain object.
 
   ```js
-  var object = AwesomeMessage.toObject(message, { enums: String, longs: String, bytes: String, defaults: true });
-  // converts enums, longs and bytes to their string representation and includes default values
+  var object = AwesomeMessage.toObject(message, {
+    enums: String,  // enums as string names
+    longs: String,  // longs as strings (requires long.js)
+    bytes: String,  // bytes as base64 encoded strings
+    defaults: true, // includes default values
+    arrays: true,   // populates empty arrays even if defaults=false
+    objects: true,  // populates empty objects even if defaults=false
+    oneofs: true    // includes virtual oneof fields set to the present field's name
+  });
   ```
+
+  See also: [ConversionOptions](http://dcode.io/protobuf.js/global.html#ConversionOptions)
 
 Examples
 --------
