@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.7.0 (c) 2016, Daniel Wirtz
- * Compiled Mon, 20 Mar 2017 22:49:20 UTC
+ * Compiled Tue, 21 Mar 2017 21:25:14 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -1172,15 +1172,13 @@ converter.toObject = function toObject(mtype) {
 
     var repeatedFields = [],
         mapFields = [],
-        otherFields = [],
+        normalFields = [],
         i = 0;
     for (; i < fields.length; ++i)
-        if (fields[i].resolve().repeated)
-            repeatedFields.push(fields[i]);
-        else if (fields[i].map)
-            mapFields.push(fields[i]);
-        else
-            otherFields.push(fields[i]);
+        if (!fields[i].partOf)
+            ( fields[i].resolve().repeated ? repeatedFields
+            : fields[i].map ? mapFields
+            : normalFields).push(fields[i]);
 
     if (repeatedFields.length) { gen
     ("if(o.arrays||o.defaults){");
@@ -1198,10 +1196,10 @@ converter.toObject = function toObject(mtype) {
     ("}");
     }
 
-    if (otherFields.length) { gen
+    if (normalFields.length) { gen
     ("if(o.defaults){");
-        for (i = 0, field; i < otherFields.length; ++i) {
-            var field = otherFields[i],
+        for (i = 0, field; i < normalFields.length; ++i) {
+            var field = normalFields[i],
                 prop  = util.safeProp(field.name);
             if (field.resolvedType instanceof Enum) gen
         ("d%s=o.enums===String?%j:%j", prop, field.resolvedType.valuesById[field.typeDefault], field.typeDefault);
