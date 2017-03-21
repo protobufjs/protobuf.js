@@ -203,15 +203,13 @@ converter.toObject = function toObject(mtype) {
 
     var repeatedFields = [],
         mapFields = [],
-        otherFields = [],
+        normalFields = [],
         i = 0;
     for (; i < fields.length; ++i)
-        if (fields[i].resolve().repeated)
-            repeatedFields.push(fields[i]);
-        else if (fields[i].map)
-            mapFields.push(fields[i]);
-        else
-            otherFields.push(fields[i]);
+        if (!fields[i].partOf)
+            ( fields[i].resolve().repeated ? repeatedFields
+            : fields[i].map ? mapFields
+            : normalFields).push(fields[i]);
 
     if (repeatedFields.length) { gen
     ("if(o.arrays||o.defaults){");
@@ -229,10 +227,10 @@ converter.toObject = function toObject(mtype) {
     ("}");
     }
 
-    if (otherFields.length) { gen
+    if (normalFields.length) { gen
     ("if(o.defaults){");
-        for (i = 0, field; i < otherFields.length; ++i) {
-            var field = otherFields[i],
+        for (i = 0, field; i < normalFields.length; ++i) {
+            var field = normalFields[i],
                 prop  = util.safeProp(field.name);
             if (field.resolvedType instanceof Enum) gen
         ("d%s=o.enums===String?%j:%j", prop, field.resolvedType.valuesById[field.typeDefault], field.typeDefault);

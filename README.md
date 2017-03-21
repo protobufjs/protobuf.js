@@ -86,7 +86,7 @@ In case of doubt you can just use the full library.
 Usage
 -----
 
-For [performance](#performance) reasons, protobuf.js provides multiple methods per message type with each of them doing just one thing. This avoids redundant assertions where messages are already known to be valid but also requires explicit verification where necessary. Note that `Message` refers to any message below.
+For [performance](#performance) reasons, protobuf.js provides multiple methods per message type with each of them doing just one thing. This avoids redundant assertions where messages are already known to be valid but also requires explicit verification where necessary. Note that `Message` refers to any message type below.
 
 * **Message.verify**(message: *Object*): *?string*<br />
   explicitly performs verification prior to encoding / converting a plain object (i.e. where data comes from user input). Instead of throwing, it returns the error message as a string, if any.
@@ -109,7 +109,7 @@ For [performance](#performance) reasons, protobuf.js provides multiple methods p
   additionally prepends the length of the message as a varint.
 
 * **Message.decode**(reader: *Reader|Uint8Array*): *Message*<br />
-  is a message specific decoder expecting a valid buffer. If required fields are missing, it throws a `protobuf.util.ProtocolError` with an `instance` property set to the so far decoded message - otherwise an `Error`. The result is a runtime message.
+  is a message specific decoder expecting a valid buffer. If required fields are missing, it throws a `util.ProtocolError` with an `instance` property set to the so far decoded message - otherwise an `Error`. The result is a runtime message.
 
   ```js
   try {
