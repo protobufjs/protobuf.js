@@ -57,7 +57,7 @@ $root.vector_tile = (function() {
 
         /**
          * Encodes the specified Tile message. Does not implicitly {@link vector_tile.Tile.verify|verify} messages.
-         * @param {vector_tile.Tile|Object} message Tile message or plain object to encode
+         * @param {vector_tile.Tile|Object.<string,*>} message Tile message or plain object to encode
          * @param {$protobuf.Writer} [writer] Writer to encode to
          * @returns {$protobuf.Writer} Writer
          */
@@ -72,7 +72,7 @@ $root.vector_tile = (function() {
 
         /**
          * Encodes the specified Tile message, length delimited. Does not implicitly {@link vector_tile.Tile.verify|verify} messages.
-         * @param {vector_tile.Tile|Object} message Tile message or plain object to encode
+         * @param {vector_tile.Tile|Object.<string,*>} message Tile message or plain object to encode
          * @param {$protobuf.Writer} [writer] Writer to encode to
          * @returns {$protobuf.Writer} Writer
          */
@@ -123,7 +123,7 @@ $root.vector_tile = (function() {
 
         /**
          * Verifies a Tile message.
-         * @param {vector_tile.Tile|Object} message Tile message or plain object to verify
+         * @param {Object.<string,*>} message Tile object to verify
          * @returns {?string} `null` if valid, otherwise the reason why it is not
          */
         Tile.verify = function verify(message) {
@@ -295,7 +295,7 @@ $root.vector_tile = (function() {
 
             /**
              * Encodes the specified Value message. Does not implicitly {@link vector_tile.Tile.Value.verify|verify} messages.
-             * @param {vector_tile.Tile.Value|Object} message Value message or plain object to encode
+             * @param {vector_tile.Tile.Value|Object.<string,*>} message Value message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -321,7 +321,7 @@ $root.vector_tile = (function() {
 
             /**
              * Encodes the specified Value message, length delimited. Does not implicitly {@link vector_tile.Tile.Value.verify|verify} messages.
-             * @param {vector_tile.Tile.Value|Object} message Value message or plain object to encode
+             * @param {vector_tile.Tile.Value|Object.<string,*>} message Value message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -388,7 +388,7 @@ $root.vector_tile = (function() {
 
             /**
              * Verifies a Value message.
-             * @param {vector_tile.Tile.Value|Object} message Value message or plain object to verify
+             * @param {Object.<string,*>} message Value object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             Value.verify = function verify(message) {
@@ -605,7 +605,7 @@ $root.vector_tile = (function() {
 
             /**
              * Encodes the specified Feature message. Does not implicitly {@link vector_tile.Tile.Feature.verify|verify} messages.
-             * @param {vector_tile.Tile.Feature|Object} message Feature message or plain object to encode
+             * @param {vector_tile.Tile.Feature|Object.<string,*>} message Feature message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -633,7 +633,7 @@ $root.vector_tile = (function() {
 
             /**
              * Encodes the specified Feature message, length delimited. Does not implicitly {@link vector_tile.Tile.Feature.verify|verify} messages.
-             * @param {vector_tile.Tile.Feature|Object} message Feature message or plain object to encode
+             * @param {vector_tile.Tile.Feature|Object.<string,*>} message Feature message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -705,7 +705,7 @@ $root.vector_tile = (function() {
 
             /**
              * Verifies a Feature message.
-             * @param {vector_tile.Tile.Feature|Object} message Feature message or plain object to verify
+             * @param {Object.<string,*>} message Feature object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             Feature.verify = function verify(message) {
@@ -932,7 +932,7 @@ $root.vector_tile = (function() {
 
             /**
              * Encodes the specified Layer message. Does not implicitly {@link vector_tile.Tile.Layer.verify|verify} messages.
-             * @param {vector_tile.Tile.Layer|Object} message Layer message or plain object to encode
+             * @param {vector_tile.Tile.Layer|Object.<string,*>} message Layer message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -957,7 +957,7 @@ $root.vector_tile = (function() {
 
             /**
              * Encodes the specified Layer message, length delimited. Does not implicitly {@link vector_tile.Tile.Layer.verify|verify} messages.
-             * @param {vector_tile.Tile.Layer|Object} message Layer message or plain object to encode
+             * @param {vector_tile.Tile.Layer|Object.<string,*>} message Layer message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -1031,7 +1031,7 @@ $root.vector_tile = (function() {
 
             /**
              * Verifies a Layer message.
-             * @param {vector_tile.Tile.Layer|Object} message Layer message or plain object to verify
+             * @param {Object.<string,*>} message Layer object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             Layer.verify = function verify(message) {

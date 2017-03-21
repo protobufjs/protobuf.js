@@ -136,7 +136,7 @@ Class.prototype = Message;
  * Encodes a message of this type.
  * @name Class#encode
  * @function
- * @param {Message|Object} message Message to encode
+ * @param {Message|Object.<string,*>} message Message to encode
  * @param {Writer} [writer] Writer to use
  * @returns {Writer} Writer
  */
@@ -145,7 +145,7 @@ Class.prototype = Message;
  * Encodes a message of this type preceeded by its length as a varint.
  * @name Class#encodeDelimited
  * @function
- * @param {Message|Object} message Message to encode
+ * @param {Message|Object.<string,*>} message Message to encode
  * @param {Writer} [writer] Writer to use
  * @returns {Writer} Writer
  */
@@ -170,6 +170,6 @@ Class.prototype = Message;
  * Verifies a message of this type.
  * @name Class#verify
  * @function
- * @param {Message|Object} message Message or plain object to verify
+ * @param {Message|Object.<string,*>} message Message or plain object to verify
  * @returns {?string} `null` if valid, otherwise the reason why it is not
  */

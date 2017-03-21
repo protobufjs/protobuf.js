@@ -101,7 +101,7 @@ Note that **Message** refers to any message type below.
   ```
 
 * **Message.encode**(message: `Message|Object` [, writer: `Writer`]): `Writer`<br />
-  is an automatically generated message specific encoder expecting a valid message or plain object. Note that this methods does not implicitly verify the message and that it's up to the user to make sure that the data can actually be encoded properly.
+  is an automatically generated message specific encoder expecting a valid message or plain object. Note that this method does not implicitly verify the message and that it's up to the user to make sure that the data can actually be encoded properly.
 
   ```js
   var buffer = AwesomeMessage.encode(message).finish();

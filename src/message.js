@@ -34,7 +34,7 @@ function Message(properties) {
 
 /**
  * Encodes a message of this type.
- * @param {Message|Object} message Message to encode
+ * @param {Message|Object.<string,*>} message Message to encode
  * @param {Writer} [writer] Writer to use
  * @returns {Writer} Writer
  */
@@ -44,7 +44,7 @@ Message.encode = function encode(message, writer) {
 
 /**
  * Encodes a message of this type preceeded by its length as a varint.
- * @param {Message|Object} message Message to encode
+ * @param {Message|Object.<string,*>} message Message to encode
  * @param {Writer} [writer] Writer to use
  * @returns {Writer} Writer
  */
@@ -78,7 +78,7 @@ Message.decodeDelimited = function decodeDelimited(reader) {
  * Verifies a message of this type.
  * @name Message.verify
  * @function
- * @param {Message|Object} message Message or plain object to verify
+ * @param {Message|Object.<string,*>} message Message or plain object to verify
  * @returns {?string} `null` if valid, otherwise the reason why it is not
  */
 Message.verify = function verify(message) {

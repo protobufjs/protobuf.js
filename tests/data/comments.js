@@ -59,7 +59,7 @@ $root.Test1 = (function() {
 
     /**
      * Encodes the specified Test1 message. Does not implicitly {@link Test1.verify|verify} messages.
-     * @param {Test1|Object} message Test1 message or plain object to encode
+     * @param {Test1|Object.<string,*>} message Test1 message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
@@ -77,7 +77,7 @@ $root.Test1 = (function() {
 
     /**
      * Encodes the specified Test1 message, length delimited. Does not implicitly {@link Test1.verify|verify} messages.
-     * @param {Test1|Object} message Test1 message or plain object to encode
+     * @param {Test1|Object.<string,*>} message Test1 message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
@@ -132,7 +132,7 @@ $root.Test1 = (function() {
 
     /**
      * Verifies a Test1 message.
-     * @param {Test1|Object} message Test1 message or plain object to verify
+     * @param {Object.<string,*>} message Test1 object to verify
      * @returns {?string} `null` if valid, otherwise the reason why it is not
      */
     Test1.verify = function verify(message) {
@@ -246,7 +246,7 @@ $root.Test2 = (function() {
 
     /**
      * Encodes the specified Test2 message. Does not implicitly {@link Test2.verify|verify} messages.
-     * @param {Test2|Object} message Test2 message or plain object to encode
+     * @param {Test2|Object.<string,*>} message Test2 message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
@@ -258,7 +258,7 @@ $root.Test2 = (function() {
 
     /**
      * Encodes the specified Test2 message, length delimited. Does not implicitly {@link Test2.verify|verify} messages.
-     * @param {Test2|Object} message Test2 message or plain object to encode
+     * @param {Test2|Object.<string,*>} message Test2 message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
@@ -304,7 +304,7 @@ $root.Test2 = (function() {
 
     /**
      * Verifies a Test2 message.
-     * @param {Test2|Object} message Test2 message or plain object to verify
+     * @param {Object.<string,*>} message Test2 object to verify
      * @returns {?string} `null` if valid, otherwise the reason why it is not
      */
     Test2.verify = function verify(message) {

@@ -97,7 +97,7 @@ $root.Message = (function() {
 
     /**
      * Encodes the specified Message message. Does not implicitly {@link Message.verify|verify} messages.
-     * @param {Message|Object} message Message message or plain object to encode
+     * @param {Message|Object.<string,*>} message Message message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
@@ -138,7 +138,7 @@ $root.Message = (function() {
 
     /**
      * Encodes the specified Message message, length delimited. Does not implicitly {@link Message.verify|verify} messages.
-     * @param {Message|Object} message Message message or plain object to encode
+     * @param {Message|Object.<string,*>} message Message message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
@@ -234,7 +234,7 @@ $root.Message = (function() {
 
     /**
      * Verifies a Message message.
-     * @param {Message|Object} message Message message or plain object to verify
+     * @param {Object.<string,*>} message Message object to verify
      * @returns {?string} `null` if valid, otherwise the reason why it is not
      */
     Message.verify = function verify(message) {

@@ -150,7 +150,7 @@ $root.Package = (function() {
 
     /**
      * Encodes the specified Package message. Does not implicitly {@link Package.verify|verify} messages.
-     * @param {Package|Object} message Package message or plain object to encode
+     * @param {Package|Object.<string,*>} message Package message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
@@ -205,7 +205,7 @@ $root.Package = (function() {
 
     /**
      * Encodes the specified Package message, length delimited. Does not implicitly {@link Package.verify|verify} messages.
-     * @param {Package|Object} message Package message or plain object to encode
+     * @param {Package|Object.<string,*>} message Package message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
@@ -334,7 +334,7 @@ $root.Package = (function() {
 
     /**
      * Verifies a Package message.
-     * @param {Package|Object} message Package message or plain object to verify
+     * @param {Object.<string,*>} message Package object to verify
      * @returns {?string} `null` if valid, otherwise the reason why it is not
      */
     Package.verify = function verify(message) {
@@ -675,7 +675,7 @@ $root.Package = (function() {
 
         /**
          * Encodes the specified Repository message. Does not implicitly {@link Package.Repository.verify|verify} messages.
-         * @param {Package.Repository|Object} message Repository message or plain object to encode
+         * @param {Package.Repository|Object.<string,*>} message Repository message or plain object to encode
          * @param {$protobuf.Writer} [writer] Writer to encode to
          * @returns {$protobuf.Writer} Writer
          */
@@ -691,7 +691,7 @@ $root.Package = (function() {
 
         /**
          * Encodes the specified Repository message, length delimited. Does not implicitly {@link Package.Repository.verify|verify} messages.
-         * @param {Package.Repository|Object} message Repository message or plain object to encode
+         * @param {Package.Repository|Object.<string,*>} message Repository message or plain object to encode
          * @param {$protobuf.Writer} [writer] Writer to encode to
          * @returns {$protobuf.Writer} Writer
          */
@@ -743,7 +743,7 @@ $root.Package = (function() {
 
         /**
          * Verifies a Repository message.
-         * @param {Package.Repository|Object} message Repository message or plain object to verify
+         * @param {Object.<string,*>} message Repository object to verify
          * @returns {?string} `null` if valid, otherwise the reason why it is not
          */
         Repository.verify = function verify(message) {

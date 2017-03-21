@@ -50,7 +50,7 @@ $root.MyService = (function() {
 
     /**
      * Calls MyMethod.
-     * @param {MyRequest|Object} request MyRequest message or plain object
+     * @param {MyRequest|Object.<string,*>} request MyRequest message or plain object
      * @param {MyService_myMethod_Callback} callback Node-style callback called with the error, if any, and MyResponse
      * @returns {undefined}
      */
@@ -62,7 +62,7 @@ $root.MyService = (function() {
      * Calls MyMethod.
      * @name MyService#myMethod
      * @function
-     * @param {MyRequest|Object} request MyRequest message or plain object
+     * @param {MyRequest|Object.<string,*>} request MyRequest message or plain object
      * @returns {Promise<MyResponse>} Promise
      * @variation 2
      */
@@ -101,7 +101,7 @@ $root.MyRequest = (function() {
 
     /**
      * Encodes the specified MyRequest message. Does not implicitly {@link MyRequest.verify|verify} messages.
-     * @param {MyRequest|Object} message MyRequest message or plain object to encode
+     * @param {MyRequest|Object.<string,*>} message MyRequest message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
@@ -115,7 +115,7 @@ $root.MyRequest = (function() {
 
     /**
      * Encodes the specified MyRequest message, length delimited. Does not implicitly {@link MyRequest.verify|verify} messages.
-     * @param {MyRequest|Object} message MyRequest message or plain object to encode
+     * @param {MyRequest|Object.<string,*>} message MyRequest message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
@@ -164,7 +164,7 @@ $root.MyRequest = (function() {
 
     /**
      * Verifies a MyRequest message.
-     * @param {MyRequest|Object} message MyRequest message or plain object to verify
+     * @param {Object.<string,*>} message MyRequest object to verify
      * @returns {?string} `null` if valid, otherwise the reason why it is not
      */
     MyRequest.verify = function verify(message) {
@@ -267,7 +267,7 @@ $root.MyResponse = (function() {
 
     /**
      * Encodes the specified MyResponse message. Does not implicitly {@link MyResponse.verify|verify} messages.
-     * @param {MyResponse|Object} message MyResponse message or plain object to encode
+     * @param {MyResponse|Object.<string,*>} message MyResponse message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
@@ -281,7 +281,7 @@ $root.MyResponse = (function() {
 
     /**
      * Encodes the specified MyResponse message, length delimited. Does not implicitly {@link MyResponse.verify|verify} messages.
-     * @param {MyResponse|Object} message MyResponse message or plain object to encode
+     * @param {MyResponse|Object.<string,*>} message MyResponse message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
@@ -330,7 +330,7 @@ $root.MyResponse = (function() {
 
     /**
      * Verifies a MyResponse message.
-     * @param {MyResponse|Object} message MyResponse message or plain object to verify
+     * @param {Object.<string,*>} message MyResponse object to verify
      * @returns {?string} `null` if valid, otherwise the reason why it is not
      */
     MyResponse.verify = function verify(message) {

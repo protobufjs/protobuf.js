@@ -13,7 +13,7 @@ var Field = require("./field");
  * @extends ReflectionObject
  * @constructor
  * @param {string} name Oneof name
- * @param {string[]|Object} [fieldNames] Field names
+ * @param {string[]|Object.<string,*>} [fieldNames] Field names
  * @param {Object.<string,*>} [options] Declared options
  */
 function OneOf(name, fieldNames, options) {

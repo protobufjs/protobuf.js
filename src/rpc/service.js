@@ -21,7 +21,7 @@ var util = require("../util/minimal");
  * A service method part of a {@link rpc.ServiceMethodMixin|ServiceMethodMixin} and thus {@link rpc.Service} as created by {@link Service.create}.
  * @typedef rpc.ServiceMethod
  * @type {function}
- * @param {Message|Object} request Request message or plain object
+ * @param {Message|Object.<string,*>} request Request message or plain object
  * @param {rpc.ServiceMethodCallback} [callback] Node-style callback called with the error, if any, and the response message
  * @returns {Promise<Message>} Promise if `callback` has been omitted, otherwise `undefined`
  */
@@ -79,7 +79,7 @@ function Service(rpcImpl, requestDelimited, responseDelimited) {
  * @param {Method|rpc.ServiceMethod} method Reflected or static method
  * @param {function} requestCtor Request constructor
  * @param {function} responseCtor Response constructor
- * @param {Message|Object} request Request message or plain object
+ * @param {Message|Object.<string,*>} request Request message or plain object
  * @param {rpc.ServiceMethodCallback} callback Service callback
  * @returns {undefined}
  */

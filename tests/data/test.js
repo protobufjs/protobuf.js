@@ -55,7 +55,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified Empty message. Does not implicitly {@link jspb.test.Empty.verify|verify} messages.
-             * @param {jspb.test.Empty|Object} message Empty message or plain object to encode
+             * @param {jspb.test.Empty|Object.<string,*>} message Empty message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -67,7 +67,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified Empty message, length delimited. Does not implicitly {@link jspb.test.Empty.verify|verify} messages.
-             * @param {jspb.test.Empty|Object} message Empty message or plain object to encode
+             * @param {jspb.test.Empty|Object.<string,*>} message Empty message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -113,7 +113,7 @@ $root.jspb = (function() {
 
             /**
              * Verifies an Empty message.
-             * @param {jspb.test.Empty|Object} message Empty message or plain object to verify
+             * @param {Object.<string,*>} message Empty object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             Empty.verify = function verify(message) {
@@ -223,7 +223,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified EnumContainer message. Does not implicitly {@link jspb.test.EnumContainer.verify|verify} messages.
-             * @param {jspb.test.EnumContainer|Object} message EnumContainer message or plain object to encode
+             * @param {jspb.test.EnumContainer|Object.<string,*>} message EnumContainer message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -237,7 +237,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified EnumContainer message, length delimited. Does not implicitly {@link jspb.test.EnumContainer.verify|verify} messages.
-             * @param {jspb.test.EnumContainer|Object} message EnumContainer message or plain object to encode
+             * @param {jspb.test.EnumContainer|Object.<string,*>} message EnumContainer message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -286,7 +286,7 @@ $root.jspb = (function() {
 
             /**
              * Verifies an EnumContainer message.
-             * @param {jspb.test.EnumContainer|Object} message EnumContainer message or plain object to verify
+             * @param {Object.<string,*>} message EnumContainer object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             EnumContainer.verify = function verify(message) {
@@ -414,7 +414,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified Simple1 message. Does not implicitly {@link jspb.test.Simple1.verify|verify} messages.
-             * @param {jspb.test.Simple1|Object} message Simple1 message or plain object to encode
+             * @param {jspb.test.Simple1|Object.<string,*>} message Simple1 message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -432,7 +432,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified Simple1 message, length delimited. Does not implicitly {@link jspb.test.Simple1.verify|verify} messages.
-             * @param {jspb.test.Simple1|Object} message Simple1 message or plain object to encode
+             * @param {jspb.test.Simple1|Object.<string,*>} message Simple1 message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -491,7 +491,7 @@ $root.jspb = (function() {
 
             /**
              * Verifies a Simple1 message.
-             * @param {jspb.test.Simple1|Object} message Simple1 message or plain object to verify
+             * @param {Object.<string,*>} message Simple1 object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             Simple1.verify = function verify(message) {
@@ -629,7 +629,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified Simple2 message. Does not implicitly {@link jspb.test.Simple2.verify|verify} messages.
-             * @param {jspb.test.Simple2|Object} message Simple2 message or plain object to encode
+             * @param {jspb.test.Simple2|Object.<string,*>} message Simple2 message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -645,7 +645,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified Simple2 message, length delimited. Does not implicitly {@link jspb.test.Simple2.verify|verify} messages.
-             * @param {jspb.test.Simple2|Object} message Simple2 message or plain object to encode
+             * @param {jspb.test.Simple2|Object.<string,*>} message Simple2 message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -701,7 +701,7 @@ $root.jspb = (function() {
 
             /**
              * Verifies a Simple2 message.
-             * @param {jspb.test.Simple2|Object} message Simple2 message or plain object to verify
+             * @param {Object.<string,*>} message Simple2 object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             Simple2.verify = function verify(message) {
@@ -845,7 +845,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified SpecialCases message. Does not implicitly {@link jspb.test.SpecialCases.verify|verify} messages.
-             * @param {jspb.test.SpecialCases|Object} message SpecialCases message or plain object to encode
+             * @param {jspb.test.SpecialCases|Object.<string,*>} message SpecialCases message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -861,7 +861,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified SpecialCases message, length delimited. Does not implicitly {@link jspb.test.SpecialCases.verify|verify} messages.
-             * @param {jspb.test.SpecialCases|Object} message SpecialCases message or plain object to encode
+             * @param {jspb.test.SpecialCases|Object.<string,*>} message SpecialCases message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -927,7 +927,7 @@ $root.jspb = (function() {
 
             /**
              * Verifies a SpecialCases message.
-             * @param {jspb.test.SpecialCases|Object} message SpecialCases message or plain object to verify
+             * @param {Object.<string,*>} message SpecialCases object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             SpecialCases.verify = function verify(message) {
@@ -1081,7 +1081,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified OptionalFields message. Does not implicitly {@link jspb.test.OptionalFields.verify|verify} messages.
-             * @param {jspb.test.OptionalFields|Object} message OptionalFields message or plain object to encode
+             * @param {jspb.test.OptionalFields|Object.<string,*>} message OptionalFields message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -1104,7 +1104,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified OptionalFields message, length delimited. Does not implicitly {@link jspb.test.OptionalFields.verify|verify} messages.
-             * @param {jspb.test.OptionalFields|Object} message OptionalFields message or plain object to encode
+             * @param {jspb.test.OptionalFields|Object.<string,*>} message OptionalFields message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -1171,7 +1171,7 @@ $root.jspb = (function() {
 
             /**
              * Verifies an OptionalFields message.
-             * @param {jspb.test.OptionalFields|Object} message OptionalFields message or plain object to verify
+             * @param {Object.<string,*>} message OptionalFields object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             OptionalFields.verify = function verify(message) {
@@ -1339,7 +1339,7 @@ $root.jspb = (function() {
 
                 /**
                  * Encodes the specified Nested message. Does not implicitly {@link jspb.test.OptionalFields.Nested.verify|verify} messages.
-                 * @param {jspb.test.OptionalFields.Nested|Object} message Nested message or plain object to encode
+                 * @param {jspb.test.OptionalFields.Nested|Object.<string,*>} message Nested message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
                  */
@@ -1353,7 +1353,7 @@ $root.jspb = (function() {
 
                 /**
                  * Encodes the specified Nested message, length delimited. Does not implicitly {@link jspb.test.OptionalFields.Nested.verify|verify} messages.
-                 * @param {jspb.test.OptionalFields.Nested|Object} message Nested message or plain object to encode
+                 * @param {jspb.test.OptionalFields.Nested|Object.<string,*>} message Nested message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
                  */
@@ -1402,7 +1402,7 @@ $root.jspb = (function() {
 
                 /**
                  * Verifies a Nested message.
-                 * @param {jspb.test.OptionalFields.Nested|Object} message Nested message or plain object to verify
+                 * @param {Object.<string,*>} message Nested object to verify
                  * @returns {?string} `null` if valid, otherwise the reason why it is not
                  */
                 Nested.verify = function verify(message) {
@@ -1570,7 +1570,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified HasExtensions message. Does not implicitly {@link jspb.test.HasExtensions.verify|verify} messages.
-             * @param {jspb.test.HasExtensions|Object} message HasExtensions message or plain object to encode
+             * @param {jspb.test.HasExtensions|Object.<string,*>} message HasExtensions message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -1602,7 +1602,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified HasExtensions message, length delimited. Does not implicitly {@link jspb.test.HasExtensions.verify|verify} messages.
-             * @param {jspb.test.HasExtensions|Object} message HasExtensions message or plain object to encode
+             * @param {jspb.test.HasExtensions|Object.<string,*>} message HasExtensions message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -1679,7 +1679,7 @@ $root.jspb = (function() {
 
             /**
              * Verifies a HasExtensions message.
-             * @param {jspb.test.HasExtensions|Object} message HasExtensions message or plain object to verify
+             * @param {Object.<string,*>} message HasExtensions object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             HasExtensions.verify = function verify(message) {
@@ -1923,7 +1923,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified Complex message. Does not implicitly {@link jspb.test.Complex.verify|verify} messages.
-             * @param {jspb.test.Complex|Object} message Complex message or plain object to encode
+             * @param {jspb.test.Complex|Object.<string,*>} message Complex message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -1945,7 +1945,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified Complex message, length delimited. Does not implicitly {@link jspb.test.Complex.verify|verify} messages.
-             * @param {jspb.test.Complex|Object} message Complex message or plain object to encode
+             * @param {jspb.test.Complex|Object.<string,*>} message Complex message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -2014,7 +2014,7 @@ $root.jspb = (function() {
 
             /**
              * Verifies a Complex message.
-             * @param {jspb.test.Complex|Object} message Complex message or plain object to verify
+             * @param {Object.<string,*>} message Complex object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             Complex.verify = function verify(message) {
@@ -2181,7 +2181,7 @@ $root.jspb = (function() {
 
                 /**
                  * Encodes the specified Nested message. Does not implicitly {@link jspb.test.Complex.Nested.verify|verify} messages.
-                 * @param {jspb.test.Complex.Nested|Object} message Nested message or plain object to encode
+                 * @param {jspb.test.Complex.Nested|Object.<string,*>} message Nested message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
                  */
@@ -2194,7 +2194,7 @@ $root.jspb = (function() {
 
                 /**
                  * Encodes the specified Nested message, length delimited. Does not implicitly {@link jspb.test.Complex.Nested.verify|verify} messages.
-                 * @param {jspb.test.Complex.Nested|Object} message Nested message or plain object to encode
+                 * @param {jspb.test.Complex.Nested|Object.<string,*>} message Nested message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
                  */
@@ -2245,7 +2245,7 @@ $root.jspb = (function() {
 
                 /**
                  * Verifies a Nested message.
-                 * @param {jspb.test.Complex.Nested|Object} message Nested message or plain object to verify
+                 * @param {Object.<string,*>} message Nested object to verify
                  * @returns {?string} `null` if valid, otherwise the reason why it is not
                  */
                 Nested.verify = function verify(message) {
@@ -2344,7 +2344,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified OuterMessage message. Does not implicitly {@link jspb.test.OuterMessage.verify|verify} messages.
-             * @param {jspb.test.OuterMessage|Object} message OuterMessage message or plain object to encode
+             * @param {jspb.test.OuterMessage|Object.<string,*>} message OuterMessage message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -2356,7 +2356,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified OuterMessage message, length delimited. Does not implicitly {@link jspb.test.OuterMessage.verify|verify} messages.
-             * @param {jspb.test.OuterMessage|Object} message OuterMessage message or plain object to encode
+             * @param {jspb.test.OuterMessage|Object.<string,*>} message OuterMessage message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -2402,7 +2402,7 @@ $root.jspb = (function() {
 
             /**
              * Verifies an OuterMessage message.
-             * @param {jspb.test.OuterMessage|Object} message OuterMessage message or plain object to verify
+             * @param {Object.<string,*>} message OuterMessage object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             OuterMessage.verify = function verify(message) {
@@ -2489,7 +2489,7 @@ $root.jspb = (function() {
 
                 /**
                  * Encodes the specified Complex message. Does not implicitly {@link jspb.test.OuterMessage.Complex.verify|verify} messages.
-                 * @param {jspb.test.OuterMessage.Complex|Object} message Complex message or plain object to encode
+                 * @param {jspb.test.OuterMessage.Complex|Object.<string,*>} message Complex message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
                  */
@@ -2503,7 +2503,7 @@ $root.jspb = (function() {
 
                 /**
                  * Encodes the specified Complex message, length delimited. Does not implicitly {@link jspb.test.OuterMessage.Complex.verify|verify} messages.
-                 * @param {jspb.test.OuterMessage.Complex|Object} message Complex message or plain object to encode
+                 * @param {jspb.test.OuterMessage.Complex|Object.<string,*>} message Complex message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
                  */
@@ -2552,7 +2552,7 @@ $root.jspb = (function() {
 
                 /**
                  * Verifies a Complex message.
-                 * @param {jspb.test.OuterMessage.Complex|Object} message Complex message or plain object to verify
+                 * @param {Object.<string,*>} message Complex object to verify
                  * @returns {?string} `null` if valid, otherwise the reason why it is not
                  */
                 Complex.verify = function verify(message) {
@@ -2658,7 +2658,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified IsExtension message. Does not implicitly {@link jspb.test.IsExtension.verify|verify} messages.
-             * @param {jspb.test.IsExtension|Object} message IsExtension message or plain object to encode
+             * @param {jspb.test.IsExtension|Object.<string,*>} message IsExtension message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -2672,7 +2672,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified IsExtension message, length delimited. Does not implicitly {@link jspb.test.IsExtension.verify|verify} messages.
-             * @param {jspb.test.IsExtension|Object} message IsExtension message or plain object to encode
+             * @param {jspb.test.IsExtension|Object.<string,*>} message IsExtension message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -2721,7 +2721,7 @@ $root.jspb = (function() {
 
             /**
              * Verifies an IsExtension message.
-             * @param {jspb.test.IsExtension|Object} message IsExtension message or plain object to verify
+             * @param {Object.<string,*>} message IsExtension object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             IsExtension.verify = function verify(message) {
@@ -2818,7 +2818,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified IndirectExtension message. Does not implicitly {@link jspb.test.IndirectExtension.verify|verify} messages.
-             * @param {jspb.test.IndirectExtension|Object} message IndirectExtension message or plain object to encode
+             * @param {jspb.test.IndirectExtension|Object.<string,*>} message IndirectExtension message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -2830,7 +2830,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified IndirectExtension message, length delimited. Does not implicitly {@link jspb.test.IndirectExtension.verify|verify} messages.
-             * @param {jspb.test.IndirectExtension|Object} message IndirectExtension message or plain object to encode
+             * @param {jspb.test.IndirectExtension|Object.<string,*>} message IndirectExtension message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -2876,7 +2876,7 @@ $root.jspb = (function() {
 
             /**
              * Verifies an IndirectExtension message.
-             * @param {jspb.test.IndirectExtension|Object} message IndirectExtension message or plain object to verify
+             * @param {Object.<string,*>} message IndirectExtension object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             IndirectExtension.verify = function verify(message) {
@@ -3001,7 +3001,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified DefaultValues message. Does not implicitly {@link jspb.test.DefaultValues.verify|verify} messages.
-             * @param {jspb.test.DefaultValues|Object} message DefaultValues message or plain object to encode
+             * @param {jspb.test.DefaultValues|Object.<string,*>} message DefaultValues message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -3025,7 +3025,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified DefaultValues message, length delimited. Does not implicitly {@link jspb.test.DefaultValues.verify|verify} messages.
-             * @param {jspb.test.DefaultValues|Object} message DefaultValues message or plain object to encode
+             * @param {jspb.test.DefaultValues|Object.<string,*>} message DefaultValues message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -3089,7 +3089,7 @@ $root.jspb = (function() {
 
             /**
              * Verifies a DefaultValues message.
-             * @param {jspb.test.DefaultValues|Object} message DefaultValues message or plain object to verify
+             * @param {Object.<string,*>} message DefaultValues object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             DefaultValues.verify = function verify(message) {
@@ -3324,7 +3324,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified FloatingPointFields message. Does not implicitly {@link jspb.test.FloatingPointFields.verify|verify} messages.
-             * @param {jspb.test.FloatingPointFields|Object} message FloatingPointFields message or plain object to encode
+             * @param {jspb.test.FloatingPointFields|Object.<string,*>} message FloatingPointFields message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -3352,7 +3352,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified FloatingPointFields message, length delimited. Does not implicitly {@link jspb.test.FloatingPointFields.verify|verify} messages.
-             * @param {jspb.test.FloatingPointFields|Object} message FloatingPointFields message or plain object to encode
+             * @param {jspb.test.FloatingPointFields|Object.<string,*>} message FloatingPointFields message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -3440,7 +3440,7 @@ $root.jspb = (function() {
 
             /**
              * Verifies a FloatingPointFields message.
-             * @param {jspb.test.FloatingPointFields|Object} message FloatingPointFields message or plain object to verify
+             * @param {Object.<string,*>} message FloatingPointFields object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             FloatingPointFields.verify = function verify(message) {
@@ -3662,7 +3662,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified TestClone message. Does not implicitly {@link jspb.test.TestClone.verify|verify} messages.
-             * @param {jspb.test.TestClone|Object} message TestClone message or plain object to encode
+             * @param {jspb.test.TestClone|Object.<string,*>} message TestClone message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -3687,7 +3687,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified TestClone message, length delimited. Does not implicitly {@link jspb.test.TestClone.verify|verify} messages.
-             * @param {jspb.test.TestClone|Object} message TestClone message or plain object to encode
+             * @param {jspb.test.TestClone|Object.<string,*>} message TestClone message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -3753,7 +3753,7 @@ $root.jspb = (function() {
 
             /**
              * Verifies a TestClone message.
-             * @param {jspb.test.TestClone|Object} message TestClone message or plain object to verify
+             * @param {Object.<string,*>} message TestClone object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             TestClone.verify = function verify(message) {
@@ -3928,7 +3928,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified CloneExtension message. Does not implicitly {@link jspb.test.CloneExtension.verify|verify} messages.
-             * @param {jspb.test.CloneExtension|Object} message CloneExtension message or plain object to encode
+             * @param {jspb.test.CloneExtension|Object.<string,*>} message CloneExtension message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -3942,7 +3942,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified CloneExtension message, length delimited. Does not implicitly {@link jspb.test.CloneExtension.verify|verify} messages.
-             * @param {jspb.test.CloneExtension|Object} message CloneExtension message or plain object to encode
+             * @param {jspb.test.CloneExtension|Object.<string,*>} message CloneExtension message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -3991,7 +3991,7 @@ $root.jspb = (function() {
 
             /**
              * Verifies a CloneExtension message.
-             * @param {jspb.test.CloneExtension|Object} message CloneExtension message or plain object to verify
+             * @param {Object.<string,*>} message CloneExtension object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             CloneExtension.verify = function verify(message) {
@@ -4133,7 +4133,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified TestGroup message. Does not implicitly {@link jspb.test.TestGroup.verify|verify} messages.
-             * @param {jspb.test.TestGroup|Object} message TestGroup message or plain object to encode
+             * @param {jspb.test.TestGroup|Object.<string,*>} message TestGroup message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -4156,7 +4156,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified TestGroup message, length delimited. Does not implicitly {@link jspb.test.TestGroup.verify|verify} messages.
-             * @param {jspb.test.TestGroup|Object} message TestGroup message or plain object to encode
+             * @param {jspb.test.TestGroup|Object.<string,*>} message TestGroup message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -4226,7 +4226,7 @@ $root.jspb = (function() {
 
             /**
              * Verifies a TestGroup message.
-             * @param {jspb.test.TestGroup|Object} message TestGroup message or plain object to verify
+             * @param {Object.<string,*>} message TestGroup object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             TestGroup.verify = function verify(message) {
@@ -4407,7 +4407,7 @@ $root.jspb = (function() {
 
                 /**
                  * Encodes the specified RepeatedGroup message. Does not implicitly {@link jspb.test.TestGroup.RepeatedGroup.verify|verify} messages.
-                 * @param {jspb.test.TestGroup.RepeatedGroup|Object} message RepeatedGroup message or plain object to encode
+                 * @param {jspb.test.TestGroup.RepeatedGroup|Object.<string,*>} message RepeatedGroup message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
                  */
@@ -4423,7 +4423,7 @@ $root.jspb = (function() {
 
                 /**
                  * Encodes the specified RepeatedGroup message, length delimited. Does not implicitly {@link jspb.test.TestGroup.RepeatedGroup.verify|verify} messages.
-                 * @param {jspb.test.TestGroup.RepeatedGroup|Object} message RepeatedGroup message or plain object to encode
+                 * @param {jspb.test.TestGroup.RepeatedGroup|Object.<string,*>} message RepeatedGroup message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
                  */
@@ -4486,7 +4486,7 @@ $root.jspb = (function() {
 
                 /**
                  * Verifies a RepeatedGroup message.
-                 * @param {jspb.test.TestGroup.RepeatedGroup|Object} message RepeatedGroup message or plain object to verify
+                 * @param {Object.<string,*>} message RepeatedGroup object to verify
                  * @returns {?string} `null` if valid, otherwise the reason why it is not
                  */
                 RepeatedGroup.verify = function verify(message) {
@@ -4609,7 +4609,7 @@ $root.jspb = (function() {
 
                 /**
                  * Encodes the specified RequiredGroup message. Does not implicitly {@link jspb.test.TestGroup.RequiredGroup.verify|verify} messages.
-                 * @param {jspb.test.TestGroup.RequiredGroup|Object} message RequiredGroup message or plain object to encode
+                 * @param {jspb.test.TestGroup.RequiredGroup|Object.<string,*>} message RequiredGroup message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
                  */
@@ -4622,7 +4622,7 @@ $root.jspb = (function() {
 
                 /**
                  * Encodes the specified RequiredGroup message, length delimited. Does not implicitly {@link jspb.test.TestGroup.RequiredGroup.verify|verify} messages.
-                 * @param {jspb.test.TestGroup.RequiredGroup|Object} message RequiredGroup message or plain object to encode
+                 * @param {jspb.test.TestGroup.RequiredGroup|Object.<string,*>} message RequiredGroup message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
                  */
@@ -4675,7 +4675,7 @@ $root.jspb = (function() {
 
                 /**
                  * Verifies a RequiredGroup message.
-                 * @param {jspb.test.TestGroup.RequiredGroup|Object} message RequiredGroup message or plain object to verify
+                 * @param {Object.<string,*>} message RequiredGroup object to verify
                  * @returns {?string} `null` if valid, otherwise the reason why it is not
                  */
                 RequiredGroup.verify = function verify(message) {
@@ -4777,7 +4777,7 @@ $root.jspb = (function() {
 
                 /**
                  * Encodes the specified OptionalGroup message. Does not implicitly {@link jspb.test.TestGroup.OptionalGroup.verify|verify} messages.
-                 * @param {jspb.test.TestGroup.OptionalGroup|Object} message OptionalGroup message or plain object to encode
+                 * @param {jspb.test.TestGroup.OptionalGroup|Object.<string,*>} message OptionalGroup message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
                  */
@@ -4790,7 +4790,7 @@ $root.jspb = (function() {
 
                 /**
                  * Encodes the specified OptionalGroup message, length delimited. Does not implicitly {@link jspb.test.TestGroup.OptionalGroup.verify|verify} messages.
-                 * @param {jspb.test.TestGroup.OptionalGroup|Object} message OptionalGroup message or plain object to encode
+                 * @param {jspb.test.TestGroup.OptionalGroup|Object.<string,*>} message OptionalGroup message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
                  */
@@ -4843,7 +4843,7 @@ $root.jspb = (function() {
 
                 /**
                  * Verifies an OptionalGroup message.
-                 * @param {jspb.test.TestGroup.OptionalGroup|Object} message OptionalGroup message or plain object to verify
+                 * @param {Object.<string,*>} message OptionalGroup object to verify
                  * @returns {?string} `null` if valid, otherwise the reason why it is not
                  */
                 OptionalGroup.verify = function verify(message) {
@@ -4953,7 +4953,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified TestGroup1 message. Does not implicitly {@link jspb.test.TestGroup1.verify|verify} messages.
-             * @param {jspb.test.TestGroup1|Object} message TestGroup1 message or plain object to encode
+             * @param {jspb.test.TestGroup1|Object.<string,*>} message TestGroup1 message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -4967,7 +4967,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified TestGroup1 message, length delimited. Does not implicitly {@link jspb.test.TestGroup1.verify|verify} messages.
-             * @param {jspb.test.TestGroup1|Object} message TestGroup1 message or plain object to encode
+             * @param {jspb.test.TestGroup1|Object.<string,*>} message TestGroup1 message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -5016,7 +5016,7 @@ $root.jspb = (function() {
 
             /**
              * Verifies a TestGroup1 message.
-             * @param {jspb.test.TestGroup1|Object} message TestGroup1 message or plain object to verify
+             * @param {Object.<string,*>} message TestGroup1 object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             TestGroup1.verify = function verify(message) {
@@ -5131,7 +5131,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified TestReservedNames message. Does not implicitly {@link jspb.test.TestReservedNames.verify|verify} messages.
-             * @param {jspb.test.TestReservedNames|Object} message TestReservedNames message or plain object to encode
+             * @param {jspb.test.TestReservedNames|Object.<string,*>} message TestReservedNames message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -5147,7 +5147,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified TestReservedNames message, length delimited. Does not implicitly {@link jspb.test.TestReservedNames.verify|verify} messages.
-             * @param {jspb.test.TestReservedNames|Object} message TestReservedNames message or plain object to encode
+             * @param {jspb.test.TestReservedNames|Object.<string,*>} message TestReservedNames message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -5199,7 +5199,7 @@ $root.jspb = (function() {
 
             /**
              * Verifies a TestReservedNames message.
-             * @param {jspb.test.TestReservedNames|Object} message TestReservedNames message or plain object to verify
+             * @param {Object.<string,*>} message TestReservedNames object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             TestReservedNames.verify = function verify(message) {
@@ -5305,7 +5305,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified TestReservedNamesExtension message. Does not implicitly {@link jspb.test.TestReservedNamesExtension.verify|verify} messages.
-             * @param {jspb.test.TestReservedNamesExtension|Object} message TestReservedNamesExtension message or plain object to encode
+             * @param {jspb.test.TestReservedNamesExtension|Object.<string,*>} message TestReservedNamesExtension message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -5317,7 +5317,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified TestReservedNamesExtension message, length delimited. Does not implicitly {@link jspb.test.TestReservedNamesExtension.verify|verify} messages.
-             * @param {jspb.test.TestReservedNamesExtension|Object} message TestReservedNamesExtension message or plain object to encode
+             * @param {jspb.test.TestReservedNamesExtension|Object.<string,*>} message TestReservedNamesExtension message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -5363,7 +5363,7 @@ $root.jspb = (function() {
 
             /**
              * Verifies a TestReservedNamesExtension message.
-             * @param {jspb.test.TestReservedNamesExtension|Object} message TestReservedNamesExtension message or plain object to verify
+             * @param {Object.<string,*>} message TestReservedNamesExtension object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             TestReservedNamesExtension.verify = function verify(message) {
@@ -5555,7 +5555,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified TestMessageWithOneof message. Does not implicitly {@link jspb.test.TestMessageWithOneof.verify|verify} messages.
-             * @param {jspb.test.TestMessageWithOneof|Object} message TestMessageWithOneof message or plain object to encode
+             * @param {jspb.test.TestMessageWithOneof|Object.<string,*>} message TestMessageWithOneof message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -5588,7 +5588,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified TestMessageWithOneof message, length delimited. Does not implicitly {@link jspb.test.TestMessageWithOneof.verify|verify} messages.
-             * @param {jspb.test.TestMessageWithOneof|Object} message TestMessageWithOneof message or plain object to encode
+             * @param {jspb.test.TestMessageWithOneof|Object.<string,*>} message TestMessageWithOneof message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -5666,7 +5666,7 @@ $root.jspb = (function() {
 
             /**
              * Verifies a TestMessageWithOneof message.
-             * @param {jspb.test.TestMessageWithOneof|Object} message TestMessageWithOneof message or plain object to verify
+             * @param {Object.<string,*>} message TestMessageWithOneof object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             TestMessageWithOneof.verify = function verify(message) {
@@ -5796,17 +5796,8 @@ $root.jspb = (function() {
                 var object = {};
                 if (options.arrays || options.defaults)
                     object.repeatedField = [];
-                if (options.defaults) {
-                    object.pone = "";
-                    object.pthree = "";
-                    object.rone = null;
-                    object.rtwo = "";
+                if (options.defaults)
                     object.normalField = false;
-                    object.aone = 1234;
-                    object.atwo = 0;
-                    object.bone = 0;
-                    object.btwo = 1234;
-                }
                 if (message.pone !== undefined && message.pone !== null && message.hasOwnProperty("pone")) {
                     object.pone = message.pone;
                     if (options.oneofs)
@@ -5914,7 +5905,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified TestEndsWithBytes message. Does not implicitly {@link jspb.test.TestEndsWithBytes.verify|verify} messages.
-             * @param {jspb.test.TestEndsWithBytes|Object} message TestEndsWithBytes message or plain object to encode
+             * @param {jspb.test.TestEndsWithBytes|Object.<string,*>} message TestEndsWithBytes message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -5930,7 +5921,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified TestEndsWithBytes message, length delimited. Does not implicitly {@link jspb.test.TestEndsWithBytes.verify|verify} messages.
-             * @param {jspb.test.TestEndsWithBytes|Object} message TestEndsWithBytes message or plain object to encode
+             * @param {jspb.test.TestEndsWithBytes|Object.<string,*>} message TestEndsWithBytes message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -5982,7 +5973,7 @@ $root.jspb = (function() {
 
             /**
              * Verifies a TestEndsWithBytes message.
-             * @param {jspb.test.TestEndsWithBytes|Object} message TestEndsWithBytes message or plain object to verify
+             * @param {Object.<string,*>} message TestEndsWithBytes object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             TestEndsWithBytes.verify = function verify(message) {
@@ -6171,7 +6162,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified TestMapFieldsNoBinary message. Does not implicitly {@link jspb.test.TestMapFieldsNoBinary.verify|verify} messages.
-             * @param {jspb.test.TestMapFieldsNoBinary|Object} message TestMapFieldsNoBinary message or plain object to encode
+             * @param {jspb.test.TestMapFieldsNoBinary|Object.<string,*>} message TestMapFieldsNoBinary message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -6222,7 +6213,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified TestMapFieldsNoBinary message, length delimited. Does not implicitly {@link jspb.test.TestMapFieldsNoBinary.verify|verify} messages.
-             * @param {jspb.test.TestMapFieldsNoBinary|Object} message TestMapFieldsNoBinary message or plain object to encode
+             * @param {jspb.test.TestMapFieldsNoBinary|Object.<string,*>} message TestMapFieldsNoBinary message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -6359,7 +6350,7 @@ $root.jspb = (function() {
 
             /**
              * Verifies a TestMapFieldsNoBinary message.
-             * @param {jspb.test.TestMapFieldsNoBinary|Object} message TestMapFieldsNoBinary message or plain object to verify
+             * @param {Object.<string,*>} message TestMapFieldsNoBinary object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             TestMapFieldsNoBinary.verify = function verify(message) {
@@ -6765,7 +6756,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified MapValueMessageNoBinary message. Does not implicitly {@link jspb.test.MapValueMessageNoBinary.verify|verify} messages.
-             * @param {jspb.test.MapValueMessageNoBinary|Object} message MapValueMessageNoBinary message or plain object to encode
+             * @param {jspb.test.MapValueMessageNoBinary|Object.<string,*>} message MapValueMessageNoBinary message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -6779,7 +6770,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified MapValueMessageNoBinary message, length delimited. Does not implicitly {@link jspb.test.MapValueMessageNoBinary.verify|verify} messages.
-             * @param {jspb.test.MapValueMessageNoBinary|Object} message MapValueMessageNoBinary message or plain object to encode
+             * @param {jspb.test.MapValueMessageNoBinary|Object.<string,*>} message MapValueMessageNoBinary message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -6828,7 +6819,7 @@ $root.jspb = (function() {
 
             /**
              * Verifies a MapValueMessageNoBinary message.
-             * @param {jspb.test.MapValueMessageNoBinary|Object} message MapValueMessageNoBinary message or plain object to verify
+             * @param {Object.<string,*>} message MapValueMessageNoBinary object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             MapValueMessageNoBinary.verify = function verify(message) {
@@ -6925,7 +6916,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified Deeply message. Does not implicitly {@link jspb.test.Deeply.verify|verify} messages.
-             * @param {jspb.test.Deeply|Object} message Deeply message or plain object to encode
+             * @param {jspb.test.Deeply|Object.<string,*>} message Deeply message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -6937,7 +6928,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified Deeply message, length delimited. Does not implicitly {@link jspb.test.Deeply.verify|verify} messages.
-             * @param {jspb.test.Deeply|Object} message Deeply message or plain object to encode
+             * @param {jspb.test.Deeply|Object.<string,*>} message Deeply message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -6983,7 +6974,7 @@ $root.jspb = (function() {
 
             /**
              * Verifies a Deeply message.
-             * @param {jspb.test.Deeply|Object} message Deeply message or plain object to verify
+             * @param {Object.<string,*>} message Deeply object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             Deeply.verify = function verify(message) {
@@ -7064,7 +7055,7 @@ $root.jspb = (function() {
 
                 /**
                  * Encodes the specified Nested message. Does not implicitly {@link jspb.test.Deeply.Nested.verify|verify} messages.
-                 * @param {jspb.test.Deeply.Nested|Object} message Nested message or plain object to encode
+                 * @param {jspb.test.Deeply.Nested|Object.<string,*>} message Nested message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
                  */
@@ -7076,7 +7067,7 @@ $root.jspb = (function() {
 
                 /**
                  * Encodes the specified Nested message, length delimited. Does not implicitly {@link jspb.test.Deeply.Nested.verify|verify} messages.
-                 * @param {jspb.test.Deeply.Nested|Object} message Nested message or plain object to encode
+                 * @param {jspb.test.Deeply.Nested|Object.<string,*>} message Nested message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
                  */
@@ -7122,7 +7113,7 @@ $root.jspb = (function() {
 
                 /**
                  * Verifies a Nested message.
-                 * @param {jspb.test.Deeply.Nested|Object} message Nested message or plain object to verify
+                 * @param {Object.<string,*>} message Nested object to verify
                  * @returns {?string} `null` if valid, otherwise the reason why it is not
                  */
                 Nested.verify = function verify(message) {
@@ -7209,7 +7200,7 @@ $root.jspb = (function() {
 
                     /**
                      * Encodes the specified Message message. Does not implicitly {@link jspb.test.Deeply.Nested.Message.verify|verify} messages.
-                     * @param {jspb.test.Deeply.Nested.Message|Object} message Message message or plain object to encode
+                     * @param {jspb.test.Deeply.Nested.Message|Object.<string,*>} message Message message or plain object to encode
                      * @param {$protobuf.Writer} [writer] Writer to encode to
                      * @returns {$protobuf.Writer} Writer
                      */
@@ -7223,7 +7214,7 @@ $root.jspb = (function() {
 
                     /**
                      * Encodes the specified Message message, length delimited. Does not implicitly {@link jspb.test.Deeply.Nested.Message.verify|verify} messages.
-                     * @param {jspb.test.Deeply.Nested.Message|Object} message Message message or plain object to encode
+                     * @param {jspb.test.Deeply.Nested.Message|Object.<string,*>} message Message message or plain object to encode
                      * @param {$protobuf.Writer} [writer] Writer to encode to
                      * @returns {$protobuf.Writer} Writer
                      */
@@ -7272,7 +7263,7 @@ $root.jspb = (function() {
 
                     /**
                      * Verifies a Message message.
-                     * @param {jspb.test.Deeply.Nested.Message|Object} message Message message or plain object to verify
+                     * @param {Object.<string,*>} message Message object to verify
                      * @returns {?string} `null` if valid, otherwise the reason why it is not
                      */
                     Message.verify = function verify(message) {
@@ -7410,7 +7401,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified FileDescriptorSet message. Does not implicitly {@link google.protobuf.FileDescriptorSet.verify|verify} messages.
-             * @param {google.protobuf.FileDescriptorSet|Object} message FileDescriptorSet message or plain object to encode
+             * @param {google.protobuf.FileDescriptorSet|Object.<string,*>} message FileDescriptorSet message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -7425,7 +7416,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified FileDescriptorSet message, length delimited. Does not implicitly {@link google.protobuf.FileDescriptorSet.verify|verify} messages.
-             * @param {google.protobuf.FileDescriptorSet|Object} message FileDescriptorSet message or plain object to encode
+             * @param {google.protobuf.FileDescriptorSet|Object.<string,*>} message FileDescriptorSet message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -7476,7 +7467,7 @@ $root.google = (function() {
 
             /**
              * Verifies a FileDescriptorSet message.
-             * @param {google.protobuf.FileDescriptorSet|Object} message FileDescriptorSet message or plain object to verify
+             * @param {Object.<string,*>} message FileDescriptorSet object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             FileDescriptorSet.verify = function verify(message) {
@@ -7673,7 +7664,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified FileDescriptorProto message. Does not implicitly {@link google.protobuf.FileDescriptorProto.verify|verify} messages.
-             * @param {google.protobuf.FileDescriptorProto|Object} message FileDescriptorProto message or plain object to encode
+             * @param {google.protobuf.FileDescriptorProto|Object.<string,*>} message FileDescriptorProto message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -7716,7 +7707,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified FileDescriptorProto message, length delimited. Does not implicitly {@link google.protobuf.FileDescriptorProto.verify|verify} messages.
-             * @param {google.protobuf.FileDescriptorProto|Object} message FileDescriptorProto message or plain object to encode
+             * @param {google.protobuf.FileDescriptorProto|Object.<string,*>} message FileDescriptorProto message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -7822,7 +7813,7 @@ $root.google = (function() {
 
             /**
              * Verifies a FileDescriptorProto message.
-             * @param {google.protobuf.FileDescriptorProto|Object} message FileDescriptorProto message or plain object to verify
+             * @param {Object.<string,*>} message FileDescriptorProto object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             FileDescriptorProto.verify = function verify(message) {
@@ -8196,7 +8187,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified DescriptorProto message. Does not implicitly {@link google.protobuf.DescriptorProto.verify|verify} messages.
-             * @param {google.protobuf.DescriptorProto|Object} message DescriptorProto message or plain object to encode
+             * @param {google.protobuf.DescriptorProto|Object.<string,*>} message DescriptorProto message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -8236,7 +8227,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified DescriptorProto message, length delimited. Does not implicitly {@link google.protobuf.DescriptorProto.verify|verify} messages.
-             * @param {google.protobuf.DescriptorProto|Object} message DescriptorProto message or plain object to encode
+             * @param {google.protobuf.DescriptorProto|Object.<string,*>} message DescriptorProto message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -8328,7 +8319,7 @@ $root.google = (function() {
 
             /**
              * Verifies a DescriptorProto message.
-             * @param {google.protobuf.DescriptorProto|Object} message DescriptorProto message or plain object to verify
+             * @param {Object.<string,*>} message DescriptorProto object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             DescriptorProto.verify = function verify(message) {
@@ -8645,7 +8636,7 @@ $root.google = (function() {
 
                 /**
                  * Encodes the specified ExtensionRange message. Does not implicitly {@link google.protobuf.DescriptorProto.ExtensionRange.verify|verify} messages.
-                 * @param {google.protobuf.DescriptorProto.ExtensionRange|Object} message ExtensionRange message or plain object to encode
+                 * @param {google.protobuf.DescriptorProto.ExtensionRange|Object.<string,*>} message ExtensionRange message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
                  */
@@ -8661,7 +8652,7 @@ $root.google = (function() {
 
                 /**
                  * Encodes the specified ExtensionRange message, length delimited. Does not implicitly {@link google.protobuf.DescriptorProto.ExtensionRange.verify|verify} messages.
-                 * @param {google.protobuf.DescriptorProto.ExtensionRange|Object} message ExtensionRange message or plain object to encode
+                 * @param {google.protobuf.DescriptorProto.ExtensionRange|Object.<string,*>} message ExtensionRange message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
                  */
@@ -8713,7 +8704,7 @@ $root.google = (function() {
 
                 /**
                  * Verifies an ExtensionRange message.
-                 * @param {google.protobuf.DescriptorProto.ExtensionRange|Object} message ExtensionRange message or plain object to verify
+                 * @param {Object.<string,*>} message ExtensionRange object to verify
                  * @returns {?string} `null` if valid, otherwise the reason why it is not
                  */
                 ExtensionRange.verify = function verify(message) {
@@ -8831,7 +8822,7 @@ $root.google = (function() {
 
                 /**
                  * Encodes the specified ReservedRange message. Does not implicitly {@link google.protobuf.DescriptorProto.ReservedRange.verify|verify} messages.
-                 * @param {google.protobuf.DescriptorProto.ReservedRange|Object} message ReservedRange message or plain object to encode
+                 * @param {google.protobuf.DescriptorProto.ReservedRange|Object.<string,*>} message ReservedRange message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
                  */
@@ -8847,7 +8838,7 @@ $root.google = (function() {
 
                 /**
                  * Encodes the specified ReservedRange message, length delimited. Does not implicitly {@link google.protobuf.DescriptorProto.ReservedRange.verify|verify} messages.
-                 * @param {google.protobuf.DescriptorProto.ReservedRange|Object} message ReservedRange message or plain object to encode
+                 * @param {google.protobuf.DescriptorProto.ReservedRange|Object.<string,*>} message ReservedRange message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
                  */
@@ -8899,7 +8890,7 @@ $root.google = (function() {
 
                 /**
                  * Verifies a ReservedRange message.
-                 * @param {google.protobuf.DescriptorProto.ReservedRange|Object} message ReservedRange message or plain object to verify
+                 * @param {Object.<string,*>} message ReservedRange object to verify
                  * @returns {?string} `null` if valid, otherwise the reason why it is not
                  */
                 ReservedRange.verify = function verify(message) {
@@ -9075,7 +9066,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified FieldDescriptorProto message. Does not implicitly {@link google.protobuf.FieldDescriptorProto.verify|verify} messages.
-             * @param {google.protobuf.FieldDescriptorProto|Object} message FieldDescriptorProto message or plain object to encode
+             * @param {google.protobuf.FieldDescriptorProto|Object.<string,*>} message FieldDescriptorProto message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -9107,7 +9098,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified FieldDescriptorProto message, length delimited. Does not implicitly {@link google.protobuf.FieldDescriptorProto.verify|verify} messages.
-             * @param {google.protobuf.FieldDescriptorProto|Object} message FieldDescriptorProto message or plain object to encode
+             * @param {google.protobuf.FieldDescriptorProto|Object.<string,*>} message FieldDescriptorProto message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -9183,7 +9174,7 @@ $root.google = (function() {
 
             /**
              * Verifies a FieldDescriptorProto message.
-             * @param {google.protobuf.FieldDescriptorProto|Object} message FieldDescriptorProto message or plain object to verify
+             * @param {Object.<string,*>} message FieldDescriptorProto object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             FieldDescriptorProto.verify = function verify(message) {
@@ -9550,7 +9541,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified OneofDescriptorProto message. Does not implicitly {@link google.protobuf.OneofDescriptorProto.verify|verify} messages.
-             * @param {google.protobuf.OneofDescriptorProto|Object} message OneofDescriptorProto message or plain object to encode
+             * @param {google.protobuf.OneofDescriptorProto|Object.<string,*>} message OneofDescriptorProto message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -9566,7 +9557,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified OneofDescriptorProto message, length delimited. Does not implicitly {@link google.protobuf.OneofDescriptorProto.verify|verify} messages.
-             * @param {google.protobuf.OneofDescriptorProto|Object} message OneofDescriptorProto message or plain object to encode
+             * @param {google.protobuf.OneofDescriptorProto|Object.<string,*>} message OneofDescriptorProto message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -9618,7 +9609,7 @@ $root.google = (function() {
 
             /**
              * Verifies an OneofDescriptorProto message.
-             * @param {google.protobuf.OneofDescriptorProto|Object} message OneofDescriptorProto message or plain object to verify
+             * @param {Object.<string,*>} message OneofDescriptorProto object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             OneofDescriptorProto.verify = function verify(message) {
@@ -9753,7 +9744,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified EnumDescriptorProto message. Does not implicitly {@link google.protobuf.EnumDescriptorProto.verify|verify} messages.
-             * @param {google.protobuf.EnumDescriptorProto|Object} message EnumDescriptorProto message or plain object to encode
+             * @param {google.protobuf.EnumDescriptorProto|Object.<string,*>} message EnumDescriptorProto message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -9772,7 +9763,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified EnumDescriptorProto message, length delimited. Does not implicitly {@link google.protobuf.EnumDescriptorProto.verify|verify} messages.
-             * @param {google.protobuf.EnumDescriptorProto|Object} message EnumDescriptorProto message or plain object to encode
+             * @param {google.protobuf.EnumDescriptorProto|Object.<string,*>} message EnumDescriptorProto message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -9829,7 +9820,7 @@ $root.google = (function() {
 
             /**
              * Verifies an EnumDescriptorProto message.
-             * @param {google.protobuf.EnumDescriptorProto|Object} message EnumDescriptorProto message or plain object to verify
+             * @param {Object.<string,*>} message EnumDescriptorProto object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             EnumDescriptorProto.verify = function verify(message) {
@@ -9989,7 +9980,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified EnumValueDescriptorProto message. Does not implicitly {@link google.protobuf.EnumValueDescriptorProto.verify|verify} messages.
-             * @param {google.protobuf.EnumValueDescriptorProto|Object} message EnumValueDescriptorProto message or plain object to encode
+             * @param {google.protobuf.EnumValueDescriptorProto|Object.<string,*>} message EnumValueDescriptorProto message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -10007,7 +9998,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified EnumValueDescriptorProto message, length delimited. Does not implicitly {@link google.protobuf.EnumValueDescriptorProto.verify|verify} messages.
-             * @param {google.protobuf.EnumValueDescriptorProto|Object} message EnumValueDescriptorProto message or plain object to encode
+             * @param {google.protobuf.EnumValueDescriptorProto|Object.<string,*>} message EnumValueDescriptorProto message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -10062,7 +10053,7 @@ $root.google = (function() {
 
             /**
              * Verifies an EnumValueDescriptorProto message.
-             * @param {google.protobuf.EnumValueDescriptorProto|Object} message EnumValueDescriptorProto message or plain object to verify
+             * @param {Object.<string,*>} message EnumValueDescriptorProto object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             EnumValueDescriptorProto.verify = function verify(message) {
@@ -10205,7 +10196,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified ServiceDescriptorProto message. Does not implicitly {@link google.protobuf.ServiceDescriptorProto.verify|verify} messages.
-             * @param {google.protobuf.ServiceDescriptorProto|Object} message ServiceDescriptorProto message or plain object to encode
+             * @param {google.protobuf.ServiceDescriptorProto|Object.<string,*>} message ServiceDescriptorProto message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -10224,7 +10215,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified ServiceDescriptorProto message, length delimited. Does not implicitly {@link google.protobuf.ServiceDescriptorProto.verify|verify} messages.
-             * @param {google.protobuf.ServiceDescriptorProto|Object} message ServiceDescriptorProto message or plain object to encode
+             * @param {google.protobuf.ServiceDescriptorProto|Object.<string,*>} message ServiceDescriptorProto message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -10281,7 +10272,7 @@ $root.google = (function() {
 
             /**
              * Verifies a ServiceDescriptorProto message.
-             * @param {google.protobuf.ServiceDescriptorProto|Object} message ServiceDescriptorProto message or plain object to verify
+             * @param {Object.<string,*>} message ServiceDescriptorProto object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             ServiceDescriptorProto.verify = function verify(message) {
@@ -10459,7 +10450,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified MethodDescriptorProto message. Does not implicitly {@link google.protobuf.MethodDescriptorProto.verify|verify} messages.
-             * @param {google.protobuf.MethodDescriptorProto|Object} message MethodDescriptorProto message or plain object to encode
+             * @param {google.protobuf.MethodDescriptorProto|Object.<string,*>} message MethodDescriptorProto message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -10483,7 +10474,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified MethodDescriptorProto message, length delimited. Does not implicitly {@link google.protobuf.MethodDescriptorProto.verify|verify} messages.
-             * @param {google.protobuf.MethodDescriptorProto|Object} message MethodDescriptorProto message or plain object to encode
+             * @param {google.protobuf.MethodDescriptorProto|Object.<string,*>} message MethodDescriptorProto message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -10547,7 +10538,7 @@ $root.google = (function() {
 
             /**
              * Verifies a MethodDescriptorProto message.
-             * @param {google.protobuf.MethodDescriptorProto|Object} message MethodDescriptorProto message or plain object to verify
+             * @param {Object.<string,*>} message MethodDescriptorProto object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             MethodDescriptorProto.verify = function verify(message) {
@@ -10786,7 +10777,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified FileOptions message. Does not implicitly {@link google.protobuf.FileOptions.verify|verify} messages.
-             * @param {google.protobuf.FileOptions|Object} message FileOptions message or plain object to encode
+             * @param {google.protobuf.FileOptions|Object.<string,*>} message FileOptions message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -10829,7 +10820,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified FileOptions message, length delimited. Does not implicitly {@link google.protobuf.FileOptions.verify|verify} messages.
-             * @param {google.protobuf.FileOptions|Object} message FileOptions message or plain object to encode
+             * @param {google.protobuf.FileOptions|Object.<string,*>} message FileOptions message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -10922,7 +10913,7 @@ $root.google = (function() {
 
             /**
              * Verifies a FileOptions message.
-             * @param {google.protobuf.FileOptions|Object} message FileOptions message or plain object to verify
+             * @param {Object.<string,*>} message FileOptions object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             FileOptions.verify = function verify(message) {
@@ -11220,7 +11211,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified MessageOptions message. Does not implicitly {@link google.protobuf.MessageOptions.verify|verify} messages.
-             * @param {google.protobuf.MessageOptions|Object} message MessageOptions message or plain object to encode
+             * @param {google.protobuf.MessageOptions|Object.<string,*>} message MessageOptions message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -11243,7 +11234,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified MessageOptions message, length delimited. Does not implicitly {@link google.protobuf.MessageOptions.verify|verify} messages.
-             * @param {google.protobuf.MessageOptions|Object} message MessageOptions message or plain object to encode
+             * @param {google.protobuf.MessageOptions|Object.<string,*>} message MessageOptions message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -11306,7 +11297,7 @@ $root.google = (function() {
 
             /**
              * Verifies a MessageOptions message.
-             * @param {google.protobuf.MessageOptions|Object} message MessageOptions message or plain object to verify
+             * @param {Object.<string,*>} message MessageOptions object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             MessageOptions.verify = function verify(message) {
@@ -11503,7 +11494,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified FieldOptions message. Does not implicitly {@link google.protobuf.FieldOptions.verify|verify} messages.
-             * @param {google.protobuf.FieldOptions|Object} message FieldOptions message or plain object to encode
+             * @param {google.protobuf.FieldOptions|Object.<string,*>} message FieldOptions message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -11530,7 +11521,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified FieldOptions message, length delimited. Does not implicitly {@link google.protobuf.FieldOptions.verify|verify} messages.
-             * @param {google.protobuf.FieldOptions|Object} message FieldOptions message or plain object to encode
+             * @param {google.protobuf.FieldOptions|Object.<string,*>} message FieldOptions message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -11599,7 +11590,7 @@ $root.google = (function() {
 
             /**
              * Verifies a FieldOptions message.
-             * @param {google.protobuf.FieldOptions|Object} message FieldOptions message or plain object to verify
+             * @param {Object.<string,*>} message FieldOptions object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             FieldOptions.verify = function verify(message) {
@@ -11844,7 +11835,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified OneofOptions message. Does not implicitly {@link google.protobuf.OneofOptions.verify|verify} messages.
-             * @param {google.protobuf.OneofOptions|Object} message OneofOptions message or plain object to encode
+             * @param {google.protobuf.OneofOptions|Object.<string,*>} message OneofOptions message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -11859,7 +11850,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified OneofOptions message, length delimited. Does not implicitly {@link google.protobuf.OneofOptions.verify|verify} messages.
-             * @param {google.protobuf.OneofOptions|Object} message OneofOptions message or plain object to encode
+             * @param {google.protobuf.OneofOptions|Object.<string,*>} message OneofOptions message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -11910,7 +11901,7 @@ $root.google = (function() {
 
             /**
              * Verifies an OneofOptions message.
-             * @param {google.protobuf.OneofOptions|Object} message OneofOptions message or plain object to verify
+             * @param {Object.<string,*>} message OneofOptions object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             OneofOptions.verify = function verify(message) {
@@ -12054,7 +12045,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified EnumOptions message. Does not implicitly {@link google.protobuf.EnumOptions.verify|verify} messages.
-             * @param {google.protobuf.EnumOptions|Object} message EnumOptions message or plain object to encode
+             * @param {google.protobuf.EnumOptions|Object.<string,*>} message EnumOptions message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -12075,7 +12066,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified EnumOptions message, length delimited. Does not implicitly {@link google.protobuf.EnumOptions.verify|verify} messages.
-             * @param {google.protobuf.EnumOptions|Object} message EnumOptions message or plain object to encode
+             * @param {google.protobuf.EnumOptions|Object.<string,*>} message EnumOptions message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -12135,7 +12126,7 @@ $root.google = (function() {
 
             /**
              * Verifies an EnumOptions message.
-             * @param {google.protobuf.EnumOptions|Object} message EnumOptions message or plain object to verify
+             * @param {Object.<string,*>} message EnumOptions object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             EnumOptions.verify = function verify(message) {
@@ -12292,7 +12283,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified EnumValueOptions message. Does not implicitly {@link google.protobuf.EnumValueOptions.verify|verify} messages.
-             * @param {google.protobuf.EnumValueOptions|Object} message EnumValueOptions message or plain object to encode
+             * @param {google.protobuf.EnumValueOptions|Object.<string,*>} message EnumValueOptions message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -12309,7 +12300,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified EnumValueOptions message, length delimited. Does not implicitly {@link google.protobuf.EnumValueOptions.verify|verify} messages.
-             * @param {google.protobuf.EnumValueOptions|Object} message EnumValueOptions message or plain object to encode
+             * @param {google.protobuf.EnumValueOptions|Object.<string,*>} message EnumValueOptions message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -12363,7 +12354,7 @@ $root.google = (function() {
 
             /**
              * Verifies an EnumValueOptions message.
-             * @param {google.protobuf.EnumValueOptions|Object} message EnumValueOptions message or plain object to verify
+             * @param {Object.<string,*>} message EnumValueOptions object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             EnumValueOptions.verify = function verify(message) {
@@ -12503,7 +12494,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified ServiceOptions message. Does not implicitly {@link google.protobuf.ServiceOptions.verify|verify} messages.
-             * @param {google.protobuf.ServiceOptions|Object} message ServiceOptions message or plain object to encode
+             * @param {google.protobuf.ServiceOptions|Object.<string,*>} message ServiceOptions message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -12520,7 +12511,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified ServiceOptions message, length delimited. Does not implicitly {@link google.protobuf.ServiceOptions.verify|verify} messages.
-             * @param {google.protobuf.ServiceOptions|Object} message ServiceOptions message or plain object to encode
+             * @param {google.protobuf.ServiceOptions|Object.<string,*>} message ServiceOptions message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -12574,7 +12565,7 @@ $root.google = (function() {
 
             /**
              * Verifies a ServiceOptions message.
-             * @param {google.protobuf.ServiceOptions|Object} message ServiceOptions message or plain object to verify
+             * @param {Object.<string,*>} message ServiceOptions object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             ServiceOptions.verify = function verify(message) {
@@ -12721,7 +12712,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified MethodOptions message. Does not implicitly {@link google.protobuf.MethodOptions.verify|verify} messages.
-             * @param {google.protobuf.MethodOptions|Object} message MethodOptions message or plain object to encode
+             * @param {google.protobuf.MethodOptions|Object.<string,*>} message MethodOptions message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -12740,7 +12731,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified MethodOptions message, length delimited. Does not implicitly {@link google.protobuf.MethodOptions.verify|verify} messages.
-             * @param {google.protobuf.MethodOptions|Object} message MethodOptions message or plain object to encode
+             * @param {google.protobuf.MethodOptions|Object.<string,*>} message MethodOptions message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -12797,7 +12788,7 @@ $root.google = (function() {
 
             /**
              * Verifies a MethodOptions message.
-             * @param {google.protobuf.MethodOptions|Object} message MethodOptions message or plain object to verify
+             * @param {Object.<string,*>} message MethodOptions object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             MethodOptions.verify = function verify(message) {
@@ -13011,7 +13002,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified UninterpretedOption message. Does not implicitly {@link google.protobuf.UninterpretedOption.verify|verify} messages.
-             * @param {google.protobuf.UninterpretedOption|Object} message UninterpretedOption message or plain object to encode
+             * @param {google.protobuf.UninterpretedOption|Object.<string,*>} message UninterpretedOption message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -13038,7 +13029,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified UninterpretedOption message, length delimited. Does not implicitly {@link google.protobuf.UninterpretedOption.verify|verify} messages.
-             * @param {google.protobuf.UninterpretedOption|Object} message UninterpretedOption message or plain object to encode
+             * @param {google.protobuf.UninterpretedOption|Object.<string,*>} message UninterpretedOption message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -13107,7 +13098,7 @@ $root.google = (function() {
 
             /**
              * Verifies an UninterpretedOption message.
-             * @param {google.protobuf.UninterpretedOption|Object} message UninterpretedOption message or plain object to verify
+             * @param {Object.<string,*>} message UninterpretedOption object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             UninterpretedOption.verify = function verify(message) {
@@ -13311,7 +13302,7 @@ $root.google = (function() {
 
                 /**
                  * Encodes the specified NamePart message. Does not implicitly {@link google.protobuf.UninterpretedOption.NamePart.verify|verify} messages.
-                 * @param {google.protobuf.UninterpretedOption.NamePart|Object} message NamePart message or plain object to encode
+                 * @param {google.protobuf.UninterpretedOption.NamePart|Object.<string,*>} message NamePart message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
                  */
@@ -13325,7 +13316,7 @@ $root.google = (function() {
 
                 /**
                  * Encodes the specified NamePart message, length delimited. Does not implicitly {@link google.protobuf.UninterpretedOption.NamePart.verify|verify} messages.
-                 * @param {google.protobuf.UninterpretedOption.NamePart|Object} message NamePart message or plain object to encode
+                 * @param {google.protobuf.UninterpretedOption.NamePart|Object.<string,*>} message NamePart message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
                  */
@@ -13381,7 +13372,7 @@ $root.google = (function() {
 
                 /**
                  * Verifies a NamePart message.
-                 * @param {google.protobuf.UninterpretedOption.NamePart|Object} message NamePart message or plain object to verify
+                 * @param {Object.<string,*>} message NamePart object to verify
                  * @returns {?string} `null` if valid, otherwise the reason why it is not
                  */
                 NamePart.verify = function verify(message) {
@@ -13499,7 +13490,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified SourceCodeInfo message. Does not implicitly {@link google.protobuf.SourceCodeInfo.verify|verify} messages.
-             * @param {google.protobuf.SourceCodeInfo|Object} message SourceCodeInfo message or plain object to encode
+             * @param {google.protobuf.SourceCodeInfo|Object.<string,*>} message SourceCodeInfo message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -13514,7 +13505,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified SourceCodeInfo message, length delimited. Does not implicitly {@link google.protobuf.SourceCodeInfo.verify|verify} messages.
-             * @param {google.protobuf.SourceCodeInfo|Object} message SourceCodeInfo message or plain object to encode
+             * @param {google.protobuf.SourceCodeInfo|Object.<string,*>} message SourceCodeInfo message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -13565,7 +13556,7 @@ $root.google = (function() {
 
             /**
              * Verifies a SourceCodeInfo message.
-             * @param {google.protobuf.SourceCodeInfo|Object} message SourceCodeInfo message or plain object to verify
+             * @param {Object.<string,*>} message SourceCodeInfo object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             SourceCodeInfo.verify = function verify(message) {
@@ -13706,7 +13697,7 @@ $root.google = (function() {
 
                 /**
                  * Encodes the specified Location message. Does not implicitly {@link google.protobuf.SourceCodeInfo.Location.verify|verify} messages.
-                 * @param {google.protobuf.SourceCodeInfo.Location|Object} message Location message or plain object to encode
+                 * @param {google.protobuf.SourceCodeInfo.Location|Object.<string,*>} message Location message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
                  */
@@ -13737,7 +13728,7 @@ $root.google = (function() {
 
                 /**
                  * Encodes the specified Location message, length delimited. Does not implicitly {@link google.protobuf.SourceCodeInfo.Location.verify|verify} messages.
-                 * @param {google.protobuf.SourceCodeInfo.Location|Object} message Location message or plain object to encode
+                 * @param {google.protobuf.SourceCodeInfo.Location|Object.<string,*>} message Location message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
                  */
@@ -13814,7 +13805,7 @@ $root.google = (function() {
 
                 /**
                  * Verifies a Location message.
-                 * @param {google.protobuf.SourceCodeInfo.Location|Object} message Location message or plain object to verify
+                 * @param {Object.<string,*>} message Location object to verify
                  * @returns {?string} `null` if valid, otherwise the reason why it is not
                  */
                 Location.verify = function verify(message) {
@@ -13996,7 +13987,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified GeneratedCodeInfo message. Does not implicitly {@link google.protobuf.GeneratedCodeInfo.verify|verify} messages.
-             * @param {google.protobuf.GeneratedCodeInfo|Object} message GeneratedCodeInfo message or plain object to encode
+             * @param {google.protobuf.GeneratedCodeInfo|Object.<string,*>} message GeneratedCodeInfo message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -14011,7 +14002,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified GeneratedCodeInfo message, length delimited. Does not implicitly {@link google.protobuf.GeneratedCodeInfo.verify|verify} messages.
-             * @param {google.protobuf.GeneratedCodeInfo|Object} message GeneratedCodeInfo message or plain object to encode
+             * @param {google.protobuf.GeneratedCodeInfo|Object.<string,*>} message GeneratedCodeInfo message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -14062,7 +14053,7 @@ $root.google = (function() {
 
             /**
              * Verifies a GeneratedCodeInfo message.
-             * @param {google.protobuf.GeneratedCodeInfo|Object} message GeneratedCodeInfo message or plain object to verify
+             * @param {Object.<string,*>} message GeneratedCodeInfo object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             GeneratedCodeInfo.verify = function verify(message) {
@@ -14197,7 +14188,7 @@ $root.google = (function() {
 
                 /**
                  * Encodes the specified Annotation message. Does not implicitly {@link google.protobuf.GeneratedCodeInfo.Annotation.verify|verify} messages.
-                 * @param {google.protobuf.GeneratedCodeInfo.Annotation|Object} message Annotation message or plain object to encode
+                 * @param {google.protobuf.GeneratedCodeInfo.Annotation|Object.<string,*>} message Annotation message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
                  */
@@ -14221,7 +14212,7 @@ $root.google = (function() {
 
                 /**
                  * Encodes the specified Annotation message, length delimited. Does not implicitly {@link google.protobuf.GeneratedCodeInfo.Annotation.verify|verify} messages.
-                 * @param {google.protobuf.GeneratedCodeInfo.Annotation|Object} message Annotation message or plain object to encode
+                 * @param {google.protobuf.GeneratedCodeInfo.Annotation|Object.<string,*>} message Annotation message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
                  */
@@ -14286,7 +14277,7 @@ $root.google = (function() {
 
                 /**
                  * Verifies an Annotation message.
-                 * @param {google.protobuf.GeneratedCodeInfo.Annotation|Object} message Annotation message or plain object to verify
+                 * @param {Object.<string,*>} message Annotation object to verify
                  * @returns {?string} `null` if valid, otherwise the reason why it is not
                  */
                 Annotation.verify = function verify(message) {

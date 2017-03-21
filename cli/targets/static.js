@@ -394,7 +394,7 @@ function buildType(ref, type) {
         push("");
         pushComment([
             "Encodes the specified " + type.name + " message. Does not implicitly {@link " + fullName + ".verify|verify} messages.",
-            "@param {" + fullName + "|Object} " + (config.beautify ? "message" : "m") + " " + type.name + " message or plain object to encode",
+            "@param {" + fullName + "|Object.<string,*>} " + (config.beautify ? "message" : "m") + " " + type.name + " message or plain object to encode",
             "@param {$protobuf.Writer} [" + (config.beautify ? "writer" : "w") + "] Writer to encode to",
             "@returns {$protobuf.Writer} Writer"
         ]);
@@ -404,7 +404,7 @@ function buildType(ref, type) {
             push("");
             pushComment([
                 "Encodes the specified " + type.name + " message, length delimited. Does not implicitly {@link " + fullName + ".verify|verify} messages.",
-                "@param {" + fullName + "|Object} message " + type.name + " message or plain object to encode",
+                "@param {" + fullName + "|Object.<string,*>} message " + type.name + " message or plain object to encode",
                 "@param {$protobuf.Writer} [writer] Writer to encode to",
                 "@returns {$protobuf.Writer} Writer"
             ]);
@@ -456,11 +456,10 @@ function buildType(ref, type) {
         push("");
         pushComment([
             "Verifies " + aOrAn(type.name) + " message.",
-            "@param {" + fullName + "|Object} " + (config.beautify ? "message" : "m") + " " + type.name + " message or plain object to verify",
+            "@param {Object.<string,*>} " + (config.beautify ? "message" : "m") + " " + type.name + " object to verify",
             "@returns {?string} `null` if valid, otherwise the reason why it is not"
         ]);
         buildFunction(type, "verify", protobuf.verifier(type));
-
     }
 
     if (config.convert) {
@@ -570,7 +569,7 @@ function buildService(ref, service) {
         push("");
         pushComment([
             method.comment || "Calls " + method.name + ".",
-            "@param {" + method.resolvedRequestType.fullName.substring(1) + "|Object} request " + method.resolvedRequestType.name + " message or plain object",
+            "@param {" + method.resolvedRequestType.fullName.substring(1) + "|Object.<string,*>} request " + method.resolvedRequestType.name + " message or plain object",
             "@param {" + cbName + "} callback Node-style callback called with the error, if any, and " + method.resolvedResponseType.name,
             "@returns {undefined}"
         ]);
@@ -585,7 +584,7 @@ function buildService(ref, service) {
             method.comment || "Calls " + method.name + ".",
             "@name " + name(service.name) + "#" + lcName,
             "@function",
-            "@param {" + method.resolvedRequestType.fullName.substring(1) + "|Object} request " + method.resolvedRequestType.name + " message or plain object",
+            "@param {" + method.resolvedRequestType.fullName.substring(1) + "|Object.<string,*>} request " + method.resolvedRequestType.name + " message or plain object",
             "@returns {Promise<"+method.resolvedResponseType.fullName.substring(1)+">} Promise",
             "@variation 2"
         ]);

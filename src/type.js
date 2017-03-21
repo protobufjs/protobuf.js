@@ -398,7 +398,7 @@ Type.prototype.setup = function setup() {
 
 /**
  * Encodes a message of this type. Does not implicitly {@link Type#verify|verify} messages.
- * @param {Message|Object} message Message instance or plain object
+ * @param {Message|Object.<string,*>} message Message instance or plain object
  * @param {Writer} [writer] Writer to encode to
  * @returns {Writer} writer
  */
@@ -408,7 +408,7 @@ Type.prototype.encode = function encode_setup(message, writer) {
 
 /**
  * Encodes a message of this type preceeded by its byte length as a varint. Does not implicitly {@link Type#verify|verify} messages.
- * @param {Message|Object} message Message instance or plain object
+ * @param {Message|Object.<string,*>} message Message instance or plain object
  * @param {Writer} [writer] Writer to encode to
  * @returns {Writer} writer
  */
@@ -443,7 +443,7 @@ Type.prototype.decodeDelimited = function decodeDelimited(reader) {
 
 /**
  * Verifies that field values are valid and that required fields are present.
- * @param {Message|Object} message Message to verify
+ * @param {Object.<string,*>} message Plain object to verify
  * @returns {?string} `null` if valid, otherwise the reason why it is not
  */
 Type.prototype.verify = function verify_setup(message) {
@@ -452,7 +452,7 @@ Type.prototype.verify = function verify_setup(message) {
 
 /**
  * Creates a new message of this type from a plain object. Also converts values to their respective internal types.
- * @param {Object.<string,*>} object Plain object
+ * @param {Object.<string,*>} object Plain object to convert
  * @returns {Message} Message instance
  */
 Type.prototype.fromObject = function fromObject(object) {
