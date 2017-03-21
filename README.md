@@ -8,11 +8,11 @@
 Contents
 --------
 
-* [Usage](#usage)<br />
+* [Installation](#installation)<br />
   How to include protobuf.js in your project.
 
-* [Distributions](#distributions)<br />
-  A brief introduction to the available distributions and their use cases.
+* [Usage](#usage)<br />
+  A brief introduction to using the toolset.
 
 * [Examples](#examples)<br />
   A few examples to get you started.
@@ -32,7 +32,7 @@ Contents
 * [Building](#building)<br />
   How to build the library and its components yourself.
 
-Usage
+Installation
 ---------------
 
 ### node.js
@@ -61,8 +61,7 @@ Production:
 
 The `protobuf` namespace will always be available globally / also supports AMD loaders.
 
-Distributions
--------------
+### Distributions
 
 The library supports both reflection-based and code-based use cases:
 
@@ -70,7 +69,7 @@ The library supports both reflection-based and code-based use cases:
 2. Loading JSON descriptors to reflection
 3. Generating static code without any reflection features
 
-There is a suitable distribution for each of these:
+Where bundle size is a factor, there is a suitable distribution for each of these:
 
 |         | Gzipped | Downloads                    | How to require                  | Description
 |---------|---------|------------------------------|---------------------------------|-------------
@@ -84,12 +83,10 @@ In case of doubt you can just use the full library.
 [dist-light]: https://github.com/dcodeIO/protobuf.js/tree/master/dist/light
 [dist-minimal]: https://github.com/dcodeIO/protobuf.js/tree/master/dist/minimal
 
-Examples
---------
+Usage
+-----
 
-### Understanding the toolset
-
-For optimal performance, protobuf.js tries to avoid redundant assertions. Instead, it provides multiple methods, each doing just one thing.
+For [performance](#performance) reasons, protobuf.js provides multiple methods per message type with each of them doing just one thing. This avoids redundant assertions where messages are already known to be valid but also requires explicit verification where necessary. Note that `Message` refers to any message below.
 
 * **Message.verify**(message: *Object*): *?string*<br />
   explicitly performs verification prior to encoding / converting a plain object (i.e. where data comes from user input). Instead of throwing, it returns the error message as a string, if any.
@@ -108,6 +105,9 @@ For optimal performance, protobuf.js tries to avoid redundant assertions. Instea
   var buffer = AwesomeMessage.encode(message).finish();
   ```
 
+* **Message.encodeDelimited**(message: *Message|Object*[, writer: *Writer*]): *Writer*<br />
+  additionally prepends the length of the message as a varint.
+
 * **Message.decode**(reader: *Reader|Uint8Array*): *Message*<br />
   is a message specific decoder expecting a valid buffer. If required fields are missing, it throws a `protobuf.util.ProtocolError` with an `instance` property set to the so far decoded message - otherwise an `Error`. The result is a runtime message.
 
@@ -120,6 +120,9 @@ For optimal performance, protobuf.js tries to avoid redundant assertions. Instea
       }
   }
   ```
+
+* **Message.decodeDelimited**(reader: *Reader|Uint8Array*): *Message*<br />
+  additionally reads the length of the meessage prepended as a varint.
 
 * **Message.create**(properties: *Object*): *Message*<br />
   quickly creates a new runtime message from known to be valid properties without any conversion being performed.
@@ -144,9 +147,12 @@ For optimal performance, protobuf.js tries to avoid redundant assertions. Instea
   // converts enums, longs and bytes to their string representation and includes default values
   ```
 
+Examples
+--------
+
 ### Using .proto files
 
-It's possible to load existing .proto files using the full library, which parses and compiles the definitions to ready to use (reflection-based) message classes:
+It is possible to load existing .proto files using the full library, which parses and compiles the definitions to ready to use (reflection-based) message classes:
 
 ```protobuf
 // awesome.proto
