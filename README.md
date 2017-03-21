@@ -86,12 +86,12 @@ In case of doubt you can just use the full library.
 Usage
 -----
 
-Each message type provides a set of methods with each of them doing just one thing. This is done for [performance](#performance) reasons because it allows to avoid unnecessary operations but also forces a user to perform verification explicitly where necessary (for example when dealing with user input).
+Each message type provides a set of methods with each method doing just one thing. This allows to avoid unnecessary operations where [performance](#performance) is a concern but also forces a user to perform verification explicitly where necessary - for example when dealing with user input.
 
 Note that **Message** refers to any message type below.
 
 * **Message.verify**(message: `Object`): `null|string`<br />
-  explicitly performs verification prior to encoding / converting a plain object (i.e. where data comes from user input). Instead of throwing, it returns the error message as a string, if any.
+  explicitly performs verification prior to encoding / converting a plain object. Instead of throwing, it returns the error message as a string, if any.
 
   ```js
   var payload = "invalid (not an object)";
@@ -118,8 +118,7 @@ Note that **Message** refers to any message type below.
     var decodedMessage = AwesomeMessage.decode(buffer);
   } catch (e) {
       if (e instanceof protobuf.util.ProtocolError) {
-        // e.instance holds the so far decoded message
-        // with missing required fields
+        // e.instance holds the so far decoded message with missing required fields
       } else {
         // wire format is invalid
       }
@@ -153,8 +152,8 @@ Note that **Message** refers to any message type below.
     longs: String,  // longs as strings (requires long.js)
     bytes: String,  // bytes as base64 encoded strings
     defaults: true, // includes default values
-    arrays: true,   // populates empty arrays even if defaults=false
-    objects: true,  // populates empty objects even if defaults=false
+    arrays: true,   // populates empty arrays (repeated fields) even if defaults=false
+    objects: true,  // populates empty objects (map fields) even if defaults=false
     oneofs: true    // includes virtual oneof fields set to the present field's name
   });
   ```
