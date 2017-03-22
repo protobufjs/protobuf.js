@@ -31,7 +31,7 @@ exports.main = function main(args, callback) {
             lint   : "l"
         },
         string: [ "target", "out", "path", "wrap", "root", "lint" ],
-        boolean: [ "keep-case", "create", "encode", "decode", "verify", "convert", "delimited", "beautify", "comments", "es6", "sparse" ],
+        boolean: [ "keep-case", "create", "encode", "decode", "verify", "convert", "delimited", "beautify", "comments", "es6", "sparse", "defaults" ],
         default: {
             target    : "json",
             create    : true,
@@ -42,6 +42,7 @@ exports.main = function main(args, callback) {
             delimited : true,
             beautify  : true,
             comments  : true,
+            defaults  : false,
             es6       : null,
             lint      : lintDefault
         }
@@ -50,6 +51,11 @@ exports.main = function main(args, callback) {
     var target = targets[argv.target],
         files  = argv._,
         paths  = typeof argv.path === "string" ? [ argv.path ] : argv.path || [];
+
+    protobuf.encoder.defaults = argv.defaults;
+    protobuf.decoder.defaults = argv.defaults;
+    protobuf.converter.defaults = argv.defaults;
+    protobuf.Class.defaults = argv.defaults;
 
     // protobuf.js package directory contains additional, otherwise non-bundled google types
     paths.push(path.relative(process.cwd(), path.join(__dirname, "..")) || ".");
@@ -107,6 +113,7 @@ exports.main = function main(args, callback) {
                 "  --no-delimited  Does not generate delimited encode/decode functions.",
                 "  --no-beautify   Does not beautify generated code.",
                 "  --no-comments   Does not output any JSDoc comments.",
+                "  --defaults      Does set default values when using .decode() or new()",
                 "",
                 "usage: " + chalk.bold.green("pbjs") + " [options] file1.proto file2.json ..." + chalk.gray("  (or)  ") + "other | " + chalk.bold.green("pbjs") + " [options] -",
                 ""

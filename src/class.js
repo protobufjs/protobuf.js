@@ -6,6 +6,9 @@ var Message = require("./message"),
 
 var Type; // cyclic
 
+// see cli/pbjs.js
+Class.defaults = false;
+
 /**
  * Constructs a new message prototype for the specified reflected type and sets up its constructor.
  * @classdesc Runtime class providing the tools to create your own custom classes.
@@ -79,13 +82,19 @@ Class.generate = function generate(type) { // eslint-disable-line no-unused-vars
     var gen = util.codegen("p");
     // see issue #700: the following would add explicitly initialized mutable object/array fields
     // so that these aren't just inherited from the prototype. will break test cases.
-    /*
-    for (var i = 0, field; i < type.fieldsArray.length; ++i)
-        if ((field = type._fieldsArray[i]).map) gen
-            ("this%s={}", util.safeProp(field.name));
-        else if (field.repeated) gen
-            ("this%s=[]", util.safeProp(field.name));
-    */
+
+    if (Class.defaults) {
+        for (var i = 0; i < type.fieldsArray.length; ++i) {
+            var field = type.fieldsArray[i];
+            var prop = util.safeProp(field.name);
+
+            if (field.map) gen
+                ("this%s={}", prop);
+            else if (field.repeated) gen
+                ("this%s=[]", prop);
+        }
+    }
+
     return gen
     ("if(p){")
         ("for(var ks=Object.keys(p),i=0;i<ks.length;++i)")

@@ -3,6 +3,9 @@ module.exports = decoder;
 
 decoder.compat = true;
 
+// see cli/pbjs.js
+decoder.defaults = false;
+
 var Enum    = require("./enum"),
     types   = require("./types"),
     util    = require("./util");
@@ -52,8 +55,8 @@ function decoder(mtype) {
                 ("%s[typeof k===\"object\"?util.longToHash(k):k]=r.%s()", ref, type);
 
         // Repeated fields
-        } else if (field.repeated) { gen
-
+        } else if (field.repeated) {
+            if (!decoder.defaults) gen
                 ("if(!(%s&&%s.length))", ref, ref)
                     ("%s=[]", ref);
 

@@ -8,6 +8,9 @@ var converter = exports;
 var Enum = require("./enum"),
     util = require("./util");
 
+// see cli/pbjs.js
+converter.defaults = false;
+
 /**
  * Generates a partial value fromObject conveter.
  * @param {Codegen} gen Codegen instance
@@ -123,8 +126,12 @@ converter.fromObject = function fromObject(mtype) {
         } else if (field.repeated) { gen
     ("if(d%s){", prop)
         ("if(!Array.isArray(d%s))", prop)
-            ("throw TypeError(%j)", field.fullName + ": array expected")
-        ("m%s=[]", prop)
+            ("throw TypeError(%j)", field.fullName + ": array expected");
+
+            if (!converter.defaults) gen
+        ("m%s=[]", prop);
+
+            gen
         ("for(var i=0;i<d%s.length;++i){", prop);
             genValuePartial_fromObject(gen, field, /* not sorted */ i, prop + "[i]")
         ("}")
