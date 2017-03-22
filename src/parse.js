@@ -27,7 +27,7 @@ var base10Re    = /^[1-9][0-9]*$/,
     typeRefRe   = /^(?:\.?[a-zA-Z_][a-zA-Z_0-9]*)+$/,
     fqTypeRefRe = /^(?:\.[a-zA-Z][a-zA-Z_0-9]*)+$/;
 
-var camelCaseRe = /_([a-z])(?=[a-z]|$)/g;
+var camelCaseRe = /_([a-z])/g;
 
 function camelCase(str) {
     return str.substring(0,1)
