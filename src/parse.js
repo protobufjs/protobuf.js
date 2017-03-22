@@ -257,18 +257,34 @@ function parse(source, root, options) {
         return false;
     }
 
-    function parseType(parent, token) {
-        var name = next();
-        /* istanbul ignore next */
-        if (!nameRe.test(name))
-            throw illegal(name, "type name");
-        var type = new Type(name);
-        type.comment = cmnt();
-        type.filename = parse.filename;
+    function ifBlock(obj, fn) {
+        var trailingLine = tn.line();
+        obj.comment = cmnt(); // try block-type comment
+        obj.filename = parse.filename;
         if (skip("{", true)) {
+            fn();
+            skip(";", true);
+            return true;
+        }
+        skip(";");
+        if (typeof obj.comment !== 'string')
+            obj.comment = cmnt(trailingLine); // try line-type comment if no block
+        return false;
+    }
+
+    function parseType(parent, token) {
+
+        /* istanbul ignore next */
+        if (!nameRe.test(token = next()))
+            throw illegal(token, "type name");
+
+        var type = new Type(token);
+        ifBlock(type, function() {
             while ((token = next()) !== "}") {
+
                 if (parseCommon(type, token))
                     continue;
+
                 switch (token) {
 
                     case "map":
@@ -302,9 +318,7 @@ function parse(source, root, options) {
                         break;
                 }
             }
-            skip(";", true);
-        } else
-            skip(";");
+        });
         parent.add(type);
     }
 
@@ -314,22 +328,26 @@ function parse(source, root, options) {
             parseGroup(parent, rule);
             return;
         }
+
         /* istanbul ignore next */
         if (!typeRefRe.test(type))
             throw illegal(type, "type");
+
         var name = next();
+
         /* istanbul ignore next */
         if (!nameRe.test(name))
             throw illegal(name, "name");
+
         name = applyCase(name);
         skip("=");
         var field = new Field(name, parseId(next()), type, rule, extend),
             trailingLine = tn.line();
-        field.comment = cmnt();
+        field.comment = cmnt(); // try block-type
         field.filename = parse.filename;
         parseInlineOptions(field);
         if (!field.comment)
-            field.comment = cmnt(trailingLine);
+            field.comment = cmnt(trailingLine); // try line-type
         // JSON defaults to packed=true if not set so we have to set packed=false explicity when
         // parsing proto2 descriptors without the option, where applicable. This must be done for
         // any type (not just packable types) because enums also use varint encoding and it is not
@@ -341,9 +359,11 @@ function parse(source, root, options) {
 
     function parseGroup(parent, rule) {
         var name = next();
+
         /* istanbul ignore next */
         if (!nameRe.test(name))
             throw illegal(name, "name");
+
         var fieldName = util.lcFirst(name);
         if (name === fieldName)
             name = util.ucFirst(name);
@@ -351,29 +371,31 @@ function parse(source, root, options) {
         var id = parseId(next());
         var type = new Type(name);
         type.group = true;
-        type.comment = cmnt();
         var field = new Field(fieldName, id, name, rule);
-        type.filename = field.filename = parse.filename;
-        skip("{");
-        while ((token = next()) !== "}") {
-            switch (token) {
-                case "option":
-                    parseOption(type, token);
-                    skip(";");
-                    break;
-                case "required":
-                case "optional":
-                case "repeated":
-                    parseField(type, token);
-                    break;
+        field.filename = parse.filename;
+        ifBlock(type, function() {
+            while ((token = next()) !== "}") {
+                switch (token) {
 
-                /* istanbul ignore next */
-                default:
-                    throw illegal(token); // there are no groups with proto3 semantics
+                    case "option":
+                        parseOption(type, token);
+                        skip(";");
+                        break;
+
+                    case "required":
+                    case "optional":
+                    case "repeated":
+                        parseField(type, token);
+                        break;
+
+                    /* istanbul ignore next */
+                    default:
+                        throw illegal(token); // there are no groups with proto3 semantics
+                }
             }
-        }
-        skip(";", true);
-        parent.add(type).add(field);
+        });
+        parent.add(type)
+              .add(field);
     }
 
     function parseMapField(parent) {
@@ -398,11 +420,11 @@ function parse(source, root, options) {
         skip("=");
         var field = new MapField(name, parseId(next()), keyType, valueType),
             trailingLine = tn.line();
-        field.comment = cmnt();
+        field.comment = cmnt(); // try block-type
         field.filename = parse.filename;
         parseInlineOptions(field);
         if (!field.comment)
-            field.comment = cmnt(trailingLine);
+            field.comment = cmnt(trailingLine); // try line-type
         parent.add(field);
     }
 
@@ -414,11 +436,8 @@ function parse(source, root, options) {
             throw illegal(name, "name");
 
         name = applyCase(name);
-        var oneof = new OneOf(name),
-            trailingLine = tn.line();
-        oneof.comment = cmnt();
-        oneof.filename = parse.filename;
-        if (skip("{", true)) {
+        var oneof = new OneOf(name);
+        ifBlock(oneof, function() {
             while ((token = next()) !== "}") {
                 if (token === "option") {
                     parseOption(oneof, token);
@@ -428,12 +447,7 @@ function parse(source, root, options) {
                     parseField(oneof, "optional");
                 }
             }
-            skip(";", true);
-        } else {
-            skip(";");
-            if (!oneof.comment)
-                oneof.comment = cmnt(trailingLine);
-        }
+        });
         parent.add(oneof);
     }
 
@@ -445,9 +459,7 @@ function parse(source, root, options) {
             throw illegal(name, "name");
 
         var enm = new Enum(name);
-        enm.comment = cmnt();
-        enm.filename = parse.filename;
-        if (skip("{", true)) {
+        ifBlock(enm, function() {
             while ((token = next()) !== "}") {
                 if (token === "option") {
                     parseOption(enm, token);
@@ -455,9 +467,7 @@ function parse(source, root, options) {
                 } else
                     parseEnumValue(enm, token);
             }
-            skip(";", true);
-        } else
-            skip(";");
+        });
         parent.add(enm);
     }
 
@@ -471,7 +481,7 @@ function parse(source, root, options) {
         skip("=");
         var value = parseId(next(), true),
             trailingLine = tn.line();
-        parent.add(name, value, cmnt());
+        parent.add(name, value, cmnt()); // block-type only
         parseInlineOptions({}); // skips enum value options
         if (!parent.comments[name])
             parent.comments[name] = cmnt(trailingLine);
@@ -539,11 +549,8 @@ function parse(source, root, options) {
         if (!nameRe.test(token))
             throw illegal(token, "service name");
 
-        var name = token;
-        var service = new Service(name);
-        service.comment = cmnt();
-        service.filename = parse.filename;
-        if (skip("{", true)) {
+        var service = new Service(token);
+        ifBlock(service, function() {
             while ((token = next()) !== "}") {
                 switch (token) {
                     case "option":
@@ -559,9 +566,7 @@ function parse(source, root, options) {
                         throw illegal(token);
                 }
             }
-            skip(";", true);
-        } else
-            skip(";");
+        });
         parent.add(service);
     }
 
@@ -590,13 +595,11 @@ function parse(source, root, options) {
 
         responseType = token;
         skip(")");
-        var method = new Method(name, type, requestType, responseType, requestStream, responseStream),
-            trailingLine = tn.line();
-        method.comment = cmnt();
-        method.filename = parse.filename;
-        if (skip("{", true)) {
+        var method = new Method(name, type, requestType, responseType, requestStream, responseStream);
+        ifBlock(method, function() {
             while ((token = next()) !== "}") {
                 switch (token) {
+
                     case "option":
                         parseOption(method, token);
                         skip(";");
@@ -607,12 +610,7 @@ function parse(source, root, options) {
                         throw illegal(token);
                 }
             }
-            skip(";", true);
-        } else {
-            skip(";");
-            if (!method.comment)
-                method.comment = cmnt(trailingLine);
-        }
+        });
         parent.add(method);
     }
 

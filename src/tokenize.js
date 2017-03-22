@@ -244,6 +244,26 @@ function tokenize(source) {
         return false;
     }
 
+    /**
+     * Gets a comment.
+     * @param {number=} trailingLine Trailing line number if applicable
+     * @returns {?string} Comment text
+     * @inner
+     */
+    function cmnt(trailingLine) {
+        var ret;
+        if (trailingLine === undefined)
+            ret = commentLine === line - 1 && commentText || null;
+        else {
+            if (!commentText)
+                peek();
+            ret = commentLine === trailingLine && commentType === "/" && commentText || null;
+        }
+        commentType = commentText = null;
+        commentLine = 0;
+        return ret;
+    }
+
     return {
         next: next,
         peek: peek,
@@ -252,21 +272,7 @@ function tokenize(source) {
         line: function() {
             return line;
         },
-        cmnt: function(trailingLine) {
-            var ret;
-            if (trailingLine === undefined)
-                ret = commentLine === line - 1 && commentText || null;
-            else {
-                if (!commentText)
-                    peek();
-                ret = commentLine === trailingLine && commentType === "/" && commentText || null;
-            }
-            if (ret) {
-                commentType = commentText = null;
-                commentLine = 0;
-            }
-            return ret;
-        }
+        cmnt: cmnt
     };
     /* eslint-enable callback-return */
 }
