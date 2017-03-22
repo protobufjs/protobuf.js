@@ -24,15 +24,18 @@ static_target.description = "Static code without reflection (non-functional on i
 function static_target(root, options, callback) {
     config = options;
     try {
-        if (config.comments)
-            push("// Common aliases");
-        var aliases = ["util"];
-        if (config.encode)
-            aliases.push("Writer");
+        var aliases = [];
         if (config.decode)
             aliases.push("Reader");
-        push((config.es6 ? "const " : "var ") + aliases.map(function(name) { return "$" + name + " = $protobuf." + name; }).join(", "));
-        push("");
+        if (config.encode)
+            aliases.push("Writer");
+        aliases.push("util");
+        if (aliases.length) {
+            if (config.comments)
+                push("// Common aliases");
+            push((config.es6 ? "const " : "var ") + aliases.map(function(name) { return "$" + name + " = $protobuf." + name; }).join(", ") + ";");
+            push("");
+        }
         if (config.comments)
             push("// Lazily resolved type references");
         push((config.es6 ? "const" : "var") + " $lazyTypes = [];");
