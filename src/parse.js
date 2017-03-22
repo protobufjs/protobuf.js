@@ -257,19 +257,24 @@ function parse(source, root, options) {
         return false;
     }
 
-    function ifBlock(obj, fn) {
+    function ifBlock(obj, fnIf, fnElse) {
         var trailingLine = tn.line();
-        obj.comment = cmnt(); // try block-type comment
-        obj.filename = parse.filename;
-        if (skip("{", true)) {
-            fn();
-            skip(";", true);
-            return true;
+        if (obj) {
+            obj.comment = cmnt(); // try block-type comment
+            obj.filename = parse.filename;
         }
-        skip(";");
-        if (typeof obj.comment !== 'string')
-            obj.comment = cmnt(trailingLine); // try line-type comment if no block
-        return false;
+        if (skip("{", true)) {
+            var token;
+            while ((token = next()) !== "}")
+                fnIf(token);
+            skip(";", true);
+        } else {
+            if (fnElse)
+                fnElse();
+            skip(";");
+            if (obj && typeof obj.comment !== "string")
+                obj.comment = cmnt(trailingLine); // try line-type comment if no block
+        }
     }
 
     function parseType(parent, token) {
@@ -279,44 +284,41 @@ function parse(source, root, options) {
             throw illegal(token, "type name");
 
         var type = new Type(token);
-        ifBlock(type, function() {
-            while ((token = next()) !== "}") {
+        ifBlock(type, function parseType_block(token) {
+            if (parseCommon(type, token))
+                return;
 
-                if (parseCommon(type, token))
-                    continue;
+            switch (token) {
 
-                switch (token) {
+                case "map":
+                    parseMapField(type, token);
+                    break;
 
-                    case "map":
-                        parseMapField(type, token);
-                        break;
+                case "required":
+                case "optional":
+                case "repeated":
+                    parseField(type, token);
+                    break;
 
-                    case "required":
-                    case "optional":
-                    case "repeated":
-                        parseField(type, token);
-                        break;
+                case "oneof":
+                    parseOneOf(type, token);
+                    break;
 
-                    case "oneof":
-                        parseOneOf(type, token);
-                        break;
+                case "extensions":
+                    readRanges(type.extensions || (type.extensions = []));
+                    break;
 
-                    case "extensions":
-                        readRanges(type.extensions || (type.extensions = []));
-                        break;
+                case "reserved":
+                    readRanges(type.reserved || (type.reserved = []), true);
+                    break;
 
-                    case "reserved":
-                        readRanges(type.reserved || (type.reserved = []), true);
-                        break;
-
-                    default:
-                        /* istanbul ignore next */
-                        if (!isProto3 || !typeRefRe.test(token))
-                            throw illegal(token);
-                        push(token);
-                        parseField(type, "optional");
-                        break;
-                }
+                default:
+                    /* istanbul ignore next */
+                    if (!isProto3 || !typeRefRe.test(token))
+                        throw illegal(token);
+                    push(token);
+                    parseField(type, "optional");
+                    break;
             }
         });
         parent.add(type);
@@ -341,13 +343,20 @@ function parse(source, root, options) {
 
         name = applyCase(name);
         skip("=");
+
         var field = new Field(name, parseId(next()), type, rule, extend),
-            trailingLine = tn.line();
-        field.comment = cmnt(); // try block-type
-        field.filename = parse.filename;
-        parseInlineOptions(field);
-        if (!field.comment)
-            field.comment = cmnt(trailingLine); // try line-type
+            token;
+        ifBlock(field, function parseField_block(token) {
+            /* istanbul ignore else */
+            if (token === "option") {
+                parseOption(field, token);
+                skip(";");
+            } else
+                throw illegal(token);
+        }, function parseField_line() {
+            parseInlineOptions(field);
+        });
+
         // JSON defaults to packed=true if not set so we have to set packed=false explicity when
         // parsing proto2 descriptors without the option, where applicable. This must be done for
         // any type (not just packable types) because enums also use varint encoding and it is not
@@ -373,25 +382,23 @@ function parse(source, root, options) {
         type.group = true;
         var field = new Field(fieldName, id, name, rule);
         field.filename = parse.filename;
-        ifBlock(type, function() {
-            while ((token = next()) !== "}") {
-                switch (token) {
+        ifBlock(type, function parseGroup_block(token) {
+            switch (token) {
 
-                    case "option":
-                        parseOption(type, token);
-                        skip(";");
-                        break;
+                case "option":
+                    parseOption(type, token);
+                    skip(";");
+                    break;
 
-                    case "required":
-                    case "optional":
-                    case "repeated":
-                        parseField(type, token);
-                        break;
+                case "required":
+                case "optional":
+                case "repeated":
+                    parseField(type, token);
+                    break;
 
-                    /* istanbul ignore next */
-                    default:
-                        throw illegal(token); // there are no groups with proto3 semantics
-                }
+                /* istanbul ignore next */
+                default:
+                    throw illegal(token); // there are no groups with proto3 semantics
             }
         });
         parent.add(type)
@@ -418,13 +425,18 @@ function parse(source, root, options) {
 
         name = applyCase(name);
         skip("=");
-        var field = new MapField(name, parseId(next()), keyType, valueType),
-            trailingLine = tn.line();
-        field.comment = cmnt(); // try block-type
-        field.filename = parse.filename;
-        parseInlineOptions(field);
-        if (!field.comment)
-            field.comment = cmnt(trailingLine); // try line-type
+        var field = new MapField(name, parseId(next()), keyType, valueType);
+        ifBlock(field, function parseMapField_block(token) {
+            /* istanbul ignore else */
+            if (token === "option") {
+                parseOption(field, token);
+                skip(";");
+            } else
+                throw illegal(token);
+        }, function parseMapField_line() {
+            parseInlineOptions(field);
+        });
+
         parent.add(field);
     }
 
@@ -437,15 +449,13 @@ function parse(source, root, options) {
 
         name = applyCase(name);
         var oneof = new OneOf(name);
-        ifBlock(oneof, function() {
-            while ((token = next()) !== "}") {
-                if (token === "option") {
-                    parseOption(oneof, token);
-                    skip(";");
-                } else {
-                    push(token);
-                    parseField(oneof, "optional");
-                }
+        ifBlock(oneof, function parseOneOf_block(token) {
+            if (token === "option") {
+                parseOption(oneof, token);
+                skip(";");
+            } else {
+                push(token);
+                parseField(oneof, "optional");
             }
         });
         parent.add(oneof);
@@ -459,14 +469,12 @@ function parse(source, root, options) {
             throw illegal(name, "name");
 
         var enm = new Enum(name);
-        ifBlock(enm, function() {
-            while ((token = next()) !== "}") {
-                if (token === "option") {
-                    parseOption(enm, token);
-                    skip(";");
-                } else
-                    parseEnumValue(enm, token);
-            }
+        ifBlock(enm, function parseEnum_block(token) {
+            if (token === "option") {
+                parseOption(enm, token);
+                skip(";");
+            } else
+                parseEnumValue(enm, token);
         });
         parent.add(enm);
     }
@@ -480,11 +488,18 @@ function parse(source, root, options) {
         var name = token;
         skip("=");
         var value = parseId(next(), true),
-            trailingLine = tn.line();
-        parent.add(name, value, cmnt()); // block-type only
-        parseInlineOptions({}); // skips enum value options
-        if (!parent.comments[name])
-            parent.comments[name] = cmnt(trailingLine);
+            dummy = {};
+        ifBlock(dummy, function parseEnumValue_block(token) {
+            /* istanbul ignore else */
+            if (token === "option") {
+                parseOption(dummy, token); // skip
+                skip(";");
+            } else
+                throw illegal(token);
+        }, function parseEnumValue_line() {
+            parseInlineOptions(dummy); // skip
+        });
+        parent.add(name, value, dummy.comment);
     }
 
     function parseOption(parent, token) {
@@ -538,7 +553,6 @@ function parse(source, root, options) {
             } while (skip(",", true));
             skip("]");
         }
-        skip(";");
         return parent;
     }
 
@@ -550,21 +564,19 @@ function parse(source, root, options) {
             throw illegal(token, "service name");
 
         var service = new Service(token);
-        ifBlock(service, function() {
-            while ((token = next()) !== "}") {
-                switch (token) {
-                    case "option":
-                        parseOption(service, token);
-                        skip(";");
-                        break;
-                    case "rpc":
-                        parseMethod(service, token);
-                        break;
+        ifBlock(service, function parseService_block(token) {
+            switch (token) {
+                case "option":
+                    parseOption(service, token);
+                    skip(";");
+                    break;
+                case "rpc":
+                    parseMethod(service, token);
+                    break;
 
-                    /* istanbul ignore next */
-                    default:
-                        throw illegal(token);
-                }
+                /* istanbul ignore next */
+                default:
+                    throw illegal(token);
             }
         });
         parent.add(service);
@@ -596,20 +608,13 @@ function parse(source, root, options) {
         responseType = token;
         skip(")");
         var method = new Method(name, type, requestType, responseType, requestStream, responseStream);
-        ifBlock(method, function() {
-            while ((token = next()) !== "}") {
-                switch (token) {
-
-                    case "option":
-                        parseOption(method, token);
-                        skip(";");
-                        break;
-
-                    /* istanbul ignore next */
-                    default:
-                        throw illegal(token);
-                }
-            }
+        ifBlock(method, function parseMethod_block(token) {
+            /* istanbul ignore else */
+            if (token === "option") {
+                parseOption(method, token);
+                skip(";");
+            } else
+                throw illegal(token);
         });
         parent.add(method);
     }
@@ -621,26 +626,24 @@ function parse(source, root, options) {
         if (!typeRefRe.test(reference))
             throw illegal(reference, "reference");
 
-        if (skip("{", true)) {
-            while ((token = next()) !== "}") {
-                switch (token) {
-                    case "required":
-                    case "repeated":
-                    case "optional":
-                        parseField(parent, token, reference);
-                        break;
-                    default:
-                        /* istanbul ignore next */
-                        if (!isProto3 || !typeRefRe.test(token))
-                            throw illegal(token);
-                        push(token);
-                        parseField(parent, "optional", reference);
-                        break;
-                }
+        ifBlock(null, function parseExtension_block(token) {
+            switch (token) {
+
+                case "required":
+                case "repeated":
+                case "optional":
+                    parseField(parent, token, reference);
+                    break;
+
+                default:
+                    /* istanbul ignore next */
+                    if (!isProto3 || !typeRefRe.test(token))
+                        throw illegal(token);
+                    push(token);
+                    parseField(parent, "optional", reference);
+                    break;
             }
-            skip(";", true);
-        } else
-            skip(";");
+        });
     }
 
     var token;
