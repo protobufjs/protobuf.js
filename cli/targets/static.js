@@ -26,7 +26,12 @@ function static_target(root, options, callback) {
     try {
         if (config.comments)
             push("// Common aliases");
-        push((config.es6 ? "const" : "var") + " $Reader = $protobuf.Reader, $Writer = $protobuf.Writer, $util = $protobuf.util;");
+        var aliases = ["util"];
+        if (config.encode)
+            aliases.push("Writer");
+        if (config.decode)
+            aliases.push("Reader");
+        push((config.es6 ? "const " : "var ") + aliases.map(function(name) { return "$" + name + " = $protobuf." + name; }).join(", "));
         push("");
         if (config.comments)
             push("// Lazily resolved type references");
