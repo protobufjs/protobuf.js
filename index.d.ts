@@ -69,21 +69,21 @@ export class Class {
      * Encodes a message of this type.
      * @name Class#encode
      * @function
-     * @param {Message|Object} message Message to encode
+     * @param {Message|Object.<string,*>} message Message to encode
      * @param {Writer} [writer] Writer to use
      * @returns {Writer} Writer
      */
-    public encode(message: (Message|Object), writer?: Writer): Writer;
+    public encode(message: (Message|{ [k: string]: any }), writer?: Writer): Writer;
 
     /**
      * Encodes a message of this type preceeded by its length as a varint.
      * @name Class#encodeDelimited
      * @function
-     * @param {Message|Object} message Message to encode
+     * @param {Message|Object.<string,*>} message Message to encode
      * @param {Writer} [writer] Writer to use
      * @returns {Writer} Writer
      */
-    public encodeDelimited(message: (Message|Object), writer?: Writer): Writer;
+    public encodeDelimited(message: (Message|{ [k: string]: any }), writer?: Writer): Writer;
 
     /**
      * Decodes a message of this type.
@@ -107,10 +107,10 @@ export class Class {
      * Verifies a message of this type.
      * @name Class#verify
      * @function
-     * @param {Message|Object} message Message or plain object to verify
+     * @param {Message|Object.<string,*>} message Message or plain object to verify
      * @returns {?string} `null` if valid, otherwise the reason why it is not
      */
-    public verify(message: (Message|Object)): string;
+    public verify(message: (Message|{ [k: string]: any })): string;
 }
 
 /**
@@ -595,19 +595,19 @@ export class Message {
 
     /**
      * Encodes a message of this type.
-     * @param {Message|Object} message Message to encode
+     * @param {Message|Object.<string,*>} message Message to encode
      * @param {Writer} [writer] Writer to use
      * @returns {Writer} Writer
      */
-    public static encode(message: (Message|Object), writer?: Writer): Writer;
+    public static encode(message: (Message|{ [k: string]: any }), writer?: Writer): Writer;
 
     /**
      * Encodes a message of this type preceeded by its length as a varint.
-     * @param {Message|Object} message Message to encode
+     * @param {Message|Object.<string,*>} message Message to encode
      * @param {Writer} [writer] Writer to use
      * @returns {Writer} Writer
      */
-    public static encodeDelimited(message: (Message|Object), writer?: Writer): Writer;
+    public static encodeDelimited(message: (Message|{ [k: string]: any }), writer?: Writer): Writer;
 
     /**
      * Decodes a message of this type.
@@ -631,10 +631,10 @@ export class Message {
      * Verifies a message of this type.
      * @name Message.verify
      * @function
-     * @param {Message|Object} message Message or plain object to verify
+     * @param {Message|Object.<string,*>} message Message or plain object to verify
      * @returns {?string} `null` if valid, otherwise the reason why it is not
      */
-    public static verify(message: (Message|Object)): string;
+    public static verify(message: (Message|{ [k: string]: any })): string;
 
     /**
      * Creates a new message of this type from a plain object. Also converts values to their respective internal types.
@@ -1054,7 +1054,7 @@ export abstract class ReflectionObject {
  * @extends ReflectionObject
  * @constructor
  * @param {string} name Oneof name
- * @param {string[]|Object} [fieldNames] Field names
+ * @param {string[]|Object.<string,*>} [fieldNames] Field names
  * @param {Object.<string,*>} [options] Declared options
  */
 export class OneOf extends ReflectionObject {
@@ -1065,10 +1065,10 @@ export class OneOf extends ReflectionObject {
      * @extends ReflectionObject
      * @constructor
      * @param {string} name Oneof name
-     * @param {string[]|Object} [fieldNames] Field names
+     * @param {string[]|Object.<string,*>} [fieldNames] Field names
      * @param {Object.<string,*>} [options] Declared options
      */
-    constructor(name: string, fieldNames?: (string[]|Object), options?: { [k: string]: any });
+    constructor(name: string, fieldNames?: (string[]|{ [k: string]: any }), options?: { [k: string]: any });
 
     /**
      * Field names that belong to this oneof.
@@ -1449,11 +1449,11 @@ export namespace rpc {
      * A service method part of a {@link rpc.ServiceMethodMixin|ServiceMethodMixin} and thus {@link rpc.Service} as created by {@link Service.create}.
      * @typedef rpc.ServiceMethod
      * @type {function}
-     * @param {Message|Object} request Request message or plain object
+     * @param {Message|Object.<string,*>} request Request message or plain object
      * @param {rpc.ServiceMethodCallback} [callback] Node-style callback called with the error, if any, and the response message
      * @returns {Promise<Message>} Promise if `callback` has been omitted, otherwise `undefined`
      */
-    type ServiceMethod = (request: (Message|Object), callback?: rpc.ServiceMethodCallback) => Promise<Message>;
+    type ServiceMethod = (request: (Message|{ [k: string]: any }), callback?: rpc.ServiceMethodCallback) => Promise<Message>;
 
     /**
      * A service method mixin.
@@ -1516,11 +1516,11 @@ export namespace rpc {
          * @param {Method|rpc.ServiceMethod} method Reflected or static method
          * @param {function} requestCtor Request constructor
          * @param {function} responseCtor Response constructor
-         * @param {Message|Object} request Request message or plain object
+         * @param {Message|Object.<string,*>} request Request message or plain object
          * @param {rpc.ServiceMethodCallback} callback Service callback
          * @returns {undefined}
          */
-        public rpcCall(method: (Method|rpc.ServiceMethod), requestCtor: () => any, responseCtor: () => any, request: (Message|Object), callback: rpc.ServiceMethodCallback): void;
+        public rpcCall(method: (Method|rpc.ServiceMethod), requestCtor: () => any, responseCtor: () => any, request: (Message|{ [k: string]: any }), callback: rpc.ServiceMethodCallback): void;
 
         /**
          * Ends this service and emits the `end` event.
@@ -1765,19 +1765,19 @@ export class Type extends NamespaceBase {
 
     /**
      * Encodes a message of this type. Does not implicitly {@link Type#verify|verify} messages.
-     * @param {Message|Object} message Message instance or plain object
+     * @param {Message|Object.<string,*>} message Message instance or plain object
      * @param {Writer} [writer] Writer to encode to
      * @returns {Writer} writer
      */
-    public encode(message: (Message|Object), writer?: Writer): Writer;
+    public encode(message: (Message|{ [k: string]: any }), writer?: Writer): Writer;
 
     /**
      * Encodes a message of this type preceeded by its byte length as a varint. Does not implicitly {@link Type#verify|verify} messages.
-     * @param {Message|Object} message Message instance or plain object
+     * @param {Message|Object.<string,*>} message Message instance or plain object
      * @param {Writer} [writer] Writer to encode to
      * @returns {Writer} writer
      */
-    public encodeDelimited(message: (Message|Object), writer?: Writer): Writer;
+    public encodeDelimited(message: (Message|{ [k: string]: any }), writer?: Writer): Writer;
 
     /**
      * Decodes a message of this type.
@@ -1800,14 +1800,14 @@ export class Type extends NamespaceBase {
 
     /**
      * Verifies that field values are valid and that required fields are present.
-     * @param {Message|Object} message Message to verify
+     * @param {Object.<string,*>} message Plain object to verify
      * @returns {?string} `null` if valid, otherwise the reason why it is not
      */
-    public verify(message: (Message|Object)): string;
+    public verify(message: { [k: string]: any }): string;
 
     /**
      * Creates a new message of this type from a plain object. Also converts values to their respective internal types.
-     * @param {Object.<string,*>} object Plain object
+     * @param {Object.<string,*>} object Plain object to convert
      * @returns {Message} Message instance
      */
     public fromObject(object: { [k: string]: any }): Message;

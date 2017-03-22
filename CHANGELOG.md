@@ -4,14 +4,27 @@
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/44a8d3af5da578c2e6bbe0a1b948d469bbe27ca1) Decoder now throws if required fields are missing, see [#695](https://github.com/dcodeIO/protobuf.js/issues/695) / [#696](https://github.com/dcodeIO/protobuf.js/issues/696)<br />
 
 ## Fixed
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/b01bb58dec92ebf6950846d9b8d8e3df5442b15d) Hardened tokenize/parse, esp. comment parsing, see [#713](https://github.com/dcodeIO/protobuf.js/issues/713)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/bc76ad732fc0689cb0a2aeeb91b06ec5331d7972) Exclude any fields part of some oneof when populating defaults in toObject, see [#710](https://github.com/dcodeIO/protobuf.js/issues/710)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/68cdb5f11fdbb950623be089f98e1356cb7b1ea3) Most of the parser is not case insensitive, see [#705](https://github.com/dcodeIO/protobuf.js/issues/705)<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/3e930b907a834a7da759478b8d3f52fef1da22d8) Retain options argument in Root#load when used with promises, see [#684](https://github.com/dcodeIO/protobuf.js/issues/684)<br />
 
 ## New
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/adb4bb001a894dd8d00bcfe03457497eb994f6ba) Verifiers return an error if multiple fields part of the same oneof are set, see [#710](https://github.com/dcodeIO/protobuf.js/issues/710)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/fe93d436b430d01b563318bff591e0dd408c06a4) Added `oneofs: true` to ConversionOptions, see [#710](https://github.com/dcodeIO/protobuf.js/issues/710)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/228c882410d47a26576f839b15f1601e8aa7914d) Optional fields handle null just like undefined regardless of type see [#709](https://github.com/dcodeIO/protobuf.js/issues/709)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/da6af8138afa5343a47c12a8beedb99889c0dd51) Encoders no longer examine virtual oneof properties but encode whatever is present, see [#710](https://github.com/dcodeIO/protobuf.js/issues/710)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/ac26a7aa60359a37dbddaad139c0134b592b3325) pbjs now generates multiple exports when using ES6 syntax, see [#686](https://github.com/dcodeIO/protobuf.js/issues/686)<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/c1ca65dc6987384af6f9fac2fbd7700fcf5765b2) Sequentially serialize fields ordered by id, as of the spec.<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/26d9fadb21a85ca0b5609156c26453ae875e4933) decode throws specific ProtocolError with a reference to the so far decoded message if required fields are missing + example<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/2b5577b238a452ae86aa395fb2ad3a3f45d755dc) Reader.create asserts that `buffer` is a valid buffer, see [#695](https://github.com/dcodeIO/protobuf.js/issues/695)<br />
 
 ## Docs
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/3ad28ec920e0fe8d0223db28804a7b3f8a6880c2) Even more usage for README<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/5a1f861a0f6b582faae7a4cc5c6ca7e4418086da) Additional information on general usage (README)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/320dea5a1d1387c72759e10a17afd77dc48c3de0) Restructured README to Installation, Usage and Examples sections<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/1c9055dd69f7696d2582942b307a1ac8ac0f5533) Added a longish section on the correct use of the toolset to README<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/99667c8e1ff0fd3dac83ce8c0cff5d0b1e347310) Added a few additional notes on core methods to README, see [#710](https://github.com/dcodeIO/protobuf.js/issues/710)<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/2130bc97e44567e766ea8efacb365383c909dbd4) Extended traverse-types example, see [#693](https://github.com/dcodeIO/protobuf.js/issues/693)<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/13e4aa3ff274ab42f1302e16fd59d074c5587b5b) Better explain how .verify, .encode and .decode are connected<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/7502dd2dfdaea111e5c1a902c524ad0a51ff9bd4) Documented that Type#encode respectively Message.encode do not implicitly .verify, see [#696](https://github.com/dcodeIO/protobuf.js/issues/696) [ci-skip]<br />
@@ -19,6 +32,18 @@
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/0fcde32306da77f02cb1ea81ed18a32cee01f17b) Added error handling notes to README, see [#696](https://github.com/dcodeIO/protobuf.js/issues/696)<br />
 
 ## Other
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/88ca8f0d1eb334646ca2625c78e63fdd57221408) Retain alias order in static code for what it's worth, see [#712](https://github.com/dcodeIO/protobuf.js/issues/712)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/2a74fbf551e934b3212273e6a28ad65ac4436faf) Everything can be block- or line-style when parsing, see [#713](https://github.com/dcodeIO/protobuf.js/issues/713)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/47bb95a31784b935b9ced52aa773b9d66236105e) Determine necessary aliases depending on config, see [#712](https://github.com/dcodeIO/protobuf.js/issues/712)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/588ffd9b129869de0abcef1d69bfa18f2f25d8e1) Use more precise types for message-like plain objects<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/d7493efe1a86a60f6cdcf7976523e69523d3f7a3) Moved field comparer to util<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/fe917652f88df17d4dbaae1cd74f470385342be2) Updated tests to use new simplified encoder logic<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/b69173b4e7b514c40bb4a85b54ca5465492a235b) Updated path to tsd-jsdoc template used by pbts, see [#707](https://github.com/dcodeIO/protobuf.js/issues/707)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/5041fad9defdb0bc8131560e92f3b454d8e45273) Additional restructuring for moving configuration files out of the root folder<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/c0b7c9fa6309d345c4ce8e06fd86f27528f4ea66) Added codegen support for constructor functions, see [#700](https://github.com/dcodeIO/protobuf.js/issues/700)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/4b49f500fce156b164c757d8f17be2338f767c82) Trying out a more aggressive aproach for custom error subclasses<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/95cd64ee514dc60d10daac5180726ff39594e8e8) Moved a few things out of the root folder<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/db1030ed257f9699a0bcf3bad0bbe8acccf5d766) Coverage for encoder compat. / protocolerror<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/3ead13e83ecdc8715fbab916f7ccaf3fbfdf59ed) Added tslint<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/364e7d457ed4c11328e609f600a57b7bc4888554) Exclude dist/ from codeclimate checks<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/6e81fcb05f25386e3997399e6596e9d9414f0286) Also lint cli utilities<br />

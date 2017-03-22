@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.7.0 (c) 2016, Daniel Wirtz
- * Compiled Tue, 21 Mar 2017 21:25:14 UTC
+ * Compiled Wed, 22 Mar 2017 17:30:26 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -928,7 +928,7 @@ Class.prototype = Message;
  * Encodes a message of this type.
  * @name Class#encode
  * @function
- * @param {Message|Object} message Message to encode
+ * @param {Message|Object.<string,*>} message Message to encode
  * @param {Writer} [writer] Writer to use
  * @returns {Writer} Writer
  */
@@ -937,7 +937,7 @@ Class.prototype = Message;
  * Encodes a message of this type preceeded by its length as a varint.
  * @name Class#encodeDelimited
  * @function
- * @param {Message|Object} message Message to encode
+ * @param {Message|Object.<string,*>} message Message to encode
  * @param {Writer} [writer] Writer to use
  * @returns {Writer} Writer
  */
@@ -962,7 +962,7 @@ Class.prototype = Message;
  * Verifies a message of this type.
  * @name Class#verify
  * @function
- * @param {Message|Object} message Message or plain object to verify
+ * @param {Message|Object.<string,*>} message Message or plain object to verify
  * @returns {?string} `null` if valid, otherwise the reason why it is not
  */
 
@@ -2388,7 +2388,7 @@ function Message(properties) {
 
 /**
  * Encodes a message of this type.
- * @param {Message|Object} message Message to encode
+ * @param {Message|Object.<string,*>} message Message to encode
  * @param {Writer} [writer] Writer to use
  * @returns {Writer} Writer
  */
@@ -2398,7 +2398,7 @@ Message.encode = function encode(message, writer) {
 
 /**
  * Encodes a message of this type preceeded by its length as a varint.
- * @param {Message|Object} message Message to encode
+ * @param {Message|Object.<string,*>} message Message to encode
  * @param {Writer} [writer] Writer to use
  * @returns {Writer} Writer
  */
@@ -2432,7 +2432,7 @@ Message.decodeDelimited = function decodeDelimited(reader) {
  * Verifies a message of this type.
  * @name Message.verify
  * @function
- * @param {Message|Object} message Message or plain object to verify
+ * @param {Message|Object.<string,*>} message Message or plain object to verify
  * @returns {?string} `null` if valid, otherwise the reason why it is not
  */
 Message.verify = function verify(message) {
@@ -3191,7 +3191,7 @@ var Field = require(16);
  * @extends ReflectionObject
  * @constructor
  * @param {string} name Oneof name
- * @param {string[]|Object} [fieldNames] Field names
+ * @param {string[]|Object.<string,*>} [fieldNames] Field names
  * @param {Object.<string,*>} [options] Declared options
  */
 function OneOf(name, fieldNames, options) {
@@ -3586,54 +3586,70 @@ function parse(source, root, options) {
         return false;
     }
 
-    function parseType(parent, token) {
-        var name = next();
-        /* istanbul ignore next */
-        if (!nameRe.test(name))
-            throw illegal(name, "type name");
-        var type = new Type(name);
-        type.comment = cmnt();
-        type.filename = parse.filename;
+    function ifBlock(obj, fnIf, fnElse) {
+        var trailingLine = tn.line();
+        if (obj) {
+            obj.comment = cmnt(); // try block-type comment
+            obj.filename = parse.filename;
+        }
         if (skip("{", true)) {
-            while ((token = next()) !== "}") {
-                if (parseCommon(type, token))
-                    continue;
-                switch (token) {
-
-                    case "map":
-                        parseMapField(type, token);
-                        break;
-
-                    case "required":
-                    case "optional":
-                    case "repeated":
-                        parseField(type, token);
-                        break;
-
-                    case "oneof":
-                        parseOneOf(type, token);
-                        break;
-
-                    case "extensions":
-                        readRanges(type.extensions || (type.extensions = []));
-                        break;
-
-                    case "reserved":
-                        readRanges(type.reserved || (type.reserved = []), true);
-                        break;
-
-                    default:
-                        /* istanbul ignore next */
-                        if (!isProto3 || !typeRefRe.test(token))
-                            throw illegal(token);
-                        push(token);
-                        parseField(type, "optional");
-                        break;
-                }
-            }
+            var token;
+            while ((token = next()) !== "}")
+                fnIf(token);
             skip(";", true);
-        } else
+        } else {
+            if (fnElse)
+                fnElse();
             skip(";");
+            if (obj && typeof obj.comment !== "string")
+                obj.comment = cmnt(trailingLine); // try line-type comment if no block
+        }
+    }
+
+    function parseType(parent, token) {
+
+        /* istanbul ignore next */
+        if (!nameRe.test(token = next()))
+            throw illegal(token, "type name");
+
+        var type = new Type(token);
+        ifBlock(type, function parseType_block(token) {
+            if (parseCommon(type, token))
+                return;
+
+            switch (token) {
+
+                case "map":
+                    parseMapField(type, token);
+                    break;
+
+                case "required":
+                case "optional":
+                case "repeated":
+                    parseField(type, token);
+                    break;
+
+                case "oneof":
+                    parseOneOf(type, token);
+                    break;
+
+                case "extensions":
+                    readRanges(type.extensions || (type.extensions = []));
+                    break;
+
+                case "reserved":
+                    readRanges(type.reserved || (type.reserved = []), true);
+                    break;
+
+                default:
+                    /* istanbul ignore next */
+                    if (!isProto3 || !typeRefRe.test(token))
+                        throw illegal(token);
+                    push(token);
+                    parseField(type, "optional");
+                    break;
+            }
+        });
         parent.add(type);
     }
 
@@ -3643,22 +3659,33 @@ function parse(source, root, options) {
             parseGroup(parent, rule);
             return;
         }
+
         /* istanbul ignore next */
         if (!typeRefRe.test(type))
             throw illegal(type, "type");
+
         var name = next();
+
         /* istanbul ignore next */
         if (!nameRe.test(name))
             throw illegal(name, "name");
+
         name = applyCase(name);
         skip("=");
+
         var field = new Field(name, parseId(next()), type, rule, extend),
-            trailingLine = tn.line();
-        field.comment = cmnt();
-        field.filename = parse.filename;
-        parseInlineOptions(field);
-        if (!field.comment)
-            field.comment = cmnt(trailingLine);
+            token;
+        ifBlock(field, function parseField_block(token) {
+            /* istanbul ignore else */
+            if (token === "option") {
+                parseOption(field, token);
+                skip(";");
+            } else
+                throw illegal(token);
+        }, function parseField_line() {
+            parseInlineOptions(field);
+        });
+
         // JSON defaults to packed=true if not set so we have to set packed=false explicity when
         // parsing proto2 descriptors without the option, where applicable. This must be done for
         // any type (not just packable types) because enums also use varint encoding and it is not
@@ -3670,9 +3697,11 @@ function parse(source, root, options) {
 
     function parseGroup(parent, rule) {
         var name = next();
+
         /* istanbul ignore next */
         if (!nameRe.test(name))
             throw illegal(name, "name");
+
         var fieldName = util.lcFirst(name);
         if (name === fieldName)
             name = util.ucFirst(name);
@@ -3680,16 +3709,16 @@ function parse(source, root, options) {
         var id = parseId(next());
         var type = new Type(name);
         type.group = true;
-        type.comment = cmnt();
         var field = new Field(fieldName, id, name, rule);
-        type.filename = field.filename = parse.filename;
-        skip("{");
-        while ((token = next()) !== "}") {
+        field.filename = parse.filename;
+        ifBlock(type, function parseGroup_block(token) {
             switch (token) {
+
                 case "option":
                     parseOption(type, token);
                     skip(";");
                     break;
+
                 case "required":
                 case "optional":
                 case "repeated":
@@ -3700,9 +3729,9 @@ function parse(source, root, options) {
                 default:
                     throw illegal(token); // there are no groups with proto3 semantics
             }
-        }
-        skip(";", true);
-        parent.add(type).add(field);
+        });
+        parent.add(type)
+              .add(field);
     }
 
     function parseMapField(parent) {
@@ -3725,13 +3754,18 @@ function parse(source, root, options) {
 
         name = applyCase(name);
         skip("=");
-        var field = new MapField(name, parseId(next()), keyType, valueType),
-            trailingLine = tn.line();
-        field.comment = cmnt();
-        field.filename = parse.filename;
-        parseInlineOptions(field);
-        if (!field.comment)
-            field.comment = cmnt(trailingLine);
+        var field = new MapField(name, parseId(next()), keyType, valueType);
+        ifBlock(field, function parseMapField_block(token) {
+            /* istanbul ignore else */
+            if (token === "option") {
+                parseOption(field, token);
+                skip(";");
+            } else
+                throw illegal(token);
+        }, function parseMapField_line() {
+            parseInlineOptions(field);
+        });
+
         parent.add(field);
     }
 
@@ -3743,26 +3777,16 @@ function parse(source, root, options) {
             throw illegal(name, "name");
 
         name = applyCase(name);
-        var oneof = new OneOf(name),
-            trailingLine = tn.line();
-        oneof.comment = cmnt();
-        oneof.filename = parse.filename;
-        if (skip("{", true)) {
-            while ((token = next()) !== "}") {
-                if (token === "option") {
-                    parseOption(oneof, token);
-                    skip(";");
-                } else {
-                    push(token);
-                    parseField(oneof, "optional");
-                }
+        var oneof = new OneOf(name);
+        ifBlock(oneof, function parseOneOf_block(token) {
+            if (token === "option") {
+                parseOption(oneof, token);
+                skip(";");
+            } else {
+                push(token);
+                parseField(oneof, "optional");
             }
-            skip(";", true);
-        } else {
-            skip(";");
-            if (!oneof.comment)
-                oneof.comment = cmnt(trailingLine);
-        }
+        });
         parent.add(oneof);
     }
 
@@ -3774,19 +3798,13 @@ function parse(source, root, options) {
             throw illegal(name, "name");
 
         var enm = new Enum(name);
-        enm.comment = cmnt();
-        enm.filename = parse.filename;
-        if (skip("{", true)) {
-            while ((token = next()) !== "}") {
-                if (token === "option") {
-                    parseOption(enm, token);
-                    skip(";");
-                } else
-                    parseEnumValue(enm, token);
-            }
-            skip(";", true);
-        } else
-            skip(";");
+        ifBlock(enm, function parseEnum_block(token) {
+            if (token === "option") {
+                parseOption(enm, token);
+                skip(";");
+            } else
+                parseEnumValue(enm, token);
+        });
         parent.add(enm);
     }
 
@@ -3799,11 +3817,18 @@ function parse(source, root, options) {
         var name = token;
         skip("=");
         var value = parseId(next(), true),
-            trailingLine = tn.line();
-        parent.add(name, value, cmnt());
-        parseInlineOptions({}); // skips enum value options
-        if (!parent.comments[name])
-            parent.comments[name] = cmnt(trailingLine);
+            dummy = {};
+        ifBlock(dummy, function parseEnumValue_block(token) {
+            /* istanbul ignore else */
+            if (token === "option") {
+                parseOption(dummy, token); // skip
+                skip(";");
+            } else
+                throw illegal(token);
+        }, function parseEnumValue_line() {
+            parseInlineOptions(dummy); // skip
+        });
+        parent.add(name, value, dummy.comment);
     }
 
     function parseOption(parent, token) {
@@ -3857,7 +3882,6 @@ function parse(source, root, options) {
             } while (skip(",", true));
             skip("]");
         }
-        skip(";");
         return parent;
     }
 
@@ -3868,29 +3892,22 @@ function parse(source, root, options) {
         if (!nameRe.test(token))
             throw illegal(token, "service name");
 
-        var name = token;
-        var service = new Service(name);
-        service.comment = cmnt();
-        service.filename = parse.filename;
-        if (skip("{", true)) {
-            while ((token = next()) !== "}") {
-                switch (token) {
-                    case "option":
-                        parseOption(service, token);
-                        skip(";");
-                        break;
-                    case "rpc":
-                        parseMethod(service, token);
-                        break;
+        var service = new Service(token);
+        ifBlock(service, function parseService_block(token) {
+            switch (token) {
+                case "option":
+                    parseOption(service, token);
+                    skip(";");
+                    break;
+                case "rpc":
+                    parseMethod(service, token);
+                    break;
 
-                    /* istanbul ignore next */
-                    default:
-                        throw illegal(token);
-                }
+                /* istanbul ignore next */
+                default:
+                    throw illegal(token);
             }
-            skip(";", true);
-        } else
-            skip(";");
+        });
         parent.add(service);
     }
 
@@ -3919,29 +3936,15 @@ function parse(source, root, options) {
 
         responseType = token;
         skip(")");
-        var method = new Method(name, type, requestType, responseType, requestStream, responseStream),
-            trailingLine = tn.line();
-        method.comment = cmnt();
-        method.filename = parse.filename;
-        if (skip("{", true)) {
-            while ((token = next()) !== "}") {
-                switch (token) {
-                    case "option":
-                        parseOption(method, token);
-                        skip(";");
-                        break;
-
-                    /* istanbul ignore next */
-                    default:
-                        throw illegal(token);
-                }
-            }
-            skip(";", true);
-        } else {
-            skip(";");
-            if (!method.comment)
-                method.comment = cmnt(trailingLine);
-        }
+        var method = new Method(name, type, requestType, responseType, requestStream, responseStream);
+        ifBlock(method, function parseMethod_block(token) {
+            /* istanbul ignore else */
+            if (token === "option") {
+                parseOption(method, token);
+                skip(";");
+            } else
+                throw illegal(token);
+        });
         parent.add(method);
     }
 
@@ -3952,26 +3955,24 @@ function parse(source, root, options) {
         if (!typeRefRe.test(reference))
             throw illegal(reference, "reference");
 
-        if (skip("{", true)) {
-            while ((token = next()) !== "}") {
-                switch (token) {
-                    case "required":
-                    case "repeated":
-                    case "optional":
-                        parseField(parent, token, reference);
-                        break;
-                    default:
-                        /* istanbul ignore next */
-                        if (!isProto3 || !typeRefRe.test(token))
-                            throw illegal(token);
-                        push(token);
-                        parseField(parent, "optional", reference);
-                        break;
-                }
+        ifBlock(null, function parseExtension_block(token) {
+            switch (token) {
+
+                case "required":
+                case "repeated":
+                case "optional":
+                    parseField(parent, token, reference);
+                    break;
+
+                default:
+                    /* istanbul ignore next */
+                    if (!isProto3 || !typeRefRe.test(token))
+                        throw illegal(token);
+                    push(token);
+                    parseField(parent, "optional", reference);
+                    break;
             }
-            skip(";", true);
-        } else
-            skip(";");
+        });
     }
 
     var token;
@@ -4989,7 +4990,7 @@ var util = require(38);
  * A service method part of a {@link rpc.ServiceMethodMixin|ServiceMethodMixin} and thus {@link rpc.Service} as created by {@link Service.create}.
  * @typedef rpc.ServiceMethod
  * @type {function}
- * @param {Message|Object} request Request message or plain object
+ * @param {Message|Object.<string,*>} request Request message or plain object
  * @param {rpc.ServiceMethodCallback} [callback] Node-style callback called with the error, if any, and the response message
  * @returns {Promise<Message>} Promise if `callback` has been omitted, otherwise `undefined`
  */
@@ -5047,7 +5048,7 @@ function Service(rpcImpl, requestDelimited, responseDelimited) {
  * @param {Method|rpc.ServiceMethod} method Reflected or static method
  * @param {function} requestCtor Request constructor
  * @param {function} responseCtor Response constructor
- * @param {Message|Object} request Request message or plain object
+ * @param {Message|Object.<string,*>} request Request message or plain object
  * @param {rpc.ServiceMethodCallback} callback Service callback
  * @returns {undefined}
  */
@@ -5515,6 +5516,26 @@ function tokenize(source) {
         return false;
     }
 
+    /**
+     * Gets a comment.
+     * @param {number=} trailingLine Trailing line number if applicable
+     * @returns {?string} Comment text
+     * @inner
+     */
+    function cmnt(trailingLine) {
+        var ret;
+        if (trailingLine === undefined)
+            ret = commentLine === line - 1 && commentText || null;
+        else {
+            if (!commentText)
+                peek();
+            ret = commentLine === trailingLine && commentType === "/" && commentText || null;
+        }
+        commentType = commentText = null;
+        commentLine = 0;
+        return ret;
+    }
+
     return {
         next: next,
         peek: peek,
@@ -5523,21 +5544,7 @@ function tokenize(source) {
         line: function() {
             return line;
         },
-        cmnt: function(trailingLine) {
-            var ret;
-            if (trailingLine === undefined)
-                ret = commentLine === line - 1 && commentText || null;
-            else {
-                if (!commentText)
-                    peek();
-                ret = commentLine === trailingLine && commentType === "/" && commentText || null;
-            }
-            if (ret) {
-                commentType = commentText = null;
-                commentLine = 0;
-            }
-            return ret;
-        }
+        cmnt: cmnt
     };
     /* eslint-enable callback-return */
 }
@@ -5943,7 +5950,7 @@ Type.prototype.setup = function setup() {
 
 /**
  * Encodes a message of this type. Does not implicitly {@link Type#verify|verify} messages.
- * @param {Message|Object} message Message instance or plain object
+ * @param {Message|Object.<string,*>} message Message instance or plain object
  * @param {Writer} [writer] Writer to encode to
  * @returns {Writer} writer
  */
@@ -5953,7 +5960,7 @@ Type.prototype.encode = function encode_setup(message, writer) {
 
 /**
  * Encodes a message of this type preceeded by its byte length as a varint. Does not implicitly {@link Type#verify|verify} messages.
- * @param {Message|Object} message Message instance or plain object
+ * @param {Message|Object.<string,*>} message Message instance or plain object
  * @param {Writer} [writer] Writer to encode to
  * @returns {Writer} writer
  */
@@ -5988,7 +5995,7 @@ Type.prototype.decodeDelimited = function decodeDelimited(reader) {
 
 /**
  * Verifies that field values are valid and that required fields are present.
- * @param {Message|Object} message Message to verify
+ * @param {Object.<string,*>} message Plain object to verify
  * @returns {?string} `null` if valid, otherwise the reason why it is not
  */
 Type.prototype.verify = function verify_setup(message) {
@@ -5997,7 +6004,7 @@ Type.prototype.verify = function verify_setup(message) {
 
 /**
  * Creates a new message of this type from a plain object. Also converts values to their respective internal types.
- * @param {Object.<string,*>} object Plain object
+ * @param {Object.<string,*>} object Plain object to convert
  * @returns {Message} Message instance
  */
 Type.prototype.fromObject = function fromObject(object) {

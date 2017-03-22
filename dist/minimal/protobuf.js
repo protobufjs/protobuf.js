@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.7.0 (c) 2016, Daniel Wirtz
- * Compiled Tue, 21 Mar 2017 21:25:14 UTC
+ * Compiled Wed, 22 Mar 2017 17:30:26 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -1112,7 +1112,7 @@ var util = require(13);
  * A service method part of a {@link rpc.ServiceMethodMixin|ServiceMethodMixin} and thus {@link rpc.Service} as created by {@link Service.create}.
  * @typedef rpc.ServiceMethod
  * @type {function}
- * @param {Message|Object} request Request message or plain object
+ * @param {Message|Object.<string,*>} request Request message or plain object
  * @param {rpc.ServiceMethodCallback} [callback] Node-style callback called with the error, if any, and the response message
  * @returns {Promise<Message>} Promise if `callback` has been omitted, otherwise `undefined`
  */
@@ -1170,7 +1170,7 @@ function Service(rpcImpl, requestDelimited, responseDelimited) {
  * @param {Method|rpc.ServiceMethod} method Reflected or static method
  * @param {function} requestCtor Request constructor
  * @param {function} responseCtor Response constructor
- * @param {Message|Object} request Request message or plain object
+ * @param {Message|Object.<string,*>} request Request message or plain object
  * @param {rpc.ServiceMethodCallback} callback Service callback
  * @returns {undefined}
  */

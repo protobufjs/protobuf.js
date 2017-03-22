@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.7.0 (c) 2016, Daniel Wirtz
- * Compiled Tue, 21 Mar 2017 21:25:14 UTC
+ * Compiled Wed, 22 Mar 2017 17:30:26 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -928,7 +928,7 @@ Class.prototype = Message;
  * Encodes a message of this type.
  * @name Class#encode
  * @function
- * @param {Message|Object} message Message to encode
+ * @param {Message|Object.<string,*>} message Message to encode
  * @param {Writer} [writer] Writer to use
  * @returns {Writer} Writer
  */
@@ -937,7 +937,7 @@ Class.prototype = Message;
  * Encodes a message of this type preceeded by its length as a varint.
  * @name Class#encodeDelimited
  * @function
- * @param {Message|Object} message Message to encode
+ * @param {Message|Object.<string,*>} message Message to encode
  * @param {Writer} [writer] Writer to use
  * @returns {Writer} Writer
  */
@@ -962,7 +962,7 @@ Class.prototype = Message;
  * Verifies a message of this type.
  * @name Class#verify
  * @function
- * @param {Message|Object} message Message or plain object to verify
+ * @param {Message|Object.<string,*>} message Message or plain object to verify
  * @returns {?string} `null` if valid, otherwise the reason why it is not
  */
 
@@ -2148,7 +2148,7 @@ function Message(properties) {
 
 /**
  * Encodes a message of this type.
- * @param {Message|Object} message Message to encode
+ * @param {Message|Object.<string,*>} message Message to encode
  * @param {Writer} [writer] Writer to use
  * @returns {Writer} Writer
  */
@@ -2158,7 +2158,7 @@ Message.encode = function encode(message, writer) {
 
 /**
  * Encodes a message of this type preceeded by its length as a varint.
- * @param {Message|Object} message Message to encode
+ * @param {Message|Object.<string,*>} message Message to encode
  * @param {Writer} [writer] Writer to use
  * @returns {Writer} Writer
  */
@@ -2192,7 +2192,7 @@ Message.decodeDelimited = function decodeDelimited(reader) {
  * Verifies a message of this type.
  * @name Message.verify
  * @function
- * @param {Message|Object} message Message or plain object to verify
+ * @param {Message|Object.<string,*>} message Message or plain object to verify
  * @returns {?string} `null` if valid, otherwise the reason why it is not
  */
 Message.verify = function verify(message) {
@@ -2951,7 +2951,7 @@ var Field = require(15);
  * @extends ReflectionObject
  * @constructor
  * @param {string} name Oneof name
- * @param {string[]|Object} [fieldNames] Field names
+ * @param {string[]|Object.<string,*>} [fieldNames] Field names
  * @param {Object.<string,*>} [options] Declared options
  */
 function OneOf(name, fieldNames, options) {
@@ -4035,7 +4035,7 @@ var util = require(34);
  * A service method part of a {@link rpc.ServiceMethodMixin|ServiceMethodMixin} and thus {@link rpc.Service} as created by {@link Service.create}.
  * @typedef rpc.ServiceMethod
  * @type {function}
- * @param {Message|Object} request Request message or plain object
+ * @param {Message|Object.<string,*>} request Request message or plain object
  * @param {rpc.ServiceMethodCallback} [callback] Node-style callback called with the error, if any, and the response message
  * @returns {Promise<Message>} Promise if `callback` has been omitted, otherwise `undefined`
  */
@@ -4093,7 +4093,7 @@ function Service(rpcImpl, requestDelimited, responseDelimited) {
  * @param {Method|rpc.ServiceMethod} method Reflected or static method
  * @param {function} requestCtor Request constructor
  * @param {function} responseCtor Response constructor
- * @param {Message|Object} request Request message or plain object
+ * @param {Message|Object.<string,*>} request Request message or plain object
  * @param {rpc.ServiceMethodCallback} callback Service callback
  * @returns {undefined}
  */
@@ -4715,7 +4715,7 @@ Type.prototype.setup = function setup() {
 
 /**
  * Encodes a message of this type. Does not implicitly {@link Type#verify|verify} messages.
- * @param {Message|Object} message Message instance or plain object
+ * @param {Message|Object.<string,*>} message Message instance or plain object
  * @param {Writer} [writer] Writer to encode to
  * @returns {Writer} writer
  */
@@ -4725,7 +4725,7 @@ Type.prototype.encode = function encode_setup(message, writer) {
 
 /**
  * Encodes a message of this type preceeded by its byte length as a varint. Does not implicitly {@link Type#verify|verify} messages.
- * @param {Message|Object} message Message instance or plain object
+ * @param {Message|Object.<string,*>} message Message instance or plain object
  * @param {Writer} [writer] Writer to encode to
  * @returns {Writer} writer
  */
@@ -4760,7 +4760,7 @@ Type.prototype.decodeDelimited = function decodeDelimited(reader) {
 
 /**
  * Verifies that field values are valid and that required fields are present.
- * @param {Message|Object} message Message to verify
+ * @param {Object.<string,*>} message Plain object to verify
  * @returns {?string} `null` if valid, otherwise the reason why it is not
  */
 Type.prototype.verify = function verify_setup(message) {
@@ -4769,7 +4769,7 @@ Type.prototype.verify = function verify_setup(message) {
 
 /**
  * Creates a new message of this type from a plain object. Also converts values to their respective internal types.
- * @param {Object.<string,*>} object Plain object
+ * @param {Object.<string,*>} object Plain object to convert
  * @returns {Message} Message instance
  */
 Type.prototype.fromObject = function fromObject(object) {
