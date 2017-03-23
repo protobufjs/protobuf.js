@@ -70,6 +70,13 @@ util.isObject = function isObject(value) {
     return value && typeof value === "object";
 };
 
+/*
+ * Any compatible Buffer instance.
+ * This is a minimal stand-alone definition of a Buffer instance. The actual type is that exported by node's typings.
+ * @typedef Buffer
+ * @type {Uint8Array}
+ */
+
 /**
  * Node's Buffer class if available.
  * @type {?function(new: Buffer)}
@@ -127,6 +134,16 @@ util.newBuffer = function newBuffer(sizeOrArray) {
  * @type {?function(new: Uint8Array, *)}
  */
 util.Array = typeof Uint8Array !== "undefined" ? Uint8Array /* istanbul ignore next */ : Array;
+
+/*
+ * Any compatible Long instance.
+ * This is a minimal stand-alone definition of a Long instance. The actual type is that exported by long.js.
+ * @typedef Long
+ * @type {Object}
+ * @property {number} low Low bits
+ * @property {number} high High bits
+ * @property {boolean} unsigned Whether unsigned or not
+ */
 
 /**
  * Long.js's Long class if available.

@@ -4,17 +4,6 @@ module.exports = LongBits;
 var util = require("../util/minimal");
 
 /**
- * Any compatible Long instance.
- *
- * This is a minimal stand-alone definition of a Long instance. The actual type is that exported by long.js.
- * @typedef Long
- * @type {Object}
- * @property {number} low Low bits
- * @property {number} high High bits
- * @property {boolean} unsigned Whether unsigned or not
- */
-
-/**
  * Constructs new long bits.
  * @classdesc Helper class for working with the low and high bits of a 64 bit value.
  * @memberof util

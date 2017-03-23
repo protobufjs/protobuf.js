@@ -140,7 +140,7 @@ $root.Package = (function() {
 
     /**
      * Encodes the specified Package message, length delimited. Does not implicitly {@link Package.verify|verify} messages.
-     * @param {Package|Object.<string,*>} message Package message or plain object to encode
+     * @param {Package$Properties} message Package message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
@@ -627,7 +627,7 @@ $root.Package = (function() {
 
         /**
          * Encodes the specified Repository message, length delimited. Does not implicitly {@link Package.Repository.verify|verify} messages.
-         * @param {Package.Repository|Object.<string,*>} message Repository message or plain object to encode
+         * @param {Package.Repository$Properties} message Repository message or plain object to encode
          * @param {$protobuf.Writer} [writer] Writer to encode to
          * @returns {$protobuf.Writer} Writer
          */

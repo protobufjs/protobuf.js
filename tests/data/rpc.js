@@ -116,7 +116,7 @@ $root.MyRequest = (function() {
 
     /**
      * Encodes the specified MyRequest message, length delimited. Does not implicitly {@link MyRequest.verify|verify} messages.
-     * @param {MyRequest|Object.<string,*>} message MyRequest message or plain object to encode
+     * @param {MyRequest$Properties} message MyRequest message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
@@ -286,7 +286,7 @@ $root.MyResponse = (function() {
 
     /**
      * Encodes the specified MyResponse message, length delimited. Does not implicitly {@link MyResponse.verify|verify} messages.
-     * @param {MyResponse|Object.<string,*>} message MyResponse message or plain object to encode
+     * @param {MyResponse$Properties} message MyResponse message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */

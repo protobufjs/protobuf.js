@@ -77,7 +77,7 @@ Where bundle size is a factor, there is a suitable distribution for each of thes
 | light   | 15.5kb  | [dist/light][dist-light]     | `require("protobufjs/light")`   | All features except tokenizer, parser and bundled common types. Works with JSON definitions, pure reflection and static code.
 | minimal | 6.0kb+  | [dist/minimal][dist-minimal] | `require("protobufjs/minimal")` | Just enough to run static code. No reflection.
 
-In case of doubt you can just use the full library.
+In case of doubt it is safe to just use the full library.
 
 [dist-full]: https://github.com/dcodeIO/protobuf.js/tree/master/dist
 [dist-light]: https://github.com/dcodeIO/protobuf.js/tree/master/dist/light
@@ -88,7 +88,7 @@ Usage
 
 Each message type provides a set of methods with each method doing just one thing. This allows to avoid unnecessary operations where [performance](#performance) is a concern but also forces a user to perform verification explicitly where necessary - for example when dealing with user input.
 
-Note that **Message** refers to any message type below.
+Note that **Message** below refers to any message type. See the next section for the definition of a [valid message](#valid-message).
 
 * **Message.verify**(message: `Object`): `null|string`<br />
   explicitly performs verification prior to encoding a plain object. Instead of throwing, it returns the error message as a string, if any.
@@ -160,29 +160,30 @@ Note that **Message** refers to any message type below.
 
   See also: [ConversionOptions](http://dcode.io/protobuf.js/global.html#ConversionOptions)
 
-**What is a valid message?**
+### Valid message
 
 A valid message is an object not missing any required fields and exclusively using JS types for its fields that are understood by the wire format writer.
 
-* Calling `Message.verify` with a valid message returns `null` and otherwise the error as a string.
-* Calling `Message.create` or `Message.encode` with any object assumes valid types.
+* Calling `Message.verify` with any object returns `null` if the object can be encoded as-is and otherwise the error as a string.
+* Calling `Message.create` or `Message.encode` must be called with a valid message.
 * Calling `Message.fromObject` with any object naively converts all values to the optimal JS type.
 
-| Type   | Expected JS type (create) | Naive conversion (fromObject)
-|--------|-----------------|-------------------
-| int32<br />uint32<br />sint32<br />fixed32<br />sfixed32 | `Number` (32 bit integer) | `value | 0`<br /> `value >>> 0`
-| int64<br />uint64<br />sint64<br />fixed64<br />sfixed64 | `Long`-like (optimal)<br />`Number` (53 bit integer) | `Long.fromValue(value)`<br />`parseInt(value, 10)` without long.js
+| Field type | Expected JS type (create, encode) | Naive conversion (fromObject)
+|------------|-----------------------------------|------------------------------
+| s-/u-/int32<br />s-/fixed32 | `Number` (32 bit integer) | `value | 0` if signed<br /> `value >>> 0` if unsigned
+| s-/u-/int64<br />s-/fixed64 | `Long`-like (optimal)<br />`Number` (53 bit integer) | `Long.fromValue(value)` with long.js<br />`parseInt(value, 10)` otherwise
 | float<br />double | `Number` | `Number(value)`
 | bool | `Boolean` | `Boolean(value)`
 | string | `String` | `String(value)`
-| bytes | `Uint8Array` (optimal)<br />`Buffer` (optimal)<br />`Array.<Number>` (8 bit integers)<br />`String` (base64) | `base64.decode(value)` if a String<br />`Object` with non-zero `.length` is kept
+| bytes | `Uint8Array` (optimal)<br />`Buffer` (optimal under node)<br />`Array.<Number>` (8 bit integers)<br />`String` (base64) | `base64.decode(value)` if a String<br />`Object` with non-zero `.length` is kept
 | enum | `Number` (32 bit integer) | Looks up the numeric id if a string
 | message | Valid message | `Message.fromObject(value)`
 
 * Explicit `undefined` and `null` are considered as not set when optional.
 * Repeated fields are `Array.<T>`.
-* Map fields are `Object.<string,T>` with the key being the string representation of the respective value or an 8 characters long binary hash string for Long-likes.
+* Map fields are `Object.<string,T>` with the key being the string representation of the respective value or an 8 characters long binary hash string for `Long`-likes.
 * `String` refers to both objects and values while `Number` refers to values only.
+* Types marked as *optimal* provide the best performance because no conversion step (i.e. number to low and high bits or base64 string to buffer) is required.
 
 Examples
 --------

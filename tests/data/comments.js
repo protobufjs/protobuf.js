@@ -70,7 +70,7 @@ $root.Test1 = (function() {
 
     /**
      * Encodes the specified Test1 message, length delimited. Does not implicitly {@link Test1.verify|verify} messages.
-     * @param {Test1|Object.<string,*>} message Test1 message or plain object to encode
+     * @param {Test1$Properties} message Test1 message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
@@ -258,7 +258,7 @@ $root.Test2 = (function() {
 
     /**
      * Encodes the specified Test2 message, length delimited. Does not implicitly {@link Test2.verify|verify} messages.
-     * @param {Test2|Object.<string,*>} message Test2 message or plain object to encode
+     * @param {Test2$Properties} message Test2 message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
@@ -373,9 +373,9 @@ $root.Test2 = (function() {
  */
 $root.Test3 = (function() {
     var valuesById = {}, values = Object.create(valuesById);
-    values["ONE"] = 1;
-    values["TWO"] = 2;
-    values["THREE"] = 3;
+    values[valuesById[1] = "ONE"] = 1;
+    values[valuesById[2] = "TWO"] = 2;
+    values[valuesById[3] = "THREE"] = 3;
     return values;
 })();
 

@@ -296,7 +296,9 @@ function buildType(ref, type) {
                 jsType = "Object.<string," + jsType + ">";
             else if (field.repeated)
                 jsType = "Array.<" + jsType + ">";
-            typeDef.push("@property {" + jsType + "} " + (field.optional ? "[" + field.name + "]" : field.name) + " " + (field.comment || type.name + " " + field.name + "."));
+            var name = util.safeProp(field.name);
+            name = name.substring(1, name.charAt(0) === "[" ? name.length - 1 : name.length);
+            typeDef.push("@property {" + jsType + "} " + (field.optional ? "[" + name + "]" : field.name) + " " + (field.comment || type.name + " " + field.name + "."));
         });
         push("");
         pushComment(typeDef);
@@ -391,7 +393,7 @@ function buildType(ref, type) {
             push("");
             pushComment([
                 "Encodes the specified " + type.name + " message, length delimited. Does not implicitly {@link " + fullName + ".verify|verify} messages.",
-                "@param {" + fullName + "|Object.<string,*>} message " + type.name + " message or plain object to encode",
+                "@param {" + fullName + "$Properties} message " + type.name + " message or plain object to encode",
                 "@param {$protobuf.Writer} [writer] Writer to encode to",
                 "@returns {$protobuf.Writer} Writer"
             ]);

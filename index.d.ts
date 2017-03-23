@@ -1842,7 +1842,7 @@ export class Type extends NamespaceBase {
  * @property {boolean} [objects=false] Sets empty objects for missing map fields even if `defaults=false`
  * @property {boolean} [oneofs=false] Includes virtual oneof properties set to the present field's name, if any
  */
-interface ConversionOptions {
+type ConversionOptions = {
     longs?: any;
     enums?: any;
     bytes?: any;
@@ -1850,7 +1850,7 @@ interface ConversionOptions {
     arrays?: boolean;
     objects?: boolean;
     oneofs?: boolean;
-}
+};
 
 /**
  * Common type constants.
@@ -2014,22 +2014,6 @@ export namespace types {
         "sfixed64": number,
         "bool": number
     };
-}
-
-/**
- * Any compatible Long instance.
- *
- * This is a minimal stand-alone definition of a Long instance. The actual type is that exported by long.js.
- * @typedef Long
- * @type {Object}
- * @property {number} low Low bits
- * @property {number} high High bits
- * @property {boolean} unsigned Whether unsigned or not
- */
-interface Long {
-    low: number;
-    high: number;
-    unsigned: boolean;
 }
 
 /**
@@ -2870,10 +2854,10 @@ type FetchCallback = (error: Error, contents?: string) => void;
  * @property {boolean} [binary=false] Whether expecting a binary response
  * @property {boolean} [xhr=false] If `true`, forces the use of XMLHttpRequest
  */
-interface FetchOptions {
+type FetchOptions = {
     binary?: boolean;
     xhr?: boolean;
-}
+};
 
 /**
  * An allocator as used by {@link util.pool}.

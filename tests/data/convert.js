@@ -106,7 +106,7 @@ $root.Message = (function() {
 
     /**
      * Encodes the specified Message message, length delimited. Does not implicitly {@link Message.verify|verify} messages.
-     * @param {Message|Object.<string,*>} message Message message or plain object to encode
+     * @param {Message$Properties} message Message message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
@@ -479,8 +479,8 @@ $root.Message = (function() {
      */
     Message.SomeEnum = (function() {
         var valuesById = {}, values = Object.create(valuesById);
-        values["ONE"] = 1;
-        values["TWO"] = 2;
+        values[valuesById[1] = "ONE"] = 1;
+        values[valuesById[2] = "TWO"] = 2;
         return values;
     })();
 

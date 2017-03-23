@@ -9,15 +9,15 @@ export class MyService extends $protobuf.rpc.Service {
 
 type MyService_myMethod_Callback = (error: Error, response?: MyResponse) => void;
 
-interface MyRequest$Properties {
+type MyRequest$Properties = {
     path?: string;
-}
+};
 
 export class MyRequest implements MyRequest$Properties {
     constructor(properties?: MyRequest$Properties);
     public static create(properties?: MyRequest$Properties): MyRequest;
     public static encode(message: MyRequest$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
-    public static encodeDelimited(message: (MyRequest|{ [k: string]: any }), writer?: $protobuf.Writer): $protobuf.Writer;
+    public static encodeDelimited(message: MyRequest$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
     public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): MyRequest;
     public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): MyRequest;
     public static verify(message: { [k: string]: any }): string;
@@ -28,15 +28,15 @@ export class MyRequest implements MyRequest$Properties {
     public toJSON(): { [k: string]: any };
 }
 
-interface MyResponse$Properties {
+type MyResponse$Properties = {
     status?: number;
-}
+};
 
 export class MyResponse implements MyResponse$Properties {
     constructor(properties?: MyResponse$Properties);
     public static create(properties?: MyResponse$Properties): MyResponse;
     public static encode(message: MyResponse$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
-    public static encodeDelimited(message: (MyResponse|{ [k: string]: any }), writer?: $protobuf.Writer): $protobuf.Writer;
+    public static encodeDelimited(message: MyResponse$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
     public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): MyResponse;
     public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): MyResponse;
     public static verify(message: { [k: string]: any }): string;

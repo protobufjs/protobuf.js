@@ -71,7 +71,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified Empty message, length delimited. Does not implicitly {@link jspb.test.Empty.verify|verify} messages.
-             * @param {jspb.test.Empty|Object.<string,*>} message Empty message or plain object to encode
+             * @param {jspb.test.Empty$Properties} message Empty message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -186,8 +186,8 @@ $root.jspb = (function() {
          */
         test.OuterEnum = (function() {
             var valuesById = {}, values = Object.create(valuesById);
-            values["FOO"] = 1;
-            values["BAR"] = 2;
+            values[valuesById[1] = "FOO"] = 1;
+            values[valuesById[2] = "BAR"] = 2;
             return values;
         })();
 
@@ -240,7 +240,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified EnumContainer message, length delimited. Does not implicitly {@link jspb.test.EnumContainer.verify|verify} messages.
-             * @param {jspb.test.EnumContainer|Object.<string,*>} message EnumContainer message or plain object to encode
+             * @param {jspb.test.EnumContainer$Properties} message EnumContainer message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -432,7 +432,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified Simple1 message, length delimited. Does not implicitly {@link jspb.test.Simple1.verify|verify} messages.
-             * @param {jspb.test.Simple1|Object.<string,*>} message Simple1 message or plain object to encode
+             * @param {jspb.test.Simple1$Properties} message Simple1 message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -646,7 +646,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified Simple2 message, length delimited. Does not implicitly {@link jspb.test.Simple2.verify|verify} messages.
-             * @param {jspb.test.Simple2|Object.<string,*>} message Simple2 message or plain object to encode
+             * @param {jspb.test.Simple2$Properties} message Simple2 message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -851,7 +851,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified SpecialCases message, length delimited. Does not implicitly {@link jspb.test.SpecialCases.verify|verify} messages.
-             * @param {jspb.test.SpecialCases|Object.<string,*>} message SpecialCases message or plain object to encode
+             * @param {jspb.test.SpecialCases$Properties} message SpecialCases message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -1078,7 +1078,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified OptionalFields message, length delimited. Does not implicitly {@link jspb.test.OptionalFields.verify|verify} messages.
-             * @param {jspb.test.OptionalFields|Object.<string,*>} message OptionalFields message or plain object to encode
+             * @param {jspb.test.OptionalFields$Properties} message OptionalFields message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -1331,7 +1331,7 @@ $root.jspb = (function() {
 
                 /**
                  * Encodes the specified Nested message, length delimited. Does not implicitly {@link jspb.test.OptionalFields.Nested.verify|verify} messages.
-                 * @param {jspb.test.OptionalFields.Nested|Object.<string,*>} message Nested message or plain object to encode
+                 * @param {jspb.test.OptionalFields.Nested$Properties} message Nested message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
                  */
@@ -1464,12 +1464,12 @@ $root.jspb = (function() {
              * @property {string} [str1] HasExtensions str1.
              * @property {string} [str2] HasExtensions str2.
              * @property {string} [str3] HasExtensions str3.
-             * @property {jspb.test.IsExtension} [.jspb.test.IsExtension.extField] HasExtensions .jspb.test.IsExtension.extField.
-             * @property {jspb.test.Simple1} [.jspb.test.IndirectExtension.simple] HasExtensions .jspb.test.IndirectExtension.simple.
-             * @property {string} [.jspb.test.IndirectExtension.str] HasExtensions .jspb.test.IndirectExtension.str.
-             * @property {Array.<string>} [.jspb.test.IndirectExtension.repeatedStr] HasExtensions .jspb.test.IndirectExtension.repeatedStr.
-             * @property {Array.<jspb.test.Simple1>} [.jspb.test.IndirectExtension.repeatedSimple] HasExtensions .jspb.test.IndirectExtension.repeatedSimple.
-             * @property {jspb.test.Simple1} [.jspb.test.simple1] HasExtensions .jspb.test.simple1.
+             * @property {jspb.test.IsExtension} [".jspb.test.IsExtension.extField"] HasExtensions .jspb.test.IsExtension.extField.
+             * @property {jspb.test.Simple1} [".jspb.test.IndirectExtension.simple"] HasExtensions .jspb.test.IndirectExtension.simple.
+             * @property {string} [".jspb.test.IndirectExtension.str"] HasExtensions .jspb.test.IndirectExtension.str.
+             * @property {Array.<string>} [".jspb.test.IndirectExtension.repeatedStr"] HasExtensions .jspb.test.IndirectExtension.repeatedStr.
+             * @property {Array.<jspb.test.Simple1>} [".jspb.test.IndirectExtension.repeatedSimple"] HasExtensions .jspb.test.IndirectExtension.repeatedSimple.
+             * @property {jspb.test.Simple1} [".jspb.test.simple1"] HasExtensions .jspb.test.simple1.
              */
 
             /**
@@ -1540,7 +1540,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified HasExtensions message, length delimited. Does not implicitly {@link jspb.test.HasExtensions.verify|verify} messages.
-             * @param {jspb.test.HasExtensions|Object.<string,*>} message HasExtensions message or plain object to encode
+             * @param {jspb.test.HasExtensions$Properties} message HasExtensions message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -1867,7 +1867,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified Complex message, length delimited. Does not implicitly {@link jspb.test.Complex.verify|verify} messages.
-             * @param {jspb.test.Complex|Object.<string,*>} message Complex message or plain object to encode
+             * @param {jspb.test.Complex$Properties} message Complex message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -2120,7 +2120,7 @@ $root.jspb = (function() {
 
                 /**
                  * Encodes the specified Nested message, length delimited. Does not implicitly {@link jspb.test.Complex.Nested.verify|verify} messages.
-                 * @param {jspb.test.Complex.Nested|Object.<string,*>} message Nested message or plain object to encode
+                 * @param {jspb.test.Complex.Nested$Properties} message Nested message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
                  */
@@ -2289,7 +2289,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified OuterMessage message, length delimited. Does not implicitly {@link jspb.test.OuterMessage.verify|verify} messages.
-             * @param {jspb.test.OuterMessage|Object.<string,*>} message OuterMessage message or plain object to encode
+             * @param {jspb.test.OuterMessage$Properties} message OuterMessage message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -2440,7 +2440,7 @@ $root.jspb = (function() {
 
                 /**
                  * Encodes the specified Complex message, length delimited. Does not implicitly {@link jspb.test.OuterMessage.Complex.verify|verify} messages.
-                 * @param {jspb.test.OuterMessage.Complex|Object.<string,*>} message Complex message or plain object to encode
+                 * @param {jspb.test.OuterMessage.Complex$Properties} message Complex message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
                  */
@@ -2613,7 +2613,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified IsExtension message, length delimited. Does not implicitly {@link jspb.test.IsExtension.verify|verify} messages.
-             * @param {jspb.test.IsExtension|Object.<string,*>} message IsExtension message or plain object to encode
+             * @param {jspb.test.IsExtension$Properties} message IsExtension message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -2778,7 +2778,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified IndirectExtension message, length delimited. Does not implicitly {@link jspb.test.IndirectExtension.verify|verify} messages.
-             * @param {jspb.test.IndirectExtension|Object.<string,*>} message IndirectExtension message or plain object to encode
+             * @param {jspb.test.IndirectExtension$Properties} message IndirectExtension message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -2952,7 +2952,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified DefaultValues message, length delimited. Does not implicitly {@link jspb.test.DefaultValues.verify|verify} messages.
-             * @param {jspb.test.DefaultValues|Object.<string,*>} message DefaultValues message or plain object to encode
+             * @param {jspb.test.DefaultValues$Properties} message DefaultValues message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -3170,8 +3170,8 @@ $root.jspb = (function() {
              */
             DefaultValues.Enum = (function() {
                 var valuesById = {}, values = Object.create(valuesById);
-                values["E1"] = 13;
-                values["E2"] = 77;
+                values[valuesById[13] = "E1"] = 13;
+                values[valuesById[77] = "E2"] = 77;
                 return values;
             })();
 
@@ -3257,7 +3257,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified FloatingPointFields message, length delimited. Does not implicitly {@link jspb.test.FloatingPointFields.verify|verify} messages.
-             * @param {jspb.test.FloatingPointFields|Object.<string,*>} message FloatingPointFields message or plain object to encode
+             * @param {jspb.test.FloatingPointFields$Properties} message FloatingPointFields message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -3509,7 +3509,7 @@ $root.jspb = (function() {
              * @property {Array.<jspb.test.Simple1>} [simple2] TestClone simple2.
              * @property {Uint8Array} [bytesField] TestClone bytesField.
              * @property {string} [unused] TestClone unused.
-             * @property {jspb.test.CloneExtension} [.jspb.test.CloneExtension.extField] TestClone .jspb.test.CloneExtension.extField.
+             * @property {jspb.test.CloneExtension} [".jspb.test.CloneExtension.extField"] TestClone .jspb.test.CloneExtension.extField.
              */
 
             /**
@@ -3569,7 +3569,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified TestClone message, length delimited. Does not implicitly {@link jspb.test.TestClone.verify|verify} messages.
-             * @param {jspb.test.TestClone|Object.<string,*>} message TestClone message or plain object to encode
+             * @param {jspb.test.TestClone$Properties} message TestClone message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -3828,7 +3828,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified CloneExtension message, length delimited. Does not implicitly {@link jspb.test.CloneExtension.verify|verify} messages.
-             * @param {jspb.test.CloneExtension|Object.<string,*>} message CloneExtension message or plain object to encode
+             * @param {jspb.test.CloneExtension$Properties} message CloneExtension message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -4018,7 +4018,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified TestGroup message, length delimited. Does not implicitly {@link jspb.test.TestGroup.verify|verify} messages.
-             * @param {jspb.test.TestGroup|Object.<string,*>} message TestGroup message or plain object to encode
+             * @param {jspb.test.TestGroup$Properties} message TestGroup message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -4286,7 +4286,7 @@ $root.jspb = (function() {
 
                 /**
                  * Encodes the specified RepeatedGroup message, length delimited. Does not implicitly {@link jspb.test.TestGroup.RepeatedGroup.verify|verify} messages.
-                 * @param {jspb.test.TestGroup.RepeatedGroup|Object.<string,*>} message RepeatedGroup message or plain object to encode
+                 * @param {jspb.test.TestGroup.RepeatedGroup$Properties} message RepeatedGroup message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
                  */
@@ -4489,7 +4489,7 @@ $root.jspb = (function() {
 
                 /**
                  * Encodes the specified RequiredGroup message, length delimited. Does not implicitly {@link jspb.test.TestGroup.RequiredGroup.verify|verify} messages.
-                 * @param {jspb.test.TestGroup.RequiredGroup|Object.<string,*>} message RequiredGroup message or plain object to encode
+                 * @param {jspb.test.TestGroup.RequiredGroup$Properties} message RequiredGroup message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
                  */
@@ -4661,7 +4661,7 @@ $root.jspb = (function() {
 
                 /**
                  * Encodes the specified OptionalGroup message, length delimited. Does not implicitly {@link jspb.test.TestGroup.OptionalGroup.verify|verify} messages.
-                 * @param {jspb.test.TestGroup.OptionalGroup|Object.<string,*>} message OptionalGroup message or plain object to encode
+                 * @param {jspb.test.TestGroup.OptionalGroup$Properties} message OptionalGroup message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
                  */
@@ -4837,7 +4837,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified TestGroup1 message, length delimited. Does not implicitly {@link jspb.test.TestGroup1.verify|verify} messages.
-             * @param {jspb.test.TestGroup1|Object.<string,*>} message TestGroup1 message or plain object to encode
+             * @param {jspb.test.TestGroup1$Properties} message TestGroup1 message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -4970,7 +4970,7 @@ $root.jspb = (function() {
              * @typedef jspb.test.TestReservedNames$Properties
              * @type Object
              * @property {number} [extension] TestReservedNames extension.
-             * @property {number} [.jspb.test.TestReservedNamesExtension.foo] TestReservedNames .jspb.test.TestReservedNamesExtension.foo.
+             * @property {number} [".jspb.test.TestReservedNamesExtension.foo"] TestReservedNames .jspb.test.TestReservedNamesExtension.foo.
              */
 
             /**
@@ -5016,7 +5016,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified TestReservedNames message, length delimited. Does not implicitly {@link jspb.test.TestReservedNames.verify|verify} messages.
-             * @param {jspb.test.TestReservedNames|Object.<string,*>} message TestReservedNames message or plain object to encode
+             * @param {jspb.test.TestReservedNames$Properties} message TestReservedNames message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -5193,7 +5193,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified TestReservedNamesExtension message, length delimited. Does not implicitly {@link jspb.test.TestReservedNamesExtension.verify|verify} messages.
-             * @param {jspb.test.TestReservedNamesExtension|Object.<string,*>} message TestReservedNamesExtension message or plain object to encode
+             * @param {jspb.test.TestReservedNamesExtension$Properties} message TestReservedNamesExtension message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -5428,7 +5428,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified TestMessageWithOneof message, length delimited. Does not implicitly {@link jspb.test.TestMessageWithOneof.verify|verify} messages.
-             * @param {jspb.test.TestMessageWithOneof|Object.<string,*>} message TestMessageWithOneof message or plain object to encode
+             * @param {jspb.test.TestMessageWithOneof$Properties} message TestMessageWithOneof message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -5761,7 +5761,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified TestEndsWithBytes message, length delimited. Does not implicitly {@link jspb.test.TestEndsWithBytes.verify|verify} messages.
-             * @param {jspb.test.TestEndsWithBytes|Object.<string,*>} message TestEndsWithBytes message or plain object to encode
+             * @param {jspb.test.TestEndsWithBytes$Properties} message TestEndsWithBytes message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -6016,7 +6016,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified TestMapFieldsNoBinary message, length delimited. Does not implicitly {@link jspb.test.TestMapFieldsNoBinary.verify|verify} messages.
-             * @param {jspb.test.TestMapFieldsNoBinary|Object.<string,*>} message TestMapFieldsNoBinary message or plain object to encode
+             * @param {jspb.test.TestMapFieldsNoBinary$Properties} message TestMapFieldsNoBinary message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -6523,9 +6523,9 @@ $root.jspb = (function() {
          */
         test.MapValueEnumNoBinary = (function() {
             var valuesById = {}, values = Object.create(valuesById);
-            values["MAP_VALUE_FOO_NOBINARY"] = 0;
-            values["MAP_VALUE_BAR_NOBINARY"] = 1;
-            values["MAP_VALUE_BAZ_NOBINARY"] = 2;
+            values[valuesById[0] = "MAP_VALUE_FOO_NOBINARY"] = 0;
+            values[valuesById[1] = "MAP_VALUE_BAR_NOBINARY"] = 1;
+            values[valuesById[2] = "MAP_VALUE_BAZ_NOBINARY"] = 2;
             return values;
         })();
 
@@ -6578,7 +6578,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified MapValueMessageNoBinary message, length delimited. Does not implicitly {@link jspb.test.MapValueMessageNoBinary.verify|verify} messages.
-             * @param {jspb.test.MapValueMessageNoBinary|Object.<string,*>} message MapValueMessageNoBinary message or plain object to encode
+             * @param {jspb.test.MapValueMessageNoBinary$Properties} message MapValueMessageNoBinary message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -6743,7 +6743,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified Deeply message, length delimited. Does not implicitly {@link jspb.test.Deeply.verify|verify} messages.
-             * @param {jspb.test.Deeply|Object.<string,*>} message Deeply message or plain object to encode
+             * @param {jspb.test.Deeply$Properties} message Deeply message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -6889,7 +6889,7 @@ $root.jspb = (function() {
 
                 /**
                  * Encodes the specified Nested message, length delimited. Does not implicitly {@link jspb.test.Deeply.Nested.verify|verify} messages.
-                 * @param {jspb.test.Deeply.Nested|Object.<string,*>} message Nested message or plain object to encode
+                 * @param {jspb.test.Deeply.Nested$Properties} message Nested message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
                  */
@@ -7040,7 +7040,7 @@ $root.jspb = (function() {
 
                     /**
                      * Encodes the specified Message message, length delimited. Does not implicitly {@link jspb.test.Deeply.Nested.Message.verify|verify} messages.
-                     * @param {jspb.test.Deeply.Nested.Message|Object.<string,*>} message Message message or plain object to encode
+                     * @param {jspb.test.Deeply.Nested.Message$Properties} message Message message or plain object to encode
                      * @param {$protobuf.Writer} [writer] Writer to encode to
                      * @returns {$protobuf.Writer} Writer
                      */
@@ -7242,7 +7242,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified FileDescriptorSet message, length delimited. Does not implicitly {@link google.protobuf.FileDescriptorSet.verify|verify} messages.
-             * @param {google.protobuf.FileDescriptorSet|Object.<string,*>} message FileDescriptorSet message or plain object to encode
+             * @param {google.protobuf.FileDescriptorSet$Properties} message FileDescriptorSet message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -7389,7 +7389,7 @@ $root.google = (function() {
              * @typedef google.protobuf.FileDescriptorProto$Properties
              * @type Object
              * @property {string} [name] FileDescriptorProto name.
-             * @property {string} [package] FileDescriptorProto package.
+             * @property {string} ["package"] FileDescriptorProto package.
              * @property {Array.<string>} [dependency] FileDescriptorProto dependency.
              * @property {Array.<number>} [publicDependency] FileDescriptorProto publicDependency.
              * @property {Array.<number>} [weakDependency] FileDescriptorProto weakDependency.
@@ -7489,7 +7489,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified FileDescriptorProto message, length delimited. Does not implicitly {@link google.protobuf.FileDescriptorProto.verify|verify} messages.
-             * @param {google.protobuf.FileDescriptorProto|Object.<string,*>} message FileDescriptorProto message or plain object to encode
+             * @param {google.protobuf.FileDescriptorProto$Properties} message FileDescriptorProto message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -7973,7 +7973,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified DescriptorProto message, length delimited. Does not implicitly {@link google.protobuf.DescriptorProto.verify|verify} messages.
-             * @param {google.protobuf.DescriptorProto|Object.<string,*>} message DescriptorProto message or plain object to encode
+             * @param {google.protobuf.DescriptorProto$Properties} message DescriptorProto message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -8398,7 +8398,7 @@ $root.google = (function() {
 
                 /**
                  * Encodes the specified ExtensionRange message, length delimited. Does not implicitly {@link google.protobuf.DescriptorProto.ExtensionRange.verify|verify} messages.
-                 * @param {google.protobuf.DescriptorProto.ExtensionRange|Object.<string,*>} message ExtensionRange message or plain object to encode
+                 * @param {google.protobuf.DescriptorProto.ExtensionRange$Properties} message ExtensionRange message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
                  */
@@ -8584,7 +8584,7 @@ $root.google = (function() {
 
                 /**
                  * Encodes the specified ReservedRange message, length delimited. Does not implicitly {@link google.protobuf.DescriptorProto.ReservedRange.verify|verify} messages.
-                 * @param {google.protobuf.DescriptorProto.ReservedRange|Object.<string,*>} message ReservedRange message or plain object to encode
+                 * @param {google.protobuf.DescriptorProto.ReservedRange$Properties} message ReservedRange message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
                  */
@@ -8805,7 +8805,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified FieldDescriptorProto message, length delimited. Does not implicitly {@link google.protobuf.FieldDescriptorProto.verify|verify} messages.
-             * @param {google.protobuf.FieldDescriptorProto|Object.<string,*>} message FieldDescriptorProto message or plain object to encode
+             * @param {google.protobuf.FieldDescriptorProto$Properties} message FieldDescriptorProto message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -9165,24 +9165,24 @@ $root.google = (function() {
              */
             FieldDescriptorProto.Type = (function() {
                 var valuesById = {}, values = Object.create(valuesById);
-                values["TYPE_DOUBLE"] = 1;
-                values["TYPE_FLOAT"] = 2;
-                values["TYPE_INT64"] = 3;
-                values["TYPE_UINT64"] = 4;
-                values["TYPE_INT32"] = 5;
-                values["TYPE_FIXED64"] = 6;
-                values["TYPE_FIXED32"] = 7;
-                values["TYPE_BOOL"] = 8;
-                values["TYPE_STRING"] = 9;
-                values["TYPE_GROUP"] = 10;
-                values["TYPE_MESSAGE"] = 11;
-                values["TYPE_BYTES"] = 12;
-                values["TYPE_UINT32"] = 13;
-                values["TYPE_ENUM"] = 14;
-                values["TYPE_SFIXED32"] = 15;
-                values["TYPE_SFIXED64"] = 16;
-                values["TYPE_SINT32"] = 17;
-                values["TYPE_SINT64"] = 18;
+                values[valuesById[1] = "TYPE_DOUBLE"] = 1;
+                values[valuesById[2] = "TYPE_FLOAT"] = 2;
+                values[valuesById[3] = "TYPE_INT64"] = 3;
+                values[valuesById[4] = "TYPE_UINT64"] = 4;
+                values[valuesById[5] = "TYPE_INT32"] = 5;
+                values[valuesById[6] = "TYPE_FIXED64"] = 6;
+                values[valuesById[7] = "TYPE_FIXED32"] = 7;
+                values[valuesById[8] = "TYPE_BOOL"] = 8;
+                values[valuesById[9] = "TYPE_STRING"] = 9;
+                values[valuesById[10] = "TYPE_GROUP"] = 10;
+                values[valuesById[11] = "TYPE_MESSAGE"] = 11;
+                values[valuesById[12] = "TYPE_BYTES"] = 12;
+                values[valuesById[13] = "TYPE_UINT32"] = 13;
+                values[valuesById[14] = "TYPE_ENUM"] = 14;
+                values[valuesById[15] = "TYPE_SFIXED32"] = 15;
+                values[valuesById[16] = "TYPE_SFIXED64"] = 16;
+                values[valuesById[17] = "TYPE_SINT32"] = 17;
+                values[valuesById[18] = "TYPE_SINT64"] = 18;
                 return values;
             })();
 
@@ -9197,9 +9197,9 @@ $root.google = (function() {
              */
             FieldDescriptorProto.Label = (function() {
                 var valuesById = {}, values = Object.create(valuesById);
-                values["LABEL_OPTIONAL"] = 1;
-                values["LABEL_REQUIRED"] = 2;
-                values["LABEL_REPEATED"] = 3;
+                values[valuesById[1] = "LABEL_OPTIONAL"] = 1;
+                values[valuesById[2] = "LABEL_REQUIRED"] = 2;
+                values[valuesById[3] = "LABEL_REPEATED"] = 3;
                 return values;
             })();
 
@@ -9259,7 +9259,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified OneofDescriptorProto message, length delimited. Does not implicitly {@link google.protobuf.OneofDescriptorProto.verify|verify} messages.
-             * @param {google.protobuf.OneofDescriptorProto|Object.<string,*>} message OneofDescriptorProto message or plain object to encode
+             * @param {google.protobuf.OneofDescriptorProto$Properties} message OneofDescriptorProto message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -9456,7 +9456,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified EnumDescriptorProto message, length delimited. Does not implicitly {@link google.protobuf.EnumDescriptorProto.verify|verify} messages.
-             * @param {google.protobuf.EnumDescriptorProto|Object.<string,*>} message EnumDescriptorProto message or plain object to encode
+             * @param {google.protobuf.EnumDescriptorProto$Properties} message EnumDescriptorProto message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -9682,7 +9682,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified EnumValueDescriptorProto message, length delimited. Does not implicitly {@link google.protobuf.EnumValueDescriptorProto.verify|verify} messages.
-             * @param {google.protobuf.EnumValueDescriptorProto|Object.<string,*>} message EnumValueDescriptorProto message or plain object to encode
+             * @param {google.protobuf.EnumValueDescriptorProto$Properties} message EnumValueDescriptorProto message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -9890,7 +9890,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified ServiceDescriptorProto message, length delimited. Does not implicitly {@link google.protobuf.ServiceDescriptorProto.verify|verify} messages.
-             * @param {google.protobuf.ServiceDescriptorProto|Object.<string,*>} message ServiceDescriptorProto message or plain object to encode
+             * @param {google.protobuf.ServiceDescriptorProto$Properties} message ServiceDescriptorProto message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -10128,7 +10128,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified MethodDescriptorProto message, length delimited. Does not implicitly {@link google.protobuf.MethodDescriptorProto.verify|verify} messages.
-             * @param {google.protobuf.MethodDescriptorProto|Object.<string,*>} message MethodDescriptorProto message or plain object to encode
+             * @param {google.protobuf.MethodDescriptorProto$Properties} message MethodDescriptorProto message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -10417,7 +10417,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified FileOptions message, length delimited. Does not implicitly {@link google.protobuf.FileOptions.verify|verify} messages.
-             * @param {google.protobuf.FileOptions|Object.<string,*>} message FileOptions message or plain object to encode
+             * @param {google.protobuf.FileOptions$Properties} message FileOptions message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -10739,9 +10739,9 @@ $root.google = (function() {
              */
             FileOptions.OptimizeMode = (function() {
                 var valuesById = {}, values = Object.create(valuesById);
-                values["SPEED"] = 1;
-                values["CODE_SIZE"] = 2;
-                values["LITE_RUNTIME"] = 3;
+                values[valuesById[1] = "SPEED"] = 1;
+                values[valuesById[2] = "CODE_SIZE"] = 2;
+                values[valuesById[3] = "LITE_RUNTIME"] = 3;
                 return values;
             })();
 
@@ -10815,7 +10815,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified MessageOptions message, length delimited. Does not implicitly {@link google.protobuf.MessageOptions.verify|verify} messages.
-             * @param {google.protobuf.MessageOptions|Object.<string,*>} message MessageOptions message or plain object to encode
+             * @param {google.protobuf.MessageOptions$Properties} message MessageOptions message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -11076,7 +11076,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified FieldOptions message, length delimited. Does not implicitly {@link google.protobuf.FieldOptions.verify|verify} messages.
-             * @param {google.protobuf.FieldOptions|Object.<string,*>} message FieldOptions message or plain object to encode
+             * @param {google.protobuf.FieldOptions$Properties} message FieldOptions message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -11328,9 +11328,9 @@ $root.google = (function() {
              */
             FieldOptions.CType = (function() {
                 var valuesById = {}, values = Object.create(valuesById);
-                values["STRING"] = 0;
-                values["CORD"] = 1;
-                values["STRING_PIECE"] = 2;
+                values[valuesById[0] = "STRING"] = 0;
+                values[valuesById[1] = "CORD"] = 1;
+                values[valuesById[2] = "STRING_PIECE"] = 2;
                 return values;
             })();
 
@@ -11345,9 +11345,9 @@ $root.google = (function() {
              */
             FieldOptions.JSType = (function() {
                 var valuesById = {}, values = Object.create(valuesById);
-                values["JS_NORMAL"] = 0;
-                values["JS_STRING"] = 1;
-                values["JS_NUMBER"] = 2;
+                values[valuesById[0] = "JS_NORMAL"] = 0;
+                values[valuesById[1] = "JS_STRING"] = 1;
+                values[valuesById[2] = "JS_NUMBER"] = 2;
                 return values;
             })();
 
@@ -11405,7 +11405,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified OneofOptions message, length delimited. Does not implicitly {@link google.protobuf.OneofOptions.verify|verify} messages.
-             * @param {google.protobuf.OneofOptions|Object.<string,*>} message OneofOptions message or plain object to encode
+             * @param {google.protobuf.OneofOptions$Properties} message OneofOptions message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -11554,7 +11554,7 @@ $root.google = (function() {
              * @property {boolean} [allowAlias] EnumOptions allowAlias.
              * @property {boolean} [deprecated] EnumOptions deprecated.
              * @property {Array.<google.protobuf.UninterpretedOption>} [uninterpretedOption] EnumOptions uninterpretedOption.
-             * @property {string} [.jspb.test.IsExtension.simpleOption] EnumOptions .jspb.test.IsExtension.simpleOption.
+             * @property {string} [".jspb.test.IsExtension.simpleOption"] EnumOptions .jspb.test.IsExtension.simpleOption.
              */
 
             /**
@@ -11608,7 +11608,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified EnumOptions message, length delimited. Does not implicitly {@link google.protobuf.EnumOptions.verify|verify} messages.
-             * @param {google.protobuf.EnumOptions|Object.<string,*>} message EnumOptions message or plain object to encode
+             * @param {google.protobuf.EnumOptions$Properties} message EnumOptions message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -11838,7 +11838,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified EnumValueOptions message, length delimited. Does not implicitly {@link google.protobuf.EnumValueOptions.verify|verify} messages.
-             * @param {google.protobuf.EnumValueOptions|Object.<string,*>} message EnumValueOptions message or plain object to encode
+             * @param {google.protobuf.EnumValueOptions$Properties} message EnumValueOptions message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -12045,7 +12045,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified ServiceOptions message, length delimited. Does not implicitly {@link google.protobuf.ServiceOptions.verify|verify} messages.
-             * @param {google.protobuf.ServiceOptions|Object.<string,*>} message ServiceOptions message or plain object to encode
+             * @param {google.protobuf.ServiceOptions$Properties} message ServiceOptions message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -12256,7 +12256,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified MethodOptions message, length delimited. Does not implicitly {@link google.protobuf.MethodOptions.verify|verify} messages.
-             * @param {google.protobuf.MethodOptions|Object.<string,*>} message MethodOptions message or plain object to encode
+             * @param {google.protobuf.MethodOptions$Properties} message MethodOptions message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -12446,9 +12446,9 @@ $root.google = (function() {
              */
             MethodOptions.IdempotencyLevel = (function() {
                 var valuesById = {}, values = Object.create(valuesById);
-                values["IDEMPOTENCY_UNKNOWN"] = 0;
-                values["NO_SIDE_EFFECTS"] = 1;
-                values["IDEMPOTENT"] = 2;
+                values[valuesById[0] = "IDEMPOTENCY_UNKNOWN"] = 0;
+                values[valuesById[1] = "NO_SIDE_EFFECTS"] = 1;
+                values[valuesById[2] = "IDEMPOTENT"] = 2;
                 return values;
             })();
 
@@ -12530,7 +12530,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified UninterpretedOption message, length delimited. Does not implicitly {@link google.protobuf.UninterpretedOption.verify|verify} messages.
-             * @param {google.protobuf.UninterpretedOption|Object.<string,*>} message UninterpretedOption message or plain object to encode
+             * @param {google.protobuf.UninterpretedOption$Properties} message UninterpretedOption message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -12817,7 +12817,7 @@ $root.google = (function() {
 
                 /**
                  * Encodes the specified NamePart message, length delimited. Does not implicitly {@link google.protobuf.UninterpretedOption.NamePart.verify|verify} messages.
-                 * @param {google.protobuf.UninterpretedOption.NamePart|Object.<string,*>} message NamePart message or plain object to encode
+                 * @param {google.protobuf.UninterpretedOption.NamePart$Properties} message NamePart message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
                  */
@@ -13006,7 +13006,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified SourceCodeInfo message, length delimited. Does not implicitly {@link google.protobuf.SourceCodeInfo.verify|verify} messages.
-             * @param {google.protobuf.SourceCodeInfo|Object.<string,*>} message SourceCodeInfo message or plain object to encode
+             * @param {google.protobuf.SourceCodeInfo$Properties} message SourceCodeInfo message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -13220,7 +13220,7 @@ $root.google = (function() {
 
                 /**
                  * Encodes the specified Location message, length delimited. Does not implicitly {@link google.protobuf.SourceCodeInfo.Location.verify|verify} messages.
-                 * @param {google.protobuf.SourceCodeInfo.Location|Object.<string,*>} message Location message or plain object to encode
+                 * @param {google.protobuf.SourceCodeInfo.Location$Properties} message Location message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
                  */
@@ -13494,7 +13494,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified GeneratedCodeInfo message, length delimited. Does not implicitly {@link google.protobuf.GeneratedCodeInfo.verify|verify} messages.
-             * @param {google.protobuf.GeneratedCodeInfo|Object.<string,*>} message GeneratedCodeInfo message or plain object to encode
+             * @param {google.protobuf.GeneratedCodeInfo$Properties} message GeneratedCodeInfo message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -13697,7 +13697,7 @@ $root.google = (function() {
 
                 /**
                  * Encodes the specified Annotation message, length delimited. Does not implicitly {@link google.protobuf.GeneratedCodeInfo.Annotation.verify|verify} messages.
-                 * @param {google.protobuf.GeneratedCodeInfo.Annotation|Object.<string,*>} message Annotation message or plain object to encode
+                 * @param {google.protobuf.GeneratedCodeInfo.Annotation$Properties} message Annotation message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
                  */
