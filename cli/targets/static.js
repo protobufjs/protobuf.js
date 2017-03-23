@@ -265,7 +265,7 @@ function toJsType(field) {
         case "sint64":
         case "fixed64":
         case "sfixed64":
-            return "number|$protobuf.Long";
+            return "number|Long";
         case "bool":
             return "boolean";
         case "string":
