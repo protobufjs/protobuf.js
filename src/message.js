@@ -5,14 +5,12 @@ var util = require("./util");
 
 /**
  * Constructs a new message instance.
- *
- * This function should also be called from your custom constructors, i.e. `Message.call(this, properties)`.
  * @classdesc Abstract runtime message.
  * @constructor
  * @param {Object.<string,*>} [properties] Properties to set
- * @see {@link Class.create}
  */
 function Message(properties) {
+    // not used internally
     if (properties)
         for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
             this[keys[i]] = properties[keys[i]];

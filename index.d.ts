@@ -33,6 +33,7 @@ export class Class {
      * @param {Type} type Reflected message type
      * @param {*} [ctor] Custom constructor to set up, defaults to create a generic one if omitted
      * @returns {Message} Message prototype
+     * @deprecated Assign the constructor to {@link Type#ctor} instead
      */
     public static create(type: Type, ctor?: any): Message;
 
@@ -555,23 +556,17 @@ export class MapField extends Field {
 
 /**
  * Constructs a new message instance.
- *
- * This function should also be called from your custom constructors, i.e. `Message.call(this, properties)`.
  * @classdesc Abstract runtime message.
  * @constructor
  * @param {Object.<string,*>} [properties] Properties to set
- * @see {@link Class.create}
  */
 export class Message {
 
     /**
      * Constructs a new message instance.
-     *
-     * This function should also be called from your custom constructors, i.e. `Message.call(this, properties)`.
      * @classdesc Abstract runtime message.
      * @constructor
      * @param {Object.<string,*>} [properties] Properties to set
-     * @see {@link Class.create}
      */
     constructor(properties?: { [k: string]: any });
 
@@ -1711,6 +1706,7 @@ export class Type extends NamespaceBase {
 
     /**
      * The registered constructor, if any registered, otherwise a generic constructor.
+     * Assigning a function replaces the internal constructor. If the function does not extend {@link Message} yet, its prototype will be setup accordingly and static methods will be populated. If it already extends {@link Message}, it will just replace the internal constructor.
      * @name Type#ctor
      * @type {Class}
      */

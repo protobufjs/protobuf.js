@@ -191,6 +191,7 @@ Object.defineProperties(Type.prototype, {
 
     /**
      * The registered constructor, if any registered, otherwise a generic constructor.
+     * Assigning a function replaces the internal constructor. If the function does not extend {@link Message} yet, its prototype will be setup accordingly and static methods will be populated. If it already extends {@link Message}, it will just replace the internal constructor.
      * @name Type#ctor
      * @type {Class}
      */
@@ -200,10 +201,9 @@ Object.defineProperties(Type.prototype, {
         },
         set: function(ctor) {
             if (ctor && !(ctor.prototype instanceof Message))
-                throw TypeError("ctor must be a Message constructor");
-            if (!ctor.from)
-                ctor.from = Message.from;
-            this._ctor = ctor;
+                Class(this, ctor);
+            else
+                this._ctor = ctor;
         }
     }
 });

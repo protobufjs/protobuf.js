@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.7.0 (c) 2016, Daniel Wirtz
- * Compiled Thu, 23 Mar 2017 02:19:49 UTC
+ * Compiled Thu, 23 Mar 2017 04:21:06 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -889,6 +889,7 @@ Class.generate = function generate(type) { // eslint-disable-line no-unused-vars
  * @param {Type} type Reflected message type
  * @param {*} [ctor] Custom constructor to set up, defaults to create a generic one if omitted
  * @returns {Message} Message prototype
+ * @deprecated Assign the constructor to {@link Type#ctor} instead
  */
 Class.create = Class;
 
@@ -2115,14 +2116,12 @@ var util = require(32);
 
 /**
  * Constructs a new message instance.
- *
- * This function should also be called from your custom constructors, i.e. `Message.call(this, properties)`.
  * @classdesc Abstract runtime message.
  * @constructor
  * @param {Object.<string,*>} [properties] Properties to set
- * @see {@link Class.create}
  */
 function Message(properties) {
+    // not used internally
     if (properties)
         for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
             this[keys[i]] = properties[keys[i]];
@@ -4512,6 +4511,7 @@ Object.defineProperties(Type.prototype, {
 
     /**
      * The registered constructor, if any registered, otherwise a generic constructor.
+     * Assigning a function replaces the internal constructor. If the function does not extend {@link Message} yet, its prototype will be setup accordingly and static methods will be populated. If it already extends {@link Message}, it will just replace the internal constructor.
      * @name Type#ctor
      * @type {Class}
      */
@@ -4521,10 +4521,9 @@ Object.defineProperties(Type.prototype, {
         },
         set: function(ctor) {
             if (ctor && !(ctor.prototype instanceof Message))
-                throw TypeError("ctor must be a Message constructor");
-            if (!ctor.from)
-                ctor.from = Message.from;
-            this._ctor = ctor;
+                Class(this, ctor);
+            else
+                this._ctor = ctor;
         }
     }
 });

@@ -289,27 +289,26 @@ Detailed information on the reflection structure is available within the [docume
 
 ### Using custom classes
 
-You can also extend runtime message classes with your own custom functionality by registering your own class with a reflected message type:
+You can also extend runtime message classes with your own custom functionality and even register your own constructor with a reflected message type:
 
 ```js
 ...
 
-// Define your own prototypal class
+// Define your own constructor
 function AwesomeMessage(properties) {
-    protobuf.Message.call(this, properties); // call the super constructor
+    // custom initialization code
+    ...
 }
 
-// Register your custom class with its reflected type (*)
-protobuf.Class.create(root.lookup("awesomepackage.AwesomeMessage") /* or use reflection */, AwesomeMessage);
+// Register your constructor with its reflected type (*)
+root.lookupType("awesomepackage.AwesomeMessage").ctor = AwesomeMessage;
 
 // Define your custom functionality
 AwesomeMessage.customStaticMethod = function() { ... };
 AwesomeMessage.prototype.customInstanceMethod = function() { ... };
 
-// Continue at "Create a message"
+// Continue at "Create a new message" above
 ```
-
-Afterwards, decoded messages of this type are `instanceof AwesomeMessage`.
 
 (*) Besides referencing its reflected type through `AwesomeMessage.$type` and `AwesomeMesage#$type`, the respective custom class is automatically populated with:
 
@@ -318,6 +317,23 @@ Afterwards, decoded messages of this type are `instanceof AwesomeMessage`.
 * `AwesomeMessage.decode` and `AwesomeMessage.decodeDelimited`
 * `AwesomeMessage.verify`
 * `AwesomeMessage.fromObject`, `AwesomeMessage.toObject`, `AwesomeMessage#toObject` and `AwesomeMessage#toJSON`
+
+Afterwards, decoded messages of this type are `instanceof AwesomeMessage`.
+
+Alternatively, you can also just reuse and extend the internal constructor if custom initialization code is not required:
+
+```js
+...
+
+// Reuse the internal constructor
+var AwesomeMessage = root.lookupType("awesomepackage.AwesomeMessage").ctor;
+
+// Define your custom functionality
+AwesomeMessage.customStaticMethod = function() { ... };
+AwesomeMessage.prototype.customInstanceMethod = function() { ... };
+
+// Continue at "Create a new message" above
+```
 
 ### Using services
 

@@ -46,17 +46,16 @@ tape.test("reflected types", function(test) {
     type = protobuf.Type.fromJSON("Test", def2);
     test.same(JSON.parse(JSON.stringify(type)), JSON.parse(JSON.stringify(def2)), "should construct from and convert back to JSON (complex parsed)");
 
-    function MyMessage() {}
+    function MyMessageAuto() {}
+    type.ctor = MyMessageAuto;
+    test.ok(MyMessageAuto.prototype instanceof protobuf.Message, "should properly register a constructor through assignment");
+    test.ok(typeof MyMessageAuto.encode === "function", "should populate static methods on assigned constructors");
 
-    test.throws(function() {
-        type.ctor = MyMessage;
-    }, TypeError, "should throw when registering a constructor that doesn't extend Message");
-    
-    MyMessage.prototype = Object.create(protobuf.Message.prototype);
-
-    test.doesNotThrow(function() {
-        type.ctor = MyMessage;
-    }, "should not throw when registering a constructor that extends Message");
+    function MyMessageManual() {}
+    MyMessageManual.prototype = Object.create(protobuf.Message.prototype);
+    type.ctor = MyMessageManual;
+    test.ok(MyMessageManual.prototype instanceof protobuf.Message, "should properly register a constructor through assignment if already extending message");
+    test.notOk(typeof MyMessageManual.encode === "function", "should not populate static methods on assigned constructors if already extending message");
 
     type = protobuf.Type.fromJSON("My", {
         fields: {

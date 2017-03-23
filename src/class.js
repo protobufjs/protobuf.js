@@ -97,6 +97,7 @@ Class.generate = function generate(type) { // eslint-disable-line no-unused-vars
  * @param {Type} type Reflected message type
  * @param {*} [ctor] Custom constructor to set up, defaults to create a generic one if omitted
  * @returns {Message} Message prototype
+ * @deprecated Assign the constructor to {@link Type#ctor} instead
  */
 Class.create = Class;
 
