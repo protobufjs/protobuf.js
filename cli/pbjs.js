@@ -31,19 +31,21 @@ exports.main = function main(args, callback) {
             lint   : "l"
         },
         string: [ "target", "out", "path", "wrap", "root", "lint" ],
-        boolean: [ "keep-case", "create", "encode", "decode", "verify", "convert", "delimited", "beautify", "comments", "es6", "sparse" ],
+        boolean: [ "keep-case", "create", "encode", "decode", "verify", "convert", "delimited", "beautify", "comments", "es6", "sparse", "strict-long" ],
         default: {
-            target    : "json",
-            create    : true,
-            encode    : true,
-            decode    : true,
-            verify    : true,
-            convert   : true,
-            delimited : true,
-            beautify  : true,
-            comments  : true,
-            es6       : null,
-            lint      : lintDefault
+            target       : "json",
+            create       : true,
+            encode       : true,
+            decode       : true,
+            verify       : true,
+            convert      : true,
+            delimited    : true,
+            beautify     : true,
+            comments     : true,
+            es6          : null,
+            lint         : lintDefault,
+            "keep-case"  : false,
+            "strict-long": false
         }
     });
 
@@ -107,6 +109,7 @@ exports.main = function main(args, callback) {
                 "  --no-delimited  Does not generate delimited encode/decode functions.",
                 "  --no-beautify   Does not beautify generated code.",
                 "  --no-comments   Does not output any JSDoc comments.",
+                "  --strict-long   Forces s-/u-/int64 and s-/fixed64 types to 'Long' only (no numbers).",
                 "",
                 "usage: " + chalk.bold.green("pbjs") + " [options] file1.proto file2.json ..." + chalk.gray("  (or)  ") + "other | " + chalk.bold.green("pbjs") + " [options] -",
                 ""
