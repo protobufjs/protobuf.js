@@ -25,20 +25,5 @@ tape.test("packed repeated values", function(test) {
     var dec2 = Test1.decode(Test2.encode(msg).finish());
     test.same(dec2, msg, "should decode non-packed even if defined packed");
 
-    try {
-        protobuf.decoder.compat = false;
-        Test1.setup();
-        Test2.setup();
-
-        test.throws(function() {
-            Test2.decode(Test1.encode(msg).finish());
-        }, RangeError, "should throw for packed if defined non-packed (no compat)");
-
-        dec2 = Test1.decode(Test2.encode(msg).finish());
-        test.same(dec2, msg, "should decode non-packed even if defined packed (no compat)");
-    } finally {
-        protobuf.decoder.compat = true;
-    }
-
     test.end();
 });

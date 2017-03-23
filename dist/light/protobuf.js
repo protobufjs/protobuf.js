@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.7.0 (c) 2016, Daniel Wirtz
- * Compiled Wed, 22 Mar 2017 17:30:26 UTC
+ * Compiled Thu, 23 Mar 2017 02:19:49 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -869,15 +869,12 @@ function Class(type, ctor) {
 Class.generate = function generate(type) { // eslint-disable-line no-unused-vars
     /* eslint-disable no-unexpected-multiline */
     var gen = util.codegen("p");
-    // see issue #700: the following would add explicitly initialized mutable object/array fields
-    // so that these aren't just inherited from the prototype. will break test cases.
-    /*
+    // explicitly initialize mutable object/array fields so that these aren't just inherited from the prototype
     for (var i = 0, field; i < type.fieldsArray.length; ++i)
         if ((field = type._fieldsArray[i]).map) gen
             ("this%s={}", util.safeProp(field.name));
         else if (field.repeated) gen
             ("this%s=[]", util.safeProp(field.name));
-    */
     return gen
     ("if(p){")
         ("for(var ks=Object.keys(p),i=0;i<ks.length;++i)")
@@ -1198,7 +1195,7 @@ converter.toObject = function toObject(mtype) {
 
     if (normalFields.length) { gen
     ("if(o.defaults){");
-        for (i = 0, field; i < normalFields.length; ++i) {
+        for (i = 0; i < normalFields.length; ++i) {
             var field = normalFields[i],
                 prop  = util.safeProp(field.name);
             if (field.resolvedType instanceof Enum) gen
@@ -1216,25 +1213,33 @@ converter.toObject = function toObject(mtype) {
         } gen
     ("}");
     }
-    for (i = 0, field; i < fields.length; ++i) {
+    var hasKs2 = false;
+    for (i = 0; i < fields.length; ++i) {
         var field = fields[i],
-            prop  = util.safeProp(field.name); gen
-    ("if(m%s!==undefined&&m%s!==null&&m.hasOwnProperty(%j)){", prop, prop, field.name);
-        if (field.map) { gen
+            index = mtype._fieldsArray.indexOf(field),
+            prop  = util.safeProp(field.name);
+        if (field.map) {
+            if (!hasKs2) { hasKs2 = true; gen
+    ("var ks2");
+            } gen
+    ("if(m%s&&(ks2=Object.keys(m%s)).length){", prop, prop)
         ("d%s={}", prop)
-        ("for(var ks2=Object.keys(m%s),j=0;j<ks2.length;++j){", prop);
-            genValuePartial_toObject(gen, field, /* sorted */ mtype._fieldsArray.indexOf(field), prop + "[ks2[j]]")
+        ("for(var j=0;j<ks2.length;++j){");
+            genValuePartial_toObject(gen, field, /* sorted */ index, prop + "[ks2[j]]")
         ("}");
         } else if (field.repeated) { gen
+    ("if(m%s&&m%s.length){", prop, prop)
         ("d%s=[]", prop)
         ("for(var j=0;j<m%s.length;++j){", prop);
-            genValuePartial_toObject(gen, field, /* sorted */ mtype._fieldsArray.indexOf(field), prop + "[j]")
+            genValuePartial_toObject(gen, field, /* sorted */ index, prop + "[j]")
         ("}");
-        } else
-        genValuePartial_toObject(gen, field, /* sorted */ mtype._fieldsArray.indexOf(field), prop);
+        } else { gen
+    ("if(m%s!==undefined&&m%s!==null&&m.hasOwnProperty(%j)){", prop, prop, field.name);
+        genValuePartial_toObject(gen, field, /* sorted */ index, prop);
         if (field.partOf) gen
         ("if(o.oneofs)")
             ("d%s=%j", util.safeProp(field.partOf.name), field.name);
+        }
         gen
     ("}");
     }
@@ -1246,8 +1251,6 @@ converter.toObject = function toObject(mtype) {
 },{"14":14,"32":32}],12:[function(require,module,exports){
 "use strict";
 module.exports = decoder;
-
-decoder.compat = true;
 
 var Enum    = require(14),
     types   = require(31),
@@ -1261,7 +1264,6 @@ function missing(field) {
  * Generates a decoder specific to the specified message type.
  * @param {Type} mtype Message type
  * @returns {Codegen} Codegen instance
- * @property {boolean} compat=true Generates backward/forward compatible decoders (packed fields)
  */
 function decoder(mtype) {
     /* eslint-disable no-unexpected-multiline */
@@ -1304,7 +1306,7 @@ function decoder(mtype) {
                     ("%s=[]", ref);
 
             // Packable (always check for forward and backward compatiblity)
-            if ((decoder.compat || field.packed) && types.packed[type] !== undefined) gen
+            if (types.packed[type] !== undefined) gen
                 ("if((t&7)===2){")
                     ("var c2=r.uint32()+r.pos")
                     ("while(r.pos<c2)")
@@ -1353,8 +1355,6 @@ function decoder(mtype) {
 "use strict";
 module.exports = encoder;
 
-encoder.compat = true;
-
 var Enum     = require(14),
     types    = require(31),
     util     = require(32);
@@ -1378,7 +1378,6 @@ function genTypePartial(gen, field, fieldIndex, ref) {
  * Generates an encoder specific to the specified message type.
  * @param {Type} mtype Message type
  * @returns {Codegen} Codegen instance
- * @property {boolean} compat=true Generates encoders serializing in ascending field order
  */
 function encoder(mtype) {
     /* eslint-disable no-unexpected-multiline, block-scoped-var, no-redeclare */
@@ -1389,14 +1388,11 @@ function encoder(mtype) {
     var i, ref;
 
     // "when a message is serialized its known fields should be written sequentially by field number"
-    var fields = /* initializes */ mtype.fieldsArray;
-    /* istanbul ignore else */
-    if (encoder.compat)
-        fields = fields.slice().sort(util.compareFieldsById);
+    var fields = /* initializes */ mtype.fieldsArray.slice().sort(util.compareFieldsById);
 
     for (var i = 0; i < fields.length; ++i) {
         var field    = fields[i].resolve(),
-            index    = encoder.compat ? mtype._fieldsArray.indexOf(field) : /* istanbul ignore next */ i,
+            index    = mtype._fieldsArray.indexOf(field),
             type     = field.resolvedType instanceof Enum ? "uint32" : field.type,
             wireType = types.basic[type];
             ref      = "m" + util.safeProp(field.name);
@@ -2053,7 +2049,7 @@ var types   = require(31),
 function MapField(name, id, keyType, type, options) {
     Field.call(this, name, id, type, options);
 
-    /* istanbul ignore next */
+    /* istanbul ignore if */
     if (!util.isString(keyType))
         throw TypeError("keyType must be a string");
 
@@ -2273,19 +2269,20 @@ function Method(name, type, requestType, responseType, requestStream, responseSt
     if (util.isObject(requestStream)) {
         options = requestStream;
         requestStream = responseStream = undefined;
-    /* istanbul ignore next */
     } else if (util.isObject(responseStream)) {
         options = responseStream;
         responseStream = undefined;
     }
 
-    /* istanbul ignore next */
+    /* istanbul ignore if */
     if (!(type === undefined || util.isString(type)))
         throw TypeError("type must be a string");
-    /* istanbul ignore next */
+
+    /* istanbul ignore if */
     if (!util.isString(requestType))
         throw TypeError("requestType must be a string");
-    /* istanbul ignore next */
+
+    /* istanbul ignore if */
     if (!util.isString(responseType))
         throw TypeError("responseType must be a string");
 
@@ -2645,7 +2642,7 @@ Namespace.prototype.resolveAll = function resolveAll() {
  */
 Namespace.prototype.lookup = function lookup(path, filterType, parentAlreadyChecked) {
 
-    /* istanbul ignore next */
+    /* istanbul ignore if */
     if (typeof filterType === "boolean") {
         parentAlreadyChecked = filterType;
         filterType = undefined;
@@ -2961,7 +2958,7 @@ function OneOf(name, fieldNames, options) {
     }
     ReflectionObject.call(this, name, options);
 
-    /* istanbul ignore next */
+    /* istanbul ignore if */
     if (!(fieldNames === undefined || Array.isArray(fieldNames)))
         throw TypeError("fieldNames must be an Array");
 
@@ -3021,9 +3018,10 @@ function addFieldsToParent(oneof) {
  */
 OneOf.prototype.add = function add(field) {
 
-    /* istanbul ignore next */
+    /* istanbul ignore if */
     if (!(field instanceof Field))
         throw TypeError("field must be a Field");
+
     if (field.parent && field.parent !== this.parent)
         field.parent.remove(field);
     this.oneof.push(field.name);
@@ -3040,20 +3038,23 @@ OneOf.prototype.add = function add(field) {
  */
 OneOf.prototype.remove = function remove(field) {
 
-    /* istanbul ignore next */
+    /* istanbul ignore if */
     if (!(field instanceof Field))
         throw TypeError("field must be a Field");
 
     var index = this.fieldsArray.indexOf(field);
-    /* istanbul ignore next */
+
+    /* istanbul ignore if */
     if (index < 0)
         throw Error(field + " is not a member of " + this);
 
     this.fieldsArray.splice(index, 1);
     index = this.oneof.indexOf(field.name);
+
     /* istanbul ignore else */
     if (index > -1) // theoretical
         this.oneof.splice(index, 1);
+
     field.partOf = null;
     return this;
 };
@@ -3177,7 +3178,7 @@ Reader.prototype.uint32 = (function read_uint32_setup() {
         value = (value | (this.buf[this.pos] & 127) << 21) >>> 0; if (this.buf[this.pos++] < 128) return value;
         value = (value | (this.buf[this.pos] &  15) << 28) >>> 0; if (this.buf[this.pos++] < 128) return value;
 
-        /* istanbul ignore next */
+        /* istanbul ignore if */
         if ((this.pos += 5) > this.len) {
             this.pos = this.len;
             throw indexOutOfRange(this, 10);
@@ -3224,7 +3225,7 @@ function readLongVarint() {
         i = 0;
     } else {
         for (; i < 3; ++i) {
-            /* istanbul ignore next */
+            /* istanbul ignore if */
             if (this.pos >= this.len)
                 throw indexOutOfRange(this);
             // 1st..3th
@@ -3245,7 +3246,7 @@ function readLongVarint() {
         }
     } else {
         for (; i < 5; ++i) {
-            /* istanbul ignore next */
+            /* istanbul ignore if */
             if (this.pos >= this.len)
                 throw indexOutOfRange(this);
             // 6th..10th
@@ -3302,7 +3303,7 @@ function readFixed32(buf, end) {
  */
 Reader.prototype.fixed32 = function read_fixed32() {
 
-    /* istanbul ignore next */
+    /* istanbul ignore if */
     if (this.pos + 4 > this.len)
         throw indexOutOfRange(this, 4);
 
@@ -3315,7 +3316,7 @@ Reader.prototype.fixed32 = function read_fixed32() {
  */
 Reader.prototype.sfixed32 = function read_sfixed32() {
 
-    /* istanbul ignore next */
+    /* istanbul ignore if */
     if (this.pos + 4 > this.len)
         throw indexOutOfRange(this, 4);
 
@@ -3326,7 +3327,7 @@ Reader.prototype.sfixed32 = function read_sfixed32() {
 
 function readFixed64(/* this: Reader */) {
 
-    /* istanbul ignore next */
+    /* istanbul ignore if */
     if (this.pos + 8 > this.len)
         throw indexOutOfRange(this, 8);
 
@@ -3393,7 +3394,7 @@ var readFloat = typeof Float32Array !== "undefined"
  */
 Reader.prototype.float = function read_float() {
 
-    /* istanbul ignore next */
+    /* istanbul ignore if */
     if (this.pos + 4 > this.len)
         throw indexOutOfRange(this, 4);
 
@@ -3455,7 +3456,7 @@ var readDouble = typeof Float64Array !== "undefined"
  */
 Reader.prototype.double = function read_double() {
 
-    /* istanbul ignore next */
+    /* istanbul ignore if */
     if (this.pos + 8 > this.len)
         throw indexOutOfRange(this, 4);
 
@@ -3473,7 +3474,7 @@ Reader.prototype.bytes = function read_bytes() {
         start  = this.pos,
         end    = this.pos + length;
 
-    /* istanbul ignore next */
+    /* istanbul ignore if */
     if (end > this.len)
         throw indexOutOfRange(this, length);
 
@@ -3499,13 +3500,13 @@ Reader.prototype.string = function read_string() {
  */
 Reader.prototype.skip = function skip(length) {
     if (typeof length === "number") {
-        /* istanbul ignore next */
+        /* istanbul ignore if */
         if (this.pos + length > this.len)
             throw indexOutOfRange(this, length);
         this.pos += length;
     } else {
-        /* istanbul ignore next */
         do {
+            /* istanbul ignore if */
             if (this.pos >= this.len)
                 throw indexOutOfRange(this);
         } while (this.buf[this.pos++] & 128);
@@ -3709,7 +3710,7 @@ Root.prototype.load = function load(filename, options, callback) {
 
     // Finishes loading by calling the callback (exactly once)
     function finish(err, root) {
-        /* istanbul ignore next */
+        /* istanbul ignore if */
         if (!callback)
             return;
         var cb = callback;
@@ -3792,13 +3793,14 @@ Root.prototype.load = function load(filename, options, callback) {
             ++queued;
             util.fetch(filename, function(err, source) {
                 --queued;
-                /* istanbul ignore next */
+                /* istanbul ignore if */
                 if (!callback)
                     return; // terminated meanwhile
                 if (err) {
+                    /* istanbul ignore else */
                     if (!weak)
                         finish(err);
-                    else /* istanbul ignore next */ if (!queued) // can't be covered reliably
+                    else if (!queued) // can't be covered reliably
                         finish(null, self);
                     return;
                 }
@@ -4267,9 +4269,11 @@ Service.prototype.resolveAll = function resolveAll() {
  * @override
  */
 Service.prototype.add = function add(object) {
-    /* istanbul ignore next */
+
+    /* istanbul ignore if */
     if (this.get(object.name))
         throw Error("duplicate name '" + object.name + "' in " + this);
+
     if (object instanceof Method) {
         this.methods[object.name] = object;
         object.parent = this;
@@ -4284,7 +4288,7 @@ Service.prototype.add = function add(object) {
 Service.prototype.remove = function remove(object) {
     if (object instanceof Method) {
 
-        /* istanbul ignore next */
+        /* istanbul ignore if */
         if (this.methods[object.name] !== object)
             throw Error(object + " is not a member of " + this);
 
@@ -4462,15 +4466,17 @@ Object.defineProperties(Type.prototype, {
      */
     fieldsById: {
         get: function() {
-            /* istanbul ignore next */
+
+            /* istanbul ignore if */
             if (this._fieldsById)
                 return this._fieldsById;
+
             this._fieldsById = {};
             for (var names = Object.keys(this.fields), i = 0; i < names.length; ++i) {
                 var field = this.fields[names[i]],
                     id = field.id;
 
-                /* istanbul ignore next */
+                /* istanbul ignore if */
                 if (this._fieldsById[id])
                     throw Error("duplicate id " + id + " in " + this);
 
@@ -4622,18 +4628,22 @@ Type.prototype.add = function add(object) {
 Type.prototype.remove = function remove(object) {
     if (object instanceof Field && object.extend === undefined) {
         // See Type#add for the reason why extension fields are excluded here.
-        /* istanbul ignore next */
+
+        /* istanbul ignore if */
         if (!this.fields || this.fields[object.name] !== object)
             throw Error(object + " is not a member of " + this);
+
         delete this.fields[object.name];
         object.parent = null;
         object.onRemove(this);
         return clearCache(this);
     }
     if (object instanceof OneOf) {
-        /* istanbul ignore next */
+
+        /* istanbul ignore if */
         if (!this.oneofs || this.oneofs[object.name] !== object)
             throw Error(object + " is not a member of " + this);
+
         delete this.oneofs[object.name];
         object.parent = null;
         object.onRemove(this);

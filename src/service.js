@@ -102,9 +102,11 @@ Service.prototype.resolveAll = function resolveAll() {
  * @override
  */
 Service.prototype.add = function add(object) {
-    /* istanbul ignore next */
+
+    /* istanbul ignore if */
     if (this.get(object.name))
         throw Error("duplicate name '" + object.name + "' in " + this);
+
     if (object instanceof Method) {
         this.methods[object.name] = object;
         object.parent = this;
@@ -119,7 +121,7 @@ Service.prototype.add = function add(object) {
 Service.prototype.remove = function remove(object) {
     if (object instanceof Method) {
 
-        /* istanbul ignore next */
+        /* istanbul ignore if */
         if (this.methods[object.name] !== object)
             throw Error(object + " is not a member of " + this);
 

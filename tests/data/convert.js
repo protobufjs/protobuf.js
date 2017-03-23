@@ -21,6 +21,11 @@ $root.Message = (function() {
      * @param {Object.<string,*>=} [properties] Properties to set
      */
     function Message(properties) {
+        this.stringRepeated = [];
+        this.uint64Repeated = [];
+        this.bytesRepeated = [];
+        this.enumRepeated = [];
+        this.int64Map = {};
         if (properties)
             for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                 this[keys[i]] = properties[keys[i]];
@@ -440,7 +445,7 @@ $root.Message = (function() {
         }
         if (message.stringVal !== undefined && message.stringVal !== null && message.hasOwnProperty("stringVal"))
             object.stringVal = message.stringVal;
-        if (message.stringRepeated !== undefined && message.stringRepeated !== null && message.hasOwnProperty("stringRepeated")) {
+        if (message.stringRepeated && message.stringRepeated.length) {
             object.stringRepeated = [];
             for (var j = 0; j < message.stringRepeated.length; ++j)
                 object.stringRepeated[j] = message.stringRepeated[j];
@@ -450,7 +455,7 @@ $root.Message = (function() {
                 object.uint64Val = options.longs === String ? String(message.uint64Val) : message.uint64Val;
             else
                 object.uint64Val = options.longs === String ? $util.Long.prototype.toString.call(message.uint64Val) : options.longs === Number ? new $util.LongBits(message.uint64Val.low >>> 0, message.uint64Val.high >>> 0).toNumber(true) : message.uint64Val;
-        if (message.uint64Repeated !== undefined && message.uint64Repeated !== null && message.hasOwnProperty("uint64Repeated")) {
+        if (message.uint64Repeated && message.uint64Repeated.length) {
             object.uint64Repeated = [];
             for (var j = 0; j < message.uint64Repeated.length; ++j)
                 if (typeof message.uint64Repeated[j] === "number")
@@ -460,21 +465,22 @@ $root.Message = (function() {
         }
         if (message.bytesVal !== undefined && message.bytesVal !== null && message.hasOwnProperty("bytesVal"))
             object.bytesVal = options.bytes === String ? $util.base64.encode(message.bytesVal, 0, message.bytesVal.length) : options.bytes === Array ? Array.prototype.slice.call(message.bytesVal) : message.bytesVal;
-        if (message.bytesRepeated !== undefined && message.bytesRepeated !== null && message.hasOwnProperty("bytesRepeated")) {
+        if (message.bytesRepeated && message.bytesRepeated.length) {
             object.bytesRepeated = [];
             for (var j = 0; j < message.bytesRepeated.length; ++j)
                 object.bytesRepeated[j] = options.bytes === String ? $util.base64.encode(message.bytesRepeated[j], 0, message.bytesRepeated[j].length) : options.bytes === Array ? Array.prototype.slice.call(message.bytesRepeated[j]) : message.bytesRepeated[j];
         }
         if (message.enumVal !== undefined && message.enumVal !== null && message.hasOwnProperty("enumVal"))
             object.enumVal = options.enums === String ? $types[6][message.enumVal] : message.enumVal;
-        if (message.enumRepeated !== undefined && message.enumRepeated !== null && message.hasOwnProperty("enumRepeated")) {
+        if (message.enumRepeated && message.enumRepeated.length) {
             object.enumRepeated = [];
             for (var j = 0; j < message.enumRepeated.length; ++j)
                 object.enumRepeated[j] = options.enums === String ? $types[7][message.enumRepeated[j]] : message.enumRepeated[j];
         }
-        if (message.int64Map !== undefined && message.int64Map !== null && message.hasOwnProperty("int64Map")) {
+        var keys2;
+        if (message.int64Map && (keys2 = Object.keys(message.int64Map)).length) {
             object.int64Map = {};
-            for (var keys2 = Object.keys(message.int64Map), j = 0; j < keys2.length; ++j)
+            for (var j = 0; j < keys2.length; ++j)
                 if (typeof message.int64Map[keys2[j]] === "number")
                     object.int64Map[keys2[j]] = options.longs === String ? String(message.int64Map[keys2[j]]) : message.int64Map[keys2[j]];
                 else

@@ -84,7 +84,7 @@ Root.prototype.load = function load(filename, options, callback) {
 
     // Finishes loading by calling the callback (exactly once)
     function finish(err, root) {
-        /* istanbul ignore next */
+        /* istanbul ignore if */
         if (!callback)
             return;
         var cb = callback;
@@ -167,13 +167,14 @@ Root.prototype.load = function load(filename, options, callback) {
             ++queued;
             util.fetch(filename, function(err, source) {
                 --queued;
-                /* istanbul ignore next */
+                /* istanbul ignore if */
                 if (!callback)
                     return; // terminated meanwhile
                 if (err) {
+                    /* istanbul ignore else */
                     if (!weak)
                         finish(err);
-                    else /* istanbul ignore next */ if (!queued) // can't be covered reliably
+                    else if (!queued) // can't be covered reliably
                         finish(null, self);
                     return;
                 }

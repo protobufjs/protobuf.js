@@ -247,12 +247,15 @@ converter.toObject = function toObject(mtype) {
         } gen
     ("}");
     }
+    var hasKs2 = false;
     for (i = 0; i < fields.length; ++i) {
         var field = fields[i],
             index = mtype._fieldsArray.indexOf(field),
             prop  = util.safeProp(field.name);
-        if (field.map) { gen
-    ("var ks2")
+        if (field.map) {
+            if (!hasKs2) { hasKs2 = true; gen
+    ("var ks2");
+            } gen
     ("if(m%s&&(ks2=Object.keys(m%s)).length){", prop, prop)
         ("d%s={}", prop)
         ("for(var j=0;j<ks2.length;++j){");

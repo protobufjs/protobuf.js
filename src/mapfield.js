@@ -22,7 +22,7 @@ var types   = require("./types"),
 function MapField(name, id, keyType, type, options) {
     Field.call(this, name, id, type, options);
 
-    /* istanbul ignore next */
+    /* istanbul ignore if */
     if (!util.isString(keyType))
         throw TypeError("keyType must be a string");
 

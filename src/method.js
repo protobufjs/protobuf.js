@@ -26,19 +26,20 @@ function Method(name, type, requestType, responseType, requestStream, responseSt
     if (util.isObject(requestStream)) {
         options = requestStream;
         requestStream = responseStream = undefined;
-    /* istanbul ignore next */
     } else if (util.isObject(responseStream)) {
         options = responseStream;
         responseStream = undefined;
     }
 
-    /* istanbul ignore next */
+    /* istanbul ignore if */
     if (!(type === undefined || util.isString(type)))
         throw TypeError("type must be a string");
-    /* istanbul ignore next */
+
+    /* istanbul ignore if */
     if (!util.isString(requestType))
         throw TypeError("requestType must be a string");
-    /* istanbul ignore next */
+
+    /* istanbul ignore if */
     if (!util.isString(responseType))
         throw TypeError("responseType must be a string");
 

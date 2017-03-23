@@ -268,7 +268,7 @@ Namespace.prototype.resolveAll = function resolveAll() {
  */
 Namespace.prototype.lookup = function lookup(path, filterType, parentAlreadyChecked) {
 
-    /* istanbul ignore next */
+    /* istanbul ignore if */
     if (typeof filterType === "boolean") {
         parentAlreadyChecked = filterType;
         filterType = undefined;

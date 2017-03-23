@@ -21,6 +21,13 @@ $root.Package = (function() {
      * @param {Object.<string,*>=} [properties] Properties to set
      */
     function Package(properties) {
+        this.keywords = [];
+        this.bin = {};
+        this.scripts = {};
+        this.dependencies = {};
+        this.optionalDependencies = {};
+        this.devDependencies = {};
+        this.cliDependencies = [];
         if (properties)
             for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                 this[keys[i]] = properties[keys[i]];
@@ -577,41 +584,42 @@ $root.Package = (function() {
             object.bugs = message.bugs;
         if (message.homepage !== undefined && message.homepage !== null && message.hasOwnProperty("homepage"))
             object.homepage = message.homepage;
-        if (message.keywords !== undefined && message.keywords !== null && message.hasOwnProperty("keywords")) {
+        if (message.keywords && message.keywords.length) {
             object.keywords = [];
             for (var j = 0; j < message.keywords.length; ++j)
                 object.keywords[j] = message.keywords[j];
         }
         if (message.main !== undefined && message.main !== null && message.hasOwnProperty("main"))
             object.main = message.main;
-        if (message.bin !== undefined && message.bin !== null && message.hasOwnProperty("bin")) {
+        var keys2;
+        if (message.bin && (keys2 = Object.keys(message.bin)).length) {
             object.bin = {};
-            for (var keys2 = Object.keys(message.bin), j = 0; j < keys2.length; ++j)
+            for (var j = 0; j < keys2.length; ++j)
                 object.bin[keys2[j]] = message.bin[keys2[j]];
         }
-        if (message.scripts !== undefined && message.scripts !== null && message.hasOwnProperty("scripts")) {
+        if (message.scripts && (keys2 = Object.keys(message.scripts)).length) {
             object.scripts = {};
-            for (var keys2 = Object.keys(message.scripts), j = 0; j < keys2.length; ++j)
+            for (var j = 0; j < keys2.length; ++j)
                 object.scripts[keys2[j]] = message.scripts[keys2[j]];
         }
-        if (message.dependencies !== undefined && message.dependencies !== null && message.hasOwnProperty("dependencies")) {
+        if (message.dependencies && (keys2 = Object.keys(message.dependencies)).length) {
             object.dependencies = {};
-            for (var keys2 = Object.keys(message.dependencies), j = 0; j < keys2.length; ++j)
+            for (var j = 0; j < keys2.length; ++j)
                 object.dependencies[keys2[j]] = message.dependencies[keys2[j]];
         }
-        if (message.optionalDependencies !== undefined && message.optionalDependencies !== null && message.hasOwnProperty("optionalDependencies")) {
+        if (message.optionalDependencies && (keys2 = Object.keys(message.optionalDependencies)).length) {
             object.optionalDependencies = {};
-            for (var keys2 = Object.keys(message.optionalDependencies), j = 0; j < keys2.length; ++j)
+            for (var j = 0; j < keys2.length; ++j)
                 object.optionalDependencies[keys2[j]] = message.optionalDependencies[keys2[j]];
         }
-        if (message.devDependencies !== undefined && message.devDependencies !== null && message.hasOwnProperty("devDependencies")) {
+        if (message.devDependencies && (keys2 = Object.keys(message.devDependencies)).length) {
             object.devDependencies = {};
-            for (var keys2 = Object.keys(message.devDependencies), j = 0; j < keys2.length; ++j)
+            for (var j = 0; j < keys2.length; ++j)
                 object.devDependencies[keys2[j]] = message.devDependencies[keys2[j]];
         }
         if (message.types !== undefined && message.types !== null && message.hasOwnProperty("types"))
             object.types = message.types;
-        if (message.cliDependencies !== undefined && message.cliDependencies !== null && message.hasOwnProperty("cliDependencies")) {
+        if (message.cliDependencies && message.cliDependencies.length) {
             object.cliDependencies = [];
             for (var j = 0; j < message.cliDependencies.length; ++j)
                 object.cliDependencies[j] = message.cliDependencies[j];

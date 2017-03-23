@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.7.0 (c) 2016, Daniel Wirtz
- * Compiled Wed, 22 Mar 2017 17:30:26 UTC
+ * Compiled Thu, 23 Mar 2017 02:19:49 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -869,15 +869,12 @@ function Class(type, ctor) {
 Class.generate = function generate(type) { // eslint-disable-line no-unused-vars
     /* eslint-disable no-unexpected-multiline */
     var gen = util.codegen("p");
-    // see issue #700: the following would add explicitly initialized mutable object/array fields
-    // so that these aren't just inherited from the prototype. will break test cases.
-    /*
+    // explicitly initialize mutable object/array fields so that these aren't just inherited from the prototype
     for (var i = 0, field; i < type.fieldsArray.length; ++i)
         if ((field = type._fieldsArray[i]).map) gen
             ("this%s={}", util.safeProp(field.name));
         else if (field.repeated) gen
             ("this%s=[]", util.safeProp(field.name));
-    */
     return gen
     ("if(p){")
         ("for(var ks=Object.keys(p),i=0;i<ks.length;++i)")
@@ -1424,7 +1421,7 @@ converter.toObject = function toObject(mtype) {
 
     if (normalFields.length) { gen
     ("if(o.defaults){");
-        for (i = 0, field; i < normalFields.length; ++i) {
+        for (i = 0; i < normalFields.length; ++i) {
             var field = normalFields[i],
                 prop  = util.safeProp(field.name);
             if (field.resolvedType instanceof Enum) gen
@@ -1442,25 +1439,33 @@ converter.toObject = function toObject(mtype) {
         } gen
     ("}");
     }
-    for (i = 0, field; i < fields.length; ++i) {
+    var hasKs2 = false;
+    for (i = 0; i < fields.length; ++i) {
         var field = fields[i],
-            prop  = util.safeProp(field.name); gen
-    ("if(m%s!==undefined&&m%s!==null&&m.hasOwnProperty(%j)){", prop, prop, field.name);
-        if (field.map) { gen
+            index = mtype._fieldsArray.indexOf(field),
+            prop  = util.safeProp(field.name);
+        if (field.map) {
+            if (!hasKs2) { hasKs2 = true; gen
+    ("var ks2");
+            } gen
+    ("if(m%s&&(ks2=Object.keys(m%s)).length){", prop, prop)
         ("d%s={}", prop)
-        ("for(var ks2=Object.keys(m%s),j=0;j<ks2.length;++j){", prop);
-            genValuePartial_toObject(gen, field, /* sorted */ mtype._fieldsArray.indexOf(field), prop + "[ks2[j]]")
+        ("for(var j=0;j<ks2.length;++j){");
+            genValuePartial_toObject(gen, field, /* sorted */ index, prop + "[ks2[j]]")
         ("}");
         } else if (field.repeated) { gen
+    ("if(m%s&&m%s.length){", prop, prop)
         ("d%s=[]", prop)
         ("for(var j=0;j<m%s.length;++j){", prop);
-            genValuePartial_toObject(gen, field, /* sorted */ mtype._fieldsArray.indexOf(field), prop + "[j]")
+            genValuePartial_toObject(gen, field, /* sorted */ index, prop + "[j]")
         ("}");
-        } else
-        genValuePartial_toObject(gen, field, /* sorted */ mtype._fieldsArray.indexOf(field), prop);
+        } else { gen
+    ("if(m%s!==undefined&&m%s!==null&&m.hasOwnProperty(%j)){", prop, prop, field.name);
+        genValuePartial_toObject(gen, field, /* sorted */ index, prop);
         if (field.partOf) gen
         ("if(o.oneofs)")
             ("d%s=%j", util.safeProp(field.partOf.name), field.name);
+        }
         gen
     ("}");
     }
@@ -1472,8 +1477,6 @@ converter.toObject = function toObject(mtype) {
 },{"15":15,"36":36}],13:[function(require,module,exports){
 "use strict";
 module.exports = decoder;
-
-decoder.compat = true;
 
 var Enum    = require(15),
     types   = require(35),
@@ -1487,7 +1490,6 @@ function missing(field) {
  * Generates a decoder specific to the specified message type.
  * @param {Type} mtype Message type
  * @returns {Codegen} Codegen instance
- * @property {boolean} compat=true Generates backward/forward compatible decoders (packed fields)
  */
 function decoder(mtype) {
     /* eslint-disable no-unexpected-multiline */
@@ -1530,7 +1532,7 @@ function decoder(mtype) {
                     ("%s=[]", ref);
 
             // Packable (always check for forward and backward compatiblity)
-            if ((decoder.compat || field.packed) && types.packed[type] !== undefined) gen
+            if (types.packed[type] !== undefined) gen
                 ("if((t&7)===2){")
                     ("var c2=r.uint32()+r.pos")
                     ("while(r.pos<c2)")
@@ -1579,8 +1581,6 @@ function decoder(mtype) {
 "use strict";
 module.exports = encoder;
 
-encoder.compat = true;
-
 var Enum     = require(15),
     types    = require(35),
     util     = require(36);
@@ -1604,7 +1604,6 @@ function genTypePartial(gen, field, fieldIndex, ref) {
  * Generates an encoder specific to the specified message type.
  * @param {Type} mtype Message type
  * @returns {Codegen} Codegen instance
- * @property {boolean} compat=true Generates encoders serializing in ascending field order
  */
 function encoder(mtype) {
     /* eslint-disable no-unexpected-multiline, block-scoped-var, no-redeclare */
@@ -1615,14 +1614,11 @@ function encoder(mtype) {
     var i, ref;
 
     // "when a message is serialized its known fields should be written sequentially by field number"
-    var fields = /* initializes */ mtype.fieldsArray;
-    /* istanbul ignore else */
-    if (encoder.compat)
-        fields = fields.slice().sort(util.compareFieldsById);
+    var fields = /* initializes */ mtype.fieldsArray.slice().sort(util.compareFieldsById);
 
     for (var i = 0; i < fields.length; ++i) {
         var field    = fields[i].resolve(),
-            index    = encoder.compat ? mtype._fieldsArray.indexOf(field) : /* istanbul ignore next */ i,
+            index    = mtype._fieldsArray.indexOf(field),
             type     = field.resolvedType instanceof Enum ? "uint32" : field.type,
             wireType = types.basic[type];
             ref      = "m" + util.safeProp(field.name);
@@ -2293,7 +2289,7 @@ var types   = require(35),
 function MapField(name, id, keyType, type, options) {
     Field.call(this, name, id, type, options);
 
-    /* istanbul ignore next */
+    /* istanbul ignore if */
     if (!util.isString(keyType))
         throw TypeError("keyType must be a string");
 
@@ -2513,19 +2509,20 @@ function Method(name, type, requestType, responseType, requestStream, responseSt
     if (util.isObject(requestStream)) {
         options = requestStream;
         requestStream = responseStream = undefined;
-    /* istanbul ignore next */
     } else if (util.isObject(responseStream)) {
         options = responseStream;
         responseStream = undefined;
     }
 
-    /* istanbul ignore next */
+    /* istanbul ignore if */
     if (!(type === undefined || util.isString(type)))
         throw TypeError("type must be a string");
-    /* istanbul ignore next */
+
+    /* istanbul ignore if */
     if (!util.isString(requestType))
         throw TypeError("requestType must be a string");
-    /* istanbul ignore next */
+
+    /* istanbul ignore if */
     if (!util.isString(responseType))
         throw TypeError("responseType must be a string");
 
@@ -2885,7 +2882,7 @@ Namespace.prototype.resolveAll = function resolveAll() {
  */
 Namespace.prototype.lookup = function lookup(path, filterType, parentAlreadyChecked) {
 
-    /* istanbul ignore next */
+    /* istanbul ignore if */
     if (typeof filterType === "boolean") {
         parentAlreadyChecked = filterType;
         filterType = undefined;
@@ -3201,7 +3198,7 @@ function OneOf(name, fieldNames, options) {
     }
     ReflectionObject.call(this, name, options);
 
-    /* istanbul ignore next */
+    /* istanbul ignore if */
     if (!(fieldNames === undefined || Array.isArray(fieldNames)))
         throw TypeError("fieldNames must be an Array");
 
@@ -3261,9 +3258,10 @@ function addFieldsToParent(oneof) {
  */
 OneOf.prototype.add = function add(field) {
 
-    /* istanbul ignore next */
+    /* istanbul ignore if */
     if (!(field instanceof Field))
         throw TypeError("field must be a Field");
+
     if (field.parent && field.parent !== this.parent)
         field.parent.remove(field);
     this.oneof.push(field.name);
@@ -3280,20 +3278,23 @@ OneOf.prototype.add = function add(field) {
  */
 OneOf.prototype.remove = function remove(field) {
 
-    /* istanbul ignore next */
+    /* istanbul ignore if */
     if (!(field instanceof Field))
         throw TypeError("field must be a Field");
 
     var index = this.fieldsArray.indexOf(field);
-    /* istanbul ignore next */
+
+    /* istanbul ignore if */
     if (index < 0)
         throw Error(field + " is not a member of " + this);
 
     this.fieldsArray.splice(index, 1);
     index = this.oneof.indexOf(field.name);
+
     /* istanbul ignore else */
     if (index > -1) // theoretical
         this.oneof.splice(index, 1);
+
     field.partOf = null;
     return this;
 };
@@ -3356,7 +3357,7 @@ var base10Re    = /^[1-9][0-9]*$/,
     typeRefRe   = /^(?:\.?[a-zA-Z_][a-zA-Z_0-9]*)+$/,
     fqTypeRefRe = /^(?:\.[a-zA-Z][a-zA-Z_0-9]*)+$/;
 
-var camelCaseRe = /_([a-z])(?=[a-z]|$)/g;
+var camelCaseRe = /_([a-z])/g;
 
 function camelCase(str) {
     return str.substring(0,1)
@@ -3430,10 +3431,11 @@ function parse(source, root, options) {
     function readString() {
         var values = [],
             token;
-        /* istanbul ignore next */
         do {
+            /* istanbul ignore if */
             if ((token = next()) !== "\"" && token !== "'")
                 throw illegal(token);
+
             values.push(next());
             skip(token);
             token = peek();
@@ -3456,9 +3458,11 @@ function parse(source, root, options) {
         try {
             return parseNumber(token, /* insideTryCatch */ true);
         } catch (e) {
+
             /* istanbul ignore else */
             if (acceptTypeRef && typeRefRe.test(token))
                 return token;
+
             /* istanbul ignore next */
             throw illegal(token, "value");
         }
@@ -3482,9 +3486,12 @@ function parse(source, root, options) {
             token = token.substring(1);
         }
         switch (token) {
-            case "inf": case "INF": return sign * Infinity;
-            case "nan": case "NaN": case "NAN": return NaN;
-            case "0": return 0;
+            case "inf": case "INF": case "Inf":
+                return sign * Infinity;
+            case "nan": case "NAN": case "Nan": case "NaN":
+                return NaN;
+            case "0":
+                return 0;
         }
         if (base10Re.test(token))
             return sign * parseInt(token, 10);
@@ -3492,39 +3499,52 @@ function parse(source, root, options) {
             return sign * parseInt(token, 16);
         if (base8Re.test(token))
             return sign * parseInt(token, 8);
+
+        /* istanbul ignore else */
         if (numberRe.test(token))
             return sign * parseFloat(token);
+
         /* istanbul ignore next */
         throw illegal(token, "number", insideTryCatch);
     }
 
     function parseId(token, acceptNegative) {
         switch (token) {
-            case "max": case "MAX": return 536870911;
-            case "0": return 0;
+            case "max": case "MAX": case "Max":
+                return 536870911;
+            case "0":
+                return 0;
         }
-        /* istanbul ignore next */
-        if (token.charAt(0) === "-" && !acceptNegative)
+
+        /* istanbul ignore if */
+        if (!acceptNegative && token.charAt(0) === "-")
             throw illegal(token, "id");
+
         if (base10NegRe.test(token))
             return parseInt(token, 10);
         if (base16NegRe.test(token))
             return parseInt(token, 16);
+
         /* istanbul ignore else */
         if (base8NegRe.test(token))
             return parseInt(token, 8);
+
         /* istanbul ignore next */
         throw illegal(token, "id");
     }
 
     function parsePackage() {
-        /* istanbul ignore next */
+
+        /* istanbul ignore if */
         if (pkg !== undefined)
             throw illegal("package");
+
         pkg = next();
-        /* istanbul ignore next */
+
+        /* istanbul ignore if */
         if (!typeRefRe.test(pkg))
             throw illegal(pkg, "name");
+
         ptr = ptr.define(pkg);
         skip(";");
     }
@@ -3553,9 +3573,11 @@ function parse(source, root, options) {
         skip("=");
         syntax = readString();
         isProto3 = syntax === "proto3";
-        /* istanbul ignore next */
+
+        /* istanbul ignore if */
         if (!isProto3 && syntax !== "proto2")
             throw illegal(syntax, "syntax");
+
         skip(";");
     }
 
@@ -3608,7 +3630,7 @@ function parse(source, root, options) {
 
     function parseType(parent, token) {
 
-        /* istanbul ignore next */
+        /* istanbul ignore if */
         if (!nameRe.test(token = next()))
             throw illegal(token, "type name");
 
@@ -3642,9 +3664,10 @@ function parse(source, root, options) {
                     break;
 
                 default:
-                    /* istanbul ignore next */
+                    /* istanbul ignore if */
                     if (!isProto3 || !typeRefRe.test(token))
                         throw illegal(token);
+
                     push(token);
                     parseField(type, "optional");
                     break;
@@ -3660,31 +3683,33 @@ function parse(source, root, options) {
             return;
         }
 
-        /* istanbul ignore next */
+        /* istanbul ignore if */
         if (!typeRefRe.test(type))
             throw illegal(type, "type");
 
         var name = next();
 
-        /* istanbul ignore next */
+        /* istanbul ignore if */
         if (!nameRe.test(name))
             throw illegal(name, "name");
 
         name = applyCase(name);
         skip("=");
 
-        var field = new Field(name, parseId(next()), type, rule, extend),
-            token;
+        var field = new Field(name, parseId(next()), type, rule, extend);
         ifBlock(field, function parseField_block(token) {
+
             /* istanbul ignore else */
             if (token === "option") {
                 parseOption(field, token);
                 skip(";");
             } else
                 throw illegal(token);
+
         }, function parseField_line() {
             parseInlineOptions(field);
         });
+        parent.add(field);
 
         // JSON defaults to packed=true if not set so we have to set packed=false explicity when
         // parsing proto2 descriptors without the option, where applicable. This must be done for
@@ -3692,13 +3717,12 @@ function parse(source, root, options) {
         // yet known whether a type is an enum or not.
         if (!isProto3 && field.repeated)
             field.setOption("packed", false, /* ifNotSet */ true);
-        parent.add(field);
     }
 
     function parseGroup(parent, rule) {
         var name = next();
 
-        /* istanbul ignore next */
+        /* istanbul ignore if */
         if (!nameRe.test(name))
             throw illegal(name, "name");
 
@@ -3738,46 +3762,48 @@ function parse(source, root, options) {
         skip("<");
         var keyType = next();
 
-        /* istanbul ignore next */
+        /* istanbul ignore if */
         if (types.mapKey[keyType] === undefined)
             throw illegal(keyType, "type");
+
         skip(",");
         var valueType = next();
-        /* istanbul ignore next */
+
+        /* istanbul ignore if */
         if (!typeRefRe.test(valueType))
             throw illegal(valueType, "type");
+
         skip(">");
         var name = next();
-        /* istanbul ignore next */
+
+        /* istanbul ignore if */
         if (!nameRe.test(name))
             throw illegal(name, "name");
 
-        name = applyCase(name);
         skip("=");
-        var field = new MapField(name, parseId(next()), keyType, valueType);
+        var field = new MapField(applyCase(name), parseId(next()), keyType, valueType);
         ifBlock(field, function parseMapField_block(token) {
+
             /* istanbul ignore else */
             if (token === "option") {
                 parseOption(field, token);
                 skip(";");
             } else
                 throw illegal(token);
+
         }, function parseMapField_line() {
             parseInlineOptions(field);
         });
-
         parent.add(field);
     }
 
     function parseOneOf(parent, token) {
-        var name = next();
 
-        /* istanbul ignore next */
-        if (!nameRe.test(name))
-            throw illegal(name, "name");
+        /* istanbul ignore if */
+        if (!nameRe.test(token = next()))
+            throw illegal(token, "name");
 
-        name = applyCase(name);
-        var oneof = new OneOf(name);
+        var oneof = new OneOf(applyCase(token));
         ifBlock(oneof, function parseOneOf_block(token) {
             if (token === "option") {
                 parseOption(oneof, token);
@@ -3791,13 +3817,12 @@ function parse(source, root, options) {
     }
 
     function parseEnum(parent, token) {
-        var name = next();
 
-        /* istanbul ignore next */
-        if (!nameRe.test(name))
-            throw illegal(name, "name");
+        /* istanbul ignore if */
+        if (!nameRe.test(token = next()))
+            throw illegal(token, "name");
 
-        var enm = new Enum(name);
+        var enm = new Enum(token);
         ifBlock(enm, function parseEnum_block(token) {
             if (token === "option") {
                 parseOption(enm, token);
@@ -3810,36 +3835,37 @@ function parse(source, root, options) {
 
     function parseEnumValue(parent, token) {
 
-        /* istanbul ignore next */
+        /* istanbul ignore if */
         if (!nameRe.test(token))
             throw illegal(token, "name");
 
-        var name = token;
         skip("=");
         var value = parseId(next(), true),
             dummy = {};
         ifBlock(dummy, function parseEnumValue_block(token) {
+
             /* istanbul ignore else */
             if (token === "option") {
                 parseOption(dummy, token); // skip
                 skip(";");
             } else
                 throw illegal(token);
+
         }, function parseEnumValue_line() {
             parseInlineOptions(dummy); // skip
         });
-        parent.add(name, value, dummy.comment);
+        parent.add(token, value, dummy.comment);
     }
 
     function parseOption(parent, token) {
-        var custom = skip("(", true);
-        var name = next();
+        var isCustom = skip("(", true);
 
-        /* istanbul ignore next */
-        if (!typeRefRe.test(name))
-            throw illegal(name, "name");
+        /* istanbul ignore if */
+        if (!typeRefRe.test(token = next()))
+            throw illegal(token, "name");
 
-        if (custom) {
+        var name = token;
+        if (isCustom) {
             skip(")");
             name = "(" + name + ")";
             token = peek();
@@ -3854,10 +3880,11 @@ function parse(source, root, options) {
 
     function parseOptionValue(parent, name) {
         if (skip("{", true)) { // { a: "foo" b { c: "bar" } }
-            /* istanbul ignore next */
             do {
+                /* istanbul ignore if */
                 if (!nameRe.test(token = next()))
                     throw illegal(token, "name");
+
                 if (peek() === "{")
                     parseOptionValue(parent, name + "." + token);
                 else {
@@ -3886,10 +3913,9 @@ function parse(source, root, options) {
     }
 
     function parseService(parent, token) {
-        token = next();
 
-        /* istanbul ignore next */
-        if (!nameRe.test(token))
+        /* istanbul ignore if */
+        if (!nameRe.test(token = next()))
             throw illegal(token, "service name");
 
         var service = new Service(token);
@@ -3913,48 +3939,56 @@ function parse(source, root, options) {
 
     function parseMethod(parent, token) {
         var type = token;
-        var name = next();
 
-        /* istanbul ignore next */
-        if (!nameRe.test(name))
-            throw illegal(name, "name");
-        var requestType, requestStream,
+        /* istanbul ignore if */
+        if (!nameRe.test(token = next()))
+            throw illegal(token, "name");
+
+        var name = token,
+            requestType, requestStream,
             responseType, responseStream;
+
         skip("(");
         if (skip("stream", true))
             requestStream = true;
-        /* istanbul ignore next */
+
+        /* istanbul ignore if */
         if (!typeRefRe.test(token = next()))
             throw illegal(token);
+
         requestType = token;
         skip(")"); skip("returns"); skip("(");
         if (skip("stream", true))
             responseStream = true;
-        /* istanbul ignore next */
+
+        /* istanbul ignore if */
         if (!typeRefRe.test(token = next()))
             throw illegal(token);
 
         responseType = token;
         skip(")");
+
         var method = new Method(name, type, requestType, responseType, requestStream, responseStream);
         ifBlock(method, function parseMethod_block(token) {
+
             /* istanbul ignore else */
             if (token === "option") {
                 parseOption(method, token);
                 skip(";");
             } else
                 throw illegal(token);
+
         });
         parent.add(method);
     }
 
     function parseExtension(parent, token) {
-        var reference = next();
 
-        /* istanbul ignore next */
-        if (!typeRefRe.test(reference))
-            throw illegal(reference, "reference");
+        /* istanbul ignore if */
+        if (!typeRefRe.test(token = next()))
+            throw illegal(token, "reference");
 
+        var reference = token;
         ifBlock(null, function parseExtension_block(token) {
             switch (token) {
 
@@ -3965,7 +3999,7 @@ function parse(source, root, options) {
                     break;
 
                 default:
-                    /* istanbul ignore next */
+                    /* istanbul ignore if */
                     if (!isProto3 || !typeRefRe.test(token))
                         throw illegal(token);
                     push(token);
@@ -3980,40 +4014,50 @@ function parse(source, root, options) {
         switch (token) {
 
             case "package":
-                /* istanbul ignore next */
+
+                /* istanbul ignore if */
                 if (!head)
                     throw illegal(token);
+
                 parsePackage();
                 break;
 
             case "import":
-                /* istanbul ignore next */
+
+                /* istanbul ignore if */
                 if (!head)
                     throw illegal(token);
+
                 parseImport();
                 break;
 
             case "syntax":
-                /* istanbul ignore next */
+
+                /* istanbul ignore if */
                 if (!head)
                     throw illegal(token);
+
                 parseSyntax();
                 break;
 
             case "option":
-                /* istanbul ignore next */
+
+                /* istanbul ignore if */
                 if (!head)
                     throw illegal(token);
+
                 parseOption(ptr, token);
                 skip(";");
                 break;
 
             default:
+
                 /* istanbul ignore else */
                 if (parseCommon(ptr, token)) {
                     head = false;
                     continue;
                 }
+
                 /* istanbul ignore next */
                 throw illegal(token);
         }
@@ -4132,7 +4176,7 @@ Reader.prototype.uint32 = (function read_uint32_setup() {
         value = (value | (this.buf[this.pos] & 127) << 21) >>> 0; if (this.buf[this.pos++] < 128) return value;
         value = (value | (this.buf[this.pos] &  15) << 28) >>> 0; if (this.buf[this.pos++] < 128) return value;
 
-        /* istanbul ignore next */
+        /* istanbul ignore if */
         if ((this.pos += 5) > this.len) {
             this.pos = this.len;
             throw indexOutOfRange(this, 10);
@@ -4179,7 +4223,7 @@ function readLongVarint() {
         i = 0;
     } else {
         for (; i < 3; ++i) {
-            /* istanbul ignore next */
+            /* istanbul ignore if */
             if (this.pos >= this.len)
                 throw indexOutOfRange(this);
             // 1st..3th
@@ -4200,7 +4244,7 @@ function readLongVarint() {
         }
     } else {
         for (; i < 5; ++i) {
-            /* istanbul ignore next */
+            /* istanbul ignore if */
             if (this.pos >= this.len)
                 throw indexOutOfRange(this);
             // 6th..10th
@@ -4257,7 +4301,7 @@ function readFixed32(buf, end) {
  */
 Reader.prototype.fixed32 = function read_fixed32() {
 
-    /* istanbul ignore next */
+    /* istanbul ignore if */
     if (this.pos + 4 > this.len)
         throw indexOutOfRange(this, 4);
 
@@ -4270,7 +4314,7 @@ Reader.prototype.fixed32 = function read_fixed32() {
  */
 Reader.prototype.sfixed32 = function read_sfixed32() {
 
-    /* istanbul ignore next */
+    /* istanbul ignore if */
     if (this.pos + 4 > this.len)
         throw indexOutOfRange(this, 4);
 
@@ -4281,7 +4325,7 @@ Reader.prototype.sfixed32 = function read_sfixed32() {
 
 function readFixed64(/* this: Reader */) {
 
-    /* istanbul ignore next */
+    /* istanbul ignore if */
     if (this.pos + 8 > this.len)
         throw indexOutOfRange(this, 8);
 
@@ -4348,7 +4392,7 @@ var readFloat = typeof Float32Array !== "undefined"
  */
 Reader.prototype.float = function read_float() {
 
-    /* istanbul ignore next */
+    /* istanbul ignore if */
     if (this.pos + 4 > this.len)
         throw indexOutOfRange(this, 4);
 
@@ -4410,7 +4454,7 @@ var readDouble = typeof Float64Array !== "undefined"
  */
 Reader.prototype.double = function read_double() {
 
-    /* istanbul ignore next */
+    /* istanbul ignore if */
     if (this.pos + 8 > this.len)
         throw indexOutOfRange(this, 4);
 
@@ -4428,7 +4472,7 @@ Reader.prototype.bytes = function read_bytes() {
         start  = this.pos,
         end    = this.pos + length;
 
-    /* istanbul ignore next */
+    /* istanbul ignore if */
     if (end > this.len)
         throw indexOutOfRange(this, length);
 
@@ -4454,13 +4498,13 @@ Reader.prototype.string = function read_string() {
  */
 Reader.prototype.skip = function skip(length) {
     if (typeof length === "number") {
-        /* istanbul ignore next */
+        /* istanbul ignore if */
         if (this.pos + length > this.len)
             throw indexOutOfRange(this, length);
         this.pos += length;
     } else {
-        /* istanbul ignore next */
         do {
+            /* istanbul ignore if */
             if (this.pos >= this.len)
                 throw indexOutOfRange(this);
         } while (this.buf[this.pos++] & 128);
@@ -4664,7 +4708,7 @@ Root.prototype.load = function load(filename, options, callback) {
 
     // Finishes loading by calling the callback (exactly once)
     function finish(err, root) {
-        /* istanbul ignore next */
+        /* istanbul ignore if */
         if (!callback)
             return;
         var cb = callback;
@@ -4747,13 +4791,14 @@ Root.prototype.load = function load(filename, options, callback) {
             ++queued;
             util.fetch(filename, function(err, source) {
                 --queued;
-                /* istanbul ignore next */
+                /* istanbul ignore if */
                 if (!callback)
                     return; // terminated meanwhile
                 if (err) {
+                    /* istanbul ignore else */
                     if (!weak)
                         finish(err);
-                    else /* istanbul ignore next */ if (!queued) // can't be covered reliably
+                    else if (!queued) // can't be covered reliably
                         finish(null, self);
                     return;
                 }
@@ -5222,9 +5267,11 @@ Service.prototype.resolveAll = function resolveAll() {
  * @override
  */
 Service.prototype.add = function add(object) {
-    /* istanbul ignore next */
+
+    /* istanbul ignore if */
     if (this.get(object.name))
         throw Error("duplicate name '" + object.name + "' in " + this);
+
     if (object instanceof Method) {
         this.methods[object.name] = object;
         object.parent = this;
@@ -5239,7 +5286,7 @@ Service.prototype.add = function add(object) {
 Service.prototype.remove = function remove(object) {
     if (object instanceof Method) {
 
-        /* istanbul ignore next */
+        /* istanbul ignore if */
         if (this.methods[object.name] !== object)
             throw Error(object + " is not a member of " + this);
 
@@ -5697,15 +5744,17 @@ Object.defineProperties(Type.prototype, {
      */
     fieldsById: {
         get: function() {
-            /* istanbul ignore next */
+
+            /* istanbul ignore if */
             if (this._fieldsById)
                 return this._fieldsById;
+
             this._fieldsById = {};
             for (var names = Object.keys(this.fields), i = 0; i < names.length; ++i) {
                 var field = this.fields[names[i]],
                     id = field.id;
 
-                /* istanbul ignore next */
+                /* istanbul ignore if */
                 if (this._fieldsById[id])
                     throw Error("duplicate id " + id + " in " + this);
 
@@ -5857,18 +5906,22 @@ Type.prototype.add = function add(object) {
 Type.prototype.remove = function remove(object) {
     if (object instanceof Field && object.extend === undefined) {
         // See Type#add for the reason why extension fields are excluded here.
-        /* istanbul ignore next */
+
+        /* istanbul ignore if */
         if (!this.fields || this.fields[object.name] !== object)
             throw Error(object + " is not a member of " + this);
+
         delete this.fields[object.name];
         object.parent = null;
         object.onRemove(this);
         return clearCache(this);
     }
     if (object instanceof OneOf) {
-        /* istanbul ignore next */
+
+        /* istanbul ignore if */
         if (!this.oneofs || this.oneofs[object.name] !== object)
             throw Error(object + " is not a member of " + this);
+
         delete this.oneofs[object.name];
         object.parent = null;
         object.onRemove(this);

@@ -32,10 +32,11 @@ function codegen_debug() {
  */
 debug.unusedTypes = function unusedTypes(ns) {
 
-    /* istanbul ignore next */
+    /* istanbul ignore if */
     if (!(ns instanceof protobuf.Namespace))
         throw TypeError("ns must be a Namespace");
-    /* istanbul ignore next */
+
+    /* istanbul ignore if */
     if (!ns.nested)
         return [];
 

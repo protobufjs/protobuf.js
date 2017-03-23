@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.7.0 (c) 2016, Daniel Wirtz
- * Compiled Wed, 22 Mar 2017 17:30:26 UTC
+ * Compiled Thu, 23 Mar 2017 02:19:49 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -605,7 +605,7 @@ Reader.prototype.uint32 = (function read_uint32_setup() {
         value = (value | (this.buf[this.pos] & 127) << 21) >>> 0; if (this.buf[this.pos++] < 128) return value;
         value = (value | (this.buf[this.pos] &  15) << 28) >>> 0; if (this.buf[this.pos++] < 128) return value;
 
-        /* istanbul ignore next */
+        /* istanbul ignore if */
         if ((this.pos += 5) > this.len) {
             this.pos = this.len;
             throw indexOutOfRange(this, 10);
@@ -652,7 +652,7 @@ function readLongVarint() {
         i = 0;
     } else {
         for (; i < 3; ++i) {
-            /* istanbul ignore next */
+            /* istanbul ignore if */
             if (this.pos >= this.len)
                 throw indexOutOfRange(this);
             // 1st..3th
@@ -673,7 +673,7 @@ function readLongVarint() {
         }
     } else {
         for (; i < 5; ++i) {
-            /* istanbul ignore next */
+            /* istanbul ignore if */
             if (this.pos >= this.len)
                 throw indexOutOfRange(this);
             // 6th..10th
@@ -730,7 +730,7 @@ function readFixed32(buf, end) {
  */
 Reader.prototype.fixed32 = function read_fixed32() {
 
-    /* istanbul ignore next */
+    /* istanbul ignore if */
     if (this.pos + 4 > this.len)
         throw indexOutOfRange(this, 4);
 
@@ -743,7 +743,7 @@ Reader.prototype.fixed32 = function read_fixed32() {
  */
 Reader.prototype.sfixed32 = function read_sfixed32() {
 
-    /* istanbul ignore next */
+    /* istanbul ignore if */
     if (this.pos + 4 > this.len)
         throw indexOutOfRange(this, 4);
 
@@ -754,7 +754,7 @@ Reader.prototype.sfixed32 = function read_sfixed32() {
 
 function readFixed64(/* this: Reader */) {
 
-    /* istanbul ignore next */
+    /* istanbul ignore if */
     if (this.pos + 8 > this.len)
         throw indexOutOfRange(this, 8);
 
@@ -821,7 +821,7 @@ var readFloat = typeof Float32Array !== "undefined"
  */
 Reader.prototype.float = function read_float() {
 
-    /* istanbul ignore next */
+    /* istanbul ignore if */
     if (this.pos + 4 > this.len)
         throw indexOutOfRange(this, 4);
 
@@ -883,7 +883,7 @@ var readDouble = typeof Float64Array !== "undefined"
  */
 Reader.prototype.double = function read_double() {
 
-    /* istanbul ignore next */
+    /* istanbul ignore if */
     if (this.pos + 8 > this.len)
         throw indexOutOfRange(this, 4);
 
@@ -901,7 +901,7 @@ Reader.prototype.bytes = function read_bytes() {
         start  = this.pos,
         end    = this.pos + length;
 
-    /* istanbul ignore next */
+    /* istanbul ignore if */
     if (end > this.len)
         throw indexOutOfRange(this, length);
 
@@ -927,13 +927,13 @@ Reader.prototype.string = function read_string() {
  */
 Reader.prototype.skip = function skip(length) {
     if (typeof length === "number") {
-        /* istanbul ignore next */
+        /* istanbul ignore if */
         if (this.pos + length > this.len)
             throw indexOutOfRange(this, length);
         this.pos += length;
     } else {
-        /* istanbul ignore next */
         do {
+            /* istanbul ignore if */
             if (this.pos >= this.len)
                 throw indexOutOfRange(this);
         } while (this.buf[this.pos++] & 128);

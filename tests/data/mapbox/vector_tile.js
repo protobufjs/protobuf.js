@@ -30,6 +30,7 @@ $root.vector_tile = (function() {
          * @param {Object.<string,*>=} [properties] Properties to set
          */
         function Tile(properties) {
+            this.layers = [];
             if (properties)
                 for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     this[keys[i]] = properties[keys[i]];
@@ -184,7 +185,7 @@ $root.vector_tile = (function() {
             var object = {};
             if (options.arrays || options.defaults)
                 object.layers = [];
-            if (message.layers !== undefined && message.layers !== null && message.hasOwnProperty("layers")) {
+            if (message.layers && message.layers.length) {
                 object.layers = [];
                 for (var j = 0; j < message.layers.length; ++j)
                     object.layers[j] = $types[0].toObject(message.layers[j], options);
@@ -560,6 +561,8 @@ $root.vector_tile = (function() {
              * @param {Object.<string,*>=} [properties] Properties to set
              */
             function Feature(properties) {
+                this.tags = [];
+                this.geometry = [];
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         this[keys[i]] = properties[keys[i]];
@@ -830,14 +833,14 @@ $root.vector_tile = (function() {
                         object.id = options.longs === String ? String(message.id) : message.id;
                     else
                         object.id = options.longs === String ? $util.Long.prototype.toString.call(message.id) : options.longs === Number ? new $util.LongBits(message.id.low >>> 0, message.id.high >>> 0).toNumber(true) : message.id;
-                if (message.tags !== undefined && message.tags !== null && message.hasOwnProperty("tags")) {
+                if (message.tags && message.tags.length) {
                     object.tags = [];
                     for (var j = 0; j < message.tags.length; ++j)
                         object.tags[j] = message.tags[j];
                 }
                 if (message.type !== undefined && message.type !== null && message.hasOwnProperty("type"))
                     object.type = options.enums === String ? $types[2][message.type] : message.type;
-                if (message.geometry !== undefined && message.geometry !== null && message.hasOwnProperty("geometry")) {
+                if (message.geometry && message.geometry.length) {
                     object.geometry = [];
                     for (var j = 0; j < message.geometry.length; ++j)
                         object.geometry[j] = message.geometry[j];
@@ -874,6 +877,9 @@ $root.vector_tile = (function() {
              * @param {Object.<string,*>=} [properties] Properties to set
              */
             function Layer(properties) {
+                this.features = [];
+                this.keys = [];
+                this.values = [];
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         this[keys[i]] = properties[keys[i]];
@@ -1148,17 +1154,17 @@ $root.vector_tile = (function() {
                 }
                 if (message.name !== undefined && message.name !== null && message.hasOwnProperty("name"))
                     object.name = message.name;
-                if (message.features !== undefined && message.features !== null && message.hasOwnProperty("features")) {
+                if (message.features && message.features.length) {
                     object.features = [];
                     for (var j = 0; j < message.features.length; ++j)
                         object.features[j] = $types[1].toObject(message.features[j], options);
                 }
-                if (message.keys !== undefined && message.keys !== null && message.hasOwnProperty("keys")) {
+                if (message.keys && message.keys.length) {
                     object.keys = [];
                     for (var j = 0; j < message.keys.length; ++j)
                         object.keys[j] = message.keys[j];
                 }
-                if (message.values !== undefined && message.values !== null && message.hasOwnProperty("values")) {
+                if (message.values && message.values.length) {
                     object.values = [];
                     for (var j = 0; j < message.values.length; ++j)
                         object.values[j] = $types[3].toObject(message.values[j], options);

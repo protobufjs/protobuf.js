@@ -380,6 +380,7 @@ $root.jspb = (function() {
              * @param {Object.<string,*>=} [properties] Properties to set
              */
             function Simple1(properties) {
+                this.aRepeatedString = [];
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         this[keys[i]] = properties[keys[i]];
@@ -562,7 +563,7 @@ $root.jspb = (function() {
                 }
                 if (message.aString !== undefined && message.aString !== null && message.hasOwnProperty("aString"))
                     object.aString = message.aString;
-                if (message.aRepeatedString !== undefined && message.aRepeatedString !== null && message.hasOwnProperty("aRepeatedString")) {
+                if (message.aRepeatedString && message.aRepeatedString.length) {
                     object.aRepeatedString = [];
                     for (var j = 0; j < message.aRepeatedString.length; ++j)
                         object.aRepeatedString[j] = message.aRepeatedString[j];
@@ -601,6 +602,7 @@ $root.jspb = (function() {
              * @param {Object.<string,*>=} [properties] Properties to set
              */
             function Simple2(properties) {
+                this.aRepeatedString = [];
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         this[keys[i]] = properties[keys[i]];
@@ -765,7 +767,7 @@ $root.jspb = (function() {
                     object.aString = "";
                 if (message.aString !== undefined && message.aString !== null && message.hasOwnProperty("aString"))
                     object.aString = message.aString;
-                if (message.aRepeatedString !== undefined && message.aRepeatedString !== null && message.hasOwnProperty("aRepeatedString")) {
+                if (message.aRepeatedString && message.aRepeatedString.length) {
                     object.aRepeatedString = [];
                     for (var j = 0; j < message.aRepeatedString.length; ++j)
                         object.aRepeatedString[j] = message.aRepeatedString[j];
@@ -1029,6 +1031,8 @@ $root.jspb = (function() {
              * @param {Object.<string,*>=} [properties] Properties to set
              */
             function OptionalFields(properties) {
+                this.aRepeatedMessage = [];
+                this.aRepeatedString = [];
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         this[keys[i]] = properties[keys[i]];
@@ -1278,12 +1282,12 @@ $root.jspb = (function() {
                     object.aBool = message.aBool;
                 if (message.aNestedMessage !== undefined && message.aNestedMessage !== null && message.hasOwnProperty("aNestedMessage"))
                     object.aNestedMessage = $types[2].toObject(message.aNestedMessage, options);
-                if (message.aRepeatedMessage !== undefined && message.aRepeatedMessage !== null && message.hasOwnProperty("aRepeatedMessage")) {
+                if (message.aRepeatedMessage && message.aRepeatedMessage.length) {
                     object.aRepeatedMessage = [];
                     for (var j = 0; j < message.aRepeatedMessage.length; ++j)
                         object.aRepeatedMessage[j] = $types[3].toObject(message.aRepeatedMessage[j], options);
                 }
-                if (message.aRepeatedString !== undefined && message.aRepeatedString !== null && message.hasOwnProperty("aRepeatedString")) {
+                if (message.aRepeatedString && message.aRepeatedString.length) {
                     object.aRepeatedString = [];
                     for (var j = 0; j < message.aRepeatedString.length; ++j)
                         object.aRepeatedString[j] = message.aRepeatedString[j];
@@ -1486,6 +1490,8 @@ $root.jspb = (function() {
              * @param {Object.<string,*>=} [properties] Properties to set
              */
             function HasExtensions(properties) {
+                this[".jspb.test.IndirectExtension.repeatedStr"] = [];
+                this[".jspb.test.IndirectExtension.repeatedSimple"] = [];
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         this[keys[i]] = properties[keys[i]];
@@ -1827,12 +1833,12 @@ $root.jspb = (function() {
                     object[".jspb.test.IndirectExtension.simple"] = $types[4].toObject(message[".jspb.test.IndirectExtension.simple"], options);
                 if (message[".jspb.test.IndirectExtension.str"] !== undefined && message[".jspb.test.IndirectExtension.str"] !== null && message.hasOwnProperty(".jspb.test.IndirectExtension.str"))
                     object[".jspb.test.IndirectExtension.str"] = message[".jspb.test.IndirectExtension.str"];
-                if (message[".jspb.test.IndirectExtension.repeatedStr"] !== undefined && message[".jspb.test.IndirectExtension.repeatedStr"] !== null && message.hasOwnProperty(".jspb.test.IndirectExtension.repeatedStr")) {
+                if (message[".jspb.test.IndirectExtension.repeatedStr"] && message[".jspb.test.IndirectExtension.repeatedStr"].length) {
                     object[".jspb.test.IndirectExtension.repeatedStr"] = [];
                     for (var j = 0; j < message[".jspb.test.IndirectExtension.repeatedStr"].length; ++j)
                         object[".jspb.test.IndirectExtension.repeatedStr"][j] = message[".jspb.test.IndirectExtension.repeatedStr"][j];
                 }
-                if (message[".jspb.test.IndirectExtension.repeatedSimple"] !== undefined && message[".jspb.test.IndirectExtension.repeatedSimple"] !== null && message.hasOwnProperty(".jspb.test.IndirectExtension.repeatedSimple")) {
+                if (message[".jspb.test.IndirectExtension.repeatedSimple"] && message[".jspb.test.IndirectExtension.repeatedSimple"].length) {
                     object[".jspb.test.IndirectExtension.repeatedSimple"] = [];
                     for (var j = 0; j < message[".jspb.test.IndirectExtension.repeatedSimple"].length; ++j)
                         object[".jspb.test.IndirectExtension.repeatedSimple"][j] = $types[7].toObject(message[".jspb.test.IndirectExtension.repeatedSimple"][j], options);
@@ -1871,6 +1877,8 @@ $root.jspb = (function() {
              * @param {Object.<string,*>=} [properties] Properties to set
              */
             function Complex(properties) {
+                this.aRepeatedMessage = [];
+                this.aRepeatedString = [];
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         this[keys[i]] = properties[keys[i]];
@@ -2118,12 +2126,12 @@ $root.jspb = (function() {
                     object.aString = message.aString;
                 if (message.aNestedMessage !== undefined && message.aNestedMessage !== null && message.hasOwnProperty("aNestedMessage"))
                     object.aNestedMessage = $types[1].toObject(message.aNestedMessage, options);
-                if (message.aRepeatedMessage !== undefined && message.aRepeatedMessage !== null && message.hasOwnProperty("aRepeatedMessage")) {
+                if (message.aRepeatedMessage && message.aRepeatedMessage.length) {
                     object.aRepeatedMessage = [];
                     for (var j = 0; j < message.aRepeatedMessage.length; ++j)
                         object.aRepeatedMessage[j] = $types[2].toObject(message.aRepeatedMessage[j], options);
                 }
-                if (message.aRepeatedString !== undefined && message.aRepeatedString !== null && message.hasOwnProperty("aRepeatedString")) {
+                if (message.aRepeatedString && message.aRepeatedString.length) {
                     object.aRepeatedString = [];
                     for (var j = 0; j < message.aRepeatedString.length; ++j)
                         object.aRepeatedString[j] = message.aRepeatedString[j];
@@ -3260,6 +3268,8 @@ $root.jspb = (function() {
              * @param {Object.<string,*>=} [properties] Properties to set
              */
             function FloatingPointFields(properties) {
+                this.repeatedFloatField = [];
+                this.repeatedDoubleField = [];
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         this[keys[i]] = properties[keys[i]];
@@ -3552,7 +3562,7 @@ $root.jspb = (function() {
                     object.optionalFloatField = message.optionalFloatField;
                 if (message.requiredFloatField !== undefined && message.requiredFloatField !== null && message.hasOwnProperty("requiredFloatField"))
                     object.requiredFloatField = message.requiredFloatField;
-                if (message.repeatedFloatField !== undefined && message.repeatedFloatField !== null && message.hasOwnProperty("repeatedFloatField")) {
+                if (message.repeatedFloatField && message.repeatedFloatField.length) {
                     object.repeatedFloatField = [];
                     for (var j = 0; j < message.repeatedFloatField.length; ++j)
                         object.repeatedFloatField[j] = message.repeatedFloatField[j];
@@ -3563,7 +3573,7 @@ $root.jspb = (function() {
                     object.optionalDoubleField = message.optionalDoubleField;
                 if (message.requiredDoubleField !== undefined && message.requiredDoubleField !== null && message.hasOwnProperty("requiredDoubleField"))
                     object.requiredDoubleField = message.requiredDoubleField;
-                if (message.repeatedDoubleField !== undefined && message.repeatedDoubleField !== null && message.hasOwnProperty("repeatedDoubleField")) {
+                if (message.repeatedDoubleField && message.repeatedDoubleField.length) {
                     object.repeatedDoubleField = [];
                     for (var j = 0; j < message.repeatedDoubleField.length; ++j)
                         object.repeatedDoubleField[j] = message.repeatedDoubleField[j];
@@ -3602,6 +3612,7 @@ $root.jspb = (function() {
              * @param {Object.<string,*>=} [properties] Properties to set
              */
             function TestClone(properties) {
+                this.simple2 = [];
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         this[keys[i]] = properties[keys[i]];
@@ -3863,7 +3874,7 @@ $root.jspb = (function() {
                     object.str = message.str;
                 if (message.simple1 !== undefined && message.simple1 !== null && message.hasOwnProperty("simple1"))
                     object.simple1 = $types[1].toObject(message.simple1, options);
-                if (message.simple2 !== undefined && message.simple2 !== null && message.hasOwnProperty("simple2")) {
+                if (message.simple2 && message.simple2.length) {
                     object.simple2 = [];
                     for (var j = 0; j < message.simple2.length; ++j)
                         object.simple2[j] = $types[2].toObject(message.simple2[j], options);
@@ -4072,6 +4083,7 @@ $root.jspb = (function() {
              * @param {Object.<string,*>=} [properties] Properties to set
              */
             function TestGroup(properties) {
+                this.repeatedGroup = [];
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         this[keys[i]] = properties[keys[i]];
@@ -4335,7 +4347,7 @@ $root.jspb = (function() {
                     object.requiredSimple = null;
                     object.optionalSimple = null;
                 }
-                if (message.repeatedGroup !== undefined && message.repeatedGroup !== null && message.hasOwnProperty("repeatedGroup")) {
+                if (message.repeatedGroup && message.repeatedGroup.length) {
                     object.repeatedGroup = [];
                     for (var j = 0; j < message.repeatedGroup.length; ++j)
                         object.repeatedGroup[j] = $types[0].toObject(message.repeatedGroup[j], options);
@@ -4379,6 +4391,7 @@ $root.jspb = (function() {
                  * @param {Object.<string,*>=} [properties] Properties to set
                  */
                 function RepeatedGroup(properties) {
+                    this.someBool = [];
                     if (properties)
                         for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                             this[keys[i]] = properties[keys[i]];
@@ -4550,7 +4563,7 @@ $root.jspb = (function() {
                         object.id = "";
                     if (message.id !== undefined && message.id !== null && message.hasOwnProperty("id"))
                         object.id = message.id;
-                    if (message.someBool !== undefined && message.someBool !== null && message.hasOwnProperty("someBool")) {
+                    if (message.someBool && message.someBool.length) {
                         object.someBool = [];
                         for (var j = 0; j < message.someBool.length; ++j)
                             object.someBool[j] = message.someBool[j];
@@ -5431,6 +5444,7 @@ $root.jspb = (function() {
              * @param {Object.<string,*>=} [properties] Properties to set
              */
             function TestMessageWithOneof(properties) {
+                this.repeatedField = [];
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         this[keys[i]] = properties[keys[i]];
@@ -5820,7 +5834,7 @@ $root.jspb = (function() {
                 }
                 if (message.normalField !== undefined && message.normalField !== null && message.hasOwnProperty("normalField"))
                     object.normalField = message.normalField;
-                if (message.repeatedField !== undefined && message.repeatedField !== null && message.hasOwnProperty("repeatedField")) {
+                if (message.repeatedField && message.repeatedField.length) {
                     object.repeatedField = [];
                     for (var j = 0; j < message.repeatedField.length; ++j)
                         object.repeatedField[j] = message.repeatedField[j];
@@ -6066,6 +6080,17 @@ $root.jspb = (function() {
              * @param {Object.<string,*>=} [properties] Properties to set
              */
             function TestMapFieldsNoBinary(properties) {
+                this.mapStringString = {};
+                this.mapStringInt32 = {};
+                this.mapStringInt64 = {};
+                this.mapStringBool = {};
+                this.mapStringDouble = {};
+                this.mapStringEnum = {};
+                this.mapStringMsg = {};
+                this.mapInt32String = {};
+                this.mapInt64String = {};
+                this.mapBoolString = {};
+                this.mapStringTestmapfields = {};
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         this[keys[i]] = properties[keys[i]];
@@ -6625,64 +6650,65 @@ $root.jspb = (function() {
                 }
                 if (options.defaults)
                     object.testMapFields = null;
-                if (message.mapStringString !== undefined && message.mapStringString !== null && message.hasOwnProperty("mapStringString")) {
+                var keys2;
+                if (message.mapStringString && (keys2 = Object.keys(message.mapStringString)).length) {
                     object.mapStringString = {};
-                    for (var keys2 = Object.keys(message.mapStringString), j = 0; j < keys2.length; ++j)
+                    for (var j = 0; j < keys2.length; ++j)
                         object.mapStringString[keys2[j]] = message.mapStringString[keys2[j]];
                 }
-                if (message.mapStringInt32 !== undefined && message.mapStringInt32 !== null && message.hasOwnProperty("mapStringInt32")) {
+                if (message.mapStringInt32 && (keys2 = Object.keys(message.mapStringInt32)).length) {
                     object.mapStringInt32 = {};
-                    for (var keys2 = Object.keys(message.mapStringInt32), j = 0; j < keys2.length; ++j)
+                    for (var j = 0; j < keys2.length; ++j)
                         object.mapStringInt32[keys2[j]] = message.mapStringInt32[keys2[j]];
                 }
-                if (message.mapStringInt64 !== undefined && message.mapStringInt64 !== null && message.hasOwnProperty("mapStringInt64")) {
+                if (message.mapStringInt64 && (keys2 = Object.keys(message.mapStringInt64)).length) {
                     object.mapStringInt64 = {};
-                    for (var keys2 = Object.keys(message.mapStringInt64), j = 0; j < keys2.length; ++j)
+                    for (var j = 0; j < keys2.length; ++j)
                         if (typeof message.mapStringInt64[keys2[j]] === "number")
                             object.mapStringInt64[keys2[j]] = options.longs === String ? String(message.mapStringInt64[keys2[j]]) : message.mapStringInt64[keys2[j]];
                         else
                             object.mapStringInt64[keys2[j]] = options.longs === String ? $util.Long.prototype.toString.call(message.mapStringInt64[keys2[j]]) : options.longs === Number ? new $util.LongBits(message.mapStringInt64[keys2[j]].low >>> 0, message.mapStringInt64[keys2[j]].high >>> 0).toNumber() : message.mapStringInt64[keys2[j]];
                 }
-                if (message.mapStringBool !== undefined && message.mapStringBool !== null && message.hasOwnProperty("mapStringBool")) {
+                if (message.mapStringBool && (keys2 = Object.keys(message.mapStringBool)).length) {
                     object.mapStringBool = {};
-                    for (var keys2 = Object.keys(message.mapStringBool), j = 0; j < keys2.length; ++j)
+                    for (var j = 0; j < keys2.length; ++j)
                         object.mapStringBool[keys2[j]] = message.mapStringBool[keys2[j]];
                 }
-                if (message.mapStringDouble !== undefined && message.mapStringDouble !== null && message.hasOwnProperty("mapStringDouble")) {
+                if (message.mapStringDouble && (keys2 = Object.keys(message.mapStringDouble)).length) {
                     object.mapStringDouble = {};
-                    for (var keys2 = Object.keys(message.mapStringDouble), j = 0; j < keys2.length; ++j)
+                    for (var j = 0; j < keys2.length; ++j)
                         object.mapStringDouble[keys2[j]] = message.mapStringDouble[keys2[j]];
                 }
-                if (message.mapStringEnum !== undefined && message.mapStringEnum !== null && message.hasOwnProperty("mapStringEnum")) {
+                if (message.mapStringEnum && (keys2 = Object.keys(message.mapStringEnum)).length) {
                     object.mapStringEnum = {};
-                    for (var keys2 = Object.keys(message.mapStringEnum), j = 0; j < keys2.length; ++j)
+                    for (var j = 0; j < keys2.length; ++j)
                         object.mapStringEnum[keys2[j]] = options.enums === String ? $types[5][message.mapStringEnum[keys2[j]]] : message.mapStringEnum[keys2[j]];
                 }
-                if (message.mapStringMsg !== undefined && message.mapStringMsg !== null && message.hasOwnProperty("mapStringMsg")) {
+                if (message.mapStringMsg && (keys2 = Object.keys(message.mapStringMsg)).length) {
                     object.mapStringMsg = {};
-                    for (var keys2 = Object.keys(message.mapStringMsg), j = 0; j < keys2.length; ++j)
+                    for (var j = 0; j < keys2.length; ++j)
                         object.mapStringMsg[keys2[j]] = $types[6].toObject(message.mapStringMsg[keys2[j]], options);
                 }
-                if (message.mapInt32String !== undefined && message.mapInt32String !== null && message.hasOwnProperty("mapInt32String")) {
+                if (message.mapInt32String && (keys2 = Object.keys(message.mapInt32String)).length) {
                     object.mapInt32String = {};
-                    for (var keys2 = Object.keys(message.mapInt32String), j = 0; j < keys2.length; ++j)
+                    for (var j = 0; j < keys2.length; ++j)
                         object.mapInt32String[keys2[j]] = message.mapInt32String[keys2[j]];
                 }
-                if (message.mapInt64String !== undefined && message.mapInt64String !== null && message.hasOwnProperty("mapInt64String")) {
+                if (message.mapInt64String && (keys2 = Object.keys(message.mapInt64String)).length) {
                     object.mapInt64String = {};
-                    for (var keys2 = Object.keys(message.mapInt64String), j = 0; j < keys2.length; ++j)
+                    for (var j = 0; j < keys2.length; ++j)
                         object.mapInt64String[keys2[j]] = message.mapInt64String[keys2[j]];
                 }
-                if (message.mapBoolString !== undefined && message.mapBoolString !== null && message.hasOwnProperty("mapBoolString")) {
+                if (message.mapBoolString && (keys2 = Object.keys(message.mapBoolString)).length) {
                     object.mapBoolString = {};
-                    for (var keys2 = Object.keys(message.mapBoolString), j = 0; j < keys2.length; ++j)
+                    for (var j = 0; j < keys2.length; ++j)
                         object.mapBoolString[keys2[j]] = message.mapBoolString[keys2[j]];
                 }
                 if (message.testMapFields !== undefined && message.testMapFields !== null && message.hasOwnProperty("testMapFields"))
                     object.testMapFields = $types[10].toObject(message.testMapFields, options);
-                if (message.mapStringTestmapfields !== undefined && message.mapStringTestmapfields !== null && message.hasOwnProperty("mapStringTestmapfields")) {
+                if (message.mapStringTestmapfields && (keys2 = Object.keys(message.mapStringTestmapfields)).length) {
                     object.mapStringTestmapfields = {};
-                    for (var keys2 = Object.keys(message.mapStringTestmapfields), j = 0; j < keys2.length; ++j)
+                    for (var j = 0; j < keys2.length; ++j)
                         object.mapStringTestmapfields[keys2[j]] = $types[11].toObject(message.mapStringTestmapfields[keys2[j]], options);
                 }
                 return object;
@@ -7374,6 +7400,7 @@ $root.google = (function() {
              * @param {Object.<string,*>=} [properties] Properties to set
              */
             function FileDescriptorSet(properties) {
+                this.file = [];
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         this[keys[i]] = properties[keys[i]];
@@ -7528,7 +7555,7 @@ $root.google = (function() {
                 var object = {};
                 if (options.arrays || options.defaults)
                     object.file = [];
-                if (message.file !== undefined && message.file !== null && message.hasOwnProperty("file")) {
+                if (message.file && message.file.length) {
                     object.file = [];
                     for (var j = 0; j < message.file.length; ++j)
                         object.file[j] = $types[0].toObject(message.file[j], options);
@@ -7565,6 +7592,13 @@ $root.google = (function() {
              * @param {Object.<string,*>=} [properties] Properties to set
              */
             function FileDescriptorProto(properties) {
+                this.dependency = [];
+                this.publicDependency = [];
+                this.weakDependency = [];
+                this.messageType = [];
+                this.enumType = [];
+                this.service = [];
+                this.extension = [];
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         this[keys[i]] = properties[keys[i]];
@@ -8026,27 +8060,27 @@ $root.google = (function() {
                     object.name = message.name;
                 if (message["package"] !== undefined && message["package"] !== null && message.hasOwnProperty("package"))
                     object["package"] = message["package"];
-                if (message.dependency !== undefined && message.dependency !== null && message.hasOwnProperty("dependency")) {
+                if (message.dependency && message.dependency.length) {
                     object.dependency = [];
                     for (var j = 0; j < message.dependency.length; ++j)
                         object.dependency[j] = message.dependency[j];
                 }
-                if (message.messageType !== undefined && message.messageType !== null && message.hasOwnProperty("messageType")) {
+                if (message.messageType && message.messageType.length) {
                     object.messageType = [];
                     for (var j = 0; j < message.messageType.length; ++j)
                         object.messageType[j] = $types[3].toObject(message.messageType[j], options);
                 }
-                if (message.enumType !== undefined && message.enumType !== null && message.hasOwnProperty("enumType")) {
+                if (message.enumType && message.enumType.length) {
                     object.enumType = [];
                     for (var j = 0; j < message.enumType.length; ++j)
                         object.enumType[j] = $types[4].toObject(message.enumType[j], options);
                 }
-                if (message.service !== undefined && message.service !== null && message.hasOwnProperty("service")) {
+                if (message.service && message.service.length) {
                     object.service = [];
                     for (var j = 0; j < message.service.length; ++j)
                         object.service[j] = $types[5].toObject(message.service[j], options);
                 }
-                if (message.extension !== undefined && message.extension !== null && message.hasOwnProperty("extension")) {
+                if (message.extension && message.extension.length) {
                     object.extension = [];
                     for (var j = 0; j < message.extension.length; ++j)
                         object.extension[j] = $types[6].toObject(message.extension[j], options);
@@ -8055,12 +8089,12 @@ $root.google = (function() {
                     object.options = $types[7].toObject(message.options, options);
                 if (message.sourceCodeInfo !== undefined && message.sourceCodeInfo !== null && message.hasOwnProperty("sourceCodeInfo"))
                     object.sourceCodeInfo = $types[8].toObject(message.sourceCodeInfo, options);
-                if (message.publicDependency !== undefined && message.publicDependency !== null && message.hasOwnProperty("publicDependency")) {
+                if (message.publicDependency && message.publicDependency.length) {
                     object.publicDependency = [];
                     for (var j = 0; j < message.publicDependency.length; ++j)
                         object.publicDependency[j] = message.publicDependency[j];
                 }
-                if (message.weakDependency !== undefined && message.weakDependency !== null && message.hasOwnProperty("weakDependency")) {
+                if (message.weakDependency && message.weakDependency.length) {
                     object.weakDependency = [];
                     for (var j = 0; j < message.weakDependency.length; ++j)
                         object.weakDependency[j] = message.weakDependency[j];
@@ -8099,6 +8133,14 @@ $root.google = (function() {
              * @param {Object.<string,*>=} [properties] Properties to set
              */
             function DescriptorProto(properties) {
+                this.field = [];
+                this.extension = [];
+                this.nestedType = [];
+                this.enumType = [];
+                this.extensionRange = [];
+                this.oneofDecl = [];
+                this.reservedRange = [];
+                this.reservedName = [];
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         this[keys[i]] = properties[keys[i]];
@@ -8537,44 +8579,44 @@ $root.google = (function() {
                 }
                 if (message.name !== undefined && message.name !== null && message.hasOwnProperty("name"))
                     object.name = message.name;
-                if (message.field !== undefined && message.field !== null && message.hasOwnProperty("field")) {
+                if (message.field && message.field.length) {
                     object.field = [];
                     for (var j = 0; j < message.field.length; ++j)
                         object.field[j] = $types[1].toObject(message.field[j], options);
                 }
-                if (message.nestedType !== undefined && message.nestedType !== null && message.hasOwnProperty("nestedType")) {
+                if (message.nestedType && message.nestedType.length) {
                     object.nestedType = [];
                     for (var j = 0; j < message.nestedType.length; ++j)
                         object.nestedType[j] = $types[2].toObject(message.nestedType[j], options);
                 }
-                if (message.enumType !== undefined && message.enumType !== null && message.hasOwnProperty("enumType")) {
+                if (message.enumType && message.enumType.length) {
                     object.enumType = [];
                     for (var j = 0; j < message.enumType.length; ++j)
                         object.enumType[j] = $types[3].toObject(message.enumType[j], options);
                 }
-                if (message.extensionRange !== undefined && message.extensionRange !== null && message.hasOwnProperty("extensionRange")) {
+                if (message.extensionRange && message.extensionRange.length) {
                     object.extensionRange = [];
                     for (var j = 0; j < message.extensionRange.length; ++j)
                         object.extensionRange[j] = $types[4].toObject(message.extensionRange[j], options);
                 }
-                if (message.extension !== undefined && message.extension !== null && message.hasOwnProperty("extension")) {
+                if (message.extension && message.extension.length) {
                     object.extension = [];
                     for (var j = 0; j < message.extension.length; ++j)
                         object.extension[j] = $types[5].toObject(message.extension[j], options);
                 }
                 if (message.options !== undefined && message.options !== null && message.hasOwnProperty("options"))
                     object.options = $types[6].toObject(message.options, options);
-                if (message.oneofDecl !== undefined && message.oneofDecl !== null && message.hasOwnProperty("oneofDecl")) {
+                if (message.oneofDecl && message.oneofDecl.length) {
                     object.oneofDecl = [];
                     for (var j = 0; j < message.oneofDecl.length; ++j)
                         object.oneofDecl[j] = $types[7].toObject(message.oneofDecl[j], options);
                 }
-                if (message.reservedRange !== undefined && message.reservedRange !== null && message.hasOwnProperty("reservedRange")) {
+                if (message.reservedRange && message.reservedRange.length) {
                     object.reservedRange = [];
                     for (var j = 0; j < message.reservedRange.length; ++j)
                         object.reservedRange[j] = $types[8].toObject(message.reservedRange[j], options);
                 }
-                if (message.reservedName !== undefined && message.reservedName !== null && message.hasOwnProperty("reservedName")) {
+                if (message.reservedName && message.reservedName.length) {
                     object.reservedName = [];
                     for (var j = 0; j < message.reservedName.length; ++j)
                         object.reservedName[j] = message.reservedName[j];
@@ -9704,6 +9746,7 @@ $root.google = (function() {
              * @param {Object.<string,*>=} [properties] Properties to set
              */
             function EnumDescriptorProto(properties) {
+                this.value = [];
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         this[keys[i]] = properties[keys[i]];
@@ -9902,7 +9945,7 @@ $root.google = (function() {
                 }
                 if (message.name !== undefined && message.name !== null && message.hasOwnProperty("name"))
                     object.name = message.name;
-                if (message.value !== undefined && message.value !== null && message.hasOwnProperty("value")) {
+                if (message.value && message.value.length) {
                     object.value = [];
                     for (var j = 0; j < message.value.length; ++j)
                         object.value[j] = $types[1].toObject(message.value[j], options);
@@ -10156,6 +10199,7 @@ $root.google = (function() {
              * @param {Object.<string,*>=} [properties] Properties to set
              */
             function ServiceDescriptorProto(properties) {
+                this.method = [];
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         this[keys[i]] = properties[keys[i]];
@@ -10354,7 +10398,7 @@ $root.google = (function() {
                 }
                 if (message.name !== undefined && message.name !== null && message.hasOwnProperty("name"))
                     object.name = message.name;
-                if (message.method !== undefined && message.method !== null && message.hasOwnProperty("method")) {
+                if (message.method && message.method.length) {
                     object.method = [];
                     for (var j = 0; j < message.method.length; ++j)
                         object.method[j] = $types[1].toObject(message.method[j], options);
@@ -10665,6 +10709,7 @@ $root.google = (function() {
              * @param {Object.<string,*>=} [properties] Properties to set
              */
             function FileOptions(properties) {
+                this.uninterpretedOption = [];
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         this[keys[i]] = properties[keys[i]];
@@ -11106,7 +11151,7 @@ $root.google = (function() {
                     object.objcClassPrefix = message.objcClassPrefix;
                 if (message.csharpNamespace !== undefined && message.csharpNamespace !== null && message.hasOwnProperty("csharpNamespace"))
                     object.csharpNamespace = message.csharpNamespace;
-                if (message.uninterpretedOption !== undefined && message.uninterpretedOption !== null && message.hasOwnProperty("uninterpretedOption")) {
+                if (message.uninterpretedOption && message.uninterpretedOption.length) {
                     object.uninterpretedOption = [];
                     for (var j = 0; j < message.uninterpretedOption.length; ++j)
                         object.uninterpretedOption[j] = $types[14].toObject(message.uninterpretedOption[j], options);
@@ -11160,6 +11205,7 @@ $root.google = (function() {
              * @param {Object.<string,*>=} [properties] Properties to set
              */
             function MessageOptions(properties) {
+                this.uninterpretedOption = [];
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         this[keys[i]] = properties[keys[i]];
@@ -11392,7 +11438,7 @@ $root.google = (function() {
                     object.deprecated = message.deprecated;
                 if (message.mapEntry !== undefined && message.mapEntry !== null && message.hasOwnProperty("mapEntry"))
                     object.mapEntry = message.mapEntry;
-                if (message.uninterpretedOption !== undefined && message.uninterpretedOption !== null && message.hasOwnProperty("uninterpretedOption")) {
+                if (message.uninterpretedOption && message.uninterpretedOption.length) {
                     object.uninterpretedOption = [];
                     for (var j = 0; j < message.uninterpretedOption.length; ++j)
                         object.uninterpretedOption[j] = $types[4].toObject(message.uninterpretedOption[j], options);
@@ -11429,6 +11475,7 @@ $root.google = (function() {
              * @param {Object.<string,*>=} [properties] Properties to set
              */
             function FieldOptions(properties) {
+                this.uninterpretedOption = [];
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         this[keys[i]] = properties[keys[i]];
@@ -11737,7 +11784,7 @@ $root.google = (function() {
                     object.jstype = options.enums === String ? $types[4][message.jstype] : message.jstype;
                 if (message.weak !== undefined && message.weak !== null && message.hasOwnProperty("weak"))
                     object.weak = message.weak;
-                if (message.uninterpretedOption !== undefined && message.uninterpretedOption !== null && message.hasOwnProperty("uninterpretedOption")) {
+                if (message.uninterpretedOption && message.uninterpretedOption.length) {
                     object.uninterpretedOption = [];
                     for (var j = 0; j < message.uninterpretedOption.length; ++j)
                         object.uninterpretedOption[j] = $types[6].toObject(message.uninterpretedOption[j], options);
@@ -11808,6 +11855,7 @@ $root.google = (function() {
              * @param {Object.<string,*>=} [properties] Properties to set
              */
             function OneofOptions(properties) {
+                this.uninterpretedOption = [];
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         this[keys[i]] = properties[keys[i]];
@@ -11962,7 +12010,7 @@ $root.google = (function() {
                 var object = {};
                 if (options.arrays || options.defaults)
                     object.uninterpretedOption = [];
-                if (message.uninterpretedOption !== undefined && message.uninterpretedOption !== null && message.hasOwnProperty("uninterpretedOption")) {
+                if (message.uninterpretedOption && message.uninterpretedOption.length) {
                     object.uninterpretedOption = [];
                     for (var j = 0; j < message.uninterpretedOption.length; ++j)
                         object.uninterpretedOption[j] = $types[0].toObject(message.uninterpretedOption[j], options);
@@ -11999,6 +12047,7 @@ $root.google = (function() {
              * @param {Object.<string,*>=} [properties] Properties to set
              */
             function EnumOptions(properties) {
+                this.uninterpretedOption = [];
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         this[keys[i]] = properties[keys[i]];
@@ -12211,7 +12260,7 @@ $root.google = (function() {
                     object.allowAlias = message.allowAlias;
                 if (message.deprecated !== undefined && message.deprecated !== null && message.hasOwnProperty("deprecated"))
                     object.deprecated = message.deprecated;
-                if (message.uninterpretedOption !== undefined && message.uninterpretedOption !== null && message.hasOwnProperty("uninterpretedOption")) {
+                if (message.uninterpretedOption && message.uninterpretedOption.length) {
                     object.uninterpretedOption = [];
                     for (var j = 0; j < message.uninterpretedOption.length; ++j)
                         object.uninterpretedOption[j] = $types[2].toObject(message.uninterpretedOption[j], options);
@@ -12250,6 +12299,7 @@ $root.google = (function() {
              * @param {Object.<string,*>=} [properties] Properties to set
              */
             function EnumValueOptions(properties) {
+                this.uninterpretedOption = [];
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         this[keys[i]] = properties[keys[i]];
@@ -12424,7 +12474,7 @@ $root.google = (function() {
                     object.deprecated = false;
                 if (message.deprecated !== undefined && message.deprecated !== null && message.hasOwnProperty("deprecated"))
                     object.deprecated = message.deprecated;
-                if (message.uninterpretedOption !== undefined && message.uninterpretedOption !== null && message.hasOwnProperty("uninterpretedOption")) {
+                if (message.uninterpretedOption && message.uninterpretedOption.length) {
                     object.uninterpretedOption = [];
                     for (var j = 0; j < message.uninterpretedOption.length; ++j)
                         object.uninterpretedOption[j] = $types[1].toObject(message.uninterpretedOption[j], options);
@@ -12461,6 +12511,7 @@ $root.google = (function() {
              * @param {Object.<string,*>=} [properties] Properties to set
              */
             function ServiceOptions(properties) {
+                this.uninterpretedOption = [];
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         this[keys[i]] = properties[keys[i]];
@@ -12635,7 +12686,7 @@ $root.google = (function() {
                     object.deprecated = false;
                 if (message.deprecated !== undefined && message.deprecated !== null && message.hasOwnProperty("deprecated"))
                     object.deprecated = message.deprecated;
-                if (message.uninterpretedOption !== undefined && message.uninterpretedOption !== null && message.hasOwnProperty("uninterpretedOption")) {
+                if (message.uninterpretedOption && message.uninterpretedOption.length) {
                     object.uninterpretedOption = [];
                     for (var j = 0; j < message.uninterpretedOption.length; ++j)
                         object.uninterpretedOption[j] = $types[1].toObject(message.uninterpretedOption[j], options);
@@ -12672,6 +12723,7 @@ $root.google = (function() {
              * @param {Object.<string,*>=} [properties] Properties to set
              */
             function MethodOptions(properties) {
+                this.uninterpretedOption = [];
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         this[keys[i]] = properties[keys[i]];
@@ -12885,7 +12937,7 @@ $root.google = (function() {
                     object.deprecated = message.deprecated;
                 if (message.idempotencyLevel !== undefined && message.idempotencyLevel !== null && message.hasOwnProperty("idempotencyLevel"))
                     object.idempotencyLevel = options.enums === String ? $types[1][message.idempotencyLevel] : message.idempotencyLevel;
-                if (message.uninterpretedOption !== undefined && message.uninterpretedOption !== null && message.hasOwnProperty("uninterpretedOption")) {
+                if (message.uninterpretedOption && message.uninterpretedOption.length) {
                     object.uninterpretedOption = [];
                     for (var j = 0; j < message.uninterpretedOption.length; ++j)
                         object.uninterpretedOption[j] = $types[2].toObject(message.uninterpretedOption[j], options);
@@ -12939,6 +12991,7 @@ $root.google = (function() {
              * @param {Object.<string,*>=} [properties] Properties to set
              */
             function UninterpretedOption(properties) {
+                this.name = [];
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         this[keys[i]] = properties[keys[i]];
@@ -13222,7 +13275,7 @@ $root.google = (function() {
                     object.stringValue = options.bytes === String ? "" : [];
                     object.aggregateValue = "";
                 }
-                if (message.name !== undefined && message.name !== null && message.hasOwnProperty("name")) {
+                if (message.name && message.name.length) {
                     object.name = [];
                     for (var j = 0; j < message.name.length; ++j)
                         object.name[j] = $types[0].toObject(message.name[j], options);
@@ -13463,6 +13516,7 @@ $root.google = (function() {
              * @param {Object.<string,*>=} [properties] Properties to set
              */
             function SourceCodeInfo(properties) {
+                this.location = [];
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         this[keys[i]] = properties[keys[i]];
@@ -13617,7 +13671,7 @@ $root.google = (function() {
                 var object = {};
                 if (options.arrays || options.defaults)
                     object.location = [];
-                if (message.location !== undefined && message.location !== null && message.hasOwnProperty("location")) {
+                if (message.location && message.location.length) {
                     object.location = [];
                     for (var j = 0; j < message.location.length; ++j)
                         object.location[j] = $types[0].toObject(message.location[j], options);
@@ -13651,6 +13705,9 @@ $root.google = (function() {
                  * @param {Object.<string,*>=} [properties] Properties to set
                  */
                 function Location(properties) {
+                    this.path = [];
+                    this.span = [];
+                    this.leadingDetachedComments = [];
                     if (properties)
                         for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                             this[keys[i]] = properties[keys[i]];
@@ -13906,12 +13963,12 @@ $root.google = (function() {
                         object.leadingComments = "";
                         object.trailingComments = "";
                     }
-                    if (message.path !== undefined && message.path !== null && message.hasOwnProperty("path")) {
+                    if (message.path && message.path.length) {
                         object.path = [];
                         for (var j = 0; j < message.path.length; ++j)
                             object.path[j] = message.path[j];
                     }
-                    if (message.span !== undefined && message.span !== null && message.hasOwnProperty("span")) {
+                    if (message.span && message.span.length) {
                         object.span = [];
                         for (var j = 0; j < message.span.length; ++j)
                             object.span[j] = message.span[j];
@@ -13920,7 +13977,7 @@ $root.google = (function() {
                         object.leadingComments = message.leadingComments;
                     if (message.trailingComments !== undefined && message.trailingComments !== null && message.hasOwnProperty("trailingComments"))
                         object.trailingComments = message.trailingComments;
-                    if (message.leadingDetachedComments !== undefined && message.leadingDetachedComments !== null && message.hasOwnProperty("leadingDetachedComments")) {
+                    if (message.leadingDetachedComments && message.leadingDetachedComments.length) {
                         object.leadingDetachedComments = [];
                         for (var j = 0; j < message.leadingDetachedComments.length; ++j)
                             object.leadingDetachedComments[j] = message.leadingDetachedComments[j];
@@ -13960,6 +14017,7 @@ $root.google = (function() {
              * @param {Object.<string,*>=} [properties] Properties to set
              */
             function GeneratedCodeInfo(properties) {
+                this.annotation = [];
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         this[keys[i]] = properties[keys[i]];
@@ -14114,7 +14172,7 @@ $root.google = (function() {
                 var object = {};
                 if (options.arrays || options.defaults)
                     object.annotation = [];
-                if (message.annotation !== undefined && message.annotation !== null && message.hasOwnProperty("annotation")) {
+                if (message.annotation && message.annotation.length) {
                     object.annotation = [];
                     for (var j = 0; j < message.annotation.length; ++j)
                         object.annotation[j] = $types[0].toObject(message.annotation[j], options);
@@ -14148,6 +14206,7 @@ $root.google = (function() {
                  * @param {Object.<string,*>=} [properties] Properties to set
                  */
                 function Annotation(properties) {
+                    this.path = [];
                     if (properties)
                         for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                             this[keys[i]] = properties[keys[i]];
@@ -14353,7 +14412,7 @@ $root.google = (function() {
                         object.begin = 0;
                         object.end = 0;
                     }
-                    if (message.path !== undefined && message.path !== null && message.hasOwnProperty("path")) {
+                    if (message.path && message.path.length) {
                         object.path = [];
                         for (var j = 0; j < message.path.length; ++j)
                             object.path[j] = message.path[j];

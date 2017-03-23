@@ -1,8 +1,6 @@
 "use strict";
 module.exports = encoder;
 
-encoder.compat = true;
-
 var Enum     = require("./enum"),
     types    = require("./types"),
     util     = require("./util");
@@ -26,7 +24,6 @@ function genTypePartial(gen, field, fieldIndex, ref) {
  * Generates an encoder specific to the specified message type.
  * @param {Type} mtype Message type
  * @returns {Codegen} Codegen instance
- * @property {boolean} compat=true Generates encoders serializing in ascending field order
  */
 function encoder(mtype) {
     /* eslint-disable no-unexpected-multiline, block-scoped-var, no-redeclare */
@@ -37,14 +34,11 @@ function encoder(mtype) {
     var i, ref;
 
     // "when a message is serialized its known fields should be written sequentially by field number"
-    var fields = /* initializes */ mtype.fieldsArray;
-    /* istanbul ignore else */
-    if (encoder.compat)
-        fields = fields.slice().sort(util.compareFieldsById);
+    var fields = /* initializes */ mtype.fieldsArray.slice().sort(util.compareFieldsById);
 
     for (var i = 0; i < fields.length; ++i) {
         var field    = fields[i].resolve(),
-            index    = encoder.compat ? mtype._fieldsArray.indexOf(field) : /* istanbul ignore next */ i,
+            index    = mtype._fieldsArray.indexOf(field),
             type     = field.resolvedType instanceof Enum ? "uint32" : field.type,
             wireType = types.basic[type];
             ref      = "m" + util.safeProp(field.name);

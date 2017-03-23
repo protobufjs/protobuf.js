@@ -145,15 +145,17 @@ Object.defineProperties(Type.prototype, {
      */
     fieldsById: {
         get: function() {
-            /* istanbul ignore next */
+
+            /* istanbul ignore if */
             if (this._fieldsById)
                 return this._fieldsById;
+
             this._fieldsById = {};
             for (var names = Object.keys(this.fields), i = 0; i < names.length; ++i) {
                 var field = this.fields[names[i]],
                     id = field.id;
 
-                /* istanbul ignore next */
+                /* istanbul ignore if */
                 if (this._fieldsById[id])
                     throw Error("duplicate id " + id + " in " + this);
 
@@ -305,18 +307,22 @@ Type.prototype.add = function add(object) {
 Type.prototype.remove = function remove(object) {
     if (object instanceof Field && object.extend === undefined) {
         // See Type#add for the reason why extension fields are excluded here.
-        /* istanbul ignore next */
+
+        /* istanbul ignore if */
         if (!this.fields || this.fields[object.name] !== object)
             throw Error(object + " is not a member of " + this);
+
         delete this.fields[object.name];
         object.parent = null;
         object.onRemove(this);
         return clearCache(this);
     }
     if (object instanceof OneOf) {
-        /* istanbul ignore next */
+
+        /* istanbul ignore if */
         if (!this.oneofs || this.oneofs[object.name] !== object)
             throw Error(object + " is not a member of " + this);
+
         delete this.oneofs[object.name];
         object.parent = null;
         object.onRemove(this);
