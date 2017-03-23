@@ -606,7 +606,7 @@ function buildEnum(ref, enm) {
         var aliased = [];
         Object.keys(enm.values).forEach(function(key) {
             var val = enm.values[key];
-            if (aliased.indexOf(val) >= -1)
+            if (aliased.indexOf(val) > -1)
                 push("values[" + JSON.stringify(key) + "] = " + val + ";");
             else {
                 push("values[valuesById[" + val + "] = " + JSON.stringify(key) + "] = " + val + ";");
