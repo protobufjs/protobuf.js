@@ -2891,7 +2891,7 @@ $root.jspb = (function() {
              * @type Object
              * @property {string} [stringField] DefaultValues stringField.
              * @property {boolean} [boolField] DefaultValues boolField.
-             * @property {number|$protobuf.Long} [intField] DefaultValues intField.
+             * @property {number|Long} [intField] DefaultValues intField.
              * @property {number} [enumField] DefaultValues enumField.
              * @property {string} [emptyField] DefaultValues emptyField.
              * @property {Uint8Array} [bytesField] DefaultValues bytesField.
@@ -5905,7 +5905,7 @@ $root.jspb = (function() {
              * @type Object
              * @property {Object.<string,string>} [mapStringString] TestMapFieldsNoBinary mapStringString.
              * @property {Object.<string,number>} [mapStringInt32] TestMapFieldsNoBinary mapStringInt32.
-             * @property {Object.<string,number|$protobuf.Long>} [mapStringInt64] TestMapFieldsNoBinary mapStringInt64.
+             * @property {Object.<string,number|Long>} [mapStringInt64] TestMapFieldsNoBinary mapStringInt64.
              * @property {Object.<string,boolean>} [mapStringBool] TestMapFieldsNoBinary mapStringBool.
              * @property {Object.<string,number>} [mapStringDouble] TestMapFieldsNoBinary mapStringDouble.
              * @property {Object.<string,number>} [mapStringEnum] TestMapFieldsNoBinary mapStringEnum.
@@ -12463,8 +12463,8 @@ $root.google = (function() {
              * @type Object
              * @property {Array.<google.protobuf.UninterpretedOption.NamePart>} [name] UninterpretedOption name.
              * @property {string} [identifierValue] UninterpretedOption identifierValue.
-             * @property {number|$protobuf.Long} [positiveIntValue] UninterpretedOption positiveIntValue.
-             * @property {number|$protobuf.Long} [negativeIntValue] UninterpretedOption negativeIntValue.
+             * @property {number|Long} [positiveIntValue] UninterpretedOption positiveIntValue.
+             * @property {number|Long} [negativeIntValue] UninterpretedOption negativeIntValue.
              * @property {number} [doubleValue] UninterpretedOption doubleValue.
              * @property {Uint8Array} [stringValue] UninterpretedOption stringValue.
              * @property {string} [aggregateValue] UninterpretedOption aggregateValue.

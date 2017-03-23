@@ -452,6 +452,13 @@ var buffer = AwesomeMessage.encode(message).finish();
 ...
 ```
 
+If you'd like to completely exclude long.js and/or node (Buffer) typings, there are two stubs available that can be referenced instead of the full type definitions:
+
+```ts
+/// <reference path="node_modules/protobufjs/stub-long.d.ts" />
+/// <reference path="node_modules/protobufjs/stub-node.d.ts" />
+```
+
 Documentation
 -------------
 

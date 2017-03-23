@@ -234,9 +234,9 @@ $root.vector_tile = (function() {
              * @property {string} [stringValue] Value stringValue.
              * @property {number} [floatValue] Value floatValue.
              * @property {number} [doubleValue] Value doubleValue.
-             * @property {number|$protobuf.Long} [intValue] Value intValue.
-             * @property {number|$protobuf.Long} [uintValue] Value uintValue.
-             * @property {number|$protobuf.Long} [sintValue] Value sintValue.
+             * @property {number|Long} [intValue] Value intValue.
+             * @property {number|Long} [uintValue] Value uintValue.
+             * @property {number|Long} [sintValue] Value sintValue.
              * @property {boolean} [boolValue] Value boolValue.
              */
 
@@ -534,7 +534,7 @@ $root.vector_tile = (function() {
              * Properties of a Feature.
              * @typedef vector_tile.Tile.Feature$Properties
              * @type Object
-             * @property {number|$protobuf.Long} [id] Feature id.
+             * @property {number|Long} [id] Feature id.
              * @property {Array.<number>} [tags] Feature tags.
              * @property {*} [type] Feature type.
              * @property {Array.<number>} [geometry] Feature geometry.

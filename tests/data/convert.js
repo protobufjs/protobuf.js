@@ -17,13 +17,13 @@ $root.Message = (function() {
      * @type Object
      * @property {string} [stringVal] Message stringVal.
      * @property {Array.<string>} [stringRepeated] Message stringRepeated.
-     * @property {number|$protobuf.Long} [uint64Val] Message uint64Val.
-     * @property {Array.<number|$protobuf.Long>} [uint64Repeated] Message uint64Repeated.
+     * @property {number|Long} [uint64Val] Message uint64Val.
+     * @property {Array.<number|Long>} [uint64Repeated] Message uint64Repeated.
      * @property {Uint8Array} [bytesVal] Message bytesVal.
      * @property {Array.<Uint8Array>} [bytesRepeated] Message bytesRepeated.
      * @property {number} [enumVal] Message enumVal.
      * @property {Array.<number>} [enumRepeated] Message enumRepeated.
-     * @property {Object.<string,number|$protobuf.Long>} [int64Map] Message int64Map.
+     * @property {Object.<string,number|Long>} [int64Map] Message int64Map.
      */
 
     /**

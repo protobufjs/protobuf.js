@@ -303,7 +303,7 @@ export namespace jspb {
         type DefaultValues$Properties = {
             stringField?: string;
             boolField?: boolean;
-            intField?: (number|$protobuf.Long);
+            intField?: (number|Long);
             enumField?: number;
             emptyField?: string;
             bytesField?: Uint8Array;
@@ -597,7 +597,7 @@ export namespace jspb {
         type TestMapFieldsNoBinary$Properties = {
             mapStringString?: { [k: string]: string };
             mapStringInt32?: { [k: string]: number };
-            mapStringInt64?: { [k: string]: (number|$protobuf.Long) };
+            mapStringInt64?: { [k: string]: (number|Long) };
             mapStringBool?: { [k: string]: boolean };
             mapStringDouble?: { [k: string]: number };
             mapStringEnum?: { [k: string]: number };
@@ -1218,8 +1218,8 @@ export namespace google {
         type UninterpretedOption$Properties = {
             name?: google.protobuf.UninterpretedOption.NamePart[];
             identifierValue?: string;
-            positiveIntValue?: (number|$protobuf.Long);
-            negativeIntValue?: (number|$protobuf.Long);
+            positiveIntValue?: (number|Long);
+            negativeIntValue?: (number|Long);
             doubleValue?: number;
             stringValue?: Uint8Array;
             aggregateValue?: string;
