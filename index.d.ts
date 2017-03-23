@@ -1211,25 +1211,25 @@ export class Reader {
      * Reads a varint as a signed 64 bit value.
      * @name Reader#int64
      * @function
-     * @returns {Long|number} Value read
+     * @returns {Long} Value read
      */
-    public int64(): (Long|number);
+    public int64(): Long;
 
     /**
      * Reads a varint as an unsigned 64 bit value.
      * @name Reader#uint64
      * @function
-     * @returns {Long|number} Value read
+     * @returns {Long} Value read
      */
-    public uint64(): (Long|number);
+    public uint64(): Long;
 
     /**
      * Reads a zig-zag encoded varint as a signed 64 bit value.
      * @name Reader#sint64
      * @function
-     * @returns {Long|number} Value read
+     * @returns {Long} Value read
      */
-    public sint64(): (Long|number);
+    public sint64(): Long;
 
     /**
      * Reads a varint as a boolean.
@@ -1253,17 +1253,17 @@ export class Reader {
      * Reads fixed 64 bits.
      * @name Reader#fixed64
      * @function
-     * @returns {Long|number} Value read
+     * @returns {Long} Value read
      */
-    public fixed64(): (Long|number);
+    public fixed64(): Long;
 
     /**
      * Reads zig-zag encoded fixed 64 bits.
      * @name Reader#sfixed64
      * @function
-     * @returns {Long|number} Value read
+     * @returns {Long} Value read
      */
-    public sfixed64(): (Long|number);
+    public sfixed64(): Long;
 
     /**
      * Reads a float (32 bit) as a number.

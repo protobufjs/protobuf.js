@@ -175,21 +175,21 @@ function readLongVarint() {
  * Reads a varint as a signed 64 bit value.
  * @name Reader#int64
  * @function
- * @returns {Long|number} Value read
+ * @returns {Long} Value read
  */
 
 /**
  * Reads a varint as an unsigned 64 bit value.
  * @name Reader#uint64
  * @function
- * @returns {Long|number} Value read
+ * @returns {Long} Value read
  */
 
 /**
  * Reads a zig-zag encoded varint as a signed 64 bit value.
  * @name Reader#sint64
  * @function
- * @returns {Long|number} Value read
+ * @returns {Long} Value read
  */
 
 /**
@@ -250,14 +250,14 @@ function readFixed64(/* this: Reader */) {
  * Reads fixed 64 bits.
  * @name Reader#fixed64
  * @function
- * @returns {Long|number} Value read
+ * @returns {Long} Value read
  */
 
 /**
  * Reads zig-zag encoded fixed 64 bits.
  * @name Reader#sfixed64
  * @function
- * @returns {Long|number} Value read
+ * @returns {Long} Value read
  */
 
 var readFloat = typeof Float32Array !== "undefined"

@@ -250,7 +250,7 @@ function buildFunction(type, functionName, gen, scope) {
         push("};");
 }
 
-function toJsType(field) {
+function toJsType(field, isReturn) {
     switch (field.type) {
         case "double":
         case "float":
@@ -265,7 +265,7 @@ function toJsType(field) {
         case "sint64":
         case "fixed64":
         case "sfixed64":
-            return "number|Long";
+            return isReturn ? "Long" : "number|Long";
         case "bool":
             return "boolean";
         case "string":
