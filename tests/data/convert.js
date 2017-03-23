@@ -6,9 +6,6 @@ var $protobuf = require("../../minimal");
 // Common aliases
 var $Reader = $protobuf.Reader, $Writer = $protobuf.Writer, $util = $protobuf.util;
 
-// Lazily resolved type references
-var $lazyTypes = [];
-
 // Exported root namespace
 var $root = $protobuf.roots.test_convert || ($protobuf.roots.test_convert = {});
 
@@ -84,12 +81,6 @@ $root.Message = (function() {
      * @type {Object.<string,number|$protobuf.Long>|undefined}
      */
     Message.prototype.int64Map = $util.emptyObject;
-
-    // Lazily resolved type references
-    var $types = {
-        6: "Message.SomeEnum",
-        7: "Message.SomeEnum"
-    }; $lazyTypes.push($types);
 
     /**
      * Creates a new Message instance using the specified properties.
@@ -471,11 +462,11 @@ $root.Message = (function() {
                 object.bytesRepeated[j] = options.bytes === String ? $util.base64.encode(message.bytesRepeated[j], 0, message.bytesRepeated[j].length) : options.bytes === Array ? Array.prototype.slice.call(message.bytesRepeated[j]) : message.bytesRepeated[j];
         }
         if (message.enumVal !== undefined && message.enumVal !== null && message.hasOwnProperty("enumVal"))
-            object.enumVal = options.enums === String ? $types[6][message.enumVal] : message.enumVal;
+            object.enumVal = options.enums === String ? $root.Message.SomeEnum[message.enumVal] : message.enumVal;
         if (message.enumRepeated && message.enumRepeated.length) {
             object.enumRepeated = [];
             for (var j = 0; j < message.enumRepeated.length; ++j)
-                object.enumRepeated[j] = options.enums === String ? $types[7][message.enumRepeated[j]] : message.enumRepeated[j];
+                object.enumRepeated[j] = options.enums === String ? $root.Message.SomeEnum[message.enumRepeated[j]] : message.enumRepeated[j];
         }
         var keys2;
         if (message.int64Map && (keys2 = Object.keys(message.int64Map)).length) {
@@ -523,8 +514,5 @@ $root.Message = (function() {
 
     return Message;
 })();
-
-// Resolve lazy type references to actual types
-$util.lazyResolve($root, $lazyTypes);
 
 module.exports = $root;

@@ -36,10 +36,6 @@ function static_target(root, options, callback) {
             push((config.es6 ? "const " : "var ") + aliases.map(function(name) { return "$" + name + " = $protobuf." + name; }).join(", ") + ";");
             push("");
         }
-        if (config.comments)
-            push("// Lazily resolved type references");
-        push((config.es6 ? "const" : "var") + " $lazyTypes = [];");
-        push("");
         if (config.comments) {
             if (root.comment)
                 pushComment("@fileoverview " + root.comment);
@@ -49,10 +45,6 @@ function static_target(root, options, callback) {
         var rootProp = cliUtil.safeProp(config.root || "default");
         push((config.es6 ? "const" : "var") + " $root = $protobuf.roots" + rootProp + " || ($protobuf.roots" + rootProp + " = {});");
         buildNamespace(null, root);
-        push("");
-        if (config.comments)
-            push("// Resolve lazy type references to actual types");
-        push("$util.lazyResolve($root, $lazyTypes);");
         return callback(null, out.join("\n"));
     } catch (err) {
         return callback(err);
@@ -217,7 +209,9 @@ function buildFunction(type, functionName, gen, scope) {
         .replace(/\b(?!\.)Writer\b/g, "$Writer")          // use common aliases instead of binding through an iife
         .replace(/\b(?!\.)Reader\b/g, "$Reader")          // "
         .replace(/\b(?!\.)util\.\b/g, "$util.")           // "
-        .replace(/\b(?!\.)types\[\b/g, "$types[");        // "
+        .replace(/\b(?!\.)types\[(\d+)\]/g, function($0, $1) {
+            return "$root" + type.fieldsArray[$1].resolvedType.fullName;
+        });
 
     if (config.beautify)
         code = beautifyCode(code);
@@ -361,28 +355,6 @@ function buildType(ref, type) {
         --indent;
         push("});");
     });
-
-    var hasTypes = false;
-    var types = [];
-    type.fieldsArray.forEach(function(field, index) {
-        if (field.resolve().resolvedType) { // including enums!
-            hasTypes = true;
-            types.push(index + ": "+JSON.stringify(field.resolvedType.fullName.substring(1)));
-        }
-    });
-
-    if (hasTypes && (config.encode || config.decode || config.verify || config.convert)) {
-        push("");
-        if (config.comments)
-            push("// Lazily resolved type references");
-        push((config.es6 ? "const" : "var") + " $types = {");
-        ++indent;
-            types.forEach(function(line, i) {
-                push(line + (i === types.length - 1 ? "" : ","));
-            });
-        --indent;
-        push("}; $lazyTypes.push($types);");
-    }
 
     if (config.create) {
         push("");

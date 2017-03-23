@@ -6,9 +6,6 @@ var $protobuf = require("../../minimal");
 // Common aliases
 var $Reader = $protobuf.Reader, $Writer = $protobuf.Writer, $util = $protobuf.util;
 
-// Lazily resolved type references
-var $lazyTypes = [];
-
 // Exported root namespace
 var $root = $protobuf.roots.test_rpc || ($protobuf.roots.test_rpc = {});
 
@@ -401,8 +398,5 @@ $root.MyResponse = (function() {
 
     return MyResponse;
 })();
-
-// Resolve lazy type references to actual types
-$util.lazyResolve($root, $lazyTypes);
 
 module.exports = $root;

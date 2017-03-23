@@ -314,6 +314,7 @@ util.oneOfSetter = function setOneOf(fieldNames) {
  * @param {Root} root Root instanceof
  * @param {Object.<number,string|ReflectionObject>} lazyTypes Type names
  * @returns {undefined}
+ * @deprecated since 6.7.0 static code does not emit lazy types anymore
  */
 util.lazyResolve = function lazyResolve(root, lazyTypes) {
     for (var i = 0; i < lazyTypes.length; ++i) {

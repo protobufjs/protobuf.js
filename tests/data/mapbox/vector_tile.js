@@ -6,9 +6,6 @@ var $protobuf = require("../../../minimal");
 // Common aliases
 var $Reader = $protobuf.Reader, $Writer = $protobuf.Writer, $util = $protobuf.util;
 
-// Lazily resolved type references
-var $lazyTypes = [];
-
 // Exported root namespace
 var $root = $protobuf.roots.test_vector_tile || ($protobuf.roots.test_vector_tile = {});
 
@@ -42,11 +39,6 @@ $root.vector_tile = (function() {
          */
         Tile.prototype.layers = $util.emptyArray;
 
-        // Lazily resolved type references
-        var $types = {
-            0: "vector_tile.Tile.Layer"
-        }; $lazyTypes.push($types);
-
         /**
          * Creates a new Tile instance using the specified properties.
          * @param {Object.<string,*>=} [properties] Properties to set
@@ -67,7 +59,7 @@ $root.vector_tile = (function() {
                 writer = $Writer.create();
             if (message.layers !== undefined && message.hasOwnProperty("layers"))
                 for (var i = 0; i < message.layers.length; ++i)
-                    $types[0].encode(message.layers[i], writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
+                    $root.vector_tile.Tile.Layer.encode(message.layers[i], writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
             return writer;
         };
 
@@ -99,7 +91,7 @@ $root.vector_tile = (function() {
                 case 3:
                     if (!(message.layers && message.layers.length))
                         message.layers = [];
-                    message.layers.push($types[0].decode(reader, reader.uint32()));
+                    message.layers.push($root.vector_tile.Tile.Layer.decode(reader, reader.uint32()));
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -134,7 +126,7 @@ $root.vector_tile = (function() {
                 if (!Array.isArray(message.layers))
                     return "layers: array expected";
                 for (var i = 0; i < message.layers.length; ++i) {
-                    var error = $types[0].verify(message.layers[i]);
+                    var error = $root.vector_tile.Tile.Layer.verify(message.layers[i]);
                     if (error)
                         return "layers." + error;
                 }
@@ -158,7 +150,7 @@ $root.vector_tile = (function() {
                 for (var i = 0; i < object.layers.length; ++i) {
                     if (typeof object.layers[i] !== "object")
                         throw TypeError(".vector_tile.Tile.layers: object expected");
-                    message.layers[i] = $types[0].fromObject(object.layers[i]);
+                    message.layers[i] = $root.vector_tile.Tile.Layer.fromObject(object.layers[i]);
                 }
             }
             return message;
@@ -188,7 +180,7 @@ $root.vector_tile = (function() {
             if (message.layers && message.layers.length) {
                 object.layers = [];
                 for (var j = 0; j < message.layers.length; ++j)
-                    object.layers[j] = $types[0].toObject(message.layers[j], options);
+                    object.layers[j] = $root.vector_tile.Tile.Layer.toObject(message.layers[j], options);
             }
             return object;
         };
@@ -592,11 +584,6 @@ $root.vector_tile = (function() {
              */
             Feature.prototype.geometry = $util.emptyArray;
 
-            // Lazily resolved type references
-            var $types = {
-                2: "vector_tile.Tile.GeomType"
-            }; $lazyTypes.push($types);
-
             /**
              * Creates a new Feature instance using the specified properties.
              * @param {Object.<string,*>=} [properties] Properties to set
@@ -839,7 +826,7 @@ $root.vector_tile = (function() {
                         object.tags[j] = message.tags[j];
                 }
                 if (message.type !== undefined && message.type !== null && message.hasOwnProperty("type"))
-                    object.type = options.enums === String ? $types[2][message.type] : message.type;
+                    object.type = options.enums === String ? $root.vector_tile.Tile.GeomType[message.type] : message.type;
                 if (message.geometry && message.geometry.length) {
                     object.geometry = [];
                     for (var j = 0; j < message.geometry.length; ++j)
@@ -921,12 +908,6 @@ $root.vector_tile = (function() {
              */
             Layer.prototype.extent = 4096;
 
-            // Lazily resolved type references
-            var $types = {
-                2: "vector_tile.Tile.Feature",
-                4: "vector_tile.Tile.Value"
-            }; $lazyTypes.push($types);
-
             /**
              * Creates a new Layer instance using the specified properties.
              * @param {Object.<string,*>=} [properties] Properties to set
@@ -948,13 +929,13 @@ $root.vector_tile = (function() {
                 writer.uint32(/* id 1, wireType 2 =*/10).string(message.name);
                 if (message.features !== undefined && message.hasOwnProperty("features"))
                     for (var i = 0; i < message.features.length; ++i)
-                        $types[2].encode(message.features[i], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
+                        $root.vector_tile.Tile.Feature.encode(message.features[i], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
                 if (message.keys !== undefined && message.hasOwnProperty("keys"))
                     for (var i = 0; i < message.keys.length; ++i)
                         writer.uint32(/* id 3, wireType 2 =*/26).string(message.keys[i]);
                 if (message.values !== undefined && message.hasOwnProperty("values"))
                     for (var i = 0; i < message.values.length; ++i)
-                        $types[4].encode(message.values[i], writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
+                        $root.vector_tile.Tile.Value.encode(message.values[i], writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
                 if (message.extent !== undefined && message.extent !== null && message.hasOwnProperty("extent"))
                     writer.uint32(/* id 5, wireType 0 =*/40).uint32(message.extent);
                 writer.uint32(/* id 15, wireType 0 =*/120).uint32(message.version);
@@ -995,7 +976,7 @@ $root.vector_tile = (function() {
                     case 2:
                         if (!(message.features && message.features.length))
                             message.features = [];
-                        message.features.push($types[2].decode(reader, reader.uint32()));
+                        message.features.push($root.vector_tile.Tile.Feature.decode(reader, reader.uint32()));
                         break;
                     case 3:
                         if (!(message.keys && message.keys.length))
@@ -1005,7 +986,7 @@ $root.vector_tile = (function() {
                     case 4:
                         if (!(message.values && message.values.length))
                             message.values = [];
-                        message.values.push($types[4].decode(reader, reader.uint32()));
+                        message.values.push($root.vector_tile.Tile.Value.decode(reader, reader.uint32()));
                         break;
                     case 5:
                         message.extent = reader.uint32();
@@ -1051,7 +1032,7 @@ $root.vector_tile = (function() {
                     if (!Array.isArray(message.features))
                         return "features: array expected";
                     for (var i = 0; i < message.features.length; ++i) {
-                        var error = $types[2].verify(message.features[i]);
+                        var error = $root.vector_tile.Tile.Feature.verify(message.features[i]);
                         if (error)
                             return "features." + error;
                     }
@@ -1067,7 +1048,7 @@ $root.vector_tile = (function() {
                     if (!Array.isArray(message.values))
                         return "values: array expected";
                     for (var i = 0; i < message.values.length; ++i) {
-                        var error = $types[4].verify(message.values[i]);
+                        var error = $root.vector_tile.Tile.Value.verify(message.values[i]);
                         if (error)
                             return "values." + error;
                     }
@@ -1098,7 +1079,7 @@ $root.vector_tile = (function() {
                     for (var i = 0; i < object.features.length; ++i) {
                         if (typeof object.features[i] !== "object")
                             throw TypeError(".vector_tile.Tile.Layer.features: object expected");
-                        message.features[i] = $types[2].fromObject(object.features[i]);
+                        message.features[i] = $root.vector_tile.Tile.Feature.fromObject(object.features[i]);
                     }
                 }
                 if (object.keys) {
@@ -1115,7 +1096,7 @@ $root.vector_tile = (function() {
                     for (var i = 0; i < object.values.length; ++i) {
                         if (typeof object.values[i] !== "object")
                             throw TypeError(".vector_tile.Tile.Layer.values: object expected");
-                        message.values[i] = $types[4].fromObject(object.values[i]);
+                        message.values[i] = $root.vector_tile.Tile.Value.fromObject(object.values[i]);
                     }
                 }
                 if (object.extent !== undefined && object.extent !== null)
@@ -1157,7 +1138,7 @@ $root.vector_tile = (function() {
                 if (message.features && message.features.length) {
                     object.features = [];
                     for (var j = 0; j < message.features.length; ++j)
-                        object.features[j] = $types[1].toObject(message.features[j], options);
+                        object.features[j] = $root.vector_tile.Tile.Feature.toObject(message.features[j], options);
                 }
                 if (message.keys && message.keys.length) {
                     object.keys = [];
@@ -1167,7 +1148,7 @@ $root.vector_tile = (function() {
                 if (message.values && message.values.length) {
                     object.values = [];
                     for (var j = 0; j < message.values.length; ++j)
-                        object.values[j] = $types[3].toObject(message.values[j], options);
+                        object.values[j] = $root.vector_tile.Tile.Value.toObject(message.values[j], options);
                 }
                 if (message.extent !== undefined && message.extent !== null && message.hasOwnProperty("extent"))
                     object.extent = message.extent;
@@ -1201,8 +1182,5 @@ $root.vector_tile = (function() {
 
     return vector_tile;
 })();
-
-// Resolve lazy type references to actual types
-$util.lazyResolve($root, $lazyTypes);
 
 module.exports = $root;

@@ -6,9 +6,6 @@ var $protobuf = require("../../minimal");
 // Common aliases
 var $Reader = $protobuf.Reader, $Writer = $protobuf.Writer, $util = $protobuf.util;
 
-// Lazily resolved type references
-var $lazyTypes = [];
-
 // Exported root namespace
 var $root = $protobuf.roots.test_package || ($protobuf.roots.test_package = {});
 
@@ -141,11 +138,6 @@ $root.Package = (function() {
      */
     Package.prototype.cliDependencies = $util.emptyArray;
 
-    // Lazily resolved type references
-    var $types = {
-        6: "Package.Repository"
-    }; $lazyTypes.push($types);
-
     /**
      * Creates a new Package instance using the specified properties.
      * @param {Object.<string,*>=} [properties] Properties to set
@@ -175,7 +167,7 @@ $root.Package = (function() {
         if (message.license !== undefined && message.license !== null && message.hasOwnProperty("license"))
             writer.uint32(/* id 5, wireType 2 =*/42).string(message.license);
         if (message.repository && message.hasOwnProperty("repository"))
-            $types[6].encode(message.repository, writer.uint32(/* id 6, wireType 2 =*/50).fork()).ldelim();
+            $root.Package.Repository.encode(message.repository, writer.uint32(/* id 6, wireType 2 =*/50).fork()).ldelim();
         if (message.bugs !== undefined && message.bugs !== null && message.hasOwnProperty("bugs"))
             writer.uint32(/* id 7, wireType 2 =*/58).string(message.bugs);
         if (message.homepage !== undefined && message.homepage !== null && message.hasOwnProperty("homepage"))
@@ -254,7 +246,7 @@ $root.Package = (function() {
                 message.license = reader.string();
                 break;
             case 6:
-                message.repository = $types[6].decode(reader, reader.uint32());
+                message.repository = $root.Package.Repository.decode(reader, reader.uint32());
                 break;
             case 7:
                 message.bugs = reader.string();
@@ -366,7 +358,7 @@ $root.Package = (function() {
             if (!$util.isString(message.license))
                 return "license: string expected";
         if (message.repository !== undefined && message.repository !== null) {
-            var error = $types[6].verify(message.repository);
+            var error = $root.Package.Repository.verify(message.repository);
             if (error)
                 return "repository." + error;
         }
@@ -463,7 +455,7 @@ $root.Package = (function() {
         if (object.repository !== undefined && object.repository !== null) {
             if (typeof object.repository !== "object")
                 throw TypeError(".Package.repository: object expected");
-            message.repository = $types[6].fromObject(object.repository);
+            message.repository = $root.Package.Repository.fromObject(object.repository);
         }
         if (object.bugs !== undefined && object.bugs !== null)
             message.bugs = String(object.bugs);
@@ -579,7 +571,7 @@ $root.Package = (function() {
         if (message.license !== undefined && message.license !== null && message.hasOwnProperty("license"))
             object.license = message.license;
         if (message.repository !== undefined && message.repository !== null && message.hasOwnProperty("repository"))
-            object.repository = $types[5].toObject(message.repository, options);
+            object.repository = $root.Package.Repository.toObject(message.repository, options);
         if (message.bugs !== undefined && message.bugs !== null && message.hasOwnProperty("bugs"))
             object.bugs = message.bugs;
         if (message.homepage !== undefined && message.homepage !== null && message.hasOwnProperty("homepage"))
@@ -834,8 +826,5 @@ $root.Package = (function() {
 
     return Package;
 })();
-
-// Resolve lazy type references to actual types
-$util.lazyResolve($root, $lazyTypes);
 
 module.exports = $root;
