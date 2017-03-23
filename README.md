@@ -183,7 +183,7 @@ protobuf.load("awesome.proto", function(err, root) {
         throw err;
 
     // Obtain a message type
-    var AwesomeMessage = root.lookup("awesomepackage.AwesomeMessage");
+    var AwesomeMessage = root.lookupType("awesomepackage.AwesomeMessage");
 
     // Exemplary payload
     var payload = { awesomeField: "AwesomeString" };
@@ -194,7 +194,7 @@ protobuf.load("awesome.proto", function(err, root) {
         throw Error(errMsg);
 
     // Create a new message
-    var message = AwesomeMessage.fromObject(payload);
+    var message = AwesomeMessage.fromObject(payload); // or use .create if payload is already known to be valid
 
     // Encode a message to an Uint8Array (browser) or Buffer (node)
     var buffer = AwesomeMessage.encode(message).finish();
