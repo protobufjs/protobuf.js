@@ -91,7 +91,7 @@ Each message type provides a set of methods with each method doing just one thin
 Note that **Message** refers to any message type below.
 
 * **Message.verify**(message: `Object`): `null|string`<br />
-  explicitly performs verification prior to encoding / converting a plain object. Instead of throwing, it returns the error message as a string, if any.
+  explicitly performs verification prior to encoding a plain object. Instead of throwing, it returns the error message as a string, if any.
 
   ```js
   var payload = "invalid (not an object)";
@@ -159,6 +159,30 @@ Note that **Message** refers to any message type below.
   ```
 
   See also: [ConversionOptions](http://dcode.io/protobuf.js/global.html#ConversionOptions)
+
+**What is a valid message?**
+
+A valid message is an object not missing any required fields and exclusively using JS types for its fields that are understood by the wire format writer.
+
+* Calling `Message.verify` with a valid message returns `null` and otherwise the error as a string.
+* Calling `Message.create` or `Message.encode` with any object assumes valid types.
+* Calling `Message.fromObject` with any object naively converts all values to the optimal JS type.
+
+| Type   | Expected JS type (create) | Naive conversion (fromObject)
+|--------|-----------------|-------------------
+| int32<br />uint32<br />sint32<br />fixed32<br />sfixed32 | `Number` (32 bit integer) | `value | 0`<br /> `value >>> 0`
+| int64<br />uint64<br />sint64<br />fixed64<br />sfixed64 | `Long`-like (optimal)<br />`Number` (53 bit integer) | `Long.fromValue(value)`<br />`parseInt(value, 10)` without long.js
+| float<br />double | `Number` | `Number(value)`
+| bool | `Boolean` | `Boolean(value)`
+| string | `String` | `String(value)`
+| bytes | `Uint8Array` (optimal)<br />`Buffer` (optimal)<br />`Array.<Number>` (8 bit integers)<br />`String` (base64) | `base64.decode(value)` if a String<br />`Object` with non-zero `.length` is kept
+| enum | `Number` (32 bit integer) | Looks up the numeric id if a string
+| message | Valid message | `Message.fromObject(value)`
+
+* Explicit `undefined` and `null` are considered as not set when optional.
+* Repeated fields are `Array.<T>`.
+* Map fields are `Object.<string,T>` with the key being the string representation of the respective value or an 8 characters long binary hash string for Long-likes.
+* `String` refers to both objects and values while `Number` refers to values only.
 
 Examples
 --------
