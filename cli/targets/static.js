@@ -284,13 +284,32 @@ function toJsType(field) {
 function buildType(ref, type) {
     var fullName = type.fullName.substring(1);
 
+    if (config.comments) {
+        var typeDef = [
+            "Properties of " + aOrAn(type.name) + ".",
+            "@typedef " + fullName + "$Properties",
+            "@type Object"
+        ];
+        type.fieldsArray.forEach(function(field) {
+            var jsType = toJsType(field);
+            if (field.map)
+                jsType = "Object.<string," + jsType + ">";
+            else if (field.repeated)
+                jsType = "Array.<" + jsType + ">";
+            typeDef.push("@property {" + jsType + "} " + (field.optional ? "[" + field.name + "]" : field.name) + " " + (field.comment || type.name + " " + field.name + "."));
+        });
+        push("");
+        pushComment(typeDef);
+    }
+
     push("");
     pushComment([
         "Constructs a new " + type.name + ".",
         type.comment ? "@classdesc " + type.comment : null,
         "@exports " + fullName,
+        "@implements " + fullName + "$Properties",
         "@constructor",
-        "@param {Object.<string,*>=} [" + (config.beautify ? "properties" : "p") + "] Properties to set"
+        "@param {" + fullName + "$Properties=} [" + (config.beautify ? "properties" : "p") + "] Properties to set"
     ]);
     buildFunction(type, type.name, Class.generate(type));
 
@@ -298,20 +317,8 @@ function buildType(ref, type) {
     var firstField = true;
     type.fieldsArray.forEach(function(field) {
         field.resolve();
-        var jsType = toJsType(field);
-        if (field.map)
-            jsType = "Object.<string," + jsType + ">"; // keys are always strings
-        else if (field.repeated)
-            jsType = "Array.<" + jsType + ">";
         var prop = util.safeProp(field.name);
-        if (config.comments) {
-            push("");
-            pushComment([
-                field.comment || type.name + " " + field.name + ".",
-                prop.charAt(0) !== "." ? "@name " + fullName + "#" + field.name : null,
-                "@type {" + jsType + (field.optional ? "|undefined": "") + "}"
-            ]);
-        } else if (firstField) {
+        if (firstField) {
             push("");
             firstField = false;
         }
@@ -360,7 +367,7 @@ function buildType(ref, type) {
         push("");
         pushComment([
             "Creates a new " + type.name + " instance using the specified properties.",
-            "@param {Object.<string,*>=} [properties] Properties to set",
+            "@param {" + fullName + "$Properties=} [properties] Properties to set",
             "@returns {" + fullName + "} " + type.name + " instance"
         ]);
         push(name(type.name) + ".create = function create(properties) {");
@@ -374,7 +381,7 @@ function buildType(ref, type) {
         push("");
         pushComment([
             "Encodes the specified " + type.name + " message. Does not implicitly {@link " + fullName + ".verify|verify} messages.",
-            "@param {" + fullName + "|Object.<string,*>} " + (config.beautify ? "message" : "m") + " " + type.name + " message or plain object to encode",
+            "@param {" + fullName + "$Properties} " + (config.beautify ? "message" : "m") + " " + type.name + " message or plain object to encode",
             "@param {$protobuf.Writer} [" + (config.beautify ? "writer" : "w") + "] Writer to encode to",
             "@returns {$protobuf.Writer} Writer"
         ]);
@@ -436,7 +443,7 @@ function buildType(ref, type) {
         push("");
         pushComment([
             "Verifies " + aOrAn(type.name) + " message.",
-            "@param {Object.<string,*>} " + (config.beautify ? "message" : "m") + " " + type.name + " object to verify",
+            "@param {Object.<string,*>} " + (config.beautify ? "message" : "m") + " Plain object to verify",
             "@returns {?string} `null` if valid, otherwise the reason why it is not"
         ]);
         buildFunction(type, "verify", protobuf.verifier(type));

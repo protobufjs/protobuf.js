@@ -70,10 +70,18 @@ $root.MyService = (function() {
 $root.MyRequest = (function() {
 
     /**
+     * Properties of a MyRequest.
+     * @typedef MyRequest$Properties
+     * @type Object
+     * @property {string} [path] MyRequest path.
+     */
+
+    /**
      * Constructs a new MyRequest.
      * @exports MyRequest
+     * @implements MyRequest$Properties
      * @constructor
-     * @param {Object.<string,*>=} [properties] Properties to set
+     * @param {MyRequest$Properties=} [properties] Properties to set
      */
     function MyRequest(properties) {
         if (properties)
@@ -81,15 +89,11 @@ $root.MyRequest = (function() {
                 this[keys[i]] = properties[keys[i]];
     }
 
-    /**
-     * MyRequest path.
-     * @type {string|undefined}
-     */
     MyRequest.prototype.path = "";
 
     /**
      * Creates a new MyRequest instance using the specified properties.
-     * @param {Object.<string,*>=} [properties] Properties to set
+     * @param {MyRequest$Properties=} [properties] Properties to set
      * @returns {MyRequest} MyRequest instance
      */
     MyRequest.create = function create(properties) {
@@ -98,7 +102,7 @@ $root.MyRequest = (function() {
 
     /**
      * Encodes the specified MyRequest message. Does not implicitly {@link MyRequest.verify|verify} messages.
-     * @param {MyRequest|Object.<string,*>} message MyRequest message or plain object to encode
+     * @param {MyRequest$Properties} message MyRequest message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
@@ -161,7 +165,7 @@ $root.MyRequest = (function() {
 
     /**
      * Verifies a MyRequest message.
-     * @param {Object.<string,*>} message MyRequest object to verify
+     * @param {Object.<string,*>} message Plain object to verify
      * @returns {?string} `null` if valid, otherwise the reason why it is not
      */
     MyRequest.verify = function verify(message) {
@@ -236,10 +240,18 @@ $root.MyRequest = (function() {
 $root.MyResponse = (function() {
 
     /**
+     * Properties of a MyResponse.
+     * @typedef MyResponse$Properties
+     * @type Object
+     * @property {number} [status] MyResponse status.
+     */
+
+    /**
      * Constructs a new MyResponse.
      * @exports MyResponse
+     * @implements MyResponse$Properties
      * @constructor
-     * @param {Object.<string,*>=} [properties] Properties to set
+     * @param {MyResponse$Properties=} [properties] Properties to set
      */
     function MyResponse(properties) {
         if (properties)
@@ -247,15 +259,11 @@ $root.MyResponse = (function() {
                 this[keys[i]] = properties[keys[i]];
     }
 
-    /**
-     * MyResponse status.
-     * @type {number|undefined}
-     */
     MyResponse.prototype.status = 0;
 
     /**
      * Creates a new MyResponse instance using the specified properties.
-     * @param {Object.<string,*>=} [properties] Properties to set
+     * @param {MyResponse$Properties=} [properties] Properties to set
      * @returns {MyResponse} MyResponse instance
      */
     MyResponse.create = function create(properties) {
@@ -264,7 +272,7 @@ $root.MyResponse = (function() {
 
     /**
      * Encodes the specified MyResponse message. Does not implicitly {@link MyResponse.verify|verify} messages.
-     * @param {MyResponse|Object.<string,*>} message MyResponse message or plain object to encode
+     * @param {MyResponse$Properties} message MyResponse message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
@@ -327,7 +335,7 @@ $root.MyResponse = (function() {
 
     /**
      * Verifies a MyResponse message.
-     * @param {Object.<string,*>} message MyResponse object to verify
+     * @param {Object.<string,*>} message Plain object to verify
      * @returns {?string} `null` if valid, otherwise the reason why it is not
      */
     MyResponse.verify = function verify(message) {

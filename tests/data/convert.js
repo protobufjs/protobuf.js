@@ -12,10 +12,26 @@ var $root = $protobuf.roots.test_convert || ($protobuf.roots.test_convert = {});
 $root.Message = (function() {
 
     /**
+     * Properties of a Message.
+     * @typedef Message$Properties
+     * @type Object
+     * @property {string} [stringVal] Message stringVal.
+     * @property {Array.<string>} [stringRepeated] Message stringRepeated.
+     * @property {number|$protobuf.Long} [uint64Val] Message uint64Val.
+     * @property {Array.<number|$protobuf.Long>} [uint64Repeated] Message uint64Repeated.
+     * @property {Uint8Array} [bytesVal] Message bytesVal.
+     * @property {Array.<Uint8Array>} [bytesRepeated] Message bytesRepeated.
+     * @property {number} [enumVal] Message enumVal.
+     * @property {Array.<number>} [enumRepeated] Message enumRepeated.
+     * @property {Object.<string,number|$protobuf.Long>} [int64Map] Message int64Map.
+     */
+
+    /**
      * Constructs a new Message.
      * @exports Message
+     * @implements Message$Properties
      * @constructor
-     * @param {Object.<string,*>=} [properties] Properties to set
+     * @param {Message$Properties=} [properties] Properties to set
      */
     function Message(properties) {
         this.stringRepeated = [];
@@ -28,63 +44,19 @@ $root.Message = (function() {
                 this[keys[i]] = properties[keys[i]];
     }
 
-    /**
-     * Message stringVal.
-     * @type {string|undefined}
-     */
     Message.prototype.stringVal = "";
-
-    /**
-     * Message stringRepeated.
-     * @type {Array.<string>|undefined}
-     */
     Message.prototype.stringRepeated = $util.emptyArray;
-
-    /**
-     * Message uint64Val.
-     * @type {number|$protobuf.Long|undefined}
-     */
     Message.prototype.uint64Val = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
-
-    /**
-     * Message uint64Repeated.
-     * @type {Array.<number|$protobuf.Long>|undefined}
-     */
     Message.prototype.uint64Repeated = $util.emptyArray;
-
-    /**
-     * Message bytesVal.
-     * @type {Uint8Array|undefined}
-     */
     Message.prototype.bytesVal = $util.newBuffer([]);
-
-    /**
-     * Message bytesRepeated.
-     * @type {Array.<Uint8Array>|undefined}
-     */
     Message.prototype.bytesRepeated = $util.emptyArray;
-
-    /**
-     * Message enumVal.
-     * @type {number|undefined}
-     */
     Message.prototype.enumVal = 1;
-
-    /**
-     * Message enumRepeated.
-     * @type {Array.<number>|undefined}
-     */
     Message.prototype.enumRepeated = $util.emptyArray;
-
-    /**
-     * Message int64Map.
-     * @type {Object.<string,number|$protobuf.Long>|undefined}
-     */
     Message.prototype.int64Map = $util.emptyObject;
 
     /**
      * Creates a new Message instance using the specified properties.
-     * @param {Object.<string,*>=} [properties] Properties to set
+     * @param {Message$Properties=} [properties] Properties to set
      * @returns {Message} Message instance
      */
     Message.create = function create(properties) {
@@ -93,7 +65,7 @@ $root.Message = (function() {
 
     /**
      * Encodes the specified Message message. Does not implicitly {@link Message.verify|verify} messages.
-     * @param {Message|Object.<string,*>} message Message message or plain object to encode
+     * @param {Message$Properties} message Message message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
@@ -230,7 +202,7 @@ $root.Message = (function() {
 
     /**
      * Verifies a Message message.
-     * @param {Object.<string,*>} message Message object to verify
+     * @param {Object.<string,*>} message Plain object to verify
      * @returns {?string} `null` if valid, otherwise the reason why it is not
      */
     Message.verify = function verify(message) {

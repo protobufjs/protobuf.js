@@ -12,10 +12,35 @@ var $root = $protobuf.roots.test_package || ($protobuf.roots.test_package = {});
 $root.Package = (function() {
 
     /**
+     * Properties of a Package.
+     * @typedef Package$Properties
+     * @type Object
+     * @property {string} [name] Package name.
+     * @property {string} [version] Package version.
+     * @property {string} [versionScheme] Package versionScheme.
+     * @property {string} [description] Package description.
+     * @property {string} [author] Package author.
+     * @property {string} [license] Package license.
+     * @property {Package.Repository} [repository] Package repository.
+     * @property {string} [bugs] Package bugs.
+     * @property {string} [homepage] Package homepage.
+     * @property {Array.<string>} [keywords] Package keywords.
+     * @property {string} [main] Package main.
+     * @property {Object.<string,string>} [bin] Package bin.
+     * @property {Object.<string,string>} [scripts] Package scripts.
+     * @property {Object.<string,string>} [dependencies] Package dependencies.
+     * @property {Object.<string,string>} [optionalDependencies] Package optionalDependencies.
+     * @property {Object.<string,string>} [devDependencies] Package devDependencies.
+     * @property {string} [types] Package types.
+     * @property {Array.<string>} [cliDependencies] Package cliDependencies.
+     */
+
+    /**
      * Constructs a new Package.
      * @exports Package
+     * @implements Package$Properties
      * @constructor
-     * @param {Object.<string,*>=} [properties] Properties to set
+     * @param {Package$Properties=} [properties] Properties to set
      */
     function Package(properties) {
         this.keywords = [];
@@ -30,117 +55,28 @@ $root.Package = (function() {
                 this[keys[i]] = properties[keys[i]];
     }
 
-    /**
-     * Package name.
-     * @type {string|undefined}
-     */
     Package.prototype.name = "";
-
-    /**
-     * Package version.
-     * @type {string|undefined}
-     */
     Package.prototype.version = "";
-
-    /**
-     * Package versionScheme.
-     * @type {string|undefined}
-     */
     Package.prototype.versionScheme = "";
-
-    /**
-     * Package description.
-     * @type {string|undefined}
-     */
     Package.prototype.description = "";
-
-    /**
-     * Package author.
-     * @type {string|undefined}
-     */
     Package.prototype.author = "";
-
-    /**
-     * Package license.
-     * @type {string|undefined}
-     */
     Package.prototype.license = "";
-
-    /**
-     * Package repository.
-     * @type {Package.Repository|undefined}
-     */
     Package.prototype.repository = null;
-
-    /**
-     * Package bugs.
-     * @type {string|undefined}
-     */
     Package.prototype.bugs = "";
-
-    /**
-     * Package homepage.
-     * @type {string|undefined}
-     */
     Package.prototype.homepage = "";
-
-    /**
-     * Package keywords.
-     * @type {Array.<string>|undefined}
-     */
     Package.prototype.keywords = $util.emptyArray;
-
-    /**
-     * Package main.
-     * @type {string|undefined}
-     */
     Package.prototype.main = "";
-
-    /**
-     * Package bin.
-     * @type {Object.<string,string>|undefined}
-     */
     Package.prototype.bin = $util.emptyObject;
-
-    /**
-     * Package scripts.
-     * @type {Object.<string,string>|undefined}
-     */
     Package.prototype.scripts = $util.emptyObject;
-
-    /**
-     * Package dependencies.
-     * @type {Object.<string,string>|undefined}
-     */
     Package.prototype.dependencies = $util.emptyObject;
-
-    /**
-     * Package optionalDependencies.
-     * @type {Object.<string,string>|undefined}
-     */
     Package.prototype.optionalDependencies = $util.emptyObject;
-
-    /**
-     * Package devDependencies.
-     * @type {Object.<string,string>|undefined}
-     */
     Package.prototype.devDependencies = $util.emptyObject;
-
-    /**
-     * Package types.
-     * @type {string|undefined}
-     */
     Package.prototype.types = "";
-
-    /**
-     * Package cliDependencies.
-     * @type {Array.<string>|undefined}
-     */
     Package.prototype.cliDependencies = $util.emptyArray;
 
     /**
      * Creates a new Package instance using the specified properties.
-     * @param {Object.<string,*>=} [properties] Properties to set
+     * @param {Package$Properties=} [properties] Properties to set
      * @returns {Package} Package instance
      */
     Package.create = function create(properties) {
@@ -149,7 +85,7 @@ $root.Package = (function() {
 
     /**
      * Encodes the specified Package message. Does not implicitly {@link Package.verify|verify} messages.
-     * @param {Package|Object.<string,*>} message Package message or plain object to encode
+     * @param {Package$Properties} message Package message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
@@ -333,7 +269,7 @@ $root.Package = (function() {
 
     /**
      * Verifies a Package message.
-     * @param {Object.<string,*>} message Package object to verify
+     * @param {Object.<string,*>} message Plain object to verify
      * @returns {?string} `null` if valid, otherwise the reason why it is not
      */
     Package.verify = function verify(message) {
@@ -641,10 +577,19 @@ $root.Package = (function() {
     Package.Repository = (function() {
 
         /**
+         * Properties of a Repository.
+         * @typedef Package.Repository$Properties
+         * @type Object
+         * @property {string} [type] Repository type.
+         * @property {string} [url] Repository url.
+         */
+
+        /**
          * Constructs a new Repository.
          * @exports Package.Repository
+         * @implements Package.Repository$Properties
          * @constructor
-         * @param {Object.<string,*>=} [properties] Properties to set
+         * @param {Package.Repository$Properties=} [properties] Properties to set
          */
         function Repository(properties) {
             if (properties)
@@ -652,21 +597,12 @@ $root.Package = (function() {
                     this[keys[i]] = properties[keys[i]];
         }
 
-        /**
-         * Repository type.
-         * @type {string|undefined}
-         */
         Repository.prototype.type = "";
-
-        /**
-         * Repository url.
-         * @type {string|undefined}
-         */
         Repository.prototype.url = "";
 
         /**
          * Creates a new Repository instance using the specified properties.
-         * @param {Object.<string,*>=} [properties] Properties to set
+         * @param {Package.Repository$Properties=} [properties] Properties to set
          * @returns {Package.Repository} Repository instance
          */
         Repository.create = function create(properties) {
@@ -675,7 +611,7 @@ $root.Package = (function() {
 
         /**
          * Encodes the specified Repository message. Does not implicitly {@link Package.Repository.verify|verify} messages.
-         * @param {Package.Repository|Object.<string,*>} message Repository message or plain object to encode
+         * @param {Package.Repository$Properties} message Repository message or plain object to encode
          * @param {$protobuf.Writer} [writer] Writer to encode to
          * @returns {$protobuf.Writer} Writer
          */
@@ -743,7 +679,7 @@ $root.Package = (function() {
 
         /**
          * Verifies a Repository message.
-         * @param {Object.<string,*>} message Repository object to verify
+         * @param {Object.<string,*>} message Plain object to verify
          * @returns {?string} `null` if valid, otherwise the reason why it is not
          */
         Repository.verify = function verify(message) {

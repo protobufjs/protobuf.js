@@ -30,10 +30,17 @@ $root.jspb = (function() {
         test.Empty = (function() {
 
             /**
+             * Properties of an Empty.
+             * @typedef jspb.test.Empty$Properties
+             * @type Object
+             */
+
+            /**
              * Constructs a new Empty.
              * @exports jspb.test.Empty
+             * @implements jspb.test.Empty$Properties
              * @constructor
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {jspb.test.Empty$Properties=} [properties] Properties to set
              */
             function Empty(properties) {
                 if (properties)
@@ -43,7 +50,7 @@ $root.jspb = (function() {
 
             /**
              * Creates a new Empty instance using the specified properties.
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {jspb.test.Empty$Properties=} [properties] Properties to set
              * @returns {jspb.test.Empty} Empty instance
              */
             Empty.create = function create(properties) {
@@ -52,7 +59,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified Empty message. Does not implicitly {@link jspb.test.Empty.verify|verify} messages.
-             * @param {jspb.test.Empty|Object.<string,*>} message Empty message or plain object to encode
+             * @param {jspb.test.Empty$Properties} message Empty message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -110,7 +117,7 @@ $root.jspb = (function() {
 
             /**
              * Verifies an Empty message.
-             * @param {Object.<string,*>} message Empty object to verify
+             * @param {Object.<string,*>} message Plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             Empty.verify = function verify(message) {
@@ -187,10 +194,18 @@ $root.jspb = (function() {
         test.EnumContainer = (function() {
 
             /**
+             * Properties of an EnumContainer.
+             * @typedef jspb.test.EnumContainer$Properties
+             * @type Object
+             * @property {number} [outerEnum] EnumContainer outerEnum.
+             */
+
+            /**
              * Constructs a new EnumContainer.
              * @exports jspb.test.EnumContainer
+             * @implements jspb.test.EnumContainer$Properties
              * @constructor
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {jspb.test.EnumContainer$Properties=} [properties] Properties to set
              */
             function EnumContainer(properties) {
                 if (properties)
@@ -198,15 +213,11 @@ $root.jspb = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
-            /**
-             * EnumContainer outerEnum.
-             * @type {number|undefined}
-             */
             EnumContainer.prototype.outerEnum = 1;
 
             /**
              * Creates a new EnumContainer instance using the specified properties.
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {jspb.test.EnumContainer$Properties=} [properties] Properties to set
              * @returns {jspb.test.EnumContainer} EnumContainer instance
              */
             EnumContainer.create = function create(properties) {
@@ -215,7 +226,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified EnumContainer message. Does not implicitly {@link jspb.test.EnumContainer.verify|verify} messages.
-             * @param {jspb.test.EnumContainer|Object.<string,*>} message EnumContainer message or plain object to encode
+             * @param {jspb.test.EnumContainer$Properties} message EnumContainer message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -278,7 +289,7 @@ $root.jspb = (function() {
 
             /**
              * Verifies an EnumContainer message.
-             * @param {Object.<string,*>} message EnumContainer object to verify
+             * @param {Object.<string,*>} message Plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             EnumContainer.verify = function verify(message) {
@@ -366,10 +377,20 @@ $root.jspb = (function() {
         test.Simple1 = (function() {
 
             /**
+             * Properties of a Simple1.
+             * @typedef jspb.test.Simple1$Properties
+             * @type Object
+             * @property {string} aString Simple1 aString.
+             * @property {Array.<string>} [aRepeatedString] Simple1 aRepeatedString.
+             * @property {boolean} [aBoolean] Simple1 aBoolean.
+             */
+
+            /**
              * Constructs a new Simple1.
              * @exports jspb.test.Simple1
+             * @implements jspb.test.Simple1$Properties
              * @constructor
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {jspb.test.Simple1$Properties=} [properties] Properties to set
              */
             function Simple1(properties) {
                 this.aRepeatedString = [];
@@ -378,27 +399,13 @@ $root.jspb = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
-            /**
-             * Simple1 aString.
-             * @type {string}
-             */
             Simple1.prototype.aString = "";
-
-            /**
-             * Simple1 aRepeatedString.
-             * @type {Array.<string>|undefined}
-             */
             Simple1.prototype.aRepeatedString = $util.emptyArray;
-
-            /**
-             * Simple1 aBoolean.
-             * @type {boolean|undefined}
-             */
             Simple1.prototype.aBoolean = false;
 
             /**
              * Creates a new Simple1 instance using the specified properties.
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {jspb.test.Simple1$Properties=} [properties] Properties to set
              * @returns {jspb.test.Simple1} Simple1 instance
              */
             Simple1.create = function create(properties) {
@@ -407,7 +414,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified Simple1 message. Does not implicitly {@link jspb.test.Simple1.verify|verify} messages.
-             * @param {jspb.test.Simple1|Object.<string,*>} message Simple1 message or plain object to encode
+             * @param {jspb.test.Simple1$Properties} message Simple1 message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -484,7 +491,7 @@ $root.jspb = (function() {
 
             /**
              * Verifies a Simple1 message.
-             * @param {Object.<string,*>} message Simple1 object to verify
+             * @param {Object.<string,*>} message Plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             Simple1.verify = function verify(message) {
@@ -588,10 +595,19 @@ $root.jspb = (function() {
         test.Simple2 = (function() {
 
             /**
+             * Properties of a Simple2.
+             * @typedef jspb.test.Simple2$Properties
+             * @type Object
+             * @property {string} aString Simple2 aString.
+             * @property {Array.<string>} [aRepeatedString] Simple2 aRepeatedString.
+             */
+
+            /**
              * Constructs a new Simple2.
              * @exports jspb.test.Simple2
+             * @implements jspb.test.Simple2$Properties
              * @constructor
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {jspb.test.Simple2$Properties=} [properties] Properties to set
              */
             function Simple2(properties) {
                 this.aRepeatedString = [];
@@ -600,21 +616,12 @@ $root.jspb = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
-            /**
-             * Simple2 aString.
-             * @type {string}
-             */
             Simple2.prototype.aString = "";
-
-            /**
-             * Simple2 aRepeatedString.
-             * @type {Array.<string>|undefined}
-             */
             Simple2.prototype.aRepeatedString = $util.emptyArray;
 
             /**
              * Creates a new Simple2 instance using the specified properties.
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {jspb.test.Simple2$Properties=} [properties] Properties to set
              * @returns {jspb.test.Simple2} Simple2 instance
              */
             Simple2.create = function create(properties) {
@@ -623,7 +630,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified Simple2 message. Does not implicitly {@link jspb.test.Simple2.verify|verify} messages.
-             * @param {jspb.test.Simple2|Object.<string,*>} message Simple2 message or plain object to encode
+             * @param {jspb.test.Simple2$Properties} message Simple2 message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -695,7 +702,7 @@ $root.jspb = (function() {
 
             /**
              * Verifies a Simple2 message.
-             * @param {Object.<string,*>} message Simple2 object to verify
+             * @param {Object.<string,*>} message Plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             Simple2.verify = function verify(message) {
@@ -790,10 +797,21 @@ $root.jspb = (function() {
         test.SpecialCases = (function() {
 
             /**
+             * Properties of a SpecialCases.
+             * @typedef jspb.test.SpecialCases$Properties
+             * @type Object
+             * @property {string} normal SpecialCases normal.
+             * @property {string} default SpecialCases default.
+             * @property {string} function SpecialCases function.
+             * @property {string} var SpecialCases var.
+             */
+
+            /**
              * Constructs a new SpecialCases.
              * @exports jspb.test.SpecialCases
+             * @implements jspb.test.SpecialCases$Properties
              * @constructor
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {jspb.test.SpecialCases$Properties=} [properties] Properties to set
              */
             function SpecialCases(properties) {
                 if (properties)
@@ -801,36 +819,14 @@ $root.jspb = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
-            /**
-             * SpecialCases normal.
-             * @type {string}
-             */
             SpecialCases.prototype.normal = "";
-
-            /**
-             * SpecialCases default.
-             * @name jspb.test.SpecialCases#default
-             * @type {string}
-             */
             SpecialCases.prototype["default"] = "";
-
-            /**
-             * SpecialCases function.
-             * @name jspb.test.SpecialCases#function
-             * @type {string}
-             */
             SpecialCases.prototype["function"] = "";
-
-            /**
-             * SpecialCases var.
-             * @name jspb.test.SpecialCases#var
-             * @type {string}
-             */
             SpecialCases.prototype["var"] = "";
 
             /**
              * Creates a new SpecialCases instance using the specified properties.
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {jspb.test.SpecialCases$Properties=} [properties] Properties to set
              * @returns {jspb.test.SpecialCases} SpecialCases instance
              */
             SpecialCases.create = function create(properties) {
@@ -839,7 +835,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified SpecialCases message. Does not implicitly {@link jspb.test.SpecialCases.verify|verify} messages.
-             * @param {jspb.test.SpecialCases|Object.<string,*>} message SpecialCases message or plain object to encode
+             * @param {jspb.test.SpecialCases$Properties} message SpecialCases message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -921,7 +917,7 @@ $root.jspb = (function() {
 
             /**
              * Verifies a SpecialCases message.
-             * @param {Object.<string,*>} message SpecialCases object to verify
+             * @param {Object.<string,*>} message Plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             SpecialCases.verify = function verify(message) {
@@ -1017,10 +1013,22 @@ $root.jspb = (function() {
         test.OptionalFields = (function() {
 
             /**
+             * Properties of an OptionalFields.
+             * @typedef jspb.test.OptionalFields$Properties
+             * @type Object
+             * @property {string} [aString] OptionalFields aString.
+             * @property {boolean} aBool OptionalFields aBool.
+             * @property {jspb.test.OptionalFields.Nested} [aNestedMessage] OptionalFields aNestedMessage.
+             * @property {Array.<jspb.test.OptionalFields.Nested>} [aRepeatedMessage] OptionalFields aRepeatedMessage.
+             * @property {Array.<string>} [aRepeatedString] OptionalFields aRepeatedString.
+             */
+
+            /**
              * Constructs a new OptionalFields.
              * @exports jspb.test.OptionalFields
+             * @implements jspb.test.OptionalFields$Properties
              * @constructor
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {jspb.test.OptionalFields$Properties=} [properties] Properties to set
              */
             function OptionalFields(properties) {
                 this.aRepeatedMessage = [];
@@ -1030,39 +1038,15 @@ $root.jspb = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
-            /**
-             * OptionalFields aString.
-             * @type {string|undefined}
-             */
             OptionalFields.prototype.aString = "";
-
-            /**
-             * OptionalFields aBool.
-             * @type {boolean}
-             */
             OptionalFields.prototype.aBool = false;
-
-            /**
-             * OptionalFields aNestedMessage.
-             * @type {jspb.test.OptionalFields.Nested|undefined}
-             */
             OptionalFields.prototype.aNestedMessage = null;
-
-            /**
-             * OptionalFields aRepeatedMessage.
-             * @type {Array.<jspb.test.OptionalFields.Nested>|undefined}
-             */
             OptionalFields.prototype.aRepeatedMessage = $util.emptyArray;
-
-            /**
-             * OptionalFields aRepeatedString.
-             * @type {Array.<string>|undefined}
-             */
             OptionalFields.prototype.aRepeatedString = $util.emptyArray;
 
             /**
              * Creates a new OptionalFields instance using the specified properties.
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {jspb.test.OptionalFields$Properties=} [properties] Properties to set
              * @returns {jspb.test.OptionalFields} OptionalFields instance
              */
             OptionalFields.create = function create(properties) {
@@ -1071,7 +1055,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified OptionalFields message. Does not implicitly {@link jspb.test.OptionalFields.verify|verify} messages.
-             * @param {jspb.test.OptionalFields|Object.<string,*>} message OptionalFields message or plain object to encode
+             * @param {jspb.test.OptionalFields$Properties} message OptionalFields message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -1161,7 +1145,7 @@ $root.jspb = (function() {
 
             /**
              * Verifies an OptionalFields message.
-             * @param {Object.<string,*>} message OptionalFields object to verify
+             * @param {Object.<string,*>} message Plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             OptionalFields.verify = function verify(message) {
@@ -1301,10 +1285,18 @@ $root.jspb = (function() {
             OptionalFields.Nested = (function() {
 
                 /**
+                 * Properties of a Nested.
+                 * @typedef jspb.test.OptionalFields.Nested$Properties
+                 * @type Object
+                 * @property {number} [anInt] Nested anInt.
+                 */
+
+                /**
                  * Constructs a new Nested.
                  * @exports jspb.test.OptionalFields.Nested
+                 * @implements jspb.test.OptionalFields.Nested$Properties
                  * @constructor
-                 * @param {Object.<string,*>=} [properties] Properties to set
+                 * @param {jspb.test.OptionalFields.Nested$Properties=} [properties] Properties to set
                  */
                 function Nested(properties) {
                     if (properties)
@@ -1312,15 +1304,11 @@ $root.jspb = (function() {
                             this[keys[i]] = properties[keys[i]];
                 }
 
-                /**
-                 * Nested anInt.
-                 * @type {number|undefined}
-                 */
                 Nested.prototype.anInt = 0;
 
                 /**
                  * Creates a new Nested instance using the specified properties.
-                 * @param {Object.<string,*>=} [properties] Properties to set
+                 * @param {jspb.test.OptionalFields.Nested$Properties=} [properties] Properties to set
                  * @returns {jspb.test.OptionalFields.Nested} Nested instance
                  */
                 Nested.create = function create(properties) {
@@ -1329,7 +1317,7 @@ $root.jspb = (function() {
 
                 /**
                  * Encodes the specified Nested message. Does not implicitly {@link jspb.test.OptionalFields.Nested.verify|verify} messages.
-                 * @param {jspb.test.OptionalFields.Nested|Object.<string,*>} message Nested message or plain object to encode
+                 * @param {jspb.test.OptionalFields.Nested$Properties} message Nested message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
                  */
@@ -1392,7 +1380,7 @@ $root.jspb = (function() {
 
                 /**
                  * Verifies a Nested message.
-                 * @param {Object.<string,*>} message Nested object to verify
+                 * @param {Object.<string,*>} message Plain object to verify
                  * @returns {?string} `null` if valid, otherwise the reason why it is not
                  */
                 Nested.verify = function verify(message) {
@@ -1470,10 +1458,26 @@ $root.jspb = (function() {
         test.HasExtensions = (function() {
 
             /**
+             * Properties of a HasExtensions.
+             * @typedef jspb.test.HasExtensions$Properties
+             * @type Object
+             * @property {string} [str1] HasExtensions str1.
+             * @property {string} [str2] HasExtensions str2.
+             * @property {string} [str3] HasExtensions str3.
+             * @property {jspb.test.IsExtension} [.jspb.test.IsExtension.extField] HasExtensions .jspb.test.IsExtension.extField.
+             * @property {jspb.test.Simple1} [.jspb.test.IndirectExtension.simple] HasExtensions .jspb.test.IndirectExtension.simple.
+             * @property {string} [.jspb.test.IndirectExtension.str] HasExtensions .jspb.test.IndirectExtension.str.
+             * @property {Array.<string>} [.jspb.test.IndirectExtension.repeatedStr] HasExtensions .jspb.test.IndirectExtension.repeatedStr.
+             * @property {Array.<jspb.test.Simple1>} [.jspb.test.IndirectExtension.repeatedSimple] HasExtensions .jspb.test.IndirectExtension.repeatedSimple.
+             * @property {jspb.test.Simple1} [.jspb.test.simple1] HasExtensions .jspb.test.simple1.
+             */
+
+            /**
              * Constructs a new HasExtensions.
              * @exports jspb.test.HasExtensions
+             * @implements jspb.test.HasExtensions$Properties
              * @constructor
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {jspb.test.HasExtensions$Properties=} [properties] Properties to set
              */
             function HasExtensions(properties) {
                 this[".jspb.test.IndirectExtension.repeatedStr"] = [];
@@ -1483,69 +1487,19 @@ $root.jspb = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
-            /**
-             * HasExtensions str1.
-             * @type {string|undefined}
-             */
             HasExtensions.prototype.str1 = "";
-
-            /**
-             * HasExtensions str2.
-             * @type {string|undefined}
-             */
             HasExtensions.prototype.str2 = "";
-
-            /**
-             * HasExtensions str3.
-             * @type {string|undefined}
-             */
             HasExtensions.prototype.str3 = "";
-
-            /**
-             * HasExtensions .jspb.test.IsExtension.extField.
-             * @name jspb.test.HasExtensions#.jspb.test.IsExtension.extField
-             * @type {jspb.test.IsExtension|undefined}
-             */
             HasExtensions.prototype[".jspb.test.IsExtension.extField"] = null;
-
-            /**
-             * HasExtensions .jspb.test.IndirectExtension.simple.
-             * @name jspb.test.HasExtensions#.jspb.test.IndirectExtension.simple
-             * @type {jspb.test.Simple1|undefined}
-             */
             HasExtensions.prototype[".jspb.test.IndirectExtension.simple"] = null;
-
-            /**
-             * HasExtensions .jspb.test.IndirectExtension.str.
-             * @name jspb.test.HasExtensions#.jspb.test.IndirectExtension.str
-             * @type {string|undefined}
-             */
             HasExtensions.prototype[".jspb.test.IndirectExtension.str"] = "";
-
-            /**
-             * HasExtensions .jspb.test.IndirectExtension.repeatedStr.
-             * @name jspb.test.HasExtensions#.jspb.test.IndirectExtension.repeatedStr
-             * @type {Array.<string>|undefined}
-             */
             HasExtensions.prototype[".jspb.test.IndirectExtension.repeatedStr"] = $util.emptyArray;
-
-            /**
-             * HasExtensions .jspb.test.IndirectExtension.repeatedSimple.
-             * @name jspb.test.HasExtensions#.jspb.test.IndirectExtension.repeatedSimple
-             * @type {Array.<jspb.test.Simple1>|undefined}
-             */
             HasExtensions.prototype[".jspb.test.IndirectExtension.repeatedSimple"] = $util.emptyArray;
-
-            /**
-             * HasExtensions .jspb.test.simple1.
-             * @name jspb.test.HasExtensions#.jspb.test.simple1
-             * @type {jspb.test.Simple1|undefined}
-             */
             HasExtensions.prototype[".jspb.test.simple1"] = null;
 
             /**
              * Creates a new HasExtensions instance using the specified properties.
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {jspb.test.HasExtensions$Properties=} [properties] Properties to set
              * @returns {jspb.test.HasExtensions} HasExtensions instance
              */
             HasExtensions.create = function create(properties) {
@@ -1554,7 +1508,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified HasExtensions message. Does not implicitly {@link jspb.test.HasExtensions.verify|verify} messages.
-             * @param {jspb.test.HasExtensions|Object.<string,*>} message HasExtensions message or plain object to encode
+             * @param {jspb.test.HasExtensions$Properties} message HasExtensions message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -1663,7 +1617,7 @@ $root.jspb = (function() {
 
             /**
              * Verifies a HasExtensions message.
-             * @param {Object.<string,*>} message HasExtensions object to verify
+             * @param {Object.<string,*>} message Plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             HasExtensions.verify = function verify(message) {
@@ -1849,10 +1803,22 @@ $root.jspb = (function() {
         test.Complex = (function() {
 
             /**
+             * Properties of a Complex.
+             * @typedef jspb.test.Complex$Properties
+             * @type Object
+             * @property {string} aString Complex aString.
+             * @property {boolean} anOutOfOrderBool Complex anOutOfOrderBool.
+             * @property {jspb.test.Complex.Nested} [aNestedMessage] Complex aNestedMessage.
+             * @property {Array.<jspb.test.Complex.Nested>} [aRepeatedMessage] Complex aRepeatedMessage.
+             * @property {Array.<string>} [aRepeatedString] Complex aRepeatedString.
+             */
+
+            /**
              * Constructs a new Complex.
              * @exports jspb.test.Complex
+             * @implements jspb.test.Complex$Properties
              * @constructor
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {jspb.test.Complex$Properties=} [properties] Properties to set
              */
             function Complex(properties) {
                 this.aRepeatedMessage = [];
@@ -1862,39 +1828,15 @@ $root.jspb = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
-            /**
-             * Complex aString.
-             * @type {string}
-             */
             Complex.prototype.aString = "";
-
-            /**
-             * Complex anOutOfOrderBool.
-             * @type {boolean}
-             */
             Complex.prototype.anOutOfOrderBool = false;
-
-            /**
-             * Complex aNestedMessage.
-             * @type {jspb.test.Complex.Nested|undefined}
-             */
             Complex.prototype.aNestedMessage = null;
-
-            /**
-             * Complex aRepeatedMessage.
-             * @type {Array.<jspb.test.Complex.Nested>|undefined}
-             */
             Complex.prototype.aRepeatedMessage = $util.emptyArray;
-
-            /**
-             * Complex aRepeatedString.
-             * @type {Array.<string>|undefined}
-             */
             Complex.prototype.aRepeatedString = $util.emptyArray;
 
             /**
              * Creates a new Complex instance using the specified properties.
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {jspb.test.Complex$Properties=} [properties] Properties to set
              * @returns {jspb.test.Complex} Complex instance
              */
             Complex.create = function create(properties) {
@@ -1903,7 +1845,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified Complex message. Does not implicitly {@link jspb.test.Complex.verify|verify} messages.
-             * @param {jspb.test.Complex|Object.<string,*>} message Complex message or plain object to encode
+             * @param {jspb.test.Complex$Properties} message Complex message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -1994,7 +1936,7 @@ $root.jspb = (function() {
 
             /**
              * Verifies a Complex message.
-             * @param {Object.<string,*>} message Complex object to verify
+             * @param {Object.<string,*>} message Plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             Complex.verify = function verify(message) {
@@ -2133,10 +2075,18 @@ $root.jspb = (function() {
             Complex.Nested = (function() {
 
                 /**
+                 * Properties of a Nested.
+                 * @typedef jspb.test.Complex.Nested$Properties
+                 * @type Object
+                 * @property {number} anInt Nested anInt.
+                 */
+
+                /**
                  * Constructs a new Nested.
                  * @exports jspb.test.Complex.Nested
+                 * @implements jspb.test.Complex.Nested$Properties
                  * @constructor
-                 * @param {Object.<string,*>=} [properties] Properties to set
+                 * @param {jspb.test.Complex.Nested$Properties=} [properties] Properties to set
                  */
                 function Nested(properties) {
                     if (properties)
@@ -2144,15 +2094,11 @@ $root.jspb = (function() {
                             this[keys[i]] = properties[keys[i]];
                 }
 
-                /**
-                 * Nested anInt.
-                 * @type {number}
-                 */
                 Nested.prototype.anInt = 0;
 
                 /**
                  * Creates a new Nested instance using the specified properties.
-                 * @param {Object.<string,*>=} [properties] Properties to set
+                 * @param {jspb.test.Complex.Nested$Properties=} [properties] Properties to set
                  * @returns {jspb.test.Complex.Nested} Nested instance
                  */
                 Nested.create = function create(properties) {
@@ -2161,7 +2107,7 @@ $root.jspb = (function() {
 
                 /**
                  * Encodes the specified Nested message. Does not implicitly {@link jspb.test.Complex.Nested.verify|verify} messages.
-                 * @param {jspb.test.Complex.Nested|Object.<string,*>} message Nested message or plain object to encode
+                 * @param {jspb.test.Complex.Nested$Properties} message Nested message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
                  */
@@ -2225,7 +2171,7 @@ $root.jspb = (function() {
 
                 /**
                  * Verifies a Nested message.
-                 * @param {Object.<string,*>} message Nested object to verify
+                 * @param {Object.<string,*>} message Plain object to verify
                  * @returns {?string} `null` if valid, otherwise the reason why it is not
                  */
                 Nested.verify = function verify(message) {
@@ -2302,10 +2248,17 @@ $root.jspb = (function() {
         test.OuterMessage = (function() {
 
             /**
+             * Properties of an OuterMessage.
+             * @typedef jspb.test.OuterMessage$Properties
+             * @type Object
+             */
+
+            /**
              * Constructs a new OuterMessage.
              * @exports jspb.test.OuterMessage
+             * @implements jspb.test.OuterMessage$Properties
              * @constructor
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {jspb.test.OuterMessage$Properties=} [properties] Properties to set
              */
             function OuterMessage(properties) {
                 if (properties)
@@ -2315,7 +2268,7 @@ $root.jspb = (function() {
 
             /**
              * Creates a new OuterMessage instance using the specified properties.
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {jspb.test.OuterMessage$Properties=} [properties] Properties to set
              * @returns {jspb.test.OuterMessage} OuterMessage instance
              */
             OuterMessage.create = function create(properties) {
@@ -2324,7 +2277,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified OuterMessage message. Does not implicitly {@link jspb.test.OuterMessage.verify|verify} messages.
-             * @param {jspb.test.OuterMessage|Object.<string,*>} message OuterMessage message or plain object to encode
+             * @param {jspb.test.OuterMessage$Properties} message OuterMessage message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -2382,7 +2335,7 @@ $root.jspb = (function() {
 
             /**
              * Verifies an OuterMessage message.
-             * @param {Object.<string,*>} message OuterMessage object to verify
+             * @param {Object.<string,*>} message Plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             OuterMessage.verify = function verify(message) {
@@ -2441,10 +2394,18 @@ $root.jspb = (function() {
             OuterMessage.Complex = (function() {
 
                 /**
+                 * Properties of a Complex.
+                 * @typedef jspb.test.OuterMessage.Complex$Properties
+                 * @type Object
+                 * @property {number} [innerComplexField] Complex innerComplexField.
+                 */
+
+                /**
                  * Constructs a new Complex.
                  * @exports jspb.test.OuterMessage.Complex
+                 * @implements jspb.test.OuterMessage.Complex$Properties
                  * @constructor
-                 * @param {Object.<string,*>=} [properties] Properties to set
+                 * @param {jspb.test.OuterMessage.Complex$Properties=} [properties] Properties to set
                  */
                 function Complex(properties) {
                     if (properties)
@@ -2452,15 +2413,11 @@ $root.jspb = (function() {
                             this[keys[i]] = properties[keys[i]];
                 }
 
-                /**
-                 * Complex innerComplexField.
-                 * @type {number|undefined}
-                 */
                 Complex.prototype.innerComplexField = 0;
 
                 /**
                  * Creates a new Complex instance using the specified properties.
-                 * @param {Object.<string,*>=} [properties] Properties to set
+                 * @param {jspb.test.OuterMessage.Complex$Properties=} [properties] Properties to set
                  * @returns {jspb.test.OuterMessage.Complex} Complex instance
                  */
                 Complex.create = function create(properties) {
@@ -2469,7 +2426,7 @@ $root.jspb = (function() {
 
                 /**
                  * Encodes the specified Complex message. Does not implicitly {@link jspb.test.OuterMessage.Complex.verify|verify} messages.
-                 * @param {jspb.test.OuterMessage.Complex|Object.<string,*>} message Complex message or plain object to encode
+                 * @param {jspb.test.OuterMessage.Complex$Properties} message Complex message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
                  */
@@ -2532,7 +2489,7 @@ $root.jspb = (function() {
 
                 /**
                  * Verifies a Complex message.
-                 * @param {Object.<string,*>} message Complex object to verify
+                 * @param {Object.<string,*>} message Plain object to verify
                  * @returns {?string} `null` if valid, otherwise the reason why it is not
                  */
                 Complex.verify = function verify(message) {
@@ -2610,10 +2567,18 @@ $root.jspb = (function() {
         test.IsExtension = (function() {
 
             /**
+             * Properties of an IsExtension.
+             * @typedef jspb.test.IsExtension$Properties
+             * @type Object
+             * @property {string} [ext1] IsExtension ext1.
+             */
+
+            /**
              * Constructs a new IsExtension.
              * @exports jspb.test.IsExtension
+             * @implements jspb.test.IsExtension$Properties
              * @constructor
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {jspb.test.IsExtension$Properties=} [properties] Properties to set
              */
             function IsExtension(properties) {
                 if (properties)
@@ -2621,15 +2586,11 @@ $root.jspb = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
-            /**
-             * IsExtension ext1.
-             * @type {string|undefined}
-             */
             IsExtension.prototype.ext1 = "";
 
             /**
              * Creates a new IsExtension instance using the specified properties.
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {jspb.test.IsExtension$Properties=} [properties] Properties to set
              * @returns {jspb.test.IsExtension} IsExtension instance
              */
             IsExtension.create = function create(properties) {
@@ -2638,7 +2599,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified IsExtension message. Does not implicitly {@link jspb.test.IsExtension.verify|verify} messages.
-             * @param {jspb.test.IsExtension|Object.<string,*>} message IsExtension message or plain object to encode
+             * @param {jspb.test.IsExtension$Properties} message IsExtension message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -2701,7 +2662,7 @@ $root.jspb = (function() {
 
             /**
              * Verifies an IsExtension message.
-             * @param {Object.<string,*>} message IsExtension object to verify
+             * @param {Object.<string,*>} message Plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             IsExtension.verify = function verify(message) {
@@ -2776,10 +2737,17 @@ $root.jspb = (function() {
         test.IndirectExtension = (function() {
 
             /**
+             * Properties of an IndirectExtension.
+             * @typedef jspb.test.IndirectExtension$Properties
+             * @type Object
+             */
+
+            /**
              * Constructs a new IndirectExtension.
              * @exports jspb.test.IndirectExtension
+             * @implements jspb.test.IndirectExtension$Properties
              * @constructor
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {jspb.test.IndirectExtension$Properties=} [properties] Properties to set
              */
             function IndirectExtension(properties) {
                 if (properties)
@@ -2789,7 +2757,7 @@ $root.jspb = (function() {
 
             /**
              * Creates a new IndirectExtension instance using the specified properties.
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {jspb.test.IndirectExtension$Properties=} [properties] Properties to set
              * @returns {jspb.test.IndirectExtension} IndirectExtension instance
              */
             IndirectExtension.create = function create(properties) {
@@ -2798,7 +2766,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified IndirectExtension message. Does not implicitly {@link jspb.test.IndirectExtension.verify|verify} messages.
-             * @param {jspb.test.IndirectExtension|Object.<string,*>} message IndirectExtension message or plain object to encode
+             * @param {jspb.test.IndirectExtension$Properties} message IndirectExtension message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -2856,7 +2824,7 @@ $root.jspb = (function() {
 
             /**
              * Verifies an IndirectExtension message.
-             * @param {Object.<string,*>} message IndirectExtension object to verify
+             * @param {Object.<string,*>} message Plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             IndirectExtension.verify = function verify(message) {
@@ -2918,10 +2886,23 @@ $root.jspb = (function() {
         test.DefaultValues = (function() {
 
             /**
+             * Properties of a DefaultValues.
+             * @typedef jspb.test.DefaultValues$Properties
+             * @type Object
+             * @property {string} [stringField] DefaultValues stringField.
+             * @property {boolean} [boolField] DefaultValues boolField.
+             * @property {number|$protobuf.Long} [intField] DefaultValues intField.
+             * @property {number} [enumField] DefaultValues enumField.
+             * @property {string} [emptyField] DefaultValues emptyField.
+             * @property {Uint8Array} [bytesField] DefaultValues bytesField.
+             */
+
+            /**
              * Constructs a new DefaultValues.
              * @exports jspb.test.DefaultValues
+             * @implements jspb.test.DefaultValues$Properties
              * @constructor
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {jspb.test.DefaultValues$Properties=} [properties] Properties to set
              */
             function DefaultValues(properties) {
                 if (properties)
@@ -2929,45 +2910,16 @@ $root.jspb = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
-            /**
-             * DefaultValues stringField.
-             * @type {string|undefined}
-             */
             DefaultValues.prototype.stringField = "default<>abc";
-
-            /**
-             * DefaultValues boolField.
-             * @type {boolean|undefined}
-             */
             DefaultValues.prototype.boolField = true;
-
-            /**
-             * DefaultValues intField.
-             * @type {number|$protobuf.Long|undefined}
-             */
             DefaultValues.prototype.intField = $util.Long ? $util.Long.fromBits(11,0,false) : 11;
-
-            /**
-             * DefaultValues enumField.
-             * @type {number|undefined}
-             */
             DefaultValues.prototype.enumField = 13;
-
-            /**
-             * DefaultValues emptyField.
-             * @type {string|undefined}
-             */
             DefaultValues.prototype.emptyField = "";
-
-            /**
-             * DefaultValues bytesField.
-             * @type {Uint8Array|undefined}
-             */
             DefaultValues.prototype.bytesField = $util.newBuffer([109,111,111]);
 
             /**
              * Creates a new DefaultValues instance using the specified properties.
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {jspb.test.DefaultValues$Properties=} [properties] Properties to set
              * @returns {jspb.test.DefaultValues} DefaultValues instance
              */
             DefaultValues.create = function create(properties) {
@@ -2976,7 +2928,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified DefaultValues message. Does not implicitly {@link jspb.test.DefaultValues.verify|verify} messages.
-             * @param {jspb.test.DefaultValues|Object.<string,*>} message DefaultValues message or plain object to encode
+             * @param {jspb.test.DefaultValues$Properties} message DefaultValues message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -3064,7 +3016,7 @@ $root.jspb = (function() {
 
             /**
              * Verifies a DefaultValues message.
-             * @param {Object.<string,*>} message DefaultValues object to verify
+             * @param {Object.<string,*>} message Plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             DefaultValues.verify = function verify(message) {
@@ -3229,10 +3181,25 @@ $root.jspb = (function() {
         test.FloatingPointFields = (function() {
 
             /**
+             * Properties of a FloatingPointFields.
+             * @typedef jspb.test.FloatingPointFields$Properties
+             * @type Object
+             * @property {number} [optionalFloatField] FloatingPointFields optionalFloatField.
+             * @property {number} requiredFloatField FloatingPointFields requiredFloatField.
+             * @property {Array.<number>} [repeatedFloatField] FloatingPointFields repeatedFloatField.
+             * @property {number} [defaultFloatField] FloatingPointFields defaultFloatField.
+             * @property {number} [optionalDoubleField] FloatingPointFields optionalDoubleField.
+             * @property {number} requiredDoubleField FloatingPointFields requiredDoubleField.
+             * @property {Array.<number>} [repeatedDoubleField] FloatingPointFields repeatedDoubleField.
+             * @property {number} [defaultDoubleField] FloatingPointFields defaultDoubleField.
+             */
+
+            /**
              * Constructs a new FloatingPointFields.
              * @exports jspb.test.FloatingPointFields
+             * @implements jspb.test.FloatingPointFields$Properties
              * @constructor
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {jspb.test.FloatingPointFields$Properties=} [properties] Properties to set
              */
             function FloatingPointFields(properties) {
                 this.repeatedFloatField = [];
@@ -3242,57 +3209,18 @@ $root.jspb = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
-            /**
-             * FloatingPointFields optionalFloatField.
-             * @type {number|undefined}
-             */
             FloatingPointFields.prototype.optionalFloatField = 0;
-
-            /**
-             * FloatingPointFields requiredFloatField.
-             * @type {number}
-             */
             FloatingPointFields.prototype.requiredFloatField = 0;
-
-            /**
-             * FloatingPointFields repeatedFloatField.
-             * @type {Array.<number>|undefined}
-             */
             FloatingPointFields.prototype.repeatedFloatField = $util.emptyArray;
-
-            /**
-             * FloatingPointFields defaultFloatField.
-             * @type {number|undefined}
-             */
             FloatingPointFields.prototype.defaultFloatField = 2;
-
-            /**
-             * FloatingPointFields optionalDoubleField.
-             * @type {number|undefined}
-             */
             FloatingPointFields.prototype.optionalDoubleField = 0;
-
-            /**
-             * FloatingPointFields requiredDoubleField.
-             * @type {number}
-             */
             FloatingPointFields.prototype.requiredDoubleField = 0;
-
-            /**
-             * FloatingPointFields repeatedDoubleField.
-             * @type {Array.<number>|undefined}
-             */
             FloatingPointFields.prototype.repeatedDoubleField = $util.emptyArray;
-
-            /**
-             * FloatingPointFields defaultDoubleField.
-             * @type {number|undefined}
-             */
             FloatingPointFields.prototype.defaultDoubleField = 2;
 
             /**
              * Creates a new FloatingPointFields instance using the specified properties.
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {jspb.test.FloatingPointFields$Properties=} [properties] Properties to set
              * @returns {jspb.test.FloatingPointFields} FloatingPointFields instance
              */
             FloatingPointFields.create = function create(properties) {
@@ -3301,7 +3229,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified FloatingPointFields message. Does not implicitly {@link jspb.test.FloatingPointFields.verify|verify} messages.
-             * @param {jspb.test.FloatingPointFields|Object.<string,*>} message FloatingPointFields message or plain object to encode
+             * @param {jspb.test.FloatingPointFields$Properties} message FloatingPointFields message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -3417,7 +3345,7 @@ $root.jspb = (function() {
 
             /**
              * Verifies a FloatingPointFields message.
-             * @param {Object.<string,*>} message FloatingPointFields object to verify
+             * @param {Object.<string,*>} message Plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             FloatingPointFields.verify = function verify(message) {
@@ -3573,10 +3501,23 @@ $root.jspb = (function() {
         test.TestClone = (function() {
 
             /**
+             * Properties of a TestClone.
+             * @typedef jspb.test.TestClone$Properties
+             * @type Object
+             * @property {string} [str] TestClone str.
+             * @property {jspb.test.Simple1} [simple1] TestClone simple1.
+             * @property {Array.<jspb.test.Simple1>} [simple2] TestClone simple2.
+             * @property {Uint8Array} [bytesField] TestClone bytesField.
+             * @property {string} [unused] TestClone unused.
+             * @property {jspb.test.CloneExtension} [.jspb.test.CloneExtension.extField] TestClone .jspb.test.CloneExtension.extField.
+             */
+
+            /**
              * Constructs a new TestClone.
              * @exports jspb.test.TestClone
+             * @implements jspb.test.TestClone$Properties
              * @constructor
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {jspb.test.TestClone$Properties=} [properties] Properties to set
              */
             function TestClone(properties) {
                 this.simple2 = [];
@@ -3585,46 +3526,16 @@ $root.jspb = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
-            /**
-             * TestClone str.
-             * @type {string|undefined}
-             */
             TestClone.prototype.str = "";
-
-            /**
-             * TestClone simple1.
-             * @type {jspb.test.Simple1|undefined}
-             */
             TestClone.prototype.simple1 = null;
-
-            /**
-             * TestClone simple2.
-             * @type {Array.<jspb.test.Simple1>|undefined}
-             */
             TestClone.prototype.simple2 = $util.emptyArray;
-
-            /**
-             * TestClone bytesField.
-             * @type {Uint8Array|undefined}
-             */
             TestClone.prototype.bytesField = $util.newBuffer([]);
-
-            /**
-             * TestClone unused.
-             * @type {string|undefined}
-             */
             TestClone.prototype.unused = "";
-
-            /**
-             * TestClone .jspb.test.CloneExtension.extField.
-             * @name jspb.test.TestClone#.jspb.test.CloneExtension.extField
-             * @type {jspb.test.CloneExtension|undefined}
-             */
             TestClone.prototype[".jspb.test.CloneExtension.extField"] = null;
 
             /**
              * Creates a new TestClone instance using the specified properties.
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {jspb.test.TestClone$Properties=} [properties] Properties to set
              * @returns {jspb.test.TestClone} TestClone instance
              */
             TestClone.create = function create(properties) {
@@ -3633,7 +3544,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified TestClone message. Does not implicitly {@link jspb.test.TestClone.verify|verify} messages.
-             * @param {jspb.test.TestClone|Object.<string,*>} message TestClone message or plain object to encode
+             * @param {jspb.test.TestClone$Properties} message TestClone message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -3724,7 +3635,7 @@ $root.jspb = (function() {
 
             /**
              * Verifies a TestClone message.
-             * @param {Object.<string,*>} message TestClone object to verify
+             * @param {Object.<string,*>} message Plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             TestClone.verify = function verify(message) {
@@ -3871,10 +3782,18 @@ $root.jspb = (function() {
         test.CloneExtension = (function() {
 
             /**
+             * Properties of a CloneExtension.
+             * @typedef jspb.test.CloneExtension$Properties
+             * @type Object
+             * @property {string} [ext] CloneExtension ext.
+             */
+
+            /**
              * Constructs a new CloneExtension.
              * @exports jspb.test.CloneExtension
+             * @implements jspb.test.CloneExtension$Properties
              * @constructor
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {jspb.test.CloneExtension$Properties=} [properties] Properties to set
              */
             function CloneExtension(properties) {
                 if (properties)
@@ -3882,15 +3801,11 @@ $root.jspb = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
-            /**
-             * CloneExtension ext.
-             * @type {string|undefined}
-             */
             CloneExtension.prototype.ext = "";
 
             /**
              * Creates a new CloneExtension instance using the specified properties.
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {jspb.test.CloneExtension$Properties=} [properties] Properties to set
              * @returns {jspb.test.CloneExtension} CloneExtension instance
              */
             CloneExtension.create = function create(properties) {
@@ -3899,7 +3814,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified CloneExtension message. Does not implicitly {@link jspb.test.CloneExtension.verify|verify} messages.
-             * @param {jspb.test.CloneExtension|Object.<string,*>} message CloneExtension message or plain object to encode
+             * @param {jspb.test.CloneExtension$Properties} message CloneExtension message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -3962,7 +3877,7 @@ $root.jspb = (function() {
 
             /**
              * Verifies a CloneExtension message.
-             * @param {Object.<string,*>} message CloneExtension object to verify
+             * @param {Object.<string,*>} message Plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             CloneExtension.verify = function verify(message) {
@@ -4037,10 +3952,23 @@ $root.jspb = (function() {
         test.TestGroup = (function() {
 
             /**
+             * Properties of a TestGroup.
+             * @typedef jspb.test.TestGroup$Properties
+             * @type Object
+             * @property {Array.<jspb.test.TestGroup.RepeatedGroup>} [repeatedGroup] TestGroup repeatedGroup.
+             * @property {jspb.test.TestGroup.RequiredGroup} requiredGroup TestGroup requiredGroup.
+             * @property {jspb.test.TestGroup.OptionalGroup} [optionalGroup] TestGroup optionalGroup.
+             * @property {string} [id] TestGroup id.
+             * @property {jspb.test.Simple2} requiredSimple TestGroup requiredSimple.
+             * @property {jspb.test.Simple2} [optionalSimple] TestGroup optionalSimple.
+             */
+
+            /**
              * Constructs a new TestGroup.
              * @exports jspb.test.TestGroup
+             * @implements jspb.test.TestGroup$Properties
              * @constructor
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {jspb.test.TestGroup$Properties=} [properties] Properties to set
              */
             function TestGroup(properties) {
                 this.repeatedGroup = [];
@@ -4049,45 +3977,16 @@ $root.jspb = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
-            /**
-             * TestGroup repeatedGroup.
-             * @type {Array.<jspb.test.TestGroup.RepeatedGroup>|undefined}
-             */
             TestGroup.prototype.repeatedGroup = $util.emptyArray;
-
-            /**
-             * TestGroup requiredGroup.
-             * @type {jspb.test.TestGroup.RequiredGroup}
-             */
             TestGroup.prototype.requiredGroup = null;
-
-            /**
-             * TestGroup optionalGroup.
-             * @type {jspb.test.TestGroup.OptionalGroup|undefined}
-             */
             TestGroup.prototype.optionalGroup = null;
-
-            /**
-             * TestGroup id.
-             * @type {string|undefined}
-             */
             TestGroup.prototype.id = "";
-
-            /**
-             * TestGroup requiredSimple.
-             * @type {jspb.test.Simple2}
-             */
             TestGroup.prototype.requiredSimple = null;
-
-            /**
-             * TestGroup optionalSimple.
-             * @type {jspb.test.Simple2|undefined}
-             */
             TestGroup.prototype.optionalSimple = null;
 
             /**
              * Creates a new TestGroup instance using the specified properties.
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {jspb.test.TestGroup$Properties=} [properties] Properties to set
              * @returns {jspb.test.TestGroup} TestGroup instance
              */
             TestGroup.create = function create(properties) {
@@ -4096,7 +3995,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified TestGroup message. Does not implicitly {@link jspb.test.TestGroup.verify|verify} messages.
-             * @param {jspb.test.TestGroup|Object.<string,*>} message TestGroup message or plain object to encode
+             * @param {jspb.test.TestGroup$Properties} message TestGroup message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -4189,7 +4088,7 @@ $root.jspb = (function() {
 
             /**
              * Verifies a TestGroup message.
-             * @param {Object.<string,*>} message TestGroup object to verify
+             * @param {Object.<string,*>} message Plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             TestGroup.verify = function verify(message) {
@@ -4336,10 +4235,19 @@ $root.jspb = (function() {
             TestGroup.RepeatedGroup = (function() {
 
                 /**
+                 * Properties of a RepeatedGroup.
+                 * @typedef jspb.test.TestGroup.RepeatedGroup$Properties
+                 * @type Object
+                 * @property {string} id RepeatedGroup id.
+                 * @property {Array.<boolean>} [someBool] RepeatedGroup someBool.
+                 */
+
+                /**
                  * Constructs a new RepeatedGroup.
                  * @exports jspb.test.TestGroup.RepeatedGroup
+                 * @implements jspb.test.TestGroup.RepeatedGroup$Properties
                  * @constructor
-                 * @param {Object.<string,*>=} [properties] Properties to set
+                 * @param {jspb.test.TestGroup.RepeatedGroup$Properties=} [properties] Properties to set
                  */
                 function RepeatedGroup(properties) {
                     this.someBool = [];
@@ -4348,21 +4256,12 @@ $root.jspb = (function() {
                             this[keys[i]] = properties[keys[i]];
                 }
 
-                /**
-                 * RepeatedGroup id.
-                 * @type {string}
-                 */
                 RepeatedGroup.prototype.id = "";
-
-                /**
-                 * RepeatedGroup someBool.
-                 * @type {Array.<boolean>|undefined}
-                 */
                 RepeatedGroup.prototype.someBool = $util.emptyArray;
 
                 /**
                  * Creates a new RepeatedGroup instance using the specified properties.
-                 * @param {Object.<string,*>=} [properties] Properties to set
+                 * @param {jspb.test.TestGroup.RepeatedGroup$Properties=} [properties] Properties to set
                  * @returns {jspb.test.TestGroup.RepeatedGroup} RepeatedGroup instance
                  */
                 RepeatedGroup.create = function create(properties) {
@@ -4371,7 +4270,7 @@ $root.jspb = (function() {
 
                 /**
                  * Encodes the specified RepeatedGroup message. Does not implicitly {@link jspb.test.TestGroup.RepeatedGroup.verify|verify} messages.
-                 * @param {jspb.test.TestGroup.RepeatedGroup|Object.<string,*>} message RepeatedGroup message or plain object to encode
+                 * @param {jspb.test.TestGroup.RepeatedGroup$Properties} message RepeatedGroup message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
                  */
@@ -4450,7 +4349,7 @@ $root.jspb = (function() {
 
                 /**
                  * Verifies a RepeatedGroup message.
-                 * @param {Object.<string,*>} message RepeatedGroup object to verify
+                 * @param {Object.<string,*>} message Plain object to verify
                  * @returns {?string} `null` if valid, otherwise the reason why it is not
                  */
                 RepeatedGroup.verify = function verify(message) {
@@ -4545,10 +4444,18 @@ $root.jspb = (function() {
             TestGroup.RequiredGroup = (function() {
 
                 /**
+                 * Properties of a RequiredGroup.
+                 * @typedef jspb.test.TestGroup.RequiredGroup$Properties
+                 * @type Object
+                 * @property {string} id RequiredGroup id.
+                 */
+
+                /**
                  * Constructs a new RequiredGroup.
                  * @exports jspb.test.TestGroup.RequiredGroup
+                 * @implements jspb.test.TestGroup.RequiredGroup$Properties
                  * @constructor
-                 * @param {Object.<string,*>=} [properties] Properties to set
+                 * @param {jspb.test.TestGroup.RequiredGroup$Properties=} [properties] Properties to set
                  */
                 function RequiredGroup(properties) {
                     if (properties)
@@ -4556,15 +4463,11 @@ $root.jspb = (function() {
                             this[keys[i]] = properties[keys[i]];
                 }
 
-                /**
-                 * RequiredGroup id.
-                 * @type {string}
-                 */
                 RequiredGroup.prototype.id = "";
 
                 /**
                  * Creates a new RequiredGroup instance using the specified properties.
-                 * @param {Object.<string,*>=} [properties] Properties to set
+                 * @param {jspb.test.TestGroup.RequiredGroup$Properties=} [properties] Properties to set
                  * @returns {jspb.test.TestGroup.RequiredGroup} RequiredGroup instance
                  */
                 RequiredGroup.create = function create(properties) {
@@ -4573,7 +4476,7 @@ $root.jspb = (function() {
 
                 /**
                  * Encodes the specified RequiredGroup message. Does not implicitly {@link jspb.test.TestGroup.RequiredGroup.verify|verify} messages.
-                 * @param {jspb.test.TestGroup.RequiredGroup|Object.<string,*>} message RequiredGroup message or plain object to encode
+                 * @param {jspb.test.TestGroup.RequiredGroup$Properties} message RequiredGroup message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
                  */
@@ -4639,7 +4542,7 @@ $root.jspb = (function() {
 
                 /**
                  * Verifies a RequiredGroup message.
-                 * @param {Object.<string,*>} message RequiredGroup object to verify
+                 * @param {Object.<string,*>} message Plain object to verify
                  * @returns {?string} `null` if valid, otherwise the reason why it is not
                  */
                 RequiredGroup.verify = function verify(message) {
@@ -4713,10 +4616,18 @@ $root.jspb = (function() {
             TestGroup.OptionalGroup = (function() {
 
                 /**
+                 * Properties of an OptionalGroup.
+                 * @typedef jspb.test.TestGroup.OptionalGroup$Properties
+                 * @type Object
+                 * @property {string} id OptionalGroup id.
+                 */
+
+                /**
                  * Constructs a new OptionalGroup.
                  * @exports jspb.test.TestGroup.OptionalGroup
+                 * @implements jspb.test.TestGroup.OptionalGroup$Properties
                  * @constructor
-                 * @param {Object.<string,*>=} [properties] Properties to set
+                 * @param {jspb.test.TestGroup.OptionalGroup$Properties=} [properties] Properties to set
                  */
                 function OptionalGroup(properties) {
                     if (properties)
@@ -4724,15 +4635,11 @@ $root.jspb = (function() {
                             this[keys[i]] = properties[keys[i]];
                 }
 
-                /**
-                 * OptionalGroup id.
-                 * @type {string}
-                 */
                 OptionalGroup.prototype.id = "";
 
                 /**
                  * Creates a new OptionalGroup instance using the specified properties.
-                 * @param {Object.<string,*>=} [properties] Properties to set
+                 * @param {jspb.test.TestGroup.OptionalGroup$Properties=} [properties] Properties to set
                  * @returns {jspb.test.TestGroup.OptionalGroup} OptionalGroup instance
                  */
                 OptionalGroup.create = function create(properties) {
@@ -4741,7 +4648,7 @@ $root.jspb = (function() {
 
                 /**
                  * Encodes the specified OptionalGroup message. Does not implicitly {@link jspb.test.TestGroup.OptionalGroup.verify|verify} messages.
-                 * @param {jspb.test.TestGroup.OptionalGroup|Object.<string,*>} message OptionalGroup message or plain object to encode
+                 * @param {jspb.test.TestGroup.OptionalGroup$Properties} message OptionalGroup message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
                  */
@@ -4807,7 +4714,7 @@ $root.jspb = (function() {
 
                 /**
                  * Verifies an OptionalGroup message.
-                 * @param {Object.<string,*>} message OptionalGroup object to verify
+                 * @param {Object.<string,*>} message Plain object to verify
                  * @returns {?string} `null` if valid, otherwise the reason why it is not
                  */
                 OptionalGroup.verify = function verify(message) {
@@ -4884,10 +4791,18 @@ $root.jspb = (function() {
         test.TestGroup1 = (function() {
 
             /**
+             * Properties of a TestGroup1.
+             * @typedef jspb.test.TestGroup1$Properties
+             * @type Object
+             * @property {jspb.test.TestGroup.RepeatedGroup} [group] TestGroup1 group.
+             */
+
+            /**
              * Constructs a new TestGroup1.
              * @exports jspb.test.TestGroup1
+             * @implements jspb.test.TestGroup1$Properties
              * @constructor
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {jspb.test.TestGroup1$Properties=} [properties] Properties to set
              */
             function TestGroup1(properties) {
                 if (properties)
@@ -4895,15 +4810,11 @@ $root.jspb = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
-            /**
-             * TestGroup1 group.
-             * @type {jspb.test.TestGroup.RepeatedGroup|undefined}
-             */
             TestGroup1.prototype.group = null;
 
             /**
              * Creates a new TestGroup1 instance using the specified properties.
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {jspb.test.TestGroup1$Properties=} [properties] Properties to set
              * @returns {jspb.test.TestGroup1} TestGroup1 instance
              */
             TestGroup1.create = function create(properties) {
@@ -4912,7 +4823,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified TestGroup1 message. Does not implicitly {@link jspb.test.TestGroup1.verify|verify} messages.
-             * @param {jspb.test.TestGroup1|Object.<string,*>} message TestGroup1 message or plain object to encode
+             * @param {jspb.test.TestGroup1$Properties} message TestGroup1 message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -4975,7 +4886,7 @@ $root.jspb = (function() {
 
             /**
              * Verifies a TestGroup1 message.
-             * @param {Object.<string,*>} message TestGroup1 object to verify
+             * @param {Object.<string,*>} message Plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             TestGroup1.verify = function verify(message) {
@@ -5055,10 +4966,19 @@ $root.jspb = (function() {
         test.TestReservedNames = (function() {
 
             /**
+             * Properties of a TestReservedNames.
+             * @typedef jspb.test.TestReservedNames$Properties
+             * @type Object
+             * @property {number} [extension] TestReservedNames extension.
+             * @property {number} [.jspb.test.TestReservedNamesExtension.foo] TestReservedNames .jspb.test.TestReservedNamesExtension.foo.
+             */
+
+            /**
              * Constructs a new TestReservedNames.
              * @exports jspb.test.TestReservedNames
+             * @implements jspb.test.TestReservedNames$Properties
              * @constructor
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {jspb.test.TestReservedNames$Properties=} [properties] Properties to set
              */
             function TestReservedNames(properties) {
                 if (properties)
@@ -5066,22 +4986,12 @@ $root.jspb = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
-            /**
-             * TestReservedNames extension.
-             * @type {number|undefined}
-             */
             TestReservedNames.prototype.extension = 0;
-
-            /**
-             * TestReservedNames .jspb.test.TestReservedNamesExtension.foo.
-             * @name jspb.test.TestReservedNames#.jspb.test.TestReservedNamesExtension.foo
-             * @type {number|undefined}
-             */
             TestReservedNames.prototype[".jspb.test.TestReservedNamesExtension.foo"] = 0;
 
             /**
              * Creates a new TestReservedNames instance using the specified properties.
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {jspb.test.TestReservedNames$Properties=} [properties] Properties to set
              * @returns {jspb.test.TestReservedNames} TestReservedNames instance
              */
             TestReservedNames.create = function create(properties) {
@@ -5090,7 +5000,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified TestReservedNames message. Does not implicitly {@link jspb.test.TestReservedNames.verify|verify} messages.
-             * @param {jspb.test.TestReservedNames|Object.<string,*>} message TestReservedNames message or plain object to encode
+             * @param {jspb.test.TestReservedNames$Properties} message TestReservedNames message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -5158,7 +5068,7 @@ $root.jspb = (function() {
 
             /**
              * Verifies a TestReservedNames message.
-             * @param {Object.<string,*>} message TestReservedNames object to verify
+             * @param {Object.<string,*>} message Plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             TestReservedNames.verify = function verify(message) {
@@ -5242,10 +5152,17 @@ $root.jspb = (function() {
         test.TestReservedNamesExtension = (function() {
 
             /**
+             * Properties of a TestReservedNamesExtension.
+             * @typedef jspb.test.TestReservedNamesExtension$Properties
+             * @type Object
+             */
+
+            /**
              * Constructs a new TestReservedNamesExtension.
              * @exports jspb.test.TestReservedNamesExtension
+             * @implements jspb.test.TestReservedNamesExtension$Properties
              * @constructor
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {jspb.test.TestReservedNamesExtension$Properties=} [properties] Properties to set
              */
             function TestReservedNamesExtension(properties) {
                 if (properties)
@@ -5255,7 +5172,7 @@ $root.jspb = (function() {
 
             /**
              * Creates a new TestReservedNamesExtension instance using the specified properties.
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {jspb.test.TestReservedNamesExtension$Properties=} [properties] Properties to set
              * @returns {jspb.test.TestReservedNamesExtension} TestReservedNamesExtension instance
              */
             TestReservedNamesExtension.create = function create(properties) {
@@ -5264,7 +5181,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified TestReservedNamesExtension message. Does not implicitly {@link jspb.test.TestReservedNamesExtension.verify|verify} messages.
-             * @param {jspb.test.TestReservedNamesExtension|Object.<string,*>} message TestReservedNamesExtension message or plain object to encode
+             * @param {jspb.test.TestReservedNamesExtension$Properties} message TestReservedNamesExtension message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -5322,7 +5239,7 @@ $root.jspb = (function() {
 
             /**
              * Verifies a TestReservedNamesExtension message.
-             * @param {Object.<string,*>} message TestReservedNamesExtension object to verify
+             * @param {Object.<string,*>} message Plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             TestReservedNamesExtension.verify = function verify(message) {
@@ -5384,10 +5301,27 @@ $root.jspb = (function() {
         test.TestMessageWithOneof = (function() {
 
             /**
+             * Properties of a TestMessageWithOneof.
+             * @typedef jspb.test.TestMessageWithOneof$Properties
+             * @type Object
+             * @property {string} [pone] TestMessageWithOneof pone.
+             * @property {string} [pthree] TestMessageWithOneof pthree.
+             * @property {jspb.test.TestMessageWithOneof} [rone] TestMessageWithOneof rone.
+             * @property {string} [rtwo] TestMessageWithOneof rtwo.
+             * @property {boolean} [normalField] TestMessageWithOneof normalField.
+             * @property {Array.<string>} [repeatedField] TestMessageWithOneof repeatedField.
+             * @property {number} [aone] TestMessageWithOneof aone.
+             * @property {number} [atwo] TestMessageWithOneof atwo.
+             * @property {number} [bone] TestMessageWithOneof bone.
+             * @property {number} [btwo] TestMessageWithOneof btwo.
+             */
+
+            /**
              * Constructs a new TestMessageWithOneof.
              * @exports jspb.test.TestMessageWithOneof
+             * @implements jspb.test.TestMessageWithOneof$Properties
              * @constructor
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {jspb.test.TestMessageWithOneof$Properties=} [properties] Properties to set
              */
             function TestMessageWithOneof(properties) {
                 this.repeatedField = [];
@@ -5396,64 +5330,15 @@ $root.jspb = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
-            /**
-             * TestMessageWithOneof pone.
-             * @type {string|undefined}
-             */
             TestMessageWithOneof.prototype.pone = "";
-
-            /**
-             * TestMessageWithOneof pthree.
-             * @type {string|undefined}
-             */
             TestMessageWithOneof.prototype.pthree = "";
-
-            /**
-             * TestMessageWithOneof rone.
-             * @type {jspb.test.TestMessageWithOneof|undefined}
-             */
             TestMessageWithOneof.prototype.rone = null;
-
-            /**
-             * TestMessageWithOneof rtwo.
-             * @type {string|undefined}
-             */
             TestMessageWithOneof.prototype.rtwo = "";
-
-            /**
-             * TestMessageWithOneof normalField.
-             * @type {boolean|undefined}
-             */
             TestMessageWithOneof.prototype.normalField = false;
-
-            /**
-             * TestMessageWithOneof repeatedField.
-             * @type {Array.<string>|undefined}
-             */
             TestMessageWithOneof.prototype.repeatedField = $util.emptyArray;
-
-            /**
-             * TestMessageWithOneof aone.
-             * @type {number|undefined}
-             */
             TestMessageWithOneof.prototype.aone = 1234;
-
-            /**
-             * TestMessageWithOneof atwo.
-             * @type {number|undefined}
-             */
             TestMessageWithOneof.prototype.atwo = 0;
-
-            /**
-             * TestMessageWithOneof bone.
-             * @type {number|undefined}
-             */
             TestMessageWithOneof.prototype.bone = 0;
-
-            /**
-             * TestMessageWithOneof btwo.
-             * @type {number|undefined}
-             */
             TestMessageWithOneof.prototype.btwo = 1234;
 
             // OneOf field names bound to virtual getters and setters
@@ -5501,7 +5386,7 @@ $root.jspb = (function() {
 
             /**
              * Creates a new TestMessageWithOneof instance using the specified properties.
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {jspb.test.TestMessageWithOneof$Properties=} [properties] Properties to set
              * @returns {jspb.test.TestMessageWithOneof} TestMessageWithOneof instance
              */
             TestMessageWithOneof.create = function create(properties) {
@@ -5510,7 +5395,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified TestMessageWithOneof message. Does not implicitly {@link jspb.test.TestMessageWithOneof.verify|verify} messages.
-             * @param {jspb.test.TestMessageWithOneof|Object.<string,*>} message TestMessageWithOneof message or plain object to encode
+             * @param {jspb.test.TestMessageWithOneof$Properties} message TestMessageWithOneof message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -5621,7 +5506,7 @@ $root.jspb = (function() {
 
             /**
              * Verifies a TestMessageWithOneof message.
-             * @param {Object.<string,*>} message TestMessageWithOneof object to verify
+             * @param {Object.<string,*>} message Plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             TestMessageWithOneof.verify = function verify(message) {
@@ -5826,10 +5711,19 @@ $root.jspb = (function() {
         test.TestEndsWithBytes = (function() {
 
             /**
+             * Properties of a TestEndsWithBytes.
+             * @typedef jspb.test.TestEndsWithBytes$Properties
+             * @type Object
+             * @property {number} [value] TestEndsWithBytes value.
+             * @property {Uint8Array} [data] TestEndsWithBytes data.
+             */
+
+            /**
              * Constructs a new TestEndsWithBytes.
              * @exports jspb.test.TestEndsWithBytes
+             * @implements jspb.test.TestEndsWithBytes$Properties
              * @constructor
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {jspb.test.TestEndsWithBytes$Properties=} [properties] Properties to set
              */
             function TestEndsWithBytes(properties) {
                 if (properties)
@@ -5837,21 +5731,12 @@ $root.jspb = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
-            /**
-             * TestEndsWithBytes value.
-             * @type {number|undefined}
-             */
             TestEndsWithBytes.prototype.value = 0;
-
-            /**
-             * TestEndsWithBytes data.
-             * @type {Uint8Array|undefined}
-             */
             TestEndsWithBytes.prototype.data = $util.newBuffer([]);
 
             /**
              * Creates a new TestEndsWithBytes instance using the specified properties.
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {jspb.test.TestEndsWithBytes$Properties=} [properties] Properties to set
              * @returns {jspb.test.TestEndsWithBytes} TestEndsWithBytes instance
              */
             TestEndsWithBytes.create = function create(properties) {
@@ -5860,7 +5745,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified TestEndsWithBytes message. Does not implicitly {@link jspb.test.TestEndsWithBytes.verify|verify} messages.
-             * @param {jspb.test.TestEndsWithBytes|Object.<string,*>} message TestEndsWithBytes message or plain object to encode
+             * @param {jspb.test.TestEndsWithBytes$Properties} message TestEndsWithBytes message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -5928,7 +5813,7 @@ $root.jspb = (function() {
 
             /**
              * Verifies a TestEndsWithBytes message.
-             * @param {Object.<string,*>} message TestEndsWithBytes object to verify
+             * @param {Object.<string,*>} message Plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             TestEndsWithBytes.verify = function verify(message) {
@@ -6015,10 +5900,29 @@ $root.jspb = (function() {
         test.TestMapFieldsNoBinary = (function() {
 
             /**
+             * Properties of a TestMapFieldsNoBinary.
+             * @typedef jspb.test.TestMapFieldsNoBinary$Properties
+             * @type Object
+             * @property {Object.<string,string>} [mapStringString] TestMapFieldsNoBinary mapStringString.
+             * @property {Object.<string,number>} [mapStringInt32] TestMapFieldsNoBinary mapStringInt32.
+             * @property {Object.<string,number|$protobuf.Long>} [mapStringInt64] TestMapFieldsNoBinary mapStringInt64.
+             * @property {Object.<string,boolean>} [mapStringBool] TestMapFieldsNoBinary mapStringBool.
+             * @property {Object.<string,number>} [mapStringDouble] TestMapFieldsNoBinary mapStringDouble.
+             * @property {Object.<string,number>} [mapStringEnum] TestMapFieldsNoBinary mapStringEnum.
+             * @property {Object.<string,jspb.test.MapValueMessageNoBinary>} [mapStringMsg] TestMapFieldsNoBinary mapStringMsg.
+             * @property {Object.<string,string>} [mapInt32String] TestMapFieldsNoBinary mapInt32String.
+             * @property {Object.<string,string>} [mapInt64String] TestMapFieldsNoBinary mapInt64String.
+             * @property {Object.<string,string>} [mapBoolString] TestMapFieldsNoBinary mapBoolString.
+             * @property {jspb.test.TestMapFieldsNoBinary} [testMapFields] TestMapFieldsNoBinary testMapFields.
+             * @property {Object.<string,jspb.test.TestMapFieldsNoBinary>} [mapStringTestmapfields] TestMapFieldsNoBinary mapStringTestmapfields.
+             */
+
+            /**
              * Constructs a new TestMapFieldsNoBinary.
              * @exports jspb.test.TestMapFieldsNoBinary
+             * @implements jspb.test.TestMapFieldsNoBinary$Properties
              * @constructor
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {jspb.test.TestMapFieldsNoBinary$Properties=} [properties] Properties to set
              */
             function TestMapFieldsNoBinary(properties) {
                 this.mapStringString = {};
@@ -6037,81 +5941,22 @@ $root.jspb = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
-            /**
-             * TestMapFieldsNoBinary mapStringString.
-             * @type {Object.<string,string>|undefined}
-             */
             TestMapFieldsNoBinary.prototype.mapStringString = $util.emptyObject;
-
-            /**
-             * TestMapFieldsNoBinary mapStringInt32.
-             * @type {Object.<string,number>|undefined}
-             */
             TestMapFieldsNoBinary.prototype.mapStringInt32 = $util.emptyObject;
-
-            /**
-             * TestMapFieldsNoBinary mapStringInt64.
-             * @type {Object.<string,number|$protobuf.Long>|undefined}
-             */
             TestMapFieldsNoBinary.prototype.mapStringInt64 = $util.emptyObject;
-
-            /**
-             * TestMapFieldsNoBinary mapStringBool.
-             * @type {Object.<string,boolean>|undefined}
-             */
             TestMapFieldsNoBinary.prototype.mapStringBool = $util.emptyObject;
-
-            /**
-             * TestMapFieldsNoBinary mapStringDouble.
-             * @type {Object.<string,number>|undefined}
-             */
             TestMapFieldsNoBinary.prototype.mapStringDouble = $util.emptyObject;
-
-            /**
-             * TestMapFieldsNoBinary mapStringEnum.
-             * @type {Object.<string,number>|undefined}
-             */
             TestMapFieldsNoBinary.prototype.mapStringEnum = $util.emptyObject;
-
-            /**
-             * TestMapFieldsNoBinary mapStringMsg.
-             * @type {Object.<string,jspb.test.MapValueMessageNoBinary>|undefined}
-             */
             TestMapFieldsNoBinary.prototype.mapStringMsg = $util.emptyObject;
-
-            /**
-             * TestMapFieldsNoBinary mapInt32String.
-             * @type {Object.<string,string>|undefined}
-             */
             TestMapFieldsNoBinary.prototype.mapInt32String = $util.emptyObject;
-
-            /**
-             * TestMapFieldsNoBinary mapInt64String.
-             * @type {Object.<string,string>|undefined}
-             */
             TestMapFieldsNoBinary.prototype.mapInt64String = $util.emptyObject;
-
-            /**
-             * TestMapFieldsNoBinary mapBoolString.
-             * @type {Object.<string,string>|undefined}
-             */
             TestMapFieldsNoBinary.prototype.mapBoolString = $util.emptyObject;
-
-            /**
-             * TestMapFieldsNoBinary testMapFields.
-             * @type {jspb.test.TestMapFieldsNoBinary|undefined}
-             */
             TestMapFieldsNoBinary.prototype.testMapFields = null;
-
-            /**
-             * TestMapFieldsNoBinary mapStringTestmapfields.
-             * @type {Object.<string,jspb.test.TestMapFieldsNoBinary>|undefined}
-             */
             TestMapFieldsNoBinary.prototype.mapStringTestmapfields = $util.emptyObject;
 
             /**
              * Creates a new TestMapFieldsNoBinary instance using the specified properties.
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {jspb.test.TestMapFieldsNoBinary$Properties=} [properties] Properties to set
              * @returns {jspb.test.TestMapFieldsNoBinary} TestMapFieldsNoBinary instance
              */
             TestMapFieldsNoBinary.create = function create(properties) {
@@ -6120,7 +5965,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified TestMapFieldsNoBinary message. Does not implicitly {@link jspb.test.TestMapFieldsNoBinary.verify|verify} messages.
-             * @param {jspb.test.TestMapFieldsNoBinary|Object.<string,*>} message TestMapFieldsNoBinary message or plain object to encode
+             * @param {jspb.test.TestMapFieldsNoBinary$Properties} message TestMapFieldsNoBinary message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -6308,7 +6153,7 @@ $root.jspb = (function() {
 
             /**
              * Verifies a TestMapFieldsNoBinary message.
-             * @param {Object.<string,*>} message TestMapFieldsNoBinary object to verify
+             * @param {Object.<string,*>} message Plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             TestMapFieldsNoBinary.verify = function verify(message) {
@@ -6687,10 +6532,18 @@ $root.jspb = (function() {
         test.MapValueMessageNoBinary = (function() {
 
             /**
+             * Properties of a MapValueMessageNoBinary.
+             * @typedef jspb.test.MapValueMessageNoBinary$Properties
+             * @type Object
+             * @property {number} [foo] MapValueMessageNoBinary foo.
+             */
+
+            /**
              * Constructs a new MapValueMessageNoBinary.
              * @exports jspb.test.MapValueMessageNoBinary
+             * @implements jspb.test.MapValueMessageNoBinary$Properties
              * @constructor
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {jspb.test.MapValueMessageNoBinary$Properties=} [properties] Properties to set
              */
             function MapValueMessageNoBinary(properties) {
                 if (properties)
@@ -6698,15 +6551,11 @@ $root.jspb = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
-            /**
-             * MapValueMessageNoBinary foo.
-             * @type {number|undefined}
-             */
             MapValueMessageNoBinary.prototype.foo = 0;
 
             /**
              * Creates a new MapValueMessageNoBinary instance using the specified properties.
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {jspb.test.MapValueMessageNoBinary$Properties=} [properties] Properties to set
              * @returns {jspb.test.MapValueMessageNoBinary} MapValueMessageNoBinary instance
              */
             MapValueMessageNoBinary.create = function create(properties) {
@@ -6715,7 +6564,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified MapValueMessageNoBinary message. Does not implicitly {@link jspb.test.MapValueMessageNoBinary.verify|verify} messages.
-             * @param {jspb.test.MapValueMessageNoBinary|Object.<string,*>} message MapValueMessageNoBinary message or plain object to encode
+             * @param {jspb.test.MapValueMessageNoBinary$Properties} message MapValueMessageNoBinary message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -6778,7 +6627,7 @@ $root.jspb = (function() {
 
             /**
              * Verifies a MapValueMessageNoBinary message.
-             * @param {Object.<string,*>} message MapValueMessageNoBinary object to verify
+             * @param {Object.<string,*>} message Plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             MapValueMessageNoBinary.verify = function verify(message) {
@@ -6853,10 +6702,17 @@ $root.jspb = (function() {
         test.Deeply = (function() {
 
             /**
+             * Properties of a Deeply.
+             * @typedef jspb.test.Deeply$Properties
+             * @type Object
+             */
+
+            /**
              * Constructs a new Deeply.
              * @exports jspb.test.Deeply
+             * @implements jspb.test.Deeply$Properties
              * @constructor
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {jspb.test.Deeply$Properties=} [properties] Properties to set
              */
             function Deeply(properties) {
                 if (properties)
@@ -6866,7 +6722,7 @@ $root.jspb = (function() {
 
             /**
              * Creates a new Deeply instance using the specified properties.
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {jspb.test.Deeply$Properties=} [properties] Properties to set
              * @returns {jspb.test.Deeply} Deeply instance
              */
             Deeply.create = function create(properties) {
@@ -6875,7 +6731,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified Deeply message. Does not implicitly {@link jspb.test.Deeply.verify|verify} messages.
-             * @param {jspb.test.Deeply|Object.<string,*>} message Deeply message or plain object to encode
+             * @param {jspb.test.Deeply$Properties} message Deeply message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -6933,7 +6789,7 @@ $root.jspb = (function() {
 
             /**
              * Verifies a Deeply message.
-             * @param {Object.<string,*>} message Deeply object to verify
+             * @param {Object.<string,*>} message Plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             Deeply.verify = function verify(message) {
@@ -6992,10 +6848,17 @@ $root.jspb = (function() {
             Deeply.Nested = (function() {
 
                 /**
+                 * Properties of a Nested.
+                 * @typedef jspb.test.Deeply.Nested$Properties
+                 * @type Object
+                 */
+
+                /**
                  * Constructs a new Nested.
                  * @exports jspb.test.Deeply.Nested
+                 * @implements jspb.test.Deeply.Nested$Properties
                  * @constructor
-                 * @param {Object.<string,*>=} [properties] Properties to set
+                 * @param {jspb.test.Deeply.Nested$Properties=} [properties] Properties to set
                  */
                 function Nested(properties) {
                     if (properties)
@@ -7005,7 +6868,7 @@ $root.jspb = (function() {
 
                 /**
                  * Creates a new Nested instance using the specified properties.
-                 * @param {Object.<string,*>=} [properties] Properties to set
+                 * @param {jspb.test.Deeply.Nested$Properties=} [properties] Properties to set
                  * @returns {jspb.test.Deeply.Nested} Nested instance
                  */
                 Nested.create = function create(properties) {
@@ -7014,7 +6877,7 @@ $root.jspb = (function() {
 
                 /**
                  * Encodes the specified Nested message. Does not implicitly {@link jspb.test.Deeply.Nested.verify|verify} messages.
-                 * @param {jspb.test.Deeply.Nested|Object.<string,*>} message Nested message or plain object to encode
+                 * @param {jspb.test.Deeply.Nested$Properties} message Nested message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
                  */
@@ -7072,7 +6935,7 @@ $root.jspb = (function() {
 
                 /**
                  * Verifies a Nested message.
-                 * @param {Object.<string,*>} message Nested object to verify
+                 * @param {Object.<string,*>} message Plain object to verify
                  * @returns {?string} `null` if valid, otherwise the reason why it is not
                  */
                 Nested.verify = function verify(message) {
@@ -7131,10 +6994,18 @@ $root.jspb = (function() {
                 Nested.Message = (function() {
 
                     /**
+                     * Properties of a Message.
+                     * @typedef jspb.test.Deeply.Nested.Message$Properties
+                     * @type Object
+                     * @property {number} [count] Message count.
+                     */
+
+                    /**
                      * Constructs a new Message.
                      * @exports jspb.test.Deeply.Nested.Message
+                     * @implements jspb.test.Deeply.Nested.Message$Properties
                      * @constructor
-                     * @param {Object.<string,*>=} [properties] Properties to set
+                     * @param {jspb.test.Deeply.Nested.Message$Properties=} [properties] Properties to set
                      */
                     function Message(properties) {
                         if (properties)
@@ -7142,15 +7013,11 @@ $root.jspb = (function() {
                                 this[keys[i]] = properties[keys[i]];
                     }
 
-                    /**
-                     * Message count.
-                     * @type {number|undefined}
-                     */
                     Message.prototype.count = 0;
 
                     /**
                      * Creates a new Message instance using the specified properties.
-                     * @param {Object.<string,*>=} [properties] Properties to set
+                     * @param {jspb.test.Deeply.Nested.Message$Properties=} [properties] Properties to set
                      * @returns {jspb.test.Deeply.Nested.Message} Message instance
                      */
                     Message.create = function create(properties) {
@@ -7159,7 +7026,7 @@ $root.jspb = (function() {
 
                     /**
                      * Encodes the specified Message message. Does not implicitly {@link jspb.test.Deeply.Nested.Message.verify|verify} messages.
-                     * @param {jspb.test.Deeply.Nested.Message|Object.<string,*>} message Message message or plain object to encode
+                     * @param {jspb.test.Deeply.Nested.Message$Properties} message Message message or plain object to encode
                      * @param {$protobuf.Writer} [writer] Writer to encode to
                      * @returns {$protobuf.Writer} Writer
                      */
@@ -7222,7 +7089,7 @@ $root.jspb = (function() {
 
                     /**
                      * Verifies a Message message.
-                     * @param {Object.<string,*>} message Message object to verify
+                     * @param {Object.<string,*>} message Plain object to verify
                      * @returns {?string} `null` if valid, otherwise the reason why it is not
                      */
                     Message.verify = function verify(message) {
@@ -7327,10 +7194,18 @@ $root.google = (function() {
         protobuf.FileDescriptorSet = (function() {
 
             /**
+             * Properties of a FileDescriptorSet.
+             * @typedef google.protobuf.FileDescriptorSet$Properties
+             * @type Object
+             * @property {Array.<google.protobuf.FileDescriptorProto>} [file] FileDescriptorSet file.
+             */
+
+            /**
              * Constructs a new FileDescriptorSet.
              * @exports google.protobuf.FileDescriptorSet
+             * @implements google.protobuf.FileDescriptorSet$Properties
              * @constructor
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {google.protobuf.FileDescriptorSet$Properties=} [properties] Properties to set
              */
             function FileDescriptorSet(properties) {
                 this.file = [];
@@ -7339,15 +7214,11 @@ $root.google = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
-            /**
-             * FileDescriptorSet file.
-             * @type {Array.<google.protobuf.FileDescriptorProto>|undefined}
-             */
             FileDescriptorSet.prototype.file = $util.emptyArray;
 
             /**
              * Creates a new FileDescriptorSet instance using the specified properties.
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {google.protobuf.FileDescriptorSet$Properties=} [properties] Properties to set
              * @returns {google.protobuf.FileDescriptorSet} FileDescriptorSet instance
              */
             FileDescriptorSet.create = function create(properties) {
@@ -7356,7 +7227,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified FileDescriptorSet message. Does not implicitly {@link google.protobuf.FileDescriptorSet.verify|verify} messages.
-             * @param {google.protobuf.FileDescriptorSet|Object.<string,*>} message FileDescriptorSet message or plain object to encode
+             * @param {google.protobuf.FileDescriptorSet$Properties} message FileDescriptorSet message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -7422,7 +7293,7 @@ $root.google = (function() {
 
             /**
              * Verifies a FileDescriptorSet message.
-             * @param {Object.<string,*>} message FileDescriptorSet object to verify
+             * @param {Object.<string,*>} message Plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             FileDescriptorSet.verify = function verify(message) {
@@ -7514,10 +7385,29 @@ $root.google = (function() {
         protobuf.FileDescriptorProto = (function() {
 
             /**
+             * Properties of a FileDescriptorProto.
+             * @typedef google.protobuf.FileDescriptorProto$Properties
+             * @type Object
+             * @property {string} [name] FileDescriptorProto name.
+             * @property {string} [package] FileDescriptorProto package.
+             * @property {Array.<string>} [dependency] FileDescriptorProto dependency.
+             * @property {Array.<number>} [publicDependency] FileDescriptorProto publicDependency.
+             * @property {Array.<number>} [weakDependency] FileDescriptorProto weakDependency.
+             * @property {Array.<google.protobuf.DescriptorProto>} [messageType] FileDescriptorProto messageType.
+             * @property {Array.<google.protobuf.EnumDescriptorProto>} [enumType] FileDescriptorProto enumType.
+             * @property {Array.<google.protobuf.ServiceDescriptorProto>} [service] FileDescriptorProto service.
+             * @property {Array.<google.protobuf.FieldDescriptorProto>} [extension] FileDescriptorProto extension.
+             * @property {google.protobuf.FileOptions} [options] FileDescriptorProto options.
+             * @property {google.protobuf.SourceCodeInfo} [sourceCodeInfo] FileDescriptorProto sourceCodeInfo.
+             * @property {string} [syntax] FileDescriptorProto syntax.
+             */
+
+            /**
              * Constructs a new FileDescriptorProto.
              * @exports google.protobuf.FileDescriptorProto
+             * @implements google.protobuf.FileDescriptorProto$Properties
              * @constructor
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {google.protobuf.FileDescriptorProto$Properties=} [properties] Properties to set
              */
             function FileDescriptorProto(properties) {
                 this.dependency = [];
@@ -7532,82 +7422,22 @@ $root.google = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
-            /**
-             * FileDescriptorProto name.
-             * @type {string|undefined}
-             */
             FileDescriptorProto.prototype.name = "";
-
-            /**
-             * FileDescriptorProto package.
-             * @name google.protobuf.FileDescriptorProto#package
-             * @type {string|undefined}
-             */
             FileDescriptorProto.prototype["package"] = "";
-
-            /**
-             * FileDescriptorProto dependency.
-             * @type {Array.<string>|undefined}
-             */
             FileDescriptorProto.prototype.dependency = $util.emptyArray;
-
-            /**
-             * FileDescriptorProto publicDependency.
-             * @type {Array.<number>|undefined}
-             */
             FileDescriptorProto.prototype.publicDependency = $util.emptyArray;
-
-            /**
-             * FileDescriptorProto weakDependency.
-             * @type {Array.<number>|undefined}
-             */
             FileDescriptorProto.prototype.weakDependency = $util.emptyArray;
-
-            /**
-             * FileDescriptorProto messageType.
-             * @type {Array.<google.protobuf.DescriptorProto>|undefined}
-             */
             FileDescriptorProto.prototype.messageType = $util.emptyArray;
-
-            /**
-             * FileDescriptorProto enumType.
-             * @type {Array.<google.protobuf.EnumDescriptorProto>|undefined}
-             */
             FileDescriptorProto.prototype.enumType = $util.emptyArray;
-
-            /**
-             * FileDescriptorProto service.
-             * @type {Array.<google.protobuf.ServiceDescriptorProto>|undefined}
-             */
             FileDescriptorProto.prototype.service = $util.emptyArray;
-
-            /**
-             * FileDescriptorProto extension.
-             * @type {Array.<google.protobuf.FieldDescriptorProto>|undefined}
-             */
             FileDescriptorProto.prototype.extension = $util.emptyArray;
-
-            /**
-             * FileDescriptorProto options.
-             * @type {google.protobuf.FileOptions|undefined}
-             */
             FileDescriptorProto.prototype.options = null;
-
-            /**
-             * FileDescriptorProto sourceCodeInfo.
-             * @type {google.protobuf.SourceCodeInfo|undefined}
-             */
             FileDescriptorProto.prototype.sourceCodeInfo = null;
-
-            /**
-             * FileDescriptorProto syntax.
-             * @type {string|undefined}
-             */
             FileDescriptorProto.prototype.syntax = "";
 
             /**
              * Creates a new FileDescriptorProto instance using the specified properties.
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {google.protobuf.FileDescriptorProto$Properties=} [properties] Properties to set
              * @returns {google.protobuf.FileDescriptorProto} FileDescriptorProto instance
              */
             FileDescriptorProto.create = function create(properties) {
@@ -7616,7 +7446,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified FileDescriptorProto message. Does not implicitly {@link google.protobuf.FileDescriptorProto.verify|verify} messages.
-             * @param {google.protobuf.FileDescriptorProto|Object.<string,*>} message FileDescriptorProto message or plain object to encode
+             * @param {google.protobuf.FileDescriptorProto$Properties} message FileDescriptorProto message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -7765,7 +7595,7 @@ $root.google = (function() {
 
             /**
              * Verifies a FileDescriptorProto message.
-             * @param {Object.<string,*>} message FileDescriptorProto object to verify
+             * @param {Object.<string,*>} message Plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             FileDescriptorProto.verify = function verify(message) {
@@ -8045,10 +7875,27 @@ $root.google = (function() {
         protobuf.DescriptorProto = (function() {
 
             /**
+             * Properties of a DescriptorProto.
+             * @typedef google.protobuf.DescriptorProto$Properties
+             * @type Object
+             * @property {string} [name] DescriptorProto name.
+             * @property {Array.<google.protobuf.FieldDescriptorProto>} [field] DescriptorProto field.
+             * @property {Array.<google.protobuf.FieldDescriptorProto>} [extension] DescriptorProto extension.
+             * @property {Array.<google.protobuf.DescriptorProto>} [nestedType] DescriptorProto nestedType.
+             * @property {Array.<google.protobuf.EnumDescriptorProto>} [enumType] DescriptorProto enumType.
+             * @property {Array.<google.protobuf.DescriptorProto.ExtensionRange>} [extensionRange] DescriptorProto extensionRange.
+             * @property {Array.<google.protobuf.OneofDescriptorProto>} [oneofDecl] DescriptorProto oneofDecl.
+             * @property {google.protobuf.MessageOptions} [options] DescriptorProto options.
+             * @property {Array.<google.protobuf.DescriptorProto.ReservedRange>} [reservedRange] DescriptorProto reservedRange.
+             * @property {Array.<string>} [reservedName] DescriptorProto reservedName.
+             */
+
+            /**
              * Constructs a new DescriptorProto.
              * @exports google.protobuf.DescriptorProto
+             * @implements google.protobuf.DescriptorProto$Properties
              * @constructor
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {google.protobuf.DescriptorProto$Properties=} [properties] Properties to set
              */
             function DescriptorProto(properties) {
                 this.field = [];
@@ -8064,69 +7911,20 @@ $root.google = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
-            /**
-             * DescriptorProto name.
-             * @type {string|undefined}
-             */
             DescriptorProto.prototype.name = "";
-
-            /**
-             * DescriptorProto field.
-             * @type {Array.<google.protobuf.FieldDescriptorProto>|undefined}
-             */
             DescriptorProto.prototype.field = $util.emptyArray;
-
-            /**
-             * DescriptorProto extension.
-             * @type {Array.<google.protobuf.FieldDescriptorProto>|undefined}
-             */
             DescriptorProto.prototype.extension = $util.emptyArray;
-
-            /**
-             * DescriptorProto nestedType.
-             * @type {Array.<google.protobuf.DescriptorProto>|undefined}
-             */
             DescriptorProto.prototype.nestedType = $util.emptyArray;
-
-            /**
-             * DescriptorProto enumType.
-             * @type {Array.<google.protobuf.EnumDescriptorProto>|undefined}
-             */
             DescriptorProto.prototype.enumType = $util.emptyArray;
-
-            /**
-             * DescriptorProto extensionRange.
-             * @type {Array.<google.protobuf.DescriptorProto.ExtensionRange>|undefined}
-             */
             DescriptorProto.prototype.extensionRange = $util.emptyArray;
-
-            /**
-             * DescriptorProto oneofDecl.
-             * @type {Array.<google.protobuf.OneofDescriptorProto>|undefined}
-             */
             DescriptorProto.prototype.oneofDecl = $util.emptyArray;
-
-            /**
-             * DescriptorProto options.
-             * @type {google.protobuf.MessageOptions|undefined}
-             */
             DescriptorProto.prototype.options = null;
-
-            /**
-             * DescriptorProto reservedRange.
-             * @type {Array.<google.protobuf.DescriptorProto.ReservedRange>|undefined}
-             */
             DescriptorProto.prototype.reservedRange = $util.emptyArray;
-
-            /**
-             * DescriptorProto reservedName.
-             * @type {Array.<string>|undefined}
-             */
             DescriptorProto.prototype.reservedName = $util.emptyArray;
 
             /**
              * Creates a new DescriptorProto instance using the specified properties.
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {google.protobuf.DescriptorProto$Properties=} [properties] Properties to set
              * @returns {google.protobuf.DescriptorProto} DescriptorProto instance
              */
             DescriptorProto.create = function create(properties) {
@@ -8135,7 +7933,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified DescriptorProto message. Does not implicitly {@link google.protobuf.DescriptorProto.verify|verify} messages.
-             * @param {google.protobuf.DescriptorProto|Object.<string,*>} message DescriptorProto message or plain object to encode
+             * @param {google.protobuf.DescriptorProto$Properties} message DescriptorProto message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -8267,7 +8065,7 @@ $root.google = (function() {
 
             /**
              * Verifies a DescriptorProto message.
-             * @param {Object.<string,*>} message DescriptorProto object to verify
+             * @param {Object.<string,*>} message Plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             DescriptorProto.verify = function verify(message) {
@@ -8550,10 +8348,19 @@ $root.google = (function() {
             DescriptorProto.ExtensionRange = (function() {
 
                 /**
+                 * Properties of an ExtensionRange.
+                 * @typedef google.protobuf.DescriptorProto.ExtensionRange$Properties
+                 * @type Object
+                 * @property {number} [start] ExtensionRange start.
+                 * @property {number} [end] ExtensionRange end.
+                 */
+
+                /**
                  * Constructs a new ExtensionRange.
                  * @exports google.protobuf.DescriptorProto.ExtensionRange
+                 * @implements google.protobuf.DescriptorProto.ExtensionRange$Properties
                  * @constructor
-                 * @param {Object.<string,*>=} [properties] Properties to set
+                 * @param {google.protobuf.DescriptorProto.ExtensionRange$Properties=} [properties] Properties to set
                  */
                 function ExtensionRange(properties) {
                     if (properties)
@@ -8561,21 +8368,12 @@ $root.google = (function() {
                             this[keys[i]] = properties[keys[i]];
                 }
 
-                /**
-                 * ExtensionRange start.
-                 * @type {number|undefined}
-                 */
                 ExtensionRange.prototype.start = 0;
-
-                /**
-                 * ExtensionRange end.
-                 * @type {number|undefined}
-                 */
                 ExtensionRange.prototype.end = 0;
 
                 /**
                  * Creates a new ExtensionRange instance using the specified properties.
-                 * @param {Object.<string,*>=} [properties] Properties to set
+                 * @param {google.protobuf.DescriptorProto.ExtensionRange$Properties=} [properties] Properties to set
                  * @returns {google.protobuf.DescriptorProto.ExtensionRange} ExtensionRange instance
                  */
                 ExtensionRange.create = function create(properties) {
@@ -8584,7 +8382,7 @@ $root.google = (function() {
 
                 /**
                  * Encodes the specified ExtensionRange message. Does not implicitly {@link google.protobuf.DescriptorProto.ExtensionRange.verify|verify} messages.
-                 * @param {google.protobuf.DescriptorProto.ExtensionRange|Object.<string,*>} message ExtensionRange message or plain object to encode
+                 * @param {google.protobuf.DescriptorProto.ExtensionRange$Properties} message ExtensionRange message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
                  */
@@ -8652,7 +8450,7 @@ $root.google = (function() {
 
                 /**
                  * Verifies an ExtensionRange message.
-                 * @param {Object.<string,*>} message ExtensionRange object to verify
+                 * @param {Object.<string,*>} message Plain object to verify
                  * @returns {?string} `null` if valid, otherwise the reason why it is not
                  */
                 ExtensionRange.verify = function verify(message) {
@@ -8736,10 +8534,19 @@ $root.google = (function() {
             DescriptorProto.ReservedRange = (function() {
 
                 /**
+                 * Properties of a ReservedRange.
+                 * @typedef google.protobuf.DescriptorProto.ReservedRange$Properties
+                 * @type Object
+                 * @property {number} [start] ReservedRange start.
+                 * @property {number} [end] ReservedRange end.
+                 */
+
+                /**
                  * Constructs a new ReservedRange.
                  * @exports google.protobuf.DescriptorProto.ReservedRange
+                 * @implements google.protobuf.DescriptorProto.ReservedRange$Properties
                  * @constructor
-                 * @param {Object.<string,*>=} [properties] Properties to set
+                 * @param {google.protobuf.DescriptorProto.ReservedRange$Properties=} [properties] Properties to set
                  */
                 function ReservedRange(properties) {
                     if (properties)
@@ -8747,21 +8554,12 @@ $root.google = (function() {
                             this[keys[i]] = properties[keys[i]];
                 }
 
-                /**
-                 * ReservedRange start.
-                 * @type {number|undefined}
-                 */
                 ReservedRange.prototype.start = 0;
-
-                /**
-                 * ReservedRange end.
-                 * @type {number|undefined}
-                 */
                 ReservedRange.prototype.end = 0;
 
                 /**
                  * Creates a new ReservedRange instance using the specified properties.
-                 * @param {Object.<string,*>=} [properties] Properties to set
+                 * @param {google.protobuf.DescriptorProto.ReservedRange$Properties=} [properties] Properties to set
                  * @returns {google.protobuf.DescriptorProto.ReservedRange} ReservedRange instance
                  */
                 ReservedRange.create = function create(properties) {
@@ -8770,7 +8568,7 @@ $root.google = (function() {
 
                 /**
                  * Encodes the specified ReservedRange message. Does not implicitly {@link google.protobuf.DescriptorProto.ReservedRange.verify|verify} messages.
-                 * @param {google.protobuf.DescriptorProto.ReservedRange|Object.<string,*>} message ReservedRange message or plain object to encode
+                 * @param {google.protobuf.DescriptorProto.ReservedRange$Properties} message ReservedRange message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
                  */
@@ -8838,7 +8636,7 @@ $root.google = (function() {
 
                 /**
                  * Verifies a ReservedRange message.
-                 * @param {Object.<string,*>} message ReservedRange object to verify
+                 * @param {Object.<string,*>} message Plain object to verify
                  * @returns {?string} `null` if valid, otherwise the reason why it is not
                  */
                 ReservedRange.verify = function verify(message) {
@@ -8925,10 +8723,27 @@ $root.google = (function() {
         protobuf.FieldDescriptorProto = (function() {
 
             /**
+             * Properties of a FieldDescriptorProto.
+             * @typedef google.protobuf.FieldDescriptorProto$Properties
+             * @type Object
+             * @property {string} [name] FieldDescriptorProto name.
+             * @property {number} [number] FieldDescriptorProto number.
+             * @property {number} [label] FieldDescriptorProto label.
+             * @property {number} [type] FieldDescriptorProto type.
+             * @property {string} [typeName] FieldDescriptorProto typeName.
+             * @property {string} [extendee] FieldDescriptorProto extendee.
+             * @property {string} [defaultValue] FieldDescriptorProto defaultValue.
+             * @property {number} [oneofIndex] FieldDescriptorProto oneofIndex.
+             * @property {string} [jsonName] FieldDescriptorProto jsonName.
+             * @property {google.protobuf.FieldOptions} [options] FieldDescriptorProto options.
+             */
+
+            /**
              * Constructs a new FieldDescriptorProto.
              * @exports google.protobuf.FieldDescriptorProto
+             * @implements google.protobuf.FieldDescriptorProto$Properties
              * @constructor
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {google.protobuf.FieldDescriptorProto$Properties=} [properties] Properties to set
              */
             function FieldDescriptorProto(properties) {
                 if (properties)
@@ -8936,69 +8751,20 @@ $root.google = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
-            /**
-             * FieldDescriptorProto name.
-             * @type {string|undefined}
-             */
             FieldDescriptorProto.prototype.name = "";
-
-            /**
-             * FieldDescriptorProto number.
-             * @type {number|undefined}
-             */
             FieldDescriptorProto.prototype.number = 0;
-
-            /**
-             * FieldDescriptorProto label.
-             * @type {number|undefined}
-             */
             FieldDescriptorProto.prototype.label = 1;
-
-            /**
-             * FieldDescriptorProto type.
-             * @type {number|undefined}
-             */
             FieldDescriptorProto.prototype.type = 1;
-
-            /**
-             * FieldDescriptorProto typeName.
-             * @type {string|undefined}
-             */
             FieldDescriptorProto.prototype.typeName = "";
-
-            /**
-             * FieldDescriptorProto extendee.
-             * @type {string|undefined}
-             */
             FieldDescriptorProto.prototype.extendee = "";
-
-            /**
-             * FieldDescriptorProto defaultValue.
-             * @type {string|undefined}
-             */
             FieldDescriptorProto.prototype.defaultValue = "";
-
-            /**
-             * FieldDescriptorProto oneofIndex.
-             * @type {number|undefined}
-             */
             FieldDescriptorProto.prototype.oneofIndex = 0;
-
-            /**
-             * FieldDescriptorProto jsonName.
-             * @type {string|undefined}
-             */
             FieldDescriptorProto.prototype.jsonName = "";
-
-            /**
-             * FieldDescriptorProto options.
-             * @type {google.protobuf.FieldOptions|undefined}
-             */
             FieldDescriptorProto.prototype.options = null;
 
             /**
              * Creates a new FieldDescriptorProto instance using the specified properties.
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {google.protobuf.FieldDescriptorProto$Properties=} [properties] Properties to set
              * @returns {google.protobuf.FieldDescriptorProto} FieldDescriptorProto instance
              */
             FieldDescriptorProto.create = function create(properties) {
@@ -9007,7 +8773,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified FieldDescriptorProto message. Does not implicitly {@link google.protobuf.FieldDescriptorProto.verify|verify} messages.
-             * @param {google.protobuf.FieldDescriptorProto|Object.<string,*>} message FieldDescriptorProto message or plain object to encode
+             * @param {google.protobuf.FieldDescriptorProto$Properties} message FieldDescriptorProto message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -9115,7 +8881,7 @@ $root.google = (function() {
 
             /**
              * Verifies a FieldDescriptorProto message.
-             * @param {Object.<string,*>} message FieldDescriptorProto object to verify
+             * @param {Object.<string,*>} message Plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             FieldDescriptorProto.verify = function verify(message) {
@@ -9443,10 +9209,19 @@ $root.google = (function() {
         protobuf.OneofDescriptorProto = (function() {
 
             /**
+             * Properties of an OneofDescriptorProto.
+             * @typedef google.protobuf.OneofDescriptorProto$Properties
+             * @type Object
+             * @property {string} [name] OneofDescriptorProto name.
+             * @property {google.protobuf.OneofOptions} [options] OneofDescriptorProto options.
+             */
+
+            /**
              * Constructs a new OneofDescriptorProto.
              * @exports google.protobuf.OneofDescriptorProto
+             * @implements google.protobuf.OneofDescriptorProto$Properties
              * @constructor
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {google.protobuf.OneofDescriptorProto$Properties=} [properties] Properties to set
              */
             function OneofDescriptorProto(properties) {
                 if (properties)
@@ -9454,21 +9229,12 @@ $root.google = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
-            /**
-             * OneofDescriptorProto name.
-             * @type {string|undefined}
-             */
             OneofDescriptorProto.prototype.name = "";
-
-            /**
-             * OneofDescriptorProto options.
-             * @type {google.protobuf.OneofOptions|undefined}
-             */
             OneofDescriptorProto.prototype.options = null;
 
             /**
              * Creates a new OneofDescriptorProto instance using the specified properties.
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {google.protobuf.OneofDescriptorProto$Properties=} [properties] Properties to set
              * @returns {google.protobuf.OneofDescriptorProto} OneofDescriptorProto instance
              */
             OneofDescriptorProto.create = function create(properties) {
@@ -9477,7 +9243,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified OneofDescriptorProto message. Does not implicitly {@link google.protobuf.OneofDescriptorProto.verify|verify} messages.
-             * @param {google.protobuf.OneofDescriptorProto|Object.<string,*>} message OneofDescriptorProto message or plain object to encode
+             * @param {google.protobuf.OneofDescriptorProto$Properties} message OneofDescriptorProto message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -9545,7 +9311,7 @@ $root.google = (function() {
 
             /**
              * Verifies an OneofDescriptorProto message.
-             * @param {Object.<string,*>} message OneofDescriptorProto object to verify
+             * @param {Object.<string,*>} message Plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             OneofDescriptorProto.verify = function verify(message) {
@@ -9634,10 +9400,20 @@ $root.google = (function() {
         protobuf.EnumDescriptorProto = (function() {
 
             /**
+             * Properties of an EnumDescriptorProto.
+             * @typedef google.protobuf.EnumDescriptorProto$Properties
+             * @type Object
+             * @property {string} [name] EnumDescriptorProto name.
+             * @property {Array.<google.protobuf.EnumValueDescriptorProto>} [value] EnumDescriptorProto value.
+             * @property {google.protobuf.EnumOptions} [options] EnumDescriptorProto options.
+             */
+
+            /**
              * Constructs a new EnumDescriptorProto.
              * @exports google.protobuf.EnumDescriptorProto
+             * @implements google.protobuf.EnumDescriptorProto$Properties
              * @constructor
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {google.protobuf.EnumDescriptorProto$Properties=} [properties] Properties to set
              */
             function EnumDescriptorProto(properties) {
                 this.value = [];
@@ -9646,27 +9422,13 @@ $root.google = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
-            /**
-             * EnumDescriptorProto name.
-             * @type {string|undefined}
-             */
             EnumDescriptorProto.prototype.name = "";
-
-            /**
-             * EnumDescriptorProto value.
-             * @type {Array.<google.protobuf.EnumValueDescriptorProto>|undefined}
-             */
             EnumDescriptorProto.prototype.value = $util.emptyArray;
-
-            /**
-             * EnumDescriptorProto options.
-             * @type {google.protobuf.EnumOptions|undefined}
-             */
             EnumDescriptorProto.prototype.options = null;
 
             /**
              * Creates a new EnumDescriptorProto instance using the specified properties.
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {google.protobuf.EnumDescriptorProto$Properties=} [properties] Properties to set
              * @returns {google.protobuf.EnumDescriptorProto} EnumDescriptorProto instance
              */
             EnumDescriptorProto.create = function create(properties) {
@@ -9675,7 +9437,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified EnumDescriptorProto message. Does not implicitly {@link google.protobuf.EnumDescriptorProto.verify|verify} messages.
-             * @param {google.protobuf.EnumDescriptorProto|Object.<string,*>} message EnumDescriptorProto message or plain object to encode
+             * @param {google.protobuf.EnumDescriptorProto$Properties} message EnumDescriptorProto message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -9751,7 +9513,7 @@ $root.google = (function() {
 
             /**
              * Verifies an EnumDescriptorProto message.
-             * @param {Object.<string,*>} message EnumDescriptorProto object to verify
+             * @param {Object.<string,*>} message Plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             EnumDescriptorProto.verify = function verify(message) {
@@ -9866,10 +9628,20 @@ $root.google = (function() {
         protobuf.EnumValueDescriptorProto = (function() {
 
             /**
+             * Properties of an EnumValueDescriptorProto.
+             * @typedef google.protobuf.EnumValueDescriptorProto$Properties
+             * @type Object
+             * @property {string} [name] EnumValueDescriptorProto name.
+             * @property {number} [number] EnumValueDescriptorProto number.
+             * @property {google.protobuf.EnumValueOptions} [options] EnumValueDescriptorProto options.
+             */
+
+            /**
              * Constructs a new EnumValueDescriptorProto.
              * @exports google.protobuf.EnumValueDescriptorProto
+             * @implements google.protobuf.EnumValueDescriptorProto$Properties
              * @constructor
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {google.protobuf.EnumValueDescriptorProto$Properties=} [properties] Properties to set
              */
             function EnumValueDescriptorProto(properties) {
                 if (properties)
@@ -9877,27 +9649,13 @@ $root.google = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
-            /**
-             * EnumValueDescriptorProto name.
-             * @type {string|undefined}
-             */
             EnumValueDescriptorProto.prototype.name = "";
-
-            /**
-             * EnumValueDescriptorProto number.
-             * @type {number|undefined}
-             */
             EnumValueDescriptorProto.prototype.number = 0;
-
-            /**
-             * EnumValueDescriptorProto options.
-             * @type {google.protobuf.EnumValueOptions|undefined}
-             */
             EnumValueDescriptorProto.prototype.options = null;
 
             /**
              * Creates a new EnumValueDescriptorProto instance using the specified properties.
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {google.protobuf.EnumValueDescriptorProto$Properties=} [properties] Properties to set
              * @returns {google.protobuf.EnumValueDescriptorProto} EnumValueDescriptorProto instance
              */
             EnumValueDescriptorProto.create = function create(properties) {
@@ -9906,7 +9664,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified EnumValueDescriptorProto message. Does not implicitly {@link google.protobuf.EnumValueDescriptorProto.verify|verify} messages.
-             * @param {google.protobuf.EnumValueDescriptorProto|Object.<string,*>} message EnumValueDescriptorProto message or plain object to encode
+             * @param {google.protobuf.EnumValueDescriptorProto$Properties} message EnumValueDescriptorProto message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -9979,7 +9737,7 @@ $root.google = (function() {
 
             /**
              * Verifies an EnumValueDescriptorProto message.
-             * @param {Object.<string,*>} message EnumValueDescriptorProto object to verify
+             * @param {Object.<string,*>} message Plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             EnumValueDescriptorProto.verify = function verify(message) {
@@ -10076,10 +9834,20 @@ $root.google = (function() {
         protobuf.ServiceDescriptorProto = (function() {
 
             /**
+             * Properties of a ServiceDescriptorProto.
+             * @typedef google.protobuf.ServiceDescriptorProto$Properties
+             * @type Object
+             * @property {string} [name] ServiceDescriptorProto name.
+             * @property {Array.<google.protobuf.MethodDescriptorProto>} [method] ServiceDescriptorProto method.
+             * @property {google.protobuf.ServiceOptions} [options] ServiceDescriptorProto options.
+             */
+
+            /**
              * Constructs a new ServiceDescriptorProto.
              * @exports google.protobuf.ServiceDescriptorProto
+             * @implements google.protobuf.ServiceDescriptorProto$Properties
              * @constructor
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {google.protobuf.ServiceDescriptorProto$Properties=} [properties] Properties to set
              */
             function ServiceDescriptorProto(properties) {
                 this.method = [];
@@ -10088,27 +9856,13 @@ $root.google = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
-            /**
-             * ServiceDescriptorProto name.
-             * @type {string|undefined}
-             */
             ServiceDescriptorProto.prototype.name = "";
-
-            /**
-             * ServiceDescriptorProto method.
-             * @type {Array.<google.protobuf.MethodDescriptorProto>|undefined}
-             */
             ServiceDescriptorProto.prototype.method = $util.emptyArray;
-
-            /**
-             * ServiceDescriptorProto options.
-             * @type {google.protobuf.ServiceOptions|undefined}
-             */
             ServiceDescriptorProto.prototype.options = null;
 
             /**
              * Creates a new ServiceDescriptorProto instance using the specified properties.
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {google.protobuf.ServiceDescriptorProto$Properties=} [properties] Properties to set
              * @returns {google.protobuf.ServiceDescriptorProto} ServiceDescriptorProto instance
              */
             ServiceDescriptorProto.create = function create(properties) {
@@ -10117,7 +9871,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified ServiceDescriptorProto message. Does not implicitly {@link google.protobuf.ServiceDescriptorProto.verify|verify} messages.
-             * @param {google.protobuf.ServiceDescriptorProto|Object.<string,*>} message ServiceDescriptorProto message or plain object to encode
+             * @param {google.protobuf.ServiceDescriptorProto$Properties} message ServiceDescriptorProto message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -10193,7 +9947,7 @@ $root.google = (function() {
 
             /**
              * Verifies a ServiceDescriptorProto message.
-             * @param {Object.<string,*>} message ServiceDescriptorProto object to verify
+             * @param {Object.<string,*>} message Plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             ServiceDescriptorProto.verify = function verify(message) {
@@ -10308,10 +10062,23 @@ $root.google = (function() {
         protobuf.MethodDescriptorProto = (function() {
 
             /**
+             * Properties of a MethodDescriptorProto.
+             * @typedef google.protobuf.MethodDescriptorProto$Properties
+             * @type Object
+             * @property {string} [name] MethodDescriptorProto name.
+             * @property {string} [inputType] MethodDescriptorProto inputType.
+             * @property {string} [outputType] MethodDescriptorProto outputType.
+             * @property {google.protobuf.MethodOptions} [options] MethodDescriptorProto options.
+             * @property {boolean} [clientStreaming] MethodDescriptorProto clientStreaming.
+             * @property {boolean} [serverStreaming] MethodDescriptorProto serverStreaming.
+             */
+
+            /**
              * Constructs a new MethodDescriptorProto.
              * @exports google.protobuf.MethodDescriptorProto
+             * @implements google.protobuf.MethodDescriptorProto$Properties
              * @constructor
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {google.protobuf.MethodDescriptorProto$Properties=} [properties] Properties to set
              */
             function MethodDescriptorProto(properties) {
                 if (properties)
@@ -10319,45 +10086,16 @@ $root.google = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
-            /**
-             * MethodDescriptorProto name.
-             * @type {string|undefined}
-             */
             MethodDescriptorProto.prototype.name = "";
-
-            /**
-             * MethodDescriptorProto inputType.
-             * @type {string|undefined}
-             */
             MethodDescriptorProto.prototype.inputType = "";
-
-            /**
-             * MethodDescriptorProto outputType.
-             * @type {string|undefined}
-             */
             MethodDescriptorProto.prototype.outputType = "";
-
-            /**
-             * MethodDescriptorProto options.
-             * @type {google.protobuf.MethodOptions|undefined}
-             */
             MethodDescriptorProto.prototype.options = null;
-
-            /**
-             * MethodDescriptorProto clientStreaming.
-             * @type {boolean|undefined}
-             */
             MethodDescriptorProto.prototype.clientStreaming = false;
-
-            /**
-             * MethodDescriptorProto serverStreaming.
-             * @type {boolean|undefined}
-             */
             MethodDescriptorProto.prototype.serverStreaming = false;
 
             /**
              * Creates a new MethodDescriptorProto instance using the specified properties.
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {google.protobuf.MethodDescriptorProto$Properties=} [properties] Properties to set
              * @returns {google.protobuf.MethodDescriptorProto} MethodDescriptorProto instance
              */
             MethodDescriptorProto.create = function create(properties) {
@@ -10366,7 +10104,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified MethodDescriptorProto message. Does not implicitly {@link google.protobuf.MethodDescriptorProto.verify|verify} messages.
-             * @param {google.protobuf.MethodDescriptorProto|Object.<string,*>} message MethodDescriptorProto message or plain object to encode
+             * @param {google.protobuf.MethodDescriptorProto$Properties} message MethodDescriptorProto message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -10454,7 +10192,7 @@ $root.google = (function() {
 
             /**
              * Verifies a MethodDescriptorProto message.
-             * @param {Object.<string,*>} message MethodDescriptorProto object to verify
+             * @param {Object.<string,*>} message Plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             MethodDescriptorProto.verify = function verify(message) {
@@ -10575,10 +10313,32 @@ $root.google = (function() {
         protobuf.FileOptions = (function() {
 
             /**
+             * Properties of a FileOptions.
+             * @typedef google.protobuf.FileOptions$Properties
+             * @type Object
+             * @property {string} [javaPackage] FileOptions javaPackage.
+             * @property {string} [javaOuterClassname] FileOptions javaOuterClassname.
+             * @property {boolean} [javaMultipleFiles] FileOptions javaMultipleFiles.
+             * @property {boolean} [javaGenerateEqualsAndHash] FileOptions javaGenerateEqualsAndHash.
+             * @property {boolean} [javaStringCheckUtf8] FileOptions javaStringCheckUtf8.
+             * @property {number} [optimizeFor] FileOptions optimizeFor.
+             * @property {string} [goPackage] FileOptions goPackage.
+             * @property {boolean} [ccGenericServices] FileOptions ccGenericServices.
+             * @property {boolean} [javaGenericServices] FileOptions javaGenericServices.
+             * @property {boolean} [pyGenericServices] FileOptions pyGenericServices.
+             * @property {boolean} [deprecated] FileOptions deprecated.
+             * @property {boolean} [ccEnableArenas] FileOptions ccEnableArenas.
+             * @property {string} [objcClassPrefix] FileOptions objcClassPrefix.
+             * @property {string} [csharpNamespace] FileOptions csharpNamespace.
+             * @property {Array.<google.protobuf.UninterpretedOption>} [uninterpretedOption] FileOptions uninterpretedOption.
+             */
+
+            /**
              * Constructs a new FileOptions.
              * @exports google.protobuf.FileOptions
+             * @implements google.protobuf.FileOptions$Properties
              * @constructor
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {google.protobuf.FileOptions$Properties=} [properties] Properties to set
              */
             function FileOptions(properties) {
                 this.uninterpretedOption = [];
@@ -10587,99 +10347,25 @@ $root.google = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
-            /**
-             * FileOptions javaPackage.
-             * @type {string|undefined}
-             */
             FileOptions.prototype.javaPackage = "";
-
-            /**
-             * FileOptions javaOuterClassname.
-             * @type {string|undefined}
-             */
             FileOptions.prototype.javaOuterClassname = "";
-
-            /**
-             * FileOptions javaMultipleFiles.
-             * @type {boolean|undefined}
-             */
             FileOptions.prototype.javaMultipleFiles = false;
-
-            /**
-             * FileOptions javaGenerateEqualsAndHash.
-             * @type {boolean|undefined}
-             */
             FileOptions.prototype.javaGenerateEqualsAndHash = false;
-
-            /**
-             * FileOptions javaStringCheckUtf8.
-             * @type {boolean|undefined}
-             */
             FileOptions.prototype.javaStringCheckUtf8 = false;
-
-            /**
-             * FileOptions optimizeFor.
-             * @type {number|undefined}
-             */
             FileOptions.prototype.optimizeFor = 1;
-
-            /**
-             * FileOptions goPackage.
-             * @type {string|undefined}
-             */
             FileOptions.prototype.goPackage = "";
-
-            /**
-             * FileOptions ccGenericServices.
-             * @type {boolean|undefined}
-             */
             FileOptions.prototype.ccGenericServices = false;
-
-            /**
-             * FileOptions javaGenericServices.
-             * @type {boolean|undefined}
-             */
             FileOptions.prototype.javaGenericServices = false;
-
-            /**
-             * FileOptions pyGenericServices.
-             * @type {boolean|undefined}
-             */
             FileOptions.prototype.pyGenericServices = false;
-
-            /**
-             * FileOptions deprecated.
-             * @type {boolean|undefined}
-             */
             FileOptions.prototype.deprecated = false;
-
-            /**
-             * FileOptions ccEnableArenas.
-             * @type {boolean|undefined}
-             */
             FileOptions.prototype.ccEnableArenas = false;
-
-            /**
-             * FileOptions objcClassPrefix.
-             * @type {string|undefined}
-             */
             FileOptions.prototype.objcClassPrefix = "";
-
-            /**
-             * FileOptions csharpNamespace.
-             * @type {string|undefined}
-             */
             FileOptions.prototype.csharpNamespace = "";
-
-            /**
-             * FileOptions uninterpretedOption.
-             * @type {Array.<google.protobuf.UninterpretedOption>|undefined}
-             */
             FileOptions.prototype.uninterpretedOption = $util.emptyArray;
 
             /**
              * Creates a new FileOptions instance using the specified properties.
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {google.protobuf.FileOptions$Properties=} [properties] Properties to set
              * @returns {google.protobuf.FileOptions} FileOptions instance
              */
             FileOptions.create = function create(properties) {
@@ -10688,7 +10374,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified FileOptions message. Does not implicitly {@link google.protobuf.FileOptions.verify|verify} messages.
-             * @param {google.protobuf.FileOptions|Object.<string,*>} message FileOptions message or plain object to encode
+             * @param {google.protobuf.FileOptions$Properties} message FileOptions message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -10824,7 +10510,7 @@ $root.google = (function() {
 
             /**
              * Verifies a FileOptions message.
-             * @param {Object.<string,*>} message FileOptions object to verify
+             * @param {Object.<string,*>} message Plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             FileOptions.verify = function verify(message) {
@@ -11065,10 +10751,22 @@ $root.google = (function() {
         protobuf.MessageOptions = (function() {
 
             /**
+             * Properties of a MessageOptions.
+             * @typedef google.protobuf.MessageOptions$Properties
+             * @type Object
+             * @property {boolean} [messageSetWireFormat] MessageOptions messageSetWireFormat.
+             * @property {boolean} [noStandardDescriptorAccessor] MessageOptions noStandardDescriptorAccessor.
+             * @property {boolean} [deprecated] MessageOptions deprecated.
+             * @property {boolean} [mapEntry] MessageOptions mapEntry.
+             * @property {Array.<google.protobuf.UninterpretedOption>} [uninterpretedOption] MessageOptions uninterpretedOption.
+             */
+
+            /**
              * Constructs a new MessageOptions.
              * @exports google.protobuf.MessageOptions
+             * @implements google.protobuf.MessageOptions$Properties
              * @constructor
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {google.protobuf.MessageOptions$Properties=} [properties] Properties to set
              */
             function MessageOptions(properties) {
                 this.uninterpretedOption = [];
@@ -11077,39 +10775,15 @@ $root.google = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
-            /**
-             * MessageOptions messageSetWireFormat.
-             * @type {boolean|undefined}
-             */
             MessageOptions.prototype.messageSetWireFormat = false;
-
-            /**
-             * MessageOptions noStandardDescriptorAccessor.
-             * @type {boolean|undefined}
-             */
             MessageOptions.prototype.noStandardDescriptorAccessor = false;
-
-            /**
-             * MessageOptions deprecated.
-             * @type {boolean|undefined}
-             */
             MessageOptions.prototype.deprecated = false;
-
-            /**
-             * MessageOptions mapEntry.
-             * @type {boolean|undefined}
-             */
             MessageOptions.prototype.mapEntry = false;
-
-            /**
-             * MessageOptions uninterpretedOption.
-             * @type {Array.<google.protobuf.UninterpretedOption>|undefined}
-             */
             MessageOptions.prototype.uninterpretedOption = $util.emptyArray;
 
             /**
              * Creates a new MessageOptions instance using the specified properties.
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {google.protobuf.MessageOptions$Properties=} [properties] Properties to set
              * @returns {google.protobuf.MessageOptions} MessageOptions instance
              */
             MessageOptions.create = function create(properties) {
@@ -11118,7 +10792,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified MessageOptions message. Does not implicitly {@link google.protobuf.MessageOptions.verify|verify} messages.
-             * @param {google.protobuf.MessageOptions|Object.<string,*>} message MessageOptions message or plain object to encode
+             * @param {google.protobuf.MessageOptions$Properties} message MessageOptions message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -11204,7 +10878,7 @@ $root.google = (function() {
 
             /**
              * Verifies a MessageOptions message.
-             * @param {Object.<string,*>} message MessageOptions object to verify
+             * @param {Object.<string,*>} message Plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             MessageOptions.verify = function verify(message) {
@@ -11330,10 +11004,24 @@ $root.google = (function() {
         protobuf.FieldOptions = (function() {
 
             /**
+             * Properties of a FieldOptions.
+             * @typedef google.protobuf.FieldOptions$Properties
+             * @type Object
+             * @property {number} [ctype] FieldOptions ctype.
+             * @property {boolean} [packed] FieldOptions packed.
+             * @property {number} [jstype] FieldOptions jstype.
+             * @property {boolean} [lazy] FieldOptions lazy.
+             * @property {boolean} [deprecated] FieldOptions deprecated.
+             * @property {boolean} [weak] FieldOptions weak.
+             * @property {Array.<google.protobuf.UninterpretedOption>} [uninterpretedOption] FieldOptions uninterpretedOption.
+             */
+
+            /**
              * Constructs a new FieldOptions.
              * @exports google.protobuf.FieldOptions
+             * @implements google.protobuf.FieldOptions$Properties
              * @constructor
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {google.protobuf.FieldOptions$Properties=} [properties] Properties to set
              */
             function FieldOptions(properties) {
                 this.uninterpretedOption = [];
@@ -11342,51 +11030,17 @@ $root.google = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
-            /**
-             * FieldOptions ctype.
-             * @type {number|undefined}
-             */
             FieldOptions.prototype.ctype = 0;
-
-            /**
-             * FieldOptions packed.
-             * @type {boolean|undefined}
-             */
             FieldOptions.prototype.packed = false;
-
-            /**
-             * FieldOptions jstype.
-             * @type {number|undefined}
-             */
             FieldOptions.prototype.jstype = 0;
-
-            /**
-             * FieldOptions lazy.
-             * @type {boolean|undefined}
-             */
             FieldOptions.prototype.lazy = false;
-
-            /**
-             * FieldOptions deprecated.
-             * @type {boolean|undefined}
-             */
             FieldOptions.prototype.deprecated = false;
-
-            /**
-             * FieldOptions weak.
-             * @type {boolean|undefined}
-             */
             FieldOptions.prototype.weak = false;
-
-            /**
-             * FieldOptions uninterpretedOption.
-             * @type {Array.<google.protobuf.UninterpretedOption>|undefined}
-             */
             FieldOptions.prototype.uninterpretedOption = $util.emptyArray;
 
             /**
              * Creates a new FieldOptions instance using the specified properties.
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {google.protobuf.FieldOptions$Properties=} [properties] Properties to set
              * @returns {google.protobuf.FieldOptions} FieldOptions instance
              */
             FieldOptions.create = function create(properties) {
@@ -11395,7 +11049,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified FieldOptions message. Does not implicitly {@link google.protobuf.FieldOptions.verify|verify} messages.
-             * @param {google.protobuf.FieldOptions|Object.<string,*>} message FieldOptions message or plain object to encode
+             * @param {google.protobuf.FieldOptions$Properties} message FieldOptions message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -11491,7 +11145,7 @@ $root.google = (function() {
 
             /**
              * Verifies a FieldOptions message.
-             * @param {Object.<string,*>} message FieldOptions object to verify
+             * @param {Object.<string,*>} message Plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             FieldOptions.verify = function verify(message) {
@@ -11703,10 +11357,18 @@ $root.google = (function() {
         protobuf.OneofOptions = (function() {
 
             /**
+             * Properties of an OneofOptions.
+             * @typedef google.protobuf.OneofOptions$Properties
+             * @type Object
+             * @property {Array.<google.protobuf.UninterpretedOption>} [uninterpretedOption] OneofOptions uninterpretedOption.
+             */
+
+            /**
              * Constructs a new OneofOptions.
              * @exports google.protobuf.OneofOptions
+             * @implements google.protobuf.OneofOptions$Properties
              * @constructor
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {google.protobuf.OneofOptions$Properties=} [properties] Properties to set
              */
             function OneofOptions(properties) {
                 this.uninterpretedOption = [];
@@ -11715,15 +11377,11 @@ $root.google = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
-            /**
-             * OneofOptions uninterpretedOption.
-             * @type {Array.<google.protobuf.UninterpretedOption>|undefined}
-             */
             OneofOptions.prototype.uninterpretedOption = $util.emptyArray;
 
             /**
              * Creates a new OneofOptions instance using the specified properties.
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {google.protobuf.OneofOptions$Properties=} [properties] Properties to set
              * @returns {google.protobuf.OneofOptions} OneofOptions instance
              */
             OneofOptions.create = function create(properties) {
@@ -11732,7 +11390,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified OneofOptions message. Does not implicitly {@link google.protobuf.OneofOptions.verify|verify} messages.
-             * @param {google.protobuf.OneofOptions|Object.<string,*>} message OneofOptions message or plain object to encode
+             * @param {google.protobuf.OneofOptions$Properties} message OneofOptions message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -11798,7 +11456,7 @@ $root.google = (function() {
 
             /**
              * Verifies an OneofOptions message.
-             * @param {Object.<string,*>} message OneofOptions object to verify
+             * @param {Object.<string,*>} message Plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             OneofOptions.verify = function verify(message) {
@@ -11890,10 +11548,21 @@ $root.google = (function() {
         protobuf.EnumOptions = (function() {
 
             /**
+             * Properties of an EnumOptions.
+             * @typedef google.protobuf.EnumOptions$Properties
+             * @type Object
+             * @property {boolean} [allowAlias] EnumOptions allowAlias.
+             * @property {boolean} [deprecated] EnumOptions deprecated.
+             * @property {Array.<google.protobuf.UninterpretedOption>} [uninterpretedOption] EnumOptions uninterpretedOption.
+             * @property {string} [.jspb.test.IsExtension.simpleOption] EnumOptions .jspb.test.IsExtension.simpleOption.
+             */
+
+            /**
              * Constructs a new EnumOptions.
              * @exports google.protobuf.EnumOptions
+             * @implements google.protobuf.EnumOptions$Properties
              * @constructor
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {google.protobuf.EnumOptions$Properties=} [properties] Properties to set
              */
             function EnumOptions(properties) {
                 this.uninterpretedOption = [];
@@ -11902,34 +11571,14 @@ $root.google = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
-            /**
-             * EnumOptions allowAlias.
-             * @type {boolean|undefined}
-             */
             EnumOptions.prototype.allowAlias = false;
-
-            /**
-             * EnumOptions deprecated.
-             * @type {boolean|undefined}
-             */
             EnumOptions.prototype.deprecated = false;
-
-            /**
-             * EnumOptions uninterpretedOption.
-             * @type {Array.<google.protobuf.UninterpretedOption>|undefined}
-             */
             EnumOptions.prototype.uninterpretedOption = $util.emptyArray;
-
-            /**
-             * EnumOptions .jspb.test.IsExtension.simpleOption.
-             * @name google.protobuf.EnumOptions#.jspb.test.IsExtension.simpleOption
-             * @type {string|undefined}
-             */
             EnumOptions.prototype[".jspb.test.IsExtension.simpleOption"] = "";
 
             /**
              * Creates a new EnumOptions instance using the specified properties.
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {google.protobuf.EnumOptions$Properties=} [properties] Properties to set
              * @returns {google.protobuf.EnumOptions} EnumOptions instance
              */
             EnumOptions.create = function create(properties) {
@@ -11938,7 +11587,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified EnumOptions message. Does not implicitly {@link google.protobuf.EnumOptions.verify|verify} messages.
-             * @param {google.protobuf.EnumOptions|Object.<string,*>} message EnumOptions message or plain object to encode
+             * @param {google.protobuf.EnumOptions$Properties} message EnumOptions message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -12019,7 +11668,7 @@ $root.google = (function() {
 
             /**
              * Verifies an EnumOptions message.
-             * @param {Object.<string,*>} message EnumOptions object to verify
+             * @param {Object.<string,*>} message Plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             EnumOptions.verify = function verify(message) {
@@ -12137,10 +11786,19 @@ $root.google = (function() {
         protobuf.EnumValueOptions = (function() {
 
             /**
+             * Properties of an EnumValueOptions.
+             * @typedef google.protobuf.EnumValueOptions$Properties
+             * @type Object
+             * @property {boolean} [deprecated] EnumValueOptions deprecated.
+             * @property {Array.<google.protobuf.UninterpretedOption>} [uninterpretedOption] EnumValueOptions uninterpretedOption.
+             */
+
+            /**
              * Constructs a new EnumValueOptions.
              * @exports google.protobuf.EnumValueOptions
+             * @implements google.protobuf.EnumValueOptions$Properties
              * @constructor
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {google.protobuf.EnumValueOptions$Properties=} [properties] Properties to set
              */
             function EnumValueOptions(properties) {
                 this.uninterpretedOption = [];
@@ -12149,21 +11807,12 @@ $root.google = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
-            /**
-             * EnumValueOptions deprecated.
-             * @type {boolean|undefined}
-             */
             EnumValueOptions.prototype.deprecated = false;
-
-            /**
-             * EnumValueOptions uninterpretedOption.
-             * @type {Array.<google.protobuf.UninterpretedOption>|undefined}
-             */
             EnumValueOptions.prototype.uninterpretedOption = $util.emptyArray;
 
             /**
              * Creates a new EnumValueOptions instance using the specified properties.
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {google.protobuf.EnumValueOptions$Properties=} [properties] Properties to set
              * @returns {google.protobuf.EnumValueOptions} EnumValueOptions instance
              */
             EnumValueOptions.create = function create(properties) {
@@ -12172,7 +11821,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified EnumValueOptions message. Does not implicitly {@link google.protobuf.EnumValueOptions.verify|verify} messages.
-             * @param {google.protobuf.EnumValueOptions|Object.<string,*>} message EnumValueOptions message or plain object to encode
+             * @param {google.protobuf.EnumValueOptions$Properties} message EnumValueOptions message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -12243,7 +11892,7 @@ $root.google = (function() {
 
             /**
              * Verifies an EnumValueOptions message.
-             * @param {Object.<string,*>} message EnumValueOptions object to verify
+             * @param {Object.<string,*>} message Plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             EnumValueOptions.verify = function verify(message) {
@@ -12344,10 +11993,19 @@ $root.google = (function() {
         protobuf.ServiceOptions = (function() {
 
             /**
+             * Properties of a ServiceOptions.
+             * @typedef google.protobuf.ServiceOptions$Properties
+             * @type Object
+             * @property {boolean} [deprecated] ServiceOptions deprecated.
+             * @property {Array.<google.protobuf.UninterpretedOption>} [uninterpretedOption] ServiceOptions uninterpretedOption.
+             */
+
+            /**
              * Constructs a new ServiceOptions.
              * @exports google.protobuf.ServiceOptions
+             * @implements google.protobuf.ServiceOptions$Properties
              * @constructor
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {google.protobuf.ServiceOptions$Properties=} [properties] Properties to set
              */
             function ServiceOptions(properties) {
                 this.uninterpretedOption = [];
@@ -12356,21 +12014,12 @@ $root.google = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
-            /**
-             * ServiceOptions deprecated.
-             * @type {boolean|undefined}
-             */
             ServiceOptions.prototype.deprecated = false;
-
-            /**
-             * ServiceOptions uninterpretedOption.
-             * @type {Array.<google.protobuf.UninterpretedOption>|undefined}
-             */
             ServiceOptions.prototype.uninterpretedOption = $util.emptyArray;
 
             /**
              * Creates a new ServiceOptions instance using the specified properties.
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {google.protobuf.ServiceOptions$Properties=} [properties] Properties to set
              * @returns {google.protobuf.ServiceOptions} ServiceOptions instance
              */
             ServiceOptions.create = function create(properties) {
@@ -12379,7 +12028,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified ServiceOptions message. Does not implicitly {@link google.protobuf.ServiceOptions.verify|verify} messages.
-             * @param {google.protobuf.ServiceOptions|Object.<string,*>} message ServiceOptions message or plain object to encode
+             * @param {google.protobuf.ServiceOptions$Properties} message ServiceOptions message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -12450,7 +12099,7 @@ $root.google = (function() {
 
             /**
              * Verifies a ServiceOptions message.
-             * @param {Object.<string,*>} message ServiceOptions object to verify
+             * @param {Object.<string,*>} message Plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             ServiceOptions.verify = function verify(message) {
@@ -12551,10 +12200,20 @@ $root.google = (function() {
         protobuf.MethodOptions = (function() {
 
             /**
+             * Properties of a MethodOptions.
+             * @typedef google.protobuf.MethodOptions$Properties
+             * @type Object
+             * @property {boolean} [deprecated] MethodOptions deprecated.
+             * @property {number} [idempotencyLevel] MethodOptions idempotencyLevel.
+             * @property {Array.<google.protobuf.UninterpretedOption>} [uninterpretedOption] MethodOptions uninterpretedOption.
+             */
+
+            /**
              * Constructs a new MethodOptions.
              * @exports google.protobuf.MethodOptions
+             * @implements google.protobuf.MethodOptions$Properties
              * @constructor
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {google.protobuf.MethodOptions$Properties=} [properties] Properties to set
              */
             function MethodOptions(properties) {
                 this.uninterpretedOption = [];
@@ -12563,27 +12222,13 @@ $root.google = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
-            /**
-             * MethodOptions deprecated.
-             * @type {boolean|undefined}
-             */
             MethodOptions.prototype.deprecated = false;
-
-            /**
-             * MethodOptions idempotencyLevel.
-             * @type {number|undefined}
-             */
             MethodOptions.prototype.idempotencyLevel = 0;
-
-            /**
-             * MethodOptions uninterpretedOption.
-             * @type {Array.<google.protobuf.UninterpretedOption>|undefined}
-             */
             MethodOptions.prototype.uninterpretedOption = $util.emptyArray;
 
             /**
              * Creates a new MethodOptions instance using the specified properties.
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {google.protobuf.MethodOptions$Properties=} [properties] Properties to set
              * @returns {google.protobuf.MethodOptions} MethodOptions instance
              */
             MethodOptions.create = function create(properties) {
@@ -12592,7 +12237,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified MethodOptions message. Does not implicitly {@link google.protobuf.MethodOptions.verify|verify} messages.
-             * @param {google.protobuf.MethodOptions|Object.<string,*>} message MethodOptions message or plain object to encode
+             * @param {google.protobuf.MethodOptions$Properties} message MethodOptions message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -12668,7 +12313,7 @@ $root.google = (function() {
 
             /**
              * Verifies a MethodOptions message.
-             * @param {Object.<string,*>} message MethodOptions object to verify
+             * @param {Object.<string,*>} message Plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             MethodOptions.verify = function verify(message) {
@@ -12813,10 +12458,24 @@ $root.google = (function() {
         protobuf.UninterpretedOption = (function() {
 
             /**
+             * Properties of an UninterpretedOption.
+             * @typedef google.protobuf.UninterpretedOption$Properties
+             * @type Object
+             * @property {Array.<google.protobuf.UninterpretedOption.NamePart>} [name] UninterpretedOption name.
+             * @property {string} [identifierValue] UninterpretedOption identifierValue.
+             * @property {number|$protobuf.Long} [positiveIntValue] UninterpretedOption positiveIntValue.
+             * @property {number|$protobuf.Long} [negativeIntValue] UninterpretedOption negativeIntValue.
+             * @property {number} [doubleValue] UninterpretedOption doubleValue.
+             * @property {Uint8Array} [stringValue] UninterpretedOption stringValue.
+             * @property {string} [aggregateValue] UninterpretedOption aggregateValue.
+             */
+
+            /**
              * Constructs a new UninterpretedOption.
              * @exports google.protobuf.UninterpretedOption
+             * @implements google.protobuf.UninterpretedOption$Properties
              * @constructor
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {google.protobuf.UninterpretedOption$Properties=} [properties] Properties to set
              */
             function UninterpretedOption(properties) {
                 this.name = [];
@@ -12825,51 +12484,17 @@ $root.google = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
-            /**
-             * UninterpretedOption name.
-             * @type {Array.<google.protobuf.UninterpretedOption.NamePart>|undefined}
-             */
             UninterpretedOption.prototype.name = $util.emptyArray;
-
-            /**
-             * UninterpretedOption identifierValue.
-             * @type {string|undefined}
-             */
             UninterpretedOption.prototype.identifierValue = "";
-
-            /**
-             * UninterpretedOption positiveIntValue.
-             * @type {number|$protobuf.Long|undefined}
-             */
             UninterpretedOption.prototype.positiveIntValue = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
-
-            /**
-             * UninterpretedOption negativeIntValue.
-             * @type {number|$protobuf.Long|undefined}
-             */
             UninterpretedOption.prototype.negativeIntValue = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
-
-            /**
-             * UninterpretedOption doubleValue.
-             * @type {number|undefined}
-             */
             UninterpretedOption.prototype.doubleValue = 0;
-
-            /**
-             * UninterpretedOption stringValue.
-             * @type {Uint8Array|undefined}
-             */
             UninterpretedOption.prototype.stringValue = $util.newBuffer([]);
-
-            /**
-             * UninterpretedOption aggregateValue.
-             * @type {string|undefined}
-             */
             UninterpretedOption.prototype.aggregateValue = "";
 
             /**
              * Creates a new UninterpretedOption instance using the specified properties.
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {google.protobuf.UninterpretedOption$Properties=} [properties] Properties to set
              * @returns {google.protobuf.UninterpretedOption} UninterpretedOption instance
              */
             UninterpretedOption.create = function create(properties) {
@@ -12878,7 +12503,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified UninterpretedOption message. Does not implicitly {@link google.protobuf.UninterpretedOption.verify|verify} messages.
-             * @param {google.protobuf.UninterpretedOption|Object.<string,*>} message UninterpretedOption message or plain object to encode
+             * @param {google.protobuf.UninterpretedOption$Properties} message UninterpretedOption message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -12974,7 +12599,7 @@ $root.google = (function() {
 
             /**
              * Verifies an UninterpretedOption message.
-             * @param {Object.<string,*>} message UninterpretedOption object to verify
+             * @param {Object.<string,*>} message Plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             UninterpretedOption.verify = function verify(message) {
@@ -13144,10 +12769,19 @@ $root.google = (function() {
             UninterpretedOption.NamePart = (function() {
 
                 /**
+                 * Properties of a NamePart.
+                 * @typedef google.protobuf.UninterpretedOption.NamePart$Properties
+                 * @type Object
+                 * @property {string} namePart NamePart namePart.
+                 * @property {boolean} isExtension NamePart isExtension.
+                 */
+
+                /**
                  * Constructs a new NamePart.
                  * @exports google.protobuf.UninterpretedOption.NamePart
+                 * @implements google.protobuf.UninterpretedOption.NamePart$Properties
                  * @constructor
-                 * @param {Object.<string,*>=} [properties] Properties to set
+                 * @param {google.protobuf.UninterpretedOption.NamePart$Properties=} [properties] Properties to set
                  */
                 function NamePart(properties) {
                     if (properties)
@@ -13155,21 +12789,12 @@ $root.google = (function() {
                             this[keys[i]] = properties[keys[i]];
                 }
 
-                /**
-                 * NamePart namePart.
-                 * @type {string}
-                 */
                 NamePart.prototype.namePart = "";
-
-                /**
-                 * NamePart isExtension.
-                 * @type {boolean}
-                 */
                 NamePart.prototype.isExtension = false;
 
                 /**
                  * Creates a new NamePart instance using the specified properties.
-                 * @param {Object.<string,*>=} [properties] Properties to set
+                 * @param {google.protobuf.UninterpretedOption.NamePart$Properties=} [properties] Properties to set
                  * @returns {google.protobuf.UninterpretedOption.NamePart} NamePart instance
                  */
                 NamePart.create = function create(properties) {
@@ -13178,7 +12803,7 @@ $root.google = (function() {
 
                 /**
                  * Encodes the specified NamePart message. Does not implicitly {@link google.protobuf.UninterpretedOption.NamePart.verify|verify} messages.
-                 * @param {google.protobuf.UninterpretedOption.NamePart|Object.<string,*>} message NamePart message or plain object to encode
+                 * @param {google.protobuf.UninterpretedOption.NamePart$Properties} message NamePart message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
                  */
@@ -13248,7 +12873,7 @@ $root.google = (function() {
 
                 /**
                  * Verifies a NamePart message.
-                 * @param {Object.<string,*>} message NamePart object to verify
+                 * @param {Object.<string,*>} message Plain object to verify
                  * @returns {?string} `null` if valid, otherwise the reason why it is not
                  */
                 NamePart.verify = function verify(message) {
@@ -13333,10 +12958,18 @@ $root.google = (function() {
         protobuf.SourceCodeInfo = (function() {
 
             /**
+             * Properties of a SourceCodeInfo.
+             * @typedef google.protobuf.SourceCodeInfo$Properties
+             * @type Object
+             * @property {Array.<google.protobuf.SourceCodeInfo.Location>} [location] SourceCodeInfo location.
+             */
+
+            /**
              * Constructs a new SourceCodeInfo.
              * @exports google.protobuf.SourceCodeInfo
+             * @implements google.protobuf.SourceCodeInfo$Properties
              * @constructor
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {google.protobuf.SourceCodeInfo$Properties=} [properties] Properties to set
              */
             function SourceCodeInfo(properties) {
                 this.location = [];
@@ -13345,15 +12978,11 @@ $root.google = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
-            /**
-             * SourceCodeInfo location.
-             * @type {Array.<google.protobuf.SourceCodeInfo.Location>|undefined}
-             */
             SourceCodeInfo.prototype.location = $util.emptyArray;
 
             /**
              * Creates a new SourceCodeInfo instance using the specified properties.
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {google.protobuf.SourceCodeInfo$Properties=} [properties] Properties to set
              * @returns {google.protobuf.SourceCodeInfo} SourceCodeInfo instance
              */
             SourceCodeInfo.create = function create(properties) {
@@ -13362,7 +12991,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified SourceCodeInfo message. Does not implicitly {@link google.protobuf.SourceCodeInfo.verify|verify} messages.
-             * @param {google.protobuf.SourceCodeInfo|Object.<string,*>} message SourceCodeInfo message or plain object to encode
+             * @param {google.protobuf.SourceCodeInfo$Properties} message SourceCodeInfo message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -13428,7 +13057,7 @@ $root.google = (function() {
 
             /**
              * Verifies a SourceCodeInfo message.
-             * @param {Object.<string,*>} message SourceCodeInfo object to verify
+             * @param {Object.<string,*>} message Plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             SourceCodeInfo.verify = function verify(message) {
@@ -13517,10 +13146,22 @@ $root.google = (function() {
             SourceCodeInfo.Location = (function() {
 
                 /**
+                 * Properties of a Location.
+                 * @typedef google.protobuf.SourceCodeInfo.Location$Properties
+                 * @type Object
+                 * @property {Array.<number>} [path] Location path.
+                 * @property {Array.<number>} [span] Location span.
+                 * @property {string} [leadingComments] Location leadingComments.
+                 * @property {string} [trailingComments] Location trailingComments.
+                 * @property {Array.<string>} [leadingDetachedComments] Location leadingDetachedComments.
+                 */
+
+                /**
                  * Constructs a new Location.
                  * @exports google.protobuf.SourceCodeInfo.Location
+                 * @implements google.protobuf.SourceCodeInfo.Location$Properties
                  * @constructor
-                 * @param {Object.<string,*>=} [properties] Properties to set
+                 * @param {google.protobuf.SourceCodeInfo.Location$Properties=} [properties] Properties to set
                  */
                 function Location(properties) {
                     this.path = [];
@@ -13531,39 +13172,15 @@ $root.google = (function() {
                             this[keys[i]] = properties[keys[i]];
                 }
 
-                /**
-                 * Location path.
-                 * @type {Array.<number>|undefined}
-                 */
                 Location.prototype.path = $util.emptyArray;
-
-                /**
-                 * Location span.
-                 * @type {Array.<number>|undefined}
-                 */
                 Location.prototype.span = $util.emptyArray;
-
-                /**
-                 * Location leadingComments.
-                 * @type {string|undefined}
-                 */
                 Location.prototype.leadingComments = "";
-
-                /**
-                 * Location trailingComments.
-                 * @type {string|undefined}
-                 */
                 Location.prototype.trailingComments = "";
-
-                /**
-                 * Location leadingDetachedComments.
-                 * @type {Array.<string>|undefined}
-                 */
                 Location.prototype.leadingDetachedComments = $util.emptyArray;
 
                 /**
                  * Creates a new Location instance using the specified properties.
-                 * @param {Object.<string,*>=} [properties] Properties to set
+                 * @param {google.protobuf.SourceCodeInfo.Location$Properties=} [properties] Properties to set
                  * @returns {google.protobuf.SourceCodeInfo.Location} Location instance
                  */
                 Location.create = function create(properties) {
@@ -13572,7 +13189,7 @@ $root.google = (function() {
 
                 /**
                  * Encodes the specified Location message. Does not implicitly {@link google.protobuf.SourceCodeInfo.Location.verify|verify} messages.
-                 * @param {google.protobuf.SourceCodeInfo.Location|Object.<string,*>} message Location message or plain object to encode
+                 * @param {google.protobuf.SourceCodeInfo.Location$Properties} message Location message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
                  */
@@ -13680,7 +13297,7 @@ $root.google = (function() {
 
                 /**
                  * Verifies a Location message.
-                 * @param {Object.<string,*>} message Location object to verify
+                 * @param {Object.<string,*>} message Plain object to verify
                  * @returns {?string} `null` if valid, otherwise the reason why it is not
                  */
                 Location.verify = function verify(message) {
@@ -13829,10 +13446,18 @@ $root.google = (function() {
         protobuf.GeneratedCodeInfo = (function() {
 
             /**
+             * Properties of a GeneratedCodeInfo.
+             * @typedef google.protobuf.GeneratedCodeInfo$Properties
+             * @type Object
+             * @property {Array.<google.protobuf.GeneratedCodeInfo.Annotation>} [annotation] GeneratedCodeInfo annotation.
+             */
+
+            /**
              * Constructs a new GeneratedCodeInfo.
              * @exports google.protobuf.GeneratedCodeInfo
+             * @implements google.protobuf.GeneratedCodeInfo$Properties
              * @constructor
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {google.protobuf.GeneratedCodeInfo$Properties=} [properties] Properties to set
              */
             function GeneratedCodeInfo(properties) {
                 this.annotation = [];
@@ -13841,15 +13466,11 @@ $root.google = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
-            /**
-             * GeneratedCodeInfo annotation.
-             * @type {Array.<google.protobuf.GeneratedCodeInfo.Annotation>|undefined}
-             */
             GeneratedCodeInfo.prototype.annotation = $util.emptyArray;
 
             /**
              * Creates a new GeneratedCodeInfo instance using the specified properties.
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {google.protobuf.GeneratedCodeInfo$Properties=} [properties] Properties to set
              * @returns {google.protobuf.GeneratedCodeInfo} GeneratedCodeInfo instance
              */
             GeneratedCodeInfo.create = function create(properties) {
@@ -13858,7 +13479,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified GeneratedCodeInfo message. Does not implicitly {@link google.protobuf.GeneratedCodeInfo.verify|verify} messages.
-             * @param {google.protobuf.GeneratedCodeInfo|Object.<string,*>} message GeneratedCodeInfo message or plain object to encode
+             * @param {google.protobuf.GeneratedCodeInfo$Properties} message GeneratedCodeInfo message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -13924,7 +13545,7 @@ $root.google = (function() {
 
             /**
              * Verifies a GeneratedCodeInfo message.
-             * @param {Object.<string,*>} message GeneratedCodeInfo object to verify
+             * @param {Object.<string,*>} message Plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             GeneratedCodeInfo.verify = function verify(message) {
@@ -14013,10 +13634,21 @@ $root.google = (function() {
             GeneratedCodeInfo.Annotation = (function() {
 
                 /**
+                 * Properties of an Annotation.
+                 * @typedef google.protobuf.GeneratedCodeInfo.Annotation$Properties
+                 * @type Object
+                 * @property {Array.<number>} [path] Annotation path.
+                 * @property {string} [sourceFile] Annotation sourceFile.
+                 * @property {number} [begin] Annotation begin.
+                 * @property {number} [end] Annotation end.
+                 */
+
+                /**
                  * Constructs a new Annotation.
                  * @exports google.protobuf.GeneratedCodeInfo.Annotation
+                 * @implements google.protobuf.GeneratedCodeInfo.Annotation$Properties
                  * @constructor
-                 * @param {Object.<string,*>=} [properties] Properties to set
+                 * @param {google.protobuf.GeneratedCodeInfo.Annotation$Properties=} [properties] Properties to set
                  */
                 function Annotation(properties) {
                     this.path = [];
@@ -14025,33 +13657,14 @@ $root.google = (function() {
                             this[keys[i]] = properties[keys[i]];
                 }
 
-                /**
-                 * Annotation path.
-                 * @type {Array.<number>|undefined}
-                 */
                 Annotation.prototype.path = $util.emptyArray;
-
-                /**
-                 * Annotation sourceFile.
-                 * @type {string|undefined}
-                 */
                 Annotation.prototype.sourceFile = "";
-
-                /**
-                 * Annotation begin.
-                 * @type {number|undefined}
-                 */
                 Annotation.prototype.begin = 0;
-
-                /**
-                 * Annotation end.
-                 * @type {number|undefined}
-                 */
                 Annotation.prototype.end = 0;
 
                 /**
                  * Creates a new Annotation instance using the specified properties.
-                 * @param {Object.<string,*>=} [properties] Properties to set
+                 * @param {google.protobuf.GeneratedCodeInfo.Annotation$Properties=} [properties] Properties to set
                  * @returns {google.protobuf.GeneratedCodeInfo.Annotation} Annotation instance
                  */
                 Annotation.create = function create(properties) {
@@ -14060,7 +13673,7 @@ $root.google = (function() {
 
                 /**
                  * Encodes the specified Annotation message. Does not implicitly {@link google.protobuf.GeneratedCodeInfo.Annotation.verify|verify} messages.
-                 * @param {google.protobuf.GeneratedCodeInfo.Annotation|Object.<string,*>} message Annotation message or plain object to encode
+                 * @param {google.protobuf.GeneratedCodeInfo.Annotation$Properties} message Annotation message or plain object to encode
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
                  */
@@ -14149,7 +13762,7 @@ $root.google = (function() {
 
                 /**
                  * Verifies an Annotation message.
-                 * @param {Object.<string,*>} message Annotation object to verify
+                 * @param {Object.<string,*>} message Plain object to verify
                  * @returns {?string} `null` if valid, otherwise the reason why it is not
                  */
                 Annotation.verify = function verify(message) {

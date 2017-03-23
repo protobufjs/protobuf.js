@@ -33,7 +33,7 @@ export class Class {
      * @param {Type} type Reflected message type
      * @param {*} [ctor] Custom constructor to set up, defaults to create a generic one if omitted
      * @returns {Message} Message prototype
-     * @deprecated Assign the constructor to {@link Type#ctor} instead
+     * @deprecated since 6.7.0 it's possible to just assign a new constructor to {@link Type#ctor}
      */
     public static create(type: Type, ctor?: any): Message;
 
@@ -2332,6 +2332,7 @@ export namespace util {
      * @param {Root} root Root instanceof
      * @param {Object.<number,string|ReflectionObject>} lazyTypes Type names
      * @returns {undefined}
+     * @deprecated since 6.7.0 static code does not emit lazy types anymore
      */
     function lazyResolve(root: Root, lazyTypes: { [k: number]: (string|ReflectionObject) }): void;
 

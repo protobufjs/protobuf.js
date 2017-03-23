@@ -9,11 +9,14 @@ export class MyService extends $protobuf.rpc.Service {
 
 type MyService_myMethod_Callback = (error: Error, response?: MyResponse) => void;
 
-export class MyRequest {
-    constructor(properties?: { [k: string]: any });
-    public path?: string;
-    public static create(properties?: { [k: string]: any }): MyRequest;
-    public static encode(message: (MyRequest|{ [k: string]: any }), writer?: $protobuf.Writer): $protobuf.Writer;
+interface MyRequest$Properties {
+    path?: string;
+}
+
+export class MyRequest implements MyRequest$Properties {
+    constructor(properties?: MyRequest$Properties);
+    public static create(properties?: MyRequest$Properties): MyRequest;
+    public static encode(message: MyRequest$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
     public static encodeDelimited(message: (MyRequest|{ [k: string]: any }), writer?: $protobuf.Writer): $protobuf.Writer;
     public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): MyRequest;
     public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): MyRequest;
@@ -25,11 +28,14 @@ export class MyRequest {
     public toJSON(): { [k: string]: any };
 }
 
-export class MyResponse {
-    constructor(properties?: { [k: string]: any });
-    public status?: number;
-    public static create(properties?: { [k: string]: any }): MyResponse;
-    public static encode(message: (MyResponse|{ [k: string]: any }), writer?: $protobuf.Writer): $protobuf.Writer;
+interface MyResponse$Properties {
+    status?: number;
+}
+
+export class MyResponse implements MyResponse$Properties {
+    constructor(properties?: MyResponse$Properties);
+    public static create(properties?: MyResponse$Properties): MyResponse;
+    public static encode(message: MyResponse$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
     public static encodeDelimited(message: (MyResponse|{ [k: string]: any }), writer?: $protobuf.Writer): $protobuf.Writer;
     public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): MyResponse;
     public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): MyResponse;

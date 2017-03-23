@@ -12,14 +12,24 @@ var $root = $protobuf.roots.test_comments || ($protobuf.roots.test_comments = {}
 $root.Test1 = (function() {
 
     /**
+     * Properties of a Test1.
+     * @typedef Test1$Properties
+     * @type Object
+     * @property {string} [field1] Field with a comment.
+     * @property {number} [field2] Test1 field2.
+     * @property {boolean} [field3] Field with a comment and a <a href="http://example.com/foo/">link</a>
+     */
+
+    /**
      * Constructs a new Test1.
      * @classdesc Message
      * with
      * a
      * comment.
      * @exports Test1
+     * @implements Test1$Properties
      * @constructor
-     * @param {Object.<string,*>=} [properties] Properties to set
+     * @param {Test1$Properties=} [properties] Properties to set
      */
     function Test1(properties) {
         if (properties)
@@ -27,27 +37,13 @@ $root.Test1 = (function() {
                 this[keys[i]] = properties[keys[i]];
     }
 
-    /**
-     * Field with a comment.
-     * @type {string|undefined}
-     */
     Test1.prototype.field1 = "";
-
-    /**
-     * Test1 field2.
-     * @type {number|undefined}
-     */
     Test1.prototype.field2 = 0;
-
-    /**
-     * Field with a comment and a <a href="http://example.com/foo/">link</a>
-     * @type {boolean|undefined}
-     */
     Test1.prototype.field3 = false;
 
     /**
      * Creates a new Test1 instance using the specified properties.
-     * @param {Object.<string,*>=} [properties] Properties to set
+     * @param {Test1$Properties=} [properties] Properties to set
      * @returns {Test1} Test1 instance
      */
     Test1.create = function create(properties) {
@@ -56,7 +52,7 @@ $root.Test1 = (function() {
 
     /**
      * Encodes the specified Test1 message. Does not implicitly {@link Test1.verify|verify} messages.
-     * @param {Test1|Object.<string,*>} message Test1 message or plain object to encode
+     * @param {Test1$Properties} message Test1 message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
@@ -129,7 +125,7 @@ $root.Test1 = (function() {
 
     /**
      * Verifies a Test1 message.
-     * @param {Object.<string,*>} message Test1 object to verify
+     * @param {Object.<string,*>} message Plain object to verify
      * @returns {?string} `null` if valid, otherwise the reason why it is not
      */
     Test1.verify = function verify(message) {
@@ -221,10 +217,17 @@ $root.Test1 = (function() {
 $root.Test2 = (function() {
 
     /**
+     * Properties of a Test2.
+     * @typedef Test2$Properties
+     * @type Object
+     */
+
+    /**
      * Constructs a new Test2.
      * @exports Test2
+     * @implements Test2$Properties
      * @constructor
-     * @param {Object.<string,*>=} [properties] Properties to set
+     * @param {Test2$Properties=} [properties] Properties to set
      */
     function Test2(properties) {
         if (properties)
@@ -234,7 +237,7 @@ $root.Test2 = (function() {
 
     /**
      * Creates a new Test2 instance using the specified properties.
-     * @param {Object.<string,*>=} [properties] Properties to set
+     * @param {Test2$Properties=} [properties] Properties to set
      * @returns {Test2} Test2 instance
      */
     Test2.create = function create(properties) {
@@ -243,7 +246,7 @@ $root.Test2 = (function() {
 
     /**
      * Encodes the specified Test2 message. Does not implicitly {@link Test2.verify|verify} messages.
-     * @param {Test2|Object.<string,*>} message Test2 message or plain object to encode
+     * @param {Test2$Properties} message Test2 message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
@@ -301,7 +304,7 @@ $root.Test2 = (function() {
 
     /**
      * Verifies a Test2 message.
-     * @param {Object.<string,*>} message Test2 object to verify
+     * @param {Object.<string,*>} message Plain object to verify
      * @returns {?string} `null` if valid, otherwise the reason why it is not
      */
     Test2.verify = function verify(message) {

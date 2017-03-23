@@ -21,10 +21,18 @@ $root.vector_tile = (function() {
     vector_tile.Tile = (function() {
 
         /**
+         * Properties of a Tile.
+         * @typedef vector_tile.Tile$Properties
+         * @type Object
+         * @property {Array.<vector_tile.Tile.Layer>} [layers] Tile layers.
+         */
+
+        /**
          * Constructs a new Tile.
          * @exports vector_tile.Tile
+         * @implements vector_tile.Tile$Properties
          * @constructor
-         * @param {Object.<string,*>=} [properties] Properties to set
+         * @param {vector_tile.Tile$Properties=} [properties] Properties to set
          */
         function Tile(properties) {
             this.layers = [];
@@ -33,15 +41,11 @@ $root.vector_tile = (function() {
                     this[keys[i]] = properties[keys[i]];
         }
 
-        /**
-         * Tile layers.
-         * @type {Array.<vector_tile.Tile.Layer>|undefined}
-         */
         Tile.prototype.layers = $util.emptyArray;
 
         /**
          * Creates a new Tile instance using the specified properties.
-         * @param {Object.<string,*>=} [properties] Properties to set
+         * @param {vector_tile.Tile$Properties=} [properties] Properties to set
          * @returns {vector_tile.Tile} Tile instance
          */
         Tile.create = function create(properties) {
@@ -50,7 +54,7 @@ $root.vector_tile = (function() {
 
         /**
          * Encodes the specified Tile message. Does not implicitly {@link vector_tile.Tile.verify|verify} messages.
-         * @param {vector_tile.Tile|Object.<string,*>} message Tile message or plain object to encode
+         * @param {vector_tile.Tile$Properties} message Tile message or plain object to encode
          * @param {$protobuf.Writer} [writer] Writer to encode to
          * @returns {$protobuf.Writer} Writer
          */
@@ -116,7 +120,7 @@ $root.vector_tile = (function() {
 
         /**
          * Verifies a Tile message.
-         * @param {Object.<string,*>} message Tile object to verify
+         * @param {Object.<string,*>} message Plain object to verify
          * @returns {?string} `null` if valid, otherwise the reason why it is not
          */
         Tile.verify = function verify(message) {
@@ -224,10 +228,24 @@ $root.vector_tile = (function() {
         Tile.Value = (function() {
 
             /**
+             * Properties of a Value.
+             * @typedef vector_tile.Tile.Value$Properties
+             * @type Object
+             * @property {string} [stringValue] Value stringValue.
+             * @property {number} [floatValue] Value floatValue.
+             * @property {number} [doubleValue] Value doubleValue.
+             * @property {number|$protobuf.Long} [intValue] Value intValue.
+             * @property {number|$protobuf.Long} [uintValue] Value uintValue.
+             * @property {number|$protobuf.Long} [sintValue] Value sintValue.
+             * @property {boolean} [boolValue] Value boolValue.
+             */
+
+            /**
              * Constructs a new Value.
              * @exports vector_tile.Tile.Value
+             * @implements vector_tile.Tile.Value$Properties
              * @constructor
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {vector_tile.Tile.Value$Properties=} [properties] Properties to set
              */
             function Value(properties) {
                 if (properties)
@@ -235,51 +253,17 @@ $root.vector_tile = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
-            /**
-             * Value stringValue.
-             * @type {string|undefined}
-             */
             Value.prototype.stringValue = "";
-
-            /**
-             * Value floatValue.
-             * @type {number|undefined}
-             */
             Value.prototype.floatValue = 0;
-
-            /**
-             * Value doubleValue.
-             * @type {number|undefined}
-             */
             Value.prototype.doubleValue = 0;
-
-            /**
-             * Value intValue.
-             * @type {number|$protobuf.Long|undefined}
-             */
             Value.prototype.intValue = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
-
-            /**
-             * Value uintValue.
-             * @type {number|$protobuf.Long|undefined}
-             */
             Value.prototype.uintValue = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
-
-            /**
-             * Value sintValue.
-             * @type {number|$protobuf.Long|undefined}
-             */
             Value.prototype.sintValue = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
-
-            /**
-             * Value boolValue.
-             * @type {boolean|undefined}
-             */
             Value.prototype.boolValue = false;
 
             /**
              * Creates a new Value instance using the specified properties.
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {vector_tile.Tile.Value$Properties=} [properties] Properties to set
              * @returns {vector_tile.Tile.Value} Value instance
              */
             Value.create = function create(properties) {
@@ -288,7 +272,7 @@ $root.vector_tile = (function() {
 
             /**
              * Encodes the specified Value message. Does not implicitly {@link vector_tile.Tile.Value.verify|verify} messages.
-             * @param {vector_tile.Tile.Value|Object.<string,*>} message Value message or plain object to encode
+             * @param {vector_tile.Tile.Value$Properties} message Value message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -381,7 +365,7 @@ $root.vector_tile = (function() {
 
             /**
              * Verifies a Value message.
-             * @param {Object.<string,*>} message Value object to verify
+             * @param {Object.<string,*>} message Plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             Value.verify = function verify(message) {
@@ -547,10 +531,21 @@ $root.vector_tile = (function() {
         Tile.Feature = (function() {
 
             /**
+             * Properties of a Feature.
+             * @typedef vector_tile.Tile.Feature$Properties
+             * @type Object
+             * @property {number|$protobuf.Long} [id] Feature id.
+             * @property {Array.<number>} [tags] Feature tags.
+             * @property {*} [type] Feature type.
+             * @property {Array.<number>} [geometry] Feature geometry.
+             */
+
+            /**
              * Constructs a new Feature.
              * @exports vector_tile.Tile.Feature
+             * @implements vector_tile.Tile.Feature$Properties
              * @constructor
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {vector_tile.Tile.Feature$Properties=} [properties] Properties to set
              */
             function Feature(properties) {
                 this.tags = [];
@@ -560,33 +555,14 @@ $root.vector_tile = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
-            /**
-             * Feature id.
-             * @type {number|$protobuf.Long|undefined}
-             */
             Feature.prototype.id = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
-
-            /**
-             * Feature tags.
-             * @type {Array.<number>|undefined}
-             */
             Feature.prototype.tags = $util.emptyArray;
-
-            /**
-             * Feature type.
-             * @type {number|undefined}
-             */
             Feature.prototype.type = 0;
-
-            /**
-             * Feature geometry.
-             * @type {Array.<number>|undefined}
-             */
             Feature.prototype.geometry = $util.emptyArray;
 
             /**
              * Creates a new Feature instance using the specified properties.
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {vector_tile.Tile.Feature$Properties=} [properties] Properties to set
              * @returns {vector_tile.Tile.Feature} Feature instance
              */
             Feature.create = function create(properties) {
@@ -595,7 +571,7 @@ $root.vector_tile = (function() {
 
             /**
              * Encodes the specified Feature message. Does not implicitly {@link vector_tile.Tile.Feature.verify|verify} messages.
-             * @param {vector_tile.Tile.Feature|Object.<string,*>} message Feature message or plain object to encode
+             * @param {vector_tile.Tile.Feature$Properties} message Feature message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -695,7 +671,7 @@ $root.vector_tile = (function() {
 
             /**
              * Verifies a Feature message.
-             * @param {Object.<string,*>} message Feature object to verify
+             * @param {Object.<string,*>} message Plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             Feature.verify = function verify(message) {
@@ -858,10 +834,23 @@ $root.vector_tile = (function() {
         Tile.Layer = (function() {
 
             /**
+             * Properties of a Layer.
+             * @typedef vector_tile.Tile.Layer$Properties
+             * @type Object
+             * @property {number} version Layer version.
+             * @property {string} name Layer name.
+             * @property {Array.<*>} [features] Layer features.
+             * @property {Array.<string>} [keys] Layer keys.
+             * @property {Array.<*>} [values] Layer values.
+             * @property {number} [extent] Layer extent.
+             */
+
+            /**
              * Constructs a new Layer.
              * @exports vector_tile.Tile.Layer
+             * @implements vector_tile.Tile.Layer$Properties
              * @constructor
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {vector_tile.Tile.Layer$Properties=} [properties] Properties to set
              */
             function Layer(properties) {
                 this.features = [];
@@ -872,45 +861,16 @@ $root.vector_tile = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
-            /**
-             * Layer version.
-             * @type {number}
-             */
             Layer.prototype.version = 1;
-
-            /**
-             * Layer name.
-             * @type {string}
-             */
             Layer.prototype.name = "";
-
-            /**
-             * Layer features.
-             * @type {Array.<vector_tile.Tile.Feature>|undefined}
-             */
             Layer.prototype.features = $util.emptyArray;
-
-            /**
-             * Layer keys.
-             * @type {Array.<string>|undefined}
-             */
             Layer.prototype.keys = $util.emptyArray;
-
-            /**
-             * Layer values.
-             * @type {Array.<vector_tile.Tile.Value>|undefined}
-             */
             Layer.prototype.values = $util.emptyArray;
-
-            /**
-             * Layer extent.
-             * @type {number|undefined}
-             */
             Layer.prototype.extent = 4096;
 
             /**
              * Creates a new Layer instance using the specified properties.
-             * @param {Object.<string,*>=} [properties] Properties to set
+             * @param {vector_tile.Tile.Layer$Properties=} [properties] Properties to set
              * @returns {vector_tile.Tile.Layer} Layer instance
              */
             Layer.create = function create(properties) {
@@ -919,7 +879,7 @@ $root.vector_tile = (function() {
 
             /**
              * Encodes the specified Layer message. Does not implicitly {@link vector_tile.Tile.Layer.verify|verify} messages.
-             * @param {vector_tile.Tile.Layer|Object.<string,*>} message Layer message or plain object to encode
+             * @param {vector_tile.Tile.Layer$Properties} message Layer message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -1018,7 +978,7 @@ $root.vector_tile = (function() {
 
             /**
              * Verifies a Layer message.
-             * @param {Object.<string,*>} message Layer object to verify
+             * @param {Object.<string,*>} message Plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             Layer.verify = function verify(message) {
