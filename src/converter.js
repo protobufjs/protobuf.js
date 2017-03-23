@@ -229,7 +229,7 @@ converter.toObject = function toObject(mtype) {
 
     if (normalFields.length) { gen
     ("if(o.defaults){");
-        for (i = 0, field; i < normalFields.length; ++i) {
+        for (i = 0; i < normalFields.length; ++i) {
             var field = normalFields[i],
                 prop  = util.safeProp(field.name);
             if (field.resolvedType instanceof Enum) gen
@@ -247,25 +247,30 @@ converter.toObject = function toObject(mtype) {
         } gen
     ("}");
     }
-    for (i = 0, field; i < fields.length; ++i) {
+    for (i = 0; i < fields.length; ++i) {
         var field = fields[i],
-            prop  = util.safeProp(field.name); gen
-    ("if(m%s!==undefined&&m%s!==null&&m.hasOwnProperty(%j)){", prop, prop, field.name);
+            index = mtype._fieldsArray.indexOf(field),
+            prop  = util.safeProp(field.name);
         if (field.map) { gen
+    ("var ks2")
+    ("if(m%s&&(ks2=Object.keys(m%s)).length){", prop, prop)
         ("d%s={}", prop)
-        ("for(var ks2=Object.keys(m%s),j=0;j<ks2.length;++j){", prop);
-            genValuePartial_toObject(gen, field, /* sorted */ mtype._fieldsArray.indexOf(field), prop + "[ks2[j]]")
+        ("for(var j=0;j<ks2.length;++j){");
+            genValuePartial_toObject(gen, field, /* sorted */ index, prop + "[ks2[j]]")
         ("}");
         } else if (field.repeated) { gen
+    ("if(m%s&&m%s.length){", prop, prop)
         ("d%s=[]", prop)
         ("for(var j=0;j<m%s.length;++j){", prop);
-            genValuePartial_toObject(gen, field, /* sorted */ mtype._fieldsArray.indexOf(field), prop + "[j]")
+            genValuePartial_toObject(gen, field, /* sorted */ index, prop + "[j]")
         ("}");
-        } else
-        genValuePartial_toObject(gen, field, /* sorted */ mtype._fieldsArray.indexOf(field), prop);
+        } else { gen
+    ("if(m%s!==undefined&&m%s!==null&&m.hasOwnProperty(%j)){", prop, prop, field.name);
+        genValuePartial_toObject(gen, field, /* sorted */ index, prop);
         if (field.partOf) gen
         ("if(o.oneofs)")
             ("d%s=%j", util.safeProp(field.partOf.name), field.name);
+        }
         gen
     ("}");
     }

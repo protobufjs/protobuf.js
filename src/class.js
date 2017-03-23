@@ -77,15 +77,12 @@ function Class(type, ctor) {
 Class.generate = function generate(type) { // eslint-disable-line no-unused-vars
     /* eslint-disable no-unexpected-multiline */
     var gen = util.codegen("p");
-    // see issue #700: the following would add explicitly initialized mutable object/array fields
-    // so that these aren't just inherited from the prototype. will break test cases.
-    /*
+    // explicitly initialize mutable object/array fields so that these aren't just inherited from the prototype
     for (var i = 0, field; i < type.fieldsArray.length; ++i)
         if ((field = type._fieldsArray[i]).map) gen
             ("this%s={}", util.safeProp(field.name));
         else if (field.repeated) gen
             ("this%s=[]", util.safeProp(field.name));
-    */
     return gen
     ("if(p){")
         ("for(var ks=Object.keys(p),i=0;i<ks.length;++i)")
