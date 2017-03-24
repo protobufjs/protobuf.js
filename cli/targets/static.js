@@ -276,7 +276,7 @@ function toJsType(field) {
             if (field.resolvedType instanceof Enum)
                 return "number";
             if (field.resolvedType instanceof Type)
-                return field.resolvedType.fullName.substring(1);
+                return field.resolvedType.fullName.substring(1) + "$Properties";
             return "*"; // should not happen
     }
 }
