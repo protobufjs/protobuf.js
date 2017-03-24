@@ -57,43 +57,38 @@ function encoder(mtype) {
         ("}")
     ("}");
 
-        // Repeated fields
-        } else if (field.repeated) {
+            // Repeated fields
+        } else if (field.repeated) { gen
+    ("if(%s&&%s.length&&m.hasOwnProperty(%j)){", ref, ref, field.name);
 
             // Packed repeated
             if (field.packed && types.packed[type] !== undefined) { gen
 
-    ("if(%s&&%s.length&&m.hasOwnProperty(%j)){", ref, ref, field.name)
         ("w.uint32(%d).fork()", (field.id << 3 | 2) >>> 0)
         ("for(var i=0;i<%s.length;++i)", ref)
             ("w.%s(%s[i])", type, ref)
-        ("w.ldelim()")
-    ("}");
+        ("w.ldelim()");
 
             // Non-packed
             } else { gen
 
-    ("if(%s!==undefined&&m.hasOwnProperty(%j)){", ref, field.name)
         ("for(var i=0;i<%s.length;++i)", ref);
                 if (wireType === undefined)
             genTypePartial(gen, field, index, ref + "[i]");
                 else gen
             ("w.uint32(%d).%s(%s[i])", (field.id << 3 | wireType) >>> 0, type, ref);
-                gen
-    ("}");
 
-            }
+            } gen
+    ("}");
 
         // Non-repeated
         } else {
-            if (!field.required) {
+            if (field.optional) {
 
-                if (field.long) gen
-    ("if(%s!==undefined&&%s!==null&&m.hasOwnProperty(%j))", ref, ref, field.name);
-                else if (field.bytes || field.resolvedType && !(field.resolvedType instanceof Enum)) gen
+                if (field.bytes || field.resolvedType && !(field.resolvedType instanceof Enum)) gen
     ("if(%s&&m.hasOwnProperty(%j))", ref, field.name);
                 else gen
-    ("if(%s!==undefined&&%s!==null&&m.hasOwnProperty(%j))", ref, ref, field.name);
+    ("if(%s!=null&&m.hasOwnProperty(%j))", ref, field.name); // !== undefined && !== null
 
             }
 

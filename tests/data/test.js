@@ -236,7 +236,7 @@ $root.jspb = (function() {
             EnumContainer.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
-                if (message.outerEnum !== undefined && message.outerEnum !== null && message.hasOwnProperty("outerEnum"))
+                if (message.outerEnum != null && message.hasOwnProperty("outerEnum"))
                     writer.uint32(/* id 1, wireType 0 =*/8).uint32(message.outerEnum);
                 return writer;
             };
@@ -298,7 +298,7 @@ $root.jspb = (function() {
             EnumContainer.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
-                if (message.outerEnum !== undefined && message.outerEnum !== null)
+                if (message.outerEnum != null)
                     switch (message.outerEnum) {
                     default:
                         return "outerEnum: enum value expected";
@@ -352,7 +352,7 @@ $root.jspb = (function() {
                 var object = {};
                 if (options.defaults)
                     object.outerEnum = options.enums === String ? "FOO" : 1;
-                if (message.outerEnum !== undefined && message.outerEnum !== null && message.hasOwnProperty("outerEnum"))
+                if (message.outerEnum != null && message.hasOwnProperty("outerEnum"))
                     object.outerEnum = options.enums === String ? $root.jspb.test.OuterEnum[message.outerEnum] : message.outerEnum;
                 return object;
             };
@@ -436,10 +436,10 @@ $root.jspb = (function() {
                 if (!writer)
                     writer = $Writer.create();
                 writer.uint32(/* id 1, wireType 2 =*/10).string(message.aString);
-                if (message.aRepeatedString !== undefined && message.hasOwnProperty("aRepeatedString"))
+                if (message.aRepeatedString && message.aRepeatedString.length && message.hasOwnProperty("aRepeatedString"))
                     for (var i = 0; i < message.aRepeatedString.length; ++i)
                         writer.uint32(/* id 2, wireType 2 =*/18).string(message.aRepeatedString[i]);
-                if (message.aBoolean !== undefined && message.aBoolean !== null && message.hasOwnProperty("aBoolean"))
+                if (message.aBoolean != null && message.hasOwnProperty("aBoolean"))
                     writer.uint32(/* id 3, wireType 0 =*/24).bool(message.aBoolean);
                 return writer;
             };
@@ -513,14 +513,14 @@ $root.jspb = (function() {
                     return "object expected";
                 if (!$util.isString(message.aString))
                     return "aString: string expected";
-                if (message.aRepeatedString !== undefined) {
+                if (message.aRepeatedString != null) {
                     if (!Array.isArray(message.aRepeatedString))
                         return "aRepeatedString: array expected";
                     for (var i = 0; i < message.aRepeatedString.length; ++i)
                         if (!$util.isString(message.aRepeatedString[i]))
                             return "aRepeatedString: string[] expected";
                 }
-                if (message.aBoolean !== undefined && message.aBoolean !== null)
+                if (message.aBoolean != null)
                     if (typeof message.aBoolean !== "boolean")
                         return "aBoolean: boolean expected";
                 return null;
@@ -535,7 +535,7 @@ $root.jspb = (function() {
                 if (object instanceof $root.jspb.test.Simple1)
                     return object;
                 var message = new $root.jspb.test.Simple1();
-                if (object.aString !== undefined && object.aString !== null)
+                if (object.aString != null)
                     message.aString = String(object.aString);
                 if (object.aRepeatedString) {
                     if (!Array.isArray(object.aRepeatedString))
@@ -544,7 +544,7 @@ $root.jspb = (function() {
                     for (var i = 0; i < object.aRepeatedString.length; ++i)
                         message.aRepeatedString[i] = String(object.aRepeatedString[i]);
                 }
-                if (object.aBoolean !== undefined && object.aBoolean !== null)
+                if (object.aBoolean != null)
                     message.aBoolean = Boolean(object.aBoolean);
                 return message;
             };
@@ -574,14 +574,14 @@ $root.jspb = (function() {
                     object.aString = "";
                     object.aBoolean = false;
                 }
-                if (message.aString !== undefined && message.aString !== null && message.hasOwnProperty("aString"))
+                if (message.aString != null && message.hasOwnProperty("aString"))
                     object.aString = message.aString;
                 if (message.aRepeatedString && message.aRepeatedString.length) {
                     object.aRepeatedString = [];
                     for (var j = 0; j < message.aRepeatedString.length; ++j)
                         object.aRepeatedString[j] = message.aRepeatedString[j];
                 }
-                if (message.aBoolean !== undefined && message.aBoolean !== null && message.hasOwnProperty("aBoolean"))
+                if (message.aBoolean != null && message.hasOwnProperty("aBoolean"))
                     object.aBoolean = message.aBoolean;
                 return object;
             };
@@ -659,7 +659,7 @@ $root.jspb = (function() {
                 if (!writer)
                     writer = $Writer.create();
                 writer.uint32(/* id 1, wireType 2 =*/10).string(message.aString);
-                if (message.aRepeatedString !== undefined && message.hasOwnProperty("aRepeatedString"))
+                if (message.aRepeatedString && message.aRepeatedString.length && message.hasOwnProperty("aRepeatedString"))
                     for (var i = 0; i < message.aRepeatedString.length; ++i)
                         writer.uint32(/* id 2, wireType 2 =*/18).string(message.aRepeatedString[i]);
                 return writer;
@@ -731,7 +731,7 @@ $root.jspb = (function() {
                     return "object expected";
                 if (!$util.isString(message.aString))
                     return "aString: string expected";
-                if (message.aRepeatedString !== undefined) {
+                if (message.aRepeatedString != null) {
                     if (!Array.isArray(message.aRepeatedString))
                         return "aRepeatedString: array expected";
                     for (var i = 0; i < message.aRepeatedString.length; ++i)
@@ -750,7 +750,7 @@ $root.jspb = (function() {
                 if (object instanceof $root.jspb.test.Simple2)
                     return object;
                 var message = new $root.jspb.test.Simple2();
-                if (object.aString !== undefined && object.aString !== null)
+                if (object.aString != null)
                     message.aString = String(object.aString);
                 if (object.aRepeatedString) {
                     if (!Array.isArray(object.aRepeatedString))
@@ -785,7 +785,7 @@ $root.jspb = (function() {
                     object.aRepeatedString = [];
                 if (options.defaults)
                     object.aString = "";
-                if (message.aString !== undefined && message.aString !== null && message.hasOwnProperty("aString"))
+                if (message.aString != null && message.hasOwnProperty("aString"))
                     object.aString = message.aString;
                 if (message.aRepeatedString && message.aRepeatedString.length) {
                     object.aRepeatedString = [];
@@ -979,13 +979,13 @@ $root.jspb = (function() {
                 if (object instanceof $root.jspb.test.SpecialCases)
                     return object;
                 var message = new $root.jspb.test.SpecialCases();
-                if (object.normal !== undefined && object.normal !== null)
+                if (object.normal != null)
                     message.normal = String(object.normal);
-                if (object["default"] !== undefined && object["default"] !== null)
+                if (object["default"] != null)
                     message["default"] = String(object["default"]);
-                if (object["function"] !== undefined && object["function"] !== null)
+                if (object["function"] != null)
                     message["function"] = String(object["function"]);
-                if (object["var"] !== undefined && object["var"] !== null)
+                if (object["var"] != null)
                     message["var"] = String(object["var"]);
                 return message;
             };
@@ -1015,13 +1015,13 @@ $root.jspb = (function() {
                     object["function"] = "";
                     object["var"] = "";
                 }
-                if (message.normal !== undefined && message.normal !== null && message.hasOwnProperty("normal"))
+                if (message.normal != null && message.hasOwnProperty("normal"))
                     object.normal = message.normal;
-                if (message["default"] !== undefined && message["default"] !== null && message.hasOwnProperty("default"))
+                if (message["default"] != null && message.hasOwnProperty("default"))
                     object["default"] = message["default"];
-                if (message["function"] !== undefined && message["function"] !== null && message.hasOwnProperty("function"))
+                if (message["function"] != null && message.hasOwnProperty("function"))
                     object["function"] = message["function"];
-                if (message["var"] !== undefined && message["var"] !== null && message.hasOwnProperty("var"))
+                if (message["var"] != null && message.hasOwnProperty("var"))
                     object["var"] = message["var"];
                 return object;
             };
@@ -1117,15 +1117,15 @@ $root.jspb = (function() {
             OptionalFields.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
-                if (message.aString !== undefined && message.aString !== null && message.hasOwnProperty("aString"))
+                if (message.aString != null && message.hasOwnProperty("aString"))
                     writer.uint32(/* id 1, wireType 2 =*/10).string(message.aString);
                 writer.uint32(/* id 2, wireType 0 =*/16).bool(message.aBool);
                 if (message.aNestedMessage && message.hasOwnProperty("aNestedMessage"))
                     $root.jspb.test.OptionalFields.Nested.encode(message.aNestedMessage, writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
-                if (message.aRepeatedMessage !== undefined && message.hasOwnProperty("aRepeatedMessage"))
+                if (message.aRepeatedMessage && message.aRepeatedMessage.length && message.hasOwnProperty("aRepeatedMessage"))
                     for (var i = 0; i < message.aRepeatedMessage.length; ++i)
                         $root.jspb.test.OptionalFields.Nested.encode(message.aRepeatedMessage[i], writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
-                if (message.aRepeatedString !== undefined && message.hasOwnProperty("aRepeatedString"))
+                if (message.aRepeatedString && message.aRepeatedString.length && message.hasOwnProperty("aRepeatedString"))
                     for (var i = 0; i < message.aRepeatedString.length; ++i)
                         writer.uint32(/* id 5, wireType 2 =*/42).string(message.aRepeatedString[i]);
                 return writer;
@@ -1206,17 +1206,17 @@ $root.jspb = (function() {
             OptionalFields.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
-                if (message.aString !== undefined && message.aString !== null)
+                if (message.aString != null)
                     if (!$util.isString(message.aString))
                         return "aString: string expected";
                 if (typeof message.aBool !== "boolean")
                     return "aBool: boolean expected";
-                if (message.aNestedMessage !== undefined && message.aNestedMessage !== null) {
+                if (message.aNestedMessage != null) {
                     var error = $root.jspb.test.OptionalFields.Nested.verify(message.aNestedMessage);
                     if (error)
                         return "aNestedMessage." + error;
                 }
-                if (message.aRepeatedMessage !== undefined) {
+                if (message.aRepeatedMessage != null) {
                     if (!Array.isArray(message.aRepeatedMessage))
                         return "aRepeatedMessage: array expected";
                     for (var i = 0; i < message.aRepeatedMessage.length; ++i) {
@@ -1225,7 +1225,7 @@ $root.jspb = (function() {
                             return "aRepeatedMessage." + error;
                     }
                 }
-                if (message.aRepeatedString !== undefined) {
+                if (message.aRepeatedString != null) {
                     if (!Array.isArray(message.aRepeatedString))
                         return "aRepeatedString: array expected";
                     for (var i = 0; i < message.aRepeatedString.length; ++i)
@@ -1244,11 +1244,11 @@ $root.jspb = (function() {
                 if (object instanceof $root.jspb.test.OptionalFields)
                     return object;
                 var message = new $root.jspb.test.OptionalFields();
-                if (object.aString !== undefined && object.aString !== null)
+                if (object.aString != null)
                     message.aString = String(object.aString);
-                if (object.aBool !== undefined && object.aBool !== null)
+                if (object.aBool != null)
                     message.aBool = Boolean(object.aBool);
-                if (object.aNestedMessage !== undefined && object.aNestedMessage !== null) {
+                if (object.aNestedMessage != null) {
                     if (typeof object.aNestedMessage !== "object")
                         throw TypeError(".jspb.test.OptionalFields.aNestedMessage: object expected");
                     message.aNestedMessage = $root.jspb.test.OptionalFields.Nested.fromObject(object.aNestedMessage);
@@ -1301,11 +1301,11 @@ $root.jspb = (function() {
                     object.aBool = false;
                     object.aNestedMessage = null;
                 }
-                if (message.aString !== undefined && message.aString !== null && message.hasOwnProperty("aString"))
+                if (message.aString != null && message.hasOwnProperty("aString"))
                     object.aString = message.aString;
-                if (message.aBool !== undefined && message.aBool !== null && message.hasOwnProperty("aBool"))
+                if (message.aBool != null && message.hasOwnProperty("aBool"))
                     object.aBool = message.aBool;
-                if (message.aNestedMessage !== undefined && message.aNestedMessage !== null && message.hasOwnProperty("aNestedMessage"))
+                if (message.aNestedMessage != null && message.hasOwnProperty("aNestedMessage"))
                     object.aNestedMessage = $root.jspb.test.OptionalFields.Nested.toObject(message.aNestedMessage, options);
                 if (message.aRepeatedMessage && message.aRepeatedMessage.length) {
                     object.aRepeatedMessage = [];
@@ -1382,7 +1382,7 @@ $root.jspb = (function() {
                 Nested.encode = function encode(message, writer) {
                     if (!writer)
                         writer = $Writer.create();
-                    if (message.anInt !== undefined && message.anInt !== null && message.hasOwnProperty("anInt"))
+                    if (message.anInt != null && message.hasOwnProperty("anInt"))
                         writer.uint32(/* id 1, wireType 0 =*/8).int32(message.anInt);
                     return writer;
                 };
@@ -1444,7 +1444,7 @@ $root.jspb = (function() {
                 Nested.verify = function verify(message) {
                     if (typeof message !== "object" || message === null)
                         return "object expected";
-                    if (message.anInt !== undefined && message.anInt !== null)
+                    if (message.anInt != null)
                         if (!$util.isInteger(message.anInt))
                             return "anInt: integer expected";
                     return null;
@@ -1459,7 +1459,7 @@ $root.jspb = (function() {
                     if (object instanceof $root.jspb.test.OptionalFields.Nested)
                         return object;
                     var message = new $root.jspb.test.OptionalFields.Nested();
-                    if (object.anInt !== undefined && object.anInt !== null)
+                    if (object.anInt != null)
                         message.anInt = object.anInt | 0;
                     return message;
                 };
@@ -1485,7 +1485,7 @@ $root.jspb = (function() {
                     var object = {};
                     if (options.defaults)
                         object.anInt = 0;
-                    if (message.anInt !== undefined && message.anInt !== null && message.hasOwnProperty("anInt"))
+                    if (message.anInt != null && message.hasOwnProperty("anInt"))
                         object.anInt = message.anInt;
                     return object;
                 };
@@ -1608,22 +1608,22 @@ $root.jspb = (function() {
             HasExtensions.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
-                if (message.str1 !== undefined && message.str1 !== null && message.hasOwnProperty("str1"))
+                if (message.str1 != null && message.hasOwnProperty("str1"))
                     writer.uint32(/* id 1, wireType 2 =*/10).string(message.str1);
-                if (message.str2 !== undefined && message.str2 !== null && message.hasOwnProperty("str2"))
+                if (message.str2 != null && message.hasOwnProperty("str2"))
                     writer.uint32(/* id 2, wireType 2 =*/18).string(message.str2);
-                if (message.str3 !== undefined && message.str3 !== null && message.hasOwnProperty("str3"))
+                if (message.str3 != null && message.hasOwnProperty("str3"))
                     writer.uint32(/* id 3, wireType 2 =*/26).string(message.str3);
                 if (message[".jspb.test.IsExtension.extField"] && message.hasOwnProperty(".jspb.test.IsExtension.extField"))
                     $root.jspb.test.IsExtension.encode(message[".jspb.test.IsExtension.extField"], writer.uint32(/* id 100, wireType 2 =*/802).fork()).ldelim();
                 if (message[".jspb.test.IndirectExtension.simple"] && message.hasOwnProperty(".jspb.test.IndirectExtension.simple"))
                     $root.jspb.test.Simple1.encode(message[".jspb.test.IndirectExtension.simple"], writer.uint32(/* id 101, wireType 2 =*/810).fork()).ldelim();
-                if (message[".jspb.test.IndirectExtension.str"] !== undefined && message[".jspb.test.IndirectExtension.str"] !== null && message.hasOwnProperty(".jspb.test.IndirectExtension.str"))
+                if (message[".jspb.test.IndirectExtension.str"] != null && message.hasOwnProperty(".jspb.test.IndirectExtension.str"))
                     writer.uint32(/* id 102, wireType 2 =*/818).string(message[".jspb.test.IndirectExtension.str"]);
-                if (message[".jspb.test.IndirectExtension.repeatedStr"] !== undefined && message.hasOwnProperty(".jspb.test.IndirectExtension.repeatedStr"))
+                if (message[".jspb.test.IndirectExtension.repeatedStr"] && message[".jspb.test.IndirectExtension.repeatedStr"].length && message.hasOwnProperty(".jspb.test.IndirectExtension.repeatedStr"))
                     for (var i = 0; i < message[".jspb.test.IndirectExtension.repeatedStr"].length; ++i)
                         writer.uint32(/* id 103, wireType 2 =*/826).string(message[".jspb.test.IndirectExtension.repeatedStr"][i]);
-                if (message[".jspb.test.IndirectExtension.repeatedSimple"] !== undefined && message.hasOwnProperty(".jspb.test.IndirectExtension.repeatedSimple"))
+                if (message[".jspb.test.IndirectExtension.repeatedSimple"] && message[".jspb.test.IndirectExtension.repeatedSimple"].length && message.hasOwnProperty(".jspb.test.IndirectExtension.repeatedSimple"))
                     for (var i = 0; i < message[".jspb.test.IndirectExtension.repeatedSimple"].length; ++i)
                         $root.jspb.test.Simple1.encode(message[".jspb.test.IndirectExtension.repeatedSimple"][i], writer.uint32(/* id 104, wireType 2 =*/834).fork()).ldelim();
                 if (message[".jspb.test.simple1"] && message.hasOwnProperty(".jspb.test.simple1"))
@@ -1716,36 +1716,36 @@ $root.jspb = (function() {
             HasExtensions.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
-                if (message.str1 !== undefined && message.str1 !== null)
+                if (message.str1 != null)
                     if (!$util.isString(message.str1))
                         return "str1: string expected";
-                if (message.str2 !== undefined && message.str2 !== null)
+                if (message.str2 != null)
                     if (!$util.isString(message.str2))
                         return "str2: string expected";
-                if (message.str3 !== undefined && message.str3 !== null)
+                if (message.str3 != null)
                     if (!$util.isString(message.str3))
                         return "str3: string expected";
-                if (message[".jspb.test.IsExtension.extField"] !== undefined && message[".jspb.test.IsExtension.extField"] !== null) {
+                if (message[".jspb.test.IsExtension.extField"] != null) {
                     var error = $root.jspb.test.IsExtension.verify(message[".jspb.test.IsExtension.extField"]);
                     if (error)
                         return ".jspb.test.IsExtension.extField." + error;
                 }
-                if (message[".jspb.test.IndirectExtension.simple"] !== undefined && message[".jspb.test.IndirectExtension.simple"] !== null) {
+                if (message[".jspb.test.IndirectExtension.simple"] != null) {
                     var error = $root.jspb.test.Simple1.verify(message[".jspb.test.IndirectExtension.simple"]);
                     if (error)
                         return ".jspb.test.IndirectExtension.simple." + error;
                 }
-                if (message[".jspb.test.IndirectExtension.str"] !== undefined && message[".jspb.test.IndirectExtension.str"] !== null)
+                if (message[".jspb.test.IndirectExtension.str"] != null)
                     if (!$util.isString(message[".jspb.test.IndirectExtension.str"]))
                         return ".jspb.test.IndirectExtension.str: string expected";
-                if (message[".jspb.test.IndirectExtension.repeatedStr"] !== undefined) {
+                if (message[".jspb.test.IndirectExtension.repeatedStr"] != null) {
                     if (!Array.isArray(message[".jspb.test.IndirectExtension.repeatedStr"]))
                         return ".jspb.test.IndirectExtension.repeatedStr: array expected";
                     for (var i = 0; i < message[".jspb.test.IndirectExtension.repeatedStr"].length; ++i)
                         if (!$util.isString(message[".jspb.test.IndirectExtension.repeatedStr"][i]))
                             return ".jspb.test.IndirectExtension.repeatedStr: string[] expected";
                 }
-                if (message[".jspb.test.IndirectExtension.repeatedSimple"] !== undefined) {
+                if (message[".jspb.test.IndirectExtension.repeatedSimple"] != null) {
                     if (!Array.isArray(message[".jspb.test.IndirectExtension.repeatedSimple"]))
                         return ".jspb.test.IndirectExtension.repeatedSimple: array expected";
                     for (var i = 0; i < message[".jspb.test.IndirectExtension.repeatedSimple"].length; ++i) {
@@ -1754,7 +1754,7 @@ $root.jspb = (function() {
                             return ".jspb.test.IndirectExtension.repeatedSimple." + error;
                     }
                 }
-                if (message[".jspb.test.simple1"] !== undefined && message[".jspb.test.simple1"] !== null) {
+                if (message[".jspb.test.simple1"] != null) {
                     var error = $root.jspb.test.Simple1.verify(message[".jspb.test.simple1"]);
                     if (error)
                         return ".jspb.test.simple1." + error;
@@ -1771,23 +1771,23 @@ $root.jspb = (function() {
                 if (object instanceof $root.jspb.test.HasExtensions)
                     return object;
                 var message = new $root.jspb.test.HasExtensions();
-                if (object.str1 !== undefined && object.str1 !== null)
+                if (object.str1 != null)
                     message.str1 = String(object.str1);
-                if (object.str2 !== undefined && object.str2 !== null)
+                if (object.str2 != null)
                     message.str2 = String(object.str2);
-                if (object.str3 !== undefined && object.str3 !== null)
+                if (object.str3 != null)
                     message.str3 = String(object.str3);
-                if (object[".jspb.test.IsExtension.extField"] !== undefined && object[".jspb.test.IsExtension.extField"] !== null) {
+                if (object[".jspb.test.IsExtension.extField"] != null) {
                     if (typeof object[".jspb.test.IsExtension.extField"] !== "object")
                         throw TypeError(".jspb.test.HasExtensions..jspb.test.IsExtension.extField: object expected");
                     message[".jspb.test.IsExtension.extField"] = $root.jspb.test.IsExtension.fromObject(object[".jspb.test.IsExtension.extField"]);
                 }
-                if (object[".jspb.test.IndirectExtension.simple"] !== undefined && object[".jspb.test.IndirectExtension.simple"] !== null) {
+                if (object[".jspb.test.IndirectExtension.simple"] != null) {
                     if (typeof object[".jspb.test.IndirectExtension.simple"] !== "object")
                         throw TypeError(".jspb.test.HasExtensions..jspb.test.IndirectExtension.simple: object expected");
                     message[".jspb.test.IndirectExtension.simple"] = $root.jspb.test.Simple1.fromObject(object[".jspb.test.IndirectExtension.simple"]);
                 }
-                if (object[".jspb.test.IndirectExtension.str"] !== undefined && object[".jspb.test.IndirectExtension.str"] !== null)
+                if (object[".jspb.test.IndirectExtension.str"] != null)
                     message[".jspb.test.IndirectExtension.str"] = String(object[".jspb.test.IndirectExtension.str"]);
                 if (object[".jspb.test.IndirectExtension.repeatedStr"]) {
                     if (!Array.isArray(object[".jspb.test.IndirectExtension.repeatedStr"]))
@@ -1806,7 +1806,7 @@ $root.jspb = (function() {
                         message[".jspb.test.IndirectExtension.repeatedSimple"][i] = $root.jspb.test.Simple1.fromObject(object[".jspb.test.IndirectExtension.repeatedSimple"][i]);
                     }
                 }
-                if (object[".jspb.test.simple1"] !== undefined && object[".jspb.test.simple1"] !== null) {
+                if (object[".jspb.test.simple1"] != null) {
                     if (typeof object[".jspb.test.simple1"] !== "object")
                         throw TypeError(".jspb.test.HasExtensions..jspb.test.simple1: object expected");
                     message[".jspb.test.simple1"] = $root.jspb.test.Simple1.fromObject(object[".jspb.test.simple1"]);
@@ -1846,17 +1846,17 @@ $root.jspb = (function() {
                     object[".jspb.test.IndirectExtension.str"] = "";
                     object[".jspb.test.simple1"] = null;
                 }
-                if (message.str1 !== undefined && message.str1 !== null && message.hasOwnProperty("str1"))
+                if (message.str1 != null && message.hasOwnProperty("str1"))
                     object.str1 = message.str1;
-                if (message.str2 !== undefined && message.str2 !== null && message.hasOwnProperty("str2"))
+                if (message.str2 != null && message.hasOwnProperty("str2"))
                     object.str2 = message.str2;
-                if (message.str3 !== undefined && message.str3 !== null && message.hasOwnProperty("str3"))
+                if (message.str3 != null && message.hasOwnProperty("str3"))
                     object.str3 = message.str3;
-                if (message[".jspb.test.IsExtension.extField"] !== undefined && message[".jspb.test.IsExtension.extField"] !== null && message.hasOwnProperty(".jspb.test.IsExtension.extField"))
+                if (message[".jspb.test.IsExtension.extField"] != null && message.hasOwnProperty(".jspb.test.IsExtension.extField"))
                     object[".jspb.test.IsExtension.extField"] = $root.jspb.test.IsExtension.toObject(message[".jspb.test.IsExtension.extField"], options);
-                if (message[".jspb.test.IndirectExtension.simple"] !== undefined && message[".jspb.test.IndirectExtension.simple"] !== null && message.hasOwnProperty(".jspb.test.IndirectExtension.simple"))
+                if (message[".jspb.test.IndirectExtension.simple"] != null && message.hasOwnProperty(".jspb.test.IndirectExtension.simple"))
                     object[".jspb.test.IndirectExtension.simple"] = $root.jspb.test.Simple1.toObject(message[".jspb.test.IndirectExtension.simple"], options);
-                if (message[".jspb.test.IndirectExtension.str"] !== undefined && message[".jspb.test.IndirectExtension.str"] !== null && message.hasOwnProperty(".jspb.test.IndirectExtension.str"))
+                if (message[".jspb.test.IndirectExtension.str"] != null && message.hasOwnProperty(".jspb.test.IndirectExtension.str"))
                     object[".jspb.test.IndirectExtension.str"] = message[".jspb.test.IndirectExtension.str"];
                 if (message[".jspb.test.IndirectExtension.repeatedStr"] && message[".jspb.test.IndirectExtension.repeatedStr"].length) {
                     object[".jspb.test.IndirectExtension.repeatedStr"] = [];
@@ -1868,7 +1868,7 @@ $root.jspb = (function() {
                     for (var j = 0; j < message[".jspb.test.IndirectExtension.repeatedSimple"].length; ++j)
                         object[".jspb.test.IndirectExtension.repeatedSimple"][j] = $root.jspb.test.Simple1.toObject(message[".jspb.test.IndirectExtension.repeatedSimple"][j], options);
                 }
-                if (message[".jspb.test.simple1"] !== undefined && message[".jspb.test.simple1"] !== null && message.hasOwnProperty(".jspb.test.simple1"))
+                if (message[".jspb.test.simple1"] != null && message.hasOwnProperty(".jspb.test.simple1"))
                     object[".jspb.test.simple1"] = $root.jspb.test.Simple1.toObject(message[".jspb.test.simple1"], options);
                 return object;
             };
@@ -1967,10 +1967,10 @@ $root.jspb = (function() {
                 writer.uint32(/* id 1, wireType 2 =*/10).string(message.aString);
                 if (message.aNestedMessage && message.hasOwnProperty("aNestedMessage"))
                     $root.jspb.test.Complex.Nested.encode(message.aNestedMessage, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
-                if (message.aRepeatedMessage !== undefined && message.hasOwnProperty("aRepeatedMessage"))
+                if (message.aRepeatedMessage && message.aRepeatedMessage.length && message.hasOwnProperty("aRepeatedMessage"))
                     for (var i = 0; i < message.aRepeatedMessage.length; ++i)
                         $root.jspb.test.Complex.Nested.encode(message.aRepeatedMessage[i], writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
-                if (message.aRepeatedString !== undefined && message.hasOwnProperty("aRepeatedString"))
+                if (message.aRepeatedString && message.aRepeatedString.length && message.hasOwnProperty("aRepeatedString"))
                     for (var i = 0; i < message.aRepeatedString.length; ++i)
                         writer.uint32(/* id 7, wireType 2 =*/58).string(message.aRepeatedString[i]);
                 writer.uint32(/* id 9, wireType 0 =*/72).bool(message.anOutOfOrderBool);
@@ -2058,12 +2058,12 @@ $root.jspb = (function() {
                     return "aString: string expected";
                 if (typeof message.anOutOfOrderBool !== "boolean")
                     return "anOutOfOrderBool: boolean expected";
-                if (message.aNestedMessage !== undefined && message.aNestedMessage !== null) {
+                if (message.aNestedMessage != null) {
                     var error = $root.jspb.test.Complex.Nested.verify(message.aNestedMessage);
                     if (error)
                         return "aNestedMessage." + error;
                 }
-                if (message.aRepeatedMessage !== undefined) {
+                if (message.aRepeatedMessage != null) {
                     if (!Array.isArray(message.aRepeatedMessage))
                         return "aRepeatedMessage: array expected";
                     for (var i = 0; i < message.aRepeatedMessage.length; ++i) {
@@ -2072,7 +2072,7 @@ $root.jspb = (function() {
                             return "aRepeatedMessage." + error;
                     }
                 }
-                if (message.aRepeatedString !== undefined) {
+                if (message.aRepeatedString != null) {
                     if (!Array.isArray(message.aRepeatedString))
                         return "aRepeatedString: array expected";
                     for (var i = 0; i < message.aRepeatedString.length; ++i)
@@ -2091,11 +2091,11 @@ $root.jspb = (function() {
                 if (object instanceof $root.jspb.test.Complex)
                     return object;
                 var message = new $root.jspb.test.Complex();
-                if (object.aString !== undefined && object.aString !== null)
+                if (object.aString != null)
                     message.aString = String(object.aString);
-                if (object.anOutOfOrderBool !== undefined && object.anOutOfOrderBool !== null)
+                if (object.anOutOfOrderBool != null)
                     message.anOutOfOrderBool = Boolean(object.anOutOfOrderBool);
-                if (object.aNestedMessage !== undefined && object.aNestedMessage !== null) {
+                if (object.aNestedMessage != null) {
                     if (typeof object.aNestedMessage !== "object")
                         throw TypeError(".jspb.test.Complex.aNestedMessage: object expected");
                     message.aNestedMessage = $root.jspb.test.Complex.Nested.fromObject(object.aNestedMessage);
@@ -2148,9 +2148,9 @@ $root.jspb = (function() {
                     object.aNestedMessage = null;
                     object.anOutOfOrderBool = false;
                 }
-                if (message.aString !== undefined && message.aString !== null && message.hasOwnProperty("aString"))
+                if (message.aString != null && message.hasOwnProperty("aString"))
                     object.aString = message.aString;
-                if (message.aNestedMessage !== undefined && message.aNestedMessage !== null && message.hasOwnProperty("aNestedMessage"))
+                if (message.aNestedMessage != null && message.hasOwnProperty("aNestedMessage"))
                     object.aNestedMessage = $root.jspb.test.Complex.Nested.toObject(message.aNestedMessage, options);
                 if (message.aRepeatedMessage && message.aRepeatedMessage.length) {
                     object.aRepeatedMessage = [];
@@ -2162,7 +2162,7 @@ $root.jspb = (function() {
                     for (var j = 0; j < message.aRepeatedString.length; ++j)
                         object.aRepeatedString[j] = message.aRepeatedString[j];
                 }
-                if (message.anOutOfOrderBool !== undefined && message.anOutOfOrderBool !== null && message.hasOwnProperty("anOutOfOrderBool"))
+                if (message.anOutOfOrderBool != null && message.hasOwnProperty("anOutOfOrderBool"))
                     object.anOutOfOrderBool = message.anOutOfOrderBool;
                 return object;
             };
@@ -2306,7 +2306,7 @@ $root.jspb = (function() {
                     if (object instanceof $root.jspb.test.Complex.Nested)
                         return object;
                     var message = new $root.jspb.test.Complex.Nested();
-                    if (object.anInt !== undefined && object.anInt !== null)
+                    if (object.anInt != null)
                         message.anInt = object.anInt | 0;
                     return message;
                 };
@@ -2332,7 +2332,7 @@ $root.jspb = (function() {
                     var object = {};
                     if (options.defaults)
                         object.anInt = 0;
-                    if (message.anInt !== undefined && message.anInt !== null && message.hasOwnProperty("anInt"))
+                    if (message.anInt != null && message.hasOwnProperty("anInt"))
                         object.anInt = message.anInt;
                     return object;
                 };
@@ -2551,7 +2551,7 @@ $root.jspb = (function() {
                 Complex.encode = function encode(message, writer) {
                     if (!writer)
                         writer = $Writer.create();
-                    if (message.innerComplexField !== undefined && message.innerComplexField !== null && message.hasOwnProperty("innerComplexField"))
+                    if (message.innerComplexField != null && message.hasOwnProperty("innerComplexField"))
                         writer.uint32(/* id 1, wireType 0 =*/8).int32(message.innerComplexField);
                     return writer;
                 };
@@ -2613,7 +2613,7 @@ $root.jspb = (function() {
                 Complex.verify = function verify(message) {
                     if (typeof message !== "object" || message === null)
                         return "object expected";
-                    if (message.innerComplexField !== undefined && message.innerComplexField !== null)
+                    if (message.innerComplexField != null)
                         if (!$util.isInteger(message.innerComplexField))
                             return "innerComplexField: integer expected";
                     return null;
@@ -2628,7 +2628,7 @@ $root.jspb = (function() {
                     if (object instanceof $root.jspb.test.OuterMessage.Complex)
                         return object;
                     var message = new $root.jspb.test.OuterMessage.Complex();
-                    if (object.innerComplexField !== undefined && object.innerComplexField !== null)
+                    if (object.innerComplexField != null)
                         message.innerComplexField = object.innerComplexField | 0;
                     return message;
                 };
@@ -2654,7 +2654,7 @@ $root.jspb = (function() {
                     var object = {};
                     if (options.defaults)
                         object.innerComplexField = 0;
-                    if (message.innerComplexField !== undefined && message.innerComplexField !== null && message.hasOwnProperty("innerComplexField"))
+                    if (message.innerComplexField != null && message.hasOwnProperty("innerComplexField"))
                         object.innerComplexField = message.innerComplexField;
                     return object;
                 };
@@ -2727,7 +2727,7 @@ $root.jspb = (function() {
             IsExtension.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
-                if (message.ext1 !== undefined && message.ext1 !== null && message.hasOwnProperty("ext1"))
+                if (message.ext1 != null && message.hasOwnProperty("ext1"))
                     writer.uint32(/* id 1, wireType 2 =*/10).string(message.ext1);
                 return writer;
             };
@@ -2789,7 +2789,7 @@ $root.jspb = (function() {
             IsExtension.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
-                if (message.ext1 !== undefined && message.ext1 !== null)
+                if (message.ext1 != null)
                     if (!$util.isString(message.ext1))
                         return "ext1: string expected";
                 return null;
@@ -2804,7 +2804,7 @@ $root.jspb = (function() {
                 if (object instanceof $root.jspb.test.IsExtension)
                     return object;
                 var message = new $root.jspb.test.IsExtension();
-                if (object.ext1 !== undefined && object.ext1 !== null)
+                if (object.ext1 != null)
                     message.ext1 = String(object.ext1);
                 return message;
             };
@@ -2830,7 +2830,7 @@ $root.jspb = (function() {
                 var object = {};
                 if (options.defaults)
                     object.ext1 = "";
-                if (message.ext1 !== undefined && message.ext1 !== null && message.hasOwnProperty("ext1"))
+                if (message.ext1 != null && message.hasOwnProperty("ext1"))
                     object.ext1 = message.ext1;
                 return object;
             };
@@ -3079,15 +3079,15 @@ $root.jspb = (function() {
             DefaultValues.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
-                if (message.stringField !== undefined && message.stringField !== null && message.hasOwnProperty("stringField"))
+                if (message.stringField != null && message.hasOwnProperty("stringField"))
                     writer.uint32(/* id 1, wireType 2 =*/10).string(message.stringField);
-                if (message.boolField !== undefined && message.boolField !== null && message.hasOwnProperty("boolField"))
+                if (message.boolField != null && message.hasOwnProperty("boolField"))
                     writer.uint32(/* id 2, wireType 0 =*/16).bool(message.boolField);
-                if (message.intField !== undefined && message.intField !== null && message.hasOwnProperty("intField"))
+                if (message.intField != null && message.hasOwnProperty("intField"))
                     writer.uint32(/* id 3, wireType 0 =*/24).int64(message.intField);
-                if (message.enumField !== undefined && message.enumField !== null && message.hasOwnProperty("enumField"))
+                if (message.enumField != null && message.hasOwnProperty("enumField"))
                     writer.uint32(/* id 4, wireType 0 =*/32).uint32(message.enumField);
-                if (message.emptyField !== undefined && message.emptyField !== null && message.hasOwnProperty("emptyField"))
+                if (message.emptyField != null && message.hasOwnProperty("emptyField"))
                     writer.uint32(/* id 6, wireType 2 =*/50).string(message.emptyField);
                 if (message.bytesField && message.hasOwnProperty("bytesField"))
                     writer.uint32(/* id 8, wireType 2 =*/66).bytes(message.bytesField);
@@ -3166,16 +3166,16 @@ $root.jspb = (function() {
             DefaultValues.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
-                if (message.stringField !== undefined && message.stringField !== null)
+                if (message.stringField != null)
                     if (!$util.isString(message.stringField))
                         return "stringField: string expected";
-                if (message.boolField !== undefined && message.boolField !== null)
+                if (message.boolField != null)
                     if (typeof message.boolField !== "boolean")
                         return "boolField: boolean expected";
-                if (message.intField !== undefined && message.intField !== null)
+                if (message.intField != null)
                     if (!$util.isInteger(message.intField) && !(message.intField && $util.isInteger(message.intField.low) && $util.isInteger(message.intField.high)))
                         return "intField: integer|Long expected";
-                if (message.enumField !== undefined && message.enumField !== null)
+                if (message.enumField != null)
                     switch (message.enumField) {
                     default:
                         return "enumField: enum value expected";
@@ -3183,10 +3183,10 @@ $root.jspb = (function() {
                     case 77:
                         break;
                     }
-                if (message.emptyField !== undefined && message.emptyField !== null)
+                if (message.emptyField != null)
                     if (!$util.isString(message.emptyField))
                         return "emptyField: string expected";
-                if (message.bytesField !== undefined && message.bytesField !== null)
+                if (message.bytesField != null)
                     if (!(message.bytesField && typeof message.bytesField.length === "number" || $util.isString(message.bytesField)))
                         return "bytesField: buffer expected";
                 return null;
@@ -3201,11 +3201,11 @@ $root.jspb = (function() {
                 if (object instanceof $root.jspb.test.DefaultValues)
                     return object;
                 var message = new $root.jspb.test.DefaultValues();
-                if (object.stringField !== undefined && object.stringField !== null)
+                if (object.stringField != null)
                     message.stringField = String(object.stringField);
-                if (object.boolField !== undefined && object.boolField !== null)
+                if (object.boolField != null)
                     message.boolField = Boolean(object.boolField);
-                if (object.intField !== undefined && object.intField !== null)
+                if (object.intField != null)
                     if ($util.Long)
                         (message.intField = $util.Long.fromValue(object.intField)).unsigned = false;
                     else if (typeof object.intField === "string")
@@ -3224,9 +3224,9 @@ $root.jspb = (function() {
                     message.enumField = 77;
                     break;
                 }
-                if (object.emptyField !== undefined && object.emptyField !== null)
+                if (object.emptyField != null)
                     message.emptyField = String(object.emptyField);
-                if (object.bytesField !== undefined && object.bytesField !== null)
+                if (object.bytesField != null)
                     if (typeof object.bytesField === "string")
                         $util.base64.decode(object.bytesField, message.bytesField = $util.newBuffer($util.base64.length(object.bytesField)), 0);
                     else if (object.bytesField.length)
@@ -3269,20 +3269,20 @@ $root.jspb = (function() {
                         111
                     ];
                 }
-                if (message.stringField !== undefined && message.stringField !== null && message.hasOwnProperty("stringField"))
+                if (message.stringField != null && message.hasOwnProperty("stringField"))
                     object.stringField = message.stringField;
-                if (message.boolField !== undefined && message.boolField !== null && message.hasOwnProperty("boolField"))
+                if (message.boolField != null && message.hasOwnProperty("boolField"))
                     object.boolField = message.boolField;
-                if (message.intField !== undefined && message.intField !== null && message.hasOwnProperty("intField"))
+                if (message.intField != null && message.hasOwnProperty("intField"))
                     if (typeof message.intField === "number")
                         object.intField = options.longs === String ? String(message.intField) : message.intField;
                     else
                         object.intField = options.longs === String ? $util.Long.prototype.toString.call(message.intField) : options.longs === Number ? new $util.LongBits(message.intField.low >>> 0, message.intField.high >>> 0).toNumber() : message.intField;
-                if (message.enumField !== undefined && message.enumField !== null && message.hasOwnProperty("enumField"))
+                if (message.enumField != null && message.hasOwnProperty("enumField"))
                     object.enumField = options.enums === String ? $root.jspb.test.DefaultValues.Enum[message.enumField] : message.enumField;
-                if (message.emptyField !== undefined && message.emptyField !== null && message.hasOwnProperty("emptyField"))
+                if (message.emptyField != null && message.hasOwnProperty("emptyField"))
                     object.emptyField = message.emptyField;
-                if (message.bytesField !== undefined && message.bytesField !== null && message.hasOwnProperty("bytesField"))
+                if (message.bytesField != null && message.hasOwnProperty("bytesField"))
                     object.bytesField = options.bytes === String ? $util.base64.encode(message.bytesField, 0, message.bytesField.length) : options.bytes === Array ? Array.prototype.slice.call(message.bytesField) : message.bytesField;
                 return object;
             };
@@ -3411,21 +3411,21 @@ $root.jspb = (function() {
             FloatingPointFields.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
-                if (message.optionalFloatField !== undefined && message.optionalFloatField !== null && message.hasOwnProperty("optionalFloatField"))
+                if (message.optionalFloatField != null && message.hasOwnProperty("optionalFloatField"))
                     writer.uint32(/* id 1, wireType 5 =*/13).float(message.optionalFloatField);
                 writer.uint32(/* id 2, wireType 5 =*/21).float(message.requiredFloatField);
-                if (message.repeatedFloatField !== undefined && message.hasOwnProperty("repeatedFloatField"))
+                if (message.repeatedFloatField && message.repeatedFloatField.length && message.hasOwnProperty("repeatedFloatField"))
                     for (var i = 0; i < message.repeatedFloatField.length; ++i)
                         writer.uint32(/* id 3, wireType 5 =*/29).float(message.repeatedFloatField[i]);
-                if (message.defaultFloatField !== undefined && message.defaultFloatField !== null && message.hasOwnProperty("defaultFloatField"))
+                if (message.defaultFloatField != null && message.hasOwnProperty("defaultFloatField"))
                     writer.uint32(/* id 4, wireType 5 =*/37).float(message.defaultFloatField);
-                if (message.optionalDoubleField !== undefined && message.optionalDoubleField !== null && message.hasOwnProperty("optionalDoubleField"))
+                if (message.optionalDoubleField != null && message.hasOwnProperty("optionalDoubleField"))
                     writer.uint32(/* id 5, wireType 1 =*/41).double(message.optionalDoubleField);
                 writer.uint32(/* id 6, wireType 1 =*/49).double(message.requiredDoubleField);
-                if (message.repeatedDoubleField !== undefined && message.hasOwnProperty("repeatedDoubleField"))
+                if (message.repeatedDoubleField && message.repeatedDoubleField.length && message.hasOwnProperty("repeatedDoubleField"))
                     for (var i = 0; i < message.repeatedDoubleField.length; ++i)
                         writer.uint32(/* id 7, wireType 1 =*/57).double(message.repeatedDoubleField[i]);
-                if (message.defaultDoubleField !== undefined && message.defaultDoubleField !== null && message.hasOwnProperty("defaultDoubleField"))
+                if (message.defaultDoubleField != null && message.hasOwnProperty("defaultDoubleField"))
                     writer.uint32(/* id 8, wireType 1 =*/65).double(message.defaultDoubleField);
                 return writer;
             };
@@ -3526,34 +3526,34 @@ $root.jspb = (function() {
             FloatingPointFields.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
-                if (message.optionalFloatField !== undefined && message.optionalFloatField !== null)
+                if (message.optionalFloatField != null)
                     if (typeof message.optionalFloatField !== "number")
                         return "optionalFloatField: number expected";
                 if (typeof message.requiredFloatField !== "number")
                     return "requiredFloatField: number expected";
-                if (message.repeatedFloatField !== undefined) {
+                if (message.repeatedFloatField != null) {
                     if (!Array.isArray(message.repeatedFloatField))
                         return "repeatedFloatField: array expected";
                     for (var i = 0; i < message.repeatedFloatField.length; ++i)
                         if (typeof message.repeatedFloatField[i] !== "number")
                             return "repeatedFloatField: number[] expected";
                 }
-                if (message.defaultFloatField !== undefined && message.defaultFloatField !== null)
+                if (message.defaultFloatField != null)
                     if (typeof message.defaultFloatField !== "number")
                         return "defaultFloatField: number expected";
-                if (message.optionalDoubleField !== undefined && message.optionalDoubleField !== null)
+                if (message.optionalDoubleField != null)
                     if (typeof message.optionalDoubleField !== "number")
                         return "optionalDoubleField: number expected";
                 if (typeof message.requiredDoubleField !== "number")
                     return "requiredDoubleField: number expected";
-                if (message.repeatedDoubleField !== undefined) {
+                if (message.repeatedDoubleField != null) {
                     if (!Array.isArray(message.repeatedDoubleField))
                         return "repeatedDoubleField: array expected";
                     for (var i = 0; i < message.repeatedDoubleField.length; ++i)
                         if (typeof message.repeatedDoubleField[i] !== "number")
                             return "repeatedDoubleField: number[] expected";
                 }
-                if (message.defaultDoubleField !== undefined && message.defaultDoubleField !== null)
+                if (message.defaultDoubleField != null)
                     if (typeof message.defaultDoubleField !== "number")
                         return "defaultDoubleField: number expected";
                 return null;
@@ -3568,9 +3568,9 @@ $root.jspb = (function() {
                 if (object instanceof $root.jspb.test.FloatingPointFields)
                     return object;
                 var message = new $root.jspb.test.FloatingPointFields();
-                if (object.optionalFloatField !== undefined && object.optionalFloatField !== null)
+                if (object.optionalFloatField != null)
                     message.optionalFloatField = Number(object.optionalFloatField);
-                if (object.requiredFloatField !== undefined && object.requiredFloatField !== null)
+                if (object.requiredFloatField != null)
                     message.requiredFloatField = Number(object.requiredFloatField);
                 if (object.repeatedFloatField) {
                     if (!Array.isArray(object.repeatedFloatField))
@@ -3579,11 +3579,11 @@ $root.jspb = (function() {
                     for (var i = 0; i < object.repeatedFloatField.length; ++i)
                         message.repeatedFloatField[i] = Number(object.repeatedFloatField[i]);
                 }
-                if (object.defaultFloatField !== undefined && object.defaultFloatField !== null)
+                if (object.defaultFloatField != null)
                     message.defaultFloatField = Number(object.defaultFloatField);
-                if (object.optionalDoubleField !== undefined && object.optionalDoubleField !== null)
+                if (object.optionalDoubleField != null)
                     message.optionalDoubleField = Number(object.optionalDoubleField);
-                if (object.requiredDoubleField !== undefined && object.requiredDoubleField !== null)
+                if (object.requiredDoubleField != null)
                     message.requiredDoubleField = Number(object.requiredDoubleField);
                 if (object.repeatedDoubleField) {
                     if (!Array.isArray(object.repeatedDoubleField))
@@ -3592,7 +3592,7 @@ $root.jspb = (function() {
                     for (var i = 0; i < object.repeatedDoubleField.length; ++i)
                         message.repeatedDoubleField[i] = Number(object.repeatedDoubleField[i]);
                 }
-                if (object.defaultDoubleField !== undefined && object.defaultDoubleField !== null)
+                if (object.defaultDoubleField != null)
                     message.defaultDoubleField = Number(object.defaultDoubleField);
                 return message;
             };
@@ -3628,27 +3628,27 @@ $root.jspb = (function() {
                     object.requiredDoubleField = 0;
                     object.defaultDoubleField = 2;
                 }
-                if (message.optionalFloatField !== undefined && message.optionalFloatField !== null && message.hasOwnProperty("optionalFloatField"))
+                if (message.optionalFloatField != null && message.hasOwnProperty("optionalFloatField"))
                     object.optionalFloatField = message.optionalFloatField;
-                if (message.requiredFloatField !== undefined && message.requiredFloatField !== null && message.hasOwnProperty("requiredFloatField"))
+                if (message.requiredFloatField != null && message.hasOwnProperty("requiredFloatField"))
                     object.requiredFloatField = message.requiredFloatField;
                 if (message.repeatedFloatField && message.repeatedFloatField.length) {
                     object.repeatedFloatField = [];
                     for (var j = 0; j < message.repeatedFloatField.length; ++j)
                         object.repeatedFloatField[j] = message.repeatedFloatField[j];
                 }
-                if (message.defaultFloatField !== undefined && message.defaultFloatField !== null && message.hasOwnProperty("defaultFloatField"))
+                if (message.defaultFloatField != null && message.hasOwnProperty("defaultFloatField"))
                     object.defaultFloatField = message.defaultFloatField;
-                if (message.optionalDoubleField !== undefined && message.optionalDoubleField !== null && message.hasOwnProperty("optionalDoubleField"))
+                if (message.optionalDoubleField != null && message.hasOwnProperty("optionalDoubleField"))
                     object.optionalDoubleField = message.optionalDoubleField;
-                if (message.requiredDoubleField !== undefined && message.requiredDoubleField !== null && message.hasOwnProperty("requiredDoubleField"))
+                if (message.requiredDoubleField != null && message.hasOwnProperty("requiredDoubleField"))
                     object.requiredDoubleField = message.requiredDoubleField;
                 if (message.repeatedDoubleField && message.repeatedDoubleField.length) {
                     object.repeatedDoubleField = [];
                     for (var j = 0; j < message.repeatedDoubleField.length; ++j)
                         object.repeatedDoubleField[j] = message.repeatedDoubleField[j];
                 }
-                if (message.defaultDoubleField !== undefined && message.defaultDoubleField !== null && message.hasOwnProperty("defaultDoubleField"))
+                if (message.defaultDoubleField != null && message.hasOwnProperty("defaultDoubleField"))
                     object.defaultDoubleField = message.defaultDoubleField;
                 return object;
             };
@@ -3749,16 +3749,16 @@ $root.jspb = (function() {
             TestClone.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
-                if (message.str !== undefined && message.str !== null && message.hasOwnProperty("str"))
+                if (message.str != null && message.hasOwnProperty("str"))
                     writer.uint32(/* id 1, wireType 2 =*/10).string(message.str);
                 if (message.simple1 && message.hasOwnProperty("simple1"))
                     $root.jspb.test.Simple1.encode(message.simple1, writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
-                if (message.simple2 !== undefined && message.hasOwnProperty("simple2"))
+                if (message.simple2 && message.simple2.length && message.hasOwnProperty("simple2"))
                     for (var i = 0; i < message.simple2.length; ++i)
                         $root.jspb.test.Simple1.encode(message.simple2[i], writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
                 if (message.bytesField && message.hasOwnProperty("bytesField"))
                     writer.uint32(/* id 6, wireType 2 =*/50).bytes(message.bytesField);
-                if (message.unused !== undefined && message.unused !== null && message.hasOwnProperty("unused"))
+                if (message.unused != null && message.hasOwnProperty("unused"))
                     writer.uint32(/* id 7, wireType 2 =*/58).string(message.unused);
                 if (message[".jspb.test.CloneExtension.extField"] && message.hasOwnProperty(".jspb.test.CloneExtension.extField"))
                     $root.jspb.test.CloneExtension.encode(message[".jspb.test.CloneExtension.extField"], writer.uint32(/* id 100, wireType 2 =*/802).fork()).ldelim();
@@ -3839,15 +3839,15 @@ $root.jspb = (function() {
             TestClone.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
-                if (message.str !== undefined && message.str !== null)
+                if (message.str != null)
                     if (!$util.isString(message.str))
                         return "str: string expected";
-                if (message.simple1 !== undefined && message.simple1 !== null) {
+                if (message.simple1 != null) {
                     var error = $root.jspb.test.Simple1.verify(message.simple1);
                     if (error)
                         return "simple1." + error;
                 }
-                if (message.simple2 !== undefined) {
+                if (message.simple2 != null) {
                     if (!Array.isArray(message.simple2))
                         return "simple2: array expected";
                     for (var i = 0; i < message.simple2.length; ++i) {
@@ -3856,13 +3856,13 @@ $root.jspb = (function() {
                             return "simple2." + error;
                     }
                 }
-                if (message.bytesField !== undefined && message.bytesField !== null)
+                if (message.bytesField != null)
                     if (!(message.bytesField && typeof message.bytesField.length === "number" || $util.isString(message.bytesField)))
                         return "bytesField: buffer expected";
-                if (message.unused !== undefined && message.unused !== null)
+                if (message.unused != null)
                     if (!$util.isString(message.unused))
                         return "unused: string expected";
-                if (message[".jspb.test.CloneExtension.extField"] !== undefined && message[".jspb.test.CloneExtension.extField"] !== null) {
+                if (message[".jspb.test.CloneExtension.extField"] != null) {
                     var error = $root.jspb.test.CloneExtension.verify(message[".jspb.test.CloneExtension.extField"]);
                     if (error)
                         return ".jspb.test.CloneExtension.extField." + error;
@@ -3879,9 +3879,9 @@ $root.jspb = (function() {
                 if (object instanceof $root.jspb.test.TestClone)
                     return object;
                 var message = new $root.jspb.test.TestClone();
-                if (object.str !== undefined && object.str !== null)
+                if (object.str != null)
                     message.str = String(object.str);
-                if (object.simple1 !== undefined && object.simple1 !== null) {
+                if (object.simple1 != null) {
                     if (typeof object.simple1 !== "object")
                         throw TypeError(".jspb.test.TestClone.simple1: object expected");
                     message.simple1 = $root.jspb.test.Simple1.fromObject(object.simple1);
@@ -3896,14 +3896,14 @@ $root.jspb = (function() {
                         message.simple2[i] = $root.jspb.test.Simple1.fromObject(object.simple2[i]);
                     }
                 }
-                if (object.bytesField !== undefined && object.bytesField !== null)
+                if (object.bytesField != null)
                     if (typeof object.bytesField === "string")
                         $util.base64.decode(object.bytesField, message.bytesField = $util.newBuffer($util.base64.length(object.bytesField)), 0);
                     else if (object.bytesField.length)
                         message.bytesField = object.bytesField;
-                if (object.unused !== undefined && object.unused !== null)
+                if (object.unused != null)
                     message.unused = String(object.unused);
-                if (object[".jspb.test.CloneExtension.extField"] !== undefined && object[".jspb.test.CloneExtension.extField"] !== null) {
+                if (object[".jspb.test.CloneExtension.extField"] != null) {
                     if (typeof object[".jspb.test.CloneExtension.extField"] !== "object")
                         throw TypeError(".jspb.test.TestClone..jspb.test.CloneExtension.extField: object expected");
                     message[".jspb.test.CloneExtension.extField"] = $root.jspb.test.CloneExtension.fromObject(object[".jspb.test.CloneExtension.extField"]);
@@ -3939,20 +3939,20 @@ $root.jspb = (function() {
                     object.unused = "";
                     object[".jspb.test.CloneExtension.extField"] = null;
                 }
-                if (message.str !== undefined && message.str !== null && message.hasOwnProperty("str"))
+                if (message.str != null && message.hasOwnProperty("str"))
                     object.str = message.str;
-                if (message.simple1 !== undefined && message.simple1 !== null && message.hasOwnProperty("simple1"))
+                if (message.simple1 != null && message.hasOwnProperty("simple1"))
                     object.simple1 = $root.jspb.test.Simple1.toObject(message.simple1, options);
                 if (message.simple2 && message.simple2.length) {
                     object.simple2 = [];
                     for (var j = 0; j < message.simple2.length; ++j)
                         object.simple2[j] = $root.jspb.test.Simple1.toObject(message.simple2[j], options);
                 }
-                if (message.bytesField !== undefined && message.bytesField !== null && message.hasOwnProperty("bytesField"))
+                if (message.bytesField != null && message.hasOwnProperty("bytesField"))
                     object.bytesField = options.bytes === String ? $util.base64.encode(message.bytesField, 0, message.bytesField.length) : options.bytes === Array ? Array.prototype.slice.call(message.bytesField) : message.bytesField;
-                if (message.unused !== undefined && message.unused !== null && message.hasOwnProperty("unused"))
+                if (message.unused != null && message.hasOwnProperty("unused"))
                     object.unused = message.unused;
-                if (message[".jspb.test.CloneExtension.extField"] !== undefined && message[".jspb.test.CloneExtension.extField"] !== null && message.hasOwnProperty(".jspb.test.CloneExtension.extField"))
+                if (message[".jspb.test.CloneExtension.extField"] != null && message.hasOwnProperty(".jspb.test.CloneExtension.extField"))
                     object[".jspb.test.CloneExtension.extField"] = $root.jspb.test.CloneExtension.toObject(message[".jspb.test.CloneExtension.extField"], options);
                 return object;
             };
@@ -4022,7 +4022,7 @@ $root.jspb = (function() {
             CloneExtension.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
-                if (message.ext !== undefined && message.ext !== null && message.hasOwnProperty("ext"))
+                if (message.ext != null && message.hasOwnProperty("ext"))
                     writer.uint32(/* id 2, wireType 2 =*/18).string(message.ext);
                 return writer;
             };
@@ -4084,7 +4084,7 @@ $root.jspb = (function() {
             CloneExtension.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
-                if (message.ext !== undefined && message.ext !== null)
+                if (message.ext != null)
                     if (!$util.isString(message.ext))
                         return "ext: string expected";
                 return null;
@@ -4099,7 +4099,7 @@ $root.jspb = (function() {
                 if (object instanceof $root.jspb.test.CloneExtension)
                     return object;
                 var message = new $root.jspb.test.CloneExtension();
-                if (object.ext !== undefined && object.ext !== null)
+                if (object.ext != null)
                     message.ext = String(object.ext);
                 return message;
             };
@@ -4125,7 +4125,7 @@ $root.jspb = (function() {
                 var object = {};
                 if (options.defaults)
                     object.ext = "";
-                if (message.ext !== undefined && message.ext !== null && message.hasOwnProperty("ext"))
+                if (message.ext != null && message.hasOwnProperty("ext"))
                     object.ext = message.ext;
                 return object;
             };
@@ -4226,13 +4226,13 @@ $root.jspb = (function() {
             TestGroup.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
-                if (message.repeatedGroup !== undefined && message.hasOwnProperty("repeatedGroup"))
+                if (message.repeatedGroup && message.repeatedGroup.length && message.hasOwnProperty("repeatedGroup"))
                     for (var i = 0; i < message.repeatedGroup.length; ++i)
                         $root.jspb.test.TestGroup.RepeatedGroup.encode(message.repeatedGroup[i], writer.uint32(/* id 1, wireType 3 =*/11)).uint32(/* id 1, wireType 4 =*/12);
                 $root.jspb.test.TestGroup.RequiredGroup.encode(message.requiredGroup, writer.uint32(/* id 2, wireType 3 =*/19)).uint32(/* id 2, wireType 4 =*/20);
                 if (message.optionalGroup && message.hasOwnProperty("optionalGroup"))
                     $root.jspb.test.TestGroup.OptionalGroup.encode(message.optionalGroup, writer.uint32(/* id 3, wireType 3 =*/27)).uint32(/* id 3, wireType 4 =*/28);
-                if (message.id !== undefined && message.id !== null && message.hasOwnProperty("id"))
+                if (message.id != null && message.hasOwnProperty("id"))
                     writer.uint32(/* id 4, wireType 2 =*/34).string(message.id);
                 $root.jspb.test.Simple2.encode(message.requiredSimple, writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
                 if (message.optionalSimple && message.hasOwnProperty("optionalSimple"))
@@ -4318,7 +4318,7 @@ $root.jspb = (function() {
             TestGroup.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
-                if (message.repeatedGroup !== undefined) {
+                if (message.repeatedGroup != null) {
                     if (!Array.isArray(message.repeatedGroup))
                         return "repeatedGroup: array expected";
                     for (var i = 0; i < message.repeatedGroup.length; ++i) {
@@ -4330,18 +4330,18 @@ $root.jspb = (function() {
                 var error = $root.jspb.test.TestGroup.RequiredGroup.verify(message.requiredGroup);
                 if (error)
                     return "requiredGroup." + error;
-                if (message.optionalGroup !== undefined && message.optionalGroup !== null) {
+                if (message.optionalGroup != null) {
                     var error = $root.jspb.test.TestGroup.OptionalGroup.verify(message.optionalGroup);
                     if (error)
                         return "optionalGroup." + error;
                 }
-                if (message.id !== undefined && message.id !== null)
+                if (message.id != null)
                     if (!$util.isString(message.id))
                         return "id: string expected";
                 var error = $root.jspb.test.Simple2.verify(message.requiredSimple);
                 if (error)
                     return "requiredSimple." + error;
-                if (message.optionalSimple !== undefined && message.optionalSimple !== null) {
+                if (message.optionalSimple != null) {
                     var error = $root.jspb.test.Simple2.verify(message.optionalSimple);
                     if (error)
                         return "optionalSimple." + error;
@@ -4368,24 +4368,24 @@ $root.jspb = (function() {
                         message.repeatedGroup[i] = $root.jspb.test.TestGroup.RepeatedGroup.fromObject(object.repeatedGroup[i]);
                     }
                 }
-                if (object.requiredGroup !== undefined && object.requiredGroup !== null) {
+                if (object.requiredGroup != null) {
                     if (typeof object.requiredGroup !== "object")
                         throw TypeError(".jspb.test.TestGroup.requiredGroup: object expected");
                     message.requiredGroup = $root.jspb.test.TestGroup.RequiredGroup.fromObject(object.requiredGroup);
                 }
-                if (object.optionalGroup !== undefined && object.optionalGroup !== null) {
+                if (object.optionalGroup != null) {
                     if (typeof object.optionalGroup !== "object")
                         throw TypeError(".jspb.test.TestGroup.optionalGroup: object expected");
                     message.optionalGroup = $root.jspb.test.TestGroup.OptionalGroup.fromObject(object.optionalGroup);
                 }
-                if (object.id !== undefined && object.id !== null)
+                if (object.id != null)
                     message.id = String(object.id);
-                if (object.requiredSimple !== undefined && object.requiredSimple !== null) {
+                if (object.requiredSimple != null) {
                     if (typeof object.requiredSimple !== "object")
                         throw TypeError(".jspb.test.TestGroup.requiredSimple: object expected");
                     message.requiredSimple = $root.jspb.test.Simple2.fromObject(object.requiredSimple);
                 }
-                if (object.optionalSimple !== undefined && object.optionalSimple !== null) {
+                if (object.optionalSimple != null) {
                     if (typeof object.optionalSimple !== "object")
                         throw TypeError(".jspb.test.TestGroup.optionalSimple: object expected");
                     message.optionalSimple = $root.jspb.test.Simple2.fromObject(object.optionalSimple);
@@ -4426,15 +4426,15 @@ $root.jspb = (function() {
                     for (var j = 0; j < message.repeatedGroup.length; ++j)
                         object.repeatedGroup[j] = $root.jspb.test.TestGroup.RepeatedGroup.toObject(message.repeatedGroup[j], options);
                 }
-                if (message.requiredGroup !== undefined && message.requiredGroup !== null && message.hasOwnProperty("requiredGroup"))
+                if (message.requiredGroup != null && message.hasOwnProperty("requiredGroup"))
                     object.requiredGroup = $root.jspb.test.TestGroup.RequiredGroup.toObject(message.requiredGroup, options);
-                if (message.optionalGroup !== undefined && message.optionalGroup !== null && message.hasOwnProperty("optionalGroup"))
+                if (message.optionalGroup != null && message.hasOwnProperty("optionalGroup"))
                     object.optionalGroup = $root.jspb.test.TestGroup.OptionalGroup.toObject(message.optionalGroup, options);
-                if (message.id !== undefined && message.id !== null && message.hasOwnProperty("id"))
+                if (message.id != null && message.hasOwnProperty("id"))
                     object.id = message.id;
-                if (message.requiredSimple !== undefined && message.requiredSimple !== null && message.hasOwnProperty("requiredSimple"))
+                if (message.requiredSimple != null && message.hasOwnProperty("requiredSimple"))
                     object.requiredSimple = $root.jspb.test.Simple2.toObject(message.requiredSimple, options);
-                if (message.optionalSimple !== undefined && message.optionalSimple !== null && message.hasOwnProperty("optionalSimple"))
+                if (message.optionalSimple != null && message.hasOwnProperty("optionalSimple"))
                     object.optionalSimple = $root.jspb.test.Simple2.toObject(message.optionalSimple, options);
                 return object;
             };
@@ -4509,7 +4509,7 @@ $root.jspb = (function() {
                     if (!writer)
                         writer = $Writer.create();
                     writer.uint32(/* id 1, wireType 2 =*/10).string(message.id);
-                    if (message.someBool !== undefined && message.hasOwnProperty("someBool"))
+                    if (message.someBool && message.someBool.length && message.hasOwnProperty("someBool"))
                         for (var i = 0; i < message.someBool.length; ++i)
                             writer.uint32(/* id 2, wireType 0 =*/16).bool(message.someBool[i]);
                     return writer;
@@ -4588,7 +4588,7 @@ $root.jspb = (function() {
                         return "object expected";
                     if (!$util.isString(message.id))
                         return "id: string expected";
-                    if (message.someBool !== undefined) {
+                    if (message.someBool != null) {
                         if (!Array.isArray(message.someBool))
                             return "someBool: array expected";
                         for (var i = 0; i < message.someBool.length; ++i)
@@ -4607,7 +4607,7 @@ $root.jspb = (function() {
                     if (object instanceof $root.jspb.test.TestGroup.RepeatedGroup)
                         return object;
                     var message = new $root.jspb.test.TestGroup.RepeatedGroup();
-                    if (object.id !== undefined && object.id !== null)
+                    if (object.id != null)
                         message.id = String(object.id);
                     if (object.someBool) {
                         if (!Array.isArray(object.someBool))
@@ -4642,7 +4642,7 @@ $root.jspb = (function() {
                         object.someBool = [];
                     if (options.defaults)
                         object.id = "";
-                    if (message.id !== undefined && message.id !== null && message.hasOwnProperty("id"))
+                    if (message.id != null && message.hasOwnProperty("id"))
                         object.id = message.id;
                     if (message.someBool && message.someBool.length) {
                         object.someBool = [];
@@ -4796,7 +4796,7 @@ $root.jspb = (function() {
                     if (object instanceof $root.jspb.test.TestGroup.RequiredGroup)
                         return object;
                     var message = new $root.jspb.test.TestGroup.RequiredGroup();
-                    if (object.id !== undefined && object.id !== null)
+                    if (object.id != null)
                         message.id = String(object.id);
                     return message;
                 };
@@ -4822,7 +4822,7 @@ $root.jspb = (function() {
                     var object = {};
                     if (options.defaults)
                         object.id = "";
-                    if (message.id !== undefined && message.id !== null && message.hasOwnProperty("id"))
+                    if (message.id != null && message.hasOwnProperty("id"))
                         object.id = message.id;
                     return object;
                 };
@@ -4971,7 +4971,7 @@ $root.jspb = (function() {
                     if (object instanceof $root.jspb.test.TestGroup.OptionalGroup)
                         return object;
                     var message = new $root.jspb.test.TestGroup.OptionalGroup();
-                    if (object.id !== undefined && object.id !== null)
+                    if (object.id != null)
                         message.id = String(object.id);
                     return message;
                 };
@@ -4997,7 +4997,7 @@ $root.jspb = (function() {
                     var object = {};
                     if (options.defaults)
                         object.id = "";
-                    if (message.id !== undefined && message.id !== null && message.hasOwnProperty("id"))
+                    if (message.id != null && message.hasOwnProperty("id"))
                         object.id = message.id;
                     return object;
                 };
@@ -5132,7 +5132,7 @@ $root.jspb = (function() {
             TestGroup1.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
-                if (message.group !== undefined && message.group !== null) {
+                if (message.group != null) {
                     var error = $root.jspb.test.TestGroup.RepeatedGroup.verify(message.group);
                     if (error)
                         return "group." + error;
@@ -5149,7 +5149,7 @@ $root.jspb = (function() {
                 if (object instanceof $root.jspb.test.TestGroup1)
                     return object;
                 var message = new $root.jspb.test.TestGroup1();
-                if (object.group !== undefined && object.group !== null) {
+                if (object.group != null) {
                     if (typeof object.group !== "object")
                         throw TypeError(".jspb.test.TestGroup1.group: object expected");
                     message.group = $root.jspb.test.TestGroup.RepeatedGroup.fromObject(object.group);
@@ -5178,7 +5178,7 @@ $root.jspb = (function() {
                 var object = {};
                 if (options.defaults)
                     object.group = null;
-                if (message.group !== undefined && message.group !== null && message.hasOwnProperty("group"))
+                if (message.group != null && message.hasOwnProperty("group"))
                     object.group = $root.jspb.test.TestGroup.RepeatedGroup.toObject(message.group, options);
                 return object;
             };
@@ -5254,9 +5254,9 @@ $root.jspb = (function() {
             TestReservedNames.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
-                if (message.extension !== undefined && message.extension !== null && message.hasOwnProperty("extension"))
+                if (message.extension != null && message.hasOwnProperty("extension"))
                     writer.uint32(/* id 1, wireType 0 =*/8).int32(message.extension);
-                if (message[".jspb.test.TestReservedNamesExtension.foo"] !== undefined && message[".jspb.test.TestReservedNamesExtension.foo"] !== null && message.hasOwnProperty(".jspb.test.TestReservedNamesExtension.foo"))
+                if (message[".jspb.test.TestReservedNamesExtension.foo"] != null && message.hasOwnProperty(".jspb.test.TestReservedNamesExtension.foo"))
                     writer.uint32(/* id 10, wireType 0 =*/80).int32(message[".jspb.test.TestReservedNamesExtension.foo"]);
                 return writer;
             };
@@ -5321,10 +5321,10 @@ $root.jspb = (function() {
             TestReservedNames.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
-                if (message.extension !== undefined && message.extension !== null)
+                if (message.extension != null)
                     if (!$util.isInteger(message.extension))
                         return "extension: integer expected";
-                if (message[".jspb.test.TestReservedNamesExtension.foo"] !== undefined && message[".jspb.test.TestReservedNamesExtension.foo"] !== null)
+                if (message[".jspb.test.TestReservedNamesExtension.foo"] != null)
                     if (!$util.isInteger(message[".jspb.test.TestReservedNamesExtension.foo"]))
                         return ".jspb.test.TestReservedNamesExtension.foo: integer expected";
                 return null;
@@ -5339,9 +5339,9 @@ $root.jspb = (function() {
                 if (object instanceof $root.jspb.test.TestReservedNames)
                     return object;
                 var message = new $root.jspb.test.TestReservedNames();
-                if (object.extension !== undefined && object.extension !== null)
+                if (object.extension != null)
                     message.extension = object.extension | 0;
-                if (object[".jspb.test.TestReservedNamesExtension.foo"] !== undefined && object[".jspb.test.TestReservedNamesExtension.foo"] !== null)
+                if (object[".jspb.test.TestReservedNamesExtension.foo"] != null)
                     message[".jspb.test.TestReservedNamesExtension.foo"] = object[".jspb.test.TestReservedNamesExtension.foo"] | 0;
                 return message;
             };
@@ -5369,9 +5369,9 @@ $root.jspb = (function() {
                     object.extension = 0;
                     object[".jspb.test.TestReservedNamesExtension.foo"] = 0;
                 }
-                if (message.extension !== undefined && message.extension !== null && message.hasOwnProperty("extension"))
+                if (message.extension != null && message.hasOwnProperty("extension"))
                     object.extension = message.extension;
-                if (message[".jspb.test.TestReservedNamesExtension.foo"] !== undefined && message[".jspb.test.TestReservedNamesExtension.foo"] !== null && message.hasOwnProperty(".jspb.test.TestReservedNamesExtension.foo"))
+                if (message[".jspb.test.TestReservedNamesExtension.foo"] != null && message.hasOwnProperty(".jspb.test.TestReservedNamesExtension.foo"))
                     object[".jspb.test.TestReservedNamesExtension.foo"] = message[".jspb.test.TestReservedNamesExtension.foo"];
                 return object;
             };
@@ -5688,26 +5688,26 @@ $root.jspb = (function() {
             TestMessageWithOneof.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
-                if (message.pone !== undefined && message.pone !== null && message.hasOwnProperty("pone"))
+                if (message.pone != null && message.hasOwnProperty("pone"))
                     writer.uint32(/* id 3, wireType 2 =*/26).string(message.pone);
-                if (message.pthree !== undefined && message.pthree !== null && message.hasOwnProperty("pthree"))
+                if (message.pthree != null && message.hasOwnProperty("pthree"))
                     writer.uint32(/* id 5, wireType 2 =*/42).string(message.pthree);
                 if (message.rone && message.hasOwnProperty("rone"))
                     $root.jspb.test.TestMessageWithOneof.encode(message.rone, writer.uint32(/* id 6, wireType 2 =*/50).fork()).ldelim();
-                if (message.rtwo !== undefined && message.rtwo !== null && message.hasOwnProperty("rtwo"))
+                if (message.rtwo != null && message.hasOwnProperty("rtwo"))
                     writer.uint32(/* id 7, wireType 2 =*/58).string(message.rtwo);
-                if (message.normalField !== undefined && message.normalField !== null && message.hasOwnProperty("normalField"))
+                if (message.normalField != null && message.hasOwnProperty("normalField"))
                     writer.uint32(/* id 8, wireType 0 =*/64).bool(message.normalField);
-                if (message.repeatedField !== undefined && message.hasOwnProperty("repeatedField"))
+                if (message.repeatedField && message.repeatedField.length && message.hasOwnProperty("repeatedField"))
                     for (var i = 0; i < message.repeatedField.length; ++i)
                         writer.uint32(/* id 9, wireType 2 =*/74).string(message.repeatedField[i]);
-                if (message.aone !== undefined && message.aone !== null && message.hasOwnProperty("aone"))
+                if (message.aone != null && message.hasOwnProperty("aone"))
                     writer.uint32(/* id 10, wireType 0 =*/80).int32(message.aone);
-                if (message.atwo !== undefined && message.atwo !== null && message.hasOwnProperty("atwo"))
+                if (message.atwo != null && message.hasOwnProperty("atwo"))
                     writer.uint32(/* id 11, wireType 0 =*/88).int32(message.atwo);
-                if (message.bone !== undefined && message.bone !== null && message.hasOwnProperty("bone"))
+                if (message.bone != null && message.hasOwnProperty("bone"))
                     writer.uint32(/* id 12, wireType 0 =*/96).int32(message.bone);
-                if (message.btwo !== undefined && message.btwo !== null && message.hasOwnProperty("btwo"))
+                if (message.btwo != null && message.hasOwnProperty("btwo"))
                     writer.uint32(/* id 13, wireType 0 =*/104).int32(message.btwo);
                 return writer;
             };
@@ -5799,59 +5799,59 @@ $root.jspb = (function() {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
                 var properties = {};
-                if (message.pone !== undefined && message.pone !== null) {
+                if (message.pone != null) {
                     properties.partialOneof = 1;
                     if (!$util.isString(message.pone))
                         return "pone: string expected";
                 }
-                if (message.pthree !== undefined && message.pthree !== null) {
+                if (message.pthree != null) {
                     if (properties.partialOneof === 1)
                         return "partialOneof: multiple values";
                     properties.partialOneof = 1;
                     if (!$util.isString(message.pthree))
                         return "pthree: string expected";
                 }
-                if (message.rone !== undefined && message.rone !== null) {
+                if (message.rone != null) {
                     properties.recursiveOneof = 1;
                     var error = $root.jspb.test.TestMessageWithOneof.verify(message.rone);
                     if (error)
                         return "rone." + error;
                 }
-                if (message.rtwo !== undefined && message.rtwo !== null) {
+                if (message.rtwo != null) {
                     if (properties.recursiveOneof === 1)
                         return "recursiveOneof: multiple values";
                     properties.recursiveOneof = 1;
                     if (!$util.isString(message.rtwo))
                         return "rtwo: string expected";
                 }
-                if (message.normalField !== undefined && message.normalField !== null)
+                if (message.normalField != null)
                     if (typeof message.normalField !== "boolean")
                         return "normalField: boolean expected";
-                if (message.repeatedField !== undefined) {
+                if (message.repeatedField != null) {
                     if (!Array.isArray(message.repeatedField))
                         return "repeatedField: array expected";
                     for (var i = 0; i < message.repeatedField.length; ++i)
                         if (!$util.isString(message.repeatedField[i]))
                             return "repeatedField: string[] expected";
                 }
-                if (message.aone !== undefined && message.aone !== null) {
+                if (message.aone != null) {
                     properties.defaultOneofA = 1;
                     if (!$util.isInteger(message.aone))
                         return "aone: integer expected";
                 }
-                if (message.atwo !== undefined && message.atwo !== null) {
+                if (message.atwo != null) {
                     if (properties.defaultOneofA === 1)
                         return "defaultOneofA: multiple values";
                     properties.defaultOneofA = 1;
                     if (!$util.isInteger(message.atwo))
                         return "atwo: integer expected";
                 }
-                if (message.bone !== undefined && message.bone !== null) {
+                if (message.bone != null) {
                     properties.defaultOneofB = 1;
                     if (!$util.isInteger(message.bone))
                         return "bone: integer expected";
                 }
-                if (message.btwo !== undefined && message.btwo !== null) {
+                if (message.btwo != null) {
                     if (properties.defaultOneofB === 1)
                         return "defaultOneofB: multiple values";
                     properties.defaultOneofB = 1;
@@ -5870,18 +5870,18 @@ $root.jspb = (function() {
                 if (object instanceof $root.jspb.test.TestMessageWithOneof)
                     return object;
                 var message = new $root.jspb.test.TestMessageWithOneof();
-                if (object.pone !== undefined && object.pone !== null)
+                if (object.pone != null)
                     message.pone = String(object.pone);
-                if (object.pthree !== undefined && object.pthree !== null)
+                if (object.pthree != null)
                     message.pthree = String(object.pthree);
-                if (object.rone !== undefined && object.rone !== null) {
+                if (object.rone != null) {
                     if (typeof object.rone !== "object")
                         throw TypeError(".jspb.test.TestMessageWithOneof.rone: object expected");
                     message.rone = $root.jspb.test.TestMessageWithOneof.fromObject(object.rone);
                 }
-                if (object.rtwo !== undefined && object.rtwo !== null)
+                if (object.rtwo != null)
                     message.rtwo = String(object.rtwo);
-                if (object.normalField !== undefined && object.normalField !== null)
+                if (object.normalField != null)
                     message.normalField = Boolean(object.normalField);
                 if (object.repeatedField) {
                     if (!Array.isArray(object.repeatedField))
@@ -5890,13 +5890,13 @@ $root.jspb = (function() {
                     for (var i = 0; i < object.repeatedField.length; ++i)
                         message.repeatedField[i] = String(object.repeatedField[i]);
                 }
-                if (object.aone !== undefined && object.aone !== null)
+                if (object.aone != null)
                     message.aone = object.aone | 0;
-                if (object.atwo !== undefined && object.atwo !== null)
+                if (object.atwo != null)
                     message.atwo = object.atwo | 0;
-                if (object.bone !== undefined && object.bone !== null)
+                if (object.bone != null)
                     message.bone = object.bone | 0;
-                if (object.btwo !== undefined && object.btwo !== null)
+                if (object.btwo != null)
                     message.btwo = object.btwo | 0;
                 return message;
             };
@@ -5924,49 +5924,49 @@ $root.jspb = (function() {
                     object.repeatedField = [];
                 if (options.defaults)
                     object.normalField = false;
-                if (message.pone !== undefined && message.pone !== null && message.hasOwnProperty("pone")) {
+                if (message.pone != null && message.hasOwnProperty("pone")) {
                     object.pone = message.pone;
                     if (options.oneofs)
                         object.partialOneof = "pone";
                 }
-                if (message.pthree !== undefined && message.pthree !== null && message.hasOwnProperty("pthree")) {
+                if (message.pthree != null && message.hasOwnProperty("pthree")) {
                     object.pthree = message.pthree;
                     if (options.oneofs)
                         object.partialOneof = "pthree";
                 }
-                if (message.rone !== undefined && message.rone !== null && message.hasOwnProperty("rone")) {
+                if (message.rone != null && message.hasOwnProperty("rone")) {
                     object.rone = $root.jspb.test.TestMessageWithOneof.toObject(message.rone, options);
                     if (options.oneofs)
                         object.recursiveOneof = "rone";
                 }
-                if (message.rtwo !== undefined && message.rtwo !== null && message.hasOwnProperty("rtwo")) {
+                if (message.rtwo != null && message.hasOwnProperty("rtwo")) {
                     object.rtwo = message.rtwo;
                     if (options.oneofs)
                         object.recursiveOneof = "rtwo";
                 }
-                if (message.normalField !== undefined && message.normalField !== null && message.hasOwnProperty("normalField"))
+                if (message.normalField != null && message.hasOwnProperty("normalField"))
                     object.normalField = message.normalField;
                 if (message.repeatedField && message.repeatedField.length) {
                     object.repeatedField = [];
                     for (var j = 0; j < message.repeatedField.length; ++j)
                         object.repeatedField[j] = message.repeatedField[j];
                 }
-                if (message.aone !== undefined && message.aone !== null && message.hasOwnProperty("aone")) {
+                if (message.aone != null && message.hasOwnProperty("aone")) {
                     object.aone = message.aone;
                     if (options.oneofs)
                         object.defaultOneofA = "aone";
                 }
-                if (message.atwo !== undefined && message.atwo !== null && message.hasOwnProperty("atwo")) {
+                if (message.atwo != null && message.hasOwnProperty("atwo")) {
                     object.atwo = message.atwo;
                     if (options.oneofs)
                         object.defaultOneofA = "atwo";
                 }
-                if (message.bone !== undefined && message.bone !== null && message.hasOwnProperty("bone")) {
+                if (message.bone != null && message.hasOwnProperty("bone")) {
                     object.bone = message.bone;
                     if (options.oneofs)
                         object.defaultOneofB = "bone";
                 }
-                if (message.btwo !== undefined && message.btwo !== null && message.hasOwnProperty("btwo")) {
+                if (message.btwo != null && message.hasOwnProperty("btwo")) {
                     object.btwo = message.btwo;
                     if (options.oneofs)
                         object.defaultOneofB = "btwo";
@@ -6045,7 +6045,7 @@ $root.jspb = (function() {
             TestEndsWithBytes.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
-                if (message.value !== undefined && message.value !== null && message.hasOwnProperty("value"))
+                if (message.value != null && message.hasOwnProperty("value"))
                     writer.uint32(/* id 1, wireType 0 =*/8).int32(message.value);
                 if (message.data && message.hasOwnProperty("data"))
                     writer.uint32(/* id 2, wireType 2 =*/18).bytes(message.data);
@@ -6112,10 +6112,10 @@ $root.jspb = (function() {
             TestEndsWithBytes.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
-                if (message.value !== undefined && message.value !== null)
+                if (message.value != null)
                     if (!$util.isInteger(message.value))
                         return "value: integer expected";
-                if (message.data !== undefined && message.data !== null)
+                if (message.data != null)
                     if (!(message.data && typeof message.data.length === "number" || $util.isString(message.data)))
                         return "data: buffer expected";
                 return null;
@@ -6130,9 +6130,9 @@ $root.jspb = (function() {
                 if (object instanceof $root.jspb.test.TestEndsWithBytes)
                     return object;
                 var message = new $root.jspb.test.TestEndsWithBytes();
-                if (object.value !== undefined && object.value !== null)
+                if (object.value != null)
                     message.value = object.value | 0;
-                if (object.data !== undefined && object.data !== null)
+                if (object.data != null)
                     if (typeof object.data === "string")
                         $util.base64.decode(object.data, message.data = $util.newBuffer($util.base64.length(object.data)), 0);
                     else if (object.data.length)
@@ -6163,9 +6163,9 @@ $root.jspb = (function() {
                     object.value = 0;
                     object.data = options.bytes === String ? "" : [];
                 }
-                if (message.value !== undefined && message.value !== null && message.hasOwnProperty("value"))
+                if (message.value != null && message.hasOwnProperty("value"))
                     object.value = message.value;
-                if (message.data !== undefined && message.data !== null && message.hasOwnProperty("data"))
+                if (message.data != null && message.hasOwnProperty("data"))
                     object.data = options.bytes === String ? $util.base64.encode(message.data, 0, message.data.length) : options.bytes === Array ? Array.prototype.slice.call(message.data) : message.data;
                 return object;
             };
@@ -6499,7 +6499,7 @@ $root.jspb = (function() {
             TestMapFieldsNoBinary.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
-                if (message.mapStringString !== undefined) {
+                if (message.mapStringString != null) {
                     if (!$util.isObject(message.mapStringString))
                         return "mapStringString: object expected";
                     var key = Object.keys(message.mapStringString);
@@ -6507,7 +6507,7 @@ $root.jspb = (function() {
                         if (!$util.isString(message.mapStringString[key[i]]))
                             return "mapStringString: string{k:string} expected";
                 }
-                if (message.mapStringInt32 !== undefined) {
+                if (message.mapStringInt32 != null) {
                     if (!$util.isObject(message.mapStringInt32))
                         return "mapStringInt32: object expected";
                     var key = Object.keys(message.mapStringInt32);
@@ -6515,7 +6515,7 @@ $root.jspb = (function() {
                         if (!$util.isInteger(message.mapStringInt32[key[i]]))
                             return "mapStringInt32: integer{k:string} expected";
                 }
-                if (message.mapStringInt64 !== undefined) {
+                if (message.mapStringInt64 != null) {
                     if (!$util.isObject(message.mapStringInt64))
                         return "mapStringInt64: object expected";
                     var key = Object.keys(message.mapStringInt64);
@@ -6523,7 +6523,7 @@ $root.jspb = (function() {
                         if (!$util.isInteger(message.mapStringInt64[key[i]]) && !(message.mapStringInt64[key[i]] && $util.isInteger(message.mapStringInt64[key[i]].low) && $util.isInteger(message.mapStringInt64[key[i]].high)))
                             return "mapStringInt64: integer|Long{k:string} expected";
                 }
-                if (message.mapStringBool !== undefined) {
+                if (message.mapStringBool != null) {
                     if (!$util.isObject(message.mapStringBool))
                         return "mapStringBool: object expected";
                     var key = Object.keys(message.mapStringBool);
@@ -6531,7 +6531,7 @@ $root.jspb = (function() {
                         if (typeof message.mapStringBool[key[i]] !== "boolean")
                             return "mapStringBool: boolean{k:string} expected";
                 }
-                if (message.mapStringDouble !== undefined) {
+                if (message.mapStringDouble != null) {
                     if (!$util.isObject(message.mapStringDouble))
                         return "mapStringDouble: object expected";
                     var key = Object.keys(message.mapStringDouble);
@@ -6539,7 +6539,7 @@ $root.jspb = (function() {
                         if (typeof message.mapStringDouble[key[i]] !== "number")
                             return "mapStringDouble: number{k:string} expected";
                 }
-                if (message.mapStringEnum !== undefined) {
+                if (message.mapStringEnum != null) {
                     if (!$util.isObject(message.mapStringEnum))
                         return "mapStringEnum: object expected";
                     var key = Object.keys(message.mapStringEnum);
@@ -6553,7 +6553,7 @@ $root.jspb = (function() {
                             break;
                         }
                 }
-                if (message.mapStringMsg !== undefined) {
+                if (message.mapStringMsg != null) {
                     if (!$util.isObject(message.mapStringMsg))
                         return "mapStringMsg: object expected";
                     var key = Object.keys(message.mapStringMsg);
@@ -6563,7 +6563,7 @@ $root.jspb = (function() {
                             return "mapStringMsg." + error;
                     }
                 }
-                if (message.mapInt32String !== undefined) {
+                if (message.mapInt32String != null) {
                     if (!$util.isObject(message.mapInt32String))
                         return "mapInt32String: object expected";
                     var key = Object.keys(message.mapInt32String);
@@ -6574,7 +6574,7 @@ $root.jspb = (function() {
                             return "mapInt32String: string{k:int32} expected";
                     }
                 }
-                if (message.mapInt64String !== undefined) {
+                if (message.mapInt64String != null) {
                     if (!$util.isObject(message.mapInt64String))
                         return "mapInt64String: object expected";
                     var key = Object.keys(message.mapInt64String);
@@ -6585,7 +6585,7 @@ $root.jspb = (function() {
                             return "mapInt64String: string{k:int64} expected";
                     }
                 }
-                if (message.mapBoolString !== undefined) {
+                if (message.mapBoolString != null) {
                     if (!$util.isObject(message.mapBoolString))
                         return "mapBoolString: object expected";
                     var key = Object.keys(message.mapBoolString);
@@ -6596,12 +6596,12 @@ $root.jspb = (function() {
                             return "mapBoolString: string{k:bool} expected";
                     }
                 }
-                if (message.testMapFields !== undefined && message.testMapFields !== null) {
+                if (message.testMapFields != null) {
                     var error = $root.jspb.test.TestMapFieldsNoBinary.verify(message.testMapFields);
                     if (error)
                         return "testMapFields." + error;
                 }
-                if (message.mapStringTestmapfields !== undefined) {
+                if (message.mapStringTestmapfields != null) {
                     if (!$util.isObject(message.mapStringTestmapfields))
                         return "mapStringTestmapfields: object expected";
                     var key = Object.keys(message.mapStringTestmapfields);
@@ -6716,7 +6716,7 @@ $root.jspb = (function() {
                     for (var keys = Object.keys(object.mapBoolString), i = 0; i < keys.length; ++i)
                         message.mapBoolString[keys[i]] = String(object.mapBoolString[keys[i]]);
                 }
-                if (object.testMapFields !== undefined && object.testMapFields !== null) {
+                if (object.testMapFields != null) {
                     if (typeof object.testMapFields !== "object")
                         throw TypeError(".jspb.test.TestMapFieldsNoBinary.testMapFields: object expected");
                     message.testMapFields = $root.jspb.test.TestMapFieldsNoBinary.fromObject(object.testMapFields);
@@ -6822,7 +6822,7 @@ $root.jspb = (function() {
                     for (var j = 0; j < keys2.length; ++j)
                         object.mapBoolString[keys2[j]] = message.mapBoolString[keys2[j]];
                 }
-                if (message.testMapFields !== undefined && message.testMapFields !== null && message.hasOwnProperty("testMapFields"))
+                if (message.testMapFields != null && message.hasOwnProperty("testMapFields"))
                     object.testMapFields = $root.jspb.test.TestMapFieldsNoBinary.toObject(message.testMapFields, options);
                 if (message.mapStringTestmapfields && (keys2 = Object.keys(message.mapStringTestmapfields)).length) {
                     object.mapStringTestmapfields = {};
@@ -6914,7 +6914,7 @@ $root.jspb = (function() {
             MapValueMessageNoBinary.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
-                if (message.foo !== undefined && message.foo !== null && message.hasOwnProperty("foo"))
+                if (message.foo != null && message.hasOwnProperty("foo"))
                     writer.uint32(/* id 1, wireType 0 =*/8).int32(message.foo);
                 return writer;
             };
@@ -6976,7 +6976,7 @@ $root.jspb = (function() {
             MapValueMessageNoBinary.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
-                if (message.foo !== undefined && message.foo !== null)
+                if (message.foo != null)
                     if (!$util.isInteger(message.foo))
                         return "foo: integer expected";
                 return null;
@@ -6991,7 +6991,7 @@ $root.jspb = (function() {
                 if (object instanceof $root.jspb.test.MapValueMessageNoBinary)
                     return object;
                 var message = new $root.jspb.test.MapValueMessageNoBinary();
-                if (object.foo !== undefined && object.foo !== null)
+                if (object.foo != null)
                     message.foo = object.foo | 0;
                 return message;
             };
@@ -7017,7 +7017,7 @@ $root.jspb = (function() {
                 var object = {};
                 if (options.defaults)
                     object.foo = 0;
-                if (message.foo !== undefined && message.foo !== null && message.hasOwnProperty("foo"))
+                if (message.foo != null && message.hasOwnProperty("foo"))
                     object.foo = message.foo;
                 return object;
             };
@@ -7379,7 +7379,7 @@ $root.jspb = (function() {
                     Message.encode = function encode(message, writer) {
                         if (!writer)
                             writer = $Writer.create();
-                        if (message.count !== undefined && message.count !== null && message.hasOwnProperty("count"))
+                        if (message.count != null && message.hasOwnProperty("count"))
                             writer.uint32(/* id 1, wireType 0 =*/8).int32(message.count);
                         return writer;
                     };
@@ -7441,7 +7441,7 @@ $root.jspb = (function() {
                     Message.verify = function verify(message) {
                         if (typeof message !== "object" || message === null)
                             return "object expected";
-                        if (message.count !== undefined && message.count !== null)
+                        if (message.count != null)
                             if (!$util.isInteger(message.count))
                                 return "count: integer expected";
                         return null;
@@ -7456,7 +7456,7 @@ $root.jspb = (function() {
                         if (object instanceof $root.jspb.test.Deeply.Nested.Message)
                             return object;
                         var message = new $root.jspb.test.Deeply.Nested.Message();
-                        if (object.count !== undefined && object.count !== null)
+                        if (object.count != null)
                             message.count = object.count | 0;
                         return message;
                     };
@@ -7482,7 +7482,7 @@ $root.jspb = (function() {
                         var object = {};
                         if (options.defaults)
                             object.count = 0;
-                        if (message.count !== undefined && message.count !== null && message.hasOwnProperty("count"))
+                        if (message.count != null && message.hasOwnProperty("count"))
                             object.count = message.count;
                         return object;
                     };
@@ -7583,7 +7583,7 @@ $root.google = (function() {
             FileDescriptorSet.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
-                if (message.file !== undefined && message.hasOwnProperty("file"))
+                if (message.file && message.file.length && message.hasOwnProperty("file"))
                     for (var i = 0; i < message.file.length; ++i)
                         $root.google.protobuf.FileDescriptorProto.encode(message.file[i], writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
                 return writer;
@@ -7648,7 +7648,7 @@ $root.google = (function() {
             FileDescriptorSet.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
-                if (message.file !== undefined) {
+                if (message.file != null) {
                     if (!Array.isArray(message.file))
                         return "file: array expected";
                     for (var i = 0; i < message.file.length; ++i) {
@@ -7849,36 +7849,36 @@ $root.google = (function() {
             FileDescriptorProto.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
-                if (message.name !== undefined && message.name !== null && message.hasOwnProperty("name"))
+                if (message.name != null && message.hasOwnProperty("name"))
                     writer.uint32(/* id 1, wireType 2 =*/10).string(message.name);
-                if (message["package"] !== undefined && message["package"] !== null && message.hasOwnProperty("package"))
+                if (message["package"] != null && message.hasOwnProperty("package"))
                     writer.uint32(/* id 2, wireType 2 =*/18).string(message["package"]);
-                if (message.dependency !== undefined && message.hasOwnProperty("dependency"))
+                if (message.dependency && message.dependency.length && message.hasOwnProperty("dependency"))
                     for (var i = 0; i < message.dependency.length; ++i)
                         writer.uint32(/* id 3, wireType 2 =*/26).string(message.dependency[i]);
-                if (message.messageType !== undefined && message.hasOwnProperty("messageType"))
+                if (message.messageType && message.messageType.length && message.hasOwnProperty("messageType"))
                     for (var i = 0; i < message.messageType.length; ++i)
                         $root.google.protobuf.DescriptorProto.encode(message.messageType[i], writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
-                if (message.enumType !== undefined && message.hasOwnProperty("enumType"))
+                if (message.enumType && message.enumType.length && message.hasOwnProperty("enumType"))
                     for (var i = 0; i < message.enumType.length; ++i)
                         $root.google.protobuf.EnumDescriptorProto.encode(message.enumType[i], writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
-                if (message.service !== undefined && message.hasOwnProperty("service"))
+                if (message.service && message.service.length && message.hasOwnProperty("service"))
                     for (var i = 0; i < message.service.length; ++i)
                         $root.google.protobuf.ServiceDescriptorProto.encode(message.service[i], writer.uint32(/* id 6, wireType 2 =*/50).fork()).ldelim();
-                if (message.extension !== undefined && message.hasOwnProperty("extension"))
+                if (message.extension && message.extension.length && message.hasOwnProperty("extension"))
                     for (var i = 0; i < message.extension.length; ++i)
                         $root.google.protobuf.FieldDescriptorProto.encode(message.extension[i], writer.uint32(/* id 7, wireType 2 =*/58).fork()).ldelim();
                 if (message.options && message.hasOwnProperty("options"))
                     $root.google.protobuf.FileOptions.encode(message.options, writer.uint32(/* id 8, wireType 2 =*/66).fork()).ldelim();
                 if (message.sourceCodeInfo && message.hasOwnProperty("sourceCodeInfo"))
                     $root.google.protobuf.SourceCodeInfo.encode(message.sourceCodeInfo, writer.uint32(/* id 9, wireType 2 =*/74).fork()).ldelim();
-                if (message.publicDependency !== undefined && message.hasOwnProperty("publicDependency"))
+                if (message.publicDependency && message.publicDependency.length && message.hasOwnProperty("publicDependency"))
                     for (var i = 0; i < message.publicDependency.length; ++i)
                         writer.uint32(/* id 10, wireType 0 =*/80).int32(message.publicDependency[i]);
-                if (message.weakDependency !== undefined && message.hasOwnProperty("weakDependency"))
+                if (message.weakDependency && message.weakDependency.length && message.hasOwnProperty("weakDependency"))
                     for (var i = 0; i < message.weakDependency.length; ++i)
                         writer.uint32(/* id 11, wireType 0 =*/88).int32(message.weakDependency[i]);
-                if (message.syntax !== undefined && message.syntax !== null && message.hasOwnProperty("syntax"))
+                if (message.syntax != null && message.hasOwnProperty("syntax"))
                     writer.uint32(/* id 12, wireType 2 =*/98).string(message.syntax);
                 return writer;
             };
@@ -7997,34 +7997,34 @@ $root.google = (function() {
             FileDescriptorProto.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
-                if (message.name !== undefined && message.name !== null)
+                if (message.name != null)
                     if (!$util.isString(message.name))
                         return "name: string expected";
-                if (message["package"] !== undefined && message["package"] !== null)
+                if (message["package"] != null)
                     if (!$util.isString(message["package"]))
                         return "package: string expected";
-                if (message.dependency !== undefined) {
+                if (message.dependency != null) {
                     if (!Array.isArray(message.dependency))
                         return "dependency: array expected";
                     for (var i = 0; i < message.dependency.length; ++i)
                         if (!$util.isString(message.dependency[i]))
                             return "dependency: string[] expected";
                 }
-                if (message.publicDependency !== undefined) {
+                if (message.publicDependency != null) {
                     if (!Array.isArray(message.publicDependency))
                         return "publicDependency: array expected";
                     for (var i = 0; i < message.publicDependency.length; ++i)
                         if (!$util.isInteger(message.publicDependency[i]))
                             return "publicDependency: integer[] expected";
                 }
-                if (message.weakDependency !== undefined) {
+                if (message.weakDependency != null) {
                     if (!Array.isArray(message.weakDependency))
                         return "weakDependency: array expected";
                     for (var i = 0; i < message.weakDependency.length; ++i)
                         if (!$util.isInteger(message.weakDependency[i]))
                             return "weakDependency: integer[] expected";
                 }
-                if (message.messageType !== undefined) {
+                if (message.messageType != null) {
                     if (!Array.isArray(message.messageType))
                         return "messageType: array expected";
                     for (var i = 0; i < message.messageType.length; ++i) {
@@ -8033,7 +8033,7 @@ $root.google = (function() {
                             return "messageType." + error;
                     }
                 }
-                if (message.enumType !== undefined) {
+                if (message.enumType != null) {
                     if (!Array.isArray(message.enumType))
                         return "enumType: array expected";
                     for (var i = 0; i < message.enumType.length; ++i) {
@@ -8042,7 +8042,7 @@ $root.google = (function() {
                             return "enumType." + error;
                     }
                 }
-                if (message.service !== undefined) {
+                if (message.service != null) {
                     if (!Array.isArray(message.service))
                         return "service: array expected";
                     for (var i = 0; i < message.service.length; ++i) {
@@ -8051,7 +8051,7 @@ $root.google = (function() {
                             return "service." + error;
                     }
                 }
-                if (message.extension !== undefined) {
+                if (message.extension != null) {
                     if (!Array.isArray(message.extension))
                         return "extension: array expected";
                     for (var i = 0; i < message.extension.length; ++i) {
@@ -8060,17 +8060,17 @@ $root.google = (function() {
                             return "extension." + error;
                     }
                 }
-                if (message.options !== undefined && message.options !== null) {
+                if (message.options != null) {
                     var error = $root.google.protobuf.FileOptions.verify(message.options);
                     if (error)
                         return "options." + error;
                 }
-                if (message.sourceCodeInfo !== undefined && message.sourceCodeInfo !== null) {
+                if (message.sourceCodeInfo != null) {
                     var error = $root.google.protobuf.SourceCodeInfo.verify(message.sourceCodeInfo);
                     if (error)
                         return "sourceCodeInfo." + error;
                 }
-                if (message.syntax !== undefined && message.syntax !== null)
+                if (message.syntax != null)
                     if (!$util.isString(message.syntax))
                         return "syntax: string expected";
                 return null;
@@ -8085,9 +8085,9 @@ $root.google = (function() {
                 if (object instanceof $root.google.protobuf.FileDescriptorProto)
                     return object;
                 var message = new $root.google.protobuf.FileDescriptorProto();
-                if (object.name !== undefined && object.name !== null)
+                if (object.name != null)
                     message.name = String(object.name);
-                if (object["package"] !== undefined && object["package"] !== null)
+                if (object["package"] != null)
                     message["package"] = String(object["package"]);
                 if (object.dependency) {
                     if (!Array.isArray(object.dependency))
@@ -8150,17 +8150,17 @@ $root.google = (function() {
                         message.extension[i] = $root.google.protobuf.FieldDescriptorProto.fromObject(object.extension[i]);
                     }
                 }
-                if (object.options !== undefined && object.options !== null) {
+                if (object.options != null) {
                     if (typeof object.options !== "object")
                         throw TypeError(".google.protobuf.FileDescriptorProto.options: object expected");
                     message.options = $root.google.protobuf.FileOptions.fromObject(object.options);
                 }
-                if (object.sourceCodeInfo !== undefined && object.sourceCodeInfo !== null) {
+                if (object.sourceCodeInfo != null) {
                     if (typeof object.sourceCodeInfo !== "object")
                         throw TypeError(".google.protobuf.FileDescriptorProto.sourceCodeInfo: object expected");
                     message.sourceCodeInfo = $root.google.protobuf.SourceCodeInfo.fromObject(object.sourceCodeInfo);
                 }
-                if (object.syntax !== undefined && object.syntax !== null)
+                if (object.syntax != null)
                     message.syntax = String(object.syntax);
                 return message;
             };
@@ -8200,9 +8200,9 @@ $root.google = (function() {
                     object.sourceCodeInfo = null;
                     object.syntax = "";
                 }
-                if (message.name !== undefined && message.name !== null && message.hasOwnProperty("name"))
+                if (message.name != null && message.hasOwnProperty("name"))
                     object.name = message.name;
-                if (message["package"] !== undefined && message["package"] !== null && message.hasOwnProperty("package"))
+                if (message["package"] != null && message.hasOwnProperty("package"))
                     object["package"] = message["package"];
                 if (message.dependency && message.dependency.length) {
                     object.dependency = [];
@@ -8229,9 +8229,9 @@ $root.google = (function() {
                     for (var j = 0; j < message.extension.length; ++j)
                         object.extension[j] = $root.google.protobuf.FieldDescriptorProto.toObject(message.extension[j], options);
                 }
-                if (message.options !== undefined && message.options !== null && message.hasOwnProperty("options"))
+                if (message.options != null && message.hasOwnProperty("options"))
                     object.options = $root.google.protobuf.FileOptions.toObject(message.options, options);
-                if (message.sourceCodeInfo !== undefined && message.sourceCodeInfo !== null && message.hasOwnProperty("sourceCodeInfo"))
+                if (message.sourceCodeInfo != null && message.hasOwnProperty("sourceCodeInfo"))
                     object.sourceCodeInfo = $root.google.protobuf.SourceCodeInfo.toObject(message.sourceCodeInfo, options);
                 if (message.publicDependency && message.publicDependency.length) {
                     object.publicDependency = [];
@@ -8243,7 +8243,7 @@ $root.google = (function() {
                     for (var j = 0; j < message.weakDependency.length; ++j)
                         object.weakDependency[j] = message.weakDependency[j];
                 }
-                if (message.syntax !== undefined && message.syntax !== null && message.hasOwnProperty("syntax"))
+                if (message.syntax != null && message.hasOwnProperty("syntax"))
                     object.syntax = message.syntax;
                 return object;
             };
@@ -8375,32 +8375,32 @@ $root.google = (function() {
             DescriptorProto.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
-                if (message.name !== undefined && message.name !== null && message.hasOwnProperty("name"))
+                if (message.name != null && message.hasOwnProperty("name"))
                     writer.uint32(/* id 1, wireType 2 =*/10).string(message.name);
-                if (message.field !== undefined && message.hasOwnProperty("field"))
+                if (message.field && message.field.length && message.hasOwnProperty("field"))
                     for (var i = 0; i < message.field.length; ++i)
                         $root.google.protobuf.FieldDescriptorProto.encode(message.field[i], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
-                if (message.nestedType !== undefined && message.hasOwnProperty("nestedType"))
+                if (message.nestedType && message.nestedType.length && message.hasOwnProperty("nestedType"))
                     for (var i = 0; i < message.nestedType.length; ++i)
                         $root.google.protobuf.DescriptorProto.encode(message.nestedType[i], writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
-                if (message.enumType !== undefined && message.hasOwnProperty("enumType"))
+                if (message.enumType && message.enumType.length && message.hasOwnProperty("enumType"))
                     for (var i = 0; i < message.enumType.length; ++i)
                         $root.google.protobuf.EnumDescriptorProto.encode(message.enumType[i], writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
-                if (message.extensionRange !== undefined && message.hasOwnProperty("extensionRange"))
+                if (message.extensionRange && message.extensionRange.length && message.hasOwnProperty("extensionRange"))
                     for (var i = 0; i < message.extensionRange.length; ++i)
                         $root.google.protobuf.DescriptorProto.ExtensionRange.encode(message.extensionRange[i], writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
-                if (message.extension !== undefined && message.hasOwnProperty("extension"))
+                if (message.extension && message.extension.length && message.hasOwnProperty("extension"))
                     for (var i = 0; i < message.extension.length; ++i)
                         $root.google.protobuf.FieldDescriptorProto.encode(message.extension[i], writer.uint32(/* id 6, wireType 2 =*/50).fork()).ldelim();
                 if (message.options && message.hasOwnProperty("options"))
                     $root.google.protobuf.MessageOptions.encode(message.options, writer.uint32(/* id 7, wireType 2 =*/58).fork()).ldelim();
-                if (message.oneofDecl !== undefined && message.hasOwnProperty("oneofDecl"))
+                if (message.oneofDecl && message.oneofDecl.length && message.hasOwnProperty("oneofDecl"))
                     for (var i = 0; i < message.oneofDecl.length; ++i)
                         $root.google.protobuf.OneofDescriptorProto.encode(message.oneofDecl[i], writer.uint32(/* id 8, wireType 2 =*/66).fork()).ldelim();
-                if (message.reservedRange !== undefined && message.hasOwnProperty("reservedRange"))
+                if (message.reservedRange && message.reservedRange.length && message.hasOwnProperty("reservedRange"))
                     for (var i = 0; i < message.reservedRange.length; ++i)
                         $root.google.protobuf.DescriptorProto.ReservedRange.encode(message.reservedRange[i], writer.uint32(/* id 9, wireType 2 =*/74).fork()).ldelim();
-                if (message.reservedName !== undefined && message.hasOwnProperty("reservedName"))
+                if (message.reservedName && message.reservedName.length && message.hasOwnProperty("reservedName"))
                     for (var i = 0; i < message.reservedName.length; ++i)
                         writer.uint32(/* id 10, wireType 2 =*/82).string(message.reservedName[i]);
                 return writer;
@@ -8506,10 +8506,10 @@ $root.google = (function() {
             DescriptorProto.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
-                if (message.name !== undefined && message.name !== null)
+                if (message.name != null)
                     if (!$util.isString(message.name))
                         return "name: string expected";
-                if (message.field !== undefined) {
+                if (message.field != null) {
                     if (!Array.isArray(message.field))
                         return "field: array expected";
                     for (var i = 0; i < message.field.length; ++i) {
@@ -8518,7 +8518,7 @@ $root.google = (function() {
                             return "field." + error;
                     }
                 }
-                if (message.extension !== undefined) {
+                if (message.extension != null) {
                     if (!Array.isArray(message.extension))
                         return "extension: array expected";
                     for (var i = 0; i < message.extension.length; ++i) {
@@ -8527,7 +8527,7 @@ $root.google = (function() {
                             return "extension." + error;
                     }
                 }
-                if (message.nestedType !== undefined) {
+                if (message.nestedType != null) {
                     if (!Array.isArray(message.nestedType))
                         return "nestedType: array expected";
                     for (var i = 0; i < message.nestedType.length; ++i) {
@@ -8536,7 +8536,7 @@ $root.google = (function() {
                             return "nestedType." + error;
                     }
                 }
-                if (message.enumType !== undefined) {
+                if (message.enumType != null) {
                     if (!Array.isArray(message.enumType))
                         return "enumType: array expected";
                     for (var i = 0; i < message.enumType.length; ++i) {
@@ -8545,7 +8545,7 @@ $root.google = (function() {
                             return "enumType." + error;
                     }
                 }
-                if (message.extensionRange !== undefined) {
+                if (message.extensionRange != null) {
                     if (!Array.isArray(message.extensionRange))
                         return "extensionRange: array expected";
                     for (var i = 0; i < message.extensionRange.length; ++i) {
@@ -8554,7 +8554,7 @@ $root.google = (function() {
                             return "extensionRange." + error;
                     }
                 }
-                if (message.oneofDecl !== undefined) {
+                if (message.oneofDecl != null) {
                     if (!Array.isArray(message.oneofDecl))
                         return "oneofDecl: array expected";
                     for (var i = 0; i < message.oneofDecl.length; ++i) {
@@ -8563,12 +8563,12 @@ $root.google = (function() {
                             return "oneofDecl." + error;
                     }
                 }
-                if (message.options !== undefined && message.options !== null) {
+                if (message.options != null) {
                     var error = $root.google.protobuf.MessageOptions.verify(message.options);
                     if (error)
                         return "options." + error;
                 }
-                if (message.reservedRange !== undefined) {
+                if (message.reservedRange != null) {
                     if (!Array.isArray(message.reservedRange))
                         return "reservedRange: array expected";
                     for (var i = 0; i < message.reservedRange.length; ++i) {
@@ -8577,7 +8577,7 @@ $root.google = (function() {
                             return "reservedRange." + error;
                     }
                 }
-                if (message.reservedName !== undefined) {
+                if (message.reservedName != null) {
                     if (!Array.isArray(message.reservedName))
                         return "reservedName: array expected";
                     for (var i = 0; i < message.reservedName.length; ++i)
@@ -8596,7 +8596,7 @@ $root.google = (function() {
                 if (object instanceof $root.google.protobuf.DescriptorProto)
                     return object;
                 var message = new $root.google.protobuf.DescriptorProto();
-                if (object.name !== undefined && object.name !== null)
+                if (object.name != null)
                     message.name = String(object.name);
                 if (object.field) {
                     if (!Array.isArray(object.field))
@@ -8658,7 +8658,7 @@ $root.google = (function() {
                         message.oneofDecl[i] = $root.google.protobuf.OneofDescriptorProto.fromObject(object.oneofDecl[i]);
                     }
                 }
-                if (object.options !== undefined && object.options !== null) {
+                if (object.options != null) {
                     if (typeof object.options !== "object")
                         throw TypeError(".google.protobuf.DescriptorProto.options: object expected");
                     message.options = $root.google.protobuf.MessageOptions.fromObject(object.options);
@@ -8716,7 +8716,7 @@ $root.google = (function() {
                     object.name = "";
                     object.options = null;
                 }
-                if (message.name !== undefined && message.name !== null && message.hasOwnProperty("name"))
+                if (message.name != null && message.hasOwnProperty("name"))
                     object.name = message.name;
                 if (message.field && message.field.length) {
                     object.field = [];
@@ -8743,7 +8743,7 @@ $root.google = (function() {
                     for (var j = 0; j < message.extension.length; ++j)
                         object.extension[j] = $root.google.protobuf.FieldDescriptorProto.toObject(message.extension[j], options);
                 }
-                if (message.options !== undefined && message.options !== null && message.hasOwnProperty("options"))
+                if (message.options != null && message.hasOwnProperty("options"))
                     object.options = $root.google.protobuf.MessageOptions.toObject(message.options, options);
                 if (message.oneofDecl && message.oneofDecl.length) {
                     object.oneofDecl = [];
@@ -8831,9 +8831,9 @@ $root.google = (function() {
                 ExtensionRange.encode = function encode(message, writer) {
                     if (!writer)
                         writer = $Writer.create();
-                    if (message.start !== undefined && message.start !== null && message.hasOwnProperty("start"))
+                    if (message.start != null && message.hasOwnProperty("start"))
                         writer.uint32(/* id 1, wireType 0 =*/8).int32(message.start);
-                    if (message.end !== undefined && message.end !== null && message.hasOwnProperty("end"))
+                    if (message.end != null && message.hasOwnProperty("end"))
                         writer.uint32(/* id 2, wireType 0 =*/16).int32(message.end);
                     return writer;
                 };
@@ -8898,10 +8898,10 @@ $root.google = (function() {
                 ExtensionRange.verify = function verify(message) {
                     if (typeof message !== "object" || message === null)
                         return "object expected";
-                    if (message.start !== undefined && message.start !== null)
+                    if (message.start != null)
                         if (!$util.isInteger(message.start))
                             return "start: integer expected";
-                    if (message.end !== undefined && message.end !== null)
+                    if (message.end != null)
                         if (!$util.isInteger(message.end))
                             return "end: integer expected";
                     return null;
@@ -8916,9 +8916,9 @@ $root.google = (function() {
                     if (object instanceof $root.google.protobuf.DescriptorProto.ExtensionRange)
                         return object;
                     var message = new $root.google.protobuf.DescriptorProto.ExtensionRange();
-                    if (object.start !== undefined && object.start !== null)
+                    if (object.start != null)
                         message.start = object.start | 0;
-                    if (object.end !== undefined && object.end !== null)
+                    if (object.end != null)
                         message.end = object.end | 0;
                     return message;
                 };
@@ -8946,9 +8946,9 @@ $root.google = (function() {
                         object.start = 0;
                         object.end = 0;
                     }
-                    if (message.start !== undefined && message.start !== null && message.hasOwnProperty("start"))
+                    if (message.start != null && message.hasOwnProperty("start"))
                         object.start = message.start;
-                    if (message.end !== undefined && message.end !== null && message.hasOwnProperty("end"))
+                    if (message.end != null && message.hasOwnProperty("end"))
                         object.end = message.end;
                     return object;
                 };
@@ -9024,9 +9024,9 @@ $root.google = (function() {
                 ReservedRange.encode = function encode(message, writer) {
                     if (!writer)
                         writer = $Writer.create();
-                    if (message.start !== undefined && message.start !== null && message.hasOwnProperty("start"))
+                    if (message.start != null && message.hasOwnProperty("start"))
                         writer.uint32(/* id 1, wireType 0 =*/8).int32(message.start);
-                    if (message.end !== undefined && message.end !== null && message.hasOwnProperty("end"))
+                    if (message.end != null && message.hasOwnProperty("end"))
                         writer.uint32(/* id 2, wireType 0 =*/16).int32(message.end);
                     return writer;
                 };
@@ -9091,10 +9091,10 @@ $root.google = (function() {
                 ReservedRange.verify = function verify(message) {
                     if (typeof message !== "object" || message === null)
                         return "object expected";
-                    if (message.start !== undefined && message.start !== null)
+                    if (message.start != null)
                         if (!$util.isInteger(message.start))
                             return "start: integer expected";
-                    if (message.end !== undefined && message.end !== null)
+                    if (message.end != null)
                         if (!$util.isInteger(message.end))
                             return "end: integer expected";
                     return null;
@@ -9109,9 +9109,9 @@ $root.google = (function() {
                     if (object instanceof $root.google.protobuf.DescriptorProto.ReservedRange)
                         return object;
                     var message = new $root.google.protobuf.DescriptorProto.ReservedRange();
-                    if (object.start !== undefined && object.start !== null)
+                    if (object.start != null)
                         message.start = object.start | 0;
-                    if (object.end !== undefined && object.end !== null)
+                    if (object.end != null)
                         message.end = object.end | 0;
                     return message;
                 };
@@ -9139,9 +9139,9 @@ $root.google = (function() {
                         object.start = 0;
                         object.end = 0;
                     }
-                    if (message.start !== undefined && message.start !== null && message.hasOwnProperty("start"))
+                    if (message.start != null && message.hasOwnProperty("start"))
                         object.start = message.start;
-                    if (message.end !== undefined && message.end !== null && message.hasOwnProperty("end"))
+                    if (message.end != null && message.hasOwnProperty("end"))
                         object.end = message.end;
                     return object;
                 };
@@ -9268,25 +9268,25 @@ $root.google = (function() {
             FieldDescriptorProto.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
-                if (message.name !== undefined && message.name !== null && message.hasOwnProperty("name"))
+                if (message.name != null && message.hasOwnProperty("name"))
                     writer.uint32(/* id 1, wireType 2 =*/10).string(message.name);
-                if (message.extendee !== undefined && message.extendee !== null && message.hasOwnProperty("extendee"))
+                if (message.extendee != null && message.hasOwnProperty("extendee"))
                     writer.uint32(/* id 2, wireType 2 =*/18).string(message.extendee);
-                if (message.number !== undefined && message.number !== null && message.hasOwnProperty("number"))
+                if (message.number != null && message.hasOwnProperty("number"))
                     writer.uint32(/* id 3, wireType 0 =*/24).int32(message.number);
-                if (message.label !== undefined && message.label !== null && message.hasOwnProperty("label"))
+                if (message.label != null && message.hasOwnProperty("label"))
                     writer.uint32(/* id 4, wireType 0 =*/32).uint32(message.label);
-                if (message.type !== undefined && message.type !== null && message.hasOwnProperty("type"))
+                if (message.type != null && message.hasOwnProperty("type"))
                     writer.uint32(/* id 5, wireType 0 =*/40).uint32(message.type);
-                if (message.typeName !== undefined && message.typeName !== null && message.hasOwnProperty("typeName"))
+                if (message.typeName != null && message.hasOwnProperty("typeName"))
                     writer.uint32(/* id 6, wireType 2 =*/50).string(message.typeName);
-                if (message.defaultValue !== undefined && message.defaultValue !== null && message.hasOwnProperty("defaultValue"))
+                if (message.defaultValue != null && message.hasOwnProperty("defaultValue"))
                     writer.uint32(/* id 7, wireType 2 =*/58).string(message.defaultValue);
                 if (message.options && message.hasOwnProperty("options"))
                     $root.google.protobuf.FieldOptions.encode(message.options, writer.uint32(/* id 8, wireType 2 =*/66).fork()).ldelim();
-                if (message.oneofIndex !== undefined && message.oneofIndex !== null && message.hasOwnProperty("oneofIndex"))
+                if (message.oneofIndex != null && message.hasOwnProperty("oneofIndex"))
                     writer.uint32(/* id 9, wireType 0 =*/72).int32(message.oneofIndex);
-                if (message.jsonName !== undefined && message.jsonName !== null && message.hasOwnProperty("jsonName"))
+                if (message.jsonName != null && message.hasOwnProperty("jsonName"))
                     writer.uint32(/* id 10, wireType 2 =*/82).string(message.jsonName);
                 return writer;
             };
@@ -9375,13 +9375,13 @@ $root.google = (function() {
             FieldDescriptorProto.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
-                if (message.name !== undefined && message.name !== null)
+                if (message.name != null)
                     if (!$util.isString(message.name))
                         return "name: string expected";
-                if (message.number !== undefined && message.number !== null)
+                if (message.number != null)
                     if (!$util.isInteger(message.number))
                         return "number: integer expected";
-                if (message.label !== undefined && message.label !== null)
+                if (message.label != null)
                     switch (message.label) {
                     default:
                         return "label: enum value expected";
@@ -9390,7 +9390,7 @@ $root.google = (function() {
                     case 3:
                         break;
                     }
-                if (message.type !== undefined && message.type !== null)
+                if (message.type != null)
                     switch (message.type) {
                     default:
                         return "type: enum value expected";
@@ -9414,22 +9414,22 @@ $root.google = (function() {
                     case 18:
                         break;
                     }
-                if (message.typeName !== undefined && message.typeName !== null)
+                if (message.typeName != null)
                     if (!$util.isString(message.typeName))
                         return "typeName: string expected";
-                if (message.extendee !== undefined && message.extendee !== null)
+                if (message.extendee != null)
                     if (!$util.isString(message.extendee))
                         return "extendee: string expected";
-                if (message.defaultValue !== undefined && message.defaultValue !== null)
+                if (message.defaultValue != null)
                     if (!$util.isString(message.defaultValue))
                         return "defaultValue: string expected";
-                if (message.oneofIndex !== undefined && message.oneofIndex !== null)
+                if (message.oneofIndex != null)
                     if (!$util.isInteger(message.oneofIndex))
                         return "oneofIndex: integer expected";
-                if (message.jsonName !== undefined && message.jsonName !== null)
+                if (message.jsonName != null)
                     if (!$util.isString(message.jsonName))
                         return "jsonName: string expected";
-                if (message.options !== undefined && message.options !== null) {
+                if (message.options != null) {
                     var error = $root.google.protobuf.FieldOptions.verify(message.options);
                     if (error)
                         return "options." + error;
@@ -9446,9 +9446,9 @@ $root.google = (function() {
                 if (object instanceof $root.google.protobuf.FieldDescriptorProto)
                     return object;
                 var message = new $root.google.protobuf.FieldDescriptorProto();
-                if (object.name !== undefined && object.name !== null)
+                if (object.name != null)
                     message.name = String(object.name);
-                if (object.number !== undefined && object.number !== null)
+                if (object.number != null)
                     message.number = object.number | 0;
                 switch (object.label) {
                 case "LABEL_OPTIONAL":
@@ -9538,17 +9538,17 @@ $root.google = (function() {
                     message.type = 18;
                     break;
                 }
-                if (object.typeName !== undefined && object.typeName !== null)
+                if (object.typeName != null)
                     message.typeName = String(object.typeName);
-                if (object.extendee !== undefined && object.extendee !== null)
+                if (object.extendee != null)
                     message.extendee = String(object.extendee);
-                if (object.defaultValue !== undefined && object.defaultValue !== null)
+                if (object.defaultValue != null)
                     message.defaultValue = String(object.defaultValue);
-                if (object.oneofIndex !== undefined && object.oneofIndex !== null)
+                if (object.oneofIndex != null)
                     message.oneofIndex = object.oneofIndex | 0;
-                if (object.jsonName !== undefined && object.jsonName !== null)
+                if (object.jsonName != null)
                     message.jsonName = String(object.jsonName);
-                if (object.options !== undefined && object.options !== null) {
+                if (object.options != null) {
                     if (typeof object.options !== "object")
                         throw TypeError(".google.protobuf.FieldDescriptorProto.options: object expected");
                     message.options = $root.google.protobuf.FieldOptions.fromObject(object.options);
@@ -9587,25 +9587,25 @@ $root.google = (function() {
                     object.oneofIndex = 0;
                     object.jsonName = "";
                 }
-                if (message.name !== undefined && message.name !== null && message.hasOwnProperty("name"))
+                if (message.name != null && message.hasOwnProperty("name"))
                     object.name = message.name;
-                if (message.extendee !== undefined && message.extendee !== null && message.hasOwnProperty("extendee"))
+                if (message.extendee != null && message.hasOwnProperty("extendee"))
                     object.extendee = message.extendee;
-                if (message.number !== undefined && message.number !== null && message.hasOwnProperty("number"))
+                if (message.number != null && message.hasOwnProperty("number"))
                     object.number = message.number;
-                if (message.label !== undefined && message.label !== null && message.hasOwnProperty("label"))
+                if (message.label != null && message.hasOwnProperty("label"))
                     object.label = options.enums === String ? $root.google.protobuf.FieldDescriptorProto.Label[message.label] : message.label;
-                if (message.type !== undefined && message.type !== null && message.hasOwnProperty("type"))
+                if (message.type != null && message.hasOwnProperty("type"))
                     object.type = options.enums === String ? $root.google.protobuf.FieldDescriptorProto.Type[message.type] : message.type;
-                if (message.typeName !== undefined && message.typeName !== null && message.hasOwnProperty("typeName"))
+                if (message.typeName != null && message.hasOwnProperty("typeName"))
                     object.typeName = message.typeName;
-                if (message.defaultValue !== undefined && message.defaultValue !== null && message.hasOwnProperty("defaultValue"))
+                if (message.defaultValue != null && message.hasOwnProperty("defaultValue"))
                     object.defaultValue = message.defaultValue;
-                if (message.options !== undefined && message.options !== null && message.hasOwnProperty("options"))
+                if (message.options != null && message.hasOwnProperty("options"))
                     object.options = $root.google.protobuf.FieldOptions.toObject(message.options, options);
-                if (message.oneofIndex !== undefined && message.oneofIndex !== null && message.hasOwnProperty("oneofIndex"))
+                if (message.oneofIndex != null && message.hasOwnProperty("oneofIndex"))
                     object.oneofIndex = message.oneofIndex;
-                if (message.jsonName !== undefined && message.jsonName !== null && message.hasOwnProperty("jsonName"))
+                if (message.jsonName != null && message.hasOwnProperty("jsonName"))
                     object.jsonName = message.jsonName;
                 return object;
             };
@@ -9745,7 +9745,7 @@ $root.google = (function() {
             OneofDescriptorProto.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
-                if (message.name !== undefined && message.name !== null && message.hasOwnProperty("name"))
+                if (message.name != null && message.hasOwnProperty("name"))
                     writer.uint32(/* id 1, wireType 2 =*/10).string(message.name);
                 if (message.options && message.hasOwnProperty("options"))
                     $root.google.protobuf.OneofOptions.encode(message.options, writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
@@ -9812,10 +9812,10 @@ $root.google = (function() {
             OneofDescriptorProto.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
-                if (message.name !== undefined && message.name !== null)
+                if (message.name != null)
                     if (!$util.isString(message.name))
                         return "name: string expected";
-                if (message.options !== undefined && message.options !== null) {
+                if (message.options != null) {
                     var error = $root.google.protobuf.OneofOptions.verify(message.options);
                     if (error)
                         return "options." + error;
@@ -9832,9 +9832,9 @@ $root.google = (function() {
                 if (object instanceof $root.google.protobuf.OneofDescriptorProto)
                     return object;
                 var message = new $root.google.protobuf.OneofDescriptorProto();
-                if (object.name !== undefined && object.name !== null)
+                if (object.name != null)
                     message.name = String(object.name);
-                if (object.options !== undefined && object.options !== null) {
+                if (object.options != null) {
                     if (typeof object.options !== "object")
                         throw TypeError(".google.protobuf.OneofDescriptorProto.options: object expected");
                     message.options = $root.google.protobuf.OneofOptions.fromObject(object.options);
@@ -9865,9 +9865,9 @@ $root.google = (function() {
                     object.name = "";
                     object.options = null;
                 }
-                if (message.name !== undefined && message.name !== null && message.hasOwnProperty("name"))
+                if (message.name != null && message.hasOwnProperty("name"))
                     object.name = message.name;
-                if (message.options !== undefined && message.options !== null && message.hasOwnProperty("options"))
+                if (message.options != null && message.hasOwnProperty("options"))
                     object.options = $root.google.protobuf.OneofOptions.toObject(message.options, options);
                 return object;
             };
@@ -9950,9 +9950,9 @@ $root.google = (function() {
             EnumDescriptorProto.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
-                if (message.name !== undefined && message.name !== null && message.hasOwnProperty("name"))
+                if (message.name != null && message.hasOwnProperty("name"))
                     writer.uint32(/* id 1, wireType 2 =*/10).string(message.name);
-                if (message.value !== undefined && message.hasOwnProperty("value"))
+                if (message.value && message.value.length && message.hasOwnProperty("value"))
                     for (var i = 0; i < message.value.length; ++i)
                         $root.google.protobuf.EnumValueDescriptorProto.encode(message.value[i], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
                 if (message.options && message.hasOwnProperty("options"))
@@ -10025,10 +10025,10 @@ $root.google = (function() {
             EnumDescriptorProto.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
-                if (message.name !== undefined && message.name !== null)
+                if (message.name != null)
                     if (!$util.isString(message.name))
                         return "name: string expected";
-                if (message.value !== undefined) {
+                if (message.value != null) {
                     if (!Array.isArray(message.value))
                         return "value: array expected";
                     for (var i = 0; i < message.value.length; ++i) {
@@ -10037,7 +10037,7 @@ $root.google = (function() {
                             return "value." + error;
                     }
                 }
-                if (message.options !== undefined && message.options !== null) {
+                if (message.options != null) {
                     var error = $root.google.protobuf.EnumOptions.verify(message.options);
                     if (error)
                         return "options." + error;
@@ -10054,7 +10054,7 @@ $root.google = (function() {
                 if (object instanceof $root.google.protobuf.EnumDescriptorProto)
                     return object;
                 var message = new $root.google.protobuf.EnumDescriptorProto();
-                if (object.name !== undefined && object.name !== null)
+                if (object.name != null)
                     message.name = String(object.name);
                 if (object.value) {
                     if (!Array.isArray(object.value))
@@ -10066,7 +10066,7 @@ $root.google = (function() {
                         message.value[i] = $root.google.protobuf.EnumValueDescriptorProto.fromObject(object.value[i]);
                     }
                 }
-                if (object.options !== undefined && object.options !== null) {
+                if (object.options != null) {
                     if (typeof object.options !== "object")
                         throw TypeError(".google.protobuf.EnumDescriptorProto.options: object expected");
                     message.options = $root.google.protobuf.EnumOptions.fromObject(object.options);
@@ -10099,14 +10099,14 @@ $root.google = (function() {
                     object.name = "";
                     object.options = null;
                 }
-                if (message.name !== undefined && message.name !== null && message.hasOwnProperty("name"))
+                if (message.name != null && message.hasOwnProperty("name"))
                     object.name = message.name;
                 if (message.value && message.value.length) {
                     object.value = [];
                     for (var j = 0; j < message.value.length; ++j)
                         object.value[j] = $root.google.protobuf.EnumValueDescriptorProto.toObject(message.value[j], options);
                 }
-                if (message.options !== undefined && message.options !== null && message.hasOwnProperty("options"))
+                if (message.options != null && message.hasOwnProperty("options"))
                     object.options = $root.google.protobuf.EnumOptions.toObject(message.options, options);
                 return object;
             };
@@ -10188,9 +10188,9 @@ $root.google = (function() {
             EnumValueDescriptorProto.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
-                if (message.name !== undefined && message.name !== null && message.hasOwnProperty("name"))
+                if (message.name != null && message.hasOwnProperty("name"))
                     writer.uint32(/* id 1, wireType 2 =*/10).string(message.name);
-                if (message.number !== undefined && message.number !== null && message.hasOwnProperty("number"))
+                if (message.number != null && message.hasOwnProperty("number"))
                     writer.uint32(/* id 2, wireType 0 =*/16).int32(message.number);
                 if (message.options && message.hasOwnProperty("options"))
                     $root.google.protobuf.EnumValueOptions.encode(message.options, writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
@@ -10260,13 +10260,13 @@ $root.google = (function() {
             EnumValueDescriptorProto.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
-                if (message.name !== undefined && message.name !== null)
+                if (message.name != null)
                     if (!$util.isString(message.name))
                         return "name: string expected";
-                if (message.number !== undefined && message.number !== null)
+                if (message.number != null)
                     if (!$util.isInteger(message.number))
                         return "number: integer expected";
-                if (message.options !== undefined && message.options !== null) {
+                if (message.options != null) {
                     var error = $root.google.protobuf.EnumValueOptions.verify(message.options);
                     if (error)
                         return "options." + error;
@@ -10283,11 +10283,11 @@ $root.google = (function() {
                 if (object instanceof $root.google.protobuf.EnumValueDescriptorProto)
                     return object;
                 var message = new $root.google.protobuf.EnumValueDescriptorProto();
-                if (object.name !== undefined && object.name !== null)
+                if (object.name != null)
                     message.name = String(object.name);
-                if (object.number !== undefined && object.number !== null)
+                if (object.number != null)
                     message.number = object.number | 0;
-                if (object.options !== undefined && object.options !== null) {
+                if (object.options != null) {
                     if (typeof object.options !== "object")
                         throw TypeError(".google.protobuf.EnumValueDescriptorProto.options: object expected");
                     message.options = $root.google.protobuf.EnumValueOptions.fromObject(object.options);
@@ -10319,11 +10319,11 @@ $root.google = (function() {
                     object.number = 0;
                     object.options = null;
                 }
-                if (message.name !== undefined && message.name !== null && message.hasOwnProperty("name"))
+                if (message.name != null && message.hasOwnProperty("name"))
                     object.name = message.name;
-                if (message.number !== undefined && message.number !== null && message.hasOwnProperty("number"))
+                if (message.number != null && message.hasOwnProperty("number"))
                     object.number = message.number;
-                if (message.options !== undefined && message.options !== null && message.hasOwnProperty("options"))
+                if (message.options != null && message.hasOwnProperty("options"))
                     object.options = $root.google.protobuf.EnumValueOptions.toObject(message.options, options);
                 return object;
             };
@@ -10406,9 +10406,9 @@ $root.google = (function() {
             ServiceDescriptorProto.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
-                if (message.name !== undefined && message.name !== null && message.hasOwnProperty("name"))
+                if (message.name != null && message.hasOwnProperty("name"))
                     writer.uint32(/* id 1, wireType 2 =*/10).string(message.name);
-                if (message.method !== undefined && message.hasOwnProperty("method"))
+                if (message.method && message.method.length && message.hasOwnProperty("method"))
                     for (var i = 0; i < message.method.length; ++i)
                         $root.google.protobuf.MethodDescriptorProto.encode(message.method[i], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
                 if (message.options && message.hasOwnProperty("options"))
@@ -10481,10 +10481,10 @@ $root.google = (function() {
             ServiceDescriptorProto.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
-                if (message.name !== undefined && message.name !== null)
+                if (message.name != null)
                     if (!$util.isString(message.name))
                         return "name: string expected";
-                if (message.method !== undefined) {
+                if (message.method != null) {
                     if (!Array.isArray(message.method))
                         return "method: array expected";
                     for (var i = 0; i < message.method.length; ++i) {
@@ -10493,7 +10493,7 @@ $root.google = (function() {
                             return "method." + error;
                     }
                 }
-                if (message.options !== undefined && message.options !== null) {
+                if (message.options != null) {
                     var error = $root.google.protobuf.ServiceOptions.verify(message.options);
                     if (error)
                         return "options." + error;
@@ -10510,7 +10510,7 @@ $root.google = (function() {
                 if (object instanceof $root.google.protobuf.ServiceDescriptorProto)
                     return object;
                 var message = new $root.google.protobuf.ServiceDescriptorProto();
-                if (object.name !== undefined && object.name !== null)
+                if (object.name != null)
                     message.name = String(object.name);
                 if (object.method) {
                     if (!Array.isArray(object.method))
@@ -10522,7 +10522,7 @@ $root.google = (function() {
                         message.method[i] = $root.google.protobuf.MethodDescriptorProto.fromObject(object.method[i]);
                     }
                 }
-                if (object.options !== undefined && object.options !== null) {
+                if (object.options != null) {
                     if (typeof object.options !== "object")
                         throw TypeError(".google.protobuf.ServiceDescriptorProto.options: object expected");
                     message.options = $root.google.protobuf.ServiceOptions.fromObject(object.options);
@@ -10555,14 +10555,14 @@ $root.google = (function() {
                     object.name = "";
                     object.options = null;
                 }
-                if (message.name !== undefined && message.name !== null && message.hasOwnProperty("name"))
+                if (message.name != null && message.hasOwnProperty("name"))
                     object.name = message.name;
                 if (message.method && message.method.length) {
                     object.method = [];
                     for (var j = 0; j < message.method.length; ++j)
                         object.method[j] = $root.google.protobuf.MethodDescriptorProto.toObject(message.method[j], options);
                 }
-                if (message.options !== undefined && message.options !== null && message.hasOwnProperty("options"))
+                if (message.options != null && message.hasOwnProperty("options"))
                     object.options = $root.google.protobuf.ServiceOptions.toObject(message.options, options);
                 return object;
             };
@@ -10662,17 +10662,17 @@ $root.google = (function() {
             MethodDescriptorProto.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
-                if (message.name !== undefined && message.name !== null && message.hasOwnProperty("name"))
+                if (message.name != null && message.hasOwnProperty("name"))
                     writer.uint32(/* id 1, wireType 2 =*/10).string(message.name);
-                if (message.inputType !== undefined && message.inputType !== null && message.hasOwnProperty("inputType"))
+                if (message.inputType != null && message.hasOwnProperty("inputType"))
                     writer.uint32(/* id 2, wireType 2 =*/18).string(message.inputType);
-                if (message.outputType !== undefined && message.outputType !== null && message.hasOwnProperty("outputType"))
+                if (message.outputType != null && message.hasOwnProperty("outputType"))
                     writer.uint32(/* id 3, wireType 2 =*/26).string(message.outputType);
                 if (message.options && message.hasOwnProperty("options"))
                     $root.google.protobuf.MethodOptions.encode(message.options, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
-                if (message.clientStreaming !== undefined && message.clientStreaming !== null && message.hasOwnProperty("clientStreaming"))
+                if (message.clientStreaming != null && message.hasOwnProperty("clientStreaming"))
                     writer.uint32(/* id 5, wireType 0 =*/40).bool(message.clientStreaming);
-                if (message.serverStreaming !== undefined && message.serverStreaming !== null && message.hasOwnProperty("serverStreaming"))
+                if (message.serverStreaming != null && message.hasOwnProperty("serverStreaming"))
                     writer.uint32(/* id 6, wireType 0 =*/48).bool(message.serverStreaming);
                 return writer;
             };
@@ -10749,24 +10749,24 @@ $root.google = (function() {
             MethodDescriptorProto.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
-                if (message.name !== undefined && message.name !== null)
+                if (message.name != null)
                     if (!$util.isString(message.name))
                         return "name: string expected";
-                if (message.inputType !== undefined && message.inputType !== null)
+                if (message.inputType != null)
                     if (!$util.isString(message.inputType))
                         return "inputType: string expected";
-                if (message.outputType !== undefined && message.outputType !== null)
+                if (message.outputType != null)
                     if (!$util.isString(message.outputType))
                         return "outputType: string expected";
-                if (message.options !== undefined && message.options !== null) {
+                if (message.options != null) {
                     var error = $root.google.protobuf.MethodOptions.verify(message.options);
                     if (error)
                         return "options." + error;
                 }
-                if (message.clientStreaming !== undefined && message.clientStreaming !== null)
+                if (message.clientStreaming != null)
                     if (typeof message.clientStreaming !== "boolean")
                         return "clientStreaming: boolean expected";
-                if (message.serverStreaming !== undefined && message.serverStreaming !== null)
+                if (message.serverStreaming != null)
                     if (typeof message.serverStreaming !== "boolean")
                         return "serverStreaming: boolean expected";
                 return null;
@@ -10781,20 +10781,20 @@ $root.google = (function() {
                 if (object instanceof $root.google.protobuf.MethodDescriptorProto)
                     return object;
                 var message = new $root.google.protobuf.MethodDescriptorProto();
-                if (object.name !== undefined && object.name !== null)
+                if (object.name != null)
                     message.name = String(object.name);
-                if (object.inputType !== undefined && object.inputType !== null)
+                if (object.inputType != null)
                     message.inputType = String(object.inputType);
-                if (object.outputType !== undefined && object.outputType !== null)
+                if (object.outputType != null)
                     message.outputType = String(object.outputType);
-                if (object.options !== undefined && object.options !== null) {
+                if (object.options != null) {
                     if (typeof object.options !== "object")
                         throw TypeError(".google.protobuf.MethodDescriptorProto.options: object expected");
                     message.options = $root.google.protobuf.MethodOptions.fromObject(object.options);
                 }
-                if (object.clientStreaming !== undefined && object.clientStreaming !== null)
+                if (object.clientStreaming != null)
                     message.clientStreaming = Boolean(object.clientStreaming);
-                if (object.serverStreaming !== undefined && object.serverStreaming !== null)
+                if (object.serverStreaming != null)
                     message.serverStreaming = Boolean(object.serverStreaming);
                 return message;
             };
@@ -10826,17 +10826,17 @@ $root.google = (function() {
                     object.clientStreaming = false;
                     object.serverStreaming = false;
                 }
-                if (message.name !== undefined && message.name !== null && message.hasOwnProperty("name"))
+                if (message.name != null && message.hasOwnProperty("name"))
                     object.name = message.name;
-                if (message.inputType !== undefined && message.inputType !== null && message.hasOwnProperty("inputType"))
+                if (message.inputType != null && message.hasOwnProperty("inputType"))
                     object.inputType = message.inputType;
-                if (message.outputType !== undefined && message.outputType !== null && message.hasOwnProperty("outputType"))
+                if (message.outputType != null && message.hasOwnProperty("outputType"))
                     object.outputType = message.outputType;
-                if (message.options !== undefined && message.options !== null && message.hasOwnProperty("options"))
+                if (message.options != null && message.hasOwnProperty("options"))
                     object.options = $root.google.protobuf.MethodOptions.toObject(message.options, options);
-                if (message.clientStreaming !== undefined && message.clientStreaming !== null && message.hasOwnProperty("clientStreaming"))
+                if (message.clientStreaming != null && message.hasOwnProperty("clientStreaming"))
                     object.clientStreaming = message.clientStreaming;
-                if (message.serverStreaming !== undefined && message.serverStreaming !== null && message.hasOwnProperty("serverStreaming"))
+                if (message.serverStreaming != null && message.hasOwnProperty("serverStreaming"))
                     object.serverStreaming = message.serverStreaming;
                 return object;
             };
@@ -10991,35 +10991,35 @@ $root.google = (function() {
             FileOptions.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
-                if (message.javaPackage !== undefined && message.javaPackage !== null && message.hasOwnProperty("javaPackage"))
+                if (message.javaPackage != null && message.hasOwnProperty("javaPackage"))
                     writer.uint32(/* id 1, wireType 2 =*/10).string(message.javaPackage);
-                if (message.javaOuterClassname !== undefined && message.javaOuterClassname !== null && message.hasOwnProperty("javaOuterClassname"))
+                if (message.javaOuterClassname != null && message.hasOwnProperty("javaOuterClassname"))
                     writer.uint32(/* id 8, wireType 2 =*/66).string(message.javaOuterClassname);
-                if (message.optimizeFor !== undefined && message.optimizeFor !== null && message.hasOwnProperty("optimizeFor"))
+                if (message.optimizeFor != null && message.hasOwnProperty("optimizeFor"))
                     writer.uint32(/* id 9, wireType 0 =*/72).uint32(message.optimizeFor);
-                if (message.javaMultipleFiles !== undefined && message.javaMultipleFiles !== null && message.hasOwnProperty("javaMultipleFiles"))
+                if (message.javaMultipleFiles != null && message.hasOwnProperty("javaMultipleFiles"))
                     writer.uint32(/* id 10, wireType 0 =*/80).bool(message.javaMultipleFiles);
-                if (message.goPackage !== undefined && message.goPackage !== null && message.hasOwnProperty("goPackage"))
+                if (message.goPackage != null && message.hasOwnProperty("goPackage"))
                     writer.uint32(/* id 11, wireType 2 =*/90).string(message.goPackage);
-                if (message.ccGenericServices !== undefined && message.ccGenericServices !== null && message.hasOwnProperty("ccGenericServices"))
+                if (message.ccGenericServices != null && message.hasOwnProperty("ccGenericServices"))
                     writer.uint32(/* id 16, wireType 0 =*/128).bool(message.ccGenericServices);
-                if (message.javaGenericServices !== undefined && message.javaGenericServices !== null && message.hasOwnProperty("javaGenericServices"))
+                if (message.javaGenericServices != null && message.hasOwnProperty("javaGenericServices"))
                     writer.uint32(/* id 17, wireType 0 =*/136).bool(message.javaGenericServices);
-                if (message.pyGenericServices !== undefined && message.pyGenericServices !== null && message.hasOwnProperty("pyGenericServices"))
+                if (message.pyGenericServices != null && message.hasOwnProperty("pyGenericServices"))
                     writer.uint32(/* id 18, wireType 0 =*/144).bool(message.pyGenericServices);
-                if (message.javaGenerateEqualsAndHash !== undefined && message.javaGenerateEqualsAndHash !== null && message.hasOwnProperty("javaGenerateEqualsAndHash"))
+                if (message.javaGenerateEqualsAndHash != null && message.hasOwnProperty("javaGenerateEqualsAndHash"))
                     writer.uint32(/* id 20, wireType 0 =*/160).bool(message.javaGenerateEqualsAndHash);
-                if (message.deprecated !== undefined && message.deprecated !== null && message.hasOwnProperty("deprecated"))
+                if (message.deprecated != null && message.hasOwnProperty("deprecated"))
                     writer.uint32(/* id 23, wireType 0 =*/184).bool(message.deprecated);
-                if (message.javaStringCheckUtf8 !== undefined && message.javaStringCheckUtf8 !== null && message.hasOwnProperty("javaStringCheckUtf8"))
+                if (message.javaStringCheckUtf8 != null && message.hasOwnProperty("javaStringCheckUtf8"))
                     writer.uint32(/* id 27, wireType 0 =*/216).bool(message.javaStringCheckUtf8);
-                if (message.ccEnableArenas !== undefined && message.ccEnableArenas !== null && message.hasOwnProperty("ccEnableArenas"))
+                if (message.ccEnableArenas != null && message.hasOwnProperty("ccEnableArenas"))
                     writer.uint32(/* id 31, wireType 0 =*/248).bool(message.ccEnableArenas);
-                if (message.objcClassPrefix !== undefined && message.objcClassPrefix !== null && message.hasOwnProperty("objcClassPrefix"))
+                if (message.objcClassPrefix != null && message.hasOwnProperty("objcClassPrefix"))
                     writer.uint32(/* id 36, wireType 2 =*/290).string(message.objcClassPrefix);
-                if (message.csharpNamespace !== undefined && message.csharpNamespace !== null && message.hasOwnProperty("csharpNamespace"))
+                if (message.csharpNamespace != null && message.hasOwnProperty("csharpNamespace"))
                     writer.uint32(/* id 37, wireType 2 =*/298).string(message.csharpNamespace);
-                if (message.uninterpretedOption !== undefined && message.hasOwnProperty("uninterpretedOption"))
+                if (message.uninterpretedOption && message.uninterpretedOption.length && message.hasOwnProperty("uninterpretedOption"))
                     for (var i = 0; i < message.uninterpretedOption.length; ++i)
                         $root.google.protobuf.UninterpretedOption.encode(message.uninterpretedOption[i], writer.uint32(/* id 999, wireType 2 =*/7994).fork()).ldelim();
                 return writer;
@@ -11126,22 +11126,22 @@ $root.google = (function() {
             FileOptions.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
-                if (message.javaPackage !== undefined && message.javaPackage !== null)
+                if (message.javaPackage != null)
                     if (!$util.isString(message.javaPackage))
                         return "javaPackage: string expected";
-                if (message.javaOuterClassname !== undefined && message.javaOuterClassname !== null)
+                if (message.javaOuterClassname != null)
                     if (!$util.isString(message.javaOuterClassname))
                         return "javaOuterClassname: string expected";
-                if (message.javaMultipleFiles !== undefined && message.javaMultipleFiles !== null)
+                if (message.javaMultipleFiles != null)
                     if (typeof message.javaMultipleFiles !== "boolean")
                         return "javaMultipleFiles: boolean expected";
-                if (message.javaGenerateEqualsAndHash !== undefined && message.javaGenerateEqualsAndHash !== null)
+                if (message.javaGenerateEqualsAndHash != null)
                     if (typeof message.javaGenerateEqualsAndHash !== "boolean")
                         return "javaGenerateEqualsAndHash: boolean expected";
-                if (message.javaStringCheckUtf8 !== undefined && message.javaStringCheckUtf8 !== null)
+                if (message.javaStringCheckUtf8 != null)
                     if (typeof message.javaStringCheckUtf8 !== "boolean")
                         return "javaStringCheckUtf8: boolean expected";
-                if (message.optimizeFor !== undefined && message.optimizeFor !== null)
+                if (message.optimizeFor != null)
                     switch (message.optimizeFor) {
                     default:
                         return "optimizeFor: enum value expected";
@@ -11150,31 +11150,31 @@ $root.google = (function() {
                     case 3:
                         break;
                     }
-                if (message.goPackage !== undefined && message.goPackage !== null)
+                if (message.goPackage != null)
                     if (!$util.isString(message.goPackage))
                         return "goPackage: string expected";
-                if (message.ccGenericServices !== undefined && message.ccGenericServices !== null)
+                if (message.ccGenericServices != null)
                     if (typeof message.ccGenericServices !== "boolean")
                         return "ccGenericServices: boolean expected";
-                if (message.javaGenericServices !== undefined && message.javaGenericServices !== null)
+                if (message.javaGenericServices != null)
                     if (typeof message.javaGenericServices !== "boolean")
                         return "javaGenericServices: boolean expected";
-                if (message.pyGenericServices !== undefined && message.pyGenericServices !== null)
+                if (message.pyGenericServices != null)
                     if (typeof message.pyGenericServices !== "boolean")
                         return "pyGenericServices: boolean expected";
-                if (message.deprecated !== undefined && message.deprecated !== null)
+                if (message.deprecated != null)
                     if (typeof message.deprecated !== "boolean")
                         return "deprecated: boolean expected";
-                if (message.ccEnableArenas !== undefined && message.ccEnableArenas !== null)
+                if (message.ccEnableArenas != null)
                     if (typeof message.ccEnableArenas !== "boolean")
                         return "ccEnableArenas: boolean expected";
-                if (message.objcClassPrefix !== undefined && message.objcClassPrefix !== null)
+                if (message.objcClassPrefix != null)
                     if (!$util.isString(message.objcClassPrefix))
                         return "objcClassPrefix: string expected";
-                if (message.csharpNamespace !== undefined && message.csharpNamespace !== null)
+                if (message.csharpNamespace != null)
                     if (!$util.isString(message.csharpNamespace))
                         return "csharpNamespace: string expected";
-                if (message.uninterpretedOption !== undefined) {
+                if (message.uninterpretedOption != null) {
                     if (!Array.isArray(message.uninterpretedOption))
                         return "uninterpretedOption: array expected";
                     for (var i = 0; i < message.uninterpretedOption.length; ++i) {
@@ -11195,15 +11195,15 @@ $root.google = (function() {
                 if (object instanceof $root.google.protobuf.FileOptions)
                     return object;
                 var message = new $root.google.protobuf.FileOptions();
-                if (object.javaPackage !== undefined && object.javaPackage !== null)
+                if (object.javaPackage != null)
                     message.javaPackage = String(object.javaPackage);
-                if (object.javaOuterClassname !== undefined && object.javaOuterClassname !== null)
+                if (object.javaOuterClassname != null)
                     message.javaOuterClassname = String(object.javaOuterClassname);
-                if (object.javaMultipleFiles !== undefined && object.javaMultipleFiles !== null)
+                if (object.javaMultipleFiles != null)
                     message.javaMultipleFiles = Boolean(object.javaMultipleFiles);
-                if (object.javaGenerateEqualsAndHash !== undefined && object.javaGenerateEqualsAndHash !== null)
+                if (object.javaGenerateEqualsAndHash != null)
                     message.javaGenerateEqualsAndHash = Boolean(object.javaGenerateEqualsAndHash);
-                if (object.javaStringCheckUtf8 !== undefined && object.javaStringCheckUtf8 !== null)
+                if (object.javaStringCheckUtf8 != null)
                     message.javaStringCheckUtf8 = Boolean(object.javaStringCheckUtf8);
                 switch (object.optimizeFor) {
                 case "SPEED":
@@ -11219,21 +11219,21 @@ $root.google = (function() {
                     message.optimizeFor = 3;
                     break;
                 }
-                if (object.goPackage !== undefined && object.goPackage !== null)
+                if (object.goPackage != null)
                     message.goPackage = String(object.goPackage);
-                if (object.ccGenericServices !== undefined && object.ccGenericServices !== null)
+                if (object.ccGenericServices != null)
                     message.ccGenericServices = Boolean(object.ccGenericServices);
-                if (object.javaGenericServices !== undefined && object.javaGenericServices !== null)
+                if (object.javaGenericServices != null)
                     message.javaGenericServices = Boolean(object.javaGenericServices);
-                if (object.pyGenericServices !== undefined && object.pyGenericServices !== null)
+                if (object.pyGenericServices != null)
                     message.pyGenericServices = Boolean(object.pyGenericServices);
-                if (object.deprecated !== undefined && object.deprecated !== null)
+                if (object.deprecated != null)
                     message.deprecated = Boolean(object.deprecated);
-                if (object.ccEnableArenas !== undefined && object.ccEnableArenas !== null)
+                if (object.ccEnableArenas != null)
                     message.ccEnableArenas = Boolean(object.ccEnableArenas);
-                if (object.objcClassPrefix !== undefined && object.objcClassPrefix !== null)
+                if (object.objcClassPrefix != null)
                     message.objcClassPrefix = String(object.objcClassPrefix);
-                if (object.csharpNamespace !== undefined && object.csharpNamespace !== null)
+                if (object.csharpNamespace != null)
                     message.csharpNamespace = String(object.csharpNamespace);
                 if (object.uninterpretedOption) {
                     if (!Array.isArray(object.uninterpretedOption))
@@ -11285,33 +11285,33 @@ $root.google = (function() {
                     object.objcClassPrefix = "";
                     object.csharpNamespace = "";
                 }
-                if (message.javaPackage !== undefined && message.javaPackage !== null && message.hasOwnProperty("javaPackage"))
+                if (message.javaPackage != null && message.hasOwnProperty("javaPackage"))
                     object.javaPackage = message.javaPackage;
-                if (message.javaOuterClassname !== undefined && message.javaOuterClassname !== null && message.hasOwnProperty("javaOuterClassname"))
+                if (message.javaOuterClassname != null && message.hasOwnProperty("javaOuterClassname"))
                     object.javaOuterClassname = message.javaOuterClassname;
-                if (message.optimizeFor !== undefined && message.optimizeFor !== null && message.hasOwnProperty("optimizeFor"))
+                if (message.optimizeFor != null && message.hasOwnProperty("optimizeFor"))
                     object.optimizeFor = options.enums === String ? $root.google.protobuf.FileOptions.OptimizeMode[message.optimizeFor] : message.optimizeFor;
-                if (message.javaMultipleFiles !== undefined && message.javaMultipleFiles !== null && message.hasOwnProperty("javaMultipleFiles"))
+                if (message.javaMultipleFiles != null && message.hasOwnProperty("javaMultipleFiles"))
                     object.javaMultipleFiles = message.javaMultipleFiles;
-                if (message.goPackage !== undefined && message.goPackage !== null && message.hasOwnProperty("goPackage"))
+                if (message.goPackage != null && message.hasOwnProperty("goPackage"))
                     object.goPackage = message.goPackage;
-                if (message.ccGenericServices !== undefined && message.ccGenericServices !== null && message.hasOwnProperty("ccGenericServices"))
+                if (message.ccGenericServices != null && message.hasOwnProperty("ccGenericServices"))
                     object.ccGenericServices = message.ccGenericServices;
-                if (message.javaGenericServices !== undefined && message.javaGenericServices !== null && message.hasOwnProperty("javaGenericServices"))
+                if (message.javaGenericServices != null && message.hasOwnProperty("javaGenericServices"))
                     object.javaGenericServices = message.javaGenericServices;
-                if (message.pyGenericServices !== undefined && message.pyGenericServices !== null && message.hasOwnProperty("pyGenericServices"))
+                if (message.pyGenericServices != null && message.hasOwnProperty("pyGenericServices"))
                     object.pyGenericServices = message.pyGenericServices;
-                if (message.javaGenerateEqualsAndHash !== undefined && message.javaGenerateEqualsAndHash !== null && message.hasOwnProperty("javaGenerateEqualsAndHash"))
+                if (message.javaGenerateEqualsAndHash != null && message.hasOwnProperty("javaGenerateEqualsAndHash"))
                     object.javaGenerateEqualsAndHash = message.javaGenerateEqualsAndHash;
-                if (message.deprecated !== undefined && message.deprecated !== null && message.hasOwnProperty("deprecated"))
+                if (message.deprecated != null && message.hasOwnProperty("deprecated"))
                     object.deprecated = message.deprecated;
-                if (message.javaStringCheckUtf8 !== undefined && message.javaStringCheckUtf8 !== null && message.hasOwnProperty("javaStringCheckUtf8"))
+                if (message.javaStringCheckUtf8 != null && message.hasOwnProperty("javaStringCheckUtf8"))
                     object.javaStringCheckUtf8 = message.javaStringCheckUtf8;
-                if (message.ccEnableArenas !== undefined && message.ccEnableArenas !== null && message.hasOwnProperty("ccEnableArenas"))
+                if (message.ccEnableArenas != null && message.hasOwnProperty("ccEnableArenas"))
                     object.ccEnableArenas = message.ccEnableArenas;
-                if (message.objcClassPrefix !== undefined && message.objcClassPrefix !== null && message.hasOwnProperty("objcClassPrefix"))
+                if (message.objcClassPrefix != null && message.hasOwnProperty("objcClassPrefix"))
                     object.objcClassPrefix = message.objcClassPrefix;
-                if (message.csharpNamespace !== undefined && message.csharpNamespace !== null && message.hasOwnProperty("csharpNamespace"))
+                if (message.csharpNamespace != null && message.hasOwnProperty("csharpNamespace"))
                     object.csharpNamespace = message.csharpNamespace;
                 if (message.uninterpretedOption && message.uninterpretedOption.length) {
                     object.uninterpretedOption = [];
@@ -11428,15 +11428,15 @@ $root.google = (function() {
             MessageOptions.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
-                if (message.messageSetWireFormat !== undefined && message.messageSetWireFormat !== null && message.hasOwnProperty("messageSetWireFormat"))
+                if (message.messageSetWireFormat != null && message.hasOwnProperty("messageSetWireFormat"))
                     writer.uint32(/* id 1, wireType 0 =*/8).bool(message.messageSetWireFormat);
-                if (message.noStandardDescriptorAccessor !== undefined && message.noStandardDescriptorAccessor !== null && message.hasOwnProperty("noStandardDescriptorAccessor"))
+                if (message.noStandardDescriptorAccessor != null && message.hasOwnProperty("noStandardDescriptorAccessor"))
                     writer.uint32(/* id 2, wireType 0 =*/16).bool(message.noStandardDescriptorAccessor);
-                if (message.deprecated !== undefined && message.deprecated !== null && message.hasOwnProperty("deprecated"))
+                if (message.deprecated != null && message.hasOwnProperty("deprecated"))
                     writer.uint32(/* id 3, wireType 0 =*/24).bool(message.deprecated);
-                if (message.mapEntry !== undefined && message.mapEntry !== null && message.hasOwnProperty("mapEntry"))
+                if (message.mapEntry != null && message.hasOwnProperty("mapEntry"))
                     writer.uint32(/* id 7, wireType 0 =*/56).bool(message.mapEntry);
-                if (message.uninterpretedOption !== undefined && message.hasOwnProperty("uninterpretedOption"))
+                if (message.uninterpretedOption && message.uninterpretedOption.length && message.hasOwnProperty("uninterpretedOption"))
                     for (var i = 0; i < message.uninterpretedOption.length; ++i)
                         $root.google.protobuf.UninterpretedOption.encode(message.uninterpretedOption[i], writer.uint32(/* id 999, wireType 2 =*/7994).fork()).ldelim();
                 return writer;
@@ -11513,19 +11513,19 @@ $root.google = (function() {
             MessageOptions.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
-                if (message.messageSetWireFormat !== undefined && message.messageSetWireFormat !== null)
+                if (message.messageSetWireFormat != null)
                     if (typeof message.messageSetWireFormat !== "boolean")
                         return "messageSetWireFormat: boolean expected";
-                if (message.noStandardDescriptorAccessor !== undefined && message.noStandardDescriptorAccessor !== null)
+                if (message.noStandardDescriptorAccessor != null)
                     if (typeof message.noStandardDescriptorAccessor !== "boolean")
                         return "noStandardDescriptorAccessor: boolean expected";
-                if (message.deprecated !== undefined && message.deprecated !== null)
+                if (message.deprecated != null)
                     if (typeof message.deprecated !== "boolean")
                         return "deprecated: boolean expected";
-                if (message.mapEntry !== undefined && message.mapEntry !== null)
+                if (message.mapEntry != null)
                     if (typeof message.mapEntry !== "boolean")
                         return "mapEntry: boolean expected";
-                if (message.uninterpretedOption !== undefined) {
+                if (message.uninterpretedOption != null) {
                     if (!Array.isArray(message.uninterpretedOption))
                         return "uninterpretedOption: array expected";
                     for (var i = 0; i < message.uninterpretedOption.length; ++i) {
@@ -11546,13 +11546,13 @@ $root.google = (function() {
                 if (object instanceof $root.google.protobuf.MessageOptions)
                     return object;
                 var message = new $root.google.protobuf.MessageOptions();
-                if (object.messageSetWireFormat !== undefined && object.messageSetWireFormat !== null)
+                if (object.messageSetWireFormat != null)
                     message.messageSetWireFormat = Boolean(object.messageSetWireFormat);
-                if (object.noStandardDescriptorAccessor !== undefined && object.noStandardDescriptorAccessor !== null)
+                if (object.noStandardDescriptorAccessor != null)
                     message.noStandardDescriptorAccessor = Boolean(object.noStandardDescriptorAccessor);
-                if (object.deprecated !== undefined && object.deprecated !== null)
+                if (object.deprecated != null)
                     message.deprecated = Boolean(object.deprecated);
-                if (object.mapEntry !== undefined && object.mapEntry !== null)
+                if (object.mapEntry != null)
                     message.mapEntry = Boolean(object.mapEntry);
                 if (object.uninterpretedOption) {
                     if (!Array.isArray(object.uninterpretedOption))
@@ -11594,13 +11594,13 @@ $root.google = (function() {
                     object.deprecated = false;
                     object.mapEntry = false;
                 }
-                if (message.messageSetWireFormat !== undefined && message.messageSetWireFormat !== null && message.hasOwnProperty("messageSetWireFormat"))
+                if (message.messageSetWireFormat != null && message.hasOwnProperty("messageSetWireFormat"))
                     object.messageSetWireFormat = message.messageSetWireFormat;
-                if (message.noStandardDescriptorAccessor !== undefined && message.noStandardDescriptorAccessor !== null && message.hasOwnProperty("noStandardDescriptorAccessor"))
+                if (message.noStandardDescriptorAccessor != null && message.hasOwnProperty("noStandardDescriptorAccessor"))
                     object.noStandardDescriptorAccessor = message.noStandardDescriptorAccessor;
-                if (message.deprecated !== undefined && message.deprecated !== null && message.hasOwnProperty("deprecated"))
+                if (message.deprecated != null && message.hasOwnProperty("deprecated"))
                     object.deprecated = message.deprecated;
-                if (message.mapEntry !== undefined && message.mapEntry !== null && message.hasOwnProperty("mapEntry"))
+                if (message.mapEntry != null && message.hasOwnProperty("mapEntry"))
                     object.mapEntry = message.mapEntry;
                 if (message.uninterpretedOption && message.uninterpretedOption.length) {
                     object.uninterpretedOption = [];
@@ -11712,19 +11712,19 @@ $root.google = (function() {
             FieldOptions.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
-                if (message.ctype !== undefined && message.ctype !== null && message.hasOwnProperty("ctype"))
+                if (message.ctype != null && message.hasOwnProperty("ctype"))
                     writer.uint32(/* id 1, wireType 0 =*/8).uint32(message.ctype);
-                if (message.packed !== undefined && message.packed !== null && message.hasOwnProperty("packed"))
+                if (message.packed != null && message.hasOwnProperty("packed"))
                     writer.uint32(/* id 2, wireType 0 =*/16).bool(message.packed);
-                if (message.deprecated !== undefined && message.deprecated !== null && message.hasOwnProperty("deprecated"))
+                if (message.deprecated != null && message.hasOwnProperty("deprecated"))
                     writer.uint32(/* id 3, wireType 0 =*/24).bool(message.deprecated);
-                if (message.lazy !== undefined && message.lazy !== null && message.hasOwnProperty("lazy"))
+                if (message.lazy != null && message.hasOwnProperty("lazy"))
                     writer.uint32(/* id 5, wireType 0 =*/40).bool(message.lazy);
-                if (message.jstype !== undefined && message.jstype !== null && message.hasOwnProperty("jstype"))
+                if (message.jstype != null && message.hasOwnProperty("jstype"))
                     writer.uint32(/* id 6, wireType 0 =*/48).uint32(message.jstype);
-                if (message.weak !== undefined && message.weak !== null && message.hasOwnProperty("weak"))
+                if (message.weak != null && message.hasOwnProperty("weak"))
                     writer.uint32(/* id 10, wireType 0 =*/80).bool(message.weak);
-                if (message.uninterpretedOption !== undefined && message.hasOwnProperty("uninterpretedOption"))
+                if (message.uninterpretedOption && message.uninterpretedOption.length && message.hasOwnProperty("uninterpretedOption"))
                     for (var i = 0; i < message.uninterpretedOption.length; ++i)
                         $root.google.protobuf.UninterpretedOption.encode(message.uninterpretedOption[i], writer.uint32(/* id 999, wireType 2 =*/7994).fork()).ldelim();
                 return writer;
@@ -11807,7 +11807,7 @@ $root.google = (function() {
             FieldOptions.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
-                if (message.ctype !== undefined && message.ctype !== null)
+                if (message.ctype != null)
                     switch (message.ctype) {
                     default:
                         return "ctype: enum value expected";
@@ -11816,10 +11816,10 @@ $root.google = (function() {
                     case 2:
                         break;
                     }
-                if (message.packed !== undefined && message.packed !== null)
+                if (message.packed != null)
                     if (typeof message.packed !== "boolean")
                         return "packed: boolean expected";
-                if (message.jstype !== undefined && message.jstype !== null)
+                if (message.jstype != null)
                     switch (message.jstype) {
                     default:
                         return "jstype: enum value expected";
@@ -11828,16 +11828,16 @@ $root.google = (function() {
                     case 2:
                         break;
                     }
-                if (message.lazy !== undefined && message.lazy !== null)
+                if (message.lazy != null)
                     if (typeof message.lazy !== "boolean")
                         return "lazy: boolean expected";
-                if (message.deprecated !== undefined && message.deprecated !== null)
+                if (message.deprecated != null)
                     if (typeof message.deprecated !== "boolean")
                         return "deprecated: boolean expected";
-                if (message.weak !== undefined && message.weak !== null)
+                if (message.weak != null)
                     if (typeof message.weak !== "boolean")
                         return "weak: boolean expected";
-                if (message.uninterpretedOption !== undefined) {
+                if (message.uninterpretedOption != null) {
                     if (!Array.isArray(message.uninterpretedOption))
                         return "uninterpretedOption: array expected";
                     for (var i = 0; i < message.uninterpretedOption.length; ++i) {
@@ -11872,7 +11872,7 @@ $root.google = (function() {
                     message.ctype = 2;
                     break;
                 }
-                if (object.packed !== undefined && object.packed !== null)
+                if (object.packed != null)
                     message.packed = Boolean(object.packed);
                 switch (object.jstype) {
                 case "JS_NORMAL":
@@ -11888,11 +11888,11 @@ $root.google = (function() {
                     message.jstype = 2;
                     break;
                 }
-                if (object.lazy !== undefined && object.lazy !== null)
+                if (object.lazy != null)
                     message.lazy = Boolean(object.lazy);
-                if (object.deprecated !== undefined && object.deprecated !== null)
+                if (object.deprecated != null)
                     message.deprecated = Boolean(object.deprecated);
-                if (object.weak !== undefined && object.weak !== null)
+                if (object.weak != null)
                     message.weak = Boolean(object.weak);
                 if (object.uninterpretedOption) {
                     if (!Array.isArray(object.uninterpretedOption))
@@ -11936,17 +11936,17 @@ $root.google = (function() {
                     object.jstype = options.enums === String ? "JS_NORMAL" : 0;
                     object.weak = false;
                 }
-                if (message.ctype !== undefined && message.ctype !== null && message.hasOwnProperty("ctype"))
+                if (message.ctype != null && message.hasOwnProperty("ctype"))
                     object.ctype = options.enums === String ? $root.google.protobuf.FieldOptions.CType[message.ctype] : message.ctype;
-                if (message.packed !== undefined && message.packed !== null && message.hasOwnProperty("packed"))
+                if (message.packed != null && message.hasOwnProperty("packed"))
                     object.packed = message.packed;
-                if (message.deprecated !== undefined && message.deprecated !== null && message.hasOwnProperty("deprecated"))
+                if (message.deprecated != null && message.hasOwnProperty("deprecated"))
                     object.deprecated = message.deprecated;
-                if (message.lazy !== undefined && message.lazy !== null && message.hasOwnProperty("lazy"))
+                if (message.lazy != null && message.hasOwnProperty("lazy"))
                     object.lazy = message.lazy;
-                if (message.jstype !== undefined && message.jstype !== null && message.hasOwnProperty("jstype"))
+                if (message.jstype != null && message.hasOwnProperty("jstype"))
                     object.jstype = options.enums === String ? $root.google.protobuf.FieldOptions.JSType[message.jstype] : message.jstype;
-                if (message.weak !== undefined && message.weak !== null && message.hasOwnProperty("weak"))
+                if (message.weak != null && message.hasOwnProperty("weak"))
                     object.weak = message.weak;
                 if (message.uninterpretedOption && message.uninterpretedOption.length) {
                     object.uninterpretedOption = [];
@@ -12056,7 +12056,7 @@ $root.google = (function() {
             OneofOptions.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
-                if (message.uninterpretedOption !== undefined && message.hasOwnProperty("uninterpretedOption"))
+                if (message.uninterpretedOption && message.uninterpretedOption.length && message.hasOwnProperty("uninterpretedOption"))
                     for (var i = 0; i < message.uninterpretedOption.length; ++i)
                         $root.google.protobuf.UninterpretedOption.encode(message.uninterpretedOption[i], writer.uint32(/* id 999, wireType 2 =*/7994).fork()).ldelim();
                 return writer;
@@ -12121,7 +12121,7 @@ $root.google = (function() {
             OneofOptions.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
-                if (message.uninterpretedOption !== undefined) {
+                if (message.uninterpretedOption != null) {
                     if (!Array.isArray(message.uninterpretedOption))
                         return "uninterpretedOption: array expected";
                     for (var i = 0; i < message.uninterpretedOption.length; ++i) {
@@ -12268,14 +12268,14 @@ $root.google = (function() {
             EnumOptions.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
-                if (message.allowAlias !== undefined && message.allowAlias !== null && message.hasOwnProperty("allowAlias"))
+                if (message.allowAlias != null && message.hasOwnProperty("allowAlias"))
                     writer.uint32(/* id 2, wireType 0 =*/16).bool(message.allowAlias);
-                if (message.deprecated !== undefined && message.deprecated !== null && message.hasOwnProperty("deprecated"))
+                if (message.deprecated != null && message.hasOwnProperty("deprecated"))
                     writer.uint32(/* id 3, wireType 0 =*/24).bool(message.deprecated);
-                if (message.uninterpretedOption !== undefined && message.hasOwnProperty("uninterpretedOption"))
+                if (message.uninterpretedOption && message.uninterpretedOption.length && message.hasOwnProperty("uninterpretedOption"))
                     for (var i = 0; i < message.uninterpretedOption.length; ++i)
                         $root.google.protobuf.UninterpretedOption.encode(message.uninterpretedOption[i], writer.uint32(/* id 999, wireType 2 =*/7994).fork()).ldelim();
-                if (message[".jspb.test.IsExtension.simpleOption"] !== undefined && message[".jspb.test.IsExtension.simpleOption"] !== null && message.hasOwnProperty(".jspb.test.IsExtension.simpleOption"))
+                if (message[".jspb.test.IsExtension.simpleOption"] != null && message.hasOwnProperty(".jspb.test.IsExtension.simpleOption"))
                     writer.uint32(/* id 42113038, wireType 2 =*/336904306).string(message[".jspb.test.IsExtension.simpleOption"]);
                 return writer;
             };
@@ -12348,13 +12348,13 @@ $root.google = (function() {
             EnumOptions.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
-                if (message.allowAlias !== undefined && message.allowAlias !== null)
+                if (message.allowAlias != null)
                     if (typeof message.allowAlias !== "boolean")
                         return "allowAlias: boolean expected";
-                if (message.deprecated !== undefined && message.deprecated !== null)
+                if (message.deprecated != null)
                     if (typeof message.deprecated !== "boolean")
                         return "deprecated: boolean expected";
-                if (message.uninterpretedOption !== undefined) {
+                if (message.uninterpretedOption != null) {
                     if (!Array.isArray(message.uninterpretedOption))
                         return "uninterpretedOption: array expected";
                     for (var i = 0; i < message.uninterpretedOption.length; ++i) {
@@ -12363,7 +12363,7 @@ $root.google = (function() {
                             return "uninterpretedOption." + error;
                     }
                 }
-                if (message[".jspb.test.IsExtension.simpleOption"] !== undefined && message[".jspb.test.IsExtension.simpleOption"] !== null)
+                if (message[".jspb.test.IsExtension.simpleOption"] != null)
                     if (!$util.isString(message[".jspb.test.IsExtension.simpleOption"]))
                         return ".jspb.test.IsExtension.simpleOption: string expected";
                 return null;
@@ -12378,9 +12378,9 @@ $root.google = (function() {
                 if (object instanceof $root.google.protobuf.EnumOptions)
                     return object;
                 var message = new $root.google.protobuf.EnumOptions();
-                if (object.allowAlias !== undefined && object.allowAlias !== null)
+                if (object.allowAlias != null)
                     message.allowAlias = Boolean(object.allowAlias);
-                if (object.deprecated !== undefined && object.deprecated !== null)
+                if (object.deprecated != null)
                     message.deprecated = Boolean(object.deprecated);
                 if (object.uninterpretedOption) {
                     if (!Array.isArray(object.uninterpretedOption))
@@ -12392,7 +12392,7 @@ $root.google = (function() {
                         message.uninterpretedOption[i] = $root.google.protobuf.UninterpretedOption.fromObject(object.uninterpretedOption[i]);
                     }
                 }
-                if (object[".jspb.test.IsExtension.simpleOption"] !== undefined && object[".jspb.test.IsExtension.simpleOption"] !== null)
+                if (object[".jspb.test.IsExtension.simpleOption"] != null)
                     message[".jspb.test.IsExtension.simpleOption"] = String(object[".jspb.test.IsExtension.simpleOption"]);
                 return message;
             };
@@ -12423,16 +12423,16 @@ $root.google = (function() {
                     object.deprecated = false;
                     object[".jspb.test.IsExtension.simpleOption"] = "";
                 }
-                if (message.allowAlias !== undefined && message.allowAlias !== null && message.hasOwnProperty("allowAlias"))
+                if (message.allowAlias != null && message.hasOwnProperty("allowAlias"))
                     object.allowAlias = message.allowAlias;
-                if (message.deprecated !== undefined && message.deprecated !== null && message.hasOwnProperty("deprecated"))
+                if (message.deprecated != null && message.hasOwnProperty("deprecated"))
                     object.deprecated = message.deprecated;
                 if (message.uninterpretedOption && message.uninterpretedOption.length) {
                     object.uninterpretedOption = [];
                     for (var j = 0; j < message.uninterpretedOption.length; ++j)
                         object.uninterpretedOption[j] = $root.google.protobuf.UninterpretedOption.toObject(message.uninterpretedOption[j], options);
                 }
-                if (message[".jspb.test.IsExtension.simpleOption"] !== undefined && message[".jspb.test.IsExtension.simpleOption"] !== null && message.hasOwnProperty(".jspb.test.IsExtension.simpleOption"))
+                if (message[".jspb.test.IsExtension.simpleOption"] != null && message.hasOwnProperty(".jspb.test.IsExtension.simpleOption"))
                     object[".jspb.test.IsExtension.simpleOption"] = message[".jspb.test.IsExtension.simpleOption"];
                 return object;
             };
@@ -12509,9 +12509,9 @@ $root.google = (function() {
             EnumValueOptions.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
-                if (message.deprecated !== undefined && message.deprecated !== null && message.hasOwnProperty("deprecated"))
+                if (message.deprecated != null && message.hasOwnProperty("deprecated"))
                     writer.uint32(/* id 1, wireType 0 =*/8).bool(message.deprecated);
-                if (message.uninterpretedOption !== undefined && message.hasOwnProperty("uninterpretedOption"))
+                if (message.uninterpretedOption && message.uninterpretedOption.length && message.hasOwnProperty("uninterpretedOption"))
                     for (var i = 0; i < message.uninterpretedOption.length; ++i)
                         $root.google.protobuf.UninterpretedOption.encode(message.uninterpretedOption[i], writer.uint32(/* id 999, wireType 2 =*/7994).fork()).ldelim();
                 return writer;
@@ -12579,10 +12579,10 @@ $root.google = (function() {
             EnumValueOptions.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
-                if (message.deprecated !== undefined && message.deprecated !== null)
+                if (message.deprecated != null)
                     if (typeof message.deprecated !== "boolean")
                         return "deprecated: boolean expected";
-                if (message.uninterpretedOption !== undefined) {
+                if (message.uninterpretedOption != null) {
                     if (!Array.isArray(message.uninterpretedOption))
                         return "uninterpretedOption: array expected";
                     for (var i = 0; i < message.uninterpretedOption.length; ++i) {
@@ -12603,7 +12603,7 @@ $root.google = (function() {
                 if (object instanceof $root.google.protobuf.EnumValueOptions)
                     return object;
                 var message = new $root.google.protobuf.EnumValueOptions();
-                if (object.deprecated !== undefined && object.deprecated !== null)
+                if (object.deprecated != null)
                     message.deprecated = Boolean(object.deprecated);
                 if (object.uninterpretedOption) {
                     if (!Array.isArray(object.uninterpretedOption))
@@ -12641,7 +12641,7 @@ $root.google = (function() {
                     object.uninterpretedOption = [];
                 if (options.defaults)
                     object.deprecated = false;
-                if (message.deprecated !== undefined && message.deprecated !== null && message.hasOwnProperty("deprecated"))
+                if (message.deprecated != null && message.hasOwnProperty("deprecated"))
                     object.deprecated = message.deprecated;
                 if (message.uninterpretedOption && message.uninterpretedOption.length) {
                     object.uninterpretedOption = [];
@@ -12723,9 +12723,9 @@ $root.google = (function() {
             ServiceOptions.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
-                if (message.deprecated !== undefined && message.deprecated !== null && message.hasOwnProperty("deprecated"))
+                if (message.deprecated != null && message.hasOwnProperty("deprecated"))
                     writer.uint32(/* id 33, wireType 0 =*/264).bool(message.deprecated);
-                if (message.uninterpretedOption !== undefined && message.hasOwnProperty("uninterpretedOption"))
+                if (message.uninterpretedOption && message.uninterpretedOption.length && message.hasOwnProperty("uninterpretedOption"))
                     for (var i = 0; i < message.uninterpretedOption.length; ++i)
                         $root.google.protobuf.UninterpretedOption.encode(message.uninterpretedOption[i], writer.uint32(/* id 999, wireType 2 =*/7994).fork()).ldelim();
                 return writer;
@@ -12793,10 +12793,10 @@ $root.google = (function() {
             ServiceOptions.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
-                if (message.deprecated !== undefined && message.deprecated !== null)
+                if (message.deprecated != null)
                     if (typeof message.deprecated !== "boolean")
                         return "deprecated: boolean expected";
-                if (message.uninterpretedOption !== undefined) {
+                if (message.uninterpretedOption != null) {
                     if (!Array.isArray(message.uninterpretedOption))
                         return "uninterpretedOption: array expected";
                     for (var i = 0; i < message.uninterpretedOption.length; ++i) {
@@ -12817,7 +12817,7 @@ $root.google = (function() {
                 if (object instanceof $root.google.protobuf.ServiceOptions)
                     return object;
                 var message = new $root.google.protobuf.ServiceOptions();
-                if (object.deprecated !== undefined && object.deprecated !== null)
+                if (object.deprecated != null)
                     message.deprecated = Boolean(object.deprecated);
                 if (object.uninterpretedOption) {
                     if (!Array.isArray(object.uninterpretedOption))
@@ -12855,7 +12855,7 @@ $root.google = (function() {
                     object.uninterpretedOption = [];
                 if (options.defaults)
                     object.deprecated = false;
-                if (message.deprecated !== undefined && message.deprecated !== null && message.hasOwnProperty("deprecated"))
+                if (message.deprecated != null && message.hasOwnProperty("deprecated"))
                     object.deprecated = message.deprecated;
                 if (message.uninterpretedOption && message.uninterpretedOption.length) {
                     object.uninterpretedOption = [];
@@ -12943,11 +12943,11 @@ $root.google = (function() {
             MethodOptions.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
-                if (message.deprecated !== undefined && message.deprecated !== null && message.hasOwnProperty("deprecated"))
+                if (message.deprecated != null && message.hasOwnProperty("deprecated"))
                     writer.uint32(/* id 33, wireType 0 =*/264).bool(message.deprecated);
-                if (message.idempotencyLevel !== undefined && message.idempotencyLevel !== null && message.hasOwnProperty("idempotencyLevel"))
+                if (message.idempotencyLevel != null && message.hasOwnProperty("idempotencyLevel"))
                     writer.uint32(/* id 34, wireType 0 =*/272).uint32(message.idempotencyLevel);
-                if (message.uninterpretedOption !== undefined && message.hasOwnProperty("uninterpretedOption"))
+                if (message.uninterpretedOption && message.uninterpretedOption.length && message.hasOwnProperty("uninterpretedOption"))
                     for (var i = 0; i < message.uninterpretedOption.length; ++i)
                         $root.google.protobuf.UninterpretedOption.encode(message.uninterpretedOption[i], writer.uint32(/* id 999, wireType 2 =*/7994).fork()).ldelim();
                 return writer;
@@ -13018,10 +13018,10 @@ $root.google = (function() {
             MethodOptions.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
-                if (message.deprecated !== undefined && message.deprecated !== null)
+                if (message.deprecated != null)
                     if (typeof message.deprecated !== "boolean")
                         return "deprecated: boolean expected";
-                if (message.idempotencyLevel !== undefined && message.idempotencyLevel !== null)
+                if (message.idempotencyLevel != null)
                     switch (message.idempotencyLevel) {
                     default:
                         return "idempotencyLevel: enum value expected";
@@ -13030,7 +13030,7 @@ $root.google = (function() {
                     case 2:
                         break;
                     }
-                if (message.uninterpretedOption !== undefined) {
+                if (message.uninterpretedOption != null) {
                     if (!Array.isArray(message.uninterpretedOption))
                         return "uninterpretedOption: array expected";
                     for (var i = 0; i < message.uninterpretedOption.length; ++i) {
@@ -13051,7 +13051,7 @@ $root.google = (function() {
                 if (object instanceof $root.google.protobuf.MethodOptions)
                     return object;
                 var message = new $root.google.protobuf.MethodOptions();
-                if (object.deprecated !== undefined && object.deprecated !== null)
+                if (object.deprecated != null)
                     message.deprecated = Boolean(object.deprecated);
                 switch (object.idempotencyLevel) {
                 case "IDEMPOTENCY_UNKNOWN":
@@ -13105,9 +13105,9 @@ $root.google = (function() {
                     object.deprecated = false;
                     object.idempotencyLevel = options.enums === String ? "IDEMPOTENCY_UNKNOWN" : 0;
                 }
-                if (message.deprecated !== undefined && message.deprecated !== null && message.hasOwnProperty("deprecated"))
+                if (message.deprecated != null && message.hasOwnProperty("deprecated"))
                     object.deprecated = message.deprecated;
-                if (message.idempotencyLevel !== undefined && message.idempotencyLevel !== null && message.hasOwnProperty("idempotencyLevel"))
+                if (message.idempotencyLevel != null && message.hasOwnProperty("idempotencyLevel"))
                     object.idempotencyLevel = options.enums === String ? $root.google.protobuf.MethodOptions.IdempotencyLevel[message.idempotencyLevel] : message.idempotencyLevel;
                 if (message.uninterpretedOption && message.uninterpretedOption.length) {
                     object.uninterpretedOption = [];
@@ -13236,20 +13236,20 @@ $root.google = (function() {
             UninterpretedOption.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
-                if (message.name !== undefined && message.hasOwnProperty("name"))
+                if (message.name && message.name.length && message.hasOwnProperty("name"))
                     for (var i = 0; i < message.name.length; ++i)
                         $root.google.protobuf.UninterpretedOption.NamePart.encode(message.name[i], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
-                if (message.identifierValue !== undefined && message.identifierValue !== null && message.hasOwnProperty("identifierValue"))
+                if (message.identifierValue != null && message.hasOwnProperty("identifierValue"))
                     writer.uint32(/* id 3, wireType 2 =*/26).string(message.identifierValue);
-                if (message.positiveIntValue !== undefined && message.positiveIntValue !== null && message.hasOwnProperty("positiveIntValue"))
+                if (message.positiveIntValue != null && message.hasOwnProperty("positiveIntValue"))
                     writer.uint32(/* id 4, wireType 0 =*/32).uint64(message.positiveIntValue);
-                if (message.negativeIntValue !== undefined && message.negativeIntValue !== null && message.hasOwnProperty("negativeIntValue"))
+                if (message.negativeIntValue != null && message.hasOwnProperty("negativeIntValue"))
                     writer.uint32(/* id 5, wireType 0 =*/40).int64(message.negativeIntValue);
-                if (message.doubleValue !== undefined && message.doubleValue !== null && message.hasOwnProperty("doubleValue"))
+                if (message.doubleValue != null && message.hasOwnProperty("doubleValue"))
                     writer.uint32(/* id 6, wireType 1 =*/49).double(message.doubleValue);
                 if (message.stringValue && message.hasOwnProperty("stringValue"))
                     writer.uint32(/* id 7, wireType 2 =*/58).bytes(message.stringValue);
-                if (message.aggregateValue !== undefined && message.aggregateValue !== null && message.hasOwnProperty("aggregateValue"))
+                if (message.aggregateValue != null && message.hasOwnProperty("aggregateValue"))
                     writer.uint32(/* id 8, wireType 2 =*/66).string(message.aggregateValue);
                 return writer;
             };
@@ -13331,7 +13331,7 @@ $root.google = (function() {
             UninterpretedOption.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
-                if (message.name !== undefined) {
+                if (message.name != null) {
                     if (!Array.isArray(message.name))
                         return "name: array expected";
                     for (var i = 0; i < message.name.length; ++i) {
@@ -13340,22 +13340,22 @@ $root.google = (function() {
                             return "name." + error;
                     }
                 }
-                if (message.identifierValue !== undefined && message.identifierValue !== null)
+                if (message.identifierValue != null)
                     if (!$util.isString(message.identifierValue))
                         return "identifierValue: string expected";
-                if (message.positiveIntValue !== undefined && message.positiveIntValue !== null)
+                if (message.positiveIntValue != null)
                     if (!$util.isInteger(message.positiveIntValue) && !(message.positiveIntValue && $util.isInteger(message.positiveIntValue.low) && $util.isInteger(message.positiveIntValue.high)))
                         return "positiveIntValue: integer|Long expected";
-                if (message.negativeIntValue !== undefined && message.negativeIntValue !== null)
+                if (message.negativeIntValue != null)
                     if (!$util.isInteger(message.negativeIntValue) && !(message.negativeIntValue && $util.isInteger(message.negativeIntValue.low) && $util.isInteger(message.negativeIntValue.high)))
                         return "negativeIntValue: integer|Long expected";
-                if (message.doubleValue !== undefined && message.doubleValue !== null)
+                if (message.doubleValue != null)
                     if (typeof message.doubleValue !== "number")
                         return "doubleValue: number expected";
-                if (message.stringValue !== undefined && message.stringValue !== null)
+                if (message.stringValue != null)
                     if (!(message.stringValue && typeof message.stringValue.length === "number" || $util.isString(message.stringValue)))
                         return "stringValue: buffer expected";
-                if (message.aggregateValue !== undefined && message.aggregateValue !== null)
+                if (message.aggregateValue != null)
                     if (!$util.isString(message.aggregateValue))
                         return "aggregateValue: string expected";
                 return null;
@@ -13380,9 +13380,9 @@ $root.google = (function() {
                         message.name[i] = $root.google.protobuf.UninterpretedOption.NamePart.fromObject(object.name[i]);
                     }
                 }
-                if (object.identifierValue !== undefined && object.identifierValue !== null)
+                if (object.identifierValue != null)
                     message.identifierValue = String(object.identifierValue);
-                if (object.positiveIntValue !== undefined && object.positiveIntValue !== null)
+                if (object.positiveIntValue != null)
                     if ($util.Long)
                         (message.positiveIntValue = $util.Long.fromValue(object.positiveIntValue)).unsigned = true;
                     else if (typeof object.positiveIntValue === "string")
@@ -13391,7 +13391,7 @@ $root.google = (function() {
                         message.positiveIntValue = object.positiveIntValue;
                     else if (typeof object.positiveIntValue === "object")
                         message.positiveIntValue = new $util.LongBits(object.positiveIntValue.low >>> 0, object.positiveIntValue.high >>> 0).toNumber(true);
-                if (object.negativeIntValue !== undefined && object.negativeIntValue !== null)
+                if (object.negativeIntValue != null)
                     if ($util.Long)
                         (message.negativeIntValue = $util.Long.fromValue(object.negativeIntValue)).unsigned = false;
                     else if (typeof object.negativeIntValue === "string")
@@ -13400,14 +13400,14 @@ $root.google = (function() {
                         message.negativeIntValue = object.negativeIntValue;
                     else if (typeof object.negativeIntValue === "object")
                         message.negativeIntValue = new $util.LongBits(object.negativeIntValue.low >>> 0, object.negativeIntValue.high >>> 0).toNumber();
-                if (object.doubleValue !== undefined && object.doubleValue !== null)
+                if (object.doubleValue != null)
                     message.doubleValue = Number(object.doubleValue);
-                if (object.stringValue !== undefined && object.stringValue !== null)
+                if (object.stringValue != null)
                     if (typeof object.stringValue === "string")
                         $util.base64.decode(object.stringValue, message.stringValue = $util.newBuffer($util.base64.length(object.stringValue)), 0);
                     else if (object.stringValue.length)
                         message.stringValue = object.stringValue;
-                if (object.aggregateValue !== undefined && object.aggregateValue !== null)
+                if (object.aggregateValue != null)
                     message.aggregateValue = String(object.aggregateValue);
                 return message;
             };
@@ -13454,23 +13454,23 @@ $root.google = (function() {
                     for (var j = 0; j < message.name.length; ++j)
                         object.name[j] = $root.google.protobuf.UninterpretedOption.NamePart.toObject(message.name[j], options);
                 }
-                if (message.identifierValue !== undefined && message.identifierValue !== null && message.hasOwnProperty("identifierValue"))
+                if (message.identifierValue != null && message.hasOwnProperty("identifierValue"))
                     object.identifierValue = message.identifierValue;
-                if (message.positiveIntValue !== undefined && message.positiveIntValue !== null && message.hasOwnProperty("positiveIntValue"))
+                if (message.positiveIntValue != null && message.hasOwnProperty("positiveIntValue"))
                     if (typeof message.positiveIntValue === "number")
                         object.positiveIntValue = options.longs === String ? String(message.positiveIntValue) : message.positiveIntValue;
                     else
                         object.positiveIntValue = options.longs === String ? $util.Long.prototype.toString.call(message.positiveIntValue) : options.longs === Number ? new $util.LongBits(message.positiveIntValue.low >>> 0, message.positiveIntValue.high >>> 0).toNumber(true) : message.positiveIntValue;
-                if (message.negativeIntValue !== undefined && message.negativeIntValue !== null && message.hasOwnProperty("negativeIntValue"))
+                if (message.negativeIntValue != null && message.hasOwnProperty("negativeIntValue"))
                     if (typeof message.negativeIntValue === "number")
                         object.negativeIntValue = options.longs === String ? String(message.negativeIntValue) : message.negativeIntValue;
                     else
                         object.negativeIntValue = options.longs === String ? $util.Long.prototype.toString.call(message.negativeIntValue) : options.longs === Number ? new $util.LongBits(message.negativeIntValue.low >>> 0, message.negativeIntValue.high >>> 0).toNumber() : message.negativeIntValue;
-                if (message.doubleValue !== undefined && message.doubleValue !== null && message.hasOwnProperty("doubleValue"))
+                if (message.doubleValue != null && message.hasOwnProperty("doubleValue"))
                     object.doubleValue = message.doubleValue;
-                if (message.stringValue !== undefined && message.stringValue !== null && message.hasOwnProperty("stringValue"))
+                if (message.stringValue != null && message.hasOwnProperty("stringValue"))
                     object.stringValue = options.bytes === String ? $util.base64.encode(message.stringValue, 0, message.stringValue.length) : options.bytes === Array ? Array.prototype.slice.call(message.stringValue) : message.stringValue;
-                if (message.aggregateValue !== undefined && message.aggregateValue !== null && message.hasOwnProperty("aggregateValue"))
+                if (message.aggregateValue != null && message.hasOwnProperty("aggregateValue"))
                     object.aggregateValue = message.aggregateValue;
                 return object;
             };
@@ -13628,9 +13628,9 @@ $root.google = (function() {
                     if (object instanceof $root.google.protobuf.UninterpretedOption.NamePart)
                         return object;
                     var message = new $root.google.protobuf.UninterpretedOption.NamePart();
-                    if (object.namePart !== undefined && object.namePart !== null)
+                    if (object.namePart != null)
                         message.namePart = String(object.namePart);
-                    if (object.isExtension !== undefined && object.isExtension !== null)
+                    if (object.isExtension != null)
                         message.isExtension = Boolean(object.isExtension);
                     return message;
                 };
@@ -13658,9 +13658,9 @@ $root.google = (function() {
                         object.namePart = "";
                         object.isExtension = false;
                     }
-                    if (message.namePart !== undefined && message.namePart !== null && message.hasOwnProperty("namePart"))
+                    if (message.namePart != null && message.hasOwnProperty("namePart"))
                         object.namePart = message.namePart;
-                    if (message.isExtension !== undefined && message.isExtension !== null && message.hasOwnProperty("isExtension"))
+                    if (message.isExtension != null && message.hasOwnProperty("isExtension"))
                         object.isExtension = message.isExtension;
                     return object;
                 };
@@ -13734,7 +13734,7 @@ $root.google = (function() {
             SourceCodeInfo.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
-                if (message.location !== undefined && message.hasOwnProperty("location"))
+                if (message.location && message.location.length && message.hasOwnProperty("location"))
                     for (var i = 0; i < message.location.length; ++i)
                         $root.google.protobuf.SourceCodeInfo.Location.encode(message.location[i], writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
                 return writer;
@@ -13799,7 +13799,7 @@ $root.google = (function() {
             SourceCodeInfo.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
-                if (message.location !== undefined) {
+                if (message.location != null) {
                     if (!Array.isArray(message.location))
                         return "location: array expected";
                     for (var i = 0; i < message.location.length; ++i) {
@@ -13963,11 +13963,11 @@ $root.google = (function() {
                             writer.int32(message.span[i]);
                         writer.ldelim();
                     }
-                    if (message.leadingComments !== undefined && message.leadingComments !== null && message.hasOwnProperty("leadingComments"))
+                    if (message.leadingComments != null && message.hasOwnProperty("leadingComments"))
                         writer.uint32(/* id 3, wireType 2 =*/26).string(message.leadingComments);
-                    if (message.trailingComments !== undefined && message.trailingComments !== null && message.hasOwnProperty("trailingComments"))
+                    if (message.trailingComments != null && message.hasOwnProperty("trailingComments"))
                         writer.uint32(/* id 4, wireType 2 =*/34).string(message.trailingComments);
-                    if (message.leadingDetachedComments !== undefined && message.hasOwnProperty("leadingDetachedComments"))
+                    if (message.leadingDetachedComments && message.leadingDetachedComments.length && message.hasOwnProperty("leadingDetachedComments"))
                         for (var i = 0; i < message.leadingDetachedComments.length; ++i)
                             writer.uint32(/* id 6, wireType 2 =*/50).string(message.leadingDetachedComments[i]);
                     return writer;
@@ -14058,27 +14058,27 @@ $root.google = (function() {
                 Location.verify = function verify(message) {
                     if (typeof message !== "object" || message === null)
                         return "object expected";
-                    if (message.path !== undefined) {
+                    if (message.path != null) {
                         if (!Array.isArray(message.path))
                             return "path: array expected";
                         for (var i = 0; i < message.path.length; ++i)
                             if (!$util.isInteger(message.path[i]))
                                 return "path: integer[] expected";
                     }
-                    if (message.span !== undefined) {
+                    if (message.span != null) {
                         if (!Array.isArray(message.span))
                             return "span: array expected";
                         for (var i = 0; i < message.span.length; ++i)
                             if (!$util.isInteger(message.span[i]))
                                 return "span: integer[] expected";
                     }
-                    if (message.leadingComments !== undefined && message.leadingComments !== null)
+                    if (message.leadingComments != null)
                         if (!$util.isString(message.leadingComments))
                             return "leadingComments: string expected";
-                    if (message.trailingComments !== undefined && message.trailingComments !== null)
+                    if (message.trailingComments != null)
                         if (!$util.isString(message.trailingComments))
                             return "trailingComments: string expected";
-                    if (message.leadingDetachedComments !== undefined) {
+                    if (message.leadingDetachedComments != null) {
                         if (!Array.isArray(message.leadingDetachedComments))
                             return "leadingDetachedComments: array expected";
                         for (var i = 0; i < message.leadingDetachedComments.length; ++i)
@@ -14111,9 +14111,9 @@ $root.google = (function() {
                         for (var i = 0; i < object.span.length; ++i)
                             message.span[i] = object.span[i] | 0;
                     }
-                    if (object.leadingComments !== undefined && object.leadingComments !== null)
+                    if (object.leadingComments != null)
                         message.leadingComments = String(object.leadingComments);
-                    if (object.trailingComments !== undefined && object.trailingComments !== null)
+                    if (object.trailingComments != null)
                         message.trailingComments = String(object.trailingComments);
                     if (object.leadingDetachedComments) {
                         if (!Array.isArray(object.leadingDetachedComments))
@@ -14163,9 +14163,9 @@ $root.google = (function() {
                         for (var j = 0; j < message.span.length; ++j)
                             object.span[j] = message.span[j];
                     }
-                    if (message.leadingComments !== undefined && message.leadingComments !== null && message.hasOwnProperty("leadingComments"))
+                    if (message.leadingComments != null && message.hasOwnProperty("leadingComments"))
                         object.leadingComments = message.leadingComments;
-                    if (message.trailingComments !== undefined && message.trailingComments !== null && message.hasOwnProperty("trailingComments"))
+                    if (message.trailingComments != null && message.hasOwnProperty("trailingComments"))
                         object.trailingComments = message.trailingComments;
                     if (message.leadingDetachedComments && message.leadingDetachedComments.length) {
                         object.leadingDetachedComments = [];
@@ -14244,7 +14244,7 @@ $root.google = (function() {
             GeneratedCodeInfo.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
-                if (message.annotation !== undefined && message.hasOwnProperty("annotation"))
+                if (message.annotation && message.annotation.length && message.hasOwnProperty("annotation"))
                     for (var i = 0; i < message.annotation.length; ++i)
                         $root.google.protobuf.GeneratedCodeInfo.Annotation.encode(message.annotation[i], writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
                 return writer;
@@ -14309,7 +14309,7 @@ $root.google = (function() {
             GeneratedCodeInfo.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
-                if (message.annotation !== undefined) {
+                if (message.annotation != null) {
                     if (!Array.isArray(message.annotation))
                         return "annotation: array expected";
                     for (var i = 0; i < message.annotation.length; ++i) {
@@ -14459,11 +14459,11 @@ $root.google = (function() {
                             writer.int32(message.path[i]);
                         writer.ldelim();
                     }
-                    if (message.sourceFile !== undefined && message.sourceFile !== null && message.hasOwnProperty("sourceFile"))
+                    if (message.sourceFile != null && message.hasOwnProperty("sourceFile"))
                         writer.uint32(/* id 2, wireType 2 =*/18).string(message.sourceFile);
-                    if (message.begin !== undefined && message.begin !== null && message.hasOwnProperty("begin"))
+                    if (message.begin != null && message.hasOwnProperty("begin"))
                         writer.uint32(/* id 3, wireType 0 =*/24).int32(message.begin);
-                    if (message.end !== undefined && message.end !== null && message.hasOwnProperty("end"))
+                    if (message.end != null && message.hasOwnProperty("end"))
                         writer.uint32(/* id 4, wireType 0 =*/32).int32(message.end);
                     return writer;
                 };
@@ -14541,20 +14541,20 @@ $root.google = (function() {
                 Annotation.verify = function verify(message) {
                     if (typeof message !== "object" || message === null)
                         return "object expected";
-                    if (message.path !== undefined) {
+                    if (message.path != null) {
                         if (!Array.isArray(message.path))
                             return "path: array expected";
                         for (var i = 0; i < message.path.length; ++i)
                             if (!$util.isInteger(message.path[i]))
                                 return "path: integer[] expected";
                     }
-                    if (message.sourceFile !== undefined && message.sourceFile !== null)
+                    if (message.sourceFile != null)
                         if (!$util.isString(message.sourceFile))
                             return "sourceFile: string expected";
-                    if (message.begin !== undefined && message.begin !== null)
+                    if (message.begin != null)
                         if (!$util.isInteger(message.begin))
                             return "begin: integer expected";
-                    if (message.end !== undefined && message.end !== null)
+                    if (message.end != null)
                         if (!$util.isInteger(message.end))
                             return "end: integer expected";
                     return null;
@@ -14576,11 +14576,11 @@ $root.google = (function() {
                         for (var i = 0; i < object.path.length; ++i)
                             message.path[i] = object.path[i] | 0;
                     }
-                    if (object.sourceFile !== undefined && object.sourceFile !== null)
+                    if (object.sourceFile != null)
                         message.sourceFile = String(object.sourceFile);
-                    if (object.begin !== undefined && object.begin !== null)
+                    if (object.begin != null)
                         message.begin = object.begin | 0;
-                    if (object.end !== undefined && object.end !== null)
+                    if (object.end != null)
                         message.end = object.end | 0;
                     return message;
                 };
@@ -14616,11 +14616,11 @@ $root.google = (function() {
                         for (var j = 0; j < message.path.length; ++j)
                             object.path[j] = message.path[j];
                     }
-                    if (message.sourceFile !== undefined && message.sourceFile !== null && message.hasOwnProperty("sourceFile"))
+                    if (message.sourceFile != null && message.hasOwnProperty("sourceFile"))
                         object.sourceFile = message.sourceFile;
-                    if (message.begin !== undefined && message.begin !== null && message.hasOwnProperty("begin"))
+                    if (message.begin != null && message.hasOwnProperty("begin"))
                         object.begin = message.begin;
-                    if (message.end !== undefined && message.end !== null && message.hasOwnProperty("end"))
+                    if (message.end != null && message.hasOwnProperty("end"))
                         object.end = message.end;
                     return object;
                 };

@@ -70,11 +70,11 @@ $root.Test1 = (function() {
     Test1.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.field1 !== undefined && message.field1 !== null && message.hasOwnProperty("field1"))
+        if (message.field1 != null && message.hasOwnProperty("field1"))
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.field1);
-        if (message.field2 !== undefined && message.field2 !== null && message.hasOwnProperty("field2"))
+        if (message.field2 != null && message.hasOwnProperty("field2"))
             writer.uint32(/* id 2, wireType 0 =*/16).uint32(message.field2);
-        if (message.field3 !== undefined && message.field3 !== null && message.hasOwnProperty("field3"))
+        if (message.field3 != null && message.hasOwnProperty("field3"))
             writer.uint32(/* id 3, wireType 0 =*/24).bool(message.field3);
         return writer;
     };
@@ -142,13 +142,13 @@ $root.Test1 = (function() {
     Test1.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
-        if (message.field1 !== undefined && message.field1 !== null)
+        if (message.field1 != null)
             if (!$util.isString(message.field1))
                 return "field1: string expected";
-        if (message.field2 !== undefined && message.field2 !== null)
+        if (message.field2 != null)
             if (!$util.isInteger(message.field2))
                 return "field2: integer expected";
-        if (message.field3 !== undefined && message.field3 !== null)
+        if (message.field3 != null)
             if (typeof message.field3 !== "boolean")
                 return "field3: boolean expected";
         return null;
@@ -163,11 +163,11 @@ $root.Test1 = (function() {
         if (object instanceof $root.Test1)
             return object;
         var message = new $root.Test1();
-        if (object.field1 !== undefined && object.field1 !== null)
+        if (object.field1 != null)
             message.field1 = String(object.field1);
-        if (object.field2 !== undefined && object.field2 !== null)
+        if (object.field2 != null)
             message.field2 = object.field2 >>> 0;
-        if (object.field3 !== undefined && object.field3 !== null)
+        if (object.field3 != null)
             message.field3 = Boolean(object.field3);
         return message;
     };
@@ -196,11 +196,11 @@ $root.Test1 = (function() {
             object.field2 = 0;
             object.field3 = false;
         }
-        if (message.field1 !== undefined && message.field1 !== null && message.hasOwnProperty("field1"))
+        if (message.field1 != null && message.hasOwnProperty("field1"))
             object.field1 = message.field1;
-        if (message.field2 !== undefined && message.field2 !== null && message.hasOwnProperty("field2"))
+        if (message.field2 != null && message.hasOwnProperty("field2"))
             object.field2 = message.field2;
-        if (message.field3 !== undefined && message.field3 !== null && message.hasOwnProperty("field3"))
+        if (message.field3 != null && message.hasOwnProperty("field3"))
             object.field3 = message.field3;
         return object;
     };

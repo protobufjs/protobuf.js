@@ -112,7 +112,7 @@ $root.MyRequest = (function() {
     MyRequest.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.path !== undefined && message.path !== null && message.hasOwnProperty("path"))
+        if (message.path != null && message.hasOwnProperty("path"))
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.path);
         return writer;
     };
@@ -174,7 +174,7 @@ $root.MyRequest = (function() {
     MyRequest.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
-        if (message.path !== undefined && message.path !== null)
+        if (message.path != null)
             if (!$util.isString(message.path))
                 return "path: string expected";
         return null;
@@ -189,7 +189,7 @@ $root.MyRequest = (function() {
         if (object instanceof $root.MyRequest)
             return object;
         var message = new $root.MyRequest();
-        if (object.path !== undefined && object.path !== null)
+        if (object.path != null)
             message.path = String(object.path);
         return message;
     };
@@ -215,7 +215,7 @@ $root.MyRequest = (function() {
         var object = {};
         if (options.defaults)
             object.path = "";
-        if (message.path !== undefined && message.path !== null && message.hasOwnProperty("path"))
+        if (message.path != null && message.hasOwnProperty("path"))
             object.path = message.path;
         return object;
     };
@@ -285,7 +285,7 @@ $root.MyResponse = (function() {
     MyResponse.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.status !== undefined && message.status !== null && message.hasOwnProperty("status"))
+        if (message.status != null && message.hasOwnProperty("status"))
             writer.uint32(/* id 2, wireType 0 =*/16).int32(message.status);
         return writer;
     };
@@ -347,7 +347,7 @@ $root.MyResponse = (function() {
     MyResponse.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
-        if (message.status !== undefined && message.status !== null)
+        if (message.status != null)
             if (!$util.isInteger(message.status))
                 return "status: integer expected";
         return null;
@@ -362,7 +362,7 @@ $root.MyResponse = (function() {
         if (object instanceof $root.MyResponse)
             return object;
         var message = new $root.MyResponse();
-        if (object.status !== undefined && object.status !== null)
+        if (object.status != null)
             message.status = object.status | 0;
         return message;
     };
@@ -388,7 +388,7 @@ $root.MyResponse = (function() {
         var object = {};
         if (options.defaults)
             object.status = 0;
-        if (message.status !== undefined && message.status !== null && message.hasOwnProperty("status"))
+        if (message.status != null && message.hasOwnProperty("status"))
             object.status = message.status;
         return object;
     };

@@ -132,7 +132,7 @@ function verifier(mtype) {
 
         // map fields
         if (field.map) { gen
-            ("if(%s!==undefined){", ref)
+            ("if(%s!=null){", ref) // !== undefined && !== null
                 ("if(!util.isObject(%s))", ref)
                     ("return%j", invalid(field, "object"))
                 ("var k=Object.keys(%s)", ref)
@@ -144,7 +144,7 @@ function verifier(mtype) {
 
         // repeated fields
         } else if (field.repeated) { gen
-            ("if(%s!==undefined){", ref)
+            ("if(%s!=null){", ref) // !== undefined && !== null
                 ("if(!Array.isArray(%s))", ref)
                     ("return%j", invalid(field, "array"))
                 ("for(var i=0;i<%s.length;++i){", ref);
@@ -154,8 +154,8 @@ function verifier(mtype) {
 
         // required or present fields
         } else {
-            if (!field.required) gen
-            ("if(%s!==undefined&&%s!==null){", ref, ref);
+            if (field.optional) gen
+            ("if(%s!=null){", ref); // !== undefined && !== null
             if (field.partOf) {
                 var oneofProp = util.safeProp(field.partOf.name);
                 if (seenFirstField[field.partOf.name] === 1) gen
@@ -166,7 +166,7 @@ function verifier(mtype) {
             ("p%s=1", oneofProp);
             }
                 genVerifyValue(gen, field, i, ref);
-            if (!field.required) gen
+            if (field.optional) gen
             ("}");
         }
     } return gen

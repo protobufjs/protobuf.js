@@ -64,7 +64,7 @@ $root.vector_tile = (function() {
         Tile.encode = function encode(message, writer) {
             if (!writer)
                 writer = $Writer.create();
-            if (message.layers !== undefined && message.hasOwnProperty("layers"))
+            if (message.layers && message.layers.length && message.hasOwnProperty("layers"))
                 for (var i = 0; i < message.layers.length; ++i)
                     $root.vector_tile.Tile.Layer.encode(message.layers[i], writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
             return writer;
@@ -129,7 +129,7 @@ $root.vector_tile = (function() {
         Tile.verify = function verify(message) {
             if (typeof message !== "object" || message === null)
                 return "object expected";
-            if (message.layers !== undefined) {
+            if (message.layers != null) {
                 if (!Array.isArray(message.layers))
                     return "layers: array expected";
                 for (var i = 0; i < message.layers.length; ++i) {
@@ -309,19 +309,19 @@ $root.vector_tile = (function() {
             Value.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
-                if (message.stringValue !== undefined && message.stringValue !== null && message.hasOwnProperty("stringValue"))
+                if (message.stringValue != null && message.hasOwnProperty("stringValue"))
                     writer.uint32(/* id 1, wireType 2 =*/10).string(message.stringValue);
-                if (message.floatValue !== undefined && message.floatValue !== null && message.hasOwnProperty("floatValue"))
+                if (message.floatValue != null && message.hasOwnProperty("floatValue"))
                     writer.uint32(/* id 2, wireType 5 =*/21).float(message.floatValue);
-                if (message.doubleValue !== undefined && message.doubleValue !== null && message.hasOwnProperty("doubleValue"))
+                if (message.doubleValue != null && message.hasOwnProperty("doubleValue"))
                     writer.uint32(/* id 3, wireType 1 =*/25).double(message.doubleValue);
-                if (message.intValue !== undefined && message.intValue !== null && message.hasOwnProperty("intValue"))
+                if (message.intValue != null && message.hasOwnProperty("intValue"))
                     writer.uint32(/* id 4, wireType 0 =*/32).int64(message.intValue);
-                if (message.uintValue !== undefined && message.uintValue !== null && message.hasOwnProperty("uintValue"))
+                if (message.uintValue != null && message.hasOwnProperty("uintValue"))
                     writer.uint32(/* id 5, wireType 0 =*/40).uint64(message.uintValue);
-                if (message.sintValue !== undefined && message.sintValue !== null && message.hasOwnProperty("sintValue"))
+                if (message.sintValue != null && message.hasOwnProperty("sintValue"))
                     writer.uint32(/* id 6, wireType 0 =*/48).sint64(message.sintValue);
-                if (message.boolValue !== undefined && message.boolValue !== null && message.hasOwnProperty("boolValue"))
+                if (message.boolValue != null && message.hasOwnProperty("boolValue"))
                     writer.uint32(/* id 7, wireType 0 =*/56).bool(message.boolValue);
                 return writer;
             };
@@ -401,25 +401,25 @@ $root.vector_tile = (function() {
             Value.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
-                if (message.stringValue !== undefined && message.stringValue !== null)
+                if (message.stringValue != null)
                     if (!$util.isString(message.stringValue))
                         return "stringValue: string expected";
-                if (message.floatValue !== undefined && message.floatValue !== null)
+                if (message.floatValue != null)
                     if (typeof message.floatValue !== "number")
                         return "floatValue: number expected";
-                if (message.doubleValue !== undefined && message.doubleValue !== null)
+                if (message.doubleValue != null)
                     if (typeof message.doubleValue !== "number")
                         return "doubleValue: number expected";
-                if (message.intValue !== undefined && message.intValue !== null)
+                if (message.intValue != null)
                     if (!$util.isInteger(message.intValue) && !(message.intValue && $util.isInteger(message.intValue.low) && $util.isInteger(message.intValue.high)))
                         return "intValue: integer|Long expected";
-                if (message.uintValue !== undefined && message.uintValue !== null)
+                if (message.uintValue != null)
                     if (!$util.isInteger(message.uintValue) && !(message.uintValue && $util.isInteger(message.uintValue.low) && $util.isInteger(message.uintValue.high)))
                         return "uintValue: integer|Long expected";
-                if (message.sintValue !== undefined && message.sintValue !== null)
+                if (message.sintValue != null)
                     if (!$util.isInteger(message.sintValue) && !(message.sintValue && $util.isInteger(message.sintValue.low) && $util.isInteger(message.sintValue.high)))
                         return "sintValue: integer|Long expected";
-                if (message.boolValue !== undefined && message.boolValue !== null)
+                if (message.boolValue != null)
                     if (typeof message.boolValue !== "boolean")
                         return "boolValue: boolean expected";
                 return null;
@@ -434,13 +434,13 @@ $root.vector_tile = (function() {
                 if (object instanceof $root.vector_tile.Tile.Value)
                     return object;
                 var message = new $root.vector_tile.Tile.Value();
-                if (object.stringValue !== undefined && object.stringValue !== null)
+                if (object.stringValue != null)
                     message.stringValue = String(object.stringValue);
-                if (object.floatValue !== undefined && object.floatValue !== null)
+                if (object.floatValue != null)
                     message.floatValue = Number(object.floatValue);
-                if (object.doubleValue !== undefined && object.doubleValue !== null)
+                if (object.doubleValue != null)
                     message.doubleValue = Number(object.doubleValue);
-                if (object.intValue !== undefined && object.intValue !== null)
+                if (object.intValue != null)
                     if ($util.Long)
                         (message.intValue = $util.Long.fromValue(object.intValue)).unsigned = false;
                     else if (typeof object.intValue === "string")
@@ -449,7 +449,7 @@ $root.vector_tile = (function() {
                         message.intValue = object.intValue;
                     else if (typeof object.intValue === "object")
                         message.intValue = new $util.LongBits(object.intValue.low >>> 0, object.intValue.high >>> 0).toNumber();
-                if (object.uintValue !== undefined && object.uintValue !== null)
+                if (object.uintValue != null)
                     if ($util.Long)
                         (message.uintValue = $util.Long.fromValue(object.uintValue)).unsigned = true;
                     else if (typeof object.uintValue === "string")
@@ -458,7 +458,7 @@ $root.vector_tile = (function() {
                         message.uintValue = object.uintValue;
                     else if (typeof object.uintValue === "object")
                         message.uintValue = new $util.LongBits(object.uintValue.low >>> 0, object.uintValue.high >>> 0).toNumber(true);
-                if (object.sintValue !== undefined && object.sintValue !== null)
+                if (object.sintValue != null)
                     if ($util.Long)
                         (message.sintValue = $util.Long.fromValue(object.sintValue)).unsigned = false;
                     else if (typeof object.sintValue === "string")
@@ -467,7 +467,7 @@ $root.vector_tile = (function() {
                         message.sintValue = object.sintValue;
                     else if (typeof object.sintValue === "object")
                         message.sintValue = new $util.LongBits(object.sintValue.low >>> 0, object.sintValue.high >>> 0).toNumber();
-                if (object.boolValue !== undefined && object.boolValue !== null)
+                if (object.boolValue != null)
                     message.boolValue = Boolean(object.boolValue);
                 return message;
             };
@@ -512,28 +512,28 @@ $root.vector_tile = (function() {
                         object.sintValue = options.longs === String ? "0" : 0;
                     object.boolValue = false;
                 }
-                if (message.stringValue !== undefined && message.stringValue !== null && message.hasOwnProperty("stringValue"))
+                if (message.stringValue != null && message.hasOwnProperty("stringValue"))
                     object.stringValue = message.stringValue;
-                if (message.floatValue !== undefined && message.floatValue !== null && message.hasOwnProperty("floatValue"))
+                if (message.floatValue != null && message.hasOwnProperty("floatValue"))
                     object.floatValue = message.floatValue;
-                if (message.doubleValue !== undefined && message.doubleValue !== null && message.hasOwnProperty("doubleValue"))
+                if (message.doubleValue != null && message.hasOwnProperty("doubleValue"))
                     object.doubleValue = message.doubleValue;
-                if (message.intValue !== undefined && message.intValue !== null && message.hasOwnProperty("intValue"))
+                if (message.intValue != null && message.hasOwnProperty("intValue"))
                     if (typeof message.intValue === "number")
                         object.intValue = options.longs === String ? String(message.intValue) : message.intValue;
                     else
                         object.intValue = options.longs === String ? $util.Long.prototype.toString.call(message.intValue) : options.longs === Number ? new $util.LongBits(message.intValue.low >>> 0, message.intValue.high >>> 0).toNumber() : message.intValue;
-                if (message.uintValue !== undefined && message.uintValue !== null && message.hasOwnProperty("uintValue"))
+                if (message.uintValue != null && message.hasOwnProperty("uintValue"))
                     if (typeof message.uintValue === "number")
                         object.uintValue = options.longs === String ? String(message.uintValue) : message.uintValue;
                     else
                         object.uintValue = options.longs === String ? $util.Long.prototype.toString.call(message.uintValue) : options.longs === Number ? new $util.LongBits(message.uintValue.low >>> 0, message.uintValue.high >>> 0).toNumber(true) : message.uintValue;
-                if (message.sintValue !== undefined && message.sintValue !== null && message.hasOwnProperty("sintValue"))
+                if (message.sintValue != null && message.hasOwnProperty("sintValue"))
                     if (typeof message.sintValue === "number")
                         object.sintValue = options.longs === String ? String(message.sintValue) : message.sintValue;
                     else
                         object.sintValue = options.longs === String ? $util.Long.prototype.toString.call(message.sintValue) : options.longs === Number ? new $util.LongBits(message.sintValue.low >>> 0, message.sintValue.high >>> 0).toNumber() : message.sintValue;
-                if (message.boolValue !== undefined && message.boolValue !== null && message.hasOwnProperty("boolValue"))
+                if (message.boolValue != null && message.hasOwnProperty("boolValue"))
                     object.boolValue = message.boolValue;
                 return object;
             };
@@ -623,7 +623,7 @@ $root.vector_tile = (function() {
             Feature.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
-                if (message.id !== undefined && message.id !== null && message.hasOwnProperty("id"))
+                if (message.id != null && message.hasOwnProperty("id"))
                     writer.uint32(/* id 1, wireType 0 =*/8).uint64(message.id);
                 if (message.tags && message.tags.length && message.hasOwnProperty("tags")) {
                     writer.uint32(/* id 2, wireType 2 =*/18).fork();
@@ -631,7 +631,7 @@ $root.vector_tile = (function() {
                         writer.uint32(message.tags[i]);
                     writer.ldelim();
                 }
-                if (message.type !== undefined && message.type !== null && message.hasOwnProperty("type"))
+                if (message.type != null && message.hasOwnProperty("type"))
                     writer.uint32(/* id 3, wireType 0 =*/24).uint32(message.type);
                 if (message.geometry && message.geometry.length && message.hasOwnProperty("geometry")) {
                     writer.uint32(/* id 4, wireType 2 =*/34).fork();
@@ -722,17 +722,17 @@ $root.vector_tile = (function() {
             Feature.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
-                if (message.id !== undefined && message.id !== null)
+                if (message.id != null)
                     if (!$util.isInteger(message.id) && !(message.id && $util.isInteger(message.id.low) && $util.isInteger(message.id.high)))
                         return "id: integer|Long expected";
-                if (message.tags !== undefined) {
+                if (message.tags != null) {
                     if (!Array.isArray(message.tags))
                         return "tags: array expected";
                     for (var i = 0; i < message.tags.length; ++i)
                         if (!$util.isInteger(message.tags[i]))
                             return "tags: integer[] expected";
                 }
-                if (message.type !== undefined && message.type !== null)
+                if (message.type != null)
                     switch (message.type) {
                     default:
                         return "type: enum value expected";
@@ -742,7 +742,7 @@ $root.vector_tile = (function() {
                     case 3:
                         break;
                     }
-                if (message.geometry !== undefined) {
+                if (message.geometry != null) {
                     if (!Array.isArray(message.geometry))
                         return "geometry: array expected";
                     for (var i = 0; i < message.geometry.length; ++i)
@@ -761,7 +761,7 @@ $root.vector_tile = (function() {
                 if (object instanceof $root.vector_tile.Tile.Feature)
                     return object;
                 var message = new $root.vector_tile.Tile.Feature();
-                if (object.id !== undefined && object.id !== null)
+                if (object.id != null)
                     if ($util.Long)
                         (message.id = $util.Long.fromValue(object.id)).unsigned = true;
                     else if (typeof object.id === "string")
@@ -836,7 +836,7 @@ $root.vector_tile = (function() {
                         object.id = options.longs === String ? "0" : 0;
                     object.type = options.enums === String ? "UNKNOWN" : 0;
                 }
-                if (message.id !== undefined && message.id !== null && message.hasOwnProperty("id"))
+                if (message.id != null && message.hasOwnProperty("id"))
                     if (typeof message.id === "number")
                         object.id = options.longs === String ? String(message.id) : message.id;
                     else
@@ -846,7 +846,7 @@ $root.vector_tile = (function() {
                     for (var j = 0; j < message.tags.length; ++j)
                         object.tags[j] = message.tags[j];
                 }
-                if (message.type !== undefined && message.type !== null && message.hasOwnProperty("type"))
+                if (message.type != null && message.hasOwnProperty("type"))
                     object.type = options.enums === String ? $root.vector_tile.Tile.GeomType[message.type] : message.type;
                 if (message.geometry && message.geometry.length) {
                     object.geometry = [];
@@ -955,16 +955,16 @@ $root.vector_tile = (function() {
                 if (!writer)
                     writer = $Writer.create();
                 writer.uint32(/* id 1, wireType 2 =*/10).string(message.name);
-                if (message.features !== undefined && message.hasOwnProperty("features"))
+                if (message.features && message.features.length && message.hasOwnProperty("features"))
                     for (var i = 0; i < message.features.length; ++i)
                         $root.vector_tile.Tile.Feature.encode(message.features[i], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
-                if (message.keys !== undefined && message.hasOwnProperty("keys"))
+                if (message.keys && message.keys.length && message.hasOwnProperty("keys"))
                     for (var i = 0; i < message.keys.length; ++i)
                         writer.uint32(/* id 3, wireType 2 =*/26).string(message.keys[i]);
-                if (message.values !== undefined && message.hasOwnProperty("values"))
+                if (message.values && message.values.length && message.hasOwnProperty("values"))
                     for (var i = 0; i < message.values.length; ++i)
                         $root.vector_tile.Tile.Value.encode(message.values[i], writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
-                if (message.extent !== undefined && message.extent !== null && message.hasOwnProperty("extent"))
+                if (message.extent != null && message.hasOwnProperty("extent"))
                     writer.uint32(/* id 5, wireType 0 =*/40).uint32(message.extent);
                 writer.uint32(/* id 15, wireType 0 =*/120).uint32(message.version);
                 return writer;
@@ -1056,7 +1056,7 @@ $root.vector_tile = (function() {
                     return "version: integer expected";
                 if (!$util.isString(message.name))
                     return "name: string expected";
-                if (message.features !== undefined) {
+                if (message.features != null) {
                     if (!Array.isArray(message.features))
                         return "features: array expected";
                     for (var i = 0; i < message.features.length; ++i) {
@@ -1065,14 +1065,14 @@ $root.vector_tile = (function() {
                             return "features." + error;
                     }
                 }
-                if (message.keys !== undefined) {
+                if (message.keys != null) {
                     if (!Array.isArray(message.keys))
                         return "keys: array expected";
                     for (var i = 0; i < message.keys.length; ++i)
                         if (!$util.isString(message.keys[i]))
                             return "keys: string[] expected";
                 }
-                if (message.values !== undefined) {
+                if (message.values != null) {
                     if (!Array.isArray(message.values))
                         return "values: array expected";
                     for (var i = 0; i < message.values.length; ++i) {
@@ -1081,7 +1081,7 @@ $root.vector_tile = (function() {
                             return "values." + error;
                     }
                 }
-                if (message.extent !== undefined && message.extent !== null)
+                if (message.extent != null)
                     if (!$util.isInteger(message.extent))
                         return "extent: integer expected";
                 return null;
@@ -1096,9 +1096,9 @@ $root.vector_tile = (function() {
                 if (object instanceof $root.vector_tile.Tile.Layer)
                     return object;
                 var message = new $root.vector_tile.Tile.Layer();
-                if (object.version !== undefined && object.version !== null)
+                if (object.version != null)
                     message.version = object.version >>> 0;
-                if (object.name !== undefined && object.name !== null)
+                if (object.name != null)
                     message.name = String(object.name);
                 if (object.features) {
                     if (!Array.isArray(object.features))
@@ -1127,7 +1127,7 @@ $root.vector_tile = (function() {
                         message.values[i] = $root.vector_tile.Tile.Value.fromObject(object.values[i]);
                     }
                 }
-                if (object.extent !== undefined && object.extent !== null)
+                if (object.extent != null)
                     message.extent = object.extent >>> 0;
                 return message;
             };
@@ -1161,7 +1161,7 @@ $root.vector_tile = (function() {
                     object.extent = 4096;
                     object.version = 1;
                 }
-                if (message.name !== undefined && message.name !== null && message.hasOwnProperty("name"))
+                if (message.name != null && message.hasOwnProperty("name"))
                     object.name = message.name;
                 if (message.features && message.features.length) {
                     object.features = [];
@@ -1178,9 +1178,9 @@ $root.vector_tile = (function() {
                     for (var j = 0; j < message.values.length; ++j)
                         object.values[j] = $root.vector_tile.Tile.Value.toObject(message.values[j], options);
                 }
-                if (message.extent !== undefined && message.extent !== null && message.hasOwnProperty("extent"))
+                if (message.extent != null && message.hasOwnProperty("extent"))
                     object.extent = message.extent;
-                if (message.version !== undefined && message.version !== null && message.hasOwnProperty("version"))
+                if (message.version != null && message.hasOwnProperty("version"))
                     object.version = message.version;
                 return object;
             };

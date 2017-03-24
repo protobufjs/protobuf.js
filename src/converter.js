@@ -133,7 +133,7 @@ converter.fromObject = function fromObject(mtype) {
         // Non-repeated fields
         } else {
             if (!(field.resolvedType instanceof Enum)) gen // no need to test for null/undefined if an enum (uses switch)
-    ("if(d%s!==undefined&&d%s!==null){", prop, prop);
+    ("if(d%s!=null){", prop); // !== undefined && !== null
         genValuePartial_fromObject(gen, field, /* not sorted */ i, prop);
             if (!(field.resolvedType instanceof Enum)) gen
     ("}");
@@ -268,7 +268,7 @@ converter.toObject = function toObject(mtype) {
             genValuePartial_toObject(gen, field, /* sorted */ index, prop + "[j]")
         ("}");
         } else { gen
-    ("if(m%s!==undefined&&m%s!==null&&m.hasOwnProperty(%j)){", prop, prop, field.name);
+    ("if(m%s!=null&&m.hasOwnProperty(%j)){", prop, field.name); // !== undefined && !== null
         genValuePartial_toObject(gen, field, /* sorted */ index, prop);
         if (field.partOf) gen
         ("if(o.oneofs)")

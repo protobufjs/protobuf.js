@@ -163,26 +163,26 @@ $root.Package = (function() {
     Package.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.name !== undefined && message.name !== null && message.hasOwnProperty("name"))
+        if (message.name != null && message.hasOwnProperty("name"))
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.name);
-        if (message.version !== undefined && message.version !== null && message.hasOwnProperty("version"))
+        if (message.version != null && message.hasOwnProperty("version"))
             writer.uint32(/* id 2, wireType 2 =*/18).string(message.version);
-        if (message.description !== undefined && message.description !== null && message.hasOwnProperty("description"))
+        if (message.description != null && message.hasOwnProperty("description"))
             writer.uint32(/* id 3, wireType 2 =*/26).string(message.description);
-        if (message.author !== undefined && message.author !== null && message.hasOwnProperty("author"))
+        if (message.author != null && message.hasOwnProperty("author"))
             writer.uint32(/* id 4, wireType 2 =*/34).string(message.author);
-        if (message.license !== undefined && message.license !== null && message.hasOwnProperty("license"))
+        if (message.license != null && message.hasOwnProperty("license"))
             writer.uint32(/* id 5, wireType 2 =*/42).string(message.license);
         if (message.repository && message.hasOwnProperty("repository"))
             $root.Package.Repository.encode(message.repository, writer.uint32(/* id 6, wireType 2 =*/50).fork()).ldelim();
-        if (message.bugs !== undefined && message.bugs !== null && message.hasOwnProperty("bugs"))
+        if (message.bugs != null && message.hasOwnProperty("bugs"))
             writer.uint32(/* id 7, wireType 2 =*/58).string(message.bugs);
-        if (message.homepage !== undefined && message.homepage !== null && message.hasOwnProperty("homepage"))
+        if (message.homepage != null && message.hasOwnProperty("homepage"))
             writer.uint32(/* id 8, wireType 2 =*/66).string(message.homepage);
-        if (message.keywords !== undefined && message.hasOwnProperty("keywords"))
+        if (message.keywords && message.keywords.length && message.hasOwnProperty("keywords"))
             for (var i = 0; i < message.keywords.length; ++i)
                 writer.uint32(/* id 9, wireType 2 =*/74).string(message.keywords[i]);
-        if (message.main !== undefined && message.main !== null && message.hasOwnProperty("main"))
+        if (message.main != null && message.hasOwnProperty("main"))
             writer.uint32(/* id 10, wireType 2 =*/82).string(message.main);
         if (message.bin && message.hasOwnProperty("bin"))
             for (var keys = Object.keys(message.bin), i = 0; i < keys.length; ++i)
@@ -199,12 +199,12 @@ $root.Package = (function() {
         if (message.devDependencies && message.hasOwnProperty("devDependencies"))
             for (var keys = Object.keys(message.devDependencies), i = 0; i < keys.length; ++i)
                 writer.uint32(/* id 15, wireType 2 =*/122).fork().uint32(/* id 1, wireType 2 =*/10).string(keys[i]).uint32(/* id 2, wireType 2 =*/18).string(message.devDependencies[keys[i]]).ldelim();
-        if (message.types !== undefined && message.types !== null && message.hasOwnProperty("types"))
+        if (message.types != null && message.hasOwnProperty("types"))
             writer.uint32(/* id 17, wireType 2 =*/138).string(message.types);
-        if (message.cliDependencies !== undefined && message.hasOwnProperty("cliDependencies"))
+        if (message.cliDependencies && message.cliDependencies.length && message.hasOwnProperty("cliDependencies"))
             for (var i = 0; i < message.cliDependencies.length; ++i)
                 writer.uint32(/* id 18, wireType 2 =*/146).string(message.cliDependencies[i]);
-        if (message.versionScheme !== undefined && message.versionScheme !== null && message.hasOwnProperty("versionScheme"))
+        if (message.versionScheme != null && message.hasOwnProperty("versionScheme"))
             writer.uint32(/* id 19, wireType 2 =*/154).string(message.versionScheme);
         return writer;
     };
@@ -346,46 +346,46 @@ $root.Package = (function() {
     Package.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
-        if (message.name !== undefined && message.name !== null)
+        if (message.name != null)
             if (!$util.isString(message.name))
                 return "name: string expected";
-        if (message.version !== undefined && message.version !== null)
+        if (message.version != null)
             if (!$util.isString(message.version))
                 return "version: string expected";
-        if (message.versionScheme !== undefined && message.versionScheme !== null)
+        if (message.versionScheme != null)
             if (!$util.isString(message.versionScheme))
                 return "versionScheme: string expected";
-        if (message.description !== undefined && message.description !== null)
+        if (message.description != null)
             if (!$util.isString(message.description))
                 return "description: string expected";
-        if (message.author !== undefined && message.author !== null)
+        if (message.author != null)
             if (!$util.isString(message.author))
                 return "author: string expected";
-        if (message.license !== undefined && message.license !== null)
+        if (message.license != null)
             if (!$util.isString(message.license))
                 return "license: string expected";
-        if (message.repository !== undefined && message.repository !== null) {
+        if (message.repository != null) {
             var error = $root.Package.Repository.verify(message.repository);
             if (error)
                 return "repository." + error;
         }
-        if (message.bugs !== undefined && message.bugs !== null)
+        if (message.bugs != null)
             if (!$util.isString(message.bugs))
                 return "bugs: string expected";
-        if (message.homepage !== undefined && message.homepage !== null)
+        if (message.homepage != null)
             if (!$util.isString(message.homepage))
                 return "homepage: string expected";
-        if (message.keywords !== undefined) {
+        if (message.keywords != null) {
             if (!Array.isArray(message.keywords))
                 return "keywords: array expected";
             for (var i = 0; i < message.keywords.length; ++i)
                 if (!$util.isString(message.keywords[i]))
                     return "keywords: string[] expected";
         }
-        if (message.main !== undefined && message.main !== null)
+        if (message.main != null)
             if (!$util.isString(message.main))
                 return "main: string expected";
-        if (message.bin !== undefined) {
+        if (message.bin != null) {
             if (!$util.isObject(message.bin))
                 return "bin: object expected";
             var key = Object.keys(message.bin);
@@ -393,7 +393,7 @@ $root.Package = (function() {
                 if (!$util.isString(message.bin[key[i]]))
                     return "bin: string{k:string} expected";
         }
-        if (message.scripts !== undefined) {
+        if (message.scripts != null) {
             if (!$util.isObject(message.scripts))
                 return "scripts: object expected";
             var key = Object.keys(message.scripts);
@@ -401,7 +401,7 @@ $root.Package = (function() {
                 if (!$util.isString(message.scripts[key[i]]))
                     return "scripts: string{k:string} expected";
         }
-        if (message.dependencies !== undefined) {
+        if (message.dependencies != null) {
             if (!$util.isObject(message.dependencies))
                 return "dependencies: object expected";
             var key = Object.keys(message.dependencies);
@@ -409,7 +409,7 @@ $root.Package = (function() {
                 if (!$util.isString(message.dependencies[key[i]]))
                     return "dependencies: string{k:string} expected";
         }
-        if (message.optionalDependencies !== undefined) {
+        if (message.optionalDependencies != null) {
             if (!$util.isObject(message.optionalDependencies))
                 return "optionalDependencies: object expected";
             var key = Object.keys(message.optionalDependencies);
@@ -417,7 +417,7 @@ $root.Package = (function() {
                 if (!$util.isString(message.optionalDependencies[key[i]]))
                     return "optionalDependencies: string{k:string} expected";
         }
-        if (message.devDependencies !== undefined) {
+        if (message.devDependencies != null) {
             if (!$util.isObject(message.devDependencies))
                 return "devDependencies: object expected";
             var key = Object.keys(message.devDependencies);
@@ -425,10 +425,10 @@ $root.Package = (function() {
                 if (!$util.isString(message.devDependencies[key[i]]))
                     return "devDependencies: string{k:string} expected";
         }
-        if (message.types !== undefined && message.types !== null)
+        if (message.types != null)
             if (!$util.isString(message.types))
                 return "types: string expected";
-        if (message.cliDependencies !== undefined) {
+        if (message.cliDependencies != null) {
             if (!Array.isArray(message.cliDependencies))
                 return "cliDependencies: array expected";
             for (var i = 0; i < message.cliDependencies.length; ++i)
@@ -447,26 +447,26 @@ $root.Package = (function() {
         if (object instanceof $root.Package)
             return object;
         var message = new $root.Package();
-        if (object.name !== undefined && object.name !== null)
+        if (object.name != null)
             message.name = String(object.name);
-        if (object.version !== undefined && object.version !== null)
+        if (object.version != null)
             message.version = String(object.version);
-        if (object.versionScheme !== undefined && object.versionScheme !== null)
+        if (object.versionScheme != null)
             message.versionScheme = String(object.versionScheme);
-        if (object.description !== undefined && object.description !== null)
+        if (object.description != null)
             message.description = String(object.description);
-        if (object.author !== undefined && object.author !== null)
+        if (object.author != null)
             message.author = String(object.author);
-        if (object.license !== undefined && object.license !== null)
+        if (object.license != null)
             message.license = String(object.license);
-        if (object.repository !== undefined && object.repository !== null) {
+        if (object.repository != null) {
             if (typeof object.repository !== "object")
                 throw TypeError(".Package.repository: object expected");
             message.repository = $root.Package.Repository.fromObject(object.repository);
         }
-        if (object.bugs !== undefined && object.bugs !== null)
+        if (object.bugs != null)
             message.bugs = String(object.bugs);
-        if (object.homepage !== undefined && object.homepage !== null)
+        if (object.homepage != null)
             message.homepage = String(object.homepage);
         if (object.keywords) {
             if (!Array.isArray(object.keywords))
@@ -475,7 +475,7 @@ $root.Package = (function() {
             for (var i = 0; i < object.keywords.length; ++i)
                 message.keywords[i] = String(object.keywords[i]);
         }
-        if (object.main !== undefined && object.main !== null)
+        if (object.main != null)
             message.main = String(object.main);
         if (object.bin) {
             if (typeof object.bin !== "object")
@@ -512,7 +512,7 @@ $root.Package = (function() {
             for (var keys = Object.keys(object.devDependencies), i = 0; i < keys.length; ++i)
                 message.devDependencies[keys[i]] = String(object.devDependencies[keys[i]]);
         }
-        if (object.types !== undefined && object.types !== null)
+        if (object.types != null)
             message.types = String(object.types);
         if (object.cliDependencies) {
             if (!Array.isArray(object.cliDependencies))
@@ -567,28 +567,28 @@ $root.Package = (function() {
             object.types = "";
             object.versionScheme = "";
         }
-        if (message.name !== undefined && message.name !== null && message.hasOwnProperty("name"))
+        if (message.name != null && message.hasOwnProperty("name"))
             object.name = message.name;
-        if (message.version !== undefined && message.version !== null && message.hasOwnProperty("version"))
+        if (message.version != null && message.hasOwnProperty("version"))
             object.version = message.version;
-        if (message.description !== undefined && message.description !== null && message.hasOwnProperty("description"))
+        if (message.description != null && message.hasOwnProperty("description"))
             object.description = message.description;
-        if (message.author !== undefined && message.author !== null && message.hasOwnProperty("author"))
+        if (message.author != null && message.hasOwnProperty("author"))
             object.author = message.author;
-        if (message.license !== undefined && message.license !== null && message.hasOwnProperty("license"))
+        if (message.license != null && message.hasOwnProperty("license"))
             object.license = message.license;
-        if (message.repository !== undefined && message.repository !== null && message.hasOwnProperty("repository"))
+        if (message.repository != null && message.hasOwnProperty("repository"))
             object.repository = $root.Package.Repository.toObject(message.repository, options);
-        if (message.bugs !== undefined && message.bugs !== null && message.hasOwnProperty("bugs"))
+        if (message.bugs != null && message.hasOwnProperty("bugs"))
             object.bugs = message.bugs;
-        if (message.homepage !== undefined && message.homepage !== null && message.hasOwnProperty("homepage"))
+        if (message.homepage != null && message.hasOwnProperty("homepage"))
             object.homepage = message.homepage;
         if (message.keywords && message.keywords.length) {
             object.keywords = [];
             for (var j = 0; j < message.keywords.length; ++j)
                 object.keywords[j] = message.keywords[j];
         }
-        if (message.main !== undefined && message.main !== null && message.hasOwnProperty("main"))
+        if (message.main != null && message.hasOwnProperty("main"))
             object.main = message.main;
         var keys2;
         if (message.bin && (keys2 = Object.keys(message.bin)).length) {
@@ -616,14 +616,14 @@ $root.Package = (function() {
             for (var j = 0; j < keys2.length; ++j)
                 object.devDependencies[keys2[j]] = message.devDependencies[keys2[j]];
         }
-        if (message.types !== undefined && message.types !== null && message.hasOwnProperty("types"))
+        if (message.types != null && message.hasOwnProperty("types"))
             object.types = message.types;
         if (message.cliDependencies && message.cliDependencies.length) {
             object.cliDependencies = [];
             for (var j = 0; j < message.cliDependencies.length; ++j)
                 object.cliDependencies[j] = message.cliDependencies[j];
         }
-        if (message.versionScheme !== undefined && message.versionScheme !== null && message.hasOwnProperty("versionScheme"))
+        if (message.versionScheme != null && message.hasOwnProperty("versionScheme"))
             object.versionScheme = message.versionScheme;
         return object;
     };
@@ -696,9 +696,9 @@ $root.Package = (function() {
         Repository.encode = function encode(message, writer) {
             if (!writer)
                 writer = $Writer.create();
-            if (message.type !== undefined && message.type !== null && message.hasOwnProperty("type"))
+            if (message.type != null && message.hasOwnProperty("type"))
                 writer.uint32(/* id 1, wireType 2 =*/10).string(message.type);
-            if (message.url !== undefined && message.url !== null && message.hasOwnProperty("url"))
+            if (message.url != null && message.hasOwnProperty("url"))
                 writer.uint32(/* id 2, wireType 2 =*/18).string(message.url);
             return writer;
         };
@@ -763,10 +763,10 @@ $root.Package = (function() {
         Repository.verify = function verify(message) {
             if (typeof message !== "object" || message === null)
                 return "object expected";
-            if (message.type !== undefined && message.type !== null)
+            if (message.type != null)
                 if (!$util.isString(message.type))
                     return "type: string expected";
-            if (message.url !== undefined && message.url !== null)
+            if (message.url != null)
                 if (!$util.isString(message.url))
                     return "url: string expected";
             return null;
@@ -781,9 +781,9 @@ $root.Package = (function() {
             if (object instanceof $root.Package.Repository)
                 return object;
             var message = new $root.Package.Repository();
-            if (object.type !== undefined && object.type !== null)
+            if (object.type != null)
                 message.type = String(object.type);
-            if (object.url !== undefined && object.url !== null)
+            if (object.url != null)
                 message.url = String(object.url);
             return message;
         };
@@ -811,9 +811,9 @@ $root.Package = (function() {
                 object.type = "";
                 object.url = "";
             }
-            if (message.type !== undefined && message.type !== null && message.hasOwnProperty("type"))
+            if (message.type != null && message.hasOwnProperty("type"))
                 object.type = message.type;
-            if (message.url !== undefined && message.url !== null && message.hasOwnProperty("url"))
+            if (message.url != null && message.hasOwnProperty("url"))
                 object.url = message.url;
             return object;
         };
