@@ -21,8 +21,8 @@ $root.Message = (function() {
      * @property {Array.<number|Long>} [uint64Repeated] Message uint64Repeated.
      * @property {Uint8Array} [bytesVal] Message bytesVal.
      * @property {Array.<Uint8Array>} [bytesRepeated] Message bytesRepeated.
-     * @property {number} [enumVal] Message enumVal.
-     * @property {Array.<number>} [enumRepeated] Message enumRepeated.
+     * @property {Message.SomeEnum} [enumVal] Message enumVal.
+     * @property {Array.<Message.SomeEnum>} [enumRepeated] Message enumRepeated.
      * @property {Object.<string,number|Long>} [int64Map] Message int64Map.
      */
 
@@ -44,14 +44,49 @@ $root.Message = (function() {
                 this[keys[i]] = properties[keys[i]];
     }
 
+    /**
+     * @type {string|undefined}
+     */
     Message.prototype.stringVal = "";
+
+    /**
+     * @type {Array.<string>|undefined}
+     */
     Message.prototype.stringRepeated = $util.emptyArray;
+
+    /**
+     * @type {number|Long|undefined}
+     */
     Message.prototype.uint64Val = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+    /**
+     * @type {Array.<number|Long>|undefined}
+     */
     Message.prototype.uint64Repeated = $util.emptyArray;
+
+    /**
+     * @type {Uint8Array|undefined}
+     */
     Message.prototype.bytesVal = $util.newBuffer([]);
+
+    /**
+     * @type {Array.<Uint8Array>|undefined}
+     */
     Message.prototype.bytesRepeated = $util.emptyArray;
+
+    /**
+     * @type {Message.SomeEnum|undefined}
+     */
     Message.prototype.enumVal = 1;
+
+    /**
+     * @type {Array.<Message.SomeEnum>|undefined}
+     */
     Message.prototype.enumRepeated = $util.emptyArray;
+
+    /**
+     * @type {Object.<string,number|Long>|undefined}
+     */
     Message.prototype.int64Map = $util.emptyObject;
 
     /**

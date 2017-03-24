@@ -197,7 +197,7 @@ $root.jspb = (function() {
              * Properties of an EnumContainer.
              * @typedef jspb.test.EnumContainer$Properties
              * @type Object
-             * @property {number} [outerEnum] EnumContainer outerEnum.
+             * @property {jspb.test.OuterEnum} [outerEnum] EnumContainer outerEnum.
              */
 
             /**
@@ -213,6 +213,9 @@ $root.jspb = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
+            /**
+             * @type {jspb.test.OuterEnum|undefined}
+             */
             EnumContainer.prototype.outerEnum = 1;
 
             /**
@@ -399,8 +402,19 @@ $root.jspb = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
+            /**
+             * @type {string}
+             */
             Simple1.prototype.aString = "";
+
+            /**
+             * @type {Array.<string>|undefined}
+             */
             Simple1.prototype.aRepeatedString = $util.emptyArray;
+
+            /**
+             * @type {boolean|undefined}
+             */
             Simple1.prototype.aBoolean = false;
 
             /**
@@ -616,7 +630,14 @@ $root.jspb = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
+            /**
+             * @type {string}
+             */
             Simple2.prototype.aString = "";
+
+            /**
+             * @type {Array.<string>|undefined}
+             */
             Simple2.prototype.aRepeatedString = $util.emptyArray;
 
             /**
@@ -819,9 +840,24 @@ $root.jspb = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
+            /**
+             * @type {string}
+             */
             SpecialCases.prototype.normal = "";
+
+            /**
+             * @type {string}
+             */
             SpecialCases.prototype["default"] = "";
+
+            /**
+             * @type {string}
+             */
             SpecialCases.prototype["function"] = "";
+
+            /**
+             * @type {string}
+             */
             SpecialCases.prototype["var"] = "";
 
             /**
@@ -1018,8 +1054,8 @@ $root.jspb = (function() {
              * @type Object
              * @property {string} [aString] OptionalFields aString.
              * @property {boolean} aBool OptionalFields aBool.
-             * @property {jspb.test.OptionalFields.Nested} [aNestedMessage] OptionalFields aNestedMessage.
-             * @property {Array.<jspb.test.OptionalFields.Nested>} [aRepeatedMessage] OptionalFields aRepeatedMessage.
+             * @property {jspb.test.OptionalFields.Nested$Properties} [aNestedMessage] OptionalFields aNestedMessage.
+             * @property {Array.<jspb.test.OptionalFields.Nested$Properties>} [aRepeatedMessage] OptionalFields aRepeatedMessage.
              * @property {Array.<string>} [aRepeatedString] OptionalFields aRepeatedString.
              */
 
@@ -1038,10 +1074,29 @@ $root.jspb = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
+            /**
+             * @type {string|undefined}
+             */
             OptionalFields.prototype.aString = "";
+
+            /**
+             * @type {boolean}
+             */
             OptionalFields.prototype.aBool = false;
+
+            /**
+             * @type {jspb.test.OptionalFields.Nested$Properties|undefined}
+             */
             OptionalFields.prototype.aNestedMessage = null;
+
+            /**
+             * @type {Array.<jspb.test.OptionalFields.Nested$Properties>|undefined}
+             */
             OptionalFields.prototype.aRepeatedMessage = $util.emptyArray;
+
+            /**
+             * @type {Array.<string>|undefined}
+             */
             OptionalFields.prototype.aRepeatedString = $util.emptyArray;
 
             /**
@@ -1304,6 +1359,9 @@ $root.jspb = (function() {
                             this[keys[i]] = properties[keys[i]];
                 }
 
+                /**
+                 * @type {number|undefined}
+                 */
                 Nested.prototype.anInt = 0;
 
                 /**
@@ -1464,12 +1522,12 @@ $root.jspb = (function() {
              * @property {string} [str1] HasExtensions str1.
              * @property {string} [str2] HasExtensions str2.
              * @property {string} [str3] HasExtensions str3.
-             * @property {jspb.test.IsExtension} [".jspb.test.IsExtension.extField"] HasExtensions .jspb.test.IsExtension.extField.
-             * @property {jspb.test.Simple1} [".jspb.test.IndirectExtension.simple"] HasExtensions .jspb.test.IndirectExtension.simple.
+             * @property {jspb.test.IsExtension$Properties} [".jspb.test.IsExtension.extField"] HasExtensions .jspb.test.IsExtension.extField.
+             * @property {jspb.test.Simple1$Properties} [".jspb.test.IndirectExtension.simple"] HasExtensions .jspb.test.IndirectExtension.simple.
              * @property {string} [".jspb.test.IndirectExtension.str"] HasExtensions .jspb.test.IndirectExtension.str.
              * @property {Array.<string>} [".jspb.test.IndirectExtension.repeatedStr"] HasExtensions .jspb.test.IndirectExtension.repeatedStr.
-             * @property {Array.<jspb.test.Simple1>} [".jspb.test.IndirectExtension.repeatedSimple"] HasExtensions .jspb.test.IndirectExtension.repeatedSimple.
-             * @property {jspb.test.Simple1} [".jspb.test.simple1"] HasExtensions .jspb.test.simple1.
+             * @property {Array.<jspb.test.Simple1$Properties>} [".jspb.test.IndirectExtension.repeatedSimple"] HasExtensions .jspb.test.IndirectExtension.repeatedSimple.
+             * @property {jspb.test.Simple1$Properties} [".jspb.test.simple1"] HasExtensions .jspb.test.simple1.
              */
 
             /**
@@ -1487,14 +1545,49 @@ $root.jspb = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
+            /**
+             * @type {string|undefined}
+             */
             HasExtensions.prototype.str1 = "";
+
+            /**
+             * @type {string|undefined}
+             */
             HasExtensions.prototype.str2 = "";
+
+            /**
+             * @type {string|undefined}
+             */
             HasExtensions.prototype.str3 = "";
+
+            /**
+             * @type {jspb.test.IsExtension$Properties|undefined}
+             */
             HasExtensions.prototype[".jspb.test.IsExtension.extField"] = null;
+
+            /**
+             * @type {jspb.test.Simple1$Properties|undefined}
+             */
             HasExtensions.prototype[".jspb.test.IndirectExtension.simple"] = null;
+
+            /**
+             * @type {string|undefined}
+             */
             HasExtensions.prototype[".jspb.test.IndirectExtension.str"] = "";
+
+            /**
+             * @type {Array.<string>|undefined}
+             */
             HasExtensions.prototype[".jspb.test.IndirectExtension.repeatedStr"] = $util.emptyArray;
+
+            /**
+             * @type {Array.<jspb.test.Simple1$Properties>|undefined}
+             */
             HasExtensions.prototype[".jspb.test.IndirectExtension.repeatedSimple"] = $util.emptyArray;
+
+            /**
+             * @type {jspb.test.Simple1$Properties|undefined}
+             */
             HasExtensions.prototype[".jspb.test.simple1"] = null;
 
             /**
@@ -1808,8 +1901,8 @@ $root.jspb = (function() {
              * @type Object
              * @property {string} aString Complex aString.
              * @property {boolean} anOutOfOrderBool Complex anOutOfOrderBool.
-             * @property {jspb.test.Complex.Nested} [aNestedMessage] Complex aNestedMessage.
-             * @property {Array.<jspb.test.Complex.Nested>} [aRepeatedMessage] Complex aRepeatedMessage.
+             * @property {jspb.test.Complex.Nested$Properties} [aNestedMessage] Complex aNestedMessage.
+             * @property {Array.<jspb.test.Complex.Nested$Properties>} [aRepeatedMessage] Complex aRepeatedMessage.
              * @property {Array.<string>} [aRepeatedString] Complex aRepeatedString.
              */
 
@@ -1828,10 +1921,29 @@ $root.jspb = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
+            /**
+             * @type {string}
+             */
             Complex.prototype.aString = "";
+
+            /**
+             * @type {boolean}
+             */
             Complex.prototype.anOutOfOrderBool = false;
+
+            /**
+             * @type {jspb.test.Complex.Nested$Properties|undefined}
+             */
             Complex.prototype.aNestedMessage = null;
+
+            /**
+             * @type {Array.<jspb.test.Complex.Nested$Properties>|undefined}
+             */
             Complex.prototype.aRepeatedMessage = $util.emptyArray;
+
+            /**
+             * @type {Array.<string>|undefined}
+             */
             Complex.prototype.aRepeatedString = $util.emptyArray;
 
             /**
@@ -2094,6 +2206,9 @@ $root.jspb = (function() {
                             this[keys[i]] = properties[keys[i]];
                 }
 
+                /**
+                 * @type {number}
+                 */
                 Nested.prototype.anInt = 0;
 
                 /**
@@ -2413,6 +2528,9 @@ $root.jspb = (function() {
                             this[keys[i]] = properties[keys[i]];
                 }
 
+                /**
+                 * @type {number|undefined}
+                 */
                 Complex.prototype.innerComplexField = 0;
 
                 /**
@@ -2586,6 +2704,9 @@ $root.jspb = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
+            /**
+             * @type {string|undefined}
+             */
             IsExtension.prototype.ext1 = "";
 
             /**
@@ -2892,7 +3013,7 @@ $root.jspb = (function() {
              * @property {string} [stringField] DefaultValues stringField.
              * @property {boolean} [boolField] DefaultValues boolField.
              * @property {number|Long} [intField] DefaultValues intField.
-             * @property {number} [enumField] DefaultValues enumField.
+             * @property {jspb.test.DefaultValues.Enum} [enumField] DefaultValues enumField.
              * @property {string} [emptyField] DefaultValues emptyField.
              * @property {Uint8Array} [bytesField] DefaultValues bytesField.
              */
@@ -2910,11 +3031,34 @@ $root.jspb = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
+            /**
+             * @type {string|undefined}
+             */
             DefaultValues.prototype.stringField = "default<>abc";
+
+            /**
+             * @type {boolean|undefined}
+             */
             DefaultValues.prototype.boolField = true;
+
+            /**
+             * @type {number|Long|undefined}
+             */
             DefaultValues.prototype.intField = $util.Long ? $util.Long.fromBits(11,0,false) : 11;
+
+            /**
+             * @type {jspb.test.DefaultValues.Enum|undefined}
+             */
             DefaultValues.prototype.enumField = 13;
+
+            /**
+             * @type {string|undefined}
+             */
             DefaultValues.prototype.emptyField = "";
+
+            /**
+             * @type {Uint8Array|undefined}
+             */
             DefaultValues.prototype.bytesField = $util.newBuffer([109,111,111]);
 
             /**
@@ -3209,13 +3353,44 @@ $root.jspb = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
+            /**
+             * @type {number|undefined}
+             */
             FloatingPointFields.prototype.optionalFloatField = 0;
+
+            /**
+             * @type {number}
+             */
             FloatingPointFields.prototype.requiredFloatField = 0;
+
+            /**
+             * @type {Array.<number>|undefined}
+             */
             FloatingPointFields.prototype.repeatedFloatField = $util.emptyArray;
+
+            /**
+             * @type {number|undefined}
+             */
             FloatingPointFields.prototype.defaultFloatField = 2;
+
+            /**
+             * @type {number|undefined}
+             */
             FloatingPointFields.prototype.optionalDoubleField = 0;
+
+            /**
+             * @type {number}
+             */
             FloatingPointFields.prototype.requiredDoubleField = 0;
+
+            /**
+             * @type {Array.<number>|undefined}
+             */
             FloatingPointFields.prototype.repeatedDoubleField = $util.emptyArray;
+
+            /**
+             * @type {number|undefined}
+             */
             FloatingPointFields.prototype.defaultDoubleField = 2;
 
             /**
@@ -3505,11 +3680,11 @@ $root.jspb = (function() {
              * @typedef jspb.test.TestClone$Properties
              * @type Object
              * @property {string} [str] TestClone str.
-             * @property {jspb.test.Simple1} [simple1] TestClone simple1.
-             * @property {Array.<jspb.test.Simple1>} [simple2] TestClone simple2.
+             * @property {jspb.test.Simple1$Properties} [simple1] TestClone simple1.
+             * @property {Array.<jspb.test.Simple1$Properties>} [simple2] TestClone simple2.
              * @property {Uint8Array} [bytesField] TestClone bytesField.
              * @property {string} [unused] TestClone unused.
-             * @property {jspb.test.CloneExtension} [".jspb.test.CloneExtension.extField"] TestClone .jspb.test.CloneExtension.extField.
+             * @property {jspb.test.CloneExtension$Properties} [".jspb.test.CloneExtension.extField"] TestClone .jspb.test.CloneExtension.extField.
              */
 
             /**
@@ -3526,11 +3701,34 @@ $root.jspb = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
+            /**
+             * @type {string|undefined}
+             */
             TestClone.prototype.str = "";
+
+            /**
+             * @type {jspb.test.Simple1$Properties|undefined}
+             */
             TestClone.prototype.simple1 = null;
+
+            /**
+             * @type {Array.<jspb.test.Simple1$Properties>|undefined}
+             */
             TestClone.prototype.simple2 = $util.emptyArray;
+
+            /**
+             * @type {Uint8Array|undefined}
+             */
             TestClone.prototype.bytesField = $util.newBuffer([]);
+
+            /**
+             * @type {string|undefined}
+             */
             TestClone.prototype.unused = "";
+
+            /**
+             * @type {jspb.test.CloneExtension$Properties|undefined}
+             */
             TestClone.prototype[".jspb.test.CloneExtension.extField"] = null;
 
             /**
@@ -3801,6 +3999,9 @@ $root.jspb = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
+            /**
+             * @type {string|undefined}
+             */
             CloneExtension.prototype.ext = "";
 
             /**
@@ -3955,12 +4156,12 @@ $root.jspb = (function() {
              * Properties of a TestGroup.
              * @typedef jspb.test.TestGroup$Properties
              * @type Object
-             * @property {Array.<jspb.test.TestGroup.RepeatedGroup>} [repeatedGroup] TestGroup repeatedGroup.
-             * @property {jspb.test.TestGroup.RequiredGroup} requiredGroup TestGroup requiredGroup.
-             * @property {jspb.test.TestGroup.OptionalGroup} [optionalGroup] TestGroup optionalGroup.
+             * @property {Array.<jspb.test.TestGroup.RepeatedGroup$Properties>} [repeatedGroup] TestGroup repeatedGroup.
+             * @property {jspb.test.TestGroup.RequiredGroup$Properties} requiredGroup TestGroup requiredGroup.
+             * @property {jspb.test.TestGroup.OptionalGroup$Properties} [optionalGroup] TestGroup optionalGroup.
              * @property {string} [id] TestGroup id.
-             * @property {jspb.test.Simple2} requiredSimple TestGroup requiredSimple.
-             * @property {jspb.test.Simple2} [optionalSimple] TestGroup optionalSimple.
+             * @property {jspb.test.Simple2$Properties} requiredSimple TestGroup requiredSimple.
+             * @property {jspb.test.Simple2$Properties} [optionalSimple] TestGroup optionalSimple.
              */
 
             /**
@@ -3977,11 +4178,34 @@ $root.jspb = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
+            /**
+             * @type {Array.<jspb.test.TestGroup.RepeatedGroup$Properties>|undefined}
+             */
             TestGroup.prototype.repeatedGroup = $util.emptyArray;
+
+            /**
+             * @type {jspb.test.TestGroup.RequiredGroup$Properties}
+             */
             TestGroup.prototype.requiredGroup = null;
+
+            /**
+             * @type {jspb.test.TestGroup.OptionalGroup$Properties|undefined}
+             */
             TestGroup.prototype.optionalGroup = null;
+
+            /**
+             * @type {string|undefined}
+             */
             TestGroup.prototype.id = "";
+
+            /**
+             * @type {jspb.test.Simple2$Properties}
+             */
             TestGroup.prototype.requiredSimple = null;
+
+            /**
+             * @type {jspb.test.Simple2$Properties|undefined}
+             */
             TestGroup.prototype.optionalSimple = null;
 
             /**
@@ -4256,7 +4480,14 @@ $root.jspb = (function() {
                             this[keys[i]] = properties[keys[i]];
                 }
 
+                /**
+                 * @type {string}
+                 */
                 RepeatedGroup.prototype.id = "";
+
+                /**
+                 * @type {Array.<boolean>|undefined}
+                 */
                 RepeatedGroup.prototype.someBool = $util.emptyArray;
 
                 /**
@@ -4463,6 +4694,9 @@ $root.jspb = (function() {
                             this[keys[i]] = properties[keys[i]];
                 }
 
+                /**
+                 * @type {string}
+                 */
                 RequiredGroup.prototype.id = "";
 
                 /**
@@ -4635,6 +4869,9 @@ $root.jspb = (function() {
                             this[keys[i]] = properties[keys[i]];
                 }
 
+                /**
+                 * @type {string}
+                 */
                 OptionalGroup.prototype.id = "";
 
                 /**
@@ -4794,7 +5031,7 @@ $root.jspb = (function() {
              * Properties of a TestGroup1.
              * @typedef jspb.test.TestGroup1$Properties
              * @type Object
-             * @property {jspb.test.TestGroup.RepeatedGroup} [group] TestGroup1 group.
+             * @property {jspb.test.TestGroup.RepeatedGroup$Properties} [group] TestGroup1 group.
              */
 
             /**
@@ -4810,6 +5047,9 @@ $root.jspb = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
+            /**
+             * @type {jspb.test.TestGroup.RepeatedGroup$Properties|undefined}
+             */
             TestGroup1.prototype.group = null;
 
             /**
@@ -4986,7 +5226,14 @@ $root.jspb = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
+            /**
+             * @type {number|undefined}
+             */
             TestReservedNames.prototype.extension = 0;
+
+            /**
+             * @type {number|undefined}
+             */
             TestReservedNames.prototype[".jspb.test.TestReservedNamesExtension.foo"] = 0;
 
             /**
@@ -5306,7 +5553,7 @@ $root.jspb = (function() {
              * @type Object
              * @property {string} [pone] TestMessageWithOneof pone.
              * @property {string} [pthree] TestMessageWithOneof pthree.
-             * @property {jspb.test.TestMessageWithOneof} [rone] TestMessageWithOneof rone.
+             * @property {jspb.test.TestMessageWithOneof$Properties} [rone] TestMessageWithOneof rone.
              * @property {string} [rtwo] TestMessageWithOneof rtwo.
              * @property {boolean} [normalField] TestMessageWithOneof normalField.
              * @property {Array.<string>} [repeatedField] TestMessageWithOneof repeatedField.
@@ -5330,15 +5577,54 @@ $root.jspb = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
+            /**
+             * @type {string|undefined}
+             */
             TestMessageWithOneof.prototype.pone = "";
+
+            /**
+             * @type {string|undefined}
+             */
             TestMessageWithOneof.prototype.pthree = "";
+
+            /**
+             * @type {jspb.test.TestMessageWithOneof$Properties|undefined}
+             */
             TestMessageWithOneof.prototype.rone = null;
+
+            /**
+             * @type {string|undefined}
+             */
             TestMessageWithOneof.prototype.rtwo = "";
+
+            /**
+             * @type {boolean|undefined}
+             */
             TestMessageWithOneof.prototype.normalField = false;
+
+            /**
+             * @type {Array.<string>|undefined}
+             */
             TestMessageWithOneof.prototype.repeatedField = $util.emptyArray;
+
+            /**
+             * @type {number|undefined}
+             */
             TestMessageWithOneof.prototype.aone = 1234;
+
+            /**
+             * @type {number|undefined}
+             */
             TestMessageWithOneof.prototype.atwo = 0;
+
+            /**
+             * @type {number|undefined}
+             */
             TestMessageWithOneof.prototype.bone = 0;
+
+            /**
+             * @type {number|undefined}
+             */
             TestMessageWithOneof.prototype.btwo = 1234;
 
             // OneOf field names bound to virtual getters and setters
@@ -5731,7 +6017,14 @@ $root.jspb = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
+            /**
+             * @type {number|undefined}
+             */
             TestEndsWithBytes.prototype.value = 0;
+
+            /**
+             * @type {Uint8Array|undefined}
+             */
             TestEndsWithBytes.prototype.data = $util.newBuffer([]);
 
             /**
@@ -5908,13 +6201,13 @@ $root.jspb = (function() {
              * @property {Object.<string,number|Long>} [mapStringInt64] TestMapFieldsNoBinary mapStringInt64.
              * @property {Object.<string,boolean>} [mapStringBool] TestMapFieldsNoBinary mapStringBool.
              * @property {Object.<string,number>} [mapStringDouble] TestMapFieldsNoBinary mapStringDouble.
-             * @property {Object.<string,number>} [mapStringEnum] TestMapFieldsNoBinary mapStringEnum.
-             * @property {Object.<string,jspb.test.MapValueMessageNoBinary>} [mapStringMsg] TestMapFieldsNoBinary mapStringMsg.
+             * @property {Object.<string,jspb.test.MapValueEnumNoBinary>} [mapStringEnum] TestMapFieldsNoBinary mapStringEnum.
+             * @property {Object.<string,jspb.test.MapValueMessageNoBinary$Properties>} [mapStringMsg] TestMapFieldsNoBinary mapStringMsg.
              * @property {Object.<string,string>} [mapInt32String] TestMapFieldsNoBinary mapInt32String.
              * @property {Object.<string,string>} [mapInt64String] TestMapFieldsNoBinary mapInt64String.
              * @property {Object.<string,string>} [mapBoolString] TestMapFieldsNoBinary mapBoolString.
-             * @property {jspb.test.TestMapFieldsNoBinary} [testMapFields] TestMapFieldsNoBinary testMapFields.
-             * @property {Object.<string,jspb.test.TestMapFieldsNoBinary>} [mapStringTestmapfields] TestMapFieldsNoBinary mapStringTestmapfields.
+             * @property {jspb.test.TestMapFieldsNoBinary$Properties} [testMapFields] TestMapFieldsNoBinary testMapFields.
+             * @property {Object.<string,jspb.test.TestMapFieldsNoBinary$Properties>} [mapStringTestmapfields] TestMapFieldsNoBinary mapStringTestmapfields.
              */
 
             /**
@@ -5941,17 +6234,64 @@ $root.jspb = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
+            /**
+             * @type {Object.<string,string>|undefined}
+             */
             TestMapFieldsNoBinary.prototype.mapStringString = $util.emptyObject;
+
+            /**
+             * @type {Object.<string,number>|undefined}
+             */
             TestMapFieldsNoBinary.prototype.mapStringInt32 = $util.emptyObject;
+
+            /**
+             * @type {Object.<string,number|Long>|undefined}
+             */
             TestMapFieldsNoBinary.prototype.mapStringInt64 = $util.emptyObject;
+
+            /**
+             * @type {Object.<string,boolean>|undefined}
+             */
             TestMapFieldsNoBinary.prototype.mapStringBool = $util.emptyObject;
+
+            /**
+             * @type {Object.<string,number>|undefined}
+             */
             TestMapFieldsNoBinary.prototype.mapStringDouble = $util.emptyObject;
+
+            /**
+             * @type {Object.<string,jspb.test.MapValueEnumNoBinary>|undefined}
+             */
             TestMapFieldsNoBinary.prototype.mapStringEnum = $util.emptyObject;
+
+            /**
+             * @type {Object.<string,jspb.test.MapValueMessageNoBinary$Properties>|undefined}
+             */
             TestMapFieldsNoBinary.prototype.mapStringMsg = $util.emptyObject;
+
+            /**
+             * @type {Object.<string,string>|undefined}
+             */
             TestMapFieldsNoBinary.prototype.mapInt32String = $util.emptyObject;
+
+            /**
+             * @type {Object.<string,string>|undefined}
+             */
             TestMapFieldsNoBinary.prototype.mapInt64String = $util.emptyObject;
+
+            /**
+             * @type {Object.<string,string>|undefined}
+             */
             TestMapFieldsNoBinary.prototype.mapBoolString = $util.emptyObject;
+
+            /**
+             * @type {jspb.test.TestMapFieldsNoBinary$Properties|undefined}
+             */
             TestMapFieldsNoBinary.prototype.testMapFields = null;
+
+            /**
+             * @type {Object.<string,jspb.test.TestMapFieldsNoBinary$Properties>|undefined}
+             */
             TestMapFieldsNoBinary.prototype.mapStringTestmapfields = $util.emptyObject;
 
             /**
@@ -6551,6 +6891,9 @@ $root.jspb = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
+            /**
+             * @type {number|undefined}
+             */
             MapValueMessageNoBinary.prototype.foo = 0;
 
             /**
@@ -7013,6 +7356,9 @@ $root.jspb = (function() {
                                 this[keys[i]] = properties[keys[i]];
                     }
 
+                    /**
+                     * @type {number|undefined}
+                     */
                     Message.prototype.count = 0;
 
                     /**
@@ -7197,7 +7543,7 @@ $root.google = (function() {
              * Properties of a FileDescriptorSet.
              * @typedef google.protobuf.FileDescriptorSet$Properties
              * @type Object
-             * @property {Array.<google.protobuf.FileDescriptorProto>} [file] FileDescriptorSet file.
+             * @property {Array.<google.protobuf.FileDescriptorProto$Properties>} [file] FileDescriptorSet file.
              */
 
             /**
@@ -7214,6 +7560,9 @@ $root.google = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
+            /**
+             * @type {Array.<google.protobuf.FileDescriptorProto$Properties>|undefined}
+             */
             FileDescriptorSet.prototype.file = $util.emptyArray;
 
             /**
@@ -7393,12 +7742,12 @@ $root.google = (function() {
              * @property {Array.<string>} [dependency] FileDescriptorProto dependency.
              * @property {Array.<number>} [publicDependency] FileDescriptorProto publicDependency.
              * @property {Array.<number>} [weakDependency] FileDescriptorProto weakDependency.
-             * @property {Array.<google.protobuf.DescriptorProto>} [messageType] FileDescriptorProto messageType.
-             * @property {Array.<google.protobuf.EnumDescriptorProto>} [enumType] FileDescriptorProto enumType.
-             * @property {Array.<google.protobuf.ServiceDescriptorProto>} [service] FileDescriptorProto service.
-             * @property {Array.<google.protobuf.FieldDescriptorProto>} [extension] FileDescriptorProto extension.
-             * @property {google.protobuf.FileOptions} [options] FileDescriptorProto options.
-             * @property {google.protobuf.SourceCodeInfo} [sourceCodeInfo] FileDescriptorProto sourceCodeInfo.
+             * @property {Array.<google.protobuf.DescriptorProto$Properties>} [messageType] FileDescriptorProto messageType.
+             * @property {Array.<google.protobuf.EnumDescriptorProto$Properties>} [enumType] FileDescriptorProto enumType.
+             * @property {Array.<google.protobuf.ServiceDescriptorProto$Properties>} [service] FileDescriptorProto service.
+             * @property {Array.<google.protobuf.FieldDescriptorProto$Properties>} [extension] FileDescriptorProto extension.
+             * @property {google.protobuf.FileOptions$Properties} [options] FileDescriptorProto options.
+             * @property {google.protobuf.SourceCodeInfo$Properties} [sourceCodeInfo] FileDescriptorProto sourceCodeInfo.
              * @property {string} [syntax] FileDescriptorProto syntax.
              */
 
@@ -7422,17 +7771,64 @@ $root.google = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
+            /**
+             * @type {string|undefined}
+             */
             FileDescriptorProto.prototype.name = "";
+
+            /**
+             * @type {string|undefined}
+             */
             FileDescriptorProto.prototype["package"] = "";
+
+            /**
+             * @type {Array.<string>|undefined}
+             */
             FileDescriptorProto.prototype.dependency = $util.emptyArray;
+
+            /**
+             * @type {Array.<number>|undefined}
+             */
             FileDescriptorProto.prototype.publicDependency = $util.emptyArray;
+
+            /**
+             * @type {Array.<number>|undefined}
+             */
             FileDescriptorProto.prototype.weakDependency = $util.emptyArray;
+
+            /**
+             * @type {Array.<google.protobuf.DescriptorProto$Properties>|undefined}
+             */
             FileDescriptorProto.prototype.messageType = $util.emptyArray;
+
+            /**
+             * @type {Array.<google.protobuf.EnumDescriptorProto$Properties>|undefined}
+             */
             FileDescriptorProto.prototype.enumType = $util.emptyArray;
+
+            /**
+             * @type {Array.<google.protobuf.ServiceDescriptorProto$Properties>|undefined}
+             */
             FileDescriptorProto.prototype.service = $util.emptyArray;
+
+            /**
+             * @type {Array.<google.protobuf.FieldDescriptorProto$Properties>|undefined}
+             */
             FileDescriptorProto.prototype.extension = $util.emptyArray;
+
+            /**
+             * @type {google.protobuf.FileOptions$Properties|undefined}
+             */
             FileDescriptorProto.prototype.options = null;
+
+            /**
+             * @type {google.protobuf.SourceCodeInfo$Properties|undefined}
+             */
             FileDescriptorProto.prototype.sourceCodeInfo = null;
+
+            /**
+             * @type {string|undefined}
+             */
             FileDescriptorProto.prototype.syntax = "";
 
             /**
@@ -7879,14 +8275,14 @@ $root.google = (function() {
              * @typedef google.protobuf.DescriptorProto$Properties
              * @type Object
              * @property {string} [name] DescriptorProto name.
-             * @property {Array.<google.protobuf.FieldDescriptorProto>} [field] DescriptorProto field.
-             * @property {Array.<google.protobuf.FieldDescriptorProto>} [extension] DescriptorProto extension.
-             * @property {Array.<google.protobuf.DescriptorProto>} [nestedType] DescriptorProto nestedType.
-             * @property {Array.<google.protobuf.EnumDescriptorProto>} [enumType] DescriptorProto enumType.
-             * @property {Array.<google.protobuf.DescriptorProto.ExtensionRange>} [extensionRange] DescriptorProto extensionRange.
-             * @property {Array.<google.protobuf.OneofDescriptorProto>} [oneofDecl] DescriptorProto oneofDecl.
-             * @property {google.protobuf.MessageOptions} [options] DescriptorProto options.
-             * @property {Array.<google.protobuf.DescriptorProto.ReservedRange>} [reservedRange] DescriptorProto reservedRange.
+             * @property {Array.<google.protobuf.FieldDescriptorProto$Properties>} [field] DescriptorProto field.
+             * @property {Array.<google.protobuf.FieldDescriptorProto$Properties>} [extension] DescriptorProto extension.
+             * @property {Array.<google.protobuf.DescriptorProto$Properties>} [nestedType] DescriptorProto nestedType.
+             * @property {Array.<google.protobuf.EnumDescriptorProto$Properties>} [enumType] DescriptorProto enumType.
+             * @property {Array.<google.protobuf.DescriptorProto.ExtensionRange$Properties>} [extensionRange] DescriptorProto extensionRange.
+             * @property {Array.<google.protobuf.OneofDescriptorProto$Properties>} [oneofDecl] DescriptorProto oneofDecl.
+             * @property {google.protobuf.MessageOptions$Properties} [options] DescriptorProto options.
+             * @property {Array.<google.protobuf.DescriptorProto.ReservedRange$Properties>} [reservedRange] DescriptorProto reservedRange.
              * @property {Array.<string>} [reservedName] DescriptorProto reservedName.
              */
 
@@ -7911,15 +8307,54 @@ $root.google = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
+            /**
+             * @type {string|undefined}
+             */
             DescriptorProto.prototype.name = "";
+
+            /**
+             * @type {Array.<google.protobuf.FieldDescriptorProto$Properties>|undefined}
+             */
             DescriptorProto.prototype.field = $util.emptyArray;
+
+            /**
+             * @type {Array.<google.protobuf.FieldDescriptorProto$Properties>|undefined}
+             */
             DescriptorProto.prototype.extension = $util.emptyArray;
+
+            /**
+             * @type {Array.<google.protobuf.DescriptorProto$Properties>|undefined}
+             */
             DescriptorProto.prototype.nestedType = $util.emptyArray;
+
+            /**
+             * @type {Array.<google.protobuf.EnumDescriptorProto$Properties>|undefined}
+             */
             DescriptorProto.prototype.enumType = $util.emptyArray;
+
+            /**
+             * @type {Array.<google.protobuf.DescriptorProto.ExtensionRange$Properties>|undefined}
+             */
             DescriptorProto.prototype.extensionRange = $util.emptyArray;
+
+            /**
+             * @type {Array.<google.protobuf.OneofDescriptorProto$Properties>|undefined}
+             */
             DescriptorProto.prototype.oneofDecl = $util.emptyArray;
+
+            /**
+             * @type {google.protobuf.MessageOptions$Properties|undefined}
+             */
             DescriptorProto.prototype.options = null;
+
+            /**
+             * @type {Array.<google.protobuf.DescriptorProto.ReservedRange$Properties>|undefined}
+             */
             DescriptorProto.prototype.reservedRange = $util.emptyArray;
+
+            /**
+             * @type {Array.<string>|undefined}
+             */
             DescriptorProto.prototype.reservedName = $util.emptyArray;
 
             /**
@@ -8368,7 +8803,14 @@ $root.google = (function() {
                             this[keys[i]] = properties[keys[i]];
                 }
 
+                /**
+                 * @type {number|undefined}
+                 */
                 ExtensionRange.prototype.start = 0;
+
+                /**
+                 * @type {number|undefined}
+                 */
                 ExtensionRange.prototype.end = 0;
 
                 /**
@@ -8554,7 +8996,14 @@ $root.google = (function() {
                             this[keys[i]] = properties[keys[i]];
                 }
 
+                /**
+                 * @type {number|undefined}
+                 */
                 ReservedRange.prototype.start = 0;
+
+                /**
+                 * @type {number|undefined}
+                 */
                 ReservedRange.prototype.end = 0;
 
                 /**
@@ -8728,14 +9177,14 @@ $root.google = (function() {
              * @type Object
              * @property {string} [name] FieldDescriptorProto name.
              * @property {number} [number] FieldDescriptorProto number.
-             * @property {number} [label] FieldDescriptorProto label.
-             * @property {number} [type] FieldDescriptorProto type.
+             * @property {google.protobuf.FieldDescriptorProto.Label} [label] FieldDescriptorProto label.
+             * @property {google.protobuf.FieldDescriptorProto.Type} [type] FieldDescriptorProto type.
              * @property {string} [typeName] FieldDescriptorProto typeName.
              * @property {string} [extendee] FieldDescriptorProto extendee.
              * @property {string} [defaultValue] FieldDescriptorProto defaultValue.
              * @property {number} [oneofIndex] FieldDescriptorProto oneofIndex.
              * @property {string} [jsonName] FieldDescriptorProto jsonName.
-             * @property {google.protobuf.FieldOptions} [options] FieldDescriptorProto options.
+             * @property {google.protobuf.FieldOptions$Properties} [options] FieldDescriptorProto options.
              */
 
             /**
@@ -8751,15 +9200,54 @@ $root.google = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
+            /**
+             * @type {string|undefined}
+             */
             FieldDescriptorProto.prototype.name = "";
+
+            /**
+             * @type {number|undefined}
+             */
             FieldDescriptorProto.prototype.number = 0;
+
+            /**
+             * @type {google.protobuf.FieldDescriptorProto.Label|undefined}
+             */
             FieldDescriptorProto.prototype.label = 1;
+
+            /**
+             * @type {google.protobuf.FieldDescriptorProto.Type|undefined}
+             */
             FieldDescriptorProto.prototype.type = 1;
+
+            /**
+             * @type {string|undefined}
+             */
             FieldDescriptorProto.prototype.typeName = "";
+
+            /**
+             * @type {string|undefined}
+             */
             FieldDescriptorProto.prototype.extendee = "";
+
+            /**
+             * @type {string|undefined}
+             */
             FieldDescriptorProto.prototype.defaultValue = "";
+
+            /**
+             * @type {number|undefined}
+             */
             FieldDescriptorProto.prototype.oneofIndex = 0;
+
+            /**
+             * @type {string|undefined}
+             */
             FieldDescriptorProto.prototype.jsonName = "";
+
+            /**
+             * @type {google.protobuf.FieldOptions$Properties|undefined}
+             */
             FieldDescriptorProto.prototype.options = null;
 
             /**
@@ -9213,7 +9701,7 @@ $root.google = (function() {
              * @typedef google.protobuf.OneofDescriptorProto$Properties
              * @type Object
              * @property {string} [name] OneofDescriptorProto name.
-             * @property {google.protobuf.OneofOptions} [options] OneofDescriptorProto options.
+             * @property {google.protobuf.OneofOptions$Properties} [options] OneofDescriptorProto options.
              */
 
             /**
@@ -9229,7 +9717,14 @@ $root.google = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
+            /**
+             * @type {string|undefined}
+             */
             OneofDescriptorProto.prototype.name = "";
+
+            /**
+             * @type {google.protobuf.OneofOptions$Properties|undefined}
+             */
             OneofDescriptorProto.prototype.options = null;
 
             /**
@@ -9404,8 +9899,8 @@ $root.google = (function() {
              * @typedef google.protobuf.EnumDescriptorProto$Properties
              * @type Object
              * @property {string} [name] EnumDescriptorProto name.
-             * @property {Array.<google.protobuf.EnumValueDescriptorProto>} [value] EnumDescriptorProto value.
-             * @property {google.protobuf.EnumOptions} [options] EnumDescriptorProto options.
+             * @property {Array.<google.protobuf.EnumValueDescriptorProto$Properties>} [value] EnumDescriptorProto value.
+             * @property {google.protobuf.EnumOptions$Properties} [options] EnumDescriptorProto options.
              */
 
             /**
@@ -9422,8 +9917,19 @@ $root.google = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
+            /**
+             * @type {string|undefined}
+             */
             EnumDescriptorProto.prototype.name = "";
+
+            /**
+             * @type {Array.<google.protobuf.EnumValueDescriptorProto$Properties>|undefined}
+             */
             EnumDescriptorProto.prototype.value = $util.emptyArray;
+
+            /**
+             * @type {google.protobuf.EnumOptions$Properties|undefined}
+             */
             EnumDescriptorProto.prototype.options = null;
 
             /**
@@ -9633,7 +10139,7 @@ $root.google = (function() {
              * @type Object
              * @property {string} [name] EnumValueDescriptorProto name.
              * @property {number} [number] EnumValueDescriptorProto number.
-             * @property {google.protobuf.EnumValueOptions} [options] EnumValueDescriptorProto options.
+             * @property {google.protobuf.EnumValueOptions$Properties} [options] EnumValueDescriptorProto options.
              */
 
             /**
@@ -9649,8 +10155,19 @@ $root.google = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
+            /**
+             * @type {string|undefined}
+             */
             EnumValueDescriptorProto.prototype.name = "";
+
+            /**
+             * @type {number|undefined}
+             */
             EnumValueDescriptorProto.prototype.number = 0;
+
+            /**
+             * @type {google.protobuf.EnumValueOptions$Properties|undefined}
+             */
             EnumValueDescriptorProto.prototype.options = null;
 
             /**
@@ -9838,8 +10355,8 @@ $root.google = (function() {
              * @typedef google.protobuf.ServiceDescriptorProto$Properties
              * @type Object
              * @property {string} [name] ServiceDescriptorProto name.
-             * @property {Array.<google.protobuf.MethodDescriptorProto>} [method] ServiceDescriptorProto method.
-             * @property {google.protobuf.ServiceOptions} [options] ServiceDescriptorProto options.
+             * @property {Array.<google.protobuf.MethodDescriptorProto$Properties>} [method] ServiceDescriptorProto method.
+             * @property {google.protobuf.ServiceOptions$Properties} [options] ServiceDescriptorProto options.
              */
 
             /**
@@ -9856,8 +10373,19 @@ $root.google = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
+            /**
+             * @type {string|undefined}
+             */
             ServiceDescriptorProto.prototype.name = "";
+
+            /**
+             * @type {Array.<google.protobuf.MethodDescriptorProto$Properties>|undefined}
+             */
             ServiceDescriptorProto.prototype.method = $util.emptyArray;
+
+            /**
+             * @type {google.protobuf.ServiceOptions$Properties|undefined}
+             */
             ServiceDescriptorProto.prototype.options = null;
 
             /**
@@ -10068,7 +10596,7 @@ $root.google = (function() {
              * @property {string} [name] MethodDescriptorProto name.
              * @property {string} [inputType] MethodDescriptorProto inputType.
              * @property {string} [outputType] MethodDescriptorProto outputType.
-             * @property {google.protobuf.MethodOptions} [options] MethodDescriptorProto options.
+             * @property {google.protobuf.MethodOptions$Properties} [options] MethodDescriptorProto options.
              * @property {boolean} [clientStreaming] MethodDescriptorProto clientStreaming.
              * @property {boolean} [serverStreaming] MethodDescriptorProto serverStreaming.
              */
@@ -10086,11 +10614,34 @@ $root.google = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
+            /**
+             * @type {string|undefined}
+             */
             MethodDescriptorProto.prototype.name = "";
+
+            /**
+             * @type {string|undefined}
+             */
             MethodDescriptorProto.prototype.inputType = "";
+
+            /**
+             * @type {string|undefined}
+             */
             MethodDescriptorProto.prototype.outputType = "";
+
+            /**
+             * @type {google.protobuf.MethodOptions$Properties|undefined}
+             */
             MethodDescriptorProto.prototype.options = null;
+
+            /**
+             * @type {boolean|undefined}
+             */
             MethodDescriptorProto.prototype.clientStreaming = false;
+
+            /**
+             * @type {boolean|undefined}
+             */
             MethodDescriptorProto.prototype.serverStreaming = false;
 
             /**
@@ -10321,7 +10872,7 @@ $root.google = (function() {
              * @property {boolean} [javaMultipleFiles] FileOptions javaMultipleFiles.
              * @property {boolean} [javaGenerateEqualsAndHash] FileOptions javaGenerateEqualsAndHash.
              * @property {boolean} [javaStringCheckUtf8] FileOptions javaStringCheckUtf8.
-             * @property {number} [optimizeFor] FileOptions optimizeFor.
+             * @property {google.protobuf.FileOptions.OptimizeMode} [optimizeFor] FileOptions optimizeFor.
              * @property {string} [goPackage] FileOptions goPackage.
              * @property {boolean} [ccGenericServices] FileOptions ccGenericServices.
              * @property {boolean} [javaGenericServices] FileOptions javaGenericServices.
@@ -10330,7 +10881,7 @@ $root.google = (function() {
              * @property {boolean} [ccEnableArenas] FileOptions ccEnableArenas.
              * @property {string} [objcClassPrefix] FileOptions objcClassPrefix.
              * @property {string} [csharpNamespace] FileOptions csharpNamespace.
-             * @property {Array.<google.protobuf.UninterpretedOption>} [uninterpretedOption] FileOptions uninterpretedOption.
+             * @property {Array.<google.protobuf.UninterpretedOption$Properties>} [uninterpretedOption] FileOptions uninterpretedOption.
              */
 
             /**
@@ -10347,20 +10898,79 @@ $root.google = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
+            /**
+             * @type {string|undefined}
+             */
             FileOptions.prototype.javaPackage = "";
+
+            /**
+             * @type {string|undefined}
+             */
             FileOptions.prototype.javaOuterClassname = "";
+
+            /**
+             * @type {boolean|undefined}
+             */
             FileOptions.prototype.javaMultipleFiles = false;
+
+            /**
+             * @type {boolean|undefined}
+             */
             FileOptions.prototype.javaGenerateEqualsAndHash = false;
+
+            /**
+             * @type {boolean|undefined}
+             */
             FileOptions.prototype.javaStringCheckUtf8 = false;
+
+            /**
+             * @type {google.protobuf.FileOptions.OptimizeMode|undefined}
+             */
             FileOptions.prototype.optimizeFor = 1;
+
+            /**
+             * @type {string|undefined}
+             */
             FileOptions.prototype.goPackage = "";
+
+            /**
+             * @type {boolean|undefined}
+             */
             FileOptions.prototype.ccGenericServices = false;
+
+            /**
+             * @type {boolean|undefined}
+             */
             FileOptions.prototype.javaGenericServices = false;
+
+            /**
+             * @type {boolean|undefined}
+             */
             FileOptions.prototype.pyGenericServices = false;
+
+            /**
+             * @type {boolean|undefined}
+             */
             FileOptions.prototype.deprecated = false;
+
+            /**
+             * @type {boolean|undefined}
+             */
             FileOptions.prototype.ccEnableArenas = false;
+
+            /**
+             * @type {string|undefined}
+             */
             FileOptions.prototype.objcClassPrefix = "";
+
+            /**
+             * @type {string|undefined}
+             */
             FileOptions.prototype.csharpNamespace = "";
+
+            /**
+             * @type {Array.<google.protobuf.UninterpretedOption$Properties>|undefined}
+             */
             FileOptions.prototype.uninterpretedOption = $util.emptyArray;
 
             /**
@@ -10758,7 +11368,7 @@ $root.google = (function() {
              * @property {boolean} [noStandardDescriptorAccessor] MessageOptions noStandardDescriptorAccessor.
              * @property {boolean} [deprecated] MessageOptions deprecated.
              * @property {boolean} [mapEntry] MessageOptions mapEntry.
-             * @property {Array.<google.protobuf.UninterpretedOption>} [uninterpretedOption] MessageOptions uninterpretedOption.
+             * @property {Array.<google.protobuf.UninterpretedOption$Properties>} [uninterpretedOption] MessageOptions uninterpretedOption.
              */
 
             /**
@@ -10775,10 +11385,29 @@ $root.google = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
+            /**
+             * @type {boolean|undefined}
+             */
             MessageOptions.prototype.messageSetWireFormat = false;
+
+            /**
+             * @type {boolean|undefined}
+             */
             MessageOptions.prototype.noStandardDescriptorAccessor = false;
+
+            /**
+             * @type {boolean|undefined}
+             */
             MessageOptions.prototype.deprecated = false;
+
+            /**
+             * @type {boolean|undefined}
+             */
             MessageOptions.prototype.mapEntry = false;
+
+            /**
+             * @type {Array.<google.protobuf.UninterpretedOption$Properties>|undefined}
+             */
             MessageOptions.prototype.uninterpretedOption = $util.emptyArray;
 
             /**
@@ -11007,13 +11636,13 @@ $root.google = (function() {
              * Properties of a FieldOptions.
              * @typedef google.protobuf.FieldOptions$Properties
              * @type Object
-             * @property {number} [ctype] FieldOptions ctype.
+             * @property {google.protobuf.FieldOptions.CType} [ctype] FieldOptions ctype.
              * @property {boolean} [packed] FieldOptions packed.
-             * @property {number} [jstype] FieldOptions jstype.
+             * @property {google.protobuf.FieldOptions.JSType} [jstype] FieldOptions jstype.
              * @property {boolean} [lazy] FieldOptions lazy.
              * @property {boolean} [deprecated] FieldOptions deprecated.
              * @property {boolean} [weak] FieldOptions weak.
-             * @property {Array.<google.protobuf.UninterpretedOption>} [uninterpretedOption] FieldOptions uninterpretedOption.
+             * @property {Array.<google.protobuf.UninterpretedOption$Properties>} [uninterpretedOption] FieldOptions uninterpretedOption.
              */
 
             /**
@@ -11030,12 +11659,39 @@ $root.google = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
+            /**
+             * @type {google.protobuf.FieldOptions.CType|undefined}
+             */
             FieldOptions.prototype.ctype = 0;
+
+            /**
+             * @type {boolean|undefined}
+             */
             FieldOptions.prototype.packed = false;
+
+            /**
+             * @type {google.protobuf.FieldOptions.JSType|undefined}
+             */
             FieldOptions.prototype.jstype = 0;
+
+            /**
+             * @type {boolean|undefined}
+             */
             FieldOptions.prototype.lazy = false;
+
+            /**
+             * @type {boolean|undefined}
+             */
             FieldOptions.prototype.deprecated = false;
+
+            /**
+             * @type {boolean|undefined}
+             */
             FieldOptions.prototype.weak = false;
+
+            /**
+             * @type {Array.<google.protobuf.UninterpretedOption$Properties>|undefined}
+             */
             FieldOptions.prototype.uninterpretedOption = $util.emptyArray;
 
             /**
@@ -11360,7 +12016,7 @@ $root.google = (function() {
              * Properties of an OneofOptions.
              * @typedef google.protobuf.OneofOptions$Properties
              * @type Object
-             * @property {Array.<google.protobuf.UninterpretedOption>} [uninterpretedOption] OneofOptions uninterpretedOption.
+             * @property {Array.<google.protobuf.UninterpretedOption$Properties>} [uninterpretedOption] OneofOptions uninterpretedOption.
              */
 
             /**
@@ -11377,6 +12033,9 @@ $root.google = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
+            /**
+             * @type {Array.<google.protobuf.UninterpretedOption$Properties>|undefined}
+             */
             OneofOptions.prototype.uninterpretedOption = $util.emptyArray;
 
             /**
@@ -11553,7 +12212,7 @@ $root.google = (function() {
              * @type Object
              * @property {boolean} [allowAlias] EnumOptions allowAlias.
              * @property {boolean} [deprecated] EnumOptions deprecated.
-             * @property {Array.<google.protobuf.UninterpretedOption>} [uninterpretedOption] EnumOptions uninterpretedOption.
+             * @property {Array.<google.protobuf.UninterpretedOption$Properties>} [uninterpretedOption] EnumOptions uninterpretedOption.
              * @property {string} [".jspb.test.IsExtension.simpleOption"] EnumOptions .jspb.test.IsExtension.simpleOption.
              */
 
@@ -11571,9 +12230,24 @@ $root.google = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
+            /**
+             * @type {boolean|undefined}
+             */
             EnumOptions.prototype.allowAlias = false;
+
+            /**
+             * @type {boolean|undefined}
+             */
             EnumOptions.prototype.deprecated = false;
+
+            /**
+             * @type {Array.<google.protobuf.UninterpretedOption$Properties>|undefined}
+             */
             EnumOptions.prototype.uninterpretedOption = $util.emptyArray;
+
+            /**
+             * @type {string|undefined}
+             */
             EnumOptions.prototype[".jspb.test.IsExtension.simpleOption"] = "";
 
             /**
@@ -11790,7 +12464,7 @@ $root.google = (function() {
              * @typedef google.protobuf.EnumValueOptions$Properties
              * @type Object
              * @property {boolean} [deprecated] EnumValueOptions deprecated.
-             * @property {Array.<google.protobuf.UninterpretedOption>} [uninterpretedOption] EnumValueOptions uninterpretedOption.
+             * @property {Array.<google.protobuf.UninterpretedOption$Properties>} [uninterpretedOption] EnumValueOptions uninterpretedOption.
              */
 
             /**
@@ -11807,7 +12481,14 @@ $root.google = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
+            /**
+             * @type {boolean|undefined}
+             */
             EnumValueOptions.prototype.deprecated = false;
+
+            /**
+             * @type {Array.<google.protobuf.UninterpretedOption$Properties>|undefined}
+             */
             EnumValueOptions.prototype.uninterpretedOption = $util.emptyArray;
 
             /**
@@ -11997,7 +12678,7 @@ $root.google = (function() {
              * @typedef google.protobuf.ServiceOptions$Properties
              * @type Object
              * @property {boolean} [deprecated] ServiceOptions deprecated.
-             * @property {Array.<google.protobuf.UninterpretedOption>} [uninterpretedOption] ServiceOptions uninterpretedOption.
+             * @property {Array.<google.protobuf.UninterpretedOption$Properties>} [uninterpretedOption] ServiceOptions uninterpretedOption.
              */
 
             /**
@@ -12014,7 +12695,14 @@ $root.google = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
+            /**
+             * @type {boolean|undefined}
+             */
             ServiceOptions.prototype.deprecated = false;
+
+            /**
+             * @type {Array.<google.protobuf.UninterpretedOption$Properties>|undefined}
+             */
             ServiceOptions.prototype.uninterpretedOption = $util.emptyArray;
 
             /**
@@ -12204,8 +12892,8 @@ $root.google = (function() {
              * @typedef google.protobuf.MethodOptions$Properties
              * @type Object
              * @property {boolean} [deprecated] MethodOptions deprecated.
-             * @property {number} [idempotencyLevel] MethodOptions idempotencyLevel.
-             * @property {Array.<google.protobuf.UninterpretedOption>} [uninterpretedOption] MethodOptions uninterpretedOption.
+             * @property {google.protobuf.MethodOptions.IdempotencyLevel} [idempotencyLevel] MethodOptions idempotencyLevel.
+             * @property {Array.<google.protobuf.UninterpretedOption$Properties>} [uninterpretedOption] MethodOptions uninterpretedOption.
              */
 
             /**
@@ -12222,8 +12910,19 @@ $root.google = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
+            /**
+             * @type {boolean|undefined}
+             */
             MethodOptions.prototype.deprecated = false;
+
+            /**
+             * @type {google.protobuf.MethodOptions.IdempotencyLevel|undefined}
+             */
             MethodOptions.prototype.idempotencyLevel = 0;
+
+            /**
+             * @type {Array.<google.protobuf.UninterpretedOption$Properties>|undefined}
+             */
             MethodOptions.prototype.uninterpretedOption = $util.emptyArray;
 
             /**
@@ -12461,7 +13160,7 @@ $root.google = (function() {
              * Properties of an UninterpretedOption.
              * @typedef google.protobuf.UninterpretedOption$Properties
              * @type Object
-             * @property {Array.<google.protobuf.UninterpretedOption.NamePart>} [name] UninterpretedOption name.
+             * @property {Array.<google.protobuf.UninterpretedOption.NamePart$Properties>} [name] UninterpretedOption name.
              * @property {string} [identifierValue] UninterpretedOption identifierValue.
              * @property {number|Long} [positiveIntValue] UninterpretedOption positiveIntValue.
              * @property {number|Long} [negativeIntValue] UninterpretedOption negativeIntValue.
@@ -12484,12 +13183,39 @@ $root.google = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
+            /**
+             * @type {Array.<google.protobuf.UninterpretedOption.NamePart$Properties>|undefined}
+             */
             UninterpretedOption.prototype.name = $util.emptyArray;
+
+            /**
+             * @type {string|undefined}
+             */
             UninterpretedOption.prototype.identifierValue = "";
+
+            /**
+             * @type {number|Long|undefined}
+             */
             UninterpretedOption.prototype.positiveIntValue = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+            /**
+             * @type {number|Long|undefined}
+             */
             UninterpretedOption.prototype.negativeIntValue = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+
+            /**
+             * @type {number|undefined}
+             */
             UninterpretedOption.prototype.doubleValue = 0;
+
+            /**
+             * @type {Uint8Array|undefined}
+             */
             UninterpretedOption.prototype.stringValue = $util.newBuffer([]);
+
+            /**
+             * @type {string|undefined}
+             */
             UninterpretedOption.prototype.aggregateValue = "";
 
             /**
@@ -12789,7 +13515,14 @@ $root.google = (function() {
                             this[keys[i]] = properties[keys[i]];
                 }
 
+                /**
+                 * @type {string}
+                 */
                 NamePart.prototype.namePart = "";
+
+                /**
+                 * @type {boolean}
+                 */
                 NamePart.prototype.isExtension = false;
 
                 /**
@@ -12961,7 +13694,7 @@ $root.google = (function() {
              * Properties of a SourceCodeInfo.
              * @typedef google.protobuf.SourceCodeInfo$Properties
              * @type Object
-             * @property {Array.<google.protobuf.SourceCodeInfo.Location>} [location] SourceCodeInfo location.
+             * @property {Array.<google.protobuf.SourceCodeInfo.Location$Properties>} [location] SourceCodeInfo location.
              */
 
             /**
@@ -12978,6 +13711,9 @@ $root.google = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
+            /**
+             * @type {Array.<google.protobuf.SourceCodeInfo.Location$Properties>|undefined}
+             */
             SourceCodeInfo.prototype.location = $util.emptyArray;
 
             /**
@@ -13172,10 +13908,29 @@ $root.google = (function() {
                             this[keys[i]] = properties[keys[i]];
                 }
 
+                /**
+                 * @type {Array.<number>|undefined}
+                 */
                 Location.prototype.path = $util.emptyArray;
+
+                /**
+                 * @type {Array.<number>|undefined}
+                 */
                 Location.prototype.span = $util.emptyArray;
+
+                /**
+                 * @type {string|undefined}
+                 */
                 Location.prototype.leadingComments = "";
+
+                /**
+                 * @type {string|undefined}
+                 */
                 Location.prototype.trailingComments = "";
+
+                /**
+                 * @type {Array.<string>|undefined}
+                 */
                 Location.prototype.leadingDetachedComments = $util.emptyArray;
 
                 /**
@@ -13449,7 +14204,7 @@ $root.google = (function() {
              * Properties of a GeneratedCodeInfo.
              * @typedef google.protobuf.GeneratedCodeInfo$Properties
              * @type Object
-             * @property {Array.<google.protobuf.GeneratedCodeInfo.Annotation>} [annotation] GeneratedCodeInfo annotation.
+             * @property {Array.<google.protobuf.GeneratedCodeInfo.Annotation$Properties>} [annotation] GeneratedCodeInfo annotation.
              */
 
             /**
@@ -13466,6 +14221,9 @@ $root.google = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
+            /**
+             * @type {Array.<google.protobuf.GeneratedCodeInfo.Annotation$Properties>|undefined}
+             */
             GeneratedCodeInfo.prototype.annotation = $util.emptyArray;
 
             /**
@@ -13657,9 +14415,24 @@ $root.google = (function() {
                             this[keys[i]] = properties[keys[i]];
                 }
 
+                /**
+                 * @type {Array.<number>|undefined}
+                 */
                 Annotation.prototype.path = $util.emptyArray;
+
+                /**
+                 * @type {string|undefined}
+                 */
                 Annotation.prototype.sourceFile = "";
+
+                /**
+                 * @type {number|undefined}
+                 */
                 Annotation.prototype.begin = 0;
+
+                /**
+                 * @type {number|undefined}
+                 */
                 Annotation.prototype.end = 0;
 
                 /**

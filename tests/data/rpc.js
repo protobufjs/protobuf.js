@@ -89,6 +89,9 @@ $root.MyRequest = (function() {
                 this[keys[i]] = properties[keys[i]];
     }
 
+    /**
+     * @type {string|undefined}
+     */
     MyRequest.prototype.path = "";
 
     /**
@@ -259,6 +262,9 @@ $root.MyResponse = (function() {
                 this[keys[i]] = properties[keys[i]];
     }
 
+    /**
+     * @type {number|undefined}
+     */
     MyResponse.prototype.status = 0;
 
     /**

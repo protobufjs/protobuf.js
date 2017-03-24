@@ -251,6 +251,7 @@ function buildFunction(type, functionName, gen, scope) {
 }
 
 function toJsType(field) {
+    var type;
     switch (field.type) {
         case "double":
         case "float":
@@ -259,26 +260,36 @@ function toJsType(field) {
         case "sint32":
         case "fixed32":
         case "sfixed32":
-            return "number";
+            type = "number";
+            break;
         case "int64":
         case "uint64":
         case "sint64":
         case "fixed64":
         case "sfixed64":
-            return config["strict-long"] ? "Long" : "number|Long";
+            type = config["strict-long"] ? "Long" : "number|Long";
+            break;
         case "bool":
-            return "boolean";
+            type = "boolean";
+            break;
         case "string":
-            return "string";
+            type = "string";
+            break;
         case "bytes":
-            return "Uint8Array";
+            type = "Uint8Array";
+            break;
         default:
             if (field.resolvedType instanceof Enum)
-                return "number";
-            if (field.resolvedType instanceof Type)
-                return field.resolvedType.fullName.substring(1) + "$Properties";
-            return "*"; // should not happen
+                type = field.resolvedType.fullName.substring(1); // reference the enum
+            else if (field.resolvedType instanceof Type)
+                type = field.resolvedType.fullName.substring(1) + "$Properties"; // reference the interface
+            else
+                type = "*"; // should not happen
+            break;
     }
+    return field.repeated ? "Array.<" + type + ">"
+         : field.map ? "Object.<string," + type + ">"
+         : type;
 }
 
 function buildType(ref, type) {
@@ -291,14 +302,10 @@ function buildType(ref, type) {
             "@type Object"
         ];
         type.fieldsArray.forEach(function(field) {
-            var jsType = toJsType(field);
-            if (field.map)
-                jsType = "Object.<string," + jsType + ">";
-            else if (field.repeated)
-                jsType = "Array.<" + jsType + ">";
-            var name = util.safeProp(field.name);
-            name = name.substring(1, name.charAt(0) === "[" ? name.length - 1 : name.length);
-            typeDef.push("@property {" + jsType + "} " + (field.optional ? "[" + name + "]" : field.name) + " " + (field.comment || type.name + " " + field.name + "."));
+            var jsType = toJsType(field),
+                prop = util.safeProp(field.name);
+            prop = prop.substring(1, prop.charAt(0) === "[" ? prop.length - 1 : prop.length);
+            typeDef.push("@property {" + jsType + "} " + (field.optional ? "[" + prop + "]" : field.name) + " " + (field.comment || type.name + " " + field.name + "."));
         });
         push("");
         pushComment(typeDef);
@@ -320,14 +327,19 @@ function buildType(ref, type) {
     type.fieldsArray.forEach(function(field) {
         field.resolve();
         var prop = util.safeProp(field.name);
-        if (firstField) {
+        if (config.comments) {
+            push("");
+            pushComment([
+                "@type {" + toJsType(field) + (field.optional ? "|undefined" : "") + "}"
+            ]);
+        } else if (firstField) {
             push("");
             firstField = false;
         }
         if (field.repeated)
-            push(name(type.name) + ".prototype" + prop + " = $util.emptyArray;");
+            push(name(type.name) + ".prototype" + prop + " = $util.emptyArray;"); // overwritten in constructor
         else if (field.map)
-            push(name(type.name) + ".prototype" + prop + " = $util.emptyObject;");
+            push(name(type.name) + ".prototype" + prop + " = $util.emptyObject;"); // overwritten in constructor
         else if (field.long)
             push(name(type.name) + ".prototype" + prop + " = $util.Long ? $util.Long.fromBits("
                     + JSON.stringify(field.typeDefault.low) + ","

@@ -21,7 +21,7 @@ $root.Package = (function() {
      * @property {string} [description] Package description.
      * @property {string} [author] Package author.
      * @property {string} [license] Package license.
-     * @property {Package.Repository} [repository] Package repository.
+     * @property {Package.Repository$Properties} [repository] Package repository.
      * @property {string} [bugs] Package bugs.
      * @property {string} [homepage] Package homepage.
      * @property {Array.<string>} [keywords] Package keywords.
@@ -55,23 +55,94 @@ $root.Package = (function() {
                 this[keys[i]] = properties[keys[i]];
     }
 
+    /**
+     * @type {string|undefined}
+     */
     Package.prototype.name = "";
+
+    /**
+     * @type {string|undefined}
+     */
     Package.prototype.version = "";
+
+    /**
+     * @type {string|undefined}
+     */
     Package.prototype.versionScheme = "";
+
+    /**
+     * @type {string|undefined}
+     */
     Package.prototype.description = "";
+
+    /**
+     * @type {string|undefined}
+     */
     Package.prototype.author = "";
+
+    /**
+     * @type {string|undefined}
+     */
     Package.prototype.license = "";
+
+    /**
+     * @type {Package.Repository$Properties|undefined}
+     */
     Package.prototype.repository = null;
+
+    /**
+     * @type {string|undefined}
+     */
     Package.prototype.bugs = "";
+
+    /**
+     * @type {string|undefined}
+     */
     Package.prototype.homepage = "";
+
+    /**
+     * @type {Array.<string>|undefined}
+     */
     Package.prototype.keywords = $util.emptyArray;
+
+    /**
+     * @type {string|undefined}
+     */
     Package.prototype.main = "";
+
+    /**
+     * @type {Object.<string,string>|undefined}
+     */
     Package.prototype.bin = $util.emptyObject;
+
+    /**
+     * @type {Object.<string,string>|undefined}
+     */
     Package.prototype.scripts = $util.emptyObject;
+
+    /**
+     * @type {Object.<string,string>|undefined}
+     */
     Package.prototype.dependencies = $util.emptyObject;
+
+    /**
+     * @type {Object.<string,string>|undefined}
+     */
     Package.prototype.optionalDependencies = $util.emptyObject;
+
+    /**
+     * @type {Object.<string,string>|undefined}
+     */
     Package.prototype.devDependencies = $util.emptyObject;
+
+    /**
+     * @type {string|undefined}
+     */
     Package.prototype.types = "";
+
+    /**
+     * @type {Array.<string>|undefined}
+     */
     Package.prototype.cliDependencies = $util.emptyArray;
 
     /**
@@ -597,7 +668,14 @@ $root.Package = (function() {
                     this[keys[i]] = properties[keys[i]];
         }
 
+        /**
+         * @type {string|undefined}
+         */
         Repository.prototype.type = "";
+
+        /**
+         * @type {string|undefined}
+         */
         Repository.prototype.url = "";
 
         /**

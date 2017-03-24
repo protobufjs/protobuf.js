@@ -24,7 +24,7 @@ $root.vector_tile = (function() {
          * Properties of a Tile.
          * @typedef vector_tile.Tile$Properties
          * @type Object
-         * @property {Array.<vector_tile.Tile.Layer>} [layers] Tile layers.
+         * @property {Array.<vector_tile.Tile.Layer$Properties>} [layers] Tile layers.
          */
 
         /**
@@ -41,6 +41,9 @@ $root.vector_tile = (function() {
                     this[keys[i]] = properties[keys[i]];
         }
 
+        /**
+         * @type {Array.<vector_tile.Tile.Layer$Properties>|undefined}
+         */
         Tile.prototype.layers = $util.emptyArray;
 
         /**
@@ -253,12 +256,39 @@ $root.vector_tile = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
+            /**
+             * @type {string|undefined}
+             */
             Value.prototype.stringValue = "";
+
+            /**
+             * @type {number|undefined}
+             */
             Value.prototype.floatValue = 0;
+
+            /**
+             * @type {number|undefined}
+             */
             Value.prototype.doubleValue = 0;
+
+            /**
+             * @type {number|Long|undefined}
+             */
             Value.prototype.intValue = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+
+            /**
+             * @type {number|Long|undefined}
+             */
             Value.prototype.uintValue = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+            /**
+             * @type {number|Long|undefined}
+             */
             Value.prototype.sintValue = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+
+            /**
+             * @type {boolean|undefined}
+             */
             Value.prototype.boolValue = false;
 
             /**
@@ -555,9 +585,24 @@ $root.vector_tile = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
+            /**
+             * @type {number|Long|undefined}
+             */
             Feature.prototype.id = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+            /**
+             * @type {Array.<number>|undefined}
+             */
             Feature.prototype.tags = $util.emptyArray;
+
+            /**
+             * @type {vector_tile.Tile.GeomType|undefined}
+             */
             Feature.prototype.type = 0;
+
+            /**
+             * @type {Array.<number>|undefined}
+             */
             Feature.prototype.geometry = $util.emptyArray;
 
             /**
@@ -861,11 +906,34 @@ $root.vector_tile = (function() {
                         this[keys[i]] = properties[keys[i]];
             }
 
+            /**
+             * @type {number}
+             */
             Layer.prototype.version = 1;
+
+            /**
+             * @type {string}
+             */
             Layer.prototype.name = "";
+
+            /**
+             * @type {Array.<vector_tile.Tile.Feature$Properties>|undefined}
+             */
             Layer.prototype.features = $util.emptyArray;
+
+            /**
+             * @type {Array.<string>|undefined}
+             */
             Layer.prototype.keys = $util.emptyArray;
+
+            /**
+             * @type {Array.<vector_tile.Tile.Value$Properties>|undefined}
+             */
             Layer.prototype.values = $util.emptyArray;
+
+            /**
+             * @type {number|undefined}
+             */
             Layer.prototype.extent = 4096;
 
             /**

@@ -37,8 +37,19 @@ $root.Test1 = (function() {
                 this[keys[i]] = properties[keys[i]];
     }
 
+    /**
+     * @type {string|undefined}
+     */
     Test1.prototype.field1 = "";
+
+    /**
+     * @type {number|undefined}
+     */
     Test1.prototype.field2 = 0;
+
+    /**
+     * @type {boolean|undefined}
+     */
     Test1.prototype.field3 = false;
 
     /**
