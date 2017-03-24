@@ -275,7 +275,7 @@ $root.Package = (function() {
                     message.bin = {};
                 key = reader.string();
                 reader.pos++;
-                message.bin[k] = reader.string();
+                message.bin[key] = reader.string();
                 break;
             case 12:
                 reader.skip().pos++;
@@ -283,7 +283,7 @@ $root.Package = (function() {
                     message.scripts = {};
                 key = reader.string();
                 reader.pos++;
-                message.scripts[k] = reader.string();
+                message.scripts[key] = reader.string();
                 break;
             case 13:
                 reader.skip().pos++;
@@ -291,7 +291,7 @@ $root.Package = (function() {
                     message.dependencies = {};
                 key = reader.string();
                 reader.pos++;
-                message.dependencies[k] = reader.string();
+                message.dependencies[key] = reader.string();
                 break;
             case 14:
                 reader.skip().pos++;
@@ -299,7 +299,7 @@ $root.Package = (function() {
                     message.optionalDependencies = {};
                 key = reader.string();
                 reader.pos++;
-                message.optionalDependencies[k] = reader.string();
+                message.optionalDependencies[key] = reader.string();
                 break;
             case 15:
                 reader.skip().pos++;
@@ -307,7 +307,7 @@ $root.Package = (function() {
                     message.devDependencies = {};
                 key = reader.string();
                 reader.pos++;
-                message.devDependencies[k] = reader.string();
+                message.devDependencies[key] = reader.string();
                 break;
             case 17:
                 message.types = reader.string();

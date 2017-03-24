@@ -170,7 +170,7 @@ function beautifyCode(code) {
     estraverse.replace(ast, {
         enter: function(node, parent) {
             // rename short vars
-            if (node.type === "Identifier" && parent.property !== node && shortVars[node.name])
+            if (node.type === "Identifier" && (parent.property !== node || parent.computed) && shortVars[node.name])
                 return {
                     "type": "Identifier",
                     "name": shortVars[node.name]

@@ -6385,7 +6385,7 @@ $root.jspb = (function() {
                             message.mapStringString = {};
                         key = reader.string();
                         reader.pos++;
-                        message.mapStringString[k] = reader.string();
+                        message.mapStringString[key] = reader.string();
                         break;
                     case 2:
                         reader.skip().pos++;
@@ -6393,7 +6393,7 @@ $root.jspb = (function() {
                             message.mapStringInt32 = {};
                         key = reader.string();
                         reader.pos++;
-                        message.mapStringInt32[k] = reader.int32();
+                        message.mapStringInt32[key] = reader.int32();
                         break;
                     case 3:
                         reader.skip().pos++;
@@ -6409,7 +6409,7 @@ $root.jspb = (function() {
                             message.mapStringBool = {};
                         key = reader.string();
                         reader.pos++;
-                        message.mapStringBool[k] = reader.bool();
+                        message.mapStringBool[key] = reader.bool();
                         break;
                     case 5:
                         reader.skip().pos++;
@@ -6417,7 +6417,7 @@ $root.jspb = (function() {
                             message.mapStringDouble = {};
                         key = reader.string();
                         reader.pos++;
-                        message.mapStringDouble[k] = reader.double();
+                        message.mapStringDouble[key] = reader.double();
                         break;
                     case 6:
                         reader.skip().pos++;
@@ -6425,7 +6425,7 @@ $root.jspb = (function() {
                             message.mapStringEnum = {};
                         key = reader.string();
                         reader.pos++;
-                        message.mapStringEnum[k] = reader.uint32();
+                        message.mapStringEnum[key] = reader.uint32();
                         break;
                     case 7:
                         reader.skip().pos++;
@@ -6433,7 +6433,7 @@ $root.jspb = (function() {
                             message.mapStringMsg = {};
                         key = reader.string();
                         reader.pos++;
-                        message.mapStringMsg[k] = $root.jspb.test.MapValueMessageNoBinary.decode(reader, reader.uint32());
+                        message.mapStringMsg[key] = $root.jspb.test.MapValueMessageNoBinary.decode(reader, reader.uint32());
                         break;
                     case 8:
                         reader.skip().pos++;
@@ -6441,7 +6441,7 @@ $root.jspb = (function() {
                             message.mapInt32String = {};
                         key = reader.int32();
                         reader.pos++;
-                        message.mapInt32String[k] = reader.string();
+                        message.mapInt32String[key] = reader.string();
                         break;
                     case 9:
                         reader.skip().pos++;
@@ -6449,7 +6449,7 @@ $root.jspb = (function() {
                             message.mapInt64String = {};
                         key = reader.int64();
                         reader.pos++;
-                        message.mapInt64String[k] = reader.string();
+                        message.mapInt64String[key] = reader.string();
                         break;
                     case 10:
                         reader.skip().pos++;
@@ -6457,7 +6457,7 @@ $root.jspb = (function() {
                             message.mapBoolString = {};
                         key = reader.bool();
                         reader.pos++;
-                        message.mapBoolString[k] = reader.string();
+                        message.mapBoolString[key] = reader.string();
                         break;
                     case 11:
                         message.testMapFields = $root.jspb.test.TestMapFieldsNoBinary.decode(reader, reader.uint32());
@@ -6468,7 +6468,7 @@ $root.jspb = (function() {
                             message.mapStringTestmapfields = {};
                         key = reader.string();
                         reader.pos++;
-                        message.mapStringTestmapfields[k] = $root.jspb.test.TestMapFieldsNoBinary.decode(reader, reader.uint32());
+                        message.mapStringTestmapfields[key] = $root.jspb.test.TestMapFieldsNoBinary.decode(reader, reader.uint32());
                         break;
                     default:
                         reader.skipType(tag & 7);
