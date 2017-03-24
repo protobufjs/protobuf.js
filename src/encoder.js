@@ -59,7 +59,7 @@ function encoder(mtype) {
 
             // Repeated fields
         } else if (field.repeated) { gen
-    ("if(%s&&%s.length&&m.hasOwnProperty(%j)){", ref, ref, field.name);
+    ("if(%s&&%s.length){", ref, ref);
 
             // Packed repeated
             if (field.packed && types.packed[type] !== undefined) { gen

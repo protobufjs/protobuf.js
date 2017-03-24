@@ -179,7 +179,7 @@ $root.Package = (function() {
             writer.uint32(/* id 7, wireType 2 =*/58).string(message.bugs);
         if (message.homepage != null && message.hasOwnProperty("homepage"))
             writer.uint32(/* id 8, wireType 2 =*/66).string(message.homepage);
-        if (message.keywords && message.keywords.length && message.hasOwnProperty("keywords"))
+        if (message.keywords && message.keywords.length)
             for (var i = 0; i < message.keywords.length; ++i)
                 writer.uint32(/* id 9, wireType 2 =*/74).string(message.keywords[i]);
         if (message.main != null && message.hasOwnProperty("main"))
@@ -201,7 +201,7 @@ $root.Package = (function() {
                 writer.uint32(/* id 15, wireType 2 =*/122).fork().uint32(/* id 1, wireType 2 =*/10).string(keys[i]).uint32(/* id 2, wireType 2 =*/18).string(message.devDependencies[keys[i]]).ldelim();
         if (message.types != null && message.hasOwnProperty("types"))
             writer.uint32(/* id 17, wireType 2 =*/138).string(message.types);
-        if (message.cliDependencies && message.cliDependencies.length && message.hasOwnProperty("cliDependencies"))
+        if (message.cliDependencies && message.cliDependencies.length)
             for (var i = 0; i < message.cliDependencies.length; ++i)
                 writer.uint32(/* id 18, wireType 2 =*/146).string(message.cliDependencies[i]);
         if (message.versionScheme != null && message.hasOwnProperty("versionScheme"))
@@ -230,7 +230,7 @@ $root.Package = (function() {
     Package.decode = function decode(reader, length) {
         if (!(reader instanceof $Reader))
             reader = $Reader.create(reader);
-        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Package();
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Package(), key;
         while (reader.pos < end) {
             var tag = reader.uint32();
             switch (tag >>> 3) {
@@ -273,41 +273,41 @@ $root.Package = (function() {
                 reader.skip().pos++;
                 if (message.bin === $util.emptyObject)
                     message.bin = {};
-                var key = reader.string();
+                key = reader.string();
                 reader.pos++;
-                message.bin[typeof key === "object" ? $util.longToHash(key) : key] = reader.string();
+                message.bin[k] = reader.string();
                 break;
             case 12:
                 reader.skip().pos++;
                 if (message.scripts === $util.emptyObject)
                     message.scripts = {};
-                var key = reader.string();
+                key = reader.string();
                 reader.pos++;
-                message.scripts[typeof key === "object" ? $util.longToHash(key) : key] = reader.string();
+                message.scripts[k] = reader.string();
                 break;
             case 13:
                 reader.skip().pos++;
                 if (message.dependencies === $util.emptyObject)
                     message.dependencies = {};
-                var key = reader.string();
+                key = reader.string();
                 reader.pos++;
-                message.dependencies[typeof key === "object" ? $util.longToHash(key) : key] = reader.string();
+                message.dependencies[k] = reader.string();
                 break;
             case 14:
                 reader.skip().pos++;
                 if (message.optionalDependencies === $util.emptyObject)
                     message.optionalDependencies = {};
-                var key = reader.string();
+                key = reader.string();
                 reader.pos++;
-                message.optionalDependencies[typeof key === "object" ? $util.longToHash(key) : key] = reader.string();
+                message.optionalDependencies[k] = reader.string();
                 break;
             case 15:
                 reader.skip().pos++;
                 if (message.devDependencies === $util.emptyObject)
                     message.devDependencies = {};
-                var key = reader.string();
+                key = reader.string();
                 reader.pos++;
-                message.devDependencies[typeof key === "object" ? $util.longToHash(key) : key] = reader.string();
+                message.devDependencies[k] = reader.string();
                 break;
             case 17:
                 message.types = reader.string();

@@ -64,7 +64,7 @@ $root.vector_tile = (function() {
         Tile.encode = function encode(message, writer) {
             if (!writer)
                 writer = $Writer.create();
-            if (message.layers && message.layers.length && message.hasOwnProperty("layers"))
+            if (message.layers && message.layers.length)
                 for (var i = 0; i < message.layers.length; ++i)
                     $root.vector_tile.Tile.Layer.encode(message.layers[i], writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
             return writer;
@@ -625,7 +625,7 @@ $root.vector_tile = (function() {
                     writer = $Writer.create();
                 if (message.id != null && message.hasOwnProperty("id"))
                     writer.uint32(/* id 1, wireType 0 =*/8).uint64(message.id);
-                if (message.tags && message.tags.length && message.hasOwnProperty("tags")) {
+                if (message.tags && message.tags.length) {
                     writer.uint32(/* id 2, wireType 2 =*/18).fork();
                     for (var i = 0; i < message.tags.length; ++i)
                         writer.uint32(message.tags[i]);
@@ -633,7 +633,7 @@ $root.vector_tile = (function() {
                 }
                 if (message.type != null && message.hasOwnProperty("type"))
                     writer.uint32(/* id 3, wireType 0 =*/24).uint32(message.type);
-                if (message.geometry && message.geometry.length && message.hasOwnProperty("geometry")) {
+                if (message.geometry && message.geometry.length) {
                     writer.uint32(/* id 4, wireType 2 =*/34).fork();
                     for (var i = 0; i < message.geometry.length; ++i)
                         writer.uint32(message.geometry[i]);
@@ -955,13 +955,13 @@ $root.vector_tile = (function() {
                 if (!writer)
                     writer = $Writer.create();
                 writer.uint32(/* id 1, wireType 2 =*/10).string(message.name);
-                if (message.features && message.features.length && message.hasOwnProperty("features"))
+                if (message.features && message.features.length)
                     for (var i = 0; i < message.features.length; ++i)
                         $root.vector_tile.Tile.Feature.encode(message.features[i], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
-                if (message.keys && message.keys.length && message.hasOwnProperty("keys"))
+                if (message.keys && message.keys.length)
                     for (var i = 0; i < message.keys.length; ++i)
                         writer.uint32(/* id 3, wireType 2 =*/26).string(message.keys[i]);
-                if (message.values && message.values.length && message.hasOwnProperty("values"))
+                if (message.values && message.values.length)
                     for (var i = 0; i < message.values.length; ++i)
                         $root.vector_tile.Tile.Value.encode(message.values[i], writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
                 if (message.extent != null && message.hasOwnProperty("extent"))

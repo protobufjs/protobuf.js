@@ -118,10 +118,8 @@ exports.main = function(args, callback) {
                 out = out.join("").replace(/\s*JSDoc \d+\.\d+\.\d+ [^$]+/, "");
                 process.stderr.write(out);
                 var err = Error("code " + code);
-                if (callback) {
-                    callback(err);
-                    return;
-                }
+                if (callback)
+                    return callback(err);
                 throw err;
             }
 

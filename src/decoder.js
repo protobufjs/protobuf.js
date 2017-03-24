@@ -19,7 +19,7 @@ function decoder(mtype) {
     var gen = util.codegen("r", "l")
     ("if(!(r instanceof Reader))")
         ("r=Reader.create(r)")
-    ("var c=l===undefined?r.len:r.pos+l,m=new this.ctor")
+    ("var c=l===undefined?r.len:r.pos+l,m=new this.ctor" + (mtype.fieldsArray.filter(function(field) { return field.map; }).length ? ",k" : ""))
     ("while(r.pos<c){")
         ("var t=r.uint32()");
     if (mtype.group) gen
@@ -37,16 +37,22 @@ function decoder(mtype) {
 
         // Map fields
         if (field.map) { gen
-
                 ("r.skip().pos++") // assumes id 1 + key wireType
                 ("if(%s===util.emptyObject)", ref)
                     ("%s={}", ref)
-                ("var k=r.%s()", field.keyType)
+                ("k=r.%s()", field.keyType)
                 ("r.pos++"); // assumes id 2 + value wireType
-            if (types.basic[type] === undefined) gen
+            if (field.long) {
+                if (types.basic[type] === undefined) gen
                 ("%s[typeof k===\"object\"?util.longToHash(k):k]=types[%d].decode(r,r.uint32())", ref, i); // can't be groups
-            else gen
+                else gen
                 ("%s[typeof k===\"object\"?util.longToHash(k):k]=r.%s()", ref, type);
+            } else {
+                if (types.basic[type] === undefined) gen
+                ("%s[k]=types[%d].decode(r,r.uint32())", ref, i); // can't be groups
+                else gen
+                ("%s[k]=r.%s()", ref, type);
+            }
 
         // Repeated fields
         } else if (field.repeated) { gen
@@ -77,7 +83,6 @@ function decoder(mtype) {
                 ("%s=r.%s()", ref, type);
         gen
                 ("break");
-
     // Unknown fields
     } gen
             ("default:")

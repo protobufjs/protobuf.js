@@ -109,12 +109,12 @@ $root.Message = (function() {
             writer = $Writer.create();
         if (message.stringVal != null && message.hasOwnProperty("stringVal"))
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.stringVal);
-        if (message.stringRepeated && message.stringRepeated.length && message.hasOwnProperty("stringRepeated"))
+        if (message.stringRepeated && message.stringRepeated.length)
             for (var i = 0; i < message.stringRepeated.length; ++i)
                 writer.uint32(/* id 2, wireType 2 =*/18).string(message.stringRepeated[i]);
         if (message.uint64Val != null && message.hasOwnProperty("uint64Val"))
             writer.uint32(/* id 3, wireType 0 =*/24).uint64(message.uint64Val);
-        if (message.uint64Repeated && message.uint64Repeated.length && message.hasOwnProperty("uint64Repeated")) {
+        if (message.uint64Repeated && message.uint64Repeated.length) {
             writer.uint32(/* id 4, wireType 2 =*/34).fork();
             for (var i = 0; i < message.uint64Repeated.length; ++i)
                 writer.uint64(message.uint64Repeated[i]);
@@ -122,12 +122,12 @@ $root.Message = (function() {
         }
         if (message.bytesVal && message.hasOwnProperty("bytesVal"))
             writer.uint32(/* id 5, wireType 2 =*/42).bytes(message.bytesVal);
-        if (message.bytesRepeated && message.bytesRepeated.length && message.hasOwnProperty("bytesRepeated"))
+        if (message.bytesRepeated && message.bytesRepeated.length)
             for (var i = 0; i < message.bytesRepeated.length; ++i)
                 writer.uint32(/* id 6, wireType 2 =*/50).bytes(message.bytesRepeated[i]);
         if (message.enumVal != null && message.hasOwnProperty("enumVal"))
             writer.uint32(/* id 7, wireType 0 =*/56).uint32(message.enumVal);
-        if (message.enumRepeated && message.enumRepeated.length && message.hasOwnProperty("enumRepeated")) {
+        if (message.enumRepeated && message.enumRepeated.length) {
             writer.uint32(/* id 8, wireType 2 =*/66).fork();
             for (var i = 0; i < message.enumRepeated.length; ++i)
                 writer.uint32(message.enumRepeated[i]);
@@ -160,7 +160,7 @@ $root.Message = (function() {
     Message.decode = function decode(reader, length) {
         if (!(reader instanceof $Reader))
             reader = $Reader.create(reader);
-        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Message();
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Message(), key;
         while (reader.pos < end) {
             var tag = reader.uint32();
             switch (tag >>> 3) {
@@ -210,7 +210,7 @@ $root.Message = (function() {
                 reader.skip().pos++;
                 if (message.int64Map === $util.emptyObject)
                     message.int64Map = {};
-                var key = reader.string();
+                key = reader.string();
                 reader.pos++;
                 message.int64Map[typeof key === "object" ? $util.longToHash(key) : key] = reader.int64();
                 break;
