@@ -311,6 +311,7 @@ function buildType(ref, type) {
         pushComment(typeDef);
     }
 
+    // constructor
     push("");
     pushComment([
         "Constructs a new " + type.name + ".",
@@ -414,9 +415,7 @@ function buildType(ref, type) {
             push("return this.encode(message, writer).ldelim();");
             --indent;
             push("};");
-
         }
-
     }
 
     if (config.decode) {
@@ -449,7 +448,6 @@ function buildType(ref, type) {
                 push("return this.decode(reader, reader.uint32());");
             --indent;
             push("};");
-
         }
     }
 

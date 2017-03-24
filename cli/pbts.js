@@ -2,7 +2,7 @@
 var child_process = require("child_process"),
     path     = require("path"),
     fs       = require("fs"),
-    pkg      = require(path.join(__dirname, "..", "package.json")),
+    pkg      = require(path.join(__dirname, "./package.json")),
     util     = require("./util");
 
 util.setup();
@@ -15,7 +15,7 @@ var minimist = require("minimist"),
 /**
  * Runs pbts programmatically.
  * @param {string[]} args Command line arguments
- * @param {function(?Error)} [callback] Optional completion callback
+ * @param {function(?Error, string=)} [callback] Optional completion callback
  * @returns {number|undefined} Exit code, if known
  */
 exports.main = function(args, callback) {
