@@ -278,11 +278,11 @@ exports.main = function main(args, callback) {
             if (output !== "") {
                 if (argv.out)
                     fs.writeFileSync(argv.out, output, { encoding: "utf8" });
-                else
+                else if (!callback)
                     process.stdout.write(output, "utf8");
             }
             return callback
-                ? callback(null)
+                ? argv.out ? callback(null) : callback(null, output)
                 : undefined;
         });
     }
