@@ -275,15 +275,19 @@ exports.main = function main(args, callback) {
                     return callback(err);
                 throw err;
             }
-            if (output !== "") {
+            try {
                 if (argv.out)
                     fs.writeFileSync(argv.out, output, { encoding: "utf8" });
                 else if (!callback)
                     process.stdout.write(output, "utf8");
+                return callback
+                    ? callback(null, output)
+                    : undefined;
+            } catch (err) {
+                if (callback)
+                    return callback(err);
+                throw err;
             }
-            return callback
-                ? callback(null, output)
-                : undefined;
         });
     }
 

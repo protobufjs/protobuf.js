@@ -140,16 +140,15 @@ exports.main = function(args, callback) {
 
             try {
                 if (argv.out)
-                    fs.writeFileSync(argv.out, output);
-                else
+                    fs.writeFileSync(argv.out, output, { encoding: "utf8" });
+                else if (!callback)
                     process.stdout.write(output, "utf8");
-                if (callback)
-                    callback(null); // eslint-disable-line callback-return
+                return callback
+                    ? callback(null, output)
+                    : undefined;
             } catch (err) {
-                if (callback) {
-                    callback(err);
-                    return;
-                }
+                if (callback)
+                    return callback(err);
                 throw err;
             }
         });
