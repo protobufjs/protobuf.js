@@ -2,7 +2,7 @@
 var child_process = require("child_process"),
     path     = require("path"),
     fs       = require("fs"),
-    pkg      = require(path.join(__dirname, "./package.json")),
+    pkg      = require("./package.json"),
     util     = require("./util");
 
 util.setup();

@@ -1,12 +1,12 @@
 "use strict";
 var path     = require("path"),
     fs       = require("fs"),
-    pkg      = require(path.join(__dirname, "package.json")),
+    pkg      = require("./package.json"),
     util     = require("./util");
 
 util.setup();
 
-var protobuf = require(".."),
+var protobuf = require(util.pathToProtobufJs),
     minimist = require("minimist"),
     chalk    = require("chalk"),
     glob     = require("glob");
@@ -66,7 +66,7 @@ exports.main = function main(args, callback) {
             process.stderr.write([
                 "protobuf.js v" + pkg.version + " CLI for JavaScript",
                 "",
-                chalk.bold.white("Consolidates imports and converts between file formats."),
+                chalk.bold.white("Translates between file formats and generates static code."),
                 "",
                 "  -t, --target    Specifies the target format. Also accepts a path to require a custom target.",
                 "",
