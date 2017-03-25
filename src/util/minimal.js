@@ -339,6 +339,7 @@ util.oneOfSetter = function setOneOf(fieldNames) {
     };
 };
 
+/* istanbul ignore next */
 /**
  * Lazily resolves fully qualified type names against the specified root.
  * @param {Root} root Root instanceof

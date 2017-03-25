@@ -590,19 +590,14 @@ function parse(source, root, options) {
 
         var service = new Service(token);
         ifBlock(service, function parseService_block(token) {
-            switch (token) {
-                case "option":
-                    parseOption(service, token);
-                    skip(";");
-                    break;
-                case "rpc":
-                    parseMethod(service, token);
-                    break;
+            if (parseCommon(service, token))
+                return;
 
-                /* istanbul ignore next */
-                default:
-                    throw illegal(token);
-            }
+            /* istanbul ignore else */
+            if (token === "rpc")
+                parseMethod(service, token);
+            else
+                throw illegal(token);
         });
         parent.add(service);
     }

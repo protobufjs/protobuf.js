@@ -42,7 +42,7 @@ function decoder(mtype) {
                     ("%s={}", ref)
                 ("k=r.%s()", field.keyType)
                 ("r.pos++"); // assumes id 2 + value wireType
-            if (field.long) {
+            if (types.long[field.keyType] !== undefined) {
                 if (types.basic[type] === undefined) gen
                 ("%s[typeof k===\"object\"?util.longToHash(k):k]=types[%d].decode(r,r.uint32())", ref, i); // can't be groups
                 else gen

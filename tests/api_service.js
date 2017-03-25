@@ -4,7 +4,12 @@ var protobuf = require("..");
 
 var def = {
     methods: {},
-    nested: undefined,
+    nested: {
+        SomeEnum: {
+            options: undefined,
+            values: {}
+        }
+    },
     options: undefined
 };
 

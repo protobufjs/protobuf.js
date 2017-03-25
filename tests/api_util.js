@@ -29,5 +29,46 @@ tape.test("util", function(test) {
         test.end();
     });
 
+    test.test(test.name + " - isset", function(test) {
+        // note that encoders don't check for default values either
+        var neverPresent = [
+            [],
+            {},
+            undefined,
+            null
+        ];
+        neverPresent.forEach(function(value) {
+            var proto = {};
+            var instance = Object.create(proto);
+            proto.p = value;
+            instance.i = value;
+            test.notOk(util.isset(proto, "p"), "should return that " + JSON.stringify(value) + " on the prototype is not present");
+            test.notOk(util.isset(instance, "i"), "should return that " + JSON.stringify(value) + " on the instance is not present");
+        });
+        var cases = {
+            "arrays": [ [], [0] ],
+            "objects": [ {}, {a:1} ],
+            "strings": [ undefined, "" ],
+            "numbers": [ undefined, 0 ],
+            "booleans": [ undefined, false ]
+        };
+        Object.keys(cases).forEach(function(name) {
+            var empty = cases[name][0],
+                value = cases[name][1];
+            var proto = {};
+            var instance = Object.create(proto);
+            proto.pe = instance.ie = empty;
+            proto.p = instance.i = value;
+            if (empty !== undefined) { // not present anyway
+                test.notOk(util.isset(instance, "pe"), "should return that empty " + name + " on the prototype are not present");
+                test.notOk(util.isset(instance, "ie"), "should return that empty " + name + " on the instance are not present");
+            }
+            test.notOk(util.isset(instance, "p"), "should return that " + name + " on the prototype are not present");
+            test.ok(util.isset(instance, "i"), "should return that " + name + " on the instance ARE present");
+        });
+
+         test.end();
+    });
+
     test.end();
 });
