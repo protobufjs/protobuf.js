@@ -70,6 +70,19 @@ util.isObject = function isObject(value) {
     return value && typeof value === "object";
 };
 
+/**
+ * Checks if a property on a message is considered present.
+ * @param {Object} obj Plain object or message instance
+ * @param {string} prop Property name
+ * @returns {boolean} `true` if considered present, otherwise `false`
+ */
+util.isset = function isset(message, prop) {
+    var value = obj[prop];
+    if (value != null && obj.hasOwnProperty(prop))
+        return typeof value !== 'object' || (Array.isArray(value) ? value.length : Object.keys(value).length) > 0;
+    return false;
+};
+
 /*
  * Any compatible Buffer instance.
  * This is a minimal stand-alone definition of a Buffer instance. The actual type is that exported by node's typings.
