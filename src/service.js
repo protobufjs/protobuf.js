@@ -36,9 +36,18 @@ function Service(name, options) {
 }
 
 /**
- * Constructs a service from JSON.
+ * Service descriptor.
+ * @typedef ServiceDescriptor
+ * @type {Object}
+ * @property {Object.<string,*>} [options] Service options
+ * @property {Object.<string,MethodDescriptor>} methods Method descriptors
+ * @property {Object.<string,AnyNestedDescriptor>} [nested] Nested object descriptors
+ */
+
+/**
+ * Constructs a service from a service descriptor.
  * @param {string} name Service name
- * @param {Object.<string,*>} json JSON object
+ * @param {ServiceDescriptor} json Service descriptor
  * @returns {Service} Created service
  * @throws {TypeError} If arguments are invalid
  */
@@ -48,7 +57,22 @@ Service.fromJSON = function fromJSON(name, json) {
     if (json.methods)
         for (var names = Object.keys(json.methods), i = 0; i < names.length; ++i)
             service.add(Method.fromJSON(names[i], json.methods[names[i]]));
+    if (json.nested)
+        service.addJSON(json.nested);
     return service;
+};
+
+/**
+ * Converts this service to a service descriptor.
+ * @returns {ServiceDescriptor} Service descriptor
+ */
+Service.prototype.toJSON = function toJSON() {
+    var inherited = Namespace.prototype.toJSON.call(this);
+    return {
+        options : inherited && inherited.options || undefined,
+        methods : Namespace.arrayToJSON(this.methodsArray) || /* istanbul ignore next */ {},
+        nested  : inherited && inherited.nested || undefined
+    };
 };
 
 /**
@@ -67,18 +91,6 @@ function clearCache(service) {
     service._methodsArray = null;
     return service;
 }
-
-/**
- * @override
- */
-Service.prototype.toJSON = function toJSON() {
-    var inherited = Namespace.prototype.toJSON.call(this);
-    return {
-        options : inherited && inherited.options || undefined,
-        methods : Namespace.arrayToJSON(this.methodsArray) || /* istanbul ignore next */ {},
-        nested  : inherited && inherited.nested || undefined
-    };
-};
 
 /**
  * @override

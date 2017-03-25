@@ -45,7 +45,7 @@
         "no-div-regex": 1,
         "no-else-return": 1,
         "no-empty-function": 1,
-        "no-eq-null": 1,
+        "no-eq-null": 0,                    // used to test if not null and not undefined
         "no-eval": 1,
         "no-extend-native": 1,
         "no-extra-bind": 1,

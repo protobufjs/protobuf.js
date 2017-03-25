@@ -184,9 +184,30 @@ Field.prototype.setOption = function setOption(name, value, ifNotSet) {
 };
 
 /**
- * Constructs a field from JSON.
+ * Field descriptor.
+ * @typedef FieldDescriptor
+ * @type {Object}
+ * @property {string} [rule="optional"] Field rule
+ * @property {string} type Field type
+ * @property {number} id Field id
+ * @property {Object.<string,*>} [options] Field options
+ */
+
+/**
+ * Extension field descriptor.
+ * @typedef ExtensionFieldDescriptor
+ * @type {Object}
+ * @property {string} [rule="optional"] Field rule
+ * @property {string} type Field type
+ * @property {number} id Field id
+ * @property {string} extend Extended type
+ * @property {Object.<string,*>} [options] Field options
+ */
+
+/**
+ * Constructs a field from a field descriptor.
  * @param {string} name Field name
- * @param {Object.<string,*>} json JSON object
+ * @param {FieldDescriptor} json Field descriptor
  * @returns {Field} Created field
  * @throws {TypeError} If arguments are invalid
  */
@@ -195,7 +216,8 @@ Field.fromJSON = function fromJSON(name, json) {
 };
 
 /**
- * @override
+ * Converts this field to a field descriptor.
+ * @returns {FieldDescriptor} Field descriptor
  */
 Field.prototype.toJSON = function toJSON() {
     return {

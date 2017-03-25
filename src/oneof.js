@@ -42,10 +42,18 @@ function OneOf(name, fieldNames, options) {
 }
 
 /**
- * Constructs a oneof from JSON.
+ * Oneof descriptor.
+ * @typedef OneOfDescriptor
+ * @type {Object}
+ * @property {Array.<string>} oneof Oneof field names
+ * @property {Object.<string,*>} [options] Oneof options
+ */
+
+/**
+ * Constructs a oneof from a oneof descriptor.
  * @param {string} name Oneof name
- * @param {Object.<string,*>} json JSON object
- * @returns {MapField} Created oneof
+ * @param {OneOfDescriptor} json Oneof descriptor
+ * @returns {OneOf} Created oneof
  * @throws {TypeError} If arguments are invalid
  */
 OneOf.fromJSON = function fromJSON(name, json) {
@@ -53,7 +61,8 @@ OneOf.fromJSON = function fromJSON(name, json) {
 };
 
 /**
- * @override
+ * Converts this oneof to a oneof descriptor.
+ * @returns {OneOfDescriptor} Oneof descriptor
  */
 OneOf.prototype.toJSON = function toJSON() {
     return {

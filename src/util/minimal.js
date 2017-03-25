@@ -71,15 +71,15 @@ util.isObject = function isObject(value) {
 };
 
 /**
- * Checks if a property on a message is considered present.
+ * Checks if a property on a message is considered to be present.
  * @param {Object} obj Plain object or message instance
  * @param {string} prop Property name
- * @returns {boolean} `true` if considered present, otherwise `false`
+ * @returns {boolean} `true` if considered to be present, otherwise `false`
  */
-util.isset = function isset(message, prop) {
+util.isset = function isset(obj, prop) {
     var value = obj[prop];
-    if (value != null && obj.hasOwnProperty(prop))
-        return typeof value !== 'object' || (Array.isArray(value) ? value.length : Object.keys(value).length) > 0;
+    if (value != null && obj.hasOwnProperty(prop)) // eslint-disable-line eqeqeq, no-prototype-builtins
+        return typeof value !== "object" || (Array.isArray(value) ? value.length : Object.keys(value).length) > 0;
     return false;
 };
 

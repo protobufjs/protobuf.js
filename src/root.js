@@ -37,8 +37,8 @@ function Root(options) {
 }
 
 /**
- * Loads a JSON definition into a root namespace.
- * @param {Object.<string,*>} json JSON definition
+ * Loads a namespace descriptor into a root namespace.
+ * @param {NamespaceDescriptor} json Nameespace descriptor
  * @param {Root} [root] Root namespace, defaults to create a new one if omitted
  * @returns {Root} Root namespace
  */

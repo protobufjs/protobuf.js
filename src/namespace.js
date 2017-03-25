@@ -98,7 +98,22 @@ Object.defineProperty(Namespace.prototype, "nestedArray", {
 });
 
 /**
- * @override
+ * Any nested object descriptor.
+ * @typedef AnyNestedDescriptor
+ * @type {EnumDescriptor|TypeDescriptor|ServiceDescriptor|ExtensionFieldDescriptor|ExtensionMapFieldDescriptor}
+ */
+
+/**
+ * Namespace descriptor.
+ * @typedef NamespaceDescriptor
+ * @type {Object}
+ * @property {Object.<string,*>} [options] Namespace options
+ * @property {Object.<string,AnyNestedDescriptor>} [nested] Nested object descriptors
+ */
+
+/**
+ * Converts this namespace to a namespace descriptor.
+ * @returns {NamespaceDescriptor} Namespace descriptor
  */
 Namespace.prototype.toJSON = function toJSON() {
     return {
@@ -108,8 +123,8 @@ Namespace.prototype.toJSON = function toJSON() {
 };
 
 /**
- * Adds nested elements to this namespace from JSON.
- * @param {Object.<string,*>} nestedJson Nested JSON
+ * Adds nested objects to this namespace from nested object descriptors.
+ * @param {Object.<string,AnyNestedDescriptor>} nestedJson Any nested object descriptors
  * @returns {Namespace} `this`
  */
 Namespace.prototype.addJSON = function addJSON(nestedJson) {

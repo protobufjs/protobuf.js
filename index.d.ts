@@ -211,13 +211,19 @@ export class Enum extends ReflectionObject {
     public comments: { [k: string]: string };
 
     /**
-     * Creates an enum from JSON.
+     * Constructs an enum from an enum descriptor.
      * @param {string} name Enum name
-     * @param {Object.<string,*>} json JSON object
+     * @param {EnumDescriptor} json Enum descriptor
      * @returns {Enum} Created enum
      * @throws {TypeError} If arguments are invalid
      */
-    public static fromJSON(name: string, json: { [k: string]: any }): Enum;
+    public static fromJSON(name: string, json: EnumDescriptor): Enum;
+
+    /**
+     * Converts this enum to an enum descriptor.
+     * @returns {EnumDescriptor} Enum descriptor
+     */
+    public toJSON(): EnumDescriptor;
 
     /**
      * Adds a value to this enum.
@@ -239,6 +245,18 @@ export class Enum extends ReflectionObject {
      */
     public remove(name: string): Enum;
 }
+
+/**
+ * Enum descriptor.
+ * @typedef EnumDescriptor
+ * @type {Object}
+ * @property {Object.<string,number>} values Enum values
+ * @property {Object.<string,*>} [options] Enum options
+ */
+type EnumDescriptor = {
+    values: { [k: string]: number };
+    options?: { [k: string]: any };
+};
 
 /**
  * Constructs a new message field instance. Note that {@link MapField|map fields} have their own class.
@@ -379,13 +397,19 @@ export class Field extends ReflectionObject {
     public readonly packed: boolean;
 
     /**
-     * Constructs a field from JSON.
+     * Constructs a field from a field descriptor.
      * @param {string} name Field name
-     * @param {Object.<string,*>} json JSON object
+     * @param {FieldDescriptor} json Field descriptor
      * @returns {Field} Created field
      * @throws {TypeError} If arguments are invalid
      */
-    public static fromJSON(name: string, json: { [k: string]: any }): Field;
+    public static fromJSON(name: string, json: FieldDescriptor): Field;
+
+    /**
+     * Converts this field to a field descriptor.
+     * @returns {FieldDescriptor} Field descriptor
+     */
+    public toJSON(): FieldDescriptor;
 
     /**
      * Resolves this field's type references.
@@ -394,6 +418,40 @@ export class Field extends ReflectionObject {
      */
     public resolve(): Field;
 }
+
+/**
+ * Field descriptor.
+ * @typedef FieldDescriptor
+ * @type {Object}
+ * @property {string} [rule="optional"] Field rule
+ * @property {string} type Field type
+ * @property {number} id Field id
+ * @property {Object.<string,*>} [options] Field options
+ */
+type FieldDescriptor = {
+    rule?: string;
+    type: string;
+    id: number;
+    options?: { [k: string]: any };
+};
+
+/**
+ * Extension field descriptor.
+ * @typedef ExtensionFieldDescriptor
+ * @type {Object}
+ * @property {string} [rule="optional"] Field rule
+ * @property {string} type Field type
+ * @property {number} id Field id
+ * @property {string} extend Extended type
+ * @property {Object.<string,*>} [options] Field options
+ */
+type ExtensionFieldDescriptor = {
+    rule?: string;
+    type: string;
+    id: number;
+    extend: string;
+    options?: { [k: string]: any };
+};
 
 /**
  * Debugging utility functions. Only present in debug builds.
@@ -545,14 +603,54 @@ export class MapField extends Field {
     public resolvedKeyType: ReflectionObject;
 
     /**
-     * Constructs a map field from JSON.
+     * Constructs a map field from a map field descriptor.
      * @param {string} name Field name
-     * @param {Object.<string,*>} json JSON object
+     * @param {MapFieldDescriptor} json Map field descriptor
      * @returns {MapField} Created map field
      * @throws {TypeError} If arguments are invalid
      */
-    public static fromJSON(name: string, json: { [k: string]: any }): MapField;
+    public static fromJSON(name: string, json: MapFieldDescriptor): MapField;
+
+    /**
+     * Converts this map field to a map field descriptor.
+     * @returns {MapFieldDescriptor} Map field descriptor
+     */
+    public toJSON(): MapFieldDescriptor;
 }
+
+/**
+ * Map field descriptor.
+ * @typedef MapFieldDescriptor
+ * @type {Object}
+ * @property {string} keyType Key type
+ * @property {string} type Value type
+ * @property {number} id Field id
+ * @property {Object.<string,*>} [options] Field options
+ */
+type MapFieldDescriptor = {
+    keyType: string;
+    type: string;
+    id: number;
+    options?: { [k: string]: any };
+};
+
+/**
+ * Extension map field descriptor.
+ * @typedef ExtensionMapFieldDescriptor
+ * @type {Object}
+ * @property {string} keyType Key type
+ * @property {string} type Value type
+ * @property {number} id Field id
+ * @property {string} extend Extended type
+ * @property {Object.<string,*>} [options] Field options
+ */
+type ExtensionMapFieldDescriptor = {
+    keyType: string;
+    type: string;
+    id: number;
+    extend: string;
+    options?: { [k: string]: any };
+};
 
 /**
  * Constructs a new message instance.
@@ -740,14 +838,39 @@ export class Method extends ReflectionObject {
     public resolvedResponseType: Type;
 
     /**
-     * Constructs a service method from JSON.
+     * Constructs a method from a method descriptor.
      * @param {string} name Method name
-     * @param {Object.<string,*>} json JSON object
+     * @param {MethodDescriptor} json Method descriptor
      * @returns {Method} Created method
      * @throws {TypeError} If arguments are invalid
      */
-    public static fromJSON(name: string, json: { [k: string]: any }): Method;
+    public static fromJSON(name: string, json: MethodDescriptor): Method;
+
+    /**
+     * Converts this method to a method descriptor.
+     * @returns {MethodDescriptor}
+     */
+    public toJSON(): MethodDescriptor;
 }
+
+/**
+ * @typedef MethodDescriptor
+ * @type {Object}
+ * @property {string} [type="rpc"] Method type
+ * @property {string} requestType Request type
+ * @property {string} responseType Response type
+ * @property {boolean} [requestStream=false] Whether requests are streamed
+ * @property {boolean} [responseStream=false] Whether responses are streamed
+ * @property {Object.<string,*>} [options] Method options
+ */
+type MethodDescriptor = {
+    type?: string;
+    requestType: string;
+    responseType: string;
+    requestStream?: boolean;
+    responseStream?: boolean;
+    options?: { [k: string]: any };
+};
 
 /**
  * Constructs a new namespace instance.
@@ -819,11 +942,17 @@ export abstract class NamespaceBase extends ReflectionObject {
     public readonly nestedArray: ReflectionObject[];
 
     /**
-     * Adds nested elements to this namespace from JSON.
-     * @param {Object.<string,*>} nestedJson Nested JSON
+     * Converts this namespace to a namespace descriptor.
+     * @returns {NamespaceDescriptor} Namespace descriptor
+     */
+    public toJSON(): NamespaceDescriptor;
+
+    /**
+     * Adds nested objects to this namespace from nested object descriptors.
+     * @param {Object.<string,AnyNestedDescriptor>} nestedJson Any nested object descriptors
      * @returns {Namespace} `this`
      */
-    public addJSON(nestedJson: { [k: string]: any }): Namespace;
+    public addJSON(nestedJson: { [k: string]: AnyNestedDescriptor }): Namespace;
 
     /**
      * Gets the nested object of the specified name.
@@ -922,6 +1051,25 @@ export abstract class NamespaceBase extends ReflectionObject {
 }
 
 /**
+ * Any nested object descriptor.
+ * @typedef AnyNestedDescriptor
+ * @type {EnumDescriptor|TypeDescriptor|ServiceDescriptor|ExtensionFieldDescriptor|ExtensionMapFieldDescriptor}
+ */
+type AnyNestedDescriptor = (EnumDescriptor|TypeDescriptor|ServiceDescriptor|ExtensionFieldDescriptor|ExtensionMapFieldDescriptor);
+
+/**
+ * Namespace descriptor.
+ * @typedef NamespaceDescriptor
+ * @type {Object}
+ * @property {Object.<string,*>} [options] Namespace options
+ * @property {Object.<string,AnyNestedDescriptor>} [nested] Nested object descriptors
+ */
+type NamespaceDescriptor = {
+    options?: { [k: string]: any };
+    nested?: { [k: string]: AnyNestedDescriptor };
+};
+
+/**
  * Constructs a new reflection object instance.
  * @classdesc Base class of all reflection objects.
  * @constructor
@@ -984,8 +1132,8 @@ export abstract class ReflectionObject {
     public readonly fullName: string;
 
     /**
-     * Converts this reflection object to its JSON representation.
-     * @returns {Object.<string,*>} JSON object
+     * Converts this reflection object to its descriptor representation.
+     * @returns {Object.<string,*>} Descriptor
      * @abstract
      */
     public toJSON(): { [k: string]: any };
@@ -1077,13 +1225,19 @@ export class OneOf extends ReflectionObject {
     public readonly fieldsArray: Field[];
 
     /**
-     * Constructs a oneof from JSON.
+     * Constructs a oneof from a oneof descriptor.
      * @param {string} name Oneof name
-     * @param {Object.<string,*>} json JSON object
-     * @returns {MapField} Created oneof
+     * @param {OneOfDescriptor} json Oneof descriptor
+     * @returns {OneOf} Created oneof
      * @throws {TypeError} If arguments are invalid
      */
-    public static fromJSON(name: string, json: { [k: string]: any }): MapField;
+    public static fromJSON(name: string, json: OneOfDescriptor): OneOf;
+
+    /**
+     * Converts this oneof to a oneof descriptor.
+     * @returns {OneOfDescriptor} Oneof descriptor
+     */
+    public toJSON(): OneOfDescriptor;
 
     /**
      * Adds a field to this oneof and removes it from its current parent, if any.
@@ -1099,6 +1253,18 @@ export class OneOf extends ReflectionObject {
      */
     public remove(field: Field): OneOf;
 }
+
+/**
+ * Oneof descriptor.
+ * @typedef OneOfDescriptor
+ * @type {Object}
+ * @property {Array.<string>} oneof Oneof field names
+ * @property {Object.<string,*>} [options] Oneof options
+ */
+type OneOfDescriptor = {
+    oneof: string[];
+    options?: { [k: string]: any };
+};
 
 /**
  * Result object returned from {@link parse}.
@@ -1371,12 +1537,12 @@ export class Root extends NamespaceBase {
     public files: string[];
 
     /**
-     * Loads a JSON definition into a root namespace.
-     * @param {Object.<string,*>} json JSON definition
+     * Loads a namespace descriptor into a root namespace.
+     * @param {NamespaceDescriptor} json Nameespace descriptor
      * @param {Root} [root] Root namespace, defaults to create a new one if omitted
      * @returns {Root} Root namespace
      */
-    public static fromJSON(json: { [k: string]: any }, root?: Root): Root;
+    public static fromJSON(json: NamespaceDescriptor, root?: Root): Root;
 
     /**
      * Resolves the path of an imported file, relative to the importing origin.
@@ -1582,13 +1748,19 @@ export class Service extends NamespaceBase {
     public methods: { [k: string]: Method };
 
     /**
-     * Constructs a service from JSON.
+     * Constructs a service from a service descriptor.
      * @param {string} name Service name
-     * @param {Object.<string,*>} json JSON object
+     * @param {ServiceDescriptor} json Service descriptor
      * @returns {Service} Created service
      * @throws {TypeError} If arguments are invalid
      */
-    public static fromJSON(name: string, json: { [k: string]: any }): Service;
+    public static fromJSON(name: string, json: ServiceDescriptor): Service;
+
+    /**
+     * Converts this service to a service descriptor.
+     * @returns {ServiceDescriptor} Service descriptor
+     */
+    public toJSON(): ServiceDescriptor;
 
     /**
      * Methods of this service as an array for iteration.
@@ -1607,6 +1779,20 @@ export class Service extends NamespaceBase {
      */
     public create(rpcImpl: RPCImpl, requestDelimited?: boolean, responseDelimited?: boolean): rpc.Service;
 }
+
+/**
+ * Service descriptor.
+ * @typedef ServiceDescriptor
+ * @type {Object}
+ * @property {Object.<string,*>} [options] Service options
+ * @property {Object.<string,MethodDescriptor>} methods Method descriptors
+ * @property {Object.<string,AnyNestedDescriptor>} [nested] Nested object descriptors
+ */
+type ServiceDescriptor = {
+    options?: { [k: string]: any };
+    methods: { [k: string]: MethodDescriptor };
+    nested?: { [k: string]: AnyNestedDescriptor };
+};
 
 /**
  * Handle object returned from {@link tokenize}.
@@ -1647,14 +1833,6 @@ export class Type extends NamespaceBase {
      * @param {Object.<string,*>} [options] Declared options
      */
     constructor(name: string, options?: { [k: string]: any });
-
-    /**
-     * Creates a type from JSON.
-     * @param {string} name Message name
-     * @param {Object.<string,*>} json JSON object
-     * @returns {Type} Created message type
-     */
-    public static fromJSON(name: string, json: { [k: string]: any }): Type;
 
     /**
      * Message fields.
@@ -1711,6 +1889,20 @@ export class Type extends NamespaceBase {
      * @type {Class}
      */
     public ctor: Class;
+
+    /**
+     * Creates a message type from a message type descriptor.
+     * @param {string} name Message name
+     * @param {TypeDescriptor} json Message type descriptor
+     * @returns {Type} Created message type
+     */
+    public static fromJSON(name: string, json: TypeDescriptor): Type;
+
+    /**
+     * Converts this message type to a message type descriptor.
+     * @returns {TypeDescriptor} Message type descriptor
+     */
+    public toJSON(): TypeDescriptor;
 
     /**
      * Adds a nested object to this type.
@@ -1823,6 +2015,28 @@ export class Type extends NamespaceBase {
      */
     public toObject(message: Message, options?: ConversionOptions): { [k: string]: any };
 }
+
+/**
+ * Message type descriptor.
+ * @typedef TypeDescriptor
+ * @type {Object}
+ * @property {Object.<string,*>} [options] Message type options
+ * @property {Object.<string,OneOfDescriptor>} [oneofs] Oneof descriptors
+ * @property {Object.<string,FieldDescriptor>} fields Field descriptors
+ * @property {number[][]} [extensions] Extension ranges
+ * @property {number[][]} [reserved] Reserved ranges
+ * @property {boolean} [group=false] Whether a legacy group or not
+ * @property {Object.<string,AnyNestedDescriptor>} [nested] Nested object descriptors
+ */
+type TypeDescriptor = {
+    options?: { [k: string]: any };
+    oneofs?: { [k: string]: OneOfDescriptor };
+    fields: { [k: string]: FieldDescriptor };
+    extensions?: number[][];
+    reserved?: number[][];
+    group?: boolean;
+    nested?: { [k: string]: AnyNestedDescriptor };
+};
 
 /**
  * Conversion options as used by {@link Type#toObject} and {@link Message.toObject}.

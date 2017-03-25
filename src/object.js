@@ -97,8 +97,8 @@ Object.defineProperties(ReflectionObject.prototype, {
 });
 
 /**
- * Converts this reflection object to its JSON representation.
- * @returns {Object.<string,*>} JSON object
+ * Converts this reflection object to its descriptor representation.
+ * @returns {Object.<string,*>} Descriptor
  * @abstract
  */
 ReflectionObject.prototype.toJSON = /* istanbul ignore next */ function toJSON() {

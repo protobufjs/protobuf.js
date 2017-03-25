@@ -229,7 +229,7 @@ protobuf.load("awesome.proto", function(err, root) {
     var message = AwesomeMessage.decode(buffer);
     // ... do something with message
 
-    // If your application uses length-delimited buffers, there is also encodeDelimited and decodeDelimited.
+    // If the application uses length-delimited buffers, there is also encodeDelimited and decodeDelimited.
 
     // Maybe convert the message back to a plain object
     var object = AwesomeMessage.toObject(message, {
@@ -252,7 +252,7 @@ protobuf.load("awesome.proto")
 
 ### Using JSON descriptors
 
-The library utilizes a JSON format that is equivalent to a .proto definition. For example, the following is identical to the .proto definition seen above:
+The library utilizes JSON descriptors that are equivalent to a .proto definition. For example, the following is identical to the .proto definition seen above:
 
 ```json
 // awesome.json
@@ -270,24 +270,26 @@ The library utilizes a JSON format that is equivalent to a .proto definition. Fo
 }
 ```
 
-The JSON format closely resembles the internal reflection structure:
+JSON descriptors closely resemble the internal reflection structure:
 
 | Type (T)           | Extends            | Type-specific properties
 |--------------------|--------------------|-------------------------
 | *ReflectionObject* |                    | options
 | *Namespace*        | *ReflectionObject* | nested
+| Root               | *Namespace*        | **nested**
 | Type               | *Namespace*        | **fields**
 | Enum               | *ReflectionObject* | **values**
 | Field              | *ReflectionObject* | rule, **type**, **id**
 | MapField           | Field              | **keyType**
+| OneOf              | *ReflectionObject* | **oneof** (array of field names)
 | Service            | *Namespace*        | **methods**
-| Method             | *ReflectionObject* | *type*, **requestType**, **responseType**, requestStream, responseStream
+| Method             | *ReflectionObject* | type, **requestType**, **responseType**, requestStream, responseStream
 
-* **Bold** properties are required. *Italic* types are abstract.
+* **Bold properties** are required. *Italic types* are abstract.
 * `T.fromJSON(name, json)` creates the respective reflection object from a JSON descriptor
-* `T#toJSON()` creates a JSON descriptor from the respective reflection object (`name` is used as the key within the parent)
+* `T#toJSON()` creates a JSON descriptor from the respective reflection object (its name is used as the key within the parent)
 
-Exclusively using JSON instead of .proto files enables the use of just the light library (the parser isn't required in this case).
+Exclusively using JSON descriptors instead of .proto files enables the use of just the light library (the parser isn't required in this case).
 
 A JSON descriptor can either be loaded the usual way:
 
@@ -299,7 +301,7 @@ protobuf.load("awesome.json", function(err, root) {
 });
 ```
 
-Or you can load it inline:
+Or it can be loaded inline:
 
 ```js
 var jsonDescriptor = require("./awesome.json"); // exemplary for node
@@ -311,7 +313,7 @@ var root = protobuf.Root.fromJSON(jsonDescriptor);
 
 ### Using reflection only
 
-Both the full and the light library include full reflection support. You could, for example, define the .proto definitions seen in the examples above using just reflection:
+Both the full and the light library include full reflection support. One could, for example, define the .proto definitions seen in the examples above using just reflection:
 
 ```js
 ...
@@ -331,21 +333,21 @@ Detailed information on the reflection structure is available within the [docume
 
 ### Using custom classes
 
-You can also extend runtime message classes with your own custom functionality and even register your own constructor with a reflected message type:
+Runtime message classes can also be extended with custom functionality and it is also possible to register a custom constructor with a reflected message type:
 
 ```js
 ...
 
-// Define your own constructor
+// Define a custom constructor
 function AwesomeMessage(properties) {
     // custom initialization code
     ...
 }
 
-// Register your constructor with its reflected type (*)
+// Register the custom constructor with its reflected type (*)
 root.lookupType("awesomepackage.AwesomeMessage").ctor = AwesomeMessage;
 
-// Define your custom functionality
+// Define custom functionality
 AwesomeMessage.customStaticMethod = function() { ... };
 AwesomeMessage.prototype.customInstanceMethod = function() { ... };
 
@@ -362,7 +364,7 @@ AwesomeMessage.prototype.customInstanceMethod = function() { ... };
 
 Afterwards, decoded messages of this type are `instanceof AwesomeMessage`.
 
-Alternatively, you can also just reuse and extend the internal constructor if custom initialization code is not required:
+Alternatively, it is also possible to reuse and extend the internal constructor if custom initialization code is not required:
 
 ```js
 ...
@@ -370,7 +372,7 @@ Alternatively, you can also just reuse and extend the internal constructor if cu
 // Reuse the internal constructor
 var AwesomeMessage = root.lookupType("awesomepackage.AwesomeMessage").ctor;
 
-// Define your custom functionality
+// Define custom functionality
 AwesomeMessage.customStaticMethod = function() { ... };
 AwesomeMessage.prototype.customInstanceMethod = function() { ... };
 
@@ -494,7 +496,7 @@ Documentation
 
 Command line
 ------------
-Command line usage has moved to the (soon to be decoupled) [CLI package]((./cli/README.md))
+Command line usage has moved to the (soon to be decoupled) [CLI package](./cli/README.md)
 
 Performance
 -----------
@@ -576,7 +578,7 @@ Compatibility
 * If typed arrays are not supported by the environment, plain arrays will be used instead.
 * Support for pre-ES5 environments (except IE8) can be achieved by [using a polyfill](https://github.com/dcodeIO/protobuf.js/blob/master/scripts/polyfill.js).
 * Support for [Content Security Policy](https://w3c.github.io/webappsec-csp/)-restricted environments (like Chrome extensions without [unsafe-eval](https://developer.chrome.com/extensions/contentSecurityPolicy#relaxing-eval)) can be achieved by generating and using static code instead.
-* If you need a proper way to work with 64 bit values (uint64, int64 etc.), you can install [long.js](https://github.com/dcodeIO/long.js) alongside this library. All 64 bit numbers will then be returned as a `Long` instance instead of a possibly unsafe JavaScript number ([see](https://github.com/dcodeIO/long.js)).
+* If a proper way to work with 64 bit values (uint64, int64 etc.) is required, just install [long.js](https://github.com/dcodeIO/long.js) alongside this library. All 64 bit numbers will then be returned as a `Long` instance instead of a possibly unsafe JavaScript number ([see](https://github.com/dcodeIO/long.js)).
 
 Building
 --------
@@ -609,9 +611,9 @@ $> npm run types
 
 ### Browserify integration
 
-By default, protobuf.js integrates into your browserify build-process without requiring any optional modules. Hence:
+By default, protobuf.js integrates into any browserify build-process without requiring any optional modules. Hence:
 
-* If you need int64 support, explicitly require the `long` module somewhere in your project as it will be excluded otherwise. This assumes that a global `require` function is present that protobuf.js can call to obtain the long module.
+* If int64 support is required, explicitly require the `long` module somewhere in your project as it will be excluded otherwise. This assumes that a global `require` function is present that protobuf.js can call to obtain the long module.
 
   If there is no global `require` function present after bundling, it's also possible to assign the long module programmatically:
 

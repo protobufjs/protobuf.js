@@ -89,9 +89,20 @@ function Method(name, type, requestType, responseType, requestStream, responseSt
 }
 
 /**
- * Constructs a service method from JSON.
+ * @typedef MethodDescriptor
+ * @type {Object}
+ * @property {string} [type="rpc"] Method type
+ * @property {string} requestType Request type
+ * @property {string} responseType Response type
+ * @property {boolean} [requestStream=false] Whether requests are streamed
+ * @property {boolean} [responseStream=false] Whether responses are streamed
+ * @property {Object.<string,*>} [options] Method options
+ */
+
+/**
+ * Constructs a method from a method descriptor.
  * @param {string} name Method name
- * @param {Object.<string,*>} json JSON object
+ * @param {MethodDescriptor} json Method descriptor
  * @returns {Method} Created method
  * @throws {TypeError} If arguments are invalid
  */
@@ -100,7 +111,8 @@ Method.fromJSON = function fromJSON(name, json) {
 };
 
 /**
- * @override
+ * Converts this method to a method descriptor.
+ * @returns {MethodDescriptor} Method descriptor
  */
 Method.prototype.toJSON = function toJSON() {
     return {
