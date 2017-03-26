@@ -848,7 +848,7 @@ export class Method extends ReflectionObject {
 
     /**
      * Converts this method to a method descriptor.
-     * @returns {MethodDescriptor}
+     * @returns {MethodDescriptor} Method descriptor
      */
     public toJSON(): MethodDescriptor;
 }
@@ -2383,6 +2383,14 @@ export namespace util {
      * @returns {boolean} `true` if the value is a non-null object
      */
     function isObject(value: any): boolean;
+
+    /**
+     * Checks if a property on a message is considered to be present.
+     * @param {Object} obj Plain object or message instance
+     * @param {string} prop Property name
+     * @returns {boolean} `true` if considered to be present, otherwise `false`
+     */
+    function isset(obj: Object, prop: string): boolean;
 
     /**
      * Node's Buffer class if available.

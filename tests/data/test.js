@@ -32,13 +32,12 @@ $root.jspb = (function() {
             /**
              * Properties of an Empty.
              * @typedef jspb.test.Empty$Properties
-             * @type Object
+             * @type {Object}
              */
 
             /**
              * Constructs a new Empty.
              * @exports jspb.test.Empty
-             * @implements jspb.test.Empty$Properties
              * @constructor
              * @param {jspb.test.Empty$Properties=} [properties] Properties to set
              */
@@ -196,14 +195,13 @@ $root.jspb = (function() {
             /**
              * Properties of an EnumContainer.
              * @typedef jspb.test.EnumContainer$Properties
-             * @type Object
+             * @type {Object}
              * @property {jspb.test.OuterEnum} [outerEnum] EnumContainer outerEnum.
              */
 
             /**
              * Constructs a new EnumContainer.
              * @exports jspb.test.EnumContainer
-             * @implements jspb.test.EnumContainer$Properties
              * @constructor
              * @param {jspb.test.EnumContainer$Properties=} [properties] Properties to set
              */
@@ -214,6 +212,7 @@ $root.jspb = (function() {
             }
 
             /**
+             * EnumContainer outerEnum.
              * @type {jspb.test.OuterEnum|undefined}
              */
             EnumContainer.prototype.outerEnum = 1;
@@ -382,7 +381,7 @@ $root.jspb = (function() {
             /**
              * Properties of a Simple1.
              * @typedef jspb.test.Simple1$Properties
-             * @type Object
+             * @type {Object}
              * @property {string} aString Simple1 aString.
              * @property {Array.<string>} [aRepeatedString] Simple1 aRepeatedString.
              * @property {boolean} [aBoolean] Simple1 aBoolean.
@@ -391,7 +390,6 @@ $root.jspb = (function() {
             /**
              * Constructs a new Simple1.
              * @exports jspb.test.Simple1
-             * @implements jspb.test.Simple1$Properties
              * @constructor
              * @param {jspb.test.Simple1$Properties=} [properties] Properties to set
              */
@@ -403,16 +401,19 @@ $root.jspb = (function() {
             }
 
             /**
+             * Simple1 aString.
              * @type {string}
              */
             Simple1.prototype.aString = "";
 
             /**
+             * Simple1 aRepeatedString.
              * @type {Array.<string>|undefined}
              */
             Simple1.prototype.aRepeatedString = $util.emptyArray;
 
             /**
+             * Simple1 aBoolean.
              * @type {boolean|undefined}
              */
             Simple1.prototype.aBoolean = false;
@@ -611,7 +612,7 @@ $root.jspb = (function() {
             /**
              * Properties of a Simple2.
              * @typedef jspb.test.Simple2$Properties
-             * @type Object
+             * @type {Object}
              * @property {string} aString Simple2 aString.
              * @property {Array.<string>} [aRepeatedString] Simple2 aRepeatedString.
              */
@@ -619,7 +620,6 @@ $root.jspb = (function() {
             /**
              * Constructs a new Simple2.
              * @exports jspb.test.Simple2
-             * @implements jspb.test.Simple2$Properties
              * @constructor
              * @param {jspb.test.Simple2$Properties=} [properties] Properties to set
              */
@@ -631,11 +631,13 @@ $root.jspb = (function() {
             }
 
             /**
+             * Simple2 aString.
              * @type {string}
              */
             Simple2.prototype.aString = "";
 
             /**
+             * Simple2 aRepeatedString.
              * @type {Array.<string>|undefined}
              */
             Simple2.prototype.aRepeatedString = $util.emptyArray;
@@ -820,7 +822,7 @@ $root.jspb = (function() {
             /**
              * Properties of a SpecialCases.
              * @typedef jspb.test.SpecialCases$Properties
-             * @type Object
+             * @type {Object}
              * @property {string} normal SpecialCases normal.
              * @property {string} default SpecialCases default.
              * @property {string} function SpecialCases function.
@@ -830,7 +832,6 @@ $root.jspb = (function() {
             /**
              * Constructs a new SpecialCases.
              * @exports jspb.test.SpecialCases
-             * @implements jspb.test.SpecialCases$Properties
              * @constructor
              * @param {jspb.test.SpecialCases$Properties=} [properties] Properties to set
              */
@@ -841,21 +842,25 @@ $root.jspb = (function() {
             }
 
             /**
+             * SpecialCases normal.
              * @type {string}
              */
             SpecialCases.prototype.normal = "";
 
             /**
+             * SpecialCases default.
              * @type {string}
              */
             SpecialCases.prototype["default"] = "";
 
             /**
+             * SpecialCases function.
              * @type {string}
              */
             SpecialCases.prototype["function"] = "";
 
             /**
+             * SpecialCases var.
              * @type {string}
              */
             SpecialCases.prototype["var"] = "";
@@ -1051,7 +1056,7 @@ $root.jspb = (function() {
             /**
              * Properties of an OptionalFields.
              * @typedef jspb.test.OptionalFields$Properties
-             * @type Object
+             * @type {Object}
              * @property {string} [aString] OptionalFields aString.
              * @property {boolean} aBool OptionalFields aBool.
              * @property {jspb.test.OptionalFields.Nested$Properties} [aNestedMessage] OptionalFields aNestedMessage.
@@ -1062,7 +1067,6 @@ $root.jspb = (function() {
             /**
              * Constructs a new OptionalFields.
              * @exports jspb.test.OptionalFields
-             * @implements jspb.test.OptionalFields$Properties
              * @constructor
              * @param {jspb.test.OptionalFields$Properties=} [properties] Properties to set
              */
@@ -1075,26 +1079,31 @@ $root.jspb = (function() {
             }
 
             /**
+             * OptionalFields aString.
              * @type {string|undefined}
              */
             OptionalFields.prototype.aString = "";
 
             /**
+             * OptionalFields aBool.
              * @type {boolean}
              */
             OptionalFields.prototype.aBool = false;
 
             /**
+             * OptionalFields aNestedMessage.
              * @type {jspb.test.OptionalFields.Nested$Properties|undefined}
              */
             OptionalFields.prototype.aNestedMessage = null;
 
             /**
+             * OptionalFields aRepeatedMessage.
              * @type {Array.<jspb.test.OptionalFields.Nested$Properties>|undefined}
              */
             OptionalFields.prototype.aRepeatedMessage = $util.emptyArray;
 
             /**
+             * OptionalFields aRepeatedString.
              * @type {Array.<string>|undefined}
              */
             OptionalFields.prototype.aRepeatedString = $util.emptyArray;
@@ -1342,14 +1351,13 @@ $root.jspb = (function() {
                 /**
                  * Properties of a Nested.
                  * @typedef jspb.test.OptionalFields.Nested$Properties
-                 * @type Object
+                 * @type {Object}
                  * @property {number} [anInt] Nested anInt.
                  */
 
                 /**
                  * Constructs a new Nested.
                  * @exports jspb.test.OptionalFields.Nested
-                 * @implements jspb.test.OptionalFields.Nested$Properties
                  * @constructor
                  * @param {jspb.test.OptionalFields.Nested$Properties=} [properties] Properties to set
                  */
@@ -1360,6 +1368,7 @@ $root.jspb = (function() {
                 }
 
                 /**
+                 * Nested anInt.
                  * @type {number|undefined}
                  */
                 Nested.prototype.anInt = 0;
@@ -1518,7 +1527,7 @@ $root.jspb = (function() {
             /**
              * Properties of a HasExtensions.
              * @typedef jspb.test.HasExtensions$Properties
-             * @type Object
+             * @type {Object}
              * @property {string} [str1] HasExtensions str1.
              * @property {string} [str2] HasExtensions str2.
              * @property {string} [str3] HasExtensions str3.
@@ -1533,7 +1542,6 @@ $root.jspb = (function() {
             /**
              * Constructs a new HasExtensions.
              * @exports jspb.test.HasExtensions
-             * @implements jspb.test.HasExtensions$Properties
              * @constructor
              * @param {jspb.test.HasExtensions$Properties=} [properties] Properties to set
              */
@@ -1546,46 +1554,55 @@ $root.jspb = (function() {
             }
 
             /**
+             * HasExtensions str1.
              * @type {string|undefined}
              */
             HasExtensions.prototype.str1 = "";
 
             /**
+             * HasExtensions str2.
              * @type {string|undefined}
              */
             HasExtensions.prototype.str2 = "";
 
             /**
+             * HasExtensions str3.
              * @type {string|undefined}
              */
             HasExtensions.prototype.str3 = "";
 
             /**
+             * HasExtensions .jspb.test.IsExtension.extField.
              * @type {jspb.test.IsExtension$Properties|undefined}
              */
             HasExtensions.prototype[".jspb.test.IsExtension.extField"] = null;
 
             /**
+             * HasExtensions .jspb.test.IndirectExtension.simple.
              * @type {jspb.test.Simple1$Properties|undefined}
              */
             HasExtensions.prototype[".jspb.test.IndirectExtension.simple"] = null;
 
             /**
+             * HasExtensions .jspb.test.IndirectExtension.str.
              * @type {string|undefined}
              */
             HasExtensions.prototype[".jspb.test.IndirectExtension.str"] = "";
 
             /**
+             * HasExtensions .jspb.test.IndirectExtension.repeatedStr.
              * @type {Array.<string>|undefined}
              */
             HasExtensions.prototype[".jspb.test.IndirectExtension.repeatedStr"] = $util.emptyArray;
 
             /**
+             * HasExtensions .jspb.test.IndirectExtension.repeatedSimple.
              * @type {Array.<jspb.test.Simple1$Properties>|undefined}
              */
             HasExtensions.prototype[".jspb.test.IndirectExtension.repeatedSimple"] = $util.emptyArray;
 
             /**
+             * HasExtensions .jspb.test.simple1.
              * @type {jspb.test.Simple1$Properties|undefined}
              */
             HasExtensions.prototype[".jspb.test.simple1"] = null;
@@ -1898,7 +1915,7 @@ $root.jspb = (function() {
             /**
              * Properties of a Complex.
              * @typedef jspb.test.Complex$Properties
-             * @type Object
+             * @type {Object}
              * @property {string} aString Complex aString.
              * @property {boolean} anOutOfOrderBool Complex anOutOfOrderBool.
              * @property {jspb.test.Complex.Nested$Properties} [aNestedMessage] Complex aNestedMessage.
@@ -1909,7 +1926,6 @@ $root.jspb = (function() {
             /**
              * Constructs a new Complex.
              * @exports jspb.test.Complex
-             * @implements jspb.test.Complex$Properties
              * @constructor
              * @param {jspb.test.Complex$Properties=} [properties] Properties to set
              */
@@ -1922,26 +1938,31 @@ $root.jspb = (function() {
             }
 
             /**
+             * Complex aString.
              * @type {string}
              */
             Complex.prototype.aString = "";
 
             /**
+             * Complex anOutOfOrderBool.
              * @type {boolean}
              */
             Complex.prototype.anOutOfOrderBool = false;
 
             /**
+             * Complex aNestedMessage.
              * @type {jspb.test.Complex.Nested$Properties|undefined}
              */
             Complex.prototype.aNestedMessage = null;
 
             /**
+             * Complex aRepeatedMessage.
              * @type {Array.<jspb.test.Complex.Nested$Properties>|undefined}
              */
             Complex.prototype.aRepeatedMessage = $util.emptyArray;
 
             /**
+             * Complex aRepeatedString.
              * @type {Array.<string>|undefined}
              */
             Complex.prototype.aRepeatedString = $util.emptyArray;
@@ -2189,14 +2210,13 @@ $root.jspb = (function() {
                 /**
                  * Properties of a Nested.
                  * @typedef jspb.test.Complex.Nested$Properties
-                 * @type Object
+                 * @type {Object}
                  * @property {number} anInt Nested anInt.
                  */
 
                 /**
                  * Constructs a new Nested.
                  * @exports jspb.test.Complex.Nested
-                 * @implements jspb.test.Complex.Nested$Properties
                  * @constructor
                  * @param {jspb.test.Complex.Nested$Properties=} [properties] Properties to set
                  */
@@ -2207,6 +2227,7 @@ $root.jspb = (function() {
                 }
 
                 /**
+                 * Nested anInt.
                  * @type {number}
                  */
                 Nested.prototype.anInt = 0;
@@ -2365,13 +2386,12 @@ $root.jspb = (function() {
             /**
              * Properties of an OuterMessage.
              * @typedef jspb.test.OuterMessage$Properties
-             * @type Object
+             * @type {Object}
              */
 
             /**
              * Constructs a new OuterMessage.
              * @exports jspb.test.OuterMessage
-             * @implements jspb.test.OuterMessage$Properties
              * @constructor
              * @param {jspb.test.OuterMessage$Properties=} [properties] Properties to set
              */
@@ -2511,14 +2531,13 @@ $root.jspb = (function() {
                 /**
                  * Properties of a Complex.
                  * @typedef jspb.test.OuterMessage.Complex$Properties
-                 * @type Object
+                 * @type {Object}
                  * @property {number} [innerComplexField] Complex innerComplexField.
                  */
 
                 /**
                  * Constructs a new Complex.
                  * @exports jspb.test.OuterMessage.Complex
-                 * @implements jspb.test.OuterMessage.Complex$Properties
                  * @constructor
                  * @param {jspb.test.OuterMessage.Complex$Properties=} [properties] Properties to set
                  */
@@ -2529,6 +2548,7 @@ $root.jspb = (function() {
                 }
 
                 /**
+                 * Complex innerComplexField.
                  * @type {number|undefined}
                  */
                 Complex.prototype.innerComplexField = 0;
@@ -2687,14 +2707,13 @@ $root.jspb = (function() {
             /**
              * Properties of an IsExtension.
              * @typedef jspb.test.IsExtension$Properties
-             * @type Object
+             * @type {Object}
              * @property {string} [ext1] IsExtension ext1.
              */
 
             /**
              * Constructs a new IsExtension.
              * @exports jspb.test.IsExtension
-             * @implements jspb.test.IsExtension$Properties
              * @constructor
              * @param {jspb.test.IsExtension$Properties=} [properties] Properties to set
              */
@@ -2705,6 +2724,7 @@ $root.jspb = (function() {
             }
 
             /**
+             * IsExtension ext1.
              * @type {string|undefined}
              */
             IsExtension.prototype.ext1 = "";
@@ -2860,13 +2880,12 @@ $root.jspb = (function() {
             /**
              * Properties of an IndirectExtension.
              * @typedef jspb.test.IndirectExtension$Properties
-             * @type Object
+             * @type {Object}
              */
 
             /**
              * Constructs a new IndirectExtension.
              * @exports jspb.test.IndirectExtension
-             * @implements jspb.test.IndirectExtension$Properties
              * @constructor
              * @param {jspb.test.IndirectExtension$Properties=} [properties] Properties to set
              */
@@ -3009,7 +3028,7 @@ $root.jspb = (function() {
             /**
              * Properties of a DefaultValues.
              * @typedef jspb.test.DefaultValues$Properties
-             * @type Object
+             * @type {Object}
              * @property {string} [stringField] DefaultValues stringField.
              * @property {boolean} [boolField] DefaultValues boolField.
              * @property {number|Long} [intField] DefaultValues intField.
@@ -3021,7 +3040,6 @@ $root.jspb = (function() {
             /**
              * Constructs a new DefaultValues.
              * @exports jspb.test.DefaultValues
-             * @implements jspb.test.DefaultValues$Properties
              * @constructor
              * @param {jspb.test.DefaultValues$Properties=} [properties] Properties to set
              */
@@ -3032,31 +3050,37 @@ $root.jspb = (function() {
             }
 
             /**
+             * DefaultValues stringField.
              * @type {string|undefined}
              */
             DefaultValues.prototype.stringField = "default<>abc";
 
             /**
+             * DefaultValues boolField.
              * @type {boolean|undefined}
              */
             DefaultValues.prototype.boolField = true;
 
             /**
+             * DefaultValues intField.
              * @type {number|Long|undefined}
              */
             DefaultValues.prototype.intField = $util.Long ? $util.Long.fromBits(11,0,false) : 11;
 
             /**
+             * DefaultValues enumField.
              * @type {jspb.test.DefaultValues.Enum|undefined}
              */
             DefaultValues.prototype.enumField = 13;
 
             /**
+             * DefaultValues emptyField.
              * @type {string|undefined}
              */
             DefaultValues.prototype.emptyField = "";
 
             /**
+             * DefaultValues bytesField.
              * @type {Uint8Array|undefined}
              */
             DefaultValues.prototype.bytesField = $util.newBuffer([109,111,111]);
@@ -3327,7 +3351,7 @@ $root.jspb = (function() {
             /**
              * Properties of a FloatingPointFields.
              * @typedef jspb.test.FloatingPointFields$Properties
-             * @type Object
+             * @type {Object}
              * @property {number} [optionalFloatField] FloatingPointFields optionalFloatField.
              * @property {number} requiredFloatField FloatingPointFields requiredFloatField.
              * @property {Array.<number>} [repeatedFloatField] FloatingPointFields repeatedFloatField.
@@ -3341,7 +3365,6 @@ $root.jspb = (function() {
             /**
              * Constructs a new FloatingPointFields.
              * @exports jspb.test.FloatingPointFields
-             * @implements jspb.test.FloatingPointFields$Properties
              * @constructor
              * @param {jspb.test.FloatingPointFields$Properties=} [properties] Properties to set
              */
@@ -3354,41 +3377,49 @@ $root.jspb = (function() {
             }
 
             /**
+             * FloatingPointFields optionalFloatField.
              * @type {number|undefined}
              */
             FloatingPointFields.prototype.optionalFloatField = 0;
 
             /**
+             * FloatingPointFields requiredFloatField.
              * @type {number}
              */
             FloatingPointFields.prototype.requiredFloatField = 0;
 
             /**
+             * FloatingPointFields repeatedFloatField.
              * @type {Array.<number>|undefined}
              */
             FloatingPointFields.prototype.repeatedFloatField = $util.emptyArray;
 
             /**
+             * FloatingPointFields defaultFloatField.
              * @type {number|undefined}
              */
             FloatingPointFields.prototype.defaultFloatField = 2;
 
             /**
+             * FloatingPointFields optionalDoubleField.
              * @type {number|undefined}
              */
             FloatingPointFields.prototype.optionalDoubleField = 0;
 
             /**
+             * FloatingPointFields requiredDoubleField.
              * @type {number}
              */
             FloatingPointFields.prototype.requiredDoubleField = 0;
 
             /**
+             * FloatingPointFields repeatedDoubleField.
              * @type {Array.<number>|undefined}
              */
             FloatingPointFields.prototype.repeatedDoubleField = $util.emptyArray;
 
             /**
+             * FloatingPointFields defaultDoubleField.
              * @type {number|undefined}
              */
             FloatingPointFields.prototype.defaultDoubleField = 2;
@@ -3678,7 +3709,7 @@ $root.jspb = (function() {
             /**
              * Properties of a TestClone.
              * @typedef jspb.test.TestClone$Properties
-             * @type Object
+             * @type {Object}
              * @property {string} [str] TestClone str.
              * @property {jspb.test.Simple1$Properties} [simple1] TestClone simple1.
              * @property {Array.<jspb.test.Simple1$Properties>} [simple2] TestClone simple2.
@@ -3690,7 +3721,6 @@ $root.jspb = (function() {
             /**
              * Constructs a new TestClone.
              * @exports jspb.test.TestClone
-             * @implements jspb.test.TestClone$Properties
              * @constructor
              * @param {jspb.test.TestClone$Properties=} [properties] Properties to set
              */
@@ -3702,31 +3732,37 @@ $root.jspb = (function() {
             }
 
             /**
+             * TestClone str.
              * @type {string|undefined}
              */
             TestClone.prototype.str = "";
 
             /**
+             * TestClone simple1.
              * @type {jspb.test.Simple1$Properties|undefined}
              */
             TestClone.prototype.simple1 = null;
 
             /**
+             * TestClone simple2.
              * @type {Array.<jspb.test.Simple1$Properties>|undefined}
              */
             TestClone.prototype.simple2 = $util.emptyArray;
 
             /**
+             * TestClone bytesField.
              * @type {Uint8Array|undefined}
              */
             TestClone.prototype.bytesField = $util.newBuffer([]);
 
             /**
+             * TestClone unused.
              * @type {string|undefined}
              */
             TestClone.prototype.unused = "";
 
             /**
+             * TestClone .jspb.test.CloneExtension.extField.
              * @type {jspb.test.CloneExtension$Properties|undefined}
              */
             TestClone.prototype[".jspb.test.CloneExtension.extField"] = null;
@@ -3982,14 +4018,13 @@ $root.jspb = (function() {
             /**
              * Properties of a CloneExtension.
              * @typedef jspb.test.CloneExtension$Properties
-             * @type Object
+             * @type {Object}
              * @property {string} [ext] CloneExtension ext.
              */
 
             /**
              * Constructs a new CloneExtension.
              * @exports jspb.test.CloneExtension
-             * @implements jspb.test.CloneExtension$Properties
              * @constructor
              * @param {jspb.test.CloneExtension$Properties=} [properties] Properties to set
              */
@@ -4000,6 +4035,7 @@ $root.jspb = (function() {
             }
 
             /**
+             * CloneExtension ext.
              * @type {string|undefined}
              */
             CloneExtension.prototype.ext = "";
@@ -4155,7 +4191,7 @@ $root.jspb = (function() {
             /**
              * Properties of a TestGroup.
              * @typedef jspb.test.TestGroup$Properties
-             * @type Object
+             * @type {Object}
              * @property {Array.<jspb.test.TestGroup.RepeatedGroup$Properties>} [repeatedGroup] TestGroup repeatedGroup.
              * @property {jspb.test.TestGroup.RequiredGroup$Properties} requiredGroup TestGroup requiredGroup.
              * @property {jspb.test.TestGroup.OptionalGroup$Properties} [optionalGroup] TestGroup optionalGroup.
@@ -4167,7 +4203,6 @@ $root.jspb = (function() {
             /**
              * Constructs a new TestGroup.
              * @exports jspb.test.TestGroup
-             * @implements jspb.test.TestGroup$Properties
              * @constructor
              * @param {jspb.test.TestGroup$Properties=} [properties] Properties to set
              */
@@ -4179,31 +4214,37 @@ $root.jspb = (function() {
             }
 
             /**
+             * TestGroup repeatedGroup.
              * @type {Array.<jspb.test.TestGroup.RepeatedGroup$Properties>|undefined}
              */
             TestGroup.prototype.repeatedGroup = $util.emptyArray;
 
             /**
+             * TestGroup requiredGroup.
              * @type {jspb.test.TestGroup.RequiredGroup$Properties}
              */
             TestGroup.prototype.requiredGroup = null;
 
             /**
+             * TestGroup optionalGroup.
              * @type {jspb.test.TestGroup.OptionalGroup$Properties|undefined}
              */
             TestGroup.prototype.optionalGroup = null;
 
             /**
+             * TestGroup id.
              * @type {string|undefined}
              */
             TestGroup.prototype.id = "";
 
             /**
+             * TestGroup requiredSimple.
              * @type {jspb.test.Simple2$Properties}
              */
             TestGroup.prototype.requiredSimple = null;
 
             /**
+             * TestGroup optionalSimple.
              * @type {jspb.test.Simple2$Properties|undefined}
              */
             TestGroup.prototype.optionalSimple = null;
@@ -4461,7 +4502,7 @@ $root.jspb = (function() {
                 /**
                  * Properties of a RepeatedGroup.
                  * @typedef jspb.test.TestGroup.RepeatedGroup$Properties
-                 * @type Object
+                 * @type {Object}
                  * @property {string} id RepeatedGroup id.
                  * @property {Array.<boolean>} [someBool] RepeatedGroup someBool.
                  */
@@ -4469,7 +4510,6 @@ $root.jspb = (function() {
                 /**
                  * Constructs a new RepeatedGroup.
                  * @exports jspb.test.TestGroup.RepeatedGroup
-                 * @implements jspb.test.TestGroup.RepeatedGroup$Properties
                  * @constructor
                  * @param {jspb.test.TestGroup.RepeatedGroup$Properties=} [properties] Properties to set
                  */
@@ -4481,11 +4521,13 @@ $root.jspb = (function() {
                 }
 
                 /**
+                 * RepeatedGroup id.
                  * @type {string}
                  */
                 RepeatedGroup.prototype.id = "";
 
                 /**
+                 * RepeatedGroup someBool.
                  * @type {Array.<boolean>|undefined}
                  */
                 RepeatedGroup.prototype.someBool = $util.emptyArray;
@@ -4677,14 +4719,13 @@ $root.jspb = (function() {
                 /**
                  * Properties of a RequiredGroup.
                  * @typedef jspb.test.TestGroup.RequiredGroup$Properties
-                 * @type Object
+                 * @type {Object}
                  * @property {string} id RequiredGroup id.
                  */
 
                 /**
                  * Constructs a new RequiredGroup.
                  * @exports jspb.test.TestGroup.RequiredGroup
-                 * @implements jspb.test.TestGroup.RequiredGroup$Properties
                  * @constructor
                  * @param {jspb.test.TestGroup.RequiredGroup$Properties=} [properties] Properties to set
                  */
@@ -4695,6 +4736,7 @@ $root.jspb = (function() {
                 }
 
                 /**
+                 * RequiredGroup id.
                  * @type {string}
                  */
                 RequiredGroup.prototype.id = "";
@@ -4852,14 +4894,13 @@ $root.jspb = (function() {
                 /**
                  * Properties of an OptionalGroup.
                  * @typedef jspb.test.TestGroup.OptionalGroup$Properties
-                 * @type Object
+                 * @type {Object}
                  * @property {string} id OptionalGroup id.
                  */
 
                 /**
                  * Constructs a new OptionalGroup.
                  * @exports jspb.test.TestGroup.OptionalGroup
-                 * @implements jspb.test.TestGroup.OptionalGroup$Properties
                  * @constructor
                  * @param {jspb.test.TestGroup.OptionalGroup$Properties=} [properties] Properties to set
                  */
@@ -4870,6 +4911,7 @@ $root.jspb = (function() {
                 }
 
                 /**
+                 * OptionalGroup id.
                  * @type {string}
                  */
                 OptionalGroup.prototype.id = "";
@@ -5030,14 +5072,13 @@ $root.jspb = (function() {
             /**
              * Properties of a TestGroup1.
              * @typedef jspb.test.TestGroup1$Properties
-             * @type Object
+             * @type {Object}
              * @property {jspb.test.TestGroup.RepeatedGroup$Properties} [group] TestGroup1 group.
              */
 
             /**
              * Constructs a new TestGroup1.
              * @exports jspb.test.TestGroup1
-             * @implements jspb.test.TestGroup1$Properties
              * @constructor
              * @param {jspb.test.TestGroup1$Properties=} [properties] Properties to set
              */
@@ -5048,6 +5089,7 @@ $root.jspb = (function() {
             }
 
             /**
+             * TestGroup1 group.
              * @type {jspb.test.TestGroup.RepeatedGroup$Properties|undefined}
              */
             TestGroup1.prototype.group = null;
@@ -5208,7 +5250,7 @@ $root.jspb = (function() {
             /**
              * Properties of a TestReservedNames.
              * @typedef jspb.test.TestReservedNames$Properties
-             * @type Object
+             * @type {Object}
              * @property {number} [extension] TestReservedNames extension.
              * @property {number} [".jspb.test.TestReservedNamesExtension.foo"] TestReservedNames .jspb.test.TestReservedNamesExtension.foo.
              */
@@ -5216,7 +5258,6 @@ $root.jspb = (function() {
             /**
              * Constructs a new TestReservedNames.
              * @exports jspb.test.TestReservedNames
-             * @implements jspb.test.TestReservedNames$Properties
              * @constructor
              * @param {jspb.test.TestReservedNames$Properties=} [properties] Properties to set
              */
@@ -5227,11 +5268,13 @@ $root.jspb = (function() {
             }
 
             /**
+             * TestReservedNames extension.
              * @type {number|undefined}
              */
             TestReservedNames.prototype.extension = 0;
 
             /**
+             * TestReservedNames .jspb.test.TestReservedNamesExtension.foo.
              * @type {number|undefined}
              */
             TestReservedNames.prototype[".jspb.test.TestReservedNamesExtension.foo"] = 0;
@@ -5401,13 +5444,12 @@ $root.jspb = (function() {
             /**
              * Properties of a TestReservedNamesExtension.
              * @typedef jspb.test.TestReservedNamesExtension$Properties
-             * @type Object
+             * @type {Object}
              */
 
             /**
              * Constructs a new TestReservedNamesExtension.
              * @exports jspb.test.TestReservedNamesExtension
-             * @implements jspb.test.TestReservedNamesExtension$Properties
              * @constructor
              * @param {jspb.test.TestReservedNamesExtension$Properties=} [properties] Properties to set
              */
@@ -5550,7 +5592,7 @@ $root.jspb = (function() {
             /**
              * Properties of a TestMessageWithOneof.
              * @typedef jspb.test.TestMessageWithOneof$Properties
-             * @type Object
+             * @type {Object}
              * @property {string} [pone] TestMessageWithOneof pone.
              * @property {string} [pthree] TestMessageWithOneof pthree.
              * @property {jspb.test.TestMessageWithOneof$Properties} [rone] TestMessageWithOneof rone.
@@ -5566,7 +5608,6 @@ $root.jspb = (function() {
             /**
              * Constructs a new TestMessageWithOneof.
              * @exports jspb.test.TestMessageWithOneof
-             * @implements jspb.test.TestMessageWithOneof$Properties
              * @constructor
              * @param {jspb.test.TestMessageWithOneof$Properties=} [properties] Properties to set
              */
@@ -5578,51 +5619,61 @@ $root.jspb = (function() {
             }
 
             /**
+             * TestMessageWithOneof pone.
              * @type {string|undefined}
              */
             TestMessageWithOneof.prototype.pone = "";
 
             /**
+             * TestMessageWithOneof pthree.
              * @type {string|undefined}
              */
             TestMessageWithOneof.prototype.pthree = "";
 
             /**
+             * TestMessageWithOneof rone.
              * @type {jspb.test.TestMessageWithOneof$Properties|undefined}
              */
             TestMessageWithOneof.prototype.rone = null;
 
             /**
+             * TestMessageWithOneof rtwo.
              * @type {string|undefined}
              */
             TestMessageWithOneof.prototype.rtwo = "";
 
             /**
+             * TestMessageWithOneof normalField.
              * @type {boolean|undefined}
              */
             TestMessageWithOneof.prototype.normalField = false;
 
             /**
+             * TestMessageWithOneof repeatedField.
              * @type {Array.<string>|undefined}
              */
             TestMessageWithOneof.prototype.repeatedField = $util.emptyArray;
 
             /**
+             * TestMessageWithOneof aone.
              * @type {number|undefined}
              */
             TestMessageWithOneof.prototype.aone = 1234;
 
             /**
+             * TestMessageWithOneof atwo.
              * @type {number|undefined}
              */
             TestMessageWithOneof.prototype.atwo = 0;
 
             /**
+             * TestMessageWithOneof bone.
              * @type {number|undefined}
              */
             TestMessageWithOneof.prototype.bone = 0;
 
             /**
+             * TestMessageWithOneof btwo.
              * @type {number|undefined}
              */
             TestMessageWithOneof.prototype.btwo = 1234;
@@ -5999,7 +6050,7 @@ $root.jspb = (function() {
             /**
              * Properties of a TestEndsWithBytes.
              * @typedef jspb.test.TestEndsWithBytes$Properties
-             * @type Object
+             * @type {Object}
              * @property {number} [value] TestEndsWithBytes value.
              * @property {Uint8Array} [data] TestEndsWithBytes data.
              */
@@ -6007,7 +6058,6 @@ $root.jspb = (function() {
             /**
              * Constructs a new TestEndsWithBytes.
              * @exports jspb.test.TestEndsWithBytes
-             * @implements jspb.test.TestEndsWithBytes$Properties
              * @constructor
              * @param {jspb.test.TestEndsWithBytes$Properties=} [properties] Properties to set
              */
@@ -6018,11 +6068,13 @@ $root.jspb = (function() {
             }
 
             /**
+             * TestEndsWithBytes value.
              * @type {number|undefined}
              */
             TestEndsWithBytes.prototype.value = 0;
 
             /**
+             * TestEndsWithBytes data.
              * @type {Uint8Array|undefined}
              */
             TestEndsWithBytes.prototype.data = $util.newBuffer([]);
@@ -6195,7 +6247,7 @@ $root.jspb = (function() {
             /**
              * Properties of a TestMapFieldsNoBinary.
              * @typedef jspb.test.TestMapFieldsNoBinary$Properties
-             * @type Object
+             * @type {Object}
              * @property {Object.<string,string>} [mapStringString] TestMapFieldsNoBinary mapStringString.
              * @property {Object.<string,number>} [mapStringInt32] TestMapFieldsNoBinary mapStringInt32.
              * @property {Object.<string,number|Long>} [mapStringInt64] TestMapFieldsNoBinary mapStringInt64.
@@ -6213,7 +6265,6 @@ $root.jspb = (function() {
             /**
              * Constructs a new TestMapFieldsNoBinary.
              * @exports jspb.test.TestMapFieldsNoBinary
-             * @implements jspb.test.TestMapFieldsNoBinary$Properties
              * @constructor
              * @param {jspb.test.TestMapFieldsNoBinary$Properties=} [properties] Properties to set
              */
@@ -6235,61 +6286,73 @@ $root.jspb = (function() {
             }
 
             /**
+             * TestMapFieldsNoBinary mapStringString.
              * @type {Object.<string,string>|undefined}
              */
             TestMapFieldsNoBinary.prototype.mapStringString = $util.emptyObject;
 
             /**
+             * TestMapFieldsNoBinary mapStringInt32.
              * @type {Object.<string,number>|undefined}
              */
             TestMapFieldsNoBinary.prototype.mapStringInt32 = $util.emptyObject;
 
             /**
+             * TestMapFieldsNoBinary mapStringInt64.
              * @type {Object.<string,number|Long>|undefined}
              */
             TestMapFieldsNoBinary.prototype.mapStringInt64 = $util.emptyObject;
 
             /**
+             * TestMapFieldsNoBinary mapStringBool.
              * @type {Object.<string,boolean>|undefined}
              */
             TestMapFieldsNoBinary.prototype.mapStringBool = $util.emptyObject;
 
             /**
+             * TestMapFieldsNoBinary mapStringDouble.
              * @type {Object.<string,number>|undefined}
              */
             TestMapFieldsNoBinary.prototype.mapStringDouble = $util.emptyObject;
 
             /**
+             * TestMapFieldsNoBinary mapStringEnum.
              * @type {Object.<string,jspb.test.MapValueEnumNoBinary>|undefined}
              */
             TestMapFieldsNoBinary.prototype.mapStringEnum = $util.emptyObject;
 
             /**
+             * TestMapFieldsNoBinary mapStringMsg.
              * @type {Object.<string,jspb.test.MapValueMessageNoBinary$Properties>|undefined}
              */
             TestMapFieldsNoBinary.prototype.mapStringMsg = $util.emptyObject;
 
             /**
+             * TestMapFieldsNoBinary mapInt32String.
              * @type {Object.<string,string>|undefined}
              */
             TestMapFieldsNoBinary.prototype.mapInt32String = $util.emptyObject;
 
             /**
+             * TestMapFieldsNoBinary mapInt64String.
              * @type {Object.<string,string>|undefined}
              */
             TestMapFieldsNoBinary.prototype.mapInt64String = $util.emptyObject;
 
             /**
+             * TestMapFieldsNoBinary mapBoolString.
              * @type {Object.<string,string>|undefined}
              */
             TestMapFieldsNoBinary.prototype.mapBoolString = $util.emptyObject;
 
             /**
+             * TestMapFieldsNoBinary testMapFields.
              * @type {jspb.test.TestMapFieldsNoBinary$Properties|undefined}
              */
             TestMapFieldsNoBinary.prototype.testMapFields = null;
 
             /**
+             * TestMapFieldsNoBinary mapStringTestmapfields.
              * @type {Object.<string,jspb.test.TestMapFieldsNoBinary$Properties>|undefined}
              */
             TestMapFieldsNoBinary.prototype.mapStringTestmapfields = $util.emptyObject;
@@ -6401,7 +6464,7 @@ $root.jspb = (function() {
                             message.mapStringInt64 = {};
                         key = reader.string();
                         reader.pos++;
-                        message.mapStringInt64[typeof key === "object" ? $util.longToHash(key) : key] = reader.int64();
+                        message.mapStringInt64[key] = reader.int64();
                         break;
                     case 4:
                         reader.skip().pos++;
@@ -6449,7 +6512,7 @@ $root.jspb = (function() {
                             message.mapInt64String = {};
                         key = reader.int64();
                         reader.pos++;
-                        message.mapInt64String[key] = reader.string();
+                        message.mapInt64String[typeof key === "object" ? $util.longToHash(key) : key] = reader.string();
                         break;
                     case 10:
                         reader.skip().pos++;
@@ -6874,14 +6937,13 @@ $root.jspb = (function() {
             /**
              * Properties of a MapValueMessageNoBinary.
              * @typedef jspb.test.MapValueMessageNoBinary$Properties
-             * @type Object
+             * @type {Object}
              * @property {number} [foo] MapValueMessageNoBinary foo.
              */
 
             /**
              * Constructs a new MapValueMessageNoBinary.
              * @exports jspb.test.MapValueMessageNoBinary
-             * @implements jspb.test.MapValueMessageNoBinary$Properties
              * @constructor
              * @param {jspb.test.MapValueMessageNoBinary$Properties=} [properties] Properties to set
              */
@@ -6892,6 +6954,7 @@ $root.jspb = (function() {
             }
 
             /**
+             * MapValueMessageNoBinary foo.
              * @type {number|undefined}
              */
             MapValueMessageNoBinary.prototype.foo = 0;
@@ -7047,13 +7110,12 @@ $root.jspb = (function() {
             /**
              * Properties of a Deeply.
              * @typedef jspb.test.Deeply$Properties
-             * @type Object
+             * @type {Object}
              */
 
             /**
              * Constructs a new Deeply.
              * @exports jspb.test.Deeply
-             * @implements jspb.test.Deeply$Properties
              * @constructor
              * @param {jspb.test.Deeply$Properties=} [properties] Properties to set
              */
@@ -7193,13 +7255,12 @@ $root.jspb = (function() {
                 /**
                  * Properties of a Nested.
                  * @typedef jspb.test.Deeply.Nested$Properties
-                 * @type Object
+                 * @type {Object}
                  */
 
                 /**
                  * Constructs a new Nested.
                  * @exports jspb.test.Deeply.Nested
-                 * @implements jspb.test.Deeply.Nested$Properties
                  * @constructor
                  * @param {jspb.test.Deeply.Nested$Properties=} [properties] Properties to set
                  */
@@ -7339,14 +7400,13 @@ $root.jspb = (function() {
                     /**
                      * Properties of a Message.
                      * @typedef jspb.test.Deeply.Nested.Message$Properties
-                     * @type Object
+                     * @type {Object}
                      * @property {number} [count] Message count.
                      */
 
                     /**
                      * Constructs a new Message.
                      * @exports jspb.test.Deeply.Nested.Message
-                     * @implements jspb.test.Deeply.Nested.Message$Properties
                      * @constructor
                      * @param {jspb.test.Deeply.Nested.Message$Properties=} [properties] Properties to set
                      */
@@ -7357,6 +7417,7 @@ $root.jspb = (function() {
                     }
 
                     /**
+                     * Message count.
                      * @type {number|undefined}
                      */
                     Message.prototype.count = 0;
@@ -7542,14 +7603,13 @@ $root.google = (function() {
             /**
              * Properties of a FileDescriptorSet.
              * @typedef google.protobuf.FileDescriptorSet$Properties
-             * @type Object
+             * @type {Object}
              * @property {Array.<google.protobuf.FileDescriptorProto$Properties>} [file] FileDescriptorSet file.
              */
 
             /**
              * Constructs a new FileDescriptorSet.
              * @exports google.protobuf.FileDescriptorSet
-             * @implements google.protobuf.FileDescriptorSet$Properties
              * @constructor
              * @param {google.protobuf.FileDescriptorSet$Properties=} [properties] Properties to set
              */
@@ -7561,6 +7621,7 @@ $root.google = (function() {
             }
 
             /**
+             * FileDescriptorSet file.
              * @type {Array.<google.protobuf.FileDescriptorProto$Properties>|undefined}
              */
             FileDescriptorSet.prototype.file = $util.emptyArray;
@@ -7736,7 +7797,7 @@ $root.google = (function() {
             /**
              * Properties of a FileDescriptorProto.
              * @typedef google.protobuf.FileDescriptorProto$Properties
-             * @type Object
+             * @type {Object}
              * @property {string} [name] FileDescriptorProto name.
              * @property {string} ["package"] FileDescriptorProto package.
              * @property {Array.<string>} [dependency] FileDescriptorProto dependency.
@@ -7754,7 +7815,6 @@ $root.google = (function() {
             /**
              * Constructs a new FileDescriptorProto.
              * @exports google.protobuf.FileDescriptorProto
-             * @implements google.protobuf.FileDescriptorProto$Properties
              * @constructor
              * @param {google.protobuf.FileDescriptorProto$Properties=} [properties] Properties to set
              */
@@ -7772,61 +7832,73 @@ $root.google = (function() {
             }
 
             /**
+             * FileDescriptorProto name.
              * @type {string|undefined}
              */
             FileDescriptorProto.prototype.name = "";
 
             /**
+             * FileDescriptorProto package.
              * @type {string|undefined}
              */
             FileDescriptorProto.prototype["package"] = "";
 
             /**
+             * FileDescriptorProto dependency.
              * @type {Array.<string>|undefined}
              */
             FileDescriptorProto.prototype.dependency = $util.emptyArray;
 
             /**
+             * FileDescriptorProto publicDependency.
              * @type {Array.<number>|undefined}
              */
             FileDescriptorProto.prototype.publicDependency = $util.emptyArray;
 
             /**
+             * FileDescriptorProto weakDependency.
              * @type {Array.<number>|undefined}
              */
             FileDescriptorProto.prototype.weakDependency = $util.emptyArray;
 
             /**
+             * FileDescriptorProto messageType.
              * @type {Array.<google.protobuf.DescriptorProto$Properties>|undefined}
              */
             FileDescriptorProto.prototype.messageType = $util.emptyArray;
 
             /**
+             * FileDescriptorProto enumType.
              * @type {Array.<google.protobuf.EnumDescriptorProto$Properties>|undefined}
              */
             FileDescriptorProto.prototype.enumType = $util.emptyArray;
 
             /**
+             * FileDescriptorProto service.
              * @type {Array.<google.protobuf.ServiceDescriptorProto$Properties>|undefined}
              */
             FileDescriptorProto.prototype.service = $util.emptyArray;
 
             /**
+             * FileDescriptorProto extension.
              * @type {Array.<google.protobuf.FieldDescriptorProto$Properties>|undefined}
              */
             FileDescriptorProto.prototype.extension = $util.emptyArray;
 
             /**
+             * FileDescriptorProto options.
              * @type {google.protobuf.FileOptions$Properties|undefined}
              */
             FileDescriptorProto.prototype.options = null;
 
             /**
+             * FileDescriptorProto sourceCodeInfo.
              * @type {google.protobuf.SourceCodeInfo$Properties|undefined}
              */
             FileDescriptorProto.prototype.sourceCodeInfo = null;
 
             /**
+             * FileDescriptorProto syntax.
              * @type {string|undefined}
              */
             FileDescriptorProto.prototype.syntax = "";
@@ -8273,7 +8345,7 @@ $root.google = (function() {
             /**
              * Properties of a DescriptorProto.
              * @typedef google.protobuf.DescriptorProto$Properties
-             * @type Object
+             * @type {Object}
              * @property {string} [name] DescriptorProto name.
              * @property {Array.<google.protobuf.FieldDescriptorProto$Properties>} [field] DescriptorProto field.
              * @property {Array.<google.protobuf.FieldDescriptorProto$Properties>} [extension] DescriptorProto extension.
@@ -8289,7 +8361,6 @@ $root.google = (function() {
             /**
              * Constructs a new DescriptorProto.
              * @exports google.protobuf.DescriptorProto
-             * @implements google.protobuf.DescriptorProto$Properties
              * @constructor
              * @param {google.protobuf.DescriptorProto$Properties=} [properties] Properties to set
              */
@@ -8308,51 +8379,61 @@ $root.google = (function() {
             }
 
             /**
+             * DescriptorProto name.
              * @type {string|undefined}
              */
             DescriptorProto.prototype.name = "";
 
             /**
+             * DescriptorProto field.
              * @type {Array.<google.protobuf.FieldDescriptorProto$Properties>|undefined}
              */
             DescriptorProto.prototype.field = $util.emptyArray;
 
             /**
+             * DescriptorProto extension.
              * @type {Array.<google.protobuf.FieldDescriptorProto$Properties>|undefined}
              */
             DescriptorProto.prototype.extension = $util.emptyArray;
 
             /**
+             * DescriptorProto nestedType.
              * @type {Array.<google.protobuf.DescriptorProto$Properties>|undefined}
              */
             DescriptorProto.prototype.nestedType = $util.emptyArray;
 
             /**
+             * DescriptorProto enumType.
              * @type {Array.<google.protobuf.EnumDescriptorProto$Properties>|undefined}
              */
             DescriptorProto.prototype.enumType = $util.emptyArray;
 
             /**
+             * DescriptorProto extensionRange.
              * @type {Array.<google.protobuf.DescriptorProto.ExtensionRange$Properties>|undefined}
              */
             DescriptorProto.prototype.extensionRange = $util.emptyArray;
 
             /**
+             * DescriptorProto oneofDecl.
              * @type {Array.<google.protobuf.OneofDescriptorProto$Properties>|undefined}
              */
             DescriptorProto.prototype.oneofDecl = $util.emptyArray;
 
             /**
+             * DescriptorProto options.
              * @type {google.protobuf.MessageOptions$Properties|undefined}
              */
             DescriptorProto.prototype.options = null;
 
             /**
+             * DescriptorProto reservedRange.
              * @type {Array.<google.protobuf.DescriptorProto.ReservedRange$Properties>|undefined}
              */
             DescriptorProto.prototype.reservedRange = $util.emptyArray;
 
             /**
+             * DescriptorProto reservedName.
              * @type {Array.<string>|undefined}
              */
             DescriptorProto.prototype.reservedName = $util.emptyArray;
@@ -8785,7 +8866,7 @@ $root.google = (function() {
                 /**
                  * Properties of an ExtensionRange.
                  * @typedef google.protobuf.DescriptorProto.ExtensionRange$Properties
-                 * @type Object
+                 * @type {Object}
                  * @property {number} [start] ExtensionRange start.
                  * @property {number} [end] ExtensionRange end.
                  */
@@ -8793,7 +8874,6 @@ $root.google = (function() {
                 /**
                  * Constructs a new ExtensionRange.
                  * @exports google.protobuf.DescriptorProto.ExtensionRange
-                 * @implements google.protobuf.DescriptorProto.ExtensionRange$Properties
                  * @constructor
                  * @param {google.protobuf.DescriptorProto.ExtensionRange$Properties=} [properties] Properties to set
                  */
@@ -8804,11 +8884,13 @@ $root.google = (function() {
                 }
 
                 /**
+                 * ExtensionRange start.
                  * @type {number|undefined}
                  */
                 ExtensionRange.prototype.start = 0;
 
                 /**
+                 * ExtensionRange end.
                  * @type {number|undefined}
                  */
                 ExtensionRange.prototype.end = 0;
@@ -8978,7 +9060,7 @@ $root.google = (function() {
                 /**
                  * Properties of a ReservedRange.
                  * @typedef google.protobuf.DescriptorProto.ReservedRange$Properties
-                 * @type Object
+                 * @type {Object}
                  * @property {number} [start] ReservedRange start.
                  * @property {number} [end] ReservedRange end.
                  */
@@ -8986,7 +9068,6 @@ $root.google = (function() {
                 /**
                  * Constructs a new ReservedRange.
                  * @exports google.protobuf.DescriptorProto.ReservedRange
-                 * @implements google.protobuf.DescriptorProto.ReservedRange$Properties
                  * @constructor
                  * @param {google.protobuf.DescriptorProto.ReservedRange$Properties=} [properties] Properties to set
                  */
@@ -8997,11 +9078,13 @@ $root.google = (function() {
                 }
 
                 /**
+                 * ReservedRange start.
                  * @type {number|undefined}
                  */
                 ReservedRange.prototype.start = 0;
 
                 /**
+                 * ReservedRange end.
                  * @type {number|undefined}
                  */
                 ReservedRange.prototype.end = 0;
@@ -9174,7 +9257,7 @@ $root.google = (function() {
             /**
              * Properties of a FieldDescriptorProto.
              * @typedef google.protobuf.FieldDescriptorProto$Properties
-             * @type Object
+             * @type {Object}
              * @property {string} [name] FieldDescriptorProto name.
              * @property {number} [number] FieldDescriptorProto number.
              * @property {google.protobuf.FieldDescriptorProto.Label} [label] FieldDescriptorProto label.
@@ -9190,7 +9273,6 @@ $root.google = (function() {
             /**
              * Constructs a new FieldDescriptorProto.
              * @exports google.protobuf.FieldDescriptorProto
-             * @implements google.protobuf.FieldDescriptorProto$Properties
              * @constructor
              * @param {google.protobuf.FieldDescriptorProto$Properties=} [properties] Properties to set
              */
@@ -9201,51 +9283,61 @@ $root.google = (function() {
             }
 
             /**
+             * FieldDescriptorProto name.
              * @type {string|undefined}
              */
             FieldDescriptorProto.prototype.name = "";
 
             /**
+             * FieldDescriptorProto number.
              * @type {number|undefined}
              */
             FieldDescriptorProto.prototype.number = 0;
 
             /**
+             * FieldDescriptorProto label.
              * @type {google.protobuf.FieldDescriptorProto.Label|undefined}
              */
             FieldDescriptorProto.prototype.label = 1;
 
             /**
+             * FieldDescriptorProto type.
              * @type {google.protobuf.FieldDescriptorProto.Type|undefined}
              */
             FieldDescriptorProto.prototype.type = 1;
 
             /**
+             * FieldDescriptorProto typeName.
              * @type {string|undefined}
              */
             FieldDescriptorProto.prototype.typeName = "";
 
             /**
+             * FieldDescriptorProto extendee.
              * @type {string|undefined}
              */
             FieldDescriptorProto.prototype.extendee = "";
 
             /**
+             * FieldDescriptorProto defaultValue.
              * @type {string|undefined}
              */
             FieldDescriptorProto.prototype.defaultValue = "";
 
             /**
+             * FieldDescriptorProto oneofIndex.
              * @type {number|undefined}
              */
             FieldDescriptorProto.prototype.oneofIndex = 0;
 
             /**
+             * FieldDescriptorProto jsonName.
              * @type {string|undefined}
              */
             FieldDescriptorProto.prototype.jsonName = "";
 
             /**
+             * FieldDescriptorProto options.
              * @type {google.protobuf.FieldOptions$Properties|undefined}
              */
             FieldDescriptorProto.prototype.options = null;
@@ -9699,7 +9791,7 @@ $root.google = (function() {
             /**
              * Properties of an OneofDescriptorProto.
              * @typedef google.protobuf.OneofDescriptorProto$Properties
-             * @type Object
+             * @type {Object}
              * @property {string} [name] OneofDescriptorProto name.
              * @property {google.protobuf.OneofOptions$Properties} [options] OneofDescriptorProto options.
              */
@@ -9707,7 +9799,6 @@ $root.google = (function() {
             /**
              * Constructs a new OneofDescriptorProto.
              * @exports google.protobuf.OneofDescriptorProto
-             * @implements google.protobuf.OneofDescriptorProto$Properties
              * @constructor
              * @param {google.protobuf.OneofDescriptorProto$Properties=} [properties] Properties to set
              */
@@ -9718,11 +9809,13 @@ $root.google = (function() {
             }
 
             /**
+             * OneofDescriptorProto name.
              * @type {string|undefined}
              */
             OneofDescriptorProto.prototype.name = "";
 
             /**
+             * OneofDescriptorProto options.
              * @type {google.protobuf.OneofOptions$Properties|undefined}
              */
             OneofDescriptorProto.prototype.options = null;
@@ -9897,7 +9990,7 @@ $root.google = (function() {
             /**
              * Properties of an EnumDescriptorProto.
              * @typedef google.protobuf.EnumDescriptorProto$Properties
-             * @type Object
+             * @type {Object}
              * @property {string} [name] EnumDescriptorProto name.
              * @property {Array.<google.protobuf.EnumValueDescriptorProto$Properties>} [value] EnumDescriptorProto value.
              * @property {google.protobuf.EnumOptions$Properties} [options] EnumDescriptorProto options.
@@ -9906,7 +9999,6 @@ $root.google = (function() {
             /**
              * Constructs a new EnumDescriptorProto.
              * @exports google.protobuf.EnumDescriptorProto
-             * @implements google.protobuf.EnumDescriptorProto$Properties
              * @constructor
              * @param {google.protobuf.EnumDescriptorProto$Properties=} [properties] Properties to set
              */
@@ -9918,16 +10010,19 @@ $root.google = (function() {
             }
 
             /**
+             * EnumDescriptorProto name.
              * @type {string|undefined}
              */
             EnumDescriptorProto.prototype.name = "";
 
             /**
+             * EnumDescriptorProto value.
              * @type {Array.<google.protobuf.EnumValueDescriptorProto$Properties>|undefined}
              */
             EnumDescriptorProto.prototype.value = $util.emptyArray;
 
             /**
+             * EnumDescriptorProto options.
              * @type {google.protobuf.EnumOptions$Properties|undefined}
              */
             EnumDescriptorProto.prototype.options = null;
@@ -10136,7 +10231,7 @@ $root.google = (function() {
             /**
              * Properties of an EnumValueDescriptorProto.
              * @typedef google.protobuf.EnumValueDescriptorProto$Properties
-             * @type Object
+             * @type {Object}
              * @property {string} [name] EnumValueDescriptorProto name.
              * @property {number} [number] EnumValueDescriptorProto number.
              * @property {google.protobuf.EnumValueOptions$Properties} [options] EnumValueDescriptorProto options.
@@ -10145,7 +10240,6 @@ $root.google = (function() {
             /**
              * Constructs a new EnumValueDescriptorProto.
              * @exports google.protobuf.EnumValueDescriptorProto
-             * @implements google.protobuf.EnumValueDescriptorProto$Properties
              * @constructor
              * @param {google.protobuf.EnumValueDescriptorProto$Properties=} [properties] Properties to set
              */
@@ -10156,16 +10250,19 @@ $root.google = (function() {
             }
 
             /**
+             * EnumValueDescriptorProto name.
              * @type {string|undefined}
              */
             EnumValueDescriptorProto.prototype.name = "";
 
             /**
+             * EnumValueDescriptorProto number.
              * @type {number|undefined}
              */
             EnumValueDescriptorProto.prototype.number = 0;
 
             /**
+             * EnumValueDescriptorProto options.
              * @type {google.protobuf.EnumValueOptions$Properties|undefined}
              */
             EnumValueDescriptorProto.prototype.options = null;
@@ -10353,7 +10450,7 @@ $root.google = (function() {
             /**
              * Properties of a ServiceDescriptorProto.
              * @typedef google.protobuf.ServiceDescriptorProto$Properties
-             * @type Object
+             * @type {Object}
              * @property {string} [name] ServiceDescriptorProto name.
              * @property {Array.<google.protobuf.MethodDescriptorProto$Properties>} [method] ServiceDescriptorProto method.
              * @property {google.protobuf.ServiceOptions$Properties} [options] ServiceDescriptorProto options.
@@ -10362,7 +10459,6 @@ $root.google = (function() {
             /**
              * Constructs a new ServiceDescriptorProto.
              * @exports google.protobuf.ServiceDescriptorProto
-             * @implements google.protobuf.ServiceDescriptorProto$Properties
              * @constructor
              * @param {google.protobuf.ServiceDescriptorProto$Properties=} [properties] Properties to set
              */
@@ -10374,16 +10470,19 @@ $root.google = (function() {
             }
 
             /**
+             * ServiceDescriptorProto name.
              * @type {string|undefined}
              */
             ServiceDescriptorProto.prototype.name = "";
 
             /**
+             * ServiceDescriptorProto method.
              * @type {Array.<google.protobuf.MethodDescriptorProto$Properties>|undefined}
              */
             ServiceDescriptorProto.prototype.method = $util.emptyArray;
 
             /**
+             * ServiceDescriptorProto options.
              * @type {google.protobuf.ServiceOptions$Properties|undefined}
              */
             ServiceDescriptorProto.prototype.options = null;
@@ -10592,7 +10691,7 @@ $root.google = (function() {
             /**
              * Properties of a MethodDescriptorProto.
              * @typedef google.protobuf.MethodDescriptorProto$Properties
-             * @type Object
+             * @type {Object}
              * @property {string} [name] MethodDescriptorProto name.
              * @property {string} [inputType] MethodDescriptorProto inputType.
              * @property {string} [outputType] MethodDescriptorProto outputType.
@@ -10604,7 +10703,6 @@ $root.google = (function() {
             /**
              * Constructs a new MethodDescriptorProto.
              * @exports google.protobuf.MethodDescriptorProto
-             * @implements google.protobuf.MethodDescriptorProto$Properties
              * @constructor
              * @param {google.protobuf.MethodDescriptorProto$Properties=} [properties] Properties to set
              */
@@ -10615,31 +10713,37 @@ $root.google = (function() {
             }
 
             /**
+             * MethodDescriptorProto name.
              * @type {string|undefined}
              */
             MethodDescriptorProto.prototype.name = "";
 
             /**
+             * MethodDescriptorProto inputType.
              * @type {string|undefined}
              */
             MethodDescriptorProto.prototype.inputType = "";
 
             /**
+             * MethodDescriptorProto outputType.
              * @type {string|undefined}
              */
             MethodDescriptorProto.prototype.outputType = "";
 
             /**
+             * MethodDescriptorProto options.
              * @type {google.protobuf.MethodOptions$Properties|undefined}
              */
             MethodDescriptorProto.prototype.options = null;
 
             /**
+             * MethodDescriptorProto clientStreaming.
              * @type {boolean|undefined}
              */
             MethodDescriptorProto.prototype.clientStreaming = false;
 
             /**
+             * MethodDescriptorProto serverStreaming.
              * @type {boolean|undefined}
              */
             MethodDescriptorProto.prototype.serverStreaming = false;
@@ -10866,7 +10970,7 @@ $root.google = (function() {
             /**
              * Properties of a FileOptions.
              * @typedef google.protobuf.FileOptions$Properties
-             * @type Object
+             * @type {Object}
              * @property {string} [javaPackage] FileOptions javaPackage.
              * @property {string} [javaOuterClassname] FileOptions javaOuterClassname.
              * @property {boolean} [javaMultipleFiles] FileOptions javaMultipleFiles.
@@ -10887,7 +10991,6 @@ $root.google = (function() {
             /**
              * Constructs a new FileOptions.
              * @exports google.protobuf.FileOptions
-             * @implements google.protobuf.FileOptions$Properties
              * @constructor
              * @param {google.protobuf.FileOptions$Properties=} [properties] Properties to set
              */
@@ -10899,76 +11002,91 @@ $root.google = (function() {
             }
 
             /**
+             * FileOptions javaPackage.
              * @type {string|undefined}
              */
             FileOptions.prototype.javaPackage = "";
 
             /**
+             * FileOptions javaOuterClassname.
              * @type {string|undefined}
              */
             FileOptions.prototype.javaOuterClassname = "";
 
             /**
+             * FileOptions javaMultipleFiles.
              * @type {boolean|undefined}
              */
             FileOptions.prototype.javaMultipleFiles = false;
 
             /**
+             * FileOptions javaGenerateEqualsAndHash.
              * @type {boolean|undefined}
              */
             FileOptions.prototype.javaGenerateEqualsAndHash = false;
 
             /**
+             * FileOptions javaStringCheckUtf8.
              * @type {boolean|undefined}
              */
             FileOptions.prototype.javaStringCheckUtf8 = false;
 
             /**
+             * FileOptions optimizeFor.
              * @type {google.protobuf.FileOptions.OptimizeMode|undefined}
              */
             FileOptions.prototype.optimizeFor = 1;
 
             /**
+             * FileOptions goPackage.
              * @type {string|undefined}
              */
             FileOptions.prototype.goPackage = "";
 
             /**
+             * FileOptions ccGenericServices.
              * @type {boolean|undefined}
              */
             FileOptions.prototype.ccGenericServices = false;
 
             /**
+             * FileOptions javaGenericServices.
              * @type {boolean|undefined}
              */
             FileOptions.prototype.javaGenericServices = false;
 
             /**
+             * FileOptions pyGenericServices.
              * @type {boolean|undefined}
              */
             FileOptions.prototype.pyGenericServices = false;
 
             /**
+             * FileOptions deprecated.
              * @type {boolean|undefined}
              */
             FileOptions.prototype.deprecated = false;
 
             /**
+             * FileOptions ccEnableArenas.
              * @type {boolean|undefined}
              */
             FileOptions.prototype.ccEnableArenas = false;
 
             /**
+             * FileOptions objcClassPrefix.
              * @type {string|undefined}
              */
             FileOptions.prototype.objcClassPrefix = "";
 
             /**
+             * FileOptions csharpNamespace.
              * @type {string|undefined}
              */
             FileOptions.prototype.csharpNamespace = "";
 
             /**
+             * FileOptions uninterpretedOption.
              * @type {Array.<google.protobuf.UninterpretedOption$Properties>|undefined}
              */
             FileOptions.prototype.uninterpretedOption = $util.emptyArray;
@@ -11363,7 +11481,7 @@ $root.google = (function() {
             /**
              * Properties of a MessageOptions.
              * @typedef google.protobuf.MessageOptions$Properties
-             * @type Object
+             * @type {Object}
              * @property {boolean} [messageSetWireFormat] MessageOptions messageSetWireFormat.
              * @property {boolean} [noStandardDescriptorAccessor] MessageOptions noStandardDescriptorAccessor.
              * @property {boolean} [deprecated] MessageOptions deprecated.
@@ -11374,7 +11492,6 @@ $root.google = (function() {
             /**
              * Constructs a new MessageOptions.
              * @exports google.protobuf.MessageOptions
-             * @implements google.protobuf.MessageOptions$Properties
              * @constructor
              * @param {google.protobuf.MessageOptions$Properties=} [properties] Properties to set
              */
@@ -11386,26 +11503,31 @@ $root.google = (function() {
             }
 
             /**
+             * MessageOptions messageSetWireFormat.
              * @type {boolean|undefined}
              */
             MessageOptions.prototype.messageSetWireFormat = false;
 
             /**
+             * MessageOptions noStandardDescriptorAccessor.
              * @type {boolean|undefined}
              */
             MessageOptions.prototype.noStandardDescriptorAccessor = false;
 
             /**
+             * MessageOptions deprecated.
              * @type {boolean|undefined}
              */
             MessageOptions.prototype.deprecated = false;
 
             /**
+             * MessageOptions mapEntry.
              * @type {boolean|undefined}
              */
             MessageOptions.prototype.mapEntry = false;
 
             /**
+             * MessageOptions uninterpretedOption.
              * @type {Array.<google.protobuf.UninterpretedOption$Properties>|undefined}
              */
             MessageOptions.prototype.uninterpretedOption = $util.emptyArray;
@@ -11635,7 +11757,7 @@ $root.google = (function() {
             /**
              * Properties of a FieldOptions.
              * @typedef google.protobuf.FieldOptions$Properties
-             * @type Object
+             * @type {Object}
              * @property {google.protobuf.FieldOptions.CType} [ctype] FieldOptions ctype.
              * @property {boolean} [packed] FieldOptions packed.
              * @property {google.protobuf.FieldOptions.JSType} [jstype] FieldOptions jstype.
@@ -11648,7 +11770,6 @@ $root.google = (function() {
             /**
              * Constructs a new FieldOptions.
              * @exports google.protobuf.FieldOptions
-             * @implements google.protobuf.FieldOptions$Properties
              * @constructor
              * @param {google.protobuf.FieldOptions$Properties=} [properties] Properties to set
              */
@@ -11660,36 +11781,43 @@ $root.google = (function() {
             }
 
             /**
+             * FieldOptions ctype.
              * @type {google.protobuf.FieldOptions.CType|undefined}
              */
             FieldOptions.prototype.ctype = 0;
 
             /**
+             * FieldOptions packed.
              * @type {boolean|undefined}
              */
             FieldOptions.prototype.packed = false;
 
             /**
+             * FieldOptions jstype.
              * @type {google.protobuf.FieldOptions.JSType|undefined}
              */
             FieldOptions.prototype.jstype = 0;
 
             /**
+             * FieldOptions lazy.
              * @type {boolean|undefined}
              */
             FieldOptions.prototype.lazy = false;
 
             /**
+             * FieldOptions deprecated.
              * @type {boolean|undefined}
              */
             FieldOptions.prototype.deprecated = false;
 
             /**
+             * FieldOptions weak.
              * @type {boolean|undefined}
              */
             FieldOptions.prototype.weak = false;
 
             /**
+             * FieldOptions uninterpretedOption.
              * @type {Array.<google.protobuf.UninterpretedOption$Properties>|undefined}
              */
             FieldOptions.prototype.uninterpretedOption = $util.emptyArray;
@@ -12015,14 +12143,13 @@ $root.google = (function() {
             /**
              * Properties of an OneofOptions.
              * @typedef google.protobuf.OneofOptions$Properties
-             * @type Object
+             * @type {Object}
              * @property {Array.<google.protobuf.UninterpretedOption$Properties>} [uninterpretedOption] OneofOptions uninterpretedOption.
              */
 
             /**
              * Constructs a new OneofOptions.
              * @exports google.protobuf.OneofOptions
-             * @implements google.protobuf.OneofOptions$Properties
              * @constructor
              * @param {google.protobuf.OneofOptions$Properties=} [properties] Properties to set
              */
@@ -12034,6 +12161,7 @@ $root.google = (function() {
             }
 
             /**
+             * OneofOptions uninterpretedOption.
              * @type {Array.<google.protobuf.UninterpretedOption$Properties>|undefined}
              */
             OneofOptions.prototype.uninterpretedOption = $util.emptyArray;
@@ -12209,7 +12337,7 @@ $root.google = (function() {
             /**
              * Properties of an EnumOptions.
              * @typedef google.protobuf.EnumOptions$Properties
-             * @type Object
+             * @type {Object}
              * @property {boolean} [allowAlias] EnumOptions allowAlias.
              * @property {boolean} [deprecated] EnumOptions deprecated.
              * @property {Array.<google.protobuf.UninterpretedOption$Properties>} [uninterpretedOption] EnumOptions uninterpretedOption.
@@ -12219,7 +12347,6 @@ $root.google = (function() {
             /**
              * Constructs a new EnumOptions.
              * @exports google.protobuf.EnumOptions
-             * @implements google.protobuf.EnumOptions$Properties
              * @constructor
              * @param {google.protobuf.EnumOptions$Properties=} [properties] Properties to set
              */
@@ -12231,21 +12358,25 @@ $root.google = (function() {
             }
 
             /**
+             * EnumOptions allowAlias.
              * @type {boolean|undefined}
              */
             EnumOptions.prototype.allowAlias = false;
 
             /**
+             * EnumOptions deprecated.
              * @type {boolean|undefined}
              */
             EnumOptions.prototype.deprecated = false;
 
             /**
+             * EnumOptions uninterpretedOption.
              * @type {Array.<google.protobuf.UninterpretedOption$Properties>|undefined}
              */
             EnumOptions.prototype.uninterpretedOption = $util.emptyArray;
 
             /**
+             * EnumOptions .jspb.test.IsExtension.simpleOption.
              * @type {string|undefined}
              */
             EnumOptions.prototype[".jspb.test.IsExtension.simpleOption"] = "";
@@ -12462,7 +12593,7 @@ $root.google = (function() {
             /**
              * Properties of an EnumValueOptions.
              * @typedef google.protobuf.EnumValueOptions$Properties
-             * @type Object
+             * @type {Object}
              * @property {boolean} [deprecated] EnumValueOptions deprecated.
              * @property {Array.<google.protobuf.UninterpretedOption$Properties>} [uninterpretedOption] EnumValueOptions uninterpretedOption.
              */
@@ -12470,7 +12601,6 @@ $root.google = (function() {
             /**
              * Constructs a new EnumValueOptions.
              * @exports google.protobuf.EnumValueOptions
-             * @implements google.protobuf.EnumValueOptions$Properties
              * @constructor
              * @param {google.protobuf.EnumValueOptions$Properties=} [properties] Properties to set
              */
@@ -12482,11 +12612,13 @@ $root.google = (function() {
             }
 
             /**
+             * EnumValueOptions deprecated.
              * @type {boolean|undefined}
              */
             EnumValueOptions.prototype.deprecated = false;
 
             /**
+             * EnumValueOptions uninterpretedOption.
              * @type {Array.<google.protobuf.UninterpretedOption$Properties>|undefined}
              */
             EnumValueOptions.prototype.uninterpretedOption = $util.emptyArray;
@@ -12676,7 +12808,7 @@ $root.google = (function() {
             /**
              * Properties of a ServiceOptions.
              * @typedef google.protobuf.ServiceOptions$Properties
-             * @type Object
+             * @type {Object}
              * @property {boolean} [deprecated] ServiceOptions deprecated.
              * @property {Array.<google.protobuf.UninterpretedOption$Properties>} [uninterpretedOption] ServiceOptions uninterpretedOption.
              */
@@ -12684,7 +12816,6 @@ $root.google = (function() {
             /**
              * Constructs a new ServiceOptions.
              * @exports google.protobuf.ServiceOptions
-             * @implements google.protobuf.ServiceOptions$Properties
              * @constructor
              * @param {google.protobuf.ServiceOptions$Properties=} [properties] Properties to set
              */
@@ -12696,11 +12827,13 @@ $root.google = (function() {
             }
 
             /**
+             * ServiceOptions deprecated.
              * @type {boolean|undefined}
              */
             ServiceOptions.prototype.deprecated = false;
 
             /**
+             * ServiceOptions uninterpretedOption.
              * @type {Array.<google.protobuf.UninterpretedOption$Properties>|undefined}
              */
             ServiceOptions.prototype.uninterpretedOption = $util.emptyArray;
@@ -12890,7 +13023,7 @@ $root.google = (function() {
             /**
              * Properties of a MethodOptions.
              * @typedef google.protobuf.MethodOptions$Properties
-             * @type Object
+             * @type {Object}
              * @property {boolean} [deprecated] MethodOptions deprecated.
              * @property {google.protobuf.MethodOptions.IdempotencyLevel} [idempotencyLevel] MethodOptions idempotencyLevel.
              * @property {Array.<google.protobuf.UninterpretedOption$Properties>} [uninterpretedOption] MethodOptions uninterpretedOption.
@@ -12899,7 +13032,6 @@ $root.google = (function() {
             /**
              * Constructs a new MethodOptions.
              * @exports google.protobuf.MethodOptions
-             * @implements google.protobuf.MethodOptions$Properties
              * @constructor
              * @param {google.protobuf.MethodOptions$Properties=} [properties] Properties to set
              */
@@ -12911,16 +13043,19 @@ $root.google = (function() {
             }
 
             /**
+             * MethodOptions deprecated.
              * @type {boolean|undefined}
              */
             MethodOptions.prototype.deprecated = false;
 
             /**
+             * MethodOptions idempotencyLevel.
              * @type {google.protobuf.MethodOptions.IdempotencyLevel|undefined}
              */
             MethodOptions.prototype.idempotencyLevel = 0;
 
             /**
+             * MethodOptions uninterpretedOption.
              * @type {Array.<google.protobuf.UninterpretedOption$Properties>|undefined}
              */
             MethodOptions.prototype.uninterpretedOption = $util.emptyArray;
@@ -13159,7 +13294,7 @@ $root.google = (function() {
             /**
              * Properties of an UninterpretedOption.
              * @typedef google.protobuf.UninterpretedOption$Properties
-             * @type Object
+             * @type {Object}
              * @property {Array.<google.protobuf.UninterpretedOption.NamePart$Properties>} [name] UninterpretedOption name.
              * @property {string} [identifierValue] UninterpretedOption identifierValue.
              * @property {number|Long} [positiveIntValue] UninterpretedOption positiveIntValue.
@@ -13172,7 +13307,6 @@ $root.google = (function() {
             /**
              * Constructs a new UninterpretedOption.
              * @exports google.protobuf.UninterpretedOption
-             * @implements google.protobuf.UninterpretedOption$Properties
              * @constructor
              * @param {google.protobuf.UninterpretedOption$Properties=} [properties] Properties to set
              */
@@ -13184,36 +13318,43 @@ $root.google = (function() {
             }
 
             /**
+             * UninterpretedOption name.
              * @type {Array.<google.protobuf.UninterpretedOption.NamePart$Properties>|undefined}
              */
             UninterpretedOption.prototype.name = $util.emptyArray;
 
             /**
+             * UninterpretedOption identifierValue.
              * @type {string|undefined}
              */
             UninterpretedOption.prototype.identifierValue = "";
 
             /**
+             * UninterpretedOption positiveIntValue.
              * @type {number|Long|undefined}
              */
             UninterpretedOption.prototype.positiveIntValue = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
 
             /**
+             * UninterpretedOption negativeIntValue.
              * @type {number|Long|undefined}
              */
             UninterpretedOption.prototype.negativeIntValue = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
 
             /**
+             * UninterpretedOption doubleValue.
              * @type {number|undefined}
              */
             UninterpretedOption.prototype.doubleValue = 0;
 
             /**
+             * UninterpretedOption stringValue.
              * @type {Uint8Array|undefined}
              */
             UninterpretedOption.prototype.stringValue = $util.newBuffer([]);
 
             /**
+             * UninterpretedOption aggregateValue.
              * @type {string|undefined}
              */
             UninterpretedOption.prototype.aggregateValue = "";
@@ -13497,7 +13638,7 @@ $root.google = (function() {
                 /**
                  * Properties of a NamePart.
                  * @typedef google.protobuf.UninterpretedOption.NamePart$Properties
-                 * @type Object
+                 * @type {Object}
                  * @property {string} namePart NamePart namePart.
                  * @property {boolean} isExtension NamePart isExtension.
                  */
@@ -13505,7 +13646,6 @@ $root.google = (function() {
                 /**
                  * Constructs a new NamePart.
                  * @exports google.protobuf.UninterpretedOption.NamePart
-                 * @implements google.protobuf.UninterpretedOption.NamePart$Properties
                  * @constructor
                  * @param {google.protobuf.UninterpretedOption.NamePart$Properties=} [properties] Properties to set
                  */
@@ -13516,11 +13656,13 @@ $root.google = (function() {
                 }
 
                 /**
+                 * NamePart namePart.
                  * @type {string}
                  */
                 NamePart.prototype.namePart = "";
 
                 /**
+                 * NamePart isExtension.
                  * @type {boolean}
                  */
                 NamePart.prototype.isExtension = false;
@@ -13693,14 +13835,13 @@ $root.google = (function() {
             /**
              * Properties of a SourceCodeInfo.
              * @typedef google.protobuf.SourceCodeInfo$Properties
-             * @type Object
+             * @type {Object}
              * @property {Array.<google.protobuf.SourceCodeInfo.Location$Properties>} [location] SourceCodeInfo location.
              */
 
             /**
              * Constructs a new SourceCodeInfo.
              * @exports google.protobuf.SourceCodeInfo
-             * @implements google.protobuf.SourceCodeInfo$Properties
              * @constructor
              * @param {google.protobuf.SourceCodeInfo$Properties=} [properties] Properties to set
              */
@@ -13712,6 +13853,7 @@ $root.google = (function() {
             }
 
             /**
+             * SourceCodeInfo location.
              * @type {Array.<google.protobuf.SourceCodeInfo.Location$Properties>|undefined}
              */
             SourceCodeInfo.prototype.location = $util.emptyArray;
@@ -13884,7 +14026,7 @@ $root.google = (function() {
                 /**
                  * Properties of a Location.
                  * @typedef google.protobuf.SourceCodeInfo.Location$Properties
-                 * @type Object
+                 * @type {Object}
                  * @property {Array.<number>} [path] Location path.
                  * @property {Array.<number>} [span] Location span.
                  * @property {string} [leadingComments] Location leadingComments.
@@ -13895,7 +14037,6 @@ $root.google = (function() {
                 /**
                  * Constructs a new Location.
                  * @exports google.protobuf.SourceCodeInfo.Location
-                 * @implements google.protobuf.SourceCodeInfo.Location$Properties
                  * @constructor
                  * @param {google.protobuf.SourceCodeInfo.Location$Properties=} [properties] Properties to set
                  */
@@ -13909,26 +14050,31 @@ $root.google = (function() {
                 }
 
                 /**
+                 * Location path.
                  * @type {Array.<number>|undefined}
                  */
                 Location.prototype.path = $util.emptyArray;
 
                 /**
+                 * Location span.
                  * @type {Array.<number>|undefined}
                  */
                 Location.prototype.span = $util.emptyArray;
 
                 /**
+                 * Location leadingComments.
                  * @type {string|undefined}
                  */
                 Location.prototype.leadingComments = "";
 
                 /**
+                 * Location trailingComments.
                  * @type {string|undefined}
                  */
                 Location.prototype.trailingComments = "";
 
                 /**
+                 * Location leadingDetachedComments.
                  * @type {Array.<string>|undefined}
                  */
                 Location.prototype.leadingDetachedComments = $util.emptyArray;
@@ -14203,14 +14349,13 @@ $root.google = (function() {
             /**
              * Properties of a GeneratedCodeInfo.
              * @typedef google.protobuf.GeneratedCodeInfo$Properties
-             * @type Object
+             * @type {Object}
              * @property {Array.<google.protobuf.GeneratedCodeInfo.Annotation$Properties>} [annotation] GeneratedCodeInfo annotation.
              */
 
             /**
              * Constructs a new GeneratedCodeInfo.
              * @exports google.protobuf.GeneratedCodeInfo
-             * @implements google.protobuf.GeneratedCodeInfo$Properties
              * @constructor
              * @param {google.protobuf.GeneratedCodeInfo$Properties=} [properties] Properties to set
              */
@@ -14222,6 +14367,7 @@ $root.google = (function() {
             }
 
             /**
+             * GeneratedCodeInfo annotation.
              * @type {Array.<google.protobuf.GeneratedCodeInfo.Annotation$Properties>|undefined}
              */
             GeneratedCodeInfo.prototype.annotation = $util.emptyArray;
@@ -14394,7 +14540,7 @@ $root.google = (function() {
                 /**
                  * Properties of an Annotation.
                  * @typedef google.protobuf.GeneratedCodeInfo.Annotation$Properties
-                 * @type Object
+                 * @type {Object}
                  * @property {Array.<number>} [path] Annotation path.
                  * @property {string} [sourceFile] Annotation sourceFile.
                  * @property {number} [begin] Annotation begin.
@@ -14404,7 +14550,6 @@ $root.google = (function() {
                 /**
                  * Constructs a new Annotation.
                  * @exports google.protobuf.GeneratedCodeInfo.Annotation
-                 * @implements google.protobuf.GeneratedCodeInfo.Annotation$Properties
                  * @constructor
                  * @param {google.protobuf.GeneratedCodeInfo.Annotation$Properties=} [properties] Properties to set
                  */
@@ -14416,21 +14561,25 @@ $root.google = (function() {
                 }
 
                 /**
+                 * Annotation path.
                  * @type {Array.<number>|undefined}
                  */
                 Annotation.prototype.path = $util.emptyArray;
 
                 /**
+                 * Annotation sourceFile.
                  * @type {string|undefined}
                  */
                 Annotation.prototype.sourceFile = "";
 
                 /**
+                 * Annotation begin.
                  * @type {number|undefined}
                  */
                 Annotation.prototype.begin = 0;
 
                 /**
+                 * Annotation end.
                  * @type {number|undefined}
                  */
                 Annotation.prototype.end = 0;

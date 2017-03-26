@@ -6,7 +6,7 @@ export namespace jspb {
 
         type Empty$Properties = Object;
 
-        class Empty implements jspb.test.Empty$Properties {
+        class Empty {
             constructor(properties?: jspb.test.Empty$Properties);
             public static create(properties?: jspb.test.Empty$Properties): jspb.test.Empty;
             public static encode(message: jspb.test.Empty$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
@@ -30,7 +30,7 @@ export namespace jspb {
             outerEnum?: jspb.test.OuterEnum;
         };
 
-        class EnumContainer implements jspb.test.EnumContainer$Properties {
+        class EnumContainer {
             constructor(properties?: jspb.test.EnumContainer$Properties);
             public outerEnum?: jspb.test.OuterEnum;
             public static create(properties?: jspb.test.EnumContainer$Properties): jspb.test.EnumContainer;
@@ -52,7 +52,7 @@ export namespace jspb {
             aBoolean?: boolean;
         };
 
-        class Simple1 implements jspb.test.Simple1$Properties {
+        class Simple1 {
             constructor(properties?: jspb.test.Simple1$Properties);
             public aString: string;
             public aRepeatedString?: string[];
@@ -75,7 +75,7 @@ export namespace jspb {
             aRepeatedString?: string[];
         };
 
-        class Simple2 implements jspb.test.Simple2$Properties {
+        class Simple2 {
             constructor(properties?: jspb.test.Simple2$Properties);
             public aString: string;
             public aRepeatedString?: string[];
@@ -99,7 +99,7 @@ export namespace jspb {
             var: string;
         };
 
-        class SpecialCases implements jspb.test.SpecialCases$Properties {
+        class SpecialCases {
             constructor(properties?: jspb.test.SpecialCases$Properties);
             public normal: string;
             public ["default"]: string;
@@ -126,7 +126,7 @@ export namespace jspb {
             aRepeatedString?: string[];
         };
 
-        class OptionalFields implements jspb.test.OptionalFields$Properties {
+        class OptionalFields {
             constructor(properties?: jspb.test.OptionalFields$Properties);
             public aString?: string;
             public aBool: boolean;
@@ -152,7 +152,7 @@ export namespace jspb {
                 anInt?: number;
             };
 
-            class Nested implements jspb.test.OptionalFields.Nested$Properties {
+            class Nested {
                 constructor(properties?: jspb.test.OptionalFields.Nested$Properties);
                 public anInt?: number;
                 public static create(properties?: jspb.test.OptionalFields.Nested$Properties): jspb.test.OptionalFields.Nested;
@@ -181,7 +181,7 @@ export namespace jspb {
             ".jspb.test.simple1"?: jspb.test.Simple1$Properties;
         };
 
-        class HasExtensions implements jspb.test.HasExtensions$Properties {
+        class HasExtensions {
             constructor(properties?: jspb.test.HasExtensions$Properties);
             public str1?: string;
             public str2?: string;
@@ -213,7 +213,7 @@ export namespace jspb {
             aRepeatedString?: string[];
         };
 
-        class Complex implements jspb.test.Complex$Properties {
+        class Complex {
             constructor(properties?: jspb.test.Complex$Properties);
             public aString: string;
             public anOutOfOrderBool: boolean;
@@ -239,7 +239,7 @@ export namespace jspb {
                 anInt: number;
             };
 
-            class Nested implements jspb.test.Complex.Nested$Properties {
+            class Nested {
                 constructor(properties?: jspb.test.Complex.Nested$Properties);
                 public anInt: number;
                 public static create(properties?: jspb.test.Complex.Nested$Properties): jspb.test.Complex.Nested;
@@ -258,7 +258,7 @@ export namespace jspb {
 
         type OuterMessage$Properties = Object;
 
-        class OuterMessage implements jspb.test.OuterMessage$Properties {
+        class OuterMessage {
             constructor(properties?: jspb.test.OuterMessage$Properties);
             public static create(properties?: jspb.test.OuterMessage$Properties): jspb.test.OuterMessage;
             public static encode(message: jspb.test.OuterMessage$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
@@ -279,7 +279,7 @@ export namespace jspb {
                 innerComplexField?: number;
             };
 
-            class Complex implements jspb.test.OuterMessage.Complex$Properties {
+            class Complex {
                 constructor(properties?: jspb.test.OuterMessage.Complex$Properties);
                 public innerComplexField?: number;
                 public static create(properties?: jspb.test.OuterMessage.Complex$Properties): jspb.test.OuterMessage.Complex;
@@ -300,7 +300,7 @@ export namespace jspb {
             ext1?: string;
         };
 
-        class IsExtension implements jspb.test.IsExtension$Properties {
+        class IsExtension {
             constructor(properties?: jspb.test.IsExtension$Properties);
             public ext1?: string;
             public static create(properties?: jspb.test.IsExtension$Properties): jspb.test.IsExtension;
@@ -318,7 +318,7 @@ export namespace jspb {
 
         type IndirectExtension$Properties = Object;
 
-        class IndirectExtension implements jspb.test.IndirectExtension$Properties {
+        class IndirectExtension {
             constructor(properties?: jspb.test.IndirectExtension$Properties);
             public static create(properties?: jspb.test.IndirectExtension$Properties): jspb.test.IndirectExtension;
             public static encode(message: jspb.test.IndirectExtension$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
@@ -342,7 +342,7 @@ export namespace jspb {
             bytesField?: Uint8Array;
         };
 
-        class DefaultValues implements jspb.test.DefaultValues$Properties {
+        class DefaultValues {
             constructor(properties?: jspb.test.DefaultValues$Properties);
             public stringField?: string;
             public boolField?: boolean;
@@ -382,7 +382,7 @@ export namespace jspb {
             defaultDoubleField?: number;
         };
 
-        class FloatingPointFields implements jspb.test.FloatingPointFields$Properties {
+        class FloatingPointFields {
             constructor(properties?: jspb.test.FloatingPointFields$Properties);
             public optionalFloatField?: number;
             public requiredFloatField: number;
@@ -414,7 +414,7 @@ export namespace jspb {
             ".jspb.test.CloneExtension.extField"?: jspb.test.CloneExtension$Properties;
         };
 
-        class TestClone implements jspb.test.TestClone$Properties {
+        class TestClone {
             constructor(properties?: jspb.test.TestClone$Properties);
             public str?: string;
             public simple1?: jspb.test.Simple1$Properties;
@@ -439,7 +439,7 @@ export namespace jspb {
             ext?: string;
         };
 
-        class CloneExtension implements jspb.test.CloneExtension$Properties {
+        class CloneExtension {
             constructor(properties?: jspb.test.CloneExtension$Properties);
             public ext?: string;
             public static create(properties?: jspb.test.CloneExtension$Properties): jspb.test.CloneExtension;
@@ -464,7 +464,7 @@ export namespace jspb {
             optionalSimple?: jspb.test.Simple2$Properties;
         };
 
-        class TestGroup implements jspb.test.TestGroup$Properties {
+        class TestGroup {
             constructor(properties?: jspb.test.TestGroup$Properties);
             public repeatedGroup?: jspb.test.TestGroup.RepeatedGroup$Properties[];
             public requiredGroup: jspb.test.TestGroup.RequiredGroup$Properties;
@@ -492,7 +492,7 @@ export namespace jspb {
                 someBool?: boolean[];
             };
 
-            class RepeatedGroup implements jspb.test.TestGroup.RepeatedGroup$Properties {
+            class RepeatedGroup {
                 constructor(properties?: jspb.test.TestGroup.RepeatedGroup$Properties);
                 public id: string;
                 public someBool?: boolean[];
@@ -513,7 +513,7 @@ export namespace jspb {
                 id: string;
             };
 
-            class RequiredGroup implements jspb.test.TestGroup.RequiredGroup$Properties {
+            class RequiredGroup {
                 constructor(properties?: jspb.test.TestGroup.RequiredGroup$Properties);
                 public id: string;
                 public static create(properties?: jspb.test.TestGroup.RequiredGroup$Properties): jspb.test.TestGroup.RequiredGroup;
@@ -533,7 +533,7 @@ export namespace jspb {
                 id: string;
             };
 
-            class OptionalGroup implements jspb.test.TestGroup.OptionalGroup$Properties {
+            class OptionalGroup {
                 constructor(properties?: jspb.test.TestGroup.OptionalGroup$Properties);
                 public id: string;
                 public static create(properties?: jspb.test.TestGroup.OptionalGroup$Properties): jspb.test.TestGroup.OptionalGroup;
@@ -554,7 +554,7 @@ export namespace jspb {
             group?: jspb.test.TestGroup.RepeatedGroup$Properties;
         };
 
-        class TestGroup1 implements jspb.test.TestGroup1$Properties {
+        class TestGroup1 {
             constructor(properties?: jspb.test.TestGroup1$Properties);
             public group?: jspb.test.TestGroup.RepeatedGroup$Properties;
             public static create(properties?: jspb.test.TestGroup1$Properties): jspb.test.TestGroup1;
@@ -575,7 +575,7 @@ export namespace jspb {
             ".jspb.test.TestReservedNamesExtension.foo"?: number;
         };
 
-        class TestReservedNames implements jspb.test.TestReservedNames$Properties {
+        class TestReservedNames {
             constructor(properties?: jspb.test.TestReservedNames$Properties);
             public extension?: number;
             public [".jspb.test.TestReservedNamesExtension.foo"]?: number;
@@ -594,7 +594,7 @@ export namespace jspb {
 
         type TestReservedNamesExtension$Properties = Object;
 
-        class TestReservedNamesExtension implements jspb.test.TestReservedNamesExtension$Properties {
+        class TestReservedNamesExtension {
             constructor(properties?: jspb.test.TestReservedNamesExtension$Properties);
             public static create(properties?: jspb.test.TestReservedNamesExtension$Properties): jspb.test.TestReservedNamesExtension;
             public static encode(message: jspb.test.TestReservedNamesExtension$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
@@ -622,7 +622,7 @@ export namespace jspb {
             btwo?: number;
         };
 
-        class TestMessageWithOneof implements jspb.test.TestMessageWithOneof$Properties {
+        class TestMessageWithOneof {
             constructor(properties?: jspb.test.TestMessageWithOneof$Properties);
             public pone?: string;
             public pthree?: string;
@@ -656,7 +656,7 @@ export namespace jspb {
             data?: Uint8Array;
         };
 
-        class TestEndsWithBytes implements jspb.test.TestEndsWithBytes$Properties {
+        class TestEndsWithBytes {
             constructor(properties?: jspb.test.TestEndsWithBytes$Properties);
             public value?: number;
             public data?: Uint8Array;
@@ -688,7 +688,7 @@ export namespace jspb {
             mapStringTestmapfields?: { [k: string]: jspb.test.TestMapFieldsNoBinary$Properties };
         };
 
-        class TestMapFieldsNoBinary implements jspb.test.TestMapFieldsNoBinary$Properties {
+        class TestMapFieldsNoBinary {
             constructor(properties?: jspb.test.TestMapFieldsNoBinary$Properties);
             public mapStringString?: { [k: string]: string };
             public mapStringInt32?: { [k: string]: number };
@@ -725,7 +725,7 @@ export namespace jspb {
             foo?: number;
         };
 
-        class MapValueMessageNoBinary implements jspb.test.MapValueMessageNoBinary$Properties {
+        class MapValueMessageNoBinary {
             constructor(properties?: jspb.test.MapValueMessageNoBinary$Properties);
             public foo?: number;
             public static create(properties?: jspb.test.MapValueMessageNoBinary$Properties): jspb.test.MapValueMessageNoBinary;
@@ -743,7 +743,7 @@ export namespace jspb {
 
         type Deeply$Properties = Object;
 
-        class Deeply implements jspb.test.Deeply$Properties {
+        class Deeply {
             constructor(properties?: jspb.test.Deeply$Properties);
             public static create(properties?: jspb.test.Deeply$Properties): jspb.test.Deeply;
             public static encode(message: jspb.test.Deeply$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
@@ -762,7 +762,7 @@ export namespace jspb {
 
             type Nested$Properties = Object;
 
-            class Nested implements jspb.test.Deeply.Nested$Properties {
+            class Nested {
                 constructor(properties?: jspb.test.Deeply.Nested$Properties);
                 public static create(properties?: jspb.test.Deeply.Nested$Properties): jspb.test.Deeply.Nested;
                 public static encode(message: jspb.test.Deeply.Nested$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
@@ -783,7 +783,7 @@ export namespace jspb {
                     count?: number;
                 };
 
-                class Message implements jspb.test.Deeply.Nested.Message$Properties {
+                class Message {
                     constructor(properties?: jspb.test.Deeply.Nested.Message$Properties);
                     public count?: number;
                     public static create(properties?: jspb.test.Deeply.Nested.Message$Properties): jspb.test.Deeply.Nested.Message;
@@ -811,7 +811,7 @@ export namespace google {
             file?: google.protobuf.FileDescriptorProto$Properties[];
         };
 
-        class FileDescriptorSet implements google.protobuf.FileDescriptorSet$Properties {
+        class FileDescriptorSet {
             constructor(properties?: google.protobuf.FileDescriptorSet$Properties);
             public file?: google.protobuf.FileDescriptorProto$Properties[];
             public static create(properties?: google.protobuf.FileDescriptorSet$Properties): google.protobuf.FileDescriptorSet;
@@ -842,7 +842,7 @@ export namespace google {
             syntax?: string;
         };
 
-        class FileDescriptorProto implements google.protobuf.FileDescriptorProto$Properties {
+        class FileDescriptorProto {
             constructor(properties?: google.protobuf.FileDescriptorProto$Properties);
             public name?: string;
             public ["package"]?: string;
@@ -882,7 +882,7 @@ export namespace google {
             reservedName?: string[];
         };
 
-        class DescriptorProto implements google.protobuf.DescriptorProto$Properties {
+        class DescriptorProto {
             constructor(properties?: google.protobuf.DescriptorProto$Properties);
             public name?: string;
             public field?: google.protobuf.FieldDescriptorProto$Properties[];
@@ -914,7 +914,7 @@ export namespace google {
                 end?: number;
             };
 
-            class ExtensionRange implements google.protobuf.DescriptorProto.ExtensionRange$Properties {
+            class ExtensionRange {
                 constructor(properties?: google.protobuf.DescriptorProto.ExtensionRange$Properties);
                 public start?: number;
                 public end?: number;
@@ -936,7 +936,7 @@ export namespace google {
                 end?: number;
             };
 
-            class ReservedRange implements google.protobuf.DescriptorProto.ReservedRange$Properties {
+            class ReservedRange {
                 constructor(properties?: google.protobuf.DescriptorProto.ReservedRange$Properties);
                 public start?: number;
                 public end?: number;
@@ -967,7 +967,7 @@ export namespace google {
             options?: google.protobuf.FieldOptions$Properties;
         };
 
-        class FieldDescriptorProto implements google.protobuf.FieldDescriptorProto$Properties {
+        class FieldDescriptorProto {
             constructor(properties?: google.protobuf.FieldDescriptorProto$Properties);
             public name?: string;
             public number?: number;
@@ -1027,7 +1027,7 @@ export namespace google {
             options?: google.protobuf.OneofOptions$Properties;
         };
 
-        class OneofDescriptorProto implements google.protobuf.OneofDescriptorProto$Properties {
+        class OneofDescriptorProto {
             constructor(properties?: google.protobuf.OneofDescriptorProto$Properties);
             public name?: string;
             public options?: google.protobuf.OneofOptions$Properties;
@@ -1050,7 +1050,7 @@ export namespace google {
             options?: google.protobuf.EnumOptions$Properties;
         };
 
-        class EnumDescriptorProto implements google.protobuf.EnumDescriptorProto$Properties {
+        class EnumDescriptorProto {
             constructor(properties?: google.protobuf.EnumDescriptorProto$Properties);
             public name?: string;
             public value?: google.protobuf.EnumValueDescriptorProto$Properties[];
@@ -1074,7 +1074,7 @@ export namespace google {
             options?: google.protobuf.EnumValueOptions$Properties;
         };
 
-        class EnumValueDescriptorProto implements google.protobuf.EnumValueDescriptorProto$Properties {
+        class EnumValueDescriptorProto {
             constructor(properties?: google.protobuf.EnumValueDescriptorProto$Properties);
             public name?: string;
             public number?: number;
@@ -1098,7 +1098,7 @@ export namespace google {
             options?: google.protobuf.ServiceOptions$Properties;
         };
 
-        class ServiceDescriptorProto implements google.protobuf.ServiceDescriptorProto$Properties {
+        class ServiceDescriptorProto {
             constructor(properties?: google.protobuf.ServiceDescriptorProto$Properties);
             public name?: string;
             public method?: google.protobuf.MethodDescriptorProto$Properties[];
@@ -1125,7 +1125,7 @@ export namespace google {
             serverStreaming?: boolean;
         };
 
-        class MethodDescriptorProto implements google.protobuf.MethodDescriptorProto$Properties {
+        class MethodDescriptorProto {
             constructor(properties?: google.protobuf.MethodDescriptorProto$Properties);
             public name?: string;
             public inputType?: string;
@@ -1164,7 +1164,7 @@ export namespace google {
             uninterpretedOption?: google.protobuf.UninterpretedOption$Properties[];
         };
 
-        class FileOptions implements google.protobuf.FileOptions$Properties {
+        class FileOptions {
             constructor(properties?: google.protobuf.FileOptions$Properties);
             public javaPackage?: string;
             public javaOuterClassname?: string;
@@ -1211,7 +1211,7 @@ export namespace google {
             uninterpretedOption?: google.protobuf.UninterpretedOption$Properties[];
         };
 
-        class MessageOptions implements google.protobuf.MessageOptions$Properties {
+        class MessageOptions {
             constructor(properties?: google.protobuf.MessageOptions$Properties);
             public messageSetWireFormat?: boolean;
             public noStandardDescriptorAccessor?: boolean;
@@ -1241,7 +1241,7 @@ export namespace google {
             uninterpretedOption?: google.protobuf.UninterpretedOption$Properties[];
         };
 
-        class FieldOptions implements google.protobuf.FieldOptions$Properties {
+        class FieldOptions {
             constructor(properties?: google.protobuf.FieldOptions$Properties);
             public ctype?: google.protobuf.FieldOptions.CType;
             public packed?: boolean;
@@ -1282,7 +1282,7 @@ export namespace google {
             uninterpretedOption?: google.protobuf.UninterpretedOption$Properties[];
         };
 
-        class OneofOptions implements google.protobuf.OneofOptions$Properties {
+        class OneofOptions {
             constructor(properties?: google.protobuf.OneofOptions$Properties);
             public uninterpretedOption?: google.protobuf.UninterpretedOption$Properties[];
             public static create(properties?: google.protobuf.OneofOptions$Properties): google.protobuf.OneofOptions;
@@ -1305,7 +1305,7 @@ export namespace google {
             ".jspb.test.IsExtension.simpleOption"?: string;
         };
 
-        class EnumOptions implements google.protobuf.EnumOptions$Properties {
+        class EnumOptions {
             constructor(properties?: google.protobuf.EnumOptions$Properties);
             public allowAlias?: boolean;
             public deprecated?: boolean;
@@ -1329,7 +1329,7 @@ export namespace google {
             uninterpretedOption?: google.protobuf.UninterpretedOption$Properties[];
         };
 
-        class EnumValueOptions implements google.protobuf.EnumValueOptions$Properties {
+        class EnumValueOptions {
             constructor(properties?: google.protobuf.EnumValueOptions$Properties);
             public deprecated?: boolean;
             public uninterpretedOption?: google.protobuf.UninterpretedOption$Properties[];
@@ -1351,7 +1351,7 @@ export namespace google {
             uninterpretedOption?: google.protobuf.UninterpretedOption$Properties[];
         };
 
-        class ServiceOptions implements google.protobuf.ServiceOptions$Properties {
+        class ServiceOptions {
             constructor(properties?: google.protobuf.ServiceOptions$Properties);
             public deprecated?: boolean;
             public uninterpretedOption?: google.protobuf.UninterpretedOption$Properties[];
@@ -1374,7 +1374,7 @@ export namespace google {
             uninterpretedOption?: google.protobuf.UninterpretedOption$Properties[];
         };
 
-        class MethodOptions implements google.protobuf.MethodOptions$Properties {
+        class MethodOptions {
             constructor(properties?: google.protobuf.MethodOptions$Properties);
             public deprecated?: boolean;
             public idempotencyLevel?: google.protobuf.MethodOptions.IdempotencyLevel;
@@ -1411,7 +1411,7 @@ export namespace google {
             aggregateValue?: string;
         };
 
-        class UninterpretedOption implements google.protobuf.UninterpretedOption$Properties {
+        class UninterpretedOption {
             constructor(properties?: google.protobuf.UninterpretedOption$Properties);
             public name?: google.protobuf.UninterpretedOption.NamePart$Properties[];
             public identifierValue?: string;
@@ -1440,7 +1440,7 @@ export namespace google {
                 isExtension: boolean;
             };
 
-            class NamePart implements google.protobuf.UninterpretedOption.NamePart$Properties {
+            class NamePart {
                 constructor(properties?: google.protobuf.UninterpretedOption.NamePart$Properties);
                 public namePart: string;
                 public isExtension: boolean;
@@ -1462,7 +1462,7 @@ export namespace google {
             location?: google.protobuf.SourceCodeInfo.Location$Properties[];
         };
 
-        class SourceCodeInfo implements google.protobuf.SourceCodeInfo$Properties {
+        class SourceCodeInfo {
             constructor(properties?: google.protobuf.SourceCodeInfo$Properties);
             public location?: google.protobuf.SourceCodeInfo.Location$Properties[];
             public static create(properties?: google.protobuf.SourceCodeInfo$Properties): google.protobuf.SourceCodeInfo;
@@ -1488,7 +1488,7 @@ export namespace google {
                 leadingDetachedComments?: string[];
             };
 
-            class Location implements google.protobuf.SourceCodeInfo.Location$Properties {
+            class Location {
                 constructor(properties?: google.protobuf.SourceCodeInfo.Location$Properties);
                 public path?: number[];
                 public span?: number[];
@@ -1513,7 +1513,7 @@ export namespace google {
             annotation?: google.protobuf.GeneratedCodeInfo.Annotation$Properties[];
         };
 
-        class GeneratedCodeInfo implements google.protobuf.GeneratedCodeInfo$Properties {
+        class GeneratedCodeInfo {
             constructor(properties?: google.protobuf.GeneratedCodeInfo$Properties);
             public annotation?: google.protobuf.GeneratedCodeInfo.Annotation$Properties[];
             public static create(properties?: google.protobuf.GeneratedCodeInfo$Properties): google.protobuf.GeneratedCodeInfo;
@@ -1538,7 +1538,7 @@ export namespace google {
                 end?: number;
             };
 
-            class Annotation implements google.protobuf.GeneratedCodeInfo.Annotation$Properties {
+            class Annotation {
                 constructor(properties?: google.protobuf.GeneratedCodeInfo.Annotation$Properties);
                 public path?: number[];
                 public sourceFile?: string;

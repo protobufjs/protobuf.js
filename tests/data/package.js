@@ -14,7 +14,7 @@ $root.Package = (function() {
     /**
      * Properties of a Package.
      * @typedef Package$Properties
-     * @type Object
+     * @type {Object}
      * @property {string} [name] Package name.
      * @property {string} [version] Package version.
      * @property {string} [versionScheme] Package versionScheme.
@@ -38,7 +38,6 @@ $root.Package = (function() {
     /**
      * Constructs a new Package.
      * @exports Package
-     * @implements Package$Properties
      * @constructor
      * @param {Package$Properties=} [properties] Properties to set
      */
@@ -56,91 +55,109 @@ $root.Package = (function() {
     }
 
     /**
+     * Package name.
      * @type {string|undefined}
      */
     Package.prototype.name = "";
 
     /**
+     * Package version.
      * @type {string|undefined}
      */
     Package.prototype.version = "";
 
     /**
+     * Package versionScheme.
      * @type {string|undefined}
      */
     Package.prototype.versionScheme = "";
 
     /**
+     * Package description.
      * @type {string|undefined}
      */
     Package.prototype.description = "";
 
     /**
+     * Package author.
      * @type {string|undefined}
      */
     Package.prototype.author = "";
 
     /**
+     * Package license.
      * @type {string|undefined}
      */
     Package.prototype.license = "";
 
     /**
+     * Package repository.
      * @type {Package.Repository$Properties|undefined}
      */
     Package.prototype.repository = null;
 
     /**
+     * Package bugs.
      * @type {string|undefined}
      */
     Package.prototype.bugs = "";
 
     /**
+     * Package homepage.
      * @type {string|undefined}
      */
     Package.prototype.homepage = "";
 
     /**
+     * Package keywords.
      * @type {Array.<string>|undefined}
      */
     Package.prototype.keywords = $util.emptyArray;
 
     /**
+     * Package main.
      * @type {string|undefined}
      */
     Package.prototype.main = "";
 
     /**
+     * Package bin.
      * @type {Object.<string,string>|undefined}
      */
     Package.prototype.bin = $util.emptyObject;
 
     /**
+     * Package scripts.
      * @type {Object.<string,string>|undefined}
      */
     Package.prototype.scripts = $util.emptyObject;
 
     /**
+     * Package dependencies.
      * @type {Object.<string,string>|undefined}
      */
     Package.prototype.dependencies = $util.emptyObject;
 
     /**
+     * Package optionalDependencies.
      * @type {Object.<string,string>|undefined}
      */
     Package.prototype.optionalDependencies = $util.emptyObject;
 
     /**
+     * Package devDependencies.
      * @type {Object.<string,string>|undefined}
      */
     Package.prototype.devDependencies = $util.emptyObject;
 
     /**
+     * Package types.
      * @type {string|undefined}
      */
     Package.prototype.types = "";
 
     /**
+     * Package cliDependencies.
      * @type {Array.<string>|undefined}
      */
     Package.prototype.cliDependencies = $util.emptyArray;
@@ -650,7 +667,7 @@ $root.Package = (function() {
         /**
          * Properties of a Repository.
          * @typedef Package.Repository$Properties
-         * @type Object
+         * @type {Object}
          * @property {string} [type] Repository type.
          * @property {string} [url] Repository url.
          */
@@ -658,7 +675,6 @@ $root.Package = (function() {
         /**
          * Constructs a new Repository.
          * @exports Package.Repository
-         * @implements Package.Repository$Properties
          * @constructor
          * @param {Package.Repository$Properties=} [properties] Properties to set
          */
@@ -669,11 +685,13 @@ $root.Package = (function() {
         }
 
         /**
+         * Repository type.
          * @type {string|undefined}
          */
         Repository.prototype.type = "";
 
         /**
+         * Repository url.
          * @type {string|undefined}
          */
         Repository.prototype.url = "";

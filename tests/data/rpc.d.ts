@@ -13,7 +13,7 @@ type MyRequest$Properties = {
     path?: string;
 };
 
-export class MyRequest implements MyRequest$Properties {
+export class MyRequest {
     constructor(properties?: MyRequest$Properties);
     public path?: string;
     public static create(properties?: MyRequest$Properties): MyRequest;
@@ -33,7 +33,7 @@ type MyResponse$Properties = {
     status?: number;
 };
 
-export class MyResponse implements MyResponse$Properties {
+export class MyResponse {
     constructor(properties?: MyResponse$Properties);
     public status?: number;
     public static create(properties?: MyResponse$Properties): MyResponse;

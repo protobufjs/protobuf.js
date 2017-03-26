@@ -72,14 +72,13 @@ $root.MyRequest = (function() {
     /**
      * Properties of a MyRequest.
      * @typedef MyRequest$Properties
-     * @type Object
+     * @type {Object}
      * @property {string} [path] MyRequest path.
      */
 
     /**
      * Constructs a new MyRequest.
      * @exports MyRequest
-     * @implements MyRequest$Properties
      * @constructor
      * @param {MyRequest$Properties=} [properties] Properties to set
      */
@@ -90,6 +89,7 @@ $root.MyRequest = (function() {
     }
 
     /**
+     * MyRequest path.
      * @type {string|undefined}
      */
     MyRequest.prototype.path = "";
@@ -245,14 +245,13 @@ $root.MyResponse = (function() {
     /**
      * Properties of a MyResponse.
      * @typedef MyResponse$Properties
-     * @type Object
+     * @type {Object}
      * @property {number} [status] MyResponse status.
      */
 
     /**
      * Constructs a new MyResponse.
      * @exports MyResponse
-     * @implements MyResponse$Properties
      * @constructor
      * @param {MyResponse$Properties=} [properties] Properties to set
      */
@@ -263,6 +262,7 @@ $root.MyResponse = (function() {
     }
 
     /**
+     * MyResponse status.
      * @type {number|undefined}
      */
     MyResponse.prototype.status = 0;

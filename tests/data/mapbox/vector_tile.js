@@ -23,14 +23,13 @@ $root.vector_tile = (function() {
         /**
          * Properties of a Tile.
          * @typedef vector_tile.Tile$Properties
-         * @type Object
+         * @type {Object}
          * @property {Array.<vector_tile.Tile.Layer$Properties>} [layers] Tile layers.
          */
 
         /**
          * Constructs a new Tile.
          * @exports vector_tile.Tile
-         * @implements vector_tile.Tile$Properties
          * @constructor
          * @param {vector_tile.Tile$Properties=} [properties] Properties to set
          */
@@ -42,6 +41,7 @@ $root.vector_tile = (function() {
         }
 
         /**
+         * Tile layers.
          * @type {Array.<vector_tile.Tile.Layer$Properties>|undefined}
          */
         Tile.prototype.layers = $util.emptyArray;
@@ -233,7 +233,7 @@ $root.vector_tile = (function() {
             /**
              * Properties of a Value.
              * @typedef vector_tile.Tile.Value$Properties
-             * @type Object
+             * @type {Object}
              * @property {string} [stringValue] Value stringValue.
              * @property {number} [floatValue] Value floatValue.
              * @property {number} [doubleValue] Value doubleValue.
@@ -246,7 +246,6 @@ $root.vector_tile = (function() {
             /**
              * Constructs a new Value.
              * @exports vector_tile.Tile.Value
-             * @implements vector_tile.Tile.Value$Properties
              * @constructor
              * @param {vector_tile.Tile.Value$Properties=} [properties] Properties to set
              */
@@ -257,36 +256,43 @@ $root.vector_tile = (function() {
             }
 
             /**
+             * Value stringValue.
              * @type {string|undefined}
              */
             Value.prototype.stringValue = "";
 
             /**
+             * Value floatValue.
              * @type {number|undefined}
              */
             Value.prototype.floatValue = 0;
 
             /**
+             * Value doubleValue.
              * @type {number|undefined}
              */
             Value.prototype.doubleValue = 0;
 
             /**
+             * Value intValue.
              * @type {number|Long|undefined}
              */
             Value.prototype.intValue = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
 
             /**
+             * Value uintValue.
              * @type {number|Long|undefined}
              */
             Value.prototype.uintValue = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
 
             /**
+             * Value sintValue.
              * @type {number|Long|undefined}
              */
             Value.prototype.sintValue = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
 
             /**
+             * Value boolValue.
              * @type {boolean|undefined}
              */
             Value.prototype.boolValue = false;
@@ -563,7 +569,7 @@ $root.vector_tile = (function() {
             /**
              * Properties of a Feature.
              * @typedef vector_tile.Tile.Feature$Properties
-             * @type Object
+             * @type {Object}
              * @property {number|Long} [id] Feature id.
              * @property {Array.<number>} [tags] Feature tags.
              * @property {*} [type] Feature type.
@@ -573,7 +579,6 @@ $root.vector_tile = (function() {
             /**
              * Constructs a new Feature.
              * @exports vector_tile.Tile.Feature
-             * @implements vector_tile.Tile.Feature$Properties
              * @constructor
              * @param {vector_tile.Tile.Feature$Properties=} [properties] Properties to set
              */
@@ -586,21 +591,25 @@ $root.vector_tile = (function() {
             }
 
             /**
+             * Feature id.
              * @type {number|Long|undefined}
              */
             Feature.prototype.id = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
 
             /**
+             * Feature tags.
              * @type {Array.<number>|undefined}
              */
             Feature.prototype.tags = $util.emptyArray;
 
             /**
+             * Feature type.
              * @type {vector_tile.Tile.GeomType|undefined}
              */
             Feature.prototype.type = 0;
 
             /**
+             * Feature geometry.
              * @type {Array.<number>|undefined}
              */
             Feature.prototype.geometry = $util.emptyArray;
@@ -881,7 +890,7 @@ $root.vector_tile = (function() {
             /**
              * Properties of a Layer.
              * @typedef vector_tile.Tile.Layer$Properties
-             * @type Object
+             * @type {Object}
              * @property {number} version Layer version.
              * @property {string} name Layer name.
              * @property {Array.<*>} [features] Layer features.
@@ -893,7 +902,6 @@ $root.vector_tile = (function() {
             /**
              * Constructs a new Layer.
              * @exports vector_tile.Tile.Layer
-             * @implements vector_tile.Tile.Layer$Properties
              * @constructor
              * @param {vector_tile.Tile.Layer$Properties=} [properties] Properties to set
              */
@@ -907,31 +915,37 @@ $root.vector_tile = (function() {
             }
 
             /**
+             * Layer version.
              * @type {number}
              */
             Layer.prototype.version = 1;
 
             /**
+             * Layer name.
              * @type {string}
              */
             Layer.prototype.name = "";
 
             /**
+             * Layer features.
              * @type {Array.<vector_tile.Tile.Feature$Properties>|undefined}
              */
             Layer.prototype.features = $util.emptyArray;
 
             /**
+             * Layer keys.
              * @type {Array.<string>|undefined}
              */
             Layer.prototype.keys = $util.emptyArray;
 
             /**
+             * Layer values.
              * @type {Array.<vector_tile.Tile.Value$Properties>|undefined}
              */
             Layer.prototype.values = $util.emptyArray;
 
             /**
+             * Layer extent.
              * @type {number|undefined}
              */
             Layer.prototype.extent = 4096;

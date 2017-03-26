@@ -14,7 +14,7 @@ $root.Test1 = (function() {
     /**
      * Properties of a Test1.
      * @typedef Test1$Properties
-     * @type Object
+     * @type {Object}
      * @property {string} [field1] Field with a comment.
      * @property {number} [field2] Test1 field2.
      * @property {boolean} [field3] Field with a comment and a <a href="http://example.com/foo/">link</a>
@@ -27,7 +27,6 @@ $root.Test1 = (function() {
      * a
      * comment.
      * @exports Test1
-     * @implements Test1$Properties
      * @constructor
      * @param {Test1$Properties=} [properties] Properties to set
      */
@@ -38,16 +37,19 @@ $root.Test1 = (function() {
     }
 
     /**
+     * Field with a comment.
      * @type {string|undefined}
      */
     Test1.prototype.field1 = "";
 
     /**
+     * Test1 field2.
      * @type {number|undefined}
      */
     Test1.prototype.field2 = 0;
 
     /**
+     * Field with a comment and a <a href="http://example.com/foo/">link</a>
      * @type {boolean|undefined}
      */
     Test1.prototype.field3 = false;
@@ -230,13 +232,12 @@ $root.Test2 = (function() {
     /**
      * Properties of a Test2.
      * @typedef Test2$Properties
-     * @type Object
+     * @type {Object}
      */
 
     /**
      * Constructs a new Test2.
      * @exports Test2
-     * @implements Test2$Properties
      * @constructor
      * @param {Test2$Properties=} [properties] Properties to set
      */

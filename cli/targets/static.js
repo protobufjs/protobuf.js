@@ -299,7 +299,7 @@ function buildType(ref, type) {
         var typeDef = [
             "Properties of " + aOrAn(type.name) + ".",
             "@typedef " + fullName + "$Properties",
-            "@type Object"
+            "@type {Object}"
         ];
         type.fieldsArray.forEach(function(field) {
             var jsType = toJsType(field),
@@ -317,7 +317,6 @@ function buildType(ref, type) {
         "Constructs a new " + type.name + ".",
         type.comment ? "@classdesc " + type.comment : null,
         "@exports " + fullName,
-        "@implements " + fullName + "$Properties",
         "@constructor",
         "@param {" + fullName + "$Properties=} [" + (config.beautify ? "properties" : "p") + "] Properties to set"
     ]);
@@ -331,6 +330,7 @@ function buildType(ref, type) {
         if (config.comments) {
             push("");
             pushComment([
+                field.comment || type.name + " " + field.name + ".",
                 "@type {" + toJsType(field) + (field.optional ? "|undefined" : "") + "}"
             ]);
         } else if (firstField) {

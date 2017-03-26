@@ -14,7 +14,7 @@ $root.Message = (function() {
     /**
      * Properties of a Message.
      * @typedef Message$Properties
-     * @type Object
+     * @type {Object}
      * @property {string} [stringVal] Message stringVal.
      * @property {Array.<string>} [stringRepeated] Message stringRepeated.
      * @property {number|Long} [uint64Val] Message uint64Val.
@@ -29,7 +29,6 @@ $root.Message = (function() {
     /**
      * Constructs a new Message.
      * @exports Message
-     * @implements Message$Properties
      * @constructor
      * @param {Message$Properties=} [properties] Properties to set
      */
@@ -45,46 +44,55 @@ $root.Message = (function() {
     }
 
     /**
+     * Message stringVal.
      * @type {string|undefined}
      */
     Message.prototype.stringVal = "";
 
     /**
+     * Message stringRepeated.
      * @type {Array.<string>|undefined}
      */
     Message.prototype.stringRepeated = $util.emptyArray;
 
     /**
+     * Message uint64Val.
      * @type {number|Long|undefined}
      */
     Message.prototype.uint64Val = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
 
     /**
+     * Message uint64Repeated.
      * @type {Array.<number|Long>|undefined}
      */
     Message.prototype.uint64Repeated = $util.emptyArray;
 
     /**
+     * Message bytesVal.
      * @type {Uint8Array|undefined}
      */
     Message.prototype.bytesVal = $util.newBuffer([]);
 
     /**
+     * Message bytesRepeated.
      * @type {Array.<Uint8Array>|undefined}
      */
     Message.prototype.bytesRepeated = $util.emptyArray;
 
     /**
+     * Message enumVal.
      * @type {Message.SomeEnum|undefined}
      */
     Message.prototype.enumVal = 1;
 
     /**
+     * Message enumRepeated.
      * @type {Array.<Message.SomeEnum>|undefined}
      */
     Message.prototype.enumRepeated = $util.emptyArray;
 
     /**
+     * Message int64Map.
      * @type {Object.<string,number|Long>|undefined}
      */
     Message.prototype.int64Map = $util.emptyObject;
@@ -212,7 +220,7 @@ $root.Message = (function() {
                     message.int64Map = {};
                 key = reader.string();
                 reader.pos++;
-                message.int64Map[typeof key === "object" ? $util.longToHash(key) : key] = reader.int64();
+                message.int64Map[key] = reader.int64();
                 break;
             default:
                 reader.skipType(tag & 7);
