@@ -96,9 +96,9 @@ exports.main = function(args, callback) {
     function callJsdoc() {
 
         // There is no proper API for jsdoc, so this executes the CLI and pipes the output
-        var basedir = path.join(__dirname, "..");
+        var basedir = path.join(__dirname, ".");
         var moduleName = argv.name || "null";
-        var cmd = "node \"" + require.resolve("jsdoc/jsdoc.js") + "\" -c \"" + path.join(basedir, "config", "jsdoc-types.json") + "\" -q \"module=" + encodeURIComponent(moduleName) + "&comments=" + Boolean(argv.comments) + "\" " + files.map(function(file) { return "\"" + file + "\""; }).join(" ");
+        var cmd = "node \"" + require.resolve("jsdoc/jsdoc.js") + "\" -c \"" + path.join(basedir, "lib", "tsd-jsdoc.json") + "\" -q \"module=" + encodeURIComponent(moduleName) + "&comments=" + Boolean(argv.comments) + "\" " + files.map(function(file) { return "\"" + file + "\""; }).join(" ");
         var child = child_process.exec(cmd, {
             cwd: process.cwd(),
             argv0: "node",

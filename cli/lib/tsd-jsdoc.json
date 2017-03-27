@@ -11,7 +11,7 @@
         "encoding"      : "utf8",
         "recurse"       : true,
         "lenient"       : true,
-        "template"      : "../lib/tsd-jsdoc",
+        "template"      : "./tsd-jsdoc",
 
         "private"       : false,
         "comments"      : true,
