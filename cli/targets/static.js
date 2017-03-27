@@ -188,7 +188,7 @@ function beautifyCode(code) {
     });
     code = escodegen.generate(ast, {
         format: {
-            newline: "\r\n",
+            newline: "\n",
             quotes: "double"
         }
     });
@@ -202,16 +202,60 @@ function beautifyCode(code) {
     return code;
 }
 
+var renameVars = {
+    "Writer": "$Writer",
+    "Reader": "$Reader",
+    "util": "$util"
+};
+
 function buildFunction(type, functionName, gen, scope) {
     var code = gen.str(functionName)
-        .replace(/this\.ctor/g, " $root" + type.fullName) // types: construct directly instead of using reflected ctor
-        .replace(/(types\[\d+])(\.values)/g, "$1")        // enums: use types[N] instead of reflected types[N].values
-        .replace(/\b(?!\.)Writer\b/g, "$Writer")          // use common aliases instead of binding through an iife
-        .replace(/\b(?!\.)Reader\b/g, "$Reader")          // "
-        .replace(/\b(?!\.)util\.\b/g, "$util.")           // "
-        .replace(/\b(?!\.)types\[(\d+)\]/g, function($0, $1) {
-            return "$root" + type.fieldsArray[$1].resolvedType.fullName;
-        });
+        .replace(/((?!\.)types\[\d+])(\.values)/g, "$1"); // enums: use types[N] instead of reflected types[N].values
+
+    var ast = espree.parse(code);
+    estraverse.replace(ast, {
+        enter: function(node, parent) {
+            // rename vars
+            if (
+                node.type === "Identifier" && renameVars[node.name]
+                && (
+                    (parent.type === "MemberExpression" && parent.object === node)
+                 || (parent.type === "BinaryExpression" && parent.right === node)
+                )
+            )
+                return {
+                    "type": "Identifier",
+                    "name": renameVars[node.name]
+                };
+            // replace this.ctor with the actual ctor
+            if (
+                node.type === "MemberExpression"
+             && node.object.type === "ThisExpression"
+             && node.property.type === "Identifier" && node.property.name === "ctor"
+            )
+                return {
+                    "type": "Identifier",
+                    "name": "$root " + type.fullName
+                };
+            // replace types[N] with the field's actual type
+            if (
+                node.type === "MemberExpression"
+             && node.object.type === "Identifier" && node.object.name === "types"
+             && node.property.type === "Literal"
+            )
+                return {
+                    "type": "Identifier",
+                    "name": "$root" + type.fieldsArray[node.property.value].resolvedType.fullName
+                };
+            return undefined;
+        }
+    });
+    code = escodegen.generate(ast, {
+        format: {
+            newline: "\n",
+            quotes: "double"
+        }
+    });
 
     if (config.beautify)
         code = beautifyCode(code);

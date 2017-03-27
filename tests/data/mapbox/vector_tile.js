@@ -572,7 +572,7 @@ $root.vector_tile = (function() {
              * @type {Object}
              * @property {number|Long} [id] Feature id.
              * @property {Array.<number>} [tags] Feature tags.
-             * @property {*} [type] Feature type.
+             * @property {vector_tile.Tile.GeomType} [type] Feature type.
              * @property {Array.<number>} [geometry] Feature geometry.
              */
 
@@ -893,9 +893,9 @@ $root.vector_tile = (function() {
              * @type {Object}
              * @property {number} version Layer version.
              * @property {string} name Layer name.
-             * @property {Array.<*>} [features] Layer features.
+             * @property {Array.<vector_tile.Tile.Feature$Properties>} [features] Layer features.
              * @property {Array.<string>} [keys] Layer keys.
-             * @property {Array.<*>} [values] Layer values.
+             * @property {Array.<vector_tile.Tile.Value$Properties>} [values] Layer values.
              * @property {number} [extent] Layer extent.
              */
 

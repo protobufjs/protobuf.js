@@ -172,7 +172,7 @@ exports.wrap = function(OUTPUT, options) {
     });
     if (options.lint !== "")
         wrap = "/*" + options.lint + "*/\n" + wrap;
-    return wrap.replace(/\r?\n/, "\n");
+    return wrap.replace(/\r?\n/g, "\n");
 };
 
 exports.pad = function(str, len, l) {
