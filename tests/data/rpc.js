@@ -7,7 +7,7 @@ var $protobuf = require("../../minimal");
 var $Reader = $protobuf.Reader, $Writer = $protobuf.Writer, $util = $protobuf.util;
 
 // Exported root namespace
-var $root = $protobuf.roots.test_rpc || ($protobuf.roots.test_rpc = {});
+var $root = $protobuf.roots["test_tests/data/rpc"] || ($protobuf.roots["test_tests/data/rpc"] = {});
 
 $root.MyService = (function() {
 

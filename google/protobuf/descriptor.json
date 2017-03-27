@@ -9,7 +9,8 @@
                 "file": {
                   "rule": "repeated",
                   "type": "FileDescriptorProto",
-                  "id": 1
+                  "id": 1,
+                  "options": {}
                 }
               }
             },
@@ -26,7 +27,10 @@
                 "dependency": {
                   "rule": "repeated",
                   "type": "string",
-                  "id": 3
+                  "id": 3,
+                  "options": {
+                    "packed": false
+                  }
                 },
                 "publicDependency": {
                   "rule": "repeated",
@@ -47,22 +51,26 @@
                 "messageType": {
                   "rule": "repeated",
                   "type": "DescriptorProto",
-                  "id": 4
+                  "id": 4,
+                  "options": {}
                 },
                 "enumType": {
                   "rule": "repeated",
                   "type": "EnumDescriptorProto",
-                  "id": 5
+                  "id": 5,
+                  "options": {}
                 },
                 "service": {
                   "rule": "repeated",
                   "type": "ServiceDescriptorProto",
-                  "id": 6
+                  "id": 6,
+                  "options": {}
                 },
                 "extension": {
                   "rule": "repeated",
                   "type": "FieldDescriptorProto",
-                  "id": 7
+                  "id": 7,
+                  "options": {}
                 },
                 "options": {
                   "type": "FileOptions",
@@ -87,32 +95,38 @@
                 "field": {
                   "rule": "repeated",
                   "type": "FieldDescriptorProto",
-                  "id": 2
+                  "id": 2,
+                  "options": {}
                 },
                 "extension": {
                   "rule": "repeated",
                   "type": "FieldDescriptorProto",
-                  "id": 6
+                  "id": 6,
+                  "options": {}
                 },
                 "nestedType": {
                   "rule": "repeated",
                   "type": "DescriptorProto",
-                  "id": 3
+                  "id": 3,
+                  "options": {}
                 },
                 "enumType": {
                   "rule": "repeated",
                   "type": "EnumDescriptorProto",
-                  "id": 4
+                  "id": 4,
+                  "options": {}
                 },
                 "extensionRange": {
                   "rule": "repeated",
                   "type": "ExtensionRange",
-                  "id": 5
+                  "id": 5,
+                  "options": {}
                 },
                 "oneofDecl": {
                   "rule": "repeated",
                   "type": "OneofDescriptorProto",
-                  "id": 8
+                  "id": 8,
+                  "options": {}
                 },
                 "options": {
                   "type": "MessageOptions",
@@ -121,12 +135,16 @@
                 "reservedRange": {
                   "rule": "repeated",
                   "type": "ReservedRange",
-                  "id": 9
+                  "id": 9,
+                  "options": {}
                 },
                 "reservedName": {
                   "rule": "repeated",
                   "type": "string",
-                  "id": 10
+                  "id": 10,
+                  "options": {
+                    "packed": false
+                  }
                 }
               },
               "nested": {
@@ -252,7 +270,8 @@
                 "value": {
                   "rule": "repeated",
                   "type": "EnumValueDescriptorProto",
-                  "id": 2
+                  "id": 2,
+                  "options": {}
                 },
                 "options": {
                   "type": "EnumOptions",
@@ -285,7 +304,8 @@
                 "method": {
                   "rule": "repeated",
                   "type": "MethodDescriptorProto",
-                  "id": 2
+                  "id": 2,
+                  "options": {}
                 },
                 "options": {
                   "type": "ServiceOptions",
@@ -388,7 +408,8 @@
                 "uninterpretedOption": {
                   "rule": "repeated",
                   "type": "UninterpretedOption",
-                  "id": 999
+                  "id": 999,
+                  "options": {}
                 }
               },
               "extensions": [
@@ -434,7 +455,8 @@
                 "uninterpretedOption": {
                   "rule": "repeated",
                   "type": "UninterpretedOption",
-                  "id": 999
+                  "id": 999,
+                  "options": {}
                 }
               },
               "extensions": [
@@ -485,7 +507,8 @@
                 "uninterpretedOption": {
                   "rule": "repeated",
                   "type": "UninterpretedOption",
-                  "id": 999
+                  "id": 999,
+                  "options": {}
                 }
               },
               "extensions": [
@@ -522,7 +545,8 @@
                 "uninterpretedOption": {
                   "rule": "repeated",
                   "type": "UninterpretedOption",
-                  "id": 999
+                  "id": 999,
+                  "options": {}
                 }
               },
               "extensions": [
@@ -545,7 +569,8 @@
                 "uninterpretedOption": {
                   "rule": "repeated",
                   "type": "UninterpretedOption",
-                  "id": 999
+                  "id": 999,
+                  "options": {}
                 }
               },
               "extensions": [
@@ -564,7 +589,8 @@
                 "uninterpretedOption": {
                   "rule": "repeated",
                   "type": "UninterpretedOption",
-                  "id": 999
+                  "id": 999,
+                  "options": {}
                 }
               },
               "extensions": [
@@ -583,7 +609,8 @@
                 "uninterpretedOption": {
                   "rule": "repeated",
                   "type": "UninterpretedOption",
-                  "id": 999
+                  "id": 999,
+                  "options": {}
                 }
               },
               "extensions": [
@@ -602,7 +629,8 @@
                 "uninterpretedOption": {
                   "rule": "repeated",
                   "type": "UninterpretedOption",
-                  "id": 999
+                  "id": 999,
+                  "options": {}
                 }
               },
               "extensions": [
@@ -617,7 +645,8 @@
                 "name": {
                   "rule": "repeated",
                   "type": "NamePart",
-                  "id": 2
+                  "id": 2,
+                  "options": {}
                 },
                 "identifierValue": {
                   "type": "string",
@@ -666,7 +695,8 @@
                 "location": {
                   "rule": "repeated",
                   "type": "Location",
-                  "id": 1
+                  "id": 1,
+                  "options": {}
                 }
               },
               "nested": {
@@ -699,7 +729,10 @@
                     "leadingDetachedComments": {
                       "rule": "repeated",
                       "type": "string",
-                      "id": 6
+                      "id": 6,
+                      "options": {
+                        "packed": false
+                      }
                     }
                   }
                 }
@@ -710,7 +743,8 @@
                 "annotation": {
                   "rule": "repeated",
                   "type": "Annotation",
-                  "id": 1
+                  "id": 1,
+                  "options": {}
                 }
               },
               "nested": {

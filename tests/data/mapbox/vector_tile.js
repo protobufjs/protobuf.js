@@ -7,7 +7,7 @@ var $protobuf = require("../../../minimal");
 var $Reader = $protobuf.Reader, $Writer = $protobuf.Writer, $util = $protobuf.util;
 
 // Exported root namespace
-var $root = $protobuf.roots.test_vector_tile || ($protobuf.roots.test_vector_tile = {});
+var $root = $protobuf.roots["test_tests/data/mapbox/vector_tile"] || ($protobuf.roots["test_tests/data/mapbox/vector_tile"] = {});
 
 $root.vector_tile = (function() {
 
