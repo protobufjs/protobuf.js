@@ -279,7 +279,7 @@ function toJsType(field) {
             type = "Uint8Array";
             break;
         default:
-            if (field.resolvedType instanceof Enum)
+            if (field.resolve().resolvedType instanceof Enum)
                 type = field.resolvedType.fullName.substring(1); // reference the enum
             else if (field.resolvedType instanceof Type)
                 type = field.resolvedType.fullName.substring(1) + "$Properties"; // reference the interface
@@ -302,10 +302,9 @@ function buildType(ref, type) {
             "@type {Object}"
         ];
         type.fieldsArray.forEach(function(field) {
-            var jsType = toJsType(field),
-                prop = util.safeProp(field.name);
+            var prop = util.safeProp(field.name);
             prop = prop.substring(1, prop.charAt(0) === "[" ? prop.length - 1 : prop.length);
-            typeDef.push("@property {" + jsType + "} " + (field.optional ? "[" + prop + "]" : field.name) + " " + (field.comment || type.name + " " + field.name + "."));
+            typeDef.push("@property {" + toJsType(field) + "} " + (field.optional ? "[" + prop + "]" : field.name) + " " + (field.comment || type.name + " " + field.name + "."));
         });
         push("");
         pushComment(typeDef);

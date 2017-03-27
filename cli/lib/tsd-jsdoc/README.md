@@ -1,7 +1,7 @@
 protobuf.js fork of tsd-jsdoc
 =============================
 
-This is a slightly modified and restructured version of [tsd-jsdoc](https://github.com/englercj/tsd-jsdoc) for use with protobuf.js, parked here so we can process issues and pull requests.
+This is a modified version of [tsd-jsdoc](https://github.com/englercj/tsd-jsdoc) v1.0.1 for use with protobuf.js, parked here so we can process issues and pull requests. The ultimate goal is to switch back to the a recent version of tsd-jsdoc once it meets our needs.
 
 Options
 -------
