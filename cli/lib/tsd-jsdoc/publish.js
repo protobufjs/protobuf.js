@@ -531,9 +531,9 @@ function handleTypeDef(element, parent) {
             writeInterface(element);
         }
     } else {
-        begin(element, true);
-        if (element.access)
-            write(element.access, " ");
+        // see: https://github.com/dcodeIO/protobuf.js/issues/737
+        // begin(element, true);
+        writeln();
         write("type ", element.name, " = ");
         if (element.type && element.type.names.length === 1 && element.type.names[0] === "function")
             writeFunctionSignature(element, false, true);
