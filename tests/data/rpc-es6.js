@@ -1,14 +1,13 @@
 /*eslint-disable block-scoped-var, no-redeclare, no-control-regex, no-prototype-builtins*/
-import * as $protobuf from "protobufjs";
+"use strict";
+
+var $protobuf = require("../../minimal");
 
 // Common aliases
 const $Reader = $protobuf.Reader, $Writer = $protobuf.Writer, $util = $protobuf.util;
 
-// Lazily resolved type references
-const $lazyTypes = [];
-
 // Exported root namespace
-const $root = $protobuf.roots["default"] || ($protobuf.roots["default"] = {});
+const $root = $protobuf.roots["test_tests/data/rpc"] || ($protobuf.roots["test_tests/data/rpc"] = {});
 
 export const MyService = $root.MyService = (function() {
 
@@ -48,7 +47,7 @@ export const MyService = $root.MyService = (function() {
 
     /**
      * Calls MyMethod.
-     * @param {MyRequest|Object} request MyRequest message or plain object
+     * @param {MyRequest|Object.<string,*>} request MyRequest message or plain object
      * @param {MyService_myMethod_Callback} callback Node-style callback called with the error, if any, and MyResponse
      * @returns {undefined}
      */
@@ -60,7 +59,7 @@ export const MyService = $root.MyService = (function() {
      * Calls MyMethod.
      * @name MyService#myMethod
      * @function
-     * @param {MyRequest|Object} request MyRequest message or plain object
+     * @param {MyRequest|Object.<string,*>} request MyRequest message or plain object
      * @returns {Promise<MyResponse>} Promise
      * @variation 2
      */
@@ -71,10 +70,17 @@ export const MyService = $root.MyService = (function() {
 export const MyRequest = $root.MyRequest = (function() {
 
     /**
+     * Properties of a MyRequest.
+     * @typedef MyRequest$Properties
+     * @type {Object}
+     * @property {string} [path] MyRequest path.
+     */
+
+    /**
      * Constructs a new MyRequest.
      * @exports MyRequest
      * @constructor
-     * @param {Object} [properties] Properties to set
+     * @param {MyRequest$Properties=} [properties] Properties to set
      */
     function MyRequest(properties) {
         if (properties)
@@ -90,7 +96,7 @@ export const MyRequest = $root.MyRequest = (function() {
 
     /**
      * Creates a new MyRequest instance using the specified properties.
-     * @param {Object} [properties] Properties to set
+     * @param {MyRequest$Properties=} [properties] Properties to set
      * @returns {MyRequest} MyRequest instance
      */
     MyRequest.create = function create(properties) {
@@ -99,21 +105,21 @@ export const MyRequest = $root.MyRequest = (function() {
 
     /**
      * Encodes the specified MyRequest message. Does not implicitly {@link MyRequest.verify|verify} messages.
-     * @param {MyRequest|Object} message MyRequest message or plain object to encode
+     * @param {MyRequest$Properties} message MyRequest message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
     MyRequest.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.path !== undefined && message.hasOwnProperty("path"))
+        if (message.path != null && message.hasOwnProperty("path"))
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.path);
         return writer;
     };
 
     /**
      * Encodes the specified MyRequest message, length delimited. Does not implicitly {@link MyRequest.verify|verify} messages.
-     * @param {MyRequest|Object} message MyRequest message or plain object to encode
+     * @param {MyRequest$Properties} message MyRequest message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
@@ -162,13 +168,13 @@ export const MyRequest = $root.MyRequest = (function() {
 
     /**
      * Verifies a MyRequest message.
-     * @param {MyRequest|Object} message MyRequest message or plain object to verify
+     * @param {Object.<string,*>} message Plain object to verify
      * @returns {?string} `null` if valid, otherwise the reason why it is not
      */
     MyRequest.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
-        if (message.path !== undefined)
+        if (message.path != null)
             if (!$util.isString(message.path))
                 return "path: string expected";
         return null;
@@ -183,7 +189,7 @@ export const MyRequest = $root.MyRequest = (function() {
         if (object instanceof $root.MyRequest)
             return object;
         let message = new $root.MyRequest();
-        if (object.path !== undefined && object.path !== null)
+        if (object.path != null)
             message.path = String(object.path);
         return message;
     };
@@ -209,7 +215,7 @@ export const MyRequest = $root.MyRequest = (function() {
         let object = {};
         if (options.defaults)
             object.path = "";
-        if (message.path !== undefined && message.path !== null && message.hasOwnProperty("path"))
+        if (message.path != null && message.hasOwnProperty("path"))
             object.path = message.path;
         return object;
     };
@@ -237,10 +243,17 @@ export const MyRequest = $root.MyRequest = (function() {
 export const MyResponse = $root.MyResponse = (function() {
 
     /**
+     * Properties of a MyResponse.
+     * @typedef MyResponse$Properties
+     * @type {Object}
+     * @property {number} [status] MyResponse status.
+     */
+
+    /**
      * Constructs a new MyResponse.
      * @exports MyResponse
      * @constructor
-     * @param {Object} [properties] Properties to set
+     * @param {MyResponse$Properties=} [properties] Properties to set
      */
     function MyResponse(properties) {
         if (properties)
@@ -256,7 +269,7 @@ export const MyResponse = $root.MyResponse = (function() {
 
     /**
      * Creates a new MyResponse instance using the specified properties.
-     * @param {Object} [properties] Properties to set
+     * @param {MyResponse$Properties=} [properties] Properties to set
      * @returns {MyResponse} MyResponse instance
      */
     MyResponse.create = function create(properties) {
@@ -265,21 +278,21 @@ export const MyResponse = $root.MyResponse = (function() {
 
     /**
      * Encodes the specified MyResponse message. Does not implicitly {@link MyResponse.verify|verify} messages.
-     * @param {MyResponse|Object} message MyResponse message or plain object to encode
+     * @param {MyResponse$Properties} message MyResponse message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
     MyResponse.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.status !== undefined && message.hasOwnProperty("status"))
+        if (message.status != null && message.hasOwnProperty("status"))
             writer.uint32(/* id 2, wireType 0 =*/16).int32(message.status);
         return writer;
     };
 
     /**
      * Encodes the specified MyResponse message, length delimited. Does not implicitly {@link MyResponse.verify|verify} messages.
-     * @param {MyResponse|Object} message MyResponse message or plain object to encode
+     * @param {MyResponse$Properties} message MyResponse message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
@@ -328,13 +341,13 @@ export const MyResponse = $root.MyResponse = (function() {
 
     /**
      * Verifies a MyResponse message.
-     * @param {MyResponse|Object} message MyResponse message or plain object to verify
+     * @param {Object.<string,*>} message Plain object to verify
      * @returns {?string} `null` if valid, otherwise the reason why it is not
      */
     MyResponse.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
-        if (message.status !== undefined)
+        if (message.status != null)
             if (!$util.isInteger(message.status))
                 return "status: integer expected";
         return null;
@@ -349,7 +362,7 @@ export const MyResponse = $root.MyResponse = (function() {
         if (object instanceof $root.MyResponse)
             return object;
         let message = new $root.MyResponse();
-        if (object.status !== undefined && object.status !== null)
+        if (object.status != null)
             message.status = object.status | 0;
         return message;
     };
@@ -375,7 +388,7 @@ export const MyResponse = $root.MyResponse = (function() {
         let object = {};
         if (options.defaults)
             object.status = 0;
-        if (message.status !== undefined && message.status !== null && message.hasOwnProperty("status"))
+        if (message.status != null && message.hasOwnProperty("status"))
             object.status = message.status;
         return object;
     };
@@ -400,7 +413,4 @@ export const MyResponse = $root.MyResponse = (function() {
     return MyResponse;
 })();
 
-// Resolve lazy type references to actual types
-$util.lazyResolve($root, $lazyTypes);
-
-export { $root as default };
+module.exports = $root;

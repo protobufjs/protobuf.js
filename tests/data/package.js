@@ -7,7 +7,7 @@ var $protobuf = require("../../minimal");
 var $Reader = $protobuf.Reader, $Writer = $protobuf.Writer, $util = $protobuf.util;
 
 // Exported root namespace
-var $root = $protobuf.roots.test_package || ($protobuf.roots.test_package = {});
+var $root = $protobuf.roots["test_tests/data/package"] || ($protobuf.roots["test_tests/data/package"] = {});
 
 $root.Package = (function() {
 

@@ -7,7 +7,7 @@ var $protobuf = require("../../minimal");
 var $Reader = $protobuf.Reader, $Writer = $protobuf.Writer, $util = $protobuf.util;
 
 // Exported root namespace
-var $root = $protobuf.roots.test_convert || ($protobuf.roots.test_convert = {});
+var $root = $protobuf.roots["test_tests/data/convert"] || ($protobuf.roots["test_tests/data/convert"] = {});
 
 $root.Message = (function() {
 
