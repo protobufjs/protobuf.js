@@ -61,21 +61,22 @@ var distPath = path.join(__dirname, "..", "..", "dist");
         test.test(test.name + " - amd loaders", function(test) {
             var sandbox;
 
-            function fakeDefine(deps, init) {
+            function fakeDefine(deps, factory) {
                 test.same(deps, [ "long" ], "should request long.js as a dependency");
                 test.notOk(sandbox.window.protobuf.util.Long, "should not have loaded long.js before calling the factory function");
-                init([ long ]);
+                factory(long);
+                test.ok(sandbox.window.protobuf.util.Long, "should have loaded long.js after calling the factory function");
             }
             fakeDefine.amd = true;
 
             vm.runInNewContext(dist.data, sandbox = {
                 define: fakeDefine,
                 window: {},
-                require: undefined
+                require: undefined,
+                console: console
             });
 
             test.ok(sandbox.window.protobuf, "should load the library as a global");
-            test.ok(sandbox.window.protobuf.util.Long, "should have loaded long.js after calling the factory function");
             test.end();
 
         });

@@ -36,6 +36,7 @@ function bake(values, offset) {
 /**
  * Basic type wire types.
  * @type {Object.<string,number>}
+ * @const
  * @property {number} double=1 Fixed64 wire type
  * @property {number} float=5 Fixed32 wire type
  * @property {number} int32=0 Varint wire type
@@ -73,6 +74,7 @@ types.basic = bake([
 /**
  * Basic type defaults.
  * @type {Object.<string,*>}
+ * @const
  * @property {number} double=0 Double default
  * @property {number} float=0 Float default
  * @property {number} int32=0 Int32 default
@@ -112,6 +114,7 @@ types.defaults = bake([
 /**
  * Basic long type wire types.
  * @type {Object.<string,number>}
+ * @const
  * @property {number} int64=0 Varint wire type
  * @property {number} uint64=0 Varint wire type
  * @property {number} sint64=0 Varint wire type
@@ -129,6 +132,7 @@ types.long = bake([
 /**
  * Allowed types for map keys with their associated wire type.
  * @type {Object.<string,number>}
+ * @const
  * @property {number} int32=0 Varint wire type
  * @property {number} uint32=0 Varint wire type
  * @property {number} sint32=0 Varint wire type
@@ -160,6 +164,7 @@ types.mapKey = bake([
 /**
  * Allowed types for packed repeated fields with their associated wire type.
  * @type {Object.<string,number>}
+ * @const
  * @property {number} double=1 Fixed64 wire type
  * @property {number} float=5 Fixed32 wire type
  * @property {number} int32=0 Varint wire type

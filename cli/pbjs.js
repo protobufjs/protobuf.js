@@ -163,8 +163,10 @@ exports.main = function main(args, callback) {
     };
 
     // Use es6 syntax if not explicitly specified on the command line and the es6 wrapper is used
-    if (argv.wrap === "es6" && argv.es6 === null)
+    if (argv.wrap === "es6" || argv.es6) {
+        argv.wrap = "es6";
         argv.es6 = true;
+    }
 
     var parseOptions = {
         "keepCase": argv["keep-case"] || false

@@ -4,7 +4,7 @@ export namespace jspb {
 
     namespace test {
 
-        type Empty$Properties = Object;
+        type Empty$Properties = {};
 
         class Empty {
             constructor(properties?: jspb.test.Empty$Properties);
@@ -256,7 +256,7 @@ export namespace jspb {
             }
         }
 
-        type OuterMessage$Properties = Object;
+        type OuterMessage$Properties = {};
 
         class OuterMessage {
             constructor(properties?: jspb.test.OuterMessage$Properties);
@@ -316,7 +316,7 @@ export namespace jspb {
             public toJSON(): { [k: string]: any };
         }
 
-        type IndirectExtension$Properties = Object;
+        type IndirectExtension$Properties = {};
 
         class IndirectExtension {
             constructor(properties?: jspb.test.IndirectExtension$Properties);
@@ -592,7 +592,7 @@ export namespace jspb {
             public toJSON(): { [k: string]: any };
         }
 
-        type TestReservedNamesExtension$Properties = Object;
+        type TestReservedNamesExtension$Properties = {};
 
         class TestReservedNamesExtension {
             constructor(properties?: jspb.test.TestReservedNamesExtension$Properties);
@@ -741,7 +741,7 @@ export namespace jspb {
             public toJSON(): { [k: string]: any };
         }
 
-        type Deeply$Properties = Object;
+        type Deeply$Properties = {};
 
         class Deeply {
             constructor(properties?: jspb.test.Deeply$Properties);
@@ -760,7 +760,7 @@ export namespace jspb {
 
         namespace Deeply {
 
-            type Nested$Properties = Object;
+            type Nested$Properties = {};
 
             class Nested {
                 constructor(properties?: jspb.test.Deeply.Nested$Properties);

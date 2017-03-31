@@ -46,7 +46,7 @@ exports.publish = function publish(taffy, opts) {
                         break;
                 }
         });
-    
+
     // remove undocumented
     taffy({ undocumented: true }).remove();
     taffy({ ignore: true }).remove();
@@ -60,14 +60,14 @@ exports.publish = function publish(taffy, opts) {
     out = options.destination
         ? fs.createWriteStream(options.destination)
         : process.stdout;
-    
+
     try {
         // setup environment
         data = taffy().get();
         indent = 0;
         indentWritten = false;
         firstLine = true;
-        
+
         // wrap everything in a module if configured
         if (options.module) {
             writeln("export = ", options.module, ";");
@@ -99,7 +99,7 @@ exports.publish = function publish(taffy, opts) {
         // close file output
         if (out !== process.stdout)
             out.end();
-        
+
     } finally {
         // gc environment objects
         out = data = null;
@@ -208,9 +208,9 @@ function getTypeOf(element) {
     // Replace catchalls with any
     name = name.replace(/\*|\bmixed\b/g, "any");
 
-    // Ensure upper case Object
+    // Ensure upper case Object for map expressions below
     name = name.replace(/\bobject\b/g, "Object");
-    
+
     // Correct Promise.<Something> to Promise<Something>
     name = replaceRecursive(name, /\bPromise\.<([^>]*)>/gi, function($0, $1) {
         return "Promise<" + $1 + ">";
@@ -228,6 +228,10 @@ function getTypeOf(element) {
 
     // Replace functions (there are no signatures) with () => any
     name = name.replace(/\bfunction(?:\(\))?([^\w]|$)/gi, "() => any");
+
+    // Convert plain Object back to just object
+    if (name === "Object")
+        name = "object";
 
     return name;
 }
@@ -324,8 +328,8 @@ function writeProperty(property) {
 // handles a single element of any understood type
 function handleElement(element, parent, insideClass) {
     if (element.optional !== true && element.type && element.type.names && element.type.names.length) {
-        for (let i = 0; i < element.type.names.length; i++) {
-            if (element.type.names[i].toLowerCase() === 'undefined') {
+        for (var i = 0; i < element.type.names.length; i++) {
+            if (element.type.names[i].toLowerCase() === "undefined") {
                 // This element is actually optional. Set optional to true and
                 // remove the 'undefined' type
                 element.optional = true;
@@ -458,7 +462,7 @@ function handleMember(element, parent) {
     begin(element);
 
     if (element.isEnum) {
-        
+
         writeln("enum ", element.name, " {");
         ++indent;
         element.properties.forEach(function(property, i) {
@@ -535,12 +539,16 @@ function handleTypeDef(element, parent) {
         // begin(element, true);
         writeln();
         write("type ", element.name, " = ");
+        var type = getTypeOf(element);
         if (element.type && element.type.names.length === 1 && element.type.names[0] === "function")
             writeFunctionSignature(element, false, true);
-        else if (getTypeOf(element) === "Object" && element.properties && element.properties.length) {
-            writeInterfaceBody(element);
+        else if (type === "object") {
+            if (element.properties && element.properties.length)
+                writeInterfaceBody(element);
+            else
+                write("{}");
         } else
-            write(getTypeOf(element));
+            write(type);
         writeln(";");
     }
 }

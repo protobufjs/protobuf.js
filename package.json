@@ -57,10 +57,10 @@
   "optionalDependencies": {
     "long": "^3.2.0",
     "@types/long": "^3.0.31",
-    "@types/node": "7.0.10"
+    "@types/node": "7.0.12"
   },
   "devDependencies": {
-    "benchmark": "^2.1.3",
+    "benchmark": "^2.1.4",
     "browserify": "^14.1.0",
     "browserify-wrap": "^1.0.2",
     "bundle-collapser": "^1.2.1",
@@ -76,7 +76,7 @@
     "gulp": "^3.9.1",
     "gulp-header": "^1.8.8",
     "gulp-if": "^2.0.1",
-    "gulp-sourcemaps": "^2.4.1",
+    "gulp-sourcemaps": "^2.5.0",
     "gulp-uglify": "^2.1.2",
     "istanbul": "^0.4.5",
     "jaguarjs-jsdoc": "dcodeIO/jaguarjs-jsdoc",
@@ -87,9 +87,9 @@
     "tap-spec": "^4.1.1",
     "tape": "^4.6.3",
     "tmp": "0.0.31",
-    "tslint": "^4.5.1",
-    "typescript": "^2.2.1",
-    "uglify-js": "^2.8.15",
+    "tslint": "^5.0.0",
+    "typescript": "^2.2.2",
+    "uglify-js": "^2.8.20",
     "vinyl-buffer": "^1.0.0",
     "vinyl-fs": "^2.4.4",
     "vinyl-source-stream": "^1.1.0"

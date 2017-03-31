@@ -98,7 +98,7 @@ function buildNamespace(ref, ns) {
     if (ns.name !== "") {
         push("");
         if (!ref && config.es6)
-            push("export const " + name(ns.name) + " = " + name(ref) + "." + name(ns.name) + " = (function() {");
+            push("export const " + name(ns.name) + " = " + name(ref) + "." + name(ns.name) + " = (() => {");
         else
             push(name(ref) + "." + name(ns.name) + " = (function() {");
         ++indent;
@@ -213,6 +213,7 @@ function buildFunction(type, functionName, gen, scope) {
         .replace(/((?!\.)types\[\d+])(\.values)/g, "$1"); // enums: use types[N] instead of reflected types[N].values
 
     var ast = espree.parse(code);
+    /* eslint-disable no-extra-parens */
     estraverse.replace(ast, {
         enter: function(node, parent) {
             // rename vars
@@ -235,7 +236,7 @@ function buildFunction(type, functionName, gen, scope) {
             )
                 return {
                     "type": "Identifier",
-                    "name": "$root " + type.fullName
+                    "name": "$root" + type.fullName
                 };
             // replace types[N] with the field's actual type
             if (
@@ -250,6 +251,7 @@ function buildFunction(type, functionName, gen, scope) {
             return undefined;
         }
     });
+    /* eslint-enable no-extra-parens */
     code = escodegen.generate(ast, {
         format: {
             newline: "\n",

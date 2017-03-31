@@ -29,7 +29,7 @@ tape.test("util", function(test) {
         test.end();
     });
 
-    test.test(test.name + " - isset", function(test) {
+    test.test(test.name + " - isSet", function(test) {
         // note that encoders don't check for default values either
         var neverPresent = [
             [],
@@ -42,8 +42,8 @@ tape.test("util", function(test) {
             var instance = Object.create(proto);
             proto.p = value;
             instance.i = value;
-            test.notOk(util.isset(proto, "p"), "should return that " + JSON.stringify(value) + " on the prototype is not present");
-            test.notOk(util.isset(instance, "i"), "should return that " + JSON.stringify(value) + " on the instance is not present");
+            test.notOk(util.isSet(proto, "p"), "should return that " + JSON.stringify(value) + " on the prototype is not present");
+            test.notOk(util.isSet(instance, "i"), "should return that " + JSON.stringify(value) + " on the instance is not present");
         });
         var cases = {
             "arrays": [ [], [0] ],
@@ -60,11 +60,11 @@ tape.test("util", function(test) {
             proto.pe = instance.ie = empty;
             proto.p = instance.i = value;
             if (empty !== undefined) { // not present anyway
-                test.notOk(util.isset(instance, "pe"), "should return that empty " + name + " on the prototype are not present");
-                test.notOk(util.isset(instance, "ie"), "should return that empty " + name + " on the instance are not present");
+                test.notOk(util.isSet(instance, "pe"), "should return that empty " + name + " on the prototype are not present");
+                test.notOk(util.isSet(instance, "ie"), "should return that empty " + name + " on the instance are not present");
             }
-            test.notOk(util.isset(instance, "p"), "should return that " + name + " on the prototype are not present");
-            test.ok(util.isset(instance, "i"), "should return that " + name + " on the instance ARE present");
+            test.notOk(util.isSet(instance, "p"), "should return that " + name + " on the prototype are not present");
+            test.ok(util.isSet(instance, "i"), "should return that " + name + " on the instance ARE present");
         });
 
          test.end();

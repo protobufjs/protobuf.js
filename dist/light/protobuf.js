@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.7.0 (c) 2016, Daniel Wirtz
- * Compiled Thu, 23 Mar 2017 04:21:06 UTC
+ * Compiled Fri, 31 Mar 2017 13:44:25 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -24,8 +24,10 @@
     // Be nice to AMD
     if (typeof define === "function" && define.amd)
         define(["long"], function(Long) {
-            protobuf.util.Long = Long;
-            protobuf.configure();
+            if (Long && Long.isLong) {
+                protobuf.util.Long = Long;
+                protobuf.configure();
+            }
             return protobuf;
         });
 
@@ -889,7 +891,7 @@ Class.generate = function generate(type) { // eslint-disable-line no-unused-vars
  * @param {Type} type Reflected message type
  * @param {*} [ctor] Custom constructor to set up, defaults to create a generic one if omitted
  * @returns {Message} Message prototype
- * @deprecated Assign the constructor to {@link Type#ctor} instead
+ * @deprecated since 6.7.0 it's possible to just assign a new constructor to {@link Type#ctor}
  */
 Class.create = Class;
 
@@ -1100,7 +1102,7 @@ converter.fromObject = function fromObject(mtype) {
         // Non-repeated fields
         } else {
             if (!(field.resolvedType instanceof Enum)) gen // no need to test for null/undefined if an enum (uses switch)
-    ("if(d%s!==undefined&&d%s!==null){", prop, prop);
+    ("if(d%s!=null){", prop); // !== undefined && !== null
         genValuePartial_fromObject(gen, field, /* not sorted */ i, prop);
             if (!(field.resolvedType instanceof Enum)) gen
     ("}");
@@ -1160,7 +1162,7 @@ function genValuePartial_toObject(gen, field, fieldIndex, prop) {
  */
 converter.toObject = function toObject(mtype) {
     /* eslint-disable no-unexpected-multiline, block-scoped-var, no-redeclare */
-    var fields = mtype.fieldsArray.sort(util.compareFieldsById);
+    var fields = mtype.fieldsArray.slice().sort(util.compareFieldsById);
     if (!fields.length)
         return util.codegen()("return {}");
     var gen = util.codegen("m", "o")
@@ -1235,7 +1237,7 @@ converter.toObject = function toObject(mtype) {
             genValuePartial_toObject(gen, field, /* sorted */ index, prop + "[j]")
         ("}");
         } else { gen
-    ("if(m%s!==undefined&&m%s!==null&&m.hasOwnProperty(%j)){", prop, prop, field.name);
+    ("if(m%s!=null&&m.hasOwnProperty(%j)){", prop, field.name); // !== undefined && !== null
         genValuePartial_toObject(gen, field, /* sorted */ index, prop);
         if (field.partOf) gen
         ("if(o.oneofs)")
@@ -1271,7 +1273,7 @@ function decoder(mtype) {
     var gen = util.codegen("r", "l")
     ("if(!(r instanceof Reader))")
         ("r=Reader.create(r)")
-    ("var c=l===undefined?r.len:r.pos+l,m=new this.ctor")
+    ("var c=l===undefined?r.len:r.pos+l,m=new this.ctor" + (mtype.fieldsArray.filter(function(field) { return field.map; }).length ? ",k" : ""))
     ("while(r.pos<c){")
         ("var t=r.uint32()");
     if (mtype.group) gen
@@ -1289,16 +1291,22 @@ function decoder(mtype) {
 
         // Map fields
         if (field.map) { gen
-
                 ("r.skip().pos++") // assumes id 1 + key wireType
                 ("if(%s===util.emptyObject)", ref)
                     ("%s={}", ref)
-                ("var k=r.%s()", field.keyType)
+                ("k=r.%s()", field.keyType)
                 ("r.pos++"); // assumes id 2 + value wireType
-            if (types.basic[type] === undefined) gen
+            if (types.long[field.keyType] !== undefined) {
+                if (types.basic[type] === undefined) gen
                 ("%s[typeof k===\"object\"?util.longToHash(k):k]=types[%d].decode(r,r.uint32())", ref, i); // can't be groups
-            else gen
+                else gen
                 ("%s[typeof k===\"object\"?util.longToHash(k):k]=r.%s()", ref, type);
+            } else {
+                if (types.basic[type] === undefined) gen
+                ("%s[k]=types[%d].decode(r,r.uint32())", ref, i); // can't be groups
+                else gen
+                ("%s[k]=r.%s()", ref, type);
+            }
 
         // Repeated fields
         } else if (field.repeated) { gen
@@ -1329,7 +1337,6 @@ function decoder(mtype) {
                 ("%s=r.%s()", ref, type);
         gen
                 ("break");
-
     // Unknown fields
     } gen
             ("default:")
@@ -1412,43 +1419,38 @@ function encoder(mtype) {
         ("}")
     ("}");
 
-        // Repeated fields
-        } else if (field.repeated) {
+            // Repeated fields
+        } else if (field.repeated) { gen
+    ("if(%s&&%s.length){", ref, ref);
 
             // Packed repeated
             if (field.packed && types.packed[type] !== undefined) { gen
 
-    ("if(%s&&%s.length&&m.hasOwnProperty(%j)){", ref, ref, field.name)
         ("w.uint32(%d).fork()", (field.id << 3 | 2) >>> 0)
         ("for(var i=0;i<%s.length;++i)", ref)
             ("w.%s(%s[i])", type, ref)
-        ("w.ldelim()")
-    ("}");
+        ("w.ldelim()");
 
             // Non-packed
             } else { gen
 
-    ("if(%s!==undefined&&m.hasOwnProperty(%j)){", ref, field.name)
         ("for(var i=0;i<%s.length;++i)", ref);
                 if (wireType === undefined)
             genTypePartial(gen, field, index, ref + "[i]");
                 else gen
             ("w.uint32(%d).%s(%s[i])", (field.id << 3 | wireType) >>> 0, type, ref);
-                gen
-    ("}");
 
-            }
+            } gen
+    ("}");
 
         // Non-repeated
         } else {
-            if (!field.required) {
+            if (field.optional) {
 
-                if (field.long) gen
-    ("if(%s!==undefined&&%s!==null&&m.hasOwnProperty(%j))", ref, ref, field.name);
-                else if (field.bytes || field.resolvedType && !(field.resolvedType instanceof Enum)) gen
+                if (field.bytes || field.resolvedType && !(field.resolvedType instanceof Enum)) gen
     ("if(%s&&m.hasOwnProperty(%j))", ref, field.name);
                 else gen
-    ("if(%s!==undefined&&%s!==null&&m.hasOwnProperty(%j))", ref, ref, field.name);
+    ("if(%s!=null&&m.hasOwnProperty(%j))", ref, field.name); // !== undefined && !== null
 
             }
 
@@ -1517,9 +1519,17 @@ function Enum(name, values, options) {
 }
 
 /**
- * Creates an enum from JSON.
+ * Enum descriptor.
+ * @typedef EnumDescriptor
+ * @type {Object}
+ * @property {Object.<string,number>} values Enum values
+ * @property {Object.<string,*>} [options] Enum options
+ */
+
+/**
+ * Constructs an enum from an enum descriptor.
  * @param {string} name Enum name
- * @param {Object.<string,*>} json JSON object
+ * @param {EnumDescriptor} json Enum descriptor
  * @returns {Enum} Created enum
  * @throws {TypeError} If arguments are invalid
  */
@@ -1528,7 +1538,8 @@ Enum.fromJSON = function fromJSON(name, json) {
 };
 
 /**
- * @override
+ * Converts this enum to an enum descriptor.
+ * @returns {EnumDescriptor} Enum descriptor
  */
 Enum.prototype.toJSON = function toJSON() {
     return {
@@ -1779,9 +1790,30 @@ Field.prototype.setOption = function setOption(name, value, ifNotSet) {
 };
 
 /**
- * Constructs a field from JSON.
+ * Field descriptor.
+ * @typedef FieldDescriptor
+ * @type {Object}
+ * @property {string} [rule="optional"] Field rule
+ * @property {string} type Field type
+ * @property {number} id Field id
+ * @property {Object.<string,*>} [options] Field options
+ */
+
+/**
+ * Extension field descriptor.
+ * @typedef ExtensionFieldDescriptor
+ * @type {Object}
+ * @property {string} [rule="optional"] Field rule
+ * @property {string} type Field type
+ * @property {number} id Field id
+ * @property {string} extend Extended type
+ * @property {Object.<string,*>} [options] Field options
+ */
+
+/**
+ * Constructs a field from a field descriptor.
  * @param {string} name Field name
- * @param {Object.<string,*>} json JSON object
+ * @param {FieldDescriptor} json Field descriptor
  * @returns {Field} Created field
  * @throws {TypeError} If arguments are invalid
  */
@@ -1790,7 +1822,8 @@ Field.fromJSON = function fromJSON(name, json) {
 };
 
 /**
- * @override
+ * Converts this field to a field descriptor.
+ * @returns {FieldDescriptor} Field descriptor
  */
 Field.prototype.toJSON = function toJSON() {
     return {
@@ -2071,9 +2104,30 @@ function MapField(name, id, keyType, type, options) {
 }
 
 /**
- * Constructs a map field from JSON.
+ * Map field descriptor.
+ * @typedef MapFieldDescriptor
+ * @type {Object}
+ * @property {string} keyType Key type
+ * @property {string} type Value type
+ * @property {number} id Field id
+ * @property {Object.<string,*>} [options] Field options
+ */
+
+/**
+ * Extension map field descriptor.
+ * @typedef ExtensionMapFieldDescriptor
+ * @type {Object}
+ * @property {string} keyType Key type
+ * @property {string} type Value type
+ * @property {number} id Field id
+ * @property {string} extend Extended type
+ * @property {Object.<string,*>} [options] Field options
+ */
+
+/**
+ * Constructs a map field from a map field descriptor.
  * @param {string} name Field name
- * @param {Object.<string,*>} json JSON object
+ * @param {MapFieldDescriptor} json Map field descriptor
  * @returns {MapField} Created map field
  * @throws {TypeError} If arguments are invalid
  */
@@ -2082,7 +2136,8 @@ MapField.fromJSON = function fromJSON(name, json) {
 };
 
 /**
- * @override
+ * Converts this map field to a map field descriptor.
+ * @returns {MapFieldDescriptor} Map field descriptor
  */
 MapField.prototype.toJSON = function toJSON() {
     return {
@@ -2331,9 +2386,20 @@ function Method(name, type, requestType, responseType, requestStream, responseSt
 }
 
 /**
- * Constructs a service method from JSON.
+ * @typedef MethodDescriptor
+ * @type {Object}
+ * @property {string} [type="rpc"] Method type
+ * @property {string} requestType Request type
+ * @property {string} responseType Response type
+ * @property {boolean} [requestStream=false] Whether requests are streamed
+ * @property {boolean} [responseStream=false] Whether responses are streamed
+ * @property {Object.<string,*>} [options] Method options
+ */
+
+/**
+ * Constructs a method from a method descriptor.
  * @param {string} name Method name
- * @param {Object.<string,*>} json JSON object
+ * @param {MethodDescriptor} json Method descriptor
  * @returns {Method} Created method
  * @throws {TypeError} If arguments are invalid
  */
@@ -2342,7 +2408,8 @@ Method.fromJSON = function fromJSON(name, json) {
 };
 
 /**
- * @override
+ * Converts this method to a method descriptor.
+ * @returns {MethodDescriptor} Method descriptor
  */
 Method.prototype.toJSON = function toJSON() {
     return {
@@ -2471,7 +2538,22 @@ Object.defineProperty(Namespace.prototype, "nestedArray", {
 });
 
 /**
- * @override
+ * Any nested object descriptor.
+ * @typedef AnyNestedDescriptor
+ * @type {EnumDescriptor|TypeDescriptor|ServiceDescriptor|ExtensionFieldDescriptor|ExtensionMapFieldDescriptor}
+ */
+
+/**
+ * Namespace descriptor.
+ * @typedef NamespaceDescriptor
+ * @type {Object}
+ * @property {Object.<string,*>} [options] Namespace options
+ * @property {Object.<string,AnyNestedDescriptor>} [nested] Nested object descriptors
+ */
+
+/**
+ * Converts this namespace to a namespace descriptor.
+ * @returns {NamespaceDescriptor} Namespace descriptor
  */
 Namespace.prototype.toJSON = function toJSON() {
     return {
@@ -2481,8 +2563,8 @@ Namespace.prototype.toJSON = function toJSON() {
 };
 
 /**
- * Adds nested elements to this namespace from JSON.
- * @param {Object.<string,*>} nestedJson Nested JSON
+ * Adds nested objects to this namespace from nested object descriptors.
+ * @param {Object.<string,AnyNestedDescriptor>} nestedJson Any nested object descriptors
  * @returns {Namespace} `this`
  */
 Namespace.prototype.addJSON = function addJSON(nestedJson) {
@@ -2830,8 +2912,8 @@ Object.defineProperties(ReflectionObject.prototype, {
 });
 
 /**
- * Converts this reflection object to its JSON representation.
- * @returns {Object.<string,*>} JSON object
+ * Converts this reflection object to its descriptor representation.
+ * @returns {Object.<string,*>} Descriptor
  * @abstract
  */
 ReflectionObject.prototype.toJSON = /* istanbul ignore next */ function toJSON() {
@@ -2976,10 +3058,18 @@ function OneOf(name, fieldNames, options) {
 }
 
 /**
- * Constructs a oneof from JSON.
+ * Oneof descriptor.
+ * @typedef OneOfDescriptor
+ * @type {Object}
+ * @property {Array.<string>} oneof Oneof field names
+ * @property {Object.<string,*>} [options] Oneof options
+ */
+
+/**
+ * Constructs a oneof from a oneof descriptor.
  * @param {string} name Oneof name
- * @param {Object.<string,*>} json JSON object
- * @returns {MapField} Created oneof
+ * @param {OneOfDescriptor} json Oneof descriptor
+ * @returns {OneOf} Created oneof
  * @throws {TypeError} If arguments are invalid
  */
 OneOf.fromJSON = function fromJSON(name, json) {
@@ -2987,7 +3077,8 @@ OneOf.fromJSON = function fromJSON(name, json) {
 };
 
 /**
- * @override
+ * Converts this oneof to a oneof descriptor.
+ * @returns {OneOfDescriptor} Oneof descriptor
  */
 OneOf.prototype.toJSON = function toJSON() {
     return {
@@ -3264,21 +3355,21 @@ function readLongVarint() {
  * Reads a varint as a signed 64 bit value.
  * @name Reader#int64
  * @function
- * @returns {Long|number} Value read
+ * @returns {Long} Value read
  */
 
 /**
  * Reads a varint as an unsigned 64 bit value.
  * @name Reader#uint64
  * @function
- * @returns {Long|number} Value read
+ * @returns {Long} Value read
  */
 
 /**
  * Reads a zig-zag encoded varint as a signed 64 bit value.
  * @name Reader#sint64
  * @function
- * @returns {Long|number} Value read
+ * @returns {Long} Value read
  */
 
 /**
@@ -3339,14 +3430,14 @@ function readFixed64(/* this: Reader */) {
  * Reads fixed 64 bits.
  * @name Reader#fixed64
  * @function
- * @returns {Long|number} Value read
+ * @returns {Long} Value read
  */
 
 /**
  * Reads zig-zag encoded fixed 64 bits.
  * @name Reader#sfixed64
  * @function
- * @returns {Long|number} Value read
+ * @returns {Long} Value read
  */
 
 var readFloat = typeof Float32Array !== "undefined"
@@ -3662,8 +3753,8 @@ function Root(options) {
 }
 
 /**
- * Loads a JSON definition into a root namespace.
- * @param {Object.<string,*>} json JSON definition
+ * Loads a namespace descriptor into a root namespace.
+ * @param {NamespaceDescriptor} json Nameespace descriptor
  * @param {Root} [root] Root namespace, defaults to create a new one if omitted
  * @returns {Root} Root namespace
  */
@@ -4202,9 +4293,18 @@ function Service(name, options) {
 }
 
 /**
- * Constructs a service from JSON.
+ * Service descriptor.
+ * @typedef ServiceDescriptor
+ * @type {Object}
+ * @property {Object.<string,*>} [options] Service options
+ * @property {Object.<string,MethodDescriptor>} methods Method descriptors
+ * @property {Object.<string,AnyNestedDescriptor>} [nested] Nested object descriptors
+ */
+
+/**
+ * Constructs a service from a service descriptor.
  * @param {string} name Service name
- * @param {Object.<string,*>} json JSON object
+ * @param {ServiceDescriptor} json Service descriptor
  * @returns {Service} Created service
  * @throws {TypeError} If arguments are invalid
  */
@@ -4214,7 +4314,22 @@ Service.fromJSON = function fromJSON(name, json) {
     if (json.methods)
         for (var names = Object.keys(json.methods), i = 0; i < names.length; ++i)
             service.add(Method.fromJSON(names[i], json.methods[names[i]]));
+    if (json.nested)
+        service.addJSON(json.nested);
     return service;
+};
+
+/**
+ * Converts this service to a service descriptor.
+ * @returns {ServiceDescriptor} Service descriptor
+ */
+Service.prototype.toJSON = function toJSON() {
+    var inherited = Namespace.prototype.toJSON.call(this);
+    return {
+        options : inherited && inherited.options || undefined,
+        methods : Namespace.arrayToJSON(this.methodsArray) || /* istanbul ignore next */ {},
+        nested  : inherited && inherited.nested || undefined
+    };
 };
 
 /**
@@ -4233,18 +4348,6 @@ function clearCache(service) {
     service._methodsArray = null;
     return service;
 }
-
-/**
- * @override
- */
-Service.prototype.toJSON = function toJSON() {
-    var inherited = Namespace.prototype.toJSON.call(this);
-    return {
-        options : inherited && inherited.options || undefined,
-        methods : Namespace.arrayToJSON(this.methodsArray) || /* istanbul ignore next */ {},
-        nested  : inherited && inherited.nested || undefined
-    };
-};
 
 /**
  * @override
@@ -4339,51 +4442,6 @@ var Enum      = require(14),
     decoder   = require(12),
     verifier  = require(35),
     converter = require(11);
-
-/**
- * Creates a type from JSON.
- * @param {string} name Message name
- * @param {Object.<string,*>} json JSON object
- * @returns {Type} Created message type
- */
-Type.fromJSON = function fromJSON(name, json) {
-    var type = new Type(name, json.options);
-    type.extensions = json.extensions;
-    type.reserved = json.reserved;
-    var names = Object.keys(json.fields),
-        i = 0;
-    for (; i < names.length; ++i)
-        type.add(
-            ( typeof json.fields[names[i]].keyType !== "undefined"
-            ? MapField.fromJSON
-            : Field.fromJSON )(names[i], json.fields[names[i]])
-        );
-    if (json.oneofs)
-        for (names = Object.keys(json.oneofs), i = 0; i < names.length; ++i)
-            type.add(OneOf.fromJSON(names[i], json.oneofs[names[i]]));
-    if (json.nested)
-        for (names = Object.keys(json.nested), i = 0; i < names.length; ++i) {
-            var nested = json.nested[names[i]];
-            type.add( // most to least likely
-                ( nested.id !== undefined
-                ? Field.fromJSON
-                : nested.fields !== undefined
-                ? Type.fromJSON
-                : nested.values !== undefined
-                ? Enum.fromJSON
-                : nested.methods !== undefined
-                ? Service.fromJSON
-                : Namespace.fromJSON )(names[i], nested)
-            );
-        }
-    if (json.extensions && json.extensions.length)
-        type.extensions = json.extensions;
-    if (json.reserved && json.reserved.length)
-        type.reserved = json.reserved;
-    if (json.group)
-        type.group = true;
-    return type;
-};
 
 /**
  * Constructs a new reflected message type instance.
@@ -4537,7 +4595,66 @@ function clearCache(type) {
 }
 
 /**
- * @override
+ * Message type descriptor.
+ * @typedef TypeDescriptor
+ * @type {Object}
+ * @property {Object.<string,*>} [options] Message type options
+ * @property {Object.<string,OneOfDescriptor>} [oneofs] Oneof descriptors
+ * @property {Object.<string,FieldDescriptor>} fields Field descriptors
+ * @property {number[][]} [extensions] Extension ranges
+ * @property {number[][]} [reserved] Reserved ranges
+ * @property {boolean} [group=false] Whether a legacy group or not
+ * @property {Object.<string,AnyNestedDescriptor>} [nested] Nested object descriptors
+ */
+
+/**
+ * Creates a message type from a message type descriptor.
+ * @param {string} name Message name
+ * @param {TypeDescriptor} json Message type descriptor
+ * @returns {Type} Created message type
+ */
+Type.fromJSON = function fromJSON(name, json) {
+    var type = new Type(name, json.options);
+    type.extensions = json.extensions;
+    type.reserved = json.reserved;
+    var names = Object.keys(json.fields),
+        i = 0;
+    for (; i < names.length; ++i)
+        type.add(
+            ( typeof json.fields[names[i]].keyType !== "undefined"
+            ? MapField.fromJSON
+            : Field.fromJSON )(names[i], json.fields[names[i]])
+        );
+    if (json.oneofs)
+        for (names = Object.keys(json.oneofs), i = 0; i < names.length; ++i)
+            type.add(OneOf.fromJSON(names[i], json.oneofs[names[i]]));
+    if (json.nested)
+        for (names = Object.keys(json.nested), i = 0; i < names.length; ++i) {
+            var nested = json.nested[names[i]];
+            type.add( // most to least likely
+                ( nested.id !== undefined
+                ? Field.fromJSON
+                : nested.fields !== undefined
+                ? Type.fromJSON
+                : nested.values !== undefined
+                ? Enum.fromJSON
+                : nested.methods !== undefined
+                ? Service.fromJSON
+                : Namespace.fromJSON )(names[i], nested)
+            );
+        }
+    if (json.extensions && json.extensions.length)
+        type.extensions = json.extensions;
+    if (json.reserved && json.reserved.length)
+        type.reserved = json.reserved;
+    if (json.group)
+        type.group = true;
+    return type;
+};
+
+/**
+ * Converts this message type to a message type descriptor.
+ * @returns {TypeDescriptor} Message type descriptor
  */
 Type.prototype.toJSON = function toJSON() {
     var inherited = Namespace.prototype.toJSON.call(this);
@@ -4862,6 +4979,7 @@ function bake(values, offset) {
 /**
  * Basic type wire types.
  * @type {Object.<string,number>}
+ * @const
  * @property {number} double=1 Fixed64 wire type
  * @property {number} float=5 Fixed32 wire type
  * @property {number} int32=0 Varint wire type
@@ -4899,6 +5017,7 @@ types.basic = bake([
 /**
  * Basic type defaults.
  * @type {Object.<string,*>}
+ * @const
  * @property {number} double=0 Double default
  * @property {number} float=0 Float default
  * @property {number} int32=0 Int32 default
@@ -4938,6 +5057,7 @@ types.defaults = bake([
 /**
  * Basic long type wire types.
  * @type {Object.<string,number>}
+ * @const
  * @property {number} int64=0 Varint wire type
  * @property {number} uint64=0 Varint wire type
  * @property {number} sint64=0 Varint wire type
@@ -4955,6 +5075,7 @@ types.long = bake([
 /**
  * Allowed types for map keys with their associated wire type.
  * @type {Object.<string,number>}
+ * @const
  * @property {number} int32=0 Varint wire type
  * @property {number} uint32=0 Varint wire type
  * @property {number} sint32=0 Varint wire type
@@ -4986,6 +5107,7 @@ types.mapKey = bake([
 /**
  * Allowed types for packed repeated fields with their associated wire type.
  * @type {Object.<string,number>}
+ * @const
  * @property {number} double=1 Fixed64 wire type
  * @property {number} float=5 Fixed32 wire type
  * @property {number} int32=0 Varint wire type
@@ -5084,17 +5206,6 @@ util.compareFieldsById = function compareFieldsById(a, b) {
 module.exports = LongBits;
 
 var util = require(34);
-
-/**
- * Any compatible Long instance.
- *
- * This is a minimal stand-alone definition of a Long instance. The actual type is that exported by long.js.
- * @typedef Long
- * @type {Object}
- * @property {number} low Low bits
- * @property {number} high High bits
- * @property {boolean} unsigned Whether unsigned or not
- */
 
 /**
  * Constructs new long bits.
@@ -5321,12 +5432,14 @@ util.LongBits = require(33);
  * An immuable empty array.
  * @memberof util
  * @type {Array.<*>}
+ * @const
  */
 util.emptyArray = Object.freeze ? Object.freeze([]) : /* istanbul ignore next */ []; // used on prototypes
 
 /**
  * An immutable empty object.
  * @type {Object}
+ * @const
  */
 util.emptyObject = Object.freeze ? Object.freeze({}) : /* istanbul ignore next */ {}; // used on prototypes
 
@@ -5334,6 +5447,7 @@ util.emptyObject = Object.freeze ? Object.freeze({}) : /* istanbul ignore next *
  * Whether running within node or not.
  * @memberof util
  * @type {boolean}
+ * @const
  */
 util.isNode = Boolean(global.process && global.process.versions && global.process.versions.node);
 
@@ -5364,6 +5478,36 @@ util.isString = function isString(value) {
 util.isObject = function isObject(value) {
     return value && typeof value === "object";
 };
+
+/**
+ * Checks if a property on a message is considered to be present.
+ * This is an alias of {@link util.isSet}.
+ * @function
+ * @param {Object} obj Plain object or message instance
+ * @param {string} prop Property name
+ * @returns {boolean} `true` if considered to be present, otherwise `false`
+ */
+util.isset =
+
+/**
+ * Checks if a property on a message is considered to be present.
+ * @param {Object} obj Plain object or message instance
+ * @param {string} prop Property name
+ * @returns {boolean} `true` if considered to be present, otherwise `false`
+ */
+util.isSet = function isSet(obj, prop) {
+    var value = obj[prop];
+    if (value != null && obj.hasOwnProperty(prop)) // eslint-disable-line eqeqeq, no-prototype-builtins
+        return typeof value !== "object" || (Array.isArray(value) ? value.length : Object.keys(value).length) > 0;
+    return false;
+};
+
+/*
+ * Any compatible Buffer instance.
+ * This is a minimal stand-alone definition of a Buffer instance. The actual type is that exported by node's typings.
+ * @typedef Buffer
+ * @type {Uint8Array}
+ */
 
 /**
  * Node's Buffer class if available.
@@ -5423,6 +5567,16 @@ util.newBuffer = function newBuffer(sizeOrArray) {
  */
 util.Array = typeof Uint8Array !== "undefined" ? Uint8Array /* istanbul ignore next */ : Array;
 
+/*
+ * Any compatible Long instance.
+ * This is a minimal stand-alone definition of a Long instance. The actual type is that exported by long.js.
+ * @typedef Long
+ * @type {Object}
+ * @property {number} low Low bits
+ * @property {number} high High bits
+ * @property {boolean} unsigned Whether unsigned or not
+ */
+
 /**
  * Long.js's Long class if available.
  * @type {?function(new: Long)}
@@ -5432,18 +5586,21 @@ util.Long = /* istanbul ignore next */ global.dcodeIO && /* istanbul ignore next
 /**
  * Regular expression used to verify 2 bit (`bool`) map keys.
  * @type {RegExp}
+ * @const
  */
 util.key2Re = /^true|false|0|1$/;
 
 /**
  * Regular expression used to verify 32 bit (`int32` etc.) map keys.
  * @type {RegExp}
+ * @const
  */
 util.key32Re = /^-?(?:0|[1-9][0-9]*)$/;
 
 /**
  * Regular expression used to verify 64 bit (`int64` etc.) map keys.
  * @type {RegExp}
+ * @const
  */
 util.key64Re = /^(?:[\\x00-\\xff]{8}|-?(?:0|[1-9][0-9]*))$/;
 
@@ -5604,11 +5761,13 @@ util.oneOfSetter = function setOneOf(fieldNames) {
     };
 };
 
+/* istanbul ignore next */
 /**
  * Lazily resolves fully qualified type names against the specified root.
  * @param {Root} root Root instanceof
  * @param {Object.<number,string|ReflectionObject>} lazyTypes Type names
  * @returns {undefined}
+ * @deprecated since 6.7.0 static code does not emit lazy types anymore
  */
 util.lazyResolve = function lazyResolve(root, lazyTypes) {
     for (var i = 0; i < lazyTypes.length; ++i) {
@@ -5788,7 +5947,7 @@ function verifier(mtype) {
 
         // map fields
         if (field.map) { gen
-            ("if(%s!==undefined){", ref)
+            ("if(%s!=null){", ref) // !== undefined && !== null
                 ("if(!util.isObject(%s))", ref)
                     ("return%j", invalid(field, "object"))
                 ("var k=Object.keys(%s)", ref)
@@ -5800,7 +5959,7 @@ function verifier(mtype) {
 
         // repeated fields
         } else if (field.repeated) { gen
-            ("if(%s!==undefined){", ref)
+            ("if(%s!=null){", ref) // !== undefined && !== null
                 ("if(!Array.isArray(%s))", ref)
                     ("return%j", invalid(field, "array"))
                 ("for(var i=0;i<%s.length;++i){", ref);
@@ -5810,8 +5969,8 @@ function verifier(mtype) {
 
         // required or present fields
         } else {
-            if (!field.required) gen
-            ("if(%s!==undefined&&%s!==null){", ref, ref);
+            if (field.optional) gen
+            ("if(%s!=null){", ref); // !== undefined && !== null
             if (field.partOf) {
                 var oneofProp = util.safeProp(field.partOf.name);
                 if (seenFirstField[field.partOf.name] === 1) gen
@@ -5822,7 +5981,7 @@ function verifier(mtype) {
             ("p%s=1", oneofProp);
             }
                 genVerifyValue(gen, field, i, ref);
-            if (!field.required) gen
+            if (field.optional) gen
             ("}");
         }
     } return gen

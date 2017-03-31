@@ -26,12 +26,14 @@ util.LongBits = require("./longbits");
  * An immuable empty array.
  * @memberof util
  * @type {Array.<*>}
+ * @const
  */
 util.emptyArray = Object.freeze ? Object.freeze([]) : /* istanbul ignore next */ []; // used on prototypes
 
 /**
  * An immutable empty object.
  * @type {Object}
+ * @const
  */
 util.emptyObject = Object.freeze ? Object.freeze({}) : /* istanbul ignore next */ {}; // used on prototypes
 
@@ -39,6 +41,7 @@ util.emptyObject = Object.freeze ? Object.freeze({}) : /* istanbul ignore next *
  * Whether running within node or not.
  * @memberof util
  * @type {boolean}
+ * @const
  */
 util.isNode = Boolean(global.process && global.process.versions && global.process.versions.node);
 
@@ -72,11 +75,21 @@ util.isObject = function isObject(value) {
 
 /**
  * Checks if a property on a message is considered to be present.
+ * This is an alias of {@link util.isSet}.
+ * @function
  * @param {Object} obj Plain object or message instance
  * @param {string} prop Property name
  * @returns {boolean} `true` if considered to be present, otherwise `false`
  */
-util.isset = function isset(obj, prop) {
+util.isset =
+
+/**
+ * Checks if a property on a message is considered to be present.
+ * @param {Object} obj Plain object or message instance
+ * @param {string} prop Property name
+ * @returns {boolean} `true` if considered to be present, otherwise `false`
+ */
+util.isSet = function isSet(obj, prop) {
     var value = obj[prop];
     if (value != null && obj.hasOwnProperty(prop)) // eslint-disable-line eqeqeq, no-prototype-builtins
         return typeof value !== "object" || (Array.isArray(value) ? value.length : Object.keys(value).length) > 0;
@@ -167,18 +180,21 @@ util.Long = /* istanbul ignore next */ global.dcodeIO && /* istanbul ignore next
 /**
  * Regular expression used to verify 2 bit (`bool`) map keys.
  * @type {RegExp}
+ * @const
  */
 util.key2Re = /^true|false|0|1$/;
 
 /**
  * Regular expression used to verify 32 bit (`int32` etc.) map keys.
  * @type {RegExp}
+ * @const
  */
 util.key32Re = /^-?(?:0|[1-9][0-9]*)$/;
 
 /**
  * Regular expression used to verify 64 bit (`int64` etc.) map keys.
  * @type {RegExp}
+ * @const
  */
 util.key64Re = /^(?:[\\x00-\\xff]{8}|-?(?:0|[1-9][0-9]*))$/;
 

@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.7.0 (c) 2016, Daniel Wirtz
- * Compiled Thu, 23 Mar 2017 04:21:06 UTC
+ * Compiled Fri, 31 Mar 2017 13:44:25 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -24,8 +24,10 @@
     // Be nice to AMD
     if (typeof define === "function" && define.amd)
         define(["long"], function(Long) {
-            protobuf.util.Long = Long;
-            protobuf.configure();
+            if (Long && Long.isLong) {
+                protobuf.util.Long = Long;
+                protobuf.configure();
+            }
             return protobuf;
         });
 
@@ -692,21 +694,21 @@ function readLongVarint() {
  * Reads a varint as a signed 64 bit value.
  * @name Reader#int64
  * @function
- * @returns {Long|number} Value read
+ * @returns {Long} Value read
  */
 
 /**
  * Reads a varint as an unsigned 64 bit value.
  * @name Reader#uint64
  * @function
- * @returns {Long|number} Value read
+ * @returns {Long} Value read
  */
 
 /**
  * Reads a zig-zag encoded varint as a signed 64 bit value.
  * @name Reader#sint64
  * @function
- * @returns {Long|number} Value read
+ * @returns {Long} Value read
  */
 
 /**
@@ -767,14 +769,14 @@ function readFixed64(/* this: Reader */) {
  * Reads fixed 64 bits.
  * @name Reader#fixed64
  * @function
- * @returns {Long|number} Value read
+ * @returns {Long} Value read
  */
 
 /**
  * Reads zig-zag encoded fixed 64 bits.
  * @name Reader#sfixed64
  * @function
- * @returns {Long|number} Value read
+ * @returns {Long} Value read
  */
 
 var readFloat = typeof Float32Array !== "undefined"
@@ -1246,17 +1248,6 @@ module.exports = LongBits;
 var util = require(13);
 
 /**
- * Any compatible Long instance.
- *
- * This is a minimal stand-alone definition of a Long instance. The actual type is that exported by long.js.
- * @typedef Long
- * @type {Object}
- * @property {number} low Low bits
- * @property {number} high High bits
- * @property {boolean} unsigned Whether unsigned or not
- */
-
-/**
  * Constructs new long bits.
  * @classdesc Helper class for working with the low and high bits of a 64 bit value.
  * @memberof util
@@ -1481,12 +1472,14 @@ util.LongBits = require(12);
  * An immuable empty array.
  * @memberof util
  * @type {Array.<*>}
+ * @const
  */
 util.emptyArray = Object.freeze ? Object.freeze([]) : /* istanbul ignore next */ []; // used on prototypes
 
 /**
  * An immutable empty object.
  * @type {Object}
+ * @const
  */
 util.emptyObject = Object.freeze ? Object.freeze({}) : /* istanbul ignore next */ {}; // used on prototypes
 
@@ -1494,6 +1487,7 @@ util.emptyObject = Object.freeze ? Object.freeze({}) : /* istanbul ignore next *
  * Whether running within node or not.
  * @memberof util
  * @type {boolean}
+ * @const
  */
 util.isNode = Boolean(global.process && global.process.versions && global.process.versions.node);
 
@@ -1524,6 +1518,36 @@ util.isString = function isString(value) {
 util.isObject = function isObject(value) {
     return value && typeof value === "object";
 };
+
+/**
+ * Checks if a property on a message is considered to be present.
+ * This is an alias of {@link util.isSet}.
+ * @function
+ * @param {Object} obj Plain object or message instance
+ * @param {string} prop Property name
+ * @returns {boolean} `true` if considered to be present, otherwise `false`
+ */
+util.isset =
+
+/**
+ * Checks if a property on a message is considered to be present.
+ * @param {Object} obj Plain object or message instance
+ * @param {string} prop Property name
+ * @returns {boolean} `true` if considered to be present, otherwise `false`
+ */
+util.isSet = function isSet(obj, prop) {
+    var value = obj[prop];
+    if (value != null && obj.hasOwnProperty(prop)) // eslint-disable-line eqeqeq, no-prototype-builtins
+        return typeof value !== "object" || (Array.isArray(value) ? value.length : Object.keys(value).length) > 0;
+    return false;
+};
+
+/*
+ * Any compatible Buffer instance.
+ * This is a minimal stand-alone definition of a Buffer instance. The actual type is that exported by node's typings.
+ * @typedef Buffer
+ * @type {Uint8Array}
+ */
 
 /**
  * Node's Buffer class if available.
@@ -1583,6 +1607,16 @@ util.newBuffer = function newBuffer(sizeOrArray) {
  */
 util.Array = typeof Uint8Array !== "undefined" ? Uint8Array /* istanbul ignore next */ : Array;
 
+/*
+ * Any compatible Long instance.
+ * This is a minimal stand-alone definition of a Long instance. The actual type is that exported by long.js.
+ * @typedef Long
+ * @type {Object}
+ * @property {number} low Low bits
+ * @property {number} high High bits
+ * @property {boolean} unsigned Whether unsigned or not
+ */
+
 /**
  * Long.js's Long class if available.
  * @type {?function(new: Long)}
@@ -1592,18 +1626,21 @@ util.Long = /* istanbul ignore next */ global.dcodeIO && /* istanbul ignore next
 /**
  * Regular expression used to verify 2 bit (`bool`) map keys.
  * @type {RegExp}
+ * @const
  */
 util.key2Re = /^true|false|0|1$/;
 
 /**
  * Regular expression used to verify 32 bit (`int32` etc.) map keys.
  * @type {RegExp}
+ * @const
  */
 util.key32Re = /^-?(?:0|[1-9][0-9]*)$/;
 
 /**
  * Regular expression used to verify 64 bit (`int64` etc.) map keys.
  * @type {RegExp}
+ * @const
  */
 util.key64Re = /^(?:[\\x00-\\xff]{8}|-?(?:0|[1-9][0-9]*))$/;
 
@@ -1764,11 +1801,13 @@ util.oneOfSetter = function setOneOf(fieldNames) {
     };
 };
 
+/* istanbul ignore next */
 /**
  * Lazily resolves fully qualified type names against the specified root.
  * @param {Root} root Root instanceof
  * @param {Object.<number,string|ReflectionObject>} lazyTypes Type names
  * @returns {undefined}
+ * @deprecated since 6.7.0 static code does not emit lazy types anymore
  */
 util.lazyResolve = function lazyResolve(root, lazyTypes) {
     for (var i = 0; i < lazyTypes.length; ++i) {

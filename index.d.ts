@@ -246,13 +246,6 @@ export class Enum extends ReflectionObject {
     public remove(name: string): Enum;
 }
 
-/**
- * Enum descriptor.
- * @typedef EnumDescriptor
- * @type {Object}
- * @property {Object.<string,number>} values Enum values
- * @property {Object.<string,*>} [options] Enum options
- */
 type EnumDescriptor = {
     values: { [k: string]: number };
     options?: { [k: string]: any };
@@ -419,15 +412,6 @@ export class Field extends ReflectionObject {
     public resolve(): Field;
 }
 
-/**
- * Field descriptor.
- * @typedef FieldDescriptor
- * @type {Object}
- * @property {string} [rule="optional"] Field rule
- * @property {string} type Field type
- * @property {number} id Field id
- * @property {Object.<string,*>} [options] Field options
- */
 type FieldDescriptor = {
     rule?: string;
     type: string;
@@ -435,16 +419,6 @@ type FieldDescriptor = {
     options?: { [k: string]: any };
 };
 
-/**
- * Extension field descriptor.
- * @typedef ExtensionFieldDescriptor
- * @type {Object}
- * @property {string} [rule="optional"] Field rule
- * @property {string} type Field type
- * @property {number} id Field id
- * @property {string} extend Extended type
- * @property {Object.<string,*>} [options] Field options
- */
 type ExtensionFieldDescriptor = {
     rule?: string;
     type: string;
@@ -479,14 +453,6 @@ export namespace debug {
     function disable(): void;
 }
 
-/**
- * A node-style callback as used by {@link load} and {@link Root#load}.
- * @typedef LoadCallback
- * @type {function}
- * @param {?Error} error Error, if any, otherwise `null`
- * @param {Root} [root] Root, if there hasn't been an error
- * @returns {undefined}
- */
 type LoadCallback = (error: Error, root?: Root) => void;
 
 /**
@@ -618,15 +584,6 @@ export class MapField extends Field {
     public toJSON(): MapFieldDescriptor;
 }
 
-/**
- * Map field descriptor.
- * @typedef MapFieldDescriptor
- * @type {Object}
- * @property {string} keyType Key type
- * @property {string} type Value type
- * @property {number} id Field id
- * @property {Object.<string,*>} [options] Field options
- */
 type MapFieldDescriptor = {
     keyType: string;
     type: string;
@@ -634,16 +591,6 @@ type MapFieldDescriptor = {
     options?: { [k: string]: any };
 };
 
-/**
- * Extension map field descriptor.
- * @typedef ExtensionMapFieldDescriptor
- * @type {Object}
- * @property {string} keyType Key type
- * @property {string} type Value type
- * @property {number} id Field id
- * @property {string} extend Extended type
- * @property {Object.<string,*>} [options] Field options
- */
 type ExtensionMapFieldDescriptor = {
     keyType: string;
     type: string;
@@ -853,16 +800,6 @@ export class Method extends ReflectionObject {
     public toJSON(): MethodDescriptor;
 }
 
-/**
- * @typedef MethodDescriptor
- * @type {Object}
- * @property {string} [type="rpc"] Method type
- * @property {string} requestType Request type
- * @property {string} responseType Response type
- * @property {boolean} [requestStream=false] Whether requests are streamed
- * @property {boolean} [responseStream=false] Whether responses are streamed
- * @property {Object.<string,*>} [options] Method options
- */
 type MethodDescriptor = {
     type?: string;
     requestType: string;
@@ -1050,20 +987,8 @@ export abstract class NamespaceBase extends ReflectionObject {
     public lookupEnum(path: (string|string[])): { [k: string]: number };
 }
 
-/**
- * Any nested object descriptor.
- * @typedef AnyNestedDescriptor
- * @type {EnumDescriptor|TypeDescriptor|ServiceDescriptor|ExtensionFieldDescriptor|ExtensionMapFieldDescriptor}
- */
 type AnyNestedDescriptor = (EnumDescriptor|TypeDescriptor|ServiceDescriptor|ExtensionFieldDescriptor|ExtensionMapFieldDescriptor);
 
-/**
- * Namespace descriptor.
- * @typedef NamespaceDescriptor
- * @type {Object}
- * @property {Object.<string,*>} [options] Namespace options
- * @property {Object.<string,AnyNestedDescriptor>} [nested] Nested object descriptors
- */
 type NamespaceDescriptor = {
     options?: { [k: string]: any };
     nested?: { [k: string]: AnyNestedDescriptor };
@@ -1254,36 +1179,13 @@ export class OneOf extends ReflectionObject {
     public remove(field: Field): OneOf;
 }
 
-/**
- * Oneof descriptor.
- * @typedef OneOfDescriptor
- * @type {Object}
- * @property {Array.<string>} oneof Oneof field names
- * @property {Object.<string,*>} [options] Oneof options
- */
 type OneOfDescriptor = {
     oneof: string[];
     options?: { [k: string]: any };
 };
 
-/**
- * Result object returned from {@link parse}.
- * @typedef ParserResult
- * @type {Object.<string,*>}
- * @property {string|undefined} package Package name, if declared
- * @property {string[]|undefined} imports Imports, if any
- * @property {string[]|undefined} weakImports Weak imports, if any
- * @property {string|undefined} syntax Syntax, if specified (either `"proto2"` or `"proto3"`)
- * @property {Root} root Populated root instance
- */
 type ParserResult = { [k: string]: any };
 
-/**
- * Options modifying the behavior of {@link parse}.
- * @typedef ParseOptions
- * @type {Object.<string,*>}
- * @property {boolean} [keepCase=false] Keeps field casing instead of converting to camel case
- */
 type ParseOptions = { [k: string]: any };
 
 /**
@@ -1592,38 +1494,10 @@ export class Root extends NamespaceBase {
  */
 export namespace rpc {
 
-    /**
-     * A service method callback as used by {@link rpc.ServiceMethod|ServiceMethod}.
-     *
-     * Differs from {@link RPCImplCallback} in that it is an actual callback of a service method which may not return `response = null`.
-     * @typedef rpc.ServiceMethodCallback
-     * @type {function}
-     * @param {?Error} error Error, if any
-     * @param {?Message} [response] Response message
-     * @returns {undefined}
-     */
     type ServiceMethodCallback = (error: Error, response?: Message) => void;
 
-    /**
-     * A service method part of a {@link rpc.ServiceMethodMixin|ServiceMethodMixin} and thus {@link rpc.Service} as created by {@link Service.create}.
-     * @typedef rpc.ServiceMethod
-     * @type {function}
-     * @param {Message|Object.<string,*>} request Request message or plain object
-     * @param {rpc.ServiceMethodCallback} [callback] Node-style callback called with the error, if any, and the response message
-     * @returns {Promise<Message>} Promise if `callback` has been omitted, otherwise `undefined`
-     */
     type ServiceMethod = (request: (Message|{ [k: string]: any }), callback?: rpc.ServiceMethodCallback) => Promise<Message>;
 
-    /**
-     * A service method mixin.
-     *
-     * When using TypeScript, mixed in service methods are only supported directly with a type definition of a static module (used with reflection). Otherwise, explicit casting is required.
-     * @typedef rpc.ServiceMethodMixin
-     * @type {Object.<string,rpc.ServiceMethod>}
-     * @example
-     * // Explicit casting with TypeScript
-     * (myRpcService["myMethod"] as protobuf.rpc.ServiceMethod)(...)
-     */
     type ServiceMethodMixin = { [k: string]: rpc.ServiceMethod };
 
     /**
@@ -1690,33 +1564,8 @@ export namespace rpc {
     }
 }
 
-/**
- * RPC implementation passed to {@link Service#create} performing a service request on network level, i.e. by utilizing http requests or websockets.
- * @typedef RPCImpl
- * @type {function}
- * @param {Method|rpc.ServiceMethod} method Reflected or static method being called
- * @param {Uint8Array} requestData Request data
- * @param {RPCImplCallback} callback Callback function
- * @returns {undefined}
- * @example
- * function rpcImpl(method, requestData, callback) {
- *     if (protobuf.util.lcFirst(method.name) !== "myMethod") // compatible with static code
- *         throw Error("no such method");
- *     asynchronouslyObtainAResponse(requestData, function(err, responseData) {
- *         callback(err, responseData);
- *     });
- * }
- */
 type RPCImpl = (method: (Method|rpc.ServiceMethod), requestData: Uint8Array, callback: RPCImplCallback) => void;
 
-/**
- * Node-style callback as used by {@link RPCImpl}.
- * @typedef RPCImplCallback
- * @type {function}
- * @param {?Error} error Error, if any, otherwise `null`
- * @param {?Uint8Array} [response] Response data or `null` to signal end of stream, if there hasn't been an error
- * @returns {undefined}
- */
 type RPCImplCallback = (error: Error, response?: Uint8Array) => void;
 
 /**
@@ -1780,30 +1629,12 @@ export class Service extends NamespaceBase {
     public create(rpcImpl: RPCImpl, requestDelimited?: boolean, responseDelimited?: boolean): rpc.Service;
 }
 
-/**
- * Service descriptor.
- * @typedef ServiceDescriptor
- * @type {Object}
- * @property {Object.<string,*>} [options] Service options
- * @property {Object.<string,MethodDescriptor>} methods Method descriptors
- * @property {Object.<string,AnyNestedDescriptor>} [nested] Nested object descriptors
- */
 type ServiceDescriptor = {
     options?: { [k: string]: any };
     methods: { [k: string]: MethodDescriptor };
     nested?: { [k: string]: AnyNestedDescriptor };
 };
 
-/**
- * Handle object returned from {@link tokenize}.
- * @typedef {Object.<string,*>} TokenizerHandle
- * @property {function():number} line Gets the current line number
- * @property {function():?string} next Gets the next token and advances (`null` on eof)
- * @property {function():?string} peek Peeks for the next token (`null` on eof)
- * @property {function(string)} push Pushes a token back to the stack
- * @property {function(string, boolean=):boolean} skip Skips a token, returns its presence and advances or, if non-optional and not present, throws
- * @property {function(number=):?string} cmnt Gets the comment on the previous line or the line comment on the specified line, if any
- */
 type TokenizerHandle = { [k: string]: any };
 
 /**
@@ -2016,18 +1847,6 @@ export class Type extends NamespaceBase {
     public toObject(message: Message, options?: ConversionOptions): { [k: string]: any };
 }
 
-/**
- * Message type descriptor.
- * @typedef TypeDescriptor
- * @type {Object}
- * @property {Object.<string,*>} [options] Message type options
- * @property {Object.<string,OneOfDescriptor>} [oneofs] Oneof descriptors
- * @property {Object.<string,FieldDescriptor>} fields Field descriptors
- * @property {number[][]} [extensions] Extension ranges
- * @property {number[][]} [reserved] Reserved ranges
- * @property {boolean} [group=false] Whether a legacy group or not
- * @property {Object.<string,AnyNestedDescriptor>} [nested] Nested object descriptors
- */
 type TypeDescriptor = {
     options?: { [k: string]: any };
     oneofs?: { [k: string]: OneOfDescriptor };
@@ -2038,24 +1857,6 @@ type TypeDescriptor = {
     nested?: { [k: string]: AnyNestedDescriptor };
 };
 
-/**
- * Conversion options as used by {@link Type#toObject} and {@link Message.toObject}.
- * @typedef ConversionOptions
- * @type {Object}
- * @property {*} [longs] Long conversion type.
- * Valid values are `String` and `Number` (the global types).
- * Defaults to copy the present value, which is a possibly unsafe number without and a {@link Long} with a long library.
- * @property {*} [enums] Enum value conversion type.
- * Only valid value is `String` (the global type).
- * Defaults to copy the present value, which is the numeric id.
- * @property {*} [bytes] Bytes value conversion type.
- * Valid values are `Array` and (a base64 encoded) `String` (the global types).
- * Defaults to copy the present value, which usually is a Buffer under node and an Uint8Array in the browser.
- * @property {boolean} [defaults=false] Also sets default values on the resulting object
- * @property {boolean} [arrays=false] Sets empty arrays for missing repeated fields even if `defaults=false`
- * @property {boolean} [objects=false] Sets empty objects for missing map fields even if `defaults=false`
- * @property {boolean} [oneofs=false] Includes virtual oneof properties set to the present field's name, if any
- */
 type ConversionOptions = {
     longs?: any;
     enums?: any;
@@ -2075,6 +1876,7 @@ export namespace types {
     /**
      * Basic type wire types.
      * @type {Object.<string,number>}
+     * @const
      * @property {number} double=1 Fixed64 wire type
      * @property {number} float=5 Fixed32 wire type
      * @property {number} int32=0 Varint wire type
@@ -2091,7 +1893,7 @@ export namespace types {
      * @property {number} string=2 Ldelim wire type
      * @property {number} bytes=2 Ldelim wire type
      */
-    let basic: {
+    const basic: {
         "double": number,
         "float": number,
         "int32": number,
@@ -2112,6 +1914,7 @@ export namespace types {
     /**
      * Basic type defaults.
      * @type {Object.<string,*>}
+     * @const
      * @property {number} double=0 Double default
      * @property {number} float=0 Float default
      * @property {number} int32=0 Int32 default
@@ -2129,7 +1932,7 @@ export namespace types {
      * @property {Array.<number>} bytes=Array(0) Bytes default
      * @property {Message} message=null Message default
      */
-    let defaults: {
+    const defaults: {
         "double": number,
         "float": number,
         "int32": number,
@@ -2151,13 +1954,14 @@ export namespace types {
     /**
      * Basic long type wire types.
      * @type {Object.<string,number>}
+     * @const
      * @property {number} int64=0 Varint wire type
      * @property {number} uint64=0 Varint wire type
      * @property {number} sint64=0 Varint wire type
      * @property {number} fixed64=1 Fixed64 wire type
      * @property {number} sfixed64=1 Fixed64 wire type
      */
-    let long: {
+    const long: {
         "int64": number,
         "uint64": number,
         "sint64": number,
@@ -2168,6 +1972,7 @@ export namespace types {
     /**
      * Allowed types for map keys with their associated wire type.
      * @type {Object.<string,number>}
+     * @const
      * @property {number} int32=0 Varint wire type
      * @property {number} uint32=0 Varint wire type
      * @property {number} sint32=0 Varint wire type
@@ -2181,7 +1986,7 @@ export namespace types {
      * @property {number} bool=0 Varint wire type
      * @property {number} string=2 Ldelim wire type
      */
-    let mapKey: {
+    const mapKey: {
         "int32": number,
         "uint32": number,
         "sint32": number,
@@ -2199,6 +2004,7 @@ export namespace types {
     /**
      * Allowed types for packed repeated fields with their associated wire type.
      * @type {Object.<string,number>}
+     * @const
      * @property {number} double=1 Fixed64 wire type
      * @property {number} float=5 Fixed32 wire type
      * @property {number} int32=0 Varint wire type
@@ -2213,7 +2019,7 @@ export namespace types {
      * @property {number} sfixed64=1 Fixed64 wire type
      * @property {number} bool=0 Varint wire type
      */
-    let packed: {
+    const packed: {
         "double": number,
         "float": number,
         "int32": number,
@@ -2346,21 +2152,24 @@ export namespace util {
      * An immuable empty array.
      * @memberof util
      * @type {Array.<*>}
+     * @const
      */
-    let emptyArray: any[];
+    const emptyArray: any[];
 
     /**
      * An immutable empty object.
      * @type {Object}
+     * @const
      */
-    let emptyObject: Object;
+    const emptyObject: object;
 
     /**
      * Whether running within node or not.
      * @memberof util
      * @type {boolean}
+     * @const
      */
-    let isNode: boolean;
+    const isNode: boolean;
 
     /**
      * Tests if the specified value is an integer.
@@ -2386,11 +2195,21 @@ export namespace util {
 
     /**
      * Checks if a property on a message is considered to be present.
+     * This is an alias of {@link util.isSet}.
+     * @function
      * @param {Object} obj Plain object or message instance
      * @param {string} prop Property name
      * @returns {boolean} `true` if considered to be present, otherwise `false`
      */
-    function isset(obj: Object, prop: string): boolean;
+    function isset(obj: object, prop: string): boolean;
+
+    /**
+     * Checks if a property on a message is considered to be present.
+     * @param {Object} obj Plain object or message instance
+     * @param {string} prop Property name
+     * @returns {boolean} `true` if considered to be present, otherwise `false`
+     */
+    function isSet(obj: object, prop: string): boolean;
 
     /**
      * Node's Buffer class if available.
@@ -2420,20 +2239,23 @@ export namespace util {
     /**
      * Regular expression used to verify 2 bit (`bool`) map keys.
      * @type {RegExp}
+     * @const
      */
-    let key2Re: RegExp;
+    const key2Re: RegExp;
 
     /**
      * Regular expression used to verify 32 bit (`int32` etc.) map keys.
      * @type {RegExp}
+     * @const
      */
-    let key32Re: RegExp;
+    const key32Re: RegExp;
 
     /**
      * Regular expression used to verify 64 bit (`int64` etc.) map keys.
      * @type {RegExp}
+     * @const
      */
-    let key64Re: RegExp;
+    const key64Re: RegExp;
 
     /**
      * Converts a number or long to an 8 characters long hash string.
@@ -2727,7 +2549,7 @@ export namespace util {
      * @param {string} moduleName Module to require
      * @returns {?Object} Required module if available and not empty, otherwise `null`
      */
-    function inquire(moduleName: string): Object;
+    function inquire(moduleName: string): object;
 
     /**
      * A minimal path module to resolve Unix, Windows and URL paths alike.
@@ -2836,19 +2658,19 @@ export class Writer {
      * Operations head.
      * @type {Object}
      */
-    public head: Object;
+    public head: object;
 
     /**
      * Operations tail
      * @type {Object}
      */
-    public tail: Object;
+    public tail: object;
 
     /**
      * Linked forked states.
      * @type {?Object}
      */
-    public states: Object;
+    public states: object;
 
     /**
      * Creates a new writer.
@@ -3047,56 +2869,15 @@ export class BufferWriter extends Writer {
     public finish(): Buffer;
 }
 
-/**
- * A codegen instance as returned by {@link codegen}, that also is a sprintf-like appender function.
- * @typedef Codegen
- * @type {function}
- * @param {string} format Format string
- * @param {...*} args Replacements
- * @returns {Codegen} Itself
- * @property {function(string=):string} str Stringifies the so far generated function source.
- * @property {function(string=, Object=):function} eof Ends generation and builds the function whilst applying a scope.
- */
 type Codegen = (format: string, ...args: any[]) => Codegen;
 
-/**
- * Node-style callback as used by {@link util.fetch}.
- * @typedef FetchCallback
- * @type {function}
- * @param {?Error} error Error, if any, otherwise `null`
- * @param {string} [contents] File contents, if there hasn't been an error
- * @returns {undefined}
- */
 type FetchCallback = (error: Error, contents?: string) => void;
 
-/**
- * Options as used by {@link util.fetch}.
- * @typedef FetchOptions
- * @type {Object}
- * @property {boolean} [binary=false] Whether expecting a binary response
- * @property {boolean} [xhr=false] If `true`, forces the use of XMLHttpRequest
- */
 type FetchOptions = {
     binary?: boolean;
     xhr?: boolean;
 };
 
-/**
- * An allocator as used by {@link util.pool}.
- * @typedef PoolAllocator
- * @type {function}
- * @param {number} size Buffer size
- * @returns {Uint8Array} Buffer
- */
 type PoolAllocator = (size: number) => Uint8Array;
 
-/**
- * A slicer as used by {@link util.pool}.
- * @typedef PoolSlicer
- * @type {function}
- * @param {number} start Start offset
- * @param {number} end End offset
- * @returns {Uint8Array} Buffer slice
- * @this {Uint8Array}
- */
 type PoolSlicer = (this: Uint8Array, start: number, end: number) => Uint8Array;
