@@ -200,7 +200,7 @@ Reader.prototype.bool = function read_bool() {
     return this.uint32() !== 0;
 };
 
-function readFixed32(buf, end) {
+function readFixed32_end(buf, end) { // note that this uses `end`, not `pos`
     return (buf[end - 4]
           | buf[end - 3] << 8
           | buf[end - 2] << 16
@@ -217,7 +217,7 @@ Reader.prototype.fixed32 = function read_fixed32() {
     if (this.pos + 4 > this.len)
         throw indexOutOfRange(this, 4);
 
-    return readFixed32(this.buf, this.pos += 4);
+    return readFixed32_end(this.buf, this.pos += 4);
 };
 
 /**
@@ -230,7 +230,7 @@ Reader.prototype.sfixed32 = function read_sfixed32() {
     if (this.pos + 4 > this.len)
         throw indexOutOfRange(this, 4);
 
-    return readFixed32(this.buf, this.pos += 4) | 0;
+    return readFixed32_end(this.buf, this.pos += 4) | 0;
 };
 
 /* eslint-disable no-invalid-this */
@@ -241,7 +241,7 @@ function readFixed64(/* this: Reader */) {
     if (this.pos + 8 > this.len)
         throw indexOutOfRange(this, 8);
 
-    return new LongBits(readFixed32(this.buf, this.pos += 4), readFixed32(this.buf, this.pos += 4));
+    return new LongBits(readFixed32_end(this.buf, this.pos += 4), readFixed32_end(this.buf, this.pos += 4));
 }
 
 /* eslint-enable no-invalid-this */
@@ -260,43 +260,6 @@ function readFixed64(/* this: Reader */) {
  * @returns {Long} Value read
  */
 
-var readFloat = typeof Float32Array !== "undefined"
-    ? (function() {
-        var f32 = new Float32Array(1),
-            f8b = new Uint8Array(f32.buffer);
-        f32[0] = -0;
-        return f8b[3] // already le?
-            ? function readFloat_f32(buf, pos) {
-                f8b[0] = buf[pos    ];
-                f8b[1] = buf[pos + 1];
-                f8b[2] = buf[pos + 2];
-                f8b[3] = buf[pos + 3];
-                return f32[0];
-            }
-            /* istanbul ignore next */
-            : function readFloat_f32_le(buf, pos) {
-                f8b[0] = buf[pos + 3];
-                f8b[1] = buf[pos + 2];
-                f8b[2] = buf[pos + 1];
-                f8b[3] = buf[pos    ];
-                return f32[0];
-            };
-    })()
-    /* istanbul ignore next */
-    : function readFloat_ieee754(buf, pos) {
-        var uint = readFixed32(buf, pos + 4),
-            sign = (uint >> 31) * 2 + 1,
-            exponent = uint >>> 23 & 255,
-            mantissa = uint & 8388607;
-        return exponent === 255
-            ? mantissa
-              ? NaN
-              : sign * Infinity
-            : exponent === 0 // denormal
-              ? sign * 1.401298464324817e-45 * mantissa
-              : sign * Math.pow(2, exponent - 150) * (mantissa + 8388608);
-    };
-
 /**
  * Reads a float (32 bit) as a number.
  * @function
@@ -308,56 +271,10 @@ Reader.prototype.float = function read_float() {
     if (this.pos + 4 > this.len)
         throw indexOutOfRange(this, 4);
 
-    var value = readFloat(this.buf, this.pos);
+    var value = util.float.readFloatLE(this.buf, this.pos);
     this.pos += 4;
     return value;
 };
-
-var readDouble = typeof Float64Array !== "undefined"
-    ? (function() {
-        var f64 = new Float64Array(1),
-            f8b = new Uint8Array(f64.buffer);
-        f64[0] = -0;
-        return f8b[7] // already le?
-            ? function readDouble_f64(buf, pos) {
-                f8b[0] = buf[pos    ];
-                f8b[1] = buf[pos + 1];
-                f8b[2] = buf[pos + 2];
-                f8b[3] = buf[pos + 3];
-                f8b[4] = buf[pos + 4];
-                f8b[5] = buf[pos + 5];
-                f8b[6] = buf[pos + 6];
-                f8b[7] = buf[pos + 7];
-                return f64[0];
-            }
-            /* istanbul ignore next */
-            : function readDouble_f64_le(buf, pos) {
-                f8b[0] = buf[pos + 7];
-                f8b[1] = buf[pos + 6];
-                f8b[2] = buf[pos + 5];
-                f8b[3] = buf[pos + 4];
-                f8b[4] = buf[pos + 3];
-                f8b[5] = buf[pos + 2];
-                f8b[6] = buf[pos + 1];
-                f8b[7] = buf[pos    ];
-                return f64[0];
-            };
-    })()
-    /* istanbul ignore next */
-    : function readDouble_ieee754(buf, pos) {
-        var lo = readFixed32(buf, pos + 4),
-            hi = readFixed32(buf, pos + 8);
-        var sign = (hi >> 31) * 2 + 1,
-            exponent = hi >>> 20 & 2047,
-            mantissa = 4294967296 * (hi & 1048575) + lo;
-        return exponent === 2047
-            ? mantissa
-              ? NaN
-              : sign * Infinity
-            : exponent === 0 // denormal
-              ? sign * 5e-324 * mantissa
-              : sign * Math.pow(2, exponent - 1075) * (mantissa + 4503599627370496);
-    };
 
 /**
  * Reads a double (64 bit float) as a number.
@@ -370,7 +287,7 @@ Reader.prototype.double = function read_double() {
     if (this.pos + 8 > this.len)
         throw indexOutOfRange(this, 4);
 
-    var value = readDouble(this.buf, this.pos);
+    var value = util.float.readDoubleLE(this.buf, this.pos);
     this.pos += 8;
     return value;
 };

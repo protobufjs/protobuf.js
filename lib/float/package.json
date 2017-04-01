@@ -1,7 +1,7 @@
 {
   "name": "@protobufjs/float",
-  "description": "Reads / writes floats / doubles from / to buffers in both modern and ancient browsers. Fast.",
-  "version": "1.0.0",
+  "description": "Reads / writes floats / doubles from / to buffers in both modern and ancient browsers.",
+  "version": "1.0.1",
   "author": "Daniel Wirtz <dcode+protobufjs@dcode.io>",
   "repository": {
     "type": "git",

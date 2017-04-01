@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.7.0 (c) 2016, Daniel Wirtz
- * Compiled Fri, 31 Mar 2017 13:44:25 UTC
+ * Compiled Sat, 01 Apr 2017 14:13:02 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -436,7 +436,7 @@ EventEmitter.prototype.emit = function emit(evt) {
 module.exports = fetch;
 
 var asPromise = require(1),
-    inquire   = require(6);
+    inquire   = require(7);
 
 var fs = inquire("fs");
 
@@ -548,7 +548,344 @@ fetch.xhr = function fetch_xhr(filename, options, callback) {
     xhr.send();
 };
 
-},{"1":1,"6":6}],6:[function(require,module,exports){
+},{"1":1,"7":7}],6:[function(require,module,exports){
+"use strict";
+
+module.exports = factory(factory);
+
+/**
+ * Reads / writes floats / doubles from / to buffers.
+ * @name util.float
+ * @namespace
+ */
+
+/**
+ * Writes a 32 bit float to a buffer using little endian byte order.
+ * @name util.float.writeFloatLE
+ * @function
+ * @param {number} val Value to write
+ * @param {Uint8Array} buf Target buffer
+ * @param {number} pos Target buffer offset
+ * @returns {undefined}
+ */
+
+/**
+ * Writes a 32 bit float to a buffer using big endian byte order.
+ * @name util.float.writeFloatBE
+ * @function
+ * @param {number} val Value to write
+ * @param {Uint8Array} buf Target buffer
+ * @param {number} pos Target buffer offset
+ * @returns {undefined}
+ */
+
+/**
+ * Reads a 32 bit float from a buffer using little endian byte order.
+ * @name util.float.readFloatLE
+ * @function
+ * @param {Uint8Array} buf Source buffer
+ * @param {number} pos Source buffer offset
+ * @returns {number} Value read
+ */
+
+/**
+ * Reads a 32 bit float from a buffer using big endian byte order.
+ * @name util.float.readFloatBE
+ * @function
+ * @param {Uint8Array} buf Source buffer
+ * @param {number} pos Source buffer offset
+ * @returns {number} Value read
+ */
+
+/**
+ * Writes a 64 bit double to a buffer using little endian byte order.
+ * @name util.float.writeDoubleLE
+ * @function
+ * @param {number} val Value to write
+ * @param {Uint8Array} buf Target buffer
+ * @param {number} pos Target buffer offset
+ * @returns {undefined}
+ */
+
+/**
+ * Writes a 64 bit double to a buffer using big endian byte order.
+ * @name util.float.writeDoubleBE
+ * @function
+ * @param {number} val Value to write
+ * @param {Uint8Array} buf Target buffer
+ * @param {number} pos Target buffer offset
+ * @returns {undefined}
+ */
+
+/**
+ * Reads a 64 bit double from a buffer using little endian byte order.
+ * @name util.float.readDoubleLE
+ * @function
+ * @param {Uint8Array} buf Source buffer
+ * @param {number} pos Source buffer offset
+ * @returns {number} Value read
+ */
+
+/**
+ * Reads a 64 bit double from a buffer using big endian byte order.
+ * @name util.float.readDoubleBE
+ * @function
+ * @param {Uint8Array} buf Source buffer
+ * @param {number} pos Source buffer offset
+ * @returns {number} Value read
+ */
+
+// Factory function for the purpose of node-based testing in modified global environments
+function factory(exports) {
+
+    // float: typed array
+    if (typeof Float32Array !== "undefined") (function() {
+
+        var f32 = new Float32Array([ -0 ]),
+            f8b = new Uint8Array(f32.buffer),
+            le  = f8b[3] === 128;
+
+        function writeFloat_f32_cpy(val, buf, pos) {
+            f32[0] = val;
+            buf[pos    ] = f8b[0];
+            buf[pos + 1] = f8b[1];
+            buf[pos + 2] = f8b[2];
+            buf[pos + 3] = f8b[3];
+        }
+
+        function writeFloat_f32_rev(val, buf, pos) {
+            f32[0] = val;
+            buf[pos    ] = f8b[3];
+            buf[pos + 1] = f8b[2];
+            buf[pos + 2] = f8b[1];
+            buf[pos + 3] = f8b[0];
+        }
+
+        /* istanbul ignore next */
+        exports.writeFloatLE = le ? writeFloat_f32_cpy : writeFloat_f32_rev;
+        /* istanbul ignore next */
+        exports.writeFloatBE = le ? writeFloat_f32_rev : writeFloat_f32_cpy;
+
+        function readFloat_f32_cpy(buf, pos) {
+            f8b[0] = buf[pos    ];
+            f8b[1] = buf[pos + 1];
+            f8b[2] = buf[pos + 2];
+            f8b[3] = buf[pos + 3];
+            return f32[0];
+        }
+
+        function readFloat_f32_rev(buf, pos) {
+            f8b[3] = buf[pos    ];
+            f8b[2] = buf[pos + 1];
+            f8b[1] = buf[pos + 2];
+            f8b[0] = buf[pos + 3];
+            return f32[0];
+        }
+
+        /* istanbul ignore next */
+        exports.readFloatLE = le ? readFloat_f32_cpy : readFloat_f32_rev;
+        /* istanbul ignore next */
+        exports.readFloatBE = le ? readFloat_f32_rev : readFloat_f32_cpy;
+
+    // float: ieee754
+    })(); else (function() {
+
+        function writeFloat_ieee754(writeUint, val, buf, pos) {
+            var sign = val < 0 ? 1 : 0;
+            if (sign)
+                val = -val;
+            if (val === 0)
+                writeUint(1 / val > 0 ? /* positive */ 0 : /* negative 0 */ 2147483648, buf, pos);
+            else if (isNaN(val))
+                writeUint(2143289344, buf, pos);
+            else if (val > 3.4028234663852886e+38) // +-Infinity
+                writeUint((sign << 31 | 2139095040) >>> 0, buf, pos);
+            else if (val < 1.1754943508222875e-38) // denormal
+                writeUint((sign << 31 | Math.round(val / 1.401298464324817e-45)) >>> 0, buf, pos);
+            else {
+                var exponent = Math.floor(Math.log(val) / Math.LN2),
+                    mantissa = Math.round(val * Math.pow(2, -exponent) * 8388608) & 8388607;
+                writeUint((sign << 31 | exponent + 127 << 23 | mantissa) >>> 0, buf, pos);
+            }
+        }
+
+        exports.writeFloatLE = writeFloat_ieee754.bind(null, writeUintLE);
+        exports.writeFloatBE = writeFloat_ieee754.bind(null, writeUintBE);
+
+        function readFloat_ieee754(readUint, buf, pos) {
+            var uint = readUint(buf, pos),
+                sign = (uint >> 31) * 2 + 1,
+                exponent = uint >>> 23 & 255,
+                mantissa = uint & 8388607;
+            return exponent === 255
+                ? mantissa
+                ? NaN
+                : sign * Infinity
+                : exponent === 0 // denormal
+                ? sign * 1.401298464324817e-45 * mantissa
+                : sign * Math.pow(2, exponent - 150) * (mantissa + 8388608);
+        }
+
+        exports.readFloatLE = readFloat_ieee754.bind(null, readUintLE);
+        exports.readFloatBE = readFloat_ieee754.bind(null, readUintBE);
+
+    })();
+
+    // double: typed array
+    if (typeof Float64Array !== "undefined") (function() {
+
+        var f64 = new Float64Array([-0]),
+            f8b = new Uint8Array(f64.buffer),
+            le  = f8b[7] === 128;
+
+        function writeDouble_f64_cpy(val, buf, pos) {
+            f64[0] = val;
+            buf[pos    ] = f8b[0];
+            buf[pos + 1] = f8b[1];
+            buf[pos + 2] = f8b[2];
+            buf[pos + 3] = f8b[3];
+            buf[pos + 4] = f8b[4];
+            buf[pos + 5] = f8b[5];
+            buf[pos + 6] = f8b[6];
+            buf[pos + 7] = f8b[7];
+        }
+
+        function writeDouble_f64_rev(val, buf, pos) {
+            f64[0] = val;
+            buf[pos    ] = f8b[7];
+            buf[pos + 1] = f8b[6];
+            buf[pos + 2] = f8b[5];
+            buf[pos + 3] = f8b[4];
+            buf[pos + 4] = f8b[3];
+            buf[pos + 5] = f8b[2];
+            buf[pos + 6] = f8b[1];
+            buf[pos + 7] = f8b[0];
+        }
+
+        /* istanbul ignore next */
+        exports.writeDoubleLE = le ? writeDouble_f64_cpy : writeDouble_f64_rev;
+        /* istanbul ignore next */
+        exports.writeDoubleBE = le ? writeDouble_f64_rev : writeDouble_f64_cpy;
+
+        function readDouble_f64_cpy(buf, pos) {
+            f8b[0] = buf[pos    ];
+            f8b[1] = buf[pos + 1];
+            f8b[2] = buf[pos + 2];
+            f8b[3] = buf[pos + 3];
+            f8b[4] = buf[pos + 4];
+            f8b[5] = buf[pos + 5];
+            f8b[6] = buf[pos + 6];
+            f8b[7] = buf[pos + 7];
+            return f64[0];
+        }
+
+        function readDouble_f64_rev(buf, pos) {
+            f8b[7] = buf[pos    ];
+            f8b[6] = buf[pos + 1];
+            f8b[5] = buf[pos + 2];
+            f8b[4] = buf[pos + 3];
+            f8b[3] = buf[pos + 4];
+            f8b[2] = buf[pos + 5];
+            f8b[1] = buf[pos + 6];
+            f8b[0] = buf[pos + 7];
+            return f64[0];
+        }
+
+        /* istanbul ignore next */
+        exports.readDoubleLE = le ? readDouble_f64_cpy : readDouble_f64_rev;
+        /* istanbul ignore next */
+        exports.readDoubleBE = le ? readDouble_f64_rev : readDouble_f64_cpy;
+
+    // double: ieee754
+    })(); else (function() {
+
+        function writeDouble_ieee754(writeUint, off0, off1, val, buf, pos) {
+            var sign = val < 0 ? 1 : 0;
+            if (sign)
+                val = -val;
+            if (val === 0) {
+                writeUint(0, buf, pos + off0);
+                writeUint(1 / val > 0 ? /* positive */ 0 : /* negative 0 */ 2147483648, buf, pos + off1);
+            } else if (isNaN(val)) {
+                writeUint(0, buf, pos + off0);
+                writeUint(2146959360, buf, pos + off1);
+            } else if (val > 1.7976931348623157e+308) { // +-Infinity
+                writeUint(0, buf, pos + off0);
+                writeUint((sign << 31 | 2146435072) >>> 0, buf, pos + off1);
+            } else {
+                var mantissa;
+                if (val < 2.2250738585072014e-308) { // denormal
+                    mantissa = val / 5e-324;
+                    writeUint(mantissa >>> 0, buf, pos + off0);
+                    writeUint((sign << 31 | mantissa / 4294967296) >>> 0, buf, pos + off1);
+                } else {
+                    var exponent = Math.floor(Math.log(val) / Math.LN2);
+                    if (exponent === 1024)
+                        exponent = 1023;
+                    mantissa = val * Math.pow(2, -exponent);
+                    writeUint(mantissa * 4503599627370496 >>> 0, buf, pos + off0);
+                    writeUint((sign << 31 | exponent + 1023 << 20 | mantissa * 1048576 & 1048575) >>> 0, buf, pos + off1);
+                }
+            }
+        }
+
+        exports.writeDoubleLE = writeDouble_ieee754.bind(null, writeUintLE, 0, 4);
+        exports.writeDoubleBE = writeDouble_ieee754.bind(null, writeUintBE, 4, 0);
+
+        function readDouble_ieee754(readUint, off0, off1, buf, pos) {
+            var lo = readUint(buf, pos + off0),
+                hi = readUint(buf, pos + off1);
+            var sign = (hi >> 31) * 2 + 1,
+                exponent = hi >>> 20 & 2047,
+                mantissa = 4294967296 * (hi & 1048575) + lo;
+            return exponent === 2047
+                ? mantissa
+                ? NaN
+                : sign * Infinity
+                : exponent === 0 // denormal
+                ? sign * 5e-324 * mantissa
+                : sign * Math.pow(2, exponent - 1075) * (mantissa + 4503599627370496);
+        }
+
+        exports.readDoubleLE = readDouble_ieee754.bind(null, readUintLE, 0, 4);
+        exports.readDoubleBE = readDouble_ieee754.bind(null, readUintBE, 4, 0);
+
+    })();
+
+    return exports;
+}
+
+// uint helpers
+
+function writeUintLE(val, buf, pos) {
+    buf[pos    ] =  val        & 255;
+    buf[pos + 1] =  val >>> 8  & 255;
+    buf[pos + 2] =  val >>> 16 & 255;
+    buf[pos + 3] =  val >>> 24;
+}
+
+function writeUintBE(val, buf, pos) {
+    buf[pos    ] =  val >>> 24;
+    buf[pos + 1] =  val >>> 16 & 255;
+    buf[pos + 2] =  val >>> 8  & 255;
+    buf[pos + 3] =  val        & 255;
+}
+
+function readUintLE(buf, pos) {
+    return (buf[pos    ]
+          | buf[pos + 1] << 8
+          | buf[pos + 2] << 16
+          | buf[pos + 3] << 24) >>> 0;
+}
+
+function readUintBE(buf, pos) {
+    return (buf[pos    ] << 24
+          | buf[pos + 1] << 16
+          | buf[pos + 2] << 8
+          | buf[pos + 3]) >>> 0;
+}
+
+},{}],7:[function(require,module,exports){
 "use strict";
 module.exports = inquire;
 
@@ -567,7 +904,7 @@ function inquire(moduleName) {
     return null;
 }
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 "use strict";
 
 /**
@@ -634,7 +971,7 @@ path.resolve = function resolve(originPath, includePath, alreadyNormalized) {
     return (originPath = originPath.replace(/(?:\/|^)[^/]+$/, "")).length ? normalize(originPath + "/" + includePath) : includePath;
 };
 
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 "use strict";
 module.exports = pool;
 
@@ -684,7 +1021,7 @@ function pool(alloc, slice, size) {
     };
 }
 
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 "use strict";
 
 /**
@@ -791,12 +1128,12 @@ utf8.write = function utf8_write(string, buffer, offset) {
     return offset - start;
 };
 
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 "use strict";
 module.exports = Class;
 
-var Message = require(19),
-    util    = require(32);
+var Message = require(20),
+    util    = require(33);
 
 var Type; // cyclic
 
@@ -810,7 +1147,7 @@ var Type; // cyclic
  */
 function Class(type, ctor) {
     if (!Type)
-        Type = require(30);
+        Type = require(31);
 
     if (!(type instanceof Type))
         throw TypeError("type must be a Type");
@@ -966,7 +1303,7 @@ Class.prototype = Message;
  * @returns {?string} `null` if valid, otherwise the reason why it is not
  */
 
-},{"19":19,"30":30,"32":32}],11:[function(require,module,exports){
+},{"20":20,"31":31,"33":33}],12:[function(require,module,exports){
 "use strict";
 /**
  * Runtime message from/to plain object converters.
@@ -974,8 +1311,8 @@ Class.prototype = Message;
  */
 var converter = exports;
 
-var Enum = require(14),
-    util = require(32);
+var Enum = require(15),
+    util = require(33);
 
 /**
  * Generates a partial value fromObject conveter.
@@ -1251,13 +1588,13 @@ converter.toObject = function toObject(mtype) {
     /* eslint-enable no-unexpected-multiline, block-scoped-var, no-redeclare */
 };
 
-},{"14":14,"32":32}],12:[function(require,module,exports){
+},{"15":15,"33":33}],13:[function(require,module,exports){
 "use strict";
 module.exports = decoder;
 
-var Enum    = require(14),
-    types   = require(31),
-    util    = require(32);
+var Enum    = require(15),
+    types   = require(32),
+    util    = require(33);
 
 function missing(field) {
     return "missing required '" + field.name + "'";
@@ -1359,13 +1696,13 @@ function decoder(mtype) {
     /* eslint-enable no-unexpected-multiline */
 }
 
-},{"14":14,"31":31,"32":32}],13:[function(require,module,exports){
+},{"15":15,"32":32,"33":33}],14:[function(require,module,exports){
 "use strict";
 module.exports = encoder;
 
-var Enum     = require(14),
-    types    = require(31),
-    util     = require(32);
+var Enum     = require(15),
+    types    = require(32),
+    util     = require(33);
 
 /**
  * Generates a partial message type encoder.
@@ -1466,15 +1803,15 @@ function encoder(mtype) {
     ("return w");
     /* eslint-enable no-unexpected-multiline, block-scoped-var, no-redeclare */
 }
-},{"14":14,"31":31,"32":32}],14:[function(require,module,exports){
+},{"15":15,"32":32,"33":33}],15:[function(require,module,exports){
 "use strict";
 module.exports = Enum;
 
 // extends ReflectionObject
-var ReflectionObject = require(22);
+var ReflectionObject = require(23);
 ((Enum.prototype = Object.create(ReflectionObject.prototype)).constructor = Enum).className = "Enum";
 
-var util = require(32);
+var util = require(33);
 
 /**
  * Constructs a new enum instance.
@@ -1603,17 +1940,17 @@ Enum.prototype.remove = function(name) {
     return this;
 };
 
-},{"22":22,"32":32}],15:[function(require,module,exports){
+},{"23":23,"33":33}],16:[function(require,module,exports){
 "use strict";
 module.exports = Field;
 
 // extends ReflectionObject
-var ReflectionObject = require(22);
+var ReflectionObject = require(23);
 ((Field.prototype = Object.create(ReflectionObject.prototype)).constructor = Field).className = "Field";
 
-var Enum  = require(14),
-    types = require(31),
-    util  = require(32);
+var Enum  = require(15),
+    types = require(32),
+    util  = require(33);
 
 var Type; // cyclic
 
@@ -1849,7 +2186,7 @@ Field.prototype.resolve = function resolve() {
 
         /* istanbul ignore if */
         if (!Type)
-            Type = require(30);
+            Type = require(31);
 
         var scope = this.declaringField ? this.declaringField.parent : this.parent;
         if (this.resolvedType = scope.lookup(this.type, Type))
@@ -1899,9 +2236,9 @@ Field.prototype.resolve = function resolve() {
     return ReflectionObject.prototype.resolve.call(this);
 };
 
-},{"14":14,"22":22,"30":30,"31":31,"32":32}],16:[function(require,module,exports){
+},{"15":15,"23":23,"31":31,"32":32,"33":33}],17:[function(require,module,exports){
 "use strict";
-var protobuf = module.exports = require(17);
+var protobuf = module.exports = require(18);
 
 protobuf.build = "light";
 
@@ -1974,37 +2311,37 @@ function loadSync(filename, root) {
 protobuf.loadSync = loadSync;
 
 // Serialization
-protobuf.encoder          = require(13);
-protobuf.decoder          = require(12);
-protobuf.verifier         = require(35);
-protobuf.converter        = require(11);
+protobuf.encoder          = require(14);
+protobuf.decoder          = require(13);
+protobuf.verifier         = require(36);
+protobuf.converter        = require(12);
 
 // Reflection
-protobuf.ReflectionObject = require(22);
-protobuf.Namespace        = require(21);
-protobuf.Root             = require(26);
-protobuf.Enum             = require(14);
-protobuf.Type             = require(30);
-protobuf.Field            = require(15);
-protobuf.OneOf            = require(23);
-protobuf.MapField         = require(18);
-protobuf.Service          = require(29);
-protobuf.Method           = require(20);
+protobuf.ReflectionObject = require(23);
+protobuf.Namespace        = require(22);
+protobuf.Root             = require(27);
+protobuf.Enum             = require(15);
+protobuf.Type             = require(31);
+protobuf.Field            = require(16);
+protobuf.OneOf            = require(24);
+protobuf.MapField         = require(19);
+protobuf.Service          = require(30);
+protobuf.Method           = require(21);
 
 // Runtime
-protobuf.Class            = require(10);
-protobuf.Message          = require(19);
+protobuf.Class            = require(11);
+protobuf.Message          = require(20);
 
 // Utility
-protobuf.types            = require(31);
-protobuf.util             = require(32);
+protobuf.types            = require(32);
+protobuf.util             = require(33);
 
 // Configure reflection
 protobuf.ReflectionObject._configure(protobuf.Root);
 protobuf.Namespace._configure(protobuf.Type, protobuf.Service);
 protobuf.Root._configure(protobuf.Type);
 
-},{"10":10,"11":11,"12":12,"13":13,"14":14,"15":15,"17":17,"18":18,"19":19,"20":20,"21":21,"22":22,"23":23,"26":26,"29":29,"30":30,"31":31,"32":32,"35":35}],17:[function(require,module,exports){
+},{"11":11,"12":12,"13":13,"14":14,"15":15,"16":16,"18":18,"19":19,"20":20,"21":21,"22":22,"23":23,"24":24,"27":27,"30":30,"31":31,"32":32,"33":33,"36":36}],18:[function(require,module,exports){
 "use strict";
 var protobuf = exports;
 
@@ -2034,14 +2371,14 @@ protobuf.build = "minimal";
 protobuf.roots = {};
 
 // Serialization
-protobuf.Writer       = require(36);
-protobuf.BufferWriter = require(37);
-protobuf.Reader       = require(24);
-protobuf.BufferReader = require(25);
+protobuf.Writer       = require(37);
+protobuf.BufferWriter = require(38);
+protobuf.Reader       = require(25);
+protobuf.BufferReader = require(26);
 
 // Utility
-protobuf.util         = require(34);
-protobuf.rpc          = require(27);
+protobuf.util         = require(35);
+protobuf.rpc          = require(28);
 protobuf.configure    = configure;
 
 /* istanbul ignore next */
@@ -2058,16 +2395,16 @@ function configure() {
 protobuf.Writer._configure(protobuf.BufferWriter);
 configure();
 
-},{"24":24,"25":25,"27":27,"34":34,"36":36,"37":37}],18:[function(require,module,exports){
+},{"25":25,"26":26,"28":28,"35":35,"37":37,"38":38}],19:[function(require,module,exports){
 "use strict";
 module.exports = MapField;
 
 // extends Field
-var Field = require(15);
+var Field = require(16);
 ((MapField.prototype = Object.create(Field.prototype)).constructor = MapField).className = "MapField";
 
-var types   = require(31),
-    util    = require(32);
+var types   = require(32),
+    util    = require(33);
 
 /**
  * Constructs a new map field instance.
@@ -2163,11 +2500,11 @@ MapField.prototype.resolve = function resolve() {
     return Field.prototype.resolve.call(this);
 };
 
-},{"15":15,"31":31,"32":32}],19:[function(require,module,exports){
+},{"16":16,"32":32,"33":33}],20:[function(require,module,exports){
 "use strict";
 module.exports = Message;
 
-var util = require(32);
+var util = require(33);
 
 /**
  * Constructs a new message instance.
@@ -2294,15 +2631,15 @@ Message.prototype.toJSON = function toJSON() {
     return this.$type.toObject(this, util.toJSONOptions);
 };
 
-},{"32":32}],20:[function(require,module,exports){
+},{"33":33}],21:[function(require,module,exports){
 "use strict";
 module.exports = Method;
 
 // extends ReflectionObject
-var ReflectionObject = require(22);
+var ReflectionObject = require(23);
 ((Method.prototype = Object.create(ReflectionObject.prototype)).constructor = Method).className = "Method";
 
-var util = require(32);
+var util = require(33);
 
 /**
  * Constructs a new service method instance.
@@ -2437,17 +2774,17 @@ Method.prototype.resolve = function resolve() {
     return ReflectionObject.prototype.resolve.call(this);
 };
 
-},{"22":22,"32":32}],21:[function(require,module,exports){
+},{"23":23,"33":33}],22:[function(require,module,exports){
 "use strict";
 module.exports = Namespace;
 
 // extends ReflectionObject
-var ReflectionObject = require(22);
+var ReflectionObject = require(23);
 ((Namespace.prototype = Object.create(ReflectionObject.prototype)).constructor = Namespace).className = "Namespace";
 
-var Enum     = require(14),
-    Field    = require(15),
-    util     = require(32);
+var Enum     = require(15),
+    Field    = require(16),
+    util     = require(33);
 
 var Type,    // cyclic
     Service; // "
@@ -2812,13 +3149,13 @@ Namespace._configure = function(Type_, Service_) {
     Service = Service_;
 };
 
-},{"14":14,"15":15,"22":22,"32":32}],22:[function(require,module,exports){
+},{"15":15,"16":16,"23":23,"33":33}],23:[function(require,module,exports){
 "use strict";
 module.exports = ReflectionObject;
 
 ReflectionObject.className = "ReflectionObject";
 
-var util = require(32);
+var util = require(33);
 
 var Root; // cyclic
 
@@ -3013,15 +3350,15 @@ ReflectionObject._configure = function(Root_) {
     Root = Root_;
 };
 
-},{"32":32}],23:[function(require,module,exports){
+},{"33":33}],24:[function(require,module,exports){
 "use strict";
 module.exports = OneOf;
 
 // extends ReflectionObject
-var ReflectionObject = require(22);
+var ReflectionObject = require(23);
 ((OneOf.prototype = Object.create(ReflectionObject.prototype)).constructor = OneOf).className = "OneOf";
 
-var Field = require(15);
+var Field = require(16);
 
 /**
  * Constructs a new oneof instance.
@@ -3177,11 +3514,11 @@ OneOf.prototype.onRemove = function onRemove(parent) {
     ReflectionObject.prototype.onRemove.call(this, parent);
 };
 
-},{"15":15,"22":22}],24:[function(require,module,exports){
+},{"16":16,"23":23}],25:[function(require,module,exports){
 "use strict";
 module.exports = Reader;
 
-var util      = require(34);
+var util      = require(35);
 
 var BufferReader; // cyclic
 
@@ -3380,7 +3717,7 @@ Reader.prototype.bool = function read_bool() {
     return this.uint32() !== 0;
 };
 
-function readFixed32(buf, end) {
+function readFixed32_end(buf, end) { // note that this uses `end`, not `pos`
     return (buf[end - 4]
           | buf[end - 3] << 8
           | buf[end - 2] << 16
@@ -3397,7 +3734,7 @@ Reader.prototype.fixed32 = function read_fixed32() {
     if (this.pos + 4 > this.len)
         throw indexOutOfRange(this, 4);
 
-    return readFixed32(this.buf, this.pos += 4);
+    return readFixed32_end(this.buf, this.pos += 4);
 };
 
 /**
@@ -3410,7 +3747,7 @@ Reader.prototype.sfixed32 = function read_sfixed32() {
     if (this.pos + 4 > this.len)
         throw indexOutOfRange(this, 4);
 
-    return readFixed32(this.buf, this.pos += 4) | 0;
+    return readFixed32_end(this.buf, this.pos += 4) | 0;
 };
 
 /* eslint-disable no-invalid-this */
@@ -3421,7 +3758,7 @@ function readFixed64(/* this: Reader */) {
     if (this.pos + 8 > this.len)
         throw indexOutOfRange(this, 8);
 
-    return new LongBits(readFixed32(this.buf, this.pos += 4), readFixed32(this.buf, this.pos += 4));
+    return new LongBits(readFixed32_end(this.buf, this.pos += 4), readFixed32_end(this.buf, this.pos += 4));
 }
 
 /* eslint-enable no-invalid-this */
@@ -3440,43 +3777,6 @@ function readFixed64(/* this: Reader */) {
  * @returns {Long} Value read
  */
 
-var readFloat = typeof Float32Array !== "undefined"
-    ? (function() {
-        var f32 = new Float32Array(1),
-            f8b = new Uint8Array(f32.buffer);
-        f32[0] = -0;
-        return f8b[3] // already le?
-            ? function readFloat_f32(buf, pos) {
-                f8b[0] = buf[pos    ];
-                f8b[1] = buf[pos + 1];
-                f8b[2] = buf[pos + 2];
-                f8b[3] = buf[pos + 3];
-                return f32[0];
-            }
-            /* istanbul ignore next */
-            : function readFloat_f32_le(buf, pos) {
-                f8b[0] = buf[pos + 3];
-                f8b[1] = buf[pos + 2];
-                f8b[2] = buf[pos + 1];
-                f8b[3] = buf[pos    ];
-                return f32[0];
-            };
-    })()
-    /* istanbul ignore next */
-    : function readFloat_ieee754(buf, pos) {
-        var uint = readFixed32(buf, pos + 4),
-            sign = (uint >> 31) * 2 + 1,
-            exponent = uint >>> 23 & 255,
-            mantissa = uint & 8388607;
-        return exponent === 255
-            ? mantissa
-              ? NaN
-              : sign * Infinity
-            : exponent === 0 // denormal
-              ? sign * 1.401298464324817e-45 * mantissa
-              : sign * Math.pow(2, exponent - 150) * (mantissa + 8388608);
-    };
-
 /**
  * Reads a float (32 bit) as a number.
  * @function
@@ -3488,56 +3788,10 @@ Reader.prototype.float = function read_float() {
     if (this.pos + 4 > this.len)
         throw indexOutOfRange(this, 4);
 
-    var value = readFloat(this.buf, this.pos);
+    var value = util.float.readFloatLE(this.buf, this.pos);
     this.pos += 4;
     return value;
 };
-
-var readDouble = typeof Float64Array !== "undefined"
-    ? (function() {
-        var f64 = new Float64Array(1),
-            f8b = new Uint8Array(f64.buffer);
-        f64[0] = -0;
-        return f8b[7] // already le?
-            ? function readDouble_f64(buf, pos) {
-                f8b[0] = buf[pos    ];
-                f8b[1] = buf[pos + 1];
-                f8b[2] = buf[pos + 2];
-                f8b[3] = buf[pos + 3];
-                f8b[4] = buf[pos + 4];
-                f8b[5] = buf[pos + 5];
-                f8b[6] = buf[pos + 6];
-                f8b[7] = buf[pos + 7];
-                return f64[0];
-            }
-            /* istanbul ignore next */
-            : function readDouble_f64_le(buf, pos) {
-                f8b[0] = buf[pos + 7];
-                f8b[1] = buf[pos + 6];
-                f8b[2] = buf[pos + 5];
-                f8b[3] = buf[pos + 4];
-                f8b[4] = buf[pos + 3];
-                f8b[5] = buf[pos + 2];
-                f8b[6] = buf[pos + 1];
-                f8b[7] = buf[pos    ];
-                return f64[0];
-            };
-    })()
-    /* istanbul ignore next */
-    : function readDouble_ieee754(buf, pos) {
-        var lo = readFixed32(buf, pos + 4),
-            hi = readFixed32(buf, pos + 8);
-        var sign = (hi >> 31) * 2 + 1,
-            exponent = hi >>> 20 & 2047,
-            mantissa = 4294967296 * (hi & 1048575) + lo;
-        return exponent === 2047
-            ? mantissa
-              ? NaN
-              : sign * Infinity
-            : exponent === 0 // denormal
-              ? sign * 5e-324 * mantissa
-              : sign * Math.pow(2, exponent - 1075) * (mantissa + 4503599627370496);
-    };
 
 /**
  * Reads a double (64 bit float) as a number.
@@ -3550,7 +3804,7 @@ Reader.prototype.double = function read_double() {
     if (this.pos + 8 > this.len)
         throw indexOutOfRange(this, 4);
 
-    var value = readDouble(this.buf, this.pos);
+    var value = util.float.readDoubleLE(this.buf, this.pos);
     this.pos += 8;
     return value;
 };
@@ -3667,15 +3921,15 @@ Reader._configure = function(BufferReader_) {
     });
 };
 
-},{"34":34}],25:[function(require,module,exports){
+},{"35":35}],26:[function(require,module,exports){
 "use strict";
 module.exports = BufferReader;
 
 // extends Reader
-var Reader = require(24);
+var Reader = require(25);
 (BufferReader.prototype = Object.create(Reader.prototype)).constructor = BufferReader;
 
-var util = require(34);
+var util = require(35);
 
 /**
  * Constructs a new buffer reader instance.
@@ -3713,17 +3967,17 @@ BufferReader.prototype.string = function read_string_buffer() {
  * @returns {Buffer} Value read
  */
 
-},{"24":24,"34":34}],26:[function(require,module,exports){
+},{"25":25,"35":35}],27:[function(require,module,exports){
 "use strict";
 module.exports = Root;
 
 // extends Namespace
-var Namespace = require(21);
+var Namespace = require(22);
 ((Root.prototype = Object.create(Namespace.prototype)).constructor = Root).className = "Root";
 
-var Field   = require(15),
-    Enum    = require(14),
-    util    = require(32);
+var Field   = require(16),
+    Enum    = require(15),
+    util    = require(33);
 
 var Type,   // cyclic
     parse,  // might be excluded
@@ -4065,7 +4319,7 @@ Root._configure = function(Type_, parse_, common_) {
     common = common_;
 };
 
-},{"14":14,"15":15,"21":21,"32":32}],27:[function(require,module,exports){
+},{"15":15,"16":16,"22":22,"33":33}],28:[function(require,module,exports){
 "use strict";
 
 /**
@@ -4101,13 +4355,13 @@ var rpc = exports;
  * @returns {undefined}
  */
 
-rpc.Service = require(28);
+rpc.Service = require(29);
 
-},{"28":28}],28:[function(require,module,exports){
+},{"29":29}],29:[function(require,module,exports){
 "use strict";
 module.exports = Service;
 
-var util = require(34);
+var util = require(35);
 
 // Extends EventEmitter
 (Service.prototype = Object.create(util.EventEmitter.prototype)).constructor = Service;
@@ -4254,17 +4508,17 @@ Service.prototype.end = function end(endedByRPC) {
     return this;
 };
 
-},{"34":34}],29:[function(require,module,exports){
+},{"35":35}],30:[function(require,module,exports){
 "use strict";
 module.exports = Service;
 
 // extends Namespace
-var Namespace = require(21);
+var Namespace = require(22);
 ((Service.prototype = Object.create(Namespace.prototype)).constructor = Service).className = "Service";
 
-var Method = require(20),
-    util   = require(32),
-    rpc    = require(27);
+var Method = require(21),
+    util   = require(33),
+    rpc    = require(28);
 
 /**
  * Constructs a new service instance.
@@ -4420,28 +4674,28 @@ Service.prototype.create = function create(rpcImpl, requestDelimited, responseDe
     return rpcService;
 };
 
-},{"20":20,"21":21,"27":27,"32":32}],30:[function(require,module,exports){
+},{"21":21,"22":22,"28":28,"33":33}],31:[function(require,module,exports){
 "use strict";
 module.exports = Type;
 
 // extends Namespace
-var Namespace = require(21);
+var Namespace = require(22);
 ((Type.prototype = Object.create(Namespace.prototype)).constructor = Type).className = "Type";
 
-var Enum      = require(14),
-    OneOf     = require(23),
-    Field     = require(15),
-    MapField  = require(18),
-    Service   = require(29),
-    Class     = require(10),
-    Message   = require(19),
-    Reader    = require(24),
-    Writer    = require(36),
-    util      = require(32),
-    encoder   = require(13),
-    decoder   = require(12),
-    verifier  = require(35),
-    converter = require(11);
+var Enum      = require(15),
+    OneOf     = require(24),
+    Field     = require(16),
+    MapField  = require(19),
+    Service   = require(30),
+    Class     = require(11),
+    Message   = require(20),
+    Reader    = require(25),
+    Writer    = require(37),
+    util      = require(33),
+    encoder   = require(14),
+    decoder   = require(13),
+    verifier  = require(36),
+    converter = require(12);
 
 /**
  * Constructs a new reflected message type instance.
@@ -4940,7 +5194,7 @@ Type.prototype.toObject = function toObject(message, options) {
     return this.setup().toObject(message, options);
 };
 
-},{"10":10,"11":11,"12":12,"13":13,"14":14,"15":15,"18":18,"19":19,"21":21,"23":23,"24":24,"29":29,"32":32,"35":35,"36":36}],31:[function(require,module,exports){
+},{"11":11,"12":12,"13":13,"14":14,"15":15,"16":16,"19":19,"20":20,"22":22,"24":24,"25":25,"30":30,"33":33,"36":36,"37":37}],32:[function(require,module,exports){
 "use strict";
 
 /**
@@ -4949,7 +5203,7 @@ Type.prototype.toObject = function toObject(message, options) {
  */
 var types = exports;
 
-var util = require(32);
+var util = require(33);
 
 var s = [
     "double",   // 0
@@ -5138,18 +5392,18 @@ types.packed = bake([
     /* bool     */ 0
 ]);
 
-},{"32":32}],32:[function(require,module,exports){
+},{"33":33}],33:[function(require,module,exports){
 "use strict";
 
 /**
  * Various utility functions.
  * @namespace
  */
-var util = module.exports = require(34);
+var util = module.exports = require(35);
 
 util.codegen = require(3);
 util.fetch   = require(5);
-util.path    = require(7);
+util.path    = require(8);
 
 /**
  * Node's fs module if available.
@@ -5201,11 +5455,11 @@ util.compareFieldsById = function compareFieldsById(a, b) {
     return a.id - b.id;
 };
 
-},{"3":3,"34":34,"5":5,"7":7}],33:[function(require,module,exports){
+},{"3":3,"35":35,"5":5,"8":8}],34:[function(require,module,exports){
 "use strict";
 module.exports = LongBits;
 
-var util = require(34);
+var util = require(35);
 
 /**
  * Constructs new long bits.
@@ -5403,7 +5657,7 @@ LongBits.prototype.length = function length() {
          : part2 < 128 ? 9 : 10;
 };
 
-},{"34":34}],34:[function(require,module,exports){
+},{"35":35}],35:[function(require,module,exports){
 "use strict";
 var util = exports;
 
@@ -5416,17 +5670,20 @@ util.base64 = require(2);
 // base class of rpc.Service
 util.EventEmitter = require(4);
 
+// float handling accross browsers
+util.float = require(6);
+
 // requires modules optionally and hides the call from bundlers
-util.inquire = require(6);
+util.inquire = require(7);
 
 // converts to / from utf8 encoded strings
-util.utf8 = require(9);
+util.utf8 = require(10);
 
 // provides a node-like buffer pool in the browser
-util.pool = require(8);
+util.pool = require(9);
 
 // utility to work with the low and high bits of a 64 bit value
-util.LongBits = require(33);
+util.LongBits = require(34);
 
 /**
  * An immuable empty array.
@@ -5812,12 +6069,12 @@ util._configure = function() {
         };
 };
 
-},{"1":1,"2":2,"33":33,"4":4,"6":6,"8":8,"9":9}],35:[function(require,module,exports){
+},{"1":1,"10":10,"2":2,"34":34,"4":4,"6":6,"7":7,"9":9}],36:[function(require,module,exports){
 "use strict";
 module.exports = verifier;
 
-var Enum      = require(14),
-    util      = require(32);
+var Enum      = require(15),
+    util      = require(33);
 
 function invalid(field, expected) {
     return field.name + ": " + expected + (field.repeated && expected !== "array" ? "[]" : field.map && expected !== "object" ? "{k:"+field.keyType+"}" : "") + " expected";
@@ -5988,11 +6245,11 @@ function verifier(mtype) {
     ("return null");
     /* eslint-enable no-unexpected-multiline */
 }
-},{"14":14,"32":32}],36:[function(require,module,exports){
+},{"15":15,"33":33}],37:[function(require,module,exports){
 "use strict";
 module.exports = Writer;
 
-var util      = require(34);
+var util      = require(35);
 
 var BufferWriter; // cyclic
 
@@ -6280,10 +6537,10 @@ Writer.prototype.bool = function write_bool(value) {
 };
 
 function writeFixed32(val, buf, pos) {
-    buf[pos++] =  val         & 255;
-    buf[pos++] =  val >>> 8   & 255;
-    buf[pos++] =  val >>> 16  & 255;
-    buf[pos  ] =  val >>> 24;
+    buf[pos    ] =  val         & 255;
+    buf[pos + 1] =  val >>> 8   & 255;
+    buf[pos + 2] =  val >>> 16  & 255;
+    buf[pos + 3] =  val >>> 24;
 }
 
 /**
@@ -6323,48 +6580,6 @@ Writer.prototype.fixed64 = function write_fixed64(value) {
  */
 Writer.prototype.sfixed64 = Writer.prototype.fixed64;
 
-var writeFloat = typeof Float32Array !== "undefined"
-    ? (function() {
-        var f32 = new Float32Array(1),
-            f8b = new Uint8Array(f32.buffer);
-        f32[0] = -0;
-        return f8b[3] // already le?
-            ? function writeFloat_f32(val, buf, pos) {
-                f32[0] = val;
-                buf[pos++] = f8b[0];
-                buf[pos++] = f8b[1];
-                buf[pos++] = f8b[2];
-                buf[pos  ] = f8b[3];
-            }
-            /* istanbul ignore next */
-            : function writeFloat_f32_le(val, buf, pos) {
-                f32[0] = val;
-                buf[pos++] = f8b[3];
-                buf[pos++] = f8b[2];
-                buf[pos++] = f8b[1];
-                buf[pos  ] = f8b[0];
-            };
-    })()
-    /* istanbul ignore next */
-    : function writeFloat_ieee754(value, buf, pos) {
-        var sign = value < 0 ? 1 : 0;
-        if (sign)
-            value = -value;
-        if (value === 0)
-            writeFixed32(1 / value > 0 ? /* positive */ 0 : /* negative 0 */ 2147483648, buf, pos);
-        else if (isNaN(value))
-            writeFixed32(2147483647, buf, pos);
-        else if (value > 3.4028234663852886e+38) // +-Infinity
-            writeFixed32((sign << 31 | 2139095040) >>> 0, buf, pos);
-        else if (value < 1.1754943508222875e-38) // denormal
-            writeFixed32((sign << 31 | Math.round(value / 1.401298464324817e-45)) >>> 0, buf, pos);
-        else {
-            var exponent = Math.floor(Math.log(value) / Math.LN2),
-                mantissa = Math.round(value * Math.pow(2, -exponent) * 8388608) & 8388607;
-            writeFixed32((sign << 31 | exponent + 127 << 23 | mantissa) >>> 0, buf, pos);
-        }
-    };
-
 /**
  * Writes a float (32 bit).
  * @function
@@ -6372,69 +6587,8 @@ var writeFloat = typeof Float32Array !== "undefined"
  * @returns {Writer} `this`
  */
 Writer.prototype.float = function write_float(value) {
-    return this.push(writeFloat, 4, value);
+    return this.push(util.float.writeFloatLE, 4, value);
 };
-
-var writeDouble = typeof Float64Array !== "undefined"
-    ? (function() {
-        var f64 = new Float64Array(1),
-            f8b = new Uint8Array(f64.buffer);
-        f64[0] = -0;
-        return f8b[7] // already le?
-            ? function writeDouble_f64(val, buf, pos) {
-                f64[0] = val;
-                buf[pos++] = f8b[0];
-                buf[pos++] = f8b[1];
-                buf[pos++] = f8b[2];
-                buf[pos++] = f8b[3];
-                buf[pos++] = f8b[4];
-                buf[pos++] = f8b[5];
-                buf[pos++] = f8b[6];
-                buf[pos  ] = f8b[7];
-            }
-            /* istanbul ignore next */
-            : function writeDouble_f64_le(val, buf, pos) {
-                f64[0] = val;
-                buf[pos++] = f8b[7];
-                buf[pos++] = f8b[6];
-                buf[pos++] = f8b[5];
-                buf[pos++] = f8b[4];
-                buf[pos++] = f8b[3];
-                buf[pos++] = f8b[2];
-                buf[pos++] = f8b[1];
-                buf[pos  ] = f8b[0];
-            };
-    })()
-    /* istanbul ignore next */
-    : function writeDouble_ieee754(value, buf, pos) {
-        var sign = value < 0 ? 1 : 0;
-        if (sign)
-            value = -value;
-        if (value === 0) {
-            writeFixed32(0, buf, pos);
-            writeFixed32(1 / value > 0 ? /* positive */ 0 : /* negative 0 */ 2147483648, buf, pos + 4);
-        } else if (isNaN(value)) {
-            writeFixed32(4294967295, buf, pos);
-            writeFixed32(2147483647, buf, pos + 4);
-        } else if (value > 1.7976931348623157e+308) { // +-Infinity
-            writeFixed32(0, buf, pos);
-            writeFixed32((sign << 31 | 2146435072) >>> 0, buf, pos + 4);
-        } else {
-            var mantissa;
-            if (value < 2.2250738585072014e-308) { // denormal
-                mantissa = value / 5e-324;
-                writeFixed32(mantissa >>> 0, buf, pos);
-                writeFixed32((sign << 31 | mantissa / 4294967296) >>> 0, buf, pos + 4);
-            } else {
-                var exponent = Math.floor(Math.log(value) / Math.LN2);
-                if (exponent === 1024)
-                    exponent = 1023;
-                mantissa = value * Math.pow(2, -exponent);
-                writeFixed32(mantissa * 4503599627370496 >>> 0, buf, pos);
-                writeFixed32((sign << 31 | exponent + 1023 << 20 | mantissa * 1048576 & 1048575) >>> 0, buf, pos + 4);
-            }
-        }
-    };
 
 /**
  * Writes a double (64 bit float).
@@ -6443,7 +6597,7 @@ var writeDouble = typeof Float64Array !== "undefined"
  * @returns {Writer} `this`
  */
 Writer.prototype.double = function write_double(value) {
-    return this.push(writeDouble, 8, value);
+    return this.push(util.float.writeDoubleLE, 8, value);
 };
 
 var writeBytes = util.Array.prototype.set
@@ -6552,15 +6706,15 @@ Writer._configure = function(BufferWriter_) {
     BufferWriter = BufferWriter_;
 };
 
-},{"34":34}],37:[function(require,module,exports){
+},{"35":35}],38:[function(require,module,exports){
 "use strict";
 module.exports = BufferWriter;
 
 // extends Writer
-var Writer = require(36);
+var Writer = require(37);
 (BufferWriter.prototype = Object.create(Writer.prototype)).constructor = BufferWriter;
 
-var util = require(34);
+var util = require(35);
 
 var Buffer = util.Buffer;
 
@@ -6635,7 +6789,7 @@ BufferWriter.prototype.string = function write_string_buffer(value) {
  * @returns {Buffer} Finished buffer
  */
 
-},{"34":34,"36":36}]},{},[16])
+},{"35":35,"37":37}]},{},[17])
 
 })(typeof window==="object"&&window||typeof self==="object"&&self||this);
 //# sourceMappingURL=protobuf.js.map

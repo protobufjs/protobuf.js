@@ -10,6 +10,9 @@ util.base64 = require("@protobufjs/base64");
 // base class of rpc.Service
 util.EventEmitter = require("@protobufjs/eventemitter");
 
+// float handling accross browsers
+util.float = require("@protobufjs/float");
+
 // requires modules optionally and hides the call from bundlers
 util.inquire = require("@protobufjs/inquire");
 

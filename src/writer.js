@@ -289,10 +289,10 @@ Writer.prototype.bool = function write_bool(value) {
 };
 
 function writeFixed32(val, buf, pos) {
-    buf[pos++] =  val         & 255;
-    buf[pos++] =  val >>> 8   & 255;
-    buf[pos++] =  val >>> 16  & 255;
-    buf[pos  ] =  val >>> 24;
+    buf[pos    ] =  val         & 255;
+    buf[pos + 1] =  val >>> 8   & 255;
+    buf[pos + 2] =  val >>> 16  & 255;
+    buf[pos + 3] =  val >>> 24;
 }
 
 /**
@@ -332,48 +332,6 @@ Writer.prototype.fixed64 = function write_fixed64(value) {
  */
 Writer.prototype.sfixed64 = Writer.prototype.fixed64;
 
-var writeFloat = typeof Float32Array !== "undefined"
-    ? (function() {
-        var f32 = new Float32Array(1),
-            f8b = new Uint8Array(f32.buffer);
-        f32[0] = -0;
-        return f8b[3] // already le?
-            ? function writeFloat_f32(val, buf, pos) {
-                f32[0] = val;
-                buf[pos++] = f8b[0];
-                buf[pos++] = f8b[1];
-                buf[pos++] = f8b[2];
-                buf[pos  ] = f8b[3];
-            }
-            /* istanbul ignore next */
-            : function writeFloat_f32_le(val, buf, pos) {
-                f32[0] = val;
-                buf[pos++] = f8b[3];
-                buf[pos++] = f8b[2];
-                buf[pos++] = f8b[1];
-                buf[pos  ] = f8b[0];
-            };
-    })()
-    /* istanbul ignore next */
-    : function writeFloat_ieee754(value, buf, pos) {
-        var sign = value < 0 ? 1 : 0;
-        if (sign)
-            value = -value;
-        if (value === 0)
-            writeFixed32(1 / value > 0 ? /* positive */ 0 : /* negative 0 */ 2147483648, buf, pos);
-        else if (isNaN(value))
-            writeFixed32(2147483647, buf, pos);
-        else if (value > 3.4028234663852886e+38) // +-Infinity
-            writeFixed32((sign << 31 | 2139095040) >>> 0, buf, pos);
-        else if (value < 1.1754943508222875e-38) // denormal
-            writeFixed32((sign << 31 | Math.round(value / 1.401298464324817e-45)) >>> 0, buf, pos);
-        else {
-            var exponent = Math.floor(Math.log(value) / Math.LN2),
-                mantissa = Math.round(value * Math.pow(2, -exponent) * 8388608) & 8388607;
-            writeFixed32((sign << 31 | exponent + 127 << 23 | mantissa) >>> 0, buf, pos);
-        }
-    };
-
 /**
  * Writes a float (32 bit).
  * @function
@@ -381,69 +339,8 @@ var writeFloat = typeof Float32Array !== "undefined"
  * @returns {Writer} `this`
  */
 Writer.prototype.float = function write_float(value) {
-    return this.push(writeFloat, 4, value);
+    return this.push(util.float.writeFloatLE, 4, value);
 };
-
-var writeDouble = typeof Float64Array !== "undefined"
-    ? (function() {
-        var f64 = new Float64Array(1),
-            f8b = new Uint8Array(f64.buffer);
-        f64[0] = -0;
-        return f8b[7] // already le?
-            ? function writeDouble_f64(val, buf, pos) {
-                f64[0] = val;
-                buf[pos++] = f8b[0];
-                buf[pos++] = f8b[1];
-                buf[pos++] = f8b[2];
-                buf[pos++] = f8b[3];
-                buf[pos++] = f8b[4];
-                buf[pos++] = f8b[5];
-                buf[pos++] = f8b[6];
-                buf[pos  ] = f8b[7];
-            }
-            /* istanbul ignore next */
-            : function writeDouble_f64_le(val, buf, pos) {
-                f64[0] = val;
-                buf[pos++] = f8b[7];
-                buf[pos++] = f8b[6];
-                buf[pos++] = f8b[5];
-                buf[pos++] = f8b[4];
-                buf[pos++] = f8b[3];
-                buf[pos++] = f8b[2];
-                buf[pos++] = f8b[1];
-                buf[pos  ] = f8b[0];
-            };
-    })()
-    /* istanbul ignore next */
-    : function writeDouble_ieee754(value, buf, pos) {
-        var sign = value < 0 ? 1 : 0;
-        if (sign)
-            value = -value;
-        if (value === 0) {
-            writeFixed32(0, buf, pos);
-            writeFixed32(1 / value > 0 ? /* positive */ 0 : /* negative 0 */ 2147483648, buf, pos + 4);
-        } else if (isNaN(value)) {
-            writeFixed32(4294967295, buf, pos);
-            writeFixed32(2147483647, buf, pos + 4);
-        } else if (value > 1.7976931348623157e+308) { // +-Infinity
-            writeFixed32(0, buf, pos);
-            writeFixed32((sign << 31 | 2146435072) >>> 0, buf, pos + 4);
-        } else {
-            var mantissa;
-            if (value < 2.2250738585072014e-308) { // denormal
-                mantissa = value / 5e-324;
-                writeFixed32(mantissa >>> 0, buf, pos);
-                writeFixed32((sign << 31 | mantissa / 4294967296) >>> 0, buf, pos + 4);
-            } else {
-                var exponent = Math.floor(Math.log(value) / Math.LN2);
-                if (exponent === 1024)
-                    exponent = 1023;
-                mantissa = value * Math.pow(2, -exponent);
-                writeFixed32(mantissa * 4503599627370496 >>> 0, buf, pos);
-                writeFixed32((sign << 31 | exponent + 1023 << 20 | mantissa * 1048576 & 1048575) >>> 0, buf, pos + 4);
-            }
-        }
-    };
 
 /**
  * Writes a double (64 bit float).
@@ -452,7 +349,7 @@ var writeDouble = typeof Float64Array !== "undefined"
  * @returns {Writer} `this`
  */
 Writer.prototype.double = function write_double(value) {
-    return this.push(writeDouble, 8, value);
+    return this.push(util.float.writeDoubleLE, 8, value);
 };
 
 var writeBytes = util.Array.prototype.set

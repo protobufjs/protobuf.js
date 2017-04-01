@@ -16,6 +16,7 @@ ratings:
   - "lib/base64/**.js"
   - "lib/eventemitter/**.js"
   - "lib/fetch/**.js"
+  - "lib/float/**.js"
   - "lib/inquire/**.js"
   - "lib/path/**.js"
   - "lib/pool/**.js"

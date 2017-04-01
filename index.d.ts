@@ -2512,6 +2512,98 @@ export namespace util {
     }
 
     /**
+     * Reads / writes floats / doubles from / to buffers.
+     * @name util.float
+     * @namespace
+     */
+    namespace float {
+
+        /**
+         * Writes a 32 bit float to a buffer using little endian byte order.
+         * @name util.float.writeFloatLE
+         * @function
+         * @param {number} val Value to write
+         * @param {Uint8Array} buf Target buffer
+         * @param {number} pos Target buffer offset
+         * @returns {undefined}
+         */
+        function writeFloatLE(val: number, buf: Uint8Array, pos: number): void;
+
+        /**
+         * Writes a 32 bit float to a buffer using big endian byte order.
+         * @name util.float.writeFloatBE
+         * @function
+         * @param {number} val Value to write
+         * @param {Uint8Array} buf Target buffer
+         * @param {number} pos Target buffer offset
+         * @returns {undefined}
+         */
+        function writeFloatBE(val: number, buf: Uint8Array, pos: number): void;
+
+        /**
+         * Reads a 32 bit float from a buffer using little endian byte order.
+         * @name util.float.readFloatLE
+         * @function
+         * @param {Uint8Array} buf Source buffer
+         * @param {number} pos Source buffer offset
+         * @returns {number} Value read
+         */
+        function readFloatLE(buf: Uint8Array, pos: number): number;
+
+        /**
+         * Reads a 32 bit float from a buffer using big endian byte order.
+         * @name util.float.readFloatBE
+         * @function
+         * @param {Uint8Array} buf Source buffer
+         * @param {number} pos Source buffer offset
+         * @returns {number} Value read
+         */
+        function readFloatBE(buf: Uint8Array, pos: number): number;
+
+        /**
+         * Writes a 64 bit double to a buffer using little endian byte order.
+         * @name util.float.writeDoubleLE
+         * @function
+         * @param {number} val Value to write
+         * @param {Uint8Array} buf Target buffer
+         * @param {number} pos Target buffer offset
+         * @returns {undefined}
+         */
+        function writeDoubleLE(val: number, buf: Uint8Array, pos: number): void;
+
+        /**
+         * Writes a 64 bit double to a buffer using big endian byte order.
+         * @name util.float.writeDoubleBE
+         * @function
+         * @param {number} val Value to write
+         * @param {Uint8Array} buf Target buffer
+         * @param {number} pos Target buffer offset
+         * @returns {undefined}
+         */
+        function writeDoubleBE(val: number, buf: Uint8Array, pos: number): void;
+
+        /**
+         * Reads a 64 bit double from a buffer using little endian byte order.
+         * @name util.float.readDoubleLE
+         * @function
+         * @param {Uint8Array} buf Source buffer
+         * @param {number} pos Source buffer offset
+         * @returns {number} Value read
+         */
+        function readDoubleLE(buf: Uint8Array, pos: number): number;
+
+        /**
+         * Reads a 64 bit double from a buffer using big endian byte order.
+         * @name util.float.readDoubleBE
+         * @function
+         * @param {Uint8Array} buf Source buffer
+         * @param {number} pos Source buffer offset
+         * @returns {number} Value read
+         */
+        function readDoubleBE(buf: Uint8Array, pos: number): number;
+    }
+
+    /**
      * Fetches the contents of a file.
      * @memberof util
      * @param {string} filename File path or url
