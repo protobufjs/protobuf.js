@@ -277,7 +277,7 @@ Namespace.prototype.resolveAll = function resolveAll() {
 /**
  * Looks up the reflection object at the specified path, relative to this namespace.
  * @param {string|string[]} path Path to look up
- * @param {function(new: ReflectionObject)|Array.<function(new: ReflectionObject)>} filterTypes Filter types, any combination of `protobuf.Type`, `protobuf.Enum`, `protobuf.Service` etc.
+ * @param {*|Array.<*>} filterTypes Filter types, any combination of the constructors of `protobuf.Type`, `protobuf.Enum`, `protobuf.Service` etc.
  * @param {boolean} [parentAlreadyChecked=false] If known, whether the parent has already been checked
  * @returns {?ReflectionObject} Looked up object or `null` if none could be found
  */

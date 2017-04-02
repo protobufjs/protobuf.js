@@ -942,11 +942,11 @@ export abstract class NamespaceBase extends ReflectionObject {
     /**
      * Looks up the reflection object at the specified path, relative to this namespace.
      * @param {string|string[]} path Path to look up
-     * @param {function(new: ReflectionObject)} filterType Filter type, one of `protobuf.Type`, `protobuf.Enum`, `protobuf.Service` etc.
+     * @param {*|Array.<*>} filterTypes Filter types, any combination of the constructors of `protobuf.Type`, `protobuf.Enum`, `protobuf.Service` etc.
      * @param {boolean} [parentAlreadyChecked=false] If known, whether the parent has already been checked
      * @returns {?ReflectionObject} Looked up object or `null` if none could be found
      */
-    public lookup(path: (string|string[]), filterType: () => any, parentAlreadyChecked?: boolean): ReflectionObject;
+    public lookup(path: (string|string[]), filterTypes: (any|any[]), parentAlreadyChecked?: boolean): ReflectionObject;
 
     /**
      * Looks up the reflection object at the specified path, relative to this namespace.
@@ -969,6 +969,24 @@ export abstract class NamespaceBase extends ReflectionObject {
     public lookupType(path: (string|string[])): Type;
 
     /**
+     * Looks up the values of the {@link Enum|enum} at the specified path, relative to this namespace.
+     * Besides its signature, this methods differs from {@link Namespace#lookup|lookup} in that it throws instead of returning `null`.
+     * @param {string|string[]} path Path to look up
+     * @returns {Enum} Looked up enum
+     * @throws {Error} If `path` does not point to an enum
+     */
+    public lookupEnum(path: (string|string[])): Enum;
+
+    /**
+     * Looks up the {@link Type|type} or {@link Enum|enum} at the specified path, relative to this namespace.
+     * Besides its signature, this methods differs from {@link Namespace#lookup|lookup} in that it throws instead of returning `null`.
+     * @param {string|string[]} path Path to look up
+     * @returns {Type} Looked up type or enum
+     * @throws {Error} If `path` does not point to a type or enum
+     */
+    public lookupTypeOrEnum(path: (string|string[])): Type;
+
+    /**
      * Looks up the {@link Service|service} at the specified path, relative to this namespace.
      * Besides its signature, this methods differs from {@link Namespace#lookup|lookup} in that it throws instead of returning `null`.
      * @param {string|string[]} path Path to look up
@@ -976,15 +994,6 @@ export abstract class NamespaceBase extends ReflectionObject {
      * @throws {Error} If `path` does not point to a service
      */
     public lookupService(path: (string|string[])): Service;
-
-    /**
-     * Looks up the values of the {@link Enum|enum} at the specified path, relative to this namespace.
-     * Besides its signature, this methods differs from {@link Namespace#lookup|lookup} in that it returns the enum's values directly and throws instead of returning `null`.
-     * @param {string|string[]} path Path to look up
-     * @returns {Object.<string,number>} Enum values
-     * @throws {Error} If `path` does not point to an enum
-     */
-    public lookupEnum(path: (string|string[])): { [k: string]: number };
 }
 
 type AnyNestedDescriptor = (EnumDescriptor|TypeDescriptor|ServiceDescriptor|ExtensionFieldDescriptor|ExtensionMapFieldDescriptor);

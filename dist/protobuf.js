@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.7.0 (c) 2016, Daniel Wirtz
- * Compiled Sat, 01 Apr 2017 14:13:02 UTC
+ * Compiled Sun, 02 Apr 2017 11:28:29 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -2414,13 +2414,11 @@ Field.prototype.resolve = function resolve() {
         if (!Type)
             Type = require(35);
 
-        var scope = this.declaringField ? this.declaringField.parent : this.parent;
-        if (this.resolvedType = scope.lookup(this.type, Type))
+        this.resolvedType = (this.declaringField ? this.declaringField.parent : this.parent).lookupTypeOrEnum(this.type);
+        if (this.resolvedType instanceof Type)
             this.typeDefault = null;
-        else if (this.resolvedType = scope.lookup(this.type, Enum))
+        else // instanceof Enum
             this.typeDefault = this.resolvedType.values[Object.keys(this.resolvedType.values)[0]]; // first defined
-        else
-            throw Error("unresolvable field type: " + this.type + " in " + scope);
     }
 
     // use explicitly set default value if present
@@ -3294,17 +3292,18 @@ Namespace.prototype.resolveAll = function resolveAll() {
 /**
  * Looks up the reflection object at the specified path, relative to this namespace.
  * @param {string|string[]} path Path to look up
- * @param {function(new: ReflectionObject)} filterType Filter type, one of `protobuf.Type`, `protobuf.Enum`, `protobuf.Service` etc.
+ * @param {*|Array.<*>} filterTypes Filter types, any combination of the constructors of `protobuf.Type`, `protobuf.Enum`, `protobuf.Service` etc.
  * @param {boolean} [parentAlreadyChecked=false] If known, whether the parent has already been checked
  * @returns {?ReflectionObject} Looked up object or `null` if none could be found
  */
-Namespace.prototype.lookup = function lookup(path, filterType, parentAlreadyChecked) {
+Namespace.prototype.lookup = function lookup(path, filterTypes, parentAlreadyChecked) {
 
     /* istanbul ignore if */
-    if (typeof filterType === "boolean") {
-        parentAlreadyChecked = filterType;
-        filterType = undefined;
-    }
+    if (typeof filterTypes === "boolean") {
+        parentAlreadyChecked = filterTypes;
+        filterTypes = undefined;
+    } else if (filterTypes && !Array.isArray(filterTypes))
+        filterTypes = [ filterTypes ];
 
     if (util.isString(path) && path.length) {
         if (path === ".")
@@ -3315,20 +3314,20 @@ Namespace.prototype.lookup = function lookup(path, filterType, parentAlreadyChec
 
     // Start at root if path is absolute
     if (path[0] === "")
-        return this.root.lookup(path.slice(1), filterType);
+        return this.root.lookup(path.slice(1), filterTypes);
     // Test if the first part matches any nested object, and if so, traverse if path contains more
     var found = this.get(path[0]);
     if (found) {
         if (path.length === 1) {
-            if (!filterType || found instanceof filterType)
+            if (!filterTypes || filterTypes.indexOf(found.constructor) > -1)
                 return found;
-        } else if (found instanceof Namespace && (found = found.lookup(path.slice(1), filterType, true)))
+        } else if (found instanceof Namespace && (found = found.lookup(path.slice(1), filterTypes, true)))
             return found;
     }
     // If there hasn't been a match, try again at the parent
     if (this.parent === null || parentAlreadyChecked)
         return null;
-    return this.parent.lookup(path, filterType);
+    return this.parent.lookup(path, filterTypes);
 };
 
 /**
@@ -3350,9 +3349,37 @@ Namespace.prototype.lookup = function lookup(path, filterType, parentAlreadyChec
  * @throws {Error} If `path` does not point to a type
  */
 Namespace.prototype.lookupType = function lookupType(path) {
-    var found = this.lookup(path, Type);
+    var found = this.lookup(path, [ Type ]);
     if (!found)
         throw Error("no such type");
+    return found;
+};
+
+/**
+ * Looks up the values of the {@link Enum|enum} at the specified path, relative to this namespace.
+ * Besides its signature, this methods differs from {@link Namespace#lookup|lookup} in that it throws instead of returning `null`.
+ * @param {string|string[]} path Path to look up
+ * @returns {Enum} Looked up enum
+ * @throws {Error} If `path` does not point to an enum
+ */
+Namespace.prototype.lookupEnum = function lookupEnum(path) {
+    var found = this.lookup(path, [ Enum ]);
+    if (!found)
+        throw Error("no such Enum '" + path + "' in " + this);
+    return found;
+};
+
+/**
+ * Looks up the {@link Type|type} or {@link Enum|enum} at the specified path, relative to this namespace.
+ * Besides its signature, this methods differs from {@link Namespace#lookup|lookup} in that it throws instead of returning `null`.
+ * @param {string|string[]} path Path to look up
+ * @returns {Type} Looked up type or enum
+ * @throws {Error} If `path` does not point to a type or enum
+ */
+Namespace.prototype.lookupTypeOrEnum = function lookupTypeOrEnum(path) {
+    var found = this.lookup(path, [ Type, Enum ]);
+    if (!found)
+        throw Error("no such Type or Enum '" + path + "' in " + this);
     return found;
 };
 
@@ -3364,24 +3391,10 @@ Namespace.prototype.lookupType = function lookupType(path) {
  * @throws {Error} If `path` does not point to a service
  */
 Namespace.prototype.lookupService = function lookupService(path) {
-    var found = this.lookup(path, Service);
+    var found = this.lookup(path, [ Service ]);
     if (!found)
-        throw Error("no such service");
+        throw Error("no such Service '" + path + "' in " + this);
     return found;
-};
-
-/**
- * Looks up the values of the {@link Enum|enum} at the specified path, relative to this namespace.
- * Besides its signature, this methods differs from {@link Namespace#lookup|lookup} in that it returns the enum's values directly and throws instead of returning `null`.
- * @param {string|string[]} path Path to look up
- * @returns {Object.<string,number>} Enum values
- * @throws {Error} If `path` does not point to an enum
- */
-Namespace.prototype.lookupEnum = function lookupEnum(path) {
-    var found = this.lookup(path, Enum);
-    if (!found)
-        throw Error("no such enum");
-    return found.values;
 };
 
 Namespace._configure = function(Type_, Service_) {

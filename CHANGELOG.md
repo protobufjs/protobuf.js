@@ -1,9 +1,11 @@
 # [6.7.0](https://github.com/dcodeIO/protobuf.js/releases/tag/6.7.0)
 
 ## Breaking
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/9c1bbf10e445c3495b23a354f9cbee951b4b20f0) Namespace#lookupEnum should actually look up the reflected enum and not just its values<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/44a8d3af5da578c2e6bbe0a1b948d469bbe27ca1) Decoder now throws if required fields are missing, see [#695](https://github.com/dcodeIO/protobuf.js/issues/695) / [#696](https://github.com/dcodeIO/protobuf.js/issues/696)<br />
 
 ## Fixed
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/d1e3122e326480fdd44e96afd76ee72e9744b246) Added functionality to filter for multiple types at once in lookup(), used by lookupTypeOrEnum(), fixes [#740](https://github.com/dcodeIO/protobuf.js/issues/740)<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/8aa21268aa5e0f568cb39e99a83b99ccb4084381) Ensure that fields have been resolved when looking up js types in static target, see [#731](https://github.com/dcodeIO/protobuf.js/issues/731)<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/f755d36829b9f1effd7960fab3a86a141aeb9fea) Properly copy fields array before sorting in toObject, fixes [#729](https://github.com/dcodeIO/protobuf.js/issues/729)<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/a06691f5b87f7e90fed0115b78ce6febc4479206) Actually emit TS compatible enums in static target if not aliases, see [#720](https://github.com/dcodeIO/protobuf.js/issues/720)<br />
@@ -13,6 +15,7 @@
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/3e930b907a834a7da759478b8d3f52fef1da22d8) Retain options argument in Root#load when used with promises, see [#684](https://github.com/dcodeIO/protobuf.js/issues/684)<br />
 
 ## New
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/3c14ef42b3c8f2fef2d96d65d6e288211f86c9ef) Created a micromodule from (currently still bundled) float support<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/7ecae9e9f2e1324ef72bf5073463e01deff50cd6) util.isset(obj, prop) can be used to test if a message property is considered to be set, see [#728](https://github.com/dcodeIO/protobuf.js/issues/728)<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/c04d4a5ab8f91899bd3e1b17fe4407370ef8abb7) Implemented stubs for long.js / node buffers to be used where either one isn't wanted, see [#718](https://github.com/dcodeIO/protobuf.js/issues/718)<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/b9574ad02521a31ebd509cdaa269e7807da78d7c) Simplified reusing / replacing internal constructors<br />
@@ -61,6 +64,9 @@
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/0fcde32306da77f02cb1ea81ed18a32cee01f17b) Added error handling notes to README, see [#696](https://github.com/dcodeIO/protobuf.js/issues/696)<br />
 
 ## Other
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/fef924e5f708f14dac5713aedc484535d36bfb47) Use @protobufjs/float<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/fef924e5f708f14dac5713aedc484535d36bfb47) Rebuilt dist files for 6.7.0<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/ca0dce2d7f34cd45e4c1cc753a97c58e05b3b9d2) Updated deps, ts fixes and regenerated dist files<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/2c2d4002d6776f3edde608bd813c37d798d87e6b) Manually merged gentests improvements, fixes [#733](https://github.com/dcodeIO/protobuf.js/issues/733)<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/e4a6b6f81fa492a63b12f0da0c381612deff1973) Make sure that util.Long is overridden by AMD loaders only if present, see [#730](https://github.com/dcodeIO/protobuf.js/issues/730)<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/fff1eb297a728ed6d334c591e7d796636859aa9a) Coverage for util.isset and service as a namespace<br />
