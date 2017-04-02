@@ -342,16 +342,16 @@ Namespace.prototype.lookupType = function lookupType(path) {
 
 /**
  * Looks up the values of the {@link Enum|enum} at the specified path, relative to this namespace.
- * Besides its signature, this methods differs from {@link Namespace#lookup|lookup} in that it returns the enum's values directly and throws instead of returning `null`.
+ * Besides its signature, this methods differs from {@link Namespace#lookup|lookup} in that it throws instead of returning `null`.
  * @param {string|string[]} path Path to look up
- * @returns {Object.<string,number>} Enum values
+ * @returns {Enum} Looked up enum
  * @throws {Error} If `path` does not point to an enum
  */
 Namespace.prototype.lookupEnum = function lookupEnum(path) {
     var found = this.lookup(path, [ Enum ]);
     if (!found)
-        throw Error("no such enum");
-    return found.values;
+        throw Error("no such Enum '" + path + "' in " + this);
+    return found;
 };
 
 /**
@@ -364,7 +364,7 @@ Namespace.prototype.lookupEnum = function lookupEnum(path) {
 Namespace.prototype.lookupTypeOrEnum = function lookupTypeOrEnum(path) {
     var found = this.lookup(path, [ Type, Enum ]);
     if (!found)
-        throw Error("no such type or enum");
+        throw Error("no such Type or Enum '" + path + "' in " + this);
     return found;
 };
 
@@ -378,7 +378,7 @@ Namespace.prototype.lookupTypeOrEnum = function lookupTypeOrEnum(path) {
 Namespace.prototype.lookupService = function lookupService(path) {
     var found = this.lookup(path, [ Service ]);
     if (!found)
-        throw Error("no such service");
+        throw Error("no such Service '" + path + "' in " + this);
     return found;
 };
 
