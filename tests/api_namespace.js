@@ -12,7 +12,9 @@ enum Enm {\
     ONE = 1;\
     TWO = 2;\
 }\
-message Msg {}\
+message Msg {\
+    message Enm {}\
+}\
 service Svc {}";
 
 tape.test("reflected namespaces", function(test) {
@@ -33,6 +35,8 @@ tape.test("reflected namespaces", function(test) {
     }, Error, "should throw when getting null as an enum");
 
     test.ok(ns.lookupType("Msg"), "should lookup types");
+
+    test.equal(ns.get("Msg").lookupTypeOrEnum("Enm"), ns.lookup(".ns.Msg.Enm"), "should lookup the nearest type or enum");
 
     test.throws(function() {
         ns.lookupType("Enm");
