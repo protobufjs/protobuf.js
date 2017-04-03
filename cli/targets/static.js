@@ -313,7 +313,7 @@ function toJsType(field) {
         case "sint64":
         case "fixed64":
         case "sfixed64":
-            type = config["strict-long"] ? "Long" : "number|Long";
+            type = config.forceLong ? "Long" : "number|Long";
             break;
         case "bool":
             type = "boolean";
@@ -328,7 +328,7 @@ function toJsType(field) {
             if (field.resolve().resolvedType instanceof Enum)
                 type = field.resolvedType.fullName.substring(1); // reference the enum
             else if (field.resolvedType instanceof Type)
-                type = field.resolvedType.fullName.substring(1) + (config["strict-message"] ? "" : "$Properties"); // reference the typedef
+                type = field.resolvedType.fullName.substring(1) + (config.forceMessage ? "" : "$Properties"); // reference the typedef
             else
                 type = "*"; // should not happen
             break;
@@ -441,7 +441,7 @@ function buildType(ref, type) {
         push("");
         pushComment([
             "Encodes the specified " + type.name + " message. Does not implicitly {@link " + fullName + ".verify|verify} messages.",
-            "@param {" + fullName + (config["strict-message"] ? "" : "$Properties") + "} " + (config.beautify ? "message" : "m") + " " + type.name + " message or plain object to encode",
+            "@param {" + fullName + (config.forceMessage ? "" : "$Properties") + "} " + (config.beautify ? "message" : "m") + " " + type.name + " message or plain object to encode",
             "@param {$protobuf.Writer} [" + (config.beautify ? "writer" : "w") + "] Writer to encode to",
             "@returns {$protobuf.Writer} Writer"
         ]);
@@ -451,7 +451,7 @@ function buildType(ref, type) {
             push("");
             pushComment([
                 "Encodes the specified " + type.name + " message, length delimited. Does not implicitly {@link " + fullName + ".verify|verify} messages.",
-                "@param {" + fullName + (config["strict-message"] ? "" : "$Properties") + "} message " + type.name + " message or plain object to encode",
+                "@param {" + fullName + (config.forceMessage ? "" : "$Properties") + "} message " + type.name + " message or plain object to encode",
                 "@param {$protobuf.Writer} [writer] Writer to encode to",
                 "@returns {$protobuf.Writer} Writer"
             ]);

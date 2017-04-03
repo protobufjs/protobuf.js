@@ -23,36 +23,46 @@ exports.main = function main(args, callback) {
     var lintDefault = "eslint-disable block-scoped-var, no-redeclare, no-control-regex, no-prototype-builtins";
     var argv = minimist(args, {
         alias: {
-            target : "t",
-            out    : "o",
-            path   : "p",
-            wrap   : "w",
-            root   : "r",
-            lint   : "l"
+            target: "t",
+            out: "o",
+            path: "p",
+            wrap: "w",
+            root: "r",
+            lint: "l",
+            // backward compatibility:
+            "force-long": "strict-long",
+            "force-message": "strict-message"
         },
         string: [ "target", "out", "path", "wrap", "root", "lint" ],
-        boolean: [ "keep-case", "create", "encode", "decode", "verify", "convert", "delimited", "beautify", "comments", "es6", "sparse", "strict-long", "strict-message" ],
+        boolean: [ "create", "encode", "decode", "verify", "convert", "delimited", "beautify", "comments", "es6", "sparse", "keep-case", "force-long", "force-message" ],
         default: {
-            target          : "json",
-            create          : true,
-            encode          : true,
-            decode          : true,
-            verify          : true,
-            convert         : true,
-            delimited       : true,
-            beautify        : true,
-            comments        : true,
-            es6             : null,
-            lint            : lintDefault,
-            "keep-case"     : false,
-            "strict-long"   : false,
-            "strict-message": false
+            target: "json",
+            create: true,
+            encode: true,
+            decode: true,
+            verify: true,
+            convert: true,
+            delimited: true,
+            beautify: true,
+            comments: true,
+            es6: null,
+            lint: lintDefault,
+            "keep-case": false,
+            "force-long": false,
+            "force-message": false
         }
     });
 
     var target = targets[argv.target],
         files  = argv._,
         paths  = typeof argv.path === "string" ? [ argv.path ] : argv.path || [];
+
+    // alias hyphen args in camel case
+    Object.keys(argv).forEach(function(key) {
+        var camelKey = key.replace(/\-([a-z])/g, function($0, $1) { return $1.toUpperCase(); });
+        if (camelKey !== key)
+            argv[camelKey] = argv[key];
+    });
 
     // protobuf.js package directory contains additional, otherwise non-bundled google types
     paths.push(path.relative(process.cwd(), path.join(__dirname, "..")) || ".");
@@ -110,14 +120,18 @@ exports.main = function main(args, callback) {
                 "  --no-delimited   Does not generate delimited encode/decode functions.",
                 "  --no-beautify    Does not beautify generated code.",
                 "  --no-comments    Does not output any JSDoc comments.",
-                "  --strict-long    Strictly references 'Long' for s-/u-/int64 and s-/fixed64 types.",
-                "  --strict-message Strictly references message types instead of typedefs.",
+                "",
+                "  --force-long     Enfores the use of 'Long' for s-/u-/int64 and s-/fixed64 fields.",
+                "  --force-message  Enfores the use of runtime messages instead of plain objects.",
                 "",
                 "usage: " + chalk.bold.green("pbjs") + " [options] file1.proto file2.json ..." + chalk.gray("  (or)  ") + "other | " + chalk.bold.green("pbjs") + " [options] -",
                 ""
             ].join("\n"));
         return 1;
     }
+
+    if (typeof argv["strict-long"] === "boolean")
+        argv["force-long"] = argv["strict-long"];
 
     // Resolve glob expressions
     for (var i = 0; i < files.length;) {
