@@ -381,7 +381,7 @@ AwesomeMessage.prototype.customInstanceMethod = function() { ... };
 
 ### Using services
 
-The library also supports services but it doesn't make any assumptions about the actual transport channel. Instead, a user must provide a suitable RPC implementation, which is an asynchronous function that takes the reflected service method, the binary request and a node-style callback as its parameters:
+The library also supports consuming services but it doesn't make any assumptions about the actual transport channel. Instead, a user must provide a suitable RPC implementation, which is an asynchronous function that takes the reflected service method, the binary request and a node-style callback as its parameters:
 
 ```js
 function rpcImpl(method, requestData, callback) {
@@ -431,6 +431,8 @@ greeter.sayHello({ name: 'you' })
 ```
 
 There is also an [example for streaming RPC](https://github.com/dcodeIO/protobuf.js/blob/master/examples/streaming-rpc.js).
+
+Note that the service API is meant for clients. Implementing a server-side endpoint pretty much always requires transport channel (i.e. http, websocket, etc.) specific code with the only common denominator being that it decodes and encodes messages.
 
 ### Usage with TypeScript
 

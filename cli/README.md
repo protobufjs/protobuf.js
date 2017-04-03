@@ -43,50 +43,55 @@ Usage
 ```
 Translates between file formats and generates static code.
 
-  -t, --target    Specifies the target format. Also accepts a path to require a custom target.
+  -t, --target     Specifies the target format. Also accepts a path to require a custom target.
 
                   json          JSON representation
                   json-module   JSON representation as a module
                   proto2        Protocol Buffers, Version 2
                   proto3        Protocol Buffers, Version 3
-                  static        Static code without reflection
+                  static        Static code without reflection (non-functional on its own)
                   static-module Static code without reflection as a module
 
-  -p, --path      Adds a directory to the include path.
+  -p, --path       Adds a directory to the include path.
 
-  -o, --out       Saves to a file instead of writing to stdout.
+  -o, --out        Saves to a file instead of writing to stdout.
 
-  Module targets only:
+  --sparse         Exports only those types referenced from a main file (experimental).
 
-  -w, --wrap      Specifies the wrapper to use. Also accepts a path to require a custom wrapper.
+   Module targets only:
 
-                  default   Default wrapper supporting both CommonJS and AMD
-                  commonjs  CommonJS wrapper
-                  amd       AMD wrapper
-                  es6       ES6 wrapper (implies --es6)
+  -w, --wrap       Specifies the wrapper to use. Also accepts a path to require a custom wrapper.
 
-  -r, --root      Specifies an alternative protobuf.roots name.
+                   default   Default wrapper supporting both CommonJS and AMD
+                   commonjs  CommonJS wrapper
+                   amd       AMD wrapper
+                   es6       ES6 wrapper (implies --es6)
 
-  -l, --lint      Linter configuration. Defaults to protobuf.js-compatible rules:
+  -r, --root       Specifies an alternative protobuf.roots name.
 
-                  eslint-disable block-scoped-var, no-redeclare, no-control-regex, no-prototype-builtins
+  -l, --lint       Linter configuration. Defaults to protobuf.js-compatible rules:
 
-  --es6           Enables ES6 syntax (const/let instead of var)
+                   eslint-disable block-scoped-var, no-redeclare, no-control-regex, no-prototype-builtins
 
-  Proto sources only:
+  --es6            Enables ES6 syntax (const/let instead of var)
 
-  --keep-case     Keeps field casing instead of converting to camel case.
+   Proto sources only:
 
-  Static targets only:
+  --keep-case      Keeps field casing instead of converting to camel case.
 
-  --no-create     Does not generate create functions used for reflection compatibility.
-  --no-encode     Does not generate encode functions.
-  --no-decode     Does not generate decode functions.
-  --no-verify     Does not generate verify functions.
-  --no-convert    Does not generate convert functions like from/toObject
-  --no-delimited  Does not generate delimited encode/decode functions.
-  --no-beautify   Does not beautify generated code.
-  --no-comments   Does not output any JSDoc comments.
+   Static targets only:
+
+  --no-create      Does not generate create functions used for reflection compatibility.
+  --no-encode      Does not generate encode functions.
+  --no-decode      Does not generate decode functions.
+  --no-verify      Does not generate verify functions.
+  --no-convert     Does not generate convert functions like from/toObject
+  --no-delimited   Does not generate delimited encode/decode functions.
+  --no-beautify    Does not beautify generated code.
+  --no-comments    Does not output any JSDoc comments.
+
+  --force-long     Enfores the use of 'Long' for s-/u-/int64 and s-/fixed64 fields.
+  --force-message  Enfores the use of runtime messages instead of plain objects.
 
 usage: pbjs [options] file1.proto file2.json ...  (or)  other | pbjs [options] -
 ```
