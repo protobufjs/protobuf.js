@@ -328,7 +328,7 @@ function toJsType(field) {
             if (field.resolve().resolvedType instanceof Enum)
                 type = field.resolvedType.fullName.substring(1); // reference the enum
             else if (field.resolvedType instanceof Type)
-                type = messageRef(field.resolvedType.fullName.substring(1)); // reference the interface
+                type = field.resolvedType.fullName.substring(1) + (config["strict-message"] ? "" : "$Properties"); // reference the typedef
             else
                 type = "*"; // should not happen
             break;
@@ -338,19 +338,13 @@ function toJsType(field) {
          : type;
 }
 
-function messageRef(fullName) {
-    return config["strict-message"] || !config.comments
-        ? fullName
-        : fullName + "$Properties";
-}
-
 function buildType(ref, type) {
     var fullName = type.fullName.substring(1);
 
-    if (config.comments && !config["strict-message"]) {
+    if (config.comments) {
         var typeDef = [
             "Properties of " + aOrAn(type.name) + ".",
-            "@typedef " + messageRef(fullName),
+            "@typedef " + fullName + "$Properties",
             "@type {Object}"
         ];
         type.fieldsArray.forEach(function(field) {
@@ -369,7 +363,7 @@ function buildType(ref, type) {
         type.comment ? "@classdesc " + type.comment : null,
         "@exports " + fullName,
         "@constructor",
-        "@param {" + messageRef(fullName) + "=} [" + (config.beautify ? "properties" : "p") + "] Properties to set"
+        "@param {" + fullName + "$Properties=} [" + (config.beautify ? "properties" : "p") + "] Properties to set"
     ]);
     buildFunction(type, type.name, Class.generate(type));
 
@@ -433,7 +427,7 @@ function buildType(ref, type) {
         push("");
         pushComment([
             "Creates a new " + type.name + " instance using the specified properties.",
-            "@param {" + messageRef(fullName) + "=} [properties] Properties to set",
+            "@param {" + fullName + "$Properties=} [properties] Properties to set",
             "@returns {" + fullName + "} " + type.name + " instance"
         ]);
         push(name(type.name) + ".create = function create(properties) {");
@@ -447,7 +441,7 @@ function buildType(ref, type) {
         push("");
         pushComment([
             "Encodes the specified " + type.name + " message. Does not implicitly {@link " + fullName + ".verify|verify} messages.",
-            "@param {" + messageRef(fullName) + "} " + (config.beautify ? "message" : "m") + " " + type.name + " message or plain object to encode",
+            "@param {" + fullName + (config["strict-message"] ? "" : "$Properties") + "} " + (config.beautify ? "message" : "m") + " " + type.name + " message or plain object to encode",
             "@param {$protobuf.Writer} [" + (config.beautify ? "writer" : "w") + "] Writer to encode to",
             "@returns {$protobuf.Writer} Writer"
         ]);
@@ -457,7 +451,7 @@ function buildType(ref, type) {
             push("");
             pushComment([
                 "Encodes the specified " + type.name + " message, length delimited. Does not implicitly {@link " + fullName + ".verify|verify} messages.",
-                "@param {" + messageRef(fullName) + "} message " + type.name + " message or plain object to encode",
+                "@param {" + fullName + (config["strict-message"] ? "" : "$Properties") + "} message " + type.name + " message or plain object to encode",
                 "@param {$protobuf.Writer} [writer] Writer to encode to",
                 "@returns {$protobuf.Writer} Writer"
             ]);
