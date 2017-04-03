@@ -341,6 +341,7 @@ function toJsType(field) {
 /**
  * If the given field will have a default value assigned to it by a Proto3 lib
  * @param {Field} field
+ * @returns {boolean}
  */
 function willFieldHaveDefaultValue(field) {
     if (field.repeated || field.map) {
