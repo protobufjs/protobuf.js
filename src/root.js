@@ -34,6 +34,12 @@ function Root(options) {
      * @type {string[]}
      */
     this.files = [];
+
+    /**
+     * If any sources which built this Root used protobuf 3 syntax
+     * @type {boolean}
+     */
+    this.containsProto3 = false;
 }
 
 /**
