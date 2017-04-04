@@ -129,33 +129,30 @@ function verifier(mtype) {
     for (var i = 0; i < /* initializes */ mtype.fieldsArray.length; ++i) {
         var field = mtype._fieldsArray[i].resolve(),
             ref   = "m" + util.safeProp(field.name);
+        
+        if (field.optional) gen
+        ("if(%s!=null&&m.hasOwnProperty(%j)){", ref, field.name); // !== undefined && !== null
 
         // map fields
         if (field.map) { gen
-            ("if(%s!=null){", ref) // !== undefined && !== null
-                ("if(!util.isObject(%s))", ref)
-                    ("return%j", invalid(field, "object"))
-                ("var k=Object.keys(%s)", ref)
-                ("for(var i=0;i<k.length;++i){");
-                    genVerifyKey(gen, field, "k[i]");
-                    genVerifyValue(gen, field, i, ref + "[k[i]]")
-                ("}")
+            ("if(!util.isObject(%s))", ref)
+                ("return%j", invalid(field, "object"))
+            ("var k=Object.keys(%s)", ref)
+            ("for(var i=0;i<k.length;++i){");
+                genVerifyKey(gen, field, "k[i]");
+                genVerifyValue(gen, field, i, ref + "[k[i]]")
             ("}");
 
         // repeated fields
         } else if (field.repeated) { gen
-            ("if(%s!=null){", ref) // !== undefined && !== null
-                ("if(!Array.isArray(%s))", ref)
-                    ("return%j", invalid(field, "array"))
-                ("for(var i=0;i<%s.length;++i){", ref);
-                    genVerifyValue(gen, field, i, ref + "[i]")
-                ("}")
+            ("if(!Array.isArray(%s))", ref)
+                ("return%j", invalid(field, "array"))
+            ("for(var i=0;i<%s.length;++i){", ref);
+                genVerifyValue(gen, field, i, ref + "[i]")
             ("}");
 
         // required or present fields
         } else {
-            if (field.optional) gen
-            ("if(%s!=null){", ref); // !== undefined && !== null
             if (field.partOf) {
                 var oneofProp = util.safeProp(field.partOf.name);
                 if (seenFirstField[field.partOf.name] === 1) gen
@@ -165,11 +162,12 @@ function verifier(mtype) {
                 gen
             ("p%s=1", oneofProp);
             }
-                genVerifyValue(gen, field, i, ref);
-            if (field.optional) gen
-            ("}");
+            genVerifyValue(gen, field, i, ref);
         }
-    } return gen
+        if (field.optional) gen
+        ("}");
+    }
+    return gen
     ("return null");
     /* eslint-enable no-unexpected-multiline */
 }

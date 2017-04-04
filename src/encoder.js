@@ -42,11 +42,11 @@ function encoder(mtype) {
             type     = field.resolvedType instanceof Enum ? "uint32" : field.type,
             wireType = types.basic[type];
             ref      = "m" + util.safeProp(field.name);
-
+        
         // Map fields
         if (field.map) {
             gen
-    ("if(%s&&m.hasOwnProperty(%j)){", ref, field.name)
+    ("if(%s!=null&&m.hasOwnProperty(%j)){", ref, field.name) // !== undefined && !== null
         ("for(var ks=Object.keys(%s),i=0;i<ks.length;++i){", ref)
             ("w.uint32(%d).fork().uint32(%d).%s(ks[i])", (field.id << 3 | 2) >>> 0, 8 | types.mapKey[field.keyType], field.keyType);
             if (wireType === undefined) gen
@@ -59,7 +59,7 @@ function encoder(mtype) {
 
             // Repeated fields
         } else if (field.repeated) { gen
-    ("if(%s&&%s.length){", ref, ref);
+    ("if(%s!=null&&%s.length){", ref, ref); // !== undefined && !== null
 
             // Packed repeated
             if (field.packed && types.packed[type] !== undefined) { gen
@@ -83,14 +83,8 @@ function encoder(mtype) {
 
         // Non-repeated
         } else {
-            if (field.optional) {
-
-                if (field.bytes || field.resolvedType && !(field.resolvedType instanceof Enum)) gen
-    ("if(%s&&m.hasOwnProperty(%j))", ref, field.name);
-                else gen
+            if (field.optional) gen
     ("if(%s!=null&&m.hasOwnProperty(%j))", ref, field.name); // !== undefined && !== null
-
-            }
 
             if (wireType === undefined)
         genTypePartial(gen, field, index, ref);

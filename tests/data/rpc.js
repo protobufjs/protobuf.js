@@ -174,7 +174,7 @@ $root.MyRequest = (function() {
     MyRequest.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
-        if (message.path != null)
+        if (message.path != null && message.hasOwnProperty("path"))
             if (!$util.isString(message.path))
                 return "path: string expected";
         return null;
@@ -347,7 +347,7 @@ $root.MyResponse = (function() {
     MyResponse.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
-        if (message.status != null)
+        if (message.status != null && message.hasOwnProperty("status"))
             if (!$util.isInteger(message.status))
                 return "status: integer expected";
         return null;

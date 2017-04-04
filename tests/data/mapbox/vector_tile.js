@@ -64,7 +64,7 @@ $root.vector_tile = (function() {
         Tile.encode = function encode(message, writer) {
             if (!writer)
                 writer = $Writer.create();
-            if (message.layers && message.layers.length)
+            if (message.layers != null && message.layers.length)
                 for (var i = 0; i < message.layers.length; ++i)
                     $root.vector_tile.Tile.Layer.encode(message.layers[i], writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
             return writer;
@@ -129,7 +129,7 @@ $root.vector_tile = (function() {
         Tile.verify = function verify(message) {
             if (typeof message !== "object" || message === null)
                 return "object expected";
-            if (message.layers != null) {
+            if (message.layers != null && message.hasOwnProperty("layers")) {
                 if (!Array.isArray(message.layers))
                     return "layers: array expected";
                 for (var i = 0; i < message.layers.length; ++i) {
@@ -407,25 +407,25 @@ $root.vector_tile = (function() {
             Value.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
-                if (message.stringValue != null)
+                if (message.stringValue != null && message.hasOwnProperty("stringValue"))
                     if (!$util.isString(message.stringValue))
                         return "stringValue: string expected";
-                if (message.floatValue != null)
+                if (message.floatValue != null && message.hasOwnProperty("floatValue"))
                     if (typeof message.floatValue !== "number")
                         return "floatValue: number expected";
-                if (message.doubleValue != null)
+                if (message.doubleValue != null && message.hasOwnProperty("doubleValue"))
                     if (typeof message.doubleValue !== "number")
                         return "doubleValue: number expected";
-                if (message.intValue != null)
+                if (message.intValue != null && message.hasOwnProperty("intValue"))
                     if (!$util.isInteger(message.intValue) && !(message.intValue && $util.isInteger(message.intValue.low) && $util.isInteger(message.intValue.high)))
                         return "intValue: integer|Long expected";
-                if (message.uintValue != null)
+                if (message.uintValue != null && message.hasOwnProperty("uintValue"))
                     if (!$util.isInteger(message.uintValue) && !(message.uintValue && $util.isInteger(message.uintValue.low) && $util.isInteger(message.uintValue.high)))
                         return "uintValue: integer|Long expected";
-                if (message.sintValue != null)
+                if (message.sintValue != null && message.hasOwnProperty("sintValue"))
                     if (!$util.isInteger(message.sintValue) && !(message.sintValue && $util.isInteger(message.sintValue.low) && $util.isInteger(message.sintValue.high)))
                         return "sintValue: integer|Long expected";
-                if (message.boolValue != null)
+                if (message.boolValue != null && message.hasOwnProperty("boolValue"))
                     if (typeof message.boolValue !== "boolean")
                         return "boolValue: boolean expected";
                 return null;
@@ -634,7 +634,7 @@ $root.vector_tile = (function() {
                     writer = $Writer.create();
                 if (message.id != null && message.hasOwnProperty("id"))
                     writer.uint32(/* id 1, wireType 0 =*/8).uint64(message.id);
-                if (message.tags && message.tags.length) {
+                if (message.tags != null && message.tags.length) {
                     writer.uint32(/* id 2, wireType 2 =*/18).fork();
                     for (var i = 0; i < message.tags.length; ++i)
                         writer.uint32(message.tags[i]);
@@ -642,7 +642,7 @@ $root.vector_tile = (function() {
                 }
                 if (message.type != null && message.hasOwnProperty("type"))
                     writer.uint32(/* id 3, wireType 0 =*/24).uint32(message.type);
-                if (message.geometry && message.geometry.length) {
+                if (message.geometry != null && message.geometry.length) {
                     writer.uint32(/* id 4, wireType 2 =*/34).fork();
                     for (var i = 0; i < message.geometry.length; ++i)
                         writer.uint32(message.geometry[i]);
@@ -731,17 +731,17 @@ $root.vector_tile = (function() {
             Feature.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
-                if (message.id != null)
+                if (message.id != null && message.hasOwnProperty("id"))
                     if (!$util.isInteger(message.id) && !(message.id && $util.isInteger(message.id.low) && $util.isInteger(message.id.high)))
                         return "id: integer|Long expected";
-                if (message.tags != null) {
+                if (message.tags != null && message.hasOwnProperty("tags")) {
                     if (!Array.isArray(message.tags))
                         return "tags: array expected";
                     for (var i = 0; i < message.tags.length; ++i)
                         if (!$util.isInteger(message.tags[i]))
                             return "tags: integer[] expected";
                 }
-                if (message.type != null)
+                if (message.type != null && message.hasOwnProperty("type"))
                     switch (message.type) {
                     default:
                         return "type: enum value expected";
@@ -751,7 +751,7 @@ $root.vector_tile = (function() {
                     case 3:
                         break;
                     }
-                if (message.geometry != null) {
+                if (message.geometry != null && message.hasOwnProperty("geometry")) {
                     if (!Array.isArray(message.geometry))
                         return "geometry: array expected";
                     for (var i = 0; i < message.geometry.length; ++i)
@@ -969,13 +969,13 @@ $root.vector_tile = (function() {
                 if (!writer)
                     writer = $Writer.create();
                 writer.uint32(/* id 1, wireType 2 =*/10).string(message.name);
-                if (message.features && message.features.length)
+                if (message.features != null && message.features.length)
                     for (var i = 0; i < message.features.length; ++i)
                         $root.vector_tile.Tile.Feature.encode(message.features[i], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
-                if (message.keys && message.keys.length)
+                if (message.keys != null && message.keys.length)
                     for (var i = 0; i < message.keys.length; ++i)
                         writer.uint32(/* id 3, wireType 2 =*/26).string(message.keys[i]);
-                if (message.values && message.values.length)
+                if (message.values != null && message.values.length)
                     for (var i = 0; i < message.values.length; ++i)
                         $root.vector_tile.Tile.Value.encode(message.values[i], writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
                 if (message.extent != null && message.hasOwnProperty("extent"))
@@ -1070,7 +1070,7 @@ $root.vector_tile = (function() {
                     return "version: integer expected";
                 if (!$util.isString(message.name))
                     return "name: string expected";
-                if (message.features != null) {
+                if (message.features != null && message.hasOwnProperty("features")) {
                     if (!Array.isArray(message.features))
                         return "features: array expected";
                     for (var i = 0; i < message.features.length; ++i) {
@@ -1079,14 +1079,14 @@ $root.vector_tile = (function() {
                             return "features." + error;
                     }
                 }
-                if (message.keys != null) {
+                if (message.keys != null && message.hasOwnProperty("keys")) {
                     if (!Array.isArray(message.keys))
                         return "keys: array expected";
                     for (var i = 0; i < message.keys.length; ++i)
                         if (!$util.isString(message.keys[i]))
                             return "keys: string[] expected";
                 }
-                if (message.values != null) {
+                if (message.values != null && message.hasOwnProperty("values")) {
                     if (!Array.isArray(message.values))
                         return "values: array expected";
                     for (var i = 0; i < message.values.length; ++i) {
@@ -1095,7 +1095,7 @@ $root.vector_tile = (function() {
                             return "values." + error;
                     }
                 }
-                if (message.extent != null)
+                if (message.extent != null && message.hasOwnProperty("extent"))
                     if (!$util.isInteger(message.extent))
                         return "extent: integer expected";
                 return null;

@@ -117,31 +117,31 @@ $root.Message = (function() {
             writer = $Writer.create();
         if (message.stringVal != null && message.hasOwnProperty("stringVal"))
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.stringVal);
-        if (message.stringRepeated && message.stringRepeated.length)
+        if (message.stringRepeated != null && message.stringRepeated.length)
             for (var i = 0; i < message.stringRepeated.length; ++i)
                 writer.uint32(/* id 2, wireType 2 =*/18).string(message.stringRepeated[i]);
         if (message.uint64Val != null && message.hasOwnProperty("uint64Val"))
             writer.uint32(/* id 3, wireType 0 =*/24).uint64(message.uint64Val);
-        if (message.uint64Repeated && message.uint64Repeated.length) {
+        if (message.uint64Repeated != null && message.uint64Repeated.length) {
             writer.uint32(/* id 4, wireType 2 =*/34).fork();
             for (var i = 0; i < message.uint64Repeated.length; ++i)
                 writer.uint64(message.uint64Repeated[i]);
             writer.ldelim();
         }
-        if (message.bytesVal && message.hasOwnProperty("bytesVal"))
+        if (message.bytesVal != null && message.hasOwnProperty("bytesVal"))
             writer.uint32(/* id 5, wireType 2 =*/42).bytes(message.bytesVal);
-        if (message.bytesRepeated && message.bytesRepeated.length)
+        if (message.bytesRepeated != null && message.bytesRepeated.length)
             for (var i = 0; i < message.bytesRepeated.length; ++i)
                 writer.uint32(/* id 6, wireType 2 =*/50).bytes(message.bytesRepeated[i]);
         if (message.enumVal != null && message.hasOwnProperty("enumVal"))
             writer.uint32(/* id 7, wireType 0 =*/56).uint32(message.enumVal);
-        if (message.enumRepeated && message.enumRepeated.length) {
+        if (message.enumRepeated != null && message.enumRepeated.length) {
             writer.uint32(/* id 8, wireType 2 =*/66).fork();
             for (var i = 0; i < message.enumRepeated.length; ++i)
                 writer.uint32(message.enumRepeated[i]);
             writer.ldelim();
         }
-        if (message.int64Map && message.hasOwnProperty("int64Map"))
+        if (message.int64Map != null && message.hasOwnProperty("int64Map"))
             for (var keys = Object.keys(message.int64Map), i = 0; i < keys.length; ++i)
                 writer.uint32(/* id 9, wireType 2 =*/74).fork().uint32(/* id 1, wireType 2 =*/10).string(keys[i]).uint32(/* id 2, wireType 0 =*/16).int64(message.int64Map[keys[i]]).ldelim();
         return writer;
@@ -251,37 +251,37 @@ $root.Message = (function() {
     Message.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
-        if (message.stringVal != null)
+        if (message.stringVal != null && message.hasOwnProperty("stringVal"))
             if (!$util.isString(message.stringVal))
                 return "stringVal: string expected";
-        if (message.stringRepeated != null) {
+        if (message.stringRepeated != null && message.hasOwnProperty("stringRepeated")) {
             if (!Array.isArray(message.stringRepeated))
                 return "stringRepeated: array expected";
             for (var i = 0; i < message.stringRepeated.length; ++i)
                 if (!$util.isString(message.stringRepeated[i]))
                     return "stringRepeated: string[] expected";
         }
-        if (message.uint64Val != null)
+        if (message.uint64Val != null && message.hasOwnProperty("uint64Val"))
             if (!$util.isInteger(message.uint64Val) && !(message.uint64Val && $util.isInteger(message.uint64Val.low) && $util.isInteger(message.uint64Val.high)))
                 return "uint64Val: integer|Long expected";
-        if (message.uint64Repeated != null) {
+        if (message.uint64Repeated != null && message.hasOwnProperty("uint64Repeated")) {
             if (!Array.isArray(message.uint64Repeated))
                 return "uint64Repeated: array expected";
             for (var i = 0; i < message.uint64Repeated.length; ++i)
                 if (!$util.isInteger(message.uint64Repeated[i]) && !(message.uint64Repeated[i] && $util.isInteger(message.uint64Repeated[i].low) && $util.isInteger(message.uint64Repeated[i].high)))
                     return "uint64Repeated: integer|Long[] expected";
         }
-        if (message.bytesVal != null)
+        if (message.bytesVal != null && message.hasOwnProperty("bytesVal"))
             if (!(message.bytesVal && typeof message.bytesVal.length === "number" || $util.isString(message.bytesVal)))
                 return "bytesVal: buffer expected";
-        if (message.bytesRepeated != null) {
+        if (message.bytesRepeated != null && message.hasOwnProperty("bytesRepeated")) {
             if (!Array.isArray(message.bytesRepeated))
                 return "bytesRepeated: array expected";
             for (var i = 0; i < message.bytesRepeated.length; ++i)
                 if (!(message.bytesRepeated[i] && typeof message.bytesRepeated[i].length === "number" || $util.isString(message.bytesRepeated[i])))
                     return "bytesRepeated: buffer[] expected";
         }
-        if (message.enumVal != null)
+        if (message.enumVal != null && message.hasOwnProperty("enumVal"))
             switch (message.enumVal) {
             default:
                 return "enumVal: enum value expected";
@@ -289,7 +289,7 @@ $root.Message = (function() {
             case 2:
                 break;
             }
-        if (message.enumRepeated != null) {
+        if (message.enumRepeated != null && message.hasOwnProperty("enumRepeated")) {
             if (!Array.isArray(message.enumRepeated))
                 return "enumRepeated: array expected";
             for (var i = 0; i < message.enumRepeated.length; ++i)
@@ -301,7 +301,7 @@ $root.Message = (function() {
                     break;
                 }
         }
-        if (message.int64Map != null) {
+        if (message.int64Map != null && message.hasOwnProperty("int64Map")) {
             if (!$util.isObject(message.int64Map))
                 return "int64Map: object expected";
             var key = Object.keys(message.int64Map);
