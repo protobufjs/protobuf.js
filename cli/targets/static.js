@@ -44,7 +44,7 @@ function static_target(root, options, callback) {
         }
         var rootProp = cliUtil.safeProp(config.root || "default");
         push((config.es6 ? "const" : "var") + " $root = $protobuf.roots" + rootProp + " || ($protobuf.roots" + rootProp + " = {});");
-        buildNamespace(null, root);
+        buildNamespace(null, root, root);
         return callback(null, out.join("\n"));
     } catch (err) {
         return callback(err);
@@ -92,7 +92,7 @@ function aOrAn(name) {
         : "a ") + name;
 }
 
-function buildNamespace(ref, ns) {
+function buildNamespace(ref, ns, root) {
     if (!ns)
         return;
     if (ns.name !== "") {
@@ -105,7 +105,7 @@ function buildNamespace(ref, ns) {
     }
 
     if (ns instanceof Type) {
-        buildType(undefined, ns);
+        buildType(undefined, ns, root);
     } else if (ns instanceof Service)
         buildService(undefined, ns);
     else if (ns.name !== "") {
@@ -122,7 +122,7 @@ function buildNamespace(ref, ns) {
         if (nested instanceof Enum)
             buildEnum(ns.name, nested);
         else if (nested instanceof Namespace)
-            buildNamespace(ns.name, nested);
+            buildNamespace(ns.name, nested, root);
     });
     if (ns.name !== "") {
         push("");
@@ -338,7 +338,27 @@ function toJsType(field) {
          : type;
 }
 
-function buildType(ref, type) {
+/**
+ * If the given field will have a default value assigned to it by a Proto3 lib
+ * @param {Field} field
+ * @returns {boolean}
+ */
+function willFieldHaveDefaultValue(field) {
+    if (field.repeated || field.map) {
+        // Default value being an empty array or map
+        return true;
+    }
+
+    field.resolve();
+    if (!field.resolvedType || field.resolvedType instanceof Enum) {
+        // Enums default to 0
+        return true;
+    }
+
+    return false;
+}
+
+function buildType(ref, type, root) {
     var fullName = type.fullName.substring(1);
 
     if (config.comments) {
@@ -372,11 +392,18 @@ function buildType(ref, type) {
     type.fieldsArray.forEach(function(field) {
         field.resolve();
         var prop = util.safeProp(field.name);
+        var canFieldBeUndefined = field.optional;
+        if (root.containsProto3) {
+            // Only fields not given defaults can be undefined since proto3 has
+            // no "optional" or "required" fields
+            canFieldBeUndefined = !willFieldHaveDefaultValue(field);
+        }
+
         if (config.comments) {
             push("");
             pushComment([
                 field.comment || type.name + " " + field.name + ".",
-                "@type {" + toJsType(field) + (field.optional ? "|undefined" : "") + "}"
+                "@type {" + toJsType(field) + (canFieldBeUndefined ? "|null" : "") + "}"
             ]);
         } else if (firstField) {
             push("");

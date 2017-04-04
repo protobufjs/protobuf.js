@@ -86,6 +86,11 @@ function parse(source, root, options) {
         syntax,
         isProto3 = false;
 
+    /**
+     * If proto3 syntax was used at any point in the source
+     */
+    var sourceContainsProto3 = false;
+
     var ptr = root;
 
     var applyCase = options.keepCase ? function(name) { return name; } : camelCase;
@@ -243,6 +248,10 @@ function parse(source, root, options) {
         skip("=");
         syntax = readString();
         isProto3 = syntax === "proto3";
+
+        if (!sourceContainsProto3) {
+            sourceContainsProto3 = isProto3;
+        }
 
         /* istanbul ignore if */
         if (!isProto3 && syntax !== "proto2")
@@ -729,6 +738,7 @@ function parse(source, root, options) {
     }
 
     parse.filename = null;
+    root.containsProto3 = sourceContainsProto3;
     return {
         "package"     : pkg,
         "imports"     : imports,
