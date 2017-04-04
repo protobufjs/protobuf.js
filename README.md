@@ -458,14 +458,16 @@ protobuf.load("awesome.proto", function(err, root) {
   console.log(`message = ${JSON.stringify(message)}`);
 
   let buffer = AwesomeMessage.encode(message).finish();
-  console.log(`buffer = ${Array.prototype.slice.call(buffer)}`);
+  console.log(`buffer = ${Array.prototype.toString.call(buffer)}`);
 
   let decoded = AwesomeMessage.decode(buffer);
   console.log(`decoded = ${JSON.stringify(decoded)}`);
 });
 ```
 
-If you generated static code using the CLI to `bundle.js` and its type definitions to `bundle.d.ts`, then you can do:
+**Note:** Dynamically generated runtime message classes cannot be typed, technically, so you must either access its fields using `message["awesomeField"]` notation or you can utilize [typings of its static counterpart](https://github.com/dcodeIO/protobuf.js/tree/master/cli#pbts) for full typings support.
+
+If you generated static code to `bundle.js` using the CLI and its type definitions to `bundle.d.ts` instead, then you can just do:
 
 ```ts
 import * as root from "./bundle.js";
@@ -477,13 +479,10 @@ var buffer = AwesomeMessage.encode(message).finish();
 ...
 ```
 
-**Note:** By default, the npm package ships with long.js including its typings and node typing as optional dependencies. However, where long.js and/or node Buffers are not required, there are two stubs available that can be referenced instead of the full type definitions:
+**Note:** When using [long.js](https://github.com/dcodeIO/long.js), make sure to add [@types/long](https://www.npmjs.com/package/@types/long) to your project's dependencies. Likewise, when building for node, make sure to add [@types/node](https://www.npmjs.com/package/@types/node). Alternatively, if you are not using one of these, there are two stubs available that can be referenced instead of the respective full type definition:
 
 ```ts
 /// <reference path="./node_modules/protobufjs/stub-long.d.ts" />
-```
-
-```ts
 /// <reference path="./node_modules/protobufjs/stub-node.d.ts" />
 ```
 

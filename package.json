@@ -56,11 +56,11 @@
     "@protobufjs/utf8": "^1.1.0"
   },
   "optionalDependencies": {
-    "long": "^3.2.0",
-    "@types/long": "^3.0.31",
-    "@types/node": "7.0.12"
+    "long": "^3.2.0"
   },
   "devDependencies": {
+    "@types/long": "^3.0.31",
+    "@types/node": "7.0.12",
     "benchmark": "^2.1.4",
     "browserify": "^14.1.0",
     "browserify-wrap": "^1.0.2",
@@ -77,7 +77,7 @@
     "gulp": "^3.9.1",
     "gulp-header": "^1.8.8",
     "gulp-if": "^2.0.1",
-    "gulp-sourcemaps": "^2.5.0",
+    "gulp-sourcemaps": "^2.5.1",
     "gulp-uglify": "^2.1.2",
     "istanbul": "^0.4.5",
     "jaguarjs-jsdoc": "dcodeIO/jaguarjs-jsdoc",
