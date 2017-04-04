@@ -444,18 +444,24 @@ import * as protobuf from "protobufjs";
 import * as Long from "long"; // optional
 
 // browser only (alternatively)
-import * as protobuf from "./node_modules/protobufjs/index.js";
-import * as Long from "./node_modules/long/dist/long.js"; // optional
+// import * as protobuf from "./node_modules/protobufjs/index.js";
+// import * as Long from "./node_modules/long/dist/long.js"; // optional
 
 protobuf.load("awesome.proto", function(err, root) {
   if (err)
     throw err;
 
   // example code
-  var AwesomeMessage = root.lookupType("AwesomeMessage");
-  var message = AwesomeMessage.create({ awesomeField: "hello" });
-  var buffer = AwesomeMessage.encode(message).finish();
-  ...
+  const AwesomeMessage = root.lookupType("awesomepackage.AwesomeMessage");
+
+  let message = AwesomeMessage.create({ awesomeField: "hello" });
+  console.log(`message = ${JSON.stringify(message)}`);
+
+  let buffer = AwesomeMessage.encode(message).finish();
+  console.log(`buffer = ${Array.prototype.slice.call(buffer)}`);
+
+  let decoded = AwesomeMessage.decode(buffer);
+  console.log(`decoded = ${JSON.stringify(decoded)}`);
 });
 ```
 

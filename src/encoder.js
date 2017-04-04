@@ -42,7 +42,7 @@ function encoder(mtype) {
             type     = field.resolvedType instanceof Enum ? "uint32" : field.type,
             wireType = types.basic[type];
             ref      = "m" + util.safeProp(field.name);
-        
+
         // Map fields
         if (field.map) {
             gen
