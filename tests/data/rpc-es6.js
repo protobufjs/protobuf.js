@@ -83,7 +83,8 @@ export const MyRequest = $root.MyRequest = (() => {
     function MyRequest(properties) {
         if (properties)
             for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                this[keys[i]] = properties[keys[i]];
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
     }
 
     /**
@@ -256,7 +257,8 @@ export const MyResponse = $root.MyResponse = (() => {
     function MyResponse(properties) {
         if (properties)
             for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                this[keys[i]] = properties[keys[i]];
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
     }
 
     /**

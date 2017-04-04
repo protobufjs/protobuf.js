@@ -44,7 +44,8 @@ $root.jspb = (function() {
             function Empty(properties) {
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                        this[keys[i]] = properties[keys[i]];
+                        if (properties[keys[i]] != null)
+                            this[keys[i]] = properties[keys[i]];
             }
 
             /**
@@ -208,7 +209,8 @@ $root.jspb = (function() {
             function EnumContainer(properties) {
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                        this[keys[i]] = properties[keys[i]];
+                        if (properties[keys[i]] != null)
+                            this[keys[i]] = properties[keys[i]];
             }
 
             /**
@@ -397,7 +399,8 @@ $root.jspb = (function() {
                 this.aRepeatedString = [];
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                        this[keys[i]] = properties[keys[i]];
+                        if (properties[keys[i]] != null)
+                            this[keys[i]] = properties[keys[i]];
             }
 
             /**
@@ -627,7 +630,8 @@ $root.jspb = (function() {
                 this.aRepeatedString = [];
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                        this[keys[i]] = properties[keys[i]];
+                        if (properties[keys[i]] != null)
+                            this[keys[i]] = properties[keys[i]];
             }
 
             /**
@@ -838,7 +842,8 @@ $root.jspb = (function() {
             function SpecialCases(properties) {
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                        this[keys[i]] = properties[keys[i]];
+                        if (properties[keys[i]] != null)
+                            this[keys[i]] = properties[keys[i]];
             }
 
             /**
@@ -1075,7 +1080,8 @@ $root.jspb = (function() {
                 this.aRepeatedString = [];
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                        this[keys[i]] = properties[keys[i]];
+                        if (properties[keys[i]] != null)
+                            this[keys[i]] = properties[keys[i]];
             }
 
             /**
@@ -1364,7 +1370,8 @@ $root.jspb = (function() {
                 function Nested(properties) {
                     if (properties)
                         for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                            this[keys[i]] = properties[keys[i]];
+                            if (properties[keys[i]] != null)
+                                this[keys[i]] = properties[keys[i]];
                 }
 
                 /**
@@ -1550,7 +1557,8 @@ $root.jspb = (function() {
                 this[".jspb.test.IndirectExtension.repeatedSimple"] = [];
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                        this[keys[i]] = properties[keys[i]];
+                        if (properties[keys[i]] != null)
+                            this[keys[i]] = properties[keys[i]];
             }
 
             /**
@@ -1934,7 +1942,8 @@ $root.jspb = (function() {
                 this.aRepeatedString = [];
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                        this[keys[i]] = properties[keys[i]];
+                        if (properties[keys[i]] != null)
+                            this[keys[i]] = properties[keys[i]];
             }
 
             /**
@@ -2223,7 +2232,8 @@ $root.jspb = (function() {
                 function Nested(properties) {
                     if (properties)
                         for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                            this[keys[i]] = properties[keys[i]];
+                            if (properties[keys[i]] != null)
+                                this[keys[i]] = properties[keys[i]];
                 }
 
                 /**
@@ -2398,7 +2408,8 @@ $root.jspb = (function() {
             function OuterMessage(properties) {
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                        this[keys[i]] = properties[keys[i]];
+                        if (properties[keys[i]] != null)
+                            this[keys[i]] = properties[keys[i]];
             }
 
             /**
@@ -2544,7 +2555,8 @@ $root.jspb = (function() {
                 function Complex(properties) {
                     if (properties)
                         for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                            this[keys[i]] = properties[keys[i]];
+                            if (properties[keys[i]] != null)
+                                this[keys[i]] = properties[keys[i]];
                 }
 
                 /**
@@ -2720,7 +2732,8 @@ $root.jspb = (function() {
             function IsExtension(properties) {
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                        this[keys[i]] = properties[keys[i]];
+                        if (properties[keys[i]] != null)
+                            this[keys[i]] = properties[keys[i]];
             }
 
             /**
@@ -2892,7 +2905,8 @@ $root.jspb = (function() {
             function IndirectExtension(properties) {
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                        this[keys[i]] = properties[keys[i]];
+                        if (properties[keys[i]] != null)
+                            this[keys[i]] = properties[keys[i]];
             }
 
             /**
@@ -3046,7 +3060,8 @@ $root.jspb = (function() {
             function DefaultValues(properties) {
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                        this[keys[i]] = properties[keys[i]];
+                        if (properties[keys[i]] != null)
+                            this[keys[i]] = properties[keys[i]];
             }
 
             /**
@@ -3373,7 +3388,8 @@ $root.jspb = (function() {
                 this.repeatedDoubleField = [];
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                        this[keys[i]] = properties[keys[i]];
+                        if (properties[keys[i]] != null)
+                            this[keys[i]] = properties[keys[i]];
             }
 
             /**
@@ -3728,7 +3744,8 @@ $root.jspb = (function() {
                 this.simple2 = [];
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                        this[keys[i]] = properties[keys[i]];
+                        if (properties[keys[i]] != null)
+                            this[keys[i]] = properties[keys[i]];
             }
 
             /**
@@ -4031,7 +4048,8 @@ $root.jspb = (function() {
             function CloneExtension(properties) {
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                        this[keys[i]] = properties[keys[i]];
+                        if (properties[keys[i]] != null)
+                            this[keys[i]] = properties[keys[i]];
             }
 
             /**
@@ -4210,7 +4228,8 @@ $root.jspb = (function() {
                 this.repeatedGroup = [];
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                        this[keys[i]] = properties[keys[i]];
+                        if (properties[keys[i]] != null)
+                            this[keys[i]] = properties[keys[i]];
             }
 
             /**
@@ -4517,7 +4536,8 @@ $root.jspb = (function() {
                     this.someBool = [];
                     if (properties)
                         for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                            this[keys[i]] = properties[keys[i]];
+                            if (properties[keys[i]] != null)
+                                this[keys[i]] = properties[keys[i]];
                 }
 
                 /**
@@ -4732,7 +4752,8 @@ $root.jspb = (function() {
                 function RequiredGroup(properties) {
                     if (properties)
                         for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                            this[keys[i]] = properties[keys[i]];
+                            if (properties[keys[i]] != null)
+                                this[keys[i]] = properties[keys[i]];
                 }
 
                 /**
@@ -4907,7 +4928,8 @@ $root.jspb = (function() {
                 function OptionalGroup(properties) {
                     if (properties)
                         for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                            this[keys[i]] = properties[keys[i]];
+                            if (properties[keys[i]] != null)
+                                this[keys[i]] = properties[keys[i]];
                 }
 
                 /**
@@ -5085,7 +5107,8 @@ $root.jspb = (function() {
             function TestGroup1(properties) {
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                        this[keys[i]] = properties[keys[i]];
+                        if (properties[keys[i]] != null)
+                            this[keys[i]] = properties[keys[i]];
             }
 
             /**
@@ -5264,7 +5287,8 @@ $root.jspb = (function() {
             function TestReservedNames(properties) {
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                        this[keys[i]] = properties[keys[i]];
+                        if (properties[keys[i]] != null)
+                            this[keys[i]] = properties[keys[i]];
             }
 
             /**
@@ -5456,7 +5480,8 @@ $root.jspb = (function() {
             function TestReservedNamesExtension(properties) {
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                        this[keys[i]] = properties[keys[i]];
+                        if (properties[keys[i]] != null)
+                            this[keys[i]] = properties[keys[i]];
             }
 
             /**
@@ -5615,7 +5640,8 @@ $root.jspb = (function() {
                 this.repeatedField = [];
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                        this[keys[i]] = properties[keys[i]];
+                        if (properties[keys[i]] != null)
+                            this[keys[i]] = properties[keys[i]];
             }
 
             /**
@@ -6064,7 +6090,8 @@ $root.jspb = (function() {
             function TestEndsWithBytes(properties) {
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                        this[keys[i]] = properties[keys[i]];
+                        if (properties[keys[i]] != null)
+                            this[keys[i]] = properties[keys[i]];
             }
 
             /**
@@ -6282,7 +6309,8 @@ $root.jspb = (function() {
                 this.mapStringTestmapfields = {};
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                        this[keys[i]] = properties[keys[i]];
+                        if (properties[keys[i]] != null)
+                            this[keys[i]] = properties[keys[i]];
             }
 
             /**
@@ -6950,7 +6978,8 @@ $root.jspb = (function() {
             function MapValueMessageNoBinary(properties) {
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                        this[keys[i]] = properties[keys[i]];
+                        if (properties[keys[i]] != null)
+                            this[keys[i]] = properties[keys[i]];
             }
 
             /**
@@ -7122,7 +7151,8 @@ $root.jspb = (function() {
             function Deeply(properties) {
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                        this[keys[i]] = properties[keys[i]];
+                        if (properties[keys[i]] != null)
+                            this[keys[i]] = properties[keys[i]];
             }
 
             /**
@@ -7267,7 +7297,8 @@ $root.jspb = (function() {
                 function Nested(properties) {
                     if (properties)
                         for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                            this[keys[i]] = properties[keys[i]];
+                            if (properties[keys[i]] != null)
+                                this[keys[i]] = properties[keys[i]];
                 }
 
                 /**
@@ -7413,7 +7444,8 @@ $root.jspb = (function() {
                     function Message(properties) {
                         if (properties)
                             for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                                this[keys[i]] = properties[keys[i]];
+                                if (properties[keys[i]] != null)
+                                    this[keys[i]] = properties[keys[i]];
                     }
 
                     /**
@@ -7617,7 +7649,8 @@ $root.google = (function() {
                 this.file = [];
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                        this[keys[i]] = properties[keys[i]];
+                        if (properties[keys[i]] != null)
+                            this[keys[i]] = properties[keys[i]];
             }
 
             /**
@@ -7828,7 +7861,8 @@ $root.google = (function() {
                 this.extension = [];
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                        this[keys[i]] = properties[keys[i]];
+                        if (properties[keys[i]] != null)
+                            this[keys[i]] = properties[keys[i]];
             }
 
             /**
@@ -8375,7 +8409,8 @@ $root.google = (function() {
                 this.reservedName = [];
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                        this[keys[i]] = properties[keys[i]];
+                        if (properties[keys[i]] != null)
+                            this[keys[i]] = properties[keys[i]];
             }
 
             /**
@@ -8880,7 +8915,8 @@ $root.google = (function() {
                 function ExtensionRange(properties) {
                     if (properties)
                         for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                            this[keys[i]] = properties[keys[i]];
+                            if (properties[keys[i]] != null)
+                                this[keys[i]] = properties[keys[i]];
                 }
 
                 /**
@@ -9074,7 +9110,8 @@ $root.google = (function() {
                 function ReservedRange(properties) {
                     if (properties)
                         for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                            this[keys[i]] = properties[keys[i]];
+                            if (properties[keys[i]] != null)
+                                this[keys[i]] = properties[keys[i]];
                 }
 
                 /**
@@ -9279,7 +9316,8 @@ $root.google = (function() {
             function FieldDescriptorProto(properties) {
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                        this[keys[i]] = properties[keys[i]];
+                        if (properties[keys[i]] != null)
+                            this[keys[i]] = properties[keys[i]];
             }
 
             /**
@@ -9805,7 +9843,8 @@ $root.google = (function() {
             function OneofDescriptorProto(properties) {
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                        this[keys[i]] = properties[keys[i]];
+                        if (properties[keys[i]] != null)
+                            this[keys[i]] = properties[keys[i]];
             }
 
             /**
@@ -10006,7 +10045,8 @@ $root.google = (function() {
                 this.value = [];
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                        this[keys[i]] = properties[keys[i]];
+                        if (properties[keys[i]] != null)
+                            this[keys[i]] = properties[keys[i]];
             }
 
             /**
@@ -10246,7 +10286,8 @@ $root.google = (function() {
             function EnumValueDescriptorProto(properties) {
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                        this[keys[i]] = properties[keys[i]];
+                        if (properties[keys[i]] != null)
+                            this[keys[i]] = properties[keys[i]];
             }
 
             /**
@@ -10466,7 +10507,8 @@ $root.google = (function() {
                 this.method = [];
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                        this[keys[i]] = properties[keys[i]];
+                        if (properties[keys[i]] != null)
+                            this[keys[i]] = properties[keys[i]];
             }
 
             /**
@@ -10709,7 +10751,8 @@ $root.google = (function() {
             function MethodDescriptorProto(properties) {
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                        this[keys[i]] = properties[keys[i]];
+                        if (properties[keys[i]] != null)
+                            this[keys[i]] = properties[keys[i]];
             }
 
             /**
@@ -10998,7 +11041,8 @@ $root.google = (function() {
                 this.uninterpretedOption = [];
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                        this[keys[i]] = properties[keys[i]];
+                        if (properties[keys[i]] != null)
+                            this[keys[i]] = properties[keys[i]];
             }
 
             /**
@@ -11499,7 +11543,8 @@ $root.google = (function() {
                 this.uninterpretedOption = [];
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                        this[keys[i]] = properties[keys[i]];
+                        if (properties[keys[i]] != null)
+                            this[keys[i]] = properties[keys[i]];
             }
 
             /**
@@ -11777,7 +11822,8 @@ $root.google = (function() {
                 this.uninterpretedOption = [];
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                        this[keys[i]] = properties[keys[i]];
+                        if (properties[keys[i]] != null)
+                            this[keys[i]] = properties[keys[i]];
             }
 
             /**
@@ -12157,7 +12203,8 @@ $root.google = (function() {
                 this.uninterpretedOption = [];
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                        this[keys[i]] = properties[keys[i]];
+                        if (properties[keys[i]] != null)
+                            this[keys[i]] = properties[keys[i]];
             }
 
             /**
@@ -12354,7 +12401,8 @@ $root.google = (function() {
                 this.uninterpretedOption = [];
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                        this[keys[i]] = properties[keys[i]];
+                        if (properties[keys[i]] != null)
+                            this[keys[i]] = properties[keys[i]];
             }
 
             /**
@@ -12608,7 +12656,8 @@ $root.google = (function() {
                 this.uninterpretedOption = [];
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                        this[keys[i]] = properties[keys[i]];
+                        if (properties[keys[i]] != null)
+                            this[keys[i]] = properties[keys[i]];
             }
 
             /**
@@ -12823,7 +12872,8 @@ $root.google = (function() {
                 this.uninterpretedOption = [];
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                        this[keys[i]] = properties[keys[i]];
+                        if (properties[keys[i]] != null)
+                            this[keys[i]] = properties[keys[i]];
             }
 
             /**
@@ -13039,7 +13089,8 @@ $root.google = (function() {
                 this.uninterpretedOption = [];
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                        this[keys[i]] = properties[keys[i]];
+                        if (properties[keys[i]] != null)
+                            this[keys[i]] = properties[keys[i]];
             }
 
             /**
@@ -13314,7 +13365,8 @@ $root.google = (function() {
                 this.name = [];
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                        this[keys[i]] = properties[keys[i]];
+                        if (properties[keys[i]] != null)
+                            this[keys[i]] = properties[keys[i]];
             }
 
             /**
@@ -13652,7 +13704,8 @@ $root.google = (function() {
                 function NamePart(properties) {
                     if (properties)
                         for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                            this[keys[i]] = properties[keys[i]];
+                            if (properties[keys[i]] != null)
+                                this[keys[i]] = properties[keys[i]];
                 }
 
                 /**
@@ -13849,7 +13902,8 @@ $root.google = (function() {
                 this.location = [];
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                        this[keys[i]] = properties[keys[i]];
+                        if (properties[keys[i]] != null)
+                            this[keys[i]] = properties[keys[i]];
             }
 
             /**
@@ -14046,7 +14100,8 @@ $root.google = (function() {
                     this.leadingDetachedComments = [];
                     if (properties)
                         for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                            this[keys[i]] = properties[keys[i]];
+                            if (properties[keys[i]] != null)
+                                this[keys[i]] = properties[keys[i]];
                 }
 
                 /**
@@ -14363,7 +14418,8 @@ $root.google = (function() {
                 this.annotation = [];
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                        this[keys[i]] = properties[keys[i]];
+                        if (properties[keys[i]] != null)
+                            this[keys[i]] = properties[keys[i]];
             }
 
             /**
@@ -14557,7 +14613,8 @@ $root.google = (function() {
                     this.path = [];
                     if (properties)
                         for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                            this[keys[i]] = properties[keys[i]];
+                            if (properties[keys[i]] != null)
+                                this[keys[i]] = properties[keys[i]];
                 }
 
                 /**

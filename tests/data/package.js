@@ -51,7 +51,8 @@ $root.Package = (function() {
         this.cliDependencies = [];
         if (properties)
             for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                this[keys[i]] = properties[keys[i]];
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
     }
 
     /**
@@ -681,7 +682,8 @@ $root.Package = (function() {
         function Repository(properties) {
             if (properties)
                 for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    this[keys[i]] = properties[keys[i]];
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
         }
 
         /**

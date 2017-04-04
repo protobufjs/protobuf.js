@@ -37,7 +37,8 @@ $root.vector_tile = (function() {
             this.layers = [];
             if (properties)
                 for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    this[keys[i]] = properties[keys[i]];
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
         }
 
         /**
@@ -252,7 +253,8 @@ $root.vector_tile = (function() {
             function Value(properties) {
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                        this[keys[i]] = properties[keys[i]];
+                        if (properties[keys[i]] != null)
+                            this[keys[i]] = properties[keys[i]];
             }
 
             /**
@@ -587,7 +589,8 @@ $root.vector_tile = (function() {
                 this.geometry = [];
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                        this[keys[i]] = properties[keys[i]];
+                        if (properties[keys[i]] != null)
+                            this[keys[i]] = properties[keys[i]];
             }
 
             /**
@@ -911,7 +914,8 @@ $root.vector_tile = (function() {
                 this.values = [];
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                        this[keys[i]] = properties[keys[i]];
+                        if (properties[keys[i]] != null)
+                            this[keys[i]] = properties[keys[i]];
             }
 
             /**

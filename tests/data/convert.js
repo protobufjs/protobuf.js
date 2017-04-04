@@ -40,7 +40,8 @@ $root.Message = (function() {
         this.int64Map = {};
         if (properties)
             for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                this[keys[i]] = properties[keys[i]];
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
     }
 
     /**
