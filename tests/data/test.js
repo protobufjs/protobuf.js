@@ -215,7 +215,7 @@ $root.jspb = (function() {
 
             /**
              * EnumContainer outerEnum.
-             * @type {jspb.test.OuterEnum|undefined}
+             * @type {jspb.test.OuterEnum}
              */
             EnumContainer.prototype.outerEnum = 1;
 
@@ -411,13 +411,13 @@ $root.jspb = (function() {
 
             /**
              * Simple1 aRepeatedString.
-             * @type {Array.<string>|undefined}
+             * @type {Array.<string>}
              */
             Simple1.prototype.aRepeatedString = $util.emptyArray;
 
             /**
              * Simple1 aBoolean.
-             * @type {boolean|undefined}
+             * @type {boolean}
              */
             Simple1.prototype.aBoolean = false;
 
@@ -642,7 +642,7 @@ $root.jspb = (function() {
 
             /**
              * Simple2 aRepeatedString.
-             * @type {Array.<string>|undefined}
+             * @type {Array.<string>}
              */
             Simple2.prototype.aRepeatedString = $util.emptyArray;
 
@@ -1086,7 +1086,7 @@ $root.jspb = (function() {
 
             /**
              * OptionalFields aString.
-             * @type {string|undefined}
+             * @type {string}
              */
             OptionalFields.prototype.aString = "";
 
@@ -1098,19 +1098,19 @@ $root.jspb = (function() {
 
             /**
              * OptionalFields aNestedMessage.
-             * @type {jspb.test.OptionalFields.Nested$Properties|undefined}
+             * @type {(jspb.test.OptionalFields.Nested$Properties|null)}
              */
             OptionalFields.prototype.aNestedMessage = null;
 
             /**
              * OptionalFields aRepeatedMessage.
-             * @type {Array.<jspb.test.OptionalFields.Nested$Properties>|undefined}
+             * @type {Array.<jspb.test.OptionalFields.Nested$Properties>}
              */
             OptionalFields.prototype.aRepeatedMessage = $util.emptyArray;
 
             /**
              * OptionalFields aRepeatedString.
-             * @type {Array.<string>|undefined}
+             * @type {Array.<string>}
              */
             OptionalFields.prototype.aRepeatedString = $util.emptyArray;
 
@@ -1376,7 +1376,7 @@ $root.jspb = (function() {
 
                 /**
                  * Nested anInt.
-                 * @type {number|undefined}
+                 * @type {number}
                  */
                 Nested.prototype.anInt = 0;
 
@@ -1563,55 +1563,55 @@ $root.jspb = (function() {
 
             /**
              * HasExtensions str1.
-             * @type {string|undefined}
+             * @type {string}
              */
             HasExtensions.prototype.str1 = "";
 
             /**
              * HasExtensions str2.
-             * @type {string|undefined}
+             * @type {string}
              */
             HasExtensions.prototype.str2 = "";
 
             /**
              * HasExtensions str3.
-             * @type {string|undefined}
+             * @type {string}
              */
             HasExtensions.prototype.str3 = "";
 
             /**
              * HasExtensions .jspb.test.IsExtension.extField.
-             * @type {jspb.test.IsExtension$Properties|undefined}
+             * @type {(jspb.test.IsExtension$Properties|null)}
              */
             HasExtensions.prototype[".jspb.test.IsExtension.extField"] = null;
 
             /**
              * HasExtensions .jspb.test.IndirectExtension.simple.
-             * @type {jspb.test.Simple1$Properties|undefined}
+             * @type {(jspb.test.Simple1$Properties|null)}
              */
             HasExtensions.prototype[".jspb.test.IndirectExtension.simple"] = null;
 
             /**
              * HasExtensions .jspb.test.IndirectExtension.str.
-             * @type {string|undefined}
+             * @type {string}
              */
             HasExtensions.prototype[".jspb.test.IndirectExtension.str"] = "";
 
             /**
              * HasExtensions .jspb.test.IndirectExtension.repeatedStr.
-             * @type {Array.<string>|undefined}
+             * @type {Array.<string>}
              */
             HasExtensions.prototype[".jspb.test.IndirectExtension.repeatedStr"] = $util.emptyArray;
 
             /**
              * HasExtensions .jspb.test.IndirectExtension.repeatedSimple.
-             * @type {Array.<jspb.test.Simple1$Properties>|undefined}
+             * @type {Array.<jspb.test.Simple1$Properties>}
              */
             HasExtensions.prototype[".jspb.test.IndirectExtension.repeatedSimple"] = $util.emptyArray;
 
             /**
              * HasExtensions .jspb.test.simple1.
-             * @type {jspb.test.Simple1$Properties|undefined}
+             * @type {(jspb.test.Simple1$Properties|null)}
              */
             HasExtensions.prototype[".jspb.test.simple1"] = null;
 
@@ -1960,19 +1960,19 @@ $root.jspb = (function() {
 
             /**
              * Complex aNestedMessage.
-             * @type {jspb.test.Complex.Nested$Properties|undefined}
+             * @type {(jspb.test.Complex.Nested$Properties|null)}
              */
             Complex.prototype.aNestedMessage = null;
 
             /**
              * Complex aRepeatedMessage.
-             * @type {Array.<jspb.test.Complex.Nested$Properties>|undefined}
+             * @type {Array.<jspb.test.Complex.Nested$Properties>}
              */
             Complex.prototype.aRepeatedMessage = $util.emptyArray;
 
             /**
              * Complex aRepeatedString.
-             * @type {Array.<string>|undefined}
+             * @type {Array.<string>}
              */
             Complex.prototype.aRepeatedString = $util.emptyArray;
 
@@ -2561,7 +2561,7 @@ $root.jspb = (function() {
 
                 /**
                  * Complex innerComplexField.
-                 * @type {number|undefined}
+                 * @type {number}
                  */
                 Complex.prototype.innerComplexField = 0;
 
@@ -2738,7 +2738,7 @@ $root.jspb = (function() {
 
             /**
              * IsExtension ext1.
-             * @type {string|undefined}
+             * @type {string}
              */
             IsExtension.prototype.ext1 = "";
 
@@ -3066,37 +3066,37 @@ $root.jspb = (function() {
 
             /**
              * DefaultValues stringField.
-             * @type {string|undefined}
+             * @type {string}
              */
             DefaultValues.prototype.stringField = "default<>abc";
 
             /**
              * DefaultValues boolField.
-             * @type {boolean|undefined}
+             * @type {boolean}
              */
             DefaultValues.prototype.boolField = true;
 
             /**
              * DefaultValues intField.
-             * @type {number|Long|undefined}
+             * @type {number|Long}
              */
             DefaultValues.prototype.intField = $util.Long ? $util.Long.fromBits(11,0,false) : 11;
 
             /**
              * DefaultValues enumField.
-             * @type {jspb.test.DefaultValues.Enum|undefined}
+             * @type {jspb.test.DefaultValues.Enum}
              */
             DefaultValues.prototype.enumField = 13;
 
             /**
              * DefaultValues emptyField.
-             * @type {string|undefined}
+             * @type {string}
              */
             DefaultValues.prototype.emptyField = "";
 
             /**
              * DefaultValues bytesField.
-             * @type {Uint8Array|undefined}
+             * @type {Uint8Array}
              */
             DefaultValues.prototype.bytesField = $util.newBuffer([109,111,111]);
 
@@ -3394,7 +3394,7 @@ $root.jspb = (function() {
 
             /**
              * FloatingPointFields optionalFloatField.
-             * @type {number|undefined}
+             * @type {number}
              */
             FloatingPointFields.prototype.optionalFloatField = 0;
 
@@ -3406,19 +3406,19 @@ $root.jspb = (function() {
 
             /**
              * FloatingPointFields repeatedFloatField.
-             * @type {Array.<number>|undefined}
+             * @type {Array.<number>}
              */
             FloatingPointFields.prototype.repeatedFloatField = $util.emptyArray;
 
             /**
              * FloatingPointFields defaultFloatField.
-             * @type {number|undefined}
+             * @type {number}
              */
             FloatingPointFields.prototype.defaultFloatField = 2;
 
             /**
              * FloatingPointFields optionalDoubleField.
-             * @type {number|undefined}
+             * @type {number}
              */
             FloatingPointFields.prototype.optionalDoubleField = 0;
 
@@ -3430,13 +3430,13 @@ $root.jspb = (function() {
 
             /**
              * FloatingPointFields repeatedDoubleField.
-             * @type {Array.<number>|undefined}
+             * @type {Array.<number>}
              */
             FloatingPointFields.prototype.repeatedDoubleField = $util.emptyArray;
 
             /**
              * FloatingPointFields defaultDoubleField.
-             * @type {number|undefined}
+             * @type {number}
              */
             FloatingPointFields.prototype.defaultDoubleField = 2;
 
@@ -3750,37 +3750,37 @@ $root.jspb = (function() {
 
             /**
              * TestClone str.
-             * @type {string|undefined}
+             * @type {string}
              */
             TestClone.prototype.str = "";
 
             /**
              * TestClone simple1.
-             * @type {jspb.test.Simple1$Properties|undefined}
+             * @type {(jspb.test.Simple1$Properties|null)}
              */
             TestClone.prototype.simple1 = null;
 
             /**
              * TestClone simple2.
-             * @type {Array.<jspb.test.Simple1$Properties>|undefined}
+             * @type {Array.<jspb.test.Simple1$Properties>}
              */
             TestClone.prototype.simple2 = $util.emptyArray;
 
             /**
              * TestClone bytesField.
-             * @type {Uint8Array|undefined}
+             * @type {Uint8Array}
              */
             TestClone.prototype.bytesField = $util.newBuffer([]);
 
             /**
              * TestClone unused.
-             * @type {string|undefined}
+             * @type {string}
              */
             TestClone.prototype.unused = "";
 
             /**
              * TestClone .jspb.test.CloneExtension.extField.
-             * @type {jspb.test.CloneExtension$Properties|undefined}
+             * @type {(jspb.test.CloneExtension$Properties|null)}
              */
             TestClone.prototype[".jspb.test.CloneExtension.extField"] = null;
 
@@ -4054,7 +4054,7 @@ $root.jspb = (function() {
 
             /**
              * CloneExtension ext.
-             * @type {string|undefined}
+             * @type {string}
              */
             CloneExtension.prototype.ext = "";
 
@@ -4234,7 +4234,7 @@ $root.jspb = (function() {
 
             /**
              * TestGroup repeatedGroup.
-             * @type {Array.<jspb.test.TestGroup.RepeatedGroup$Properties>|undefined}
+             * @type {Array.<jspb.test.TestGroup.RepeatedGroup$Properties>}
              */
             TestGroup.prototype.repeatedGroup = $util.emptyArray;
 
@@ -4246,13 +4246,13 @@ $root.jspb = (function() {
 
             /**
              * TestGroup optionalGroup.
-             * @type {jspb.test.TestGroup.OptionalGroup$Properties|undefined}
+             * @type {(jspb.test.TestGroup.OptionalGroup$Properties|null)}
              */
             TestGroup.prototype.optionalGroup = null;
 
             /**
              * TestGroup id.
-             * @type {string|undefined}
+             * @type {string}
              */
             TestGroup.prototype.id = "";
 
@@ -4264,7 +4264,7 @@ $root.jspb = (function() {
 
             /**
              * TestGroup optionalSimple.
-             * @type {jspb.test.Simple2$Properties|undefined}
+             * @type {(jspb.test.Simple2$Properties|null)}
              */
             TestGroup.prototype.optionalSimple = null;
 
@@ -4548,7 +4548,7 @@ $root.jspb = (function() {
 
                 /**
                  * RepeatedGroup someBool.
-                 * @type {Array.<boolean>|undefined}
+                 * @type {Array.<boolean>}
                  */
                 RepeatedGroup.prototype.someBool = $util.emptyArray;
 
@@ -5113,7 +5113,7 @@ $root.jspb = (function() {
 
             /**
              * TestGroup1 group.
-             * @type {jspb.test.TestGroup.RepeatedGroup$Properties|undefined}
+             * @type {(jspb.test.TestGroup.RepeatedGroup$Properties|null)}
              */
             TestGroup1.prototype.group = null;
 
@@ -5293,13 +5293,13 @@ $root.jspb = (function() {
 
             /**
              * TestReservedNames extension.
-             * @type {number|undefined}
+             * @type {number}
              */
             TestReservedNames.prototype.extension = 0;
 
             /**
              * TestReservedNames .jspb.test.TestReservedNamesExtension.foo.
-             * @type {number|undefined}
+             * @type {number}
              */
             TestReservedNames.prototype[".jspb.test.TestReservedNamesExtension.foo"] = 0;
 
@@ -5646,61 +5646,61 @@ $root.jspb = (function() {
 
             /**
              * TestMessageWithOneof pone.
-             * @type {string|undefined}
+             * @type {string}
              */
             TestMessageWithOneof.prototype.pone = "";
 
             /**
              * TestMessageWithOneof pthree.
-             * @type {string|undefined}
+             * @type {string}
              */
             TestMessageWithOneof.prototype.pthree = "";
 
             /**
              * TestMessageWithOneof rone.
-             * @type {jspb.test.TestMessageWithOneof$Properties|undefined}
+             * @type {(jspb.test.TestMessageWithOneof$Properties|null)}
              */
             TestMessageWithOneof.prototype.rone = null;
 
             /**
              * TestMessageWithOneof rtwo.
-             * @type {string|undefined}
+             * @type {string}
              */
             TestMessageWithOneof.prototype.rtwo = "";
 
             /**
              * TestMessageWithOneof normalField.
-             * @type {boolean|undefined}
+             * @type {boolean}
              */
             TestMessageWithOneof.prototype.normalField = false;
 
             /**
              * TestMessageWithOneof repeatedField.
-             * @type {Array.<string>|undefined}
+             * @type {Array.<string>}
              */
             TestMessageWithOneof.prototype.repeatedField = $util.emptyArray;
 
             /**
              * TestMessageWithOneof aone.
-             * @type {number|undefined}
+             * @type {number}
              */
             TestMessageWithOneof.prototype.aone = 1234;
 
             /**
              * TestMessageWithOneof atwo.
-             * @type {number|undefined}
+             * @type {number}
              */
             TestMessageWithOneof.prototype.atwo = 0;
 
             /**
              * TestMessageWithOneof bone.
-             * @type {number|undefined}
+             * @type {number}
              */
             TestMessageWithOneof.prototype.bone = 0;
 
             /**
              * TestMessageWithOneof btwo.
-             * @type {number|undefined}
+             * @type {number}
              */
             TestMessageWithOneof.prototype.btwo = 1234;
 
@@ -6096,13 +6096,13 @@ $root.jspb = (function() {
 
             /**
              * TestEndsWithBytes value.
-             * @type {number|undefined}
+             * @type {number}
              */
             TestEndsWithBytes.prototype.value = 0;
 
             /**
              * TestEndsWithBytes data.
-             * @type {Uint8Array|undefined}
+             * @type {Uint8Array}
              */
             TestEndsWithBytes.prototype.data = $util.newBuffer([]);
 
@@ -6315,73 +6315,73 @@ $root.jspb = (function() {
 
             /**
              * TestMapFieldsNoBinary mapStringString.
-             * @type {Object.<string,string>|undefined}
+             * @type {Object.<string,string>}
              */
             TestMapFieldsNoBinary.prototype.mapStringString = $util.emptyObject;
 
             /**
              * TestMapFieldsNoBinary mapStringInt32.
-             * @type {Object.<string,number>|undefined}
+             * @type {Object.<string,number>}
              */
             TestMapFieldsNoBinary.prototype.mapStringInt32 = $util.emptyObject;
 
             /**
              * TestMapFieldsNoBinary mapStringInt64.
-             * @type {Object.<string,number|Long>|undefined}
+             * @type {Object.<string,number|Long>}
              */
             TestMapFieldsNoBinary.prototype.mapStringInt64 = $util.emptyObject;
 
             /**
              * TestMapFieldsNoBinary mapStringBool.
-             * @type {Object.<string,boolean>|undefined}
+             * @type {Object.<string,boolean>}
              */
             TestMapFieldsNoBinary.prototype.mapStringBool = $util.emptyObject;
 
             /**
              * TestMapFieldsNoBinary mapStringDouble.
-             * @type {Object.<string,number>|undefined}
+             * @type {Object.<string,number>}
              */
             TestMapFieldsNoBinary.prototype.mapStringDouble = $util.emptyObject;
 
             /**
              * TestMapFieldsNoBinary mapStringEnum.
-             * @type {Object.<string,jspb.test.MapValueEnumNoBinary>|undefined}
+             * @type {Object.<string,jspb.test.MapValueEnumNoBinary>}
              */
             TestMapFieldsNoBinary.prototype.mapStringEnum = $util.emptyObject;
 
             /**
              * TestMapFieldsNoBinary mapStringMsg.
-             * @type {Object.<string,jspb.test.MapValueMessageNoBinary$Properties>|undefined}
+             * @type {Object.<string,jspb.test.MapValueMessageNoBinary$Properties>}
              */
             TestMapFieldsNoBinary.prototype.mapStringMsg = $util.emptyObject;
 
             /**
              * TestMapFieldsNoBinary mapInt32String.
-             * @type {Object.<string,string>|undefined}
+             * @type {Object.<string,string>}
              */
             TestMapFieldsNoBinary.prototype.mapInt32String = $util.emptyObject;
 
             /**
              * TestMapFieldsNoBinary mapInt64String.
-             * @type {Object.<string,string>|undefined}
+             * @type {Object.<string,string>}
              */
             TestMapFieldsNoBinary.prototype.mapInt64String = $util.emptyObject;
 
             /**
              * TestMapFieldsNoBinary mapBoolString.
-             * @type {Object.<string,string>|undefined}
+             * @type {Object.<string,string>}
              */
             TestMapFieldsNoBinary.prototype.mapBoolString = $util.emptyObject;
 
             /**
              * TestMapFieldsNoBinary testMapFields.
-             * @type {jspb.test.TestMapFieldsNoBinary$Properties|undefined}
+             * @type {(jspb.test.TestMapFieldsNoBinary$Properties|null)}
              */
             TestMapFieldsNoBinary.prototype.testMapFields = null;
 
             /**
              * TestMapFieldsNoBinary mapStringTestmapfields.
-             * @type {Object.<string,jspb.test.TestMapFieldsNoBinary$Properties>|undefined}
+             * @type {Object.<string,jspb.test.TestMapFieldsNoBinary$Properties>}
              */
             TestMapFieldsNoBinary.prototype.mapStringTestmapfields = $util.emptyObject;
 
@@ -6984,7 +6984,7 @@ $root.jspb = (function() {
 
             /**
              * MapValueMessageNoBinary foo.
-             * @type {number|undefined}
+             * @type {number}
              */
             MapValueMessageNoBinary.prototype.foo = 0;
 
@@ -7450,7 +7450,7 @@ $root.jspb = (function() {
 
                     /**
                      * Message count.
-                     * @type {number|undefined}
+                     * @type {number}
                      */
                     Message.prototype.count = 0;
 
@@ -7655,7 +7655,7 @@ $root.google = (function() {
 
             /**
              * FileDescriptorSet file.
-             * @type {Array.<google.protobuf.FileDescriptorProto$Properties>|undefined}
+             * @type {Array.<google.protobuf.FileDescriptorProto$Properties>}
              */
             FileDescriptorSet.prototype.file = $util.emptyArray;
 
@@ -7867,73 +7867,73 @@ $root.google = (function() {
 
             /**
              * FileDescriptorProto name.
-             * @type {string|undefined}
+             * @type {string}
              */
             FileDescriptorProto.prototype.name = "";
 
             /**
              * FileDescriptorProto package.
-             * @type {string|undefined}
+             * @type {string}
              */
             FileDescriptorProto.prototype["package"] = "";
 
             /**
              * FileDescriptorProto dependency.
-             * @type {Array.<string>|undefined}
+             * @type {Array.<string>}
              */
             FileDescriptorProto.prototype.dependency = $util.emptyArray;
 
             /**
              * FileDescriptorProto publicDependency.
-             * @type {Array.<number>|undefined}
+             * @type {Array.<number>}
              */
             FileDescriptorProto.prototype.publicDependency = $util.emptyArray;
 
             /**
              * FileDescriptorProto weakDependency.
-             * @type {Array.<number>|undefined}
+             * @type {Array.<number>}
              */
             FileDescriptorProto.prototype.weakDependency = $util.emptyArray;
 
             /**
              * FileDescriptorProto messageType.
-             * @type {Array.<google.protobuf.DescriptorProto$Properties>|undefined}
+             * @type {Array.<google.protobuf.DescriptorProto$Properties>}
              */
             FileDescriptorProto.prototype.messageType = $util.emptyArray;
 
             /**
              * FileDescriptorProto enumType.
-             * @type {Array.<google.protobuf.EnumDescriptorProto$Properties>|undefined}
+             * @type {Array.<google.protobuf.EnumDescriptorProto$Properties>}
              */
             FileDescriptorProto.prototype.enumType = $util.emptyArray;
 
             /**
              * FileDescriptorProto service.
-             * @type {Array.<google.protobuf.ServiceDescriptorProto$Properties>|undefined}
+             * @type {Array.<google.protobuf.ServiceDescriptorProto$Properties>}
              */
             FileDescriptorProto.prototype.service = $util.emptyArray;
 
             /**
              * FileDescriptorProto extension.
-             * @type {Array.<google.protobuf.FieldDescriptorProto$Properties>|undefined}
+             * @type {Array.<google.protobuf.FieldDescriptorProto$Properties>}
              */
             FileDescriptorProto.prototype.extension = $util.emptyArray;
 
             /**
              * FileDescriptorProto options.
-             * @type {google.protobuf.FileOptions$Properties|undefined}
+             * @type {(google.protobuf.FileOptions$Properties|null)}
              */
             FileDescriptorProto.prototype.options = null;
 
             /**
              * FileDescriptorProto sourceCodeInfo.
-             * @type {google.protobuf.SourceCodeInfo$Properties|undefined}
+             * @type {(google.protobuf.SourceCodeInfo$Properties|null)}
              */
             FileDescriptorProto.prototype.sourceCodeInfo = null;
 
             /**
              * FileDescriptorProto syntax.
-             * @type {string|undefined}
+             * @type {string}
              */
             FileDescriptorProto.prototype.syntax = "";
 
@@ -8415,61 +8415,61 @@ $root.google = (function() {
 
             /**
              * DescriptorProto name.
-             * @type {string|undefined}
+             * @type {string}
              */
             DescriptorProto.prototype.name = "";
 
             /**
              * DescriptorProto field.
-             * @type {Array.<google.protobuf.FieldDescriptorProto$Properties>|undefined}
+             * @type {Array.<google.protobuf.FieldDescriptorProto$Properties>}
              */
             DescriptorProto.prototype.field = $util.emptyArray;
 
             /**
              * DescriptorProto extension.
-             * @type {Array.<google.protobuf.FieldDescriptorProto$Properties>|undefined}
+             * @type {Array.<google.protobuf.FieldDescriptorProto$Properties>}
              */
             DescriptorProto.prototype.extension = $util.emptyArray;
 
             /**
              * DescriptorProto nestedType.
-             * @type {Array.<google.protobuf.DescriptorProto$Properties>|undefined}
+             * @type {Array.<google.protobuf.DescriptorProto$Properties>}
              */
             DescriptorProto.prototype.nestedType = $util.emptyArray;
 
             /**
              * DescriptorProto enumType.
-             * @type {Array.<google.protobuf.EnumDescriptorProto$Properties>|undefined}
+             * @type {Array.<google.protobuf.EnumDescriptorProto$Properties>}
              */
             DescriptorProto.prototype.enumType = $util.emptyArray;
 
             /**
              * DescriptorProto extensionRange.
-             * @type {Array.<google.protobuf.DescriptorProto.ExtensionRange$Properties>|undefined}
+             * @type {Array.<google.protobuf.DescriptorProto.ExtensionRange$Properties>}
              */
             DescriptorProto.prototype.extensionRange = $util.emptyArray;
 
             /**
              * DescriptorProto oneofDecl.
-             * @type {Array.<google.protobuf.OneofDescriptorProto$Properties>|undefined}
+             * @type {Array.<google.protobuf.OneofDescriptorProto$Properties>}
              */
             DescriptorProto.prototype.oneofDecl = $util.emptyArray;
 
             /**
              * DescriptorProto options.
-             * @type {google.protobuf.MessageOptions$Properties|undefined}
+             * @type {(google.protobuf.MessageOptions$Properties|null)}
              */
             DescriptorProto.prototype.options = null;
 
             /**
              * DescriptorProto reservedRange.
-             * @type {Array.<google.protobuf.DescriptorProto.ReservedRange$Properties>|undefined}
+             * @type {Array.<google.protobuf.DescriptorProto.ReservedRange$Properties>}
              */
             DescriptorProto.prototype.reservedRange = $util.emptyArray;
 
             /**
              * DescriptorProto reservedName.
-             * @type {Array.<string>|undefined}
+             * @type {Array.<string>}
              */
             DescriptorProto.prototype.reservedName = $util.emptyArray;
 
@@ -8921,13 +8921,13 @@ $root.google = (function() {
 
                 /**
                  * ExtensionRange start.
-                 * @type {number|undefined}
+                 * @type {number}
                  */
                 ExtensionRange.prototype.start = 0;
 
                 /**
                  * ExtensionRange end.
-                 * @type {number|undefined}
+                 * @type {number}
                  */
                 ExtensionRange.prototype.end = 0;
 
@@ -9116,13 +9116,13 @@ $root.google = (function() {
 
                 /**
                  * ReservedRange start.
-                 * @type {number|undefined}
+                 * @type {number}
                  */
                 ReservedRange.prototype.start = 0;
 
                 /**
                  * ReservedRange end.
-                 * @type {number|undefined}
+                 * @type {number}
                  */
                 ReservedRange.prototype.end = 0;
 
@@ -9322,61 +9322,61 @@ $root.google = (function() {
 
             /**
              * FieldDescriptorProto name.
-             * @type {string|undefined}
+             * @type {string}
              */
             FieldDescriptorProto.prototype.name = "";
 
             /**
              * FieldDescriptorProto number.
-             * @type {number|undefined}
+             * @type {number}
              */
             FieldDescriptorProto.prototype.number = 0;
 
             /**
              * FieldDescriptorProto label.
-             * @type {google.protobuf.FieldDescriptorProto.Label|undefined}
+             * @type {google.protobuf.FieldDescriptorProto.Label}
              */
             FieldDescriptorProto.prototype.label = 1;
 
             /**
              * FieldDescriptorProto type.
-             * @type {google.protobuf.FieldDescriptorProto.Type|undefined}
+             * @type {google.protobuf.FieldDescriptorProto.Type}
              */
             FieldDescriptorProto.prototype.type = 1;
 
             /**
              * FieldDescriptorProto typeName.
-             * @type {string|undefined}
+             * @type {string}
              */
             FieldDescriptorProto.prototype.typeName = "";
 
             /**
              * FieldDescriptorProto extendee.
-             * @type {string|undefined}
+             * @type {string}
              */
             FieldDescriptorProto.prototype.extendee = "";
 
             /**
              * FieldDescriptorProto defaultValue.
-             * @type {string|undefined}
+             * @type {string}
              */
             FieldDescriptorProto.prototype.defaultValue = "";
 
             /**
              * FieldDescriptorProto oneofIndex.
-             * @type {number|undefined}
+             * @type {number}
              */
             FieldDescriptorProto.prototype.oneofIndex = 0;
 
             /**
              * FieldDescriptorProto jsonName.
-             * @type {string|undefined}
+             * @type {string}
              */
             FieldDescriptorProto.prototype.jsonName = "";
 
             /**
              * FieldDescriptorProto options.
-             * @type {google.protobuf.FieldOptions$Properties|undefined}
+             * @type {(google.protobuf.FieldOptions$Properties|null)}
              */
             FieldDescriptorProto.prototype.options = null;
 
@@ -9849,13 +9849,13 @@ $root.google = (function() {
 
             /**
              * OneofDescriptorProto name.
-             * @type {string|undefined}
+             * @type {string}
              */
             OneofDescriptorProto.prototype.name = "";
 
             /**
              * OneofDescriptorProto options.
-             * @type {google.protobuf.OneofOptions$Properties|undefined}
+             * @type {(google.protobuf.OneofOptions$Properties|null)}
              */
             OneofDescriptorProto.prototype.options = null;
 
@@ -10051,19 +10051,19 @@ $root.google = (function() {
 
             /**
              * EnumDescriptorProto name.
-             * @type {string|undefined}
+             * @type {string}
              */
             EnumDescriptorProto.prototype.name = "";
 
             /**
              * EnumDescriptorProto value.
-             * @type {Array.<google.protobuf.EnumValueDescriptorProto$Properties>|undefined}
+             * @type {Array.<google.protobuf.EnumValueDescriptorProto$Properties>}
              */
             EnumDescriptorProto.prototype.value = $util.emptyArray;
 
             /**
              * EnumDescriptorProto options.
-             * @type {google.protobuf.EnumOptions$Properties|undefined}
+             * @type {(google.protobuf.EnumOptions$Properties|null)}
              */
             EnumDescriptorProto.prototype.options = null;
 
@@ -10292,19 +10292,19 @@ $root.google = (function() {
 
             /**
              * EnumValueDescriptorProto name.
-             * @type {string|undefined}
+             * @type {string}
              */
             EnumValueDescriptorProto.prototype.name = "";
 
             /**
              * EnumValueDescriptorProto number.
-             * @type {number|undefined}
+             * @type {number}
              */
             EnumValueDescriptorProto.prototype.number = 0;
 
             /**
              * EnumValueDescriptorProto options.
-             * @type {google.protobuf.EnumValueOptions$Properties|undefined}
+             * @type {(google.protobuf.EnumValueOptions$Properties|null)}
              */
             EnumValueDescriptorProto.prototype.options = null;
 
@@ -10513,19 +10513,19 @@ $root.google = (function() {
 
             /**
              * ServiceDescriptorProto name.
-             * @type {string|undefined}
+             * @type {string}
              */
             ServiceDescriptorProto.prototype.name = "";
 
             /**
              * ServiceDescriptorProto method.
-             * @type {Array.<google.protobuf.MethodDescriptorProto$Properties>|undefined}
+             * @type {Array.<google.protobuf.MethodDescriptorProto$Properties>}
              */
             ServiceDescriptorProto.prototype.method = $util.emptyArray;
 
             /**
              * ServiceDescriptorProto options.
-             * @type {google.protobuf.ServiceOptions$Properties|undefined}
+             * @type {(google.protobuf.ServiceOptions$Properties|null)}
              */
             ServiceDescriptorProto.prototype.options = null;
 
@@ -10757,37 +10757,37 @@ $root.google = (function() {
 
             /**
              * MethodDescriptorProto name.
-             * @type {string|undefined}
+             * @type {string}
              */
             MethodDescriptorProto.prototype.name = "";
 
             /**
              * MethodDescriptorProto inputType.
-             * @type {string|undefined}
+             * @type {string}
              */
             MethodDescriptorProto.prototype.inputType = "";
 
             /**
              * MethodDescriptorProto outputType.
-             * @type {string|undefined}
+             * @type {string}
              */
             MethodDescriptorProto.prototype.outputType = "";
 
             /**
              * MethodDescriptorProto options.
-             * @type {google.protobuf.MethodOptions$Properties|undefined}
+             * @type {(google.protobuf.MethodOptions$Properties|null)}
              */
             MethodDescriptorProto.prototype.options = null;
 
             /**
              * MethodDescriptorProto clientStreaming.
-             * @type {boolean|undefined}
+             * @type {boolean}
              */
             MethodDescriptorProto.prototype.clientStreaming = false;
 
             /**
              * MethodDescriptorProto serverStreaming.
-             * @type {boolean|undefined}
+             * @type {boolean}
              */
             MethodDescriptorProto.prototype.serverStreaming = false;
 
@@ -11047,91 +11047,91 @@ $root.google = (function() {
 
             /**
              * FileOptions javaPackage.
-             * @type {string|undefined}
+             * @type {string}
              */
             FileOptions.prototype.javaPackage = "";
 
             /**
              * FileOptions javaOuterClassname.
-             * @type {string|undefined}
+             * @type {string}
              */
             FileOptions.prototype.javaOuterClassname = "";
 
             /**
              * FileOptions javaMultipleFiles.
-             * @type {boolean|undefined}
+             * @type {boolean}
              */
             FileOptions.prototype.javaMultipleFiles = false;
 
             /**
              * FileOptions javaGenerateEqualsAndHash.
-             * @type {boolean|undefined}
+             * @type {boolean}
              */
             FileOptions.prototype.javaGenerateEqualsAndHash = false;
 
             /**
              * FileOptions javaStringCheckUtf8.
-             * @type {boolean|undefined}
+             * @type {boolean}
              */
             FileOptions.prototype.javaStringCheckUtf8 = false;
 
             /**
              * FileOptions optimizeFor.
-             * @type {google.protobuf.FileOptions.OptimizeMode|undefined}
+             * @type {google.protobuf.FileOptions.OptimizeMode}
              */
             FileOptions.prototype.optimizeFor = 1;
 
             /**
              * FileOptions goPackage.
-             * @type {string|undefined}
+             * @type {string}
              */
             FileOptions.prototype.goPackage = "";
 
             /**
              * FileOptions ccGenericServices.
-             * @type {boolean|undefined}
+             * @type {boolean}
              */
             FileOptions.prototype.ccGenericServices = false;
 
             /**
              * FileOptions javaGenericServices.
-             * @type {boolean|undefined}
+             * @type {boolean}
              */
             FileOptions.prototype.javaGenericServices = false;
 
             /**
              * FileOptions pyGenericServices.
-             * @type {boolean|undefined}
+             * @type {boolean}
              */
             FileOptions.prototype.pyGenericServices = false;
 
             /**
              * FileOptions deprecated.
-             * @type {boolean|undefined}
+             * @type {boolean}
              */
             FileOptions.prototype.deprecated = false;
 
             /**
              * FileOptions ccEnableArenas.
-             * @type {boolean|undefined}
+             * @type {boolean}
              */
             FileOptions.prototype.ccEnableArenas = false;
 
             /**
              * FileOptions objcClassPrefix.
-             * @type {string|undefined}
+             * @type {string}
              */
             FileOptions.prototype.objcClassPrefix = "";
 
             /**
              * FileOptions csharpNamespace.
-             * @type {string|undefined}
+             * @type {string}
              */
             FileOptions.prototype.csharpNamespace = "";
 
             /**
              * FileOptions uninterpretedOption.
-             * @type {Array.<google.protobuf.UninterpretedOption$Properties>|undefined}
+             * @type {Array.<google.protobuf.UninterpretedOption$Properties>}
              */
             FileOptions.prototype.uninterpretedOption = $util.emptyArray;
 
@@ -11549,31 +11549,31 @@ $root.google = (function() {
 
             /**
              * MessageOptions messageSetWireFormat.
-             * @type {boolean|undefined}
+             * @type {boolean}
              */
             MessageOptions.prototype.messageSetWireFormat = false;
 
             /**
              * MessageOptions noStandardDescriptorAccessor.
-             * @type {boolean|undefined}
+             * @type {boolean}
              */
             MessageOptions.prototype.noStandardDescriptorAccessor = false;
 
             /**
              * MessageOptions deprecated.
-             * @type {boolean|undefined}
+             * @type {boolean}
              */
             MessageOptions.prototype.deprecated = false;
 
             /**
              * MessageOptions mapEntry.
-             * @type {boolean|undefined}
+             * @type {boolean}
              */
             MessageOptions.prototype.mapEntry = false;
 
             /**
              * MessageOptions uninterpretedOption.
-             * @type {Array.<google.protobuf.UninterpretedOption$Properties>|undefined}
+             * @type {Array.<google.protobuf.UninterpretedOption$Properties>}
              */
             MessageOptions.prototype.uninterpretedOption = $util.emptyArray;
 
@@ -11828,43 +11828,43 @@ $root.google = (function() {
 
             /**
              * FieldOptions ctype.
-             * @type {google.protobuf.FieldOptions.CType|undefined}
+             * @type {google.protobuf.FieldOptions.CType}
              */
             FieldOptions.prototype.ctype = 0;
 
             /**
              * FieldOptions packed.
-             * @type {boolean|undefined}
+             * @type {boolean}
              */
             FieldOptions.prototype.packed = false;
 
             /**
              * FieldOptions jstype.
-             * @type {google.protobuf.FieldOptions.JSType|undefined}
+             * @type {google.protobuf.FieldOptions.JSType}
              */
             FieldOptions.prototype.jstype = 0;
 
             /**
              * FieldOptions lazy.
-             * @type {boolean|undefined}
+             * @type {boolean}
              */
             FieldOptions.prototype.lazy = false;
 
             /**
              * FieldOptions deprecated.
-             * @type {boolean|undefined}
+             * @type {boolean}
              */
             FieldOptions.prototype.deprecated = false;
 
             /**
              * FieldOptions weak.
-             * @type {boolean|undefined}
+             * @type {boolean}
              */
             FieldOptions.prototype.weak = false;
 
             /**
              * FieldOptions uninterpretedOption.
-             * @type {Array.<google.protobuf.UninterpretedOption$Properties>|undefined}
+             * @type {Array.<google.protobuf.UninterpretedOption$Properties>}
              */
             FieldOptions.prototype.uninterpretedOption = $util.emptyArray;
 
@@ -12209,7 +12209,7 @@ $root.google = (function() {
 
             /**
              * OneofOptions uninterpretedOption.
-             * @type {Array.<google.protobuf.UninterpretedOption$Properties>|undefined}
+             * @type {Array.<google.protobuf.UninterpretedOption$Properties>}
              */
             OneofOptions.prototype.uninterpretedOption = $util.emptyArray;
 
@@ -12407,25 +12407,25 @@ $root.google = (function() {
 
             /**
              * EnumOptions allowAlias.
-             * @type {boolean|undefined}
+             * @type {boolean}
              */
             EnumOptions.prototype.allowAlias = false;
 
             /**
              * EnumOptions deprecated.
-             * @type {boolean|undefined}
+             * @type {boolean}
              */
             EnumOptions.prototype.deprecated = false;
 
             /**
              * EnumOptions uninterpretedOption.
-             * @type {Array.<google.protobuf.UninterpretedOption$Properties>|undefined}
+             * @type {Array.<google.protobuf.UninterpretedOption$Properties>}
              */
             EnumOptions.prototype.uninterpretedOption = $util.emptyArray;
 
             /**
              * EnumOptions .jspb.test.IsExtension.simpleOption.
-             * @type {string|undefined}
+             * @type {string}
              */
             EnumOptions.prototype[".jspb.test.IsExtension.simpleOption"] = "";
 
@@ -12662,13 +12662,13 @@ $root.google = (function() {
 
             /**
              * EnumValueOptions deprecated.
-             * @type {boolean|undefined}
+             * @type {boolean}
              */
             EnumValueOptions.prototype.deprecated = false;
 
             /**
              * EnumValueOptions uninterpretedOption.
-             * @type {Array.<google.protobuf.UninterpretedOption$Properties>|undefined}
+             * @type {Array.<google.protobuf.UninterpretedOption$Properties>}
              */
             EnumValueOptions.prototype.uninterpretedOption = $util.emptyArray;
 
@@ -12878,13 +12878,13 @@ $root.google = (function() {
 
             /**
              * ServiceOptions deprecated.
-             * @type {boolean|undefined}
+             * @type {boolean}
              */
             ServiceOptions.prototype.deprecated = false;
 
             /**
              * ServiceOptions uninterpretedOption.
-             * @type {Array.<google.protobuf.UninterpretedOption$Properties>|undefined}
+             * @type {Array.<google.protobuf.UninterpretedOption$Properties>}
              */
             ServiceOptions.prototype.uninterpretedOption = $util.emptyArray;
 
@@ -13095,19 +13095,19 @@ $root.google = (function() {
 
             /**
              * MethodOptions deprecated.
-             * @type {boolean|undefined}
+             * @type {boolean}
              */
             MethodOptions.prototype.deprecated = false;
 
             /**
              * MethodOptions idempotencyLevel.
-             * @type {google.protobuf.MethodOptions.IdempotencyLevel|undefined}
+             * @type {google.protobuf.MethodOptions.IdempotencyLevel}
              */
             MethodOptions.prototype.idempotencyLevel = 0;
 
             /**
              * MethodOptions uninterpretedOption.
-             * @type {Array.<google.protobuf.UninterpretedOption$Properties>|undefined}
+             * @type {Array.<google.protobuf.UninterpretedOption$Properties>}
              */
             MethodOptions.prototype.uninterpretedOption = $util.emptyArray;
 
@@ -13371,43 +13371,43 @@ $root.google = (function() {
 
             /**
              * UninterpretedOption name.
-             * @type {Array.<google.protobuf.UninterpretedOption.NamePart$Properties>|undefined}
+             * @type {Array.<google.protobuf.UninterpretedOption.NamePart$Properties>}
              */
             UninterpretedOption.prototype.name = $util.emptyArray;
 
             /**
              * UninterpretedOption identifierValue.
-             * @type {string|undefined}
+             * @type {string}
              */
             UninterpretedOption.prototype.identifierValue = "";
 
             /**
              * UninterpretedOption positiveIntValue.
-             * @type {number|Long|undefined}
+             * @type {number|Long}
              */
             UninterpretedOption.prototype.positiveIntValue = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
 
             /**
              * UninterpretedOption negativeIntValue.
-             * @type {number|Long|undefined}
+             * @type {number|Long}
              */
             UninterpretedOption.prototype.negativeIntValue = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
 
             /**
              * UninterpretedOption doubleValue.
-             * @type {number|undefined}
+             * @type {number}
              */
             UninterpretedOption.prototype.doubleValue = 0;
 
             /**
              * UninterpretedOption stringValue.
-             * @type {Uint8Array|undefined}
+             * @type {Uint8Array}
              */
             UninterpretedOption.prototype.stringValue = $util.newBuffer([]);
 
             /**
              * UninterpretedOption aggregateValue.
-             * @type {string|undefined}
+             * @type {string}
              */
             UninterpretedOption.prototype.aggregateValue = "";
 
@@ -13908,7 +13908,7 @@ $root.google = (function() {
 
             /**
              * SourceCodeInfo location.
-             * @type {Array.<google.protobuf.SourceCodeInfo.Location$Properties>|undefined}
+             * @type {Array.<google.protobuf.SourceCodeInfo.Location$Properties>}
              */
             SourceCodeInfo.prototype.location = $util.emptyArray;
 
@@ -14106,31 +14106,31 @@ $root.google = (function() {
 
                 /**
                  * Location path.
-                 * @type {Array.<number>|undefined}
+                 * @type {Array.<number>}
                  */
                 Location.prototype.path = $util.emptyArray;
 
                 /**
                  * Location span.
-                 * @type {Array.<number>|undefined}
+                 * @type {Array.<number>}
                  */
                 Location.prototype.span = $util.emptyArray;
 
                 /**
                  * Location leadingComments.
-                 * @type {string|undefined}
+                 * @type {string}
                  */
                 Location.prototype.leadingComments = "";
 
                 /**
                  * Location trailingComments.
-                 * @type {string|undefined}
+                 * @type {string}
                  */
                 Location.prototype.trailingComments = "";
 
                 /**
                  * Location leadingDetachedComments.
-                 * @type {Array.<string>|undefined}
+                 * @type {Array.<string>}
                  */
                 Location.prototype.leadingDetachedComments = $util.emptyArray;
 
@@ -14424,7 +14424,7 @@ $root.google = (function() {
 
             /**
              * GeneratedCodeInfo annotation.
-             * @type {Array.<google.protobuf.GeneratedCodeInfo.Annotation$Properties>|undefined}
+             * @type {Array.<google.protobuf.GeneratedCodeInfo.Annotation$Properties>}
              */
             GeneratedCodeInfo.prototype.annotation = $util.emptyArray;
 
@@ -14619,25 +14619,25 @@ $root.google = (function() {
 
                 /**
                  * Annotation path.
-                 * @type {Array.<number>|undefined}
+                 * @type {Array.<number>}
                  */
                 Annotation.prototype.path = $util.emptyArray;
 
                 /**
                  * Annotation sourceFile.
-                 * @type {string|undefined}
+                 * @type {string}
                  */
                 Annotation.prototype.sourceFile = "";
 
                 /**
                  * Annotation begin.
-                 * @type {number|undefined}
+                 * @type {number}
                  */
                 Annotation.prototype.begin = 0;
 
                 /**
                  * Annotation end.
-                 * @type {number|undefined}
+                 * @type {number}
                  */
                 Annotation.prototype.end = 0;
 

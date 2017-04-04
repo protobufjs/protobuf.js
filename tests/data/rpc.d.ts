@@ -15,7 +15,7 @@ type MyRequest$Properties = {
 
 export class MyRequest {
     constructor(properties?: MyRequest$Properties);
-    public path?: string;
+    public path: string;
     public static create(properties?: MyRequest$Properties): MyRequest;
     public static encode(message: MyRequest$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
     public static encodeDelimited(message: MyRequest$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
@@ -35,7 +35,7 @@ type MyResponse$Properties = {
 
 export class MyResponse {
     constructor(properties?: MyResponse$Properties);
-    public status?: number;
+    public status: number;
     public static create(properties?: MyResponse$Properties): MyResponse;
     public static encode(message: MyResponse$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
     public static encodeDelimited(message: MyResponse$Properties, writer?: $protobuf.Writer): $protobuf.Writer;

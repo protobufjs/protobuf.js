@@ -46,55 +46,55 @@ $root.Message = (function() {
 
     /**
      * Message stringVal.
-     * @type {string|undefined}
+     * @type {string}
      */
     Message.prototype.stringVal = "";
 
     /**
      * Message stringRepeated.
-     * @type {Array.<string>|undefined}
+     * @type {Array.<string>}
      */
     Message.prototype.stringRepeated = $util.emptyArray;
 
     /**
      * Message uint64Val.
-     * @type {number|Long|undefined}
+     * @type {number|Long}
      */
     Message.prototype.uint64Val = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
 
     /**
      * Message uint64Repeated.
-     * @type {Array.<number|Long>|undefined}
+     * @type {Array.<number|Long>}
      */
     Message.prototype.uint64Repeated = $util.emptyArray;
 
     /**
      * Message bytesVal.
-     * @type {Uint8Array|undefined}
+     * @type {Uint8Array}
      */
     Message.prototype.bytesVal = $util.newBuffer([]);
 
     /**
      * Message bytesRepeated.
-     * @type {Array.<Uint8Array>|undefined}
+     * @type {Array.<Uint8Array>}
      */
     Message.prototype.bytesRepeated = $util.emptyArray;
 
     /**
      * Message enumVal.
-     * @type {Message.SomeEnum|undefined}
+     * @type {Message.SomeEnum}
      */
     Message.prototype.enumVal = 1;
 
     /**
      * Message enumRepeated.
-     * @type {Array.<Message.SomeEnum>|undefined}
+     * @type {Array.<Message.SomeEnum>}
      */
     Message.prototype.enumRepeated = $util.emptyArray;
 
     /**
      * Message int64Map.
-     * @type {Object.<string,number|Long>|undefined}
+     * @type {Object.<string,number|Long>}
      */
     Message.prototype.int64Map = $util.emptyObject;
 

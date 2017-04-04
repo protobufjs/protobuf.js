@@ -333,9 +333,11 @@ function toJsType(field) {
                 type = "*"; // should not happen
             break;
     }
-    return field.repeated ? "Array.<" + type + ">"
-         : field.map ? "Object.<string," + type + ">"
-         : type;
+    if (field.map)
+        return "Object.<string," + type + ">";
+    if (field.repeated)
+        return "Array.<" + type + ">";
+    return type;
 }
 
 function buildType(ref, type) {
@@ -374,9 +376,12 @@ function buildType(ref, type) {
         var prop = util.safeProp(field.name);
         if (config.comments) {
             push("");
+            var jsType = toJsType(field);
+            if (field.optional && !field.map && !field.repeated && field.resolvedType instanceof Type)
+                jsType = "(" + jsType + "|null)";
             pushComment([
                 field.comment || type.name + " " + field.name + ".",
-                "@type {" + toJsType(field) + (field.optional ? "|undefined" : "") + "}"
+                "@type {" + jsType + "}"
             ]);
         } else if (firstField) {
             push("");

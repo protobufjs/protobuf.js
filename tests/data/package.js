@@ -57,109 +57,109 @@ $root.Package = (function() {
 
     /**
      * Package name.
-     * @type {string|undefined}
+     * @type {string}
      */
     Package.prototype.name = "";
 
     /**
      * Package version.
-     * @type {string|undefined}
+     * @type {string}
      */
     Package.prototype.version = "";
 
     /**
      * Package versionScheme.
-     * @type {string|undefined}
+     * @type {string}
      */
     Package.prototype.versionScheme = "";
 
     /**
      * Package description.
-     * @type {string|undefined}
+     * @type {string}
      */
     Package.prototype.description = "";
 
     /**
      * Package author.
-     * @type {string|undefined}
+     * @type {string}
      */
     Package.prototype.author = "";
 
     /**
      * Package license.
-     * @type {string|undefined}
+     * @type {string}
      */
     Package.prototype.license = "";
 
     /**
      * Package repository.
-     * @type {Package.Repository$Properties|undefined}
+     * @type {(Package.Repository$Properties|null)}
      */
     Package.prototype.repository = null;
 
     /**
      * Package bugs.
-     * @type {string|undefined}
+     * @type {string}
      */
     Package.prototype.bugs = "";
 
     /**
      * Package homepage.
-     * @type {string|undefined}
+     * @type {string}
      */
     Package.prototype.homepage = "";
 
     /**
      * Package keywords.
-     * @type {Array.<string>|undefined}
+     * @type {Array.<string>}
      */
     Package.prototype.keywords = $util.emptyArray;
 
     /**
      * Package main.
-     * @type {string|undefined}
+     * @type {string}
      */
     Package.prototype.main = "";
 
     /**
      * Package bin.
-     * @type {Object.<string,string>|undefined}
+     * @type {Object.<string,string>}
      */
     Package.prototype.bin = $util.emptyObject;
 
     /**
      * Package scripts.
-     * @type {Object.<string,string>|undefined}
+     * @type {Object.<string,string>}
      */
     Package.prototype.scripts = $util.emptyObject;
 
     /**
      * Package dependencies.
-     * @type {Object.<string,string>|undefined}
+     * @type {Object.<string,string>}
      */
     Package.prototype.dependencies = $util.emptyObject;
 
     /**
      * Package optionalDependencies.
-     * @type {Object.<string,string>|undefined}
+     * @type {Object.<string,string>}
      */
     Package.prototype.optionalDependencies = $util.emptyObject;
 
     /**
      * Package devDependencies.
-     * @type {Object.<string,string>|undefined}
+     * @type {Object.<string,string>}
      */
     Package.prototype.devDependencies = $util.emptyObject;
 
     /**
      * Package types.
-     * @type {string|undefined}
+     * @type {string}
      */
     Package.prototype.types = "";
 
     /**
      * Package cliDependencies.
-     * @type {Array.<string>|undefined}
+     * @type {Array.<string>}
      */
     Package.prototype.cliDependencies = $util.emptyArray;
 
@@ -688,13 +688,13 @@ $root.Package = (function() {
 
         /**
          * Repository type.
-         * @type {string|undefined}
+         * @type {string}
          */
         Repository.prototype.type = "";
 
         /**
          * Repository url.
-         * @type {string|undefined}
+         * @type {string}
          */
         Repository.prototype.url = "";
 

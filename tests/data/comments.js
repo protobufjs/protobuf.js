@@ -39,19 +39,19 @@ $root.Test1 = (function() {
 
     /**
      * Field with a comment.
-     * @type {string|undefined}
+     * @type {string}
      */
     Test1.prototype.field1 = "";
 
     /**
      * Test1 field2.
-     * @type {number|undefined}
+     * @type {number}
      */
     Test1.prototype.field2 = 0;
 
     /**
      * Field with a comment and a <a href="http://example.com/foo/">link</a>
-     * @type {boolean|undefined}
+     * @type {boolean}
      */
     Test1.prototype.field3 = false;
 

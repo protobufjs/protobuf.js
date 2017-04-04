@@ -89,7 +89,7 @@ export const MyRequest = $root.MyRequest = (() => {
 
     /**
      * MyRequest path.
-     * @type {string|undefined}
+     * @type {string}
      */
     MyRequest.prototype.path = "";
 
@@ -263,7 +263,7 @@ export const MyResponse = $root.MyResponse = (() => {
 
     /**
      * MyResponse status.
-     * @type {number|undefined}
+     * @type {number}
      */
     MyResponse.prototype.status = 0;
 

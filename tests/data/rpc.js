@@ -91,7 +91,7 @@ $root.MyRequest = (function() {
 
     /**
      * MyRequest path.
-     * @type {string|undefined}
+     * @type {string}
      */
     MyRequest.prototype.path = "";
 
@@ -265,7 +265,7 @@ $root.MyResponse = (function() {
 
     /**
      * MyResponse status.
-     * @type {number|undefined}
+     * @type {number}
      */
     MyResponse.prototype.status = 0;
 
