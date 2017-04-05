@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Namespace: rpc</title>
+    <title>Class: ProtocolError</title>
     
     
     <script src="scripts/prettify/prettify.js"></script>
@@ -1803,7 +1803,7 @@
     </ul>
 </div>
     <div class="main">
-        <h1 class="page-title" data-filename="rpc.html">Namespace: rpc</h1>
+        <h1 class="page-title" data-filename="util.ProtocolError.html">Class: ProtocolError</h1>
         
 
 
@@ -1812,8 +1812,12 @@
     
 <header>
     <h2>
-    rpc
+        <span class="ancestors"><a href="util.html">util</a>.</span>
+    
+    ProtocolError
     </h2>
+    
+        <div class="class-description"><p>Error subclass indicating a protocol specifc error.</p></div>
     
 </header>  
 
@@ -1823,75 +1827,16 @@
     
     
         
-            <div class="description"><p>Streaming RPC helpers.</p></div>
-        
-        
-        
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-        
-        
-    
-    </div>
-    
-    
-    
-    
-    
-    
-    
-    
-        <h3 class="subsection-title">Classes</h3>
-        
-        <dl>
-            <dt><a href="rpc.Service.html">Service</a></dt>
-            <dd></dd>
-        </dl>
-    
-    
-    
-    
-    
-    
-    
-    
-    
-        <h3 class="subsection-title">Type Definitions</h3>
-        
-        <dl>
-                
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id=".ServiceMethod">
+        <h4 class="name" id="ProtocolError">
             
-            rpc.ServiceMethod<span class="signature">(request, <span class="optional">callback</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ Promise&lt;<a href="Message.html">Message</a>> }</span>
+            new util.ProtocolError<span class="signature">(message, <span class="optional">properties</span>)</span>
         </h4>
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/rpc/service.js">src/rpc/service.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/rpc/service.js#L20">line 20</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/util/minimal.js">src/util/minimal.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/util/minimal.js#L311">line 311</a>
         </div>
         
     </div>
@@ -1902,7 +1847,7 @@
     
     
     <div class="description">
-        <p>A service method part of a <a href="rpc.html#.ServiceMethodMixin">ServiceMethodMixin</a> and thus <a href="rpc.Service.html">rpc.Service</a> as created by Service.create.</p>
+        <p>Constructs a new protocol error.</p>
     </div>
     
 
@@ -1933,15 +1878,40 @@
 	
         <tr>
             
-                <td class="name"><code>request</code></td>
+                <td class="name"><code>message</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type"><a href="Message.html">Message</a></span>
-|
+<span class="param-type">string</span>
 
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                    
+                    
+                        
+                    
+                
+                <p>Error message</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>properties</code></td>
+            
+            
+            <td class="type">
+            
+                
 <span class="param-type">Object.&lt;string, *></span>
 
 
@@ -1953,41 +1923,13 @@
             <td class="description last">
                 
                     
-                    
-                        
-                    
-                
-                <p>Request message or plain object</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>callback</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="rpc.html#.ServiceMethodCallback">rpc.ServiceMethodCallback</a></span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
                         <span class="optional">optional</span>
                     
                     
                         
                     
                 
-                <p>Node-style callback called with the error, if any, and the response message</p></td>
+                <p>Additional properties</p></td>
         </tr>
 	
 	
@@ -2030,279 +1972,90 @@
     
     
     
-    <h5>Returns:</h5>
-    
-
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Type</th>
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-    <tbody>
-    
-        <tr>
-            
-            <td class="type">
-            
-                        Promise.&lt;<a href="Message.html">Message</a>>
-                        
-                    
-            </td>
-            <td class="description last">Promise if <code>callback</code> has been omitted, otherwise <code>undefined</code></td>
-        </tr>
-    
-    </tbody>
-</table>
-
-    
-    
-    
-</dd>
-
-            
-                
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id=".ServiceMethodCallback">
-            
-            rpc.ServiceMethodCallback<span class="signature">(error, <span class="optional">response</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ undefined }</span>
-        </h4>
-    
-        
-        <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/rpc/service.js">src/rpc/service.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/rpc/service.js#L9">line 9</a>
-        </div>
-        
-    </div>
-
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>A service method callback as used by <a href="rpc.html#.ServiceMethod">ServiceMethod</a>.</p>
-<p>Differs from <a href="global.html#RPCImplCallback">RPCImplCallback</a> in that it is an actual callback of a service method which may not return <code>response = null</code>.</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>error</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Error</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                    
-                        <span class="nullable">nullable</span>
-                    
-                        
-                    
-                
-                <p>Error, if any</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>response</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="Message.html">Message</a></span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        <span class="nullable">nullable</span>
-                    
-                        
-                    
-                
-                <p>Response message</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Type</th>
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-    <tbody>
-    
-        <tr>
-            
-            <td class="type">
-            
-                        undefined
-                        
-                    
-            </td>
-            <td class="description last"></td>
-        </tr>
-    
-    </tbody>
-</table>
-
-    
-    
-    
-</dd>
-
-            
-                
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id=".ServiceMethodMixin">rpc.ServiceMethodMixin <span class="type-signature type">{ Object&lt;string, <a href="rpc.html#.ServiceMethod">rpc.ServiceMethod</a>> }</span></h4>
-    </div>
-    
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        <p>A service method mixin.</p>
-<p>When using TypeScript, mixed in service methods are only supported directly with a type definition of a static module (used with reflection). Otherwise, explicit casting is required.</p>
-    </div>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
     
     
         <h5>Example</h5>
         
 
     
-    <pre class="prettyprint"><code>// Explicit casting with TypeScript(myRpcService["myMethod"] as protobuf.rpc.ServiceMethod)(...)</code></pre>
+    <pre class="prettyprint"><code>try {    MyMessage.decode(someBuffer); // throws if required fields are missing} catch (e) {    if (e instanceof ProtocolError && e.instance)        console.log("decoded so far: " + JSON.stringify(e.instance));}</code></pre>
     
 
     
 </dd>
 
-            </dl>
+    
+    </div>
+    
+    
+        <h3 class="subsection-title">Extends</h3>
+        
+        <ul>
+            <li>Error</li>
+        </ul>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        <h3 class="subsection-title">Members</h3>
+        
+        <dl>
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="instance">instance <span class="type-signature type">{ <a href="Message.html">Message</a> }</span></h4>
+    </div>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>So far decoded message instance.</p>
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        </dl>
+    
+    
+    
+    
     
     
     
