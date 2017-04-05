@@ -880,9 +880,9 @@ export abstract class NamespaceBase extends ReflectionObject {
 
     /**
      * Converts this namespace to a namespace descriptor.
-     * @returns {NamespaceDescriptor} Namespace descriptor
+     * @returns {NamespaceBaseDescriptor} Namespace descriptor
      */
-    public toJSON(): NamespaceDescriptor;
+    public toJSON(): NamespaceBaseDescriptor;
 
     /**
      * Adds nested objects to this namespace from nested object descriptors.
@@ -996,12 +996,19 @@ export abstract class NamespaceBase extends ReflectionObject {
     public lookupService(path: (string|string[])): Service;
 }
 
-type AnyNestedDescriptor = (EnumDescriptor|TypeDescriptor|ServiceDescriptor|ExtensionFieldDescriptor|ExtensionMapFieldDescriptor);
-
 type NamespaceDescriptor = {
+    options?: { [k: string]: any };
+    nested: { [k: string]: AnyNestedDescriptor };
+};
+
+type NamespaceBaseDescriptor = {
     options?: { [k: string]: any };
     nested?: { [k: string]: AnyNestedDescriptor };
 };
+
+type AnyExtensionFieldDescriptor = (ExtensionFieldDescriptor|ExtensionMapFieldDescriptor);
+
+type AnyNestedDescriptor = (EnumDescriptor|TypeDescriptor|ServiceDescriptor|AnyExtensionFieldDescriptor|NamespaceDescriptor);
 
 /**
  * Constructs a new reflection object instance.

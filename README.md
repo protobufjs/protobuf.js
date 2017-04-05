@@ -106,7 +106,7 @@ Where bundle size is a factor, there are additional stripped-down versions of th
 Usage
 -----
 
-Because JavaScript is a dynamically typed language, protobuf.js introduces the concept of a **valid message** in order to provide the best possible [performance](#performance):
+Because JavaScript is a dynamically typed language, protobuf.js introduces the concept of a **valid message** in order to provide the best possible [performance](#performance) (and, as a side product, proper typings):
 
 ### Valid message
 
@@ -119,8 +119,8 @@ There are two possible types of valid messages and the encoder is able to work w
 
 In a nutshell, the wire format writer understands the following types:
 
-| Field type | Expected JS type (create, encode) | Naive conversion (fromObject)
-|------------|-----------------------------------|------------------------------
+| Field type | Expected JS type (create, encode) | Conversion (fromObject)
+|------------|-----------------------------------|------------------------
 | s-/u-/int32<br />s-/fixed32 | `number` (32 bit integer) | `value | 0` if signed<br /> `value >>> 0` if unsigned
 | s-/u-/int64<br />s-/fixed64 | `Long`-like (optimal)<br />`number` (53 bit integer) | `Long.fromValue(value)` with long.js<br />`parseInt(value, 10)` otherwise
 | float<br />double | `number` | `Number(value)`
@@ -187,7 +187,7 @@ With that in mind and again for performance reasons, each message class provides
   ```
 
 * **Message.fromObject**(object: `Object`): `Message`<br />
-  naively converts any non-valid **plain JavaScript object** to a **message instance**. See the table above for the exact conversion operations performed.
+  converts any non-valid **plain JavaScript object** to a **message instance** using the conversion steps outlined within the table above.
 
   ```js
   var message = AwesomeMessage.fromObject({ awesomeField: 42 });
@@ -212,6 +212,8 @@ With that in mind and again for performance reasons, each message class provides
 For reference, the following diagram aims to display the relationships between the different methods above and the concept of a valid message:
 
 <img alt="Toolset Diagram" src="http://dcode.io/protobuf.js/toolset.svg" />
+
+> In other words: `verify` indicates that calling `create` or `encode` directly on the plain object will [result in a valid message respectively] succeed. `fromObject`, on the other hand, does conversion from a broader range of plain objects to create valid messages. ([ref](https://github.com/dcodeIO/protobuf.js/issues/748#issuecomment-291925749))
 
 Examples
 --------
@@ -247,7 +249,7 @@ protobuf.load("awesome.proto", function(err, root) {
         throw Error(errMsg);
 
     // Create a new message
-    var message = AwesomeMessage.fromObject(payload); // or use .create if payload is already known to be valid
+    var message = AwesomeMessage.creeate(payload); // or use .fromObject if conversion is necessary
 
     // Encode a message to an Uint8Array (browser) or Buffer (node)
     var buffer = AwesomeMessage.encode(message).finish();

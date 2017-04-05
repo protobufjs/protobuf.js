@@ -98,22 +98,37 @@ Object.defineProperty(Namespace.prototype, "nestedArray", {
 });
 
 /**
- * Any nested object descriptor.
- * @typedef AnyNestedDescriptor
- * @type {EnumDescriptor|TypeDescriptor|ServiceDescriptor|ExtensionFieldDescriptor|ExtensionMapFieldDescriptor}
+ * Namespace descriptor.
+ * @typedef NamespaceDescriptor
+ * @type {Object}
+ * @property {Object.<string,*>} [options] Namespace options
+ * @property {Object.<string,AnyNestedDescriptor>} nested Nested object descriptors
  */
 
 /**
- * Namespace descriptor.
- * @typedef NamespaceDescriptor
+ * Namespace base descriptor.
+ * @typedef NamespaceBaseDescriptor
  * @type {Object}
  * @property {Object.<string,*>} [options] Namespace options
  * @property {Object.<string,AnyNestedDescriptor>} [nested] Nested object descriptors
  */
 
 /**
+ * Any extension field descriptor.
+ * @typedef AnyExtensionFieldDescriptor
+ * @type {ExtensionFieldDescriptor|ExtensionMapFieldDescriptor}
+ */
+
+/**
+ * Any nested object descriptor.
+ * @typedef AnyNestedDescriptor
+ * @type {EnumDescriptor|TypeDescriptor|ServiceDescriptor|AnyExtensionFieldDescriptor|NamespaceDescriptor}
+ */
+// ^ BEWARE: VSCode hangs forever when using more than 5 types (that's why AnyExtensionFieldDescriptor exists in the first place)
+
+/**
  * Converts this namespace to a namespace descriptor.
- * @returns {NamespaceDescriptor} Namespace descriptor
+ * @returns {NamespaceBaseDescriptor} Namespace descriptor
  */
 Namespace.prototype.toJSON = function toJSON() {
     return {
