@@ -98,7 +98,7 @@ In case of doubt it is safe to just use the full library.
 Usage
 -----
 
-Each message type provides a set of methods with each method doing just one thing. This allows to avoid unnecessary operations where [performance](#performance) is a concern but also forces a user to perform verification explicitly where necessary - for example when dealing with user input.
+Each message type provides a set of methods with each method doing just one thing. This avoids unnecessary operations where [performance](#performance) is a concern but also forces a user to perform verification explicitly where necessary - for example when dealing with user input.
 
 Note that **Message** below refers to any message type. See the next section for the definition of a [valid message](#valid-message).
 
@@ -614,7 +614,7 @@ Generates TypeScript definitions from annotated JavaScript files.
 usage: pbts [options] file1.js file2.js ...  (or)  other | pbts [options] -
 ```
 
-Picking up on the example above, the following not just generates static code to a CommonJS module `compiled.js` but also its respective TypeScript definitions to `compiled.d.ts`:
+Picking up on the example above, the following not only generates static code to a CommonJS module `compiled.js` but also its respective TypeScript definitions to `compiled.d.ts`:
 
 ```
 $> pbjs -t static-module -w commonjs -o compiled.js file1.proto file2.proto

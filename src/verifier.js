@@ -129,7 +129,7 @@ function verifier(mtype) {
     for (var i = 0; i < /* initializes */ mtype.fieldsArray.length; ++i) {
         var field = mtype._fieldsArray[i].resolve(),
             ref   = "m" + util.safeProp(field.name);
-        
+
         if (field.optional) gen
         ("if(%s!=null&&m.hasOwnProperty(%j)){", ref, field.name); // !== undefined && !== null
 

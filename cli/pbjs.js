@@ -59,7 +59,7 @@ exports.main = function main(args, callback) {
 
     // alias hyphen args in camel case
     Object.keys(argv).forEach(function(key) {
-        var camelKey = key.replace(/\-([a-z])/g, function($0, $1) { return $1.toUpperCase(); });
+        var camelKey = key.replace(/-([a-z])/g, function($0, $1) { return $1.toUpperCase(); });
         if (camelKey !== key)
             argv[camelKey] = argv[key];
     });

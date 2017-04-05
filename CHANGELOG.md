@@ -1,3 +1,23 @@
+# [6.7.1](https://github.com/dcodeIO/protobuf.js/releases/tag/6.7.1)
+
+## New
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/3d23eed6f7c79007969672f06c1a9ccd691e2411) Made .verify behave more like .encode, see [#710](https://github.com/dcodeIO/protobuf.js/issues/710)<br />
+
+## CLI
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/bed514290c105c3b606f760f2abba80510721c77) With null/undefined eliminated by constructors and .create, document message fields as non-optional where applicable (ideally used with TS & strictNullChecks), see [#743](https://github.com/dcodeIO/protobuf.js/issues/743)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/007b2329842679ddf994df7ec0f9c70e73ee3caf) Renamed --strict-long/message to --force-long/message with backward compatible aliases, see [#741](https://github.com/dcodeIO/protobuf.js/issues/741)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/6aae71f75e82ffd899869b0c952daf98991421b8) Keep $Properties with --strict-message but require actual instances within, see [#741](https://github.com/dcodeIO/protobuf.js/issues/741)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/c812cef0eff26998f14c9d58d4486464ad7b2bbc) Added --strict-message option to pbjs to strictly reference message instances instead of $Properties, see [#741](https://github.com/dcodeIO/protobuf.js/issues/741)<br />
+
+## Docs
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/412407de9afb7ec3a999c4c9a3a1f388f971fce7) Restructured README<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/1c4d9d7f024bfa096ddc24aabbdf39211ed8637a) Added more information on typings usage, see [#744](https://github.com/dcodeIO/protobuf.js/issues/744)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/602065e16862751c515c2f3391ee8b880e8140b1) Clarified typescript example in README, see [#744](https://github.com/dcodeIO/protobuf.js/issues/744)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/79d0ba2cc71a156910a9d937683af164df694f08) Clarified that the service API targets clients consuming a service, see [#742](https://github.com/dcodeIO/protobuf.js/issues/742)<br />
+
+## Other
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/a66f76452ba050088efd1aaebf3c503a55e6287c) Omit copying of undefined or null in constructors and .create, see [#743](https://github.com/dcodeIO/protobuf.js/issues/743)<br />
+
 # [6.7.0](https://github.com/dcodeIO/protobuf.js/releases/tag/6.7.0)
 
 ## Breaking
