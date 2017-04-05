@@ -114,7 +114,7 @@ Because JavaScript is a dynamically typed language, protobuf.js introduces the c
 
 There are two possible types of valid messages and the encoder is able to work with both of these:
 
-* **Runtime messages** (explicit instances of message classes with default values on their prototype) always (have to) satisfy the requirements of a valid message and
+* **Message instances** (explicit instances of message classes with default values on their prototype) always (have to) satisfy the requirements of a valid message and
 * **Plain JavaScript objects** that just so happen to be composed in a way satisfying the requirements of a valid message as well.
 
 In a nutshell, the wire format writer understands the following types:
@@ -152,7 +152,7 @@ With that in mind and again for performance reasons, each message class provides
   ```
 
 * **Message.encode**(message: `Message|Object` [, writer: `Writer`]): `Writer`<br />
-  encodes a valid message (**runtime message** or valid **plain JavaScript object**). This method does not implicitly verify the message and it's up to the user to make sure that the payload is a valid message.
+  encodes a **message instance** or valid **plain JavaScript object**. This method does not implicitly verify the message and it's up to the user to make sure that the payload is a valid message.
 
   ```js
   var buffer = AwesomeMessage.encode(message).finish();
@@ -162,7 +162,7 @@ With that in mind and again for performance reasons, each message class provides
   works like `Message.encode` but additionally prepends the length of the message as a varint.
 
 * **Message.decode**(reader: `Reader|Uint8Array`): `Message`<br />
-  decodes a buffer to a **runtime message**. If required fields are missing, it throws a `util.ProtocolError` with an `instance` property set to the so far decoded message. If the wire format is invalid, it throws an `Error`.
+  decodes a buffer to a **message instance**. If required fields are missing, it throws a `util.ProtocolError` with an `instance` property set to the so far decoded message. If the wire format is invalid, it throws an `Error`.
 
   ```js
   try {
@@ -180,14 +180,14 @@ With that in mind and again for performance reasons, each message class provides
   works like `Message.decode` but additionally reads the length of the message prepended as a varint.
 
 * **Message.create**(properties: `Object`): `Message`<br />
-  creates a new **runtime message** from a set of properties that satisfy the requirements of a valid message. Where applicable, it is recommended to prefer `Message.create` over `Message.fromObject` because it doesn't perform possibly redundant conversion.
+  creates a new **message instance** from a set of properties that satisfy the requirements of a valid message. Where applicable, it is recommended to prefer `Message.create` over `Message.fromObject` because it doesn't perform possibly redundant conversion.
 
   ```js
   var message = AwesomeMessage.create({ awesomeField: "AwesomeString" });
   ```
 
 * **Message.fromObject**(object: `Object`): `Message`<br />
-  naively converts any non-valid **plain JavaScript object** to a **runtime message**. See the table above for the exact conversion operations performed.
+  naively converts any non-valid **plain JavaScript object** to a **message instance**. See the table above for the exact conversion operations performed.
 
   ```js
   var message = AwesomeMessage.fromObject({ awesomeField: 42 });
@@ -195,7 +195,7 @@ With that in mind and again for performance reasons, each message class provides
   ```
 
 * **Message.toObject**(message: `Message` [, options: `ConversionOptions`]): `Object`<br />
-  converts a **runtime message** to an arbitrary **plain JavaScript object** for interoperability with other libraries or storage. The resulting plain JavaScript object *might* still satisfy the requirements of a valid message depending on the actual conversion options specified, but most of the time it does not.
+  converts a **message instance** to an arbitrary **plain JavaScript object** for interoperability with other libraries or storage. The resulting plain JavaScript object *might* still satisfy the requirements of a valid message depending on the actual conversion options specified, but most of the time it does not.
 
   ```js
   var object = AwesomeMessage.toObject(message, {
@@ -361,7 +361,7 @@ Detailed information on the reflection structure is available within the [API do
 
 ### Using custom classes
 
-Runtime message classes can also be extended with custom functionality and it is also possible to register a custom constructor with a reflected message type:
+Message classes can also be extended with custom functionality and it is also possible to register a custom constructor with a reflected message type:
 
 ```js
 ...
@@ -493,7 +493,7 @@ protobuf.load("awesome.proto", function(err, root) {
 });
 ```
 
-**Note:** Dynamically generated runtime message classes cannot be typed, technically, so you must either access its fields using `message["awesomeField"]` notation or you can utilize [typings of its static counterpart](#pbts-for-typescript) for full typings support.
+**Note:** Dynamically generated message classes cannot be typed, technically, so you must either access its fields using `message["awesomeField"]` notation or you can utilize [typings of its static counterpart](#pbts-for-typescript) for full typings support.
 
 If you generated static code to `bundle.js` using the CLI and its type definitions to `bundle.d.ts` instead, then you can just do:
 
@@ -574,7 +574,7 @@ Translates between file formats and generates static code.
   --no-comments    Does not output any JSDoc comments.
 
   --force-long     Enfores the use of 'Long' for s-/u-/int64 and s-/fixed64 fields.
-  --force-message  Enfores the use of runtime messages instead of plain objects.
+  --force-message  Enfores the use of message instances instead of plain objects.
 
 usage: pbjs [options] file1.proto file2.json ...  (or)  other | pbjs [options] -
 ```

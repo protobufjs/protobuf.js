@@ -122,7 +122,7 @@ exports.main = function main(args, callback) {
                 "  --no-comments    Does not output any JSDoc comments.",
                 "",
                 "  --force-long     Enfores the use of 'Long' for s-/u-/int64 and s-/fixed64 fields.",
-                "  --force-message  Enfores the use of runtime messages instead of plain objects.",
+                "  --force-message  Enfores the use of message instances instead of plain objects.",
                 "",
                 "usage: " + chalk.bold.green("pbjs") + " [options] file1.proto file2.json ..." + chalk.gray("  (or)  ") + "other | " + chalk.bold.green("pbjs") + " [options] -",
                 ""
