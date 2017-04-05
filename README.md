@@ -24,6 +24,7 @@ Contents
   * [Using services](#using-services)
   * [Usage with TypeScript](#usage-with-typescript)
 
+
 * [Command line](#command-line)<br />
   How to use the command line utility.
 
@@ -31,6 +32,7 @@ Contents
   * [pbts for TypeScript](#pbts-for-typescript)
   * [Reflection vs. static code](#reflection-vs-static-code)
   * [Command line API](#command-line-api)
+
 
 * [Additional documentation](#additional-documentation)<br />
   A list of available documentation resources.
@@ -172,9 +174,13 @@ Note that **Message** below refers to any message type. See the next section for
 
   See also: [ConversionOptions](http://dcode.io/protobuf.js/global.html#ConversionOptions)
 
+In pictures:
+
+<img alt="Toolset Diagram" src="http://dcode.io/protobuf.js/toolset.svg" />
+
 ### Valid message
 
-A valid message is an object not missing any required fields and exclusively using JS types for its fields that are understood by the wire format writer.
+A valid message is an object not missing any required fields and exclusively using JS types for its fields / properties that are understood by the wire format writer.
 
 * Calling `Message.verify` with any object returns `null` if the object can be encoded as-is and otherwise the error as a string.
 * Calling `Message.create` or `Message.encode` must be called with a valid message.
