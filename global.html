@@ -230,9 +230,9 @@
             
                 <li data-name="util.isObject"><a href="util.html#.isObject">isObject</a></li>
             
-                <li data-name="util.isSet"><a href="util.html#.isSet">isSet</a></li>
-            
                 <li data-name="util.isset"><a href="util.html#.isset">isset</a></li>
+            
+                <li data-name="util.isSet"><a href="util.html#.isSet">isSet</a></li>
             
                 <li data-name="util.isString"><a href="util.html#.isString">isString</a></li>
             
@@ -4401,51 +4401,6 @@
                 
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="AnyNestedDescriptor">AnyNestedDescriptor <span class="type-signature type">{ <a href="global.html#EnumDescriptor">EnumDescriptor</a> | <a href="global.html#TypeDescriptor">TypeDescriptor</a> | <a href="global.html#ServiceDescriptor">ServiceDescriptor</a> | <a href="global.html#ExtensionFieldDescriptor">ExtensionFieldDescriptor</a> | <a href="global.html#ExtensionMapFieldDescriptor">ExtensionMapFieldDescriptor</a> }</span></h4>
-    </div>
-    
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        <p>Any nested object descriptor.</p>
-    </div>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-</dd>
-
-            
-                
-<dt>
-    <div class="nameContainer">
         <h4 class="name" id="Codegen">
             
             Codegen<span class="signature">(format, args)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ <a href="global.html#Codegen">Codegen</a> }</span>
@@ -6843,6 +6798,143 @@
                 
 <dt>
     <div class="nameContainer">
+        <h4 class="name" id="NamespaceBaseDescriptor">NamespaceBaseDescriptor <span class="type-signature type">{ Object }</span></h4>
+    </div>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Namespace base descriptor.</p>
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+        <h5 class="subsection-title">Properties:</h5>
+        
+        <dl>
+
+<table class="props">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		<th>Argument</th>
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object.&lt;string, *></span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>Namespace options</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>nested</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object.&lt;string, AnyNestedDescriptor></span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>Nested object descriptors</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table></dl>
+        
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+            
+                
+<dt>
+    <div class="nameContainer">
         <h4 class="name" id="NamespaceDescriptor">NamespaceDescriptor <span class="type-signature type">{ Object }</span></h4>
     </div>
     
@@ -6924,7 +7016,7 @@
             <td class="type">
             
                 
-<span class="param-type">Object.&lt;string, <a href="global.html#AnyNestedDescriptor">AnyNestedDescriptor</a>></span>
+<span class="param-type">Object.&lt;string, AnyNestedDescriptor></span>
 
 
             
@@ -6932,8 +7024,6 @@
             
             
                 <td class="attributes">
-                
-                    &lt;optional><br>
                 
                     
                 
@@ -8241,7 +8331,7 @@
             <td class="type">
             
                 
-<span class="param-type">Object.&lt;string, <a href="global.html#AnyNestedDescriptor">AnyNestedDescriptor</a>></span>
+<span class="param-type">Object.&lt;string, AnyNestedDescriptor></span>
 
 
             
@@ -8770,7 +8860,7 @@
             <td class="type">
             
                 
-<span class="param-type">Object.&lt;string, <a href="global.html#AnyNestedDescriptor">AnyNestedDescriptor</a>></span>
+<span class="param-type">Object.&lt;string, AnyNestedDescriptor></span>
 
 
             
