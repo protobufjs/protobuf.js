@@ -655,9 +655,15 @@ $> pbjs -t static-module file1.proto file2.proto | pbts -o bundle.d.ts -
 
 While using .proto files directly requires the full library respectively pure reflection/JSON the light library, pretty much all code but the relatively short descriptors is shared.
 
-Static code, on the other hand, requires just the minimal library, but generates additional, albeit editable, source code without any reflection features.
+Static code, on the other hand, requires just the minimal library, but generates additional source code without any reflection features. This also implies that there is a break-even point where statically generated code becomes larger than descriptor-based code once the amount of code generated exceeds the size of the full respectively light library.
 
 There is no significant difference performance-wise as the code generated statically is pretty much the same as generated at runtime and both are largely interchangeable as seen in the previous section.
+
+| Source | Library | Advantages | Tradeoffs
+|--------|---------|------------|-----------
+| .proto | full    | Easily editable<br />Interoperability with other libraries<br />No compile step | Some parsing and possibly network overhead
+| JSON   | light   | Easily editable<br />No parsing overhead<br />Single bundle (no network overhead) | protobuf.js specific<br />Has a compile step
+| static | minimal | Works where `eval` access is restricted<br />Fully documented<br />Small footprint for small protos | Can be hard to edit<br />No reflection<br />Has a compile step
 
 ### Command line API
 
