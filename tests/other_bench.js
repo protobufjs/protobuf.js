@@ -5,7 +5,7 @@ var protobuf = require(".."),
 
 tape.test("bench.proto and bench.json", function(test) {
     test.plan(4);
-    protobuf.load(require.resolve("../bench/data/bench.proto"), undefined, function(err, root) {
+    protobuf.load("bench/data/bench.proto", undefined, function(err, root) { // no require.resolve to support browsers
         if (err)
             return test.fail(err.message);
 
