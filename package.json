@@ -1,6 +1,6 @@
 {
   "name": "protobufjs",
-  "version": "6.7.1",
+  "version": "6.7.2",
   "versionScheme": "~",
   "description": "Protocol Buffers for JavaScript (& TypeScript).",
   "author": "Daniel Wirtz <dcode+protobufjs@dcode.io>",
@@ -62,7 +62,7 @@
     "@types/long": "^3.0.31",
     "@types/node": "7.0.12",
     "benchmark": "^2.1.4",
-    "browserify": "^14.1.0",
+    "browserify": "^14.3.0",
     "browserify-wrap": "^1.0.2",
     "bundle-collapser": "^1.2.1",
     "chalk": "^1.1.3",

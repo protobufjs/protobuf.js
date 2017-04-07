@@ -3,7 +3,7 @@
 
 **Protocol Buffers** are a language-neutral, platform-neutral, extensible way of serializing structured data for use in communications protocols, data storage, and more, originally designed at Google ([see](https://developers.google.com/protocol-buffers/)).
 
-**protobuf.js** is a pure JavaScript implementation with [TypeScript](https://www.typescriptlang.org) support for [node.js](https://nodejs.org) and the browser. It's super easy to use, blazingly fast and works out of the box with [.proto](https://developers.google.com/protocol-buffers/docs/proto) files!
+**protobuf.js** is a pure JavaScript implementation with [TypeScript](https://www.typescriptlang.org) support for [node.js](https://nodejs.org) and the browser. It's easy to use, blazingly fast and works out of the box with [.proto](https://developers.google.com/protocol-buffers/docs/proto) files!
 
 Contents
 --------
@@ -110,11 +110,11 @@ Because JavaScript is a dynamically typed language, protobuf.js introduces the c
 
 ### Valid message
 
-> **A valid message is an object not missing any required fields and exclusively using JS types for its fields (properties) that are understood by the wire format writer.**
+> A valid message is an object a) not missing any required fields and b) exclusively composed of JS types understood by the wire format writer.
 
-There are two possible types of valid messages and the encoder is able to work with both of these:
+There are two possible types of valid messages and the encoder is able to work with both of these for convenience:
 
-* **Message instances** (explicit instances of message classes with default values on their prototype) always (have to) satisfy the requirements of a valid message and
+* **Message instances** (explicit instances of message classes with default values on their prototype) always (have to) satisfy the requirements of a valid message by design and
 * **Plain JavaScript objects** that just so happen to be composed in a way satisfying the requirements of a valid message as well.
 
 In a nutshell, the wire format writer understands the following types:
@@ -137,7 +137,7 @@ In a nutshell, the wire format writer understands the following types:
 
 ### Toolset
 
-With that in mind and again for performance reasons, each message class provides a distinct set of methods with each method doing just one thing. This avoids unnecessary assertions / operations where performance is a concern but also forces a user to perform verification (of plain JavaScript objects that *might* just so happen to be a valid message) explicitly where necessary - for example when dealing with user input.
+With that in mind and again for performance reasons, each message class provides a distinct set of methods with each method doing just one thing. This avoids unnecessary assertions / redundant operations where performance is a concern but also forces a user to perform verification (of plain JavaScript objects that *might* just so happen to be a valid message) explicitly where necessary - for example when dealing with user input.
 
 **Note** that `Message` below refers to any message class.
 
@@ -209,9 +209,9 @@ With that in mind and again for performance reasons, each message class provides
   });
   ```
 
-For reference, the following diagram aims to display the relationships between the different methods above and the concept of a valid message:
+For reference, the following diagram aims to display relationships between the different methods and the concept of a valid message:
 
-<img alt="Toolset Diagram" src="http://dcode.io/protobuf.js/toolset.svg" />
+<p align="center"><img alt="Toolset Diagram" src="http://dcode.io/protobuf.js/toolset.svg" /></p>
 
 > In other words: `verify` indicates that calling `create` or `encode` directly on the plain object will [result in a valid message respectively] succeed. `fromObject`, on the other hand, does conversion from a broader range of plain objects to create valid messages. ([ref](https://github.com/dcodeIO/protobuf.js/issues/748#issuecomment-291925749))
 
