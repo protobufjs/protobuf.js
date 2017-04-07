@@ -700,45 +700,45 @@ The package includes a benchmark that compares protobuf.js performance to native
 ```
 benchmarking encoding performance ...
 
-protobuf.js (reflect) x 547,366 ops/sec ±1.29% (90 runs sampled)
-protobuf.js (static) x 525,722 ops/sec ±1.17% (91 runs sampled)
-JSON (string) x 311,180 ops/sec ±0.67% (93 runs sampled)
-JSON (buffer) x 183,724 ops/sec ±0.69% (92 runs sampled)
-google-protobuf x 76,337 ops/sec ±0.73% (91 runs sampled)
+protobuf.js (reflect) x 540,622 ops/sec ±0.87% (89 runs sampled)
+protobuf.js (static) x 537,928 ops/sec ±1.19% (91 runs sampled)
+JSON (string) x 317,124 ops/sec ±0.63% (91 runs sampled)
+JSON (buffer) x 185,945 ops/sec ±0.72% (89 runs sampled)
+google-protobuf x 76,552 ops/sec ±0.85% (91 runs sampled)
 
   protobuf.js (reflect) was fastest
-   protobuf.js (static) was 3.8% slower
-          JSON (string) was 42.8% slower
-          JSON (buffer) was 66.2% slower
-        google-protobuf was 86.0% slower
+   protobuf.js (static) was 0.01 times slower (-0.8% ops/sec)
+          JSON (string) was 0.70 times slower (-41.2% ops/sec)
+          JSON (buffer) was 1.90 times slower (-65.6% ops/sec)
+        google-protobuf was 6.06 times slower (-85.8% ops/sec)
 
 benchmarking decoding performance ...
 
-protobuf.js (reflect) x 1,401,958 ops/sec ±0.78% (93 runs sampled)
-protobuf.js (static) x 1,391,017 ops/sec ±0.78% (90 runs sampled)
-JSON (string) x 301,749 ops/sec ±0.88% (93 runs sampled)
-JSON (buffer) x 268,792 ops/sec ±0.84% (90 runs sampled)
-google-protobuf x 186,727 ops/sec ±0.81% (90 runs sampled)
+protobuf.js (reflect) x 1,386,221 ops/sec ±0.95% (93 runs sampled)
+protobuf.js (static) x 1,397,599 ops/sec ±0.74% (91 runs sampled)
+JSON (string) x 300,667 ops/sec ±0.88% (90 runs sampled)
+JSON (buffer) x 265,276 ops/sec ±0.88% (90 runs sampled)
+google-protobuf x 162,202 ops/sec ±0.85% (92 runs sampled)
 
-  protobuf.js (reflect) was fastest
-   protobuf.js (static) was 0.8% slower
-          JSON (string) was 78.5% slower
-          JSON (buffer) was 80.8% slower
-        google-protobuf was 86.7% slower
+   protobuf.js (static) was fastest
+  protobuf.js (reflect) was 0.01 times slower (-1.0% ops/sec)
+          JSON (string) was 3.65 times slower (-78.5% ops/sec)
+          JSON (buffer) was 4.28 times slower (-81.0% ops/sec)
+        google-protobuf was 7.63 times slower (-88.4% ops/sec)
 
 benchmarking combined performance ...
 
-protobuf.js (reflect) x 274,685 ops/sec ±0.99% (89 runs sampled)
-protobuf.js (static) x 278,352 ops/sec ±1.00% (90 runs sampled)
-JSON (string) x 129,638 ops/sec ±0.83% (91 runs sampled)
-JSON (buffer) x 90,904 ops/sec ±0.93% (87 runs sampled)
-google-protobuf x 43,327 ops/sec ±0.89% (90 runs sampled)
+protobuf.js (reflect) x 277,238 ops/sec ±0.95% (92 runs sampled)
+protobuf.js (static) x 281,732 ops/sec ±0.91% (91 runs sampled)
+JSON (string) x 128,615 ops/sec ±1.01% (88 runs sampled)
+JSON (buffer) x 89,794 ops/sec ±1.28% (88 runs sampled)
+google-protobuf x 40,987 ops/sec ±1.29% (90 runs sampled)
 
    protobuf.js (static) was fastest
-  protobuf.js (reflect) was 1.3% slower
-          JSON (string) was 53.3% slower
-          JSON (buffer) was 67.3% slower
-        google-protobuf was 84.4% slower
+  protobuf.js (reflect) was 0.02 times slower (-1.6% ops/sec)
+          JSON (string) was 1.19 times slower (-54.4% ops/sec)
+          JSON (buffer) was 2.15 times slower (-68.2% ops/sec)
+        google-protobuf was 5.90 times slower (-85.5% ops/sec)
 ```
 
 You can also run [the benchmark](https://github.com/dcodeIO/protobuf.js/blob/master/bench/index.js) ...
