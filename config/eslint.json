@@ -37,7 +37,7 @@
         "default-case": 0,                  // just forces unnecessary code
         "dot-location": 0,                  // looks nicer for chainables
         "dot-notation": 0,                  // not compatible with some reserved properties
-        "eqeqeq": 1,
+        "eqeqeq": [1, "allow-null"],
         "guard-for-in": 1,
         "no-alert": 1,
         "no-caller": 1,
@@ -45,7 +45,6 @@
         "no-div-regex": 1,
         "no-else-return": 1,
         "no-empty-function": 1,
-        "no-eq-null": 0,                    // used to test if not null and not undefined
         "no-eval": 1,
         "no-extend-native": 1,
         "no-extra-bind": 1,

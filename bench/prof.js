@@ -60,10 +60,10 @@ if (process.argv[2] === "fromjson") {
 var Test, data, count;
 
 if (process.argv.indexOf("--alt") < 0) {
-    root = protobuf.parse(fs.readFileSync(require.resolve("../bench/bench.proto")).toString("utf8")).root;
+    root = protobuf.parse(fs.readFileSync(require.resolve("../bench/data/bench.proto")).toString("utf8")).root;
     Test = root.lookup("Test");
     json = JSON.stringify(root);
-    data = require("../bench/bench.json");
+    data = require("../bench/data/bench.json");
     count = 10000000;
     process.stdout.write("bench.proto");
 } else {

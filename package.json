@@ -74,6 +74,7 @@
     "git-raw-commits": "^1.2.0",
     "git-semver-tags": "^1.2.0",
     "glob": "^7.1.1",
+    "google-protobuf": "^3.2.0",
     "gulp": "^3.9.1",
     "gulp-header": "^1.8.8",
     "gulp-if": "^2.0.1",

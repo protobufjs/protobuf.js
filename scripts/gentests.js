@@ -12,10 +12,12 @@ var fs   = require("fs"),
     { file: "tests/data/rpc.proto", flags: [ "es6" ] },
     { file: "tests/data/rpc.proto", flags: [] },
     { file: "tests/data/test.proto", flags: [] },
+    { file: "bench/data/bench.proto", flags: [], out: "bench/data/static_pbjs.js" }
 ]
-.forEach(function({ file, flags }) {
+.forEach(function({ file, flags, out }) {
     var basename = file.replace(/\.proto$/, "");
-    var out = [ basename ].concat(flags).join("-") + ".js";
+    if (!out)
+        out = [ basename ].concat(flags).join("-") + ".js";
     pbjs.main([
         "--target", "static-module",
         "--wrap", "commonjs",

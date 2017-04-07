@@ -5,13 +5,13 @@ var protobuf = require(".."),
 
 tape.test("bench.proto and bench.json", function(test) {
     test.plan(4);
-    protobuf.load("bench/bench.proto", undefined, function(err, root) {
+    protobuf.load(require.resolve("../bench/data/bench.proto"), undefined, function(err, root) {
         if (err)
             return test.fail(err.message);
-        
+
         var Test = root.lookup("Test");
-        
-        var data = require("../bench/bench.json");
+
+        var data = require("../bench/data/bench.json");
 
         test.equal(Test.verify(data), null, "should verify our test data");
         test.equal(Test.ctor.verify(data), null, "should verify our test data (static)");

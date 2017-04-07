@@ -4,7 +4,7 @@ module.exports = newSuite;
 var benchmark = require("benchmark"),
     chalk     = require("chalk");
 
-var padSize = 27;
+var padSize = 23;
 
 function newSuite(name) {
     var benches = [];
@@ -20,13 +20,12 @@ function newSuite(name) {
     })
     .on("complete", function() {
         if (benches.length > 1) {
-            var fastest = this.filter("fastest"), // eslint-disable-line no-invalid-this
-                fastestHz = getHz(fastest[0]);
-            process.stdout.write("\n" + chalk.white(pad(fastest[0].name, padSize)) + " was " + chalk.green("fastest") + "\n");
-            benches.forEach(function(bench) {
-                if (fastest.indexOf(bench) === 0)
-                    return;
-                var hz = hz = getHz(bench);
+            benches.sort(function(a, b) { return getHz(b) - getHz(a); });
+            var fastest   = benches[0],
+                fastestHz = getHz(fastest);
+            process.stdout.write("\n" + chalk.white(pad(fastest.name, padSize)) + " was " + chalk.green("fastest") + "\n");
+            benches.slice(1).forEach(function(bench) {
+                var hz = getHz(bench);
                 var percent = (1 - hz / fastestHz) * 100;
                 process.stdout.write(chalk.white(pad(bench.name, padSize)) + " was " + chalk.red(percent.toFixed(1) + "% slower") + "\n");
             });

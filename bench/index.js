@@ -1,106 +1,90 @@
 "use strict";
 
-var protobuf  = require(".."),
-    newSuite  = require("./suite"),
-    data      = require("./bench.json");
-
-// NOTE: This benchmark is flawed in that it compares protocol buffers, which is purely a binary
-// format, to JSON, which is purely a string format.
+// NOTE: This benchmark partly compares apples and oranges in that it measures protocol buffers,
+// which is purely a binary format, and JSON, which is purely a string format.
 //
-// This matters because the encoder must convert JavaScript strings from UTF16 LE characters to
-// UTF8 bytes with every string operation while JSON does not require a mechanism for this by its
-// own. Ultimately, also strings produced by JSON must be converted to UTF8 somewhere down the
-// road, but this implementation detail is hidden from JS code and cannot be reliably measured
-// here without using some sort of networking layer, i.e. a tcp socket, in between, which would
-// most likely introduce other statistical difficulties.
-//
-// Hence, this benchmark compares to both pure string performance of JSON and additional binary
-// conversion of the same data using node buffers, which is probably slower than what a modern
-// VM uses under the hood when sending string data over the network. Comparable JSON performance
-// should be somewhere in between what is displayed as "to string" and "to buffer", though.
-//
-// To experience the impact by yourself, increase string lengths within bench.json.
+// This matters because strings aren't actually transfered over the network but must still be
+// converted to binary somewhere down the road. Because this can't be measured reliably, this
+// benchmark compares both pure string performance of JSON and additional binary conversion of the
+// same data using node buffers. Actual JSON performance on the network level should be somewhere
+// in between.
 
-var root = protobuf.loadSync(require.resolve("./bench.proto")),
-    Test = root.resolveAll().lookup("Test");
+var newSuite  = require("./suite"),
+    payload   = require("./data/bench.json");
 
-// protobuf.util.codegen.verbose = true;
+var Buffer_from = Buffer.from !== Uint8Array.from && Buffer.from || function(value, encoding) { return new Buffer(value, encoding); };
 
-var buf = Test.encode(data).finish();
+// protobuf.js dynamic: load the proto and set up a buffer
+var pbjsCls = require("..").loadSync(require.resolve("./data/bench.proto")).resolveAll().lookup("Test");
+var pbjsMsg = payload; // alt: pbjsCls.fromObject(payload);
+var pbjsBuf = pbjsCls.encode(pbjsMsg).finish();
 
-// warm up
-process.stdout.write("warming up ...\n");
-var i;
-for (i = 0; i < 500000; ++i)
-    Test.encode(data).finish();
-for (i = 0; i < 1000000; ++i)
-    Test.decode(buf);
-for (i = 0; i < 500000; ++i)
-    Test.verify(data);
-process.stdout.write("\n");
+// protobuf.js static: load the proto
+var pbjsStaticCls = require("./data/static_pbjs.js").Test;
 
-// give the optimizer some time to do its job
-setTimeout(function() {
-    var str    = JSON.stringify(data),
-        strbuf = protobuf.util._Buffer_from(str, "utf8");
+// JSON: set up a string and a buffer
+var jsonMsg = payload;
+var jsonStr = JSON.stringify(jsonMsg);
+var jsonBuf = Buffer_from(jsonStr, "utf8");
 
-    newSuite("encoding")
-    .add("Type.encode to buffer", function() {
-        Test.encode(data).finish();
-    })
-    .add("JSON.stringify to string", function() {
-        JSON.stringify(data);
-    })
-    .add("JSON.stringify to buffer", function() {
-        protobuf.util._Buffer_from(JSON.stringify(data), "utf8");
-    })
-    .run();
+// google-protobuf: load the proto, set up an Uint8Array and a message
+var jspbCls = require("./data/static_jspb.js").Test;
+var jspbBuf = new Uint8Array(Array.prototype.slice.call(pbjsBuf));
+var jspbMsg = jspbCls.deserializeBinary(jspbBuf);
 
-    newSuite("decoding")
-    .add("Type.decode from buffer", function() {
-        Test.decode(buf); // no allocation overhead, if you wondered
-    })
-    .add("JSON.parse from string", function() {
-        JSON.parse(str);
-    })
-    .add("JSON.parse from buffer", function() {
-        JSON.parse(strbuf.toString("utf8"));
-    })
-    .run();
+newSuite("encoding")
 
-    newSuite("combined")
-    .add("Type to/from buffer", function() {
-        Test.decode(Test.encode(data).finish());
-    })
-    .add("JSON to/from string", function() {
-        JSON.parse(JSON.stringify(data));
-    })
-    .add("JSON to/from buffer", function() {
-        JSON.parse(protobuf.util._Buffer_from(JSON.stringify(data), "utf8").toString("utf8"));
-    })
-    .run();
+.add("protobuf.js (reflect)", function() {
+    pbjsCls.encode(pbjsMsg).finish();
+})
+.add("protobuf.js (static)", function() {
+    pbjsStaticCls.encode(pbjsMsg).finish();
+})
+.add("JSON (string)", function() {
+    JSON.stringify(jsonMsg);
+})
+.add("JSON (buffer)", function() {
+    Buffer_from(JSON.stringify(jsonMsg), "utf8");
+})
+.add("google-protobuf", function() {
+    jspbMsg.serializeBinary();
+})
+.run();
 
-    newSuite("verifying")
-    .add("Type.verify", function() {
-        var r = Test.verify(data);
-        if (r)
-            throw Error(r);
-    })
-    .run();
+newSuite("decoding")
 
-    var dataMessage = Test.from(data);
-    var dataObject = dataMessage.toObject();
+.add("protobuf.js (reflect)", function() {
+    pbjsCls.decode(pbjsBuf); // no allocation overhead, if you wondered
+})
+.add("protobuf.js (static)", function() {
+    pbjsStaticCls.decode(pbjsBuf);
+})
+.add("JSON (string)", function() {
+    JSON.parse(jsonStr);
+})
+.add("JSON (buffer)", function() {
+    JSON.parse(jsonBuf.toString("utf8"));
+})
+.add("google-protobuf", function() {
+    jspbCls.deserializeBinary(jspbBuf);
+})
+.run();
 
-    newSuite("message from object")
-    .add("Type.fromObject", function() {
-        Test.fromObject(dataObject);
-    })
-    .run();
+newSuite("combined")
 
-    newSuite("message to object")
-    .add("Type.toObject", function() {
-        Test.toObject(dataMessage);
-    })
-    .run();
-
-}, 3000);
+.add("protobuf.js (reflect)", function() {
+    pbjsCls.decode(pbjsCls.encode(pbjsMsg).finish());
+})
+.add("protobuf.js (static)", function() {
+    pbjsStaticCls.decode(pbjsStaticCls.encode(pbjsMsg).finish());
+})
+.add("JSON (string)", function() {
+    JSON.parse(JSON.stringify(jsonMsg));
+})
+.add("JSON (buffer)", function() {
+    JSON.parse(Buffer_from(JSON.stringify(jsonMsg), "utf8").toString("utf8"));
+})
+.add("google-protobuf", function() {
+    jspbCls.deserializeBinary(jspbMsg.serializeBinary());
+})
+.run();
