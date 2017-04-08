@@ -26,7 +26,7 @@ function newSuite(name) {
             process.stdout.write("\n" + chalk.white(pad(fastest.name, padSize)) + " was " + chalk.green("fastest") + "\n");
             benches.slice(1).forEach(function(bench) {
                 var hz = getHz(bench);
-                var percent = (1 - hz / fastestHz);
+                var percent = 1 - hz / fastestHz;
                 process.stdout.write(chalk.white(pad(bench.name, padSize)) + " was " + chalk.red((percent * 100).toFixed(1) + "% ops/sec slower (factor " + (fastestHz / hz).toFixed(1) + ")") + "\n");
             });
         }

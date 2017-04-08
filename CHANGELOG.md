@@ -1,3 +1,22 @@
+# [6.7.2](https://github.com/dcodeIO/protobuf.js/releases/tag/6.7.2)
+
+## New
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/a7621be0a56585defc72d863f4e891e476905692) Split up NamespaceDescriptor to make nested plain namespaces a thing, see [#749](https://github.com/dcodeIO/protobuf.js/issues/749)<br />
+
+## Docs
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/e980e72ae3d4697ef0426c8a51608d31f516a2c4) More README<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/1f76749d0b9a780c7b6cb56be304f7327d74ebdb) Replaced 'runtime message' with 'message instance' for clarity<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/e6b6dedb550edbd0e54e212799e42aae2f1a87f1) Rephrased the Usage section around the concept of valid messages<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/0d8100ba87be768ebdec834ca2759693e0bf4325) Added toolset diagram to README<br />
+
+## Other
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/3405ae8d1ea775c96c30d1ef5cde666c9c7341b3) Touched benchmark output metrics once more<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/e36b228f4bb8b1cd835bf31f8605b759a7f1f501) Fixed failing browser test<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/7b3bdb562ee7d30c1a557d7b7851d55de3091da4) Output more human friendly metrics from benchmark<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/59e447889057c4575f383630942fd308a35c12e6) Stripped down static bench code to what's necessary<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/f88dad098282ece65f5d6e224ca38305a8431829) Revamped benchmark, now also covers Google's JS implementation<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/45356be81ba7796faee0d4d8ad324abdd9f301fb) Updated dependencies and dist files<br />
+
 # [6.7.1](https://github.com/dcodeIO/protobuf.js/releases/tag/6.7.1)
 
 ## New

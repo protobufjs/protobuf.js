@@ -741,6 +741,13 @@ google-protobuf x 42,050 ops/sec ±0.85% (91 runs sampled)
         google-protobuf was 85.5% ops/sec slower (factor 6.9)
 ```
 
+These results are achieved by
+
+* generating type-specific encoders, decoders, verifiers and converters at runtime
+* configuring the reader/writer interface according to the environment
+* using node-specific functionality where beneficial and, of course
+* avoiding unnecessary operations through splitting up [the toolset](#toolset).
+
 You can also run [the benchmark](https://github.com/dcodeIO/protobuf.js/blob/master/bench/index.js) ...
 
 ```
