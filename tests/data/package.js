@@ -29,7 +29,6 @@ $root.Package = (function() {
      * @property {Object.<string,string>} [bin] Package bin.
      * @property {Object.<string,string>} [scripts] Package scripts.
      * @property {Object.<string,string>} [dependencies] Package dependencies.
-     * @property {Object.<string,string>} [optionalDependencies] Package optionalDependencies.
      * @property {Object.<string,string>} [devDependencies] Package devDependencies.
      * @property {string} [types] Package types.
      * @property {Array.<string>} [cliDependencies] Package cliDependencies.
@@ -46,7 +45,6 @@ $root.Package = (function() {
         this.bin = {};
         this.scripts = {};
         this.dependencies = {};
-        this.optionalDependencies = {};
         this.devDependencies = {};
         this.cliDependencies = [];
         if (properties)
@@ -140,12 +138,6 @@ $root.Package = (function() {
     Package.prototype.dependencies = $util.emptyObject;
 
     /**
-     * Package optionalDependencies.
-     * @type {Object.<string,string>}
-     */
-    Package.prototype.optionalDependencies = $util.emptyObject;
-
-    /**
      * Package devDependencies.
      * @type {Object.<string,string>}
      */
@@ -211,9 +203,6 @@ $root.Package = (function() {
         if (message.dependencies != null && message.hasOwnProperty("dependencies"))
             for (var keys = Object.keys(message.dependencies), i = 0; i < keys.length; ++i)
                 writer.uint32(/* id 13, wireType 2 =*/106).fork().uint32(/* id 1, wireType 2 =*/10).string(keys[i]).uint32(/* id 2, wireType 2 =*/18).string(message.dependencies[keys[i]]).ldelim();
-        if (message.optionalDependencies != null && message.hasOwnProperty("optionalDependencies"))
-            for (var keys = Object.keys(message.optionalDependencies), i = 0; i < keys.length; ++i)
-                writer.uint32(/* id 14, wireType 2 =*/114).fork().uint32(/* id 1, wireType 2 =*/10).string(keys[i]).uint32(/* id 2, wireType 2 =*/18).string(message.optionalDependencies[keys[i]]).ldelim();
         if (message.devDependencies != null && message.hasOwnProperty("devDependencies"))
             for (var keys = Object.keys(message.devDependencies), i = 0; i < keys.length; ++i)
                 writer.uint32(/* id 15, wireType 2 =*/122).fork().uint32(/* id 1, wireType 2 =*/10).string(keys[i]).uint32(/* id 2, wireType 2 =*/18).string(message.devDependencies[keys[i]]).ldelim();
@@ -310,14 +299,6 @@ $root.Package = (function() {
                 key = reader.string();
                 reader.pos++;
                 message.dependencies[key] = reader.string();
-                break;
-            case 14:
-                reader.skip().pos++;
-                if (message.optionalDependencies === $util.emptyObject)
-                    message.optionalDependencies = {};
-                key = reader.string();
-                reader.pos++;
-                message.optionalDependencies[key] = reader.string();
                 break;
             case 15:
                 reader.skip().pos++;
@@ -427,14 +408,6 @@ $root.Package = (function() {
                 if (!$util.isString(message.dependencies[key[i]]))
                     return "dependencies: string{k:string} expected";
         }
-        if (message.optionalDependencies != null && message.hasOwnProperty("optionalDependencies")) {
-            if (!$util.isObject(message.optionalDependencies))
-                return "optionalDependencies: object expected";
-            var key = Object.keys(message.optionalDependencies);
-            for (var i = 0; i < key.length; ++i)
-                if (!$util.isString(message.optionalDependencies[key[i]]))
-                    return "optionalDependencies: string{k:string} expected";
-        }
         if (message.devDependencies != null && message.hasOwnProperty("devDependencies")) {
             if (!$util.isObject(message.devDependencies))
                 return "devDependencies: object expected";
@@ -516,13 +489,6 @@ $root.Package = (function() {
             for (var keys = Object.keys(object.dependencies), i = 0; i < keys.length; ++i)
                 message.dependencies[keys[i]] = String(object.dependencies[keys[i]]);
         }
-        if (object.optionalDependencies) {
-            if (typeof object.optionalDependencies !== "object")
-                throw TypeError(".Package.optionalDependencies: object expected");
-            message.optionalDependencies = {};
-            for (var keys = Object.keys(object.optionalDependencies), i = 0; i < keys.length; ++i)
-                message.optionalDependencies[keys[i]] = String(object.optionalDependencies[keys[i]]);
-        }
         if (object.devDependencies) {
             if (typeof object.devDependencies !== "object")
                 throw TypeError(".Package.devDependencies: object expected");
@@ -569,7 +535,6 @@ $root.Package = (function() {
             object.bin = {};
             object.scripts = {};
             object.dependencies = {};
-            object.optionalDependencies = {};
             object.devDependencies = {};
         }
         if (options.defaults) {
@@ -623,11 +588,6 @@ $root.Package = (function() {
             object.dependencies = {};
             for (var j = 0; j < keys2.length; ++j)
                 object.dependencies[keys2[j]] = message.dependencies[keys2[j]];
-        }
-        if (message.optionalDependencies && (keys2 = Object.keys(message.optionalDependencies)).length) {
-            object.optionalDependencies = {};
-            for (var j = 0; j < keys2.length; ++j)
-                object.optionalDependencies[keys2[j]] = message.optionalDependencies[keys2[j]];
         }
         if (message.devDependencies && (keys2 = Object.keys(message.devDependencies)).length) {
             object.devDependencies = {};

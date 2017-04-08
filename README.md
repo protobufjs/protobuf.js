@@ -509,7 +509,9 @@ var buffer = AwesomeMessage.encode(message).finish();
 ...
 ```
 
-**Note:** When using [long.js](https://github.com/dcodeIO/long.js), make sure to add [@types/long](https://www.npmjs.com/package/@types/long) to your project's dependencies. Likewise, when building for node, make sure to add [@types/node](https://www.npmjs.com/package/@types/node). Alternatively, if you are not using one of these, there are two stubs available that can be referenced instead of the respective full type definition:
+**Note** that the npm package depends on [@types/node](https://www.npmjs.com/package/@types/node) because of `Buffer` and [@types/long](https://www.npmjs.com/package/@types/long) because of `Long`.
+
+If you are not building for node and/or not using long.js and want to exclude their full type definitions manually for whatever reason, there are two stubs available that can be referenced instead of the respective full type definition:
 
 ```ts
 /// <reference path="./node_modules/protobufjs/stub-long.d.ts" />

@@ -1,6 +1,6 @@
 {
   "name": "protobufjs",
-  "version": "6.7.2",
+  "version": "6.7.3",
   "versionScheme": "~",
   "description": "Protocol Buffers for JavaScript (& TypeScript).",
   "author": "Daniel Wirtz <dcode+protobufjs@dcode.io>",
@@ -44,6 +44,7 @@
     "release": "npm run make && npm run changelog"
   },
   "dependencies": {
+    "long": "^3.2.0",
     "@protobufjs/aspromise": "^1.1.1",
     "@protobufjs/base64": "^1.1.1",
     "@protobufjs/codegen": "^1.0.8",
@@ -53,14 +54,11 @@
     "@protobufjs/inquire": "^1.1.0",
     "@protobufjs/path": "^1.1.2",
     "@protobufjs/pool": "^1.1.0",
-    "@protobufjs/utf8": "^1.1.0"
-  },
-  "optionalDependencies": {
-    "long": "^3.2.0"
+    "@protobufjs/utf8": "^1.1.0",
+    "@types/long": "^3.0.31",
+    "@types/node": "7.0.12"
   },
   "devDependencies": {
-    "@types/long": "^3.0.31",
-    "@types/node": "7.0.12",
     "benchmark": "^2.1.4",
     "browserify": "^14.3.0",
     "browserify-wrap": "^1.0.2",
