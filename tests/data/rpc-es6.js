@@ -194,15 +194,6 @@ export const MyRequest = $root.MyRequest = (() => {
     };
 
     /**
-     * Creates a MyRequest message from a plain object. Also converts values to their respective internal types.
-     * This is an alias of {@link MyRequest.fromObject}.
-     * @function
-     * @param {Object.<string,*>} object Plain object
-     * @returns {MyRequest} MyRequest
-     */
-    MyRequest.from = MyRequest.fromObject;
-
-    /**
      * Creates a plain object from a MyRequest message. Also converts values to other types if specified.
      * @param {MyRequest} message MyRequest
      * @param {$protobuf.ConversionOptions} [options] Conversion options
@@ -366,15 +357,6 @@ export const MyResponse = $root.MyResponse = (() => {
             message.status = object.status | 0;
         return message;
     };
-
-    /**
-     * Creates a MyResponse message from a plain object. Also converts values to their respective internal types.
-     * This is an alias of {@link MyResponse.fromObject}.
-     * @function
-     * @param {Object.<string,*>} object Plain object
-     * @returns {MyResponse} MyResponse
-     */
-    MyResponse.from = MyResponse.fromObject;
 
     /**
      * Creates a plain object from a MyResponse message. Also converts values to other types if specified.

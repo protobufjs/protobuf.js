@@ -90,7 +90,7 @@ types.basic = bake([
  * @property {boolean} bool=false Bool default
  * @property {string} string="" String default
  * @property {Array.<number>} bytes=Array(0) Bytes default
- * @property {Message} message=null Message default
+ * @property {null} message=null Message default
  */
 types.defaults = bake([
     /* double   */ 0,

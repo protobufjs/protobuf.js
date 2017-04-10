@@ -522,16 +522,6 @@ function buildType(ref, type) {
 
         push("");
         pushComment([
-            "Creates " + aOrAn(type.name) + " message from a plain object. Also converts values to their respective internal types.",
-            "This is an alias of {@link " + fullName + ".fromObject}.",
-            "@function",
-            "@param {Object.<string,*>} object Plain object",
-            "@returns {" + fullName + "} " + type.name
-        ]);
-        push(name(type.name) + ".from = " + name(type.name) + ".fromObject;");
-
-        push("");
-        pushComment([
             "Creates a plain object from " + aOrAn(type.name) + " message. Also converts values to other types if specified.",
             "@param {" + fullName + "} " + (config.beautify ? "message" : "m") + " " + type.name,
             "@param {$protobuf.ConversionOptions} [" + (config.beautify ? "options" : "o") + "] Conversion options",

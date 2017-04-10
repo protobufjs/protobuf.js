@@ -239,12 +239,11 @@ Field.prototype.resolve = function resolve() {
     if (this.resolved)
         return this;
 
+    /* istanbul ignore if */
+    if (!Type)
+        Type = require("./type");
+
     if ((this.typeDefault = types.defaults[this.type]) === undefined) { // if not a basic type, resolve it
-
-        /* istanbul ignore if */
-        if (!Type)
-            Type = require("./type");
-
         this.resolvedType = (this.declaringField ? this.declaringField.parent : this.parent).lookupTypeOrEnum(this.type);
         if (this.resolvedType instanceof Type)
             this.typeDefault = null;
@@ -288,5 +287,57 @@ Field.prototype.resolve = function resolve() {
     else
         this.defaultValue = this.typeDefault;
 
+    // ensure proper value on prototype
+    if (this.parent instanceof Type)
+        this.parent.ctor.prototype[this.name] = this.defaultValue;
+
     return ReflectionObject.prototype.resolve.call(this);
+};
+
+/**
+ * Initializes this field's default value on the specified prototype.
+ * @param {Object} prototype Message prototype
+ * @returns {Field} `this`
+ */
+/* Field.prototype.initDefault = function(prototype) {
+    // objects on the prototype must be immmutable. users must assign a new object instance and
+    // cannot use Array#push on empty arrays on the prototype for example, as this would modify
+    // the value on the prototype for ALL messages of this type. Hence, these objects are frozen.
+    prototype[this.name] = Array.isArray(this.defaultValue)
+        ? util.emptyArray
+        : util.isObject(this.defaultValue) && !this.long
+            ? util.emptyObject
+            : this.defaultValue; // if a long, it is frozen when initialized
+    return this;
+}; */
+
+/**
+ * Decorator function as returned by {@link Field.d} (TypeScript).
+ * @typedef FieldDecorator
+ * @type {function}
+ * @param {Object} prototype Target prototype
+ * @param {string} fieldName Field name
+ * @returns {undefined}
+ */
+
+/**
+ * Field decorator (TypeScript).
+ * @function
+ * @param {number} fieldId Field id
+ * @param {"double"|"float"|"int32"|"uint32"|"sint32"|"fixed32"|"sfixed32"|"int64"|"uint64"|"sint64"|"fixed64"|"sfixed64"|"bool"|"string"|"bytes"|TConstructor<{}>} fieldType Field type
+ * @param {"optional"|"required"|"repeated"} [fieldRule="optional"] Field rule
+ * @param {T} [defaultValue] Default value (scalar types only)
+ * @returns {FieldDecorator} Decorator function
+ * @template T
+ */
+Field.d = function fieldDecorator(fieldId, fieldType, fieldRule, defaultValue) {
+    if (typeof fieldType === "function") {
+        util.decorate(fieldType);
+        fieldType = fieldType.name;
+    }
+    return function(prototype, fieldName) {
+        var field = new Field(fieldName, fieldId, fieldType, fieldRule, { "default": defaultValue });
+        util.decorate(prototype.constructor)
+            .add(field);
+    };
 };

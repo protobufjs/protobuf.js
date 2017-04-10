@@ -176,15 +176,6 @@ $root.Test1 = (function() {
     };
 
     /**
-     * Creates a Test1 message from a plain object. Also converts values to their respective internal types.
-     * This is an alias of {@link Test1.fromObject}.
-     * @function
-     * @param {Object.<string,*>} object Plain object
-     * @returns {Test1} Test1
-     */
-    Test1.from = Test1.fromObject;
-
-    /**
      * Creates a plain object from a Test1 message. Also converts values to other types if specified.
      * @param {Test1} message Test1
      * @param {$protobuf.ConversionOptions} [options] Conversion options
@@ -337,15 +328,6 @@ $root.Test2 = (function() {
             return object;
         return new $root.Test2();
     };
-
-    /**
-     * Creates a Test2 message from a plain object. Also converts values to their respective internal types.
-     * This is an alias of {@link Test2.fromObject}.
-     * @function
-     * @param {Object.<string,*>} object Plain object
-     * @returns {Test2} Test2
-     */
-    Test2.from = Test2.fromObject;
 
     /**
      * Creates a plain object from a Test2 message. Also converts values to other types if specified.

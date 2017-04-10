@@ -249,7 +249,7 @@ protobuf.load("awesome.proto", function(err, root) {
         throw Error(errMsg);
 
     // Create a new message
-    var message = AwesomeMessage.creeate(payload); // or use .fromObject if conversion is necessary
+    var message = AwesomeMessage.create(payload); // or use .fromObject if conversion is necessary
 
     // Encode a message to an Uint8Array (browser) or Buffer (node)
     var buffer = AwesomeMessage.encode(message).finish();
@@ -516,6 +516,53 @@ If you are not building for node and/or not using long.js and want to exclude th
 ```ts
 /// <reference path="./node_modules/protobufjs/stub-long.d.ts" />
 /// <reference path="./node_modules/protobufjs/stub-node.d.ts" />
+```
+
+#### Experimental decorators
+
+**WARNING:** Just introduced, not well tested, probably buggy.
+
+protobuf.js ships with an initial implementation of decorators, but note that decorators in TypeScript are an experimental feature and are subject to change without notice - plus - you have to enable the feature explicitly with the `experimentalDecorators` option:
+
+```ts
+import { Message, Type, Field, OneOf } from "protobufjs/light";
+
+@Type.d()
+export class AwesomeArrayMessage extends Message<AwesomeArrayMessage> {
+
+  @Field.d(1, "uint32", "repeated")
+  public awesomeArray: number[];
+
+}
+
+@Type.d()
+export class AwesomeStringMessage extends Message<AwesomeStringMessage> {
+
+  @Field.d(1, "string")
+  public awesomeString: string;
+
+}
+
+@Type.d()
+export class AwesomeMessage extends Message<AwesomeMessage> {
+
+  @Field.d(1, "string", "optional", "awesome default string")
+  public awesomeField: string;
+
+  @Field.d(2, AwesomeArrayMessage)
+  public awesomeArrayMessage: AwesomeArrayMessage;
+
+  @Field.d(3, AwesomeStringMessage)
+  public awesomeStringMessage: AwesomeStringMessage;
+
+  @OneOf.d("awesomeArrayMessage", "awesomeStringMessage")
+  public whichAwesomeMessage: string;
+
+}
+
+let awesomeMessage = new AwesomeMessage({ awesomeField: "hi" });
+let awesomeBuffer  = AwesomeMessage.encode(awesomeMessage).finish();
+let awesomeDecoded = AwesomeMessage.decode(awesomeBuffer);
 ```
 
 Command line

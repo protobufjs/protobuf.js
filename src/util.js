@@ -59,3 +59,22 @@ util.ucFirst = function ucFirst(str) {
 util.compareFieldsById = function compareFieldsById(a, b) {
     return a.id - b.id;
 };
+
+/**
+ * Decorator helper (TypeScript).
+ * @param {TMessageConstructor<T>} ctor Constructor function
+ * @returns {Type} Reflected type
+ * @template T extends Message<T>
+ */
+util.decorate = function decorate(ctor) {
+    var Root  = require("./root"),
+        Type  = require("./type"),
+        roots = require("./roots");
+    var root  = roots["decorators"] || (roots["decorators"] = new Root()),
+        type  = root.get(ctor.name);
+    if (!type) {
+        root.add(type = new Type(ctor.name));
+        ctor.$type = ctor.prototype.$type = type;
+    }
+    return type;
+};

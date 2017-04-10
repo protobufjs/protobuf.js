@@ -414,15 +414,6 @@ $root.Message = (function() {
     };
 
     /**
-     * Creates a Message message from a plain object. Also converts values to their respective internal types.
-     * This is an alias of {@link Message.fromObject}.
-     * @function
-     * @param {Object.<string,*>} object Plain object
-     * @returns {Message} Message
-     */
-    Message.from = Message.fromObject;
-
-    /**
      * Creates a plain object from a Message message. Also converts values to other types if specified.
      * @param {Message} message Message
      * @param {$protobuf.ConversionOptions} [options] Conversion options

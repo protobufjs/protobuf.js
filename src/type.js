@@ -10,7 +10,6 @@ var Enum      = require("./enum"),
     Field     = require("./field"),
     MapField  = require("./mapfield"),
     Service   = require("./service"),
-    Class     = require("./class"),
     Message   = require("./message"),
     Reader    = require("./reader"),
     Writer    = require("./writer"),
@@ -84,7 +83,7 @@ function Type(name, options) {
 
     /**
      * Cached constructor.
-     * @type {*}
+     * @type {TConstructor<{}>}
      * @private
      */
     this._ctor = null;
@@ -148,20 +147,61 @@ Object.defineProperties(Type.prototype, {
      * The registered constructor, if any registered, otherwise a generic constructor.
      * Assigning a function replaces the internal constructor. If the function does not extend {@link Message} yet, its prototype will be setup accordingly and static methods will be populated. If it already extends {@link Message}, it will just replace the internal constructor.
      * @name Type#ctor
-     * @type {Class}
+     * @type {TConstructor<{}>}
      */
     ctor: {
         get: function() {
-            return this._ctor || (this._ctor = Class(this).constructor);
+            return this._ctor || (this.ctor = generateConstructor(this).eof(this.name));
         },
         set: function(ctor) {
-            if (ctor && !(ctor.prototype instanceof Message))
-                Class(this, ctor);
-            else
-                this._ctor = ctor;
+
+            // Ensure proper prototype
+            var prototype = ctor.prototype;
+            if (!(prototype instanceof Message)) {
+                (ctor.prototype = new Message()).constructor = ctor;
+                util.merge(ctor.prototype, prototype);
+            }
+
+            // Classes and messages reference their reflected type
+            ctor.$type = ctor.prototype.$type = this;
+
+            // Mixin static methods
+            util.merge(ctor, Message, true);
+
+            this._ctor = ctor;
+
+            // Messages have non-enumerable default values on their prototype
+            var i = 0;
+            for (; i < /* initializes */ this.fieldsArray.length; ++i)
+                this._fieldsArray[i].resolve(); // ensures a proper value
+
+            // Messages have non-enumerable getters and setters for each virtual oneof field
+            var ctorProperties = {};
+            for (i = 0; i < /* initializes */ this.oneofsArray.length; ++i)
+                ctorProperties[this._oneofsArray[i].resolve().name] = {
+                    get: util.oneOfGetter(this._oneofsArray[i].oneof),
+                    set: util.oneOfSetter(this._oneofsArray[i].oneof)
+                };
+            if (i)
+                Object.defineProperties(ctor.prototype, ctorProperties);
         }
     }
 });
+
+function generateConstructor(type) {
+    /* eslint-disable no-unexpected-multiline */
+    var gen = util.codegen("p");
+    // explicitly initialize mutable object/array fields so that these aren't just inherited from the prototype
+    for (var i = 0, field; i < type.fieldsArray.length; ++i)
+        if ((field = type._fieldsArray[i]).map) gen
+            ("this%s={}", util.safeProp(field.name));
+        else if (field.repeated) gen
+            ("this%s=[]", util.safeProp(field.name));
+    return gen
+    ("if(p)for(var ks=Object.keys(p),i=0;i<ks.length;++i)if(p[ks[i]]!=null)") // omit undefined or null
+        ("this[ks[i]]=p[ks[i]]");
+    /* eslint-enable no-unexpected-multiline */
+}
 
 function clearCache(type) {
     type._fieldsById = type._fieldsArray = type._oneofsArray = type._ctor = null;
@@ -374,7 +414,8 @@ Type.prototype.isReservedName = function isReservedName(name) {
 /**
  * Creates a new message of this type using the specified properties.
  * @param {Object.<string,*>} [properties] Properties to set
- * @returns {Message} Runtime message
+ * @returns {Message<{}>} Message instance
+ * @template T
  */
 Type.prototype.create = function create(properties) {
     return new this.ctor(properties);
@@ -418,7 +459,7 @@ Type.prototype.setup = function setup() {
 
 /**
  * Encodes a message of this type. Does not implicitly {@link Type#verify|verify} messages.
- * @param {Message|Object.<string,*>} message Message instance or plain object
+ * @param {Message<{}>|Object.<string,*>} message Message instance or plain object
  * @param {Writer} [writer] Writer to encode to
  * @returns {Writer} writer
  */
@@ -428,7 +469,7 @@ Type.prototype.encode = function encode_setup(message, writer) {
 
 /**
  * Encodes a message of this type preceeded by its byte length as a varint. Does not implicitly {@link Type#verify|verify} messages.
- * @param {Message|Object.<string,*>} message Message instance or plain object
+ * @param {Message<{}>|Object.<string,*>} message Message instance or plain object
  * @param {Writer} [writer] Writer to encode to
  * @returns {Writer} writer
  */
@@ -440,9 +481,9 @@ Type.prototype.encodeDelimited = function encodeDelimited(message, writer) {
  * Decodes a message of this type.
  * @param {Reader|Uint8Array} reader Reader or buffer to decode from
  * @param {number} [length] Length of the message, if known beforehand
- * @returns {Message} Decoded message
+ * @returns {Message<{}>} Decoded message
  * @throws {Error} If the payload is not a reader or valid buffer
- * @throws {util.ProtocolError} If required fields are missing
+ * @throws {util.ProtocolError<{}>} If required fields are missing
  */
 Type.prototype.decode = function decode_setup(reader, length) {
     return this.setup().decode(reader, length); // overrides this method
@@ -451,7 +492,7 @@ Type.prototype.decode = function decode_setup(reader, length) {
 /**
  * Decodes a message of this type preceeded by its byte length as a varint.
  * @param {Reader|Uint8Array} reader Reader or buffer to decode from
- * @returns {Message} Decoded message
+ * @returns {Message<{}>} Decoded message
  * @throws {Error} If the payload is not a reader or valid buffer
  * @throws {util.ProtocolError} If required fields are missing
  */
@@ -473,20 +514,11 @@ Type.prototype.verify = function verify_setup(message) {
 /**
  * Creates a new message of this type from a plain object. Also converts values to their respective internal types.
  * @param {Object.<string,*>} object Plain object to convert
- * @returns {Message} Message instance
+ * @returns {Message<{}>} Message instance
  */
 Type.prototype.fromObject = function fromObject(object) {
     return this.setup().fromObject(object);
 };
-
-/**
- * Creates a new message of this type from a plain object. Also converts values to their respective internal types.
- * This is an alias of {@link Type#fromObject}.
- * @function
- * @param {Object.<string,*>} object Plain object
- * @returns {Message} Message instance
- */
-Type.prototype.from = Type.prototype.fromObject;
 
 /**
  * Conversion options as used by {@link Type#toObject} and {@link Message.toObject}.
@@ -509,10 +541,30 @@ Type.prototype.from = Type.prototype.fromObject;
 
 /**
  * Creates a plain object from a message of this type. Also converts values to other types if specified.
- * @param {Message} message Message instance
+ * @param {Message<{}>} message Message instance
  * @param {ConversionOptions} [options] Conversion options
  * @returns {Object.<string,*>} Plain object
  */
 Type.prototype.toObject = function toObject(message, options) {
     return this.setup().toObject(message, options);
+};
+
+/**
+ * Decorator function as returned by {@link Type.d} (TypeScript).
+ * @typedef TypeDecorator
+ * @type {function}
+ * @param {TMessageConstructor<T>} target Target constructor
+ * @returns {undefined}
+ * @template T extends Message<T>
+ */
+
+/**
+ * Type decorator (TypeScript).
+ * @returns {TypeDecorator<T>} Decorator function
+ * @template T extends Message<T>
+ */
+Type.d = function typeDecorator() {
+    return function(target) {
+        util.decorate(target);
+    };
 };

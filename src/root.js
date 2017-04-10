@@ -7,6 +7,7 @@ var Namespace = require("./namespace");
 
 var Field   = require("./field"),
     Enum    = require("./enum"),
+    OneOf   = require("./oneof"),
     util    = require("./util");
 
 var Type,   // cyclic
@@ -287,7 +288,7 @@ Root.prototype._handleAdd = function _handleAdd(object) {
         if (exposeRe.test(object.name))
             object.parent[object.name] = object.values; // expose enum values as property of its parent
 
-    } else /* everything else is a namespace */ {
+    } else if (!(object instanceof OneOf)) /* everything else is a namespace */ {
 
         if (object instanceof Type) // Try to handle any deferred extensions
             for (var i = 0; i < this.deferred.length;)

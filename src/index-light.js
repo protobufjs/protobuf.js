@@ -90,7 +90,6 @@ protobuf.Service          = require("./service");
 protobuf.Method           = require("./method");
 
 // Runtime
-protobuf.Class            = require("./class");
 protobuf.Message          = require("./message");
 
 // Utility

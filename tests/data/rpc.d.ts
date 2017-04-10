@@ -23,7 +23,6 @@ export class MyRequest {
     public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): MyRequest;
     public static verify(message: { [k: string]: any }): string;
     public static fromObject(object: { [k: string]: any }): MyRequest;
-    public static from(object: { [k: string]: any }): MyRequest;
     public static toObject(message: MyRequest, options?: $protobuf.ConversionOptions): { [k: string]: any };
     public toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
     public toJSON(): { [k: string]: any };
@@ -43,7 +42,6 @@ export class MyResponse {
     public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): MyResponse;
     public static verify(message: { [k: string]: any }): string;
     public static fromObject(object: { [k: string]: any }): MyResponse;
-    public static from(object: { [k: string]: any }): MyResponse;
     public static toObject(message: MyResponse, options?: $protobuf.ConversionOptions): { [k: string]: any };
     public toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
     public toJSON(): { [k: string]: any };

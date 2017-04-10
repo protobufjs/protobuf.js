@@ -509,15 +509,6 @@ $root.Package = (function() {
     };
 
     /**
-     * Creates a Package message from a plain object. Also converts values to their respective internal types.
-     * This is an alias of {@link Package.fromObject}.
-     * @function
-     * @param {Object.<string,*>} object Plain object
-     * @returns {Package} Package
-     */
-    Package.from = Package.fromObject;
-
-    /**
      * Creates a plain object from a Package message. Also converts values to other types if specified.
      * @param {Package} message Package
      * @param {$protobuf.ConversionOptions} [options] Conversion options
@@ -767,15 +758,6 @@ $root.Package = (function() {
                 message.url = String(object.url);
             return message;
         };
-
-        /**
-         * Creates a Repository message from a plain object. Also converts values to their respective internal types.
-         * This is an alias of {@link Package.Repository.fromObject}.
-         * @function
-         * @param {Object.<string,*>} object Plain object
-         * @returns {Package.Repository} Repository
-         */
-        Repository.from = Repository.fromObject;
 
         /**
          * Creates a plain object from a Repository message. Also converts values to other types if specified.

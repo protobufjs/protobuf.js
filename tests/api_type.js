@@ -55,7 +55,7 @@ tape.test("reflected types", function(test) {
     MyMessageManual.prototype = Object.create(protobuf.Message.prototype);
     type.ctor = MyMessageManual;
     test.ok(MyMessageManual.prototype instanceof protobuf.Message, "should properly register a constructor through assignment if already extending message");
-    test.notOk(typeof MyMessageManual.encode === "function", "should not populate static methods on assigned constructors if already extending message");
+    test.ok(typeof MyMessageManual.encode === "function", "should populate static methods on assigned constructors");
 
     type = protobuf.Type.fromJSON("My", {
         fields: {

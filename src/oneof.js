@@ -5,7 +5,8 @@ module.exports = OneOf;
 var ReflectionObject = require("./object");
 ((OneOf.prototype = Object.create(ReflectionObject.prototype)).constructor = OneOf).className = "OneOf";
 
-var Field = require("./field");
+var Field = require("./field"),
+    util  = require("./util");
 
 /**
  * Constructs a new oneof instance.
@@ -159,4 +160,34 @@ OneOf.prototype.onRemove = function onRemove(parent) {
         if ((field = this.fieldsArray[i]).parent)
             field.parent.remove(field);
     ReflectionObject.prototype.onRemove.call(this, parent);
+};
+
+/**
+ * Decorator function as returned by {@link OneOf.d} (TypeScript).
+ * @typedef OneOfDecorator
+ * @type {function}
+ * @param {Object} prototype Target prototype
+ * @param {string} oneofName OneOf name
+ * @returns {undefined}
+ */
+
+/**
+ * OneOf decorator (TypeScript).
+ * @function
+ * @param {...string} fieldNames Field names
+ * @returns {OneOfDecorator} Decorator function
+ * @template T
+ */
+OneOf.d = function oneOfDecorator() {
+    var fieldNames = [];
+    for (var i = 0; i < arguments.length; ++i)
+        fieldNames.push(arguments[i]);
+    return function(prototype, oneofName) {
+        util.decorate(prototype.constructor)
+            .add(new OneOf(oneofName, fieldNames));
+        Object.defineProperty(prototype, oneofName, {
+            get: util.oneOfGetter(fieldNames),
+            set: util.oneOfSetter(fieldNames)
+        });
+    };
 };

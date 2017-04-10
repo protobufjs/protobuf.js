@@ -4,9 +4,10 @@
 /// <reference path="../stub-node.d.ts" />
 */
 
-import * as protobuf from "..";
+import { Root, Message, Type, Field, OneOf } from "..";
 
-export const proto = {
+// Reflection
+const root = Root.fromJSON({
     nested: {
         Hello: {
             fields: {
@@ -18,28 +19,67 @@ export const proto = {
             }
         }
     }
-};
+});
+const HelloReflected = root.lookupType("Hello");
 
-const root = protobuf.Root.fromJSON(proto);
+HelloReflected.create({ value: "hi" });
 
-export class Hello extends protobuf.Message {
-    constructor (properties?: { [k: string]: any }) {
-        super(properties);
-    }
+// Custom classes
+
+export class Hello extends Message<Hello> {
+
+    public value: string; // for MessageProperties<T> coercion
 
     public foo() {
-        this["value"] = "hi";
+        this.value = "hi";
         return this;
     }
 }
-protobuf.Class.create(root.lookupType("Hello"), Hello);
 
-let hello = new Hello();
+root.lookupType("Hello").ctor = Hello;
 
-let writer = Hello.encode(hello.foo()) as protobuf.BufferWriter;
-let buf = writer.finish();
+Hello.create({ value: "hi" });
+let helloMessage = new Hello({ value: "hi" });
+let helloBuffer  = Hello.encode(helloMessage.foo()).finish();
+let helloDecoded = Hello.decode(helloBuffer);
 
-let hello2 = Hello.decode(buf) as Hello;
-// console.log(JSON.stringify(hello2.foo().toObject(), null, 2));
+// Decorators
 
-export const utf8 = protobuf.util.utf8;
+@Type.d()
+export class AwesomeArrayMessage extends Message<AwesomeArrayMessage> {
+
+  @Field.d(1, "uint32", "repeated")
+  public awesomeArray: number[];
+
+}
+
+@Type.d()
+export class AwesomeStringMessage extends Message<AwesomeStringMessage> {
+
+  @Field.d(1, "string")
+  public awesomeString: string;
+
+}
+
+@Type.d()
+export class AwesomeMessage extends Message<AwesomeMessage> {
+
+  @Field.d(1, "string", "optional", "awesome default string")
+  public awesomeField: string;
+
+  @Field.d(2, AwesomeArrayMessage)
+  public awesomeArrayMessage: AwesomeArrayMessage;
+
+  @Field.d(3, AwesomeStringMessage)
+  public awesomeStringMessage: AwesomeStringMessage;
+
+  @OneOf.d("awesomeArrayMessage", "awesomeStringMessage")
+  public whichAwesomeMessage: string;
+
+}
+
+let awesomeMessage = new AwesomeMessage({ awesomeField: "hi" });
+let awesomeBuffer  = AwesomeMessage.encode(awesomeMessage).finish();
+let awesomeDecoded = AwesomeMessage.decode(awesomeBuffer);
+
+// test currently consists only of not throwing

@@ -165,15 +165,6 @@ $root.vector_tile = (function() {
         };
 
         /**
-         * Creates a Tile message from a plain object. Also converts values to their respective internal types.
-         * This is an alias of {@link vector_tile.Tile.fromObject}.
-         * @function
-         * @param {Object.<string,*>} object Plain object
-         * @returns {vector_tile.Tile} Tile
-         */
-        Tile.from = Tile.fromObject;
-
-        /**
          * Creates a plain object from a Tile message. Also converts values to other types if specified.
          * @param {vector_tile.Tile} message Tile
          * @param {$protobuf.ConversionOptions} [options] Conversion options
@@ -479,15 +470,6 @@ $root.vector_tile = (function() {
                     message.boolValue = Boolean(object.boolValue);
                 return message;
             };
-
-            /**
-             * Creates a Value message from a plain object. Also converts values to their respective internal types.
-             * This is an alias of {@link vector_tile.Tile.Value.fromObject}.
-             * @function
-             * @param {Object.<string,*>} object Plain object
-             * @returns {vector_tile.Tile.Value} Value
-             */
-            Value.from = Value.fromObject;
 
             /**
              * Creates a plain object from a Value message. Also converts values to other types if specified.
@@ -818,15 +800,6 @@ $root.vector_tile = (function() {
             };
 
             /**
-             * Creates a Feature message from a plain object. Also converts values to their respective internal types.
-             * This is an alias of {@link vector_tile.Tile.Feature.fromObject}.
-             * @function
-             * @param {Object.<string,*>} object Plain object
-             * @returns {vector_tile.Tile.Feature} Feature
-             */
-            Feature.from = Feature.fromObject;
-
-            /**
              * Creates a plain object from a Feature message. Also converts values to other types if specified.
              * @param {vector_tile.Tile.Feature} message Feature
              * @param {$protobuf.ConversionOptions} [options] Conversion options
@@ -1149,15 +1122,6 @@ $root.vector_tile = (function() {
                     message.extent = object.extent >>> 0;
                 return message;
             };
-
-            /**
-             * Creates a Layer message from a plain object. Also converts values to their respective internal types.
-             * This is an alias of {@link vector_tile.Tile.Layer.fromObject}.
-             * @function
-             * @param {Object.<string,*>} object Plain object
-             * @returns {vector_tile.Tile.Layer} Layer
-             */
-            Layer.from = Layer.fromObject;
 
             /**
              * Creates a plain object from a Layer message. Also converts values to other types if specified.

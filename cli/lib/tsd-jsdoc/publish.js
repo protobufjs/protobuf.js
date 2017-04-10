@@ -195,6 +195,8 @@ function getChildrenOf(parent) {
 
 // gets the literal type of an element
 function getTypeOf(element) {
+    if (element.tsType)
+        return element.tsType;
     var name = "any";
     var type = element.type;
     if (type && type.names && type.names.length) {
@@ -211,9 +213,9 @@ function getTypeOf(element) {
     // Ensure upper case Object for map expressions below
     name = name.replace(/\bobject\b/g, "Object");
 
-    // Correct Promise.<Something> to Promise<Something>
-    name = replaceRecursive(name, /\bPromise\.<([^>]*)>/gi, function($0, $1) {
-        return "Promise<" + $1 + ">";
+    // Correct Something.<Something> to Something<Something>
+    name = replaceRecursive(name, /\b(?!Object|Array)([\w$]+)\.<([^>]*)>/gi, function($0, $1, $2) {
+        return $1 + "<" + $2 + ">";
     });
 
     // Replace Array.<string> with string[]
@@ -226,8 +228,8 @@ function getTypeOf(element) {
         return "{ [k: " + $1 + "]: " + $2 + " }";
     });
 
-    // Replace functions (there are no signatures) with () => any
-    name = name.replace(/\bfunction(?:\(\))?([^\w]|$)/gi, "() => any");
+    // Replace functions (there are no signatures) with Function
+    name = name.replace(/\bfunction(?:\(\))?([^\w]|$)/g, "Function");
 
     // Convert plain Object back to just object
     if (name === "Object")
@@ -402,7 +404,10 @@ function handleClass(element, parent) {
             write("abstract ");
         write("class ");
     }
-    write(element.name, " ");
+    write(element.name);
+    if (element.templates && element.templates.length)
+        write("<", element.templates.join(", "), ">");
+    write(" ");
 
     // extended classes
     if (element.augments) {
@@ -520,6 +525,8 @@ function handleFunction(element, parent, isConstructor) {
         } else
             write("function ");
         write(element.name);
+        if (element.templates && element.templates.length)
+            write("<", element.templates.join(", "), ">");
     }
     writeFunctionSignature(element, isConstructor, false);
     writeln(";");
@@ -538,7 +545,10 @@ function handleTypeDef(element, parent) {
         // see: https://github.com/dcodeIO/protobuf.js/issues/737
         // begin(element, true);
         writeln();
-        write("type ", element.name, " = ");
+        write("type ", element.name);
+        if (element.templates && element.templates.length)
+            write("<", element.templates.join(", "), ">");
+        write(" = ");
         var type = getTypeOf(element);
         if (element.type && element.type.names.length === 1 && element.type.names[0] === "function")
             writeFunctionSignature(element, false, true);

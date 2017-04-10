@@ -1,14 +1,11 @@
 var tape = require("tape");
 
 var protobuf = require(".."),
-    Class    = protobuf.Class,
     Message  = protobuf.Message;
 
 tape.test("google.protobuf.Any class", function(test) {
 
-    test.plan(2);
-
-    test.equal(Message, Class.prototype, "requires that prototypes are class instances");
+    test.plan(1);
 
     protobuf.load("tests/data/common.proto", function(err, root) {
         if (err)
@@ -17,7 +14,7 @@ tape.test("google.protobuf.Any class", function(test) {
         function Any(properties) {
             Message.call(this, properties);
         }
-        /* Any.prototype = */ Class.create(root.lookup("google.protobuf.Any"), Any);
+        root.lookup("google.protobuf.Any").ctor = Any;
 
         var valueBuffer = protobuf.util.newBuffer(1);
         valueBuffer[0] = 0;

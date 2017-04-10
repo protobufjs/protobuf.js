@@ -7,6 +7,9 @@
         "includePattern": ".+\\.js(doc)?$",
         "excludePattern": "(^|\\/|\\\\)_"
     },
+    "plugins": [
+        "./tsd-jsdoc/plugin"
+    ],
     "opts": {
         "encoding"      : "utf8",
         "recurse"       : true,

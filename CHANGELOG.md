@@ -1,3 +1,8 @@
+# [6.7.3](https://github.com/dcodeIO/protobuf.js/releases/tag/6.7.3)
+
+## Other
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/57f1da64945f2dc5537c6eaa53e08e8fdd477b67) long, @types/long and @types/node are just dependencies, see [#753](https://github.com/dcodeIO/protobuf.js/issues/753)<br />
+
 # [6.7.2](https://github.com/dcodeIO/protobuf.js/releases/tag/6.7.2)
 
 ## New
