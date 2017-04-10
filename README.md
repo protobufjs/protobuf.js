@@ -466,18 +466,23 @@ Note that the service API is meant for clients. Implementing a server-side endpo
 
 ### Usage with TypeScript
 
-The library ships with its own [type definitions](https://github.com/dcodeIO/protobuf.js/blob/master/index.d.ts) and modern editors like [Visual Studio Code](https://code.visualstudio.com/) should automatically detect and use them for code completion when following this pattern:
+The library ships with its own [type definitions](https://github.com/dcodeIO/protobuf.js/blob/master/index.d.ts) and modern editors like [Visual Studio Code](https://code.visualstudio.com/) will automatically detect and use them for code completion.
+
+**Note** that the npm package depends on [@types/node](https://www.npmjs.com/package/@types/node) because of `Buffer` and [@types/long](https://www.npmjs.com/package/@types/long) because of `Long`. If you are not building for node and/or not using long.js and want to exclude their full type definitions manually for whatever reason, there are two stubs available that can be referenced instead of the respective full type definition:
 
 ```ts
-// node.js
-import * as protobuf from "protobufjs";
-import * as Long from "long"; // optional
+/// <reference path="./node_modules/protobufjs/stub-long.d.ts" />
+/// <reference path="./node_modules/protobufjs/stub-node.d.ts" />
+```
 
-// browser only (alternatively)
-// import * as protobuf from "./node_modules/protobufjs/index.js";
-// import * as Long from "./node_modules/long/dist/long.js"; // optional
+#### Using the JS API
 
-protobuf.load("awesome.proto", function(err, root) {
+The API shown above works pretty much the same with TypeScript. However, because everything is typed, accessing fields on instances of dynamically generated message classes requires either (1) using bracket-notation (i.e. `message["awesomeField"]`), (2) explicit casts or (3) the use of a [typings file generated for its static counterpart](#pbts-for-typescript).
+
+```ts
+import { load } from "protobufjs"; // respectively "./node_modules/protobufjs"
+
+load("awesome.proto", function(err, root) {
   if (err)
     throw err;
 
@@ -495,37 +500,27 @@ protobuf.load("awesome.proto", function(err, root) {
 });
 ```
 
-**Note:** Dynamically generated message classes cannot be typed, technically, so you must either access its fields using `message["awesomeField"]` notation or you can utilize [typings of its static counterpart](#pbts-for-typescript) for full typings support.
+#### Using generated static code
 
-If you generated static code to `bundle.js` using the CLI and its type definitions to `bundle.d.ts` instead, then you can just do:
+If you generated static code to `bundle.js` using the CLI and its type definitions to `bundle.d.ts`, then you can just do:
 
 ```ts
-import * as root from "./bundle.js";
+import { AwesomeMessage } from "./bundle.js";
 
 // example code
-var AwesomeMessage = root.AwesomeMessage;
-var message = AwesomeMessage.create({ awesomeField: "hello" });
-var buffer = AwesomeMessage.encode(message).finish();
-...
+let message = AwesomeMessage.create({ awesomeField: "hello" });
+let buffer  = AwesomeMessage.encode(message).finish();
+let decoded = AweesomeMessage.decode(buffer);
 ```
 
-**Note** that the npm package depends on [@types/node](https://www.npmjs.com/package/@types/node) because of `Buffer` and [@types/long](https://www.npmjs.com/package/@types/long) because of `Long`.
+#### Using decorators
 
-If you are not building for node and/or not using long.js and want to exclude their full type definitions manually for whatever reason, there are two stubs available that can be referenced instead of the respective full type definition:
+The library also includes an early implementation of [decorators](https://www.typescriptlang.org/docs/handbook/decorators.html).
 
-```ts
-/// <reference path="./node_modules/protobufjs/stub-long.d.ts" />
-/// <reference path="./node_modules/protobufjs/stub-node.d.ts" />
-```
-
-#### Experimental decorators
-
-**WARNING:** Just introduced, not well tested, probably buggy.
-
-protobuf.js ships with an initial implementation of decorators, but note that decorators in TypeScript are an experimental feature and are subject to change without notice - plus - you have to enable the feature explicitly with the `experimentalDecorators` option:
+**Note** that this API is rather new in protobuf.js (and probably buggy) and that decorators are an experimental subject-to-change-without-notice feature in TypeScript. Also note that declaration order is important depending on the JS target. For example, `@Field.d(2, AwesomeArrayMessage)` requires that `AwesomeArrayMessage` has been defined earlier when targeting `es5`.
 
 ```ts
-import { Message, Type, Field, OneOf } from "protobufjs/light";
+import { Message, Type, Field, OneOf } from "protobufjs/light"; // respectively "./node_modules/protobufjs/light.js"
 
 @Type.d()
 export class AwesomeArrayMessage extends Message<AwesomeArrayMessage> {
@@ -560,9 +555,9 @@ export class AwesomeMessage extends Message<AwesomeMessage> {
 
 }
 
-let awesomeMessage = new AwesomeMessage({ awesomeField: "hi" });
-let awesomeBuffer  = AwesomeMessage.encode(awesomeMessage).finish();
-let awesomeDecoded = AwesomeMessage.decode(awesomeBuffer);
+let message = new AwesomeMessage({ awesomeField: "hi" });
+let buffer  = AwesomeMessage.encode(message).finish();
+let decoded = AwesomeMessage.decode(buffer);
 ```
 
 Command line
