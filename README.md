@@ -121,7 +121,7 @@ In a nutshell, the wire format writer understands the following types:
 
 | Field type | Expected JS type (create, encode) | Conversion (fromObject)
 |------------|-----------------------------------|------------------------
-| s-/u-/int32<br />s-/fixed32 | `number` (32 bit integer) | `value | 0` if signed<br />`value >>> 0` if unsigned
+| s-/u-/int32<br />s-/fixed32 | `number` (32 bit integer) | <code>value &#124; 0</code> if signed<br />`value >>> 0` if unsigned
 | s-/u-/int64<br />s-/fixed64 | `Long`-like (optimal)<br />`number` (53 bit integer) | `Long.fromValue(value)` with long.js<br />`parseInt(value, 10)` otherwise
 | float<br />double | `number` | `Number(value)`
 | bool | `boolean` | `Boolean(value)`
