@@ -139,7 +139,82 @@ type EnumDescriptor = {
 
 /**
  * Constructs a new message field instance. Note that {@link MapField|map fields} have their own class.
+ * @name Field
  * @classdesc Reflected message field.
+ * @extends FieldBase
+ * @constructor
+ * @param {string} name Unique name within its namespace
+ * @param {number} id Unique id within its namespace
+ * @param {string} type Value type
+ * @param {string|Object.<string,*>} [rule="optional"] Field rule
+ * @param {string|Object.<string,*>} [extend] Extended type if different from parent
+ * @param {Object.<string,*>} [options] Declared options
+ */
+export class Field extends FieldBase {
+
+    /**
+     * Constructs a new message field instance. Note that {@link MapField|map fields} have their own class.
+     * @name Field
+     * @classdesc Reflected message field.
+     * @extends FieldBase
+     * @constructor
+     * @param {string} name Unique name within its namespace
+     * @param {number} id Unique id within its namespace
+     * @param {string} type Value type
+     * @param {string|Object.<string,*>} [rule="optional"] Field rule
+     * @param {string|Object.<string,*>} [extend] Extended type if different from parent
+     * @param {Object.<string,*>} [options] Declared options
+     */
+    constructor(name: string, id: number, type: string, rule?: (string|{ [k: string]: any }), extend?: (string|{ [k: string]: any }), options?: { [k: string]: any });
+
+    /**
+     * Constructs a field from a field descriptor.
+     * @param {string} name Field name
+     * @param {FieldDescriptor} json Field descriptor
+     * @returns {Field} Created field
+     * @throws {TypeError} If arguments are invalid
+     */
+    public static fromJSON(name: string, json: FieldDescriptor): Field;
+
+    /**
+     * Determines whether this field is packed. Only relevant when repeated and working with proto2.
+     * @name Field#packed
+     * @type {boolean}
+     * @readonly
+     */
+    public readonly packed: boolean;
+
+    /**
+     * Field decorator (TypeScript).
+     * @name Field.d
+     * @function
+     * @param {number} fieldId Field id
+     * @param {"double"|"float"|"int32"|"uint32"|"sint32"|"fixed32"|"sfixed32"|"int64"|"uint64"|"sint64"|"fixed64"|"sfixed64"|"string"|"bool"|"bytes"|Object} fieldType Field type
+     * @param {"optional"|"required"|"repeated"} [fieldRule="optional"] Field rule
+     * @param {T} [defaultValue] Default value
+     * @returns {FieldDecorator} Decorator function
+     * @template T
+     */
+    public static d<T>(fieldId: number, fieldType: ("double"|"float"|"int32"|"uint32"|"sint32"|"fixed32"|"sfixed32"|"int64"|"uint64"|"sint64"|"fixed64"|"sfixed64"|"string"|"bool"|"bytes"|object), fieldRule?: ("optional"|"required"|"repeated"), defaultValue?: T): FieldDecorator;
+
+    /**
+     * Field decorator (TypeScript).
+     * @name Field.d
+     * @function
+     * @param {number} fieldId Field id
+     * @param {TMessageConstructor<T>} fieldType Field type
+     * @param {"optional"|"required"|"repeated"} [fieldRule="optional"] Field rule
+     * @returns {FieldDecorator} Decorator function
+     * @template T extends Message<T>
+     * @variation 2
+     */
+    public static d<T extends Message<T>>(fieldId: number, fieldType: TMessageConstructor<T>, fieldRule?: ("optional"|"required"|"repeated")): FieldDecorator;
+}
+
+/**
+ * Not an actual constructor. Use {@link Field} instead.
+ * @classdesc Base class of all reflected message fields. This is not an actual class but here for the sake of having consistent type definitions.
+ * @exports FieldBase
  * @extends ReflectionObject
  * @constructor
  * @param {string} name Unique name within its namespace
@@ -149,11 +224,12 @@ type EnumDescriptor = {
  * @param {string|Object.<string,*>} [extend] Extended type if different from parent
  * @param {Object.<string,*>} [options] Declared options
  */
-export class Field extends ReflectionObject {
+export class FieldBase extends ReflectionObject {
 
     /**
-     * Constructs a new message field instance. Note that {@link MapField|map fields} have their own class.
-     * @classdesc Reflected message field.
+     * Not an actual constructor. Use {@link Field} instead.
+     * @classdesc Base class of all reflected message fields. This is not an actual class but here for the sake of having consistent type definitions.
+     * @exports FieldBase
      * @extends ReflectionObject
      * @constructor
      * @param {string} name Unique name within its namespace
@@ -268,23 +344,6 @@ export class Field extends ReflectionObject {
     public declaringField: Field;
 
     /**
-     * Determines whether this field is packed. Only relevant when repeated and working with proto2.
-     * @name Field#packed
-     * @type {boolean}
-     * @readonly
-     */
-    public readonly packed: boolean;
-
-    /**
-     * Constructs a field from a field descriptor.
-     * @param {string} name Field name
-     * @param {FieldDescriptor} json Field descriptor
-     * @returns {Field} Created field
-     * @throws {TypeError} If arguments are invalid
-     */
-    public static fromJSON(name: string, json: FieldDescriptor): Field;
-
-    /**
      * Converts this field to a field descriptor.
      * @returns {FieldDescriptor} Field descriptor
      */
@@ -296,18 +355,6 @@ export class Field extends ReflectionObject {
      * @throws {Error} If any reference cannot be resolved
      */
     public resolve(): Field;
-
-    /**
-     * Field decorator (TypeScript).
-     * @function
-     * @param {number} fieldId Field id
-     * @param {"double"|"float"|"int32"|"uint32"|"sint32"|"fixed32"|"sfixed32"|"int64"|"uint64"|"sint64"|"fixed64"|"sfixed64"|"bool"|"string"|"bytes"|TConstructor<{}>} fieldType Field type
-     * @param {"optional"|"required"|"repeated"} [fieldRule="optional"] Field rule
-     * @param {T} [defaultValue] Default value (scalar types only)
-     * @returns {FieldDecorator} Decorator function
-     * @template T
-     */
-    public static d<T>(fieldId: number, fieldType: ("double"|"float"|"int32"|"uint32"|"sint32"|"fixed32"|"sfixed32"|"int64"|"uint64"|"sint64"|"fixed64"|"sfixed64"|"bool"|"string"|"bytes"|TConstructor<{}>), fieldRule?: ("optional"|"required"|"repeated"), defaultValue?: T): FieldDecorator;
 }
 
 type FieldDescriptor = {
@@ -416,7 +463,7 @@ export function configure(): void;
 /**
  * Constructs a new map field instance.
  * @classdesc Reflected map field.
- * @extends Field
+ * @extends FieldBase
  * @constructor
  * @param {string} name Unique name within its namespace
  * @param {number} id Unique id within its namespace
@@ -424,12 +471,12 @@ export function configure(): void;
  * @param {string} type Value type
  * @param {Object.<string,*>} [options] Declared options
  */
-export class MapField extends Field {
+export class MapField extends FieldBase {
 
     /**
      * Constructs a new map field instance.
      * @classdesc Reflected map field.
-     * @extends Field
+     * @extends FieldBase
      * @constructor
      * @param {string} name Unique name within its namespace
      * @param {number} id Unique id within its namespace
@@ -465,6 +512,18 @@ export class MapField extends Field {
      * @returns {MapFieldDescriptor} Map field descriptor
      */
     public toJSON(): MapFieldDescriptor;
+
+    /**
+     * Map field decorator (TypeScript).
+     * @name MapField.d
+     * @function
+     * @param {number} fieldId Field id
+     * @param {"int32"|"uint32"|"sint32"|"fixed32"|"sfixed32"|"int64"|"uint64"|"sint64"|"fixed64"|"sfixed64"|"bool"|"string"} fieldKeyType Field key type
+     * @param {"double"|"float"|"int32"|"uint32"|"sint32"|"fixed32"|"sfixed32"|"int64"|"uint64"|"sint64"|"fixed64"|"sfixed64"|"bool"|"string"|"bytes"|Object|TConstructor<{}>} fieldValueType Field value type
+     * @returns {FieldDecorator} Decorator function
+     * @template T extends { [key: string]: any }
+     */
+    public static d<T extends { [key: string]: any }>(fieldId: number, fieldKeyType: ("int32"|"uint32"|"sint32"|"fixed32"|"sfixed32"|"int64"|"uint64"|"sint64"|"fixed64"|"sfixed64"|"bool"|"string"), fieldValueType: ("double"|"float"|"int32"|"uint32"|"sint32"|"fixed32"|"sfixed32"|"int64"|"uint64"|"sint64"|"fixed64"|"sfixed64"|"bool"|"string"|"bytes"|object|TConstructor<{}>)): FieldDecorator;
 }
 
 type MapFieldDescriptor = {
@@ -1098,9 +1157,9 @@ export class OneOf extends ReflectionObject {
      * @function
      * @param {...string} fieldNames Field names
      * @returns {OneOfDecorator} Decorator function
-     * @template T
+     * @template T extends string
      */
-    public static d<T>(...fieldNames: string[]): OneOfDecorator;
+    public static d<T extends string>(...fieldNames: string[]): OneOfDecorator;
 }
 
 type OneOfDescriptor = {
@@ -1781,10 +1840,11 @@ export class Type extends NamespaceBase {
 
     /**
      * Type decorator (TypeScript).
+     * @param {string} [typeName] Type name, defaults to the constructor's name
      * @returns {TypeDecorator<T>} Decorator function
      * @template T extends Message<T>
      */
-    public static d<T extends Message<T>>(): TypeDecorator<T>;
+    public static d<T extends Message<T>>(typeName?: string): TypeDecorator<T>;
 }
 
 type TypeDescriptor = {
@@ -1981,6 +2041,8 @@ export namespace types {
 type TConstructor<T> = { new(...params: any[]): T };
 
 type TMessageConstructor<T extends Message<T>> = { new(properties?: TMessageProperties<T>): T };
+
+type TObject<V> = { [key: string]: V };
 
 type OneOfGetter = () => (string|undefined);
 
@@ -2349,12 +2411,29 @@ export namespace util {
     function compareFieldsById(a: Field, b: Field): number;
 
     /**
-     * Decorator helper (TypeScript).
+     * Decorator helper for types (TypeScript).
      * @param {TMessageConstructor<T>} ctor Constructor function
+     * @param {string} [typeName] Type name, defaults to the constructor's name
      * @returns {Type} Reflected type
      * @template T extends Message<T>
+     * @property {Root} root Decorators root
      */
-    function decorate<T extends Message<T>>(ctor: TMessageConstructor<T>): Type;
+    function decorateType<T extends Message<T>>(ctor: TMessageConstructor<T>, typeName?: string): Type;
+
+    /**
+     * Decorator helper for enums (TypeScript).
+     * @param {Object} object Enum object
+     * @returns {Enum} Reflected enum
+     */
+    function decorateEnum(object: object): Enum;
+
+    /**
+     * Decorator root (TypeScript).
+     * @name util.decorateRoot
+     * @type {Root}
+     * @readonly
+     */
+    let decorateRoot: Root;
 
     /**
      * Returns a promise from a node-style callback function.

@@ -176,14 +176,14 @@ OneOf.prototype.onRemove = function onRemove(parent) {
  * @function
  * @param {...string} fieldNames Field names
  * @returns {OneOfDecorator} Decorator function
- * @template T
+ * @template T extends string
  */
-OneOf.d = function oneOfDecorator() {
+OneOf.d = function decorateOneOf() {
     var fieldNames = [];
     for (var i = 0; i < arguments.length; ++i)
         fieldNames.push(arguments[i]);
-    return function(prototype, oneofName) {
-        util.decorate(prototype.constructor)
+    return function oneOfDecorator(prototype, oneofName) {
+        util.decorateType(prototype.constructor)
             .add(new OneOf(oneofName, fieldNames));
         Object.defineProperty(prototype, oneofName, {
             get: util.oneOfGetter(fieldNames),

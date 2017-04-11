@@ -6,6 +6,11 @@
  */
 var util = module.exports = require("./util/minimal");
 
+var roots = require("./roots");
+
+var Type, // cyclic
+    Enum;
+
 util.codegen = require("@protobufjs/codegen");
 util.fetch   = require("@protobufjs/fetch");
 util.path    = require("@protobufjs/path");
@@ -61,20 +66,67 @@ util.compareFieldsById = function compareFieldsById(a, b) {
 };
 
 /**
- * Decorator helper (TypeScript).
+ * Decorator helper for types (TypeScript).
  * @param {TMessageConstructor<T>} ctor Constructor function
+ * @param {string} [typeName] Type name, defaults to the constructor's name
  * @returns {Type} Reflected type
  * @template T extends Message<T>
+ * @property {Root} root Decorators root
  */
-util.decorate = function decorate(ctor) {
-    var Root  = require("./root"),
-        Type  = require("./type"),
-        roots = require("./roots");
-    var root  = roots["decorators"] || (roots["decorators"] = new Root()),
-        type  = root.get(ctor.name);
-    if (!type) {
-        root.add(type = new Type(ctor.name));
-        ctor.$type = ctor.prototype.$type = type;
+util.decorateType = function decorateType(ctor, typeName) {
+
+    /* istanbul ignore if */
+    if (ctor.$type) {
+        if (typeName && ctor.$type.name !== typeName) {
+            util.decorateRoot.remove(ctor.$type);
+            ctor.$type.name = typeName;
+            util.decorateRoot.add(ctor.$type);
+        }
+        return ctor.$type;
     }
+
+    /* istanbul ignore if */
+    if (!Type)
+        Type = require("./type");
+
+    var type = new Type(typeName || ctor.name);
+    util.decorateRoot.add(type);
+    Object.defineProperty(ctor, "$type", { value: type, enumerable: false });
+    Object.defineProperty(ctor.prototype, "$type", { value: type, enumerable: false });
     return type;
 };
+
+var decorateEnumIndex = 0;
+
+/**
+ * Decorator helper for enums (TypeScript).
+ * @param {Object} object Enum object
+ * @returns {Enum} Reflected enum
+ */
+util.decorateEnum = function decorateEnum(object) {
+
+    /* istanbul ignore if */
+    if (object.$type)
+        return object.$type;
+
+    /* istanbul ignore if */
+    if (!Enum)
+        Enum = require("./enum");
+
+    var enm = new Enum("Enum" + decorateEnumIndex++, object);
+    util.decorateRoot.add(enm);
+    Object.defineProperty(object, "$type", { value: enm, enumerable: false });
+    return enm;
+};
+
+/**
+ * Decorator root (TypeScript).
+ * @name util.decorateRoot
+ * @type {Root}
+ * @readonly
+ */
+Object.defineProperty(util, "decorateRoot", {
+    get: function() {
+        return roots["decorators"] || (roots["decorators"] = new (require("./root"))());
+    }
+});

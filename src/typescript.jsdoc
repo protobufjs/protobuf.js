@@ -18,3 +18,10 @@
  * @template T extends Message<T>
  * @tstype { new(properties?: TMessageProperties<T>): T }
  */
+
+/**
+ * Object type.
+ * @typedef TObject
+ * @template V
+ * @tstype { [key: string]: V }
+ */

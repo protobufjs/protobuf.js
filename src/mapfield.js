@@ -11,7 +11,7 @@ var types   = require("./types"),
 /**
  * Constructs a new map field instance.
  * @classdesc Reflected map field.
- * @extends Field
+ * @extends FieldBase
  * @constructor
  * @param {string} name Unique name within its namespace
  * @param {number} id Unique id within its namespace
@@ -100,4 +100,30 @@ MapField.prototype.resolve = function resolve() {
         throw Error("invalid key type: " + this.keyType);
 
     return Field.prototype.resolve.call(this);
+};
+
+/**
+ * Map field decorator (TypeScript).
+ * @name MapField.d
+ * @function
+ * @param {number} fieldId Field id
+ * @param {"int32"|"uint32"|"sint32"|"fixed32"|"sfixed32"|"int64"|"uint64"|"sint64"|"fixed64"|"sfixed64"|"bool"|"string"} fieldKeyType Field key type
+ * @param {"double"|"float"|"int32"|"uint32"|"sint32"|"fixed32"|"sfixed32"|"int64"|"uint64"|"sint64"|"fixed64"|"sfixed64"|"bool"|"string"|"bytes"|Object|TConstructor<{}>} fieldValueType Field value type
+ * @returns {FieldDecorator} Decorator function
+ * @template T extends { [key: string]: any }
+ */
+MapField.d = function decorateMapField(fieldId, fieldKeyType, fieldValueType) {
+
+    // submessage value: decorate the submessage and use its name as the type
+    if (typeof fieldValueType === "function")
+        fieldValueType = util.decorateType(fieldValueType).name;
+
+    // enum reference value: create a reflected copy of the enum and keep reuseing it
+    else if (fieldValueType && typeof fieldType === "object")
+        fieldValueType = util.decorateEnum(fieldValueType).name;
+
+    return function mapFieldDecorator(prototype, fieldName) {
+        util.decorateType(prototype.constructor)
+            .add(new MapField(fieldName, fieldId, fieldKeyType, fieldValueType));
+    };
 };

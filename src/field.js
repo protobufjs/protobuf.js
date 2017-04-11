@@ -15,7 +15,33 @@ var ruleRe = /^required|optional|repeated$/;
 
 /**
  * Constructs a new message field instance. Note that {@link MapField|map fields} have their own class.
+ * @name Field
  * @classdesc Reflected message field.
+ * @extends FieldBase
+ * @constructor
+ * @param {string} name Unique name within its namespace
+ * @param {number} id Unique id within its namespace
+ * @param {string} type Value type
+ * @param {string|Object.<string,*>} [rule="optional"] Field rule
+ * @param {string|Object.<string,*>} [extend] Extended type if different from parent
+ * @param {Object.<string,*>} [options] Declared options
+ */
+
+/**
+ * Constructs a field from a field descriptor.
+ * @param {string} name Field name
+ * @param {FieldDescriptor} json Field descriptor
+ * @returns {Field} Created field
+ * @throws {TypeError} If arguments are invalid
+ */
+Field.fromJSON = function fromJSON(name, json) {
+    return new Field(name, json.id, json.type, json.rule, json.extend, json.options);
+};
+
+/**
+ * Not an actual constructor. Use {@link Field} instead.
+ * @classdesc Base class of all reflected message fields. This is not an actual class but here for the sake of having consistent type definitions.
+ * @exports FieldBase
  * @extends ReflectionObject
  * @constructor
  * @param {string} name Unique name within its namespace
@@ -205,17 +231,6 @@ Field.prototype.setOption = function setOption(name, value, ifNotSet) {
  */
 
 /**
- * Constructs a field from a field descriptor.
- * @param {string} name Field name
- * @param {FieldDescriptor} json Field descriptor
- * @returns {Field} Created field
- * @throws {TypeError} If arguments are invalid
- */
-Field.fromJSON = function fromJSON(name, json) {
-    return new Field(name, json.id, json.type, json.rule, json.extend, json.options);
-};
-
-/**
  * Converts this field to a field descriptor.
  * @returns {FieldDescriptor} Field descriptor
  */
@@ -295,24 +310,7 @@ Field.prototype.resolve = function resolve() {
 };
 
 /**
- * Initializes this field's default value on the specified prototype.
- * @param {Object} prototype Message prototype
- * @returns {Field} `this`
- */
-/* Field.prototype.initDefault = function(prototype) {
-    // objects on the prototype must be immmutable. users must assign a new object instance and
-    // cannot use Array#push on empty arrays on the prototype for example, as this would modify
-    // the value on the prototype for ALL messages of this type. Hence, these objects are frozen.
-    prototype[this.name] = Array.isArray(this.defaultValue)
-        ? util.emptyArray
-        : util.isObject(this.defaultValue) && !this.long
-            ? util.emptyObject
-            : this.defaultValue; // if a long, it is frozen when initialized
-    return this;
-}; */
-
-/**
- * Decorator function as returned by {@link Field.d} (TypeScript).
+ * Decorator function as returned by {@link Field.d} and {@link MapField.d} (TypeScript).
  * @typedef FieldDecorator
  * @type {function}
  * @param {Object} prototype Target prototype
@@ -322,22 +320,40 @@ Field.prototype.resolve = function resolve() {
 
 /**
  * Field decorator (TypeScript).
+ * @name Field.d
  * @function
  * @param {number} fieldId Field id
- * @param {"double"|"float"|"int32"|"uint32"|"sint32"|"fixed32"|"sfixed32"|"int64"|"uint64"|"sint64"|"fixed64"|"sfixed64"|"bool"|"string"|"bytes"|TConstructor<{}>} fieldType Field type
+ * @param {"double"|"float"|"int32"|"uint32"|"sint32"|"fixed32"|"sfixed32"|"int64"|"uint64"|"sint64"|"fixed64"|"sfixed64"|"string"|"bool"|"bytes"|Object} fieldType Field type
  * @param {"optional"|"required"|"repeated"} [fieldRule="optional"] Field rule
- * @param {T} [defaultValue] Default value (scalar types only)
+ * @param {T} [defaultValue] Default value
  * @returns {FieldDecorator} Decorator function
  * @template T
  */
-Field.d = function fieldDecorator(fieldId, fieldType, fieldRule, defaultValue) {
-    if (typeof fieldType === "function") {
-        util.decorate(fieldType);
-        fieldType = fieldType.name;
-    }
-    return function(prototype, fieldName) {
-        var field = new Field(fieldName, fieldId, fieldType, fieldRule, { "default": defaultValue });
-        util.decorate(prototype.constructor)
-            .add(field);
+Field.d = function decorateField(fieldId, fieldType, fieldRule, defaultValue) {
+
+    // submessage: decorate the submessage and use its name as the type
+    if (typeof fieldType === "function")
+        fieldType = util.decorateType(fieldType).name;
+
+    // enum reference: create a reflected copy of the enum and keep reuseing it
+    else if (fieldType && typeof fieldType === "object")
+        fieldType = util.decorateEnum(fieldType).name;
+
+    return function fieldDecorator(prototype, fieldName) {
+        util.decorateType(prototype.constructor)
+            .add(new Field(fieldName, fieldId, fieldType, fieldRule, { "default": defaultValue }));
     };
 };
+
+/**
+ * Field decorator (TypeScript).
+ * @name Field.d
+ * @function
+ * @param {number} fieldId Field id
+ * @param {TMessageConstructor<T>} fieldType Field type
+ * @param {"optional"|"required"|"repeated"} [fieldRule="optional"] Field rule
+ * @returns {FieldDecorator} Decorator function
+ * @template T extends Message<T>
+ * @variation 2
+ */
+// like Field.d but without a default value

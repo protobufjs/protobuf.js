@@ -510,48 +510,44 @@ import { AwesomeMessage } from "./bundle.js";
 // example code
 let message = AwesomeMessage.create({ awesomeField: "hello" });
 let buffer  = AwesomeMessage.encode(message).finish();
-let decoded = AweesomeMessage.decode(buffer);
+let decoded = AwesomeMessage.decode(buffer);
 ```
 
 #### Using decorators
 
 The library also includes an early implementation of [decorators](https://www.typescriptlang.org/docs/handbook/decorators.html).
 
-**Note** that this API is rather new in protobuf.js (and probably buggy) and that decorators are an experimental subject-to-change-without-notice feature in TypeScript. Also note that declaration order is important depending on the JS target. For example, `@Field.d(2, AwesomeArrayMessage)` requires that `AwesomeArrayMessage` has been defined earlier when targeting `es5`.
+**Note** that this API is rather new in protobuf.js (and probably buggy) and that decorators are an experimental feature in TypeScript. Also note that declaration order is important depending on the JS target. For example, `@Field.d(2, AwesomeArrayMessage)` requires that `AwesomeArrayMessage` has been defined earlier when targeting `ES5`.
 
 ```ts
 import { Message, Type, Field, OneOf } from "protobufjs/light"; // respectively "./node_modules/protobufjs/light.js"
 
-@Type.d()
-export class AwesomeArrayMessage extends Message<AwesomeArrayMessage> {
-
-  @Field.d(1, "uint32", "repeated")
-  public awesomeArray: number[];
-
-}
-
-@Type.d()
-export class AwesomeStringMessage extends Message<AwesomeStringMessage> {
+export class AwesomeSubMessage extends Message<AwesomeSubMessage> {
 
   @Field.d(1, "string")
   public awesomeString: string;
 
 }
 
-@Type.d()
+export enum AwesomeEnum {
+  ONE = 1,
+  TWO = 2
+}
+
+@Type.d("SuperAwesomeMessage")
 export class AwesomeMessage extends Message<AwesomeMessage> {
 
   @Field.d(1, "string", "optional", "awesome default string")
   public awesomeField: string;
 
-  @Field.d(2, AwesomeArrayMessage)
-  public awesomeArrayMessage: AwesomeArrayMessage;
+  @Field.d(2, AwesomeSubMessage)
+  public awesomeSubMessage: AwesomeSubMessage;
 
-  @Field.d(3, AwesomeStringMessage)
-  public awesomeStringMessage: AwesomeStringMessage;
+  @Field.d(3, AwesomeEnum)
+  public awesomeEnum: AwesomeEnum;
 
-  @OneOf.d("awesomeArrayMessage", "awesomeStringMessage")
-  public whichAwesomeMessage: string;
+  @OneOf.d("awesomeSubMessage", "awesomeEnum")
+  public which: string;
 
 }
 
@@ -559,6 +555,22 @@ let message = new AwesomeMessage({ awesomeField: "hi" });
 let buffer  = AwesomeMessage.encode(message).finish();
 let decoded = AwesomeMessage.decode(buffer);
 ```
+
+Supported decorators are:
+
+* **Type.d(typeName?: `string`)**<br />
+  optionally annotates a class as a protobuf message type. If `typeName` is not specified, the constructor's runtime function name is used.
+
+* **Field.d&lt;T>(fieldId: `number`, fieldType: `string | TMessageConstructor<TField>`, fieldRule?: `"optional" | "required" | "repeated"`, defaultValue?: `T`)**<br />
+  annotates a property as a protobuf field with the specified id and protobuf type.
+
+* **MapField.d&lt;T extends { [key: string]: any }>(fieldId: `number`, fieldKeyType: `string`, fieldValueType. `string | TConstructor<{}>`)**<br />
+  annotates a property as a protobuf map field with the specified id, protobuf key and value type.
+
+* **OneOf.d&lt;T extends string>(...fieldNames: `string[]`)**<br />
+  annotates a property as a protobuf oneof covering the specified fields.
+
+Decorated types reside in `protobuf.roots.decorators` using a flat structure (no duplicate names).
 
 Command line
 ------------

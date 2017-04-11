@@ -20,6 +20,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
 exports.__esModule = true;
 var __1 = require("..");
 // Reflection
@@ -57,34 +60,24 @@ var helloMessage = new Hello({ value: "hi" });
 var helloBuffer = Hello.encode(helloMessage.foo()).finish();
 var helloDecoded = Hello.decode(helloBuffer);
 // Decorators
-var AwesomeArrayMessage = (function (_super) {
-    __extends(AwesomeArrayMessage, _super);
-    function AwesomeArrayMessage() {
+require("reflect-metadata");
+var AwesomeSubMessage = (function (_super) {
+    __extends(AwesomeSubMessage, _super);
+    function AwesomeSubMessage() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    return AwesomeArrayMessage;
+    return AwesomeSubMessage;
 }(__1.Message));
 __decorate([
-    __1.Field.d(1, "uint32", "repeated")
-], AwesomeArrayMessage.prototype, "awesomeArray");
-AwesomeArrayMessage = __decorate([
-    __1.Type.d()
-], AwesomeArrayMessage);
-exports.AwesomeArrayMessage = AwesomeArrayMessage;
-var AwesomeStringMessage = (function (_super) {
-    __extends(AwesomeStringMessage, _super);
-    function AwesomeStringMessage() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    return AwesomeStringMessage;
-}(__1.Message));
-__decorate([
-    __1.Field.d(1, "string")
-], AwesomeStringMessage.prototype, "awesomeString");
-AwesomeStringMessage = __decorate([
-    __1.Type.d()
-], AwesomeStringMessage);
-exports.AwesomeStringMessage = AwesomeStringMessage;
+    __1.Field.d(1, "string"),
+    __metadata("design:type", String)
+], AwesomeSubMessage.prototype, "awesomeString");
+exports.AwesomeSubMessage = AwesomeSubMessage;
+var AwesomeEnum;
+(function (AwesomeEnum) {
+    AwesomeEnum[AwesomeEnum["ONE"] = 1] = "ONE";
+    AwesomeEnum[AwesomeEnum["TWO"] = 2] = "TWO";
+})(AwesomeEnum = exports.AwesomeEnum || (exports.AwesomeEnum = {}));
 var AwesomeMessage = (function (_super) {
     __extends(AwesomeMessage, _super);
     function AwesomeMessage() {
@@ -93,19 +86,23 @@ var AwesomeMessage = (function (_super) {
     return AwesomeMessage;
 }(__1.Message));
 __decorate([
-    __1.Field.d(1, "string", "optional", "awesome default string")
+    __1.Field.d(1, "string", "optional", "awesome default string"),
+    __metadata("design:type", String)
 ], AwesomeMessage.prototype, "awesomeField");
 __decorate([
-    __1.Field.d(2, AwesomeArrayMessage)
-], AwesomeMessage.prototype, "awesomeArrayMessage");
+    __1.Field.d(2, AwesomeSubMessage),
+    __metadata("design:type", AwesomeSubMessage)
+], AwesomeMessage.prototype, "awesomeSubMessage");
 __decorate([
-    __1.Field.d(3, AwesomeStringMessage)
-], AwesomeMessage.prototype, "awesomeStringMessage");
+    __1.Field.d(3, AwesomeEnum, "optional", AwesomeEnum.ONE),
+    __metadata("design:type", Number)
+], AwesomeMessage.prototype, "awesomeEnum");
 __decorate([
-    __1.OneOf.d("awesomeArrayMessage", "awesomeStringMessage")
-], AwesomeMessage.prototype, "whichAwesomeMessage");
+    __1.OneOf.d("awesomeSubMessage", "awesomeEnum"),
+    __metadata("design:type", String)
+], AwesomeMessage.prototype, "which");
 AwesomeMessage = __decorate([
-    __1.Type.d()
+    __1.Type.d("SuperAwesomeMessage")
 ], AwesomeMessage);
 exports.AwesomeMessage = AwesomeMessage;
 var awesomeMessage = new AwesomeMessage({ awesomeField: "hi" });

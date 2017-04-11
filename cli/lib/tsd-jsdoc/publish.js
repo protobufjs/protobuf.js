@@ -232,8 +232,9 @@ function getTypeOf(element) {
     name = name.replace(/\bfunction(?:\(\))?([^\w]|$)/g, "Function");
 
     // Convert plain Object back to just object
-    if (name === "Object")
-        name = "object";
+    name = name.replace(/\b(Object(?!\.))/g, function($0, $1) {
+        return $1.toLowerCase();
+    });
 
     return name;
 }

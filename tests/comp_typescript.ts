@@ -45,36 +45,34 @@ let helloDecoded = Hello.decode(helloBuffer);
 
 // Decorators
 
-@Type.d()
-export class AwesomeArrayMessage extends Message<AwesomeArrayMessage> {
+import "reflect-metadata";
 
-  @Field.d(1, "uint32", "repeated")
-  public awesomeArray: number[];
-
-}
-
-@Type.d()
-export class AwesomeStringMessage extends Message<AwesomeStringMessage> {
+export class AwesomeSubMessage extends Message<AwesomeSubMessage> {
 
   @Field.d(1, "string")
   public awesomeString: string;
 
 }
 
-@Type.d()
+export enum AwesomeEnum {
+  ONE = 1,
+  TWO = 2
+}
+
+@Type.d("SuperAwesomeMessage")
 export class AwesomeMessage extends Message<AwesomeMessage> {
 
   @Field.d(1, "string", "optional", "awesome default string")
   public awesomeField: string;
 
-  @Field.d(2, AwesomeArrayMessage)
-  public awesomeArrayMessage: AwesomeArrayMessage;
+  @Field.d(2, AwesomeSubMessage)
+  public awesomeSubMessage: AwesomeSubMessage;
 
-  @Field.d(3, AwesomeStringMessage)
-  public awesomeStringMessage: AwesomeStringMessage;
+  @Field.d(3, AwesomeEnum, "optional", AwesomeEnum.ONE)
+  public awesomeEnum: AwesomeEnum;
 
-  @OneOf.d("awesomeArrayMessage", "awesomeStringMessage")
-  public whichAwesomeMessage: string;
+  @OneOf.d("awesomeSubMessage", "awesomeEnum")
+  public which: string;
 
 }
 

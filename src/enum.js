@@ -46,7 +46,8 @@ function Enum(name, values, options) {
 
     if (values)
         for (var keys = Object.keys(values), i = 0; i < keys.length; ++i)
-            this.valuesById[ this.values[keys[i]] = values[keys[i]] ] = keys[i];
+            if (typeof values[keys[i]] === "number") // use forward entries only
+                this.valuesById[ this.values[keys[i]] = values[keys[i]] ] = keys[i];
 }
 
 /**

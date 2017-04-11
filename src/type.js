@@ -560,11 +560,12 @@ Type.prototype.toObject = function toObject(message, options) {
 
 /**
  * Type decorator (TypeScript).
+ * @param {string} [typeName] Type name, defaults to the constructor's name
  * @returns {TypeDecorator<T>} Decorator function
  * @template T extends Message<T>
  */
-Type.d = function typeDecorator() {
-    return function(target) {
-        util.decorate(target);
+Type.d = function decorateType(typeName) {
+    return function typeDecorator(target) {
+        util.decorateType(target, typeName);
     };
 };

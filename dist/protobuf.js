@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.8.0 (c) 2016, Daniel Wirtz
- * Compiled Mon, 10 Apr 2017 15:13:40 UTC
+ * Compiled Tue, 11 Apr 2017 00:13:36 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -1897,7 +1897,8 @@ function Enum(name, values, options) {
 
     if (values)
         for (var keys = Object.keys(values), i = 0; i < keys.length; ++i)
-            this.valuesById[ this.values[keys[i]] = values[keys[i]] ] = keys[i];
+            if (typeof values[keys[i]] === "number") // use forward entries only
+                this.valuesById[ this.values[keys[i]] = values[keys[i]] ] = keys[i];
 }
 
 /**
@@ -2003,7 +2004,33 @@ var ruleRe = /^required|optional|repeated$/;
 
 /**
  * Constructs a new message field instance. Note that {@link MapField|map fields} have their own class.
+ * @name Field
  * @classdesc Reflected message field.
+ * @extends FieldBase
+ * @constructor
+ * @param {string} name Unique name within its namespace
+ * @param {number} id Unique id within its namespace
+ * @param {string} type Value type
+ * @param {string|Object.<string,*>} [rule="optional"] Field rule
+ * @param {string|Object.<string,*>} [extend] Extended type if different from parent
+ * @param {Object.<string,*>} [options] Declared options
+ */
+
+/**
+ * Constructs a field from a field descriptor.
+ * @param {string} name Field name
+ * @param {FieldDescriptor} json Field descriptor
+ * @returns {Field} Created field
+ * @throws {TypeError} If arguments are invalid
+ */
+Field.fromJSON = function fromJSON(name, json) {
+    return new Field(name, json.id, json.type, json.rule, json.extend, json.options);
+};
+
+/**
+ * Not an actual constructor. Use {@link Field} instead.
+ * @classdesc Base class of all reflected message fields. This is not an actual class but here for the sake of having consistent type definitions.
+ * @exports FieldBase
  * @extends ReflectionObject
  * @constructor
  * @param {string} name Unique name within its namespace
@@ -2193,17 +2220,6 @@ Field.prototype.setOption = function setOption(name, value, ifNotSet) {
  */
 
 /**
- * Constructs a field from a field descriptor.
- * @param {string} name Field name
- * @param {FieldDescriptor} json Field descriptor
- * @returns {Field} Created field
- * @throws {TypeError} If arguments are invalid
- */
-Field.fromJSON = function fromJSON(name, json) {
-    return new Field(name, json.id, json.type, json.rule, json.extend, json.options);
-};
-
-/**
  * Converts this field to a field descriptor.
  * @returns {FieldDescriptor} Field descriptor
  */
@@ -2283,24 +2299,7 @@ Field.prototype.resolve = function resolve() {
 };
 
 /**
- * Initializes this field's default value on the specified prototype.
- * @param {Object} prototype Message prototype
- * @returns {Field} `this`
- */
-/* Field.prototype.initDefault = function(prototype) {
-    // objects on the prototype must be immmutable. users must assign a new object instance and
-    // cannot use Array#push on empty arrays on the prototype for example, as this would modify
-    // the value on the prototype for ALL messages of this type. Hence, these objects are frozen.
-    prototype[this.name] = Array.isArray(this.defaultValue)
-        ? util.emptyArray
-        : util.isObject(this.defaultValue) && !this.long
-            ? util.emptyObject
-            : this.defaultValue; // if a long, it is frozen when initialized
-    return this;
-}; */
-
-/**
- * Decorator function as returned by {@link Field.d} (TypeScript).
+ * Decorator function as returned by {@link Field.d} and {@link MapField.d} (TypeScript).
  * @typedef FieldDecorator
  * @type {function}
  * @param {Object} prototype Target prototype
@@ -2310,25 +2309,43 @@ Field.prototype.resolve = function resolve() {
 
 /**
  * Field decorator (TypeScript).
+ * @name Field.d
  * @function
  * @param {number} fieldId Field id
- * @param {"double"|"float"|"int32"|"uint32"|"sint32"|"fixed32"|"sfixed32"|"int64"|"uint64"|"sint64"|"fixed64"|"sfixed64"|"bool"|"string"|"bytes"|TConstructor<{}>} fieldType Field type
+ * @param {"double"|"float"|"int32"|"uint32"|"sint32"|"fixed32"|"sfixed32"|"int64"|"uint64"|"sint64"|"fixed64"|"sfixed64"|"string"|"bool"|"bytes"|Object} fieldType Field type
  * @param {"optional"|"required"|"repeated"} [fieldRule="optional"] Field rule
- * @param {T} [defaultValue] Default value (scalar types only)
+ * @param {T} [defaultValue] Default value
  * @returns {FieldDecorator} Decorator function
  * @template T
  */
-Field.d = function fieldDecorator(fieldId, fieldType, fieldRule, defaultValue) {
-    if (typeof fieldType === "function") {
-        util.decorate(fieldType);
-        fieldType = fieldType.name;
-    }
-    return function(prototype, fieldName) {
-        var field = new Field(fieldName, fieldId, fieldType, fieldRule, { "default": defaultValue });
-        util.decorate(prototype.constructor)
-            .add(field);
+Field.d = function decorateField(fieldId, fieldType, fieldRule, defaultValue) {
+
+    // submessage: decorate the submessage and use its name as the type
+    if (typeof fieldType === "function")
+        fieldType = util.decorateType(fieldType).name;
+
+    // enum reference: create a reflected copy of the enum and keep reuseing it
+    else if (fieldType && typeof fieldType === "object")
+        fieldType = util.decorateEnum(fieldType).name;
+
+    return function fieldDecorator(prototype, fieldName) {
+        util.decorateType(prototype.constructor)
+            .add(new Field(fieldName, fieldId, fieldType, fieldRule, { "default": defaultValue }));
     };
 };
+
+/**
+ * Field decorator (TypeScript).
+ * @name Field.d
+ * @function
+ * @param {number} fieldId Field id
+ * @param {TMessageConstructor<T>} fieldType Field type
+ * @param {"optional"|"required"|"repeated"} [fieldRule="optional"] Field rule
+ * @returns {FieldDecorator} Decorator function
+ * @template T extends Message<T>
+ * @variation 2
+ */
+// like Field.d but without a default value
 
 },{"15":15,"24":24,"35":35,"36":36,"37":37}],17:[function(require,module,exports){
 "use strict";
@@ -2500,7 +2517,7 @@ var types   = require(36),
 /**
  * Constructs a new map field instance.
  * @classdesc Reflected map field.
- * @extends Field
+ * @extends FieldBase
  * @constructor
  * @param {string} name Unique name within its namespace
  * @param {number} id Unique id within its namespace
@@ -2589,6 +2606,32 @@ MapField.prototype.resolve = function resolve() {
         throw Error("invalid key type: " + this.keyType);
 
     return Field.prototype.resolve.call(this);
+};
+
+/**
+ * Map field decorator (TypeScript).
+ * @name MapField.d
+ * @function
+ * @param {number} fieldId Field id
+ * @param {"int32"|"uint32"|"sint32"|"fixed32"|"sfixed32"|"int64"|"uint64"|"sint64"|"fixed64"|"sfixed64"|"bool"|"string"} fieldKeyType Field key type
+ * @param {"double"|"float"|"int32"|"uint32"|"sint32"|"fixed32"|"sfixed32"|"int64"|"uint64"|"sint64"|"fixed64"|"sfixed64"|"bool"|"string"|"bytes"|Object|TConstructor<{}>} fieldValueType Field value type
+ * @returns {FieldDecorator} Decorator function
+ * @template T extends { [key: string]: any }
+ */
+MapField.d = function decorateMapField(fieldId, fieldKeyType, fieldValueType) {
+
+    // submessage value: decorate the submessage and use its name as the type
+    if (typeof fieldValueType === "function")
+        fieldValueType = util.decorateType(fieldValueType).name;
+
+    // enum reference value: create a reflected copy of the enum and keep reuseing it
+    else if (fieldValueType && typeof fieldType === "object")
+        fieldValueType = util.decorateEnum(fieldValueType).name;
+
+    return function mapFieldDecorator(prototype, fieldName) {
+        util.decorateType(prototype.constructor)
+            .add(new MapField(fieldName, fieldId, fieldKeyType, fieldValueType));
+    };
 };
 
 },{"16":16,"36":36,"37":37}],21:[function(require,module,exports){
@@ -3675,14 +3718,14 @@ OneOf.prototype.onRemove = function onRemove(parent) {
  * @function
  * @param {...string} fieldNames Field names
  * @returns {OneOfDecorator} Decorator function
- * @template T
+ * @template T extends string
  */
-OneOf.d = function oneOfDecorator() {
+OneOf.d = function decorateOneOf() {
     var fieldNames = [];
     for (var i = 0; i < arguments.length; ++i)
         fieldNames.push(arguments[i]);
-    return function(prototype, oneofName) {
-        util.decorate(prototype.constructor)
+    return function oneOfDecorator(prototype, oneofName) {
+        util.decorateType(prototype.constructor)
             .add(new OneOf(oneofName, fieldNames));
         Object.defineProperty(prototype, oneofName, {
             get: util.oneOfGetter(fieldNames),
@@ -6461,12 +6504,13 @@ Type.prototype.toObject = function toObject(message, options) {
 
 /**
  * Type decorator (TypeScript).
+ * @param {string} [typeName] Type name, defaults to the constructor's name
  * @returns {TypeDecorator<T>} Decorator function
  * @template T extends Message<T>
  */
-Type.d = function typeDecorator() {
-    return function(target) {
-        util.decorate(target);
+Type.d = function decorateType(typeName) {
+    return function typeDecorator(target) {
+        util.decorateType(target, typeName);
     };
 };
 
@@ -6677,6 +6721,11 @@ types.packed = bake([
  */
 var util = module.exports = require(39);
 
+var roots = require(30);
+
+var Type, // cyclic
+    Enum;
+
 util.codegen = require(3);
 util.fetch   = require(5);
 util.path    = require(8);
@@ -6732,25 +6781,72 @@ util.compareFieldsById = function compareFieldsById(a, b) {
 };
 
 /**
- * Decorator helper (TypeScript).
+ * Decorator helper for types (TypeScript).
  * @param {TMessageConstructor<T>} ctor Constructor function
+ * @param {string} [typeName] Type name, defaults to the constructor's name
  * @returns {Type} Reflected type
  * @template T extends Message<T>
+ * @property {Root} root Decorators root
  */
-util.decorate = function decorate(ctor) {
-    var Root  = require(29),
-        Type  = require(35),
-        roots = require(30);
-    var root  = roots["decorators"] || (roots["decorators"] = new Root()),
-        type  = root.get(ctor.name);
-    if (!type) {
-        root.add(type = new Type(ctor.name));
-        ctor.$type = ctor.prototype.$type = type;
+util.decorateType = function decorateType(ctor, typeName) {
+
+    /* istanbul ignore if */
+    if (ctor.$type) {
+        if (typeName && ctor.$type.name !== typeName) {
+            util.decorateRoot.remove(ctor.$type);
+            ctor.$type.name = typeName;
+            util.decorateRoot.add(ctor.$type);
+        }
+        return ctor.$type;
     }
+
+    /* istanbul ignore if */
+    if (!Type)
+        Type = require(35);
+
+    var type = new Type(typeName || ctor.name);
+    util.decorateRoot.add(type);
+    Object.defineProperty(ctor, "$type", { value: type, enumerable: false });
+    Object.defineProperty(ctor.prototype, "$type", { value: type, enumerable: false });
     return type;
 };
 
-},{"29":29,"3":3,"30":30,"35":35,"39":39,"5":5,"8":8}],38:[function(require,module,exports){
+var decorateEnumIndex = 0;
+
+/**
+ * Decorator helper for enums (TypeScript).
+ * @param {Object} object Enum object
+ * @returns {Enum} Reflected enum
+ */
+util.decorateEnum = function decorateEnum(object) {
+
+    /* istanbul ignore if */
+    if (object.$type)
+        return object.$type;
+
+    /* istanbul ignore if */
+    if (!Enum)
+        Enum = require(15);
+
+    var enm = new Enum("Enum" + decorateEnumIndex++, object);
+    util.decorateRoot.add(enm);
+    Object.defineProperty(object, "$type", { value: enm, enumerable: false });
+    return enm;
+};
+
+/**
+ * Decorator root (TypeScript).
+ * @name util.decorateRoot
+ * @type {Root}
+ * @readonly
+ */
+Object.defineProperty(util, "decorateRoot", {
+    get: function() {
+        return roots["decorators"] || (roots["decorators"] = new (require(29))());
+    }
+});
+
+},{"15":15,"29":29,"3":3,"30":30,"35":35,"39":39,"5":5,"8":8}],38:[function(require,module,exports){
 "use strict";
 module.exports = LongBits;
 
