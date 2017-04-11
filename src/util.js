@@ -85,7 +85,7 @@ util.decorateType = function decorateType(ctor, typeName) {
         return ctor.$type;
     }
 
-    /* istanbul ignore if */
+    /* istanbul ignore next */
     if (!Type)
         Type = require("./type");
 
@@ -109,7 +109,7 @@ util.decorateEnum = function decorateEnum(object) {
     if (object.$type)
         return object.$type;
 
-    /* istanbul ignore if */
+    /* istanbul ignore next */
     if (!Enum)
         Enum = require("./enum");
 

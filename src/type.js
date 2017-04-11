@@ -17,7 +17,8 @@ var Enum      = require("./enum"),
     encoder   = require("./encoder"),
     decoder   = require("./decoder"),
     verifier  = require("./verifier"),
-    converter = require("./converter");
+    converter = require("./converter"),
+    wrappers  = require("./wrappers");
 
 /**
  * Constructs a new reflected message type instance.
@@ -428,10 +429,13 @@ Type.prototype.create = function create(properties) {
 Type.prototype.setup = function setup() {
     // Sets up everything at once so that the prototype chain does not have to be re-evaluated
     // multiple times (V8, soft-deopt prototype-check).
+
     var fullName = this.fullName,
         types    = [];
     for (var i = 0; i < /* initializes */ this.fieldsArray.length; ++i)
         types.push(this._fieldsArray[i].resolve().resolvedType);
+
+    // Replace setup methods with type-specific generated functions
     this.encode = encoder(this).eof(fullName + "$encode", {
         Writer : Writer,
         types  : types,
@@ -450,14 +454,25 @@ Type.prototype.setup = function setup() {
         types : types,
         util  : util
     });
-    if (this.options && this.options.__formObject)
-        this.fromObject = this.options.__formObject.bind({ fromObject: this.fromObject });
     this.toObject = converter.toObject(this).eof(fullName + "$toObject", {
         types : types,
         util  : util
     });
-    if (this.options && this.options.__toObject)
-        this.toObject = this.options.__toObject.bind({ toObject: this.toObject });
+
+    // Inject custom wrappers for common types
+    var wrapper = wrappers[fullName];
+    if (wrapper) {
+        var originalThis = Object.create(this);
+        // if (wrapper.fromObject) {
+            originalThis.fromObject = this.fromObject;
+            this.fromObject = wrapper.fromObject.bind(originalThis);
+        // }
+        // if (wrapper.toObject) {
+            originalThis.toObject = this.toObject;
+            this.toObject = wrapper.toObject.bind(originalThis);
+        // }
+    }
+
     return this;
 };
 
