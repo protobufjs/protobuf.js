@@ -375,13 +375,26 @@ util.oneOfSetter = function setOneOf(fieldNames) {
 };
 
 /**
- * Default conversion options used for {@link Message#toJSON} implementations. Longs, enums and bytes are converted to strings by default.
+ * Default conversion options used for {@link Message#toJSON} implementations.
+ * 
+ * These options are close to proto3's JSON mapping with the exception that internal types like Any are handled just like messages. More precisely:
+ * 
+ * - Longs become strings
+ * - Enums become string keys
+ * - Bytes become base64 encoded strings
+ * - (Sub-)Messages become plain objects
+ * - Maps become plain objects with all string keys
+ * - Repeated fields become arrays
+ * - NaN and Infinity for float and double fields become strings
+ * 
  * @type {ConversionOptions}
+ * @see https://developers.google.com/protocol-buffers/docs/proto3?hl=en#json
  */
 util.toJSONOptions = {
     longs: String,
     enums: String,
-    bytes: String
+    bytes: String,
+    json: true
 };
 
 util._configure = function() {

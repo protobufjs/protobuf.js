@@ -40,8 +40,8 @@ function genValuePartial_fromObject(gen, field, fieldIndex, prop) {
         var isUnsigned = false;
         switch (field.type) {
             case "double":
-            case "float":gen
-                ("m%s=Number(d%s)", prop, prop);
+            case "float": gen
+                ("m%s=Number(d%s)", prop, prop); // also catches "NaN", "Infinity"
                 break;
             case "uint32":
             case "fixed32": gen
@@ -162,6 +162,10 @@ function genValuePartial_toObject(gen, field, fieldIndex, prop) {
     } else {
         var isUnsigned = false;
         switch (field.type) {
+            case "double":
+            case "float": gen
+            ("d%s=o.json&&!isFinite(m%s)?String(m%s):m%s", prop, prop, prop, prop);
+                break;
             case "uint64":
                 isUnsigned = true;
                 // eslint-disable-line no-fallthrough

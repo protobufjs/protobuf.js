@@ -570,7 +570,7 @@ Supported decorators are:
 * **OneOf.d&lt;T extends string>(...fieldNames: `string[]`)**<br />
   annotates a property as a protobuf oneof covering the specified fields.
 
-Decorated types reside in `protobuf.roots.decorators` using a flat structure (no duplicate names).
+Decorated types reside in `protobuf.roots["decorators"]` using a flat structure (no duplicate names).
 
 Command line
 ------------
