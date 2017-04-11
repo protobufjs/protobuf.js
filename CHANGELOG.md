@@ -1,3 +1,27 @@
+# [6.8.0](https://github.com/dcodeIO/protobuf.js/releases/tag/6.8.0)
+
+## Breaking
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/7a6f98b5e74f9e9142f9be3ba0683caeaff916c4) Initial implementation of TypeScript decorators<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/7a6f98b5e74f9e9142f9be3ba0683caeaff916c4) Refactored protobuf.Class away<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/7a6f98b5e74f9e9142f9be3ba0683caeaff916c4) TypeScript definitions now have (a lot of) generics<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/7a6f98b5e74f9e9142f9be3ba0683caeaff916c4) Removed deprecated features<br />
+
+## Fixed
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/ed34b093839652db2ff7b84db87857fc57d96038) Reader#bytes should also support plain arrays<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/514afcfa890aa598e93254576c4fd6062e0eff3b) Fix markdown for pipe in code in table<br />
+
+## New
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/3939667ef1f37b025bd7f9476015890496d50e00) Added 'json' conversion option for proto3 JSON mapping compatibility of NaN and Infinity + additional documentation of util.toJSONOptions, see [#351](https://github.com/dcodeIO/protobuf.js/issues/351)<br />
+
+## Docs
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/35a663757efe188bea552aef017837bc6c6a481a) Additional docs on TS/decorators usage<br />
+
+## Other
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/48e66d975bf7b4e6bdbb68ec24386c98b16c54c5) Moved custom wrappers to its own module instead, also makes the API easier to use manually, see [#677](https://github.com/dcodeIO/protobuf.js/issues/677)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/0c6e639d08fdf9be12677bf678563ea631bafb2c) Added infrastructure for custom wrapping/unwrapping of special types, see [#677](https://github.com/dcodeIO/protobuf.js/issues/677)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/0425b584f49841d87a8249fef30c78cc31c1c742) More decorator progress (MapField.d, optional Type.d)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/7a6f98b5e74f9e9142f9be3ba0683caeaff916c4) tsd-jsdoc now has limited generics support<br />
+
 # [6.7.3](https://github.com/dcodeIO/protobuf.js/releases/tag/6.7.3)
 
 ## Other

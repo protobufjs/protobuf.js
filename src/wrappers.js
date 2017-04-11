@@ -6,7 +6,8 @@
  */
 var wrappers = exports;
 
-var util = require("./util/minimal");
+var Message = require("./message"),
+    util    = require("./util/minimal");
 
 /**
  * From object converter part of a {@link Wrapper}.
@@ -65,7 +66,7 @@ wrappers[".google.protobuf.Any"] = {
         }
 
         // wrap value if unmapped
-        if (!(message instanceof this.ctor)) {
+        if (!(message instanceof this.ctor) && message instanceof Message) {
             var object = message.toObject(options);
             object["@type"] = message.$type.fullName;
             return object;
