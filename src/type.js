@@ -446,14 +446,18 @@ Type.prototype.setup = function setup() {
         types : types,
         util  : util
     });
-    this.fromObject = this.from = converter.fromObject(this).eof(fullName + "$fromObject", {
+    this.fromObject = converter.fromObject(this).eof(fullName + "$fromObject", {
         types : types,
         util  : util
     });
+    if (this.options && this.options.__formObject)
+        this.fromObject = this.options.__formObject.bind({ fromObject: this.fromObject });
     this.toObject = converter.toObject(this).eof(fullName + "$toObject", {
         types : types,
         util  : util
     });
+    if (this.options && this.options.__toObject)
+        this.toObject = this.options.__toObject.bind({ toObject: this.toObject });
     return this;
 };
 

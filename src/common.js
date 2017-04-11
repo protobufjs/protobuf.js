@@ -51,7 +51,15 @@ common("any", {
                 type: "bytes",
                 id: 2
             }
-        }
+        }/*,
+        options: Object.create({
+            __fromObject: function(object) {
+                return this.fromObject(object);
+            },
+            __toObject: function(options) {
+                return this.toObject(options);
+            }
+        })*/
     }
 });
 
