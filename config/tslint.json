@@ -3,7 +3,7 @@
     "rules": {
         "array-type": [ true, "array" ],
         "no-namespace": false,
-        "interface-name": [ true, "never-prefix" ],
+        "interface-name": [ false ],
         "interface-over-type-literal": false,
         "max-line-length": [ false ],
         "trailing-comma": [ true, "never" ],

@@ -12,7 +12,6 @@ var Type      = protobuf.Type,
     Service   = protobuf.Service,
     Enum      = protobuf.Enum,
     Namespace = protobuf.Namespace,
-    Class     = protobuf.Class,
     util      = protobuf.util;
 
 var out = [];
