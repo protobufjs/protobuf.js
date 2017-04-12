@@ -193,22 +193,22 @@ export class Field extends FieldBase {
      * @param {"optional"|"required"|"repeated"} [fieldRule="optional"] Field rule
      * @param {T} [defaultValue] Default value
      * @returns {FieldDecorator} Decorator function
-     * @template T
+     * @template T extends number | number[] | Long | Long[] | string | string[] | boolean | boolean[] | Uint8Array | Uint8Array[] | Buffer | Buffer[]
      */
-    public static d<T>(fieldId: number, fieldType: ("double"|"float"|"int32"|"uint32"|"sint32"|"fixed32"|"sfixed32"|"int64"|"uint64"|"sint64"|"fixed64"|"sfixed64"|"string"|"bool"|"bytes"|object), fieldRule?: ("optional"|"required"|"repeated"), defaultValue?: T): FieldDecorator;
+    public static d<T extends number | number[] | Long | Long[] | string | string[] | boolean | boolean[] | Uint8Array | Uint8Array[] | Buffer | Buffer[]>(fieldId: number, fieldType: ("double"|"float"|"int32"|"uint32"|"sint32"|"fixed32"|"sfixed32"|"int64"|"uint64"|"sint64"|"fixed64"|"sfixed64"|"string"|"bool"|"bytes"|object), fieldRule?: ("optional"|"required"|"repeated"), defaultValue?: T): FieldDecorator;
 
     /**
      * Field decorator (TypeScript).
      * @name Field.d
      * @function
      * @param {number} fieldId Field id
-     * @param {TMessageConstructor<T>} fieldType Field type
+     * @param {Constructor<T>} fieldType Field type
      * @param {"optional"|"required"|"repeated"} [fieldRule="optional"] Field rule
      * @returns {FieldDecorator} Decorator function
      * @template T extends Message<T>
      * @variation 2
      */
-    public static d<T extends Message<T>>(fieldId: number, fieldType: TMessageConstructor<T>, fieldRule?: ("optional"|"required"|"repeated")): FieldDecorator;
+    public static d<T extends Message<T>>(fieldId: number, fieldType: Constructor<T>, fieldRule?: ("optional"|"required"|"repeated")): FieldDecorator;
 }
 
 /**
@@ -519,11 +519,11 @@ export class MapField extends FieldBase {
      * @function
      * @param {number} fieldId Field id
      * @param {"int32"|"uint32"|"sint32"|"fixed32"|"sfixed32"|"int64"|"uint64"|"sint64"|"fixed64"|"sfixed64"|"bool"|"string"} fieldKeyType Field key type
-     * @param {"double"|"float"|"int32"|"uint32"|"sint32"|"fixed32"|"sfixed32"|"int64"|"uint64"|"sint64"|"fixed64"|"sfixed64"|"bool"|"string"|"bytes"|Object|TConstructor<{}>} fieldValueType Field value type
+     * @param {"double"|"float"|"int32"|"uint32"|"sint32"|"fixed32"|"sfixed32"|"int64"|"uint64"|"sint64"|"fixed64"|"sfixed64"|"bool"|"string"|"bytes"|Object|Constructor<{}>} fieldValueType Field value type
      * @returns {FieldDecorator} Decorator function
-     * @template T extends { [key: string]: any }
+     * @template T extends { [key: string]: number | Long | string | boolean | Uint8Array | Buffer | number[] | Message<{}> }
      */
-    public static d<T extends { [key: string]: any }>(fieldId: number, fieldKeyType: ("int32"|"uint32"|"sint32"|"fixed32"|"sfixed32"|"int64"|"uint64"|"sint64"|"fixed64"|"sfixed64"|"bool"|"string"), fieldValueType: ("double"|"float"|"int32"|"uint32"|"sint32"|"fixed32"|"sfixed32"|"int64"|"uint64"|"sint64"|"fixed64"|"sfixed64"|"bool"|"string"|"bytes"|object|TConstructor<{}>)): FieldDecorator;
+    public static d<T extends { [key: string]: number | Long | string | boolean | Uint8Array | Buffer | number[] | Message<{}> }>(fieldId: number, fieldKeyType: ("int32"|"uint32"|"sint32"|"fixed32"|"sfixed32"|"int64"|"uint64"|"sint64"|"fixed64"|"sfixed64"|"bool"|"string"), fieldValueType: ("double"|"float"|"int32"|"uint32"|"sint32"|"fixed32"|"sfixed32"|"int64"|"uint64"|"sint64"|"fixed64"|"sfixed64"|"bool"|"string"|"bytes"|object|Constructor<{}>)): FieldDecorator;
 }
 
 type MapFieldDescriptor = {
@@ -541,25 +541,23 @@ type ExtensionMapFieldDescriptor = {
     options?: { [k: string]: any };
 };
 
-type TMessageProperties<T> = { [P in keyof T]?: T[P] };
-
 /**
  * Constructs a new message instance.
  * @classdesc Abstract runtime message.
  * @constructor
- * @param {TMessageProperties<T>} [properties] Properties to set
- * @template T
+ * @param {Properties<T>} [properties] Properties to set
+ * @template T extends object
  */
-export class Message<T> {
+export class Message<T extends object> {
 
     /**
      * Constructs a new message instance.
      * @classdesc Abstract runtime message.
      * @constructor
-     * @param {TMessageProperties<T>} [properties] Properties to set
-     * @template T
+     * @param {Properties<T>} [properties] Properties to set
+     * @template T extends object
      */
-    constructor(properties?: TMessageProperties<T>);
+    constructor(properties?: Properties<T>);
 
     /**
      * Reference to the reflected type.
@@ -582,9 +580,9 @@ export class Message<T> {
      * @param {Object.<string,*>} [properties] Properties to set
      * @returns {Message<T>} Message instance
      * @template T extends Message<T>
-     * @this TMessageConstructor<T>
+     * @this Constructor<T>
      */
-    public static create<T extends Message<T>>(this: TMessageConstructor<T>, properties?: { [k: string]: any }): Message<T>;
+    public static create<T extends Message<T>>(this: Constructor<T>, properties?: { [k: string]: any }): Message<T>;
 
     /**
      * Encodes a message of this type.
@@ -592,9 +590,9 @@ export class Message<T> {
      * @param {Writer} [writer] Writer to use
      * @returns {Writer} Writer
      * @template T extends Message<T>
-     * @this TMessageConstructor<T>
+     * @this Constructor<T>
      */
-    public static encode<T extends Message<T>>(this: TMessageConstructor<T>, message: (T|{ [k: string]: any }), writer?: Writer): Writer;
+    public static encode<T extends Message<T>>(this: Constructor<T>, message: (T|{ [k: string]: any }), writer?: Writer): Writer;
 
     /**
      * Encodes a message of this type preceeded by its length as a varint.
@@ -602,9 +600,9 @@ export class Message<T> {
      * @param {Writer} [writer] Writer to use
      * @returns {Writer} Writer
      * @template T extends Message<T>
-     * @this TMessageConstructor<T>
+     * @this Constructor<T>
      */
-    public static encodeDelimited<T extends Message<T>>(this: TMessageConstructor<T>, message: (T|{ [k: string]: any }), writer?: Writer): Writer;
+    public static encodeDelimited<T extends Message<T>>(this: Constructor<T>, message: (T|{ [k: string]: any }), writer?: Writer): Writer;
 
     /**
      * Decodes a message of this type.
@@ -613,9 +611,9 @@ export class Message<T> {
      * @param {Reader|Uint8Array} reader Reader or buffer to decode
      * @returns {T} Decoded message
      * @template T extends Message<T>
-     * @this TMessageConstructor<T>
+     * @this Constructor<T>
      */
-    public static decode<T extends Message<T>>(this: TMessageConstructor<T>, reader: (Reader|Uint8Array)): T;
+    public static decode<T extends Message<T>>(this: Constructor<T>, reader: (Reader|Uint8Array)): T;
 
     /**
      * Decodes a message of this type preceeded by its length as a varint.
@@ -624,9 +622,9 @@ export class Message<T> {
      * @param {Reader|Uint8Array} reader Reader or buffer to decode
      * @returns {T} Decoded message
      * @template T extends Message<T>
-     * @this TMessageConstructor<T>
+     * @this Constructor<T>
      */
-    public static decodeDelimited<T extends Message<T>>(this: TMessageConstructor<T>, reader: (Reader|Uint8Array)): T;
+    public static decodeDelimited<T extends Message<T>>(this: Constructor<T>, reader: (Reader|Uint8Array)): T;
 
     /**
      * Verifies a message of this type.
@@ -642,9 +640,9 @@ export class Message<T> {
      * @param {Object.<string,*>} object Plain object
      * @returns {T} Message instance
      * @template T extends Message<T>
-     * @this TMessageConstructor<T>
+     * @this Constructor<T>
      */
-    public static fromObject<T extends Message<T>>(this: TMessageConstructor<T>, object: { [k: string]: any }): T;
+    public static fromObject<T extends Message<T>>(this: Constructor<T>, object: { [k: string]: any }): T;
 
     /**
      * Creates a plain object from a message of this type. Also converts values to other types if specified.
@@ -652,9 +650,9 @@ export class Message<T> {
      * @param {ConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      * @template T extends Message<T>
-     * @this TMessageConstructor<T>
+     * @this Constructor<T>
      */
-    public static toObject<T extends Message<T>>(this: TMessageConstructor<T>, message: T, options?: ConversionOptions): { [k: string]: any };
+    public static toObject<T extends Message<T>>(this: Constructor<T>, message: T, options?: ConversionOptions): { [k: string]: any };
 
     /**
      * Creates a plain object from this message. Also converts values to other types if specified.
@@ -1496,9 +1494,9 @@ export let roots: { [k: string]: Root };
  */
 export namespace rpc {
 
-    type ServiceMethodCallback<TRes> = (error: Error, response?: TRes) => void;
+    type ServiceMethodCallback<TRes extends Message<TRes>> = (error: Error, response?: TRes) => void;
 
-    type ServiceMethod<TReq, TRes> = (request: (TReq|TMessageProperties<TReq>), callback?: rpc.ServiceMethodCallback<TRes>) => Promise<Message<TRes>>;
+    type ServiceMethod<TReq extends Message<TReq>, TRes extends Message<TRes>> = (request: (TReq|Properties<TReq>), callback?: rpc.ServiceMethodCallback<TRes>) => Promise<Message<TRes>>;
 
     /**
      * Constructs a new RPC service instance.
@@ -1545,15 +1543,15 @@ export namespace rpc {
         /**
          * Calls a service method through {@link rpc.Service#rpcImpl|rpcImpl}.
          * @param {Method|rpc.ServiceMethod<TReq,TRes>} method Reflected or static method
-         * @param {TMessageConstructor<TReq>} requestCtor Request constructor
-         * @param {TMessageConstructor<TRes>} responseCtor Response constructor
-         * @param {TReq|TMessageProperties<TReq>} request Request message or plain object
+         * @param {Constructor<TReq>} requestCtor Request constructor
+         * @param {Constructor<TRes>} responseCtor Response constructor
+         * @param {TReq|Properties<TReq>} request Request message or plain object
          * @param {rpc.ServiceMethodCallback<TRes>} callback Service callback
          * @returns {undefined}
          * @template TReq extends Message<TReq>
          * @template TRes extends Message<TRes>
          */
-        public rpcCall<TReq extends Message<TReq>, TRes extends Message<TRes>>(method: (Method|rpc.ServiceMethod<TReq, TRes>), requestCtor: TMessageConstructor<TReq>, responseCtor: TMessageConstructor<TRes>, request: (TReq|TMessageProperties<TReq>), callback: rpc.ServiceMethodCallback<TRes>): void;
+        public rpcCall<TReq extends Message<TReq>, TRes extends Message<TRes>>(method: (Method|rpc.ServiceMethod<TReq, TRes>), requestCtor: Constructor<TReq>, responseCtor: Constructor<TRes>, request: (TReq|Properties<TReq>), callback: rpc.ServiceMethodCallback<TRes>): void;
 
         /**
          * Ends this service and emits the `end` event.
@@ -1564,7 +1562,7 @@ export namespace rpc {
     }
 }
 
-type RPCImpl = (method: (Method|rpc.ServiceMethod<{}, {}>), requestData: Uint8Array, callback: RPCImplCallback) => void;
+type RPCImpl = (method: (Method|rpc.ServiceMethod<Message<{}>, Message<{}>>), requestData: Uint8Array, callback: RPCImplCallback) => void;
 
 type RPCImplCallback = (error: Error, response?: Uint8Array) => void;
 
@@ -1717,9 +1715,9 @@ export class Type extends NamespaceBase {
      * The registered constructor, if any registered, otherwise a generic constructor.
      * Assigning a function replaces the internal constructor. If the function does not extend {@link Message} yet, its prototype will be setup accordingly and static methods will be populated. If it already extends {@link Message}, it will just replace the internal constructor.
      * @name Type#ctor
-     * @type {TConstructor<{}>}
+     * @type {Constructor<{}>}
      */
-    public ctor: TConstructor<{}>;
+    public ctor: Constructor<{}>;
 
     /**
      * Creates a message type from a message type descriptor.
@@ -1771,9 +1769,8 @@ export class Type extends NamespaceBase {
      * Creates a new message of this type using the specified properties.
      * @param {Object.<string,*>} [properties] Properties to set
      * @returns {Message<{}>} Message instance
-     * @template T
      */
-    public create<T>(properties?: { [k: string]: any }): Message<{}>;
+    public create(properties?: { [k: string]: any }): Message<{}>;
 
     /**
      * Sets up {@link Type#encode|encode}, {@link Type#decode|decode} and {@link Type#verify|verify}.
@@ -1865,9 +1862,10 @@ type ConversionOptions = {
     arrays?: boolean;
     objects?: boolean;
     oneofs?: boolean;
+    json?: boolean;
 };
 
-type TypeDecorator<T extends Message<T>> = (target: TMessageConstructor<T>) => void;
+type TypeDecorator<T extends Message<T>> = (target: Constructor<T>) => void;
 
 /**
  * Common type constants.
@@ -2038,11 +2036,9 @@ export namespace types {
     };
 }
 
-type TConstructor<T> = { new(...params: any[]): T };
+type Constructor<T extends object> = { new(...params: any[]): T };
 
-type TMessageConstructor<T extends Message<T>> = { new(properties?: TMessageProperties<T>): T };
-
-type TObject<V> = { [key: string]: V };
+type Properties<T extends object> = { [P in keyof T]?: T[P] } & { [key: string]: any };
 
 type OneOfGetter = () => (string|undefined);
 
@@ -2225,9 +2221,9 @@ export namespace util {
 
     /**
      * Node's Buffer class if available.
-     * @type {TConstructor<Buffer>}
+     * @type {Constructor<Buffer>}
      */
-    let Buffer: TConstructor<Buffer>;
+    let Buffer: Constructor<Buffer>;
 
     /**
      * Creates a new buffer of whatever type supported by the environment.
@@ -2238,15 +2234,15 @@ export namespace util {
 
     /**
      * Array implementation used in the browser. `Uint8Array` if supported, otherwise `Array`.
-     * @type {TConstructor<Uint8Array>}
+     * @type {Constructor<Uint8Array>}
      */
-    let Array: TConstructor<Uint8Array>;
+    let Array: Constructor<Uint8Array>;
 
     /**
      * Long.js's Long class if available.
-     * @type {TConstructor<Long>}
+     * @type {Constructor<Long>}
      */
-    let Long: TConstructor<Long>;
+    let Long: Constructor<Long>;
 
     /**
      * Regular expression used to verify 2 bit (`bool`) map keys.
@@ -2305,19 +2301,19 @@ export namespace util {
      * Creates a custom error constructor.
      * @memberof util
      * @param {string} name Error name
-     * @returns {TConstructor<Error>} Custom error constructor
+     * @returns {Constructor<Error>} Custom error constructor
      */
-    function newError(name: string): TConstructor<Error>;
+    function newError(name: string): Constructor<Error>;
 
     /**
      * Constructs a new protocol error.
      * @classdesc Error subclass indicating a protocol specifc error.
      * @memberof util
      * @extends Error
-     * @template T
+     * @template T extends Message<T>
      * @constructor
      * @param {string} message Error message
-     * @param {Object.<string,*>=} properties Additional properties
+     * @param {Object.<string,*>} [properties] Additional properties
      * @example
      * try {
      *     MyMessage.decode(someBuffer); // throws if required fields are missing
@@ -2326,17 +2322,17 @@ export namespace util {
      *         console.log("decoded so far: " + JSON.stringify(e.instance));
      * }
      */
-    class ProtocolError<T> extends Error {
+    class ProtocolError<T extends Message<T>> extends Error {
 
         /**
          * Constructs a new protocol error.
          * @classdesc Error subclass indicating a protocol specifc error.
          * @memberof util
          * @extends Error
-         * @template T
+         * @template T extends Message<T>
          * @constructor
          * @param {string} message Error message
-         * @param {Object.<string,*>=} properties Additional properties
+         * @param {Object.<string,*>} [properties] Additional properties
          * @example
          * try {
          *     MyMessage.decode(someBuffer); // throws if required fields are missing
@@ -2370,8 +2366,20 @@ export namespace util {
     function oneOfSetter(fieldNames: string[]): OneOfSetter;
 
     /**
-     * Default conversion options used for {@link Message#toJSON} implementations. Longs, enums and bytes are converted to strings by default.
+     * Default conversion options used for {@link Message#toJSON} implementations.
+     *
+     * These options are close to proto3's JSON mapping with the exception that internal types like Any are handled just like messages. More precisely:
+     *
+     * - Longs become strings
+     * - Enums become string keys
+     * - Bytes become base64 encoded strings
+     * - (Sub-)Messages become plain objects
+     * - Maps become plain objects with all string keys
+     * - Repeated fields become arrays
+     * - NaN and Infinity for float and double fields become strings
+     *
      * @type {ConversionOptions}
+     * @see https://developers.google.com/protocol-buffers/docs/proto3?hl=en#json
      */
     let toJSONOptions: ConversionOptions;
 
@@ -2412,13 +2420,13 @@ export namespace util {
 
     /**
      * Decorator helper for types (TypeScript).
-     * @param {TMessageConstructor<T>} ctor Constructor function
+     * @param {Constructor<T>} ctor Constructor function
      * @param {string} [typeName] Type name, defaults to the constructor's name
      * @returns {Type} Reflected type
      * @template T extends Message<T>
      * @property {Root} root Decorators root
      */
-    function decorateType<T extends Message<T>>(ctor: TMessageConstructor<T>, typeName?: string): Type;
+    function decorateType<T extends Message<T>>(ctor: Constructor<T>, typeName?: string): Type;
 
     /**
      * Decorator helper for enums (TypeScript).
@@ -2755,6 +2763,22 @@ export namespace util {
  * @returns {Codegen} Codegen instance
  */
 export function verifier(mtype: Type): Codegen;
+
+/**
+ * Wrappers for common types.
+ * @type {Object.<string,Wrapper>}
+ * @const
+ */
+export const wrappers: { [k: string]: Wrapper };
+
+type WrapperFromObjectConverter = (this: Type, object: { [k: string]: any }) => Message<{}>;
+
+type WrapperToObjectConverter = (this: Type, message: Message<{}>, options?: ConversionOptions) => { [k: string]: any };
+
+type Wrapper = {
+    fromObject?: WrapperFromObjectConverter;
+    toObject?: WrapperToObjectConverter;
+};
 
 /**
  * Constructs a new writer instance.

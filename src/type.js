@@ -84,7 +84,7 @@ function Type(name, options) {
 
     /**
      * Cached constructor.
-     * @type {TConstructor<{}>}
+     * @type {Constructor<{}>}
      * @private
      */
     this._ctor = null;
@@ -148,7 +148,7 @@ Object.defineProperties(Type.prototype, {
      * The registered constructor, if any registered, otherwise a generic constructor.
      * Assigning a function replaces the internal constructor. If the function does not extend {@link Message} yet, its prototype will be setup accordingly and static methods will be populated. If it already extends {@link Message}, it will just replace the internal constructor.
      * @name Type#ctor
-     * @type {TConstructor<{}>}
+     * @type {Constructor<{}>}
      */
     ctor: {
         get: function() {
@@ -416,7 +416,6 @@ Type.prototype.isReservedName = function isReservedName(name) {
  * Creates a new message of this type using the specified properties.
  * @param {Object.<string,*>} [properties] Properties to set
  * @returns {Message<{}>} Message instance
- * @template T
  */
 Type.prototype.create = function create(properties) {
     return new this.ctor(properties);
@@ -573,7 +572,7 @@ Type.prototype.toObject = function toObject(message, options) {
  * Decorator function as returned by {@link Type.d} (TypeScript).
  * @typedef TypeDecorator
  * @type {function}
- * @param {TMessageConstructor<T>} target Target constructor
+ * @param {Constructor<T>} target Target constructor
  * @returns {undefined}
  * @template T extends Message<T>
  */

@@ -1,8 +1,6 @@
 "use strict";
 module.exports = common;
 
-var Type = require("./type");
-
 /**
  * Provides common type definitions.
  * Can also be used to provide additional google types or your own custom types.

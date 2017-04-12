@@ -327,7 +327,7 @@ Field.prototype.resolve = function resolve() {
  * @param {"optional"|"required"|"repeated"} [fieldRule="optional"] Field rule
  * @param {T} [defaultValue] Default value
  * @returns {FieldDecorator} Decorator function
- * @template T
+ * @template T extends number | number[] | Long | Long[] | string | string[] | boolean | boolean[] | Uint8Array | Uint8Array[] | Buffer | Buffer[]
  */
 Field.d = function decorateField(fieldId, fieldType, fieldRule, defaultValue) {
 
@@ -350,7 +350,7 @@ Field.d = function decorateField(fieldId, fieldType, fieldRule, defaultValue) {
  * @name Field.d
  * @function
  * @param {number} fieldId Field id
- * @param {TMessageConstructor<T>} fieldType Field type
+ * @param {Constructor<T>} fieldType Field type
  * @param {"optional"|"required"|"repeated"} [fieldRule="optional"] Field rule
  * @returns {FieldDecorator} Decorator function
  * @template T extends Message<T>

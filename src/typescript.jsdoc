@@ -1,27 +1,13 @@
 /**
  * Constructor type.
- * @typedef TConstructor
- * @template T
+ * @typedef Constructor
+ * @template T extends object
  * @tstype { new(...params: any[]): T }
  */
 
 /**
- * Properties of a message instance.
- * @typedef TMessageProperties
- * @template T extends Message<T>
- * @tstype { [P in keyof T]?: T[P] }
- */
-
-/**
- * Message constructor type.
- * @typedef TMessageConstructor
- * @template T extends Message<T>
- * @tstype { new(properties?: TMessageProperties<T>): T }
- */
-
-/**
- * Object type.
- * @typedef TObject
- * @template V
- * @tstype { [key: string]: V }
+ * Properties type.
+ * @typedef Properties
+ * @template T extends object
+ * @tstype { [P in keyof T]?: T[P] } & { [key: string]: any }
  */

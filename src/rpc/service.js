@@ -11,7 +11,7 @@ var util = require("../util/minimal");
  *
  * Differs from {@link RPCImplCallback} in that it is an actual callback of a service method which may not return `response = null`.
  * @typedef rpc.ServiceMethodCallback
- * @template TRes
+ * @template TRes extends Message<TRes>
  * @type {function}
  * @param {?Error} error Error, if any
  * @param {?TRes} [response] Response message
@@ -21,10 +21,10 @@ var util = require("../util/minimal");
 /**
  * A service method part of a {@link rpc.Service} as created by {@link Service.create}.
  * @typedef rpc.ServiceMethod
- * @template TReq
- * @template TRes
+ * @template TReq extends Message<TReq>
+ * @template TRes extends Message<TRes>
  * @type {function}
- * @param {TReq|TMessageProperties<TReq>} request Request message or plain object
+ * @param {TReq|Properties<TReq>} request Request message or plain object
  * @param {rpc.ServiceMethodCallback<TRes>} [callback] Node-style callback called with the error, if any, and the response message
  * @returns {Promise<Message<TRes>>} Promise if `callback` has been omitted, otherwise `undefined`
  */
@@ -68,9 +68,9 @@ function Service(rpcImpl, requestDelimited, responseDelimited) {
 /**
  * Calls a service method through {@link rpc.Service#rpcImpl|rpcImpl}.
  * @param {Method|rpc.ServiceMethod<TReq,TRes>} method Reflected or static method
- * @param {TMessageConstructor<TReq>} requestCtor Request constructor
- * @param {TMessageConstructor<TRes>} responseCtor Response constructor
- * @param {TReq|TMessageProperties<TReq>} request Request message or plain object
+ * @param {Constructor<TReq>} requestCtor Request constructor
+ * @param {Constructor<TRes>} responseCtor Response constructor
+ * @param {TReq|Properties<TReq>} request Request message or plain object
  * @param {rpc.ServiceMethodCallback<TRes>} callback Service callback
  * @returns {undefined}
  * @template TReq extends Message<TReq>

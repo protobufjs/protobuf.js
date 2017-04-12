@@ -4,18 +4,11 @@ module.exports = Message;
 var util = require("./util");
 
 /**
- * Properties of a message instance.
- * @typedef TMessageProperties
- * @template T
- * @tstype { [P in keyof T]?: T[P] }
- */
-
-/**
  * Constructs a new message instance.
  * @classdesc Abstract runtime message.
  * @constructor
- * @param {TMessageProperties<T>} [properties] Properties to set
- * @template T
+ * @param {Properties<T>} [properties] Properties to set
+ * @template T extends object
  */
 function Message(properties) {
     // not used internally
@@ -45,7 +38,7 @@ function Message(properties) {
  * @param {Object.<string,*>} [properties] Properties to set
  * @returns {Message<T>} Message instance
  * @template T extends Message<T>
- * @this TMessageConstructor<T>
+ * @this Constructor<T>
  */
 Message.create = function create(properties) {
     return this.$type.create(properties);
@@ -57,7 +50,7 @@ Message.create = function create(properties) {
  * @param {Writer} [writer] Writer to use
  * @returns {Writer} Writer
  * @template T extends Message<T>
- * @this TMessageConstructor<T>
+ * @this Constructor<T>
  */
 Message.encode = function encode(message, writer) {
     return this.$type.encode(message, writer);
@@ -69,7 +62,7 @@ Message.encode = function encode(message, writer) {
  * @param {Writer} [writer] Writer to use
  * @returns {Writer} Writer
  * @template T extends Message<T>
- * @this TMessageConstructor<T>
+ * @this Constructor<T>
  */
 Message.encodeDelimited = function encodeDelimited(message, writer) {
     return this.$type.encodeDelimited(message, writer);
@@ -82,7 +75,7 @@ Message.encodeDelimited = function encodeDelimited(message, writer) {
  * @param {Reader|Uint8Array} reader Reader or buffer to decode
  * @returns {T} Decoded message
  * @template T extends Message<T>
- * @this TMessageConstructor<T>
+ * @this Constructor<T>
  */
 Message.decode = function decode(reader) {
     return this.$type.decode(reader);
@@ -95,7 +88,7 @@ Message.decode = function decode(reader) {
  * @param {Reader|Uint8Array} reader Reader or buffer to decode
  * @returns {T} Decoded message
  * @template T extends Message<T>
- * @this TMessageConstructor<T>
+ * @this Constructor<T>
  */
 Message.decodeDelimited = function decodeDelimited(reader) {
     return this.$type.decodeDelimited(reader);
@@ -117,7 +110,7 @@ Message.verify = function verify(message) {
  * @param {Object.<string,*>} object Plain object
  * @returns {T} Message instance
  * @template T extends Message<T>
- * @this TMessageConstructor<T>
+ * @this Constructor<T>
  */
 Message.fromObject = function fromObject(object) {
     return this.$type.fromObject(object);
@@ -129,7 +122,7 @@ Message.fromObject = function fromObject(object) {
  * @param {ConversionOptions} [options] Conversion options
  * @returns {Object.<string,*>} Plain object
  * @template T extends Message<T>
- * @this TMessageConstructor<T>
+ * @this Constructor<T>
  */
 Message.toObject = function toObject(message, options) {
     return this.$type.toObject(message, options);

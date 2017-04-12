@@ -67,7 +67,7 @@ util.compareFieldsById = function compareFieldsById(a, b) {
 
 /**
  * Decorator helper for types (TypeScript).
- * @param {TMessageConstructor<T>} ctor Constructor function
+ * @param {Constructor<T>} ctor Constructor function
  * @param {string} [typeName] Type name, defaults to the constructor's name
  * @returns {Type} Reflected type
  * @template T extends Message<T>
@@ -127,6 +127,6 @@ util.decorateEnum = function decorateEnum(object) {
  */
 Object.defineProperty(util, "decorateRoot", {
     get: function() {
-        return roots["decorators"] || (roots["decorators"] = new (require("./root"))());
+        return roots["decorated"] || (roots["decorated"] = new (require("./root"))());
     }
 });

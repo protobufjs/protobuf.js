@@ -2,12 +2,12 @@
 
 /**
  * Wrappers for common types.
- * @namespace
+ * @type {Object.<string,Wrapper>}
+ * @const
  */
 var wrappers = exports;
 
-var Message = require("./message"),
-    util    = require("./util/minimal");
+var Message = require("./message");
 
 /**
  * From object converter part of a {@link Wrapper}.
@@ -23,7 +23,7 @@ var Message = require("./message"),
  * @typedef WrapperToObjectConverter
  * @type {function}
  * @param {Message<{}>} message Message instance
- * @param {ConversionOptions=} options Conversion options
+ * @param {ConversionOptions} [options] Conversion options
  * @returns {Object.<string,*>}
  * @this Type
  */
@@ -36,10 +36,7 @@ var Message = require("./message"),
  * @property {WrapperToObjectConverter} [toObject] To object converter
  */
 
-/**
- * Custom wrapper for Any.
- * @type {Wrapper}
- */
+// Custom wrapper for Any
 wrappers[".google.protobuf.Any"] = {
 
     fromObject: function(object) {

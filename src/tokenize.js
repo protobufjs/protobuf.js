@@ -246,7 +246,7 @@ function tokenize(source) {
 
     /**
      * Gets a comment.
-     * @param {number=} trailingLine Trailing line number if applicable
+     * @param {number} [trailingLine] Trailing line number if applicable
      * @returns {?string} Comment text
      * @inner
      */

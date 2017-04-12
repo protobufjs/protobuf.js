@@ -108,7 +108,7 @@ util.isSet = function isSet(obj, prop) {
 
 /**
  * Node's Buffer class if available.
- * @type {TConstructor<Buffer>}
+ * @type {Constructor<Buffer>}
  */
 util.Buffer = (function() {
     try {
@@ -160,7 +160,7 @@ util.newBuffer = function newBuffer(sizeOrArray) {
 
 /**
  * Array implementation used in the browser. `Uint8Array` if supported, otherwise `Array`.
- * @type {TConstructor<Uint8Array>}
+ * @type {Constructor<Uint8Array>}
  */
 util.Array = typeof Uint8Array !== "undefined" ? Uint8Array /* istanbul ignore next */ : Array;
 
@@ -176,7 +176,7 @@ util.Array = typeof Uint8Array !== "undefined" ? Uint8Array /* istanbul ignore n
 
 /**
  * Long.js's Long class if available.
- * @type {TConstructor<Long>}
+ * @type {Constructor<Long>}
  */
 util.Long = /* istanbul ignore next */ global.dcodeIO && /* istanbul ignore next */ global.dcodeIO.Long || util.inquire("long");
 
@@ -255,7 +255,7 @@ util.lcFirst = function lcFirst(str) {
  * Creates a custom error constructor.
  * @memberof util
  * @param {string} name Error name
- * @returns {TConstructor<Error>} Custom error constructor
+ * @returns {Constructor<Error>} Custom error constructor
  */
 function newError(name) {
 
@@ -297,10 +297,10 @@ util.newError = newError;
  * @classdesc Error subclass indicating a protocol specifc error.
  * @memberof util
  * @extends Error
- * @template T
+ * @template T extends Message<T>
  * @constructor
  * @param {string} message Error message
- * @param {Object.<string,*>=} properties Additional properties
+ * @param {Object.<string,*>} [properties] Additional properties
  * @example
  * try {
  *     MyMessage.decode(someBuffer); // throws if required fields are missing
