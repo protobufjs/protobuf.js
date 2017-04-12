@@ -549,16 +549,20 @@ function handleTypeDef(element, parent) {
         if (element.templates && element.templates.length)
             write("<", element.templates.join(", "), ">");
         write(" = ");
-        var type = getTypeOf(element);
-        if (element.type && element.type.names.length === 1 && element.type.names[0] === "function")
-            writeFunctionSignature(element, false, true);
-        else if (type === "object") {
-            if (element.properties && element.properties.length)
-                writeInterfaceBody(element);
-            else
-                write("{}");
-        } else
-            write(type);
+        if (element.tsType)
+            write(element.tsType);
+        else {
+            var type = getTypeOf(element);
+            if (element.type && element.type.names.length === 1 && element.type.names[0] === "function")
+                writeFunctionSignature(element, false, true);
+            else if (type === "object") {
+                if (element.properties && element.properties.length)
+                    writeInterfaceBody(element);
+                else
+                    write("{}");
+            } else
+                write(type);
+        }
         writeln(";");
     }
 }
