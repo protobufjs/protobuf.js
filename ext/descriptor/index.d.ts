@@ -35,7 +35,7 @@ interface IDescriptorProto {
 }
 
 interface IMessageOptions {
-    mapEntry?: any;
+    mapEntry?: boolean;
 }
 
 interface IExtensionRange {
@@ -46,6 +46,10 @@ interface IExtensionRange {
 interface IReservedRange {
     start?: number;
     end?: number;
+}
+
+interface IFieldOptions {
+    packed?: boolean;
 }
 
 interface IFieldDescriptorProto {
@@ -64,10 +68,6 @@ interface IFieldDescriptorProto {
 type IFieldDescriptorProto_Label = number;
 
 type IFieldDescriptorProto_Type = number;
-
-interface IFieldOptions {
-    packed?: boolean;
-}
 
 interface IEnumDescriptorProto {
     name?: string;

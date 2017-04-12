@@ -12,15 +12,16 @@ var $protobuf = require("..");
  */
 var descriptor = module.exports = $protobuf.Root.fromJSON(require("../google/protobuf/descriptor.json")).lookup(".google.protobuf");
 
-var google   = descriptor, // alias used where `descriptor` is a local var
-    Root     = $protobuf.Root,
-    Enum     = $protobuf.Enum,
-    Type     = $protobuf.Type,
-    Field    = $protobuf.Field,
-    MapField = $protobuf.MapField,
-    OneOf    = $protobuf.OneOf,
-    Service  = $protobuf.Service,
-    Method   = $protobuf.Method;
+var google    = descriptor, // alias used where `descriptor` is a local var
+    Namespace = $protobuf.Namespace,
+    Root      = $protobuf.Root,
+    Enum      = $protobuf.Enum,
+    Type      = $protobuf.Type,
+    Field     = $protobuf.Field,
+    MapField  = $protobuf.MapField,
+    OneOf     = $protobuf.OneOf,
+    Service   = $protobuf.Service,
+    Method    = $protobuf.Method;
 
 // --- Root ---
 
@@ -87,12 +88,51 @@ Root.fromDescriptor = function fromDescriptor(descriptor) {
     return root;
 };
 
-function traverseNamespace(ns, file) {
-    for (var i = 0; i < ns.nestedArray.length; ++i)
-        ( ns._nestedArray[i] instanceof Type ? file.messageType
-        : ns._nestedArray[i] instanceof Enum ? file.enumType
-        : ns._nestedArray[i] instanceof Field ? file.extension
-        : ns._nestedArray[i] instanceof Service ? file.service : []).push(ns._nestedArray[i].toDescriptor(file.syntax));
+// Traverses a namespace and assembles the descriptor set
+function traverseNamespace(ns, file, files, syntax) {
+
+    // When encountering a plain namespace, create a new file using the current path as its package,
+    // but don't add the file yet until we know that it has some actual types.
+    var newFile = false;
+    if (ns instanceof Namespace && !(ns instanceof Type || ns instanceof Service)) {
+        file = google.FileDescriptorProto.create({
+            name: ns.filename || ns.fullName.substring(1).replace(/\./g, "_") + ".proto"
+        });
+        if (syntax)
+            file.syntax = syntax;
+        if (!(ns instanceof Root))
+            file["package"] = ns.fullName.substring(1);
+        newFile = true;
+    }
+
+    var descriptor, which;
+    for (var i = 0; i < ns.nestedArray.length; ++i) {
+        if (ns._nestedArray[i].toDescriptor) {
+            descriptor = ns._nestedArray[i].toDescriptor(file.syntax);
+            which = null;
+            if (ns._nestedArray[i] instanceof Type)
+                which = file.messageType;
+            else if (ns._nestedArray[i] instanceof Enum)
+                which = file.enumType;
+            else if (ns._nestedArray[i] instanceof Field)
+                which = file.extension;
+            else if (ns._nestedArray[i] instanceof Service)
+                which = file.service;
+            else
+                throw Error("illegal nested type");
+
+            // There's at least one actual type -> keep the file
+            if (newFile) {
+                files.push(file);
+                newFile = false;
+            }
+            which.push(descriptor);
+        }
+
+        // And traverse into the namespace
+        if (ns._nestedArray[i] instanceof Namespace)
+            traverseNamespace(ns._nestedArray[i], file, files);
+    }
 }
 
 /**
@@ -102,15 +142,9 @@ function traverseNamespace(ns, file) {
  * @see Part of the {@link descriptor} extension (ext/descriptor)
  */
 Root.prototype.toDescriptor = function toDescriptor(syntax) {
-    var file = google.FileDescriptorProto.create({ name: "bundle.proto" });
-    if (syntax)
-        file.syntax = syntax;
-    traverseNamespace(this, file);
-    // return google.FileDescriptorSet.create({ file: [ file ] });
-
-    // not working, packages need to be split to individual files first because there is no support
-    // for plain namespaces
-    throw Error("not implemented");
+    var files = google.FileDescriptorSet.create();
+    traverseNamespace(this, null, files, syntax);
+    return files;
 };
 
 // --- Type ---
