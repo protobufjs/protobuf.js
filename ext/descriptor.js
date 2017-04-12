@@ -4,26 +4,26 @@
 // ...
 "use strict";
 
+var protobuf = require("..");
+
 /**
  * Descriptor extension.
  * @namespace
+ * @property {Type} FileDescriptorSet Descriptor set describing a root
+ * @property {Type} DescriptorProto Descriptor describing a type
+ * @property {Type} FieldDescriptorProto Descriptor describing a field
  */
-var descriptor = exports;
+var descriptor = module.exports = protobuf.Root.fromJSON(require("../google/protobuf/descriptor.json")).lookup(".google.protobuf");
 
-var protobuf = require("..");
-
-var root  = protobuf.Root.fromJSON(require("../google/protobuf/descriptor.json")).resolveAll(),
-    Root  = protobuf.Root,
+var Root  = protobuf.Root,
     Type  = protobuf.Type,
     Field = protobuf.Field;
 
-// Root
+var FileDescriptorSet    = descriptor.FileDescriptorSet,
+    DescriptorProto      = descriptor.DescriptorProto,
+    FieldDescriptorProto = descriptor.FieldDescriptorProto;
 
-/**
- * FileDescriptorSet describing a root.
- * @type {Type}
- */
-descriptor.FileDescriptorSet = root.lookupType(".google.protobuf.FileDescriptorSet");
+// Root
 
 /**
  * Creates a root from a descriptor set.
@@ -43,12 +43,6 @@ protobuf.Root.prototype.toDescriptor = function toDescriptorSet() {
 };
 
 // Type
-
-/**
- * DescriptorProto describing a type.
- * @type {Type}
- */
-descriptor.DescriptorProto = root.lookupType(".google.protobuf.DescriptorProto");
 
 /**
  * Creates a type from a descriptor.
@@ -83,12 +77,6 @@ protobuf.Type.prototype.toDescriptor = function toDescriptor() {
 // Field
 
 /**
- * FieldDescriptorProto describing a field.
- * @type {Type}
- */
-descriptor.FieldDescriptorProto = root.lookupType(".google.protobuf.FieldDescriptorProto");
-
-/**
  * Creates a field from a descriptor.
  * @param {FieldDescriptorProto|Reader|Uint8Array} descriptor Descriptor
  * @returns {Field} Field instance
@@ -104,5 +92,3 @@ protobuf.Field.fromDescriptor = function fromDescriptor(descriptor) {
 protobuf.Field.prototype.toDescriptor = function toDescriptor() {
     throw Error("not implemented");
 };
-
-// etc.
