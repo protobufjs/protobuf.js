@@ -1,6 +1,6 @@
 import * as $protobuf from "../..";
 
-declare const descriptor: $protobuf.Root;
+declare const descriptor: $protobuf.Namespace;
 
 interface IFileDescriptorSet {
     file: IFileDescriptorProto[];

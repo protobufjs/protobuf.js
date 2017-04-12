@@ -4,13 +4,15 @@ var $protobuf = require("..");
 
 /**
  * Descriptor extension (ext/descriptor).
+ * Exports the `.google.protobuf` namespace of the internally used {@link Root} instance containing the types present in descriptor.proto.
  * @type {Root}
- * @tstype $protobuf.Root
+ * @tstype $protobuf.Namespace
  * @const
+ * @see https://github.com/dcodeIO/protobuf.js/tree/master/ext/descriptor
  */
 var descriptor = module.exports = $protobuf.Root.fromJSON(require("../google/protobuf/descriptor.json")).lookup(".google.protobuf");
 
-var google   = descriptor,
+var google   = descriptor, // aliased used where `descriptor` is a local var
     Root     = $protobuf.Root,
     Enum     = $protobuf.Enum,
     Type     = $protobuf.Type,
@@ -44,7 +46,7 @@ var google   = descriptor,
 
 /**
  * Creates a root from a descriptor set.
- * @param {Properties<IFileDescriptorSet>|Reader|Uint8Array} descriptor Descriptor
+ * @param {IFileDescriptorSet|Reader|Uint8Array} descriptor Descriptor
  * @returns {Root} Root instance
  * @see Part of the {@link descriptor} extension (ext/descriptor)
  */
@@ -144,7 +146,7 @@ var unnamedMessageIndex = 0;
 
 /**
  * Creates a type from a descriptor.
- * @param {Properties<IDescriptorProto>|Reader|Uint8Array} descriptor Descriptor
+ * @param {IDescriptorProto|Reader|Uint8Array} descriptor Descriptor
  * @param {string} [syntax="proto2"] Syntax
  * @returns {Type} Type instance
  * @see Part of the {@link descriptor} extension (ext/descriptor)
@@ -520,7 +522,7 @@ var unnamedServiceIndex = 0;
 
 /**
  * Creates a service from a descriptor.
- * @param {Properties<IServiceDescriptorProto>|Reader|Uint8Array} descriptor Descriptor
+ * @param {IServiceDescriptorProto|Reader|Uint8Array} descriptor Descriptor
  * @returns {Service} Service instance
  * @see Part of the {@link descriptor} extension (ext/descriptor)
  */
