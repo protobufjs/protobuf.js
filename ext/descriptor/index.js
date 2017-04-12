@@ -1,34 +1,25 @@
-// [WIP] Extension for reflection interoperability with descriptor.proto types
-// var protobuf   = require("protobufjs"),
-//     descriptor = require("protobufjs/ext/descriptor");
-// ...
 "use strict";
 
-var protobuf = require("..");
+var $protobuf = require("..");
 
 /**
  * Descriptor extension (ext/descriptor).
- * @namespace
+ * @type {Root}
+ * @tstype $protobuf.Root
+ * @const
  */
-
-var descriptor = module.exports = protobuf.Root.fromJSON(require("../google/protobuf/descriptor.json")).lookup(".google.protobuf");
+var descriptor = module.exports = $protobuf.Root.fromJSON(require("../google/protobuf/descriptor.json")).lookup(".google.protobuf");
 
 var google   = descriptor,
-    Root     = protobuf.Root,
-    Enum     = protobuf.Enum,
-    Type     = protobuf.Type,
-    Field    = protobuf.Field,
-    OneOf    = protobuf.OneOf,
-    Service  = protobuf.Service,
-    Method   = protobuf.Method;
+    Root     = $protobuf.Root,
+    Enum     = $protobuf.Enum,
+    Type     = $protobuf.Type,
+    Field    = $protobuf.Field,
+    OneOf    = $protobuf.OneOf,
+    Service  = $protobuf.Service,
+    Method   = $protobuf.Method;
 
 // --- Root ---
-
-/**
- * Reflected type describing a root.
- * @name descriptor.FileDescriptorSet
- * @type {Type}
- */
 
 /**
  * @interface IFileDescriptorSet
@@ -119,12 +110,6 @@ Root.prototype.toDescriptor = function toDescriptor(syntax) {
 // --- Type ---
 
 /**
- * Reflected type describing a type.
- * @name descriptor.DescriptorProto
- * @type {Type}
- */
-
-/**
  * @interface IDescriptorProto
  * @property {string} [name]
  * @property {IFieldDescriptorProto[]} [field]
@@ -175,15 +160,15 @@ Type.fromDescriptor = function fromDescriptor(descriptor, syntax) {
         i;
 
     /* Fields */ for (i = 0; i < descriptor.field.length; ++i)
-        type.add(protobuf.Field.fromDescriptor(descriptor.field[i], syntax));
+        type.add(Field.fromDescriptor(descriptor.field[i], syntax));
     /* Extension fields */ for (i = 0; i < descriptor.extension.length; ++i)
-        type.add(protobuf.Field.fromDescriptor(descriptor.extension[i], syntax));
+        type.add(Field.fromDescriptor(descriptor.extension[i], syntax));
     /* Oneofs */ for (i = 0; i < descriptor.oneofDecl.length; ++i)
-        type.add(protobuf.OneOf.fromDescriptor(descriptor.oneofDecl[i]));
+        type.add(OneOf.fromDescriptor(descriptor.oneofDecl[i]));
     /* Nested types */ for (i = 0; i < descriptor.nestedType.length; ++i)
-        type.add(protobuf.Type.fromDescriptor(descriptor.nestedType[i], syntax));
+        type.add(Type.fromDescriptor(descriptor.nestedType[i], syntax));
     /* Nested enums */ for (i = 0; i < descriptor.enumType.length; ++i)
-        type.add(protobuf.Enum.fromDescriptor(descriptor.enumType[i]));
+        type.add(Enum.fromDescriptor(descriptor.enumType[i]));
     /* Extension ranges */ if (descriptor.extensionRange.length) {
         type.extensions = [];
         for (i = 0; i < descriptor.extensionRange.length; ++i)
@@ -237,17 +222,9 @@ Type.prototype.toDescriptor = function toDescriptor(syntax) {
 // --- Field ---
 
 /**
- * Reflected type describing a field.
- * @name descriptor.FieldDescriptorProto
- * @type {Type}
- * @property {Enum} Label Reflected descriptor describing a field label (rule)
- * @property {Enum} Type Reflected descriptor describing a field type
- */
-
-/**
  * @interface IFieldDescriptorProto
  * @property {string} [name]
- * @property {number} [number}
+ * @property {number} [number]
  * @property {IFieldDescriptorProto_Label} [label]
  * @property {IFieldDescriptorProto_Type} [type]
  * @property {string} [typeName]
@@ -425,24 +402,6 @@ Field.prototype.toDescriptor = function toDescriptor(syntax) {
 // --- Enum ---
 
 /**
- * Reflected type describing an enum.
- * @name descriptor.EnumDescriptorProto
- * @type {Type}
- */
-
-/**
- * Reflected type describing an enum value.
- * @name descriptor.EnumValueDescriptorProto
- * @type {Type}
- */
-
-/**
- * Reflected type describing enum options.
- * @name descriptor.EnumOptions
- * @type {Type}
- */
-
-/**
  * @interface IEnumDescriptorProto
  * @property {string} [name]
  * @property {IEnumValueDescriptorProto[]} [value]
@@ -512,12 +471,6 @@ Enum.prototype.toDescriptor = function toDescriptor() {
 // --- OneOf ---
 
 /**
- * Reflected type describing a oneof.
- * @name descriptor.OneofDescriptorProto
- * @type {Type}
- */
-
-/**
  * @interface IOneofDescriptorProto
  * @property {string} [name]
  * @property {*} [options]
@@ -555,12 +508,6 @@ OneOf.prototype.toDescriptor = function toDescriptor() {
 };
 
 // --- Service ---
-
-/**
- * Reflected type describing a service.
- * @name descriptor.ServiceDescriptorProto
- * @type {Type}
- */
 
 /**
  * @interface IServiceDescriptorProto
@@ -609,12 +556,6 @@ Service.prototype.toDescriptor = function toDescriptor() {
 };
 
 // --- Method ---
-
-/**
- * Reflected type describing a method.
- * @name descriptor.MethodDescriptorProto
- * @type {Type}
- */
 
 /**
  * @interface IMethodDescriptorProto

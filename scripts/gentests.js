@@ -42,10 +42,11 @@ var fs   = require("fs"),
 });
 
 [
-    "tests/data/rpc.js",
-    "tests/data/test.js",
+    { file: "tests/data/rpc.js" },
+    { file: "tests/data/test.js" },
+    { file: "ext/descriptor/index.js", ext: true }
 ]
-.forEach(function(file) {
+.forEach(function({ file, ext }) {
     var out = file.replace(/\.js$/, ".d.ts");
     pbts.main([
         "--no-comments",
@@ -54,7 +55,13 @@ var fs   = require("fs"),
         if (err)
             throw err;
         var pathToProtobufjs = path.relative(path.dirname(out), "").replace(/\\/g, "/");
-        fs.writeFileSync(out, output.replace(/"protobufjs"/g, JSON.stringify(pathToProtobufjs)));
+        output = output.replace(/"protobufjs"/g, JSON.stringify(pathToProtobufjs));
+        if (ext) {
+            var extName;
+            output = output.replace(/export (\w+) (\w+)/, function($0, $1, $2) { extName = $2; return "declare " + $1 + " " + extName; });
+            output += "\nexport = " + extName + ";\n";
+        }
+        fs.writeFileSync(out, output);
         process.stdout.write("pbts: " + file + " -> " + out + "\n");
     });
 });

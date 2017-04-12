@@ -367,7 +367,7 @@ function buildType(ref, type) {
         "@constructor",
         "@param {" + fullName + "$Properties=} [" + (config.beautify ? "properties" : "p") + "] Properties to set"
     ]);
-    buildFunction(type, type.name, Class.generate(type));
+    buildFunction(type, type.name, Type.generateConstructor(type));
 
     // default values
     var firstField = true;

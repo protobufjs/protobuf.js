@@ -152,7 +152,7 @@ Object.defineProperties(Type.prototype, {
      */
     ctor: {
         get: function() {
-            return this._ctor || (this.ctor = generateConstructor(this).eof(this.name));
+            return this._ctor || (this.ctor = Type.generateConstructor(this).eof(this.name));
         },
         set: function(ctor) {
 
@@ -189,7 +189,12 @@ Object.defineProperties(Type.prototype, {
     }
 });
 
-function generateConstructor(type) {
+/**
+ * Generates a constructor function for the specified type.
+ * @param {Type} type Type
+ * @returns {Codegen} Codegen instance
+ */
+Type.generateConstructor = function generateConstructor(type) {
     /* eslint-disable no-unexpected-multiline */
     var gen = util.codegen("p");
     // explicitly initialize mutable object/array fields so that these aren't just inherited from the prototype
@@ -202,7 +207,7 @@ function generateConstructor(type) {
     ("if(p)for(var ks=Object.keys(p),i=0;i<ks.length;++i)if(p[ks[i]]!=null)") // omit undefined or null
         ("this[ks[i]]=p[ks[i]]");
     /* eslint-enable no-unexpected-multiline */
-}
+};
 
 function clearCache(type) {
     type._fieldsById = type._fieldsArray = type._oneofsArray = type._ctor = null;

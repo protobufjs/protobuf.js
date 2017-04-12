@@ -505,9 +505,9 @@ $root.vector_tile = (function() {
                 if (message.stringValue != null && message.hasOwnProperty("stringValue"))
                     object.stringValue = message.stringValue;
                 if (message.floatValue != null && message.hasOwnProperty("floatValue"))
-                    object.floatValue = message.floatValue;
+                    object.floatValue = options.json && !isFinite(message.floatValue) ? String(message.floatValue) : message.floatValue;
                 if (message.doubleValue != null && message.hasOwnProperty("doubleValue"))
-                    object.doubleValue = message.doubleValue;
+                    object.doubleValue = options.json && !isFinite(message.doubleValue) ? String(message.doubleValue) : message.doubleValue;
                 if (message.intValue != null && message.hasOwnProperty("intValue"))
                     if (typeof message.intValue === "number")
                         object.intValue = options.longs === String ? String(message.intValue) : message.intValue;

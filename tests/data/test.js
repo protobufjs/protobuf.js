@@ -3532,27 +3532,27 @@ $root.jspb = (function() {
                     object.defaultDoubleField = 2;
                 }
                 if (message.optionalFloatField != null && message.hasOwnProperty("optionalFloatField"))
-                    object.optionalFloatField = message.optionalFloatField;
+                    object.optionalFloatField = options.json && !isFinite(message.optionalFloatField) ? String(message.optionalFloatField) : message.optionalFloatField;
                 if (message.requiredFloatField != null && message.hasOwnProperty("requiredFloatField"))
-                    object.requiredFloatField = message.requiredFloatField;
+                    object.requiredFloatField = options.json && !isFinite(message.requiredFloatField) ? String(message.requiredFloatField) : message.requiredFloatField;
                 if (message.repeatedFloatField && message.repeatedFloatField.length) {
                     object.repeatedFloatField = [];
                     for (var j = 0; j < message.repeatedFloatField.length; ++j)
-                        object.repeatedFloatField[j] = message.repeatedFloatField[j];
+                        object.repeatedFloatField[j] = options.json && !isFinite(message.repeatedFloatField[j]) ? String(message.repeatedFloatField[j]) : message.repeatedFloatField[j];
                 }
                 if (message.defaultFloatField != null && message.hasOwnProperty("defaultFloatField"))
-                    object.defaultFloatField = message.defaultFloatField;
+                    object.defaultFloatField = options.json && !isFinite(message.defaultFloatField) ? String(message.defaultFloatField) : message.defaultFloatField;
                 if (message.optionalDoubleField != null && message.hasOwnProperty("optionalDoubleField"))
-                    object.optionalDoubleField = message.optionalDoubleField;
+                    object.optionalDoubleField = options.json && !isFinite(message.optionalDoubleField) ? String(message.optionalDoubleField) : message.optionalDoubleField;
                 if (message.requiredDoubleField != null && message.hasOwnProperty("requiredDoubleField"))
-                    object.requiredDoubleField = message.requiredDoubleField;
+                    object.requiredDoubleField = options.json && !isFinite(message.requiredDoubleField) ? String(message.requiredDoubleField) : message.requiredDoubleField;
                 if (message.repeatedDoubleField && message.repeatedDoubleField.length) {
                     object.repeatedDoubleField = [];
                     for (var j = 0; j < message.repeatedDoubleField.length; ++j)
-                        object.repeatedDoubleField[j] = message.repeatedDoubleField[j];
+                        object.repeatedDoubleField[j] = options.json && !isFinite(message.repeatedDoubleField[j]) ? String(message.repeatedDoubleField[j]) : message.repeatedDoubleField[j];
                 }
                 if (message.defaultDoubleField != null && message.hasOwnProperty("defaultDoubleField"))
-                    object.defaultDoubleField = message.defaultDoubleField;
+                    object.defaultDoubleField = options.json && !isFinite(message.defaultDoubleField) ? String(message.defaultDoubleField) : message.defaultDoubleField;
                 return object;
             };
 
@@ -6634,7 +6634,7 @@ $root.jspb = (function() {
                 if (message.mapStringDouble && (keys2 = Object.keys(message.mapStringDouble)).length) {
                     object.mapStringDouble = {};
                     for (var j = 0; j < keys2.length; ++j)
-                        object.mapStringDouble[keys2[j]] = message.mapStringDouble[keys2[j]];
+                        object.mapStringDouble[keys2[j]] = options.json && !isFinite(message.mapStringDouble[keys2[j]]) ? String(message.mapStringDouble[keys2[j]]) : message.mapStringDouble[keys2[j]];
                 }
                 if (message.mapStringEnum && (keys2 = Object.keys(message.mapStringEnum)).length) {
                     object.mapStringEnum = {};
@@ -13192,7 +13192,7 @@ $root.google = (function() {
                     else
                         object.negativeIntValue = options.longs === String ? $util.Long.prototype.toString.call(message.negativeIntValue) : options.longs === Number ? new $util.LongBits(message.negativeIntValue.low >>> 0, message.negativeIntValue.high >>> 0).toNumber() : message.negativeIntValue;
                 if (message.doubleValue != null && message.hasOwnProperty("doubleValue"))
-                    object.doubleValue = message.doubleValue;
+                    object.doubleValue = options.json && !isFinite(message.doubleValue) ? String(message.doubleValue) : message.doubleValue;
                 if (message.stringValue != null && message.hasOwnProperty("stringValue"))
                     object.stringValue = options.bytes === String ? $util.base64.encode(message.stringValue, 0, message.stringValue.length) : options.bytes === Array ? Array.prototype.slice.call(message.stringValue) : message.stringValue;
                 if (message.aggregateValue != null && message.hasOwnProperty("aggregateValue"))

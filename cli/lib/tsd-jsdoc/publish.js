@@ -393,7 +393,6 @@ function notAModuleReference(ref) {
     return ref.indexOf("module:") === -1;
 }
 
-
 // handles a class or class-like
 function handleClass(element, parent) {
     var is_interface = isInterface(element);

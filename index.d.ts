@@ -1720,6 +1720,13 @@ export class Type extends NamespaceBase {
     public ctor: Constructor<{}>;
 
     /**
+     * Generates a constructor function for the specified type.
+     * @param {Type} type Type
+     * @returns {Codegen} Codegen instance
+     */
+    public static generateConstructor(type: Type): Codegen;
+
+    /**
      * Creates a message type from a message type descriptor.
      * @param {string} name Message name
      * @param {TypeDescriptor} json Message type descriptor
