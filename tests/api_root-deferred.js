@@ -28,7 +28,8 @@ tape.test("extension fields", function(test) {
     extensionField = extendedType.get(declaringField.fullName);
     test.equal(extensionField, declaringField.extensionField, "should become instantly available if their extended type is knwon");
 
-    root.add(type = new Type("Test"));
+    ns.remove(extendedType);
+    type.remove(declaringField);
     type.add(declaringField);
     test.throws(function() {
         root.resolveAll();
