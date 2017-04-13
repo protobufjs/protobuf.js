@@ -79,8 +79,20 @@ Root.fromDescriptor = function fromDescriptor(descriptor) {
     return root;
 };
 
+/**
+ * Converts a root to a descriptor set.
+ * @returns {Message<FileDescriptorSetProperties>} Descriptor
+ * @param {string} [syntax="proto2"] Syntax
+ * @see Part of the {@link descriptor} extension (ext/descriptor)
+ */
+Root.prototype.toDescriptor = function toDescriptor(syntax) {
+    var set = exports.FileDescriptorSet.create();
+    Root_toDescriptorRecursive(this, set.file, syntax);
+    return set;
+};
+
 // Traverses a namespace and assembles the descriptor set
-function traverseNamespace(ns, files, syntax) {
+function Root_toDescriptorRecursive(ns, files, syntax) {
 
     // Create a new file
     var file = exports.FileDescriptorProto.create({ name: ns.filename || (ns.fullName.substring(1).replace(/\./g, "_") || "root") + ".proto" });
@@ -100,24 +112,12 @@ function traverseNamespace(ns, files, syntax) {
         else if (nested instanceof Service)
             file.service.push(nested.toDescriptor());
         else if (nested instanceof /* plain */ Namespace)
-            traverseNamespace(nested, files, syntax); // requires new file
+            Root_toDescriptorRecursive(nested, files, syntax); // requires new file
 
     // And keep the file only if there is at least one nested object
     if (file.messageType.length + file.enumType.length + file.extension.length + file.service.length)
         files.push(file);
 }
-
-/**
- * Converts a root to a descriptor set.
- * @returns {Message<FileDescriptorSetProperties>} Descriptor
- * @param {string} [syntax="proto2"] Syntax
- * @see Part of the {@link descriptor} extension (ext/descriptor)
- */
-Root.prototype.toDescriptor = function toDescriptor(syntax) {
-    var set = exports.FileDescriptorSet.create();
-    traverseNamespace(this, set.file, syntax);
-    return set;
-};
 
 // --- Type ---
 
@@ -183,15 +183,19 @@ Type.fromDescriptor = function fromDescriptor(descriptor, syntax) {
     var type = new Type(descriptor.name.length ? descriptor.name : "Type" + unnamedMessageIndex++),
         i;
 
-    /* Fields */ if (descriptor.field)
-        for (i = 0; i < descriptor.field.length; ++i)
-            type.add(Field.fromDescriptor(descriptor.field[i], syntax));
-    /* Extension fields */ if (descriptor.extension)
-        for (i = 0; i < descriptor.extension.length; ++i)
-            type.add(Field.fromDescriptor(descriptor.extension[i], syntax));
     /* Oneofs */ if (descriptor.oneofDecl)
         for (i = 0; i < descriptor.oneofDecl.length; ++i)
             type.add(OneOf.fromDescriptor(descriptor.oneofDecl[i]));
+    /* Fields */ if (descriptor.field)
+        for (i = 0; i < descriptor.field.length; ++i) {
+            var field = Field.fromDescriptor(descriptor.field[i], syntax);
+            type.add(field);
+            if (descriptor.field[i].hasOwnProperty("oneofIndex")) // eslint-disable-line no-prototype-builtins
+                type.oneofsArray[descriptor.field[i].oneofIndex].add(field);
+        }
+    /* Extension fields */ if (descriptor.extension)
+        for (i = 0; i < descriptor.extension.length; ++i)
+            type.add(Field.fromDescriptor(descriptor.extension[i], syntax));
     /* Nested types */ if (descriptor.nestedType)
         for (i = 0; i < descriptor.nestedType.length; ++i) {
             type.add(Type.fromDescriptor(descriptor.nestedType[i], syntax));
@@ -230,15 +234,16 @@ Type.prototype.toDescriptor = function toDescriptor(syntax) {
         i;
 
     /* Fields */ for (i = 0; i < this.fieldsArray.length; ++i) {
-        descriptor.field.push(this._fieldsArray[i].toDescriptor(syntax));
+        var fieldDescriptor;
+        descriptor.field.push(fieldDescriptor = this._fieldsArray[i].toDescriptor(syntax));
         if (this._fieldsArray[i] instanceof MapField) { // map fields are repeated FieldNameEntry
             var keyType = toDescriptorType(this._fieldsArray[i].keyType, this._fieldsArray[i].resolvedKeyType),
                 valueType = toDescriptorType(this._fieldsArray[i].type, this._fieldsArray[i].resolvedType),
                 valueTypeName = valueType === /* type */ 11 || valueType === /* enum */ 14
-                    ? this._fieldsArray[i].resolvedType && this._fieldsArray[i].resolvedType.fullName || this._fieldsArray[i].type
+                    ? this._fieldsArray[i].resolvedType && shortname(this.parent, this._fieldsArray[i].resolvedType) || this._fieldsArray[i].type
                     : undefined;
             descriptor.nestedType.push(exports.DescriptorProto.create({
-                name: descriptor.field[descriptor.field.length - 1].typeName,
+                name: fieldDescriptor.typeName,
                 field: [
                     exports.FieldDescriptorProto.create({ name: "key", number: 1, label: 1, type: keyType }), // can't reference a type or enum
                     exports.FieldDescriptorProto.create({ name: "value", number: 2, label: 1, type: valueType, typeName: valueTypeName })
@@ -247,11 +252,11 @@ Type.prototype.toDescriptor = function toDescriptor(syntax) {
             }));
         }
     }
+    /* Oneofs */ for (i = 0; i < this.oneofsArray.length; ++i)
+        descriptor.oneofDecl.push(this._oneofsArray[i].toDescriptor());
     /* Nested... */ for (i = 0; i < this.nestedArray.length; ++i) {
         /* Extension fields */ if (this._nestedArray[i] instanceof Field)
             descriptor.field.push(this._nestedArray[i].toDescriptor(syntax));
-        /* Oneofs */ else if (this._nestedArray[i] instanceof OneOf)
-            descriptor.oneofDecl.push(this._nestedArray[i].toDescriptor());
         /* Types */ else if (this._nestedArray[i] instanceof Type)
             descriptor.nestedType.push(this._nestedArray[i].toDescriptor(syntax));
         /* Enums */ else if (this._nestedArray[i] instanceof Enum)
@@ -286,7 +291,7 @@ Type.prototype.toDescriptor = function toDescriptor(syntax) {
  * @property {FieldDescriptorProto_Type} [type] Field basic type
  * @property {string} [typeName] Field type name
  * @property {string} [extendee] Extended type name
- * @property {*} [defaultValue] Not supported
+ * @property {string} [defaultValue] Literal default value
  * @property {number} [oneofIndex] Oneof index if part of a oneof
  * @property {*} [jsonName] Not supported
  * @property {FieldOptionsProperties} [options] Field options
@@ -346,51 +351,6 @@ Type.prototype.toDescriptor = function toDescriptor(syntax) {
  * @property {number} JS_NUMBER=2
  */
 
-// Converts a descriptor type to a protobuf.js basic type
-function fromDescriptorType(type) {
-    switch (type) {
-        // 0 is reserved for errors
-        case 1: return "double";
-        case 2: return "float";
-        case 3: return "int64";
-        case 4: return "uint64";
-        case 5: return "int32";
-        case 6: return "fixed64";
-        case 7: return "fixed32";
-        case 8: return "bool";
-        case 9: return "string";
-        case 12: return "bytes";
-        case 13: return "uint32";
-        case 15: return "sfixed32";
-        case 16: return "sfixed64";
-        case 17: return "sint32";
-        case 18: return "sint64";
-    }
-    throw Error("illegal type: " + type);
-}
-
-// Tests if a descriptor type is packable
-function packableDescriptorType(type) {
-    switch (type) {
-        case 1: // double
-        case 2: // float
-        case 3: // int64
-        case 4: // uint64
-        case 5: // int32
-        case 6: // fixed64
-        case 7: // fixed32
-        case 8: // bool
-        case 13: // uint32
-        case 14: // enum (!)
-        case 15: // sfixed32
-        case 16: // sfixed64
-        case 17: // sint32
-        case 18: // sint64
-            return true;
-    }
-    return false;
-}
-
 /**
  * Creates a field from a descriptor.
  * @param {FieldDescriptorProtoProperties|Reader|Uint8Array} descriptor Descriptor
@@ -434,6 +394,8 @@ Field.fromDescriptor = function fromDescriptor(descriptor, syntax) {
 
     if (descriptor.options)
         field.options = fromDescriptorOptions(descriptor.options, exports.FieldOptions);
+    if (descriptor.defaultValue && descriptor.defaultValue.length)
+        field.setOption("default", descriptor.defaultValue);
 
     if (packableDescriptorType(descriptor.type)) {
         if (syntax === "proto3") { // defaults to packed=true (internal preset is packed=true)
@@ -445,33 +407,6 @@ Field.fromDescriptor = function fromDescriptor(descriptor, syntax) {
 
     return field;
 };
-
-// Converts a protobuf.js basic type to a descriptor type
-function toDescriptorType(type, resolvedType) {
-    switch (type) {
-        // 0 is reserved for errors
-        case "double": return 1;
-        case "float": return 2;
-        case "int64": return 3;
-        case "uint64": return 4;
-        case "int32": return 5;
-        case "fixed64": return 6;
-        case "fixed32": return 7;
-        case "bool": return 8;
-        case "string": return 9;
-        case "bytes": return 12;
-        case "uint32": return 13;
-        case "sfixed32": return 15;
-        case "sfixed64": return 16;
-        case "sint32": return 17;
-        case "sint64": return 18;
-    }
-    if (resolvedType instanceof Enum)
-        return 14;
-    if (resolvedType instanceof Type)
-        return resolvedType.group ? 10 : 11;
-    throw Error("illegal type: " + type);
-}
 
 /**
  * Converts a field to a descriptor.
@@ -495,7 +430,7 @@ Field.prototype.toDescriptor = function toDescriptor(syntax) {
             case 10: // group
             case 11: // type
             case 14: // enum
-                descriptor.typeName = this.resolvedType ? this.resolvedType.fullName : this.type; // TODO: shorten
+                descriptor.typeName = this.resolvedType ? shortname(this.parent, this.resolvedType) : this.type;
                 break;
         }
 
@@ -516,8 +451,11 @@ Field.prototype.toDescriptor = function toDescriptor(syntax) {
         if ((descriptor.oneofIndex = this.parent.oneofsArray.indexOf(this.partOf)) < 0)
             throw Error("missing oneof");
 
-    if (this.options)
+    if (this.options) {
         descriptor.options = toDescriptorOptions(this.options, exports.FieldOptions);
+        if (this.options["default"] != null)
+            descriptor.defaultValue = String(this.options["default"]);
+    }
 
     if (syntax === "proto3") { // defaults to packed=true
         if (!this.packed)
@@ -757,6 +695,79 @@ Method.prototype.toDescriptor = function toDescriptor() {
 
 // --- utility ---
 
+// Converts a descriptor type to a protobuf.js basic type
+function fromDescriptorType(type) {
+    switch (type) {
+        // 0 is reserved for errors
+        case 1: return "double";
+        case 2: return "float";
+        case 3: return "int64";
+        case 4: return "uint64";
+        case 5: return "int32";
+        case 6: return "fixed64";
+        case 7: return "fixed32";
+        case 8: return "bool";
+        case 9: return "string";
+        case 12: return "bytes";
+        case 13: return "uint32";
+        case 15: return "sfixed32";
+        case 16: return "sfixed64";
+        case 17: return "sint32";
+        case 18: return "sint64";
+    }
+    throw Error("illegal type: " + type);
+}
+
+// Tests if a descriptor type is packable
+function packableDescriptorType(type) {
+    switch (type) {
+        case 1: // double
+        case 2: // float
+        case 3: // int64
+        case 4: // uint64
+        case 5: // int32
+        case 6: // fixed64
+        case 7: // fixed32
+        case 8: // bool
+        case 13: // uint32
+        case 14: // enum (!)
+        case 15: // sfixed32
+        case 16: // sfixed64
+        case 17: // sint32
+        case 18: // sint64
+            return true;
+    }
+    return false;
+}
+
+// Converts a protobuf.js basic type to a descriptor type
+function toDescriptorType(type, resolvedType) {
+    switch (type) {
+        // 0 is reserved for errors
+        case "double": return 1;
+        case "float": return 2;
+        case "int64": return 3;
+        case "uint64": return 4;
+        case "int32": return 5;
+        case "fixed64": return 6;
+        case "fixed32": return 7;
+        case "bool": return 8;
+        case "string": return 9;
+        case "bytes": return 12;
+        case "uint32": return 13;
+        case "sfixed32": return 15;
+        case "sfixed64": return 16;
+        case "sint32": return 17;
+        case "sint64": return 18;
+    }
+    if (resolvedType instanceof Enum)
+        return 14;
+    if (resolvedType instanceof Type)
+        return resolvedType.group ? 10 : 11;
+    throw Error("illegal type: " + type);
+}
+
+// Converts descriptor options to an options object
 function fromDescriptorOptions(options, type) {
     var out = [];
     for (var i = 0, key; i < type.fieldsArray.length; ++i)
@@ -766,11 +777,32 @@ function fromDescriptorOptions(options, type) {
     return out.length ? $protobuf.util.toObject(out) : undefined;
 }
 
+// Converts an options object to descriptor options
 function toDescriptorOptions(options, type) {
     var out = [];
     for (var i = 0, key; i < type.fieldsArray.length; ++i)
-        out.push(key = type._fieldsArray[i].name, options[key]);
+        if ((key = type._fieldsArray[i].name) !== "default")
+            out.push(key, options[key]);
     return out.length ? type.fromObject($protobuf.util.toObject(out)) : undefined;
+}
+
+// Calculates the shortest relative path from `from` to `to`.
+function shortname(from, to) {
+    var fromPath = from.fullName.split("."),
+        toPath = to.fullName.split("."),
+        i = 0,
+        j = 0,
+        k = toPath.length - 1;
+    if (!(from instanceof Root) && to instanceof Namespace)
+        while (i < fromPath.length && j < k && fromPath[i] === toPath[j]) {
+            var other = to.lookup(fromPath[i++], true);
+            if (other !== null && other !== to)
+                break;
+            ++j;
+        }
+    else
+        for (; i < fromPath.length && j < k && fromPath[i] === toPath[j]; ++i, ++j);
+    return toPath.slice(j).join(".");
 }
 
 // --- exports ---

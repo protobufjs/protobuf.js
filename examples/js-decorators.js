@@ -2,7 +2,7 @@
 // the README example.
 
 /*eslint-disable strict, no-console*/
-var protobuf = require("..");
+var protobuf = require("../light");
 
 var Type  = protobuf.Type,
     Field = protobuf.Field,
@@ -38,4 +38,5 @@ var message = new AwesomeMessage({ awesomeField: "hello" });
 var buffer  = AwesomeMessage.encode(message).finish();
 var decoded = AwesomeMessage.decode(buffer);
 
-console.log(decoded, "internal name: " + AwesomeMessage.$type.name);
+console.log(decoded);
+console.log("internal name: " + AwesomeMessage.$type.name);

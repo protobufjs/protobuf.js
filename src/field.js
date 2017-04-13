@@ -267,7 +267,7 @@ Field.prototype.resolve = function resolve() {
     }
 
     // use explicitly set default value if present
-    if (this.options && this.options["default"] !== undefined) {
+    if (this.options && this.options["default"] != null) {
         this.typeDefault = this.options["default"];
         if (this.resolvedType instanceof Enum && typeof this.typeDefault === "string")
             this.typeDefault = this.resolvedType.values[this.typeDefault];
@@ -277,7 +277,7 @@ Field.prototype.resolve = function resolve() {
     if (this.options) {
         if (this.options.packed === true || this.options.packed !== undefined && this.resolvedType && !(this.resolvedType instanceof Enum))
             delete this.options.packed;
-        if (Object.keys(this.options).length === 0)
+        if (!Object.keys(this.options).length)
             this.options = undefined;
     }
 

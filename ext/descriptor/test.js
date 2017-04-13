@@ -40,9 +40,13 @@ var root2 = protobuf.Root.fromDescriptor(buf, "proto2").resolveAll();
 
 // console.log("\nDecoded proto", JSON.stringify(root2, null, 2));
 
-require("deep-diff").diff(root.toJSON(), root2.toJSON()).forEach(function(diff) {
-    console.log(diff.kind + " @ " + diff.path.join("."));
-    console.log("lhs:", diff.lhs);
-    console.log("rhs:", diff.rhs);
-    console.log();
-});
+var diff = require("deep-diff").diff(root.toJSON(), root2.toJSON());
+if (diff)
+    diff.forEach(function(diff) {
+        console.log(diff.kind + " @ " + diff.path.join("."));
+        console.log("lhs:", diff.lhs);
+        console.log("rhs:", diff.rhs);
+        console.log();
+    });
+else
+    console.log("no differences");
