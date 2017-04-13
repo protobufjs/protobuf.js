@@ -1,12 +1,10 @@
 import * as $protobuf from "../..";
 
-declare const descriptor: $protobuf.Namespace;
-
-interface IFileDescriptorSet {
+export interface IFileDescriptorSet {
     file: IFileDescriptorProto[];
 }
 
-interface IFileDescriptorProto {
+export interface IFileDescriptorProto {
     name?: string;
     package?: string;
     dependency?: any;
@@ -21,7 +19,7 @@ interface IFileDescriptorProto {
     syntax?: string;
 }
 
-interface IDescriptorProto {
+export interface IDescriptorProto {
     name?: string;
     field?: IFieldDescriptorProto[];
     extension?: IFieldDescriptorProto[];
@@ -34,25 +32,25 @@ interface IDescriptorProto {
     reservedName?: string[];
 }
 
-interface IMessageOptions {
+export interface IMessageOptions {
     mapEntry?: boolean;
 }
 
-interface IExtensionRange {
+export interface IExtensionRange {
     start?: number;
     end?: number;
 }
 
-interface IReservedRange {
+export interface IReservedRange {
     start?: number;
     end?: number;
 }
 
-interface IFieldOptions {
+export interface IFieldOptions {
     packed?: boolean;
 }
 
-interface IFieldDescriptorProto {
+export interface IFieldDescriptorProto {
     name?: string;
     number?: number;
     label?: IFieldDescriptorProto_Label;
@@ -69,34 +67,34 @@ type IFieldDescriptorProto_Label = number;
 
 type IFieldDescriptorProto_Type = number;
 
-interface IEnumDescriptorProto {
+export interface IEnumDescriptorProto {
     name?: string;
     value?: IEnumValueDescriptorProto[];
     options?: IEnumOptions;
 }
 
-interface IEnumValueDescriptorProto {
+export interface IEnumValueDescriptorProto {
     name?: string;
     number?: number;
     options?: any;
 }
 
-interface IEnumOptions {
+export interface IEnumOptions {
     allowAlias?: boolean;
 }
 
-interface IOneofDescriptorProto {
+export interface IOneofDescriptorProto {
     name?: string;
     options?: any;
 }
 
-interface IServiceDescriptorProto {
+export interface IServiceDescriptorProto {
     name?: string;
     method?: IMethodDescriptorProto[];
     options?: any;
 }
 
-interface IMethodDescriptorProto {
+export interface IMethodDescriptorProto {
     name?: string;
     inputType?: string;
     outputType?: string;
@@ -104,5 +102,23 @@ interface IMethodDescriptorProto {
     clientStreaming?: boolean;
     serverStreaming?: boolean;
 }
-
-export = descriptor;
+export const FileDescriptorSet: $protobuf.Type;
+export const FileDescriptorProto: $protobuf.Type;
+export const DescriptorProto: $protobuf.Type;
+export const FieldDescriptorProto: $protobuf.Type;
+export const OneofDescriptorProto: $protobuf.Type;
+export const EnumDescriptorProto: $protobuf.Type;
+export const ServiceDescriptorProto: $protobuf.Type;
+export const EnumValueDescriptorProto: $protobuf.Type;
+export const MethodDescriptorProto: $protobuf.Type;
+export const FileOptions: $protobuf.Type;
+export const MessageOptions: $protobuf.Type;
+export const FieldOptions: $protobuf.Type;
+export const OneofOptions: $protobuf.Type;
+export const EnumOptions: $protobuf.Type;
+export const EnumValueOptions: $protobuf.Type;
+export const ServiceOptions: $protobuf.Type;
+export const MethodOptions: $protobuf.Type;
+export const UninterpretedOption: $protobuf.Type;
+export const SourceCodeInfo: $protobuf.Type;
+export const GeneratedCodeInfo: $protobuf.Type;

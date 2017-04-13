@@ -1,19 +1,8 @@
 "use strict";
+var $protobuf = require("../..");
+module.exports = exports = $protobuf.descriptor = $protobuf.Root.fromJSON(require("../../google/protobuf/descriptor.json")).lookup(".google.protobuf");
 
-var $protobuf = require("..");
-
-/**
- * Descriptor extension (ext/descriptor).
- * Exports the `.google.protobuf` namespace of the internally used {@link Root} instance containing the types present in descriptor.proto.
- * @type {Root}
- * @tstype $protobuf.Namespace
- * @const
- * @see https://github.com/dcodeIO/protobuf.js/tree/master/ext/descriptor
- */
-var descriptor = module.exports = $protobuf.Root.fromJSON(require("../google/protobuf/descriptor.json")).lookup(".google.protobuf");
-
-var google    = descriptor, // alias used where `descriptor` is a local var
-    Namespace = $protobuf.Namespace,
+var Namespace = $protobuf.Namespace,
     Root      = $protobuf.Root,
     Enum      = $protobuf.Enum,
     Type      = $protobuf.Type,
@@ -60,7 +49,7 @@ Root.fromDescriptor = function fromDescriptor(descriptor) {
 
     // Decode the descriptor message if specified as a buffer:
     if (typeof descriptor.length === "number")
-        descriptor = google.FileDescriptorSet.decode(descriptor);
+        descriptor = exports.FileDescriptorSet.decode(descriptor);
 
     var root = new Root();
 
@@ -89,50 +78,31 @@ Root.fromDescriptor = function fromDescriptor(descriptor) {
 };
 
 // Traverses a namespace and assembles the descriptor set
-function traverseNamespace(ns, file, files, syntax) {
+function traverseNamespace(ns, files, syntax) {
 
-    // When encountering a plain namespace, create a new file using the current path as its package,
-    // but don't add the file yet until we know that it has some actual types.
-    var newFile = false;
-    if (ns instanceof Namespace && !(ns instanceof Type || ns instanceof Service)) {
-        file = google.FileDescriptorProto.create({
-            name: ns.filename || ns.fullName.substring(1).replace(/\./g, "_") + ".proto"
-        });
-        if (syntax)
-            file.syntax = syntax;
-        if (!(ns instanceof Root))
-            file["package"] = ns.fullName.substring(1);
-        newFile = true;
-    }
+    // Create a new file
+    var file = exports.FileDescriptorProto.create({ name: ns.filename || (ns.fullName.substring(1).replace(/\./g, "_") || "root") + ".proto" });
+    if (syntax)
+        file.syntax = syntax;
+    if (!(ns instanceof Root))
+        file["package"] = ns.fullName.substring(1);
 
-    var descriptor, which;
-    for (var i = 0; i < ns.nestedArray.length; ++i) {
-        if (ns._nestedArray[i].toDescriptor) {
-            descriptor = ns._nestedArray[i].toDescriptor(file.syntax);
-            which = null;
-            if (ns._nestedArray[i] instanceof Type)
-                which = file.messageType;
-            else if (ns._nestedArray[i] instanceof Enum)
-                which = file.enumType;
-            else if (ns._nestedArray[i] instanceof Field)
-                which = file.extension;
-            else if (ns._nestedArray[i] instanceof Service)
-                which = file.service;
-            else
-                throw Error("illegal nested type");
+    // Add nested types
+    for (var i = 0, nested; i < ns.nestedArray.length; ++i)
+        if ((nested = ns._nestedArray[i]) instanceof Type)
+            file.messageType.push(nested.toDescriptor(syntax));
+        else if (nested instanceof Enum)
+            file.enumType.push(nested.toDescriptor());
+        else if (nested instanceof Field)
+            file.extension.push(nested.toDescriptor(syntax));
+        else if (nested instanceof Service)
+            file.service.push(nested.toDescriptor());        
+        else if (nested instanceof /* plain */ Namespace)
+            traverseNamespace(nested, files, syntax); // requires new file
 
-            // There's at least one actual type -> keep the file
-            if (newFile) {
-                files.push(file);
-                newFile = false;
-            }
-            which.push(descriptor);
-        }
-
-        // And traverse into the namespace
-        if (ns._nestedArray[i] instanceof Namespace)
-            traverseNamespace(ns._nestedArray[i], file, files);
-    }
+    // And keep the file only if there is at least one nested object
+    if (file.messageType.length + file.enumType.length + file.extension.length + file.service.length)
+        files.push(file);
 }
 
 /**
@@ -142,9 +112,9 @@ function traverseNamespace(ns, file, files, syntax) {
  * @see Part of the {@link descriptor} extension (ext/descriptor)
  */
 Root.prototype.toDescriptor = function toDescriptor(syntax) {
-    var files = google.FileDescriptorSet.create();
-    traverseNamespace(this, null, files, syntax);
-    return files;
+    var set = exports.FileDescriptorSet.create();
+    traverseNamespace(this, set.file, syntax);
+    return set;
 };
 
 // --- Type ---
@@ -201,7 +171,7 @@ Type.fromDescriptor = function fromDescriptor(descriptor, syntax) {
 
     // Decode the descriptor message if specified as a buffer:
     if (typeof descriptor.length === "number")
-        descriptor = google.DescriptorProto.decode(descriptor);
+        descriptor = exports.DescriptorProto.decode(descriptor);
 
     // Create the message type
     var type = new Type(descriptor.name.length ? descriptor.name : "Type" + unnamedMessageIndex++),
@@ -250,7 +220,7 @@ Type.fromDescriptor = function fromDescriptor(descriptor, syntax) {
  * @see Part of the {@link descriptor} extension (ext/descriptor)
  */
 Type.prototype.toDescriptor = function toDescriptor(syntax) {
-    var descriptor = google.DescriptorProto.create({ name: this.name }),
+    var descriptor = exports.DescriptorProto.create({ name: this.name }),
         i;
 
     /* Fields */ for (i = 0; i < this.fieldsArray.length; ++i) {
@@ -261,13 +231,13 @@ Type.prototype.toDescriptor = function toDescriptor(syntax) {
                 valueTypeName = valueType === 11 || valueType === 14
                     ? this._fieldsArray[i].resolvedType && this._fieldsArray[i].resolvedType.fullName || this._fieldsArray[i].type
                     : undefined;
-            descriptor.nestedType.push(google.DescriptorProto.create({
+            descriptor.nestedType.push(exports.DescriptorProto.create({
                 name: descriptor.field[descriptor.field.length - 1].type_name,
                 field: [
-                    google.FieldDescriptorProto.create({ name: "key", number: 1, label: 1, type: keyType }), // can't be message
-                    google.FieldDescriptorProto.create({ name: "value", number: 2, label: 1, type: valueType, typeName: valueTypeName })
+                    exports.FieldDescriptorProto.create({ name: "key", number: 1, label: 1, type: keyType }), // can't be message
+                    exports.FieldDescriptorProto.create({ name: "value", number: 2, label: 1, type: valueType, typeName: valueTypeName })
                 ],
-                options: google.MessageOptions({ mapEntry: true })
+                options: exports.MessageOptions({ mapEntry: true })
             }));
         }
     }
@@ -284,16 +254,16 @@ Type.prototype.toDescriptor = function toDescriptor(syntax) {
     }
     /* Extension ranges */ if (this.extensions)
         for (i = 0; i < this.extensions.length; ++i)
-            descriptor.extensionRange.push(google.DescriptorProto.ExtensionRange.create({ start: this.extensions[i][0], end: this.extensions[i][1] }));
+            descriptor.extensionRange.push(exports.DescriptorProto.ExtensionRange.create({ start: this.extensions[i][0], end: this.extensions[i][1] }));
     /* Reserved... */ if (this.reserved)
         for (i = 0; i < this.reserved.length; ++i)
             /* Names */ if (typeof this.reserved[i] === "string")
                 descriptor.reservedName.push(this.reserved[i]);
             /* Ranges */ else
-                descriptor.reservedRange.push(google.DescriptorProto.ReservedRange.create({ start: this.reserved[i][0], end: this.reserved[i][1] }));
+                descriptor.reservedRange.push(exports.DescriptorProto.ReservedRange.create({ start: this.reserved[i][0], end: this.reserved[i][1] }));
 
     if (this.options && this.options.map_entry)
-        descriptor.options = google.MessageOptions.create({ map_entry: true });
+        descriptor.options = exports.MessageOptions.create({ map_entry: true });
 
     return descriptor;
 };
@@ -378,7 +348,29 @@ function fromDescriptorType(type) {
         case 17: return "sint32";
         case 18: return "sint64";
     }
-    throw Error("illegal type: " + descriptor.type);
+    throw Error("illegal type: " + type);
+}
+
+// Tests if a descriptor type is packable
+function packableDescriptorType(type) {
+    switch (type) {
+        case 1: // double
+        case 2: // float
+        case 3: // int64
+        case 4: // uint64
+        case 5: // int32
+        case 6: // fixed64
+        case 7: // fixed32
+        case 8: // bool
+        case 13: // uint32
+        case 14: // enum (!)
+        case 15: // sfixed32
+        case 16: // sfixed64
+        case 17: // sint32
+        case 18: // sint64
+            return true;
+    }
+    return false;
 }
 
 /**
@@ -392,7 +384,7 @@ Field.fromDescriptor = function fromDescriptor(descriptor, syntax) {
 
     // Decode the descriptor message if specified as a buffer:
     if (typeof descriptor.length === "number")
-        descriptor = google.DescriptorProto.decode(descriptor);
+        descriptor = exports.DescriptorProto.decode(descriptor);
 
     if (typeof descriptor.number !== "number")
         throw Error("missing field id");
@@ -422,11 +414,13 @@ Field.fromDescriptor = function fromDescriptor(descriptor, syntax) {
         descriptor.extendee.length ? descriptor.extendee : undefined
     );
 
-    if (syntax === "proto3") { // defaults to packed=true (internal preset is packed=true)
-        if (descriptor.options && !descriptor.options.packed)
+    if (packableDescriptorType(descriptor.type)) {
+        if (syntax === "proto3") { // defaults to packed=true (internal preset is packed=true)
+            if (descriptor.options && !descriptor.options.packed)
+                field.setOption("packed", false);
+        } else if (!(descriptor.options && descriptor.options.packed)) // defaults to packed=false
             field.setOption("packed", false);
-    } else if (!(descriptor.options && descriptor.options.packed)) // defaults to packed=false
-        field.setOption("packed", false);
+    }
 
     return field;
 };
@@ -465,12 +459,12 @@ function toDescriptorType(type, resolvedType) {
  * @see Part of the {@link descriptor} extension (ext/descriptor)
  */
 Field.prototype.toDescriptor = function toDescriptor(syntax) {
-    var descriptor = google.FieldDescriptorProto.create({ name: this.name, number: this.id });
+    var descriptor = exports.FieldDescriptorProto.create({ name: this.name, number: this.id });
 
     if (this.map) {
 
         descriptor.type = 11; // message
-        descriptor.type_name = $protobuf.util.ucFirst(this.name); // fieldName -> FieldNameEntry (built in Type#toDescriptor)
+        descriptor.typeName = $protobuf.util.ucFirst(this.name); // fieldName -> FieldNameEntry (built in Type#toDescriptor)
         descriptor.label = 3; // repeated
 
     } else {
@@ -480,7 +474,7 @@ Field.prototype.toDescriptor = function toDescriptor(syntax) {
             case 10: // group
             case 11: // type
             case 14: // enum
-                descriptor.type_name = this.resolvedType ? this.resolvedType.fullName : this.type;
+                descriptor.typeName = this.resolvedType ? this.resolvedType.fullName : this.type;
                 break;
         }
 
@@ -503,9 +497,9 @@ Field.prototype.toDescriptor = function toDescriptor(syntax) {
 
     if (syntax === "proto3") { // defaults to packed=true
         if (!this.packed)
-            descriptor.options = google.FieldOptions.create({ packed: false });
+            descriptor.options = exports.FieldOptions.create({ packed: false });
     } else if (this.packed) // defaults to packed=false
-        descriptor.options = google.FieldOptions.create({ packed: true });
+        descriptor.options = exports.FieldOptions.create({ packed: true });
 
     return descriptor;
 };
@@ -549,7 +543,7 @@ Enum.fromDescriptor = function fromDescriptor(descriptor) {
 
     // Decode the descriptor message if specified as a buffer:
     if (typeof descriptor.length === "number")
-        descriptor = google.EnumDescriptorProto.decode(descriptor);
+        descriptor = exports.EnumDescriptorProto.decode(descriptor);
 
     // Construct values object
     var values = {};
@@ -572,16 +566,15 @@ Enum.fromDescriptor = function fromDescriptor(descriptor) {
  * @see Part of the {@link descriptor} extension (ext/descriptor)
  */
 Enum.prototype.toDescriptor = function toDescriptor() {
-    var values = [];
 
-    for (var i = 0, ks = Object.keys(this.values), valueDescriptor; i < ks.length; ++i) {
-        values.push(valueDescriptor = google.EnumValueDescriptorProto.create({ name: ks[i] }));
-        if (this.values[ks[i]]) // is 0 actually omitted?
-            valueDescriptor.value = this.values[ks[i]];
-    }
-    return google.EnumDescriptorProto.create({
+    // Values
+    var values = [];
+    for (var i = 0, ks = Object.keys(this.values); i < ks.length; ++i)
+        values.push(exports.EnumValueDescriptorProto.create({ name: ks[i], number: this.values[ks[i]] }));
+
+    return exports.EnumDescriptorProto.create({
         name: this.name,
-        values: values
+        value: values
     });
 };
 
@@ -607,7 +600,7 @@ OneOf.fromDescriptor = function fromDescriptor(descriptor) {
 
     // Decode the descriptor message if specified as a buffer:
     if (typeof descriptor.length === "number")
-        descriptor = google.OneofDescriptorProto.decode(descriptor);
+        descriptor = exports.OneofDescriptorProto.decode(descriptor);
 
     return new OneOf(
         // unnamedOneOfIndex is global, not per type, because we have no ref to a type here
@@ -621,7 +614,7 @@ OneOf.fromDescriptor = function fromDescriptor(descriptor) {
  * @see Part of the {@link descriptor} extension (ext/descriptor)
  */
 OneOf.prototype.toDescriptor = function toDescriptor() {
-    return google.OneofDescriptorProto.create({
+    return exports.OneofDescriptorProto.create({
         name: this.name
     });
 };
@@ -649,7 +642,7 @@ Service.fromDescriptor = function fromDescriptor(descriptor) {
 
     // Decode the descriptor message if specified as a buffer:
     if (typeof descriptor.length === "number")
-        descriptor = google.ServiceDescriptorProto.decode(descriptor);
+        descriptor = exports.ServiceDescriptorProto.decode(descriptor);
 
     var service = new Service(descriptor.name && descriptor.name.length ? descriptor.name : "Service" + unnamedServiceIndex++);
     if (descriptor.method)
@@ -671,7 +664,7 @@ Service.prototype.toDescriptor = function toDescriptor() {
     for (var i = 0; i < this.methodsArray; ++i)
         methods.push(this._methodsArray[i].toDescriptor());
 
-    return google.ServiceDescriptorProto.create({
+    return exports.ServiceDescriptorProto.create({
         name: this.name,
         methods: methods
     });
@@ -703,7 +696,7 @@ Method.fromDescriptor = function fromDescriptor(descriptor) {
 
     // Decode the descriptor message if specified as a buffer:
     if (typeof descriptor.length === "number")
-        descriptor = google.MethodDescriptorProto.decode(descriptor);
+        descriptor = exports.MethodDescriptorProto.decode(descriptor);
 
     return new Method(
         // unnamedMethodIndex is global, not per service, because we have no ref to a service here
@@ -722,7 +715,7 @@ Method.fromDescriptor = function fromDescriptor(descriptor) {
  * @see Part of the {@link descriptor} extension (ext/descriptor)
  */
 Method.prototype.toDescriptor = function toDescriptor() {
-    return google.MethodDescriptorProto.create({
+    return exports.MethodDescriptorProto.create({
         name: this.name,
         inputType: this.resolvedRequestType ? this.resolvedRequestType.fullName : this.requestType,
         outputType: this.resolvedResponseType ? this.resolvedResponseType.fullName : this.responseType,
@@ -730,3 +723,165 @@ Method.prototype.toDescriptor = function toDescriptor() {
         serverStreaming: this.responseStream
     });
 };
+
+// --- exports ---
+
+/**
+ * Reflected file descriptor set.
+ * @name FileDescriptorSet
+ * @type {Type}
+ * @const
+ * @tstype $protobuf.Type
+ */
+
+/**
+ * Reflected file descriptor proto.
+ * @name FileDescriptorProto
+ * @type {Type}
+ * @const
+ * @tstype $protobuf.Type
+ */
+
+/**
+ * Reflected descriptor proto.
+ * @name DescriptorProto
+ * @type {Type}
+ * @const
+ * @tstype $protobuf.Type
+ */
+
+/**
+ * Reflected field descriptor proto.
+ * @name FieldDescriptorProto
+ * @type {Type}
+ * @const
+ * @tstype $protobuf.Type
+ */
+
+/**
+ * Reflected oneof descriptor proto.
+ * @name OneofDescriptorProto
+ * @type {Type}
+ * @const
+ * @tstype $protobuf.Type
+ */
+
+/**
+ * Reflected enum descriptor proto.
+ * @name EnumDescriptorProto
+ * @type {Type}
+ * @const
+ * @tstype $protobuf.Type
+ */
+
+/**
+ * Reflected service descriptor proto.
+ * @name ServiceDescriptorProto
+ * @type {Type}
+ * @const
+ * @tstype $protobuf.Type
+ */
+
+/**
+ * Reflected enum value descriptor proto.
+ * @name EnumValueDescriptorProto
+ * @type {Type}
+ * @const
+ * @tstype $protobuf.Type
+ */
+
+/**
+ * Reflected method descriptor proto.
+ * @name MethodDescriptorProto
+ * @type {Type}
+ * @const
+ * @tstype $protobuf.Type
+ */
+
+/**
+ * Reflected file options.
+ * @name FileOptions
+ * @type {Type}
+ * @const
+ * @tstype $protobuf.Type
+ */
+
+/**
+ * Reflected message options.
+ * @name MessageOptions
+ * @type {Type}
+ * @const
+ * @tstype $protobuf.Type
+ */
+
+/**
+ * Reflected field options.
+ * @name FieldOptions
+ * @type {Type}
+ * @const
+ * @tstype $protobuf.Type
+ */
+
+/**
+ * Reflected oneof options.
+ * @name OneofOptions
+ * @type {Type}
+ * @const
+ * @tstype $protobuf.Type
+ */
+
+/**
+ * Reflected enum options.
+ * @name EnumOptions
+ * @type {Type}
+ * @const
+ * @tstype $protobuf.Type
+ */
+
+/**
+ * Reflected enum value options.
+ * @name EnumValueOptions
+ * @type {Type}
+ * @const
+ * @tstype $protobuf.Type
+ */
+
+/**
+ * Reflected service options.
+ * @name ServiceOptions
+ * @type {Type}
+ * @const
+ * @tstype $protobuf.Type
+ */
+
+/**
+ * Reflected method options.
+ * @name MethodOptions
+ * @type {Type}
+ * @const
+ * @tstype $protobuf.Type
+ */
+
+/**
+ * Reflected uninterpretet option.
+ * @name UninterpretedOption
+ * @type {Type}
+ * @const
+ * @tstype $protobuf.Type
+ */
+
+/**
+ * Reflected source code info.
+ * @name SourceCodeInfo
+ * @type {Type}
+ * @const
+ * @tstype $protobuf.Type
+ */
+
+/**
+ * Reflected generated code info.
+ * @name GeneratedCodeInfo
+ * @type {Type}
+ * @const
+ * @tstype $protobuf.Type
+ */

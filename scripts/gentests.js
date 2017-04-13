@@ -47,20 +47,13 @@ var fs   = require("fs"),
     { file: "ext/descriptor/index.js", ext: true }
 ]
 .forEach(function({ file, ext }) {
-    var out = file.replace(/\.js$/, ".d.ts");
-    pbts.main([
-        "--no-comments",
-        file
-    ], function(err, output) {
+    var out = file.replace(/\.js$/, ".d.ts"),
+        args = [ "--no-comments" ];
+    pbts.main(args.concat(file), function(err, output) {
         if (err)
             throw err;
         var pathToProtobufjs = path.relative(path.dirname(out), "").replace(/\\/g, "/");
         output = output.replace(/"protobufjs"/g, JSON.stringify(pathToProtobufjs));
-        if (ext) {
-            var extName;
-            output = output.replace(/export (\w+) (\w+)/, function($0, $1, $2) { extName = $2; return "declare " + $1 + " " + extName; });
-            output += "\nexport = " + extName + ";\n";
-        }
         fs.writeFileSync(out, output);
         process.stdout.write("pbts: " + file + " -> " + out + "\n");
     });

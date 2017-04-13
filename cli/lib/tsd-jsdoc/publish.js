@@ -242,7 +242,7 @@ function getTypeOf(element) {
 // begins writing the definition of the specified element
 function begin(element, is_interface) {
     writeComment(element.comment, is_interface || isInterface(element) || isClassLike(element) || isNamespace(element) || element.isEnum);
-    if (element.scope !== "global" || options.module || is_interface || isInterface(element))
+    if (element.scope !== "global" || options.module)
         return;
     write("export ");
 }
@@ -543,7 +543,7 @@ function handleTypeDef(element, parent) {
         }
     } else {
         // see: https://github.com/dcodeIO/protobuf.js/issues/737
-        // begin(element, true);
+        // NO begin(element, true); - isn't exported
         writeln();
         write("type ", element.name);
         if (element.templates && element.templates.length)
