@@ -302,7 +302,7 @@ Type.prototype.resolveAll = function resolveAll() {
     var oneofs = this.oneofsArray; i = 0;
     while (i < oneofs.length)
         oneofs[i++].resolve();
-    return Namespace.prototype.resolve.call(this);
+    return Namespace.prototype.resolveAll.call(this);
 };
 
 /**

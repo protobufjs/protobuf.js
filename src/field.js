@@ -273,9 +273,13 @@ Field.prototype.resolve = function resolve() {
             this.typeDefault = this.resolvedType.values[this.typeDefault];
     }
 
-    // remove unnecessary packed option (parser adds this) if not referencing an enum
-    if (this.options && this.options.packed !== undefined && this.resolvedType && !(this.resolvedType instanceof Enum))
-        delete this.options.packed;
+    // remove unnecessary options
+    if (this.options) {
+        if (this.options.packed === true || this.options.packed !== undefined && this.resolvedType && !(this.resolvedType instanceof Enum))
+            delete this.options.packed;
+        if (Object.keys(this.options).length === 0)
+            this.options = undefined;
+    }
 
     // convert to internal data type if necesssary
     if (this.long) {

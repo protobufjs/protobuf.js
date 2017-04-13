@@ -39,7 +39,7 @@ function encoder(mtype) {
     for (var i = 0; i < fields.length; ++i) {
         var field    = fields[i].resolve(),
             index    = mtype._fieldsArray.indexOf(field),
-            type     = field.resolvedType instanceof Enum ? "uint32" : field.type,
+            type     = field.resolvedType instanceof Enum ? "int32" : field.type,
             wireType = types.basic[type];
             ref      = "m" + util.safeProp(field.name);
 

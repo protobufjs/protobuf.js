@@ -229,7 +229,7 @@ function buildFieldOptions(field) {
     var sb = [];
     keys.forEach(function(key) {
         var val = field.options[key];
-        var wireType = types.packed[field.resolvedType instanceof Enum ? "uint32" : field.type];
+        var wireType = types.packed[field.resolvedType instanceof Enum ? "int32" : field.type];
         switch (key) {
             case "packed":
                 val = Boolean(val);

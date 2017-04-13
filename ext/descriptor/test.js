@@ -27,15 +27,22 @@ var proto = require("../../google/protobuf/descriptor.json")/*{
     }
 }*/;
 
-var root = protobuf.Root.fromJSON(proto);
+var root = protobuf.Root.fromJSON(proto).resolveAll();
 
-console.log("Original proto", JSON.stringify(root, null, 2));
+// console.log("Original proto", JSON.stringify(root, null, 2));
 
 var msg  = root.toDescriptor();
 
-console.log("\nDescriptor", JSON.stringify(msg.toObject(), null, 2));
+// console.log("\nDescriptor", JSON.stringify(msg.toObject(), null, 2));
 
 var buf  = descriptor.FileDescriptorSet.encode(msg).finish();
 var root2 = protobuf.Root.fromDescriptor(buf, "proto2");
 
-console.log("\nDecoded proto", JSON.stringify(root2, null, 2));
+// console.log("\nDecoded proto", JSON.stringify(root2, null, 2));
+
+require("deep-diff").diff(root.toJSON(), root2.toJSON()).forEach(function(diff) {
+    console.log(diff.kind + " @ " + diff.path.join("."));
+    console.log("lhs:", diff.lhs);
+    console.log("rhs:", diff.rhs);
+    console.log();
+});

@@ -9,8 +9,7 @@
                 "file": {
                   "rule": "repeated",
                   "type": "FileDescriptorProto",
-                  "id": 1,
-                  "options": {}
+                  "id": 1
                 }
               }
             },
@@ -27,10 +26,7 @@
                 "dependency": {
                   "rule": "repeated",
                   "type": "string",
-                  "id": 3,
-                  "options": {
-                    "packed": false
-                  }
+                  "id": 3
                 },
                 "publicDependency": {
                   "rule": "repeated",
@@ -51,26 +47,22 @@
                 "messageType": {
                   "rule": "repeated",
                   "type": "DescriptorProto",
-                  "id": 4,
-                  "options": {}
+                  "id": 4
                 },
                 "enumType": {
                   "rule": "repeated",
                   "type": "EnumDescriptorProto",
-                  "id": 5,
-                  "options": {}
+                  "id": 5
                 },
                 "service": {
                   "rule": "repeated",
                   "type": "ServiceDescriptorProto",
-                  "id": 6,
-                  "options": {}
+                  "id": 6
                 },
                 "extension": {
                   "rule": "repeated",
                   "type": "FieldDescriptorProto",
-                  "id": 7,
-                  "options": {}
+                  "id": 7
                 },
                 "options": {
                   "type": "FileOptions",
@@ -95,38 +87,32 @@
                 "field": {
                   "rule": "repeated",
                   "type": "FieldDescriptorProto",
-                  "id": 2,
-                  "options": {}
+                  "id": 2
                 },
                 "extension": {
                   "rule": "repeated",
                   "type": "FieldDescriptorProto",
-                  "id": 6,
-                  "options": {}
+                  "id": 6
                 },
                 "nestedType": {
                   "rule": "repeated",
                   "type": "DescriptorProto",
-                  "id": 3,
-                  "options": {}
+                  "id": 3
                 },
                 "enumType": {
                   "rule": "repeated",
                   "type": "EnumDescriptorProto",
-                  "id": 4,
-                  "options": {}
+                  "id": 4
                 },
                 "extensionRange": {
                   "rule": "repeated",
                   "type": "ExtensionRange",
-                  "id": 5,
-                  "options": {}
+                  "id": 5
                 },
                 "oneofDecl": {
                   "rule": "repeated",
                   "type": "OneofDescriptorProto",
-                  "id": 8,
-                  "options": {}
+                  "id": 8
                 },
                 "options": {
                   "type": "MessageOptions",
@@ -135,16 +121,12 @@
                 "reservedRange": {
                   "rule": "repeated",
                   "type": "ReservedRange",
-                  "id": 9,
-                  "options": {}
+                  "id": 9
                 },
                 "reservedName": {
                   "rule": "repeated",
                   "type": "string",
-                  "id": 10,
-                  "options": {
-                    "packed": false
-                  }
+                  "id": 10
                 }
               },
               "nested": {
@@ -270,8 +252,7 @@
                 "value": {
                   "rule": "repeated",
                   "type": "EnumValueDescriptorProto",
-                  "id": 2,
-                  "options": {}
+                  "id": 2
                 },
                 "options": {
                   "type": "EnumOptions",
@@ -304,8 +285,7 @@
                 "method": {
                   "rule": "repeated",
                   "type": "MethodDescriptorProto",
-                  "id": 2,
-                  "options": {}
+                  "id": 2
                 },
                 "options": {
                   "type": "ServiceOptions",
@@ -408,8 +388,7 @@
                 "uninterpretedOption": {
                   "rule": "repeated",
                   "type": "UninterpretedOption",
-                  "id": 999,
-                  "options": {}
+                  "id": 999
                 }
               },
               "extensions": [
@@ -455,8 +434,7 @@
                 "uninterpretedOption": {
                   "rule": "repeated",
                   "type": "UninterpretedOption",
-                  "id": 999,
-                  "options": {}
+                  "id": 999
                 }
               },
               "extensions": [
@@ -507,8 +485,7 @@
                 "uninterpretedOption": {
                   "rule": "repeated",
                   "type": "UninterpretedOption",
-                  "id": 999,
-                  "options": {}
+                  "id": 999
                 }
               },
               "extensions": [
@@ -545,8 +522,7 @@
                 "uninterpretedOption": {
                   "rule": "repeated",
                   "type": "UninterpretedOption",
-                  "id": 999,
-                  "options": {}
+                  "id": 999
                 }
               },
               "extensions": [
@@ -569,8 +545,7 @@
                 "uninterpretedOption": {
                   "rule": "repeated",
                   "type": "UninterpretedOption",
-                  "id": 999,
-                  "options": {}
+                  "id": 999
                 }
               },
               "extensions": [
@@ -589,8 +564,7 @@
                 "uninterpretedOption": {
                   "rule": "repeated",
                   "type": "UninterpretedOption",
-                  "id": 999,
-                  "options": {}
+                  "id": 999
                 }
               },
               "extensions": [
@@ -609,8 +583,7 @@
                 "uninterpretedOption": {
                   "rule": "repeated",
                   "type": "UninterpretedOption",
-                  "id": 999,
-                  "options": {}
+                  "id": 999
                 }
               },
               "extensions": [
@@ -629,8 +602,7 @@
                 "uninterpretedOption": {
                   "rule": "repeated",
                   "type": "UninterpretedOption",
-                  "id": 999,
-                  "options": {}
+                  "id": 999
                 }
               },
               "extensions": [
@@ -645,8 +617,7 @@
                 "name": {
                   "rule": "repeated",
                   "type": "NamePart",
-                  "id": 2,
-                  "options": {}
+                  "id": 2
                 },
                 "identifierValue": {
                   "type": "string",
@@ -695,8 +666,7 @@
                 "location": {
                   "rule": "repeated",
                   "type": "Location",
-                  "id": 1,
-                  "options": {}
+                  "id": 1
                 }
               },
               "nested": {
@@ -705,18 +675,12 @@
                     "path": {
                       "rule": "repeated",
                       "type": "int32",
-                      "id": 1,
-                      "options": {
-                        "packed": true
-                      }
+                      "id": 1
                     },
                     "span": {
                       "rule": "repeated",
                       "type": "int32",
-                      "id": 2,
-                      "options": {
-                        "packed": true
-                      }
+                      "id": 2
                     },
                     "leadingComments": {
                       "type": "string",
@@ -729,10 +693,7 @@
                     "leadingDetachedComments": {
                       "rule": "repeated",
                       "type": "string",
-                      "id": 6,
-                      "options": {
-                        "packed": false
-                      }
+                      "id": 6
                     }
                   }
                 }
@@ -743,8 +704,7 @@
                 "annotation": {
                   "rule": "repeated",
                   "type": "Annotation",
-                  "id": 1,
-                  "options": {}
+                  "id": 1
                 }
               },
               "nested": {
@@ -753,10 +713,7 @@
                     "path": {
                       "rule": "repeated",
                       "type": "int32",
-                      "id": 1,
-                      "options": {
-                        "packed": true
-                      }
+                      "id": 1
                     },
                     "sourceFile": {
                       "type": "string",

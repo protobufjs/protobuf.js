@@ -290,7 +290,7 @@ Namespace.prototype.resolveAll = function resolveAll() {
 };
 
 /**
- * Looks up the reflection object at the specified path, relative to this namespace.
+ * Recursively looks up the reflection object matching the specified path in the scope of this namespace.
  * @param {string|string[]} path Path to look up
  * @param {*|Array.<*>} filterTypes Filter types, any combination of the constructors of `protobuf.Type`, `protobuf.Enum`, `protobuf.Service` etc.
  * @param {boolean} [parentAlreadyChecked=false] If known, whether the parent has already been checked
@@ -315,6 +315,7 @@ Namespace.prototype.lookup = function lookup(path, filterTypes, parentAlreadyChe
     // Start at root if path is absolute
     if (path[0] === "")
         return this.root.lookup(path.slice(1), filterTypes);
+
     // Test if the first part matches any nested object, and if so, traverse if path contains more
     var found = this.get(path[0]);
     if (found) {
@@ -323,11 +324,13 @@ Namespace.prototype.lookup = function lookup(path, filterTypes, parentAlreadyChe
                 return found;
         } else if (found instanceof Namespace && (found = found.lookup(path.slice(1), filterTypes, true)))
             return found;
+
     // Otherwise try each nested namespace
     } else
         for (var i = 0; i < this.nestedArray.length; ++i)
             if (this._nestedArray[i] instanceof Namespace && (found = this._nestedArray[i].lookup(path, filterTypes, true)))
                 return found;
+
     // If there hasn't been a match, try again at the parent
     if (this.parent === null || parentAlreadyChecked)
         return null;

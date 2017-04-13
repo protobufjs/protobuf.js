@@ -234,16 +234,16 @@ Type.prototype.toDescriptor = function toDescriptor(syntax) {
         if (this._fieldsArray[i] instanceof MapField) { // map fields are repeated FieldNameEntry
             var keyType = toDescriptorType(this._fieldsArray[i].keyType, this._fieldsArray[i].resolvedKeyType),
                 valueType = toDescriptorType(this._fieldsArray[i].type, this._fieldsArray[i].resolvedType),
-                valueTypeName = valueType === 11 || valueType === 14
+                valueTypeName = valueType === /* type */ 11 || valueType === /* enum */ 14
                     ? this._fieldsArray[i].resolvedType && this._fieldsArray[i].resolvedType.fullName || this._fieldsArray[i].type
                     : undefined;
             descriptor.nestedType.push(exports.DescriptorProto.create({
-                name: descriptor.field[descriptor.field.length - 1].type_name,
+                name: descriptor.field[descriptor.field.length - 1].typeName,
                 field: [
-                    exports.FieldDescriptorProto.create({ name: "key", number: 1, label: 1, type: keyType }), // can't be message
+                    exports.FieldDescriptorProto.create({ name: "key", number: 1, label: 1, type: keyType }), // can't reference a type or enum
                     exports.FieldDescriptorProto.create({ name: "value", number: 2, label: 1, type: valueType, typeName: valueTypeName })
                 ],
-                options: exports.MessageOptions({ mapEntry: true })
+                options: exports.MessageOptions.create({ mapEntry: true })
             }));
         }
     }
@@ -482,7 +482,7 @@ Field.prototype.toDescriptor = function toDescriptor(syntax) {
             case 10: // group
             case 11: // type
             case 14: // enum
-                descriptor.typeName = this.resolvedType ? this.resolvedType.fullName : this.type;
+                descriptor.typeName = this.resolvedType ? this.resolvedType.fullName : this.type; // TODO: shorten
                 break;
         }
 
@@ -567,7 +567,8 @@ Enum.fromDescriptor = function fromDescriptor(descriptor) {
 
     return new Enum(
         descriptor.name && descriptor.name.length ? descriptor.name : "Enum" + unnamedEnumIndex++,
-        values
+        values,
+        descriptor.options && descriptor.options.allowAlias ? { allowAlias: true } : undefined
     );
 };
 
