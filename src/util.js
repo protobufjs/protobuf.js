@@ -107,6 +107,7 @@ util.decorateType = function decorateType(ctor, typeName) {
 
     var type = new Type(typeName || ctor.name);
     util.decorateRoot.add(type);
+    type.ctor = ctor; // sets up .encode, .decode etc.
     Object.defineProperty(ctor, "$type", { value: type, enumerable: false });
     Object.defineProperty(ctor.prototype, "$type", { value: type, enumerable: false });
     return type;

@@ -36,7 +36,7 @@ var msg  = root.toDescriptor();
 // console.log("\nDescriptor", JSON.stringify(msg.toObject(), null, 2));
 
 var buf  = descriptor.FileDescriptorSet.encode(msg).finish();
-var root2 = protobuf.Root.fromDescriptor(buf, "proto2");
+var root2 = protobuf.Root.fromDescriptor(buf, "proto2").resolveAll();
 
 // console.log("\nDecoded proto", JSON.stringify(root2, null, 2));
 

@@ -166,7 +166,7 @@ Object.defineProperties(Type.prototype, {
             // Classes and messages reference their reflected type
             ctor.$type = ctor.prototype.$type = this;
 
-            // Mixin static methods
+            // Mix in static methods
             util.merge(ctor, Message, true);
 
             this._ctor = ctor;
@@ -210,7 +210,7 @@ Type.generateConstructor = function generateConstructor(type) {
 };
 
 function clearCache(type) {
-    type._fieldsById = type._fieldsArray = type._oneofsArray = type._ctor = null;
+    type._fieldsById = type._fieldsArray = type._oneofsArray = null;
     delete type.encode;
     delete type.decode;
     delete type.verify;

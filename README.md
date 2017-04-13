@@ -578,6 +578,8 @@ Other notes:
 * Default values must be specified as arguments to the decorator instead of using a property initializer for proper prototype behavior.
 * Property names on decorated classes must not be renamed on compile time (i.e. by a minifier) because decorators just receive the original field name as a string.
 
+**ProTip!** Not as pretty, but you can [use decorators in plain JavaScript](https://github.com/dcodeIO/protobuf.js/blob/master/examples/js-decorators.js) as well.
+
 Command line
 ------------
 

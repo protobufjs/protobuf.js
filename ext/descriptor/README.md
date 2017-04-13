@@ -1,7 +1,7 @@
 protobufjs/ext/descriptor
 =========================
 
-Experimental extension for interoperability with descriptor.proto types.
+Experimental extension for interoperability with [descriptor.proto](https://github.com/google/protobuf/blob/master/src/google/protobuf/descriptor.proto) types.
 
 Usage
 -----
@@ -31,17 +31,17 @@ root = protobuf.Root.fromDescriptor(decoded);
 API
 ---
 
-The extension adds `.fromDescriptor(descriptor[, syntax])` and `#toDescriptor([syntax])` methods to reflection objects and exports the `.google.protobuf` namespace of the internally used `Root` instance containing the following types present in descriptor.proto.
+The extension adds `.fromDescriptor(descriptor[, syntax])` and `#toDescriptor([syntax])` methods to reflection objects and exports the `.google.protobuf` namespace of the internally used `Root` instance containing the following types present in descriptor.proto, including sub-types:
 
 | Descriptor type          | protobuf.js type | Remarks
 |--------------------------|------------------|---------
 | FileDescriptorSet        | Root             |
-| FileDescriptorProto      | Root             | not supported: dependencies, sourceCodeInfo
+| FileDescriptorProto      | Root             | except dependencies, sourceCodeInfo
 | FileOptions              | Root             | not supported
 | DescriptorProto          | Type             |
 | MessageOptions           | Type             | not supported
-| FieldDescriptorProto     | Field            | not supported: defaultValue, jsonValue
-| FieldOptions             | Field            | only packed
+| FieldDescriptorProto     | Field            | except defaultValue
+| FieldOptions             | Field            |
 | OneofDescriptorProto     | OneOf            |
 | OneofOptions             | OneOf            | not supported
 | EnumDescriptorProto      | Enum             |
@@ -56,4 +56,4 @@ The extension adds `.fromDescriptor(descriptor[, syntax])` and `#toDescriptor([s
 | SourceCodeInfo           |                  | not supported
 | GeneratedCodeInfo        |                  | not supported
 
-Additionally, not all features of descriptor.proto translate perfectly to a protobuf.js root instance. A root instance has only limited knowlege of packages or individual files for example, which is then compensated by guessing.
+Note that not all features of descriptor.proto translate perfectly to a protobuf.js root instance. A root instance has only limited knowlege of packages or individual files for example, which is then compensated by guessing and generating fictional file names.

@@ -282,8 +282,8 @@ Type.prototype.toDescriptor = function toDescriptor(syntax) {
  * @type {Object}
  * @property {string} [name] Field name
  * @property {number} [number] Field id
- * @property {FieldDescriptorProtoLabel} [label] Field rule
- * @property {FieldDescriptorProtoType} [type] Field basic type
+ * @property {FieldDescriptorProto_Label} [label] Field rule
+ * @property {FieldDescriptorProto_Type} [type] Field basic type
  * @property {string} [typeName] Field type name
  * @property {string} [extendee] Extended type name
  * @property {*} [defaultValue] Not supported
@@ -295,7 +295,7 @@ Type.prototype.toDescriptor = function toDescriptor(syntax) {
 
 /**
  * Values of the FieldDescriptorProto.Label enum.
- * @typedef FieldDescriptorProtoLabel
+ * @typedef FieldDescriptorProto_Label
  * @type {number}
  * @property {number} LABEL_OPTIONAL=1
  * @property {number} LABEL_REQUIRED=2
@@ -305,7 +305,7 @@ Type.prototype.toDescriptor = function toDescriptor(syntax) {
 
 /**
  * Values of the FieldDescriptorProto.Type enum.
- * @typedef FieldDescriptorProtoType
+ * @typedef FieldDescriptorProto_Type
  * @type {number}
  * @property {number} TYPE_DOUBLE=1
  * @property {number} TYPE_FLOAT=2
@@ -333,7 +333,17 @@ Type.prototype.toDescriptor = function toDescriptor(syntax) {
  * @typedef FieldOptionsProperties
  * @type {Object}
  * @property {boolean} [packed] Whether packed or not (defaults to `false` for proto2 and `true` for proto3)
+ * @property {FieldOptions_JSType} [jstype] JavaScript value type (not used by protobuf.js)
  * @see Part of the {@link descriptor} extension (ext/descriptor)
+ */
+
+/**
+ * Values of the FieldOptions.JSType enum.
+ * @typedef FieldOptions_JSType
+ * @type {number}
+ * @property {number} JS_NORMAL=0
+ * @property {number} JS_STRING=1
+ * @property {number} JS_NUMBER=2
  */
 
 // Converts a descriptor type to a protobuf.js basic type
@@ -422,6 +432,9 @@ Field.fromDescriptor = function fromDescriptor(descriptor, syntax) {
         descriptor.extendee.length ? descriptor.extendee : undefined
     );
 
+    if (descriptor.options)
+        field.options = fromDescriptorOptions(descriptor.options, exports.FieldOptions);
+
     if (packableDescriptorType(descriptor.type)) {
         if (syntax === "proto3") { // defaults to packed=true (internal preset is packed=true)
             if (descriptor.options && !descriptor.options.packed)
@@ -503,11 +516,14 @@ Field.prototype.toDescriptor = function toDescriptor(syntax) {
         if ((descriptor.oneofIndex = this.parent.oneofsArray.indexOf(this.partOf)) < 0)
             throw Error("missing oneof");
 
+    if (this.options)
+        descriptor.options = toDescriptorOptions(this.options, exports.FieldOptions);
+
     if (syntax === "proto3") { // defaults to packed=true
         if (!this.packed)
-            descriptor.options = exports.FieldOptions.create({ packed: false });
+            (descriptor.options || (descriptor.options = exports.FieldOptions.create())).packed = false;
     } else if (this.packed) // defaults to packed=false
-        descriptor.options = exports.FieldOptions.create({ packed: true });
+        (descriptor.options || (descriptor.options = exports.FieldOptions.create())).packed = true;
 
     return descriptor;
 };
@@ -738,6 +754,24 @@ Method.prototype.toDescriptor = function toDescriptor() {
         serverStreaming: this.responseStream
     });
 };
+
+// --- utility ---
+
+function fromDescriptorOptions(options, type) {
+    var out = [];
+    for (var i = 0, key; i < type.fieldsArray.length; ++i)
+        if ((key = type._fieldsArray[i].name) !== "uninterpretedOption")
+            if (options.hasOwnProperty(key)) // eslint-disable-line no-prototype-builtins
+                out.push(key, options[key]);
+    return out.length ? $protobuf.util.toObject(out) : undefined;
+}
+
+function toDescriptorOptions(options, type) {
+    var out = [];
+    for (var i = 0, key; i < type.fieldsArray.length; ++i)
+        out.push(key = type._fieldsArray[i].name, options[key]);
+    return out.length ? type.fromObject($protobuf.util.toObject(out)) : undefined;
+}
 
 // --- exports ---
 
