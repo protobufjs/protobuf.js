@@ -79,13 +79,13 @@ MapField.fromJSON = function fromJSON(name, json) {
  * @returns {MapFieldDescriptor} Map field descriptor
  */
 MapField.prototype.toJSON = function toJSON() {
-    return {
-        keyType : this.keyType,
-        type    : this.type,
-        id      : this.id,
-        extend  : this.extend,
-        options : this.options
-    };
+    return util.toObject([
+        "keyType" , this.keyType,
+        "type"    , this.type,
+        "id"      , this.id,
+        "extend"  , this.extend,
+        "options" , this.options
+    ]);
 };
 
 /**

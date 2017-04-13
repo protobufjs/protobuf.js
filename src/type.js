@@ -281,15 +281,15 @@ Type.fromJSON = function fromJSON(name, json) {
  */
 Type.prototype.toJSON = function toJSON() {
     var inherited = Namespace.prototype.toJSON.call(this);
-    return {
-        options    : inherited && inherited.options || undefined,
-        oneofs     : Namespace.arrayToJSON(this.oneofsArray),
-        fields     : Namespace.arrayToJSON(this.fieldsArray.filter(function(obj) { return !obj.declaringField; })) || {},
-        extensions : this.extensions && this.extensions.length ? this.extensions : undefined,
-        reserved   : this.reserved && this.reserved.length ? this.reserved : undefined,
-        group      : this.group || undefined,
-        nested     : inherited && inherited.nested || undefined
-    };
+    return util.toObject([
+        "options"    , inherited && inherited.options || undefined,
+        "oneofs"     , Namespace.arrayToJSON(this.oneofsArray),
+        "fields"     , Namespace.arrayToJSON(this.fieldsArray.filter(function(obj) { return !obj.declaringField; })) || {},
+        "extensions" , this.extensions && this.extensions.length ? this.extensions : undefined,
+        "reserved"   , this.reserved && this.reserved.length ? this.reserved : undefined,
+        "group"      , this.group || undefined,
+        "nested"     , inherited && inherited.nested || undefined
+    ]);
 };
 
 /**

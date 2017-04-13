@@ -6,15 +6,12 @@ var def = {
     methods: {},
     nested: {
         SomeEnum: {
-            options: undefined,
             values: {}
         }
-    },
-    options: undefined
+    }
 };
 
 var methodDef = {
-    type: undefined,
     requestType: "MyRequest",
     requestStream: true,
     responseType: "MyResponse",

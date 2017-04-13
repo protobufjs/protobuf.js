@@ -34,6 +34,22 @@ util.toArray = function toArray(object) {
     return array;
 };
 
+/**
+ * Converts an array of keys immediately followed by their respective value to an object, omitting undefined values.
+ * @param {Array.<*>} array Array to convert
+ * @returns {Object.<string,*>} Converted object
+ */
+util.toObject = function toObject(array) {
+    var object = {};
+    for (var i = 0; i < array.length; i += 2) {
+        var key = array[i    ],
+            val = array[i + 1];
+        if (val !== undefined)
+            object[key] = val;
+    }
+    return object;
+};
+
 var safePropBackslashRe = /\\/g,
     safePropQuoteRe     = /"/g;
 

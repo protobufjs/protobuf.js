@@ -235,13 +235,13 @@ Field.prototype.setOption = function setOption(name, value, ifNotSet) {
  * @returns {FieldDescriptor} Field descriptor
  */
 Field.prototype.toJSON = function toJSON() {
-    return {
-        rule    : this.rule !== "optional" && this.rule || undefined,
-        type    : this.type,
-        id      : this.id,
-        extend  : this.extend,
-        options : this.options
-    };
+    return util.toObject([
+        "rule"    , this.rule !== "optional" && this.rule || undefined,
+        "type"    , this.type,
+        "id"      , this.id,
+        "extend"  , this.extend,
+        "options" , this.options
+    ]);
 };
 
 /**

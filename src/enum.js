@@ -74,10 +74,10 @@ Enum.fromJSON = function fromJSON(name, json) {
  * @returns {EnumDescriptor} Enum descriptor
  */
 Enum.prototype.toJSON = function toJSON() {
-    return {
-        options : this.options,
-        values  : this.values
-    };
+    return util.toObject([
+        "options" , this.options,
+        "values"  , this.values
+    ]);
 };
 
 /**

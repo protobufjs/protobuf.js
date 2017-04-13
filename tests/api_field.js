@@ -43,10 +43,8 @@ tape.test("reflected fields", function(test) {
         field = new protobuf.Field("a", 1, "uint32", /* rule */ undefined, /* skipped extend, */ /* options */ {});
 
     test.same(field.toJSON(), {
-        rule: undefined,
         type: "uint32",
         id: 1,
-        extend: undefined,
         options: {}
     }, "should export to JSON");
 

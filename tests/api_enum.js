@@ -68,12 +68,11 @@ tape.test("reflected enums", function(test) {
     }, "should no longer expose any removed values by id");
 
     test.same(enm.toJSON(), {
-        options: undefined,
         values: {
             a: 1,
             c: 3
         }
-    }, "should export options and values to JSON");
+    }, "should export values to JSON");
 
     enm_allow_alias.add( 'b', 0 );
     test.same( enm_allow_alias.values, {

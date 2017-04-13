@@ -31,15 +31,13 @@ tape.test("reflected oneofs", function(test) {
 
     kind.add(field);
     test.same(kind.toJSON(), {
-        oneof: ["a", "b", "c"],
-        options: undefined
+        oneof: ["a", "b", "c"]
     }, "should allow adding fields");
     test.ok(Test.get("c"), "should still have the field on the parent");
 
     kind.remove(field);
     test.same(kind.toJSON(), {
-        oneof: ["a", "b"],
-        options: undefined
+        oneof: ["a", "b"]
     }, "should allow removing fields");
     test.ok(Test.get("c"), "should still have the field on the parent");
 

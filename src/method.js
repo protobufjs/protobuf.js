@@ -115,14 +115,14 @@ Method.fromJSON = function fromJSON(name, json) {
  * @returns {MethodDescriptor} Method descriptor
  */
 Method.prototype.toJSON = function toJSON() {
-    return {
-        type           : this.type !== "rpc" && /* istanbul ignore next */ this.type || undefined,
-        requestType    : this.requestType,
-        requestStream  : this.requestStream,
-        responseType   : this.responseType,
-        responseStream : this.responseStream,
-        options        : this.options
-    };
+    return util.toObject([
+        "type"           , this.type !== "rpc" && /* istanbul ignore next */ this.type || undefined,
+        "requestType"    , this.requestType,
+        "requestStream"  , this.requestStream,
+        "responseType"   , this.responseType,
+        "responseStream" , this.responseStream,
+        "options"        , this.options
+    ]);
 };
 
 /**

@@ -68,11 +68,11 @@ Service.fromJSON = function fromJSON(name, json) {
  */
 Service.prototype.toJSON = function toJSON() {
     var inherited = Namespace.prototype.toJSON.call(this);
-    return {
-        options : inherited && inherited.options || undefined,
-        methods : Namespace.arrayToJSON(this.methodsArray) || /* istanbul ignore next */ {},
-        nested  : inherited && inherited.nested || undefined
-    };
+    return util.toObject([
+        "options" , inherited && inherited.options || undefined,
+        "methods" , Namespace.arrayToJSON(this.methodsArray) || /* istanbul ignore next */ {},
+        "nested"  , inherited && inherited.nested || undefined
+    ]);
 };
 
 /**

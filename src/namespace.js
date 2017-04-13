@@ -131,10 +131,10 @@ Object.defineProperty(Namespace.prototype, "nestedArray", {
  * @returns {NamespaceBaseDescriptor} Namespace descriptor
  */
 Namespace.prototype.toJSON = function toJSON() {
-    return {
-        options : this.options,
-        nested  : arrayToJSON(this.nestedArray)
-    };
+    return util.toObject([
+        "options" , this.options,
+        "nested"  , arrayToJSON(this.nestedArray)
+    ]);
 };
 
 /**

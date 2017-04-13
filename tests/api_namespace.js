@@ -2,10 +2,7 @@ var tape = require("tape");
 
 var protobuf = require("..");
 
-var def = {
-    nested: undefined,
-    options: undefined
-};
+var def = {};
 
 var proto = "package ns;\
 enum Enm {\
@@ -124,13 +121,12 @@ tape.test("reflected namespaces", function(test) {
     });
     test.same(ns.toJSON(), {
         nested: {
-            Message: { extensions: undefined, fields: {}, group: undefined, nested: undefined, oneofs: undefined, options: undefined, reserved: undefined },
-            Enum: { options: undefined, values: {} },
-            Service: { methods: {}, nested: undefined, options: undefined },
-            extensionField: { extend: "Message", id: 1000, options: undefined, rule: undefined, type: "string" },
-            Other: { nested: undefined, options: undefined }
-        },
-        options: undefined
+            Message: { fields: {} },
+            Enum: { values: {} },
+            Service: { methods: {} },
+            extensionField: { extend: "Message", id: 1000, type: "string" },
+            Other: { }
+        }
     }, "should create from Type, Enum, Service, extension Field and Namespace JSON");
 
     test.end();

@@ -5,9 +5,7 @@ var protobuf = require("..");
 var def = {
     keyType: "bytes",
     type: "string",
-    id: 1,
-    extend: undefined,
-    options: undefined
+    id: 1
 };
 
 tape.test("reflected map fields", function(test) {

@@ -66,10 +66,10 @@ OneOf.fromJSON = function fromJSON(name, json) {
  * @returns {OneOfDescriptor} Oneof descriptor
  */
 OneOf.prototype.toJSON = function toJSON() {
-    return {
-        oneof   : this.oneof,
-        options : this.options
-    };
+    return util.toObject([
+        "options" , this.options,
+        "oneof"   , this.oneof
+    ]);
 };
 
 /**
