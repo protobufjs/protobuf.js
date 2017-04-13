@@ -23,7 +23,7 @@ var buffer = descriptor.FileDescriptorSet.encode(fileDescriptorSet).finish();
 var decoded = descriptor.FileDescriptorSet.decode(buffer);
 
 // convert it back to a protobuf.js root
-root = protobuf.Root.fromDescriptor(decoded, "proto2");
+root = protobuf.Root.fromDescriptor(decoded);
 
 // and start all over again
 ```

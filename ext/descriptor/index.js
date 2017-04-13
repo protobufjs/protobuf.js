@@ -16,23 +16,25 @@ var Namespace = $protobuf.Namespace,
 
 /**
  * Properties of a FileDescriptorSet message.
- * @interface IFileDescriptorSet
- * @property {IFileDescriptorProto[]} file Files
+ * @typedef FileDescriptorSetProperties
+ * @type {Object}
+ * @property {FileDescriptorProtoProperties[]} file Files
  * @see Part of the {@link descriptor} extension (ext/descriptor)
  */
 
 /**
  * Properties of a FileDescriptorProto message.
- * @interface IFileDescriptorProto
+ * @typedef FileDescriptorProtoProperties
+ * @type {Object}
  * @property {string} [name] File name
  * @property {string} [package] Package
  * @property {*} [dependency] Not supported
  * @property {*} [publicDependency] Not supported
  * @property {*} [weakDependency] Not supported
- * @property {IDescriptorProto[]} [messageType] Nested message types
- * @property {IEnumDescriptorProto[]} [enumType] Nested enums
- * @property {IServiceDescriptorProto[]} [service] Nested services
- * @property {IFieldDescriptorProto[]} [extension] Nested extension fields
+ * @property {DescriptorProtoProperties[]} [messageType] Nested message types
+ * @property {EnumDescriptorProtoProperties[]} [enumType] Nested enums
+ * @property {ServiceDescriptorProtoProperties[]} [service] Nested services
+ * @property {FieldDescriptorProtoProperties[]} [extension] Nested extension fields
  * @property {*} [options] Not supported
  * @property {*} [sourceCodeInfo] Not supported
  * @property {string} [syntax="proto2"] Syntax
@@ -41,7 +43,7 @@ var Namespace = $protobuf.Namespace,
 
 /**
  * Creates a root from a descriptor set.
- * @param {IFileDescriptorSet|Reader|Uint8Array} descriptor Descriptor
+ * @param {FileDescriptorSetProperties|Reader|Uint8Array} descriptor Descriptor
  * @returns {Root} Root instance
  * @see Part of the {@link descriptor} extension (ext/descriptor)
  */
@@ -96,7 +98,7 @@ function traverseNamespace(ns, files, syntax) {
         else if (nested instanceof Field)
             file.extension.push(nested.toDescriptor(syntax));
         else if (nested instanceof Service)
-            file.service.push(nested.toDescriptor());        
+            file.service.push(nested.toDescriptor());
         else if (nested instanceof /* plain */ Namespace)
             traverseNamespace(nested, files, syntax); // requires new file
 
@@ -107,7 +109,7 @@ function traverseNamespace(ns, files, syntax) {
 
 /**
  * Converts a root to a descriptor set.
- * @returns {Message<IFileDescriptorSet>} Descriptor
+ * @returns {Message<FileDescriptorSetProperties>} Descriptor
  * @param {string} [syntax="proto2"] Syntax
  * @see Part of the {@link descriptor} extension (ext/descriptor)
  */
@@ -121,30 +123,33 @@ Root.prototype.toDescriptor = function toDescriptor(syntax) {
 
 /**
  * Properties of a DescriptorProto message.
- * @interface IDescriptorProto
+ * @typedef DescriptorProtoProperties
+ * @type {Object}
  * @property {string} [name] Message type name
- * @property {IFieldDescriptorProto[]} [field] Fields
- * @property {IFieldDescriptorProto[]} [extension] Extension fields
- * @property {IDescriptorProto[]} [nestedType] Nested message types
- * @property {IEnumDescriptorProto[]} [enumType] Nested enums
- * @property {IExtensionRange[]} [extensionRange] Extension ranges
- * @property {IOneofDescriptorProto[]} [oneofDecl] Oneofs
- * @property {IMessageOptions} [options] Not supported
- * @property {IReservedRange[]} [reservedRange] Reserved ranges
+ * @property {FieldDescriptorProtoProperties[]} [field] Fields
+ * @property {FieldDescriptorProtoProperties[]} [extension] Extension fields
+ * @property {DescriptorProtoProperties[]} [nestedType] Nested message types
+ * @property {EnumDescriptorProtoProperties[]} [enumType] Nested enums
+ * @property {ExtensionRangeProperties[]} [extensionRange] Extension ranges
+ * @property {OneofDescriptorProtoProperties[]} [oneofDecl] Oneofs
+ * @property {MessageOptionsProperties} [options] Not supported
+ * @property {ReservedRangeProperties[]} [reservedRange] Reserved ranges
  * @property {string[]} [reservedName] Reserved names
  * @see Part of the {@link descriptor} extension (ext/descriptor)
  */
 
 /**
  * Properties of a MessageOptions message.
- * @interface IMessageOptions
+ * @typedef MessageOptionsProperties
+ * @type {Object}
  * @property {boolean} [mapEntry=false] Whether this message is a map entry
  * @see Part of the {@link descriptor} extension (ext/descriptor)
  */
 
 /**
  * Properties of an ExtensionRange message.
- * @interface IExtensionRange
+ * @typedef ExtensionRangeProperties
+ * @type {Object}
  * @property {number} [start] Start field id
  * @property {number} [end] End field id
  * @see Part of the {@link descriptor} extension (ext/descriptor)
@@ -152,7 +157,8 @@ Root.prototype.toDescriptor = function toDescriptor(syntax) {
 
 /**
  * Properties of a ReservedRange message.
- * @interface IReservedRange
+ * @typedef ReservedRangeProperties
+ * @type {Object}
  * @property {number} [start] Start field id
  * @property {number} [end] End field id
  * @see Part of the {@link descriptor} extension (ext/descriptor)
@@ -162,7 +168,7 @@ var unnamedMessageIndex = 0;
 
 /**
  * Creates a type from a descriptor.
- * @param {IDescriptorProto|Reader|Uint8Array} descriptor Descriptor
+ * @param {DescriptorProtoProperties|Reader|Uint8Array} descriptor Descriptor
  * @param {string} [syntax="proto2"] Syntax
  * @returns {Type} Type instance
  * @see Part of the {@link descriptor} extension (ext/descriptor)
@@ -215,7 +221,7 @@ Type.fromDescriptor = function fromDescriptor(descriptor, syntax) {
 
 /**
  * Converts a type to a descriptor.
- * @returns {Message<IDescriptorProto>} Descriptor
+ * @returns {Message<DescriptorProtoProperties>} Descriptor
  * @param {string} [syntax="proto2"] Syntax
  * @see Part of the {@link descriptor} extension (ext/descriptor)
  */
@@ -272,23 +278,24 @@ Type.prototype.toDescriptor = function toDescriptor(syntax) {
 
 /**
  * Properties of a FieldDescriptorProto message.
- * @interface IFieldDescriptorProto
+ * @typedef FieldDescriptorProtoProperties
+ * @type {Object}
  * @property {string} [name] Field name
  * @property {number} [number] Field id
- * @property {IFieldDescriptorProto_Label} [label] Field rule
- * @property {IFieldDescriptorProto_Type} [type] Field basic type
+ * @property {FieldDescriptorProtoLabel} [label] Field rule
+ * @property {FieldDescriptorProtoType} [type] Field basic type
  * @property {string} [typeName] Field type name
  * @property {string} [extendee] Extended type name
  * @property {*} [defaultValue] Not supported
  * @property {number} [oneofIndex] Oneof index if part of a oneof
  * @property {*} [jsonName] Not supported
- * @property {IFieldOptions} [options] Field options
+ * @property {FieldOptionsProperties} [options] Field options
  * @see Part of the {@link descriptor} extension (ext/descriptor)
  */
 
 /**
  * Values of the FieldDescriptorProto.Label enum.
- * @typedef IFieldDescriptorProto_Label
+ * @typedef FieldDescriptorProtoLabel
  * @type {number}
  * @property {number} LABEL_OPTIONAL=1
  * @property {number} LABEL_REQUIRED=2
@@ -298,7 +305,7 @@ Type.prototype.toDescriptor = function toDescriptor(syntax) {
 
 /**
  * Values of the FieldDescriptorProto.Type enum.
- * @typedef IFieldDescriptorProto_Type
+ * @typedef FieldDescriptorProtoType
  * @type {number}
  * @property {number} TYPE_DOUBLE=1
  * @property {number} TYPE_FLOAT=2
@@ -323,7 +330,8 @@ Type.prototype.toDescriptor = function toDescriptor(syntax) {
 
 /**
  * Properties of a FieldOptions message.
- * @interface IFieldOptions
+ * @typedef FieldOptionsProperties
+ * @type {Object}
  * @property {boolean} [packed] Whether packed or not (defaults to `false` for proto2 and `true` for proto3)
  * @see Part of the {@link descriptor} extension (ext/descriptor)
  */
@@ -375,7 +383,7 @@ function packableDescriptorType(type) {
 
 /**
  * Creates a field from a descriptor.
- * @param {IFieldDescriptorProto|Reader|Uint8Array} descriptor Descriptor
+ * @param {FieldDescriptorProtoProperties|Reader|Uint8Array} descriptor Descriptor
  * @param {string} [syntax="proto2"] Syntax
  * @returns {Field} Field instance
  * @see Part of the {@link descriptor} extension (ext/descriptor)
@@ -454,7 +462,7 @@ function toDescriptorType(type, resolvedType) {
 
 /**
  * Converts a field to a descriptor.
- * @returns {Message<IFieldDescriptorProto>} Descriptor
+ * @returns {Message<FieldDescriptorProtoProperties>} Descriptor
  * @param {string} [syntax="proto2"] Syntax
  * @see Part of the {@link descriptor} extension (ext/descriptor)
  */
@@ -508,16 +516,18 @@ Field.prototype.toDescriptor = function toDescriptor(syntax) {
 
 /**
  * Properties of an EnumDescriptorProto message.
- * @interface IEnumDescriptorProto
+ * @typedef EnumDescriptorProtoProperties
+ * @type {Object}
  * @property {string} [name] Enum name
- * @property {IEnumValueDescriptorProto[]} [value] Enum values
- * @property {IEnumOptions} [options] Enum options
+ * @property {EnumValueDescriptorProtoProperties[]} [value] Enum values
+ * @property {EnumOptionsProperties} [options] Enum options
  * @see Part of the {@link descriptor} extension (ext/descriptor)
  */
 
 /**
  * Properties of an EnumValueDescriptorProto message.
- * @interface IEnumValueDescriptorProto
+ * @typedef EnumValueDescriptorProtoProperties
+ * @type {Object}
  * @property {string} [name] Name
  * @property {number} [number] Value
  * @property {*} [options] Not supported
@@ -526,7 +536,8 @@ Field.prototype.toDescriptor = function toDescriptor(syntax) {
 
 /**
  * Properties of an EnumOptions message.
- * @interface IEnumOptions
+ * @typedef EnumOptionsProperties
+ * @type {Object}
  * @property {boolean} [allowAlias] Whether aliases are allowed
  * @see Part of the {@link descriptor} extension (ext/descriptor)
  */
@@ -535,7 +546,7 @@ var unnamedEnumIndex = 0;
 
 /**
  * Creates an enum from a descriptor.
- * @param {IEnumDescriptorProto|Reader|Uint8Array} descriptor Descriptor
+ * @param {EnumDescriptorProtoProperties|Reader|Uint8Array} descriptor Descriptor
  * @returns {Enum} Enum instance
  * @see Part of the {@link descriptor} extension (ext/descriptor)
  */
@@ -562,7 +573,7 @@ Enum.fromDescriptor = function fromDescriptor(descriptor) {
 
 /**
  * Converts an enum to a descriptor.
- * @returns {Message<IEnumDescriptorProto>} Descriptor
+ * @returns {Message<EnumDescriptorProtoProperties>} Descriptor
  * @see Part of the {@link descriptor} extension (ext/descriptor)
  */
 Enum.prototype.toDescriptor = function toDescriptor() {
@@ -582,7 +593,8 @@ Enum.prototype.toDescriptor = function toDescriptor() {
 
 /**
  * Properties of a OneofDescriptorProto message.
- * @interface IOneofDescriptorProto
+ * @typedef OneofDescriptorProtoProperties
+ * @type {Object}
  * @property {string} [name] Oneof name
  * @property {*} [options] Not supported
  * @see Part of the {@link descriptor} extension (ext/descriptor)
@@ -592,7 +604,7 @@ var unnamedOneofIndex = 0;
 
 /**
  * Creates a oneof from a descriptor.
- * @param {IOneofDescriptorProto|Reader|Uint8Array} descriptor Descriptor
+ * @param {OneofDescriptorProtoProperties|Reader|Uint8Array} descriptor Descriptor
  * @returns {OneOf} OneOf instance
  * @see Part of the {@link descriptor} extension (ext/descriptor)
  */
@@ -610,7 +622,7 @@ OneOf.fromDescriptor = function fromDescriptor(descriptor) {
 
 /**
  * Converts a oneof to a descriptor.
- * @returns {Message<IOneofDescriptorProto>} Descriptor
+ * @returns {Message<OneofDescriptorProtoProperties>} Descriptor
  * @see Part of the {@link descriptor} extension (ext/descriptor)
  */
 OneOf.prototype.toDescriptor = function toDescriptor() {
@@ -623,9 +635,10 @@ OneOf.prototype.toDescriptor = function toDescriptor() {
 
 /**
  * Properties of a ServiceDescriptorProto message.
- * @interface IServiceDescriptorProto
+ * @typedef ServiceDescriptorProtoProperties
+ * @type {Object}
  * @property {string} [name] Service name
- * @property {IMethodDescriptorProto[]} [method] Methods
+ * @property {MethodDescriptorProtoProperties[]} [method] Methods
  * @property {*} [options] Not supported
  * @see Part of the {@link descriptor} extension (ext/descriptor)
  */
@@ -634,7 +647,7 @@ var unnamedServiceIndex = 0;
 
 /**
  * Creates a service from a descriptor.
- * @param {IServiceDescriptorProto|Reader|Uint8Array} descriptor Descriptor
+ * @param {ServiceDescriptorProtoProperties|Reader|Uint8Array} descriptor Descriptor
  * @returns {Service} Service instance
  * @see Part of the {@link descriptor} extension (ext/descriptor)
  */
@@ -654,7 +667,7 @@ Service.fromDescriptor = function fromDescriptor(descriptor) {
 
 /**
  * Converts a service to a descriptor.
- * @returns {Message<IServiceDescriptorProto>} Descriptor
+ * @returns {Message<ServiceDescriptorProtoProperties>} Descriptor
  * @see Part of the {@link descriptor} extension (ext/descriptor)
  */
 Service.prototype.toDescriptor = function toDescriptor() {
@@ -674,7 +687,8 @@ Service.prototype.toDescriptor = function toDescriptor() {
 
 /**
  * Properties of a MethodDescriptorProto message.
- * @interface IMethodDescriptorProto
+ * @typedef MethodDescriptorProtoProperties
+ * @type {Object}
  * @property {string} [name] Method name
  * @property {string} [inputType] Request type name
  * @property {string} [outputType] Response type name
@@ -688,7 +702,7 @@ var unnamedMethodIndex = 0;
 
 /**
  * Creates a method from a descriptor.
- * @param {IMethodDescriptorProto|Reader|Uint8Array} descriptor Descriptor
+ * @param {MethodDescriptorProtoProperties|Reader|Uint8Array} descriptor Descriptor
  * @returns {Method} Reflected method instance
  * @see Part of the {@link descriptor} extension (ext/descriptor)
  */
@@ -711,7 +725,7 @@ Method.fromDescriptor = function fromDescriptor(descriptor) {
 
 /**
  * Converts a method to a descriptor.
- * @returns {Message<IMethodDescriptorProto>} Descriptor
+ * @returns {Message<MethodDescriptorProtoProperties>} Descriptor
  * @see Part of the {@link descriptor} extension (ext/descriptor)
  */
 Method.prototype.toDescriptor = function toDescriptor() {

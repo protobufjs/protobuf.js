@@ -1,107 +1,107 @@
 import * as $protobuf from "../..";
 
-export interface IFileDescriptorSet {
-    file: IFileDescriptorProto[];
-}
+type FileDescriptorSetProperties = {
+    file: FileDescriptorProtoProperties[];
+};
 
-export interface IFileDescriptorProto {
+type FileDescriptorProtoProperties = {
     name?: string;
     package?: string;
     dependency?: any;
     publicDependency?: any;
     weakDependency?: any;
-    messageType?: IDescriptorProto[];
-    enumType?: IEnumDescriptorProto[];
-    service?: IServiceDescriptorProto[];
-    extension?: IFieldDescriptorProto[];
+    messageType?: DescriptorProtoProperties[];
+    enumType?: EnumDescriptorProtoProperties[];
+    service?: ServiceDescriptorProtoProperties[];
+    extension?: FieldDescriptorProtoProperties[];
     options?: any;
     sourceCodeInfo?: any;
     syntax?: string;
-}
+};
 
-export interface IDescriptorProto {
+type DescriptorProtoProperties = {
     name?: string;
-    field?: IFieldDescriptorProto[];
-    extension?: IFieldDescriptorProto[];
-    nestedType?: IDescriptorProto[];
-    enumType?: IEnumDescriptorProto[];
-    extensionRange?: IExtensionRange[];
-    oneofDecl?: IOneofDescriptorProto[];
-    options?: IMessageOptions;
-    reservedRange?: IReservedRange[];
+    field?: FieldDescriptorProtoProperties[];
+    extension?: FieldDescriptorProtoProperties[];
+    nestedType?: DescriptorProtoProperties[];
+    enumType?: EnumDescriptorProtoProperties[];
+    extensionRange?: ExtensionRangeProperties[];
+    oneofDecl?: OneofDescriptorProtoProperties[];
+    options?: MessageOptionsProperties;
+    reservedRange?: ReservedRangeProperties[];
     reservedName?: string[];
-}
+};
 
-export interface IMessageOptions {
+type MessageOptionsProperties = {
     mapEntry?: boolean;
-}
+};
 
-export interface IExtensionRange {
+type ExtensionRangeProperties = {
     start?: number;
     end?: number;
-}
+};
 
-export interface IReservedRange {
+type ReservedRangeProperties = {
     start?: number;
     end?: number;
-}
+};
 
-export interface IFieldOptions {
+type FieldOptionsProperties = {
     packed?: boolean;
-}
+};
 
-export interface IFieldDescriptorProto {
+type FieldDescriptorProtoProperties = {
     name?: string;
     number?: number;
-    label?: IFieldDescriptorProto_Label;
-    type?: IFieldDescriptorProto_Type;
+    label?: FieldDescriptorProtoLabel;
+    type?: FieldDescriptorProtoType;
     typeName?: string;
     extendee?: string;
     defaultValue?: any;
     oneofIndex?: number;
     jsonName?: any;
-    options?: IFieldOptions;
-}
+    options?: FieldOptionsProperties;
+};
 
-type IFieldDescriptorProto_Label = number;
+type FieldDescriptorProtoLabel = number;
 
-type IFieldDescriptorProto_Type = number;
+type FieldDescriptorProtoType = number;
 
-export interface IEnumDescriptorProto {
+type EnumDescriptorProtoProperties = {
     name?: string;
-    value?: IEnumValueDescriptorProto[];
-    options?: IEnumOptions;
-}
+    value?: EnumValueDescriptorProtoProperties[];
+    options?: EnumOptionsProperties;
+};
 
-export interface IEnumValueDescriptorProto {
+type EnumValueDescriptorProtoProperties = {
     name?: string;
     number?: number;
     options?: any;
-}
+};
 
-export interface IEnumOptions {
+type EnumOptionsProperties = {
     allowAlias?: boolean;
-}
+};
 
-export interface IOneofDescriptorProto {
+type OneofDescriptorProtoProperties = {
     name?: string;
     options?: any;
-}
+};
 
-export interface IServiceDescriptorProto {
+type ServiceDescriptorProtoProperties = {
     name?: string;
-    method?: IMethodDescriptorProto[];
+    method?: MethodDescriptorProtoProperties[];
     options?: any;
-}
+};
 
-export interface IMethodDescriptorProto {
+type MethodDescriptorProtoProperties = {
     name?: string;
     inputType?: string;
     outputType?: string;
     options?: any;
     clientStreaming?: boolean;
     serverStreaming?: boolean;
-}
+};
 export const FileDescriptorSet: $protobuf.Type;
 export const FileDescriptorProto: $protobuf.Type;
 export const DescriptorProto: $protobuf.Type;
