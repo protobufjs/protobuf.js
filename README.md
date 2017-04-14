@@ -15,8 +15,7 @@ Contents
   A brief introduction to using the toolset.
 
   * [Valid Message](#valid-message)
-  * [Toolset](#toolset)
-
+  * [Toolset](#toolset)<br />
 
 * [Examples](#examples)<br />
   A few examples to get you started.
@@ -26,8 +25,7 @@ Contents
   * [Using reflection only](#using-reflection-only)
   * [Using custom classes](#using-custom-classes)
   * [Using services](#using-services)
-  * [Usage with TypeScript](#usage-with-typescript)
-
+  * [Usage with TypeScript](#usage-with-typescript)<br />
 
 * [Command line](#command-line)<br />
   How to use the command line utility.
@@ -35,8 +33,7 @@ Contents
   * [pbjs for JavaScript](#pbjs-for-javascript)
   * [pbts for TypeScript](#pbts-for-typescript)
   * [Reflection vs. static code](#reflection-vs-static-code)
-  * [Command line API](#command-line-api)
-
+  * [Command line API](#command-line-api)<br />
 
 * [Additional documentation](#additional-documentation)<br />
   A list of available documentation resources.
@@ -836,6 +833,7 @@ Compatibility
 * Support for pre-ES5 environments (except IE8) can be achieved by [using a polyfill](https://github.com/dcodeIO/protobuf.js/blob/master/scripts/polyfill.js).
 * Support for [Content Security Policy](https://w3c.github.io/webappsec-csp/)-restricted environments (like Chrome extensions without [unsafe-eval](https://developer.chrome.com/extensions/contentSecurityPolicy#relaxing-eval)) can be achieved by generating and using static code instead.
 * If a proper way to work with 64 bit values (uint64, int64 etc.) is required, just install [long.js](https://github.com/dcodeIO/long.js) alongside this library. All 64 bit numbers will then be returned as a `Long` instance instead of a possibly unsafe JavaScript number ([see](https://github.com/dcodeIO/long.js)).
+* For descriptor.proto interoperability, see [ext/descriptor](https://github.com/dcodeIO/protobuf.js/tree/master/ext/descriptor)
 
 Building
 --------

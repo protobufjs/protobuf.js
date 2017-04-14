@@ -21,6 +21,7 @@ ratings:
   - "lib/path/**.js"
   - "lib/pool/**.js"
   - "lib/utf8/**.js"
+  - "ext/**.js"
   - "**/*.d.ts"
 exclude_paths:
   - "dist/**"
