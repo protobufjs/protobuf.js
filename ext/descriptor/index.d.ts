@@ -14,10 +14,29 @@ type FileDescriptorProtoProperties = {
     enumType?: EnumDescriptorProtoProperties[];
     service?: ServiceDescriptorProtoProperties[];
     extension?: FieldDescriptorProtoProperties[];
-    options?: any;
+    options?: FileOptionsProperties;
     sourceCodeInfo?: any;
     syntax?: string;
 };
+
+type FileOptionsProperties = {
+    javaPackage?: string;
+    javaOuterClassname?: string;
+    javaMultipleFiles?: boolean;
+    javaGenerateEqualsAndHash?: boolean;
+    javaStringCheckUtf8?: boolean;
+    optimizeFor?: FileOptions_OptimizeMode;
+    goPackage?: string;
+    ccGenericServices?: boolean;
+    javaGenericServices?: boolean;
+    pyGenericServices?: boolean;
+    deprecated?: boolean;
+    ccEnableArenas?: boolean;
+    objcClassPrefix?: string;
+    csharpNamespace?: string;
+};
+
+type FileOptions_OptimizeMode = number;
 
 type DescriptorProtoProperties = {
     name?: string;
@@ -84,6 +103,7 @@ type EnumValueDescriptorProtoProperties = {
 
 type EnumOptionsProperties = {
     allowAlias?: boolean;
+    deprecated?: boolean;
 };
 
 type OneofDescriptorProtoProperties = {
@@ -94,16 +114,24 @@ type OneofDescriptorProtoProperties = {
 type ServiceDescriptorProtoProperties = {
     name?: string;
     method?: MethodDescriptorProtoProperties[];
-    options?: any;
+    options?: ServiceOptionsProperties;
+};
+
+type ServiceOptionsProperties = {
+    deprecated?: boolean;
 };
 
 type MethodDescriptorProtoProperties = {
     name?: string;
     inputType?: string;
     outputType?: string;
-    options?: any;
+    options?: MethodOptionsProperties;
     clientStreaming?: boolean;
     serverStreaming?: boolean;
+};
+
+type MethodOptionsProperties = {
+    deprecated?: boolean;
 };
 
 export const FileDescriptorSet: $protobuf.Type;

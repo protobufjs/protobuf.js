@@ -20,9 +20,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
 exports.__esModule = true;
 var __1 = require("..");
 // Reflection
@@ -61,6 +58,11 @@ var helloBuffer = Hello.encode(helloMessage.foo()).finish();
 var helloDecoded = Hello.decode(helloBuffer);
 // Decorators
 require("reflect-metadata");
+var AwesomeEnum;
+(function (AwesomeEnum) {
+    AwesomeEnum[AwesomeEnum["ONE"] = 1] = "ONE";
+    AwesomeEnum[AwesomeEnum["TWO"] = 2] = "TWO";
+})(AwesomeEnum = exports.AwesomeEnum || (exports.AwesomeEnum = {}));
 var AwesomeSubMessage = (function (_super) {
     __extends(AwesomeSubMessage, _super);
     function AwesomeSubMessage() {
@@ -69,15 +71,18 @@ var AwesomeSubMessage = (function (_super) {
     return AwesomeSubMessage;
 }(__1.Message));
 __decorate([
-    __1.Field.d(1, "string"),
-    __metadata("design:type", String)
+    __1.Field.d(1, "string")
 ], AwesomeSubMessage.prototype, "awesomeString");
+__decorate([
+    __1.MapField.d(2, "string", "string")
+], AwesomeSubMessage.prototype, "awesomeMapString");
+__decorate([
+    __1.MapField.d(3, "string", AwesomeEnum)
+], AwesomeSubMessage.prototype, "awesomeMapEnum");
+__decorate([
+    __1.MapField.d(4, "string", AwesomeSubMessage)
+], AwesomeSubMessage.prototype, "awesomeMapMessage");
 exports.AwesomeSubMessage = AwesomeSubMessage;
-var AwesomeEnum;
-(function (AwesomeEnum) {
-    AwesomeEnum[AwesomeEnum["ONE"] = 1] = "ONE";
-    AwesomeEnum[AwesomeEnum["TWO"] = 2] = "TWO";
-})(AwesomeEnum = exports.AwesomeEnum || (exports.AwesomeEnum = {}));
 var AwesomeMessage = (function (_super) {
     __extends(AwesomeMessage, _super);
     function AwesomeMessage() {
@@ -86,20 +91,16 @@ var AwesomeMessage = (function (_super) {
     return AwesomeMessage;
 }(__1.Message));
 __decorate([
-    __1.Field.d(1, "string", "optional", "awesome default string"),
-    __metadata("design:type", String)
+    __1.Field.d(1, "string", "optional", "awesome default string")
 ], AwesomeMessage.prototype, "awesomeField");
 __decorate([
-    __1.Field.d(2, AwesomeSubMessage),
-    __metadata("design:type", AwesomeSubMessage)
+    __1.Field.d(2, AwesomeSubMessage)
 ], AwesomeMessage.prototype, "awesomeSubMessage");
 __decorate([
-    __1.Field.d(3, AwesomeEnum, "optional", AwesomeEnum.ONE),
-    __metadata("design:type", Number)
+    __1.Field.d(3, AwesomeEnum, "optional", AwesomeEnum.ONE)
 ], AwesomeMessage.prototype, "awesomeEnum");
 __decorate([
-    __1.OneOf.d("awesomeSubMessage", "awesomeEnum"),
-    __metadata("design:type", String)
+    __1.OneOf.d("awesomeSubMessage", "awesomeEnum")
 ], AwesomeMessage.prototype, "which");
 AwesomeMessage = __decorate([
     __1.Type.d("SuperAwesomeMessage")

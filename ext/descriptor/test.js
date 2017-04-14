@@ -3,7 +3,7 @@
 var protobuf   = require("../../"),
     descriptor = require(".");
 
-var proto = require("../../google/protobuf/descriptor.json")/*{
+/* var proto = {
     nested: {
         Message: {
             fields: {
@@ -25,7 +25,7 @@ var proto = require("../../google/protobuf/descriptor.json")/*{
             }
         }
     }
-}*/;
+}; */
 
 // var root = protobuf.Root.fromJSON(proto).resolveAll();
 var root = protobuf.loadSync("tests/data/google/protobuf/descriptor.proto").resolveAll();
@@ -49,6 +49,6 @@ if (diff) {
         console.log("rhs:", typeof diff.rhs, diff.rhs);
         console.log();
     });
-    process.exit(1);
+    process.exitCode = 1;
 } else
     console.log("no differences");

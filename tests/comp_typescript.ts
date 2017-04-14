@@ -4,7 +4,7 @@
 /// <reference path="../stub-node.d.ts" />
 */
 
-import { Root, Message, Type, Field, OneOf } from "..";
+import { Root, Message, Type, Field, MapField, OneOf } from "..";
 
 // Reflection
 const root = Root.fromJSON({
@@ -47,16 +47,25 @@ let helloDecoded = Hello.decode(helloBuffer);
 
 import "reflect-metadata";
 
+export enum AwesomeEnum {
+  ONE = 1,
+  TWO = 2
+}
+
 export class AwesomeSubMessage extends Message<AwesomeSubMessage> {
 
   @Field.d(1, "string")
   public awesomeString: string;
 
-}
+  @MapField.d(2, "string", "string")
+  public awesomeMapString : { [key: string]: string };
 
-export enum AwesomeEnum {
-  ONE = 1,
-  TWO = 2
+  @MapField.d(3, "string", AwesomeEnum)
+  public awesomeMapEnum : { [key: string]: string };
+
+  @MapField.d(4, "string", AwesomeSubMessage)
+  public awesomeMapMessage : { [key: string]: Message<AwesomeSubMessage> };
+
 }
 
 @Type.d("SuperAwesomeMessage")

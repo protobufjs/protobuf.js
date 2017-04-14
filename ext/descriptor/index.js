@@ -19,7 +19,6 @@ var Namespace = $protobuf.Namespace,
  * @typedef FileDescriptorSetProperties
  * @type {Object}
  * @property {FileDescriptorProtoProperties[]} file Files
- * @see Part of the {@link descriptor} extension (ext/descriptor)
  */
 
 /**
@@ -35,17 +34,44 @@ var Namespace = $protobuf.Namespace,
  * @property {EnumDescriptorProtoProperties[]} [enumType] Nested enums
  * @property {ServiceDescriptorProtoProperties[]} [service] Nested services
  * @property {FieldDescriptorProtoProperties[]} [extension] Nested extension fields
- * @property {*} [options] Not supported
+ * @property {FileOptionsProperties} [options] Options
  * @property {*} [sourceCodeInfo] Not supported
  * @property {string} [syntax="proto2"] Syntax
- * @see Part of the {@link descriptor} extension (ext/descriptor)
+ */
+
+/**
+ * Properties of a FileOptions message.
+ * @typedef FileOptionsProperties
+ * @type {Object}
+ * @property {string} [javaPackage]
+ * @property {string} [javaOuterClassname]
+ * @property {boolean} [javaMultipleFiles]
+ * @property {boolean} [javaGenerateEqualsAndHash]
+ * @property {boolean} [javaStringCheckUtf8]
+ * @property {FileOptions_OptimizeMode} [optimizeFor=1]
+ * @property {string} [goPackage]
+ * @property {boolean} [ccGenericServices]
+ * @property {boolean} [javaGenericServices]
+ * @property {boolean} [pyGenericServices]
+ * @property {boolean} [deprecated]
+ * @property {boolean} [ccEnableArenas]
+ * @property {string} [objcClassPrefix]
+ * @property {string} [csharpNamespace]
+ */
+
+/**
+ * Values of he FileOptions.OptimizeMode enum.
+ * @typedef FileOptions_OptimizeMode
+ * @type {number}
+ * @property {number} SPEED=1
+ * @property {number} CODE_SIZE=2
+ * @property {number} LITE_RUNTIME=3
  */
 
 /**
  * Creates a root from a descriptor set.
  * @param {FileDescriptorSetProperties|Reader|Uint8Array} descriptor Descriptor
  * @returns {Root} Root instance
- * @see Part of the {@link descriptor} extension (ext/descriptor)
  */
 Root.fromDescriptor = function fromDescriptor(descriptor) {
 
@@ -89,7 +115,6 @@ Root.fromDescriptor = function fromDescriptor(descriptor) {
  * Converts a root to a descriptor set.
  * @returns {Message<FileDescriptorSetProperties>} Descriptor
  * @param {string} [syntax="proto2"] Syntax
- * @see Part of the {@link descriptor} extension (ext/descriptor)
  */
 Root.prototype.toDescriptor = function toDescriptor(syntax) {
     var set = exports.FileDescriptorSet.create();
@@ -144,7 +169,6 @@ function Root_toDescriptorRecursive(ns, files, syntax) {
  * @property {MessageOptionsProperties} [options] Not supported
  * @property {ReservedRangeProperties[]} [reservedRange] Reserved ranges
  * @property {string[]} [reservedName] Reserved names
- * @see Part of the {@link descriptor} extension (ext/descriptor)
  */
 
 /**
@@ -152,7 +176,6 @@ function Root_toDescriptorRecursive(ns, files, syntax) {
  * @typedef MessageOptionsProperties
  * @type {Object}
  * @property {boolean} [mapEntry=false] Whether this message is a map entry
- * @see Part of the {@link descriptor} extension (ext/descriptor)
  */
 
 /**
@@ -161,7 +184,6 @@ function Root_toDescriptorRecursive(ns, files, syntax) {
  * @type {Object}
  * @property {number} [start] Start field id
  * @property {number} [end] End field id
- * @see Part of the {@link descriptor} extension (ext/descriptor)
  */
 
 /**
@@ -170,7 +192,6 @@ function Root_toDescriptorRecursive(ns, files, syntax) {
  * @type {Object}
  * @property {number} [start] Start field id
  * @property {number} [end] End field id
- * @see Part of the {@link descriptor} extension (ext/descriptor)
  */
 
 var unnamedMessageIndex = 0;
@@ -180,7 +201,6 @@ var unnamedMessageIndex = 0;
  * @param {DescriptorProtoProperties|Reader|Uint8Array} descriptor Descriptor
  * @param {string} [syntax="proto2"] Syntax
  * @returns {Type} Type instance
- * @see Part of the {@link descriptor} extension (ext/descriptor)
  */
 Type.fromDescriptor = function fromDescriptor(descriptor, syntax) {
 
@@ -236,7 +256,6 @@ Type.fromDescriptor = function fromDescriptor(descriptor, syntax) {
  * Converts a type to a descriptor.
  * @returns {Message<DescriptorProtoProperties>} Descriptor
  * @param {string} [syntax="proto2"] Syntax
- * @see Part of the {@link descriptor} extension (ext/descriptor)
  */
 Type.prototype.toDescriptor = function toDescriptor(syntax) {
     var descriptor = exports.DescriptorProto.create({ name: this.name }),
@@ -303,7 +322,6 @@ Type.prototype.toDescriptor = function toDescriptor(syntax) {
  * @property {number} [oneofIndex] Oneof index if part of a oneof
  * @property {*} [jsonName] Not supported
  * @property {FieldOptionsProperties} [options] Field options
- * @see Part of the {@link descriptor} extension (ext/descriptor)
  */
 
 /**
@@ -313,7 +331,6 @@ Type.prototype.toDescriptor = function toDescriptor(syntax) {
  * @property {number} LABEL_OPTIONAL=1
  * @property {number} LABEL_REQUIRED=2
  * @property {number} LABEL_REPEATED=3
- * @see Part of the {@link descriptor} extension (ext/descriptor)
  */
 
 /**
@@ -338,7 +355,6 @@ Type.prototype.toDescriptor = function toDescriptor(syntax) {
  * @property {number} TYPE_SFIXED64=16
  * @property {number} TYPE_SINT32=17
  * @property {number} TYPE_SINT64=18
- * @see Part of the {@link descriptor} extension (ext/descriptor)
  */
 
 /**
@@ -347,7 +363,6 @@ Type.prototype.toDescriptor = function toDescriptor(syntax) {
  * @type {Object}
  * @property {boolean} [packed] Whether packed or not (defaults to `false` for proto2 and `true` for proto3)
  * @property {FieldOptions_JSType} [jstype] JavaScript value type (not used by protobuf.js)
- * @see Part of the {@link descriptor} extension (ext/descriptor)
  */
 
 /**
@@ -364,7 +379,6 @@ Type.prototype.toDescriptor = function toDescriptor(syntax) {
  * @param {FieldDescriptorProtoProperties|Reader|Uint8Array} descriptor Descriptor
  * @param {string} [syntax="proto2"] Syntax
  * @returns {Field} Field instance
- * @see Part of the {@link descriptor} extension (ext/descriptor)
  */
 Field.fromDescriptor = function fromDescriptor(descriptor, syntax) {
 
@@ -414,7 +428,7 @@ Field.fromDescriptor = function fromDescriptor(descriptor, syntax) {
             default:
                 var match = $protobuf.parse.numberRe.exec(defaultValue);
                 if (match)
-                    defaultValue = parseInt(defaultValue);
+                    defaultValue = parseInt(defaultValue); // eslint-disable-line radix
                 break;
         }
         field.setOption("default", defaultValue);
@@ -435,7 +449,6 @@ Field.fromDescriptor = function fromDescriptor(descriptor, syntax) {
  * Converts a field to a descriptor.
  * @returns {Message<FieldDescriptorProtoProperties>} Descriptor
  * @param {string} [syntax="proto2"] Syntax
- * @see Part of the {@link descriptor} extension (ext/descriptor)
  */
 Field.prototype.toDescriptor = function toDescriptor(syntax) {
     var descriptor = exports.FieldDescriptorProto.create({ name: this.name, number: this.id });
@@ -498,7 +511,6 @@ Field.prototype.toDescriptor = function toDescriptor(syntax) {
  * @property {string} [name] Enum name
  * @property {EnumValueDescriptorProtoProperties[]} [value] Enum values
  * @property {EnumOptionsProperties} [options] Enum options
- * @see Part of the {@link descriptor} extension (ext/descriptor)
  */
 
 /**
@@ -508,7 +520,6 @@ Field.prototype.toDescriptor = function toDescriptor(syntax) {
  * @property {string} [name] Name
  * @property {number} [number] Value
  * @property {*} [options] Not supported
- * @see Part of the {@link descriptor} extension (ext/descriptor)
  */
 
 /**
@@ -516,7 +527,7 @@ Field.prototype.toDescriptor = function toDescriptor(syntax) {
  * @typedef EnumOptionsProperties
  * @type {Object}
  * @property {boolean} [allowAlias] Whether aliases are allowed
- * @see Part of the {@link descriptor} extension (ext/descriptor)
+ * @property {boolean} [deprecated]
  */
 
 var unnamedEnumIndex = 0;
@@ -525,7 +536,6 @@ var unnamedEnumIndex = 0;
  * Creates an enum from a descriptor.
  * @param {EnumDescriptorProtoProperties|Reader|Uint8Array} descriptor Descriptor
  * @returns {Enum} Enum instance
- * @see Part of the {@link descriptor} extension (ext/descriptor)
  */
 Enum.fromDescriptor = function fromDescriptor(descriptor) {
 
@@ -552,7 +562,6 @@ Enum.fromDescriptor = function fromDescriptor(descriptor) {
 /**
  * Converts an enum to a descriptor.
  * @returns {Message<EnumDescriptorProtoProperties>} Descriptor
- * @see Part of the {@link descriptor} extension (ext/descriptor)
  */
 Enum.prototype.toDescriptor = function toDescriptor() {
 
@@ -576,7 +585,6 @@ Enum.prototype.toDescriptor = function toDescriptor() {
  * @type {Object}
  * @property {string} [name] Oneof name
  * @property {*} [options] Not supported
- * @see Part of the {@link descriptor} extension (ext/descriptor)
  */
 
 var unnamedOneofIndex = 0;
@@ -585,7 +593,6 @@ var unnamedOneofIndex = 0;
  * Creates a oneof from a descriptor.
  * @param {OneofDescriptorProtoProperties|Reader|Uint8Array} descriptor Descriptor
  * @returns {OneOf} OneOf instance
- * @see Part of the {@link descriptor} extension (ext/descriptor)
  */
 OneOf.fromDescriptor = function fromDescriptor(descriptor) {
 
@@ -603,7 +610,6 @@ OneOf.fromDescriptor = function fromDescriptor(descriptor) {
 /**
  * Converts a oneof to a descriptor.
  * @returns {Message<OneofDescriptorProtoProperties>} Descriptor
- * @see Part of the {@link descriptor} extension (ext/descriptor)
  */
 OneOf.prototype.toDescriptor = function toDescriptor() {
     return exports.OneofDescriptorProto.create({
@@ -620,8 +626,14 @@ OneOf.prototype.toDescriptor = function toDescriptor() {
  * @type {Object}
  * @property {string} [name] Service name
  * @property {MethodDescriptorProtoProperties[]} [method] Methods
- * @property {*} [options] Not supported
- * @see Part of the {@link descriptor} extension (ext/descriptor)
+ * @property {ServiceOptionsProperties} [options] Options
+ */
+
+/**
+ * Properties of a ServiceOptions message.
+ * @typedef ServiceOptionsProperties
+ * @type {Object}
+ * @property {boolean} [deprecated]
  */
 
 var unnamedServiceIndex = 0;
@@ -630,7 +642,6 @@ var unnamedServiceIndex = 0;
  * Creates a service from a descriptor.
  * @param {ServiceDescriptorProtoProperties|Reader|Uint8Array} descriptor Descriptor
  * @returns {Service} Service instance
- * @see Part of the {@link descriptor} extension (ext/descriptor)
  */
 Service.fromDescriptor = function fromDescriptor(descriptor) {
 
@@ -649,7 +660,6 @@ Service.fromDescriptor = function fromDescriptor(descriptor) {
 /**
  * Converts a service to a descriptor.
  * @returns {Message<ServiceDescriptorProtoProperties>} Descriptor
- * @see Part of the {@link descriptor} extension (ext/descriptor)
  */
 Service.prototype.toDescriptor = function toDescriptor() {
 
@@ -674,10 +684,16 @@ Service.prototype.toDescriptor = function toDescriptor() {
  * @property {string} [name] Method name
  * @property {string} [inputType] Request type name
  * @property {string} [outputType] Response type name
- * @property {*} [options] Not supported
+ * @property {MethodOptionsProperties} [options] Not supported
  * @property {boolean} [clientStreaming=false] Whether requests are streamed
  * @property {boolean} [serverStreaming=false] Whether responses are streamed
- * @see Part of the {@link descriptor} extension (ext/descriptor)
+ */
+
+/**
+ * Properties of a MethodOptions message.
+ * @typedef MethodOptionsProperties
+ * @type {Object}
+ * @property {boolean} [deprecated]
  */
 
 var unnamedMethodIndex = 0;
@@ -686,7 +702,6 @@ var unnamedMethodIndex = 0;
  * Creates a method from a descriptor.
  * @param {MethodDescriptorProtoProperties|Reader|Uint8Array} descriptor Descriptor
  * @returns {Method} Reflected method instance
- * @see Part of the {@link descriptor} extension (ext/descriptor)
  */
 Method.fromDescriptor = function fromDescriptor(descriptor) {
 
@@ -709,7 +724,6 @@ Method.fromDescriptor = function fromDescriptor(descriptor) {
 /**
  * Converts a method to a descriptor.
  * @returns {Message<MethodDescriptorProtoProperties>} Descriptor
- * @see Part of the {@link descriptor} extension (ext/descriptor)
  */
 Method.prototype.toDescriptor = function toDescriptor() {
     return exports.MethodDescriptorProto.create({

@@ -119,7 +119,7 @@ MapField.d = function decorateMapField(fieldId, fieldKeyType, fieldValueType) {
         fieldValueType = util.decorateType(fieldValueType).name;
 
     // enum reference value: create a reflected copy of the enum and keep reuseing it
-    else if (fieldValueType && typeof fieldType === "object")
+    else if (fieldValueType && typeof fieldValueType === "object")
         fieldValueType = util.decorateEnum(fieldValueType).name;
 
     return function mapFieldDecorator(prototype, fieldName) {
