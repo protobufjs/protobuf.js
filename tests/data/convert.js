@@ -135,11 +135,11 @@ $root.Message = (function() {
             for (var i = 0; i < message.bytesRepeated.length; ++i)
                 writer.uint32(/* id 6, wireType 2 =*/50).bytes(message.bytesRepeated[i]);
         if (message.enumVal != null && message.hasOwnProperty("enumVal"))
-            writer.uint32(/* id 7, wireType 0 =*/56).uint32(message.enumVal);
+            writer.uint32(/* id 7, wireType 0 =*/56).int32(message.enumVal);
         if (message.enumRepeated != null && message.enumRepeated.length) {
             writer.uint32(/* id 8, wireType 2 =*/66).fork();
             for (var i = 0; i < message.enumRepeated.length; ++i)
-                writer.uint32(message.enumRepeated[i]);
+                writer.int32(message.enumRepeated[i]);
             writer.ldelim();
         }
         if (message.int64Map != null && message.hasOwnProperty("int64Map"))
@@ -203,7 +203,7 @@ $root.Message = (function() {
                 message.bytesRepeated.push(reader.bytes());
                 break;
             case 7:
-                message.enumVal = reader.uint32();
+                message.enumVal = reader.int32();
                 break;
             case 8:
                 if (!(message.enumRepeated && message.enumRepeated.length))
@@ -211,9 +211,9 @@ $root.Message = (function() {
                 if ((tag & 7) === 2) {
                     var end2 = reader.uint32() + reader.pos;
                     while (reader.pos < end2)
-                        message.enumRepeated.push(reader.uint32());
+                        message.enumRepeated.push(reader.int32());
                 } else
-                    message.enumRepeated.push(reader.uint32());
+                    message.enumRepeated.push(reader.int32());
                 break;
             case 9:
                 reader.skip().pos++;

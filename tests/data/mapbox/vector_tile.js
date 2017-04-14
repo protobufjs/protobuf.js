@@ -626,7 +626,7 @@ $root.vector_tile = (function() {
                     writer.ldelim();
                 }
                 if (message.type != null && message.hasOwnProperty("type"))
-                    writer.uint32(/* id 3, wireType 0 =*/24).uint32(message.type);
+                    writer.uint32(/* id 3, wireType 0 =*/24).int32(message.type);
                 if (message.geometry != null && message.geometry.length) {
                     writer.uint32(/* id 4, wireType 2 =*/34).fork();
                     for (var i = 0; i < message.geometry.length; ++i)
@@ -675,7 +675,7 @@ $root.vector_tile = (function() {
                             message.tags.push(reader.uint32());
                         break;
                     case 3:
-                        message.type = reader.uint32();
+                        message.type = reader.int32();
                         break;
                     case 4:
                         if (!(message.geometry && message.geometry.length))

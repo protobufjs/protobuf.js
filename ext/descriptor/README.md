@@ -36,22 +36,22 @@ The extension adds `.fromDescriptor(descriptor[, syntax])` and `#toDescriptor([s
 | Descriptor type          | protobuf.js type | Remarks
 |--------------------------|------------------|---------
 | FileDescriptorSet        | Root             |
-| FileDescriptorProto      | Root             | except dependencies, sourceCodeInfo
-| FileOptions              | Root             | not supported
+| FileDescriptorProto      | Root             | except dependencies
+| FileOptions              | Root             |
 | DescriptorProto          | Type             |
-| MessageOptions           | Type             | not supported
-| FieldDescriptorProto     | Field            | except defaultValue
+| MessageOptions           | Type             |
+| FieldDescriptorProto     | Field            |
 | FieldOptions             | Field            |
 | OneofDescriptorProto     | OneOf            |
-| OneofOptions             | OneOf            | not supported
+| OneofOptions             | OneOf            |
 | EnumDescriptorProto      | Enum             |
 | EnumValueDescriptorProto | Enum             |
-| EnumOptions              | Enum             | only allowAlias
+| EnumOptions              | Enum             |
 | EnumValueOptions         | Enum             | not supported
 | ServiceDescriptorProto   | Service          |
-| ServiceOptions           | Service          | not supported
+| ServiceOptions           | Service          |
 | MethodDescriptorProto    | Method           |
-| MethodOptions            | Method           | not supported
+| MethodOptions            | Method           |
 | UninterpretedOption      |                  | not supported
 | SourceCodeInfo           |                  | not supported
 | GeneratedCodeInfo        |                  | not supported

@@ -27,7 +27,8 @@ var proto = require("../../google/protobuf/descriptor.json")/*{
     }
 }*/;
 
-var root = protobuf.Root.fromJSON(proto).resolveAll();
+// var root = protobuf.Root.fromJSON(proto).resolveAll();
+var root = protobuf.loadSync("tests/data/google/protobuf/descriptor.proto").resolveAll();
 
 // console.log("Original proto", JSON.stringify(root, null, 2));
 
@@ -41,12 +42,13 @@ var root2 = protobuf.Root.fromDescriptor(buf, "proto2").resolveAll();
 // console.log("\nDecoded proto", JSON.stringify(root2, null, 2));
 
 var diff = require("deep-diff").diff(root.toJSON(), root2.toJSON());
-if (diff)
+if (diff) {
     diff.forEach(function(diff) {
         console.log(diff.kind + " @ " + diff.path.join("."));
-        console.log("lhs:", diff.lhs);
-        console.log("rhs:", diff.rhs);
+        console.log("lhs:", typeof diff.lhs, diff.lhs);
+        console.log("rhs:", typeof diff.rhs, diff.rhs);
         console.log();
     });
-else
+    process.exit(1);
+} else
     console.log("no differences");

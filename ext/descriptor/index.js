@@ -1,5 +1,5 @@
 "use strict";
-var $protobuf = require("../..");
+var $protobuf = require("../.."); // requires the full library (uses parser exports)
 module.exports = exports = $protobuf.descriptor = $protobuf.Root.fromJSON(require("../../google/protobuf/descriptor.json")).lookup(".google.protobuf");
 
 var Namespace = $protobuf.Namespace,
@@ -73,6 +73,12 @@ Root.fromDescriptor = function fromDescriptor(descriptor) {
             if (fileDescriptor.extension)
                 for (i = 0; i < fileDescriptor.extension.length; ++i)
                     filePackage.add(Field.fromDescriptor(fileDescriptor.extension[i]));
+            var opts = fromDescriptorOptions(fileDescriptor.options, exports.FileOptions);
+            if (opts) {
+                var ks = Object.keys(opts);
+                for (i = 0; i < ks.length; ++i)
+                    filePackage.setOption(ks[i], opts[ks[i]]);
+            }
         }
     }
 
@@ -113,6 +119,9 @@ function Root_toDescriptorRecursive(ns, files, syntax) {
             file.service.push(nested.toDescriptor());
         else if (nested instanceof /* plain */ Namespace)
             Root_toDescriptorRecursive(nested, files, syntax); // requires new file
+
+    // Keep package-level options
+    file.options = toDescriptorOptions(ns.options, exports.FileOptions);
 
     // And keep the file only if there is at least one nested object
     if (file.messageType.length + file.enumType.length + file.extension.length + file.service.length)
@@ -180,7 +189,7 @@ Type.fromDescriptor = function fromDescriptor(descriptor, syntax) {
         descriptor = exports.DescriptorProto.decode(descriptor);
 
     // Create the message type
-    var type = new Type(descriptor.name.length ? descriptor.name : "Type" + unnamedMessageIndex++),
+    var type = new Type(descriptor.name.length ? descriptor.name : "Type" + unnamedMessageIndex++, fromDescriptorOptions(descriptor.options, exports.MessageOptions)),
         i;
 
     /* Oneofs */ if (descriptor.oneofDecl)
@@ -273,8 +282,7 @@ Type.prototype.toDescriptor = function toDescriptor(syntax) {
             /* Ranges */ else
                 descriptor.reservedRange.push(exports.DescriptorProto.ReservedRange.create({ start: this.reserved[i][0], end: this.reserved[i][1] }));
 
-    if (this.options && this.options.map_entry)
-        descriptor.options = exports.MessageOptions.create({ map_entry: true });
+    descriptor.options = toDescriptorOptions(this.options, exports.MessageOptions);
 
     return descriptor;
 };
@@ -392,10 +400,25 @@ Field.fromDescriptor = function fromDescriptor(descriptor, syntax) {
         descriptor.extendee.length ? descriptor.extendee : undefined
     );
 
-    if (descriptor.options)
-        field.options = fromDescriptorOptions(descriptor.options, exports.FieldOptions);
-    if (descriptor.defaultValue && descriptor.defaultValue.length)
-        field.setOption("default", descriptor.defaultValue);
+    field.options = fromDescriptorOptions(descriptor.options, exports.FieldOptions);
+
+    if (descriptor.defaultValue && descriptor.defaultValue.length) {
+        var defaultValue = descriptor.defaultValue;
+        switch (defaultValue) {
+            case "true": case "TRUE":
+                defaultValue = true;
+                break;
+            case "false": case "FALSE":
+                defaultValue = false;
+                break;
+            default:
+                var match = $protobuf.parse.numberRe.exec(defaultValue);
+                if (match)
+                    defaultValue = parseInt(defaultValue);
+                break;
+        }
+        field.setOption("default", defaultValue);
+    }
 
     if (packableDescriptorType(descriptor.type)) {
         if (syntax === "proto3") { // defaults to packed=true (internal preset is packed=true)
@@ -522,7 +545,7 @@ Enum.fromDescriptor = function fromDescriptor(descriptor) {
     return new Enum(
         descriptor.name && descriptor.name.length ? descriptor.name : "Enum" + unnamedEnumIndex++,
         values,
-        descriptor.options && descriptor.options.allowAlias ? { allowAlias: true } : undefined
+        fromDescriptorOptions(descriptor.options, exports.EnumOptions)
     );
 };
 
@@ -540,7 +563,8 @@ Enum.prototype.toDescriptor = function toDescriptor() {
 
     return exports.EnumDescriptorProto.create({
         name: this.name,
-        value: values
+        value: values,
+        options: toDescriptorOptions(this.options, exports.EnumOptions)
     });
 };
 
@@ -572,6 +596,7 @@ OneOf.fromDescriptor = function fromDescriptor(descriptor) {
     return new OneOf(
         // unnamedOneOfIndex is global, not per type, because we have no ref to a type here
         descriptor.name && descriptor.name.length ? descriptor.name : "oneof" + unnamedOneofIndex++
+        // fromDescriptorOptions(descriptor.options, exports.OneofOptions) - only uninterpreted_option
     );
 };
 
@@ -583,6 +608,7 @@ OneOf.fromDescriptor = function fromDescriptor(descriptor) {
 OneOf.prototype.toDescriptor = function toDescriptor() {
     return exports.OneofDescriptorProto.create({
         name: this.name
+        // options: toDescriptorOptions(this.options, exports.OneofOptions) - only uninterpreted_option
     });
 };
 
@@ -612,7 +638,7 @@ Service.fromDescriptor = function fromDescriptor(descriptor) {
     if (typeof descriptor.length === "number")
         descriptor = exports.ServiceDescriptorProto.decode(descriptor);
 
-    var service = new Service(descriptor.name && descriptor.name.length ? descriptor.name : "Service" + unnamedServiceIndex++);
+    var service = new Service(descriptor.name && descriptor.name.length ? descriptor.name : "Service" + unnamedServiceIndex++, fromDescriptorOptions(descriptor.options, exports.ServiceOptions));
     if (descriptor.method)
         for (var i = 0; i < descriptor.method.length; ++i)
             service.add(Method.fromDescriptor(descriptor.method[i]));
@@ -634,7 +660,8 @@ Service.prototype.toDescriptor = function toDescriptor() {
 
     return exports.ServiceDescriptorProto.create({
         name: this.name,
-        methods: methods
+        methods: methods,
+        options: toDescriptorOptions(this.options, exports.ServiceOptions)
     });
 };
 
@@ -674,7 +701,8 @@ Method.fromDescriptor = function fromDescriptor(descriptor) {
         descriptor.inputType,
         descriptor.outputType,
         Boolean(descriptor.clientStreaming),
-        Boolean(descriptor.serverStreaming)
+        Boolean(descriptor.serverStreaming),
+        fromDescriptorOptions(descriptor.options, exports.MethodOptions)
     );
 };
 
@@ -689,7 +717,8 @@ Method.prototype.toDescriptor = function toDescriptor() {
         inputType: this.resolvedRequestType ? this.resolvedRequestType.fullName : this.requestType,
         outputType: this.resolvedResponseType ? this.resolvedResponseType.fullName : this.responseType,
         clientStreaming: this.requestStream,
-        serverStreaming: this.responseStream
+        serverStreaming: this.responseStream,
+        options: toDescriptorOptions(this.options, exports.MethodOptions)
     });
 };
 
@@ -769,20 +798,34 @@ function toDescriptorType(type, resolvedType) {
 
 // Converts descriptor options to an options object
 function fromDescriptorOptions(options, type) {
+    if (!options)
+        return undefined;
     var out = [];
-    for (var i = 0, key; i < type.fieldsArray.length; ++i)
-        if ((key = type._fieldsArray[i].name) !== "uninterpretedOption")
-            if (options.hasOwnProperty(key)) // eslint-disable-line no-prototype-builtins
-                out.push(key, options[key]);
+    for (var i = 0, field, key, val; i < type.fieldsArray.length; ++i)
+        if ((key = (field = type._fieldsArray[i]).name) !== "uninterpretedOption")
+            if (options.hasOwnProperty(key)) { // eslint-disable-line no-prototype-builtins
+                val = options[key];
+                if (field.resolvedType instanceof Enum && typeof val === "number" && field.resolvedType.valuesById[val] !== undefined)
+                    val = field.resolvedType.valuesById[val];
+                out.push(underScore(key), val);
+            }
     return out.length ? $protobuf.util.toObject(out) : undefined;
 }
 
 // Converts an options object to descriptor options
 function toDescriptorOptions(options, type) {
+    if (!options)
+        return undefined;
     var out = [];
-    for (var i = 0, key; i < type.fieldsArray.length; ++i)
-        if ((key = type._fieldsArray[i].name) !== "default")
-            out.push(key, options[key]);
+    for (var i = 0, ks = Object.keys(options), key, val; i < ks.length; ++i) {
+        val = options[key = ks[i]];
+        if (key === "default")
+            continue;
+        var field = type.fields[key];
+        if (!field && !(field = type.fields[key = $protobuf.parse.camelCase(key)]))
+            continue;
+        out.push(key, val);
+    }
     return out.length ? type.fromObject($protobuf.util.toObject(out)) : undefined;
 }
 
@@ -803,6 +846,13 @@ function shortname(from, to) {
     else
         for (; i < fromPath.length && j < k && fromPath[i] === toPath[j]; ++i, ++j);
     return toPath.slice(j).join(".");
+}
+
+// copied here from cli/targets/proto.js
+function underScore(str) {
+    return str.substring(0,1)
+         + str.substring(1)
+               .replace(/([A-Z])(?=[a-z]|$)/g, function($0, $1) { return "_" + $1.toLowerCase(); });
 }
 
 // --- exports ---

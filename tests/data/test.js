@@ -229,7 +229,7 @@ $root.jspb = (function() {
                 if (!writer)
                     writer = $Writer.create();
                 if (message.outerEnum != null && message.hasOwnProperty("outerEnum"))
-                    writer.uint32(/* id 1, wireType 0 =*/8).uint32(message.outerEnum);
+                    writer.uint32(/* id 1, wireType 0 =*/8).int32(message.outerEnum);
                 return writer;
             };
 
@@ -259,7 +259,7 @@ $root.jspb = (function() {
                     var tag = reader.uint32();
                     switch (tag >>> 3) {
                     case 1:
-                        message.outerEnum = reader.uint32();
+                        message.outerEnum = reader.int32();
                         break;
                     default:
                         reader.skipType(tag & 7);
@@ -2999,7 +2999,7 @@ $root.jspb = (function() {
                 if (message.intField != null && message.hasOwnProperty("intField"))
                     writer.uint32(/* id 3, wireType 0 =*/24).int64(message.intField);
                 if (message.enumField != null && message.hasOwnProperty("enumField"))
-                    writer.uint32(/* id 4, wireType 0 =*/32).uint32(message.enumField);
+                    writer.uint32(/* id 4, wireType 0 =*/32).int32(message.enumField);
                 if (message.emptyField != null && message.hasOwnProperty("emptyField"))
                     writer.uint32(/* id 6, wireType 2 =*/50).string(message.emptyField);
                 if (message.bytesField != null && message.hasOwnProperty("bytesField"))
@@ -3042,7 +3042,7 @@ $root.jspb = (function() {
                         message.intField = reader.int64();
                         break;
                     case 4:
-                        message.enumField = reader.uint32();
+                        message.enumField = reader.int32();
                         break;
                     case 6:
                         message.emptyField = reader.string();
@@ -6177,7 +6177,7 @@ $root.jspb = (function() {
                         writer.uint32(/* id 5, wireType 2 =*/42).fork().uint32(/* id 1, wireType 2 =*/10).string(keys[i]).uint32(/* id 2, wireType 1 =*/17).double(message.mapStringDouble[keys[i]]).ldelim();
                 if (message.mapStringEnum != null && message.hasOwnProperty("mapStringEnum"))
                     for (var keys = Object.keys(message.mapStringEnum), i = 0; i < keys.length; ++i)
-                        writer.uint32(/* id 6, wireType 2 =*/50).fork().uint32(/* id 1, wireType 2 =*/10).string(keys[i]).uint32(/* id 2, wireType 0 =*/16).uint32(message.mapStringEnum[keys[i]]).ldelim();
+                        writer.uint32(/* id 6, wireType 2 =*/50).fork().uint32(/* id 1, wireType 2 =*/10).string(keys[i]).uint32(/* id 2, wireType 0 =*/16).int32(message.mapStringEnum[keys[i]]).ldelim();
                 if (message.mapStringMsg != null && message.hasOwnProperty("mapStringMsg"))
                     for (var keys = Object.keys(message.mapStringMsg), i = 0; i < keys.length; ++i) {
                         writer.uint32(/* id 7, wireType 2 =*/58).fork().uint32(/* id 1, wireType 2 =*/10).string(keys[i]);
@@ -6273,7 +6273,7 @@ $root.jspb = (function() {
                             message.mapStringEnum = {};
                         key = reader.string();
                         reader.pos++;
-                        message.mapStringEnum[key] = reader.uint32();
+                        message.mapStringEnum[key] = reader.int32();
                         break;
                     case 7:
                         reader.skip().pos++;
@@ -9072,9 +9072,9 @@ $root.google = (function() {
                 if (message.number != null && message.hasOwnProperty("number"))
                     writer.uint32(/* id 3, wireType 0 =*/24).int32(message.number);
                 if (message.label != null && message.hasOwnProperty("label"))
-                    writer.uint32(/* id 4, wireType 0 =*/32).uint32(message.label);
+                    writer.uint32(/* id 4, wireType 0 =*/32).int32(message.label);
                 if (message.type != null && message.hasOwnProperty("type"))
-                    writer.uint32(/* id 5, wireType 0 =*/40).uint32(message.type);
+                    writer.uint32(/* id 5, wireType 0 =*/40).int32(message.type);
                 if (message.typeName != null && message.hasOwnProperty("typeName"))
                     writer.uint32(/* id 6, wireType 2 =*/50).string(message.typeName);
                 if (message.defaultValue != null && message.hasOwnProperty("defaultValue"))
@@ -9120,10 +9120,10 @@ $root.google = (function() {
                         message.number = reader.int32();
                         break;
                     case 4:
-                        message.label = reader.uint32();
+                        message.label = reader.int32();
                         break;
                     case 5:
-                        message.type = reader.uint32();
+                        message.type = reader.int32();
                         break;
                     case 6:
                         message.typeName = reader.string();
@@ -10771,7 +10771,7 @@ $root.google = (function() {
                 if (message.javaOuterClassname != null && message.hasOwnProperty("javaOuterClassname"))
                     writer.uint32(/* id 8, wireType 2 =*/66).string(message.javaOuterClassname);
                 if (message.optimizeFor != null && message.hasOwnProperty("optimizeFor"))
-                    writer.uint32(/* id 9, wireType 0 =*/72).uint32(message.optimizeFor);
+                    writer.uint32(/* id 9, wireType 0 =*/72).int32(message.optimizeFor);
                 if (message.javaMultipleFiles != null && message.hasOwnProperty("javaMultipleFiles"))
                     writer.uint32(/* id 10, wireType 0 =*/80).bool(message.javaMultipleFiles);
                 if (message.goPackage != null && message.hasOwnProperty("goPackage"))
@@ -10841,7 +10841,7 @@ $root.google = (function() {
                         message.javaStringCheckUtf8 = reader.bool();
                         break;
                     case 9:
-                        message.optimizeFor = reader.uint32();
+                        message.optimizeFor = reader.int32();
                         break;
                     case 11:
                         message.goPackage = reader.string();
@@ -11482,7 +11482,7 @@ $root.google = (function() {
                 if (!writer)
                     writer = $Writer.create();
                 if (message.ctype != null && message.hasOwnProperty("ctype"))
-                    writer.uint32(/* id 1, wireType 0 =*/8).uint32(message.ctype);
+                    writer.uint32(/* id 1, wireType 0 =*/8).int32(message.ctype);
                 if (message.packed != null && message.hasOwnProperty("packed"))
                     writer.uint32(/* id 2, wireType 0 =*/16).bool(message.packed);
                 if (message.deprecated != null && message.hasOwnProperty("deprecated"))
@@ -11490,7 +11490,7 @@ $root.google = (function() {
                 if (message.lazy != null && message.hasOwnProperty("lazy"))
                     writer.uint32(/* id 5, wireType 0 =*/40).bool(message.lazy);
                 if (message.jstype != null && message.hasOwnProperty("jstype"))
-                    writer.uint32(/* id 6, wireType 0 =*/48).uint32(message.jstype);
+                    writer.uint32(/* id 6, wireType 0 =*/48).int32(message.jstype);
                 if (message.weak != null && message.hasOwnProperty("weak"))
                     writer.uint32(/* id 10, wireType 0 =*/80).bool(message.weak);
                 if (message.uninterpretedOption != null && message.uninterpretedOption.length)
@@ -11525,13 +11525,13 @@ $root.google = (function() {
                     var tag = reader.uint32();
                     switch (tag >>> 3) {
                     case 1:
-                        message.ctype = reader.uint32();
+                        message.ctype = reader.int32();
                         break;
                     case 2:
                         message.packed = reader.bool();
                         break;
                     case 6:
-                        message.jstype = reader.uint32();
+                        message.jstype = reader.int32();
                         break;
                     case 5:
                         message.lazy = reader.bool();
@@ -12682,7 +12682,7 @@ $root.google = (function() {
                 if (message.deprecated != null && message.hasOwnProperty("deprecated"))
                     writer.uint32(/* id 33, wireType 0 =*/264).bool(message.deprecated);
                 if (message.idempotencyLevel != null && message.hasOwnProperty("idempotencyLevel"))
-                    writer.uint32(/* id 34, wireType 0 =*/272).uint32(message.idempotencyLevel);
+                    writer.uint32(/* id 34, wireType 0 =*/272).int32(message.idempotencyLevel);
                 if (message.uninterpretedOption != null && message.uninterpretedOption.length)
                     for (var i = 0; i < message.uninterpretedOption.length; ++i)
                         $root.google.protobuf.UninterpretedOption.encode(message.uninterpretedOption[i], writer.uint32(/* id 999, wireType 2 =*/7994).fork()).ldelim();
@@ -12718,7 +12718,7 @@ $root.google = (function() {
                         message.deprecated = reader.bool();
                         break;
                     case 34:
-                        message.idempotencyLevel = reader.uint32();
+                        message.idempotencyLevel = reader.int32();
                         break;
                     case 999:
                         if (!(message.uninterpretedOption && message.uninterpretedOption.length))

@@ -46,26 +46,29 @@ type ReservedRangeProperties = {
     end?: number;
 };
 
-type FieldOptionsProperties = {
-    packed?: boolean;
-};
-
 type FieldDescriptorProtoProperties = {
     name?: string;
     number?: number;
-    label?: FieldDescriptorProtoLabel;
-    type?: FieldDescriptorProtoType;
+    label?: FieldDescriptorProto_Label;
+    type?: FieldDescriptorProto_Type;
     typeName?: string;
     extendee?: string;
-    defaultValue?: any;
+    defaultValue?: string;
     oneofIndex?: number;
     jsonName?: any;
     options?: FieldOptionsProperties;
 };
 
-type FieldDescriptorProtoLabel = number;
+type FieldDescriptorProto_Label = number;
 
-type FieldDescriptorProtoType = number;
+type FieldDescriptorProto_Type = number;
+
+type FieldOptionsProperties = {
+    packed?: boolean;
+    jstype?: FieldOptions_JSType;
+};
+
+type FieldOptions_JSType = number;
 
 type EnumDescriptorProtoProperties = {
     name?: string;
@@ -102,23 +105,43 @@ type MethodDescriptorProtoProperties = {
     clientStreaming?: boolean;
     serverStreaming?: boolean;
 };
+
 export const FileDescriptorSet: $protobuf.Type;
+
 export const FileDescriptorProto: $protobuf.Type;
+
 export const DescriptorProto: $protobuf.Type;
+
 export const FieldDescriptorProto: $protobuf.Type;
+
 export const OneofDescriptorProto: $protobuf.Type;
+
 export const EnumDescriptorProto: $protobuf.Type;
+
 export const ServiceDescriptorProto: $protobuf.Type;
+
 export const EnumValueDescriptorProto: $protobuf.Type;
+
 export const MethodDescriptorProto: $protobuf.Type;
+
 export const FileOptions: $protobuf.Type;
+
 export const MessageOptions: $protobuf.Type;
+
 export const FieldOptions: $protobuf.Type;
+
 export const OneofOptions: $protobuf.Type;
+
 export const EnumOptions: $protobuf.Type;
+
 export const EnumValueOptions: $protobuf.Type;
+
 export const ServiceOptions: $protobuf.Type;
+
 export const MethodOptions: $protobuf.Type;
+
 export const UninterpretedOption: $protobuf.Type;
+
 export const SourceCodeInfo: $protobuf.Type;
+
 export const GeneratedCodeInfo: $protobuf.Type;

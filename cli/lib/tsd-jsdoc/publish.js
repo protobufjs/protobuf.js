@@ -241,7 +241,7 @@ function getTypeOf(element) {
 
 // begins writing the definition of the specified element
 function begin(element, is_interface) {
-    writeComment(element.comment, is_interface || isInterface(element) || isClassLike(element) || isNamespace(element) || element.isEnum);
+    writeComment(element.comment, is_interface || isInterface(element) || isClassLike(element) || isNamespace(element) || element.isEnum || element.scope === "global");
     if (element.scope !== "global" || options.module)
         return;
     write("export ");

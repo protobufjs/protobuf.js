@@ -35,6 +35,9 @@ function camelCase(str) {
                .replace(camelCaseRe, function($0, $1) { return $1.toUpperCase(); });
 }
 
+parse.camelCase = camelCase;
+parse.numberRe = numberRe;
+
 /**
  * Result object returned from {@link parse}.
  * @typedef ParserResult

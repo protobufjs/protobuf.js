@@ -130,7 +130,7 @@ $root.Test = (function() {
                 if (message.long != null && message.hasOwnProperty("long"))
                     writer.uint32(8).int64(message.long);
                 if (message["enum"] != null && message.hasOwnProperty("enum"))
-                    writer.uint32(16).uint32(message["enum"]);
+                    writer.uint32(16).int32(message["enum"]);
                 if (message.sint32 != null && message.hasOwnProperty("sint32"))
                     writer.uint32(24).sint32(message.sint32);
                 return writer;
@@ -147,7 +147,7 @@ $root.Test = (function() {
                         message.long = reader.int64();
                         break;
                     case 2:
-                        message["enum"] = reader.uint32();
+                        message["enum"] = reader.int32();
                         break;
                     case 3:
                         message.sint32 = reader.sint32();
