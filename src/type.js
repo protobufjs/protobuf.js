@@ -219,21 +219,19 @@ function clearCache(type) {
 
 /**
  * Message type descriptor.
- * @typedef TypeDescriptor
- * @type {Object}
- * @property {Object.<string,*>} [options] Message type options
- * @property {Object.<string,OneOfDescriptor>} [oneofs] Oneof descriptors
- * @property {Object.<string,FieldDescriptor>} fields Field descriptors
+ * @interface IType
+ * @extends INamespace
+ * @property {Object.<string,IOneOf>} [oneofs] Oneof descriptors
+ * @property {Object.<string,IField>} fields Field descriptors
  * @property {number[][]} [extensions] Extension ranges
  * @property {number[][]} [reserved] Reserved ranges
  * @property {boolean} [group=false] Whether a legacy group or not
- * @property {Object.<string,AnyNestedDescriptor>} [nested] Nested object descriptors
  */
 
 /**
  * Creates a message type from a message type descriptor.
  * @param {string} name Message name
- * @param {TypeDescriptor} json Message type descriptor
+ * @param {IType} json Message type descriptor
  * @returns {Type} Created message type
  */
 Type.fromJSON = function fromJSON(name, json) {
@@ -277,7 +275,7 @@ Type.fromJSON = function fromJSON(name, json) {
 
 /**
  * Converts this message type to a message type descriptor.
- * @returns {TypeDescriptor} Message type descriptor
+ * @returns {IType} Message type descriptor
  */
 Type.prototype.toJSON = function toJSON() {
     var inherited = Namespace.prototype.toJSON.call(this);
@@ -545,8 +543,7 @@ Type.prototype.fromObject = function fromObject(object) {
 
 /**
  * Conversion options as used by {@link Type#toObject} and {@link Message.toObject}.
- * @typedef ConversionOptions
- * @type {Object}
+ * @interface IConversionOptions
  * @property {*} [longs] Long conversion type.
  * Valid values are `String` and `Number` (the global types).
  * Defaults to copy the present value, which is a possibly unsafe number without and a {@link Long} with a long library.
@@ -566,7 +563,7 @@ Type.prototype.fromObject = function fromObject(object) {
 /**
  * Creates a plain object from a message of this type. Also converts values to other types if specified.
  * @param {Message<{}>} message Message instance
- * @param {ConversionOptions} [options] Conversion options
+ * @param {IConversionOptions} [options] Conversion options
  * @returns {Object.<string,*>} Plain object
  */
 Type.prototype.toObject = function toObject(message, options) {

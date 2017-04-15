@@ -100,3 +100,4 @@ protobuf.util             = require("./util");
 protobuf.ReflectionObject._configure(protobuf.Root);
 protobuf.Namespace._configure(protobuf.Type, protobuf.Service);
 protobuf.Root._configure(protobuf.Type);
+protobuf.Field._configure(protobuf.Type);

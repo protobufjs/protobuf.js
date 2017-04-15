@@ -12,13 +12,13 @@ type FetchCallback = (error: Error, contents?: string) => void;
 
 /**
  * Options as used by {@link util.fetch}.
- * @typedef FetchOptions
+ * @typedef IFetchOptions
  * @type {Object}
  * @property {boolean} [binary=false] Whether expecting a binary response
  * @property {boolean} [xhr=false] If `true`, forces the use of XMLHttpRequest
  */
 
-interface FetchOptions {
+interface IFetchOptions {
     binary?: boolean;
     xhr?: boolean;
 }
@@ -27,11 +27,11 @@ interface FetchOptions {
  * Fetches the contents of a file.
  * @memberof util
  * @param {string} filename File path or url
- * @param {FetchOptions} options Fetch options
+ * @param {IFetchOptions} options Fetch options
  * @param {FetchCallback} callback Callback function
  * @returns {undefined}
  */
-declare function fetch(filename: string, options: FetchOptions, callback: FetchCallback): void;
+declare function fetch(filename: string, options: IFetchOptions, callback: FetchCallback): void;
 
 /**
  * Fetches the contents of a file.
@@ -49,8 +49,8 @@ declare function fetch(path: string, callback: FetchCallback): void;
  * @name util.fetch
  * @function
  * @param {string} path File path or url
- * @param {FetchOptions} [options] Fetch options
+ * @param {IFetchOptions} [options] Fetch options
  * @returns {Promise<string|Uint8Array>} Promise
  * @variation 3
  */
-declare function fetch(path: string, options?: FetchOptions): Promise<(string|Uint8Array)>;
+declare function fetch(path: string, options?: IFetchOptions): Promise<(string|Uint8Array)>;

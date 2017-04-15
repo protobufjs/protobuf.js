@@ -44,29 +44,22 @@ function MapField(name, id, keyType, type, options) {
 
 /**
  * Map field descriptor.
- * @typedef MapFieldDescriptor
- * @type {Object}
+ * @interface IMapField
+ * @extends {IField}
  * @property {string} keyType Key type
- * @property {string} type Value type
- * @property {number} id Field id
- * @property {Object.<string,*>} [options] Field options
  */
 
 /**
  * Extension map field descriptor.
- * @typedef ExtensionMapFieldDescriptor
- * @type {Object}
- * @property {string} keyType Key type
- * @property {string} type Value type
- * @property {number} id Field id
+ * @interface IExtensionMapField
+ * @extends IMapField
  * @property {string} extend Extended type
- * @property {Object.<string,*>} [options] Field options
  */
 
 /**
  * Constructs a map field from a map field descriptor.
  * @param {string} name Field name
- * @param {MapFieldDescriptor} json Map field descriptor
+ * @param {IMapField} json Map field descriptor
  * @returns {MapField} Created map field
  * @throws {TypeError} If arguments are invalid
  */
@@ -76,7 +69,7 @@ MapField.fromJSON = function fromJSON(name, json) {
 
 /**
  * Converts this map field to a map field descriptor.
- * @returns {MapFieldDescriptor} Map field descriptor
+ * @returns {IMapField} Map field descriptor
  */
 MapField.prototype.toJSON = function toJSON() {
     return util.toObject([

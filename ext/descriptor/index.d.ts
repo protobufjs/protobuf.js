@@ -1,31 +1,31 @@
 import * as $protobuf from "../..";
 
-type FileDescriptorSet$Properties = {
-    file: FileDescriptorProto$Properties[];
-};
+export interface IFileDescriptorSet {
+    file: IFileDescriptorProto[];
+}
 
-type FileDescriptorProto$Properties = {
+export interface IFileDescriptorProto {
     name?: string;
     package?: string;
     dependency?: any;
     publicDependency?: any;
     weakDependency?: any;
-    messageType?: DescriptorProto$Properties[];
-    enumType?: EnumDescriptorProto$Properties[];
-    service?: ServiceDescriptorProto$Properties[];
-    extension?: FieldDescriptorProto$Properties[];
-    options?: FileOptions$Properties;
+    messageType?: IDescriptorProto[];
+    enumType?: IEnumDescriptorProto[];
+    service?: IServiceDescriptorProto[];
+    extension?: IFieldDescriptorProto[];
+    options?: IFileOptions;
     sourceCodeInfo?: any;
     syntax?: string;
-};
+}
 
-type FileOptions$Properties = {
+export interface IFileOptions {
     javaPackage?: string;
     javaOuterClassname?: string;
     javaMultipleFiles?: boolean;
     javaGenerateEqualsAndHash?: boolean;
     javaStringCheckUtf8?: boolean;
-    optimizeFor?: FileOptions$OptimizeMode;
+    optimizeFor?: IFileOptionsOptimizeMode;
     goPackage?: string;
     ccGenericServices?: boolean;
     javaGenericServices?: boolean;
@@ -34,105 +34,105 @@ type FileOptions$Properties = {
     ccEnableArenas?: boolean;
     objcClassPrefix?: string;
     csharpNamespace?: string;
-};
+}
 
-type FileOptions$OptimizeMode = number;
+type IFileOptionsOptimizeMode = number;
 
-type DescriptorProto$Properties = {
+export interface IDescriptorProto {
     name?: string;
-    field?: FieldDescriptorProto$Properties[];
-    extension?: FieldDescriptorProto$Properties[];
-    nestedType?: DescriptorProto$Properties[];
-    enumType?: EnumDescriptorProto$Properties[];
-    extensionRange?: ExtensionRange$Properties[];
-    oneofDecl?: OneofDescriptorProto$Properties[];
-    options?: MessageOptions$Properties;
-    reservedRange?: ReservedRange$Properties[];
+    field?: IFieldDescriptorProto[];
+    extension?: IFieldDescriptorProto[];
+    nestedType?: IDescriptorProto[];
+    enumType?: IEnumDescriptorProto[];
+    extensionRange?: IDescriptorProtoExtensionRange[];
+    oneofDecl?: IOneofDescriptorProto[];
+    options?: IMessageOptions;
+    reservedRange?: IDescriptorProtoReservedRange[];
     reservedName?: string[];
-};
+}
 
-type MessageOptions$Properties = {
+export interface IMessageOptions {
     mapEntry?: boolean;
-};
+}
 
-type ExtensionRange$Properties = {
+export interface IDescriptorProtoExtensionRange {
     start?: number;
     end?: number;
-};
+}
 
-type ReservedRange$Properties = {
+export interface IDescriptorProtoReservedRange {
     start?: number;
     end?: number;
-};
+}
 
-type FieldDescriptorProto$Properties = {
+export interface IFieldDescriptorProto {
     name?: string;
     number?: number;
-    label?: FieldDescriptorProto$Label;
-    type?: FieldDescriptorProto$Type;
+    label?: IFieldDescriptorProtoLabel;
+    type?: IFieldDescriptorProtoType;
     typeName?: string;
     extendee?: string;
     defaultValue?: string;
     oneofIndex?: number;
     jsonName?: any;
-    options?: FieldOptions$Properties;
-};
+    options?: IFieldOptionsProperties;
+}
 
-type FieldDescriptorProto$Label = number;
+type IFieldDescriptorProtoLabel = number;
 
-type FieldDescriptorProto$Type = number;
+type IFieldDescriptorProtoType = number;
 
-type FieldOptions$Properties = {
+export interface IFieldOptions {
     packed?: boolean;
-    jstype?: FieldOptions$JSType;
-};
+    jstype?: IFieldOptionsJSType;
+}
 
-type FieldOptions$JSType = number;
+type IFieldOptionsJSType = number;
 
-type EnumDescriptorProto$Properties = {
+export interface IEnumDescriptorProto {
     name?: string;
-    value?: EnumValueDescriptorProto$Properties[];
-    options?: EnumOptions$Properties;
-};
+    value?: IEnumValueDescriptorProto[];
+    options?: IEnumOptions;
+}
 
-type EnumValueDescriptorProto$Properties = {
+export interface IEnumValueDescriptorProto {
     name?: string;
     number?: number;
     options?: any;
-};
+}
 
-type EnumOptions$Properties = {
+export interface IEnumOptions {
     allowAlias?: boolean;
     deprecated?: boolean;
-};
+}
 
-type OneofDescriptorProto$Properties = {
+export interface IOneofDescriptorProto {
     name?: string;
     options?: any;
-};
+}
 
-type ServiceDescriptorProto$Properties = {
+export interface IServiceDescriptorProto {
     name?: string;
-    method?: MethodDescriptorProto$Properties[];
-    options?: ServiceOptions$Properties;
-};
+    method?: IMethodDescriptorProto[];
+    options?: IServiceOptions;
+}
 
-type ServiceOptions$Properties = {
+export interface IServiceOptions {
     deprecated?: boolean;
-};
+}
 
-type MethodDescriptorProto$Properties = {
+export interface IMethodDescriptorProto {
     name?: string;
     inputType?: string;
     outputType?: string;
-    options?: MethodOptions$Properties;
+    options?: IMethodOptions;
     clientStreaming?: boolean;
     serverStreaming?: boolean;
-};
+}
 
-type MethodOptions$Properties = {
+export interface IMethodOptions {
     deprecated?: boolean;
-};
+}
 
 export const FileDescriptorSet: $protobuf.Type;
 
@@ -140,15 +140,15 @@ export const FileDescriptorProto: $protobuf.Type;
 
 export const DescriptorProto: $protobuf.Type;
 
-export const DescriptorProto_ExtensionRange: $protobuf.Type;
+export const DescriptorProtoExtensionRange: $protobuf.Type;
 
-export const DescriptorProto_ReservedRange: $protobuf.Type;
+export const DescriptorProtoReservedRange: $protobuf.Type;
 
 export const FieldDescriptorProto: $protobuf.Type;
 
-export const FieldDescriptorProto_Label: $protobuf.Enum;
+export const FieldDescriptorProtoLabel: $protobuf.Enum;
 
-export const FieldDescriptorProto_Type: $protobuf.Enum;
+export const FieldDescriptorProtoType: $protobuf.Enum;
 
 export const OneofDescriptorProto: $protobuf.Type;
 
@@ -162,15 +162,15 @@ export const MethodDescriptorProto: $protobuf.Type;
 
 export const FileOptions: $protobuf.Type;
 
-export const FileOptions_OptimizeMode: $protobuf.Enum;
+export const FileOptionsOptimizeMode: $protobuf.Enum;
 
 export const MessageOptions: $protobuf.Type;
 
 export const FieldOptions: $protobuf.Type;
 
-export const FieldOptions_CType: $protobuf.Enum;
+export const FieldOptionsCType: $protobuf.Enum;
 
-export const FieldOptions_JSType: $protobuf.Enum;
+export const FieldOptionsJSType: $protobuf.Enum;
 
 export const OneofOptions: $protobuf.Type;
 
@@ -184,12 +184,12 @@ export const MethodOptions: $protobuf.Type;
 
 export const UninterpretedOption: $protobuf.Type;
 
-export const UninterpretedOption_NamePart: $protobuf.Type;
+export const UninterpretedOptionNamePart: $protobuf.Type;
 
 export const SourceCodeInfo: $protobuf.Type;
 
-export const SourceCodeInfo_Location: $protobuf.Type;
+export const SourceCodeInfoLocation: $protobuf.Type;
 
 export const GeneratedCodeInfo: $protobuf.Type;
 
-export const GeneratedCodeInfo_Annotation: $protobuf.Type;
+export const GeneratedCodeInfoAnnotation: $protobuf.Type;

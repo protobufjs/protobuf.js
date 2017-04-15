@@ -13,8 +13,8 @@ $root.vector_tile = (function() {
 
     /**
      * Namespace vector_tile.
-     * @exports vector_tile
      * @namespace
+     * @name vector_tile
      */
     var vector_tile = {};
 
@@ -22,16 +22,16 @@ $root.vector_tile = (function() {
 
         /**
          * Properties of a Tile.
-         * @typedef vector_tile.Tile$Properties
-         * @type {Object}
-         * @property {Array.<vector_tile.Tile.Layer$Properties>} [layers] Tile layers.
+         * @interface ITile
+         * @memberof vector_tile
+         * @property {Array.<vector_tile.Tile.ILayer>} [layers] Tile layers.
          */
 
         /**
          * Constructs a new Tile.
-         * @exports vector_tile.Tile
          * @constructor
-         * @param {vector_tile.Tile$Properties=} [properties] Properties to set
+         * @param {vector_tile.ITile=} [properties] Properties to set
+         * @memberof vector_tile
          */
         function Tile(properties) {
             this.layers = [];
@@ -43,13 +43,13 @@ $root.vector_tile = (function() {
 
         /**
          * Tile layers.
-         * @type {Array.<vector_tile.Tile.Layer$Properties>}
+         * @type {Array.<vector_tile.Tile.ILayer>}
          */
         Tile.prototype.layers = $util.emptyArray;
 
         /**
          * Creates a new Tile instance using the specified properties.
-         * @param {vector_tile.Tile$Properties=} [properties] Properties to set
+         * @param {vector_tile.ITile=} [properties] Properties to set
          * @returns {vector_tile.Tile} Tile instance
          */
         Tile.create = function create(properties) {
@@ -58,7 +58,7 @@ $root.vector_tile = (function() {
 
         /**
          * Encodes the specified Tile message. Does not implicitly {@link vector_tile.Tile.verify|verify} messages.
-         * @param {vector_tile.Tile$Properties} message Tile message or plain object to encode
+         * @param {vector_tile.ITile} message Tile message or plain object to encode
          * @param {$protobuf.Writer} [writer] Writer to encode to
          * @returns {$protobuf.Writer} Writer
          */
@@ -73,7 +73,7 @@ $root.vector_tile = (function() {
 
         /**
          * Encodes the specified Tile message, length delimited. Does not implicitly {@link vector_tile.Tile.verify|verify} messages.
-         * @param {vector_tile.Tile$Properties} message Tile message or plain object to encode
+         * @param {vector_tile.ITile} message Tile message or plain object to encode
          * @param {$protobuf.Writer} [writer] Writer to encode to
          * @returns {$protobuf.Writer} Writer
          */
@@ -167,7 +167,7 @@ $root.vector_tile = (function() {
         /**
          * Creates a plain object from a Tile message. Also converts values to other types if specified.
          * @param {vector_tile.Tile} message Tile
-         * @param {$protobuf.ConversionOptions} [options] Conversion options
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
          * @returns {Object.<string,*>} Plain object
          */
         Tile.toObject = function toObject(message, options) {
@@ -186,7 +186,7 @@ $root.vector_tile = (function() {
 
         /**
          * Creates a plain object from this Tile message. Also converts values to other types if specified.
-         * @param {$protobuf.ConversionOptions} [options] Conversion options
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
          * @returns {Object.<string,*>} Plain object
          */
         Tile.prototype.toObject = function toObject(options) {
@@ -204,8 +204,8 @@ $root.vector_tile = (function() {
         /**
          * GeomType enum.
          * @name GeomType
-         * @memberof vector_tile.Tile
          * @enum {number}
+         * @memberof vector_tile.Tile
          * @property {number} UNKNOWN=0 UNKNOWN value
          * @property {number} POINT=1 POINT value
          * @property {number} LINESTRING=2 LINESTRING value
@@ -224,8 +224,8 @@ $root.vector_tile = (function() {
 
             /**
              * Properties of a Value.
-             * @typedef vector_tile.Tile.Value$Properties
-             * @type {Object}
+             * @interface IValue
+             * @memberof vector_tile.Tile
              * @property {string} [stringValue] Value stringValue.
              * @property {number} [floatValue] Value floatValue.
              * @property {number} [doubleValue] Value doubleValue.
@@ -237,9 +237,9 @@ $root.vector_tile = (function() {
 
             /**
              * Constructs a new Value.
-             * @exports vector_tile.Tile.Value
              * @constructor
-             * @param {vector_tile.Tile.Value$Properties=} [properties] Properties to set
+             * @param {vector_tile.Tile.IValue=} [properties] Properties to set
+             * @memberof vector_tile.Tile
              */
             function Value(properties) {
                 if (properties)
@@ -292,7 +292,7 @@ $root.vector_tile = (function() {
 
             /**
              * Creates a new Value instance using the specified properties.
-             * @param {vector_tile.Tile.Value$Properties=} [properties] Properties to set
+             * @param {vector_tile.Tile.IValue=} [properties] Properties to set
              * @returns {vector_tile.Tile.Value} Value instance
              */
             Value.create = function create(properties) {
@@ -301,7 +301,7 @@ $root.vector_tile = (function() {
 
             /**
              * Encodes the specified Value message. Does not implicitly {@link vector_tile.Tile.Value.verify|verify} messages.
-             * @param {vector_tile.Tile.Value$Properties} message Value message or plain object to encode
+             * @param {vector_tile.Tile.IValue} message Value message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -327,7 +327,7 @@ $root.vector_tile = (function() {
 
             /**
              * Encodes the specified Value message, length delimited. Does not implicitly {@link vector_tile.Tile.Value.verify|verify} messages.
-             * @param {vector_tile.Tile.Value$Properties} message Value message or plain object to encode
+             * @param {vector_tile.Tile.IValue} message Value message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -474,7 +474,7 @@ $root.vector_tile = (function() {
             /**
              * Creates a plain object from a Value message. Also converts values to other types if specified.
              * @param {vector_tile.Tile.Value} message Value
-             * @param {$protobuf.ConversionOptions} [options] Conversion options
+             * @param {$protobuf.IConversionOptions} [options] Conversion options
              * @returns {Object.<string,*>} Plain object
              */
             Value.toObject = function toObject(message, options) {
@@ -530,7 +530,7 @@ $root.vector_tile = (function() {
 
             /**
              * Creates a plain object from this Value message. Also converts values to other types if specified.
-             * @param {$protobuf.ConversionOptions} [options] Conversion options
+             * @param {$protobuf.IConversionOptions} [options] Conversion options
              * @returns {Object.<string,*>} Plain object
              */
             Value.prototype.toObject = function toObject(options) {
@@ -552,8 +552,8 @@ $root.vector_tile = (function() {
 
             /**
              * Properties of a Feature.
-             * @typedef vector_tile.Tile.Feature$Properties
-             * @type {Object}
+             * @interface IFeature
+             * @memberof vector_tile.Tile
              * @property {number|Long} [id] Feature id.
              * @property {Array.<number>} [tags] Feature tags.
              * @property {vector_tile.Tile.GeomType} [type] Feature type.
@@ -562,9 +562,9 @@ $root.vector_tile = (function() {
 
             /**
              * Constructs a new Feature.
-             * @exports vector_tile.Tile.Feature
              * @constructor
-             * @param {vector_tile.Tile.Feature$Properties=} [properties] Properties to set
+             * @param {vector_tile.Tile.IFeature=} [properties] Properties to set
+             * @memberof vector_tile.Tile
              */
             function Feature(properties) {
                 this.tags = [];
@@ -601,7 +601,7 @@ $root.vector_tile = (function() {
 
             /**
              * Creates a new Feature instance using the specified properties.
-             * @param {vector_tile.Tile.Feature$Properties=} [properties] Properties to set
+             * @param {vector_tile.Tile.IFeature=} [properties] Properties to set
              * @returns {vector_tile.Tile.Feature} Feature instance
              */
             Feature.create = function create(properties) {
@@ -610,7 +610,7 @@ $root.vector_tile = (function() {
 
             /**
              * Encodes the specified Feature message. Does not implicitly {@link vector_tile.Tile.Feature.verify|verify} messages.
-             * @param {vector_tile.Tile.Feature$Properties} message Feature message or plain object to encode
+             * @param {vector_tile.Tile.IFeature} message Feature message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -638,7 +638,7 @@ $root.vector_tile = (function() {
 
             /**
              * Encodes the specified Feature message, length delimited. Does not implicitly {@link vector_tile.Tile.Feature.verify|verify} messages.
-             * @param {vector_tile.Tile.Feature$Properties} message Feature message or plain object to encode
+             * @param {vector_tile.Tile.IFeature} message Feature message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -802,7 +802,7 @@ $root.vector_tile = (function() {
             /**
              * Creates a plain object from a Feature message. Also converts values to other types if specified.
              * @param {vector_tile.Tile.Feature} message Feature
-             * @param {$protobuf.ConversionOptions} [options] Conversion options
+             * @param {$protobuf.IConversionOptions} [options] Conversion options
              * @returns {Object.<string,*>} Plain object
              */
             Feature.toObject = function toObject(message, options) {
@@ -843,7 +843,7 @@ $root.vector_tile = (function() {
 
             /**
              * Creates a plain object from this Feature message. Also converts values to other types if specified.
-             * @param {$protobuf.ConversionOptions} [options] Conversion options
+             * @param {$protobuf.IConversionOptions} [options] Conversion options
              * @returns {Object.<string,*>} Plain object
              */
             Feature.prototype.toObject = function toObject(options) {
@@ -865,21 +865,21 @@ $root.vector_tile = (function() {
 
             /**
              * Properties of a Layer.
-             * @typedef vector_tile.Tile.Layer$Properties
-             * @type {Object}
+             * @interface ILayer
+             * @memberof vector_tile.Tile
              * @property {number} version Layer version.
              * @property {string} name Layer name.
-             * @property {Array.<vector_tile.Tile.Feature$Properties>} [features] Layer features.
+             * @property {Array.<vector_tile.Tile.IFeature>} [features] Layer features.
              * @property {Array.<string>} [keys] Layer keys.
-             * @property {Array.<vector_tile.Tile.Value$Properties>} [values] Layer values.
+             * @property {Array.<vector_tile.Tile.IValue>} [values] Layer values.
              * @property {number} [extent] Layer extent.
              */
 
             /**
              * Constructs a new Layer.
-             * @exports vector_tile.Tile.Layer
              * @constructor
-             * @param {vector_tile.Tile.Layer$Properties=} [properties] Properties to set
+             * @param {vector_tile.Tile.ILayer=} [properties] Properties to set
+             * @memberof vector_tile.Tile
              */
             function Layer(properties) {
                 this.features = [];
@@ -905,7 +905,7 @@ $root.vector_tile = (function() {
 
             /**
              * Layer features.
-             * @type {Array.<vector_tile.Tile.Feature$Properties>}
+             * @type {Array.<vector_tile.Tile.IFeature>}
              */
             Layer.prototype.features = $util.emptyArray;
 
@@ -917,7 +917,7 @@ $root.vector_tile = (function() {
 
             /**
              * Layer values.
-             * @type {Array.<vector_tile.Tile.Value$Properties>}
+             * @type {Array.<vector_tile.Tile.IValue>}
              */
             Layer.prototype.values = $util.emptyArray;
 
@@ -929,7 +929,7 @@ $root.vector_tile = (function() {
 
             /**
              * Creates a new Layer instance using the specified properties.
-             * @param {vector_tile.Tile.Layer$Properties=} [properties] Properties to set
+             * @param {vector_tile.Tile.ILayer=} [properties] Properties to set
              * @returns {vector_tile.Tile.Layer} Layer instance
              */
             Layer.create = function create(properties) {
@@ -938,7 +938,7 @@ $root.vector_tile = (function() {
 
             /**
              * Encodes the specified Layer message. Does not implicitly {@link vector_tile.Tile.Layer.verify|verify} messages.
-             * @param {vector_tile.Tile.Layer$Properties} message Layer message or plain object to encode
+             * @param {vector_tile.Tile.ILayer} message Layer message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -963,7 +963,7 @@ $root.vector_tile = (function() {
 
             /**
              * Encodes the specified Layer message, length delimited. Does not implicitly {@link vector_tile.Tile.Layer.verify|verify} messages.
-             * @param {vector_tile.Tile.Layer$Properties} message Layer message or plain object to encode
+             * @param {vector_tile.Tile.ILayer} message Layer message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
@@ -1126,7 +1126,7 @@ $root.vector_tile = (function() {
             /**
              * Creates a plain object from a Layer message. Also converts values to other types if specified.
              * @param {vector_tile.Tile.Layer} message Layer
-             * @param {$protobuf.ConversionOptions} [options] Conversion options
+             * @param {$protobuf.IConversionOptions} [options] Conversion options
              * @returns {Object.<string,*>} Plain object
              */
             Layer.toObject = function toObject(message, options) {
@@ -1169,7 +1169,7 @@ $root.vector_tile = (function() {
 
             /**
              * Creates a plain object from this Layer message. Also converts values to other types if specified.
-             * @param {$protobuf.ConversionOptions} [options] Conversion options
+             * @param {$protobuf.IConversionOptions} [options] Conversion options
              * @returns {Object.<string,*>} Plain object
              */
             Layer.prototype.toObject = function toObject(options) {

@@ -52,8 +52,7 @@ function Enum(name, values, options) {
 
 /**
  * Enum descriptor.
- * @typedef EnumDescriptor
- * @type {Object}
+ * @interface IEnum
  * @property {Object.<string,number>} values Enum values
  * @property {Object.<string,*>} [options] Enum options
  */
@@ -61,7 +60,7 @@ function Enum(name, values, options) {
 /**
  * Constructs an enum from an enum descriptor.
  * @param {string} name Enum name
- * @param {EnumDescriptor} json Enum descriptor
+ * @param {IEnum} json Enum descriptor
  * @returns {Enum} Created enum
  * @throws {TypeError} If arguments are invalid
  */
@@ -71,7 +70,7 @@ Enum.fromJSON = function fromJSON(name, json) {
 
 /**
  * Converts this enum to an enum descriptor.
- * @returns {EnumDescriptor} Enum descriptor
+ * @returns {IEnum} Enum descriptor
  */
 Enum.prototype.toJSON = function toJSON() {
     return util.toObject([

@@ -119,7 +119,7 @@ Message.fromObject = function fromObject(object) {
 /**
  * Creates a plain object from a message of this type. Also converts values to other types if specified.
  * @param {T} message Message instance
- * @param {ConversionOptions} [options] Conversion options
+ * @param {IConversionOptions} [options] Conversion options
  * @returns {Object.<string,*>} Plain object
  * @template T extends Message<T>
  * @this Constructor<T>
@@ -130,7 +130,7 @@ Message.toObject = function toObject(message, options) {
 
 /**
  * Creates a plain object from this message. Also converts values to other types if specified.
- * @param {ConversionOptions} [options] Conversion options
+ * @param {IConversionOptions} [options] Conversion options
  * @returns {Object.<string,*>} Plain object
  */
 Message.prototype.toObject = function toObject(options) {

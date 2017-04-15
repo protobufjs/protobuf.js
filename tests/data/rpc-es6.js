@@ -11,12 +11,12 @@ export const MyService = $root.MyService = (() => {
 
     /**
      * Constructs a new MyService service.
-     * @exports MyService
      * @extends $protobuf.rpc.Service
      * @constructor
      * @param {$protobuf.RPCImpl} rpcImpl RPC implementation
      * @param {boolean} [requestDelimited=false] Whether requests are length-delimited
      * @param {boolean} [responseDelimited=false] Whether responses are length-delimited
+     * @name MyService
      */
     function MyService(rpcImpl, requestDelimited, responseDelimited) {
         $protobuf.rpc.Service.call(this, rpcImpl, requestDelimited, responseDelimited);
@@ -45,7 +45,7 @@ export const MyService = $root.MyService = (() => {
 
     /**
      * Calls MyMethod.
-     * @param {MyRequest|Object.<string,*>} request MyRequest message or plain object
+     * @param {IMyRequest} request MyRequest message or plain object
      * @param {MyService_myMethod_Callback} callback Node-style callback called with the error, if any, and MyResponse
      * @returns {undefined}
      */
@@ -57,7 +57,7 @@ export const MyService = $root.MyService = (() => {
      * Calls MyMethod.
      * @name MyService#myMethod
      * @function
-     * @param {MyRequest|Object.<string,*>} request MyRequest message or plain object
+     * @param {IMyRequest} request MyRequest message or plain object
      * @returns {Promise<MyResponse>} Promise
      * @variation 2
      */
@@ -69,16 +69,16 @@ export const MyRequest = $root.MyRequest = (() => {
 
     /**
      * Properties of a MyRequest.
-     * @typedef MyRequest$Properties
-     * @type {Object}
+     * @interface IMyRequest
+     * @name IMyRequest
      * @property {string} [path] MyRequest path.
      */
 
     /**
      * Constructs a new MyRequest.
-     * @exports MyRequest
      * @constructor
-     * @param {MyRequest$Properties=} [properties] Properties to set
+     * @param {IMyRequest=} [properties] Properties to set
+     * @name MyRequest
      */
     function MyRequest(properties) {
         if (properties)
@@ -95,7 +95,7 @@ export const MyRequest = $root.MyRequest = (() => {
 
     /**
      * Creates a new MyRequest instance using the specified properties.
-     * @param {MyRequest$Properties=} [properties] Properties to set
+     * @param {IMyRequest=} [properties] Properties to set
      * @returns {MyRequest} MyRequest instance
      */
     MyRequest.create = function create(properties) {
@@ -104,7 +104,7 @@ export const MyRequest = $root.MyRequest = (() => {
 
     /**
      * Encodes the specified MyRequest message. Does not implicitly {@link MyRequest.verify|verify} messages.
-     * @param {MyRequest$Properties} message MyRequest message or plain object to encode
+     * @param {IMyRequest} message MyRequest message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
@@ -118,7 +118,7 @@ export const MyRequest = $root.MyRequest = (() => {
 
     /**
      * Encodes the specified MyRequest message, length delimited. Does not implicitly {@link MyRequest.verify|verify} messages.
-     * @param {MyRequest$Properties} message MyRequest message or plain object to encode
+     * @param {IMyRequest} message MyRequest message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
@@ -196,7 +196,7 @@ export const MyRequest = $root.MyRequest = (() => {
     /**
      * Creates a plain object from a MyRequest message. Also converts values to other types if specified.
      * @param {MyRequest} message MyRequest
-     * @param {$protobuf.ConversionOptions} [options] Conversion options
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      */
     MyRequest.toObject = function toObject(message, options) {
@@ -212,7 +212,7 @@ export const MyRequest = $root.MyRequest = (() => {
 
     /**
      * Creates a plain object from this MyRequest message. Also converts values to other types if specified.
-     * @param {$protobuf.ConversionOptions} [options] Conversion options
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      */
     MyRequest.prototype.toObject = function toObject(options) {
@@ -234,16 +234,16 @@ export const MyResponse = $root.MyResponse = (() => {
 
     /**
      * Properties of a MyResponse.
-     * @typedef MyResponse$Properties
-     * @type {Object}
+     * @interface IMyResponse
+     * @name IMyResponse
      * @property {number} [status] MyResponse status.
      */
 
     /**
      * Constructs a new MyResponse.
-     * @exports MyResponse
      * @constructor
-     * @param {MyResponse$Properties=} [properties] Properties to set
+     * @param {IMyResponse=} [properties] Properties to set
+     * @name MyResponse
      */
     function MyResponse(properties) {
         if (properties)
@@ -260,7 +260,7 @@ export const MyResponse = $root.MyResponse = (() => {
 
     /**
      * Creates a new MyResponse instance using the specified properties.
-     * @param {MyResponse$Properties=} [properties] Properties to set
+     * @param {IMyResponse=} [properties] Properties to set
      * @returns {MyResponse} MyResponse instance
      */
     MyResponse.create = function create(properties) {
@@ -269,7 +269,7 @@ export const MyResponse = $root.MyResponse = (() => {
 
     /**
      * Encodes the specified MyResponse message. Does not implicitly {@link MyResponse.verify|verify} messages.
-     * @param {MyResponse$Properties} message MyResponse message or plain object to encode
+     * @param {IMyResponse} message MyResponse message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
@@ -283,7 +283,7 @@ export const MyResponse = $root.MyResponse = (() => {
 
     /**
      * Encodes the specified MyResponse message, length delimited. Does not implicitly {@link MyResponse.verify|verify} messages.
-     * @param {MyResponse$Properties} message MyResponse message or plain object to encode
+     * @param {IMyResponse} message MyResponse message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
@@ -361,7 +361,7 @@ export const MyResponse = $root.MyResponse = (() => {
     /**
      * Creates a plain object from a MyResponse message. Also converts values to other types if specified.
      * @param {MyResponse} message MyResponse
-     * @param {$protobuf.ConversionOptions} [options] Conversion options
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      */
     MyResponse.toObject = function toObject(message, options) {
@@ -377,7 +377,7 @@ export const MyResponse = $root.MyResponse = (() => {
 
     /**
      * Creates a plain object from this MyResponse message. Also converts values to other types if specified.
-     * @param {$protobuf.ConversionOptions} [options] Conversion options
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      */
     MyResponse.prototype.toObject = function toObject(options) {

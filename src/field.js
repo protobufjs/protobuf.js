@@ -30,7 +30,7 @@ var ruleRe = /^required|optional|repeated$/;
 /**
  * Constructs a field from a field descriptor.
  * @param {string} name Field name
- * @param {FieldDescriptor} json Field descriptor
+ * @param {IField} json Field descriptor
  * @returns {Field} Created field
  * @throws {TypeError} If arguments are invalid
  */
@@ -211,8 +211,7 @@ Field.prototype.setOption = function setOption(name, value, ifNotSet) {
 
 /**
  * Field descriptor.
- * @typedef FieldDescriptor
- * @type {Object}
+ * @interface IField
  * @property {string} [rule="optional"] Field rule
  * @property {string} type Field type
  * @property {number} id Field id
@@ -221,18 +220,14 @@ Field.prototype.setOption = function setOption(name, value, ifNotSet) {
 
 /**
  * Extension field descriptor.
- * @typedef ExtensionFieldDescriptor
- * @type {Object}
- * @property {string} [rule="optional"] Field rule
- * @property {string} type Field type
- * @property {number} id Field id
+ * @interface IExtensionField
+ * @extends IField
  * @property {string} extend Extended type
- * @property {Object.<string,*>} [options] Field options
  */
 
 /**
  * Converts this field to a field descriptor.
- * @returns {FieldDescriptor} Field descriptor
+ * @returns {IField} Field descriptor
  */
 Field.prototype.toJSON = function toJSON() {
     return util.toObject([
@@ -253,10 +248,6 @@ Field.prototype.resolve = function resolve() {
 
     if (this.resolved)
         return this;
-
-    /* istanbul ignore if */
-    if (!Type)
-        Type = require("./type");
 
     if ((this.typeDefault = types.defaults[this.type]) === undefined) { // if not a basic type, resolve it
         this.resolvedType = (this.declaringField ? this.declaringField.parent : this.parent).lookupTypeOrEnum(this.type);
@@ -354,10 +345,14 @@ Field.d = function decorateField(fieldId, fieldType, fieldRule, defaultValue) {
  * @name Field.d
  * @function
  * @param {number} fieldId Field id
- * @param {Constructor<T>} fieldType Field type
+ * @param {Constructor<T>|string} fieldType Field type
  * @param {"optional"|"required"|"repeated"} [fieldRule="optional"] Field rule
  * @returns {FieldDecorator} Decorator function
  * @template T extends Message<T>
  * @variation 2
  */
 // like Field.d but without a default value
+
+Field._configure = function configure(Type_) {
+    Type = Type_;
+};

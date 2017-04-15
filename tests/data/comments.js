@@ -13,8 +13,8 @@ $root.Test1 = (function() {
 
     /**
      * Properties of a Test1.
-     * @typedef Test1$Properties
-     * @type {Object}
+     * @interface ITest1
+     * @name ITest1
      * @property {string} [field1] Field with a comment.
      * @property {number} [field2] Test1 field2.
      * @property {boolean} [field3] Field with a comment and a <a href="http://example.com/foo/">link</a>
@@ -26,9 +26,9 @@ $root.Test1 = (function() {
      * with
      * a
      * comment.
-     * @exports Test1
      * @constructor
-     * @param {Test1$Properties=} [properties] Properties to set
+     * @param {ITest1=} [properties] Properties to set
+     * @name Test1
      */
     function Test1(properties) {
         if (properties)
@@ -57,7 +57,7 @@ $root.Test1 = (function() {
 
     /**
      * Creates a new Test1 instance using the specified properties.
-     * @param {Test1$Properties=} [properties] Properties to set
+     * @param {ITest1=} [properties] Properties to set
      * @returns {Test1} Test1 instance
      */
     Test1.create = function create(properties) {
@@ -66,7 +66,7 @@ $root.Test1 = (function() {
 
     /**
      * Encodes the specified Test1 message. Does not implicitly {@link Test1.verify|verify} messages.
-     * @param {Test1$Properties} message Test1 message or plain object to encode
+     * @param {ITest1} message Test1 message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
@@ -84,7 +84,7 @@ $root.Test1 = (function() {
 
     /**
      * Encodes the specified Test1 message, length delimited. Does not implicitly {@link Test1.verify|verify} messages.
-     * @param {Test1$Properties} message Test1 message or plain object to encode
+     * @param {ITest1} message Test1 message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
@@ -178,7 +178,7 @@ $root.Test1 = (function() {
     /**
      * Creates a plain object from a Test1 message. Also converts values to other types if specified.
      * @param {Test1} message Test1
-     * @param {$protobuf.ConversionOptions} [options] Conversion options
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      */
     Test1.toObject = function toObject(message, options) {
@@ -201,7 +201,7 @@ $root.Test1 = (function() {
 
     /**
      * Creates a plain object from this Test1 message. Also converts values to other types if specified.
-     * @param {$protobuf.ConversionOptions} [options] Conversion options
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      */
     Test1.prototype.toObject = function toObject(options) {
@@ -223,15 +223,15 @@ $root.Test2 = (function() {
 
     /**
      * Properties of a Test2.
-     * @typedef Test2$Properties
-     * @type {Object}
+     * @interface ITest2
+     * @name ITest2
      */
 
     /**
      * Constructs a new Test2.
-     * @exports Test2
      * @constructor
-     * @param {Test2$Properties=} [properties] Properties to set
+     * @param {ITest2=} [properties] Properties to set
+     * @name Test2
      */
     function Test2(properties) {
         if (properties)
@@ -242,7 +242,7 @@ $root.Test2 = (function() {
 
     /**
      * Creates a new Test2 instance using the specified properties.
-     * @param {Test2$Properties=} [properties] Properties to set
+     * @param {ITest2=} [properties] Properties to set
      * @returns {Test2} Test2 instance
      */
     Test2.create = function create(properties) {
@@ -251,7 +251,7 @@ $root.Test2 = (function() {
 
     /**
      * Encodes the specified Test2 message. Does not implicitly {@link Test2.verify|verify} messages.
-     * @param {Test2$Properties} message Test2 message or plain object to encode
+     * @param {ITest2} message Test2 message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
@@ -263,7 +263,7 @@ $root.Test2 = (function() {
 
     /**
      * Encodes the specified Test2 message, length delimited. Does not implicitly {@link Test2.verify|verify} messages.
-     * @param {Test2$Properties} message Test2 message or plain object to encode
+     * @param {ITest2} message Test2 message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
@@ -332,7 +332,7 @@ $root.Test2 = (function() {
     /**
      * Creates a plain object from a Test2 message. Also converts values to other types if specified.
      * @param {Test2} message Test2
-     * @param {$protobuf.ConversionOptions} [options] Conversion options
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      */
     Test2.toObject = function toObject() {
@@ -341,7 +341,7 @@ $root.Test2 = (function() {
 
     /**
      * Creates a plain object from this Test2 message. Also converts values to other types if specified.
-     * @param {$protobuf.ConversionOptions} [options] Conversion options
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      */
     Test2.prototype.toObject = function toObject(options) {
@@ -361,8 +361,9 @@ $root.Test2 = (function() {
 
 /**
  * Test3 enum.
- * @exports Test3
+ * @name Test3
  * @enum {number}
+ * @name Test3
  * @property {number} ONE=1 Value with a comment.
  * @property {number} TWO=2 TWO value
  * @property {number} THREE=3 Value with a comment.

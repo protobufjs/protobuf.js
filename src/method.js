@@ -89,8 +89,8 @@ function Method(name, type, requestType, responseType, requestStream, responseSt
 }
 
 /**
- * @typedef MethodDescriptor
- * @type {Object}
+ * Method descriptor.
+ * @interface IMethod
  * @property {string} [type="rpc"] Method type
  * @property {string} requestType Request type
  * @property {string} responseType Response type
@@ -102,7 +102,7 @@ function Method(name, type, requestType, responseType, requestStream, responseSt
 /**
  * Constructs a method from a method descriptor.
  * @param {string} name Method name
- * @param {MethodDescriptor} json Method descriptor
+ * @param {IMethod} json Method descriptor
  * @returns {Method} Created method
  * @throws {TypeError} If arguments are invalid
  */
@@ -112,7 +112,7 @@ Method.fromJSON = function fromJSON(name, json) {
 
 /**
  * Converts this method to a method descriptor.
- * @returns {MethodDescriptor} Method descriptor
+ * @returns {IMethod} Method descriptor
  */
 Method.prototype.toJSON = function toJSON() {
     return util.toObject([

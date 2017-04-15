@@ -2,7 +2,7 @@
 
 /**
  * Wrappers for common types.
- * @type {Object.<string,Wrapper>}
+ * @type {Object.<string,IWrapper>}
  * @const
  */
 var wrappers = exports;
@@ -10,7 +10,7 @@ var wrappers = exports;
 var Message = require("./message");
 
 /**
- * From object converter part of a {@link Wrapper}.
+ * From object converter part of an {@link IWrapper}.
  * @typedef WrapperFromObjectConverter
  * @type {function}
  * @param {Object.<string,*>} object Plain object
@@ -19,19 +19,18 @@ var Message = require("./message");
  */
 
 /**
- * To object converter part of a {@link Wrapper}.
+ * To object converter part of an {@link IWrapper}.
  * @typedef WrapperToObjectConverter
  * @type {function}
  * @param {Message<{}>} message Message instance
- * @param {ConversionOptions} [options] Conversion options
+ * @param {IConversionOptions} [options] Conversion options
  * @returns {Object.<string,*>}
  * @this Type
  */
 
 /**
  * Common type wrapper part of {@link wrappers}.
- * @typedef Wrapper
- * @type {Object}
+ * @interface IWrapper
  * @property {WrapperFromObjectConverter} [fromObject] From object converter
  * @property {WrapperToObjectConverter} [toObject] To object converter
  */

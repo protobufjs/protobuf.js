@@ -99,36 +99,27 @@ Object.defineProperty(Namespace.prototype, "nestedArray", {
 
 /**
  * Namespace descriptor.
- * @typedef NamespaceDescriptor
- * @type {Object}
+ * @interface INamespace
  * @property {Object.<string,*>} [options] Namespace options
- * @property {Object.<string,AnyNestedDescriptor>} nested Nested object descriptors
- */
-
-/**
- * Namespace base descriptor.
- * @typedef NamespaceBaseDescriptor
- * @type {Object}
- * @property {Object.<string,*>} [options] Namespace options
- * @property {Object.<string,AnyNestedDescriptor>} [nested] Nested object descriptors
+ * @property {Object.<string,AnyNestedObject>} [nested] Nested object descriptors
  */
 
 /**
  * Any extension field descriptor.
- * @typedef AnyExtensionFieldDescriptor
- * @type {ExtensionFieldDescriptor|ExtensionMapFieldDescriptor}
+ * @typedef AnyExtensionField
+ * @type {IExtensionField|IExtensionMapField}
  */
 
 /**
  * Any nested object descriptor.
- * @typedef AnyNestedDescriptor
- * @type {EnumDescriptor|TypeDescriptor|ServiceDescriptor|AnyExtensionFieldDescriptor|NamespaceDescriptor}
+ * @typedef AnyNestedObject
+ * @type {IEnum|IType|IService|AnyExtensionField|INamespace}
  */
-// ^ BEWARE: VSCode hangs forever when using more than 5 types (that's why AnyExtensionFieldDescriptor exists in the first place)
+// ^ BEWARE: VSCode hangs forever when using more than 5 types (that's why AnyExtensionField exists in the first place)
 
 /**
  * Converts this namespace to a namespace descriptor.
- * @returns {NamespaceBaseDescriptor} Namespace descriptor
+ * @returns {INamespace} Namespace descriptor
  */
 Namespace.prototype.toJSON = function toJSON() {
     return util.toObject([
@@ -139,7 +130,7 @@ Namespace.prototype.toJSON = function toJSON() {
 
 /**
  * Adds nested objects to this namespace from nested object descriptors.
- * @param {Object.<string,AnyNestedDescriptor>} nestedJson Any nested object descriptors
+ * @param {Object.<string,AnyNestedObject>} nestedJson Any nested object descriptors
  * @returns {Namespace} `this`
  */
 Namespace.prototype.addJSON = function addJSON(nestedJson) {

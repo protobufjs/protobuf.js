@@ -4,19 +4,20 @@ export namespace jspb {
 
     namespace test {
 
-        type Empty$Properties = {};
+        interface IEmpty {
+        }
 
         class Empty {
-            constructor(properties?: jspb.test.Empty$Properties);
-            public static create(properties?: jspb.test.Empty$Properties): jspb.test.Empty;
-            public static encode(message: jspb.test.Empty$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
-            public static encodeDelimited(message: jspb.test.Empty$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+            constructor(properties?: jspb.test.IEmpty);
+            public static create(properties?: jspb.test.IEmpty): jspb.test.Empty;
+            public static encode(message: jspb.test.IEmpty, writer?: $protobuf.Writer): $protobuf.Writer;
+            public static encodeDelimited(message: jspb.test.IEmpty, writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.Empty;
             public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): jspb.test.Empty;
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): jspb.test.Empty;
-            public static toObject(message: jspb.test.Empty, options?: $protobuf.ConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
+            public static toObject(message: jspb.test.Empty, options?: $protobuf.IConversionOptions): { [k: string]: any };
+            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
@@ -25,326 +26,328 @@ export namespace jspb {
             BAR = 2
         }
 
-        type EnumContainer$Properties = {
+        interface IEnumContainer {
             outerEnum?: jspb.test.OuterEnum;
-        };
+        }
 
         class EnumContainer {
-            constructor(properties?: jspb.test.EnumContainer$Properties);
+            constructor(properties?: jspb.test.IEnumContainer);
             public outerEnum: jspb.test.OuterEnum;
-            public static create(properties?: jspb.test.EnumContainer$Properties): jspb.test.EnumContainer;
-            public static encode(message: jspb.test.EnumContainer$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
-            public static encodeDelimited(message: jspb.test.EnumContainer$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+            public static create(properties?: jspb.test.IEnumContainer): jspb.test.EnumContainer;
+            public static encode(message: jspb.test.IEnumContainer, writer?: $protobuf.Writer): $protobuf.Writer;
+            public static encodeDelimited(message: jspb.test.IEnumContainer, writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.EnumContainer;
             public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): jspb.test.EnumContainer;
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): jspb.test.EnumContainer;
-            public static toObject(message: jspb.test.EnumContainer, options?: $protobuf.ConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
+            public static toObject(message: jspb.test.EnumContainer, options?: $protobuf.IConversionOptions): { [k: string]: any };
+            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
-        type Simple1$Properties = {
+        interface ISimple1 {
             aString: string;
             aRepeatedString?: string[];
             aBoolean?: boolean;
-        };
+        }
 
         class Simple1 {
-            constructor(properties?: jspb.test.Simple1$Properties);
+            constructor(properties?: jspb.test.ISimple1);
             public aString: string;
             public aRepeatedString: string[];
             public aBoolean: boolean;
-            public static create(properties?: jspb.test.Simple1$Properties): jspb.test.Simple1;
-            public static encode(message: jspb.test.Simple1$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
-            public static encodeDelimited(message: jspb.test.Simple1$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+            public static create(properties?: jspb.test.ISimple1): jspb.test.Simple1;
+            public static encode(message: jspb.test.ISimple1, writer?: $protobuf.Writer): $protobuf.Writer;
+            public static encodeDelimited(message: jspb.test.ISimple1, writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.Simple1;
             public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): jspb.test.Simple1;
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): jspb.test.Simple1;
-            public static toObject(message: jspb.test.Simple1, options?: $protobuf.ConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
+            public static toObject(message: jspb.test.Simple1, options?: $protobuf.IConversionOptions): { [k: string]: any };
+            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
-        type Simple2$Properties = {
+        interface ISimple2 {
             aString: string;
             aRepeatedString?: string[];
-        };
+        }
 
         class Simple2 {
-            constructor(properties?: jspb.test.Simple2$Properties);
+            constructor(properties?: jspb.test.ISimple2);
             public aString: string;
             public aRepeatedString: string[];
-            public static create(properties?: jspb.test.Simple2$Properties): jspb.test.Simple2;
-            public static encode(message: jspb.test.Simple2$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
-            public static encodeDelimited(message: jspb.test.Simple2$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+            public static create(properties?: jspb.test.ISimple2): jspb.test.Simple2;
+            public static encode(message: jspb.test.ISimple2, writer?: $protobuf.Writer): $protobuf.Writer;
+            public static encodeDelimited(message: jspb.test.ISimple2, writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.Simple2;
             public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): jspb.test.Simple2;
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): jspb.test.Simple2;
-            public static toObject(message: jspb.test.Simple2, options?: $protobuf.ConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
+            public static toObject(message: jspb.test.Simple2, options?: $protobuf.IConversionOptions): { [k: string]: any };
+            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
-        type SpecialCases$Properties = {
+        interface ISpecialCases {
             normal: string;
             default: string;
             function: string;
             var: string;
-        };
+        }
 
         class SpecialCases {
-            constructor(properties?: jspb.test.SpecialCases$Properties);
+            constructor(properties?: jspb.test.ISpecialCases);
             public normal: string;
             public ["default"]: string;
             public ["function"]: string;
             public ["var"]: string;
-            public static create(properties?: jspb.test.SpecialCases$Properties): jspb.test.SpecialCases;
-            public static encode(message: jspb.test.SpecialCases$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
-            public static encodeDelimited(message: jspb.test.SpecialCases$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+            public static create(properties?: jspb.test.ISpecialCases): jspb.test.SpecialCases;
+            public static encode(message: jspb.test.ISpecialCases, writer?: $protobuf.Writer): $protobuf.Writer;
+            public static encodeDelimited(message: jspb.test.ISpecialCases, writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.SpecialCases;
             public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): jspb.test.SpecialCases;
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): jspb.test.SpecialCases;
-            public static toObject(message: jspb.test.SpecialCases, options?: $protobuf.ConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
+            public static toObject(message: jspb.test.SpecialCases, options?: $protobuf.IConversionOptions): { [k: string]: any };
+            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
-        type OptionalFields$Properties = {
+        interface IOptionalFields {
             aString?: string;
             aBool: boolean;
-            aNestedMessage?: jspb.test.OptionalFields.Nested$Properties;
-            aRepeatedMessage?: jspb.test.OptionalFields.Nested$Properties[];
+            aNestedMessage?: jspb.test.OptionalFields.INested;
+            aRepeatedMessage?: jspb.test.OptionalFields.INested[];
             aRepeatedString?: string[];
-        };
+        }
 
         class OptionalFields {
-            constructor(properties?: jspb.test.OptionalFields$Properties);
+            constructor(properties?: jspb.test.IOptionalFields);
             public aString: string;
             public aBool: boolean;
-            public aNestedMessage: (jspb.test.OptionalFields.Nested$Properties|null);
-            public aRepeatedMessage: jspb.test.OptionalFields.Nested$Properties[];
+            public aNestedMessage: (jspb.test.OptionalFields.INested|null);
+            public aRepeatedMessage: jspb.test.OptionalFields.INested[];
             public aRepeatedString: string[];
-            public static create(properties?: jspb.test.OptionalFields$Properties): jspb.test.OptionalFields;
-            public static encode(message: jspb.test.OptionalFields$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
-            public static encodeDelimited(message: jspb.test.OptionalFields$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+            public static create(properties?: jspb.test.IOptionalFields): jspb.test.OptionalFields;
+            public static encode(message: jspb.test.IOptionalFields, writer?: $protobuf.Writer): $protobuf.Writer;
+            public static encodeDelimited(message: jspb.test.IOptionalFields, writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.OptionalFields;
             public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): jspb.test.OptionalFields;
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): jspb.test.OptionalFields;
-            public static toObject(message: jspb.test.OptionalFields, options?: $protobuf.ConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
+            public static toObject(message: jspb.test.OptionalFields, options?: $protobuf.IConversionOptions): { [k: string]: any };
+            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
         namespace OptionalFields {
 
-            type Nested$Properties = {
+            interface INested {
                 anInt?: number;
-            };
+            }
 
             class Nested {
-                constructor(properties?: jspb.test.OptionalFields.Nested$Properties);
+                constructor(properties?: jspb.test.OptionalFields.INested);
                 public anInt: number;
-                public static create(properties?: jspb.test.OptionalFields.Nested$Properties): jspb.test.OptionalFields.Nested;
-                public static encode(message: jspb.test.OptionalFields.Nested$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
-                public static encodeDelimited(message: jspb.test.OptionalFields.Nested$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+                public static create(properties?: jspb.test.OptionalFields.INested): jspb.test.OptionalFields.Nested;
+                public static encode(message: jspb.test.OptionalFields.INested, writer?: $protobuf.Writer): $protobuf.Writer;
+                public static encodeDelimited(message: jspb.test.OptionalFields.INested, writer?: $protobuf.Writer): $protobuf.Writer;
                 public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.OptionalFields.Nested;
                 public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): jspb.test.OptionalFields.Nested;
                 public static verify(message: { [k: string]: any }): string;
                 public static fromObject(object: { [k: string]: any }): jspb.test.OptionalFields.Nested;
-                public static toObject(message: jspb.test.OptionalFields.Nested, options?: $protobuf.ConversionOptions): { [k: string]: any };
-                public toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
+                public static toObject(message: jspb.test.OptionalFields.Nested, options?: $protobuf.IConversionOptions): { [k: string]: any };
+                public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
                 public toJSON(): { [k: string]: any };
             }
         }
 
-        type HasExtensions$Properties = {
+        interface IHasExtensions {
             str1?: string;
             str2?: string;
             str3?: string;
-            ".jspb.test.IsExtension.extField"?: jspb.test.IsExtension$Properties;
-            ".jspb.test.IndirectExtension.simple"?: jspb.test.Simple1$Properties;
+            ".jspb.test.IsExtension.extField"?: jspb.test.IIsExtension;
+            ".jspb.test.IndirectExtension.simple"?: jspb.test.ISimple1;
             ".jspb.test.IndirectExtension.str"?: string;
             ".jspb.test.IndirectExtension.repeatedStr"?: string[];
-            ".jspb.test.IndirectExtension.repeatedSimple"?: jspb.test.Simple1$Properties[];
-            ".jspb.test.simple1"?: jspb.test.Simple1$Properties;
-        };
+            ".jspb.test.IndirectExtension.repeatedSimple"?: jspb.test.ISimple1[];
+            ".jspb.test.simple1"?: jspb.test.ISimple1;
+        }
 
         class HasExtensions {
-            constructor(properties?: jspb.test.HasExtensions$Properties);
+            constructor(properties?: jspb.test.IHasExtensions);
             public str1: string;
             public str2: string;
             public str3: string;
-            public [".jspb.test.IsExtension.extField"]: (jspb.test.IsExtension$Properties|null);
-            public [".jspb.test.IndirectExtension.simple"]: (jspb.test.Simple1$Properties|null);
+            public [".jspb.test.IsExtension.extField"]: (jspb.test.IIsExtension|null);
+            public [".jspb.test.IndirectExtension.simple"]: (jspb.test.ISimple1|null);
             public [".jspb.test.IndirectExtension.str"]: string;
             public [".jspb.test.IndirectExtension.repeatedStr"]: string[];
-            public [".jspb.test.IndirectExtension.repeatedSimple"]: jspb.test.Simple1$Properties[];
-            public [".jspb.test.simple1"]: (jspb.test.Simple1$Properties|null);
-            public static create(properties?: jspb.test.HasExtensions$Properties): jspb.test.HasExtensions;
-            public static encode(message: jspb.test.HasExtensions$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
-            public static encodeDelimited(message: jspb.test.HasExtensions$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+            public [".jspb.test.IndirectExtension.repeatedSimple"]: jspb.test.ISimple1[];
+            public [".jspb.test.simple1"]: (jspb.test.ISimple1|null);
+            public static create(properties?: jspb.test.IHasExtensions): jspb.test.HasExtensions;
+            public static encode(message: jspb.test.IHasExtensions, writer?: $protobuf.Writer): $protobuf.Writer;
+            public static encodeDelimited(message: jspb.test.IHasExtensions, writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.HasExtensions;
             public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): jspb.test.HasExtensions;
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): jspb.test.HasExtensions;
-            public static toObject(message: jspb.test.HasExtensions, options?: $protobuf.ConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
+            public static toObject(message: jspb.test.HasExtensions, options?: $protobuf.IConversionOptions): { [k: string]: any };
+            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
-        type Complex$Properties = {
+        interface IComplex {
             aString: string;
             anOutOfOrderBool: boolean;
-            aNestedMessage?: jspb.test.Complex.Nested$Properties;
-            aRepeatedMessage?: jspb.test.Complex.Nested$Properties[];
+            aNestedMessage?: jspb.test.Complex.INested;
+            aRepeatedMessage?: jspb.test.Complex.INested[];
             aRepeatedString?: string[];
-        };
+        }
 
         class Complex {
-            constructor(properties?: jspb.test.Complex$Properties);
+            constructor(properties?: jspb.test.IComplex);
             public aString: string;
             public anOutOfOrderBool: boolean;
-            public aNestedMessage: (jspb.test.Complex.Nested$Properties|null);
-            public aRepeatedMessage: jspb.test.Complex.Nested$Properties[];
+            public aNestedMessage: (jspb.test.Complex.INested|null);
+            public aRepeatedMessage: jspb.test.Complex.INested[];
             public aRepeatedString: string[];
-            public static create(properties?: jspb.test.Complex$Properties): jspb.test.Complex;
-            public static encode(message: jspb.test.Complex$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
-            public static encodeDelimited(message: jspb.test.Complex$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+            public static create(properties?: jspb.test.IComplex): jspb.test.Complex;
+            public static encode(message: jspb.test.IComplex, writer?: $protobuf.Writer): $protobuf.Writer;
+            public static encodeDelimited(message: jspb.test.IComplex, writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.Complex;
             public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): jspb.test.Complex;
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): jspb.test.Complex;
-            public static toObject(message: jspb.test.Complex, options?: $protobuf.ConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
+            public static toObject(message: jspb.test.Complex, options?: $protobuf.IConversionOptions): { [k: string]: any };
+            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
         namespace Complex {
 
-            type Nested$Properties = {
+            interface INested {
                 anInt: number;
-            };
+            }
 
             class Nested {
-                constructor(properties?: jspb.test.Complex.Nested$Properties);
+                constructor(properties?: jspb.test.Complex.INested);
                 public anInt: number;
-                public static create(properties?: jspb.test.Complex.Nested$Properties): jspb.test.Complex.Nested;
-                public static encode(message: jspb.test.Complex.Nested$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
-                public static encodeDelimited(message: jspb.test.Complex.Nested$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+                public static create(properties?: jspb.test.Complex.INested): jspb.test.Complex.Nested;
+                public static encode(message: jspb.test.Complex.INested, writer?: $protobuf.Writer): $protobuf.Writer;
+                public static encodeDelimited(message: jspb.test.Complex.INested, writer?: $protobuf.Writer): $protobuf.Writer;
                 public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.Complex.Nested;
                 public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): jspb.test.Complex.Nested;
                 public static verify(message: { [k: string]: any }): string;
                 public static fromObject(object: { [k: string]: any }): jspb.test.Complex.Nested;
-                public static toObject(message: jspb.test.Complex.Nested, options?: $protobuf.ConversionOptions): { [k: string]: any };
-                public toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
+                public static toObject(message: jspb.test.Complex.Nested, options?: $protobuf.IConversionOptions): { [k: string]: any };
+                public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
                 public toJSON(): { [k: string]: any };
             }
         }
 
-        type OuterMessage$Properties = {};
+        interface IOuterMessage {
+        }
 
         class OuterMessage {
-            constructor(properties?: jspb.test.OuterMessage$Properties);
-            public static create(properties?: jspb.test.OuterMessage$Properties): jspb.test.OuterMessage;
-            public static encode(message: jspb.test.OuterMessage$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
-            public static encodeDelimited(message: jspb.test.OuterMessage$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+            constructor(properties?: jspb.test.IOuterMessage);
+            public static create(properties?: jspb.test.IOuterMessage): jspb.test.OuterMessage;
+            public static encode(message: jspb.test.IOuterMessage, writer?: $protobuf.Writer): $protobuf.Writer;
+            public static encodeDelimited(message: jspb.test.IOuterMessage, writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.OuterMessage;
             public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): jspb.test.OuterMessage;
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): jspb.test.OuterMessage;
-            public static toObject(message: jspb.test.OuterMessage, options?: $protobuf.ConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
+            public static toObject(message: jspb.test.OuterMessage, options?: $protobuf.IConversionOptions): { [k: string]: any };
+            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
         namespace OuterMessage {
 
-            type Complex$Properties = {
+            interface IComplex {
                 innerComplexField?: number;
-            };
+            }
 
             class Complex {
-                constructor(properties?: jspb.test.OuterMessage.Complex$Properties);
+                constructor(properties?: jspb.test.OuterMessage.IComplex);
                 public innerComplexField: number;
-                public static create(properties?: jspb.test.OuterMessage.Complex$Properties): jspb.test.OuterMessage.Complex;
-                public static encode(message: jspb.test.OuterMessage.Complex$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
-                public static encodeDelimited(message: jspb.test.OuterMessage.Complex$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+                public static create(properties?: jspb.test.OuterMessage.IComplex): jspb.test.OuterMessage.Complex;
+                public static encode(message: jspb.test.OuterMessage.IComplex, writer?: $protobuf.Writer): $protobuf.Writer;
+                public static encodeDelimited(message: jspb.test.OuterMessage.IComplex, writer?: $protobuf.Writer): $protobuf.Writer;
                 public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.OuterMessage.Complex;
                 public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): jspb.test.OuterMessage.Complex;
                 public static verify(message: { [k: string]: any }): string;
                 public static fromObject(object: { [k: string]: any }): jspb.test.OuterMessage.Complex;
-                public static toObject(message: jspb.test.OuterMessage.Complex, options?: $protobuf.ConversionOptions): { [k: string]: any };
-                public toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
+                public static toObject(message: jspb.test.OuterMessage.Complex, options?: $protobuf.IConversionOptions): { [k: string]: any };
+                public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
                 public toJSON(): { [k: string]: any };
             }
         }
 
-        type IsExtension$Properties = {
+        interface IIsExtension {
             ext1?: string;
-        };
+        }
 
         class IsExtension {
-            constructor(properties?: jspb.test.IsExtension$Properties);
+            constructor(properties?: jspb.test.IIsExtension);
             public ext1: string;
-            public static create(properties?: jspb.test.IsExtension$Properties): jspb.test.IsExtension;
-            public static encode(message: jspb.test.IsExtension$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
-            public static encodeDelimited(message: jspb.test.IsExtension$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+            public static create(properties?: jspb.test.IIsExtension): jspb.test.IsExtension;
+            public static encode(message: jspb.test.IIsExtension, writer?: $protobuf.Writer): $protobuf.Writer;
+            public static encodeDelimited(message: jspb.test.IIsExtension, writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.IsExtension;
             public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): jspb.test.IsExtension;
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): jspb.test.IsExtension;
-            public static toObject(message: jspb.test.IsExtension, options?: $protobuf.ConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
+            public static toObject(message: jspb.test.IsExtension, options?: $protobuf.IConversionOptions): { [k: string]: any };
+            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
-        type IndirectExtension$Properties = {};
+        interface IIndirectExtension {
+        }
 
         class IndirectExtension {
-            constructor(properties?: jspb.test.IndirectExtension$Properties);
-            public static create(properties?: jspb.test.IndirectExtension$Properties): jspb.test.IndirectExtension;
-            public static encode(message: jspb.test.IndirectExtension$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
-            public static encodeDelimited(message: jspb.test.IndirectExtension$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+            constructor(properties?: jspb.test.IIndirectExtension);
+            public static create(properties?: jspb.test.IIndirectExtension): jspb.test.IndirectExtension;
+            public static encode(message: jspb.test.IIndirectExtension, writer?: $protobuf.Writer): $protobuf.Writer;
+            public static encodeDelimited(message: jspb.test.IIndirectExtension, writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.IndirectExtension;
             public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): jspb.test.IndirectExtension;
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): jspb.test.IndirectExtension;
-            public static toObject(message: jspb.test.IndirectExtension, options?: $protobuf.ConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
+            public static toObject(message: jspb.test.IndirectExtension, options?: $protobuf.IConversionOptions): { [k: string]: any };
+            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
-        type DefaultValues$Properties = {
+        interface IDefaultValues {
             stringField?: string;
             boolField?: boolean;
             intField?: (number|Long);
             enumField?: jspb.test.DefaultValues.Enum;
             emptyField?: string;
             bytesField?: Uint8Array;
-        };
+        }
 
         class DefaultValues {
-            constructor(properties?: jspb.test.DefaultValues$Properties);
+            constructor(properties?: jspb.test.IDefaultValues);
             public stringField: string;
             public boolField: boolean;
             public intField: (number|Long);
             public enumField: jspb.test.DefaultValues.Enum;
             public emptyField: string;
             public bytesField: Uint8Array;
-            public static create(properties?: jspb.test.DefaultValues$Properties): jspb.test.DefaultValues;
-            public static encode(message: jspb.test.DefaultValues$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
-            public static encodeDelimited(message: jspb.test.DefaultValues$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+            public static create(properties?: jspb.test.IDefaultValues): jspb.test.DefaultValues;
+            public static encode(message: jspb.test.IDefaultValues, writer?: $protobuf.Writer): $protobuf.Writer;
+            public static encodeDelimited(message: jspb.test.IDefaultValues, writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.DefaultValues;
             public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): jspb.test.DefaultValues;
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): jspb.test.DefaultValues;
-            public static toObject(message: jspb.test.DefaultValues, options?: $protobuf.ConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
+            public static toObject(message: jspb.test.DefaultValues, options?: $protobuf.IConversionOptions): { [k: string]: any };
+            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
@@ -356,7 +359,7 @@ export namespace jspb {
             }
         }
 
-        type FloatingPointFields$Properties = {
+        interface IFloatingPointFields {
             optionalFloatField?: number;
             requiredFloatField: number;
             repeatedFloatField?: number[];
@@ -365,10 +368,10 @@ export namespace jspb {
             requiredDoubleField: number;
             repeatedDoubleField?: number[];
             defaultDoubleField?: number;
-        };
+        }
 
         class FloatingPointFields {
-            constructor(properties?: jspb.test.FloatingPointFields$Properties);
+            constructor(properties?: jspb.test.IFloatingPointFields);
             public optionalFloatField: number;
             public requiredFloatField: number;
             public repeatedFloatField: number[];
@@ -377,217 +380,218 @@ export namespace jspb {
             public requiredDoubleField: number;
             public repeatedDoubleField: number[];
             public defaultDoubleField: number;
-            public static create(properties?: jspb.test.FloatingPointFields$Properties): jspb.test.FloatingPointFields;
-            public static encode(message: jspb.test.FloatingPointFields$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
-            public static encodeDelimited(message: jspb.test.FloatingPointFields$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+            public static create(properties?: jspb.test.IFloatingPointFields): jspb.test.FloatingPointFields;
+            public static encode(message: jspb.test.IFloatingPointFields, writer?: $protobuf.Writer): $protobuf.Writer;
+            public static encodeDelimited(message: jspb.test.IFloatingPointFields, writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.FloatingPointFields;
             public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): jspb.test.FloatingPointFields;
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): jspb.test.FloatingPointFields;
-            public static toObject(message: jspb.test.FloatingPointFields, options?: $protobuf.ConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
+            public static toObject(message: jspb.test.FloatingPointFields, options?: $protobuf.IConversionOptions): { [k: string]: any };
+            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
-        type TestClone$Properties = {
+        interface ITestClone {
             str?: string;
-            simple1?: jspb.test.Simple1$Properties;
-            simple2?: jspb.test.Simple1$Properties[];
+            simple1?: jspb.test.ISimple1;
+            simple2?: jspb.test.ISimple1[];
             bytesField?: Uint8Array;
             unused?: string;
-            ".jspb.test.CloneExtension.extField"?: jspb.test.CloneExtension$Properties;
-        };
+            ".jspb.test.CloneExtension.extField"?: jspb.test.ICloneExtension;
+        }
 
         class TestClone {
-            constructor(properties?: jspb.test.TestClone$Properties);
+            constructor(properties?: jspb.test.ITestClone);
             public str: string;
-            public simple1: (jspb.test.Simple1$Properties|null);
-            public simple2: jspb.test.Simple1$Properties[];
+            public simple1: (jspb.test.ISimple1|null);
+            public simple2: jspb.test.ISimple1[];
             public bytesField: Uint8Array;
             public unused: string;
-            public [".jspb.test.CloneExtension.extField"]: (jspb.test.CloneExtension$Properties|null);
-            public static create(properties?: jspb.test.TestClone$Properties): jspb.test.TestClone;
-            public static encode(message: jspb.test.TestClone$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
-            public static encodeDelimited(message: jspb.test.TestClone$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+            public [".jspb.test.CloneExtension.extField"]: (jspb.test.ICloneExtension|null);
+            public static create(properties?: jspb.test.ITestClone): jspb.test.TestClone;
+            public static encode(message: jspb.test.ITestClone, writer?: $protobuf.Writer): $protobuf.Writer;
+            public static encodeDelimited(message: jspb.test.ITestClone, writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.TestClone;
             public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): jspb.test.TestClone;
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): jspb.test.TestClone;
-            public static toObject(message: jspb.test.TestClone, options?: $protobuf.ConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
+            public static toObject(message: jspb.test.TestClone, options?: $protobuf.IConversionOptions): { [k: string]: any };
+            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
-        type CloneExtension$Properties = {
+        interface ICloneExtension {
             ext?: string;
-        };
+        }
 
         class CloneExtension {
-            constructor(properties?: jspb.test.CloneExtension$Properties);
+            constructor(properties?: jspb.test.ICloneExtension);
             public ext: string;
-            public static create(properties?: jspb.test.CloneExtension$Properties): jspb.test.CloneExtension;
-            public static encode(message: jspb.test.CloneExtension$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
-            public static encodeDelimited(message: jspb.test.CloneExtension$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+            public static create(properties?: jspb.test.ICloneExtension): jspb.test.CloneExtension;
+            public static encode(message: jspb.test.ICloneExtension, writer?: $protobuf.Writer): $protobuf.Writer;
+            public static encodeDelimited(message: jspb.test.ICloneExtension, writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.CloneExtension;
             public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): jspb.test.CloneExtension;
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): jspb.test.CloneExtension;
-            public static toObject(message: jspb.test.CloneExtension, options?: $protobuf.ConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
+            public static toObject(message: jspb.test.CloneExtension, options?: $protobuf.IConversionOptions): { [k: string]: any };
+            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
-        type TestGroup$Properties = {
-            repeatedGroup?: jspb.test.TestGroup.RepeatedGroup$Properties[];
-            requiredGroup: jspb.test.TestGroup.RequiredGroup$Properties;
-            optionalGroup?: jspb.test.TestGroup.OptionalGroup$Properties;
+        interface ITestGroup {
+            repeatedGroup?: jspb.test.TestGroup.IRepeatedGroup[];
+            requiredGroup: jspb.test.TestGroup.IRequiredGroup;
+            optionalGroup?: jspb.test.TestGroup.IOptionalGroup;
             id?: string;
-            requiredSimple: jspb.test.Simple2$Properties;
-            optionalSimple?: jspb.test.Simple2$Properties;
-        };
+            requiredSimple: jspb.test.ISimple2;
+            optionalSimple?: jspb.test.ISimple2;
+        }
 
         class TestGroup {
-            constructor(properties?: jspb.test.TestGroup$Properties);
-            public repeatedGroup: jspb.test.TestGroup.RepeatedGroup$Properties[];
-            public requiredGroup: jspb.test.TestGroup.RequiredGroup$Properties;
-            public optionalGroup: (jspb.test.TestGroup.OptionalGroup$Properties|null);
+            constructor(properties?: jspb.test.ITestGroup);
+            public repeatedGroup: jspb.test.TestGroup.IRepeatedGroup[];
+            public requiredGroup: jspb.test.TestGroup.IRequiredGroup;
+            public optionalGroup: (jspb.test.TestGroup.IOptionalGroup|null);
             public id: string;
-            public requiredSimple: jspb.test.Simple2$Properties;
-            public optionalSimple: (jspb.test.Simple2$Properties|null);
-            public static create(properties?: jspb.test.TestGroup$Properties): jspb.test.TestGroup;
-            public static encode(message: jspb.test.TestGroup$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
-            public static encodeDelimited(message: jspb.test.TestGroup$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+            public requiredSimple: jspb.test.ISimple2;
+            public optionalSimple: (jspb.test.ISimple2|null);
+            public static create(properties?: jspb.test.ITestGroup): jspb.test.TestGroup;
+            public static encode(message: jspb.test.ITestGroup, writer?: $protobuf.Writer): $protobuf.Writer;
+            public static encodeDelimited(message: jspb.test.ITestGroup, writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.TestGroup;
             public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): jspb.test.TestGroup;
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): jspb.test.TestGroup;
-            public static toObject(message: jspb.test.TestGroup, options?: $protobuf.ConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
+            public static toObject(message: jspb.test.TestGroup, options?: $protobuf.IConversionOptions): { [k: string]: any };
+            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
         namespace TestGroup {
 
-            type RepeatedGroup$Properties = {
+            interface IRepeatedGroup {
                 id: string;
                 someBool?: boolean[];
-            };
+            }
 
             class RepeatedGroup {
-                constructor(properties?: jspb.test.TestGroup.RepeatedGroup$Properties);
+                constructor(properties?: jspb.test.TestGroup.IRepeatedGroup);
                 public id: string;
                 public someBool: boolean[];
-                public static create(properties?: jspb.test.TestGroup.RepeatedGroup$Properties): jspb.test.TestGroup.RepeatedGroup;
-                public static encode(message: jspb.test.TestGroup.RepeatedGroup$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
-                public static encodeDelimited(message: jspb.test.TestGroup.RepeatedGroup$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+                public static create(properties?: jspb.test.TestGroup.IRepeatedGroup): jspb.test.TestGroup.RepeatedGroup;
+                public static encode(message: jspb.test.TestGroup.IRepeatedGroup, writer?: $protobuf.Writer): $protobuf.Writer;
+                public static encodeDelimited(message: jspb.test.TestGroup.IRepeatedGroup, writer?: $protobuf.Writer): $protobuf.Writer;
                 public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.TestGroup.RepeatedGroup;
                 public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): jspb.test.TestGroup.RepeatedGroup;
                 public static verify(message: { [k: string]: any }): string;
                 public static fromObject(object: { [k: string]: any }): jspb.test.TestGroup.RepeatedGroup;
-                public static toObject(message: jspb.test.TestGroup.RepeatedGroup, options?: $protobuf.ConversionOptions): { [k: string]: any };
-                public toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
+                public static toObject(message: jspb.test.TestGroup.RepeatedGroup, options?: $protobuf.IConversionOptions): { [k: string]: any };
+                public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
                 public toJSON(): { [k: string]: any };
             }
 
-            type RequiredGroup$Properties = {
+            interface IRequiredGroup {
                 id: string;
-            };
+            }
 
             class RequiredGroup {
-                constructor(properties?: jspb.test.TestGroup.RequiredGroup$Properties);
+                constructor(properties?: jspb.test.TestGroup.IRequiredGroup);
                 public id: string;
-                public static create(properties?: jspb.test.TestGroup.RequiredGroup$Properties): jspb.test.TestGroup.RequiredGroup;
-                public static encode(message: jspb.test.TestGroup.RequiredGroup$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
-                public static encodeDelimited(message: jspb.test.TestGroup.RequiredGroup$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+                public static create(properties?: jspb.test.TestGroup.IRequiredGroup): jspb.test.TestGroup.RequiredGroup;
+                public static encode(message: jspb.test.TestGroup.IRequiredGroup, writer?: $protobuf.Writer): $protobuf.Writer;
+                public static encodeDelimited(message: jspb.test.TestGroup.IRequiredGroup, writer?: $protobuf.Writer): $protobuf.Writer;
                 public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.TestGroup.RequiredGroup;
                 public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): jspb.test.TestGroup.RequiredGroup;
                 public static verify(message: { [k: string]: any }): string;
                 public static fromObject(object: { [k: string]: any }): jspb.test.TestGroup.RequiredGroup;
-                public static toObject(message: jspb.test.TestGroup.RequiredGroup, options?: $protobuf.ConversionOptions): { [k: string]: any };
-                public toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
+                public static toObject(message: jspb.test.TestGroup.RequiredGroup, options?: $protobuf.IConversionOptions): { [k: string]: any };
+                public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
                 public toJSON(): { [k: string]: any };
             }
 
-            type OptionalGroup$Properties = {
+            interface IOptionalGroup {
                 id: string;
-            };
+            }
 
             class OptionalGroup {
-                constructor(properties?: jspb.test.TestGroup.OptionalGroup$Properties);
+                constructor(properties?: jspb.test.TestGroup.IOptionalGroup);
                 public id: string;
-                public static create(properties?: jspb.test.TestGroup.OptionalGroup$Properties): jspb.test.TestGroup.OptionalGroup;
-                public static encode(message: jspb.test.TestGroup.OptionalGroup$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
-                public static encodeDelimited(message: jspb.test.TestGroup.OptionalGroup$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+                public static create(properties?: jspb.test.TestGroup.IOptionalGroup): jspb.test.TestGroup.OptionalGroup;
+                public static encode(message: jspb.test.TestGroup.IOptionalGroup, writer?: $protobuf.Writer): $protobuf.Writer;
+                public static encodeDelimited(message: jspb.test.TestGroup.IOptionalGroup, writer?: $protobuf.Writer): $protobuf.Writer;
                 public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.TestGroup.OptionalGroup;
                 public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): jspb.test.TestGroup.OptionalGroup;
                 public static verify(message: { [k: string]: any }): string;
                 public static fromObject(object: { [k: string]: any }): jspb.test.TestGroup.OptionalGroup;
-                public static toObject(message: jspb.test.TestGroup.OptionalGroup, options?: $protobuf.ConversionOptions): { [k: string]: any };
-                public toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
+                public static toObject(message: jspb.test.TestGroup.OptionalGroup, options?: $protobuf.IConversionOptions): { [k: string]: any };
+                public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
                 public toJSON(): { [k: string]: any };
             }
         }
 
-        type TestGroup1$Properties = {
-            group?: jspb.test.TestGroup.RepeatedGroup$Properties;
-        };
+        interface ITestGroup1 {
+            group?: jspb.test.TestGroup.IRepeatedGroup;
+        }
 
         class TestGroup1 {
-            constructor(properties?: jspb.test.TestGroup1$Properties);
-            public group: (jspb.test.TestGroup.RepeatedGroup$Properties|null);
-            public static create(properties?: jspb.test.TestGroup1$Properties): jspb.test.TestGroup1;
-            public static encode(message: jspb.test.TestGroup1$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
-            public static encodeDelimited(message: jspb.test.TestGroup1$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+            constructor(properties?: jspb.test.ITestGroup1);
+            public group: (jspb.test.TestGroup.IRepeatedGroup|null);
+            public static create(properties?: jspb.test.ITestGroup1): jspb.test.TestGroup1;
+            public static encode(message: jspb.test.ITestGroup1, writer?: $protobuf.Writer): $protobuf.Writer;
+            public static encodeDelimited(message: jspb.test.ITestGroup1, writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.TestGroup1;
             public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): jspb.test.TestGroup1;
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): jspb.test.TestGroup1;
-            public static toObject(message: jspb.test.TestGroup1, options?: $protobuf.ConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
+            public static toObject(message: jspb.test.TestGroup1, options?: $protobuf.IConversionOptions): { [k: string]: any };
+            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
-        type TestReservedNames$Properties = {
+        interface ITestReservedNames {
             extension?: number;
             ".jspb.test.TestReservedNamesExtension.foo"?: number;
-        };
+        }
 
         class TestReservedNames {
-            constructor(properties?: jspb.test.TestReservedNames$Properties);
+            constructor(properties?: jspb.test.ITestReservedNames);
             public extension: number;
             public [".jspb.test.TestReservedNamesExtension.foo"]: number;
-            public static create(properties?: jspb.test.TestReservedNames$Properties): jspb.test.TestReservedNames;
-            public static encode(message: jspb.test.TestReservedNames$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
-            public static encodeDelimited(message: jspb.test.TestReservedNames$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+            public static create(properties?: jspb.test.ITestReservedNames): jspb.test.TestReservedNames;
+            public static encode(message: jspb.test.ITestReservedNames, writer?: $protobuf.Writer): $protobuf.Writer;
+            public static encodeDelimited(message: jspb.test.ITestReservedNames, writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.TestReservedNames;
             public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): jspb.test.TestReservedNames;
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): jspb.test.TestReservedNames;
-            public static toObject(message: jspb.test.TestReservedNames, options?: $protobuf.ConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
+            public static toObject(message: jspb.test.TestReservedNames, options?: $protobuf.IConversionOptions): { [k: string]: any };
+            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
-        type TestReservedNamesExtension$Properties = {};
+        interface ITestReservedNamesExtension {
+        }
 
         class TestReservedNamesExtension {
-            constructor(properties?: jspb.test.TestReservedNamesExtension$Properties);
-            public static create(properties?: jspb.test.TestReservedNamesExtension$Properties): jspb.test.TestReservedNamesExtension;
-            public static encode(message: jspb.test.TestReservedNamesExtension$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
-            public static encodeDelimited(message: jspb.test.TestReservedNamesExtension$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+            constructor(properties?: jspb.test.ITestReservedNamesExtension);
+            public static create(properties?: jspb.test.ITestReservedNamesExtension): jspb.test.TestReservedNamesExtension;
+            public static encode(message: jspb.test.ITestReservedNamesExtension, writer?: $protobuf.Writer): $protobuf.Writer;
+            public static encodeDelimited(message: jspb.test.ITestReservedNamesExtension, writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.TestReservedNamesExtension;
             public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): jspb.test.TestReservedNamesExtension;
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): jspb.test.TestReservedNamesExtension;
-            public static toObject(message: jspb.test.TestReservedNamesExtension, options?: $protobuf.ConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
+            public static toObject(message: jspb.test.TestReservedNamesExtension, options?: $protobuf.IConversionOptions): { [k: string]: any };
+            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
-        type TestMessageWithOneof$Properties = {
+        interface ITestMessageWithOneof {
             pone?: string;
             pthree?: string;
-            rone?: jspb.test.TestMessageWithOneof$Properties;
+            rone?: jspb.test.ITestMessageWithOneof;
             rtwo?: string;
             normalField?: boolean;
             repeatedField?: string[];
@@ -595,13 +599,13 @@ export namespace jspb {
             atwo?: number;
             bone?: number;
             btwo?: number;
-        };
+        }
 
         class TestMessageWithOneof {
-            constructor(properties?: jspb.test.TestMessageWithOneof$Properties);
+            constructor(properties?: jspb.test.ITestMessageWithOneof);
             public pone: string;
             public pthree: string;
-            public rone: (jspb.test.TestMessageWithOneof$Properties|null);
+            public rone: (jspb.test.ITestMessageWithOneof|null);
             public rtwo: string;
             public normalField: boolean;
             public repeatedField: string[];
@@ -613,77 +617,77 @@ export namespace jspb {
             public recursiveOneof?: string;
             public defaultOneofA?: string;
             public defaultOneofB?: string;
-            public static create(properties?: jspb.test.TestMessageWithOneof$Properties): jspb.test.TestMessageWithOneof;
-            public static encode(message: jspb.test.TestMessageWithOneof$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
-            public static encodeDelimited(message: jspb.test.TestMessageWithOneof$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+            public static create(properties?: jspb.test.ITestMessageWithOneof): jspb.test.TestMessageWithOneof;
+            public static encode(message: jspb.test.ITestMessageWithOneof, writer?: $protobuf.Writer): $protobuf.Writer;
+            public static encodeDelimited(message: jspb.test.ITestMessageWithOneof, writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.TestMessageWithOneof;
             public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): jspb.test.TestMessageWithOneof;
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): jspb.test.TestMessageWithOneof;
-            public static toObject(message: jspb.test.TestMessageWithOneof, options?: $protobuf.ConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
+            public static toObject(message: jspb.test.TestMessageWithOneof, options?: $protobuf.IConversionOptions): { [k: string]: any };
+            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
-        type TestEndsWithBytes$Properties = {
+        interface ITestEndsWithBytes {
             value?: number;
             data?: Uint8Array;
-        };
+        }
 
         class TestEndsWithBytes {
-            constructor(properties?: jspb.test.TestEndsWithBytes$Properties);
+            constructor(properties?: jspb.test.ITestEndsWithBytes);
             public value: number;
             public data: Uint8Array;
-            public static create(properties?: jspb.test.TestEndsWithBytes$Properties): jspb.test.TestEndsWithBytes;
-            public static encode(message: jspb.test.TestEndsWithBytes$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
-            public static encodeDelimited(message: jspb.test.TestEndsWithBytes$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+            public static create(properties?: jspb.test.ITestEndsWithBytes): jspb.test.TestEndsWithBytes;
+            public static encode(message: jspb.test.ITestEndsWithBytes, writer?: $protobuf.Writer): $protobuf.Writer;
+            public static encodeDelimited(message: jspb.test.ITestEndsWithBytes, writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.TestEndsWithBytes;
             public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): jspb.test.TestEndsWithBytes;
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): jspb.test.TestEndsWithBytes;
-            public static toObject(message: jspb.test.TestEndsWithBytes, options?: $protobuf.ConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
+            public static toObject(message: jspb.test.TestEndsWithBytes, options?: $protobuf.IConversionOptions): { [k: string]: any };
+            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
-        type TestMapFieldsNoBinary$Properties = {
+        interface ITestMapFieldsNoBinary {
             mapStringString?: { [k: string]: string };
             mapStringInt32?: { [k: string]: number };
             mapStringInt64?: { [k: string]: (number|Long) };
             mapStringBool?: { [k: string]: boolean };
             mapStringDouble?: { [k: string]: number };
             mapStringEnum?: { [k: string]: jspb.test.MapValueEnumNoBinary };
-            mapStringMsg?: { [k: string]: jspb.test.MapValueMessageNoBinary$Properties };
+            mapStringMsg?: { [k: string]: jspb.test.IMapValueMessageNoBinary };
             mapInt32String?: { [k: string]: string };
             mapInt64String?: { [k: string]: string };
             mapBoolString?: { [k: string]: string };
-            testMapFields?: jspb.test.TestMapFieldsNoBinary$Properties;
-            mapStringTestmapfields?: { [k: string]: jspb.test.TestMapFieldsNoBinary$Properties };
-        };
+            testMapFields?: jspb.test.ITestMapFieldsNoBinary;
+            mapStringTestmapfields?: { [k: string]: jspb.test.ITestMapFieldsNoBinary };
+        }
 
         class TestMapFieldsNoBinary {
-            constructor(properties?: jspb.test.TestMapFieldsNoBinary$Properties);
+            constructor(properties?: jspb.test.ITestMapFieldsNoBinary);
             public mapStringString: { [k: string]: string };
             public mapStringInt32: { [k: string]: number };
             public mapStringInt64: { [k: string]: (number|Long) };
             public mapStringBool: { [k: string]: boolean };
             public mapStringDouble: { [k: string]: number };
             public mapStringEnum: { [k: string]: jspb.test.MapValueEnumNoBinary };
-            public mapStringMsg: { [k: string]: jspb.test.MapValueMessageNoBinary$Properties };
+            public mapStringMsg: { [k: string]: jspb.test.IMapValueMessageNoBinary };
             public mapInt32String: { [k: string]: string };
             public mapInt64String: { [k: string]: string };
             public mapBoolString: { [k: string]: string };
-            public testMapFields: (jspb.test.TestMapFieldsNoBinary$Properties|null);
-            public mapStringTestmapfields: { [k: string]: jspb.test.TestMapFieldsNoBinary$Properties };
-            public static create(properties?: jspb.test.TestMapFieldsNoBinary$Properties): jspb.test.TestMapFieldsNoBinary;
-            public static encode(message: jspb.test.TestMapFieldsNoBinary$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
-            public static encodeDelimited(message: jspb.test.TestMapFieldsNoBinary$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+            public testMapFields: (jspb.test.ITestMapFieldsNoBinary|null);
+            public mapStringTestmapfields: { [k: string]: jspb.test.ITestMapFieldsNoBinary };
+            public static create(properties?: jspb.test.ITestMapFieldsNoBinary): jspb.test.TestMapFieldsNoBinary;
+            public static encode(message: jspb.test.ITestMapFieldsNoBinary, writer?: $protobuf.Writer): $protobuf.Writer;
+            public static encodeDelimited(message: jspb.test.ITestMapFieldsNoBinary, writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.TestMapFieldsNoBinary;
             public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): jspb.test.TestMapFieldsNoBinary;
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): jspb.test.TestMapFieldsNoBinary;
-            public static toObject(message: jspb.test.TestMapFieldsNoBinary, options?: $protobuf.ConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
+            public static toObject(message: jspb.test.TestMapFieldsNoBinary, options?: $protobuf.IConversionOptions): { [k: string]: any };
+            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
@@ -693,77 +697,79 @@ export namespace jspb {
             MAP_VALUE_BAZ_NOBINARY = 2
         }
 
-        type MapValueMessageNoBinary$Properties = {
+        interface IMapValueMessageNoBinary {
             foo?: number;
-        };
+        }
 
         class MapValueMessageNoBinary {
-            constructor(properties?: jspb.test.MapValueMessageNoBinary$Properties);
+            constructor(properties?: jspb.test.IMapValueMessageNoBinary);
             public foo: number;
-            public static create(properties?: jspb.test.MapValueMessageNoBinary$Properties): jspb.test.MapValueMessageNoBinary;
-            public static encode(message: jspb.test.MapValueMessageNoBinary$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
-            public static encodeDelimited(message: jspb.test.MapValueMessageNoBinary$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+            public static create(properties?: jspb.test.IMapValueMessageNoBinary): jspb.test.MapValueMessageNoBinary;
+            public static encode(message: jspb.test.IMapValueMessageNoBinary, writer?: $protobuf.Writer): $protobuf.Writer;
+            public static encodeDelimited(message: jspb.test.IMapValueMessageNoBinary, writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.MapValueMessageNoBinary;
             public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): jspb.test.MapValueMessageNoBinary;
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): jspb.test.MapValueMessageNoBinary;
-            public static toObject(message: jspb.test.MapValueMessageNoBinary, options?: $protobuf.ConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
+            public static toObject(message: jspb.test.MapValueMessageNoBinary, options?: $protobuf.IConversionOptions): { [k: string]: any };
+            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
-        type Deeply$Properties = {};
+        interface IDeeply {
+        }
 
         class Deeply {
-            constructor(properties?: jspb.test.Deeply$Properties);
-            public static create(properties?: jspb.test.Deeply$Properties): jspb.test.Deeply;
-            public static encode(message: jspb.test.Deeply$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
-            public static encodeDelimited(message: jspb.test.Deeply$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+            constructor(properties?: jspb.test.IDeeply);
+            public static create(properties?: jspb.test.IDeeply): jspb.test.Deeply;
+            public static encode(message: jspb.test.IDeeply, writer?: $protobuf.Writer): $protobuf.Writer;
+            public static encodeDelimited(message: jspb.test.IDeeply, writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.Deeply;
             public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): jspb.test.Deeply;
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): jspb.test.Deeply;
-            public static toObject(message: jspb.test.Deeply, options?: $protobuf.ConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
+            public static toObject(message: jspb.test.Deeply, options?: $protobuf.IConversionOptions): { [k: string]: any };
+            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
         namespace Deeply {
 
-            type Nested$Properties = {};
+            interface INested {
+            }
 
             class Nested {
-                constructor(properties?: jspb.test.Deeply.Nested$Properties);
-                public static create(properties?: jspb.test.Deeply.Nested$Properties): jspb.test.Deeply.Nested;
-                public static encode(message: jspb.test.Deeply.Nested$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
-                public static encodeDelimited(message: jspb.test.Deeply.Nested$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+                constructor(properties?: jspb.test.Deeply.INested);
+                public static create(properties?: jspb.test.Deeply.INested): jspb.test.Deeply.Nested;
+                public static encode(message: jspb.test.Deeply.INested, writer?: $protobuf.Writer): $protobuf.Writer;
+                public static encodeDelimited(message: jspb.test.Deeply.INested, writer?: $protobuf.Writer): $protobuf.Writer;
                 public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.Deeply.Nested;
                 public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): jspb.test.Deeply.Nested;
                 public static verify(message: { [k: string]: any }): string;
                 public static fromObject(object: { [k: string]: any }): jspb.test.Deeply.Nested;
-                public static toObject(message: jspb.test.Deeply.Nested, options?: $protobuf.ConversionOptions): { [k: string]: any };
-                public toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
+                public static toObject(message: jspb.test.Deeply.Nested, options?: $protobuf.IConversionOptions): { [k: string]: any };
+                public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
                 public toJSON(): { [k: string]: any };
             }
 
             namespace Nested {
 
-                type Message$Properties = {
+                interface IMessage {
                     count?: number;
-                };
+                }
 
                 class Message {
-                    constructor(properties?: jspb.test.Deeply.Nested.Message$Properties);
+                    constructor(properties?: jspb.test.Deeply.Nested.IMessage);
                     public count: number;
-                    public static create(properties?: jspb.test.Deeply.Nested.Message$Properties): jspb.test.Deeply.Nested.Message;
-                    public static encode(message: jspb.test.Deeply.Nested.Message$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
-                    public static encodeDelimited(message: jspb.test.Deeply.Nested.Message$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+                    public static create(properties?: jspb.test.Deeply.Nested.IMessage): jspb.test.Deeply.Nested.Message;
+                    public static encode(message: jspb.test.Deeply.Nested.IMessage, writer?: $protobuf.Writer): $protobuf.Writer;
+                    public static encodeDelimited(message: jspb.test.Deeply.Nested.IMessage, writer?: $protobuf.Writer): $protobuf.Writer;
                     public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.Deeply.Nested.Message;
                     public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): jspb.test.Deeply.Nested.Message;
                     public static verify(message: { [k: string]: any }): string;
                     public static fromObject(object: { [k: string]: any }): jspb.test.Deeply.Nested.Message;
-                    public static toObject(message: jspb.test.Deeply.Nested.Message, options?: $protobuf.ConversionOptions): { [k: string]: any };
-                    public toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
+                    public static toObject(message: jspb.test.Deeply.Nested.Message, options?: $protobuf.IConversionOptions): { [k: string]: any };
+                    public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
                     public toJSON(): { [k: string]: any };
                 }
             }
@@ -775,149 +781,149 @@ export namespace google {
 
     namespace protobuf {
 
-        type FileDescriptorSet$Properties = {
-            file?: google.protobuf.FileDescriptorProto$Properties[];
-        };
+        interface IFileDescriptorSet {
+            file?: google.protobuf.IFileDescriptorProto[];
+        }
 
         class FileDescriptorSet {
-            constructor(properties?: google.protobuf.FileDescriptorSet$Properties);
-            public file: google.protobuf.FileDescriptorProto$Properties[];
-            public static create(properties?: google.protobuf.FileDescriptorSet$Properties): google.protobuf.FileDescriptorSet;
-            public static encode(message: google.protobuf.FileDescriptorSet$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
-            public static encodeDelimited(message: google.protobuf.FileDescriptorSet$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+            constructor(properties?: google.protobuf.IFileDescriptorSet);
+            public file: google.protobuf.IFileDescriptorProto[];
+            public static create(properties?: google.protobuf.IFileDescriptorSet): google.protobuf.FileDescriptorSet;
+            public static encode(message: google.protobuf.IFileDescriptorSet, writer?: $protobuf.Writer): $protobuf.Writer;
+            public static encodeDelimited(message: google.protobuf.IFileDescriptorSet, writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.FileDescriptorSet;
             public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.protobuf.FileDescriptorSet;
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): google.protobuf.FileDescriptorSet;
-            public static toObject(message: google.protobuf.FileDescriptorSet, options?: $protobuf.ConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
+            public static toObject(message: google.protobuf.FileDescriptorSet, options?: $protobuf.IConversionOptions): { [k: string]: any };
+            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
-        type FileDescriptorProto$Properties = {
+        interface IFileDescriptorProto {
             name?: string;
             "package"?: string;
             dependency?: string[];
             publicDependency?: number[];
             weakDependency?: number[];
-            messageType?: google.protobuf.DescriptorProto$Properties[];
-            enumType?: google.protobuf.EnumDescriptorProto$Properties[];
-            service?: google.protobuf.ServiceDescriptorProto$Properties[];
-            extension?: google.protobuf.FieldDescriptorProto$Properties[];
-            options?: google.protobuf.FileOptions$Properties;
-            sourceCodeInfo?: google.protobuf.SourceCodeInfo$Properties;
+            messageType?: google.protobuf.IDescriptorProto[];
+            enumType?: google.protobuf.IEnumDescriptorProto[];
+            service?: google.protobuf.IServiceDescriptorProto[];
+            extension?: google.protobuf.IFieldDescriptorProto[];
+            options?: google.protobuf.IFileOptions;
+            sourceCodeInfo?: google.protobuf.ISourceCodeInfo;
             syntax?: string;
-        };
+        }
 
         class FileDescriptorProto {
-            constructor(properties?: google.protobuf.FileDescriptorProto$Properties);
+            constructor(properties?: google.protobuf.IFileDescriptorProto);
             public name: string;
             public ["package"]: string;
             public dependency: string[];
             public publicDependency: number[];
             public weakDependency: number[];
-            public messageType: google.protobuf.DescriptorProto$Properties[];
-            public enumType: google.protobuf.EnumDescriptorProto$Properties[];
-            public service: google.protobuf.ServiceDescriptorProto$Properties[];
-            public extension: google.protobuf.FieldDescriptorProto$Properties[];
-            public options: (google.protobuf.FileOptions$Properties|null);
-            public sourceCodeInfo: (google.protobuf.SourceCodeInfo$Properties|null);
+            public messageType: google.protobuf.IDescriptorProto[];
+            public enumType: google.protobuf.IEnumDescriptorProto[];
+            public service: google.protobuf.IServiceDescriptorProto[];
+            public extension: google.protobuf.IFieldDescriptorProto[];
+            public options: (google.protobuf.IFileOptions|null);
+            public sourceCodeInfo: (google.protobuf.ISourceCodeInfo|null);
             public syntax: string;
-            public static create(properties?: google.protobuf.FileDescriptorProto$Properties): google.protobuf.FileDescriptorProto;
-            public static encode(message: google.protobuf.FileDescriptorProto$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
-            public static encodeDelimited(message: google.protobuf.FileDescriptorProto$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+            public static create(properties?: google.protobuf.IFileDescriptorProto): google.protobuf.FileDescriptorProto;
+            public static encode(message: google.protobuf.IFileDescriptorProto, writer?: $protobuf.Writer): $protobuf.Writer;
+            public static encodeDelimited(message: google.protobuf.IFileDescriptorProto, writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.FileDescriptorProto;
             public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.protobuf.FileDescriptorProto;
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): google.protobuf.FileDescriptorProto;
-            public static toObject(message: google.protobuf.FileDescriptorProto, options?: $protobuf.ConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
+            public static toObject(message: google.protobuf.FileDescriptorProto, options?: $protobuf.IConversionOptions): { [k: string]: any };
+            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
-        type DescriptorProto$Properties = {
+        interface IDescriptorProto {
             name?: string;
-            field?: google.protobuf.FieldDescriptorProto$Properties[];
-            extension?: google.protobuf.FieldDescriptorProto$Properties[];
-            nestedType?: google.protobuf.DescriptorProto$Properties[];
-            enumType?: google.protobuf.EnumDescriptorProto$Properties[];
-            extensionRange?: google.protobuf.DescriptorProto.ExtensionRange$Properties[];
-            oneofDecl?: google.protobuf.OneofDescriptorProto$Properties[];
-            options?: google.protobuf.MessageOptions$Properties;
-            reservedRange?: google.protobuf.DescriptorProto.ReservedRange$Properties[];
+            field?: google.protobuf.IFieldDescriptorProto[];
+            extension?: google.protobuf.IFieldDescriptorProto[];
+            nestedType?: google.protobuf.IDescriptorProto[];
+            enumType?: google.protobuf.IEnumDescriptorProto[];
+            extensionRange?: google.protobuf.DescriptorProto.IExtensionRange[];
+            oneofDecl?: google.protobuf.IOneofDescriptorProto[];
+            options?: google.protobuf.IMessageOptions;
+            reservedRange?: google.protobuf.DescriptorProto.IReservedRange[];
             reservedName?: string[];
-        };
+        }
 
         class DescriptorProto {
-            constructor(properties?: google.protobuf.DescriptorProto$Properties);
+            constructor(properties?: google.protobuf.IDescriptorProto);
             public name: string;
-            public field: google.protobuf.FieldDescriptorProto$Properties[];
-            public extension: google.protobuf.FieldDescriptorProto$Properties[];
-            public nestedType: google.protobuf.DescriptorProto$Properties[];
-            public enumType: google.protobuf.EnumDescriptorProto$Properties[];
-            public extensionRange: google.protobuf.DescriptorProto.ExtensionRange$Properties[];
-            public oneofDecl: google.protobuf.OneofDescriptorProto$Properties[];
-            public options: (google.protobuf.MessageOptions$Properties|null);
-            public reservedRange: google.protobuf.DescriptorProto.ReservedRange$Properties[];
+            public field: google.protobuf.IFieldDescriptorProto[];
+            public extension: google.protobuf.IFieldDescriptorProto[];
+            public nestedType: google.protobuf.IDescriptorProto[];
+            public enumType: google.protobuf.IEnumDescriptorProto[];
+            public extensionRange: google.protobuf.DescriptorProto.IExtensionRange[];
+            public oneofDecl: google.protobuf.IOneofDescriptorProto[];
+            public options: (google.protobuf.IMessageOptions|null);
+            public reservedRange: google.protobuf.DescriptorProto.IReservedRange[];
             public reservedName: string[];
-            public static create(properties?: google.protobuf.DescriptorProto$Properties): google.protobuf.DescriptorProto;
-            public static encode(message: google.protobuf.DescriptorProto$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
-            public static encodeDelimited(message: google.protobuf.DescriptorProto$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+            public static create(properties?: google.protobuf.IDescriptorProto): google.protobuf.DescriptorProto;
+            public static encode(message: google.protobuf.IDescriptorProto, writer?: $protobuf.Writer): $protobuf.Writer;
+            public static encodeDelimited(message: google.protobuf.IDescriptorProto, writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.DescriptorProto;
             public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.protobuf.DescriptorProto;
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): google.protobuf.DescriptorProto;
-            public static toObject(message: google.protobuf.DescriptorProto, options?: $protobuf.ConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
+            public static toObject(message: google.protobuf.DescriptorProto, options?: $protobuf.IConversionOptions): { [k: string]: any };
+            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
         namespace DescriptorProto {
 
-            type ExtensionRange$Properties = {
+            interface IExtensionRange {
                 start?: number;
                 end?: number;
-            };
+            }
 
             class ExtensionRange {
-                constructor(properties?: google.protobuf.DescriptorProto.ExtensionRange$Properties);
+                constructor(properties?: google.protobuf.DescriptorProto.IExtensionRange);
                 public start: number;
                 public end: number;
-                public static create(properties?: google.protobuf.DescriptorProto.ExtensionRange$Properties): google.protobuf.DescriptorProto.ExtensionRange;
-                public static encode(message: google.protobuf.DescriptorProto.ExtensionRange$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
-                public static encodeDelimited(message: google.protobuf.DescriptorProto.ExtensionRange$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+                public static create(properties?: google.protobuf.DescriptorProto.IExtensionRange): google.protobuf.DescriptorProto.ExtensionRange;
+                public static encode(message: google.protobuf.DescriptorProto.IExtensionRange, writer?: $protobuf.Writer): $protobuf.Writer;
+                public static encodeDelimited(message: google.protobuf.DescriptorProto.IExtensionRange, writer?: $protobuf.Writer): $protobuf.Writer;
                 public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.DescriptorProto.ExtensionRange;
                 public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.protobuf.DescriptorProto.ExtensionRange;
                 public static verify(message: { [k: string]: any }): string;
                 public static fromObject(object: { [k: string]: any }): google.protobuf.DescriptorProto.ExtensionRange;
-                public static toObject(message: google.protobuf.DescriptorProto.ExtensionRange, options?: $protobuf.ConversionOptions): { [k: string]: any };
-                public toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
+                public static toObject(message: google.protobuf.DescriptorProto.ExtensionRange, options?: $protobuf.IConversionOptions): { [k: string]: any };
+                public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
                 public toJSON(): { [k: string]: any };
             }
 
-            type ReservedRange$Properties = {
+            interface IReservedRange {
                 start?: number;
                 end?: number;
-            };
+            }
 
             class ReservedRange {
-                constructor(properties?: google.protobuf.DescriptorProto.ReservedRange$Properties);
+                constructor(properties?: google.protobuf.DescriptorProto.IReservedRange);
                 public start: number;
                 public end: number;
-                public static create(properties?: google.protobuf.DescriptorProto.ReservedRange$Properties): google.protobuf.DescriptorProto.ReservedRange;
-                public static encode(message: google.protobuf.DescriptorProto.ReservedRange$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
-                public static encodeDelimited(message: google.protobuf.DescriptorProto.ReservedRange$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+                public static create(properties?: google.protobuf.DescriptorProto.IReservedRange): google.protobuf.DescriptorProto.ReservedRange;
+                public static encode(message: google.protobuf.DescriptorProto.IReservedRange, writer?: $protobuf.Writer): $protobuf.Writer;
+                public static encodeDelimited(message: google.protobuf.DescriptorProto.IReservedRange, writer?: $protobuf.Writer): $protobuf.Writer;
                 public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.DescriptorProto.ReservedRange;
                 public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.protobuf.DescriptorProto.ReservedRange;
                 public static verify(message: { [k: string]: any }): string;
                 public static fromObject(object: { [k: string]: any }): google.protobuf.DescriptorProto.ReservedRange;
-                public static toObject(message: google.protobuf.DescriptorProto.ReservedRange, options?: $protobuf.ConversionOptions): { [k: string]: any };
-                public toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
+                public static toObject(message: google.protobuf.DescriptorProto.ReservedRange, options?: $protobuf.IConversionOptions): { [k: string]: any };
+                public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
                 public toJSON(): { [k: string]: any };
             }
         }
 
-        type FieldDescriptorProto$Properties = {
+        interface IFieldDescriptorProto {
             name?: string;
             number?: number;
             label?: google.protobuf.FieldDescriptorProto.Label;
@@ -927,11 +933,11 @@ export namespace google {
             defaultValue?: string;
             oneofIndex?: number;
             jsonName?: string;
-            options?: google.protobuf.FieldOptions$Properties;
-        };
+            options?: google.protobuf.IFieldOptions;
+        }
 
         class FieldDescriptorProto {
-            constructor(properties?: google.protobuf.FieldDescriptorProto$Properties);
+            constructor(properties?: google.protobuf.IFieldDescriptorProto);
             public name: string;
             public number: number;
             public label: google.protobuf.FieldDescriptorProto.Label;
@@ -941,16 +947,16 @@ export namespace google {
             public defaultValue: string;
             public oneofIndex: number;
             public jsonName: string;
-            public options: (google.protobuf.FieldOptions$Properties|null);
-            public static create(properties?: google.protobuf.FieldDescriptorProto$Properties): google.protobuf.FieldDescriptorProto;
-            public static encode(message: google.protobuf.FieldDescriptorProto$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
-            public static encodeDelimited(message: google.protobuf.FieldDescriptorProto$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+            public options: (google.protobuf.IFieldOptions|null);
+            public static create(properties?: google.protobuf.IFieldDescriptorProto): google.protobuf.FieldDescriptorProto;
+            public static encode(message: google.protobuf.IFieldDescriptorProto, writer?: $protobuf.Writer): $protobuf.Writer;
+            public static encodeDelimited(message: google.protobuf.IFieldDescriptorProto, writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.FieldDescriptorProto;
             public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.protobuf.FieldDescriptorProto;
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): google.protobuf.FieldDescriptorProto;
-            public static toObject(message: google.protobuf.FieldDescriptorProto, options?: $protobuf.ConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
+            public static toObject(message: google.protobuf.FieldDescriptorProto, options?: $protobuf.IConversionOptions): { [k: string]: any };
+            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
@@ -984,126 +990,126 @@ export namespace google {
             }
         }
 
-        type OneofDescriptorProto$Properties = {
+        interface IOneofDescriptorProto {
             name?: string;
-            options?: google.protobuf.OneofOptions$Properties;
-        };
+            options?: google.protobuf.IOneofOptions;
+        }
 
         class OneofDescriptorProto {
-            constructor(properties?: google.protobuf.OneofDescriptorProto$Properties);
+            constructor(properties?: google.protobuf.IOneofDescriptorProto);
             public name: string;
-            public options: (google.protobuf.OneofOptions$Properties|null);
-            public static create(properties?: google.protobuf.OneofDescriptorProto$Properties): google.protobuf.OneofDescriptorProto;
-            public static encode(message: google.protobuf.OneofDescriptorProto$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
-            public static encodeDelimited(message: google.protobuf.OneofDescriptorProto$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+            public options: (google.protobuf.IOneofOptions|null);
+            public static create(properties?: google.protobuf.IOneofDescriptorProto): google.protobuf.OneofDescriptorProto;
+            public static encode(message: google.protobuf.IOneofDescriptorProto, writer?: $protobuf.Writer): $protobuf.Writer;
+            public static encodeDelimited(message: google.protobuf.IOneofDescriptorProto, writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.OneofDescriptorProto;
             public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.protobuf.OneofDescriptorProto;
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): google.protobuf.OneofDescriptorProto;
-            public static toObject(message: google.protobuf.OneofDescriptorProto, options?: $protobuf.ConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
+            public static toObject(message: google.protobuf.OneofDescriptorProto, options?: $protobuf.IConversionOptions): { [k: string]: any };
+            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
-        type EnumDescriptorProto$Properties = {
+        interface IEnumDescriptorProto {
             name?: string;
-            value?: google.protobuf.EnumValueDescriptorProto$Properties[];
-            options?: google.protobuf.EnumOptions$Properties;
-        };
+            value?: google.protobuf.IEnumValueDescriptorProto[];
+            options?: google.protobuf.IEnumOptions;
+        }
 
         class EnumDescriptorProto {
-            constructor(properties?: google.protobuf.EnumDescriptorProto$Properties);
+            constructor(properties?: google.protobuf.IEnumDescriptorProto);
             public name: string;
-            public value: google.protobuf.EnumValueDescriptorProto$Properties[];
-            public options: (google.protobuf.EnumOptions$Properties|null);
-            public static create(properties?: google.protobuf.EnumDescriptorProto$Properties): google.protobuf.EnumDescriptorProto;
-            public static encode(message: google.protobuf.EnumDescriptorProto$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
-            public static encodeDelimited(message: google.protobuf.EnumDescriptorProto$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+            public value: google.protobuf.IEnumValueDescriptorProto[];
+            public options: (google.protobuf.IEnumOptions|null);
+            public static create(properties?: google.protobuf.IEnumDescriptorProto): google.protobuf.EnumDescriptorProto;
+            public static encode(message: google.protobuf.IEnumDescriptorProto, writer?: $protobuf.Writer): $protobuf.Writer;
+            public static encodeDelimited(message: google.protobuf.IEnumDescriptorProto, writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.EnumDescriptorProto;
             public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.protobuf.EnumDescriptorProto;
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): google.protobuf.EnumDescriptorProto;
-            public static toObject(message: google.protobuf.EnumDescriptorProto, options?: $protobuf.ConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
+            public static toObject(message: google.protobuf.EnumDescriptorProto, options?: $protobuf.IConversionOptions): { [k: string]: any };
+            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
-        type EnumValueDescriptorProto$Properties = {
+        interface IEnumValueDescriptorProto {
             name?: string;
             number?: number;
-            options?: google.protobuf.EnumValueOptions$Properties;
-        };
+            options?: google.protobuf.IEnumValueOptions;
+        }
 
         class EnumValueDescriptorProto {
-            constructor(properties?: google.protobuf.EnumValueDescriptorProto$Properties);
+            constructor(properties?: google.protobuf.IEnumValueDescriptorProto);
             public name: string;
             public number: number;
-            public options: (google.protobuf.EnumValueOptions$Properties|null);
-            public static create(properties?: google.protobuf.EnumValueDescriptorProto$Properties): google.protobuf.EnumValueDescriptorProto;
-            public static encode(message: google.protobuf.EnumValueDescriptorProto$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
-            public static encodeDelimited(message: google.protobuf.EnumValueDescriptorProto$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+            public options: (google.protobuf.IEnumValueOptions|null);
+            public static create(properties?: google.protobuf.IEnumValueDescriptorProto): google.protobuf.EnumValueDescriptorProto;
+            public static encode(message: google.protobuf.IEnumValueDescriptorProto, writer?: $protobuf.Writer): $protobuf.Writer;
+            public static encodeDelimited(message: google.protobuf.IEnumValueDescriptorProto, writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.EnumValueDescriptorProto;
             public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.protobuf.EnumValueDescriptorProto;
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): google.protobuf.EnumValueDescriptorProto;
-            public static toObject(message: google.protobuf.EnumValueDescriptorProto, options?: $protobuf.ConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
+            public static toObject(message: google.protobuf.EnumValueDescriptorProto, options?: $protobuf.IConversionOptions): { [k: string]: any };
+            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
-        type ServiceDescriptorProto$Properties = {
+        interface IServiceDescriptorProto {
             name?: string;
-            method?: google.protobuf.MethodDescriptorProto$Properties[];
-            options?: google.protobuf.ServiceOptions$Properties;
-        };
+            method?: google.protobuf.IMethodDescriptorProto[];
+            options?: google.protobuf.IServiceOptions;
+        }
 
         class ServiceDescriptorProto {
-            constructor(properties?: google.protobuf.ServiceDescriptorProto$Properties);
+            constructor(properties?: google.protobuf.IServiceDescriptorProto);
             public name: string;
-            public method: google.protobuf.MethodDescriptorProto$Properties[];
-            public options: (google.protobuf.ServiceOptions$Properties|null);
-            public static create(properties?: google.protobuf.ServiceDescriptorProto$Properties): google.protobuf.ServiceDescriptorProto;
-            public static encode(message: google.protobuf.ServiceDescriptorProto$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
-            public static encodeDelimited(message: google.protobuf.ServiceDescriptorProto$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+            public method: google.protobuf.IMethodDescriptorProto[];
+            public options: (google.protobuf.IServiceOptions|null);
+            public static create(properties?: google.protobuf.IServiceDescriptorProto): google.protobuf.ServiceDescriptorProto;
+            public static encode(message: google.protobuf.IServiceDescriptorProto, writer?: $protobuf.Writer): $protobuf.Writer;
+            public static encodeDelimited(message: google.protobuf.IServiceDescriptorProto, writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.ServiceDescriptorProto;
             public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.protobuf.ServiceDescriptorProto;
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): google.protobuf.ServiceDescriptorProto;
-            public static toObject(message: google.protobuf.ServiceDescriptorProto, options?: $protobuf.ConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
+            public static toObject(message: google.protobuf.ServiceDescriptorProto, options?: $protobuf.IConversionOptions): { [k: string]: any };
+            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
-        type MethodDescriptorProto$Properties = {
+        interface IMethodDescriptorProto {
             name?: string;
             inputType?: string;
             outputType?: string;
-            options?: google.protobuf.MethodOptions$Properties;
+            options?: google.protobuf.IMethodOptions;
             clientStreaming?: boolean;
             serverStreaming?: boolean;
-        };
+        }
 
         class MethodDescriptorProto {
-            constructor(properties?: google.protobuf.MethodDescriptorProto$Properties);
+            constructor(properties?: google.protobuf.IMethodDescriptorProto);
             public name: string;
             public inputType: string;
             public outputType: string;
-            public options: (google.protobuf.MethodOptions$Properties|null);
+            public options: (google.protobuf.IMethodOptions|null);
             public clientStreaming: boolean;
             public serverStreaming: boolean;
-            public static create(properties?: google.protobuf.MethodDescriptorProto$Properties): google.protobuf.MethodDescriptorProto;
-            public static encode(message: google.protobuf.MethodDescriptorProto$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
-            public static encodeDelimited(message: google.protobuf.MethodDescriptorProto$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+            public static create(properties?: google.protobuf.IMethodDescriptorProto): google.protobuf.MethodDescriptorProto;
+            public static encode(message: google.protobuf.IMethodDescriptorProto, writer?: $protobuf.Writer): $protobuf.Writer;
+            public static encodeDelimited(message: google.protobuf.IMethodDescriptorProto, writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.MethodDescriptorProto;
             public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.protobuf.MethodDescriptorProto;
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): google.protobuf.MethodDescriptorProto;
-            public static toObject(message: google.protobuf.MethodDescriptorProto, options?: $protobuf.ConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
+            public static toObject(message: google.protobuf.MethodDescriptorProto, options?: $protobuf.IConversionOptions): { [k: string]: any };
+            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
-        type FileOptions$Properties = {
+        interface IFileOptions {
             javaPackage?: string;
             javaOuterClassname?: string;
             javaMultipleFiles?: boolean;
@@ -1118,11 +1124,11 @@ export namespace google {
             ccEnableArenas?: boolean;
             objcClassPrefix?: string;
             csharpNamespace?: string;
-            uninterpretedOption?: google.protobuf.UninterpretedOption$Properties[];
-        };
+            uninterpretedOption?: google.protobuf.IUninterpretedOption[];
+        }
 
         class FileOptions {
-            constructor(properties?: google.protobuf.FileOptions$Properties);
+            constructor(properties?: google.protobuf.IFileOptions);
             public javaPackage: string;
             public javaOuterClassname: string;
             public javaMultipleFiles: boolean;
@@ -1137,16 +1143,16 @@ export namespace google {
             public ccEnableArenas: boolean;
             public objcClassPrefix: string;
             public csharpNamespace: string;
-            public uninterpretedOption: google.protobuf.UninterpretedOption$Properties[];
-            public static create(properties?: google.protobuf.FileOptions$Properties): google.protobuf.FileOptions;
-            public static encode(message: google.protobuf.FileOptions$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
-            public static encodeDelimited(message: google.protobuf.FileOptions$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+            public uninterpretedOption: google.protobuf.IUninterpretedOption[];
+            public static create(properties?: google.protobuf.IFileOptions): google.protobuf.FileOptions;
+            public static encode(message: google.protobuf.IFileOptions, writer?: $protobuf.Writer): $protobuf.Writer;
+            public static encodeDelimited(message: google.protobuf.IFileOptions, writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.FileOptions;
             public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.protobuf.FileOptions;
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): google.protobuf.FileOptions;
-            public static toObject(message: google.protobuf.FileOptions, options?: $protobuf.ConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
+            public static toObject(message: google.protobuf.FileOptions, options?: $protobuf.IConversionOptions): { [k: string]: any };
+            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
@@ -1159,61 +1165,61 @@ export namespace google {
             }
         }
 
-        type MessageOptions$Properties = {
+        interface IMessageOptions {
             messageSetWireFormat?: boolean;
             noStandardDescriptorAccessor?: boolean;
             deprecated?: boolean;
             mapEntry?: boolean;
-            uninterpretedOption?: google.protobuf.UninterpretedOption$Properties[];
-        };
+            uninterpretedOption?: google.protobuf.IUninterpretedOption[];
+        }
 
         class MessageOptions {
-            constructor(properties?: google.protobuf.MessageOptions$Properties);
+            constructor(properties?: google.protobuf.IMessageOptions);
             public messageSetWireFormat: boolean;
             public noStandardDescriptorAccessor: boolean;
             public deprecated: boolean;
             public mapEntry: boolean;
-            public uninterpretedOption: google.protobuf.UninterpretedOption$Properties[];
-            public static create(properties?: google.protobuf.MessageOptions$Properties): google.protobuf.MessageOptions;
-            public static encode(message: google.protobuf.MessageOptions$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
-            public static encodeDelimited(message: google.protobuf.MessageOptions$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+            public uninterpretedOption: google.protobuf.IUninterpretedOption[];
+            public static create(properties?: google.protobuf.IMessageOptions): google.protobuf.MessageOptions;
+            public static encode(message: google.protobuf.IMessageOptions, writer?: $protobuf.Writer): $protobuf.Writer;
+            public static encodeDelimited(message: google.protobuf.IMessageOptions, writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.MessageOptions;
             public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.protobuf.MessageOptions;
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): google.protobuf.MessageOptions;
-            public static toObject(message: google.protobuf.MessageOptions, options?: $protobuf.ConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
+            public static toObject(message: google.protobuf.MessageOptions, options?: $protobuf.IConversionOptions): { [k: string]: any };
+            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
-        type FieldOptions$Properties = {
+        interface IFieldOptions {
             ctype?: google.protobuf.FieldOptions.CType;
             packed?: boolean;
             jstype?: google.protobuf.FieldOptions.JSType;
             lazy?: boolean;
             deprecated?: boolean;
             weak?: boolean;
-            uninterpretedOption?: google.protobuf.UninterpretedOption$Properties[];
-        };
+            uninterpretedOption?: google.protobuf.IUninterpretedOption[];
+        }
 
         class FieldOptions {
-            constructor(properties?: google.protobuf.FieldOptions$Properties);
+            constructor(properties?: google.protobuf.IFieldOptions);
             public ctype: google.protobuf.FieldOptions.CType;
             public packed: boolean;
             public jstype: google.protobuf.FieldOptions.JSType;
             public lazy: boolean;
             public deprecated: boolean;
             public weak: boolean;
-            public uninterpretedOption: google.protobuf.UninterpretedOption$Properties[];
-            public static create(properties?: google.protobuf.FieldOptions$Properties): google.protobuf.FieldOptions;
-            public static encode(message: google.protobuf.FieldOptions$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
-            public static encodeDelimited(message: google.protobuf.FieldOptions$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+            public uninterpretedOption: google.protobuf.IUninterpretedOption[];
+            public static create(properties?: google.protobuf.IFieldOptions): google.protobuf.FieldOptions;
+            public static encode(message: google.protobuf.IFieldOptions, writer?: $protobuf.Writer): $protobuf.Writer;
+            public static encodeDelimited(message: google.protobuf.IFieldOptions, writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.FieldOptions;
             public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.protobuf.FieldOptions;
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): google.protobuf.FieldOptions;
-            public static toObject(message: google.protobuf.FieldOptions, options?: $protobuf.ConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
+            public static toObject(message: google.protobuf.FieldOptions, options?: $protobuf.IConversionOptions): { [k: string]: any };
+            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
@@ -1232,112 +1238,112 @@ export namespace google {
             }
         }
 
-        type OneofOptions$Properties = {
-            uninterpretedOption?: google.protobuf.UninterpretedOption$Properties[];
-        };
+        interface IOneofOptions {
+            uninterpretedOption?: google.protobuf.IUninterpretedOption[];
+        }
 
         class OneofOptions {
-            constructor(properties?: google.protobuf.OneofOptions$Properties);
-            public uninterpretedOption: google.protobuf.UninterpretedOption$Properties[];
-            public static create(properties?: google.protobuf.OneofOptions$Properties): google.protobuf.OneofOptions;
-            public static encode(message: google.protobuf.OneofOptions$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
-            public static encodeDelimited(message: google.protobuf.OneofOptions$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+            constructor(properties?: google.protobuf.IOneofOptions);
+            public uninterpretedOption: google.protobuf.IUninterpretedOption[];
+            public static create(properties?: google.protobuf.IOneofOptions): google.protobuf.OneofOptions;
+            public static encode(message: google.protobuf.IOneofOptions, writer?: $protobuf.Writer): $protobuf.Writer;
+            public static encodeDelimited(message: google.protobuf.IOneofOptions, writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.OneofOptions;
             public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.protobuf.OneofOptions;
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): google.protobuf.OneofOptions;
-            public static toObject(message: google.protobuf.OneofOptions, options?: $protobuf.ConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
+            public static toObject(message: google.protobuf.OneofOptions, options?: $protobuf.IConversionOptions): { [k: string]: any };
+            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
-        type EnumOptions$Properties = {
+        interface IEnumOptions {
             allowAlias?: boolean;
             deprecated?: boolean;
-            uninterpretedOption?: google.protobuf.UninterpretedOption$Properties[];
+            uninterpretedOption?: google.protobuf.IUninterpretedOption[];
             ".jspb.test.IsExtension.simpleOption"?: string;
-        };
+        }
 
         class EnumOptions {
-            constructor(properties?: google.protobuf.EnumOptions$Properties);
+            constructor(properties?: google.protobuf.IEnumOptions);
             public allowAlias: boolean;
             public deprecated: boolean;
-            public uninterpretedOption: google.protobuf.UninterpretedOption$Properties[];
+            public uninterpretedOption: google.protobuf.IUninterpretedOption[];
             public [".jspb.test.IsExtension.simpleOption"]: string;
-            public static create(properties?: google.protobuf.EnumOptions$Properties): google.protobuf.EnumOptions;
-            public static encode(message: google.protobuf.EnumOptions$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
-            public static encodeDelimited(message: google.protobuf.EnumOptions$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+            public static create(properties?: google.protobuf.IEnumOptions): google.protobuf.EnumOptions;
+            public static encode(message: google.protobuf.IEnumOptions, writer?: $protobuf.Writer): $protobuf.Writer;
+            public static encodeDelimited(message: google.protobuf.IEnumOptions, writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.EnumOptions;
             public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.protobuf.EnumOptions;
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): google.protobuf.EnumOptions;
-            public static toObject(message: google.protobuf.EnumOptions, options?: $protobuf.ConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
+            public static toObject(message: google.protobuf.EnumOptions, options?: $protobuf.IConversionOptions): { [k: string]: any };
+            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
-        type EnumValueOptions$Properties = {
+        interface IEnumValueOptions {
             deprecated?: boolean;
-            uninterpretedOption?: google.protobuf.UninterpretedOption$Properties[];
-        };
+            uninterpretedOption?: google.protobuf.IUninterpretedOption[];
+        }
 
         class EnumValueOptions {
-            constructor(properties?: google.protobuf.EnumValueOptions$Properties);
+            constructor(properties?: google.protobuf.IEnumValueOptions);
             public deprecated: boolean;
-            public uninterpretedOption: google.protobuf.UninterpretedOption$Properties[];
-            public static create(properties?: google.protobuf.EnumValueOptions$Properties): google.protobuf.EnumValueOptions;
-            public static encode(message: google.protobuf.EnumValueOptions$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
-            public static encodeDelimited(message: google.protobuf.EnumValueOptions$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+            public uninterpretedOption: google.protobuf.IUninterpretedOption[];
+            public static create(properties?: google.protobuf.IEnumValueOptions): google.protobuf.EnumValueOptions;
+            public static encode(message: google.protobuf.IEnumValueOptions, writer?: $protobuf.Writer): $protobuf.Writer;
+            public static encodeDelimited(message: google.protobuf.IEnumValueOptions, writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.EnumValueOptions;
             public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.protobuf.EnumValueOptions;
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): google.protobuf.EnumValueOptions;
-            public static toObject(message: google.protobuf.EnumValueOptions, options?: $protobuf.ConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
+            public static toObject(message: google.protobuf.EnumValueOptions, options?: $protobuf.IConversionOptions): { [k: string]: any };
+            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
-        type ServiceOptions$Properties = {
+        interface IServiceOptions {
             deprecated?: boolean;
-            uninterpretedOption?: google.protobuf.UninterpretedOption$Properties[];
-        };
+            uninterpretedOption?: google.protobuf.IUninterpretedOption[];
+        }
 
         class ServiceOptions {
-            constructor(properties?: google.protobuf.ServiceOptions$Properties);
+            constructor(properties?: google.protobuf.IServiceOptions);
             public deprecated: boolean;
-            public uninterpretedOption: google.protobuf.UninterpretedOption$Properties[];
-            public static create(properties?: google.protobuf.ServiceOptions$Properties): google.protobuf.ServiceOptions;
-            public static encode(message: google.protobuf.ServiceOptions$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
-            public static encodeDelimited(message: google.protobuf.ServiceOptions$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+            public uninterpretedOption: google.protobuf.IUninterpretedOption[];
+            public static create(properties?: google.protobuf.IServiceOptions): google.protobuf.ServiceOptions;
+            public static encode(message: google.protobuf.IServiceOptions, writer?: $protobuf.Writer): $protobuf.Writer;
+            public static encodeDelimited(message: google.protobuf.IServiceOptions, writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.ServiceOptions;
             public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.protobuf.ServiceOptions;
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): google.protobuf.ServiceOptions;
-            public static toObject(message: google.protobuf.ServiceOptions, options?: $protobuf.ConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
+            public static toObject(message: google.protobuf.ServiceOptions, options?: $protobuf.IConversionOptions): { [k: string]: any };
+            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
-        type MethodOptions$Properties = {
+        interface IMethodOptions {
             deprecated?: boolean;
             idempotencyLevel?: google.protobuf.MethodOptions.IdempotencyLevel;
-            uninterpretedOption?: google.protobuf.UninterpretedOption$Properties[];
-        };
+            uninterpretedOption?: google.protobuf.IUninterpretedOption[];
+        }
 
         class MethodOptions {
-            constructor(properties?: google.protobuf.MethodOptions$Properties);
+            constructor(properties?: google.protobuf.IMethodOptions);
             public deprecated: boolean;
             public idempotencyLevel: google.protobuf.MethodOptions.IdempotencyLevel;
-            public uninterpretedOption: google.protobuf.UninterpretedOption$Properties[];
-            public static create(properties?: google.protobuf.MethodOptions$Properties): google.protobuf.MethodOptions;
-            public static encode(message: google.protobuf.MethodOptions$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
-            public static encodeDelimited(message: google.protobuf.MethodOptions$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+            public uninterpretedOption: google.protobuf.IUninterpretedOption[];
+            public static create(properties?: google.protobuf.IMethodOptions): google.protobuf.MethodOptions;
+            public static encode(message: google.protobuf.IMethodOptions, writer?: $protobuf.Writer): $protobuf.Writer;
+            public static encodeDelimited(message: google.protobuf.IMethodOptions, writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.MethodOptions;
             public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.protobuf.MethodOptions;
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): google.protobuf.MethodOptions;
-            public static toObject(message: google.protobuf.MethodOptions, options?: $protobuf.ConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
+            public static toObject(message: google.protobuf.MethodOptions, options?: $protobuf.IConversionOptions): { [k: string]: any };
+            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
@@ -1350,153 +1356,153 @@ export namespace google {
             }
         }
 
-        type UninterpretedOption$Properties = {
-            name?: google.protobuf.UninterpretedOption.NamePart$Properties[];
+        interface IUninterpretedOption {
+            name?: google.protobuf.UninterpretedOption.INamePart[];
             identifierValue?: string;
             positiveIntValue?: (number|Long);
             negativeIntValue?: (number|Long);
             doubleValue?: number;
             stringValue?: Uint8Array;
             aggregateValue?: string;
-        };
+        }
 
         class UninterpretedOption {
-            constructor(properties?: google.protobuf.UninterpretedOption$Properties);
-            public name: google.protobuf.UninterpretedOption.NamePart$Properties[];
+            constructor(properties?: google.protobuf.IUninterpretedOption);
+            public name: google.protobuf.UninterpretedOption.INamePart[];
             public identifierValue: string;
             public positiveIntValue: (number|Long);
             public negativeIntValue: (number|Long);
             public doubleValue: number;
             public stringValue: Uint8Array;
             public aggregateValue: string;
-            public static create(properties?: google.protobuf.UninterpretedOption$Properties): google.protobuf.UninterpretedOption;
-            public static encode(message: google.protobuf.UninterpretedOption$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
-            public static encodeDelimited(message: google.protobuf.UninterpretedOption$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+            public static create(properties?: google.protobuf.IUninterpretedOption): google.protobuf.UninterpretedOption;
+            public static encode(message: google.protobuf.IUninterpretedOption, writer?: $protobuf.Writer): $protobuf.Writer;
+            public static encodeDelimited(message: google.protobuf.IUninterpretedOption, writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.UninterpretedOption;
             public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.protobuf.UninterpretedOption;
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): google.protobuf.UninterpretedOption;
-            public static toObject(message: google.protobuf.UninterpretedOption, options?: $protobuf.ConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
+            public static toObject(message: google.protobuf.UninterpretedOption, options?: $protobuf.IConversionOptions): { [k: string]: any };
+            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
         namespace UninterpretedOption {
 
-            type NamePart$Properties = {
+            interface INamePart {
                 namePart: string;
                 isExtension: boolean;
-            };
+            }
 
             class NamePart {
-                constructor(properties?: google.protobuf.UninterpretedOption.NamePart$Properties);
+                constructor(properties?: google.protobuf.UninterpretedOption.INamePart);
                 public namePart: string;
                 public isExtension: boolean;
-                public static create(properties?: google.protobuf.UninterpretedOption.NamePart$Properties): google.protobuf.UninterpretedOption.NamePart;
-                public static encode(message: google.protobuf.UninterpretedOption.NamePart$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
-                public static encodeDelimited(message: google.protobuf.UninterpretedOption.NamePart$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+                public static create(properties?: google.protobuf.UninterpretedOption.INamePart): google.protobuf.UninterpretedOption.NamePart;
+                public static encode(message: google.protobuf.UninterpretedOption.INamePart, writer?: $protobuf.Writer): $protobuf.Writer;
+                public static encodeDelimited(message: google.protobuf.UninterpretedOption.INamePart, writer?: $protobuf.Writer): $protobuf.Writer;
                 public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.UninterpretedOption.NamePart;
                 public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.protobuf.UninterpretedOption.NamePart;
                 public static verify(message: { [k: string]: any }): string;
                 public static fromObject(object: { [k: string]: any }): google.protobuf.UninterpretedOption.NamePart;
-                public static toObject(message: google.protobuf.UninterpretedOption.NamePart, options?: $protobuf.ConversionOptions): { [k: string]: any };
-                public toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
+                public static toObject(message: google.protobuf.UninterpretedOption.NamePart, options?: $protobuf.IConversionOptions): { [k: string]: any };
+                public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
                 public toJSON(): { [k: string]: any };
             }
         }
 
-        type SourceCodeInfo$Properties = {
-            location?: google.protobuf.SourceCodeInfo.Location$Properties[];
-        };
+        interface ISourceCodeInfo {
+            location?: google.protobuf.SourceCodeInfo.ILocation[];
+        }
 
         class SourceCodeInfo {
-            constructor(properties?: google.protobuf.SourceCodeInfo$Properties);
-            public location: google.protobuf.SourceCodeInfo.Location$Properties[];
-            public static create(properties?: google.protobuf.SourceCodeInfo$Properties): google.protobuf.SourceCodeInfo;
-            public static encode(message: google.protobuf.SourceCodeInfo$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
-            public static encodeDelimited(message: google.protobuf.SourceCodeInfo$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+            constructor(properties?: google.protobuf.ISourceCodeInfo);
+            public location: google.protobuf.SourceCodeInfo.ILocation[];
+            public static create(properties?: google.protobuf.ISourceCodeInfo): google.protobuf.SourceCodeInfo;
+            public static encode(message: google.protobuf.ISourceCodeInfo, writer?: $protobuf.Writer): $protobuf.Writer;
+            public static encodeDelimited(message: google.protobuf.ISourceCodeInfo, writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.SourceCodeInfo;
             public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.protobuf.SourceCodeInfo;
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): google.protobuf.SourceCodeInfo;
-            public static toObject(message: google.protobuf.SourceCodeInfo, options?: $protobuf.ConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
+            public static toObject(message: google.protobuf.SourceCodeInfo, options?: $protobuf.IConversionOptions): { [k: string]: any };
+            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
         namespace SourceCodeInfo {
 
-            type Location$Properties = {
+            interface ILocation {
                 path?: number[];
                 span?: number[];
                 leadingComments?: string;
                 trailingComments?: string;
                 leadingDetachedComments?: string[];
-            };
+            }
 
             class Location {
-                constructor(properties?: google.protobuf.SourceCodeInfo.Location$Properties);
+                constructor(properties?: google.protobuf.SourceCodeInfo.ILocation);
                 public path: number[];
                 public span: number[];
                 public leadingComments: string;
                 public trailingComments: string;
                 public leadingDetachedComments: string[];
-                public static create(properties?: google.protobuf.SourceCodeInfo.Location$Properties): google.protobuf.SourceCodeInfo.Location;
-                public static encode(message: google.protobuf.SourceCodeInfo.Location$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
-                public static encodeDelimited(message: google.protobuf.SourceCodeInfo.Location$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+                public static create(properties?: google.protobuf.SourceCodeInfo.ILocation): google.protobuf.SourceCodeInfo.Location;
+                public static encode(message: google.protobuf.SourceCodeInfo.ILocation, writer?: $protobuf.Writer): $protobuf.Writer;
+                public static encodeDelimited(message: google.protobuf.SourceCodeInfo.ILocation, writer?: $protobuf.Writer): $protobuf.Writer;
                 public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.SourceCodeInfo.Location;
                 public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.protobuf.SourceCodeInfo.Location;
                 public static verify(message: { [k: string]: any }): string;
                 public static fromObject(object: { [k: string]: any }): google.protobuf.SourceCodeInfo.Location;
-                public static toObject(message: google.protobuf.SourceCodeInfo.Location, options?: $protobuf.ConversionOptions): { [k: string]: any };
-                public toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
+                public static toObject(message: google.protobuf.SourceCodeInfo.Location, options?: $protobuf.IConversionOptions): { [k: string]: any };
+                public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
                 public toJSON(): { [k: string]: any };
             }
         }
 
-        type GeneratedCodeInfo$Properties = {
-            annotation?: google.protobuf.GeneratedCodeInfo.Annotation$Properties[];
-        };
+        interface IGeneratedCodeInfo {
+            annotation?: google.protobuf.GeneratedCodeInfo.IAnnotation[];
+        }
 
         class GeneratedCodeInfo {
-            constructor(properties?: google.protobuf.GeneratedCodeInfo$Properties);
-            public annotation: google.protobuf.GeneratedCodeInfo.Annotation$Properties[];
-            public static create(properties?: google.protobuf.GeneratedCodeInfo$Properties): google.protobuf.GeneratedCodeInfo;
-            public static encode(message: google.protobuf.GeneratedCodeInfo$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
-            public static encodeDelimited(message: google.protobuf.GeneratedCodeInfo$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+            constructor(properties?: google.protobuf.IGeneratedCodeInfo);
+            public annotation: google.protobuf.GeneratedCodeInfo.IAnnotation[];
+            public static create(properties?: google.protobuf.IGeneratedCodeInfo): google.protobuf.GeneratedCodeInfo;
+            public static encode(message: google.protobuf.IGeneratedCodeInfo, writer?: $protobuf.Writer): $protobuf.Writer;
+            public static encodeDelimited(message: google.protobuf.IGeneratedCodeInfo, writer?: $protobuf.Writer): $protobuf.Writer;
             public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.GeneratedCodeInfo;
             public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.protobuf.GeneratedCodeInfo;
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): google.protobuf.GeneratedCodeInfo;
-            public static toObject(message: google.protobuf.GeneratedCodeInfo, options?: $protobuf.ConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
+            public static toObject(message: google.protobuf.GeneratedCodeInfo, options?: $protobuf.IConversionOptions): { [k: string]: any };
+            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
         namespace GeneratedCodeInfo {
 
-            type Annotation$Properties = {
+            interface IAnnotation {
                 path?: number[];
                 sourceFile?: string;
                 begin?: number;
                 end?: number;
-            };
+            }
 
             class Annotation {
-                constructor(properties?: google.protobuf.GeneratedCodeInfo.Annotation$Properties);
+                constructor(properties?: google.protobuf.GeneratedCodeInfo.IAnnotation);
                 public path: number[];
                 public sourceFile: string;
                 public begin: number;
                 public end: number;
-                public static create(properties?: google.protobuf.GeneratedCodeInfo.Annotation$Properties): google.protobuf.GeneratedCodeInfo.Annotation;
-                public static encode(message: google.protobuf.GeneratedCodeInfo.Annotation$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
-                public static encodeDelimited(message: google.protobuf.GeneratedCodeInfo.Annotation$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+                public static create(properties?: google.protobuf.GeneratedCodeInfo.IAnnotation): google.protobuf.GeneratedCodeInfo.Annotation;
+                public static encode(message: google.protobuf.GeneratedCodeInfo.IAnnotation, writer?: $protobuf.Writer): $protobuf.Writer;
+                public static encodeDelimited(message: google.protobuf.GeneratedCodeInfo.IAnnotation, writer?: $protobuf.Writer): $protobuf.Writer;
                 public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.GeneratedCodeInfo.Annotation;
                 public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.protobuf.GeneratedCodeInfo.Annotation;
                 public static verify(message: { [k: string]: any }): string;
                 public static fromObject(object: { [k: string]: any }): google.protobuf.GeneratedCodeInfo.Annotation;
-                public static toObject(message: google.protobuf.GeneratedCodeInfo.Annotation, options?: $protobuf.ConversionOptions): { [k: string]: any };
-                public toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
+                public static toObject(message: google.protobuf.GeneratedCodeInfo.Annotation, options?: $protobuf.IConversionOptions): { [k: string]: any };
+                public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
                 public toJSON(): { [k: string]: any };
             }
         }

@@ -41,6 +41,14 @@ var commonRe = /\/|\./;
 // the repository or package within the google/protobuf directory.
 
 common("any", {
+
+    /**
+    * Properties of a google.protobuf.Any message.
+    * @interface IAny
+    * @type {Object}
+    * @property {string} [typeUrl]
+    * @property {Uint8Array} [bytes]
+     */
     Any: {
         fields: {
             type_url: {
@@ -58,6 +66,14 @@ common("any", {
 var timeType;
 
 common("duration", {
+
+    /**
+     * Properties of a google.protobuf.Duration message.
+     * @interface IDuration
+     * @type {Object}
+     * @property {number|Long} [seconds]
+     * @property {number} [nanos]
+     */
     Duration: timeType = {
         fields: {
             seconds: {
@@ -73,16 +89,36 @@ common("duration", {
 });
 
 common("timestamp", {
+
+    /**
+     * Properties of a google.protobuf.Timestamp message.
+     * @interface ITimestamp
+     * @type {Object}
+     * @property {number|Long} [seconds]
+     * @property {number} [nanos]
+     */
     Timestamp: timeType
 });
 
 common("empty", {
+
+    /**
+     * Properties of a google.protobuf.Empty message.
+     * @interface IEmpty
+     */
     Empty: {
         fields: {}
     }
 });
 
 common("struct", {
+
+    /**
+     * Properties of a google.protobuf.Struct message.
+     * @interface IStruct
+     * @type {Object}
+     * @property {Object.<string,IValue>} [fields]
+     */
     Struct: {
         fields: {
             fields: {
@@ -92,6 +128,19 @@ common("struct", {
             }
         }
     },
+
+    /**
+     * Properties of a google.protobuf.Value message.
+     * @interface IValue
+     * @type {Object}
+     * @property {string} [kind]
+     * @property {0} [nullValue]
+     * @property {number} [numberValue]
+     * @property {string} [stringValue]
+     * @property {boolean} [boolValue]
+     * @property {IStruct} [structValue]
+     * @property {IListValue} [listValue]
+     */
     Value: {
         oneofs: {
             kind: {
@@ -132,11 +181,19 @@ common("struct", {
             }
         }
     },
+
     NullValue: {
         values: {
             NULL_VALUE: 0
         }
     },
+
+    /**
+     * Properties of a google.protobuf.ListValue message.
+     * @interface IListValue
+     * @type {Object}
+     * @property {Array.<IValue>} [values]
+     */
     ListValue: {
         fields: {
             values: {
@@ -149,6 +206,13 @@ common("struct", {
 });
 
 common("wrappers", {
+
+    /**
+     * Properties of a google.protobuf.DoubleValue message.
+     * @interface IDoubleValue
+     * @type {Object}
+     * @property {number} [value]
+     */
     DoubleValue: {
         fields: {
             value: {
@@ -157,6 +221,13 @@ common("wrappers", {
             }
         }
     },
+
+    /**
+     * Properties of a google.protobuf.FloatValue message.
+     * @interface IFloatValue
+     * @type {Object}
+     * @property {number} [value]
+     */
     FloatValue: {
         fields: {
             value: {
@@ -165,6 +236,13 @@ common("wrappers", {
             }
         }
     },
+
+    /**
+     * Properties of a google.protobuf.Int64Value message.
+     * @interface IInt64Value
+     * @type {Object}
+     * @property {number|Long} [value]
+     */
     Int64Value: {
         fields: {
             value: {
@@ -173,6 +251,13 @@ common("wrappers", {
             }
         }
     },
+
+    /**
+     * Properties of a google.protobuf.UInt64Value message.
+     * @interface IUInt64Value
+     * @type {Object}
+     * @property {number|Long} [value]
+     */
     UInt64Value: {
         fields: {
             value: {
@@ -181,6 +266,13 @@ common("wrappers", {
             }
         }
     },
+
+    /**
+     * Properties of a google.protobuf.Int32Value message.
+     * @interface IInt32Value
+     * @type {Object}
+     * @property {number} [value]
+     */
     Int32Value: {
         fields: {
             value: {
@@ -189,6 +281,13 @@ common("wrappers", {
             }
         }
     },
+
+    /**
+     * Properties of a google.protobuf.UInt32Value message.
+     * @interface IUInt32Value
+     * @type {Object}
+     * @property {number} [value]
+     */
     UInt32Value: {
         fields: {
             value: {
@@ -197,6 +296,13 @@ common("wrappers", {
             }
         }
     },
+
+    /**
+     * Properties of a google.protobuf.BoolValue message.
+     * @interface IBoolValue
+     * @type {Object}
+     * @property {boolean} [value]
+     */
     BoolValue: {
         fields: {
             value: {
@@ -205,6 +311,13 @@ common("wrappers", {
             }
         }
     },
+
+    /**
+     * Properties of a google.protobuf.StringValue message.
+     * @interface IStringValue
+     * @type {Object}
+     * @property {string} [value]
+     */
     StringValue: {
         fields: {
             value: {
@@ -213,6 +326,13 @@ common("wrappers", {
             }
         }
     },
+
+    /**
+     * Properties of a google.protobuf.BytesValue message.
+     * @interface IBytesValue
+     * @type {Object}
+     * @property {Uint8Array} [value]
+     */
     BytesValue: {
         fields: {
             value: {

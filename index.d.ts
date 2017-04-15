@@ -22,6 +22,181 @@ export as namespace protobuf;
 export function common(name: string, json: { [k: string]: any }): void;
 
 /**
+ * Properties of a google.protobuf.Any message.
+ * @interface IAny
+ * @type {Object}
+ * @property {string} [typeUrl]
+ * @property {Uint8Array} [bytes]
+ */
+export interface IAny {
+    typeUrl?: string;
+    bytes?: Uint8Array;
+}
+
+/**
+ * Properties of a google.protobuf.Duration message.
+ * @interface IDuration
+ * @type {Object}
+ * @property {number|Long} [seconds]
+ * @property {number} [nanos]
+ */
+export interface IDuration {
+    seconds?: (number|Long);
+    nanos?: number;
+}
+
+/**
+ * Properties of a google.protobuf.Timestamp message.
+ * @interface ITimestamp
+ * @type {Object}
+ * @property {number|Long} [seconds]
+ * @property {number} [nanos]
+ */
+export interface ITimestamp {
+    seconds?: (number|Long);
+    nanos?: number;
+}
+
+/**
+ * Properties of a google.protobuf.Empty message.
+ * @interface IEmpty
+ */
+export interface IEmpty {
+}
+
+/**
+ * Properties of a google.protobuf.Struct message.
+ * @interface IStruct
+ * @type {Object}
+ * @property {Object.<string,IValue>} [fields]
+ */
+export interface IStruct {
+    fields?: { [k: string]: IValue };
+}
+
+/**
+ * Properties of a google.protobuf.Value message.
+ * @interface IValue
+ * @type {Object}
+ * @property {string} [kind]
+ * @property {0} [nullValue]
+ * @property {number} [numberValue]
+ * @property {string} [stringValue]
+ * @property {boolean} [boolValue]
+ * @property {IStruct} [structValue]
+ * @property {IListValue} [listValue]
+ */
+export interface IValue {
+    kind?: string;
+    nullValue?: 0;
+    numberValue?: number;
+    stringValue?: string;
+    boolValue?: boolean;
+    structValue?: IStruct;
+    listValue?: IListValue;
+}
+
+/**
+ * Properties of a google.protobuf.ListValue message.
+ * @interface IListValue
+ * @type {Object}
+ * @property {Array.<IValue>} [values]
+ */
+export interface IListValue {
+    values?: IValue[];
+}
+
+/**
+ * Properties of a google.protobuf.DoubleValue message.
+ * @interface IDoubleValue
+ * @type {Object}
+ * @property {number} [value]
+ */
+export interface IDoubleValue {
+    value?: number;
+}
+
+/**
+ * Properties of a google.protobuf.FloatValue message.
+ * @interface IFloatValue
+ * @type {Object}
+ * @property {number} [value]
+ */
+export interface IFloatValue {
+    value?: number;
+}
+
+/**
+ * Properties of a google.protobuf.Int64Value message.
+ * @interface IInt64Value
+ * @type {Object}
+ * @property {number|Long} [value]
+ */
+export interface IInt64Value {
+    value?: (number|Long);
+}
+
+/**
+ * Properties of a google.protobuf.UInt64Value message.
+ * @interface IUInt64Value
+ * @type {Object}
+ * @property {number|Long} [value]
+ */
+export interface IUInt64Value {
+    value?: (number|Long);
+}
+
+/**
+ * Properties of a google.protobuf.Int32Value message.
+ * @interface IInt32Value
+ * @type {Object}
+ * @property {number} [value]
+ */
+export interface IInt32Value {
+    value?: number;
+}
+
+/**
+ * Properties of a google.protobuf.UInt32Value message.
+ * @interface IUInt32Value
+ * @type {Object}
+ * @property {number} [value]
+ */
+export interface IUInt32Value {
+    value?: number;
+}
+
+/**
+ * Properties of a google.protobuf.BoolValue message.
+ * @interface IBoolValue
+ * @type {Object}
+ * @property {boolean} [value]
+ */
+export interface IBoolValue {
+    value?: boolean;
+}
+
+/**
+ * Properties of a google.protobuf.StringValue message.
+ * @interface IStringValue
+ * @type {Object}
+ * @property {string} [value]
+ */
+export interface IStringValue {
+    value?: string;
+}
+
+/**
+ * Properties of a google.protobuf.BytesValue message.
+ * @interface IBytesValue
+ * @type {Object}
+ * @property {Uint8Array} [value]
+ */
+export interface IBytesValue {
+    value?: Uint8Array;
+}
+
+/**
  * Runtime message from/to plain object converters.
  * @namespace
  */
@@ -99,17 +274,17 @@ export class Enum extends ReflectionObject {
     /**
      * Constructs an enum from an enum descriptor.
      * @param {string} name Enum name
-     * @param {EnumDescriptor} json Enum descriptor
+     * @param {IEnum} json Enum descriptor
      * @returns {Enum} Created enum
      * @throws {TypeError} If arguments are invalid
      */
-    public static fromJSON(name: string, json: EnumDescriptor): Enum;
+    public static fromJSON(name: string, json: IEnum): Enum;
 
     /**
      * Converts this enum to an enum descriptor.
-     * @returns {EnumDescriptor} Enum descriptor
+     * @returns {IEnum} Enum descriptor
      */
-    public toJSON(): EnumDescriptor;
+    public toJSON(): IEnum;
 
     /**
      * Adds a value to this enum.
@@ -132,10 +307,16 @@ export class Enum extends ReflectionObject {
     public remove(name: string): Enum;
 }
 
-type EnumDescriptor = {
+/**
+ * Enum descriptor.
+ * @interface IEnum
+ * @property {Object.<string,number>} values Enum values
+ * @property {Object.<string,*>} [options] Enum options
+ */
+export interface IEnum {
     values: { [k: string]: number };
     options?: { [k: string]: any };
-};
+}
 
 /**
  * Constructs a new message field instance. Note that {@link MapField|map fields} have their own class.
@@ -170,11 +351,11 @@ export class Field extends FieldBase {
     /**
      * Constructs a field from a field descriptor.
      * @param {string} name Field name
-     * @param {FieldDescriptor} json Field descriptor
+     * @param {IField} json Field descriptor
      * @returns {Field} Created field
      * @throws {TypeError} If arguments are invalid
      */
-    public static fromJSON(name: string, json: FieldDescriptor): Field;
+    public static fromJSON(name: string, json: IField): Field;
 
     /**
      * Determines whether this field is packed. Only relevant when repeated and working with proto2.
@@ -202,13 +383,13 @@ export class Field extends FieldBase {
      * @name Field.d
      * @function
      * @param {number} fieldId Field id
-     * @param {Constructor<T>} fieldType Field type
+     * @param {Constructor<T>|string} fieldType Field type
      * @param {"optional"|"required"|"repeated"} [fieldRule="optional"] Field rule
      * @returns {FieldDecorator} Decorator function
      * @template T extends Message<T>
      * @variation 2
      */
-    public static d<T extends Message<T>>(fieldId: number, fieldType: Constructor<T>, fieldRule?: ("optional"|"required"|"repeated")): FieldDecorator;
+    public static d<T extends Message<T>>(fieldId: number, fieldType: (Constructor<T>|string), fieldRule?: ("optional"|"required"|"repeated")): FieldDecorator;
 }
 
 /**
@@ -345,9 +526,9 @@ export class FieldBase extends ReflectionObject {
 
     /**
      * Converts this field to a field descriptor.
-     * @returns {FieldDescriptor} Field descriptor
+     * @returns {IField} Field descriptor
      */
-    public toJSON(): FieldDescriptor;
+    public toJSON(): IField;
 
     /**
      * Resolves this field's type references.
@@ -357,20 +538,30 @@ export class FieldBase extends ReflectionObject {
     public resolve(): Field;
 }
 
-type FieldDescriptor = {
+/**
+ * Field descriptor.
+ * @interface IField
+ * @property {string} [rule="optional"] Field rule
+ * @property {string} type Field type
+ * @property {number} id Field id
+ * @property {Object.<string,*>} [options] Field options
+ */
+export interface IField {
     rule?: string;
     type: string;
     id: number;
     options?: { [k: string]: any };
-};
+}
 
-type ExtensionFieldDescriptor = {
-    rule?: string;
-    type: string;
-    id: number;
+/**
+ * Extension field descriptor.
+ * @interface IExtensionField
+ * @extends IField
+ * @property {string} extend Extended type
+ */
+export interface IExtensionField extends IField {
     extend: string;
-    options?: { [k: string]: any };
-};
+}
 
 type FieldDecorator = (prototype: object, fieldName: string) => void;
 
@@ -501,17 +692,17 @@ export class MapField extends FieldBase {
     /**
      * Constructs a map field from a map field descriptor.
      * @param {string} name Field name
-     * @param {MapFieldDescriptor} json Map field descriptor
+     * @param {IMapField} json Map field descriptor
      * @returns {MapField} Created map field
      * @throws {TypeError} If arguments are invalid
      */
-    public static fromJSON(name: string, json: MapFieldDescriptor): MapField;
+    public static fromJSON(name: string, json: IMapField): MapField;
 
     /**
      * Converts this map field to a map field descriptor.
-     * @returns {MapFieldDescriptor} Map field descriptor
+     * @returns {IMapField} Map field descriptor
      */
-    public toJSON(): MapFieldDescriptor;
+    public toJSON(): IMapField;
 
     /**
      * Map field decorator (TypeScript).
@@ -526,20 +717,25 @@ export class MapField extends FieldBase {
     public static d<T extends { [key: string]: number | Long | string | boolean | Uint8Array | Buffer | number[] | Message<{}> }>(fieldId: number, fieldKeyType: ("int32"|"uint32"|"sint32"|"fixed32"|"sfixed32"|"int64"|"uint64"|"sint64"|"fixed64"|"sfixed64"|"bool"|"string"), fieldValueType: ("double"|"float"|"int32"|"uint32"|"sint32"|"fixed32"|"sfixed32"|"int64"|"uint64"|"sint64"|"fixed64"|"sfixed64"|"bool"|"string"|"bytes"|object|Constructor<{}>)): FieldDecorator;
 }
 
-type MapFieldDescriptor = {
+/**
+ * Map field descriptor.
+ * @interface IMapField
+ * @extends {IField}
+ * @property {string} keyType Key type
+ */
+export interface IMapField extends IField {
     keyType: string;
-    type: string;
-    id: number;
-    options?: { [k: string]: any };
-};
+}
 
-type ExtensionMapFieldDescriptor = {
-    keyType: string;
-    type: string;
-    id: number;
+/**
+ * Extension map field descriptor.
+ * @interface IExtensionMapField
+ * @extends IMapField
+ * @property {string} extend Extended type
+ */
+export interface IExtensionMapField extends IMapField {
     extend: string;
-    options?: { [k: string]: any };
-};
+}
 
 /**
  * Constructs a new message instance.
@@ -647,19 +843,19 @@ export class Message<T extends object> {
     /**
      * Creates a plain object from a message of this type. Also converts values to other types if specified.
      * @param {T} message Message instance
-     * @param {ConversionOptions} [options] Conversion options
+     * @param {IConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      * @template T extends Message<T>
      * @this Constructor<T>
      */
-    public static toObject<T extends Message<T>>(this: Constructor<T>, message: T, options?: ConversionOptions): { [k: string]: any };
+    public static toObject<T extends Message<T>>(this: Constructor<T>, message: T, options?: IConversionOptions): { [k: string]: any };
 
     /**
      * Creates a plain object from this message. Also converts values to other types if specified.
-     * @param {ConversionOptions} [options] Conversion options
+     * @param {IConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      */
-    public toObject(options?: ConversionOptions): { [k: string]: any };
+    public toObject(options?: IConversionOptions): { [k: string]: any };
 
     /**
      * Converts this message to JSON.
@@ -743,27 +939,37 @@ export class Method extends ReflectionObject {
     /**
      * Constructs a method from a method descriptor.
      * @param {string} name Method name
-     * @param {MethodDescriptor} json Method descriptor
+     * @param {IMethod} json Method descriptor
      * @returns {Method} Created method
      * @throws {TypeError} If arguments are invalid
      */
-    public static fromJSON(name: string, json: MethodDescriptor): Method;
+    public static fromJSON(name: string, json: IMethod): Method;
 
     /**
      * Converts this method to a method descriptor.
-     * @returns {MethodDescriptor} Method descriptor
+     * @returns {IMethod} Method descriptor
      */
-    public toJSON(): MethodDescriptor;
+    public toJSON(): IMethod;
 }
 
-type MethodDescriptor = {
+/**
+ * Method descriptor.
+ * @interface IMethod
+ * @property {string} [type="rpc"] Method type
+ * @property {string} requestType Request type
+ * @property {string} responseType Response type
+ * @property {boolean} [requestStream=false] Whether requests are streamed
+ * @property {boolean} [responseStream=false] Whether responses are streamed
+ * @property {Object.<string,*>} [options] Method options
+ */
+export interface IMethod {
     type?: string;
     requestType: string;
     responseType: string;
     requestStream?: boolean;
     responseStream?: boolean;
     options?: { [k: string]: any };
-};
+}
 
 /**
  * Constructs a new namespace instance.
@@ -836,16 +1042,16 @@ export abstract class NamespaceBase extends ReflectionObject {
 
     /**
      * Converts this namespace to a namespace descriptor.
-     * @returns {NamespaceBaseDescriptor} Namespace descriptor
+     * @returns {INamespace} Namespace descriptor
      */
-    public toJSON(): NamespaceBaseDescriptor;
+    public toJSON(): INamespace;
 
     /**
      * Adds nested objects to this namespace from nested object descriptors.
-     * @param {Object.<string,AnyNestedDescriptor>} nestedJson Any nested object descriptors
+     * @param {Object.<string,AnyNestedObject>} nestedJson Any nested object descriptors
      * @returns {Namespace} `this`
      */
-    public addJSON(nestedJson: { [k: string]: AnyNestedDescriptor }): Namespace;
+    public addJSON(nestedJson: { [k: string]: AnyNestedObject }): Namespace;
 
     /**
      * Gets the nested object of the specified name.
@@ -896,7 +1102,7 @@ export abstract class NamespaceBase extends ReflectionObject {
     public resolveAll(): Namespace;
 
     /**
-     * Looks up the reflection object at the specified path, relative to this namespace.
+     * Recursively looks up the reflection object matching the specified path in the scope of this namespace.
      * @param {string|string[]} path Path to look up
      * @param {*|Array.<*>} filterTypes Filter types, any combination of the constructors of `protobuf.Type`, `protobuf.Enum`, `protobuf.Service` etc.
      * @param {boolean} [parentAlreadyChecked=false] If known, whether the parent has already been checked
@@ -952,19 +1158,20 @@ export abstract class NamespaceBase extends ReflectionObject {
     public lookupService(path: (string|string[])): Service;
 }
 
-type NamespaceDescriptor = {
+/**
+ * Namespace descriptor.
+ * @interface INamespace
+ * @property {Object.<string,*>} [options] Namespace options
+ * @property {Object.<string,AnyNestedObject>} [nested] Nested object descriptors
+ */
+export interface INamespace {
     options?: { [k: string]: any };
-    nested: { [k: string]: AnyNestedDescriptor };
-};
+    nested?: { [k: string]: AnyNestedObject };
+}
 
-type NamespaceBaseDescriptor = {
-    options?: { [k: string]: any };
-    nested?: { [k: string]: AnyNestedDescriptor };
-};
+type AnyExtensionField = (IExtensionField|IExtensionMapField);
 
-type AnyExtensionFieldDescriptor = (ExtensionFieldDescriptor|ExtensionMapFieldDescriptor);
-
-type AnyNestedDescriptor = (EnumDescriptor|TypeDescriptor|ServiceDescriptor|AnyExtensionFieldDescriptor|NamespaceDescriptor);
+type AnyNestedObject = (IEnum|IType|IService|AnyExtensionField|INamespace);
 
 /**
  * Constructs a new reflection object instance.
@@ -1124,17 +1331,17 @@ export class OneOf extends ReflectionObject {
     /**
      * Constructs a oneof from a oneof descriptor.
      * @param {string} name Oneof name
-     * @param {OneOfDescriptor} json Oneof descriptor
+     * @param {IOneOf} json Oneof descriptor
      * @returns {OneOf} Created oneof
      * @throws {TypeError} If arguments are invalid
      */
-    public static fromJSON(name: string, json: OneOfDescriptor): OneOf;
+    public static fromJSON(name: string, json: IOneOf): OneOf;
 
     /**
      * Converts this oneof to a oneof descriptor.
-     * @returns {OneOfDescriptor} Oneof descriptor
+     * @returns {IOneOf} Oneof descriptor
      */
-    public toJSON(): OneOfDescriptor;
+    public toJSON(): IOneOf;
 
     /**
      * Adds a field to this oneof and removes it from its current parent, if any.
@@ -1160,41 +1367,69 @@ export class OneOf extends ReflectionObject {
     public static d<T extends string>(...fieldNames: string[]): OneOfDecorator;
 }
 
-type OneOfDescriptor = {
+/**
+ * Oneof descriptor.
+ * @interface IOneOf
+ * @property {Array.<string>} oneof Oneof field names
+ * @property {Object.<string,*>} [options] Oneof options
+ */
+export interface IOneOf {
     oneof: string[];
     options?: { [k: string]: any };
-};
+}
 
 type OneOfDecorator = (prototype: object, oneofName: string) => void;
 
-type ParserResult = { [k: string]: any };
+/**
+ * Result object returned from {@link parse}.
+ * @interface IParserResult
+ * @property {string|undefined} package Package name, if declared
+ * @property {string[]|undefined} imports Imports, if any
+ * @property {string[]|undefined} weakImports Weak imports, if any
+ * @property {string|undefined} syntax Syntax, if specified (either `"proto2"` or `"proto3"`)
+ * @property {Root} root Populated root instance
+ */
+export interface IParserResult {
+    package: (string|undefined);
+    imports: (string[]|undefined);
+    weakImports: (string[]|undefined);
+    syntax: (string|undefined);
+    root: Root;
+}
 
-type ParseOptions = { [k: string]: any };
+/**
+ * Options modifying the behavior of {@link parse}.
+ * @interface IParseOptions
+ * @property {boolean} [keepCase=false] Keeps field casing instead of converting to camel case
+ */
+export interface IParseOptions {
+    keepCase?: boolean;
+}
 
 /**
  * Parses the given .proto source and returns an object with the parsed contents.
  * @function
  * @param {string} source Source contents
  * @param {Root} root Root to populate
- * @param {ParseOptions} [options] Parse options. Defaults to {@link parse.defaults} when omitted.
- * @returns {ParserResult} Parser result
+ * @param {IParseOptions} [options] Parse options. Defaults to {@link parse.defaults} when omitted.
+ * @returns {IParserResult} Parser result
  * @property {string} filename=null Currently processing file name for error reporting, if known
- * @property {ParseOptions} defaults Default {@link ParseOptions}
+ * @property {IParseOptions} defaults Default {@link IParseOptions}
  */
-export function parse(source: string, root: Root, options?: ParseOptions): ParserResult;
+export function parse(source: string, root: Root, options?: IParseOptions): IParserResult;
 
 /**
  * Parses the given .proto source and returns an object with the parsed contents.
  * @name parse
  * @function
  * @param {string} source Source contents
- * @param {ParseOptions} [options] Parse options. Defaults to {@link parse.defaults} when omitted.
- * @returns {ParserResult} Parser result
+ * @param {IParseOptions} [options] Parse options. Defaults to {@link parse.defaults} when omitted.
+ * @returns {IParserResult} Parser result
  * @property {string} filename=null Currently processing file name for error reporting, if known
- * @property {ParseOptions} defaults Default {@link ParseOptions}
+ * @property {IParseOptions} defaults Default {@link IParseOptions}
  * @variation 2
  */
-export function parse(source: string, options?: ParseOptions): ParserResult;
+export function parse(source: string, options?: IParseOptions): IParserResult;
 
 /**
  * Constructs a new reader instance using the specified buffer.
@@ -1423,11 +1658,11 @@ export class Root extends NamespaceBase {
 
     /**
      * Loads a namespace descriptor into a root namespace.
-     * @param {NamespaceDescriptor} json Nameespace descriptor
+     * @param {INamespace} json Nameespace descriptor
      * @param {Root} [root] Root namespace, defaults to create a new one if omitted
      * @returns {Root} Root namespace
      */
-    public static fromJSON(json: NamespaceDescriptor, root?: Root): Root;
+    public static fromJSON(json: INamespace, root?: Root): Root;
 
     /**
      * Resolves the path of an imported file, relative to the importing origin.
@@ -1442,33 +1677,33 @@ export class Root extends NamespaceBase {
     /**
      * Loads one or multiple .proto or preprocessed .json files into this root namespace and calls the callback.
      * @param {string|string[]} filename Names of one or multiple files to load
-     * @param {ParseOptions} options Parse options
+     * @param {IParseOptions} options Parse options
      * @param {LoadCallback} callback Callback function
      * @returns {undefined}
      */
-    public load(filename: (string|string[]), options: ParseOptions, callback: LoadCallback): void;
+    public load(filename: (string|string[]), options: IParseOptions, callback: LoadCallback): void;
 
     /**
      * Loads one or multiple .proto or preprocessed .json files into this root namespace and returns a promise.
      * @name Root#load
      * @function
      * @param {string|string[]} filename Names of one or multiple files to load
-     * @param {ParseOptions} [options] Parse options. Defaults to {@link parse.defaults} when omitted.
+     * @param {IParseOptions} [options] Parse options. Defaults to {@link parse.defaults} when omitted.
      * @returns {Promise<Root>} Promise
      * @variation 3
      */
-    public load(filename: (string|string[]), options?: ParseOptions): Promise<Root>;
+    public load(filename: (string|string[]), options?: IParseOptions): Promise<Root>;
 
     /**
      * Synchronously loads one or multiple .proto or preprocessed .json files into this root namespace (node only).
      * @name Root#loadSync
      * @function
      * @param {string|string[]} filename Names of one or multiple files to load
-     * @param {ParseOptions} [options] Parse options. Defaults to {@link parse.defaults} when omitted.
+     * @param {IParseOptions} [options] Parse options. Defaults to {@link parse.defaults} when omitted.
      * @returns {Root} Root namespace
      * @throws {Error} If synchronous fetching is not supported (i.e. in browsers) or if a file's syntax is invalid
      */
-    public loadSync(filename: (string|string[]), options?: ParseOptions): Root;
+    public loadSync(filename: (string|string[]), options?: IParseOptions): Root;
 }
 
 /**
@@ -1597,17 +1832,17 @@ export class Service extends NamespaceBase {
     /**
      * Constructs a service from a service descriptor.
      * @param {string} name Service name
-     * @param {ServiceDescriptor} json Service descriptor
+     * @param {IService} json Service descriptor
      * @returns {Service} Created service
      * @throws {TypeError} If arguments are invalid
      */
-    public static fromJSON(name: string, json: ServiceDescriptor): Service;
+    public static fromJSON(name: string, json: IService): Service;
 
     /**
      * Converts this service to a service descriptor.
-     * @returns {ServiceDescriptor} Service descriptor
+     * @returns {IService} Service descriptor
      */
-    public toJSON(): ServiceDescriptor;
+    public toJSON(): IService;
 
     /**
      * Methods of this service as an array for iteration.
@@ -1627,21 +1862,54 @@ export class Service extends NamespaceBase {
     public create(rpcImpl: RPCImpl, requestDelimited?: boolean, responseDelimited?: boolean): rpc.Service;
 }
 
-type ServiceDescriptor = {
-    options?: { [k: string]: any };
-    methods: { [k: string]: MethodDescriptor };
-    nested?: { [k: string]: AnyNestedDescriptor };
-};
+/**
+ * Service descriptor.
+ * @interface IService
+ * @extends INamespace
+ * @property {Object.<string,IMethod>} methods Method descriptors
+ */
+export interface IService extends INamespace {
+    methods: { [k: string]: IMethod };
+}
 
-type TokenizerHandle = { [k: string]: any };
+type TokenizerHandleLine = () => number;
+
+type TokenizerHandleNext = () => string;
+
+type TokenizerHandlePeek = () => string;
+
+type TokenizerHandlePush = (token: string) => void;
+
+type TokenizerHandleSkip = (expected: string, optional?: boolean) => boolean;
+
+type TokenizerHandleCmnt = (line?: number) => string;
+
+/**
+ * Handle object returned from {@link tokenize}.
+ * @interface ITokenizerHandle
+ * @property {TokenizerHandleLine} line Gets the current line number
+ * @property {TokenizerHandleNext} next Gets the next token and advances (`null` on eof)
+ * @property {TokenizerHandlePeek} peek Peeks for the next token (`null` on eof)
+ * @property {TokenizerHandlePush} push Pushes a token back to the stack
+ * @property {TokenizerHandleSkip} skip Skips a token, returns its presence and advances or, if non-optional and not present, throws
+ * @property {TokenizerHandleCmnt} cmnt Gets the comment on the previous line or the line comment on the specified line, if any
+ */
+export interface ITokenizerHandle {
+    line: TokenizerHandleLine;
+    next: TokenizerHandleNext;
+    peek: TokenizerHandlePeek;
+    push: TokenizerHandlePush;
+    skip: TokenizerHandleSkip;
+    cmnt: TokenizerHandleCmnt;
+}
 
 /**
  * Tokenizes the given .proto source and returns an object with useful utility functions.
  * @param {string} source Source contents
- * @returns {TokenizerHandle} Tokenizer handle
+ * @returns {ITokenizerHandle} Tokenizer handle
  * @property {function(string):string} unescape Unescapes a string
  */
-export function tokenize(source: string): TokenizerHandle;
+export function tokenize(source: string): ITokenizerHandle;
 
 /**
  * Constructs a new reflected message type instance.
@@ -1729,16 +1997,16 @@ export class Type extends NamespaceBase {
     /**
      * Creates a message type from a message type descriptor.
      * @param {string} name Message name
-     * @param {TypeDescriptor} json Message type descriptor
+     * @param {IType} json Message type descriptor
      * @returns {Type} Created message type
      */
-    public static fromJSON(name: string, json: TypeDescriptor): Type;
+    public static fromJSON(name: string, json: IType): Type;
 
     /**
      * Converts this message type to a message type descriptor.
-     * @returns {TypeDescriptor} Message type descriptor
+     * @returns {IType} Message type descriptor
      */
-    public toJSON(): TypeDescriptor;
+    public toJSON(): IType;
 
     /**
      * Adds a nested object to this type.
@@ -1837,10 +2105,10 @@ export class Type extends NamespaceBase {
     /**
      * Creates a plain object from a message of this type. Also converts values to other types if specified.
      * @param {Message<{}>} message Message instance
-     * @param {ConversionOptions} [options] Conversion options
+     * @param {IConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      */
-    public toObject(message: Message<{}>, options?: ConversionOptions): { [k: string]: any };
+    public toObject(message: Message<{}>, options?: IConversionOptions): { [k: string]: any };
 
     /**
      * Type decorator (TypeScript).
@@ -1851,17 +2119,43 @@ export class Type extends NamespaceBase {
     public static d<T extends Message<T>>(typeName?: string): TypeDecorator<T>;
 }
 
-type TypeDescriptor = {
-    options?: { [k: string]: any };
-    oneofs?: { [k: string]: OneOfDescriptor };
-    fields: { [k: string]: FieldDescriptor };
+/**
+ * Message type descriptor.
+ * @interface IType
+ * @extends INamespace
+ * @property {Object.<string,IOneOf>} [oneofs] Oneof descriptors
+ * @property {Object.<string,IField>} fields Field descriptors
+ * @property {number[][]} [extensions] Extension ranges
+ * @property {number[][]} [reserved] Reserved ranges
+ * @property {boolean} [group=false] Whether a legacy group or not
+ */
+export interface IType extends INamespace {
+    oneofs?: { [k: string]: IOneOf };
+    fields: { [k: string]: IField };
     extensions?: number[][];
     reserved?: number[][];
     group?: boolean;
-    nested?: { [k: string]: AnyNestedDescriptor };
-};
+}
 
-type ConversionOptions = {
+/**
+ * Conversion options as used by {@link Type#toObject} and {@link Message.toObject}.
+ * @interface IConversionOptions
+ * @property {*} [longs] Long conversion type.
+ * Valid values are `String` and `Number` (the global types).
+ * Defaults to copy the present value, which is a possibly unsafe number without and a {@link Long} with a long library.
+ * @property {*} [enums] Enum value conversion type.
+ * Only valid value is `String` (the global type).
+ * Defaults to copy the present value, which is the numeric id.
+ * @property {*} [bytes] Bytes value conversion type.
+ * Valid values are `Array` and (a base64 encoded) `String` (the global types).
+ * Defaults to copy the present value, which usually is a Buffer under node and an Uint8Array in the browser.
+ * @property {boolean} [defaults=false] Also sets default values on the resulting object
+ * @property {boolean} [arrays=false] Sets empty arrays for missing repeated fields even if `defaults=false`
+ * @property {boolean} [objects=false] Sets empty objects for missing map fields even if `defaults=false`
+ * @property {boolean} [oneofs=false] Includes virtual oneof properties set to the present field's name, if any
+ * @property {boolean} [json=false] Performs additional JSON compatibility conversions, i.e. NaN and Infinity to strings
+ */
+export interface IConversionOptions {
     longs?: any;
     enums?: any;
     bytes?: any;
@@ -1870,7 +2164,7 @@ type ConversionOptions = {
     objects?: boolean;
     oneofs?: boolean;
     json?: boolean;
-};
+}
 
 type TypeDecorator<T extends Message<T>> = (target: Constructor<T>) => void;
 
@@ -2043,9 +2337,18 @@ export namespace types {
     };
 }
 
-type Constructor<T extends object> = { new(...params: any[]): T };
+/**
+ * Constructor type.
+ * @interface Constructor
+ * @extends Function
+ * @template T
+ * @tstype new(...params: any[]): T; prototype: T;
+ */
+export interface Constructor<T> extends Function {
+    new(...params: any[]): T; prototype: T;
+}
 
-type Properties<T extends object> = { [P in keyof T]?: T[P] } & { [key: string]: any };
+type Properties<T> = { [P in keyof T]?: T[P] };
 
 type OneOfGetter = () => (string|undefined);
 
@@ -2385,10 +2688,10 @@ export namespace util {
      * - Repeated fields become arrays
      * - NaN and Infinity for float and double fields become strings
      *
-     * @type {ConversionOptions}
+     * @type {IConversionOptions}
      * @see https://developers.google.com/protocol-buffers/docs/proto3?hl=en#json
      */
-    let toJSONOptions: ConversionOptions;
+    let toJSONOptions: IConversionOptions;
 
     /**
      * Node's fs module if available.
@@ -2402,6 +2705,13 @@ export namespace util {
      * @returns {Array.<*>} Converted array
      */
     function toArray(object: { [k: string]: any }): any[];
+
+    /**
+     * Converts an array of keys immediately followed by their respective value to an object, omitting undefined values.
+     * @param {Array.<*>} array Array to convert
+     * @returns {Object.<string,*>} Converted object
+     */
+    function toObject(array: any[]): { [k: string]: any };
 
     /**
      * Returns a safe property accessor for the specified properly name.
@@ -2652,11 +2962,11 @@ export namespace util {
      * Fetches the contents of a file.
      * @memberof util
      * @param {string} filename File path or url
-     * @param {FetchOptions} options Fetch options
+     * @param {IFetchOptions} options Fetch options
      * @param {FetchCallback} callback Callback function
      * @returns {undefined}
      */
-    function fetch(filename: string, options: FetchOptions, callback: FetchCallback): void;
+    function fetch(filename: string, options: IFetchOptions, callback: FetchCallback): void;
 
     /**
      * Fetches the contents of a file.
@@ -2674,11 +2984,11 @@ export namespace util {
      * @name util.fetch
      * @function
      * @param {string} path File path or url
-     * @param {FetchOptions} [options] Fetch options
+     * @param {IFetchOptions} [options] Fetch options
      * @returns {Promise<string|Uint8Array>} Promise
      * @variation 3
      */
-    function fetch(path: string, options?: FetchOptions): Promise<(string|Uint8Array)>;
+    function fetch(path: string, options?: IFetchOptions): Promise<(string|Uint8Array)>;
 
     /**
      * Requires a module only if available.
@@ -2773,19 +3083,25 @@ export function verifier(mtype: Type): Codegen;
 
 /**
  * Wrappers for common types.
- * @type {Object.<string,Wrapper>}
+ * @type {Object.<string,IWrapper>}
  * @const
  */
-export const wrappers: { [k: string]: Wrapper };
+export const wrappers: { [k: string]: IWrapper };
 
 type WrapperFromObjectConverter = (this: Type, object: { [k: string]: any }) => Message<{}>;
 
-type WrapperToObjectConverter = (this: Type, message: Message<{}>, options?: ConversionOptions) => { [k: string]: any };
+type WrapperToObjectConverter = (this: Type, message: Message<{}>, options?: IConversionOptions) => { [k: string]: any };
 
-type Wrapper = {
+/**
+ * Common type wrapper part of {@link wrappers}.
+ * @interface IWrapper
+ * @property {WrapperFromObjectConverter} [fromObject] From object converter
+ * @property {WrapperToObjectConverter} [toObject] To object converter
+ */
+export interface IWrapper {
     fromObject?: WrapperFromObjectConverter;
     toObject?: WrapperToObjectConverter;
-};
+}
 
 /**
  * Constructs a new writer instance.
@@ -3021,10 +3337,16 @@ type EventEmitterListener = (...args: any[]) => void;
 
 type FetchCallback = (error: Error, contents?: string) => void;
 
-type FetchOptions = {
+/**
+ * Options as used by {@link util.fetch}.
+ * @interface IFetchOptions
+ * @property {boolean} [binary=false] Whether expecting a binary response
+ * @property {boolean} [xhr=false] If `true`, forces the use of XMLHttpRequest
+ */
+export interface IFetchOptions {
     binary?: boolean;
     xhr?: boolean;
-};
+}
 
 type PoolAllocator = (size: number) => Uint8Array;
 

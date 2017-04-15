@@ -40,8 +40,7 @@ parse.numberRe = numberRe;
 
 /**
  * Result object returned from {@link parse}.
- * @typedef ParserResult
- * @type {Object.<string,*>}
+ * @interface IParserResult
  * @property {string|undefined} package Package name, if declared
  * @property {string[]|undefined} imports Imports, if any
  * @property {string[]|undefined} weakImports Weak imports, if any
@@ -51,8 +50,7 @@ parse.numberRe = numberRe;
 
 /**
  * Options modifying the behavior of {@link parse}.
- * @typedef ParseOptions
- * @type {Object.<string,*>}
+ * @interface IParseOptions
  * @property {boolean} [keepCase=false] Keeps field casing instead of converting to camel case
  */
 
@@ -61,10 +59,10 @@ parse.numberRe = numberRe;
  * @function
  * @param {string} source Source contents
  * @param {Root} root Root to populate
- * @param {ParseOptions} [options] Parse options. Defaults to {@link parse.defaults} when omitted.
- * @returns {ParserResult} Parser result
+ * @param {IParseOptions} [options] Parse options. Defaults to {@link parse.defaults} when omitted.
+ * @returns {IParserResult} Parser result
  * @property {string} filename=null Currently processing file name for error reporting, if known
- * @property {ParseOptions} defaults Default {@link ParseOptions}
+ * @property {IParseOptions} defaults Default {@link IParseOptions}
  */
 function parse(source, root, options) {
     /* eslint-disable callback-return */
@@ -745,9 +743,9 @@ function parse(source, root, options) {
  * @name parse
  * @function
  * @param {string} source Source contents
- * @param {ParseOptions} [options] Parse options. Defaults to {@link parse.defaults} when omitted.
- * @returns {ParserResult} Parser result
+ * @param {IParseOptions} [options] Parse options. Defaults to {@link parse.defaults} when omitted.
+ * @returns {IParserResult} Parser result
  * @property {string} filename=null Currently processing file name for error reporting, if known
- * @property {ParseOptions} defaults Default {@link ParseOptions}
+ * @property {IParseOptions} defaults Default {@link IParseOptions}
  * @variation 2
  */

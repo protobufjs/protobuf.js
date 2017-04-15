@@ -13,15 +13,15 @@ $root.Package = (function() {
 
     /**
      * Properties of a Package.
-     * @typedef Package$Properties
-     * @type {Object}
+     * @interface IPackage
+     * @name IPackage
      * @property {string} [name] Package name.
      * @property {string} [version] Package version.
      * @property {string} [versionScheme] Package versionScheme.
      * @property {string} [description] Package description.
      * @property {string} [author] Package author.
      * @property {string} [license] Package license.
-     * @property {Package.Repository$Properties} [repository] Package repository.
+     * @property {Package.IRepository} [repository] Package repository.
      * @property {string} [bugs] Package bugs.
      * @property {string} [homepage] Package homepage.
      * @property {Array.<string>} [keywords] Package keywords.
@@ -36,9 +36,9 @@ $root.Package = (function() {
 
     /**
      * Constructs a new Package.
-     * @exports Package
      * @constructor
-     * @param {Package$Properties=} [properties] Properties to set
+     * @param {IPackage=} [properties] Properties to set
+     * @name Package
      */
     function Package(properties) {
         this.keywords = [];
@@ -91,7 +91,7 @@ $root.Package = (function() {
 
     /**
      * Package repository.
-     * @type {(Package.Repository$Properties|null)}
+     * @type {(Package.IRepository|null)}
      */
     Package.prototype.repository = null;
 
@@ -157,7 +157,7 @@ $root.Package = (function() {
 
     /**
      * Creates a new Package instance using the specified properties.
-     * @param {Package$Properties=} [properties] Properties to set
+     * @param {IPackage=} [properties] Properties to set
      * @returns {Package} Package instance
      */
     Package.create = function create(properties) {
@@ -166,7 +166,7 @@ $root.Package = (function() {
 
     /**
      * Encodes the specified Package message. Does not implicitly {@link Package.verify|verify} messages.
-     * @param {Package$Properties} message Package message or plain object to encode
+     * @param {IPackage} message Package message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
@@ -218,7 +218,7 @@ $root.Package = (function() {
 
     /**
      * Encodes the specified Package message, length delimited. Does not implicitly {@link Package.verify|verify} messages.
-     * @param {Package$Properties} message Package message or plain object to encode
+     * @param {IPackage} message Package message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
@@ -511,7 +511,7 @@ $root.Package = (function() {
     /**
      * Creates a plain object from a Package message. Also converts values to other types if specified.
      * @param {Package} message Package
-     * @param {$protobuf.ConversionOptions} [options] Conversion options
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      */
     Package.toObject = function toObject(message, options) {
@@ -599,7 +599,7 @@ $root.Package = (function() {
 
     /**
      * Creates a plain object from this Package message. Also converts values to other types if specified.
-     * @param {$protobuf.ConversionOptions} [options] Conversion options
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      */
     Package.prototype.toObject = function toObject(options) {
@@ -618,17 +618,17 @@ $root.Package = (function() {
 
         /**
          * Properties of a Repository.
-         * @typedef Package.Repository$Properties
-         * @type {Object}
+         * @interface IRepository
+         * @memberof Package
          * @property {string} [type] Repository type.
          * @property {string} [url] Repository url.
          */
 
         /**
          * Constructs a new Repository.
-         * @exports Package.Repository
          * @constructor
-         * @param {Package.Repository$Properties=} [properties] Properties to set
+         * @param {Package.IRepository=} [properties] Properties to set
+         * @memberof Package
          */
         function Repository(properties) {
             if (properties)
@@ -651,7 +651,7 @@ $root.Package = (function() {
 
         /**
          * Creates a new Repository instance using the specified properties.
-         * @param {Package.Repository$Properties=} [properties] Properties to set
+         * @param {Package.IRepository=} [properties] Properties to set
          * @returns {Package.Repository} Repository instance
          */
         Repository.create = function create(properties) {
@@ -660,7 +660,7 @@ $root.Package = (function() {
 
         /**
          * Encodes the specified Repository message. Does not implicitly {@link Package.Repository.verify|verify} messages.
-         * @param {Package.Repository$Properties} message Repository message or plain object to encode
+         * @param {Package.IRepository} message Repository message or plain object to encode
          * @param {$protobuf.Writer} [writer] Writer to encode to
          * @returns {$protobuf.Writer} Writer
          */
@@ -676,7 +676,7 @@ $root.Package = (function() {
 
         /**
          * Encodes the specified Repository message, length delimited. Does not implicitly {@link Package.Repository.verify|verify} messages.
-         * @param {Package.Repository$Properties} message Repository message or plain object to encode
+         * @param {Package.IRepository} message Repository message or plain object to encode
          * @param {$protobuf.Writer} [writer] Writer to encode to
          * @returns {$protobuf.Writer} Writer
          */
@@ -762,7 +762,7 @@ $root.Package = (function() {
         /**
          * Creates a plain object from a Repository message. Also converts values to other types if specified.
          * @param {Package.Repository} message Repository
-         * @param {$protobuf.ConversionOptions} [options] Conversion options
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
          * @returns {Object.<string,*>} Plain object
          */
         Repository.toObject = function toObject(message, options) {
@@ -782,7 +782,7 @@ $root.Package = (function() {
 
         /**
          * Creates a plain object from this Repository message. Also converts values to other types if specified.
-         * @param {$protobuf.ConversionOptions} [options] Conversion options
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
          * @returns {Object.<string,*>} Plain object
          */
         Repository.prototype.toObject = function toObject(options) {

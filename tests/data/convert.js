@@ -13,8 +13,8 @@ $root.Message = (function() {
 
     /**
      * Properties of a Message.
-     * @typedef Message$Properties
-     * @type {Object}
+     * @interface IMessage
+     * @name IMessage
      * @property {string} [stringVal] Message stringVal.
      * @property {Array.<string>} [stringRepeated] Message stringRepeated.
      * @property {number|Long} [uint64Val] Message uint64Val.
@@ -28,9 +28,9 @@ $root.Message = (function() {
 
     /**
      * Constructs a new Message.
-     * @exports Message
      * @constructor
-     * @param {Message$Properties=} [properties] Properties to set
+     * @param {IMessage=} [properties] Properties to set
+     * @name Message
      */
     function Message(properties) {
         this.stringRepeated = [];
@@ -100,7 +100,7 @@ $root.Message = (function() {
 
     /**
      * Creates a new Message instance using the specified properties.
-     * @param {Message$Properties=} [properties] Properties to set
+     * @param {IMessage=} [properties] Properties to set
      * @returns {Message} Message instance
      */
     Message.create = function create(properties) {
@@ -109,7 +109,7 @@ $root.Message = (function() {
 
     /**
      * Encodes the specified Message message. Does not implicitly {@link Message.verify|verify} messages.
-     * @param {Message$Properties} message Message message or plain object to encode
+     * @param {IMessage} message Message message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
@@ -150,7 +150,7 @@ $root.Message = (function() {
 
     /**
      * Encodes the specified Message message, length delimited. Does not implicitly {@link Message.verify|verify} messages.
-     * @param {Message$Properties} message Message message or plain object to encode
+     * @param {IMessage} message Message message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
@@ -416,7 +416,7 @@ $root.Message = (function() {
     /**
      * Creates a plain object from a Message message. Also converts values to other types if specified.
      * @param {Message} message Message
-     * @param {$protobuf.ConversionOptions} [options] Conversion options
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      */
     Message.toObject = function toObject(message, options) {
@@ -489,7 +489,7 @@ $root.Message = (function() {
 
     /**
      * Creates a plain object from this Message message. Also converts values to other types if specified.
-     * @param {$protobuf.ConversionOptions} [options] Conversion options
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      */
     Message.prototype.toObject = function toObject(options) {
@@ -507,8 +507,8 @@ $root.Message = (function() {
     /**
      * SomeEnum enum.
      * @name SomeEnum
-     * @memberof Message
      * @enum {number}
+     * @memberof Message
      * @property {number} ONE=1 ONE value
      * @property {number} TWO=2 TWO value
      */

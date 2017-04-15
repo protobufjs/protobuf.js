@@ -387,7 +387,7 @@ util.oneOfSetter = function setOneOf(fieldNames) {
  * - Repeated fields become arrays
  * - NaN and Infinity for float and double fields become strings
  *
- * @type {ConversionOptions}
+ * @type {IConversionOptions}
  * @see https://developers.google.com/protocol-buffers/docs/proto3?hl=en#json
  */
 util.toJSONOptions = {

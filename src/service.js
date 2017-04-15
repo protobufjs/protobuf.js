@@ -37,17 +37,15 @@ function Service(name, options) {
 
 /**
  * Service descriptor.
- * @typedef ServiceDescriptor
- * @type {Object}
- * @property {Object.<string,*>} [options] Service options
- * @property {Object.<string,MethodDescriptor>} methods Method descriptors
- * @property {Object.<string,AnyNestedDescriptor>} [nested] Nested object descriptors
+ * @interface IService
+ * @extends INamespace
+ * @property {Object.<string,IMethod>} methods Method descriptors
  */
 
 /**
  * Constructs a service from a service descriptor.
  * @param {string} name Service name
- * @param {ServiceDescriptor} json Service descriptor
+ * @param {IService} json Service descriptor
  * @returns {Service} Created service
  * @throws {TypeError} If arguments are invalid
  */
@@ -64,7 +62,7 @@ Service.fromJSON = function fromJSON(name, json) {
 
 /**
  * Converts this service to a service descriptor.
- * @returns {ServiceDescriptor} Service descriptor
+ * @returns {IService} Service descriptor
  */
 Service.prototype.toJSON = function toJSON() {
     var inherited = Namespace.prototype.toJSON.call(this);

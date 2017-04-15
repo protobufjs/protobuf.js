@@ -311,7 +311,10 @@ function writeInterface(element) {
 function writeInterfaceBody(element) {
     writeln("{");
     ++indent;
-    element.properties.forEach(writeProperty);
+    if (element.tsType)
+        writeln(element.tsType);
+    else if (element.properties && element.properties.length)
+        element.properties.forEach(writeProperty);
     --indent;
     write("}");
 }
@@ -428,6 +431,9 @@ function handleClass(element, parent) {
 
     writeln("{");
     ++indent;
+
+    if (element.tsType)
+        writeln(element.tsType);
 
     // constructor
     if (!is_interface && !element.virtual)

@@ -20,6 +20,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
 exports.__esModule = true;
 var __1 = require("..");
 // Reflection
@@ -71,16 +74,20 @@ var AwesomeSubMessage = (function (_super) {
     return AwesomeSubMessage;
 }(__1.Message));
 __decorate([
-    __1.Field.d(1, "string")
+    __1.Field.d(1, "string"),
+    __metadata("design:type", String)
 ], AwesomeSubMessage.prototype, "awesomeString");
 __decorate([
-    __1.MapField.d(2, "string", "string")
+    __1.MapField.d(2, "string", "string"),
+    __metadata("design:type", Object)
 ], AwesomeSubMessage.prototype, "awesomeMapString");
 __decorate([
-    __1.MapField.d(3, "string", AwesomeEnum)
+    __1.MapField.d(3, "string", AwesomeEnum),
+    __metadata("design:type", Object)
 ], AwesomeSubMessage.prototype, "awesomeMapEnum");
 __decorate([
-    __1.MapField.d(4, "string", AwesomeSubMessage)
+    __1.MapField.d(4, "string", AwesomeSubMessage),
+    __metadata("design:type", Object)
 ], AwesomeSubMessage.prototype, "awesomeMapMessage");
 exports.AwesomeSubMessage = AwesomeSubMessage;
 var AwesomeMessage = (function (_super) {
@@ -91,16 +98,20 @@ var AwesomeMessage = (function (_super) {
     return AwesomeMessage;
 }(__1.Message));
 __decorate([
-    __1.Field.d(1, "string", "optional", "awesome default string")
+    __1.Field.d(1, "string", "optional", "awesome default string"),
+    __metadata("design:type", String)
 ], AwesomeMessage.prototype, "awesomeField");
 __decorate([
-    __1.Field.d(2, AwesomeSubMessage)
+    __1.Field.d(2, AwesomeSubMessage),
+    __metadata("design:type", AwesomeSubMessage)
 ], AwesomeMessage.prototype, "awesomeSubMessage");
 __decorate([
-    __1.Field.d(3, AwesomeEnum, "optional", AwesomeEnum.ONE)
+    __1.Field.d(3, AwesomeEnum, "optional", AwesomeEnum.ONE),
+    __metadata("design:type", Number)
 ], AwesomeMessage.prototype, "awesomeEnum");
 __decorate([
-    __1.OneOf.d("awesomeSubMessage", "awesomeEnum")
+    __1.OneOf.d("awesomeSubMessage", "awesomeEnum"),
+    __metadata("design:type", String)
 ], AwesomeMessage.prototype, "which");
 AwesomeMessage = __decorate([
     __1.Type.d("SuperAwesomeMessage")
