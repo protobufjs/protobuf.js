@@ -43,11 +43,12 @@ var commonRe = /\/|\./;
 common("any", {
 
     /**
-    * Properties of a google.protobuf.Any message.
-    * @interface IAny
-    * @type {Object}
-    * @property {string} [typeUrl]
-    * @property {Uint8Array} [bytes]
+     * Properties of a google.protobuf.Any message.
+     * @interface IAny
+     * @type {Object}
+     * @property {string} [typeUrl]
+     * @property {Uint8Array} [bytes]
+     * @memberof common
      */
     Any: {
         fields: {
@@ -73,6 +74,7 @@ common("duration", {
      * @type {Object}
      * @property {number|Long} [seconds]
      * @property {number} [nanos]
+     * @memberof common
      */
     Duration: timeType = {
         fields: {
@@ -96,6 +98,7 @@ common("timestamp", {
      * @type {Object}
      * @property {number|Long} [seconds]
      * @property {number} [nanos]
+     * @memberof common
      */
     Timestamp: timeType
 });
@@ -105,6 +108,7 @@ common("empty", {
     /**
      * Properties of a google.protobuf.Empty message.
      * @interface IEmpty
+     * @memberof common
      */
     Empty: {
         fields: {}
@@ -118,6 +122,7 @@ common("struct", {
      * @interface IStruct
      * @type {Object}
      * @property {Object.<string,IValue>} [fields]
+     * @memberof common
      */
     Struct: {
         fields: {
@@ -140,6 +145,7 @@ common("struct", {
      * @property {boolean} [boolValue]
      * @property {IStruct} [structValue]
      * @property {IListValue} [listValue]
+     * @memberof common
      */
     Value: {
         oneofs: {
@@ -193,6 +199,7 @@ common("struct", {
      * @interface IListValue
      * @type {Object}
      * @property {Array.<IValue>} [values]
+     * @memberof common
      */
     ListValue: {
         fields: {
@@ -212,6 +219,7 @@ common("wrappers", {
      * @interface IDoubleValue
      * @type {Object}
      * @property {number} [value]
+     * @memberof common
      */
     DoubleValue: {
         fields: {
@@ -227,6 +235,7 @@ common("wrappers", {
      * @interface IFloatValue
      * @type {Object}
      * @property {number} [value]
+     * @memberof common
      */
     FloatValue: {
         fields: {
@@ -242,6 +251,7 @@ common("wrappers", {
      * @interface IInt64Value
      * @type {Object}
      * @property {number|Long} [value]
+     * @memberof common
      */
     Int64Value: {
         fields: {
@@ -257,6 +267,7 @@ common("wrappers", {
      * @interface IUInt64Value
      * @type {Object}
      * @property {number|Long} [value]
+     * @memberof common
      */
     UInt64Value: {
         fields: {
@@ -272,6 +283,7 @@ common("wrappers", {
      * @interface IInt32Value
      * @type {Object}
      * @property {number} [value]
+     * @memberof common
      */
     Int32Value: {
         fields: {
@@ -287,6 +299,7 @@ common("wrappers", {
      * @interface IUInt32Value
      * @type {Object}
      * @property {number} [value]
+     * @memberof common
      */
     UInt32Value: {
         fields: {
@@ -302,6 +315,7 @@ common("wrappers", {
      * @interface IBoolValue
      * @type {Object}
      * @property {boolean} [value]
+     * @memberof common
      */
     BoolValue: {
         fields: {
@@ -317,6 +331,7 @@ common("wrappers", {
      * @interface IStringValue
      * @type {Object}
      * @property {string} [value]
+     * @memberof common
      */
     StringValue: {
         fields: {
@@ -332,6 +347,7 @@ common("wrappers", {
      * @interface IBytesValue
      * @type {Object}
      * @property {Uint8Array} [value]
+     * @memberof common
      */
     BytesValue: {
         fields: {

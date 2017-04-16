@@ -200,15 +200,6 @@ $root.Test1 = (function() {
     };
 
     /**
-     * Creates a plain object from this Test1 message. Also converts values to other types if specified.
-     * @param {$protobuf.IConversionOptions} [options] Conversion options
-     * @returns {Object.<string,*>} Plain object
-     */
-    Test1.prototype.toObject = function toObject(options) {
-        return this.constructor.toObject(this, options);
-    };
-
-    /**
      * Converts this Test1 to JSON.
      * @returns {Object.<string,*>} JSON object
      */
@@ -337,15 +328,6 @@ $root.Test2 = (function() {
      */
     Test2.toObject = function toObject() {
         return {};
-    };
-
-    /**
-     * Creates a plain object from this Test2 message. Also converts values to other types if specified.
-     * @param {$protobuf.IConversionOptions} [options] Conversion options
-     * @returns {Object.<string,*>} Plain object
-     */
-    Test2.prototype.toObject = function toObject(options) {
-        return this.constructor.toObject(this, options);
     };
 
     /**

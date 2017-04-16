@@ -15,7 +15,7 @@ tape.test("converters", function(test) {
             test.plan(5);
 
             test.test(test.name + " - called with defaults = true", function(test) {
-                var obj = Message.create().toObject({ defaults: true });
+                var obj = Message.toObject(Message.create(), { defaults: true });
 
                 test.equal(obj.stringVal, "", "should set stringVal");
                 test.same(obj.stringRepeated, [], "should set stringRepeated");
@@ -35,7 +35,7 @@ tape.test("converters", function(test) {
             });
 
             test.test(test.name + " - called with defaults = undefined", function(test) {
-                var obj = Message.create().toObject();
+                var obj = Message.toObject(Message.create());
 
                 test.equal(obj.stringVal, undefined, "should not set stringVal");
                 test.equal(obj.stringRepeated, undefined, "should not set stringRepeated");
@@ -55,7 +55,7 @@ tape.test("converters", function(test) {
             });
 
             test.test(test.name + " - called with arrays = true", function(test) {
-                var obj = Message.create().toObject({ arrays: true });
+                var obj = Message.toObject(Message.create(), { arrays: true });
 
                 test.equal(obj.stringVal, undefined, "should not set stringVal");
                 test.same(obj.stringRepeated, [], "should set stringRepeated");
@@ -75,7 +75,7 @@ tape.test("converters", function(test) {
             });
 
             test.test(test.name + " - called with objects = true", function(test) {
-                var obj = Message.create().toObject({ objects: true });
+                var obj = Message.toObject(Message.create(), { objects: true });
 
                 test.equal(obj.stringVal, undefined, "should not set stringVal");
                 test.equal(obj.stringRepeated, undefined, "should not set stringRepeated");
@@ -110,8 +110,8 @@ tape.test("converters", function(test) {
                     }
                 });
 
-                var msgLongsToNumber = msg.toObject({ longs: Number }),
-                    msgLongsToString = msg.toObject({ longs: String });
+                var msgLongsToNumber = Message.toObject(msg, { longs: Number }),
+                    msgLongsToString = Message.toObject(msg, { longs: String });
 
                 test.same(Message.ctor.toObject(msg, { longs: Number}), msgLongsToNumber, "should convert the same using the static and the instance method");
                 test.same(Message.ctor.toObject(msg, { longs: String}), msgLongsToString, "should convert the same using the static and the instance method");
@@ -121,12 +121,12 @@ tape.test("converters", function(test) {
                 test.same(msgLongsToNumber.int64Map, { a: 2, b: 3}, "long map values to numbers");
                 test.same(msgLongsToString.int64Map, { a: "2", b: "3"}, "long map values to strings");
 
-                test.equal(Object.prototype.toString.call(msg.toObject({ bytes: Array }).bytesVal), "[object Array]", "bytes to arrays");
-                test.equal(msg.toObject({ bytes: String }).bytesVal, "MTEx", "bytes to base64 strings");
+                test.equal(Object.prototype.toString.call(Message.toObject(msg, { bytes: Array }).bytesVal), "[object Array]", "bytes to arrays");
+                test.equal(Message.toObject(msg, { bytes: String }).bytesVal, "MTEx", "bytes to base64 strings");
                 if (protobuf.util.isNode)
-                    test.ok(Buffer.isBuffer(msg.toObject({ bytes: Buffer }).bytesVal), "bytes to buffers");
+                    test.ok(Buffer.isBuffer(Message.toObject(msg, { bytes: Buffer }).bytesVal), "bytes to buffers");
 
-                test.equal(msg.toObject({ enums: String }).enumVal, "TWO", "enums to strings");
+                test.equal(Message.toObject(msg, { enums: String }).enumVal, "TWO", "enums to strings");
 
                 test.end();
             });

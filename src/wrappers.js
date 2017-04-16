@@ -63,7 +63,7 @@ wrappers[".google.protobuf.Any"] = {
 
         // wrap value if unmapped
         if (!(message instanceof this.ctor) && message instanceof Message) {
-            var object = message.toObject(options);
+            var object = message.$type.toObject(message, options);
             object["@type"] = message.$type.fullName;
             return object;
         }

@@ -598,15 +598,6 @@ $root.Package = (function() {
     };
 
     /**
-     * Creates a plain object from this Package message. Also converts values to other types if specified.
-     * @param {$protobuf.IConversionOptions} [options] Conversion options
-     * @returns {Object.<string,*>} Plain object
-     */
-    Package.prototype.toObject = function toObject(options) {
-        return this.constructor.toObject(this, options);
-    };
-
-    /**
      * Converts this Package to JSON.
      * @returns {Object.<string,*>} JSON object
      */
@@ -778,15 +769,6 @@ $root.Package = (function() {
             if (message.url != null && message.hasOwnProperty("url"))
                 object.url = message.url;
             return object;
-        };
-
-        /**
-         * Creates a plain object from this Repository message. Also converts values to other types if specified.
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        Repository.prototype.toObject = function toObject(options) {
-            return this.constructor.toObject(this, options);
         };
 
         /**

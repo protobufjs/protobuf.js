@@ -538,18 +538,6 @@ function buildType(ref, type) {
 
         push("");
         pushComment([
-            "Creates a plain object from this " + type.name + " message. Also converts values to other types if specified.",
-            "@param {$protobuf.IConversionOptions} [options] Conversion options",
-            "@returns {Object.<string,*>} Plain object"
-        ]);
-        push(escapeName(type.name) + ".prototype.toObject = function toObject(options) {");
-        ++indent;
-            push("return this.constructor.toObject(this, options);");
-        --indent;
-        push("};");
-
-        push("");
-        pushComment([
             "Converts this " + type.name + " to JSON.",
             "@returns {Object.<string,*>} JSON object"
         ]);

@@ -488,15 +488,6 @@ $root.Message = (function() {
     };
 
     /**
-     * Creates a plain object from this Message message. Also converts values to other types if specified.
-     * @param {$protobuf.IConversionOptions} [options] Conversion options
-     * @returns {Object.<string,*>} Plain object
-     */
-    Message.prototype.toObject = function toObject(options) {
-        return this.constructor.toObject(this, options);
-    };
-
-    /**
      * Converts this Message to JSON.
      * @returns {Object.<string,*>} JSON object
      */

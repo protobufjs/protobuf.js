@@ -185,15 +185,6 @@ $root.vector_tile = (function() {
         };
 
         /**
-         * Creates a plain object from this Tile message. Also converts values to other types if specified.
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        Tile.prototype.toObject = function toObject(options) {
-            return this.constructor.toObject(this, options);
-        };
-
-        /**
          * Converts this Tile to JSON.
          * @returns {Object.<string,*>} JSON object
          */
@@ -529,15 +520,6 @@ $root.vector_tile = (function() {
             };
 
             /**
-             * Creates a plain object from this Value message. Also converts values to other types if specified.
-             * @param {$protobuf.IConversionOptions} [options] Conversion options
-             * @returns {Object.<string,*>} Plain object
-             */
-            Value.prototype.toObject = function toObject(options) {
-                return this.constructor.toObject(this, options);
-            };
-
-            /**
              * Converts this Value to JSON.
              * @returns {Object.<string,*>} JSON object
              */
@@ -839,15 +821,6 @@ $root.vector_tile = (function() {
                         object.geometry[j] = message.geometry[j];
                 }
                 return object;
-            };
-
-            /**
-             * Creates a plain object from this Feature message. Also converts values to other types if specified.
-             * @param {$protobuf.IConversionOptions} [options] Conversion options
-             * @returns {Object.<string,*>} Plain object
-             */
-            Feature.prototype.toObject = function toObject(options) {
-                return this.constructor.toObject(this, options);
             };
 
             /**
@@ -1165,15 +1138,6 @@ $root.vector_tile = (function() {
                 if (message.version != null && message.hasOwnProperty("version"))
                     object.version = message.version;
                 return object;
-            };
-
-            /**
-             * Creates a plain object from this Layer message. Also converts values to other types if specified.
-             * @param {$protobuf.IConversionOptions} [options] Conversion options
-             * @returns {Object.<string,*>} Plain object
-             */
-            Layer.prototype.toObject = function toObject(options) {
-                return this.constructor.toObject(this, options);
             };
 
             /**

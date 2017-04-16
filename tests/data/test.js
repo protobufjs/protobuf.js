@@ -148,15 +148,6 @@ $root.jspb = (function() {
             };
 
             /**
-             * Creates a plain object from this Empty message. Also converts values to other types if specified.
-             * @param {$protobuf.IConversionOptions} [options] Conversion options
-             * @returns {Object.<string,*>} Plain object
-             */
-            Empty.prototype.toObject = function toObject(options) {
-                return this.constructor.toObject(this, options);
-            };
-
-            /**
              * Converts this Empty to JSON.
              * @returns {Object.<string,*>} JSON object
              */
@@ -338,15 +329,6 @@ $root.jspb = (function() {
                 if (message.outerEnum != null && message.hasOwnProperty("outerEnum"))
                     object.outerEnum = options.enums === String ? $root.jspb.test.OuterEnum[message.outerEnum] : message.outerEnum;
                 return object;
-            };
-
-            /**
-             * Creates a plain object from this EnumContainer message. Also converts values to other types if specified.
-             * @param {$protobuf.IConversionOptions} [options] Conversion options
-             * @returns {Object.<string,*>} Plain object
-             */
-            EnumContainer.prototype.toObject = function toObject(options) {
-                return this.constructor.toObject(this, options);
             };
 
             /**
@@ -564,15 +546,6 @@ $root.jspb = (function() {
             };
 
             /**
-             * Creates a plain object from this Simple1 message. Also converts values to other types if specified.
-             * @param {$protobuf.IConversionOptions} [options] Conversion options
-             * @returns {Object.<string,*>} Plain object
-             */
-            Simple1.prototype.toObject = function toObject(options) {
-                return this.constructor.toObject(this, options);
-            };
-
-            /**
              * Converts this Simple1 to JSON.
              * @returns {Object.<string,*>} JSON object
              */
@@ -763,15 +736,6 @@ $root.jspb = (function() {
                         object.aRepeatedString[j] = message.aRepeatedString[j];
                 }
                 return object;
-            };
-
-            /**
-             * Creates a plain object from this Simple2 message. Also converts values to other types if specified.
-             * @param {$protobuf.IConversionOptions} [options] Conversion options
-             * @returns {Object.<string,*>} Plain object
-             */
-            Simple2.prototype.toObject = function toObject(options) {
-                return this.constructor.toObject(this, options);
             };
 
             /**
@@ -989,15 +953,6 @@ $root.jspb = (function() {
                 if (message["var"] != null && message.hasOwnProperty("var"))
                     object["var"] = message["var"];
                 return object;
-            };
-
-            /**
-             * Creates a plain object from this SpecialCases message. Also converts values to other types if specified.
-             * @param {$protobuf.IConversionOptions} [options] Conversion options
-             * @returns {Object.<string,*>} Plain object
-             */
-            SpecialCases.prototype.toObject = function toObject(options) {
-                return this.constructor.toObject(this, options);
             };
 
             /**
@@ -1282,15 +1237,6 @@ $root.jspb = (function() {
             };
 
             /**
-             * Creates a plain object from this OptionalFields message. Also converts values to other types if specified.
-             * @param {$protobuf.IConversionOptions} [options] Conversion options
-             * @returns {Object.<string,*>} Plain object
-             */
-            OptionalFields.prototype.toObject = function toObject(options) {
-                return this.constructor.toObject(this, options);
-            };
-
-            /**
              * Converts this OptionalFields to JSON.
              * @returns {Object.<string,*>} JSON object
              */
@@ -1441,15 +1387,6 @@ $root.jspb = (function() {
                     if (message.anInt != null && message.hasOwnProperty("anInt"))
                         object.anInt = message.anInt;
                     return object;
-                };
-
-                /**
-                 * Creates a plain object from this Nested message. Also converts values to other types if specified.
-                 * @param {$protobuf.IConversionOptions} [options] Conversion options
-                 * @returns {Object.<string,*>} Plain object
-                 */
-                Nested.prototype.toObject = function toObject(options) {
-                    return this.constructor.toObject(this, options);
                 };
 
                 /**
@@ -1827,15 +1764,6 @@ $root.jspb = (function() {
             };
 
             /**
-             * Creates a plain object from this HasExtensions message. Also converts values to other types if specified.
-             * @param {$protobuf.IConversionOptions} [options] Conversion options
-             * @returns {Object.<string,*>} Plain object
-             */
-            HasExtensions.prototype.toObject = function toObject(options) {
-                return this.constructor.toObject(this, options);
-            };
-
-            /**
              * Converts this HasExtensions to JSON.
              * @returns {Object.<string,*>} JSON object
              */
@@ -2117,15 +2045,6 @@ $root.jspb = (function() {
             };
 
             /**
-             * Creates a plain object from this Complex message. Also converts values to other types if specified.
-             * @param {$protobuf.IConversionOptions} [options] Conversion options
-             * @returns {Object.<string,*>} Plain object
-             */
-            Complex.prototype.toObject = function toObject(options) {
-                return this.constructor.toObject(this, options);
-            };
-
-            /**
              * Converts this Complex to JSON.
              * @returns {Object.<string,*>} JSON object
              */
@@ -2279,15 +2198,6 @@ $root.jspb = (function() {
                 };
 
                 /**
-                 * Creates a plain object from this Nested message. Also converts values to other types if specified.
-                 * @param {$protobuf.IConversionOptions} [options] Conversion options
-                 * @returns {Object.<string,*>} Plain object
-                 */
-                Nested.prototype.toObject = function toObject(options) {
-                    return this.constructor.toObject(this, options);
-                };
-
-                /**
                  * Converts this Nested to JSON.
                  * @returns {Object.<string,*>} JSON object
                  */
@@ -2419,15 +2329,6 @@ $root.jspb = (function() {
              */
             OuterMessage.toObject = function toObject() {
                 return {};
-            };
-
-            /**
-             * Creates a plain object from this OuterMessage message. Also converts values to other types if specified.
-             * @param {$protobuf.IConversionOptions} [options] Conversion options
-             * @returns {Object.<string,*>} Plain object
-             */
-            OuterMessage.prototype.toObject = function toObject(options) {
-                return this.constructor.toObject(this, options);
             };
 
             /**
@@ -2581,15 +2482,6 @@ $root.jspb = (function() {
                     if (message.innerComplexField != null && message.hasOwnProperty("innerComplexField"))
                         object.innerComplexField = message.innerComplexField;
                     return object;
-                };
-
-                /**
-                 * Creates a plain object from this Complex message. Also converts values to other types if specified.
-                 * @param {$protobuf.IConversionOptions} [options] Conversion options
-                 * @returns {Object.<string,*>} Plain object
-                 */
-                Complex.prototype.toObject = function toObject(options) {
-                    return this.constructor.toObject(this, options);
                 };
 
                 /**
@@ -2752,15 +2644,6 @@ $root.jspb = (function() {
             };
 
             /**
-             * Creates a plain object from this IsExtension message. Also converts values to other types if specified.
-             * @param {$protobuf.IConversionOptions} [options] Conversion options
-             * @returns {Object.<string,*>} Plain object
-             */
-            IsExtension.prototype.toObject = function toObject(options) {
-                return this.constructor.toObject(this, options);
-            };
-
-            /**
              * Converts this IsExtension to JSON.
              * @returns {Object.<string,*>} JSON object
              */
@@ -2889,15 +2772,6 @@ $root.jspb = (function() {
              */
             IndirectExtension.toObject = function toObject() {
                 return {};
-            };
-
-            /**
-             * Creates a plain object from this IndirectExtension message. Also converts values to other types if specified.
-             * @param {$protobuf.IConversionOptions} [options] Conversion options
-             * @returns {Object.<string,*>} Plain object
-             */
-            IndirectExtension.prototype.toObject = function toObject(options) {
-                return this.constructor.toObject(this, options);
             };
 
             /**
@@ -3189,15 +3063,6 @@ $root.jspb = (function() {
                 if (message.bytesField != null && message.hasOwnProperty("bytesField"))
                     object.bytesField = options.bytes === String ? $util.base64.encode(message.bytesField, 0, message.bytesField.length) : options.bytes === Array ? Array.prototype.slice.call(message.bytesField) : message.bytesField;
                 return object;
-            };
-
-            /**
-             * Creates a plain object from this DefaultValues message. Also converts values to other types if specified.
-             * @param {$protobuf.IConversionOptions} [options] Conversion options
-             * @returns {Object.<string,*>} Plain object
-             */
-            DefaultValues.prototype.toObject = function toObject(options) {
-                return this.constructor.toObject(this, options);
             };
 
             /**
@@ -3557,15 +3422,6 @@ $root.jspb = (function() {
             };
 
             /**
-             * Creates a plain object from this FloatingPointFields message. Also converts values to other types if specified.
-             * @param {$protobuf.IConversionOptions} [options] Conversion options
-             * @returns {Object.<string,*>} Plain object
-             */
-            FloatingPointFields.prototype.toObject = function toObject(options) {
-                return this.constructor.toObject(this, options);
-            };
-
-            /**
              * Converts this FloatingPointFields to JSON.
              * @returns {Object.<string,*>} JSON object
              */
@@ -3858,15 +3714,6 @@ $root.jspb = (function() {
             };
 
             /**
-             * Creates a plain object from this TestClone message. Also converts values to other types if specified.
-             * @param {$protobuf.IConversionOptions} [options] Conversion options
-             * @returns {Object.<string,*>} Plain object
-             */
-            TestClone.prototype.toObject = function toObject(options) {
-                return this.constructor.toObject(this, options);
-            };
-
-            /**
              * Converts this TestClone to JSON.
              * @returns {Object.<string,*>} JSON object
              */
@@ -4020,15 +3867,6 @@ $root.jspb = (function() {
                 if (message.ext != null && message.hasOwnProperty("ext"))
                     object.ext = message.ext;
                 return object;
-            };
-
-            /**
-             * Creates a plain object from this CloneExtension message. Also converts values to other types if specified.
-             * @param {$protobuf.IConversionOptions} [options] Conversion options
-             * @returns {Object.<string,*>} Plain object
-             */
-            CloneExtension.prototype.toObject = function toObject(options) {
-                return this.constructor.toObject(this, options);
             };
 
             /**
@@ -4329,15 +4167,6 @@ $root.jspb = (function() {
             };
 
             /**
-             * Creates a plain object from this TestGroup message. Also converts values to other types if specified.
-             * @param {$protobuf.IConversionOptions} [options] Conversion options
-             * @returns {Object.<string,*>} Plain object
-             */
-            TestGroup.prototype.toObject = function toObject(options) {
-                return this.constructor.toObject(this, options);
-            };
-
-            /**
              * Converts this TestGroup to JSON.
              * @returns {Object.<string,*>} JSON object
              */
@@ -4535,15 +4364,6 @@ $root.jspb = (function() {
                 };
 
                 /**
-                 * Creates a plain object from this RepeatedGroup message. Also converts values to other types if specified.
-                 * @param {$protobuf.IConversionOptions} [options] Conversion options
-                 * @returns {Object.<string,*>} Plain object
-                 */
-                RepeatedGroup.prototype.toObject = function toObject(options) {
-                    return this.constructor.toObject(this, options);
-                };
-
-                /**
                  * Converts this RepeatedGroup to JSON.
                  * @returns {Object.<string,*>} JSON object
                  */
@@ -4702,15 +4522,6 @@ $root.jspb = (function() {
                 };
 
                 /**
-                 * Creates a plain object from this RequiredGroup message. Also converts values to other types if specified.
-                 * @param {$protobuf.IConversionOptions} [options] Conversion options
-                 * @returns {Object.<string,*>} Plain object
-                 */
-                RequiredGroup.prototype.toObject = function toObject(options) {
-                    return this.constructor.toObject(this, options);
-                };
-
-                /**
                  * Converts this RequiredGroup to JSON.
                  * @returns {Object.<string,*>} JSON object
                  */
@@ -4866,15 +4677,6 @@ $root.jspb = (function() {
                     if (message.id != null && message.hasOwnProperty("id"))
                         object.id = message.id;
                     return object;
-                };
-
-                /**
-                 * Creates a plain object from this OptionalGroup message. Also converts values to other types if specified.
-                 * @param {$protobuf.IConversionOptions} [options] Conversion options
-                 * @returns {Object.<string,*>} Plain object
-                 */
-                OptionalGroup.prototype.toObject = function toObject(options) {
-                    return this.constructor.toObject(this, options);
                 };
 
                 /**
@@ -5039,15 +4841,6 @@ $root.jspb = (function() {
                 if (message.group != null && message.hasOwnProperty("group"))
                     object.group = $root.jspb.test.TestGroup.RepeatedGroup.toObject(message.group, options);
                 return object;
-            };
-
-            /**
-             * Creates a plain object from this TestGroup1 message. Also converts values to other types if specified.
-             * @param {$protobuf.IConversionOptions} [options] Conversion options
-             * @returns {Object.<string,*>} Plain object
-             */
-            TestGroup1.prototype.toObject = function toObject(options) {
-                return this.constructor.toObject(this, options);
             };
 
             /**
@@ -5228,15 +5021,6 @@ $root.jspb = (function() {
             };
 
             /**
-             * Creates a plain object from this TestReservedNames message. Also converts values to other types if specified.
-             * @param {$protobuf.IConversionOptions} [options] Conversion options
-             * @returns {Object.<string,*>} Plain object
-             */
-            TestReservedNames.prototype.toObject = function toObject(options) {
-                return this.constructor.toObject(this, options);
-            };
-
-            /**
              * Converts this TestReservedNames to JSON.
              * @returns {Object.<string,*>} JSON object
              */
@@ -5365,15 +5149,6 @@ $root.jspb = (function() {
              */
             TestReservedNamesExtension.toObject = function toObject() {
                 return {};
-            };
-
-            /**
-             * Creates a plain object from this TestReservedNamesExtension message. Also converts values to other types if specified.
-             * @param {$protobuf.IConversionOptions} [options] Conversion options
-             * @returns {Object.<string,*>} Plain object
-             */
-            TestReservedNamesExtension.prototype.toObject = function toObject(options) {
-                return this.constructor.toObject(this, options);
             };
 
             /**
@@ -5818,15 +5593,6 @@ $root.jspb = (function() {
             };
 
             /**
-             * Creates a plain object from this TestMessageWithOneof message. Also converts values to other types if specified.
-             * @param {$protobuf.IConversionOptions} [options] Conversion options
-             * @returns {Object.<string,*>} Plain object
-             */
-            TestMessageWithOneof.prototype.toObject = function toObject(options) {
-                return this.constructor.toObject(this, options);
-            };
-
-            /**
              * Converts this TestMessageWithOneof to JSON.
              * @returns {Object.<string,*>} JSON object
              */
@@ -6004,15 +5770,6 @@ $root.jspb = (function() {
                 if (message.data != null && message.hasOwnProperty("data"))
                     object.data = options.bytes === String ? $util.base64.encode(message.data, 0, message.data.length) : options.bytes === Array ? Array.prototype.slice.call(message.data) : message.data;
                 return object;
-            };
-
-            /**
-             * Creates a plain object from this TestEndsWithBytes message. Also converts values to other types if specified.
-             * @param {$protobuf.IConversionOptions} [options] Conversion options
-             * @returns {Object.<string,*>} Plain object
-             */
-            TestEndsWithBytes.prototype.toObject = function toObject(options) {
-                return this.constructor.toObject(this, options);
             };
 
             /**
@@ -6672,15 +6429,6 @@ $root.jspb = (function() {
             };
 
             /**
-             * Creates a plain object from this TestMapFieldsNoBinary message. Also converts values to other types if specified.
-             * @param {$protobuf.IConversionOptions} [options] Conversion options
-             * @returns {Object.<string,*>} Plain object
-             */
-            TestMapFieldsNoBinary.prototype.toObject = function toObject(options) {
-                return this.constructor.toObject(this, options);
-            };
-
-            /**
              * Converts this TestMapFieldsNoBinary to JSON.
              * @returns {Object.<string,*>} JSON object
              */
@@ -6854,15 +6602,6 @@ $root.jspb = (function() {
             };
 
             /**
-             * Creates a plain object from this MapValueMessageNoBinary message. Also converts values to other types if specified.
-             * @param {$protobuf.IConversionOptions} [options] Conversion options
-             * @returns {Object.<string,*>} Plain object
-             */
-            MapValueMessageNoBinary.prototype.toObject = function toObject(options) {
-                return this.constructor.toObject(this, options);
-            };
-
-            /**
              * Converts this MapValueMessageNoBinary to JSON.
              * @returns {Object.<string,*>} JSON object
              */
@@ -6994,15 +6733,6 @@ $root.jspb = (function() {
             };
 
             /**
-             * Creates a plain object from this Deeply message. Also converts values to other types if specified.
-             * @param {$protobuf.IConversionOptions} [options] Conversion options
-             * @returns {Object.<string,*>} Plain object
-             */
-            Deeply.prototype.toObject = function toObject(options) {
-                return this.constructor.toObject(this, options);
-            };
-
-            /**
              * Converts this Deeply to JSON.
              * @returns {Object.<string,*>} JSON object
              */
@@ -7128,15 +6858,6 @@ $root.jspb = (function() {
                  */
                 Nested.toObject = function toObject() {
                     return {};
-                };
-
-                /**
-                 * Creates a plain object from this Nested message. Also converts values to other types if specified.
-                 * @param {$protobuf.IConversionOptions} [options] Conversion options
-                 * @returns {Object.<string,*>} Plain object
-                 */
-                Nested.prototype.toObject = function toObject(options) {
-                    return this.constructor.toObject(this, options);
                 };
 
                 /**
@@ -7290,15 +7011,6 @@ $root.jspb = (function() {
                         if (message.count != null && message.hasOwnProperty("count"))
                             object.count = message.count;
                         return object;
-                    };
-
-                    /**
-                     * Creates a plain object from this Message message. Also converts values to other types if specified.
-                     * @param {$protobuf.IConversionOptions} [options] Conversion options
-                     * @returns {Object.<string,*>} Plain object
-                     */
-                    Message.prototype.toObject = function toObject(options) {
-                        return this.constructor.toObject(this, options);
                     };
 
                     /**
@@ -7506,15 +7218,6 @@ $root.google = (function() {
                         object.file[j] = $root.google.protobuf.FileDescriptorProto.toObject(message.file[j], options);
                 }
                 return object;
-            };
-
-            /**
-             * Creates a plain object from this FileDescriptorSet message. Also converts values to other types if specified.
-             * @param {$protobuf.IConversionOptions} [options] Conversion options
-             * @returns {Object.<string,*>} Plain object
-             */
-            FileDescriptorSet.prototype.toObject = function toObject(options) {
-                return this.constructor.toObject(this, options);
             };
 
             /**
@@ -8049,15 +7752,6 @@ $root.google = (function() {
             };
 
             /**
-             * Creates a plain object from this FileDescriptorProto message. Also converts values to other types if specified.
-             * @param {$protobuf.IConversionOptions} [options] Conversion options
-             * @returns {Object.<string,*>} Plain object
-             */
-            FileDescriptorProto.prototype.toObject = function toObject(options) {
-                return this.constructor.toObject(this, options);
-            };
-
-            /**
              * Converts this FileDescriptorProto to JSON.
              * @returns {Object.<string,*>} JSON object
              */
@@ -8565,15 +8259,6 @@ $root.google = (function() {
             };
 
             /**
-             * Creates a plain object from this DescriptorProto message. Also converts values to other types if specified.
-             * @param {$protobuf.IConversionOptions} [options] Conversion options
-             * @returns {Object.<string,*>} Plain object
-             */
-            DescriptorProto.prototype.toObject = function toObject(options) {
-                return this.constructor.toObject(this, options);
-            };
-
-            /**
              * Converts this DescriptorProto to JSON.
              * @returns {Object.<string,*>} JSON object
              */
@@ -8745,15 +8430,6 @@ $root.google = (function() {
                     if (message.end != null && message.hasOwnProperty("end"))
                         object.end = message.end;
                     return object;
-                };
-
-                /**
-                 * Creates a plain object from this ExtensionRange message. Also converts values to other types if specified.
-                 * @param {$protobuf.IConversionOptions} [options] Conversion options
-                 * @returns {Object.<string,*>} Plain object
-                 */
-                ExtensionRange.prototype.toObject = function toObject(options) {
-                    return this.constructor.toObject(this, options);
                 };
 
                 /**
@@ -8931,15 +8607,6 @@ $root.google = (function() {
                     if (message.end != null && message.hasOwnProperty("end"))
                         object.end = message.end;
                     return object;
-                };
-
-                /**
-                 * Creates a plain object from this ReservedRange message. Also converts values to other types if specified.
-                 * @param {$protobuf.IConversionOptions} [options] Conversion options
-                 * @returns {Object.<string,*>} Plain object
-                 */
-                ReservedRange.prototype.toObject = function toObject(options) {
-                    return this.constructor.toObject(this, options);
                 };
 
                 /**
@@ -9399,15 +9066,6 @@ $root.google = (function() {
             };
 
             /**
-             * Creates a plain object from this FieldDescriptorProto message. Also converts values to other types if specified.
-             * @param {$protobuf.IConversionOptions} [options] Conversion options
-             * @returns {Object.<string,*>} Plain object
-             */
-            FieldDescriptorProto.prototype.toObject = function toObject(options) {
-                return this.constructor.toObject(this, options);
-            };
-
-            /**
              * Converts this FieldDescriptorProto to JSON.
              * @returns {Object.<string,*>} JSON object
              */
@@ -9654,15 +9312,6 @@ $root.google = (function() {
             };
 
             /**
-             * Creates a plain object from this OneofDescriptorProto message. Also converts values to other types if specified.
-             * @param {$protobuf.IConversionOptions} [options] Conversion options
-             * @returns {Object.<string,*>} Plain object
-             */
-            OneofDescriptorProto.prototype.toObject = function toObject(options) {
-                return this.constructor.toObject(this, options);
-            };
-
-            /**
              * Converts this OneofDescriptorProto to JSON.
              * @returns {Object.<string,*>} JSON object
              */
@@ -9887,15 +9536,6 @@ $root.google = (function() {
             };
 
             /**
-             * Creates a plain object from this EnumDescriptorProto message. Also converts values to other types if specified.
-             * @param {$protobuf.IConversionOptions} [options] Conversion options
-             * @returns {Object.<string,*>} Plain object
-             */
-            EnumDescriptorProto.prototype.toObject = function toObject(options) {
-                return this.constructor.toObject(this, options);
-            };
-
-            /**
              * Converts this EnumDescriptorProto to JSON.
              * @returns {Object.<string,*>} JSON object
              */
@@ -10095,15 +9735,6 @@ $root.google = (function() {
                 if (message.options != null && message.hasOwnProperty("options"))
                     object.options = $root.google.protobuf.EnumValueOptions.toObject(message.options, options);
                 return object;
-            };
-
-            /**
-             * Creates a plain object from this EnumValueDescriptorProto message. Also converts values to other types if specified.
-             * @param {$protobuf.IConversionOptions} [options] Conversion options
-             * @returns {Object.<string,*>} Plain object
-             */
-            EnumValueDescriptorProto.prototype.toObject = function toObject(options) {
-                return this.constructor.toObject(this, options);
             };
 
             /**
@@ -10328,15 +9959,6 @@ $root.google = (function() {
                 if (message.options != null && message.hasOwnProperty("options"))
                     object.options = $root.google.protobuf.ServiceOptions.toObject(message.options, options);
                 return object;
-            };
-
-            /**
-             * Creates a plain object from this ServiceDescriptorProto message. Also converts values to other types if specified.
-             * @param {$protobuf.IConversionOptions} [options] Conversion options
-             * @returns {Object.<string,*>} Plain object
-             */
-            ServiceDescriptorProto.prototype.toObject = function toObject(options) {
-                return this.constructor.toObject(this, options);
             };
 
             /**
@@ -10599,15 +10221,6 @@ $root.google = (function() {
                 if (message.serverStreaming != null && message.hasOwnProperty("serverStreaming"))
                     object.serverStreaming = message.serverStreaming;
                 return object;
-            };
-
-            /**
-             * Creates a plain object from this MethodDescriptorProto message. Also converts values to other types if specified.
-             * @param {$protobuf.IConversionOptions} [options] Conversion options
-             * @returns {Object.<string,*>} Plain object
-             */
-            MethodDescriptorProto.prototype.toObject = function toObject(options) {
-                return this.constructor.toObject(this, options);
             };
 
             /**
@@ -11088,15 +10701,6 @@ $root.google = (function() {
             };
 
             /**
-             * Creates a plain object from this FileOptions message. Also converts values to other types if specified.
-             * @param {$protobuf.IConversionOptions} [options] Conversion options
-             * @returns {Object.<string,*>} Plain object
-             */
-            FileOptions.prototype.toObject = function toObject(options) {
-                return this.constructor.toObject(this, options);
-            };
-
-            /**
              * Converts this FileOptions to JSON.
              * @returns {Object.<string,*>} JSON object
              */
@@ -11370,15 +10974,6 @@ $root.google = (function() {
                         object.uninterpretedOption[j] = $root.google.protobuf.UninterpretedOption.toObject(message.uninterpretedOption[j], options);
                 }
                 return object;
-            };
-
-            /**
-             * Creates a plain object from this MessageOptions message. Also converts values to other types if specified.
-             * @param {$protobuf.IConversionOptions} [options] Conversion options
-             * @returns {Object.<string,*>} Plain object
-             */
-            MessageOptions.prototype.toObject = function toObject(options) {
-                return this.constructor.toObject(this, options);
             };
 
             /**
@@ -11717,15 +11312,6 @@ $root.google = (function() {
             };
 
             /**
-             * Creates a plain object from this FieldOptions message. Also converts values to other types if specified.
-             * @param {$protobuf.IConversionOptions} [options] Conversion options
-             * @returns {Object.<string,*>} Plain object
-             */
-            FieldOptions.prototype.toObject = function toObject(options) {
-                return this.constructor.toObject(this, options);
-            };
-
-            /**
              * Converts this FieldOptions to JSON.
              * @returns {Object.<string,*>} JSON object
              */
@@ -11934,15 +11520,6 @@ $root.google = (function() {
                         object.uninterpretedOption[j] = $root.google.protobuf.UninterpretedOption.toObject(message.uninterpretedOption[j], options);
                 }
                 return object;
-            };
-
-            /**
-             * Creates a plain object from this OneofOptions message. Also converts values to other types if specified.
-             * @param {$protobuf.IConversionOptions} [options] Conversion options
-             * @returns {Object.<string,*>} Plain object
-             */
-            OneofOptions.prototype.toObject = function toObject(options) {
-                return this.constructor.toObject(this, options);
             };
 
             /**
@@ -12185,15 +11762,6 @@ $root.google = (function() {
             };
 
             /**
-             * Creates a plain object from this EnumOptions message. Also converts values to other types if specified.
-             * @param {$protobuf.IConversionOptions} [options] Conversion options
-             * @returns {Object.<string,*>} Plain object
-             */
-            EnumOptions.prototype.toObject = function toObject(options) {
-                return this.constructor.toObject(this, options);
-            };
-
-            /**
              * Converts this EnumOptions to JSON.
              * @returns {Object.<string,*>} JSON object
              */
@@ -12392,15 +11960,6 @@ $root.google = (function() {
             };
 
             /**
-             * Creates a plain object from this EnumValueOptions message. Also converts values to other types if specified.
-             * @param {$protobuf.IConversionOptions} [options] Conversion options
-             * @returns {Object.<string,*>} Plain object
-             */
-            EnumValueOptions.prototype.toObject = function toObject(options) {
-                return this.constructor.toObject(this, options);
-            };
-
-            /**
              * Converts this EnumValueOptions to JSON.
              * @returns {Object.<string,*>} JSON object
              */
@@ -12596,15 +12155,6 @@ $root.google = (function() {
                         object.uninterpretedOption[j] = $root.google.protobuf.UninterpretedOption.toObject(message.uninterpretedOption[j], options);
                 }
                 return object;
-            };
-
-            /**
-             * Creates a plain object from this ServiceOptions message. Also converts values to other types if specified.
-             * @param {$protobuf.IConversionOptions} [options] Conversion options
-             * @returns {Object.<string,*>} Plain object
-             */
-            ServiceOptions.prototype.toObject = function toObject(options) {
-                return this.constructor.toObject(this, options);
             };
 
             /**
@@ -12842,15 +12392,6 @@ $root.google = (function() {
                         object.uninterpretedOption[j] = $root.google.protobuf.UninterpretedOption.toObject(message.uninterpretedOption[j], options);
                 }
                 return object;
-            };
-
-            /**
-             * Creates a plain object from this MethodOptions message. Also converts values to other types if specified.
-             * @param {$protobuf.IConversionOptions} [options] Conversion options
-             * @returns {Object.<string,*>} Plain object
-             */
-            MethodOptions.prototype.toObject = function toObject(options) {
-                return this.constructor.toObject(this, options);
             };
 
             /**
@@ -13201,15 +12742,6 @@ $root.google = (function() {
             };
 
             /**
-             * Creates a plain object from this UninterpretedOption message. Also converts values to other types if specified.
-             * @param {$protobuf.IConversionOptions} [options] Conversion options
-             * @returns {Object.<string,*>} Plain object
-             */
-            UninterpretedOption.prototype.toObject = function toObject(options) {
-                return this.constructor.toObject(this, options);
-            };
-
-            /**
              * Converts this UninterpretedOption to JSON.
              * @returns {Object.<string,*>} JSON object
              */
@@ -13381,15 +12913,6 @@ $root.google = (function() {
                     if (message.isExtension != null && message.hasOwnProperty("isExtension"))
                         object.isExtension = message.isExtension;
                     return object;
-                };
-
-                /**
-                 * Creates a plain object from this NamePart message. Also converts values to other types if specified.
-                 * @param {$protobuf.IConversionOptions} [options] Conversion options
-                 * @returns {Object.<string,*>} Plain object
-                 */
-                NamePart.prototype.toObject = function toObject(options) {
-                    return this.constructor.toObject(this, options);
                 };
 
                 /**
@@ -13570,15 +13093,6 @@ $root.google = (function() {
                         object.location[j] = $root.google.protobuf.SourceCodeInfo.Location.toObject(message.location[j], options);
                 }
                 return object;
-            };
-
-            /**
-             * Creates a plain object from this SourceCodeInfo message. Also converts values to other types if specified.
-             * @param {$protobuf.IConversionOptions} [options] Conversion options
-             * @returns {Object.<string,*>} Plain object
-             */
-            SourceCodeInfo.prototype.toObject = function toObject(options) {
-                return this.constructor.toObject(this, options);
             };
 
             /**
@@ -13882,15 +13396,6 @@ $root.google = (function() {
                 };
 
                 /**
-                 * Creates a plain object from this Location message. Also converts values to other types if specified.
-                 * @param {$protobuf.IConversionOptions} [options] Conversion options
-                 * @returns {Object.<string,*>} Plain object
-                 */
-                Location.prototype.toObject = function toObject(options) {
-                    return this.constructor.toObject(this, options);
-                };
-
-                /**
                  * Converts this Location to JSON.
                  * @returns {Object.<string,*>} JSON object
                  */
@@ -14068,15 +13573,6 @@ $root.google = (function() {
                         object.annotation[j] = $root.google.protobuf.GeneratedCodeInfo.Annotation.toObject(message.annotation[j], options);
                 }
                 return object;
-            };
-
-            /**
-             * Creates a plain object from this GeneratedCodeInfo message. Also converts values to other types if specified.
-             * @param {$protobuf.IConversionOptions} [options] Conversion options
-             * @returns {Object.<string,*>} Plain object
-             */
-            GeneratedCodeInfo.prototype.toObject = function toObject(options) {
-                return this.constructor.toObject(this, options);
             };
 
             /**
@@ -14316,15 +13812,6 @@ $root.google = (function() {
                     if (message.end != null && message.hasOwnProperty("end"))
                         object.end = message.end;
                     return object;
-                };
-
-                /**
-                 * Creates a plain object from this Annotation message. Also converts values to other types if specified.
-                 * @param {$protobuf.IConversionOptions} [options] Conversion options
-                 * @returns {Object.<string,*>} Plain object
-                 */
-                Annotation.prototype.toObject = function toObject(options) {
-                    return this.constructor.toObject(this, options);
                 };
 
                 /**

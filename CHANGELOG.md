@@ -1,22 +1,48 @@
 # [6.8.0](https://github.com/dcodeIO/protobuf.js/releases/tag/6.8.0)
 
 ## Breaking
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/c97b61811248df002f1fb93557b982bc0aa27309) Everything uses interfaces now instead of typedefs (SomethingProperties is now ISomething)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/b9f179064f3ddf683f13e0d4e17840301be64010) ReflectionObject#toJSON properly omits explicit undefined values<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/7a6f98b5e74f9e9142f9be3ba0683caeaff916c4) Initial implementation of TypeScript decorators<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/7a6f98b5e74f9e9142f9be3ba0683caeaff916c4) Refactored protobuf.Class away<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/7a6f98b5e74f9e9142f9be3ba0683caeaff916c4) TypeScript definitions now have (a lot of) generics<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/7a6f98b5e74f9e9142f9be3ba0683caeaff916c4) Removed deprecated features<br />
 
 ## Fixed
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/0589ace4dc9e5c565ff996cf6e6bf94e63f43c4e) Types should not clear constructor with cache (fixes decorators)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/056ecc3834a3b323aaaa676957efcbe3f52365a0) Namespace#lookup should also check in nested namespaces (wtf)<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/ed34b093839652db2ff7b84db87857fc57d96038) Reader#bytes should also support plain arrays<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/514afcfa890aa598e93254576c4fd6062e0eff3b) Fix markdown for pipe in code in table<br />
 
 ## New
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/57d7d35ddbb9e3a28c396b4ef1ae3b150eeb8035) ext/descriptor enables interoperability between reflection and descriptor.proto (experimental), see [#757](https://github.com/dcodeIO/protobuf.js/issues/757)<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/3939667ef1f37b025bd7f9476015890496d50e00) Added 'json' conversion option for proto3 JSON mapping compatibility of NaN and Infinity + additional documentation of util.toJSONOptions, see [#351](https://github.com/dcodeIO/protobuf.js/issues/351)<br />
 
+## CLI
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/b355115e619c6595ac9d91897cfe628ef0e46054) Prefer @tstype over @type when generating typedefs (tsd-jsdoc)<br />
+
 ## Docs
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/6493f52013c92a34b8305a25068ec7b8c4c29d54) Added more info to ext/descriptor README, see [#757](https://github.com/dcodeIO/protobuf.js/issues/757)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/ef92da3768d8746dbfe72e77232f78b879fc811d) Additional notes on ext/descriptor<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/b646cf7499791a41b75eef2de1a80fb558d4159e) Updated CHANGELOG so everyone knows what's going on (and soon, breaking)<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/35a663757efe188bea552aef017837bc6c6a481a) Additional docs on TS/decorators usage<br />
 
 ## Other
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/5bc3541d2da19e2857dc884f743d37c27e8e21f2) Even more documentation and typings for ext/descriptor<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/773e6347b57e4a5236b1ef0bb8d361e4b233caf7) ext/descriptor docs<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/773e6347b57e4a5236b1ef0bb8d361e4b233caf7) Decorators coverage<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/9a23ded94729ceeea2f87cb7e8460eaaaf1c8269) ext/descriptor support for various standard options, see [#757](https://github.com/dcodeIO/protobuf.js/issues/757)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/2d8ce6ec0abd261f9b261a44a0a258fdf57ecec3) ext/descriptor passes descriptor.proto test with no differences, see [#757](https://github.com/dcodeIO/protobuf.js/issues/757)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/3a20968c6d676312e4f2a510f7e079e0e0819daf) Properly remove unnecessary (packed) options from JSON descriptors<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/2a30df8bd5f20d91143a38c2232dafc3a6f3a7bd) Use typedefs in ext/descriptor (like everywhere else), see [#757](https://github.com/dcodeIO/protobuf.js/issues/757)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/1fc911cef01e081c04fb82ead685f49dde1403bb) Fixed obvious issues with ext/descriptor, does not throw anymore when throwing descriptor.proto itself at it, see [#757](https://github.com/dcodeIO/protobuf.js/issues/757)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/6c37dbd14f39dad687f2f89f1558a875f7dcc882) Added still missing root traversal to ext/descriptor, see [#757](https://github.com/dcodeIO/protobuf.js/issues/757)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/7ab136daa5eb2769b616b6b7522e45a4e33a59f6) Initial map fields support for ext/descriptor, see [#757](https://github.com/dcodeIO/protobuf.js/issues/757)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/708552bb84508364b6e6fdf73906aa69e83854e1) Added infrastructure for TypeScript support of extensions<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/23f26defa793b371c16b5f920fbacb3fb66bdf22) TypeScript generics improvements<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/e49bef863c0fb10257ec1001a3c5561755f2ec6b) More ext/descriptor progress, see [#757](https://github.com/dcodeIO/protobuf.js/issues/757)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/6b94336c1e6eec0f2eb1bd5dca73a7a8e71a2153) Just export the relevant namespace in ext/descriptor<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/fbb99489ed0c095174feff8f53431d30fb6c34a0) Initial descriptor.proto extension for reflection interoperability, see [#757](https://github.com/dcodeIO/protobuf.js/issues/757)<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/48e66d975bf7b4e6bdbb68ec24386c98b16c54c5) Moved custom wrappers to its own module instead, also makes the API easier to use manually, see [#677](https://github.com/dcodeIO/protobuf.js/issues/677)<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/0c6e639d08fdf9be12677bf678563ea631bafb2c) Added infrastructure for custom wrapping/unwrapping of special types, see [#677](https://github.com/dcodeIO/protobuf.js/issues/677)<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/0425b584f49841d87a8249fef30c78cc31c1c742) More decorator progress (MapField.d, optional Type.d)<br />

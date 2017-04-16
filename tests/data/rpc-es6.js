@@ -211,15 +211,6 @@ export const MyRequest = $root.MyRequest = (() => {
     };
 
     /**
-     * Creates a plain object from this MyRequest message. Also converts values to other types if specified.
-     * @param {$protobuf.IConversionOptions} [options] Conversion options
-     * @returns {Object.<string,*>} Plain object
-     */
-    MyRequest.prototype.toObject = function toObject(options) {
-        return this.constructor.toObject(this, options);
-    };
-
-    /**
      * Converts this MyRequest to JSON.
      * @returns {Object.<string,*>} JSON object
      */
@@ -373,15 +364,6 @@ export const MyResponse = $root.MyResponse = (() => {
         if (message.status != null && message.hasOwnProperty("status"))
             object.status = message.status;
         return object;
-    };
-
-    /**
-     * Creates a plain object from this MyResponse message. Also converts values to other types if specified.
-     * @param {$protobuf.IConversionOptions} [options] Conversion options
-     * @returns {Object.<string,*>} Plain object
-     */
-    MyResponse.prototype.toObject = function toObject(options) {
-        return this.constructor.toObject(this, options);
     };
 
     /**

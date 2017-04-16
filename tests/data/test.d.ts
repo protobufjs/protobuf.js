@@ -17,7 +17,6 @@ export namespace jspb {
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): jspb.test.Empty;
             public static toObject(message: jspb.test.Empty, options?: $protobuf.IConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
@@ -41,7 +40,6 @@ export namespace jspb {
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): jspb.test.EnumContainer;
             public static toObject(message: jspb.test.EnumContainer, options?: $protobuf.IConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
@@ -64,7 +62,6 @@ export namespace jspb {
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): jspb.test.Simple1;
             public static toObject(message: jspb.test.Simple1, options?: $protobuf.IConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
@@ -85,7 +82,6 @@ export namespace jspb {
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): jspb.test.Simple2;
             public static toObject(message: jspb.test.Simple2, options?: $protobuf.IConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
@@ -110,7 +106,6 @@ export namespace jspb {
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): jspb.test.SpecialCases;
             public static toObject(message: jspb.test.SpecialCases, options?: $protobuf.IConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
@@ -137,7 +132,6 @@ export namespace jspb {
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): jspb.test.OptionalFields;
             public static toObject(message: jspb.test.OptionalFields, options?: $protobuf.IConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
@@ -158,7 +152,6 @@ export namespace jspb {
                 public static verify(message: { [k: string]: any }): string;
                 public static fromObject(object: { [k: string]: any }): jspb.test.OptionalFields.Nested;
                 public static toObject(message: jspb.test.OptionalFields.Nested, options?: $protobuf.IConversionOptions): { [k: string]: any };
-                public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
                 public toJSON(): { [k: string]: any };
             }
         }
@@ -194,7 +187,6 @@ export namespace jspb {
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): jspb.test.HasExtensions;
             public static toObject(message: jspb.test.HasExtensions, options?: $protobuf.IConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
@@ -221,7 +213,6 @@ export namespace jspb {
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): jspb.test.Complex;
             public static toObject(message: jspb.test.Complex, options?: $protobuf.IConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
@@ -242,7 +233,6 @@ export namespace jspb {
                 public static verify(message: { [k: string]: any }): string;
                 public static fromObject(object: { [k: string]: any }): jspb.test.Complex.Nested;
                 public static toObject(message: jspb.test.Complex.Nested, options?: $protobuf.IConversionOptions): { [k: string]: any };
-                public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
                 public toJSON(): { [k: string]: any };
             }
         }
@@ -260,7 +250,6 @@ export namespace jspb {
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): jspb.test.OuterMessage;
             public static toObject(message: jspb.test.OuterMessage, options?: $protobuf.IConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
@@ -281,7 +270,6 @@ export namespace jspb {
                 public static verify(message: { [k: string]: any }): string;
                 public static fromObject(object: { [k: string]: any }): jspb.test.OuterMessage.Complex;
                 public static toObject(message: jspb.test.OuterMessage.Complex, options?: $protobuf.IConversionOptions): { [k: string]: any };
-                public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
                 public toJSON(): { [k: string]: any };
             }
         }
@@ -301,7 +289,6 @@ export namespace jspb {
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): jspb.test.IsExtension;
             public static toObject(message: jspb.test.IsExtension, options?: $protobuf.IConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
@@ -318,7 +305,6 @@ export namespace jspb {
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): jspb.test.IndirectExtension;
             public static toObject(message: jspb.test.IndirectExtension, options?: $protobuf.IConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
@@ -347,11 +333,7 @@ export namespace jspb {
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): jspb.test.DefaultValues;
             public static toObject(message: jspb.test.DefaultValues, options?: $protobuf.IConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
-        }
-
-        namespace DefaultValues {
 
             enum Enum {
                 E1 = 13,
@@ -388,7 +370,6 @@ export namespace jspb {
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): jspb.test.FloatingPointFields;
             public static toObject(message: jspb.test.FloatingPointFields, options?: $protobuf.IConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
@@ -417,7 +398,6 @@ export namespace jspb {
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): jspb.test.TestClone;
             public static toObject(message: jspb.test.TestClone, options?: $protobuf.IConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
@@ -436,7 +416,6 @@ export namespace jspb {
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): jspb.test.CloneExtension;
             public static toObject(message: jspb.test.CloneExtension, options?: $protobuf.IConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
@@ -465,7 +444,6 @@ export namespace jspb {
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): jspb.test.TestGroup;
             public static toObject(message: jspb.test.TestGroup, options?: $protobuf.IConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
@@ -488,7 +466,6 @@ export namespace jspb {
                 public static verify(message: { [k: string]: any }): string;
                 public static fromObject(object: { [k: string]: any }): jspb.test.TestGroup.RepeatedGroup;
                 public static toObject(message: jspb.test.TestGroup.RepeatedGroup, options?: $protobuf.IConversionOptions): { [k: string]: any };
-                public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
                 public toJSON(): { [k: string]: any };
             }
 
@@ -507,7 +484,6 @@ export namespace jspb {
                 public static verify(message: { [k: string]: any }): string;
                 public static fromObject(object: { [k: string]: any }): jspb.test.TestGroup.RequiredGroup;
                 public static toObject(message: jspb.test.TestGroup.RequiredGroup, options?: $protobuf.IConversionOptions): { [k: string]: any };
-                public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
                 public toJSON(): { [k: string]: any };
             }
 
@@ -526,7 +502,6 @@ export namespace jspb {
                 public static verify(message: { [k: string]: any }): string;
                 public static fromObject(object: { [k: string]: any }): jspb.test.TestGroup.OptionalGroup;
                 public static toObject(message: jspb.test.TestGroup.OptionalGroup, options?: $protobuf.IConversionOptions): { [k: string]: any };
-                public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
                 public toJSON(): { [k: string]: any };
             }
         }
@@ -546,7 +521,6 @@ export namespace jspb {
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): jspb.test.TestGroup1;
             public static toObject(message: jspb.test.TestGroup1, options?: $protobuf.IConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
@@ -567,7 +541,6 @@ export namespace jspb {
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): jspb.test.TestReservedNames;
             public static toObject(message: jspb.test.TestReservedNames, options?: $protobuf.IConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
@@ -584,7 +557,6 @@ export namespace jspb {
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): jspb.test.TestReservedNamesExtension;
             public static toObject(message: jspb.test.TestReservedNamesExtension, options?: $protobuf.IConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
@@ -625,7 +597,6 @@ export namespace jspb {
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): jspb.test.TestMessageWithOneof;
             public static toObject(message: jspb.test.TestMessageWithOneof, options?: $protobuf.IConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
@@ -646,7 +617,6 @@ export namespace jspb {
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): jspb.test.TestEndsWithBytes;
             public static toObject(message: jspb.test.TestEndsWithBytes, options?: $protobuf.IConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
@@ -687,7 +657,6 @@ export namespace jspb {
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): jspb.test.TestMapFieldsNoBinary;
             public static toObject(message: jspb.test.TestMapFieldsNoBinary, options?: $protobuf.IConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
@@ -712,7 +681,6 @@ export namespace jspb {
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): jspb.test.MapValueMessageNoBinary;
             public static toObject(message: jspb.test.MapValueMessageNoBinary, options?: $protobuf.IConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
@@ -729,7 +697,6 @@ export namespace jspb {
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): jspb.test.Deeply;
             public static toObject(message: jspb.test.Deeply, options?: $protobuf.IConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
@@ -748,7 +715,6 @@ export namespace jspb {
                 public static verify(message: { [k: string]: any }): string;
                 public static fromObject(object: { [k: string]: any }): jspb.test.Deeply.Nested;
                 public static toObject(message: jspb.test.Deeply.Nested, options?: $protobuf.IConversionOptions): { [k: string]: any };
-                public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
                 public toJSON(): { [k: string]: any };
             }
 
@@ -769,7 +735,6 @@ export namespace jspb {
                     public static verify(message: { [k: string]: any }): string;
                     public static fromObject(object: { [k: string]: any }): jspb.test.Deeply.Nested.Message;
                     public static toObject(message: jspb.test.Deeply.Nested.Message, options?: $protobuf.IConversionOptions): { [k: string]: any };
-                    public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
                     public toJSON(): { [k: string]: any };
                 }
             }
@@ -796,7 +761,6 @@ export namespace google {
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): google.protobuf.FileDescriptorSet;
             public static toObject(message: google.protobuf.FileDescriptorSet, options?: $protobuf.IConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
@@ -837,7 +801,6 @@ export namespace google {
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): google.protobuf.FileDescriptorProto;
             public static toObject(message: google.protobuf.FileDescriptorProto, options?: $protobuf.IConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
@@ -874,7 +837,6 @@ export namespace google {
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): google.protobuf.DescriptorProto;
             public static toObject(message: google.protobuf.DescriptorProto, options?: $protobuf.IConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
@@ -897,7 +859,6 @@ export namespace google {
                 public static verify(message: { [k: string]: any }): string;
                 public static fromObject(object: { [k: string]: any }): google.protobuf.DescriptorProto.ExtensionRange;
                 public static toObject(message: google.protobuf.DescriptorProto.ExtensionRange, options?: $protobuf.IConversionOptions): { [k: string]: any };
-                public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
                 public toJSON(): { [k: string]: any };
             }
 
@@ -918,7 +879,6 @@ export namespace google {
                 public static verify(message: { [k: string]: any }): string;
                 public static fromObject(object: { [k: string]: any }): google.protobuf.DescriptorProto.ReservedRange;
                 public static toObject(message: google.protobuf.DescriptorProto.ReservedRange, options?: $protobuf.IConversionOptions): { [k: string]: any };
-                public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
                 public toJSON(): { [k: string]: any };
             }
         }
@@ -956,11 +916,7 @@ export namespace google {
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): google.protobuf.FieldDescriptorProto;
             public static toObject(message: google.protobuf.FieldDescriptorProto, options?: $protobuf.IConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
-        }
-
-        namespace FieldDescriptorProto {
 
             enum Type {
                 TYPE_DOUBLE = 1,
@@ -1007,7 +963,6 @@ export namespace google {
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): google.protobuf.OneofDescriptorProto;
             public static toObject(message: google.protobuf.OneofDescriptorProto, options?: $protobuf.IConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
@@ -1030,7 +985,6 @@ export namespace google {
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): google.protobuf.EnumDescriptorProto;
             public static toObject(message: google.protobuf.EnumDescriptorProto, options?: $protobuf.IConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
@@ -1053,7 +1007,6 @@ export namespace google {
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): google.protobuf.EnumValueDescriptorProto;
             public static toObject(message: google.protobuf.EnumValueDescriptorProto, options?: $protobuf.IConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
@@ -1076,7 +1029,6 @@ export namespace google {
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): google.protobuf.ServiceDescriptorProto;
             public static toObject(message: google.protobuf.ServiceDescriptorProto, options?: $protobuf.IConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
@@ -1105,7 +1057,6 @@ export namespace google {
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): google.protobuf.MethodDescriptorProto;
             public static toObject(message: google.protobuf.MethodDescriptorProto, options?: $protobuf.IConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
@@ -1152,11 +1103,7 @@ export namespace google {
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): google.protobuf.FileOptions;
             public static toObject(message: google.protobuf.FileOptions, options?: $protobuf.IConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
-        }
-
-        namespace FileOptions {
 
             enum OptimizeMode {
                 SPEED = 1,
@@ -1188,7 +1135,6 @@ export namespace google {
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): google.protobuf.MessageOptions;
             public static toObject(message: google.protobuf.MessageOptions, options?: $protobuf.IConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
@@ -1219,11 +1165,7 @@ export namespace google {
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): google.protobuf.FieldOptions;
             public static toObject(message: google.protobuf.FieldOptions, options?: $protobuf.IConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
-        }
-
-        namespace FieldOptions {
 
             enum CType {
                 STRING = 0,
@@ -1253,7 +1195,6 @@ export namespace google {
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): google.protobuf.OneofOptions;
             public static toObject(message: google.protobuf.OneofOptions, options?: $protobuf.IConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
@@ -1278,7 +1219,6 @@ export namespace google {
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): google.protobuf.EnumOptions;
             public static toObject(message: google.protobuf.EnumOptions, options?: $protobuf.IConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
@@ -1299,7 +1239,6 @@ export namespace google {
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): google.protobuf.EnumValueOptions;
             public static toObject(message: google.protobuf.EnumValueOptions, options?: $protobuf.IConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
@@ -1320,7 +1259,6 @@ export namespace google {
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): google.protobuf.ServiceOptions;
             public static toObject(message: google.protobuf.ServiceOptions, options?: $protobuf.IConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
@@ -1343,11 +1281,7 @@ export namespace google {
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): google.protobuf.MethodOptions;
             public static toObject(message: google.protobuf.MethodOptions, options?: $protobuf.IConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
-        }
-
-        namespace MethodOptions {
 
             enum IdempotencyLevel {
                 IDEMPOTENCY_UNKNOWN = 0,
@@ -1383,7 +1317,6 @@ export namespace google {
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): google.protobuf.UninterpretedOption;
             public static toObject(message: google.protobuf.UninterpretedOption, options?: $protobuf.IConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
@@ -1406,7 +1339,6 @@ export namespace google {
                 public static verify(message: { [k: string]: any }): string;
                 public static fromObject(object: { [k: string]: any }): google.protobuf.UninterpretedOption.NamePart;
                 public static toObject(message: google.protobuf.UninterpretedOption.NamePart, options?: $protobuf.IConversionOptions): { [k: string]: any };
-                public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
                 public toJSON(): { [k: string]: any };
             }
         }
@@ -1426,7 +1358,6 @@ export namespace google {
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): google.protobuf.SourceCodeInfo;
             public static toObject(message: google.protobuf.SourceCodeInfo, options?: $protobuf.IConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
@@ -1455,7 +1386,6 @@ export namespace google {
                 public static verify(message: { [k: string]: any }): string;
                 public static fromObject(object: { [k: string]: any }): google.protobuf.SourceCodeInfo.Location;
                 public static toObject(message: google.protobuf.SourceCodeInfo.Location, options?: $protobuf.IConversionOptions): { [k: string]: any };
-                public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
                 public toJSON(): { [k: string]: any };
             }
         }
@@ -1475,7 +1405,6 @@ export namespace google {
             public static verify(message: { [k: string]: any }): string;
             public static fromObject(object: { [k: string]: any }): google.protobuf.GeneratedCodeInfo;
             public static toObject(message: google.protobuf.GeneratedCodeInfo, options?: $protobuf.IConversionOptions): { [k: string]: any };
-            public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
         }
 
@@ -1502,7 +1431,6 @@ export namespace google {
                 public static verify(message: { [k: string]: any }): string;
                 public static fromObject(object: { [k: string]: any }): google.protobuf.GeneratedCodeInfo.Annotation;
                 public static toObject(message: google.protobuf.GeneratedCodeInfo.Annotation, options?: $protobuf.IConversionOptions): { [k: string]: any };
-                public toObject(options?: $protobuf.IConversionOptions): { [k: string]: any };
                 public toJSON(): { [k: string]: any };
             }
         }

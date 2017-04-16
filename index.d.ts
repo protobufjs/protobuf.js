@@ -3,316 +3,198 @@ export as namespace protobuf;
 /**
  * Provides common type definitions.
  * Can also be used to provide additional google types or your own custom types.
- * @param {string} name Short name as in `google/protobuf/[name].proto` or full file name
- * @param {Object.<string,*>} json JSON definition within `google.protobuf` if a short name, otherwise the file's root definition
- * @returns {undefined}
- * @property {Object.<string,*>} google/protobuf/any.proto Any
- * @property {Object.<string,*>} google/protobuf/duration.proto Duration
- * @property {Object.<string,*>} google/protobuf/empty.proto Empty
- * @property {Object.<string,*>} google/protobuf/struct.proto Struct, Value, NullValue and ListValue
- * @property {Object.<string,*>} google/protobuf/timestamp.proto Timestamp
- * @property {Object.<string,*>} google/protobuf/wrappers.proto Wrappers
- * @example
- * // manually provides descriptor.proto (assumes google/protobuf/ namespace and .proto extension)
- * protobuf.common("descriptor", descriptorJson);
- *
- * // manually provides a custom definition (uses my.foo namespace)
- * protobuf.common("my/foo/bar.proto", myFooBarJson);
+ * @param name Short name as in `google/protobuf/[name].proto` or full file name
+ * @param json JSON definition within `google.protobuf` if a short name, otherwise the file's root definition
  */
 export function common(name: string, json: { [k: string]: any }): void;
 
-/**
- * Properties of a google.protobuf.Any message.
- * @interface IAny
- * @type {Object}
- * @property {string} [typeUrl]
- * @property {Uint8Array} [bytes]
- */
-export interface IAny {
-    typeUrl?: string;
-    bytes?: Uint8Array;
+export namespace common {
+
+    /** Properties of a google.protobuf.Any message. */
+    interface IAny {
+        typeUrl?: string;
+        bytes?: Uint8Array;
+    }
+
+    /** Properties of a google.protobuf.Duration message. */
+    interface IDuration {
+        seconds?: (number|Long);
+        nanos?: number;
+    }
+
+    /** Properties of a google.protobuf.Timestamp message. */
+    interface ITimestamp {
+        seconds?: (number|Long);
+        nanos?: number;
+    }
+
+    /** Properties of a google.protobuf.Empty message. */
+    interface IEmpty {
+    }
+
+    /** Properties of a google.protobuf.Struct message. */
+    interface IStruct {
+        fields?: { [k: string]: IValue };
+    }
+
+    /** Properties of a google.protobuf.Value message. */
+    interface IValue {
+        kind?: string;
+        nullValue?: 0;
+        numberValue?: number;
+        stringValue?: string;
+        boolValue?: boolean;
+        structValue?: IStruct;
+        listValue?: IListValue;
+    }
+
+    /** Properties of a google.protobuf.ListValue message. */
+    interface IListValue {
+        values?: IValue[];
+    }
+
+    /** Properties of a google.protobuf.DoubleValue message. */
+    interface IDoubleValue {
+        value?: number;
+    }
+
+    /** Properties of a google.protobuf.FloatValue message. */
+    interface IFloatValue {
+        value?: number;
+    }
+
+    /** Properties of a google.protobuf.Int64Value message. */
+    interface IInt64Value {
+        value?: (number|Long);
+    }
+
+    /** Properties of a google.protobuf.UInt64Value message. */
+    interface IUInt64Value {
+        value?: (number|Long);
+    }
+
+    /** Properties of a google.protobuf.Int32Value message. */
+    interface IInt32Value {
+        value?: number;
+    }
+
+    /** Properties of a google.protobuf.UInt32Value message. */
+    interface IUInt32Value {
+        value?: number;
+    }
+
+    /** Properties of a google.protobuf.BoolValue message. */
+    interface IBoolValue {
+        value?: boolean;
+    }
+
+    /** Properties of a google.protobuf.StringValue message. */
+    interface IStringValue {
+        value?: string;
+    }
+
+    /** Properties of a google.protobuf.BytesValue message. */
+    interface IBytesValue {
+        value?: Uint8Array;
+    }
 }
 
-/**
- * Properties of a google.protobuf.Duration message.
- * @interface IDuration
- * @type {Object}
- * @property {number|Long} [seconds]
- * @property {number} [nanos]
- */
-export interface IDuration {
-    seconds?: (number|Long);
-    nanos?: number;
-}
-
-/**
- * Properties of a google.protobuf.Timestamp message.
- * @interface ITimestamp
- * @type {Object}
- * @property {number|Long} [seconds]
- * @property {number} [nanos]
- */
-export interface ITimestamp {
-    seconds?: (number|Long);
-    nanos?: number;
-}
-
-/**
- * Properties of a google.protobuf.Empty message.
- * @interface IEmpty
- */
-export interface IEmpty {
-}
-
-/**
- * Properties of a google.protobuf.Struct message.
- * @interface IStruct
- * @type {Object}
- * @property {Object.<string,IValue>} [fields]
- */
-export interface IStruct {
-    fields?: { [k: string]: IValue };
-}
-
-/**
- * Properties of a google.protobuf.Value message.
- * @interface IValue
- * @type {Object}
- * @property {string} [kind]
- * @property {0} [nullValue]
- * @property {number} [numberValue]
- * @property {string} [stringValue]
- * @property {boolean} [boolValue]
- * @property {IStruct} [structValue]
- * @property {IListValue} [listValue]
- */
-export interface IValue {
-    kind?: string;
-    nullValue?: 0;
-    numberValue?: number;
-    stringValue?: string;
-    boolValue?: boolean;
-    structValue?: IStruct;
-    listValue?: IListValue;
-}
-
-/**
- * Properties of a google.protobuf.ListValue message.
- * @interface IListValue
- * @type {Object}
- * @property {Array.<IValue>} [values]
- */
-export interface IListValue {
-    values?: IValue[];
-}
-
-/**
- * Properties of a google.protobuf.DoubleValue message.
- * @interface IDoubleValue
- * @type {Object}
- * @property {number} [value]
- */
-export interface IDoubleValue {
-    value?: number;
-}
-
-/**
- * Properties of a google.protobuf.FloatValue message.
- * @interface IFloatValue
- * @type {Object}
- * @property {number} [value]
- */
-export interface IFloatValue {
-    value?: number;
-}
-
-/**
- * Properties of a google.protobuf.Int64Value message.
- * @interface IInt64Value
- * @type {Object}
- * @property {number|Long} [value]
- */
-export interface IInt64Value {
-    value?: (number|Long);
-}
-
-/**
- * Properties of a google.protobuf.UInt64Value message.
- * @interface IUInt64Value
- * @type {Object}
- * @property {number|Long} [value]
- */
-export interface IUInt64Value {
-    value?: (number|Long);
-}
-
-/**
- * Properties of a google.protobuf.Int32Value message.
- * @interface IInt32Value
- * @type {Object}
- * @property {number} [value]
- */
-export interface IInt32Value {
-    value?: number;
-}
-
-/**
- * Properties of a google.protobuf.UInt32Value message.
- * @interface IUInt32Value
- * @type {Object}
- * @property {number} [value]
- */
-export interface IUInt32Value {
-    value?: number;
-}
-
-/**
- * Properties of a google.protobuf.BoolValue message.
- * @interface IBoolValue
- * @type {Object}
- * @property {boolean} [value]
- */
-export interface IBoolValue {
-    value?: boolean;
-}
-
-/**
- * Properties of a google.protobuf.StringValue message.
- * @interface IStringValue
- * @type {Object}
- * @property {string} [value]
- */
-export interface IStringValue {
-    value?: string;
-}
-
-/**
- * Properties of a google.protobuf.BytesValue message.
- * @interface IBytesValue
- * @type {Object}
- * @property {Uint8Array} [value]
- */
-export interface IBytesValue {
-    value?: Uint8Array;
-}
-
-/**
- * Runtime message from/to plain object converters.
- * @namespace
- */
+/** Runtime message from/to plain object converters. */
 export namespace converter {
 
     /**
      * Generates a plain object to runtime message converter specific to the specified message type.
-     * @param {Type} mtype Message type
-     * @returns {Codegen} Codegen instance
+     * @param mtype Message type
+     * @returns Codegen instance
      */
     function fromObject(mtype: Type): Codegen;
 
     /**
      * Generates a runtime message to plain object converter specific to the specified message type.
-     * @param {Type} mtype Message type
-     * @returns {Codegen} Codegen instance
+     * @param mtype Message type
+     * @returns Codegen instance
      */
     function toObject(mtype: Type): Codegen;
 }
 
 /**
  * Generates a decoder specific to the specified message type.
- * @param {Type} mtype Message type
- * @returns {Codegen} Codegen instance
+ * @param mtype Message type
+ * @returns Codegen instance
  */
 export function decoder(mtype: Type): Codegen;
 
 /**
  * Generates an encoder specific to the specified message type.
- * @param {Type} mtype Message type
- * @returns {Codegen} Codegen instance
+ * @param mtype Message type
+ * @returns Codegen instance
  */
 export function encoder(mtype: Type): Codegen;
 
 /**
  * Constructs a new enum instance.
  * @classdesc Reflected enum.
- * @extends ReflectionObject
- * @constructor
- * @param {string} name Unique name within its namespace
- * @param {Object.<string,number>} [values] Enum values as an object, by name
- * @param {Object.<string,*>} [options] Declared options
+ * @param name Unique name within its namespace
+ * @param [values] Enum values as an object, by name
+ * @param [options] Declared options
  */
 export class Enum extends ReflectionObject {
 
     /**
      * Constructs a new enum instance.
      * @classdesc Reflected enum.
-     * @extends ReflectionObject
-     * @constructor
-     * @param {string} name Unique name within its namespace
-     * @param {Object.<string,number>} [values] Enum values as an object, by name
-     * @param {Object.<string,*>} [options] Declared options
+     * @param name Unique name within its namespace
+     * @param [values] Enum values as an object, by name
+     * @param [options] Declared options
      */
     constructor(name: string, values?: { [k: string]: number }, options?: { [k: string]: any });
 
-    /**
-     * Enum values by id.
-     * @type {Object.<number,string>}
-     */
+    /** Enum values by id. */
     public valuesById: { [k: number]: string };
 
-    /**
-     * Enum values by name.
-     * @type {Object.<string,number>}
-     */
+    /** Enum values by name. */
     public values: { [k: string]: number };
 
-    /**
-     * Value comment texts, if any.
-     * @type {Object.<string,string>}
-     */
+    /** Value comment texts, if any. */
     public comments: { [k: string]: string };
 
     /**
      * Constructs an enum from an enum descriptor.
-     * @param {string} name Enum name
-     * @param {IEnum} json Enum descriptor
-     * @returns {Enum} Created enum
-     * @throws {TypeError} If arguments are invalid
+     * @param name Enum name
+     * @param json Enum descriptor
+     * @returns Created enum
+     * @throws If arguments are invalid
      */
     public static fromJSON(name: string, json: IEnum): Enum;
 
     /**
      * Converts this enum to an enum descriptor.
-     * @returns {IEnum} Enum descriptor
+     * @returns Enum descriptor
      */
     public toJSON(): IEnum;
 
     /**
      * Adds a value to this enum.
-     * @param {string} name Value name
-     * @param {number} id Value id
-     * @param {?string} comment Comment, if any
-     * @returns {Enum} `this`
-     * @throws {TypeError} If arguments are invalid
-     * @throws {Error} If there is already a value with this name or id
+     * @param name Value name
+     * @param id Value id
+     * @param comment Comment, if any
+     * @returns `this`
+     * @throws If arguments are invalid
+     * @throws If there is already a value with this name or id
      */
     public add(name: string, id: number, comment: string): Enum;
 
     /**
      * Removes a value from this enum
-     * @param {string} name Value name
-     * @returns {Enum} `this`
-     * @throws {TypeError} If arguments are invalid
-     * @throws {Error} If `name` is not a name of this enum
+     * @param name Value name
+     * @returns `this`
+     * @throws If arguments are invalid
+     * @throws If `name` is not a name of this enum
      */
     public remove(name: string): Enum;
 }
 
-/**
- * Enum descriptor.
- * @interface IEnum
- * @property {Object.<string,number>} values Enum values
- * @property {Object.<string,*>} [options] Enum options
- */
+/** Enum descriptor. */
 export interface IEnum {
     values: { [k: string]: number };
     options?: { [k: string]: any };
@@ -320,74 +202,59 @@ export interface IEnum {
 
 /**
  * Constructs a new message field instance. Note that {@link MapField|map fields} have their own class.
- * @name Field
  * @classdesc Reflected message field.
- * @extends FieldBase
- * @constructor
- * @param {string} name Unique name within its namespace
- * @param {number} id Unique id within its namespace
- * @param {string} type Value type
- * @param {string|Object.<string,*>} [rule="optional"] Field rule
- * @param {string|Object.<string,*>} [extend] Extended type if different from parent
- * @param {Object.<string,*>} [options] Declared options
+ * @param name Unique name within its namespace
+ * @param id Unique id within its namespace
+ * @param type Value type
+ * @param [rule="optional"] Field rule
+ * @param [extend] Extended type if different from parent
+ * @param [options] Declared options
  */
 export class Field extends FieldBase {
 
     /**
      * Constructs a new message field instance. Note that {@link MapField|map fields} have their own class.
-     * @name Field
      * @classdesc Reflected message field.
-     * @extends FieldBase
-     * @constructor
-     * @param {string} name Unique name within its namespace
-     * @param {number} id Unique id within its namespace
-     * @param {string} type Value type
-     * @param {string|Object.<string,*>} [rule="optional"] Field rule
-     * @param {string|Object.<string,*>} [extend] Extended type if different from parent
-     * @param {Object.<string,*>} [options] Declared options
+     * @param name Unique name within its namespace
+     * @param id Unique id within its namespace
+     * @param type Value type
+     * @param [rule="optional"] Field rule
+     * @param [extend] Extended type if different from parent
+     * @param [options] Declared options
      */
     constructor(name: string, id: number, type: string, rule?: (string|{ [k: string]: any }), extend?: (string|{ [k: string]: any }), options?: { [k: string]: any });
 
     /**
      * Constructs a field from a field descriptor.
-     * @param {string} name Field name
-     * @param {IField} json Field descriptor
-     * @returns {Field} Created field
-     * @throws {TypeError} If arguments are invalid
+     * @param name Field name
+     * @param json Field descriptor
+     * @returns Created field
+     * @throws If arguments are invalid
      */
     public static fromJSON(name: string, json: IField): Field;
 
     /**
      * Determines whether this field is packed. Only relevant when repeated and working with proto2.
-     * @name Field#packed
-     * @type {boolean}
      * @readonly
      */
     public readonly packed: boolean;
 
     /**
      * Field decorator (TypeScript).
-     * @name Field.d
-     * @function
-     * @param {number} fieldId Field id
-     * @param {"double"|"float"|"int32"|"uint32"|"sint32"|"fixed32"|"sfixed32"|"int64"|"uint64"|"sint64"|"fixed64"|"sfixed64"|"string"|"bool"|"bytes"|Object} fieldType Field type
-     * @param {"optional"|"required"|"repeated"} [fieldRule="optional"] Field rule
-     * @param {T} [defaultValue] Default value
-     * @returns {FieldDecorator} Decorator function
-     * @template T extends number | number[] | Long | Long[] | string | string[] | boolean | boolean[] | Uint8Array | Uint8Array[] | Buffer | Buffer[]
+     * @param fieldId Field id
+     * @param fieldType Field type
+     * @param [fieldRule="optional"] Field rule
+     * @param [defaultValue] Default value
+     * @returns Decorator function
      */
     public static d<T extends number | number[] | Long | Long[] | string | string[] | boolean | boolean[] | Uint8Array | Uint8Array[] | Buffer | Buffer[]>(fieldId: number, fieldType: ("double"|"float"|"int32"|"uint32"|"sint32"|"fixed32"|"sfixed32"|"int64"|"uint64"|"sint64"|"fixed64"|"sfixed64"|"string"|"bool"|"bytes"|object), fieldRule?: ("optional"|"required"|"repeated"), defaultValue?: T): FieldDecorator;
 
     /**
      * Field decorator (TypeScript).
-     * @name Field.d
-     * @function
-     * @param {number} fieldId Field id
-     * @param {Constructor<T>|string} fieldType Field type
-     * @param {"optional"|"required"|"repeated"} [fieldRule="optional"] Field rule
-     * @returns {FieldDecorator} Decorator function
-     * @template T extends Message<T>
-     * @variation 2
+     * @param fieldId Field id
+     * @param fieldType Field type
+     * @param [fieldRule="optional"] Field rule
+     * @returns Decorator function
      */
     public static d<T extends Message<T>>(fieldId: number, fieldType: (Constructor<T>|string), fieldRule?: ("optional"|"required"|"repeated")): FieldDecorator;
 }
@@ -395,157 +262,93 @@ export class Field extends FieldBase {
 /**
  * Not an actual constructor. Use {@link Field} instead.
  * @classdesc Base class of all reflected message fields. This is not an actual class but here for the sake of having consistent type definitions.
- * @exports FieldBase
- * @extends ReflectionObject
- * @constructor
- * @param {string} name Unique name within its namespace
- * @param {number} id Unique id within its namespace
- * @param {string} type Value type
- * @param {string|Object.<string,*>} [rule="optional"] Field rule
- * @param {string|Object.<string,*>} [extend] Extended type if different from parent
- * @param {Object.<string,*>} [options] Declared options
+ * @param name Unique name within its namespace
+ * @param id Unique id within its namespace
+ * @param type Value type
+ * @param [rule="optional"] Field rule
+ * @param [extend] Extended type if different from parent
+ * @param [options] Declared options
  */
 export class FieldBase extends ReflectionObject {
 
     /**
      * Not an actual constructor. Use {@link Field} instead.
      * @classdesc Base class of all reflected message fields. This is not an actual class but here for the sake of having consistent type definitions.
-     * @exports FieldBase
-     * @extends ReflectionObject
-     * @constructor
-     * @param {string} name Unique name within its namespace
-     * @param {number} id Unique id within its namespace
-     * @param {string} type Value type
-     * @param {string|Object.<string,*>} [rule="optional"] Field rule
-     * @param {string|Object.<string,*>} [extend] Extended type if different from parent
-     * @param {Object.<string,*>} [options] Declared options
+     * @param name Unique name within its namespace
+     * @param id Unique id within its namespace
+     * @param type Value type
+     * @param [rule="optional"] Field rule
+     * @param [extend] Extended type if different from parent
+     * @param [options] Declared options
      */
     constructor(name: string, id: number, type: string, rule?: (string|{ [k: string]: any }), extend?: (string|{ [k: string]: any }), options?: { [k: string]: any });
 
-    /**
-     * Field rule, if any.
-     * @type {string|undefined}
-     */
+    /** Field rule, if any. */
     public rule?: string;
 
-    /**
-     * Field type.
-     * @type {string}
-     */
+    /** Field type. */
     public type: string;
 
-    /**
-     * Unique field id.
-     * @type {number}
-     */
+    /** Unique field id. */
     public id: number;
 
-    /**
-     * Extended type if different from parent.
-     * @type {string|undefined}
-     */
+    /** Extended type if different from parent. */
     public extend?: string;
 
-    /**
-     * Whether this field is required.
-     * @type {boolean}
-     */
+    /** Whether this field is required. */
     public required: boolean;
 
-    /**
-     * Whether this field is optional.
-     * @type {boolean}
-     */
+    /** Whether this field is optional. */
     public optional: boolean;
 
-    /**
-     * Whether this field is repeated.
-     * @type {boolean}
-     */
+    /** Whether this field is repeated. */
     public repeated: boolean;
 
-    /**
-     * Whether this field is a map or not.
-     * @type {boolean}
-     */
+    /** Whether this field is a map or not. */
     public map: boolean;
 
-    /**
-     * Message this field belongs to.
-     * @type {?Type}
-     */
+    /** Message this field belongs to. */
     public message: Type;
 
-    /**
-     * OneOf this field belongs to, if any,
-     * @type {?OneOf}
-     */
+    /** OneOf this field belongs to, if any, */
     public partOf: OneOf;
 
-    /**
-     * The field type's default value.
-     * @type {*}
-     */
+    /** The field type's default value. */
     public typeDefault: any;
 
-    /**
-     * The field's default value on prototypes.
-     * @type {*}
-     */
+    /** The field's default value on prototypes. */
     public defaultValue: any;
 
-    /**
-     * Whether this field's value should be treated as a long.
-     * @type {boolean}
-     */
+    /** Whether this field's value should be treated as a long. */
     public long: boolean;
 
-    /**
-     * Whether this field's value is a buffer.
-     * @type {boolean}
-     */
+    /** Whether this field's value is a buffer. */
     public bytes: boolean;
 
-    /**
-     * Resolved type if not a basic type.
-     * @type {?(Type|Enum)}
-     */
+    /** Resolved type if not a basic type. */
     public resolvedType: (Type|Enum);
 
-    /**
-     * Sister-field within the extended type if a declaring extension field.
-     * @type {?Field}
-     */
+    /** Sister-field within the extended type if a declaring extension field. */
     public extensionField: Field;
 
-    /**
-     * Sister-field within the declaring namespace if an extended field.
-     * @type {?Field}
-     */
+    /** Sister-field within the declaring namespace if an extended field. */
     public declaringField: Field;
 
     /**
      * Converts this field to a field descriptor.
-     * @returns {IField} Field descriptor
+     * @returns Field descriptor
      */
     public toJSON(): IField;
 
     /**
      * Resolves this field's type references.
-     * @returns {Field} `this`
-     * @throws {Error} If any reference cannot be resolved
+     * @returns `this`
+     * @throws If any reference cannot be resolved
      */
     public resolve(): Field;
 }
 
-/**
- * Field descriptor.
- * @interface IField
- * @property {string} [rule="optional"] Field rule
- * @property {string} type Field type
- * @property {number} id Field id
- * @property {Object.<string,*>} [options] Field options
- */
+/** Field descriptor. */
 export interface IField {
     rule?: string;
     type: string;
@@ -553,186 +356,146 @@ export interface IField {
     options?: { [k: string]: any };
 }
 
-/**
- * Extension field descriptor.
- * @interface IExtensionField
- * @extends IField
- * @property {string} extend Extended type
- */
+/** Extension field descriptor. */
 export interface IExtensionField extends IField {
     extend: string;
 }
 
+/**
+ * Decorator function as returned by {@link Field.d} and {@link MapField.d} (TypeScript).
+ * @param prototype Target prototype
+ * @param fieldName Field name
+ */
 type FieldDecorator = (prototype: object, fieldName: string) => void;
 
-/**
- * Debugging utility functions. Only present in debug builds.
- * @namespace
- */
+/** Debugging utility functions. Only present in debug builds. */
 export namespace debug {
 
     /**
      * Returns a list of unused types within the specified root.
-     * @param {NamespaceBase} ns Namespace to search
-     * @returns {Type[]} Unused types
+     * @param ns Namespace to search
+     * @returns Unused types
      */
     function unusedTypes(ns: NamespaceBase): Type[];
 
-    /**
-     * Enables debugging extensions.
-     * @returns {undefined}
-     */
+    /** Enables debugging extensions. */
     function enable(): void;
 
-    /**
-     * Disables debugging extensions.
-     * @returns {undefined}
-     */
+    /** Disables debugging extensions. */
     function disable(): void;
 }
 
+/**
+ * A node-style callback as used by {@link load} and {@link Root#load}.
+ * @param error Error, if any, otherwise `null`
+ * @param [root] Root, if there hasn't been an error
+ */
 type LoadCallback = (error: Error, root?: Root) => void;
 
 /**
  * Loads one or multiple .proto or preprocessed .json files into a common root namespace and calls the callback.
- * @param {string|string[]} filename One or multiple files to load
- * @param {Root} root Root namespace, defaults to create a new one if omitted.
- * @param {LoadCallback} callback Callback function
- * @returns {undefined}
+ * @param filename One or multiple files to load
+ * @param root Root namespace, defaults to create a new one if omitted.
+ * @param callback Callback function
  * @see {@link Root#load}
  */
 export function load(filename: (string|string[]), root: Root, callback: LoadCallback): void;
 
 /**
  * Loads one or multiple .proto or preprocessed .json files into a common root namespace and calls the callback.
- * @name load
- * @function
- * @param {string|string[]} filename One or multiple files to load
- * @param {LoadCallback} callback Callback function
- * @returns {undefined}
+ * @param filename One or multiple files to load
+ * @param callback Callback function
  * @see {@link Root#load}
- * @variation 2
  */
 export function load(filename: (string|string[]), callback: LoadCallback): void;
 
 /**
  * Loads one or multiple .proto or preprocessed .json files into a common root namespace and returns a promise.
- * @name load
- * @function
- * @param {string|string[]} filename One or multiple files to load
- * @param {Root} [root] Root namespace, defaults to create a new one if omitted.
- * @returns {Promise<Root>} Promise
+ * @param filename One or multiple files to load
+ * @param [root] Root namespace, defaults to create a new one if omitted.
+ * @returns Promise
  * @see {@link Root#load}
- * @variation 3
  */
 export function load(filename: (string|string[]), root?: Root): Promise<Root>;
 
 /**
  * Synchronously loads one or multiple .proto or preprocessed .json files into a common root namespace (node only).
- * @param {string|string[]} filename One or multiple files to load
- * @param {Root} [root] Root namespace, defaults to create a new one if omitted.
- * @returns {Root} Root namespace
- * @throws {Error} If synchronous fetching is not supported (i.e. in browsers) or if a file's syntax is invalid
+ * @param filename One or multiple files to load
+ * @param [root] Root namespace, defaults to create a new one if omitted.
+ * @returns Root namespace
+ * @throws If synchronous fetching is not supported (i.e. in browsers) or if a file's syntax is invalid
  * @see {@link Root#loadSync}
  */
 export function loadSync(filename: (string|string[]), root?: Root): Root;
 
 /**
  * Build type, one of `"full"`, `"light"` or `"minimal"`.
- * @name build
- * @type {string}
  * @const
  */
 export const build: string;
 
-/**
- * Reconfigures the library according to the environment.
- * @returns {undefined}
- */
+/** Reconfigures the library according to the environment. */
 export function configure(): void;
 
 /**
  * Constructs a new map field instance.
  * @classdesc Reflected map field.
- * @extends FieldBase
- * @constructor
- * @param {string} name Unique name within its namespace
- * @param {number} id Unique id within its namespace
- * @param {string} keyType Key type
- * @param {string} type Value type
- * @param {Object.<string,*>} [options] Declared options
+ * @param name Unique name within its namespace
+ * @param id Unique id within its namespace
+ * @param keyType Key type
+ * @param type Value type
+ * @param [options] Declared options
  */
 export class MapField extends FieldBase {
 
     /**
      * Constructs a new map field instance.
      * @classdesc Reflected map field.
-     * @extends FieldBase
-     * @constructor
-     * @param {string} name Unique name within its namespace
-     * @param {number} id Unique id within its namespace
-     * @param {string} keyType Key type
-     * @param {string} type Value type
-     * @param {Object.<string,*>} [options] Declared options
+     * @param name Unique name within its namespace
+     * @param id Unique id within its namespace
+     * @param keyType Key type
+     * @param type Value type
+     * @param [options] Declared options
      */
     constructor(name: string, id: number, keyType: string, type: string, options?: { [k: string]: any });
 
-    /**
-     * Key type.
-     * @type {string}
-     */
+    /** Key type. */
     public keyType: string;
 
-    /**
-     * Resolved key type if not a basic type.
-     * @type {?ReflectionObject}
-     */
+    /** Resolved key type if not a basic type. */
     public resolvedKeyType: ReflectionObject;
 
     /**
      * Constructs a map field from a map field descriptor.
-     * @param {string} name Field name
-     * @param {IMapField} json Map field descriptor
-     * @returns {MapField} Created map field
-     * @throws {TypeError} If arguments are invalid
+     * @param name Field name
+     * @param json Map field descriptor
+     * @returns Created map field
+     * @throws If arguments are invalid
      */
     public static fromJSON(name: string, json: IMapField): MapField;
 
     /**
      * Converts this map field to a map field descriptor.
-     * @returns {IMapField} Map field descriptor
+     * @returns Map field descriptor
      */
     public toJSON(): IMapField;
 
     /**
      * Map field decorator (TypeScript).
-     * @name MapField.d
-     * @function
-     * @param {number} fieldId Field id
-     * @param {"int32"|"uint32"|"sint32"|"fixed32"|"sfixed32"|"int64"|"uint64"|"sint64"|"fixed64"|"sfixed64"|"bool"|"string"} fieldKeyType Field key type
-     * @param {"double"|"float"|"int32"|"uint32"|"sint32"|"fixed32"|"sfixed32"|"int64"|"uint64"|"sint64"|"fixed64"|"sfixed64"|"bool"|"string"|"bytes"|Object|Constructor<{}>} fieldValueType Field value type
-     * @returns {FieldDecorator} Decorator function
-     * @template T extends { [key: string]: number | Long | string | boolean | Uint8Array | Buffer | number[] | Message<{}> }
+     * @param fieldId Field id
+     * @param fieldKeyType Field key type
+     * @param fieldValueType Field value type
+     * @returns Decorator function
      */
     public static d<T extends { [key: string]: number | Long | string | boolean | Uint8Array | Buffer | number[] | Message<{}> }>(fieldId: number, fieldKeyType: ("int32"|"uint32"|"sint32"|"fixed32"|"sfixed32"|"int64"|"uint64"|"sint64"|"fixed64"|"sfixed64"|"bool"|"string"), fieldValueType: ("double"|"float"|"int32"|"uint32"|"sint32"|"fixed32"|"sfixed32"|"int64"|"uint64"|"sint64"|"fixed64"|"sfixed64"|"bool"|"string"|"bytes"|object|Constructor<{}>)): FieldDecorator;
 }
 
-/**
- * Map field descriptor.
- * @interface IMapField
- * @extends {IField}
- * @property {string} keyType Key type
- */
+/** Map field descriptor. */
 export interface IMapField extends IField {
     keyType: string;
 }
 
-/**
- * Extension map field descriptor.
- * @interface IExtensionMapField
- * @extends IMapField
- * @property {string} extend Extended type
- */
+/** Extension map field descriptor. */
 export interface IExtensionMapField extends IMapField {
     extend: string;
 }
@@ -740,126 +503,93 @@ export interface IExtensionMapField extends IMapField {
 /**
  * Constructs a new message instance.
  * @classdesc Abstract runtime message.
- * @constructor
- * @param {Properties<T>} [properties] Properties to set
- * @template T extends object
+ * @param [properties] Properties to set
  */
 export class Message<T extends object> {
 
     /**
      * Constructs a new message instance.
      * @classdesc Abstract runtime message.
-     * @constructor
-     * @param {Properties<T>} [properties] Properties to set
-     * @template T extends object
+     * @param [properties] Properties to set
      */
     constructor(properties?: Properties<T>);
 
     /**
      * Reference to the reflected type.
-     * @name Message.$type
-     * @type {Type}
+     * $type
      * @readonly
      */
     public static readonly $type: Type;
 
     /**
      * Reference to the reflected type.
-     * @name Message#$type
-     * @type {Type}
+     * $type
      * @readonly
      */
     public readonly $type: Type;
 
     /**
      * Creates a new message of this type using the specified properties.
-     * @param {Object.<string,*>} [properties] Properties to set
-     * @returns {Message<T>} Message instance
-     * @template T extends Message<T>
-     * @this Constructor<T>
+     * @param [properties] Properties to set
+     * @returns Message instance
      */
     public static create<T extends Message<T>>(this: Constructor<T>, properties?: { [k: string]: any }): Message<T>;
 
     /**
      * Encodes a message of this type.
-     * @param {T|Object.<string,*>} message Message to encode
-     * @param {Writer} [writer] Writer to use
-     * @returns {Writer} Writer
-     * @template T extends Message<T>
-     * @this Constructor<T>
+     * @param message Message to encode
+     * @param [writer] Writer to use
+     * @returns Writer
      */
     public static encode<T extends Message<T>>(this: Constructor<T>, message: (T|{ [k: string]: any }), writer?: Writer): Writer;
 
     /**
      * Encodes a message of this type preceeded by its length as a varint.
-     * @param {T|Object.<string,*>} message Message to encode
-     * @param {Writer} [writer] Writer to use
-     * @returns {Writer} Writer
-     * @template T extends Message<T>
-     * @this Constructor<T>
+     * @param message Message to encode
+     * @param [writer] Writer to use
+     * @returns Writer
      */
     public static encodeDelimited<T extends Message<T>>(this: Constructor<T>, message: (T|{ [k: string]: any }), writer?: Writer): Writer;
 
     /**
      * Decodes a message of this type.
-     * @name Message.decode
-     * @function
-     * @param {Reader|Uint8Array} reader Reader or buffer to decode
-     * @returns {T} Decoded message
-     * @template T extends Message<T>
-     * @this Constructor<T>
+     * @param reader Reader or buffer to decode
+     * @returns Decoded message
      */
     public static decode<T extends Message<T>>(this: Constructor<T>, reader: (Reader|Uint8Array)): T;
 
     /**
      * Decodes a message of this type preceeded by its length as a varint.
-     * @name Message.decodeDelimited
-     * @function
-     * @param {Reader|Uint8Array} reader Reader or buffer to decode
-     * @returns {T} Decoded message
-     * @template T extends Message<T>
-     * @this Constructor<T>
+     * @param reader Reader or buffer to decode
+     * @returns Decoded message
      */
     public static decodeDelimited<T extends Message<T>>(this: Constructor<T>, reader: (Reader|Uint8Array)): T;
 
     /**
      * Verifies a message of this type.
-     * @name Message.verify
-     * @function
-     * @param {Object.<string,*>} message Plain object to verify
-     * @returns {?string} `null` if valid, otherwise the reason why it is not
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
      */
     public static verify(message: { [k: string]: any }): string;
 
     /**
      * Creates a new message of this type from a plain object. Also converts values to their respective internal types.
-     * @param {Object.<string,*>} object Plain object
-     * @returns {T} Message instance
-     * @template T extends Message<T>
-     * @this Constructor<T>
+     * @param object Plain object
+     * @returns Message instance
      */
     public static fromObject<T extends Message<T>>(this: Constructor<T>, object: { [k: string]: any }): T;
 
     /**
      * Creates a plain object from a message of this type. Also converts values to other types if specified.
-     * @param {T} message Message instance
-     * @param {IConversionOptions} [options] Conversion options
-     * @returns {Object.<string,*>} Plain object
-     * @template T extends Message<T>
-     * @this Constructor<T>
+     * @param message Message instance
+     * @param [options] Conversion options
+     * @returns Plain object
      */
     public static toObject<T extends Message<T>>(this: Constructor<T>, message: T, options?: IConversionOptions): { [k: string]: any };
 
     /**
-     * Creates a plain object from this message. Also converts values to other types if specified.
-     * @param {IConversionOptions} [options] Conversion options
-     * @returns {Object.<string,*>} Plain object
-     */
-    public toObject(options?: IConversionOptions): { [k: string]: any };
-
-    /**
      * Converts this message to JSON.
-     * @returns {Object.<string,*>} JSON object
+     * @returns JSON object
      */
     public toJSON(): { [k: string]: any };
 }
@@ -867,101 +597,67 @@ export class Message<T extends object> {
 /**
  * Constructs a new service method instance.
  * @classdesc Reflected service method.
- * @extends ReflectionObject
- * @constructor
- * @param {string} name Method name
- * @param {string|undefined} type Method type, usually `"rpc"`
- * @param {string} requestType Request message type
- * @param {string} responseType Response message type
- * @param {boolean|Object.<string,*>} [requestStream] Whether the request is streamed
- * @param {boolean|Object.<string,*>} [responseStream] Whether the response is streamed
- * @param {Object.<string,*>} [options] Declared options
+ * @param name Method name
+ * @param type Method type, usually `"rpc"`
+ * @param requestType Request message type
+ * @param responseType Response message type
+ * @param [requestStream] Whether the request is streamed
+ * @param [responseStream] Whether the response is streamed
+ * @param [options] Declared options
  */
 export class Method extends ReflectionObject {
 
     /**
      * Constructs a new service method instance.
      * @classdesc Reflected service method.
-     * @extends ReflectionObject
-     * @constructor
-     * @param {string} name Method name
-     * @param {string|undefined} type Method type, usually `"rpc"`
-     * @param {string} requestType Request message type
-     * @param {string} responseType Response message type
-     * @param {boolean|Object.<string,*>} [requestStream] Whether the request is streamed
-     * @param {boolean|Object.<string,*>} [responseStream] Whether the response is streamed
-     * @param {Object.<string,*>} [options] Declared options
+     * @param name Method name
+     * @param type Method type, usually `"rpc"`
+     * @param requestType Request message type
+     * @param responseType Response message type
+     * @param [requestStream] Whether the request is streamed
+     * @param [responseStream] Whether the response is streamed
+     * @param [options] Declared options
      */
     constructor(name: string, type: (string|undefined), requestType: string, responseType: string, requestStream?: (boolean|{ [k: string]: any }), responseStream?: (boolean|{ [k: string]: any }), options?: { [k: string]: any });
 
-    /**
-     * Method type.
-     * @type {string}
-     */
+    /** Method type. */
     public type: string;
 
-    /**
-     * Request type.
-     * @type {string}
-     */
+    /** Request type. */
     public requestType: string;
 
-    /**
-     * Whether requests are streamed or not.
-     * @type {boolean|undefined}
-     */
+    /** Whether requests are streamed or not. */
     public requestStream?: boolean;
 
-    /**
-     * Response type.
-     * @type {string}
-     */
+    /** Response type. */
     public responseType: string;
 
-    /**
-     * Whether responses are streamed or not.
-     * @type {boolean|undefined}
-     */
+    /** Whether responses are streamed or not. */
     public responseStream?: boolean;
 
-    /**
-     * Resolved request type.
-     * @type {?Type}
-     */
+    /** Resolved request type. */
     public resolvedRequestType: Type;
 
-    /**
-     * Resolved response type.
-     * @type {?Type}
-     */
+    /** Resolved response type. */
     public resolvedResponseType: Type;
 
     /**
      * Constructs a method from a method descriptor.
-     * @param {string} name Method name
-     * @param {IMethod} json Method descriptor
-     * @returns {Method} Created method
-     * @throws {TypeError} If arguments are invalid
+     * @param name Method name
+     * @param json Method descriptor
+     * @returns Created method
+     * @throws If arguments are invalid
      */
     public static fromJSON(name: string, json: IMethod): Method;
 
     /**
      * Converts this method to a method descriptor.
-     * @returns {IMethod} Method descriptor
+     * @returns Method descriptor
      */
     public toJSON(): IMethod;
 }
 
-/**
- * Method descriptor.
- * @interface IMethod
- * @property {string} [type="rpc"] Method type
- * @property {string} requestType Request type
- * @property {string} responseType Response type
- * @property {boolean} [requestStream=false] Whether requests are streamed
- * @property {boolean} [responseStream=false] Whether responses are streamed
- * @property {Object.<string,*>} [options] Method options
- */
+/** Method descriptor. */
 export interface IMethod {
     type?: string;
     requestType: string;
@@ -973,42 +669,33 @@ export interface IMethod {
 
 /**
  * Constructs a new namespace instance.
- * @name Namespace
  * @classdesc Reflected namespace.
- * @extends NamespaceBase
- * @constructor
- * @param {string} name Namespace name
- * @param {Object.<string,*>} [options] Declared options
+ * @param name Namespace name
+ * @param [options] Declared options
  */
 export class Namespace extends NamespaceBase {
 
     /**
      * Constructs a new namespace instance.
-     * @name Namespace
      * @classdesc Reflected namespace.
-     * @extends NamespaceBase
-     * @constructor
-     * @param {string} name Namespace name
-     * @param {Object.<string,*>} [options] Declared options
+     * @param name Namespace name
+     * @param [options] Declared options
      */
     constructor(name: string, options?: { [k: string]: any });
 
     /**
      * Constructs a namespace from JSON.
-     * @memberof Namespace
-     * @function
-     * @param {string} name Namespace name
-     * @param {Object.<string,*>} json JSON object
-     * @returns {Namespace} Created namespace
-     * @throws {TypeError} If arguments are invalid
+     * @param name Namespace name
+     * @param json JSON object
+     * @returns Created namespace
+     * @throws If arguments are invalid
      */
     public static fromJSON(name: string, json: { [k: string]: any }): Namespace;
 
     /**
      * Converts an array of reflection objects to JSON.
-     * @memberof Namespace
-     * @param {ReflectionObject[]} array Object array
-     * @returns {Object.<string,*>|undefined} JSON object or `undefined` when array is empty
+     * @param array Object array
+     * @returns JSON object or `undefined` when array is empty
      */
     public static arrayToJSON(array: ReflectionObject[]): ({ [k: string]: any }|undefined);
 }
@@ -1016,279 +703,240 @@ export class Namespace extends NamespaceBase {
 /**
  * Not an actual constructor. Use {@link Namespace} instead.
  * @classdesc Base class of all reflection objects containing nested objects. This is not an actual class but here for the sake of having consistent type definitions.
- * @exports NamespaceBase
- * @extends ReflectionObject
  * @abstract
- * @constructor
- * @param {string} name Namespace name
- * @param {Object.<string,*>} [options] Declared options
+ * @param name Namespace name
+ * @param [options] Declared options
  * @see {@link Namespace}
  */
 export abstract class NamespaceBase extends ReflectionObject {
 
-    /**
-     * Nested objects by name.
-     * @type {Object.<string,ReflectionObject>|undefined}
-     */
+    /** Nested objects by name. */
     public nested?: { [k: string]: ReflectionObject };
 
     /**
      * Nested objects of this namespace as an array for iteration.
-     * @name NamespaceBase#nestedArray
-     * @type {ReflectionObject[]}
      * @readonly
      */
     public readonly nestedArray: ReflectionObject[];
 
     /**
      * Converts this namespace to a namespace descriptor.
-     * @returns {INamespace} Namespace descriptor
+     * @returns Namespace descriptor
      */
     public toJSON(): INamespace;
 
     /**
      * Adds nested objects to this namespace from nested object descriptors.
-     * @param {Object.<string,AnyNestedObject>} nestedJson Any nested object descriptors
-     * @returns {Namespace} `this`
+     * @param nestedJson Any nested object descriptors
+     * @returns `this`
      */
     public addJSON(nestedJson: { [k: string]: AnyNestedObject }): Namespace;
 
     /**
      * Gets the nested object of the specified name.
-     * @param {string} name Nested object name
-     * @returns {?ReflectionObject} The reflection object or `null` if it doesn't exist
+     * @param name Nested object name
+     * @returns The reflection object or `null` if it doesn't exist
      */
     public get(name: string): ReflectionObject;
 
     /**
      * Gets the values of the nested {@link Enum|enum} of the specified name.
      * This methods differs from {@link Namespace#get|get} in that it returns an enum's values directly and throws instead of returning `null`.
-     * @param {string} name Nested enum name
-     * @returns {Object.<string,number>} Enum values
-     * @throws {Error} If there is no such enum
+     * @param name Nested enum name
+     * @returns Enum values
+     * @throws If there is no such enum
      */
     public getEnum(name: string): { [k: string]: number };
 
     /**
      * Adds a nested object to this namespace.
-     * @param {ReflectionObject} object Nested object to add
-     * @returns {Namespace} `this`
-     * @throws {TypeError} If arguments are invalid
-     * @throws {Error} If there is already a nested object with this name
+     * @param object Nested object to add
+     * @returns `this`
+     * @throws If arguments are invalid
+     * @throws If there is already a nested object with this name
      */
     public add(object: ReflectionObject): Namespace;
 
     /**
      * Removes a nested object from this namespace.
-     * @param {ReflectionObject} object Nested object to remove
-     * @returns {Namespace} `this`
-     * @throws {TypeError} If arguments are invalid
-     * @throws {Error} If `object` is not a member of this namespace
+     * @param object Nested object to remove
+     * @returns `this`
+     * @throws If arguments are invalid
+     * @throws If `object` is not a member of this namespace
      */
     public remove(object: ReflectionObject): Namespace;
 
     /**
      * Defines additial namespaces within this one if not yet existing.
-     * @param {string|string[]} path Path to create
-     * @param {*} [json] Nested types to create from JSON
-     * @returns {Namespace} Pointer to the last namespace created or `this` if path is empty
+     * @param path Path to create
+     * @param [json] Nested types to create from JSON
+     * @returns Pointer to the last namespace created or `this` if path is empty
      */
     public define(path: (string|string[]), json?: any): Namespace;
 
     /**
      * Resolves this namespace's and all its nested objects' type references. Useful to validate a reflection tree, but comes at a cost.
-     * @returns {Namespace} `this`
+     * @returns `this`
      */
     public resolveAll(): Namespace;
 
     /**
      * Recursively looks up the reflection object matching the specified path in the scope of this namespace.
-     * @param {string|string[]} path Path to look up
-     * @param {*|Array.<*>} filterTypes Filter types, any combination of the constructors of `protobuf.Type`, `protobuf.Enum`, `protobuf.Service` etc.
-     * @param {boolean} [parentAlreadyChecked=false] If known, whether the parent has already been checked
-     * @returns {?ReflectionObject} Looked up object or `null` if none could be found
+     * @param path Path to look up
+     * @param filterTypes Filter types, any combination of the constructors of `protobuf.Type`, `protobuf.Enum`, `protobuf.Service` etc.
+     * @param [parentAlreadyChecked=false] If known, whether the parent has already been checked
+     * @returns Looked up object or `null` if none could be found
      */
     public lookup(path: (string|string[]), filterTypes: (any|any[]), parentAlreadyChecked?: boolean): ReflectionObject;
 
     /**
      * Looks up the reflection object at the specified path, relative to this namespace.
-     * @name NamespaceBase#lookup
-     * @function
-     * @param {string|string[]} path Path to look up
-     * @param {boolean} [parentAlreadyChecked=false] Whether the parent has already been checked
-     * @returns {?ReflectionObject} Looked up object or `null` if none could be found
-     * @variation 2
+     * @param path Path to look up
+     * @param [parentAlreadyChecked=false] Whether the parent has already been checked
+     * @returns Looked up object or `null` if none could be found
      */
     public lookup(path: (string|string[]), parentAlreadyChecked?: boolean): ReflectionObject;
 
     /**
      * Looks up the {@link Type|type} at the specified path, relative to this namespace.
      * Besides its signature, this methods differs from {@link Namespace#lookup|lookup} in that it throws instead of returning `null`.
-     * @param {string|string[]} path Path to look up
-     * @returns {Type} Looked up type
-     * @throws {Error} If `path` does not point to a type
+     * @param path Path to look up
+     * @returns Looked up type
+     * @throws If `path` does not point to a type
      */
     public lookupType(path: (string|string[])): Type;
 
     /**
      * Looks up the values of the {@link Enum|enum} at the specified path, relative to this namespace.
      * Besides its signature, this methods differs from {@link Namespace#lookup|lookup} in that it throws instead of returning `null`.
-     * @param {string|string[]} path Path to look up
-     * @returns {Enum} Looked up enum
-     * @throws {Error} If `path` does not point to an enum
+     * @param path Path to look up
+     * @returns Looked up enum
+     * @throws If `path` does not point to an enum
      */
     public lookupEnum(path: (string|string[])): Enum;
 
     /**
      * Looks up the {@link Type|type} or {@link Enum|enum} at the specified path, relative to this namespace.
      * Besides its signature, this methods differs from {@link Namespace#lookup|lookup} in that it throws instead of returning `null`.
-     * @param {string|string[]} path Path to look up
-     * @returns {Type} Looked up type or enum
-     * @throws {Error} If `path` does not point to a type or enum
+     * @param path Path to look up
+     * @returns Looked up type or enum
+     * @throws If `path` does not point to a type or enum
      */
     public lookupTypeOrEnum(path: (string|string[])): Type;
 
     /**
      * Looks up the {@link Service|service} at the specified path, relative to this namespace.
      * Besides its signature, this methods differs from {@link Namespace#lookup|lookup} in that it throws instead of returning `null`.
-     * @param {string|string[]} path Path to look up
-     * @returns {Service} Looked up service
-     * @throws {Error} If `path` does not point to a service
+     * @param path Path to look up
+     * @returns Looked up service
+     * @throws If `path` does not point to a service
      */
     public lookupService(path: (string|string[])): Service;
 }
 
-/**
- * Namespace descriptor.
- * @interface INamespace
- * @property {Object.<string,*>} [options] Namespace options
- * @property {Object.<string,AnyNestedObject>} [nested] Nested object descriptors
- */
+/** Namespace descriptor. */
 export interface INamespace {
     options?: { [k: string]: any };
     nested?: { [k: string]: AnyNestedObject };
 }
 
+/** Any extension field descriptor. */
 type AnyExtensionField = (IExtensionField|IExtensionMapField);
 
+/** Any nested object descriptor. */
 type AnyNestedObject = (IEnum|IType|IService|AnyExtensionField|INamespace);
 
 /**
  * Constructs a new reflection object instance.
  * @classdesc Base class of all reflection objects.
- * @constructor
- * @param {string} name Object name
- * @param {Object.<string,*>} [options] Declared options
+ * @param name Object name
+ * @param [options] Declared options
  * @abstract
  */
 export abstract class ReflectionObject {
 
-    /**
-     * Options.
-     * @type {Object.<string,*>|undefined}
-     */
+    /** Options. */
     public options?: { [k: string]: any };
 
-    /**
-     * Unique name within its namespace.
-     * @type {string}
-     */
+    /** Unique name within its namespace. */
     public name: string;
 
-    /**
-     * Parent namespace.
-     * @type {?Namespace}
-     */
+    /** Parent namespace. */
     public parent: Namespace;
 
-    /**
-     * Whether already resolved or not.
-     * @type {boolean}
-     */
+    /** Whether already resolved or not. */
     public resolved: boolean;
 
-    /**
-     * Comment text, if any.
-     * @type {?string}
-     */
+    /** Comment text, if any. */
     public comment: string;
 
-    /**
-     * Defining file name.
-     * @type {?string}
-     */
+    /** Defining file name. */
     public filename: string;
 
     /**
      * Reference to the root namespace.
-     * @name ReflectionObject#root
-     * @type {Root}
      * @readonly
      */
     public readonly root: Root;
 
     /**
      * Full name including leading dot.
-     * @name ReflectionObject#fullName
-     * @type {string}
      * @readonly
      */
     public readonly fullName: string;
 
     /**
      * Converts this reflection object to its descriptor representation.
-     * @returns {Object.<string,*>} Descriptor
+     * @returns Descriptor
      * @abstract
      */
     public toJSON(): { [k: string]: any };
 
     /**
      * Called when this object is added to a parent.
-     * @param {ReflectionObject} parent Parent added to
-     * @returns {undefined}
+     * @param parent Parent added to
      */
     public onAdd(parent: ReflectionObject): void;
 
     /**
      * Called when this object is removed from a parent.
-     * @param {ReflectionObject} parent Parent removed from
-     * @returns {undefined}
+     * @param parent Parent removed from
      */
     public onRemove(parent: ReflectionObject): void;
 
     /**
      * Resolves this objects type references.
-     * @returns {ReflectionObject} `this`
+     * @returns `this`
      */
     public resolve(): ReflectionObject;
 
     /**
      * Gets an option value.
-     * @param {string} name Option name
-     * @returns {*} Option value or `undefined` if not set
+     * @param name Option name
+     * @returns Option value or `undefined` if not set
      */
     public getOption(name: string): any;
 
     /**
      * Sets an option.
-     * @param {string} name Option name
-     * @param {*} value Option value
-     * @param {boolean} [ifNotSet] Sets the option only if it isn't currently set
-     * @returns {ReflectionObject} `this`
+     * @param name Option name
+     * @param value Option value
+     * @param [ifNotSet] Sets the option only if it isn't currently set
+     * @returns `this`
      */
     public setOption(name: string, value: any, ifNotSet?: boolean): ReflectionObject;
 
     /**
      * Sets multiple options.
-     * @param {Object.<string,*>} options Options to set
-     * @param {boolean} [ifNotSet] Sets an option only if it isn't currently set
-     * @returns {ReflectionObject} `this`
+     * @param options Options to set
+     * @param [ifNotSet] Sets an option only if it isn't currently set
+     * @returns `this`
      */
     public setOptions(options: { [k: string]: any }, ifNotSet?: boolean): ReflectionObject;
 
     /**
      * Converts this instance to its string representation.
-     * @returns {string} Class name[, space, full name]
+     * @returns Class name[, space, full name]
      */
     public toString(): string;
 }
@@ -1296,99 +944,81 @@ export abstract class ReflectionObject {
 /**
  * Constructs a new oneof instance.
  * @classdesc Reflected oneof.
- * @extends ReflectionObject
- * @constructor
- * @param {string} name Oneof name
- * @param {string[]|Object.<string,*>} [fieldNames] Field names
- * @param {Object.<string,*>} [options] Declared options
+ * @param name Oneof name
+ * @param [fieldNames] Field names
+ * @param [options] Declared options
  */
 export class OneOf extends ReflectionObject {
 
     /**
      * Constructs a new oneof instance.
      * @classdesc Reflected oneof.
-     * @extends ReflectionObject
-     * @constructor
-     * @param {string} name Oneof name
-     * @param {string[]|Object.<string,*>} [fieldNames] Field names
-     * @param {Object.<string,*>} [options] Declared options
+     * @param name Oneof name
+     * @param [fieldNames] Field names
+     * @param [options] Declared options
      */
     constructor(name: string, fieldNames?: (string[]|{ [k: string]: any }), options?: { [k: string]: any });
 
-    /**
-     * Field names that belong to this oneof.
-     * @type {string[]}
-     */
+    /** Field names that belong to this oneof. */
     public oneof: string[];
 
     /**
      * Fields that belong to this oneof as an array for iteration.
-     * @type {Field[]}
      * @readonly
      */
     public readonly fieldsArray: Field[];
 
     /**
      * Constructs a oneof from a oneof descriptor.
-     * @param {string} name Oneof name
-     * @param {IOneOf} json Oneof descriptor
-     * @returns {OneOf} Created oneof
-     * @throws {TypeError} If arguments are invalid
+     * @param name Oneof name
+     * @param json Oneof descriptor
+     * @returns Created oneof
+     * @throws If arguments are invalid
      */
     public static fromJSON(name: string, json: IOneOf): OneOf;
 
     /**
      * Converts this oneof to a oneof descriptor.
-     * @returns {IOneOf} Oneof descriptor
+     * @returns Oneof descriptor
      */
     public toJSON(): IOneOf;
 
     /**
      * Adds a field to this oneof and removes it from its current parent, if any.
-     * @param {Field} field Field to add
-     * @returns {OneOf} `this`
+     * @param field Field to add
+     * @returns `this`
      */
     public add(field: Field): OneOf;
 
     /**
      * Removes a field from this oneof and puts it back to the oneof's parent.
-     * @param {Field} field Field to remove
-     * @returns {OneOf} `this`
+     * @param field Field to remove
+     * @returns `this`
      */
     public remove(field: Field): OneOf;
 
     /**
      * OneOf decorator (TypeScript).
-     * @function
-     * @param {...string} fieldNames Field names
-     * @returns {OneOfDecorator} Decorator function
-     * @template T extends string
+     * @param fieldNames Field names
+     * @returns Decorator function
      */
     public static d<T extends string>(...fieldNames: string[]): OneOfDecorator;
 }
 
-/**
- * Oneof descriptor.
- * @interface IOneOf
- * @property {Array.<string>} oneof Oneof field names
- * @property {Object.<string,*>} [options] Oneof options
- */
+/** Oneof descriptor. */
 export interface IOneOf {
     oneof: string[];
     options?: { [k: string]: any };
 }
 
+/**
+ * Decorator function as returned by {@link OneOf.d} (TypeScript).
+ * @param prototype Target prototype
+ * @param oneofName OneOf name
+ */
 type OneOfDecorator = (prototype: object, oneofName: string) => void;
 
-/**
- * Result object returned from {@link parse}.
- * @interface IParserResult
- * @property {string|undefined} package Package name, if declared
- * @property {string[]|undefined} imports Imports, if any
- * @property {string[]|undefined} weakImports Weak imports, if any
- * @property {string|undefined} syntax Syntax, if specified (either `"proto2"` or `"proto3"`)
- * @property {Root} root Populated root instance
- */
+/** Result object returned from {@link parse}. */
 export interface IParserResult {
     package: (string|undefined);
     imports: (string[]|undefined);
@@ -1397,197 +1027,162 @@ export interface IParserResult {
     root: Root;
 }
 
-/**
- * Options modifying the behavior of {@link parse}.
- * @interface IParseOptions
- * @property {boolean} [keepCase=false] Keeps field casing instead of converting to camel case
- */
+/** Options modifying the behavior of {@link parse}. */
 export interface IParseOptions {
     keepCase?: boolean;
 }
 
 /**
  * Parses the given .proto source and returns an object with the parsed contents.
- * @function
- * @param {string} source Source contents
- * @param {Root} root Root to populate
- * @param {IParseOptions} [options] Parse options. Defaults to {@link parse.defaults} when omitted.
- * @returns {IParserResult} Parser result
- * @property {string} filename=null Currently processing file name for error reporting, if known
- * @property {IParseOptions} defaults Default {@link IParseOptions}
+ * @param source Source contents
+ * @param root Root to populate
+ * @param [options] Parse options. Defaults to {@link parse.defaults} when omitted.
+ * @returns Parser result
+ * @link IParseOptions}
  */
 export function parse(source: string, root: Root, options?: IParseOptions): IParserResult;
 
 /**
  * Parses the given .proto source and returns an object with the parsed contents.
- * @name parse
- * @function
- * @param {string} source Source contents
- * @param {IParseOptions} [options] Parse options. Defaults to {@link parse.defaults} when omitted.
- * @returns {IParserResult} Parser result
- * @property {string} filename=null Currently processing file name for error reporting, if known
- * @property {IParseOptions} defaults Default {@link IParseOptions}
- * @variation 2
+ * @param source Source contents
+ * @param [options] Parse options. Defaults to {@link parse.defaults} when omitted.
+ * @returns Parser result
+ * @link IParseOptions}
  */
 export function parse(source: string, options?: IParseOptions): IParserResult;
 
 /**
  * Constructs a new reader instance using the specified buffer.
  * @classdesc Wire format reader using `Uint8Array` if available, otherwise `Array`.
- * @constructor
- * @param {Uint8Array} buffer Buffer to read from
+ * @param buffer Buffer to read from
  */
 export class Reader {
 
     /**
      * Constructs a new reader instance using the specified buffer.
      * @classdesc Wire format reader using `Uint8Array` if available, otherwise `Array`.
-     * @constructor
-     * @param {Uint8Array} buffer Buffer to read from
+     * @param buffer Buffer to read from
      */
     constructor(buffer: Uint8Array);
 
-    /**
-     * Read buffer.
-     * @type {Uint8Array}
-     */
+    /** Read buffer. */
     public buf: Uint8Array;
 
-    /**
-     * Read buffer position.
-     * @type {number}
-     */
+    /** Read buffer position. */
     public pos: number;
 
-    /**
-     * Read buffer length.
-     * @type {number}
-     */
+    /** Read buffer length. */
     public len: number;
 
     /**
      * Creates a new reader using the specified buffer.
-     * @function
-     * @param {Uint8Array|Buffer} buffer Buffer to read from
-     * @returns {Reader|BufferReader} A {@link BufferReader} if `buffer` is a Buffer, otherwise a {@link Reader}
-     * @throws {Error} If `buffer` is not a valid buffer
+     * @param buffer Buffer to read from
+     * @returns A {@link BufferReader} if `buffer` is a Buffer, otherwise a {@link Reader}
+     * @throws If `buffer` is not a valid buffer
      */
     public static create(buffer: (Uint8Array|Buffer)): (Reader|BufferReader);
 
     /**
      * Reads a varint as an unsigned 32 bit value.
-     * @function
-     * @returns {number} Value read
+     * @returns Value read
      */
     public uint32(): number;
 
     /**
      * Reads a varint as a signed 32 bit value.
-     * @returns {number} Value read
+     * @returns Value read
      */
     public int32(): number;
 
     /**
      * Reads a zig-zag encoded varint as a signed 32 bit value.
-     * @returns {number} Value read
+     * @returns Value read
      */
     public sint32(): number;
 
     /**
      * Reads a varint as a signed 64 bit value.
-     * @name Reader#int64
-     * @function
-     * @returns {Long} Value read
+     * @returns Value read
      */
     public int64(): Long;
 
     /**
      * Reads a varint as an unsigned 64 bit value.
-     * @name Reader#uint64
-     * @function
-     * @returns {Long} Value read
+     * @returns Value read
      */
     public uint64(): Long;
 
     /**
      * Reads a zig-zag encoded varint as a signed 64 bit value.
-     * @name Reader#sint64
-     * @function
-     * @returns {Long} Value read
+     * @returns Value read
      */
     public sint64(): Long;
 
     /**
      * Reads a varint as a boolean.
-     * @returns {boolean} Value read
+     * @returns Value read
      */
     public bool(): boolean;
 
     /**
      * Reads fixed 32 bits as an unsigned 32 bit integer.
-     * @returns {number} Value read
+     * @returns Value read
      */
     public fixed32(): number;
 
     /**
      * Reads fixed 32 bits as a signed 32 bit integer.
-     * @returns {number} Value read
+     * @returns Value read
      */
     public sfixed32(): number;
 
     /**
      * Reads fixed 64 bits.
-     * @name Reader#fixed64
-     * @function
-     * @returns {Long} Value read
+     * @returns Value read
      */
     public fixed64(): Long;
 
     /**
      * Reads zig-zag encoded fixed 64 bits.
-     * @name Reader#sfixed64
-     * @function
-     * @returns {Long} Value read
+     * @returns Value read
      */
     public sfixed64(): Long;
 
     /**
      * Reads a float (32 bit) as a number.
-     * @function
-     * @returns {number} Value read
+     * @returns Value read
      */
     public float(): number;
 
     /**
      * Reads a double (64 bit float) as a number.
-     * @function
-     * @returns {number} Value read
+     * @returns Value read
      */
     public double(): number;
 
     /**
      * Reads a sequence of bytes preceeded by its length as a varint.
-     * @returns {Uint8Array} Value read
+     * @returns Value read
      */
     public bytes(): Uint8Array;
 
     /**
      * Reads a string preceeded by its byte length as a varint.
-     * @returns {string} Value read
+     * @returns Value read
      */
     public string(): string;
 
     /**
      * Skips the specified number of bytes if specified, otherwise skips a varint.
-     * @param {number} [length] Length if known, otherwise a varint is assumed
-     * @returns {Reader} `this`
+     * @param [length] Length if known, otherwise a varint is assumed
+     * @returns `this`
      */
     public skip(length?: number): Reader;
 
     /**
      * Skips the next element of the specified wire type.
-     * @param {number} wireType Wire type received
-     * @returns {Reader} `this`
+     * @param wireType Wire type received
+     * @returns `this`
      */
     public skipType(wireType: number): Reader;
 }
@@ -1595,33 +1190,23 @@ export class Reader {
 /**
  * Constructs a new buffer reader instance.
  * @classdesc Wire format reader using node buffers.
- * @extends Reader
- * @constructor
- * @param {Buffer} buffer Buffer to read from
+ * @param buffer Buffer to read from
  */
 export class BufferReader extends Reader {
 
     /**
      * Constructs a new buffer reader instance.
      * @classdesc Wire format reader using node buffers.
-     * @extends Reader
-     * @constructor
-     * @param {Buffer} buffer Buffer to read from
+     * @param buffer Buffer to read from
      */
     constructor(buffer: Buffer);
 
-    /**
-     * Read buffer.
-     * @name BufferReader#buf
-     * @type {Buffer}
-     */
+    /** Read buffer. */
     public buf: Buffer;
 
     /**
      * Reads a sequence of bytes preceeded by its length as a varint.
-     * @name BufferReader#bytes
-     * @function
-     * @returns {Buffer} Value read
+     * @returns Value read
      */
     public bytes(): Buffer;
 }
@@ -1629,79 +1214,62 @@ export class BufferReader extends Reader {
 /**
  * Constructs a new root namespace instance.
  * @classdesc Root namespace wrapping all types, enums, services, sub-namespaces etc. that belong together.
- * @extends NamespaceBase
- * @constructor
- * @param {Object.<string,*>} [options] Top level options
+ * @param [options] Top level options
  */
 export class Root extends NamespaceBase {
 
     /**
      * Constructs a new root namespace instance.
      * @classdesc Root namespace wrapping all types, enums, services, sub-namespaces etc. that belong together.
-     * @extends NamespaceBase
-     * @constructor
-     * @param {Object.<string,*>} [options] Top level options
+     * @param [options] Top level options
      */
     constructor(options?: { [k: string]: any });
 
-    /**
-     * Deferred extension fields.
-     * @type {Field[]}
-     */
+    /** Deferred extension fields. */
     public deferred: Field[];
 
-    /**
-     * Resolved file names of loaded files.
-     * @type {string[]}
-     */
+    /** Resolved file names of loaded files. */
     public files: string[];
 
     /**
      * Loads a namespace descriptor into a root namespace.
-     * @param {INamespace} json Nameespace descriptor
-     * @param {Root} [root] Root namespace, defaults to create a new one if omitted
-     * @returns {Root} Root namespace
+     * @param json Nameespace descriptor
+     * @param [root] Root namespace, defaults to create a new one if omitted
+     * @returns Root namespace
      */
     public static fromJSON(json: INamespace, root?: Root): Root;
 
     /**
      * Resolves the path of an imported file, relative to the importing origin.
      * This method exists so you can override it with your own logic in case your imports are scattered over multiple directories.
-     * @function
-     * @param {string} origin The file name of the importing file
-     * @param {string} target The file name being imported
-     * @returns {?string} Resolved path to `target` or `null` to skip the file
+     * @param origin The file name of the importing file
+     * @param target The file name being imported
+     * @returns Resolved path to `target` or `null` to skip the file
      */
     public resolvePath(origin: string, target: string): string;
 
     /**
      * Loads one or multiple .proto or preprocessed .json files into this root namespace and calls the callback.
-     * @param {string|string[]} filename Names of one or multiple files to load
-     * @param {IParseOptions} options Parse options
-     * @param {LoadCallback} callback Callback function
-     * @returns {undefined}
+     * @param filename Names of one or multiple files to load
+     * @param options Parse options
+     * @param callback Callback function
      */
     public load(filename: (string|string[]), options: IParseOptions, callback: LoadCallback): void;
 
     /**
      * Loads one or multiple .proto or preprocessed .json files into this root namespace and returns a promise.
-     * @name Root#load
-     * @function
-     * @param {string|string[]} filename Names of one or multiple files to load
-     * @param {IParseOptions} [options] Parse options. Defaults to {@link parse.defaults} when omitted.
-     * @returns {Promise<Root>} Promise
-     * @variation 3
+     * @param filename Names of one or multiple files to load
+     * @param [options] Parse options. Defaults to {@link parse.defaults} when omitted.
+     * @returns Promise
      */
     public load(filename: (string|string[]), options?: IParseOptions): Promise<Root>;
 
     /**
      * Synchronously loads one or multiple .proto or preprocessed .json files into this root namespace (node only).
-     * @name Root#loadSync
-     * @function
-     * @param {string|string[]} filename Names of one or multiple files to load
-     * @param {IParseOptions} [options] Parse options. Defaults to {@link parse.defaults} when omitted.
-     * @returns {Root} Root namespace
-     * @throws {Error} If synchronous fetching is not supported (i.e. in browsers) or if a file's syntax is invalid
+     * @param filename Names of one or multiple files to load
+     * @param [options] Parse options. Defaults to {@link parse.defaults} when omitted.
+     * @returns Root namespace
+     * @throws If synchronous fetching is not supported (i.e. in browsers) or if a file's syntax is invalid
      */
     public loadSync(filename: (string|string[]), options?: IParseOptions): Root;
 }
@@ -1710,190 +1278,188 @@ export class Root extends NamespaceBase {
  * Named roots.
  * This is where pbjs stores generated structures (the option `-r, --root` specifies a name).
  * Can also be used manually to make roots available accross modules.
- * @name roots
- * @type {Object.<string,Root>}
- * @example
- * // pbjs -r myroot -o compiled.js ...
- *
- * // in another module:
- * require("./compiled.js");
- *
- * // in any subsequent module:
- * var root = protobuf.roots["myroot"];
  */
 export let roots: { [k: string]: Root };
 
-/**
- * Streaming RPC helpers.
- * @namespace
- */
+/** Streaming RPC helpers. */
 export namespace rpc {
 
+    /**
+     * A service method callback as used by {@link rpc.ServiceMethod|ServiceMethod}.
+     *
+     * Differs from {@link RPCImplCallback} in that it is an actual callback of a service method which may not return `response = null`.
+     * @param error Error, if any
+     * @param [response] Response message
+     */
     type ServiceMethodCallback<TRes extends Message<TRes>> = (error: Error, response?: TRes) => void;
 
+    /**
+     * A service method part of a {@link rpc.Service} as created by {@link Service.create}.
+     * @param request Request message or plain object
+     * @param [callback] Node-style callback called with the error, if any, and the response message
+     * @returns Promise if `callback` has been omitted, otherwise `undefined`
+     */
     type ServiceMethod<TReq extends Message<TReq>, TRes extends Message<TRes>> = (request: (TReq|Properties<TReq>), callback?: rpc.ServiceMethodCallback<TRes>) => Promise<Message<TRes>>;
 
     /**
      * Constructs a new RPC service instance.
      * @classdesc An RPC service as returned by {@link Service#create}.
-     * @exports rpc.Service
-     * @extends util.EventEmitter
-     * @constructor
-     * @param {RPCImpl} rpcImpl RPC implementation
-     * @param {boolean} [requestDelimited=false] Whether requests are length-delimited
-     * @param {boolean} [responseDelimited=false] Whether responses are length-delimited
+     * @param rpcImpl RPC implementation
+     * @param [requestDelimited=false] Whether requests are length-delimited
+     * @param [responseDelimited=false] Whether responses are length-delimited
      */
     class Service extends util.EventEmitter {
 
         /**
          * Constructs a new RPC service instance.
          * @classdesc An RPC service as returned by {@link Service#create}.
-         * @exports rpc.Service
-         * @extends util.EventEmitter
-         * @constructor
-         * @param {RPCImpl} rpcImpl RPC implementation
-         * @param {boolean} [requestDelimited=false] Whether requests are length-delimited
-         * @param {boolean} [responseDelimited=false] Whether responses are length-delimited
+         * @param rpcImpl RPC implementation
+         * @param [requestDelimited=false] Whether requests are length-delimited
+         * @param [responseDelimited=false] Whether responses are length-delimited
          */
         constructor(rpcImpl: RPCImpl, requestDelimited?: boolean, responseDelimited?: boolean);
 
-        /**
-         * RPC implementation. Becomes `null` once the service is ended.
-         * @type {?RPCImpl}
-         */
+        /** RPC implementation. Becomes `null` once the service is ended. */
         public rpcImpl: RPCImpl;
 
-        /**
-         * Whether requests are length-delimited.
-         * @type {boolean}
-         */
+        /** Whether requests are length-delimited. */
         public requestDelimited: boolean;
 
-        /**
-         * Whether responses are length-delimited.
-         * @type {boolean}
-         */
+        /** Whether responses are length-delimited. */
         public responseDelimited: boolean;
 
         /**
          * Calls a service method through {@link rpc.Service#rpcImpl|rpcImpl}.
-         * @param {Method|rpc.ServiceMethod<TReq,TRes>} method Reflected or static method
-         * @param {Constructor<TReq>} requestCtor Request constructor
-         * @param {Constructor<TRes>} responseCtor Response constructor
-         * @param {TReq|Properties<TReq>} request Request message or plain object
-         * @param {rpc.ServiceMethodCallback<TRes>} callback Service callback
-         * @returns {undefined}
-         * @template TReq extends Message<TReq>
-         * @template TRes extends Message<TRes>
+         * @param method Reflected or static method
+         * @param requestCtor Request constructor
+         * @param responseCtor Response constructor
+         * @param request Request message or plain object
+         * @param callback Service callback
          */
         public rpcCall<TReq extends Message<TReq>, TRes extends Message<TRes>>(method: (Method|rpc.ServiceMethod<TReq, TRes>), requestCtor: Constructor<TReq>, responseCtor: Constructor<TRes>, request: (TReq|Properties<TReq>), callback: rpc.ServiceMethodCallback<TRes>): void;
 
         /**
          * Ends this service and emits the `end` event.
-         * @param {boolean} [endedByRPC=false] Whether the service has been ended by the RPC implementation.
-         * @returns {rpc.Service} `this`
+         * @param [endedByRPC=false] Whether the service has been ended by the RPC implementation.
+         * @returns `this`
          */
         public end(endedByRPC?: boolean): rpc.Service;
     }
 }
 
+/**
+ * RPC implementation passed to {@link Service#create} performing a service request on network level, i.e. by utilizing http requests or websockets.
+ * @param method Reflected or static method being called
+ * @param requestData Request data
+ * @param callback Callback function
+ */
 type RPCImpl = (method: (Method|rpc.ServiceMethod<Message<{}>, Message<{}>>), requestData: Uint8Array, callback: RPCImplCallback) => void;
 
+/**
+ * Node-style callback as used by {@link RPCImpl}.
+ * @param error Error, if any, otherwise `null`
+ * @param [response] Response data or `null` to signal end of stream, if there hasn't been an error
+ */
 type RPCImplCallback = (error: Error, response?: Uint8Array) => void;
 
 /**
  * Constructs a new service instance.
  * @classdesc Reflected service.
- * @extends NamespaceBase
- * @constructor
- * @param {string} name Service name
- * @param {Object.<string,*>} [options] Service options
- * @throws {TypeError} If arguments are invalid
+ * @param name Service name
+ * @param [options] Service options
+ * @throws If arguments are invalid
  */
 export class Service extends NamespaceBase {
 
     /**
      * Constructs a new service instance.
      * @classdesc Reflected service.
-     * @extends NamespaceBase
-     * @constructor
-     * @param {string} name Service name
-     * @param {Object.<string,*>} [options] Service options
-     * @throws {TypeError} If arguments are invalid
+     * @param name Service name
+     * @param [options] Service options
+     * @throws If arguments are invalid
      */
     constructor(name: string, options?: { [k: string]: any });
 
-    /**
-     * Service methods.
-     * @type {Object.<string,Method>}
-     */
+    /** Service methods. */
     public methods: { [k: string]: Method };
 
     /**
      * Constructs a service from a service descriptor.
-     * @param {string} name Service name
-     * @param {IService} json Service descriptor
-     * @returns {Service} Created service
-     * @throws {TypeError} If arguments are invalid
+     * @param name Service name
+     * @param json Service descriptor
+     * @returns Created service
+     * @throws If arguments are invalid
      */
     public static fromJSON(name: string, json: IService): Service;
 
     /**
      * Converts this service to a service descriptor.
-     * @returns {IService} Service descriptor
+     * @returns Service descriptor
      */
     public toJSON(): IService;
 
     /**
      * Methods of this service as an array for iteration.
-     * @name Service#methodsArray
-     * @type {Method[]}
      * @readonly
      */
     public readonly methodsArray: Method[];
 
     /**
      * Creates a runtime service using the specified rpc implementation.
-     * @param {RPCImpl} rpcImpl RPC implementation
-     * @param {boolean} [requestDelimited=false] Whether requests are length-delimited
-     * @param {boolean} [responseDelimited=false] Whether responses are length-delimited
-     * @returns {rpc.Service} RPC service. Useful where requests and/or responses are streamed.
+     * @param rpcImpl RPC implementation
+     * @param [requestDelimited=false] Whether requests are length-delimited
+     * @param [responseDelimited=false] Whether responses are length-delimited
+     * @returns RPC service. Useful where requests and/or responses are streamed.
      */
     public create(rpcImpl: RPCImpl, requestDelimited?: boolean, responseDelimited?: boolean): rpc.Service;
 }
 
-/**
- * Service descriptor.
- * @interface IService
- * @extends INamespace
- * @property {Object.<string,IMethod>} methods Method descriptors
- */
+/** Service descriptor. */
 export interface IService extends INamespace {
     methods: { [k: string]: IMethod };
 }
 
+/**
+ * Gets the current line number.
+ * @returns Line number
+ */
 type TokenizerHandleLine = () => number;
 
+/**
+ * Gets the next token and advances.
+ * @returns Next token or `null` on eof
+ */
 type TokenizerHandleNext = () => string;
 
+/**
+ * Peeks for the next token.
+ * @returns Next token or `null` on eof
+ */
 type TokenizerHandlePeek = () => string;
 
+/**
+ * Pushes a token back to the stack.
+ * @param token Token
+ */
 type TokenizerHandlePush = (token: string) => void;
 
+/**
+ * Skips the next token.
+ * @param expected Expected token
+ * @param [optional=false] If optional
+ * @returns Whether the token matched
+ * @throws If the token didn't match and is not optional
+ */
 type TokenizerHandleSkip = (expected: string, optional?: boolean) => boolean;
 
+/**
+ * Gets the comment on the previous line or, alternatively, the line comment on the specified line.
+ * @param [line] Line number
+ * @returns Comment text or `null` if none
+ */
 type TokenizerHandleCmnt = (line?: number) => string;
 
-/**
- * Handle object returned from {@link tokenize}.
- * @interface ITokenizerHandle
- * @property {TokenizerHandleLine} line Gets the current line number
- * @property {TokenizerHandleNext} next Gets the next token and advances (`null` on eof)
- * @property {TokenizerHandlePeek} peek Peeks for the next token (`null` on eof)
- * @property {TokenizerHandlePush} push Pushes a token back to the stack
- * @property {TokenizerHandleSkip} skip Skips a token, returns its presence and advances or, if non-optional and not present, throws
- * @property {TokenizerHandleCmnt} cmnt Gets the comment on the previous line or the line comment on the specified line, if any
- */
+/** Handle object returned from {@link tokenize}. */
 export interface ITokenizerHandle {
     line: TokenizerHandleLine;
     next: TokenizerHandleNext;
@@ -1905,76 +1471,53 @@ export interface ITokenizerHandle {
 
 /**
  * Tokenizes the given .proto source and returns an object with useful utility functions.
- * @param {string} source Source contents
- * @returns {ITokenizerHandle} Tokenizer handle
- * @property {function(string):string} unescape Unescapes a string
+ * @param source Source contents
+ * @returns Tokenizer handle
  */
 export function tokenize(source: string): ITokenizerHandle;
 
 /**
  * Constructs a new reflected message type instance.
  * @classdesc Reflected message type.
- * @extends NamespaceBase
- * @constructor
- * @param {string} name Message name
- * @param {Object.<string,*>} [options] Declared options
+ * @param name Message name
+ * @param [options] Declared options
  */
 export class Type extends NamespaceBase {
 
     /**
      * Constructs a new reflected message type instance.
      * @classdesc Reflected message type.
-     * @extends NamespaceBase
-     * @constructor
-     * @param {string} name Message name
-     * @param {Object.<string,*>} [options] Declared options
+     * @param name Message name
+     * @param [options] Declared options
      */
     constructor(name: string, options?: { [k: string]: any });
 
-    /**
-     * Message fields.
-     * @type {Object.<string,Field>}
-     */
+    /** Message fields. */
     public fields: { [k: string]: Field };
 
-    /**
-     * Oneofs declared within this namespace, if any.
-     * @type {Object.<string,OneOf>}
-     */
+    /** Oneofs declared within this namespace, if any. */
     public oneofs: { [k: string]: OneOf };
 
-    /**
-     * Extension ranges, if any.
-     * @type {number[][]}
-     */
+    /** Extension ranges, if any. */
     public extensions: number[][];
 
-    /**
-     * Reserved ranges, if any.
-     * @type {Array.<number[]|string>}
-     */
+    /** Reserved ranges, if any. */
     public reserved: (number[]|string)[];
 
     /**
      * Message fields by id.
-     * @name Type#fieldsById
-     * @type {Object.<number,Field>}
      * @readonly
      */
     public readonly fieldsById: { [k: number]: Field };
 
     /**
      * Fields of this message as an array for iteration.
-     * @name Type#fieldsArray
-     * @type {Field[]}
      * @readonly
      */
     public readonly fieldsArray: Field[];
 
     /**
      * Oneofs of this message as an array for iteration.
-     * @name Type#oneofsArray
-     * @type {OneOf[]}
      * @readonly
      */
     public readonly oneofsArray: OneOf[];
@@ -1982,153 +1525,141 @@ export class Type extends NamespaceBase {
     /**
      * The registered constructor, if any registered, otherwise a generic constructor.
      * Assigning a function replaces the internal constructor. If the function does not extend {@link Message} yet, its prototype will be setup accordingly and static methods will be populated. If it already extends {@link Message}, it will just replace the internal constructor.
-     * @name Type#ctor
-     * @type {Constructor<{}>}
      */
     public ctor: Constructor<{}>;
 
     /**
      * Generates a constructor function for the specified type.
-     * @param {Type} type Type
-     * @returns {Codegen} Codegen instance
+     * @param type Type
+     * @returns Codegen instance
      */
     public static generateConstructor(type: Type): Codegen;
 
     /**
      * Creates a message type from a message type descriptor.
-     * @param {string} name Message name
-     * @param {IType} json Message type descriptor
-     * @returns {Type} Created message type
+     * @param name Message name
+     * @param json Message type descriptor
+     * @returns Created message type
      */
     public static fromJSON(name: string, json: IType): Type;
 
     /**
      * Converts this message type to a message type descriptor.
-     * @returns {IType} Message type descriptor
+     * @returns Message type descriptor
      */
     public toJSON(): IType;
 
     /**
      * Adds a nested object to this type.
-     * @param {ReflectionObject} object Nested object to add
-     * @returns {Type} `this`
-     * @throws {TypeError} If arguments are invalid
-     * @throws {Error} If there is already a nested object with this name or, if a field, when there is already a field with this id
+     * @param object Nested object to add
+     * @returns `this`
+     * @throws If arguments are invalid
+     * @throws If there is already a nested object with this name or, if a field, when there is already a field with this id
      */
     public add(object: ReflectionObject): Type;
 
     /**
      * Removes a nested object from this type.
-     * @param {ReflectionObject} object Nested object to remove
-     * @returns {Type} `this`
-     * @throws {TypeError} If arguments are invalid
-     * @throws {Error} If `object` is not a member of this type
+     * @param object Nested object to remove
+     * @returns `this`
+     * @throws If arguments are invalid
+     * @throws If `object` is not a member of this type
      */
     public remove(object: ReflectionObject): Type;
 
     /**
      * Tests if the specified id is reserved.
-     * @param {number} id Id to test
-     * @returns {boolean} `true` if reserved, otherwise `false`
+     * @param id Id to test
+     * @returns `true` if reserved, otherwise `false`
      */
     public isReservedId(id: number): boolean;
 
     /**
      * Tests if the specified name is reserved.
-     * @param {string} name Name to test
-     * @returns {boolean} `true` if reserved, otherwise `false`
+     * @param name Name to test
+     * @returns `true` if reserved, otherwise `false`
      */
     public isReservedName(name: string): boolean;
 
     /**
      * Creates a new message of this type using the specified properties.
-     * @param {Object.<string,*>} [properties] Properties to set
-     * @returns {Message<{}>} Message instance
+     * @param [properties] Properties to set
+     * @returns Message instance
      */
     public create(properties?: { [k: string]: any }): Message<{}>;
 
     /**
      * Sets up {@link Type#encode|encode}, {@link Type#decode|decode} and {@link Type#verify|verify}.
-     * @returns {Type} `this`
+     * @returns `this`
      */
     public setup(): Type;
 
     /**
      * Encodes a message of this type. Does not implicitly {@link Type#verify|verify} messages.
-     * @param {Message<{}>|Object.<string,*>} message Message instance or plain object
-     * @param {Writer} [writer] Writer to encode to
-     * @returns {Writer} writer
+     * @param message Message instance or plain object
+     * @param [writer] Writer to encode to
+     * @returns writer
      */
     public encode(message: (Message<{}>|{ [k: string]: any }), writer?: Writer): Writer;
 
     /**
      * Encodes a message of this type preceeded by its byte length as a varint. Does not implicitly {@link Type#verify|verify} messages.
-     * @param {Message<{}>|Object.<string,*>} message Message instance or plain object
-     * @param {Writer} [writer] Writer to encode to
-     * @returns {Writer} writer
+     * @param message Message instance or plain object
+     * @param [writer] Writer to encode to
+     * @returns writer
      */
     public encodeDelimited(message: (Message<{}>|{ [k: string]: any }), writer?: Writer): Writer;
 
     /**
      * Decodes a message of this type.
-     * @param {Reader|Uint8Array} reader Reader or buffer to decode from
-     * @param {number} [length] Length of the message, if known beforehand
-     * @returns {Message<{}>} Decoded message
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {util.ProtocolError<{}>} If required fields are missing
+     * @param reader Reader or buffer to decode from
+     * @param [length] Length of the message, if known beforehand
+     * @returns Decoded message
+     * @throws If the payload is not a reader or valid buffer
+     * @throws If required fields are missing
      */
     public decode(reader: (Reader|Uint8Array), length?: number): Message<{}>;
 
     /**
      * Decodes a message of this type preceeded by its byte length as a varint.
-     * @param {Reader|Uint8Array} reader Reader or buffer to decode from
-     * @returns {Message<{}>} Decoded message
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {util.ProtocolError} If required fields are missing
+     * @param reader Reader or buffer to decode from
+     * @returns Decoded message
+     * @throws If the payload is not a reader or valid buffer
+     * @throws If required fields are missing
      */
     public decodeDelimited(reader: (Reader|Uint8Array)): Message<{}>;
 
     /**
      * Verifies that field values are valid and that required fields are present.
-     * @param {Object.<string,*>} message Plain object to verify
-     * @returns {?string} `null` if valid, otherwise the reason why it is not
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
      */
     public verify(message: { [k: string]: any }): string;
 
     /**
      * Creates a new message of this type from a plain object. Also converts values to their respective internal types.
-     * @param {Object.<string,*>} object Plain object to convert
-     * @returns {Message<{}>} Message instance
+     * @param object Plain object to convert
+     * @returns Message instance
      */
     public fromObject(object: { [k: string]: any }): Message<{}>;
 
     /**
      * Creates a plain object from a message of this type. Also converts values to other types if specified.
-     * @param {Message<{}>} message Message instance
-     * @param {IConversionOptions} [options] Conversion options
-     * @returns {Object.<string,*>} Plain object
+     * @param message Message instance
+     * @param [options] Conversion options
+     * @returns Plain object
      */
     public toObject(message: Message<{}>, options?: IConversionOptions): { [k: string]: any };
 
     /**
      * Type decorator (TypeScript).
-     * @param {string} [typeName] Type name, defaults to the constructor's name
-     * @returns {TypeDecorator<T>} Decorator function
-     * @template T extends Message<T>
+     * @param [typeName] Type name, defaults to the constructor's name
+     * @returns Decorator function
      */
     public static d<T extends Message<T>>(typeName?: string): TypeDecorator<T>;
 }
 
-/**
- * Message type descriptor.
- * @interface IType
- * @extends INamespace
- * @property {Object.<string,IOneOf>} [oneofs] Oneof descriptors
- * @property {Object.<string,IField>} fields Field descriptors
- * @property {number[][]} [extensions] Extension ranges
- * @property {number[][]} [reserved] Reserved ranges
- * @property {boolean} [group=false] Whether a legacy group or not
- */
+/** Message type descriptor. */
 export interface IType extends INamespace {
     oneofs?: { [k: string]: IOneOf };
     fields: { [k: string]: IField };
@@ -2139,21 +1670,7 @@ export interface IType extends INamespace {
 
 /**
  * Conversion options as used by {@link Type#toObject} and {@link Message.toObject}.
- * @interface IConversionOptions
- * @property {*} [longs] Long conversion type.
- * Valid values are `String` and `Number` (the global types).
- * Defaults to copy the present value, which is a possibly unsafe number without and a {@link Long} with a long library.
- * @property {*} [enums] Enum value conversion type.
- * Only valid value is `String` (the global type).
- * Defaults to copy the present value, which is the numeric id.
- * @property {*} [bytes] Bytes value conversion type.
- * Valid values are `Array` and (a base64 encoded) `String` (the global types).
- * Defaults to copy the present value, which usually is a Buffer under node and an Uint8Array in the browser.
- * @property {boolean} [defaults=false] Also sets default values on the resulting object
- * @property {boolean} [arrays=false] Sets empty arrays for missing repeated fields even if `defaults=false`
- * @property {boolean} [objects=false] Sets empty objects for missing map fields even if `defaults=false`
- * @property {boolean} [oneofs=false] Includes virtual oneof properties set to the present field's name, if any
- * @property {boolean} [json=false] Performs additional JSON compatibility conversions, i.e. NaN and Infinity to strings
+ * @link Long} with a long library.
  */
 export interface IConversionOptions {
     longs?: any;
@@ -2166,33 +1683,18 @@ export interface IConversionOptions {
     json?: boolean;
 }
 
+/**
+ * Decorator function as returned by {@link Type.d} (TypeScript).
+ * @param target Target constructor
+ */
 type TypeDecorator<T extends Message<T>> = (target: Constructor<T>) => void;
 
-/**
- * Common type constants.
- * @namespace
- */
+/** Common type constants. */
 export namespace types {
 
     /**
      * Basic type wire types.
-     * @type {Object.<string,number>}
      * @const
-     * @property {number} double=1 Fixed64 wire type
-     * @property {number} float=5 Fixed32 wire type
-     * @property {number} int32=0 Varint wire type
-     * @property {number} uint32=0 Varint wire type
-     * @property {number} sint32=0 Varint wire type
-     * @property {number} fixed32=5 Fixed32 wire type
-     * @property {number} sfixed32=5 Fixed32 wire type
-     * @property {number} int64=0 Varint wire type
-     * @property {number} uint64=0 Varint wire type
-     * @property {number} sint64=0 Varint wire type
-     * @property {number} fixed64=1 Fixed64 wire type
-     * @property {number} sfixed64=1 Fixed64 wire type
-     * @property {number} bool=0 Varint wire type
-     * @property {number} string=2 Ldelim wire type
-     * @property {number} bytes=2 Ldelim wire type
      */
     const basic: {
         "double": number,
@@ -2214,24 +1716,7 @@ export namespace types {
 
     /**
      * Basic type defaults.
-     * @type {Object.<string,*>}
      * @const
-     * @property {number} double=0 Double default
-     * @property {number} float=0 Float default
-     * @property {number} int32=0 Int32 default
-     * @property {number} uint32=0 Uint32 default
-     * @property {number} sint32=0 Sint32 default
-     * @property {number} fixed32=0 Fixed32 default
-     * @property {number} sfixed32=0 Sfixed32 default
-     * @property {number} int64=0 Int64 default
-     * @property {number} uint64=0 Uint64 default
-     * @property {number} sint64=0 Sint32 default
-     * @property {number} fixed64=0 Fixed64 default
-     * @property {number} sfixed64=0 Sfixed64 default
-     * @property {boolean} bool=false Bool default
-     * @property {string} string="" String default
-     * @property {Array.<number>} bytes=Array(0) Bytes default
-     * @property {null} message=null Message default
      */
     const defaults: {
         "double": number,
@@ -2254,13 +1739,7 @@ export namespace types {
 
     /**
      * Basic long type wire types.
-     * @type {Object.<string,number>}
      * @const
-     * @property {number} int64=0 Varint wire type
-     * @property {number} uint64=0 Varint wire type
-     * @property {number} sint64=0 Varint wire type
-     * @property {number} fixed64=1 Fixed64 wire type
-     * @property {number} sfixed64=1 Fixed64 wire type
      */
     const long: {
         "int64": number,
@@ -2272,20 +1751,7 @@ export namespace types {
 
     /**
      * Allowed types for map keys with their associated wire type.
-     * @type {Object.<string,number>}
      * @const
-     * @property {number} int32=0 Varint wire type
-     * @property {number} uint32=0 Varint wire type
-     * @property {number} sint32=0 Varint wire type
-     * @property {number} fixed32=5 Fixed32 wire type
-     * @property {number} sfixed32=5 Fixed32 wire type
-     * @property {number} int64=0 Varint wire type
-     * @property {number} uint64=0 Varint wire type
-     * @property {number} sint64=0 Varint wire type
-     * @property {number} fixed64=1 Fixed64 wire type
-     * @property {number} sfixed64=1 Fixed64 wire type
-     * @property {number} bool=0 Varint wire type
-     * @property {number} string=2 Ldelim wire type
      */
     const mapKey: {
         "int32": number,
@@ -2304,21 +1770,7 @@ export namespace types {
 
     /**
      * Allowed types for packed repeated fields with their associated wire type.
-     * @type {Object.<string,number>}
      * @const
-     * @property {number} double=1 Fixed64 wire type
-     * @property {number} float=5 Fixed32 wire type
-     * @property {number} int32=0 Varint wire type
-     * @property {number} uint32=0 Varint wire type
-     * @property {number} sint32=0 Varint wire type
-     * @property {number} fixed32=5 Fixed32 wire type
-     * @property {number} sfixed32=5 Fixed32 wire type
-     * @property {number} int64=0 Varint wire type
-     * @property {number} uint64=0 Varint wire type
-     * @property {number} sint64=0 Varint wire type
-     * @property {number} fixed64=1 Fixed64 wire type
-     * @property {number} sfixed64=1 Fixed64 wire type
-     * @property {number} bool=0 Varint wire type
      */
     const packed: {
         "double": number,
@@ -2339,339 +1791,280 @@ export namespace types {
 
 /**
  * Constructor type.
- * @interface Constructor
- * @extends Function
- * @template T
  * @tstype new(...params: any[]): T; prototype: T;
  */
 export interface Constructor<T> extends Function {
     new(...params: any[]): T; prototype: T;
 }
 
+/**
+ * Properties type.
+ * @tstype { [P in keyof T]?: T[P] }
+ */
 type Properties<T> = { [P in keyof T]?: T[P] };
 
+/**
+ * A OneOf getter as returned by {@link util.oneOfGetter}.
+ * @returns Set field name, if any
+ */
 type OneOfGetter = () => (string|undefined);
 
+/**
+ * A OneOf setter as returned by {@link util.oneOfSetter}.
+ * @param value Field name
+ */
 type OneOfSetter = (value: (string|undefined)) => void;
 
-/**
- * Various utility functions.
- * @namespace
- */
+/** Various utility functions. */
 export namespace util {
 
     /**
      * Constructs new long bits.
      * @classdesc Helper class for working with the low and high bits of a 64 bit value.
-     * @memberof util
-     * @constructor
-     * @param {number} lo Low 32 bits, unsigned
-     * @param {number} hi High 32 bits, unsigned
+     * @param lo Low 32 bits, unsigned
+     * @param hi High 32 bits, unsigned
      */
     class LongBits {
 
         /**
          * Constructs new long bits.
          * @classdesc Helper class for working with the low and high bits of a 64 bit value.
-         * @memberof util
-         * @constructor
-         * @param {number} lo Low 32 bits, unsigned
-         * @param {number} hi High 32 bits, unsigned
+         * @param lo Low 32 bits, unsigned
+         * @param hi High 32 bits, unsigned
          */
         constructor(lo: number, hi: number);
 
-        /**
-         * Low bits.
-         * @type {number}
-         */
+        /** Low bits. */
         public lo: number;
 
-        /**
-         * High bits.
-         * @type {number}
-         */
+        /** High bits. */
         public hi: number;
 
-        /**
-         * Zero bits.
-         * @memberof util.LongBits
-         * @type {util.LongBits}
-         */
+        /** Zero bits. */
         public static zero: util.LongBits;
 
-        /**
-         * Zero hash.
-         * @memberof util.LongBits
-         * @type {string}
-         */
+        /** Zero hash. */
         public static zeroHash: string;
 
         /**
          * Constructs new long bits from the specified number.
-         * @param {number} value Value
-         * @returns {util.LongBits} Instance
+         * @param value Value
+         * @returns Instance
          */
         public static fromNumber(value: number): util.LongBits;
 
         /**
          * Constructs new long bits from a number, long or string.
-         * @param {Long|number|string} value Value
-         * @returns {util.LongBits} Instance
+         * @param value Value
+         * @returns Instance
          */
         public static from(value: (Long|number|string)): util.LongBits;
 
         /**
          * Converts this long bits to a possibly unsafe JavaScript number.
-         * @param {boolean} [unsigned=false] Whether unsigned or not
-         * @returns {number} Possibly unsafe number
+         * @param [unsigned=false] Whether unsigned or not
+         * @returns Possibly unsafe number
          */
         public toNumber(unsigned?: boolean): number;
 
         /**
          * Converts this long bits to a long.
-         * @param {boolean} [unsigned=false] Whether unsigned or not
-         * @returns {Long} Long
+         * @param [unsigned=false] Whether unsigned or not
+         * @returns Long
          */
         public toLong(unsigned?: boolean): Long;
 
         /**
          * Constructs new long bits from the specified 8 characters long hash.
-         * @param {string} hash Hash
-         * @returns {util.LongBits} Bits
+         * @param hash Hash
+         * @returns Bits
          */
         public static fromHash(hash: string): util.LongBits;
 
         /**
          * Converts this long bits to a 8 characters long hash.
-         * @returns {string} Hash
+         * @returns Hash
          */
         public toHash(): string;
 
         /**
          * Zig-zag encodes this long bits.
-         * @returns {util.LongBits} `this`
+         * @returns `this`
          */
         public zzEncode(): util.LongBits;
 
         /**
          * Zig-zag decodes this long bits.
-         * @returns {util.LongBits} `this`
+         * @returns `this`
          */
         public zzDecode(): util.LongBits;
 
         /**
          * Calculates the length of this longbits when encoded as a varint.
-         * @returns {number} Length
+         * @returns Length
          */
         public length(): number;
     }
 
     /**
      * An immuable empty array.
-     * @memberof util
-     * @type {Array.<*>}
      * @const
      */
     const emptyArray: any[];
 
     /**
      * An immutable empty object.
-     * @type {Object}
      * @const
      */
     const emptyObject: object;
 
     /**
      * Whether running within node or not.
-     * @memberof util
-     * @type {boolean}
      * @const
      */
     const isNode: boolean;
 
     /**
      * Tests if the specified value is an integer.
-     * @function
-     * @param {*} value Value to test
-     * @returns {boolean} `true` if the value is an integer
+     * @param value Value to test
+     * @returns `true` if the value is an integer
      */
     function isInteger(value: any): boolean;
 
     /**
      * Tests if the specified value is a string.
-     * @param {*} value Value to test
-     * @returns {boolean} `true` if the value is a string
+     * @param value Value to test
+     * @returns `true` if the value is a string
      */
     function isString(value: any): boolean;
 
     /**
      * Tests if the specified value is a non-null object.
-     * @param {*} value Value to test
-     * @returns {boolean} `true` if the value is a non-null object
+     * @param value Value to test
+     * @returns `true` if the value is a non-null object
      */
     function isObject(value: any): boolean;
 
     /**
      * Checks if a property on a message is considered to be present.
      * This is an alias of {@link util.isSet}.
-     * @function
-     * @param {Object} obj Plain object or message instance
-     * @param {string} prop Property name
-     * @returns {boolean} `true` if considered to be present, otherwise `false`
+     * @param obj Plain object or message instance
+     * @param prop Property name
+     * @returns `true` if considered to be present, otherwise `false`
      */
     function isset(obj: object, prop: string): boolean;
 
     /**
      * Checks if a property on a message is considered to be present.
-     * @param {Object} obj Plain object or message instance
-     * @param {string} prop Property name
-     * @returns {boolean} `true` if considered to be present, otherwise `false`
+     * @param obj Plain object or message instance
+     * @param prop Property name
+     * @returns `true` if considered to be present, otherwise `false`
      */
     function isSet(obj: object, prop: string): boolean;
 
-    /**
-     * Node's Buffer class if available.
-     * @type {Constructor<Buffer>}
-     */
+    /** Node's Buffer class if available. */
     let Buffer: Constructor<Buffer>;
 
     /**
      * Creates a new buffer of whatever type supported by the environment.
-     * @param {number|number[]} [sizeOrArray=0] Buffer size or number array
-     * @returns {Uint8Array|Buffer} Buffer
+     * @param [sizeOrArray=0] Buffer size or number array
+     * @returns Buffer
      */
     function newBuffer(sizeOrArray?: (number|number[])): (Uint8Array|Buffer);
 
-    /**
-     * Array implementation used in the browser. `Uint8Array` if supported, otherwise `Array`.
-     * @type {Constructor<Uint8Array>}
-     */
+    /** Array implementation used in the browser. `Uint8Array` if supported, otherwise `Array`. */
     let Array: Constructor<Uint8Array>;
 
-    /**
-     * Long.js's Long class if available.
-     * @type {Constructor<Long>}
-     */
+    /** Long.js's Long class if available. */
     let Long: Constructor<Long>;
 
     /**
      * Regular expression used to verify 2 bit (`bool`) map keys.
-     * @type {RegExp}
      * @const
      */
     const key2Re: RegExp;
 
     /**
      * Regular expression used to verify 32 bit (`int32` etc.) map keys.
-     * @type {RegExp}
      * @const
      */
     const key32Re: RegExp;
 
     /**
      * Regular expression used to verify 64 bit (`int64` etc.) map keys.
-     * @type {RegExp}
      * @const
      */
     const key64Re: RegExp;
 
     /**
      * Converts a number or long to an 8 characters long hash string.
-     * @param {Long|number} value Value to convert
-     * @returns {string} Hash
+     * @param value Value to convert
+     * @returns Hash
      */
     function longToHash(value: (Long|number)): string;
 
     /**
      * Converts an 8 characters long hash string to a long or number.
-     * @param {string} hash Hash
-     * @param {boolean} [unsigned=false] Whether unsigned or not
-     * @returns {Long|number} Original value
+     * @param hash Hash
+     * @param [unsigned=false] Whether unsigned or not
+     * @returns Original value
      */
     function longFromHash(hash: string, unsigned?: boolean): (Long|number);
 
     /**
      * Merges the properties of the source object into the destination object.
-     * @memberof util
-     * @param {Object.<string,*>} dst Destination object
-     * @param {Object.<string,*>} src Source object
-     * @param {boolean} [ifNotSet=false] Merges only if the key is not already set
-     * @returns {Object.<string,*>} Destination object
+     * @param dst Destination object
+     * @param src Source object
+     * @param [ifNotSet=false] Merges only if the key is not already set
+     * @returns Destination object
      */
     function merge(dst: { [k: string]: any }, src: { [k: string]: any }, ifNotSet?: boolean): { [k: string]: any };
 
     /**
      * Converts the first character of a string to lower case.
-     * @param {string} str String to convert
-     * @returns {string} Converted string
+     * @param str String to convert
+     * @returns Converted string
      */
     function lcFirst(str: string): string;
 
     /**
      * Creates a custom error constructor.
-     * @memberof util
-     * @param {string} name Error name
-     * @returns {Constructor<Error>} Custom error constructor
+     * @param name Error name
+     * @returns Custom error constructor
      */
     function newError(name: string): Constructor<Error>;
 
     /**
      * Constructs a new protocol error.
      * @classdesc Error subclass indicating a protocol specifc error.
-     * @memberof util
-     * @extends Error
-     * @template T extends Message<T>
-     * @constructor
-     * @param {string} message Error message
-     * @param {Object.<string,*>} [properties] Additional properties
-     * @example
-     * try {
-     *     MyMessage.decode(someBuffer); // throws if required fields are missing
-     * } catch (e) {
-     *     if (e instanceof ProtocolError && e.instance)
-     *         console.log("decoded so far: " + JSON.stringify(e.instance));
-     * }
+     * @param message Error message
+     * @param [properties] Additional properties
      */
     class ProtocolError<T extends Message<T>> extends Error {
 
         /**
          * Constructs a new protocol error.
          * @classdesc Error subclass indicating a protocol specifc error.
-         * @memberof util
-         * @extends Error
-         * @template T extends Message<T>
-         * @constructor
-         * @param {string} message Error message
-         * @param {Object.<string,*>} [properties] Additional properties
-         * @example
-         * try {
-         *     MyMessage.decode(someBuffer); // throws if required fields are missing
-         * } catch (e) {
-         *     if (e instanceof ProtocolError && e.instance)
-         *         console.log("decoded so far: " + JSON.stringify(e.instance));
-         * }
+         * @param message Error message
+         * @param [properties] Additional properties
          */
         constructor(message: string, properties?: { [k: string]: any });
 
-        /**
-         * So far decoded message instance.
-         * @name util.ProtocolError#instance
-         * @type {Message<T>}
-         */
+        /** So far decoded message instance. */
         public instance: Message<T>;
     }
 
     /**
      * Builds a getter for a oneof's present field name.
-     * @param {string[]} fieldNames Field names
-     * @returns {OneOfGetter} Unbound getter
+     * @param fieldNames Field names
+     * @returns Unbound getter
      */
     function oneOfGetter(fieldNames: string[]): OneOfGetter;
 
     /**
      * Builds a setter for a oneof's present field name.
-     * @param {string[]} fieldNames Field names
-     * @returns {OneOfSetter} Unbound setter
+     * @param fieldNames Field names
+     * @returns Unbound setter
      */
     function oneOfSetter(fieldNames: string[]): OneOfSetter;
 
@@ -2688,387 +2081,320 @@ export namespace util {
      * - Repeated fields become arrays
      * - NaN and Infinity for float and double fields become strings
      *
-     * @type {IConversionOptions}
      * @see https://developers.google.com/protocol-buffers/docs/proto3?hl=en#json
      */
     let toJSONOptions: IConversionOptions;
 
-    /**
-     * Node's fs module if available.
-     * @type {Object.<string,*>}
-     */
+    /** Node's fs module if available. */
     let fs: { [k: string]: any };
 
     /**
      * Converts an object's values to an array.
-     * @param {Object.<string,*>} object Object to convert
-     * @returns {Array.<*>} Converted array
+     * @param object Object to convert
+     * @returns Converted array
      */
     function toArray(object: { [k: string]: any }): any[];
 
     /**
      * Converts an array of keys immediately followed by their respective value to an object, omitting undefined values.
-     * @param {Array.<*>} array Array to convert
-     * @returns {Object.<string,*>} Converted object
+     * @param array Array to convert
+     * @returns Converted object
      */
     function toObject(array: any[]): { [k: string]: any };
 
     /**
      * Returns a safe property accessor for the specified properly name.
-     * @param {string} prop Property name
-     * @returns {string} Safe accessor
+     * @param prop Property name
+     * @returns Safe accessor
      */
     function safeProp(prop: string): string;
 
     /**
      * Converts the first character of a string to upper case.
-     * @param {string} str String to convert
-     * @returns {string} Converted string
+     * @param str String to convert
+     * @returns Converted string
      */
     function ucFirst(str: string): string;
 
     /**
      * Compares reflected fields by id.
-     * @param {Field} a First field
-     * @param {Field} b Second field
-     * @returns {number} Comparison value
+     * @param a First field
+     * @param b Second field
+     * @returns Comparison value
      */
     function compareFieldsById(a: Field, b: Field): number;
 
     /**
      * Decorator helper for types (TypeScript).
-     * @param {Constructor<T>} ctor Constructor function
-     * @param {string} [typeName] Type name, defaults to the constructor's name
-     * @returns {Type} Reflected type
-     * @template T extends Message<T>
-     * @property {Root} root Decorators root
+     * @param ctor Constructor function
+     * @param [typeName] Type name, defaults to the constructor's name
+     * @returns Reflected type
      */
     function decorateType<T extends Message<T>>(ctor: Constructor<T>, typeName?: string): Type;
 
     /**
      * Decorator helper for enums (TypeScript).
-     * @param {Object} object Enum object
-     * @returns {Enum} Reflected enum
+     * @param object Enum object
+     * @returns Reflected enum
      */
     function decorateEnum(object: object): Enum;
 
     /**
      * Decorator root (TypeScript).
-     * @name util.decorateRoot
-     * @type {Root}
      * @readonly
      */
     let decorateRoot: Root;
 
     /**
      * Returns a promise from a node-style callback function.
-     * @memberof util
-     * @param {asPromiseCallback} fn Function to call
-     * @param {*} ctx Function context
-     * @param {...*} params Function arguments
-     * @returns {Promise<*>} Promisified function
+     * @param fn Function to call
+     * @param ctx Function context
+     * @param params Function arguments
+     * @returns Promisified function
      */
     function asPromise(fn: asPromiseCallback, ctx: any, ...params: any[]): Promise<any>;
 
-    /**
-     * A minimal base64 implementation for number arrays.
-     * @memberof util
-     * @namespace
-     */
+    /** A minimal base64 implementation for number arrays. */
     namespace base64 {
 
         /**
          * Calculates the byte length of a base64 encoded string.
-         * @param {string} string Base64 encoded string
-         * @returns {number} Byte length
+         * @param string Base64 encoded string
+         * @returns Byte length
          */
         function length(string: string): number;
 
         /**
          * Encodes a buffer to a base64 encoded string.
-         * @param {Uint8Array} buffer Source buffer
-         * @param {number} start Source start
-         * @param {number} end Source end
-         * @returns {string} Base64 encoded string
+         * @param buffer Source buffer
+         * @param start Source start
+         * @param end Source end
+         * @returns Base64 encoded string
          */
         function encode(buffer: Uint8Array, start: number, end: number): string;
 
         /**
          * Decodes a base64 encoded string to a buffer.
-         * @param {string} string Source string
-         * @param {Uint8Array} buffer Destination buffer
-         * @param {number} offset Destination offset
-         * @returns {number} Number of bytes written
-         * @throws {Error} If encoding is invalid
+         * @param string Source string
+         * @param buffer Destination buffer
+         * @param offset Destination offset
+         * @returns Number of bytes written
+         * @throws If encoding is invalid
          */
         function decode(string: string, buffer: Uint8Array, offset: number): number;
 
         /**
          * Tests if the specified string appears to be base64 encoded.
-         * @param {string} string String to test
-         * @returns {boolean} `true` if probably base64 encoded, otherwise false
+         * @param string String to test
+         * @returns `true` if probably base64 encoded, otherwise false
          */
         function test(string: string): boolean;
     }
 
     /**
      * A closure for generating functions programmatically.
-     * @memberof util
-     * @namespace
-     * @function
-     * @param {...string} params Function parameter names
-     * @returns {Codegen} Codegen instance
-     * @property {boolean} supported Whether code generation is supported by the environment.
-     * @property {boolean} verbose=false When set to true, codegen will log generated code to console. Useful for debugging.
-     * @property {function(string, ...*):string} sprintf Underlying sprintf implementation
+     * @param params Function parameter names
+     * @returns Codegen instance
      */
     function codegen(...params: string[]): Codegen;
 
     /**
      * Constructs a new event emitter instance.
      * @classdesc A minimal event emitter.
-     * @memberof util
-     * @constructor
      */
     class EventEmitter {
 
         /**
          * Constructs a new event emitter instance.
          * @classdesc A minimal event emitter.
-         * @memberof util
-         * @constructor
          */
         constructor();
 
         /**
          * Registers an event listener.
-         * @param {string} evt Event name
-         * @param {EventEmitterListener} fn Listener
-         * @param {*} [ctx] Listener context
-         * @returns {this} `this`
+         * @param evt Event name
+         * @param fn Listener
+         * @param [ctx] Listener context
+         * @returns `this`
          */
         public on(evt: string, fn: EventEmitterListener, ctx?: any): this;
 
         /**
          * Removes an event listener or any matching listeners if arguments are omitted.
-         * @param {string} [evt] Event name. Removes all listeners if omitted.
-         * @param {EventEmitterListener} [fn] Listener to remove. Removes all listeners of `evt` if omitted.
-         * @returns {this} `this`
+         * @param [evt] Event name. Removes all listeners if omitted.
+         * @param [fn] Listener to remove. Removes all listeners of `evt` if omitted.
+         * @returns `this`
          */
         public off(evt?: string, fn?: EventEmitterListener): this;
 
         /**
          * Emits an event by calling its listeners with the specified arguments.
-         * @param {string} evt Event name
-         * @param {...*} args Arguments
-         * @returns {this} `this`
+         * @param evt Event name
+         * @param args Arguments
+         * @returns `this`
          */
         public emit(evt: string, ...args: any[]): this;
     }
 
-    /**
-     * Reads / writes floats / doubles from / to buffers.
-     * @name util.float
-     * @namespace
-     */
+    /** Reads / writes floats / doubles from / to buffers. */
     namespace float {
 
         /**
          * Writes a 32 bit float to a buffer using little endian byte order.
-         * @name util.float.writeFloatLE
-         * @function
-         * @param {number} val Value to write
-         * @param {Uint8Array} buf Target buffer
-         * @param {number} pos Target buffer offset
-         * @returns {undefined}
+         * @param val Value to write
+         * @param buf Target buffer
+         * @param pos Target buffer offset
          */
         function writeFloatLE(val: number, buf: Uint8Array, pos: number): void;
 
         /**
          * Writes a 32 bit float to a buffer using big endian byte order.
-         * @name util.float.writeFloatBE
-         * @function
-         * @param {number} val Value to write
-         * @param {Uint8Array} buf Target buffer
-         * @param {number} pos Target buffer offset
-         * @returns {undefined}
+         * @param val Value to write
+         * @param buf Target buffer
+         * @param pos Target buffer offset
          */
         function writeFloatBE(val: number, buf: Uint8Array, pos: number): void;
 
         /**
          * Reads a 32 bit float from a buffer using little endian byte order.
-         * @name util.float.readFloatLE
-         * @function
-         * @param {Uint8Array} buf Source buffer
-         * @param {number} pos Source buffer offset
-         * @returns {number} Value read
+         * @param buf Source buffer
+         * @param pos Source buffer offset
+         * @returns Value read
          */
         function readFloatLE(buf: Uint8Array, pos: number): number;
 
         /**
          * Reads a 32 bit float from a buffer using big endian byte order.
-         * @name util.float.readFloatBE
-         * @function
-         * @param {Uint8Array} buf Source buffer
-         * @param {number} pos Source buffer offset
-         * @returns {number} Value read
+         * @param buf Source buffer
+         * @param pos Source buffer offset
+         * @returns Value read
          */
         function readFloatBE(buf: Uint8Array, pos: number): number;
 
         /**
          * Writes a 64 bit double to a buffer using little endian byte order.
-         * @name util.float.writeDoubleLE
-         * @function
-         * @param {number} val Value to write
-         * @param {Uint8Array} buf Target buffer
-         * @param {number} pos Target buffer offset
-         * @returns {undefined}
+         * @param val Value to write
+         * @param buf Target buffer
+         * @param pos Target buffer offset
          */
         function writeDoubleLE(val: number, buf: Uint8Array, pos: number): void;
 
         /**
          * Writes a 64 bit double to a buffer using big endian byte order.
-         * @name util.float.writeDoubleBE
-         * @function
-         * @param {number} val Value to write
-         * @param {Uint8Array} buf Target buffer
-         * @param {number} pos Target buffer offset
-         * @returns {undefined}
+         * @param val Value to write
+         * @param buf Target buffer
+         * @param pos Target buffer offset
          */
         function writeDoubleBE(val: number, buf: Uint8Array, pos: number): void;
 
         /**
          * Reads a 64 bit double from a buffer using little endian byte order.
-         * @name util.float.readDoubleLE
-         * @function
-         * @param {Uint8Array} buf Source buffer
-         * @param {number} pos Source buffer offset
-         * @returns {number} Value read
+         * @param buf Source buffer
+         * @param pos Source buffer offset
+         * @returns Value read
          */
         function readDoubleLE(buf: Uint8Array, pos: number): number;
 
         /**
          * Reads a 64 bit double from a buffer using big endian byte order.
-         * @name util.float.readDoubleBE
-         * @function
-         * @param {Uint8Array} buf Source buffer
-         * @param {number} pos Source buffer offset
-         * @returns {number} Value read
+         * @param buf Source buffer
+         * @param pos Source buffer offset
+         * @returns Value read
          */
         function readDoubleBE(buf: Uint8Array, pos: number): number;
     }
 
     /**
      * Fetches the contents of a file.
-     * @memberof util
-     * @param {string} filename File path or url
-     * @param {IFetchOptions} options Fetch options
-     * @param {FetchCallback} callback Callback function
-     * @returns {undefined}
+     * @param filename File path or url
+     * @param options Fetch options
+     * @param callback Callback function
      */
     function fetch(filename: string, options: IFetchOptions, callback: FetchCallback): void;
 
     /**
      * Fetches the contents of a file.
-     * @name util.fetch
-     * @function
-     * @param {string} path File path or url
-     * @param {FetchCallback} callback Callback function
-     * @returns {undefined}
-     * @variation 2
+     * @param path File path or url
+     * @param callback Callback function
      */
     function fetch(path: string, callback: FetchCallback): void;
 
     /**
      * Fetches the contents of a file.
-     * @name util.fetch
-     * @function
-     * @param {string} path File path or url
-     * @param {IFetchOptions} [options] Fetch options
-     * @returns {Promise<string|Uint8Array>} Promise
-     * @variation 3
+     * @param path File path or url
+     * @param [options] Fetch options
+     * @returns Promise
      */
     function fetch(path: string, options?: IFetchOptions): Promise<(string|Uint8Array)>;
 
     /**
      * Requires a module only if available.
-     * @memberof util
-     * @param {string} moduleName Module to require
-     * @returns {?Object} Required module if available and not empty, otherwise `null`
+     * @param moduleName Module to require
+     * @returns Required module if available and not empty, otherwise `null`
      */
     function inquire(moduleName: string): object;
 
-    /**
-     * A minimal path module to resolve Unix, Windows and URL paths alike.
-     * @memberof util
-     * @namespace
-     */
+    /** A minimal path module to resolve Unix, Windows and URL paths alike. */
     namespace path {
 
         /**
          * Tests if the specified path is absolute.
-         * @param {string} path Path to test
-         * @returns {boolean} `true` if path is absolute
+         * @param path Path to test
+         * @returns `true` if path is absolute
          */
         function isAbsolute(path: string): boolean;
 
         /**
          * Normalizes the specified path.
-         * @param {string} path Path to normalize
-         * @returns {string} Normalized path
+         * @param path Path to normalize
+         * @returns Normalized path
          */
         function normalize(path: string): string;
 
         /**
          * Resolves the specified include path against the specified origin path.
-         * @param {string} originPath Path to the origin file
-         * @param {string} includePath Include path relative to origin path
-         * @param {boolean} [alreadyNormalized=false] `true` if both paths are already known to be normalized
-         * @returns {string} Path to the include file
+         * @param originPath Path to the origin file
+         * @param includePath Include path relative to origin path
+         * @param [alreadyNormalized=false] `true` if both paths are already known to be normalized
+         * @returns Path to the include file
          */
         function resolve(originPath: string, includePath: string, alreadyNormalized?: boolean): string;
     }
 
     /**
      * A general purpose buffer pool.
-     * @memberof util
-     * @function
-     * @param {PoolAllocator} alloc Allocator
-     * @param {PoolSlicer} slice Slicer
-     * @param {number} [size=8192] Slab size
-     * @returns {PoolAllocator} Pooled allocator
+     * @param alloc Allocator
+     * @param slice Slicer
+     * @param [size=8192] Slab size
+     * @returns Pooled allocator
      */
     function pool(alloc: PoolAllocator, slice: PoolSlicer, size?: number): PoolAllocator;
 
-    /**
-     * A minimal UTF8 implementation for number arrays.
-     * @memberof util
-     * @namespace
-     */
+    /** A minimal UTF8 implementation for number arrays. */
     namespace utf8 {
 
         /**
          * Calculates the UTF8 byte length of a string.
-         * @param {string} string String
-         * @returns {number} Byte length
+         * @param string String
+         * @returns Byte length
          */
         function length(string: string): number;
 
         /**
          * Reads UTF8 bytes as a string.
-         * @param {Uint8Array} buffer Source buffer
-         * @param {number} start Source start
-         * @param {number} end Source end
-         * @returns {string} String read
+         * @param buffer Source buffer
+         * @param start Source start
+         * @param end Source end
+         * @returns String read
          */
         function read(buffer: Uint8Array, start: number, end: number): string;
 
         /**
          * Writes a string as UTF8 bytes.
-         * @param {string} string Source string
-         * @param {Uint8Array} buffer Destination buffer
-         * @param {number} offset Destination offset
-         * @returns {number} Bytes written
+         * @param string Source string
+         * @param buffer Destination buffer
+         * @param offset Destination offset
+         * @returns Bytes written
          */
         function write(string: string, buffer: Uint8Array, offset: number): number;
     }
@@ -3076,28 +2402,33 @@ export namespace util {
 
 /**
  * Generates a verifier specific to the specified message type.
- * @param {Type} mtype Message type
- * @returns {Codegen} Codegen instance
+ * @param mtype Message type
+ * @returns Codegen instance
  */
 export function verifier(mtype: Type): Codegen;
 
 /**
  * Wrappers for common types.
- * @type {Object.<string,IWrapper>}
  * @const
  */
 export const wrappers: { [k: string]: IWrapper };
 
+/**
+ * From object converter part of an {@link IWrapper}.
+ * @param object Plain object
+ * @returns
+ */
 type WrapperFromObjectConverter = (this: Type, object: { [k: string]: any }) => Message<{}>;
 
+/**
+ * To object converter part of an {@link IWrapper}.
+ * @param message Message instance
+ * @param [options] Conversion options
+ * @returns
+ */
 type WrapperToObjectConverter = (this: Type, message: Message<{}>, options?: IConversionOptions) => { [k: string]: any };
 
-/**
- * Common type wrapper part of {@link wrappers}.
- * @interface IWrapper
- * @property {WrapperFromObjectConverter} [fromObject] From object converter
- * @property {WrapperToObjectConverter} [toObject] To object converter
- */
+/** Common type wrapper part of {@link wrappers}. */
 export interface IWrapper {
     fromObject?: WrapperFromObjectConverter;
     toObject?: WrapperToObjectConverter;
@@ -3106,193 +2437,172 @@ export interface IWrapper {
 /**
  * Constructs a new writer instance.
  * @classdesc Wire format writer using `Uint8Array` if available, otherwise `Array`.
- * @constructor
  */
 export class Writer {
 
     /**
      * Constructs a new writer instance.
      * @classdesc Wire format writer using `Uint8Array` if available, otherwise `Array`.
-     * @constructor
      */
     constructor();
 
-    /**
-     * Current length.
-     * @type {number}
-     */
+    /** Current length. */
     public len: number;
 
-    /**
-     * Operations head.
-     * @type {Object}
-     */
+    /** Operations head. */
     public head: object;
 
-    /**
-     * Operations tail
-     * @type {Object}
-     */
+    /** Operations tail */
     public tail: object;
 
-    /**
-     * Linked forked states.
-     * @type {?Object}
-     */
+    /** Linked forked states. */
     public states: object;
 
     /**
      * Creates a new writer.
-     * @function
-     * @returns {BufferWriter|Writer} A {@link BufferWriter} when Buffers are supported, otherwise a {@link Writer}
+     * @returns A {@link BufferWriter} when Buffers are supported, otherwise a {@link Writer}
      */
     public static create(): (BufferWriter|Writer);
 
     /**
      * Allocates a buffer of the specified size.
-     * @param {number} size Buffer size
-     * @returns {Uint8Array} Buffer
+     * @param size Buffer size
+     * @returns Buffer
      */
     public static alloc(size: number): Uint8Array;
 
     /**
      * Writes an unsigned 32 bit value as a varint.
-     * @param {number} value Value to write
-     * @returns {Writer} `this`
+     * @param value Value to write
+     * @returns `this`
      */
     public uint32(value: number): Writer;
 
     /**
      * Writes a signed 32 bit value as a varint.
-     * @function
-     * @param {number} value Value to write
-     * @returns {Writer} `this`
+     * @param value Value to write
+     * @returns `this`
      */
     public int32(value: number): Writer;
 
     /**
      * Writes a 32 bit value as a varint, zig-zag encoded.
-     * @param {number} value Value to write
-     * @returns {Writer} `this`
+     * @param value Value to write
+     * @returns `this`
      */
     public sint32(value: number): Writer;
 
     /**
      * Writes an unsigned 64 bit value as a varint.
-     * @param {Long|number|string} value Value to write
-     * @returns {Writer} `this`
-     * @throws {TypeError} If `value` is a string and no long library is present.
+     * @param value Value to write
+     * @returns `this`
+     * @throws If `value` is a string and no long library is present.
      */
     public uint64(value: (Long|number|string)): Writer;
 
     /**
      * Writes a signed 64 bit value as a varint.
-     * @function
-     * @param {Long|number|string} value Value to write
-     * @returns {Writer} `this`
-     * @throws {TypeError} If `value` is a string and no long library is present.
+     * @param value Value to write
+     * @returns `this`
+     * @throws If `value` is a string and no long library is present.
      */
     public int64(value: (Long|number|string)): Writer;
 
     /**
      * Writes a signed 64 bit value as a varint, zig-zag encoded.
-     * @param {Long|number|string} value Value to write
-     * @returns {Writer} `this`
-     * @throws {TypeError} If `value` is a string and no long library is present.
+     * @param value Value to write
+     * @returns `this`
+     * @throws If `value` is a string and no long library is present.
      */
     public sint64(value: (Long|number|string)): Writer;
 
     /**
      * Writes a boolish value as a varint.
-     * @param {boolean} value Value to write
-     * @returns {Writer} `this`
+     * @param value Value to write
+     * @returns `this`
      */
     public bool(value: boolean): Writer;
 
     /**
      * Writes an unsigned 32 bit value as fixed 32 bits.
-     * @param {number} value Value to write
-     * @returns {Writer} `this`
+     * @param value Value to write
+     * @returns `this`
      */
     public fixed32(value: number): Writer;
 
     /**
      * Writes a signed 32 bit value as fixed 32 bits.
-     * @function
-     * @param {number} value Value to write
-     * @returns {Writer} `this`
+     * @param value Value to write
+     * @returns `this`
      */
     public sfixed32(value: number): Writer;
 
     /**
      * Writes an unsigned 64 bit value as fixed 64 bits.
-     * @param {Long|number|string} value Value to write
-     * @returns {Writer} `this`
-     * @throws {TypeError} If `value` is a string and no long library is present.
+     * @param value Value to write
+     * @returns `this`
+     * @throws If `value` is a string and no long library is present.
      */
     public fixed64(value: (Long|number|string)): Writer;
 
     /**
      * Writes a signed 64 bit value as fixed 64 bits.
-     * @function
-     * @param {Long|number|string} value Value to write
-     * @returns {Writer} `this`
-     * @throws {TypeError} If `value` is a string and no long library is present.
+     * @param value Value to write
+     * @returns `this`
+     * @throws If `value` is a string and no long library is present.
      */
     public sfixed64(value: (Long|number|string)): Writer;
 
     /**
      * Writes a float (32 bit).
-     * @function
-     * @param {number} value Value to write
-     * @returns {Writer} `this`
+     * @param value Value to write
+     * @returns `this`
      */
     public float(value: number): Writer;
 
     /**
      * Writes a double (64 bit float).
-     * @function
-     * @param {number} value Value to write
-     * @returns {Writer} `this`
+     * @param value Value to write
+     * @returns `this`
      */
     public double(value: number): Writer;
 
     /**
      * Writes a sequence of bytes.
-     * @param {Uint8Array|string} value Buffer or base64 encoded string to write
-     * @returns {Writer} `this`
+     * @param value Buffer or base64 encoded string to write
+     * @returns `this`
      */
     public bytes(value: (Uint8Array|string)): Writer;
 
     /**
      * Writes a string.
-     * @param {string} value Value to write
-     * @returns {Writer} `this`
+     * @param value Value to write
+     * @returns `this`
      */
     public string(value: string): Writer;
 
     /**
      * Forks this writer's state by pushing it to a stack.
      * Calling {@link Writer#reset|reset} or {@link Writer#ldelim|ldelim} resets the writer to the previous state.
-     * @returns {Writer} `this`
+     * @returns `this`
      */
     public fork(): Writer;
 
     /**
      * Resets this instance to the last state.
-     * @returns {Writer} `this`
+     * @returns `this`
      */
     public reset(): Writer;
 
     /**
      * Resets to the last state and appends the fork state's current write length as a varint followed by its operations.
-     * @returns {Writer} `this`
+     * @returns `this`
      */
     public ldelim(): Writer;
 
     /**
      * Finishes the write operation.
-     * @returns {Uint8Array} Finished buffer
+     * @returns Finished buffer
      */
     public finish(): Uint8Array;
 }
@@ -3300,54 +2610,74 @@ export class Writer {
 /**
  * Constructs a new buffer writer instance.
  * @classdesc Wire format writer using node buffers.
- * @extends Writer
- * @constructor
  */
 export class BufferWriter extends Writer {
 
     /**
      * Constructs a new buffer writer instance.
      * @classdesc Wire format writer using node buffers.
-     * @extends Writer
-     * @constructor
      */
     constructor();
 
     /**
      * Allocates a buffer of the specified size.
-     * @param {number} size Buffer size
-     * @returns {Buffer} Buffer
+     * @param size Buffer size
+     * @returns Buffer
      */
     public static alloc(size: number): Buffer;
 
     /**
      * Finishes the write operation.
-     * @name BufferWriter#finish
-     * @function
-     * @returns {Buffer} Finished buffer
+     * @returns Finished buffer
      */
     public finish(): Buffer;
 }
 
+/**
+ * Callback as used by {@link util.asPromise}.
+ * @param error Error, if any
+ * @param params Additional arguments
+ */
 type asPromiseCallback = (error: (Error|null), ...params: any[]) => void;
 
+/**
+ * A codegen instance as returned by {@link codegen}, that also is a sprintf-like appender function.
+ * @param format Format string
+ * @param args Replacements
+ * @returns Itself
+ */
 type Codegen = (format: string, ...args: any[]) => Codegen;
 
+/**
+ * Event listener as used by {@link util.EventEmitter}.
+ * @param args Arguments
+ */
 type EventEmitterListener = (...args: any[]) => void;
 
+/**
+ * Node-style callback as used by {@link util.fetch}.
+ * @param error Error, if any, otherwise `null`
+ * @param [contents] File contents, if there hasn't been an error
+ */
 type FetchCallback = (error: Error, contents?: string) => void;
 
-/**
- * Options as used by {@link util.fetch}.
- * @interface IFetchOptions
- * @property {boolean} [binary=false] Whether expecting a binary response
- * @property {boolean} [xhr=false] If `true`, forces the use of XMLHttpRequest
- */
+/** Options as used by {@link util.fetch}. */
 export interface IFetchOptions {
     binary?: boolean;
     xhr?: boolean;
 }
 
+/**
+ * An allocator as used by {@link util.pool}.
+ * @param size Buffer size
+ * @returns Buffer
+ */
 type PoolAllocator = (size: number) => Uint8Array;
 
+/**
+ * A slicer as used by {@link util.pool}.
+ * @param start Start offset
+ * @param end End offset
+ * @returns Buffer slice
+ */
 type PoolSlicer = (this: Uint8Array, start: number, end: number) => Uint8Array;

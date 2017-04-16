@@ -129,15 +129,6 @@ Message.toObject = function toObject(message, options) {
 };
 
 /**
- * Creates a plain object from this message. Also converts values to other types if specified.
- * @param {IConversionOptions} [options] Conversion options
- * @returns {Object.<string,*>} Plain object
- */
-Message.prototype.toObject = function toObject(options) {
-    return this.$type.toObject(this, options);
-};
-
-/**
  * Converts this message to JSON.
  * @returns {Object.<string,*>} JSON object
  */

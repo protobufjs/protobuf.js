@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.8.0 (c) 2016, Daniel Wirtz
- * Compiled Tue, 11 Apr 2017 00:13:36 UTC
+ * Compiled Sun, 16 Apr 2017 01:20:29 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -1172,6 +1172,15 @@ var commonRe = /\/|\./;
 // the repository or package within the google/protobuf directory.
 
 common("any", {
+
+    /**
+     * Properties of a google.protobuf.Any message.
+     * @interface IAny
+     * @type {Object}
+     * @property {string} [typeUrl]
+     * @property {Uint8Array} [bytes]
+     * @memberof common
+     */
     Any: {
         fields: {
             type_url: {
@@ -1189,6 +1198,15 @@ common("any", {
 var timeType;
 
 common("duration", {
+
+    /**
+     * Properties of a google.protobuf.Duration message.
+     * @interface IDuration
+     * @type {Object}
+     * @property {number|Long} [seconds]
+     * @property {number} [nanos]
+     * @memberof common
+     */
     Duration: timeType = {
         fields: {
             seconds: {
@@ -1204,16 +1222,39 @@ common("duration", {
 });
 
 common("timestamp", {
+
+    /**
+     * Properties of a google.protobuf.Timestamp message.
+     * @interface ITimestamp
+     * @type {Object}
+     * @property {number|Long} [seconds]
+     * @property {number} [nanos]
+     * @memberof common
+     */
     Timestamp: timeType
 });
 
 common("empty", {
+
+    /**
+     * Properties of a google.protobuf.Empty message.
+     * @interface IEmpty
+     * @memberof common
+     */
     Empty: {
         fields: {}
     }
 });
 
 common("struct", {
+
+    /**
+     * Properties of a google.protobuf.Struct message.
+     * @interface IStruct
+     * @type {Object}
+     * @property {Object.<string,IValue>} [fields]
+     * @memberof common
+     */
     Struct: {
         fields: {
             fields: {
@@ -1223,6 +1264,20 @@ common("struct", {
             }
         }
     },
+
+    /**
+     * Properties of a google.protobuf.Value message.
+     * @interface IValue
+     * @type {Object}
+     * @property {string} [kind]
+     * @property {0} [nullValue]
+     * @property {number} [numberValue]
+     * @property {string} [stringValue]
+     * @property {boolean} [boolValue]
+     * @property {IStruct} [structValue]
+     * @property {IListValue} [listValue]
+     * @memberof common
+     */
     Value: {
         oneofs: {
             kind: {
@@ -1263,11 +1318,20 @@ common("struct", {
             }
         }
     },
+
     NullValue: {
         values: {
             NULL_VALUE: 0
         }
     },
+
+    /**
+     * Properties of a google.protobuf.ListValue message.
+     * @interface IListValue
+     * @type {Object}
+     * @property {Array.<IValue>} [values]
+     * @memberof common
+     */
     ListValue: {
         fields: {
             values: {
@@ -1280,6 +1344,14 @@ common("struct", {
 });
 
 common("wrappers", {
+
+    /**
+     * Properties of a google.protobuf.DoubleValue message.
+     * @interface IDoubleValue
+     * @type {Object}
+     * @property {number} [value]
+     * @memberof common
+     */
     DoubleValue: {
         fields: {
             value: {
@@ -1288,6 +1360,14 @@ common("wrappers", {
             }
         }
     },
+
+    /**
+     * Properties of a google.protobuf.FloatValue message.
+     * @interface IFloatValue
+     * @type {Object}
+     * @property {number} [value]
+     * @memberof common
+     */
     FloatValue: {
         fields: {
             value: {
@@ -1296,6 +1376,14 @@ common("wrappers", {
             }
         }
     },
+
+    /**
+     * Properties of a google.protobuf.Int64Value message.
+     * @interface IInt64Value
+     * @type {Object}
+     * @property {number|Long} [value]
+     * @memberof common
+     */
     Int64Value: {
         fields: {
             value: {
@@ -1304,6 +1392,14 @@ common("wrappers", {
             }
         }
     },
+
+    /**
+     * Properties of a google.protobuf.UInt64Value message.
+     * @interface IUInt64Value
+     * @type {Object}
+     * @property {number|Long} [value]
+     * @memberof common
+     */
     UInt64Value: {
         fields: {
             value: {
@@ -1312,6 +1408,14 @@ common("wrappers", {
             }
         }
     },
+
+    /**
+     * Properties of a google.protobuf.Int32Value message.
+     * @interface IInt32Value
+     * @type {Object}
+     * @property {number} [value]
+     * @memberof common
+     */
     Int32Value: {
         fields: {
             value: {
@@ -1320,6 +1424,14 @@ common("wrappers", {
             }
         }
     },
+
+    /**
+     * Properties of a google.protobuf.UInt32Value message.
+     * @interface IUInt32Value
+     * @type {Object}
+     * @property {number} [value]
+     * @memberof common
+     */
     UInt32Value: {
         fields: {
             value: {
@@ -1328,6 +1440,14 @@ common("wrappers", {
             }
         }
     },
+
+    /**
+     * Properties of a google.protobuf.BoolValue message.
+     * @interface IBoolValue
+     * @type {Object}
+     * @property {boolean} [value]
+     * @memberof common
+     */
     BoolValue: {
         fields: {
             value: {
@@ -1336,6 +1456,14 @@ common("wrappers", {
             }
         }
     },
+
+    /**
+     * Properties of a google.protobuf.StringValue message.
+     * @interface IStringValue
+     * @type {Object}
+     * @property {string} [value]
+     * @memberof common
+     */
     StringValue: {
         fields: {
             value: {
@@ -1344,6 +1472,14 @@ common("wrappers", {
             }
         }
     },
+
+    /**
+     * Properties of a google.protobuf.BytesValue message.
+     * @interface IBytesValue
+     * @type {Object}
+     * @property {Uint8Array} [value]
+     * @memberof common
+     */
     BytesValue: {
         fields: {
             value: {
@@ -1397,8 +1533,8 @@ function genValuePartial_fromObject(gen, field, fieldIndex, prop) {
         var isUnsigned = false;
         switch (field.type) {
             case "double":
-            case "float":gen
-                ("m%s=Number(d%s)", prop, prop);
+            case "float": gen
+                ("m%s=Number(d%s)", prop, prop); // also catches "NaN", "Infinity"
                 break;
             case "uint32":
             case "fixed32": gen
@@ -1519,6 +1655,10 @@ function genValuePartial_toObject(gen, field, fieldIndex, prop) {
     } else {
         var isUnsigned = false;
         switch (field.type) {
+            case "double":
+            case "float": gen
+            ("d%s=o.json&&!isFinite(m%s)?String(m%s):m%s", prop, prop, prop, prop);
+                break;
             case "uint64":
                 isUnsigned = true;
                 // eslint-disable-line no-fallthrough
@@ -1673,7 +1813,7 @@ function decoder(mtype) {
     var i = 0;
     for (; i < /* initializes */ mtype.fieldsArray.length; ++i) {
         var field = mtype._fieldsArray[i].resolve(),
-            type  = field.resolvedType instanceof Enum ? "uint32" : field.type,
+            type  = field.resolvedType instanceof Enum ? "int32" : field.type,
             ref   = "m" + util.safeProp(field.name); gen
             ("case %d:", field.id);
 
@@ -1789,7 +1929,7 @@ function encoder(mtype) {
     for (var i = 0; i < fields.length; ++i) {
         var field    = fields[i].resolve(),
             index    = mtype._fieldsArray.indexOf(field),
-            type     = field.resolvedType instanceof Enum ? "uint32" : field.type,
+            type     = field.resolvedType instanceof Enum ? "int32" : field.type,
             wireType = types.basic[type];
             ref      = "m" + util.safeProp(field.name);
 
@@ -1903,8 +2043,7 @@ function Enum(name, values, options) {
 
 /**
  * Enum descriptor.
- * @typedef EnumDescriptor
- * @type {Object}
+ * @interface IEnum
  * @property {Object.<string,number>} values Enum values
  * @property {Object.<string,*>} [options] Enum options
  */
@@ -1912,7 +2051,7 @@ function Enum(name, values, options) {
 /**
  * Constructs an enum from an enum descriptor.
  * @param {string} name Enum name
- * @param {EnumDescriptor} json Enum descriptor
+ * @param {IEnum} json Enum descriptor
  * @returns {Enum} Created enum
  * @throws {TypeError} If arguments are invalid
  */
@@ -1922,13 +2061,13 @@ Enum.fromJSON = function fromJSON(name, json) {
 
 /**
  * Converts this enum to an enum descriptor.
- * @returns {EnumDescriptor} Enum descriptor
+ * @returns {IEnum} Enum descriptor
  */
 Enum.prototype.toJSON = function toJSON() {
-    return {
-        options : this.options,
-        values  : this.values
-    };
+    return util.toObject([
+        "options" , this.options,
+        "values"  , this.values
+    ]);
 };
 
 /**
@@ -2019,7 +2158,7 @@ var ruleRe = /^required|optional|repeated$/;
 /**
  * Constructs a field from a field descriptor.
  * @param {string} name Field name
- * @param {FieldDescriptor} json Field descriptor
+ * @param {IField} json Field descriptor
  * @returns {Field} Created field
  * @throws {TypeError} If arguments are invalid
  */
@@ -2200,8 +2339,7 @@ Field.prototype.setOption = function setOption(name, value, ifNotSet) {
 
 /**
  * Field descriptor.
- * @typedef FieldDescriptor
- * @type {Object}
+ * @interface IField
  * @property {string} [rule="optional"] Field rule
  * @property {string} type Field type
  * @property {number} id Field id
@@ -2210,27 +2348,23 @@ Field.prototype.setOption = function setOption(name, value, ifNotSet) {
 
 /**
  * Extension field descriptor.
- * @typedef ExtensionFieldDescriptor
- * @type {Object}
- * @property {string} [rule="optional"] Field rule
- * @property {string} type Field type
- * @property {number} id Field id
+ * @interface IExtensionField
+ * @extends IField
  * @property {string} extend Extended type
- * @property {Object.<string,*>} [options] Field options
  */
 
 /**
  * Converts this field to a field descriptor.
- * @returns {FieldDescriptor} Field descriptor
+ * @returns {IField} Field descriptor
  */
 Field.prototype.toJSON = function toJSON() {
-    return {
-        rule    : this.rule !== "optional" && this.rule || undefined,
-        type    : this.type,
-        id      : this.id,
-        extend  : this.extend,
-        options : this.options
-    };
+    return util.toObject([
+        "rule"    , this.rule !== "optional" && this.rule || undefined,
+        "type"    , this.type,
+        "id"      , this.id,
+        "extend"  , this.extend,
+        "options" , this.options
+    ]);
 };
 
 /**
@@ -2243,10 +2377,6 @@ Field.prototype.resolve = function resolve() {
     if (this.resolved)
         return this;
 
-    /* istanbul ignore if */
-    if (!Type)
-        Type = require(35);
-
     if ((this.typeDefault = types.defaults[this.type]) === undefined) { // if not a basic type, resolve it
         this.resolvedType = (this.declaringField ? this.declaringField.parent : this.parent).lookupTypeOrEnum(this.type);
         if (this.resolvedType instanceof Type)
@@ -2256,15 +2386,19 @@ Field.prototype.resolve = function resolve() {
     }
 
     // use explicitly set default value if present
-    if (this.options && this.options["default"] !== undefined) {
+    if (this.options && this.options["default"] != null) {
         this.typeDefault = this.options["default"];
         if (this.resolvedType instanceof Enum && typeof this.typeDefault === "string")
             this.typeDefault = this.resolvedType.values[this.typeDefault];
     }
 
-    // remove unnecessary packed option (parser adds this) if not referencing an enum
-    if (this.options && this.options.packed !== undefined && this.resolvedType && !(this.resolvedType instanceof Enum))
-        delete this.options.packed;
+    // remove unnecessary options
+    if (this.options) {
+        if (this.options.packed === true || this.options.packed !== undefined && this.resolvedType && !(this.resolvedType instanceof Enum))
+            delete this.options.packed;
+        if (!Object.keys(this.options).length)
+            this.options = undefined;
+    }
 
     // convert to internal data type if necesssary
     if (this.long) {
@@ -2316,7 +2450,7 @@ Field.prototype.resolve = function resolve() {
  * @param {"optional"|"required"|"repeated"} [fieldRule="optional"] Field rule
  * @param {T} [defaultValue] Default value
  * @returns {FieldDecorator} Decorator function
- * @template T
+ * @template T extends number | number[] | Long | Long[] | string | string[] | boolean | boolean[] | Uint8Array | Uint8Array[] | Buffer | Buffer[]
  */
 Field.d = function decorateField(fieldId, fieldType, fieldRule, defaultValue) {
 
@@ -2339,7 +2473,7 @@ Field.d = function decorateField(fieldId, fieldType, fieldRule, defaultValue) {
  * @name Field.d
  * @function
  * @param {number} fieldId Field id
- * @param {TMessageConstructor<T>} fieldType Field type
+ * @param {Constructor<T>|string} fieldType Field type
  * @param {"optional"|"required"|"repeated"} [fieldRule="optional"] Field rule
  * @returns {FieldDecorator} Decorator function
  * @template T extends Message<T>
@@ -2347,7 +2481,11 @@ Field.d = function decorateField(fieldId, fieldType, fieldRule, defaultValue) {
  */
 // like Field.d but without a default value
 
-},{"15":15,"24":24,"35":35,"36":36,"37":37}],17:[function(require,module,exports){
+Field._configure = function configure(Type_) {
+    Type = Type_;
+};
+
+},{"15":15,"24":24,"36":36,"37":37}],17:[function(require,module,exports){
 "use strict";
 var protobuf = module.exports = require(18);
 
@@ -2450,6 +2588,7 @@ protobuf.util             = require(37);
 protobuf.ReflectionObject._configure(protobuf.Root);
 protobuf.Namespace._configure(protobuf.Type, protobuf.Service);
 protobuf.Root._configure(protobuf.Type);
+protobuf.Field._configure(protobuf.Type);
 
 },{"12":12,"13":13,"14":14,"15":15,"16":16,"18":18,"20":20,"21":21,"22":22,"23":23,"24":24,"25":25,"29":29,"33":33,"35":35,"36":36,"37":37,"40":40}],18:[function(require,module,exports){
 "use strict";
@@ -2464,8 +2603,8 @@ var protobuf = exports;
 protobuf.build = "minimal";
 
 // Serialization
-protobuf.Writer       = require(41);
-protobuf.BufferWriter = require(42);
+protobuf.Writer       = require(42);
+protobuf.BufferWriter = require(43);
 protobuf.Reader       = require(27);
 protobuf.BufferReader = require(28);
 
@@ -2473,6 +2612,7 @@ protobuf.BufferReader = require(28);
 protobuf.util         = require(39);
 protobuf.rpc          = require(31);
 protobuf.roots        = require(30);
+protobuf.wrappers     = require(41);
 protobuf.configure    = configure;
 
 /* istanbul ignore next */
@@ -2489,7 +2629,7 @@ function configure() {
 protobuf.Writer._configure(protobuf.BufferWriter);
 configure();
 
-},{"27":27,"28":28,"30":30,"31":31,"39":39,"41":41,"42":42}],19:[function(require,module,exports){
+},{"27":27,"28":28,"30":30,"31":31,"39":39,"41":41,"42":42,"43":43}],19:[function(require,module,exports){
 "use strict";
 var protobuf = module.exports = require(17);
 
@@ -2550,29 +2690,22 @@ function MapField(name, id, keyType, type, options) {
 
 /**
  * Map field descriptor.
- * @typedef MapFieldDescriptor
- * @type {Object}
+ * @interface IMapField
+ * @extends {IField}
  * @property {string} keyType Key type
- * @property {string} type Value type
- * @property {number} id Field id
- * @property {Object.<string,*>} [options] Field options
  */
 
 /**
  * Extension map field descriptor.
- * @typedef ExtensionMapFieldDescriptor
- * @type {Object}
- * @property {string} keyType Key type
- * @property {string} type Value type
- * @property {number} id Field id
+ * @interface IExtensionMapField
+ * @extends IMapField
  * @property {string} extend Extended type
- * @property {Object.<string,*>} [options] Field options
  */
 
 /**
  * Constructs a map field from a map field descriptor.
  * @param {string} name Field name
- * @param {MapFieldDescriptor} json Map field descriptor
+ * @param {IMapField} json Map field descriptor
  * @returns {MapField} Created map field
  * @throws {TypeError} If arguments are invalid
  */
@@ -2582,16 +2715,16 @@ MapField.fromJSON = function fromJSON(name, json) {
 
 /**
  * Converts this map field to a map field descriptor.
- * @returns {MapFieldDescriptor} Map field descriptor
+ * @returns {IMapField} Map field descriptor
  */
 MapField.prototype.toJSON = function toJSON() {
-    return {
-        keyType : this.keyType,
-        type    : this.type,
-        id      : this.id,
-        extend  : this.extend,
-        options : this.options
-    };
+    return util.toObject([
+        "keyType" , this.keyType,
+        "type"    , this.type,
+        "id"      , this.id,
+        "extend"  , this.extend,
+        "options" , this.options
+    ]);
 };
 
 /**
@@ -2614,9 +2747,9 @@ MapField.prototype.resolve = function resolve() {
  * @function
  * @param {number} fieldId Field id
  * @param {"int32"|"uint32"|"sint32"|"fixed32"|"sfixed32"|"int64"|"uint64"|"sint64"|"fixed64"|"sfixed64"|"bool"|"string"} fieldKeyType Field key type
- * @param {"double"|"float"|"int32"|"uint32"|"sint32"|"fixed32"|"sfixed32"|"int64"|"uint64"|"sint64"|"fixed64"|"sfixed64"|"bool"|"string"|"bytes"|Object|TConstructor<{}>} fieldValueType Field value type
+ * @param {"double"|"float"|"int32"|"uint32"|"sint32"|"fixed32"|"sfixed32"|"int64"|"uint64"|"sint64"|"fixed64"|"sfixed64"|"bool"|"string"|"bytes"|Object|Constructor<{}>} fieldValueType Field value type
  * @returns {FieldDecorator} Decorator function
- * @template T extends { [key: string]: any }
+ * @template T extends { [key: string]: number | Long | string | boolean | Uint8Array | Buffer | number[] | Message<{}> }
  */
 MapField.d = function decorateMapField(fieldId, fieldKeyType, fieldValueType) {
 
@@ -2625,7 +2758,7 @@ MapField.d = function decorateMapField(fieldId, fieldKeyType, fieldValueType) {
         fieldValueType = util.decorateType(fieldValueType).name;
 
     // enum reference value: create a reflected copy of the enum and keep reuseing it
-    else if (fieldValueType && typeof fieldType === "object")
+    else if (fieldValueType && typeof fieldValueType === "object")
         fieldValueType = util.decorateEnum(fieldValueType).name;
 
     return function mapFieldDecorator(prototype, fieldName) {
@@ -2641,18 +2774,11 @@ module.exports = Message;
 var util = require(37);
 
 /**
- * Properties of a message instance.
- * @typedef TMessageProperties
- * @template T
- * @tstype { [P in keyof T]?: T[P] }
- */
-
-/**
  * Constructs a new message instance.
  * @classdesc Abstract runtime message.
  * @constructor
- * @param {TMessageProperties<T>} [properties] Properties to set
- * @template T
+ * @param {Properties<T>} [properties] Properties to set
+ * @template T extends object
  */
 function Message(properties) {
     // not used internally
@@ -2682,7 +2808,7 @@ function Message(properties) {
  * @param {Object.<string,*>} [properties] Properties to set
  * @returns {Message<T>} Message instance
  * @template T extends Message<T>
- * @this TMessageConstructor<T>
+ * @this Constructor<T>
  */
 Message.create = function create(properties) {
     return this.$type.create(properties);
@@ -2694,7 +2820,7 @@ Message.create = function create(properties) {
  * @param {Writer} [writer] Writer to use
  * @returns {Writer} Writer
  * @template T extends Message<T>
- * @this TMessageConstructor<T>
+ * @this Constructor<T>
  */
 Message.encode = function encode(message, writer) {
     return this.$type.encode(message, writer);
@@ -2706,7 +2832,7 @@ Message.encode = function encode(message, writer) {
  * @param {Writer} [writer] Writer to use
  * @returns {Writer} Writer
  * @template T extends Message<T>
- * @this TMessageConstructor<T>
+ * @this Constructor<T>
  */
 Message.encodeDelimited = function encodeDelimited(message, writer) {
     return this.$type.encodeDelimited(message, writer);
@@ -2719,7 +2845,7 @@ Message.encodeDelimited = function encodeDelimited(message, writer) {
  * @param {Reader|Uint8Array} reader Reader or buffer to decode
  * @returns {T} Decoded message
  * @template T extends Message<T>
- * @this TMessageConstructor<T>
+ * @this Constructor<T>
  */
 Message.decode = function decode(reader) {
     return this.$type.decode(reader);
@@ -2732,7 +2858,7 @@ Message.decode = function decode(reader) {
  * @param {Reader|Uint8Array} reader Reader or buffer to decode
  * @returns {T} Decoded message
  * @template T extends Message<T>
- * @this TMessageConstructor<T>
+ * @this Constructor<T>
  */
 Message.decodeDelimited = function decodeDelimited(reader) {
     return this.$type.decodeDelimited(reader);
@@ -2754,7 +2880,7 @@ Message.verify = function verify(message) {
  * @param {Object.<string,*>} object Plain object
  * @returns {T} Message instance
  * @template T extends Message<T>
- * @this TMessageConstructor<T>
+ * @this Constructor<T>
  */
 Message.fromObject = function fromObject(object) {
     return this.$type.fromObject(object);
@@ -2763,22 +2889,13 @@ Message.fromObject = function fromObject(object) {
 /**
  * Creates a plain object from a message of this type. Also converts values to other types if specified.
  * @param {T} message Message instance
- * @param {ConversionOptions} [options] Conversion options
+ * @param {IConversionOptions} [options] Conversion options
  * @returns {Object.<string,*>} Plain object
  * @template T extends Message<T>
- * @this TMessageConstructor<T>
+ * @this Constructor<T>
  */
 Message.toObject = function toObject(message, options) {
     return this.$type.toObject(message, options);
-};
-
-/**
- * Creates a plain object from this message. Also converts values to other types if specified.
- * @param {ConversionOptions} [options] Conversion options
- * @returns {Object.<string,*>} Plain object
- */
-Message.prototype.toObject = function toObject(options) {
-    return this.$type.toObject(this, options);
 };
 
 /**
@@ -2882,8 +2999,8 @@ function Method(name, type, requestType, responseType, requestStream, responseSt
 }
 
 /**
- * @typedef MethodDescriptor
- * @type {Object}
+ * Method descriptor.
+ * @interface IMethod
  * @property {string} [type="rpc"] Method type
  * @property {string} requestType Request type
  * @property {string} responseType Response type
@@ -2895,7 +3012,7 @@ function Method(name, type, requestType, responseType, requestStream, responseSt
 /**
  * Constructs a method from a method descriptor.
  * @param {string} name Method name
- * @param {MethodDescriptor} json Method descriptor
+ * @param {IMethod} json Method descriptor
  * @returns {Method} Created method
  * @throws {TypeError} If arguments are invalid
  */
@@ -2905,17 +3022,17 @@ Method.fromJSON = function fromJSON(name, json) {
 
 /**
  * Converts this method to a method descriptor.
- * @returns {MethodDescriptor} Method descriptor
+ * @returns {IMethod} Method descriptor
  */
 Method.prototype.toJSON = function toJSON() {
-    return {
-        type           : this.type !== "rpc" && /* istanbul ignore next */ this.type || undefined,
-        requestType    : this.requestType,
-        requestStream  : this.requestStream,
-        responseType   : this.responseType,
-        responseStream : this.responseStream,
-        options        : this.options
-    };
+    return util.toObject([
+        "type"           , this.type !== "rpc" && /* istanbul ignore next */ this.type || undefined,
+        "requestType"    , this.requestType,
+        "requestStream"  , this.requestStream,
+        "responseType"   , this.responseType,
+        "responseStream" , this.responseStream,
+        "options"        , this.options
+    ]);
 };
 
 /**
@@ -3035,47 +3152,38 @@ Object.defineProperty(Namespace.prototype, "nestedArray", {
 
 /**
  * Namespace descriptor.
- * @typedef NamespaceDescriptor
- * @type {Object}
+ * @interface INamespace
  * @property {Object.<string,*>} [options] Namespace options
- * @property {Object.<string,AnyNestedDescriptor>} nested Nested object descriptors
- */
-
-/**
- * Namespace base descriptor.
- * @typedef NamespaceBaseDescriptor
- * @type {Object}
- * @property {Object.<string,*>} [options] Namespace options
- * @property {Object.<string,AnyNestedDescriptor>} [nested] Nested object descriptors
+ * @property {Object.<string,AnyNestedObject>} [nested] Nested object descriptors
  */
 
 /**
  * Any extension field descriptor.
- * @typedef AnyExtensionFieldDescriptor
- * @type {ExtensionFieldDescriptor|ExtensionMapFieldDescriptor}
+ * @typedef AnyExtensionField
+ * @type {IExtensionField|IExtensionMapField}
  */
 
 /**
  * Any nested object descriptor.
- * @typedef AnyNestedDescriptor
- * @type {EnumDescriptor|TypeDescriptor|ServiceDescriptor|AnyExtensionFieldDescriptor|NamespaceDescriptor}
+ * @typedef AnyNestedObject
+ * @type {IEnum|IType|IService|AnyExtensionField|INamespace}
  */
-// ^ BEWARE: VSCode hangs forever when using more than 5 types (that's why AnyExtensionFieldDescriptor exists in the first place)
+// ^ BEWARE: VSCode hangs forever when using more than 5 types (that's why AnyExtensionField exists in the first place)
 
 /**
  * Converts this namespace to a namespace descriptor.
- * @returns {NamespaceBaseDescriptor} Namespace descriptor
+ * @returns {INamespace} Namespace descriptor
  */
 Namespace.prototype.toJSON = function toJSON() {
-    return {
-        options : this.options,
-        nested  : arrayToJSON(this.nestedArray)
-    };
+    return util.toObject([
+        "options" , this.options,
+        "nested"  , arrayToJSON(this.nestedArray)
+    ]);
 };
 
 /**
  * Adds nested objects to this namespace from nested object descriptors.
- * @param {Object.<string,AnyNestedDescriptor>} nestedJson Any nested object descriptors
+ * @param {Object.<string,AnyNestedObject>} nestedJson Any nested object descriptors
  * @returns {Namespace} `this`
  */
 Namespace.prototype.addJSON = function addJSON(nestedJson) {
@@ -3226,7 +3334,7 @@ Namespace.prototype.resolveAll = function resolveAll() {
 };
 
 /**
- * Looks up the reflection object at the specified path, relative to this namespace.
+ * Recursively looks up the reflection object matching the specified path in the scope of this namespace.
  * @param {string|string[]} path Path to look up
  * @param {*|Array.<*>} filterTypes Filter types, any combination of the constructors of `protobuf.Type`, `protobuf.Enum`, `protobuf.Service` etc.
  * @param {boolean} [parentAlreadyChecked=false] If known, whether the parent has already been checked
@@ -3251,6 +3359,7 @@ Namespace.prototype.lookup = function lookup(path, filterTypes, parentAlreadyChe
     // Start at root if path is absolute
     if (path[0] === "")
         return this.root.lookup(path.slice(1), filterTypes);
+
     // Test if the first part matches any nested object, and if so, traverse if path contains more
     var found = this.get(path[0]);
     if (found) {
@@ -3259,7 +3368,13 @@ Namespace.prototype.lookup = function lookup(path, filterTypes, parentAlreadyChe
                 return found;
         } else if (found instanceof Namespace && (found = found.lookup(path.slice(1), filterTypes, true)))
             return found;
-    }
+
+    // Otherwise try each nested namespace
+    } else
+        for (var i = 0; i < this.nestedArray.length; ++i)
+            if (this._nestedArray[i] instanceof Namespace && (found = this._nestedArray[i].lookup(path, filterTypes, true)))
+                return found;
+
     // If there hasn't been a match, try again at the parent
     if (this.parent === null || parentAlreadyChecked)
         return null;
@@ -3586,8 +3701,7 @@ function OneOf(name, fieldNames, options) {
 
 /**
  * Oneof descriptor.
- * @typedef OneOfDescriptor
- * @type {Object}
+ * @interface IOneOf
  * @property {Array.<string>} oneof Oneof field names
  * @property {Object.<string,*>} [options] Oneof options
  */
@@ -3595,7 +3709,7 @@ function OneOf(name, fieldNames, options) {
 /**
  * Constructs a oneof from a oneof descriptor.
  * @param {string} name Oneof name
- * @param {OneOfDescriptor} json Oneof descriptor
+ * @param {IOneOf} json Oneof descriptor
  * @returns {OneOf} Created oneof
  * @throws {TypeError} If arguments are invalid
  */
@@ -3605,13 +3719,13 @@ OneOf.fromJSON = function fromJSON(name, json) {
 
 /**
  * Converts this oneof to a oneof descriptor.
- * @returns {OneOfDescriptor} Oneof descriptor
+ * @returns {IOneOf} Oneof descriptor
  */
 OneOf.prototype.toJSON = function toJSON() {
-    return {
-        oneof   : this.oneof,
-        options : this.options
-    };
+    return util.toObject([
+        "options" , this.options,
+        "oneof"   , this.oneof
+    ]);
 };
 
 /**
@@ -3772,10 +3886,12 @@ function camelCase(str) {
                .replace(camelCaseRe, function($0, $1) { return $1.toUpperCase(); });
 }
 
+parse.camelCase = camelCase;
+parse.numberRe = numberRe;
+
 /**
  * Result object returned from {@link parse}.
- * @typedef ParserResult
- * @type {Object.<string,*>}
+ * @interface IParserResult
  * @property {string|undefined} package Package name, if declared
  * @property {string[]|undefined} imports Imports, if any
  * @property {string[]|undefined} weakImports Weak imports, if any
@@ -3785,8 +3901,7 @@ function camelCase(str) {
 
 /**
  * Options modifying the behavior of {@link parse}.
- * @typedef ParseOptions
- * @type {Object.<string,*>}
+ * @interface IParseOptions
  * @property {boolean} [keepCase=false] Keeps field casing instead of converting to camel case
  */
 
@@ -3795,10 +3910,10 @@ function camelCase(str) {
  * @function
  * @param {string} source Source contents
  * @param {Root} root Root to populate
- * @param {ParseOptions} [options] Parse options. Defaults to {@link parse.defaults} when omitted.
- * @returns {ParserResult} Parser result
+ * @param {IParseOptions} [options] Parse options. Defaults to {@link parse.defaults} when omitted.
+ * @returns {IParserResult} Parser result
  * @property {string} filename=null Currently processing file name for error reporting, if known
- * @property {ParseOptions} defaults Default {@link ParseOptions}
+ * @property {IParseOptions} defaults Default {@link IParseOptions}
  */
 function parse(source, root, options) {
     /* eslint-disable callback-return */
@@ -4120,9 +4235,8 @@ function parse(source, root, options) {
 
         // JSON defaults to packed=true if not set so we have to set packed=false explicity when
         // parsing proto2 descriptors without the option, where applicable. This must be done for
-        // any type (not just packable types) because enums also use varint encoding and it is not
-        // yet known whether a type is an enum or not.
-        if (!isProto3 && field.repeated)
+        // all known packable types and anything that could be an enum (= is not a basic type).
+        if (!isProto3 && field.repeated && (types.packed[type] !== undefined || types.basic[type] === undefined))
             field.setOption("packed", false, /* ifNotSet */ true);
     }
 
@@ -4480,10 +4594,10 @@ function parse(source, root, options) {
  * @name parse
  * @function
  * @param {string} source Source contents
- * @param {ParseOptions} [options] Parse options. Defaults to {@link parse.defaults} when omitted.
- * @returns {ParserResult} Parser result
+ * @param {IParseOptions} [options] Parse options. Defaults to {@link parse.defaults} when omitted.
+ * @returns {IParserResult} Parser result
  * @property {string} filename=null Currently processing file name for error reporting, if known
- * @property {ParseOptions} defaults Default {@link ParseOptions}
+ * @property {IParseOptions} defaults Default {@link IParseOptions}
  * @variation 2
  */
 
@@ -4796,6 +4910,8 @@ Reader.prototype.bytes = function read_bytes() {
         throw indexOutOfRange(this, length);
 
     this.pos += length;
+    if (Array.isArray(this.buf)) // plain array
+        return this.buf.slice(start, end);
     return start === end // fix for IE 10/Win8 and others' subarray returning array of size 1
         ? new this.buf.constructor(0)
         : this._slice.call(this.buf, start, end);
@@ -4982,7 +5098,7 @@ function Root(options) {
 
 /**
  * Loads a namespace descriptor into a root namespace.
- * @param {NamespaceDescriptor} json Nameespace descriptor
+ * @param {INamespace} json Nameespace descriptor
  * @param {Root} [root] Root namespace, defaults to create a new one if omitted
  * @returns {Root} Root namespace
  */
@@ -5011,7 +5127,7 @@ function SYNC() {} // eslint-disable-line no-empty-function
 /**
  * Loads one or multiple .proto or preprocessed .json files into this root namespace and calls the callback.
  * @param {string|string[]} filename Names of one or multiple files to load
- * @param {ParseOptions} options Parse options
+ * @param {IParseOptions} options Parse options
  * @param {LoadCallback} callback Callback function
  * @returns {undefined}
  */
@@ -5142,7 +5258,7 @@ Root.prototype.load = function load(filename, options, callback) {
         finish(null, self);
     return undefined;
 };
-// function load(filename:string, options:ParseOptions, callback:LoadCallback):undefined
+// function load(filename:string, options:IParseOptions, callback:LoadCallback):undefined
 
 /**
  * Loads one or multiple .proto or preprocessed .json files into this root namespace and calls the callback.
@@ -5158,18 +5274,18 @@ Root.prototype.load = function load(filename, options, callback) {
  * @name Root#load
  * @function
  * @param {string|string[]} filename Names of one or multiple files to load
- * @param {ParseOptions} [options] Parse options. Defaults to {@link parse.defaults} when omitted.
+ * @param {IParseOptions} [options] Parse options. Defaults to {@link parse.defaults} when omitted.
  * @returns {Promise<Root>} Promise
  * @variation 3
  */
-// function load(filename:string, [options:ParseOptions]):Promise<Root>
+// function load(filename:string, [options:IParseOptions]):Promise<Root>
 
 /**
  * Synchronously loads one or multiple .proto or preprocessed .json files into this root namespace (node only).
  * @name Root#loadSync
  * @function
  * @param {string|string[]} filename Names of one or multiple files to load
- * @param {ParseOptions} [options] Parse options. Defaults to {@link parse.defaults} when omitted.
+ * @param {IParseOptions} [options] Parse options. Defaults to {@link parse.defaults} when omitted.
  * @returns {Root} Root namespace
  * @throws {Error} If synchronous fetching is not supported (i.e. in browsers) or if a file's syntax is invalid
  */
@@ -5326,7 +5442,7 @@ var rpc = exports;
  * RPC implementation passed to {@link Service#create} performing a service request on network level, i.e. by utilizing http requests or websockets.
  * @typedef RPCImpl
  * @type {function}
- * @param {Method|rpc.ServiceMethod<{},{}>} method Reflected or static method being called
+ * @param {Method|rpc.ServiceMethod<Message<{}>,Message<{}>>} method Reflected or static method being called
  * @param {Uint8Array} requestData Request data
  * @param {RPCImplCallback} callback Callback function
  * @returns {undefined}
@@ -5365,7 +5481,7 @@ var util = require(39);
  *
  * Differs from {@link RPCImplCallback} in that it is an actual callback of a service method which may not return `response = null`.
  * @typedef rpc.ServiceMethodCallback
- * @template TRes
+ * @template TRes extends Message<TRes>
  * @type {function}
  * @param {?Error} error Error, if any
  * @param {?TRes} [response] Response message
@@ -5375,10 +5491,10 @@ var util = require(39);
 /**
  * A service method part of a {@link rpc.Service} as created by {@link Service.create}.
  * @typedef rpc.ServiceMethod
- * @template TReq
- * @template TRes
+ * @template TReq extends Message<TReq>
+ * @template TRes extends Message<TRes>
  * @type {function}
- * @param {TReq|TMessageProperties<TReq>} request Request message or plain object
+ * @param {TReq|Properties<TReq>} request Request message or plain object
  * @param {rpc.ServiceMethodCallback<TRes>} [callback] Node-style callback called with the error, if any, and the response message
  * @returns {Promise<Message<TRes>>} Promise if `callback` has been omitted, otherwise `undefined`
  */
@@ -5422,9 +5538,9 @@ function Service(rpcImpl, requestDelimited, responseDelimited) {
 /**
  * Calls a service method through {@link rpc.Service#rpcImpl|rpcImpl}.
  * @param {Method|rpc.ServiceMethod<TReq,TRes>} method Reflected or static method
- * @param {TMessageConstructor<TReq>} requestCtor Request constructor
- * @param {TMessageConstructor<TRes>} responseCtor Response constructor
- * @param {TReq|TMessageProperties<TReq>} request Request message or plain object
+ * @param {Constructor<TReq>} requestCtor Request constructor
+ * @param {Constructor<TRes>} responseCtor Response constructor
+ * @param {TReq|Properties<TReq>} request Request message or plain object
  * @param {rpc.ServiceMethodCallback<TRes>} callback Service callback
  * @returns {undefined}
  * @template TReq extends Message<TReq>
@@ -5535,17 +5651,15 @@ function Service(name, options) {
 
 /**
  * Service descriptor.
- * @typedef ServiceDescriptor
- * @type {Object}
- * @property {Object.<string,*>} [options] Service options
- * @property {Object.<string,MethodDescriptor>} methods Method descriptors
- * @property {Object.<string,AnyNestedDescriptor>} [nested] Nested object descriptors
+ * @interface IService
+ * @extends INamespace
+ * @property {Object.<string,IMethod>} methods Method descriptors
  */
 
 /**
  * Constructs a service from a service descriptor.
  * @param {string} name Service name
- * @param {ServiceDescriptor} json Service descriptor
+ * @param {IService} json Service descriptor
  * @returns {Service} Created service
  * @throws {TypeError} If arguments are invalid
  */
@@ -5562,15 +5676,15 @@ Service.fromJSON = function fromJSON(name, json) {
 
 /**
  * Converts this service to a service descriptor.
- * @returns {ServiceDescriptor} Service descriptor
+ * @returns {IService} Service descriptor
  */
 Service.prototype.toJSON = function toJSON() {
     var inherited = Namespace.prototype.toJSON.call(this);
-    return {
-        options : inherited && inherited.options || undefined,
-        methods : Namespace.arrayToJSON(this.methodsArray) || /* istanbul ignore next */ {},
-        nested  : inherited && inherited.nested || undefined
-    };
+    return util.toObject([
+        "options" , inherited && inherited.options || undefined,
+        "methods" , Namespace.arrayToJSON(this.methodsArray) || /* istanbul ignore next */ {},
+        "nested"  , inherited && inherited.nested || undefined
+    ]);
 };
 
 /**
@@ -5703,20 +5817,67 @@ function unescape(str) {
 tokenize.unescape = unescape;
 
 /**
+ * Gets the current line number.
+ * @typedef TokenizerHandleLine
+ * @type {function}
+ * @returns {number} Line number
+ */
+
+/**
+ * Gets the next token and advances.
+ * @typedef TokenizerHandleNext
+ * @type {function}
+ * @returns {?string} Next token or `null` on eof
+ */
+
+/**
+ * Peeks for the next token.
+ * @typedef TokenizerHandlePeek
+ * @type {function}
+ * @returns {?string} Next token or `null` on eof
+ */
+
+/**
+ * Pushes a token back to the stack.
+ * @typedef TokenizerHandlePush
+ * @type {function}
+ * @param {string} token Token
+ * @returns {undefined}
+ */
+
+/**
+ * Skips the next token.
+ * @typedef TokenizerHandleSkip
+ * @type {function}
+ * @param {string} expected Expected token
+ * @param {boolean} [optional=false] If optional
+ * @returns {boolean} Whether the token matched
+ * @throws {Error} If the token didn't match and is not optional
+ */
+
+/**
+ * Gets the comment on the previous line or, alternatively, the line comment on the specified line.
+ * @typedef TokenizerHandleCmnt
+ * @type {function}
+ * @param {number} [line] Line number
+ * @returns {?string} Comment text or `null` if none
+ */
+
+/**
  * Handle object returned from {@link tokenize}.
- * @typedef {Object.<string,*>} TokenizerHandle
- * @property {function():number} line Gets the current line number
- * @property {function():?string} next Gets the next token and advances (`null` on eof)
- * @property {function():?string} peek Peeks for the next token (`null` on eof)
- * @property {function(string)} push Pushes a token back to the stack
- * @property {function(string, boolean=):boolean} skip Skips a token, returns its presence and advances or, if non-optional and not present, throws
- * @property {function(number=):?string} cmnt Gets the comment on the previous line or the line comment on the specified line, if any
+ * @interface ITokenizerHandle
+ * @property {TokenizerHandleLine} line Gets the current line number
+ * @property {TokenizerHandleNext} next Gets the next token and advances (`null` on eof)
+ * @property {TokenizerHandlePeek} peek Peeks for the next token (`null` on eof)
+ * @property {TokenizerHandlePush} push Pushes a token back to the stack
+ * @property {TokenizerHandleSkip} skip Skips a token, returns its presence and advances or, if non-optional and not present, throws
+ * @property {TokenizerHandleCmnt} cmnt Gets the comment on the previous line or the line comment on the specified line, if any
  */
 
 /**
  * Tokenizes the given .proto source and returns an object with useful utility functions.
  * @param {string} source Source contents
- * @returns {TokenizerHandle} Tokenizer handle
+ * @returns {ITokenizerHandle} Tokenizer handle
  * @property {function(string):string} unescape Unescapes a string
  */
 function tokenize(source) {
@@ -5910,7 +6071,7 @@ function tokenize(source) {
 
     /**
      * Gets a comment.
-     * @param {number=} trailingLine Trailing line number if applicable
+     * @param {number} [trailingLine] Trailing line number if applicable
      * @returns {?string} Comment text
      * @inner
      */
@@ -5956,12 +6117,13 @@ var Enum      = require(15),
     Service   = require(33),
     Message   = require(21),
     Reader    = require(27),
-    Writer    = require(41),
+    Writer    = require(42),
     util      = require(37),
     encoder   = require(14),
     decoder   = require(13),
     verifier  = require(40),
-    converter = require(12);
+    converter = require(12),
+    wrappers  = require(41);
 
 /**
  * Constructs a new reflected message type instance.
@@ -6027,7 +6189,7 @@ function Type(name, options) {
 
     /**
      * Cached constructor.
-     * @type {TConstructor<{}>}
+     * @type {Constructor<{}>}
      * @private
      */
     this._ctor = null;
@@ -6091,11 +6253,11 @@ Object.defineProperties(Type.prototype, {
      * The registered constructor, if any registered, otherwise a generic constructor.
      * Assigning a function replaces the internal constructor. If the function does not extend {@link Message} yet, its prototype will be setup accordingly and static methods will be populated. If it already extends {@link Message}, it will just replace the internal constructor.
      * @name Type#ctor
-     * @type {TConstructor<{}>}
+     * @type {Constructor<{}>}
      */
     ctor: {
         get: function() {
-            return this._ctor || (this.ctor = generateConstructor(this).eof(this.name));
+            return this._ctor || (this.ctor = Type.generateConstructor(this).eof(this.name));
         },
         set: function(ctor) {
 
@@ -6109,7 +6271,7 @@ Object.defineProperties(Type.prototype, {
             // Classes and messages reference their reflected type
             ctor.$type = ctor.prototype.$type = this;
 
-            // Mixin static methods
+            // Mix in static methods
             util.merge(ctor, Message, true);
 
             this._ctor = ctor;
@@ -6132,7 +6294,12 @@ Object.defineProperties(Type.prototype, {
     }
 });
 
-function generateConstructor(type) {
+/**
+ * Generates a constructor function for the specified type.
+ * @param {Type} type Type
+ * @returns {Codegen} Codegen instance
+ */
+Type.generateConstructor = function generateConstructor(type) {
     /* eslint-disable no-unexpected-multiline */
     var gen = util.codegen("p");
     // explicitly initialize mutable object/array fields so that these aren't just inherited from the prototype
@@ -6145,10 +6312,10 @@ function generateConstructor(type) {
     ("if(p)for(var ks=Object.keys(p),i=0;i<ks.length;++i)if(p[ks[i]]!=null)") // omit undefined or null
         ("this[ks[i]]=p[ks[i]]");
     /* eslint-enable no-unexpected-multiline */
-}
+};
 
 function clearCache(type) {
-    type._fieldsById = type._fieldsArray = type._oneofsArray = type._ctor = null;
+    type._fieldsById = type._fieldsArray = type._oneofsArray = null;
     delete type.encode;
     delete type.decode;
     delete type.verify;
@@ -6157,21 +6324,19 @@ function clearCache(type) {
 
 /**
  * Message type descriptor.
- * @typedef TypeDescriptor
- * @type {Object}
- * @property {Object.<string,*>} [options] Message type options
- * @property {Object.<string,OneOfDescriptor>} [oneofs] Oneof descriptors
- * @property {Object.<string,FieldDescriptor>} fields Field descriptors
+ * @interface IType
+ * @extends INamespace
+ * @property {Object.<string,IOneOf>} [oneofs] Oneof descriptors
+ * @property {Object.<string,IField>} fields Field descriptors
  * @property {number[][]} [extensions] Extension ranges
  * @property {number[][]} [reserved] Reserved ranges
  * @property {boolean} [group=false] Whether a legacy group or not
- * @property {Object.<string,AnyNestedDescriptor>} [nested] Nested object descriptors
  */
 
 /**
  * Creates a message type from a message type descriptor.
  * @param {string} name Message name
- * @param {TypeDescriptor} json Message type descriptor
+ * @param {IType} json Message type descriptor
  * @returns {Type} Created message type
  */
 Type.fromJSON = function fromJSON(name, json) {
@@ -6215,19 +6380,19 @@ Type.fromJSON = function fromJSON(name, json) {
 
 /**
  * Converts this message type to a message type descriptor.
- * @returns {TypeDescriptor} Message type descriptor
+ * @returns {IType} Message type descriptor
  */
 Type.prototype.toJSON = function toJSON() {
     var inherited = Namespace.prototype.toJSON.call(this);
-    return {
-        options    : inherited && inherited.options || undefined,
-        oneofs     : Namespace.arrayToJSON(this.oneofsArray),
-        fields     : Namespace.arrayToJSON(this.fieldsArray.filter(function(obj) { return !obj.declaringField; })) || {},
-        extensions : this.extensions && this.extensions.length ? this.extensions : undefined,
-        reserved   : this.reserved && this.reserved.length ? this.reserved : undefined,
-        group      : this.group || undefined,
-        nested     : inherited && inherited.nested || undefined
-    };
+    return util.toObject([
+        "options"    , inherited && inherited.options || undefined,
+        "oneofs"     , Namespace.arrayToJSON(this.oneofsArray),
+        "fields"     , Namespace.arrayToJSON(this.fieldsArray.filter(function(obj) { return !obj.declaringField; })) || {},
+        "extensions" , this.extensions && this.extensions.length ? this.extensions : undefined,
+        "reserved"   , this.reserved && this.reserved.length ? this.reserved : undefined,
+        "group"      , this.group || undefined,
+        "nested"     , inherited && inherited.nested || undefined
+    ]);
 };
 
 /**
@@ -6240,7 +6405,7 @@ Type.prototype.resolveAll = function resolveAll() {
     var oneofs = this.oneofsArray; i = 0;
     while (i < oneofs.length)
         oneofs[i++].resolve();
-    return Namespace.prototype.resolve.call(this);
+    return Namespace.prototype.resolveAll.call(this);
 };
 
 /**
@@ -6359,7 +6524,6 @@ Type.prototype.isReservedName = function isReservedName(name) {
  * Creates a new message of this type using the specified properties.
  * @param {Object.<string,*>} [properties] Properties to set
  * @returns {Message<{}>} Message instance
- * @template T
  */
 Type.prototype.create = function create(properties) {
     return new this.ctor(properties);
@@ -6372,10 +6536,13 @@ Type.prototype.create = function create(properties) {
 Type.prototype.setup = function setup() {
     // Sets up everything at once so that the prototype chain does not have to be re-evaluated
     // multiple times (V8, soft-deopt prototype-check).
+
     var fullName = this.fullName,
         types    = [];
     for (var i = 0; i < /* initializes */ this.fieldsArray.length; ++i)
         types.push(this._fieldsArray[i].resolve().resolvedType);
+
+    // Replace setup methods with type-specific generated functions
     this.encode = encoder(this).eof(fullName + "$encode", {
         Writer : Writer,
         types  : types,
@@ -6390,7 +6557,7 @@ Type.prototype.setup = function setup() {
         types : types,
         util  : util
     });
-    this.fromObject = this.from = converter.fromObject(this).eof(fullName + "$fromObject", {
+    this.fromObject = converter.fromObject(this).eof(fullName + "$fromObject", {
         types : types,
         util  : util
     });
@@ -6398,6 +6565,21 @@ Type.prototype.setup = function setup() {
         types : types,
         util  : util
     });
+
+    // Inject custom wrappers for common types
+    var wrapper = wrappers[fullName];
+    if (wrapper) {
+        var originalThis = Object.create(this);
+        // if (wrapper.fromObject) {
+            originalThis.fromObject = this.fromObject;
+            this.fromObject = wrapper.fromObject.bind(originalThis);
+        // }
+        // if (wrapper.toObject) {
+            originalThis.toObject = this.toObject;
+            this.toObject = wrapper.toObject.bind(originalThis);
+        // }
+    }
+
     return this;
 };
 
@@ -6466,8 +6648,7 @@ Type.prototype.fromObject = function fromObject(object) {
 
 /**
  * Conversion options as used by {@link Type#toObject} and {@link Message.toObject}.
- * @typedef ConversionOptions
- * @type {Object}
+ * @interface IConversionOptions
  * @property {*} [longs] Long conversion type.
  * Valid values are `String` and `Number` (the global types).
  * Defaults to copy the present value, which is a possibly unsafe number without and a {@link Long} with a long library.
@@ -6481,12 +6662,13 @@ Type.prototype.fromObject = function fromObject(object) {
  * @property {boolean} [arrays=false] Sets empty arrays for missing repeated fields even if `defaults=false`
  * @property {boolean} [objects=false] Sets empty objects for missing map fields even if `defaults=false`
  * @property {boolean} [oneofs=false] Includes virtual oneof properties set to the present field's name, if any
+ * @property {boolean} [json=false] Performs additional JSON compatibility conversions, i.e. NaN and Infinity to strings
  */
 
 /**
  * Creates a plain object from a message of this type. Also converts values to other types if specified.
  * @param {Message<{}>} message Message instance
- * @param {ConversionOptions} [options] Conversion options
+ * @param {IConversionOptions} [options] Conversion options
  * @returns {Object.<string,*>} Plain object
  */
 Type.prototype.toObject = function toObject(message, options) {
@@ -6497,7 +6679,7 @@ Type.prototype.toObject = function toObject(message, options) {
  * Decorator function as returned by {@link Type.d} (TypeScript).
  * @typedef TypeDecorator
  * @type {function}
- * @param {TMessageConstructor<T>} target Target constructor
+ * @param {Constructor<T>} target Target constructor
  * @returns {undefined}
  * @template T extends Message<T>
  */
@@ -6514,7 +6696,7 @@ Type.d = function decorateType(typeName) {
     };
 };
 
-},{"12":12,"13":13,"14":14,"15":15,"16":16,"20":20,"21":21,"23":23,"25":25,"27":27,"33":33,"37":37,"40":40,"41":41}],36:[function(require,module,exports){
+},{"12":12,"13":13,"14":14,"15":15,"16":16,"20":20,"21":21,"23":23,"25":25,"27":27,"33":33,"37":37,"40":40,"41":41,"42":42}],36:[function(require,module,exports){
 "use strict";
 
 /**
@@ -6749,6 +6931,22 @@ util.toArray = function toArray(object) {
     return array;
 };
 
+/**
+ * Converts an array of keys immediately followed by their respective value to an object, omitting undefined values.
+ * @param {Array.<*>} array Array to convert
+ * @returns {Object.<string,*>} Converted object
+ */
+util.toObject = function toObject(array) {
+    var object = {};
+    for (var i = 0; i < array.length; i += 2) {
+        var key = array[i    ],
+            val = array[i + 1];
+        if (val !== undefined)
+            object[key] = val;
+    }
+    return object;
+};
+
 var safePropBackslashRe = /\\/g,
     safePropQuoteRe     = /"/g;
 
@@ -6782,7 +6980,7 @@ util.compareFieldsById = function compareFieldsById(a, b) {
 
 /**
  * Decorator helper for types (TypeScript).
- * @param {TMessageConstructor<T>} ctor Constructor function
+ * @param {Constructor<T>} ctor Constructor function
  * @param {string} [typeName] Type name, defaults to the constructor's name
  * @returns {Type} Reflected type
  * @template T extends Message<T>
@@ -6800,12 +6998,13 @@ util.decorateType = function decorateType(ctor, typeName) {
         return ctor.$type;
     }
 
-    /* istanbul ignore if */
+    /* istanbul ignore next */
     if (!Type)
         Type = require(35);
 
     var type = new Type(typeName || ctor.name);
     util.decorateRoot.add(type);
+    type.ctor = ctor; // sets up .encode, .decode etc.
     Object.defineProperty(ctor, "$type", { value: type, enumerable: false });
     Object.defineProperty(ctor.prototype, "$type", { value: type, enumerable: false });
     return type;
@@ -6824,7 +7023,7 @@ util.decorateEnum = function decorateEnum(object) {
     if (object.$type)
         return object.$type;
 
-    /* istanbul ignore if */
+    /* istanbul ignore next */
     if (!Enum)
         Enum = require(15);
 
@@ -6842,7 +7041,7 @@ util.decorateEnum = function decorateEnum(object) {
  */
 Object.defineProperty(util, "decorateRoot", {
     get: function() {
-        return roots["decorators"] || (roots["decorators"] = new (require(29))());
+        return roots["decorated"] || (roots["decorated"] = new (require(29))());
     }
 });
 
@@ -7159,7 +7358,7 @@ util.isSet = function isSet(obj, prop) {
 
 /**
  * Node's Buffer class if available.
- * @type {TConstructor<Buffer>}
+ * @type {Constructor<Buffer>}
  */
 util.Buffer = (function() {
     try {
@@ -7211,7 +7410,7 @@ util.newBuffer = function newBuffer(sizeOrArray) {
 
 /**
  * Array implementation used in the browser. `Uint8Array` if supported, otherwise `Array`.
- * @type {TConstructor<Uint8Array>}
+ * @type {Constructor<Uint8Array>}
  */
 util.Array = typeof Uint8Array !== "undefined" ? Uint8Array /* istanbul ignore next */ : Array;
 
@@ -7227,7 +7426,7 @@ util.Array = typeof Uint8Array !== "undefined" ? Uint8Array /* istanbul ignore n
 
 /**
  * Long.js's Long class if available.
- * @type {TConstructor<Long>}
+ * @type {Constructor<Long>}
  */
 util.Long = /* istanbul ignore next */ global.dcodeIO && /* istanbul ignore next */ global.dcodeIO.Long || util.inquire("long");
 
@@ -7306,7 +7505,7 @@ util.lcFirst = function lcFirst(str) {
  * Creates a custom error constructor.
  * @memberof util
  * @param {string} name Error name
- * @returns {TConstructor<Error>} Custom error constructor
+ * @returns {Constructor<Error>} Custom error constructor
  */
 function newError(name) {
 
@@ -7348,10 +7547,10 @@ util.newError = newError;
  * @classdesc Error subclass indicating a protocol specifc error.
  * @memberof util
  * @extends Error
- * @template T
+ * @template T extends Message<T>
  * @constructor
  * @param {string} message Error message
- * @param {Object.<string,*>=} properties Additional properties
+ * @param {Object.<string,*>} [properties] Additional properties
  * @example
  * try {
  *     MyMessage.decode(someBuffer); // throws if required fields are missing
@@ -7426,13 +7625,26 @@ util.oneOfSetter = function setOneOf(fieldNames) {
 };
 
 /**
- * Default conversion options used for {@link Message#toJSON} implementations. Longs, enums and bytes are converted to strings by default.
- * @type {ConversionOptions}
+ * Default conversion options used for {@link Message#toJSON} implementations.
+ *
+ * These options are close to proto3's JSON mapping with the exception that internal types like Any are handled just like messages. More precisely:
+ *
+ * - Longs become strings
+ * - Enums become string keys
+ * - Bytes become base64 encoded strings
+ * - (Sub-)Messages become plain objects
+ * - Maps become plain objects with all string keys
+ * - Repeated fields become arrays
+ * - NaN and Infinity for float and double fields become strings
+ *
+ * @type {IConversionOptions}
+ * @see https://developers.google.com/protocol-buffers/docs/proto3?hl=en#json
  */
 util.toJSONOptions = {
     longs: String,
     enums: String,
-    bytes: String
+    bytes: String,
+    json: true
 };
 
 util._configure = function() {
@@ -7631,6 +7843,81 @@ function verifier(mtype) {
     /* eslint-enable no-unexpected-multiline */
 }
 },{"15":15,"37":37}],41:[function(require,module,exports){
+"use strict";
+
+/**
+ * Wrappers for common types.
+ * @type {Object.<string,IWrapper>}
+ * @const
+ */
+var wrappers = exports;
+
+var Message = require(21);
+
+/**
+ * From object converter part of an {@link IWrapper}.
+ * @typedef WrapperFromObjectConverter
+ * @type {function}
+ * @param {Object.<string,*>} object Plain object
+ * @returns {Message<{}>}
+ * @this Type
+ */
+
+/**
+ * To object converter part of an {@link IWrapper}.
+ * @typedef WrapperToObjectConverter
+ * @type {function}
+ * @param {Message<{}>} message Message instance
+ * @param {IConversionOptions} [options] Conversion options
+ * @returns {Object.<string,*>}
+ * @this Type
+ */
+
+/**
+ * Common type wrapper part of {@link wrappers}.
+ * @interface IWrapper
+ * @property {WrapperFromObjectConverter} [fromObject] From object converter
+ * @property {WrapperToObjectConverter} [toObject] To object converter
+ */
+
+// Custom wrapper for Any
+wrappers[".google.protobuf.Any"] = {
+
+    fromObject: function(object) {
+
+        // unwrap value type if mapped
+        if (object && object["@type"]) {
+            var type = this.lookup(object["@type"]);
+            /* istanbul ignore else */
+            if (type)
+                return type.fromObject(object);
+        }
+
+        return this.fromObject(object);
+    },
+
+    toObject: function(message, options) {
+
+        // decode value if requested and unmapped
+        if (options && options.json && message.type_url && message.value) {
+            var type = this.lookup(message.type_url);
+            /* istanbul ignore else */
+            if (type)
+                message = type.decode(message.value);
+        }
+
+        // wrap value if unmapped
+        if (!(message instanceof this.ctor) && message instanceof Message) {
+            var object = message.$type.toObject(message, options);
+            object["@type"] = message.$type.fullName;
+            return object;
+        }
+
+        return this.toObject(message, options);
+    }
+};
+
+},{"21":21}],42:[function(require,module,exports){
 "use strict";
 module.exports = Writer;
 
@@ -8092,12 +8379,12 @@ Writer._configure = function(BufferWriter_) {
     BufferWriter = BufferWriter_;
 };
 
-},{"39":39}],42:[function(require,module,exports){
+},{"39":39}],43:[function(require,module,exports){
 "use strict";
 module.exports = BufferWriter;
 
 // extends Writer
-var Writer = require(41);
+var Writer = require(42);
 (BufferWriter.prototype = Object.create(Writer.prototype)).constructor = BufferWriter;
 
 var util = require(39);
@@ -8175,7 +8462,7 @@ BufferWriter.prototype.string = function write_string_buffer(value) {
  * @returns {Buffer} Finished buffer
  */
 
-},{"39":39,"41":41}]},{},[19])
+},{"39":39,"42":42}]},{},[19])
 
 })(typeof window==="object"&&window||typeof self==="object"&&self||this);
 //# sourceMappingURL=protobuf.js.map
