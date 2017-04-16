@@ -334,6 +334,9 @@ export namespace jspb {
             public static fromObject(object: { [k: string]: any }): jspb.test.DefaultValues;
             public static toObject(message: jspb.test.DefaultValues, options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
+        }
+
+        namespace DefaultValues {
 
             enum Enum {
                 E1 = 13,
@@ -917,6 +920,9 @@ export namespace google {
             public static fromObject(object: { [k: string]: any }): google.protobuf.FieldDescriptorProto;
             public static toObject(message: google.protobuf.FieldDescriptorProto, options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
+        }
+
+        namespace FieldDescriptorProto {
 
             enum Type {
                 TYPE_DOUBLE = 1,
@@ -1104,6 +1110,9 @@ export namespace google {
             public static fromObject(object: { [k: string]: any }): google.protobuf.FileOptions;
             public static toObject(message: google.protobuf.FileOptions, options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
+        }
+
+        namespace FileOptions {
 
             enum OptimizeMode {
                 SPEED = 1,
@@ -1166,6 +1175,9 @@ export namespace google {
             public static fromObject(object: { [k: string]: any }): google.protobuf.FieldOptions;
             public static toObject(message: google.protobuf.FieldOptions, options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
+        }
+
+        namespace FieldOptions {
 
             enum CType {
                 STRING = 0,
@@ -1282,6 +1294,9 @@ export namespace google {
             public static fromObject(object: { [k: string]: any }): google.protobuf.MethodOptions;
             public static toObject(message: google.protobuf.MethodOptions, options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
+        }
+
+        namespace MethodOptions {
 
             enum IdempotencyLevel {
                 IDEMPOTENCY_UNKNOWN = 0,

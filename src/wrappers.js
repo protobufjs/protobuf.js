@@ -14,7 +14,7 @@ var Message = require("./message");
  * @typedef WrapperFromObjectConverter
  * @type {function}
  * @param {Object.<string,*>} object Plain object
- * @returns {Message<{}>}
+ * @returns {Message<{}>} Message instance
  * @this Type
  */
 
@@ -24,7 +24,7 @@ var Message = require("./message");
  * @type {function}
  * @param {Message<{}>} message Message instance
  * @param {IConversionOptions} [options] Conversion options
- * @returns {Object.<string,*>}
+ * @returns {Object.<string,*>} Plain object
  * @this Type
  */
 

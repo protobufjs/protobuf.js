@@ -465,12 +465,7 @@ Note that the service API is meant for clients. Implementing a server-side endpo
 
 The library ships with its own [type definitions](https://github.com/dcodeIO/protobuf.js/blob/master/index.d.ts) and modern editors like [Visual Studio Code](https://code.visualstudio.com/) will automatically detect and use them for code completion.
 
-**Note** that the npm package depends on [@types/node](https://www.npmjs.com/package/@types/node) because of `Buffer` and [@types/long](https://www.npmjs.com/package/@types/long) because of `Long`. If you are not building for node and/or not using long.js and want to exclude their full type definitions manually for whatever reason, there are two stubs available that can be referenced instead of the respective full type definition:
-
-```ts
-/// <reference path="./node_modules/protobufjs/stub-long.d.ts" />
-/// <reference path="./node_modules/protobufjs/stub-node.d.ts" />
-```
+The npm package depends on [@types/node](https://www.npmjs.com/package/@types/node) because of `Buffer` and [@types/long](https://www.npmjs.com/package/@types/long) because of `Long`. If you are not building for node and/or not using long.js, it should be safe to exclude them manually.
 
 #### Using the JS API
 

@@ -99,11 +99,11 @@ util.isSet = function isSet(obj, prop) {
     return false;
 };
 
-/*
+/**
  * Any compatible Buffer instance.
  * This is a minimal stand-alone definition of a Buffer instance. The actual type is that exported by node's typings.
- * @typedef Buffer
- * @type {Uint8Array}
+ * @interface Buffer
+ * @extends Uint8Array
  */
 
 /**
@@ -164,11 +164,10 @@ util.newBuffer = function newBuffer(sizeOrArray) {
  */
 util.Array = typeof Uint8Array !== "undefined" ? Uint8Array /* istanbul ignore next */ : Array;
 
-/*
+/**
  * Any compatible Long instance.
  * This is a minimal stand-alone definition of a Long instance. The actual type is that exported by long.js.
- * @typedef Long
- * @type {Object}
+ * @interface Long
  * @property {number} low Low bits
  * @property {number} high High bits
  * @property {boolean} unsigned Whether unsigned or not

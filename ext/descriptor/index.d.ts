@@ -75,7 +75,7 @@ export interface IFieldDescriptorProto {
     defaultValue?: string;
     oneofIndex?: number;
     jsonName?: any;
-    options?: IFieldOptionsProperties;
+    options?: IFieldOptions;
 }
 
 type IFieldDescriptorProtoLabel = number;
@@ -138,17 +138,9 @@ export const FileDescriptorSet: $protobuf.Type;
 
 export const FileDescriptorProto: $protobuf.Type;
 
-export const DescriptorProto: $protobuf.Type;
+export const DescriptorProto: $protobuf.Type & {    ExtensionRange: $protobuf.Type,    ReservedRange: $protobuf.Type};
 
-export const DescriptorProtoExtensionRange: $protobuf.Type;
-
-export const DescriptorProtoReservedRange: $protobuf.Type;
-
-export const FieldDescriptorProto: $protobuf.Type;
-
-export const FieldDescriptorProtoLabel: $protobuf.Enum;
-
-export const FieldDescriptorProtoType: $protobuf.Enum;
+export const FieldDescriptorProto: $protobuf.Type & {    Label: $protobuf.Enum,    Type: $protobuf.Enum};
 
 export const OneofDescriptorProto: $protobuf.Type;
 
@@ -160,17 +152,11 @@ export const EnumValueDescriptorProto: $protobuf.Type;
 
 export const MethodDescriptorProto: $protobuf.Type;
 
-export const FileOptions: $protobuf.Type;
-
-export const FileOptionsOptimizeMode: $protobuf.Enum;
+export const FileOptions: $protobuf.Type & {    OptimizeMode: $protobuf.Enum};
 
 export const MessageOptions: $protobuf.Type;
 
-export const FieldOptions: $protobuf.Type;
-
-export const FieldOptionsCType: $protobuf.Enum;
-
-export const FieldOptionsJSType: $protobuf.Enum;
+export const FieldOptions: $protobuf.Type & {    CType: $protobuf.Enum,    JSType: $protobuf.Enum};
 
 export const OneofOptions: $protobuf.Type;
 
@@ -182,14 +168,8 @@ export const ServiceOptions: $protobuf.Type;
 
 export const MethodOptions: $protobuf.Type;
 
-export const UninterpretedOption: $protobuf.Type;
+export const UninterpretedOption: $protobuf.Type & {    NamePart: $protobuf.Type};
 
-export const UninterpretedOptionNamePart: $protobuf.Type;
+export const SourceCodeInfo: $protobuf.Type & {    Location: $protobuf.Type};
 
-export const SourceCodeInfo: $protobuf.Type;
-
-export const SourceCodeInfoLocation: $protobuf.Type;
-
-export const GeneratedCodeInfo: $protobuf.Type;
-
-export const GeneratedCodeInfoAnnotation: $protobuf.Type;
+export const GeneratedCodeInfo: $protobuf.Type & {    Annotation: $protobuf.Type};

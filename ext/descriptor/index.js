@@ -313,7 +313,7 @@ Type.prototype.toDescriptor = function toDescriptor(syntax) {
  * @property {string} [defaultValue] Literal default value
  * @property {number} [oneofIndex] Oneof index if part of a oneof
  * @property {*} [jsonName] Not supported
- * @property {IFieldOptionsProperties} [options] Field options
+ * @property {IFieldOptions} [options] Field options
  */
 
 /**
@@ -874,53 +874,27 @@ function underScore(str) {
  * Reflected descriptor proto.
  * @name DescriptorProto
  * @type {Type}
+ * @property {Type} ExtensionRange
+ * @property {Type} ReservedRange
  * @const
- * @tstype $protobuf.Type
+ * @tstype $protobuf.Type & {
+ *     ExtensionRange: $protobuf.Type,
+ *     ReservedRange: $protobuf.Type
+ * }
  */
-
-/**
- * Reflected descriptor proto extension range.
- * @name DescriptorProtoExtensionRange
- * @type {Type}
- * @const
- * @tstype $protobuf.Type
- */
-exports.DescriptorProtoExtensionRange = exports.DescriptorProto.ExtensionRange;
-
-/**
- * Reflected descriptor proto reserved range.
- * @name DescriptorProtoReservedRange
- * @type {Type}
- * @const
- * @tstype $protobuf.Type
- */
-exports.DescriptorProtoReservedRange = exports.DescriptorProto.ReservedRange;
 
 /**
  * Reflected field descriptor proto.
  * @name FieldDescriptorProto
  * @type {Type}
+ * @property {Enum} Label
+ * @property {Enum} Type
  * @const
- * @tstype $protobuf.Type
+ * @tstype $protobuf.Type & {
+ *     Label: $protobuf.Enum,
+ *     Type: $protobuf.Enum
+ * }
  */
-
-/**
- * Reflected field descriptor proto label.
- * @name FieldDescriptorProtoLabel
- * @type {Enum}
- * @const
- * @tstype $protobuf.Enum
- */
-exports.FieldDescriptorProtoLabel = exports.FieldDescriptorProto.Label;
-
-/**
- * Reflected field descriptor proto type.
- * @name FieldDescriptorProtoType
- * @type {Enum}
- * @const
- * @tstype $protobuf.Enum
- */
-exports.FieldDescriptorProtoType = exports.FieldDescriptorProto.Type;
 
 /**
  * Reflected oneof descriptor proto.
@@ -966,18 +940,12 @@ exports.FieldDescriptorProtoType = exports.FieldDescriptorProto.Type;
  * Reflected file options.
  * @name FileOptions
  * @type {Type}
+ * @property {Enum} OptimizeMode
  * @const
- * @tstype $protobuf.Type
+ * @tstype $protobuf.Type & {
+ *     OptimizeMode: $protobuf.Enum
+ * }
  */
-
-/**
- * Reflected file options optimize mode.
- * @name FileOptionsOptimizeMode
- * @type {Type}
- * @const
- * @tstype $protobuf.Enum
- */
-exports.FileOptionsOptimizeMode = exports.FileOptions.OptimizeMode;
 
 /**
  * Reflected message options.
@@ -991,27 +959,14 @@ exports.FileOptionsOptimizeMode = exports.FileOptions.OptimizeMode;
  * Reflected field options.
  * @name FieldOptions
  * @type {Type}
+ * @property {Enum} CType
+ * @property {Enum} JSType
  * @const
- * @tstype $protobuf.Type
+ * @tstype $protobuf.Type & {
+ *     CType: $protobuf.Enum,
+ *     JSType: $protobuf.Enum
+ * }
  */
-
-/**
- * Reflected field options c-type.
- * @name FieldOptionsCType
- * @type {Enum}
- * @const
- * @tstype $protobuf.Enum
- */
-exports.FieldOptionsCType = exports.FieldOptions.CType;
-
-/**
- * Reflected field options js-type.
- * @name FieldOptionsJSType
- * @type {Enum}
- * @const
- * @tstype $protobuf.Enum
- */
-exports.FieldOptionsJSType = exports.FieldOptions.JSType;
 
 /**
  * Reflected oneof options.
@@ -1057,49 +1012,31 @@ exports.FieldOptionsJSType = exports.FieldOptions.JSType;
  * Reflected uninterpretet option.
  * @name UninterpretedOption
  * @type {Type}
+ * @property {Type} NamePart
  * @const
- * @tstype $protobuf.Type
+ * @tstype $protobuf.Type & {
+ *     NamePart: $protobuf.Type
+ * }
  */
-
-/**
- * Reflected uninterpreted option name part.
- * @name UninterpretedOptionNamePart
- * @type {Type}
- * @const
- * @tstype $protobuf.Type
- */
-exports.UninterpretedOptionNamePart = exports.UninterpretedOption.NamePart;
 
 /**
  * Reflected source code info.
  * @name SourceCodeInfo
  * @type {Type}
+ * @property {Type} Location
  * @const
- * @tstype $protobuf.Type
+ * @tstype $protobuf.Type & {
+ *     Location: $protobuf.Type
+ * }
  */
-
-/**
- * Reflected source code info location.
- * @name SourceCodeInfoLocation
- * @type {Type}
- * @const
- * @tstype $protobuf.Type
- */
-exports.SourceCodeInfoLocation = exports.SourceCodeInfo.Location;
 
 /**
  * Reflected generated code info.
  * @name GeneratedCodeInfo
  * @type {Type}
+ * @property {Type} Annotation
  * @const
- * @tstype $protobuf.Type
+ * @tstype $protobuf.Type & {
+ *     Annotation: $protobuf.Type
+ * }
  */
-
-/**
- * Reflected generated code info annotation.
- * @name GeneratedCodeInfoAnnotation
- * @type {Type}
- * @const
- * @tstype $protobuf.Type
- */
-exports.GeneratedCodeInfoAnnotation = exports.GeneratedCodeInfo.Annotation;

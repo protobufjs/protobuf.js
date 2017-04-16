@@ -428,10 +428,7 @@ export function load(filename: (string|string[]), root?: Root): Promise<Root>;
  */
 export function loadSync(filename: (string|string[]), root?: Root): Root;
 
-/**
- * Build type, one of `"full"`, `"light"` or `"minimal"`.
- * @const
- */
+/** Build type, one of `"full"`, `"light"` or `"minimal"`. */
 export const build: string;
 
 /** Reconfigures the library according to the environment. */
@@ -1692,10 +1689,7 @@ type TypeDecorator<T extends Message<T>> = (target: Constructor<T>) => void;
 /** Common type constants. */
 export namespace types {
 
-    /**
-     * Basic type wire types.
-     * @const
-     */
+    /** Basic type wire types. */
     const basic: {
         "double": number,
         "float": number,
@@ -1714,10 +1708,7 @@ export namespace types {
         "bytes": number
     };
 
-    /**
-     * Basic type defaults.
-     * @const
-     */
+    /** Basic type defaults. */
     const defaults: {
         "double": number,
         "float": number,
@@ -1737,10 +1728,7 @@ export namespace types {
         "message": null
     };
 
-    /**
-     * Basic long type wire types.
-     * @const
-     */
+    /** Basic long type wire types. */
     const long: {
         "int64": number,
         "uint64": number,
@@ -1749,10 +1737,7 @@ export namespace types {
         "sfixed64": number
     };
 
-    /**
-     * Allowed types for map keys with their associated wire type.
-     * @const
-     */
+    /** Allowed types for map keys with their associated wire type. */
     const mapKey: {
         "int32": number,
         "uint32": number,
@@ -1768,10 +1753,7 @@ export namespace types {
         "string": number
     };
 
-    /**
-     * Allowed types for packed repeated fields with their associated wire type.
-     * @const
-     */
+    /** Allowed types for packed repeated fields with their associated wire type. */
     const packed: {
         "double": number,
         "float": number,
@@ -1789,19 +1771,30 @@ export namespace types {
     };
 }
 
-/**
- * Constructor type.
- * @tstype new(...params: any[]): T; prototype: T;
- */
+/** Constructor type. */
 export interface Constructor<T> extends Function {
     new(...params: any[]): T; prototype: T;
 }
 
-/**
- * Properties type.
- * @tstype { [P in keyof T]?: T[P] }
- */
+/** Properties type. */
 type Properties<T> = { [P in keyof T]?: T[P] };
+
+/**
+ * Any compatible Buffer instance.
+ * This is a minimal stand-alone definition of a Buffer instance. The actual type is that exported by node's typings.
+ */
+export interface Buffer extends Uint8Array {
+}
+
+/**
+ * Any compatible Long instance.
+ * This is a minimal stand-alone definition of a Long instance. The actual type is that exported by long.js.
+ */
+export interface Long {
+    low: number;
+    high: number;
+    unsigned: boolean;
+}
 
 /**
  * A OneOf getter as returned by {@link util.oneOfGetter}.
@@ -1906,22 +1899,13 @@ export namespace util {
         public length(): number;
     }
 
-    /**
-     * An immuable empty array.
-     * @const
-     */
+    /** An immuable empty array. */
     const emptyArray: any[];
 
-    /**
-     * An immutable empty object.
-     * @const
-     */
+    /** An immutable empty object. */
     const emptyObject: object;
 
-    /**
-     * Whether running within node or not.
-     * @const
-     */
+    /** Whether running within node or not. */
     const isNode: boolean;
 
     /**
@@ -1978,22 +1962,13 @@ export namespace util {
     /** Long.js's Long class if available. */
     let Long: Constructor<Long>;
 
-    /**
-     * Regular expression used to verify 2 bit (`bool`) map keys.
-     * @const
-     */
+    /** Regular expression used to verify 2 bit (`bool`) map keys. */
     const key2Re: RegExp;
 
-    /**
-     * Regular expression used to verify 32 bit (`int32` etc.) map keys.
-     * @const
-     */
+    /** Regular expression used to verify 32 bit (`int32` etc.) map keys. */
     const key32Re: RegExp;
 
-    /**
-     * Regular expression used to verify 64 bit (`int64` etc.) map keys.
-     * @const
-     */
+    /** Regular expression used to verify 64 bit (`int64` etc.) map keys. */
     const key64Re: RegExp;
 
     /**
@@ -2407,16 +2382,13 @@ export namespace util {
  */
 export function verifier(mtype: Type): Codegen;
 
-/**
- * Wrappers for common types.
- * @const
- */
+/** Wrappers for common types. */
 export const wrappers: { [k: string]: IWrapper };
 
 /**
  * From object converter part of an {@link IWrapper}.
  * @param object Plain object
- * @returns
+ * @returns Message instance
  */
 type WrapperFromObjectConverter = (this: Type, object: { [k: string]: any }) => Message<{}>;
 
@@ -2424,7 +2396,7 @@ type WrapperFromObjectConverter = (this: Type, object: { [k: string]: any }) => 
  * To object converter part of an {@link IWrapper}.
  * @param message Message instance
  * @param [options] Conversion options
- * @returns
+ * @returns Plain object
  */
 type WrapperToObjectConverter = (this: Type, message: Message<{}>, options?: IConversionOptions) => { [k: string]: any };
 

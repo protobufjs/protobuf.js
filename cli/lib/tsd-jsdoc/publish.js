@@ -134,7 +134,7 @@ function writeln() {
     indentWritten = false;
 }
 
-var skipTagsRe = /@(type|memberof|name|exports|interface|extends|implements|constructor|function|template|property|this|typedef|variation|example|returns \{undefined})[^@$]*/g,
+var skipTagsRe = /@(type|tstype|const|memberof|name|exports|interface|extends|implements|constructor|function|template|property|this|typedef|variation|example|returns \{undefined})[^@$]*/g,
     skipTypeRe = /(@[^ ]+) \{[^\s$]+}/g;
 
 // writes a comment
@@ -468,7 +468,7 @@ function handleClass(element, parent) {
     // class-compatible members
     var incompatible = [];
     getChildrenOf(element).forEach(function(child) {
-        if (isClassLike(child) || element.kind === "module" || element.kind === "typedef") {
+        if (isClassLike(child) || child.kind === "module" || child.kind === "typedef" || child.isEnum) {
             incompatible.push(child);
             return;
         }
@@ -515,7 +515,8 @@ function handleMember(element, parent) {
 
     } else {
 
-        if (isClassLike(parent)) {
+        var inClass = isClassLike(parent);
+        if (inClass) {
             write(element.access || "public", " ");
             if (element.scope === "static")
                 write("static ");
