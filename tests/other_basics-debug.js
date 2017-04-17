@@ -1,4 +1,4 @@
-var tape = require("tape");
+/* var tape = require("tape");
 
 var protobuf = require("../debug");
 
@@ -105,4 +105,4 @@ tape.test("google.protobuf.Any type", function(test) {
         test.end();
 
     });
-});
+}); */

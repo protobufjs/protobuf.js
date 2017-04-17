@@ -338,23 +338,6 @@ export interface IExtensionField extends IField {
  */
 type FieldDecorator = (prototype: object, fieldName: string) => void;
 
-/** Debugging utility functions. Only present in debug builds. */
-export namespace debug {
-
-    /**
-     * Returns a list of unused types within the specified root.
-     * @param ns Namespace to search
-     * @returns Unused types
-     */
-    function unusedTypes(ns: NamespaceBase): Type[];
-
-    /** Enables debugging extensions. */
-    function enable(): void;
-
-    /** Disables debugging extensions. */
-    function disable(): void;
-}
-
 /**
  * A node-style callback as used by {@link load} and {@link Root#load}.
  * @param error Error, if any, otherwise `null`

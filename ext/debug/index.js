@@ -1,14 +1,11 @@
-// WARNING: highly experimental.
-// might eventually become a starting point for a real debug build.
-
 "use strict";
-var protobuf = module.exports = require("./index");
+var protobuf = require("../..");
 
 /**
  * Debugging utility functions. Only present in debug builds.
  * @namespace
  */
-var debug = protobuf.debug = {};
+var debug = protobuf.debug = module.exports = {};
 
 var codegen = protobuf.util.codegen;
 
