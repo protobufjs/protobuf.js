@@ -131,18 +131,11 @@ export function decoder(mtype: Type): Codegen;
  */
 export function encoder(mtype: Type): Codegen;
 
-/**
- * Constructs a new enum instance.
- * @classdesc Reflected enum.
- * @param name Unique name within its namespace
- * @param [values] Enum values as an object, by name
- * @param [options] Declared options
- */
+/** Reflected enum. */
 export class Enum extends ReflectionObject {
 
     /**
      * Constructs a new enum instance.
-     * @classdesc Reflected enum.
      * @param name Unique name within its namespace
      * @param [values] Enum values as an object, by name
      * @param [options] Declared options
@@ -163,7 +156,7 @@ export class Enum extends ReflectionObject {
      * @param name Enum name
      * @param json Enum descriptor
      * @returns Created enum
-     * @throws If arguments are invalid
+     * @throws {TypeError} If arguments are invalid
      */
     public static fromJSON(name: string, json: IEnum): Enum;
 
@@ -179,8 +172,8 @@ export class Enum extends ReflectionObject {
      * @param id Value id
      * @param comment Comment, if any
      * @returns `this`
-     * @throws If arguments are invalid
-     * @throws If there is already a value with this name or id
+     * @throws {TypeError} If arguments are invalid
+     * @throws {Error} If there is already a value with this name or id
      */
     public add(name: string, id: number, comment: string): Enum;
 
@@ -188,8 +181,8 @@ export class Enum extends ReflectionObject {
      * Removes a value from this enum
      * @param name Value name
      * @returns `this`
-     * @throws If arguments are invalid
-     * @throws If `name` is not a name of this enum
+     * @throws {TypeError} If arguments are invalid
+     * @throws {Error} If `name` is not a name of this enum
      */
     public remove(name: string): Enum;
 }
@@ -200,21 +193,11 @@ export interface IEnum {
     options?: { [k: string]: any };
 }
 
-/**
- * Constructs a new message field instance. Note that {@link MapField|map fields} have their own class.
- * @classdesc Reflected message field.
- * @param name Unique name within its namespace
- * @param id Unique id within its namespace
- * @param type Value type
- * @param [rule="optional"] Field rule
- * @param [extend] Extended type if different from parent
- * @param [options] Declared options
- */
+/** Reflected message field. */
 export class Field extends FieldBase {
 
     /**
      * Constructs a new message field instance. Note that {@link MapField|map fields} have their own class.
-     * @classdesc Reflected message field.
      * @param name Unique name within its namespace
      * @param id Unique id within its namespace
      * @param type Value type
@@ -229,14 +212,11 @@ export class Field extends FieldBase {
      * @param name Field name
      * @param json Field descriptor
      * @returns Created field
-     * @throws If arguments are invalid
+     * @throws {TypeError} If arguments are invalid
      */
     public static fromJSON(name: string, json: IField): Field;
 
-    /**
-     * Determines whether this field is packed. Only relevant when repeated and working with proto2.
-     * @readonly
-     */
+    /** Determines whether this field is packed. Only relevant when repeated and working with proto2. */
     public readonly packed: boolean;
 
     /**
@@ -259,21 +239,11 @@ export class Field extends FieldBase {
     public static d<T extends Message<T>>(fieldId: number, fieldType: (Constructor<T>|string), fieldRule?: ("optional"|"required"|"repeated")): FieldDecorator;
 }
 
-/**
- * Not an actual constructor. Use {@link Field} instead.
- * @classdesc Base class of all reflected message fields. This is not an actual class but here for the sake of having consistent type definitions.
- * @param name Unique name within its namespace
- * @param id Unique id within its namespace
- * @param type Value type
- * @param [rule="optional"] Field rule
- * @param [extend] Extended type if different from parent
- * @param [options] Declared options
- */
+/** Base class of all reflected message fields. This is not an actual class but here for the sake of having consistent type definitions. */
 export class FieldBase extends ReflectionObject {
 
     /**
      * Not an actual constructor. Use {@link Field} instead.
-     * @classdesc Base class of all reflected message fields. This is not an actual class but here for the sake of having consistent type definitions.
      * @param name Unique name within its namespace
      * @param id Unique id within its namespace
      * @param type Value type
@@ -343,7 +313,7 @@ export class FieldBase extends ReflectionObject {
     /**
      * Resolves this field's type references.
      * @returns `this`
-     * @throws If any reference cannot be resolved
+     * @throws {Error} If any reference cannot be resolved
      */
     public resolve(): Field;
 }
@@ -423,7 +393,7 @@ export function load(filename: (string|string[]), root?: Root): Promise<Root>;
  * @param filename One or multiple files to load
  * @param [root] Root namespace, defaults to create a new one if omitted.
  * @returns Root namespace
- * @throws If synchronous fetching is not supported (i.e. in browsers) or if a file's syntax is invalid
+ * @throws {Error} If synchronous fetching is not supported (i.e. in browsers) or if a file's syntax is invalid
  * @see {@link Root#loadSync}
  */
 export function loadSync(filename: (string|string[]), root?: Root): Root;
@@ -434,20 +404,11 @@ export const build: string;
 /** Reconfigures the library according to the environment. */
 export function configure(): void;
 
-/**
- * Constructs a new map field instance.
- * @classdesc Reflected map field.
- * @param name Unique name within its namespace
- * @param id Unique id within its namespace
- * @param keyType Key type
- * @param type Value type
- * @param [options] Declared options
- */
+/** Reflected map field. */
 export class MapField extends FieldBase {
 
     /**
      * Constructs a new map field instance.
-     * @classdesc Reflected map field.
      * @param name Unique name within its namespace
      * @param id Unique id within its namespace
      * @param keyType Key type
@@ -467,7 +428,7 @@ export class MapField extends FieldBase {
      * @param name Field name
      * @param json Map field descriptor
      * @returns Created map field
-     * @throws If arguments are invalid
+     * @throws {TypeError} If arguments are invalid
      */
     public static fromJSON(name: string, json: IMapField): MapField;
 
@@ -497,32 +458,19 @@ export interface IExtensionMapField extends IMapField {
     extend: string;
 }
 
-/**
- * Constructs a new message instance.
- * @classdesc Abstract runtime message.
- * @param [properties] Properties to set
- */
+/** Abstract runtime message. */
 export class Message<T extends object> {
 
     /**
      * Constructs a new message instance.
-     * @classdesc Abstract runtime message.
      * @param [properties] Properties to set
      */
     constructor(properties?: Properties<T>);
 
-    /**
-     * Reference to the reflected type.
-     * $type
-     * @readonly
-     */
+    /** Reference to the reflected type. */
     public static readonly $type: Type;
 
-    /**
-     * Reference to the reflected type.
-     * $type
-     * @readonly
-     */
+    /** Reference to the reflected type. */
     public readonly $type: Type;
 
     /**
@@ -591,22 +539,11 @@ export class Message<T extends object> {
     public toJSON(): { [k: string]: any };
 }
 
-/**
- * Constructs a new service method instance.
- * @classdesc Reflected service method.
- * @param name Method name
- * @param type Method type, usually `"rpc"`
- * @param requestType Request message type
- * @param responseType Response message type
- * @param [requestStream] Whether the request is streamed
- * @param [responseStream] Whether the response is streamed
- * @param [options] Declared options
- */
+/** Reflected service method. */
 export class Method extends ReflectionObject {
 
     /**
      * Constructs a new service method instance.
-     * @classdesc Reflected service method.
      * @param name Method name
      * @param type Method type, usually `"rpc"`
      * @param requestType Request message type
@@ -643,7 +580,7 @@ export class Method extends ReflectionObject {
      * @param name Method name
      * @param json Method descriptor
      * @returns Created method
-     * @throws If arguments are invalid
+     * @throws {TypeError} If arguments are invalid
      */
     public static fromJSON(name: string, json: IMethod): Method;
 
@@ -664,17 +601,11 @@ export interface IMethod {
     options?: { [k: string]: any };
 }
 
-/**
- * Constructs a new namespace instance.
- * @classdesc Reflected namespace.
- * @param name Namespace name
- * @param [options] Declared options
- */
+/** Reflected namespace. */
 export class Namespace extends NamespaceBase {
 
     /**
      * Constructs a new namespace instance.
-     * @classdesc Reflected namespace.
      * @param name Namespace name
      * @param [options] Declared options
      */
@@ -685,7 +616,7 @@ export class Namespace extends NamespaceBase {
      * @param name Namespace name
      * @param json JSON object
      * @returns Created namespace
-     * @throws If arguments are invalid
+     * @throws {TypeError} If arguments are invalid
      */
     public static fromJSON(name: string, json: { [k: string]: any }): Namespace;
 
@@ -697,23 +628,13 @@ export class Namespace extends NamespaceBase {
     public static arrayToJSON(array: ReflectionObject[]): ({ [k: string]: any }|undefined);
 }
 
-/**
- * Not an actual constructor. Use {@link Namespace} instead.
- * @classdesc Base class of all reflection objects containing nested objects. This is not an actual class but here for the sake of having consistent type definitions.
- * @abstract
- * @param name Namespace name
- * @param [options] Declared options
- * @see {@link Namespace}
- */
+/** Base class of all reflection objects containing nested objects. This is not an actual class but here for the sake of having consistent type definitions. */
 export abstract class NamespaceBase extends ReflectionObject {
 
     /** Nested objects by name. */
     public nested?: { [k: string]: ReflectionObject };
 
-    /**
-     * Nested objects of this namespace as an array for iteration.
-     * @readonly
-     */
+    /** Nested objects of this namespace as an array for iteration. */
     public readonly nestedArray: ReflectionObject[];
 
     /**
@@ -741,7 +662,7 @@ export abstract class NamespaceBase extends ReflectionObject {
      * This methods differs from {@link Namespace#get|get} in that it returns an enum's values directly and throws instead of returning `null`.
      * @param name Nested enum name
      * @returns Enum values
-     * @throws If there is no such enum
+     * @throws {Error} If there is no such enum
      */
     public getEnum(name: string): { [k: string]: number };
 
@@ -749,8 +670,8 @@ export abstract class NamespaceBase extends ReflectionObject {
      * Adds a nested object to this namespace.
      * @param object Nested object to add
      * @returns `this`
-     * @throws If arguments are invalid
-     * @throws If there is already a nested object with this name
+     * @throws {TypeError} If arguments are invalid
+     * @throws {Error} If there is already a nested object with this name
      */
     public add(object: ReflectionObject): Namespace;
 
@@ -758,8 +679,8 @@ export abstract class NamespaceBase extends ReflectionObject {
      * Removes a nested object from this namespace.
      * @param object Nested object to remove
      * @returns `this`
-     * @throws If arguments are invalid
-     * @throws If `object` is not a member of this namespace
+     * @throws {TypeError} If arguments are invalid
+     * @throws {Error} If `object` is not a member of this namespace
      */
     public remove(object: ReflectionObject): Namespace;
 
@@ -799,7 +720,7 @@ export abstract class NamespaceBase extends ReflectionObject {
      * Besides its signature, this methods differs from {@link Namespace#lookup|lookup} in that it throws instead of returning `null`.
      * @param path Path to look up
      * @returns Looked up type
-     * @throws If `path` does not point to a type
+     * @throws {Error} If `path` does not point to a type
      */
     public lookupType(path: (string|string[])): Type;
 
@@ -808,7 +729,7 @@ export abstract class NamespaceBase extends ReflectionObject {
      * Besides its signature, this methods differs from {@link Namespace#lookup|lookup} in that it throws instead of returning `null`.
      * @param path Path to look up
      * @returns Looked up enum
-     * @throws If `path` does not point to an enum
+     * @throws {Error} If `path` does not point to an enum
      */
     public lookupEnum(path: (string|string[])): Enum;
 
@@ -817,7 +738,7 @@ export abstract class NamespaceBase extends ReflectionObject {
      * Besides its signature, this methods differs from {@link Namespace#lookup|lookup} in that it throws instead of returning `null`.
      * @param path Path to look up
      * @returns Looked up type or enum
-     * @throws If `path` does not point to a type or enum
+     * @throws {Error} If `path` does not point to a type or enum
      */
     public lookupTypeOrEnum(path: (string|string[])): Type;
 
@@ -826,7 +747,7 @@ export abstract class NamespaceBase extends ReflectionObject {
      * Besides its signature, this methods differs from {@link Namespace#lookup|lookup} in that it throws instead of returning `null`.
      * @param path Path to look up
      * @returns Looked up service
-     * @throws If `path` does not point to a service
+     * @throws {Error} If `path` does not point to a service
      */
     public lookupService(path: (string|string[])): Service;
 }
@@ -843,13 +764,7 @@ type AnyExtensionField = (IExtensionField|IExtensionMapField);
 /** Any nested object descriptor. */
 type AnyNestedObject = (IEnum|IType|IService|AnyExtensionField|INamespace);
 
-/**
- * Constructs a new reflection object instance.
- * @classdesc Base class of all reflection objects.
- * @param name Object name
- * @param [options] Declared options
- * @abstract
- */
+/** Base class of all reflection objects. */
 export abstract class ReflectionObject {
 
     /** Options. */
@@ -870,22 +785,15 @@ export abstract class ReflectionObject {
     /** Defining file name. */
     public filename: string;
 
-    /**
-     * Reference to the root namespace.
-     * @readonly
-     */
+    /** Reference to the root namespace. */
     public readonly root: Root;
 
-    /**
-     * Full name including leading dot.
-     * @readonly
-     */
+    /** Full name including leading dot. */
     public readonly fullName: string;
 
     /**
      * Converts this reflection object to its descriptor representation.
      * @returns Descriptor
-     * @abstract
      */
     public toJSON(): { [k: string]: any };
 
@@ -938,18 +846,11 @@ export abstract class ReflectionObject {
     public toString(): string;
 }
 
-/**
- * Constructs a new oneof instance.
- * @classdesc Reflected oneof.
- * @param name Oneof name
- * @param [fieldNames] Field names
- * @param [options] Declared options
- */
+/** Reflected oneof. */
 export class OneOf extends ReflectionObject {
 
     /**
      * Constructs a new oneof instance.
-     * @classdesc Reflected oneof.
      * @param name Oneof name
      * @param [fieldNames] Field names
      * @param [options] Declared options
@@ -959,10 +860,7 @@ export class OneOf extends ReflectionObject {
     /** Field names that belong to this oneof. */
     public oneof: string[];
 
-    /**
-     * Fields that belong to this oneof as an array for iteration.
-     * @readonly
-     */
+    /** Fields that belong to this oneof as an array for iteration. */
     public readonly fieldsArray: Field[];
 
     /**
@@ -970,7 +868,7 @@ export class OneOf extends ReflectionObject {
      * @param name Oneof name
      * @param json Oneof descriptor
      * @returns Created oneof
-     * @throws If arguments are invalid
+     * @throws {TypeError} If arguments are invalid
      */
     public static fromJSON(name: string, json: IOneOf): OneOf;
 
@@ -1035,7 +933,6 @@ export interface IParseOptions {
  * @param root Root to populate
  * @param [options] Parse options. Defaults to {@link parse.defaults} when omitted.
  * @returns Parser result
- * @link IParseOptions}
  */
 export function parse(source: string, root: Root, options?: IParseOptions): IParserResult;
 
@@ -1044,20 +941,14 @@ export function parse(source: string, root: Root, options?: IParseOptions): IPar
  * @param source Source contents
  * @param [options] Parse options. Defaults to {@link parse.defaults} when omitted.
  * @returns Parser result
- * @link IParseOptions}
  */
 export function parse(source: string, options?: IParseOptions): IParserResult;
 
-/**
- * Constructs a new reader instance using the specified buffer.
- * @classdesc Wire format reader using `Uint8Array` if available, otherwise `Array`.
- * @param buffer Buffer to read from
- */
+/** Wire format reader using `Uint8Array` if available, otherwise `Array`. */
 export class Reader {
 
     /**
      * Constructs a new reader instance using the specified buffer.
-     * @classdesc Wire format reader using `Uint8Array` if available, otherwise `Array`.
      * @param buffer Buffer to read from
      */
     constructor(buffer: Uint8Array);
@@ -1075,7 +966,7 @@ export class Reader {
      * Creates a new reader using the specified buffer.
      * @param buffer Buffer to read from
      * @returns A {@link BufferReader} if `buffer` is a Buffer, otherwise a {@link Reader}
-     * @throws If `buffer` is not a valid buffer
+     * @throws {Error} If `buffer` is not a valid buffer
      */
     public static create(buffer: (Uint8Array|Buffer)): (Reader|BufferReader);
 
@@ -1184,16 +1075,11 @@ export class Reader {
     public skipType(wireType: number): Reader;
 }
 
-/**
- * Constructs a new buffer reader instance.
- * @classdesc Wire format reader using node buffers.
- * @param buffer Buffer to read from
- */
+/** Wire format reader using node buffers. */
 export class BufferReader extends Reader {
 
     /**
      * Constructs a new buffer reader instance.
-     * @classdesc Wire format reader using node buffers.
      * @param buffer Buffer to read from
      */
     constructor(buffer: Buffer);
@@ -1208,16 +1094,11 @@ export class BufferReader extends Reader {
     public bytes(): Buffer;
 }
 
-/**
- * Constructs a new root namespace instance.
- * @classdesc Root namespace wrapping all types, enums, services, sub-namespaces etc. that belong together.
- * @param [options] Top level options
- */
+/** Root namespace wrapping all types, enums, services, sub-namespaces etc. that belong together. */
 export class Root extends NamespaceBase {
 
     /**
      * Constructs a new root namespace instance.
-     * @classdesc Root namespace wrapping all types, enums, services, sub-namespaces etc. that belong together.
      * @param [options] Top level options
      */
     constructor(options?: { [k: string]: any });
@@ -1266,7 +1147,7 @@ export class Root extends NamespaceBase {
      * @param filename Names of one or multiple files to load
      * @param [options] Parse options. Defaults to {@link parse.defaults} when omitted.
      * @returns Root namespace
-     * @throws If synchronous fetching is not supported (i.e. in browsers) or if a file's syntax is invalid
+     * @throws {Error} If synchronous fetching is not supported (i.e. in browsers) or if a file's syntax is invalid
      */
     public loadSync(filename: (string|string[]), options?: IParseOptions): Root;
 }
@@ -1283,7 +1164,7 @@ export namespace rpc {
 
     /**
      * A service method callback as used by {@link rpc.ServiceMethod|ServiceMethod}.
-     *
+     * 
      * Differs from {@link RPCImplCallback} in that it is an actual callback of a service method which may not return `response = null`.
      * @param error Error, if any
      * @param [response] Response message
@@ -1298,18 +1179,11 @@ export namespace rpc {
      */
     type ServiceMethod<TReq extends Message<TReq>, TRes extends Message<TRes>> = (request: (TReq|Properties<TReq>), callback?: rpc.ServiceMethodCallback<TRes>) => Promise<Message<TRes>>;
 
-    /**
-     * Constructs a new RPC service instance.
-     * @classdesc An RPC service as returned by {@link Service#create}.
-     * @param rpcImpl RPC implementation
-     * @param [requestDelimited=false] Whether requests are length-delimited
-     * @param [responseDelimited=false] Whether responses are length-delimited
-     */
+    /** An RPC service as returned by {@link Service#create}. */
     class Service extends util.EventEmitter {
 
         /**
          * Constructs a new RPC service instance.
-         * @classdesc An RPC service as returned by {@link Service#create}.
          * @param rpcImpl RPC implementation
          * @param [requestDelimited=false] Whether requests are length-delimited
          * @param [responseDelimited=false] Whether responses are length-delimited
@@ -1359,21 +1233,14 @@ type RPCImpl = (method: (Method|rpc.ServiceMethod<Message<{}>, Message<{}>>), re
  */
 type RPCImplCallback = (error: Error, response?: Uint8Array) => void;
 
-/**
- * Constructs a new service instance.
- * @classdesc Reflected service.
- * @param name Service name
- * @param [options] Service options
- * @throws If arguments are invalid
- */
+/** Reflected service. */
 export class Service extends NamespaceBase {
 
     /**
      * Constructs a new service instance.
-     * @classdesc Reflected service.
      * @param name Service name
      * @param [options] Service options
-     * @throws If arguments are invalid
+     * @throws {TypeError} If arguments are invalid
      */
     constructor(name: string, options?: { [k: string]: any });
 
@@ -1385,7 +1252,7 @@ export class Service extends NamespaceBase {
      * @param name Service name
      * @param json Service descriptor
      * @returns Created service
-     * @throws If arguments are invalid
+     * @throws {TypeError} If arguments are invalid
      */
     public static fromJSON(name: string, json: IService): Service;
 
@@ -1395,10 +1262,7 @@ export class Service extends NamespaceBase {
      */
     public toJSON(): IService;
 
-    /**
-     * Methods of this service as an array for iteration.
-     * @readonly
-     */
+    /** Methods of this service as an array for iteration. */
     public readonly methodsArray: Method[];
 
     /**
@@ -1445,7 +1309,7 @@ type TokenizerHandlePush = (token: string) => void;
  * @param expected Expected token
  * @param [optional=false] If optional
  * @returns Whether the token matched
- * @throws If the token didn't match and is not optional
+ * @throws {Error} If the token didn't match and is not optional
  */
 type TokenizerHandleSkip = (expected: string, optional?: boolean) => boolean;
 
@@ -1473,17 +1337,11 @@ export interface ITokenizerHandle {
  */
 export function tokenize(source: string): ITokenizerHandle;
 
-/**
- * Constructs a new reflected message type instance.
- * @classdesc Reflected message type.
- * @param name Message name
- * @param [options] Declared options
- */
+/** Reflected message type. */
 export class Type extends NamespaceBase {
 
     /**
      * Constructs a new reflected message type instance.
-     * @classdesc Reflected message type.
      * @param name Message name
      * @param [options] Declared options
      */
@@ -1501,22 +1359,13 @@ export class Type extends NamespaceBase {
     /** Reserved ranges, if any. */
     public reserved: (number[]|string)[];
 
-    /**
-     * Message fields by id.
-     * @readonly
-     */
+    /** Message fields by id. */
     public readonly fieldsById: { [k: number]: Field };
 
-    /**
-     * Fields of this message as an array for iteration.
-     * @readonly
-     */
+    /** Fields of this message as an array for iteration. */
     public readonly fieldsArray: Field[];
 
-    /**
-     * Oneofs of this message as an array for iteration.
-     * @readonly
-     */
+    /** Oneofs of this message as an array for iteration. */
     public readonly oneofsArray: OneOf[];
 
     /**
@@ -1550,8 +1399,8 @@ export class Type extends NamespaceBase {
      * Adds a nested object to this type.
      * @param object Nested object to add
      * @returns `this`
-     * @throws If arguments are invalid
-     * @throws If there is already a nested object with this name or, if a field, when there is already a field with this id
+     * @throws {TypeError} If arguments are invalid
+     * @throws {Error} If there is already a nested object with this name or, if a field, when there is already a field with this id
      */
     public add(object: ReflectionObject): Type;
 
@@ -1559,8 +1408,8 @@ export class Type extends NamespaceBase {
      * Removes a nested object from this type.
      * @param object Nested object to remove
      * @returns `this`
-     * @throws If arguments are invalid
-     * @throws If `object` is not a member of this type
+     * @throws {TypeError} If arguments are invalid
+     * @throws {Error} If `object` is not a member of this type
      */
     public remove(object: ReflectionObject): Type;
 
@@ -1612,8 +1461,8 @@ export class Type extends NamespaceBase {
      * @param reader Reader or buffer to decode from
      * @param [length] Length of the message, if known beforehand
      * @returns Decoded message
-     * @throws If the payload is not a reader or valid buffer
-     * @throws If required fields are missing
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {util.ProtocolError<{}>} If required fields are missing
      */
     public decode(reader: (Reader|Uint8Array), length?: number): Message<{}>;
 
@@ -1621,8 +1470,8 @@ export class Type extends NamespaceBase {
      * Decodes a message of this type preceeded by its byte length as a varint.
      * @param reader Reader or buffer to decode from
      * @returns Decoded message
-     * @throws If the payload is not a reader or valid buffer
-     * @throws If required fields are missing
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {util.ProtocolError} If required fields are missing
      */
     public decodeDelimited(reader: (Reader|Uint8Array)): Message<{}>;
 
@@ -1665,10 +1514,7 @@ export interface IType extends INamespace {
     group?: boolean;
 }
 
-/**
- * Conversion options as used by {@link Type#toObject} and {@link Message.toObject}.
- * @link Long} with a long library.
- */
+/** Conversion options as used by {@link Type#toObject} and {@link Message.toObject}. */
 export interface IConversionOptions {
     longs?: any;
     enums?: any;
@@ -1811,17 +1657,11 @@ type OneOfSetter = (value: (string|undefined)) => void;
 /** Various utility functions. */
 export namespace util {
 
-    /**
-     * Constructs new long bits.
-     * @classdesc Helper class for working with the low and high bits of a 64 bit value.
-     * @param lo Low 32 bits, unsigned
-     * @param hi High 32 bits, unsigned
-     */
+    /** Helper class for working with the low and high bits of a 64 bit value. */
     class LongBits {
 
         /**
          * Constructs new long bits.
-         * @classdesc Helper class for working with the low and high bits of a 64 bit value.
          * @param lo Low 32 bits, unsigned
          * @param hi High 32 bits, unsigned
          */
@@ -2009,17 +1849,11 @@ export namespace util {
      */
     function newError(name: string): Constructor<Error>;
 
-    /**
-     * Constructs a new protocol error.
-     * @classdesc Error subclass indicating a protocol specifc error.
-     * @param message Error message
-     * @param [properties] Additional properties
-     */
+    /** Error subclass indicating a protocol specifc error. */
     class ProtocolError<T extends Message<T>> extends Error {
 
         /**
          * Constructs a new protocol error.
-         * @classdesc Error subclass indicating a protocol specifc error.
          * @param message Error message
          * @param [properties] Additional properties
          */
@@ -2045,9 +1879,9 @@ export namespace util {
 
     /**
      * Default conversion options used for {@link Message#toJSON} implementations.
-     *
+     * 
      * These options are close to proto3's JSON mapping with the exception that internal types like Any are handled just like messages. More precisely:
-     *
+     * 
      * - Longs become strings
      * - Enums become string keys
      * - Bytes become base64 encoded strings
@@ -2055,7 +1889,7 @@ export namespace util {
      * - Maps become plain objects with all string keys
      * - Repeated fields become arrays
      * - NaN and Infinity for float and double fields become strings
-     *
+     * 
      * @see https://developers.google.com/protocol-buffers/docs/proto3?hl=en#json
      */
     let toJSONOptions: IConversionOptions;
@@ -2114,10 +1948,7 @@ export namespace util {
      */
     function decorateEnum(object: object): Enum;
 
-    /**
-     * Decorator root (TypeScript).
-     * @readonly
-     */
+    /** Decorator root (TypeScript). */
     let decorateRoot: Root;
 
     /**
@@ -2154,7 +1985,7 @@ export namespace util {
          * @param buffer Destination buffer
          * @param offset Destination offset
          * @returns Number of bytes written
-         * @throws If encoding is invalid
+         * @throws {Error} If encoding is invalid
          */
         function decode(string: string, buffer: Uint8Array, offset: number): number;
 
@@ -2173,16 +2004,10 @@ export namespace util {
      */
     function codegen(...params: string[]): Codegen;
 
-    /**
-     * Constructs a new event emitter instance.
-     * @classdesc A minimal event emitter.
-     */
+    /** A minimal event emitter. */
     class EventEmitter {
 
-        /**
-         * Constructs a new event emitter instance.
-         * @classdesc A minimal event emitter.
-         */
+        /** Constructs a new event emitter instance. */
         constructor();
 
         /**
@@ -2406,16 +2231,10 @@ export interface IWrapper {
     toObject?: WrapperToObjectConverter;
 }
 
-/**
- * Constructs a new writer instance.
- * @classdesc Wire format writer using `Uint8Array` if available, otherwise `Array`.
- */
+/** Wire format writer using `Uint8Array` if available, otherwise `Array`. */
 export class Writer {
 
-    /**
-     * Constructs a new writer instance.
-     * @classdesc Wire format writer using `Uint8Array` if available, otherwise `Array`.
-     */
+    /** Constructs a new writer instance. */
     constructor();
 
     /** Current length. */
@@ -2468,7 +2287,7 @@ export class Writer {
      * Writes an unsigned 64 bit value as a varint.
      * @param value Value to write
      * @returns `this`
-     * @throws If `value` is a string and no long library is present.
+     * @throws {TypeError} If `value` is a string and no long library is present.
      */
     public uint64(value: (Long|number|string)): Writer;
 
@@ -2476,7 +2295,7 @@ export class Writer {
      * Writes a signed 64 bit value as a varint.
      * @param value Value to write
      * @returns `this`
-     * @throws If `value` is a string and no long library is present.
+     * @throws {TypeError} If `value` is a string and no long library is present.
      */
     public int64(value: (Long|number|string)): Writer;
 
@@ -2484,7 +2303,7 @@ export class Writer {
      * Writes a signed 64 bit value as a varint, zig-zag encoded.
      * @param value Value to write
      * @returns `this`
-     * @throws If `value` is a string and no long library is present.
+     * @throws {TypeError} If `value` is a string and no long library is present.
      */
     public sint64(value: (Long|number|string)): Writer;
 
@@ -2513,7 +2332,7 @@ export class Writer {
      * Writes an unsigned 64 bit value as fixed 64 bits.
      * @param value Value to write
      * @returns `this`
-     * @throws If `value` is a string and no long library is present.
+     * @throws {TypeError} If `value` is a string and no long library is present.
      */
     public fixed64(value: (Long|number|string)): Writer;
 
@@ -2521,7 +2340,7 @@ export class Writer {
      * Writes a signed 64 bit value as fixed 64 bits.
      * @param value Value to write
      * @returns `this`
-     * @throws If `value` is a string and no long library is present.
+     * @throws {TypeError} If `value` is a string and no long library is present.
      */
     public sfixed64(value: (Long|number|string)): Writer;
 
@@ -2579,16 +2398,10 @@ export class Writer {
     public finish(): Uint8Array;
 }
 
-/**
- * Constructs a new buffer writer instance.
- * @classdesc Wire format writer using node buffers.
- */
+/** Wire format writer using node buffers. */
 export class BufferWriter extends Writer {
 
-    /**
-     * Constructs a new buffer writer instance.
-     * @classdesc Wire format writer using node buffers.
-     */
+    /** Constructs a new buffer writer instance. */
     constructor();
 
     /**

@@ -469,7 +469,7 @@ The npm package depends on [@types/node](https://www.npmjs.com/package/@types/no
 
 #### Using the JS API
 
-The API shown above works pretty much the same with TypeScript. However, because everything is typed, accessing fields on instances of dynamically generated message classes requires either (1) using bracket-notation (i.e. `message["awesomeField"]`), (2) explicit casts or (3) the use of a [typings file generated for its static counterpart](#pbts-for-typescript).
+The API shown above works pretty much the same with TypeScript. However, because everything is typed, accessing fields on instances of dynamically generated message classes requires either using bracket-notation (i.e. `message["awesomeField"]`) or explicit casts. Alternatively, it is possible to use a [typings file generated for its static counterpart](#pbts-for-typescript).
 
 ```ts
 import { load } from "protobufjs"; // respectively "./node_modules/protobufjs"
@@ -509,7 +509,7 @@ let decoded = AwesomeMessage.decode(buffer);
 
 The library also includes an early implementation of [decorators](https://www.typescriptlang.org/docs/handbook/decorators.html).
 
-**Note** that this API is rather new in protobuf.js (and probably buggy) and that decorators are an experimental feature in TypeScript. Also note that declaration order is important depending on the JS target. For example, `@Field.d(2, AwesomeArrayMessage)` requires that `AwesomeArrayMessage` has been defined earlier when targeting `ES5`.
+**Note** that decorators are an experimental feature in TypeScript and that declaration order is important depending on the JS target. For example, `@Field.d(2, AwesomeArrayMessage)` requires that `AwesomeArrayMessage` has been defined earlier when targeting `ES5`.
 
 ```ts
 import { Message, Type, Field, OneOf } from "protobufjs/light"; // respectively "./node_modules/protobufjs/light.js"

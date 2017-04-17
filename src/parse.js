@@ -56,7 +56,6 @@ parse.numberRe = numberRe;
 
 /**
  * Parses the given .proto source and returns an object with the parsed contents.
- * @function
  * @param {string} source Source contents
  * @param {Root} root Root to populate
  * @param {IParseOptions} [options] Parse options. Defaults to {@link parse.defaults} when omitted.

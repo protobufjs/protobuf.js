@@ -1,6 +1,8 @@
 # [6.8.0](https://github.com/dcodeIO/protobuf.js/releases/tag/6.8.0)
 
 ## Breaking
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/ff858003f525db542cbb270777b6fab3a230c9bb) Replaced Buffer and Long types with interfaces and removed stubs<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/22f907c49adbbdf09b72bde5299271dbe0ee9cbe) Removed Message#toObject in favor of having just the static version (unnecessary static code otherwise)<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/c97b61811248df002f1fb93557b982bc0aa27309) Everything uses interfaces now instead of typedefs (SomethingProperties is now ISomething)<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/b9f179064f3ddf683f13e0d4e17840301be64010) ReflectionObject#toJSON properly omits explicit undefined values<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/7a6f98b5e74f9e9142f9be3ba0683caeaff916c4) Initial implementation of TypeScript decorators<br />
@@ -19,6 +21,9 @@
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/3939667ef1f37b025bd7f9476015890496d50e00) Added 'json' conversion option for proto3 JSON mapping compatibility of NaN and Infinity + additional documentation of util.toJSONOptions, see [#351](https://github.com/dcodeIO/protobuf.js/issues/351)<br />
 
 ## CLI
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/ff858003f525db542cbb270777b6fab3a230c9bb) Further TypeScript definition improvements<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/22f907c49adbbdf09b72bde5299271dbe0ee9cbe) Relieved tsd files from unnecessary comments<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/22f907c49adbbdf09b72bde5299271dbe0ee9cbe) Generate TS namespaces for vars and functions with properties<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/b355115e619c6595ac9d91897cfe628ef0e46054) Prefer @tstype over @type when generating typedefs (tsd-jsdoc)<br />
 
 ## Docs
@@ -28,6 +33,7 @@
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/35a663757efe188bea552aef017837bc6c6a481a) Additional docs on TS/decorators usage<br />
 
 ## Other
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/22f907c49adbbdf09b72bde5299271dbe0ee9cbe) Regenerated dist files<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/5bc3541d2da19e2857dc884f743d37c27e8e21f2) Even more documentation and typings for ext/descriptor<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/773e6347b57e4a5236b1ef0bb8d361e4b233caf7) ext/descriptor docs<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/773e6347b57e4a5236b1ef0bb8d361e4b233caf7) Decorators coverage<br />

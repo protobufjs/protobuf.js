@@ -371,6 +371,7 @@ function buildType(ref, type) {
         "Constructs a new " + type.name + ".",
         type.comment ? "@classdesc " + type.comment : null,
         "@constructor",
+        // "@extends $protobuf.Message<" + exportName(type) + ">",
         "@param {" + exportName(type, true) + "=} [" + (config.beautify ? "properties" : "p") + "] Properties to set",
         type.parent instanceof protobuf.Root ? "@name " + escapeName(type.name) : "@memberof " + exportName(type.parent)
     ]);

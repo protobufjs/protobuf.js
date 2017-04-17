@@ -28,3 +28,20 @@ defineTask("light"  , "../src/index-light"  , "../dist/light"  );
 defineTask("minimal", "../src/index-minimal", "../dist/minimal");
 
 gulp.task("default", defaultTask);
+
+/* var typedoc = require("gulp-typedoc");
+gulp.task("typedoc", function() {
+    return gulp
+        .src(["../index.d.ts"])
+        .pipe(typedoc({
+            module: "commonjs",
+            target: "es5",
+            mode: "file",
+            theme: "default",
+            includeDeclarations: true,
+            excludePrivate: true,
+            out: "../tsdocs",
+            name: "protobuf.js"
+        }))
+}); */
+

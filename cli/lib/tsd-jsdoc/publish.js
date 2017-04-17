@@ -134,8 +134,38 @@ function writeln() {
     indentWritten = false;
 }
 
-var skipTagsRe = /@(type|tstype|const|memberof|name|exports|interface|extends|implements|constructor|function|template|property|this|typedef|variation|example|returns \{undefined})[^@$]*/g,
-    skipTypeRe = /(@[^ ]+) \{[^\s$]+}/g;
+var keepTags = [
+    "param",
+    "returns",
+    "throws",
+    "see"
+];
+
+// parses a comment into text and tags
+function parseComment(comment) {
+    var lines = comment.replace(/^ *\/\*\* *|^ *\*\/| *\*\/ *$|^ *\* */mg, "").trim().split(/\r?\n/g);
+    var desc;
+    var text = [];
+    var tags = null;
+    for (var i = 0; i < lines.length; ++i) {
+        var match = /^@(\w+)\b/.exec(lines[i]);
+        if (match) {
+            if (!tags) {
+                tags = [];
+                desc = text;
+            }
+            text = [];
+            tags.push({ name: match[1], text: text });
+            lines[i] = lines[i].substring(match[1].length + 1).trim();
+        }
+        if (lines[i].length || text.length)
+            text.push(lines[i]);
+    }
+    return {
+        text: desc || text,
+        tags: tags || []
+    };
+}
 
 // writes a comment
 function writeComment(comment, otherwiseNewline) {
@@ -144,26 +174,40 @@ function writeComment(comment, otherwiseNewline) {
             writeln();
         return;
     }
-    comment = comment.replace(skipTagsRe, "").trim();
-    if (comment.charAt(comment.length - 1) !== "/")
-        comment += "/";
-    var lines = comment.split(/\r?\n/g);
-    if (lines.length === 3) {
-        writeln();
-        writeln("/*" + lines[1].trim() + " */");
-    } else {
-        var first = true;
-        lines.forEach(function(line) {
-            line = line.trim().replace(/^\*/, " *").replace(skipTypeRe, "$1");
-            if (line.length) {
-                if (first) {
-                    writeln();
-                    first = false;
+
+    if (typeof comment !== "object")
+        comment = parseComment(comment);
+    comment.tags = comment.tags.filter(function(tag) {
+        return keepTags.indexOf(tag.name) > -1 && (tag.name !== "returns" || tag.text[0] !== "{undefined}");
+    });
+    writeln();
+    if (!comment.tags.length && comment.text.length < 2) {
+        writeln("/** " + comment.text[0] + " */");
+        return;
+    }
+    writeln("/**");
+    comment.text.forEach(function(line) {
+        writeln(" * ", line);
+    });
+    comment.tags.forEach(function(tag) {
+        var started = false;
+        if (tag.text.length) {
+            tag.text.forEach(function(line, i) {
+                if (i > 0)
+                    write(" * ");
+                else if (tag.name !== "throws")
+                    line = line.replace(/^\{[^\s]*} ?/, "");
+                if (!line.length)
+                    return;
+                if (!started) {
+                    write(" * @", tag.name, " ");
+                    started = true;
                 }
                 writeln(line);
-            }
-        });
-    }
+            });
+        }
+    });
+    writeln(" */");
 }
 
 // recursively replaces all occurencies of re's match
@@ -184,12 +228,17 @@ function replaceRecursive(name, re, fn) {
 
 // tests if an element is considered to be a class or class-like
 function isClassLike(element) {
-    return element && (element.kind === "class" || element.kind === "interface" || element.kind === "mixin");
+    return isClass(element) || isInterface(element);
+}
+
+// tests if an element is considered to be a class
+function isClass(element) {
+    return element && element.kind === "class";
 }
 
 // tests if an element is considered to be an interface
 function isInterface(element) {
-    return element && element.kind === "interface";
+    return element && (element.kind === "interface" || element.kind === "mixin");
 }
 
 // tests if an element is considered to be a namespace
@@ -254,7 +303,16 @@ function getTypeOf(element) {
 // begins writing the definition of the specified element
 function begin(element, is_interface) {
     if (!seen[element.longname]) {
-        writeComment(element.comment, is_interface || isInterface(element) || isClassLike(element) || isNamespace(element) || element.isEnum || element.scope === "global");
+        if (isClass(element)) {
+            var comment = parseComment(element.comment);
+            var classdesc = comment.tags.find(function(tag) { return tag.name === "classdesc"; });
+            if (classdesc) {
+                comment.text = classdesc.text;
+                comment.tags = [];
+            }
+            writeComment(comment, true);
+        } else
+            writeComment(element.comment, is_interface || isClassLike(element) || isNamespace(element) || element.isEnum || element.scope === "global");
         seen[element.longname] = element;
     } else
         writeln();
