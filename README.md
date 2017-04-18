@@ -554,7 +554,7 @@ Supported decorators are:
 * **Type.d(typeName?: `string`)** &nbsp; *(optional)*<br />
   annotates a class as a protobuf message type. If `typeName` is not specified, the constructor's runtime function name is used for the reflected type.
 
-* **Field.d&lt;T>(fieldId: `number`, fieldType: `string | TMessageConstructor<TField>`, fieldRule?: `"optional" | "required" | "repeated"`, defaultValue?: `T`)**<br />
+* **Field.d&lt;T>(fieldId: `number`, fieldType: `string | Constructor<T>`, fieldRule?: `"optional" | "required" | "repeated"`, defaultValue?: `T`)**<br />
   annotates a property as a protobuf field with the specified id and protobuf type.
 
 * **MapField.d&lt;T extends { [key: string]: any }>(fieldId: `number`, fieldKeyType: `string`, fieldValueType. `string | Constructor<{}>`)**<br />

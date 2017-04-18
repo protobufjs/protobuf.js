@@ -395,11 +395,9 @@ function writeInterfaceBody(element) {
     write("}");
 }
 
-function writeProperty(property, withLet) {
+function writeProperty(property, declare) {
     writeComment(property.description);
-    if (!/^[\w$]+$/.test(property.name)) // incompatible
-        write("// ");
-    if (withLet)
+    if (declare)
         write("let ");
     write(property.name);
     if (property.optional)
@@ -462,6 +460,8 @@ function handleNamespace(element/*, parent*/) {
     var first = true;
     if (element.properties)
         element.properties.forEach(function(property) {
+            if (!/^[$\w]+$/.test(property.name)) // incompatible in namespace
+                return;
             if (first) {
                 begin(element);
                 writeln("namespace ", element.name, " {");
