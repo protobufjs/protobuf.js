@@ -3,7 +3,7 @@ var tape = require("tape");
 var protobuf = require("..");
 
 tape.test("proto comments", function(test) {
-    test.plan(9);
+    test.plan(10);
     protobuf.load("tests/data/comments.proto", function(err, root) {
         if (err)
             throw test.fail(err.message);
@@ -18,7 +18,8 @@ tape.test("proto comments", function(test) {
 
         test.equal(root.lookup("Test3").comments.ONE, "Value with a comment.", "should parse blocks for enum values");
         test.equal(root.lookup("Test3").comments.TWO, null, "should not parse lines for enum values");
-        test.equal(root.lookup("Test3").comments.THREE, "Value with a comment.", "should parse triple-slash lines for enum values");
+        test.equal(root.lookup("Test3").comments.THREE, "Preferred value with a comment.", "should parse lines for enum values and prefer on top over trailing");
+        test.equal(root.lookup("Test3").comments.FOUR, "Other value with a comment.", "should not confuse previous trailing comments with comments for the next field");
 
         test.end();
     });

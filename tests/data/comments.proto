@@ -10,7 +10,7 @@ syntax = "proto3";
 a
  ** comment.
  */
-message Test1 {
+message Test1 { /// not a valid comment
 
     /**
      * Field with a comment.
@@ -44,5 +44,8 @@ enum Test3 {
     // Value with no comment.
     TWO = 2;
 
+    /// Preferred value with a comment.
     THREE = 3; /// Value with a comment.
+
+    FOUR = 4; /// Other value with a comment.
 }

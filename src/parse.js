@@ -95,7 +95,7 @@ function parse(source, root, options) {
         var filename = parse.filename;
         if (!insideTryCatch)
             parse.filename = null;
-        return Error("illegal " + (name || "token") + " '" + token + "' (" + (filename ? filename + ", " : "") + "line " + tn.line() + ")");
+        return Error("illegal " + (name || "token") + " '" + token + "' (" + (filename ? filename + ", " : "") + "line " + tn.line + ")");
     }
 
     function readString() {
@@ -279,7 +279,7 @@ function parse(source, root, options) {
     }
 
     function ifBlock(obj, fnIf, fnElse) {
-        var trailingLine = tn.line();
+        var trailingLine = tn.line;
         if (obj) {
             obj.comment = cmnt(); // try block-type comment
             obj.filename = parse.filename;

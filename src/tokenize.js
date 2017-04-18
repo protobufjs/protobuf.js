@@ -39,13 +39,6 @@ function unescape(str) {
 tokenize.unescape = unescape;
 
 /**
- * Gets the current line number.
- * @typedef TokenizerHandleLine
- * @type {function}
- * @returns {number} Line number
- */
-
-/**
  * Gets the next token and advances.
  * @typedef TokenizerHandleNext
  * @type {function}
@@ -88,12 +81,12 @@ tokenize.unescape = unescape;
 /**
  * Handle object returned from {@link tokenize}.
  * @interface ITokenizerHandle
- * @property {TokenizerHandleLine} line Gets the current line number
  * @property {TokenizerHandleNext} next Gets the next token and advances (`null` on eof)
  * @property {TokenizerHandlePeek} peek Peeks for the next token (`null` on eof)
  * @property {TokenizerHandlePush} push Pushes a token back to the stack
  * @property {TokenizerHandleSkip} skip Skips a token, returns its presence and advances or, if non-optional and not present, throws
  * @property {TokenizerHandleCmnt} cmnt Gets the comment on the previous line or the line comment on the specified line, if any
+ * @property {number} line Current line number
  */
 
 /**
@@ -110,7 +103,8 @@ function tokenize(source) {
         line = 1,
         commentType = null,
         commentText = null,
-        commentLine = 0;
+        commentLine = 0,
+        commentLineEmpty = false;
 
     var stack = [];
 
@@ -164,6 +158,15 @@ function tokenize(source) {
     function setComment(start, end) {
         commentType = source.charAt(start++);
         commentLine = line;
+        commentLineEmpty = false;
+        var offset = start - 3, // "///" or "/**"
+            c;
+        do {
+            if (--offset < 0 || (c = source.charAt(offset)) === "\n") {
+                commentLineEmpty = true;
+                break;
+            }
+        } while (c === " " || c === "\t");
         var lines = source
             .substring(start, end)
             .split(setCommentSplitRe);
@@ -188,7 +191,7 @@ function tokenize(source) {
             prev,
             curr,
             start,
-            isComment;
+            isDoc;
         do {
             if (offset === length)
                 return null;
@@ -203,17 +206,17 @@ function tokenize(source) {
                 if (++offset === length)
                     throw illegal("comment");
                 if (charAt(offset) === "/") { // Line
-                    isComment = charAt(start = offset + 1) === "/";
+                    isDoc = charAt(start = offset + 1) === "/";
                     while (charAt(++offset) !== "\n")
                         if (offset === length)
                             return null;
                     ++offset;
-                    if (isComment)
+                    if (isDoc) /// Comment
                         setComment(start, offset - 1);
                     ++line;
                     repeat = true;
                 } else if ((curr = charAt(offset)) === "*") { /* Block */
-                    isComment = charAt(start = offset + 1) === "*";
+                    isDoc = charAt(start = offset + 1) === "*";
                     do {
                         if (curr === "\n")
                             ++line;
@@ -223,7 +226,7 @@ function tokenize(source) {
                         curr = charAt(offset);
                     } while (prev !== "*" || curr !== "/");
                     ++offset;
-                    if (isComment)
+                    if (isDoc) /** Comment */
                         setComment(start, offset - 2);
                     repeat = true;
                 } else
@@ -292,33 +295,32 @@ function tokenize(source) {
 
     /**
      * Gets a comment.
-     * @param {number} [trailingLine] Trailing line number if applicable
+     * @param {number} [trailingLine] Line number if looking for a trailing comment
      * @returns {?string} Comment text
      * @inner
      */
     function cmnt(trailingLine) {
-        var ret;
-        if (trailingLine === undefined)
-            ret = commentLine === line - 1 && commentText || null;
-        else {
-            if (!commentText)
+        var ret = null;
+        if (trailingLine === undefined) {
+            if (commentLine === line - 1 && (commentType === "*" || commentLineEmpty))
+                ret = commentText;
+        } else {
+            if (commentLine !== trailingLine || commentLineEmpty || commentType !== "/")
                 peek();
-            ret = commentLine === trailingLine && commentType === "/" && commentText || null;
+            if (commentLine === trailingLine && !commentLineEmpty && commentType === "/")
+                ret = commentText;
         }
-        commentType = commentText = null;
-        commentLine = 0;
         return ret;
     }
 
-    return {
+    return Object.defineProperty({
         next: next,
         peek: peek,
         push: push,
         skip: skip,
-        line: function() {
-            return line;
-        },
         cmnt: cmnt
-    };
+    }, "line", {
+        get: function() { return line; }
+    });
     /* eslint-enable callback-return */
 }

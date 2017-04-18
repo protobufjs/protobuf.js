@@ -10,24 +10,6 @@ export function common(name: string, json: { [k: string]: any }): void;
 
 export namespace common {
 
-    /** Any */
-    // let google/protobuf/any.proto: INamespace;
-
-    /** Duration */
-    // let google/protobuf/duration.proto: INamespace;
-
-    /** Empty */
-    // let google/protobuf/empty.proto: INamespace;
-
-    /** Struct, Value, NullValue and ListValue */
-    // let google/protobuf/struct.proto: INamespace;
-
-    /** Timestamp */
-    // let google/protobuf/timestamp.proto: INamespace;
-
-    /** Wrappers */
-    // let google/protobuf/wrappers.proto: INamespace;
-
     /**
      * Gets the root definition of the specified common proto file.
      *
@@ -1350,12 +1332,6 @@ export interface IService extends INamespace {
 }
 
 /**
- * Gets the current line number.
- * @returns Line number
- */
-type TokenizerHandleLine = () => number;
-
-/**
  * Gets the next token and advances.
  * @returns Next token or `null` on eof
  */
@@ -1392,9 +1368,6 @@ type TokenizerHandleCmnt = (line?: number) => string;
 /** Handle object returned from {@link tokenize}. */
 export interface ITokenizerHandle {
 
-    /** Gets the current line number */
-    line: TokenizerHandleLine;
-
     /** Gets the next token and advances (`null` on eof) */
     next: TokenizerHandleNext;
 
@@ -1409,6 +1382,9 @@ export interface ITokenizerHandle {
 
     /** Gets the comment on the previous line or the line comment on the specified line, if any */
     cmnt: TokenizerHandleCmnt;
+
+    /** Current line number */
+    line: number;
 }
 
 /**
