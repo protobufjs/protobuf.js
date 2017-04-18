@@ -27,13 +27,14 @@ tape.test("tokenize", function(test) {
 
     tn = tokenize("// line comment");
     test.equal(tn.next(), null, "should skip line comments on a single line");
-    tn = tokenize("/// line comment\n");
-    test.equal(tn.cmnt(1), "line comment", "should peek for trailing line comments when on the next line");
+    tn = tokenize("a /// line comment\n");
+    tn.next();
+    test.equal(tn.cmnt(1), "line comment", "should peek for trailing line comments");
     tn = tokenize("/* block comment */");
     test.equal(tn.next(), null, "should skip block comments on a single line");
     tn = tokenize("/// line comment\na\n");
     tn.next();
-    test.equal(tn.cmnt(1), "line comment", "should keep leading comments around while on the next line");
+    test.equal(tn.cmnt(), "line comment", "should keep leading comments around while on the next line");
 
     test.ok(expectError("something; /"), "should throw for unterminated line comments");
     test.ok(expectError("something; /* comment"), "should throw for unterminated block comments");
