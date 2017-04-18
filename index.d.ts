@@ -10,6 +10,40 @@ export function common(name: string, json: { [k: string]: any }): void;
 
 export namespace common {
 
+    /** Any */
+    // let google/protobuf/any.proto: INamespace;
+
+    /** Duration */
+    // let google/protobuf/duration.proto: INamespace;
+
+    /** Empty */
+    // let google/protobuf/empty.proto: INamespace;
+
+    /** Struct, Value, NullValue and ListValue */
+    // let google/protobuf/struct.proto: INamespace;
+
+    /** Timestamp */
+    // let google/protobuf/timestamp.proto: INamespace;
+
+    /** Wrappers */
+    // let google/protobuf/wrappers.proto: INamespace;
+
+    /**
+     * Gets the root definition of the specified common proto file.
+     *
+     * Bundled definitions are:
+     * - google/protobuf/any.proto
+     * - google/protobuf/duration.proto
+     * - google/protobuf/empty.proto
+     * - google/protobuf/struct.proto
+     * - google/protobuf/timestamp.proto
+     * - google/protobuf/wrappers.proto
+     *
+     * @param file Proto file name
+     * @returns Root definition or `null` if not defined
+     */
+    function get(file: string): INamespace;
+
     /** Properties of a google.protobuf.Any message. */
     interface IAny {
         typeUrl?: string;
@@ -189,7 +223,11 @@ export class Enum extends ReflectionObject {
 
 /** Enum descriptor. */
 export interface IEnum {
+
+    /** Enum values */
     values: { [k: string]: number };
+
+    /** Enum options */
     options?: { [k: string]: any };
 }
 
@@ -320,14 +358,24 @@ export class FieldBase extends ReflectionObject {
 
 /** Field descriptor. */
 export interface IField {
+
+    /** Field rule */
     rule?: string;
+
+    /** Field type */
     type: string;
+
+    /** Field id */
     id: number;
+
+    /** Field options */
     options?: { [k: string]: any };
 }
 
 /** Extension field descriptor. */
 export interface IExtensionField extends IField {
+
+    /** Extended type */
     extend: string;
 }
 
@@ -433,11 +481,15 @@ export class MapField extends FieldBase {
 
 /** Map field descriptor. */
 export interface IMapField extends IField {
+
+    /** Key type */
     keyType: string;
 }
 
 /** Extension map field descriptor. */
 export interface IExtensionMapField extends IMapField {
+
+    /** Extended type */
     extend: string;
 }
 
@@ -576,11 +628,23 @@ export class Method extends ReflectionObject {
 
 /** Method descriptor. */
 export interface IMethod {
+
+    /** Method type */
     type?: string;
+
+    /** Request type */
     requestType: string;
+
+    /** Response type */
     responseType: string;
+
+    /** Whether requests are streamed */
     requestStream?: boolean;
+
+    /** Whether responses are streamed */
     responseStream?: boolean;
+
+    /** Method options */
     options?: { [k: string]: any };
 }
 
@@ -737,7 +801,11 @@ export abstract class NamespaceBase extends ReflectionObject {
 
 /** Namespace descriptor. */
 export interface INamespace {
+
+    /** Namespace options */
     options?: { [k: string]: any };
+
+    /** Nested object descriptors */
     nested?: { [k: string]: AnyNestedObject };
 }
 
@@ -885,7 +953,11 @@ export class OneOf extends ReflectionObject {
 
 /** Oneof descriptor. */
 export interface IOneOf {
+
+    /** Oneof field names */
     oneof: string[];
+
+    /** Oneof options */
     options?: { [k: string]: any };
 }
 
@@ -898,15 +970,27 @@ type OneOfDecorator = (prototype: object, oneofName: string) => void;
 
 /** Result object returned from {@link parse}. */
 export interface IParserResult {
+
+    /** Package name, if declared */
     package: (string|undefined);
+
+    /** Imports, if any */
     imports: (string[]|undefined);
+
+    /** Weak imports, if any */
     weakImports: (string[]|undefined);
+
+    /** Syntax, if specified (either `"proto2"` or `"proto3"`) */
     syntax: (string|undefined);
+
+    /** Populated root instance */
     root: Root;
 }
 
 /** Options modifying the behavior of {@link parse}. */
 export interface IParseOptions {
+
+    /** Keeps field casing instead of converting to camel case */
     keepCase?: boolean;
 }
 
@@ -1147,7 +1231,7 @@ export namespace rpc {
 
     /**
      * A service method callback as used by {@link rpc.ServiceMethod|ServiceMethod}.
-     * 
+     *
      * Differs from {@link RPCImplCallback} in that it is an actual callback of a service method which may not return `response = null`.
      * @param error Error, if any
      * @param [response] Response message
@@ -1260,6 +1344,8 @@ export class Service extends NamespaceBase {
 
 /** Service descriptor. */
 export interface IService extends INamespace {
+
+    /** Method descriptors */
     methods: { [k: string]: IMethod };
 }
 
@@ -1305,11 +1391,23 @@ type TokenizerHandleCmnt = (line?: number) => string;
 
 /** Handle object returned from {@link tokenize}. */
 export interface ITokenizerHandle {
+
+    /** Gets the current line number */
     line: TokenizerHandleLine;
+
+    /** Gets the next token and advances (`null` on eof) */
     next: TokenizerHandleNext;
+
+    /** Peeks for the next token (`null` on eof) */
     peek: TokenizerHandlePeek;
+
+    /** Pushes a token back to the stack */
     push: TokenizerHandlePush;
+
+    /** Skips a token, returns its presence and advances or, if non-optional and not present, throws */
     skip: TokenizerHandleSkip;
+
+    /** Gets the comment on the previous line or the line comment on the specified line, if any */
     cmnt: TokenizerHandleCmnt;
 }
 
@@ -1319,6 +1417,16 @@ export interface ITokenizerHandle {
  * @returns Tokenizer handle
  */
 export function tokenize(source: string): ITokenizerHandle;
+
+export namespace tokenize {
+
+    /**
+     * Unescapes a string.
+     * @param str String to unescape
+     * @returns Unescaped string
+     */
+    function unescape(str: string): string;
+}
 
 /** Reflected message type. */
 export class Type extends NamespaceBase {
@@ -1490,22 +1598,60 @@ export class Type extends NamespaceBase {
 
 /** Message type descriptor. */
 export interface IType extends INamespace {
+
+    /** Oneof descriptors */
     oneofs?: { [k: string]: IOneOf };
+
+    /** Field descriptors */
     fields: { [k: string]: IField };
+
+    /** Extension ranges */
     extensions?: number[][];
+
+    /** Reserved ranges */
     reserved?: number[][];
+
+    /** Whether a legacy group or not */
     group?: boolean;
 }
 
 /** Conversion options as used by {@link Type#toObject} and {@link Message.toObject}. */
 export interface IConversionOptions {
-    longs?: any;
-    enums?: any;
-    bytes?: any;
+
+    /**
+     * Long conversion type.
+     * Valid values are `String` and `Number` (the global types).
+     * Defaults to copy the present value, which is a possibly unsafe number without and a {@link Long} with a long library.
+     */
+    longs?: Function;
+
+    /**
+     * Enum value conversion type.
+     * Only valid value is `String` (the global type).
+     * Defaults to copy the present value, which is the numeric id.
+     */
+    enums?: Function;
+
+    /**
+     * Bytes value conversion type.
+     * Valid values are `Array` and (a base64 encoded) `String` (the global types).
+     * Defaults to copy the present value, which usually is a Buffer under node and an Uint8Array in the browser.
+     */
+    bytes?: Function;
+
+    /** Also sets default values on the resulting object */
     defaults?: boolean;
+
+    /** Sets empty arrays for missing repeated fields even if `defaults=false` */
     arrays?: boolean;
+
+    /** Sets empty objects for missing map fields even if `defaults=false` */
     objects?: boolean;
+
+    /** Includes virtual oneof properties set to the present field's name, if any */
     oneofs?: boolean;
+
+    /** Performs additional JSON compatibility conversions, i.e. NaN and Infinity to strings */
     json?: boolean;
 }
 
@@ -1620,8 +1766,14 @@ export interface Buffer extends Uint8Array {
  * This is a minimal stand-alone definition of a Long instance. The actual type is that exported by long.js.
  */
 export interface Long {
+
+    /** Low bits */
     low: number;
+
+    /** High bits */
     high: number;
+
+    /** Whether unsigned or not */
     unsigned: boolean;
 }
 
@@ -1862,9 +2014,9 @@ export namespace util {
 
     /**
      * Default conversion options used for {@link Message#toJSON} implementations.
-     * 
+     *
      * These options are close to proto3's JSON mapping with the exception that internal types like Any are handled just like messages. More precisely:
-     * 
+     *
      * - Longs become strings
      * - Enums become string keys
      * - Bytes become base64 encoded strings
@@ -1872,7 +2024,7 @@ export namespace util {
      * - Maps become plain objects with all string keys
      * - Repeated fields become arrays
      * - NaN and Infinity for float and double fields become strings
-     * 
+     *
      * @see https://developers.google.com/protocol-buffers/docs/proto3?hl=en#json
      */
     let toJSONOptions: IConversionOptions;
@@ -1986,6 +2138,18 @@ export namespace util {
      * @returns Codegen instance
      */
     function codegen(...params: string[]): Codegen;
+
+    namespace codegen {
+
+        /** Whether code generation is supported by the environment. */
+        let supported: boolean;
+
+        /** When set to true, codegen will log generated code to console. Useful for debugging. */
+        let verbose: boolean;
+
+        /** Underlying sprintf implementation */
+        let sprintf: Function;
+    }
 
     /** A minimal event emitter. */
     class EventEmitter {
@@ -2210,7 +2374,11 @@ type WrapperToObjectConverter = (this: Type, message: Message<{}>, options?: ICo
 
 /** Common type wrapper part of {@link wrappers}. */
 export interface IWrapper {
+
+    /** From object converter */
     fromObject?: WrapperFromObjectConverter;
+
+    /** To object converter */
     toObject?: WrapperToObjectConverter;
 }
 
@@ -2431,7 +2599,11 @@ type FetchCallback = (error: Error, contents?: string) => void;
 
 /** Options as used by {@link util.fetch}. */
 export interface IFetchOptions {
+
+    /** Whether expecting a binary response */
     binary?: boolean;
+
+    /** If `true`, forces the use of XMLHttpRequest */
     xhr?: boolean;
 }
 

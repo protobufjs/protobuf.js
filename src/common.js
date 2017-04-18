@@ -7,12 +7,12 @@ module.exports = common;
  * @param {string} name Short name as in `google/protobuf/[name].proto` or full file name
  * @param {Object.<string,*>} json JSON definition within `google.protobuf` if a short name, otherwise the file's root definition
  * @returns {undefined}
- * @property {Object.<string,*>} google/protobuf/any.proto Any
- * @property {Object.<string,*>} google/protobuf/duration.proto Duration
- * @property {Object.<string,*>} google/protobuf/empty.proto Empty
- * @property {Object.<string,*>} google/protobuf/struct.proto Struct, Value, NullValue and ListValue
- * @property {Object.<string,*>} google/protobuf/timestamp.proto Timestamp
- * @property {Object.<string,*>} google/protobuf/wrappers.proto Wrappers
+ * @property {INamespace} google/protobuf/any.proto Any
+ * @property {INamespace} google/protobuf/duration.proto Duration
+ * @property {INamespace} google/protobuf/empty.proto Empty
+ * @property {INamespace} google/protobuf/struct.proto Struct, Value, NullValue and ListValue
+ * @property {INamespace} google/protobuf/timestamp.proto Timestamp
+ * @property {INamespace} google/protobuf/wrappers.proto Wrappers
  * @example
  * // manually provides descriptor.proto (assumes google/protobuf/ namespace and .proto extension)
  * protobuf.common("descriptor", descriptorJson);
@@ -27,6 +27,26 @@ function common(name, json) {
     }
     common[name] = json;
 }
+
+/**
+ * Gets the root definition of the specified common proto file.
+ *
+ * Bundled definitions are:
+ * - google/protobuf/any.proto
+ * - google/protobuf/duration.proto
+ * - google/protobuf/empty.proto
+ * - google/protobuf/struct.proto
+ * - google/protobuf/timestamp.proto
+ * - google/protobuf/wrappers.proto
+ *
+ * @name common.get
+ * @function
+ * @param {string} file Proto file name
+ * @returns {?INamespace} Root definition or `null` if not defined
+ */
+common.get = function get(file) {
+    return common[file] || null;
+};
 
 var commonRe = /\/|\./;
 

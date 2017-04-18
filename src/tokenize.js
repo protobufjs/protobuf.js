@@ -22,7 +22,7 @@ var unescapeMap = {
  * @param {string} str String to unescape
  * @returns {string} Unescaped string
  * @property {Object.<string,string>} map Special characters map
- * @ignore
+ * @memberof tokenize
  */
 function unescape(str) {
     return str.replace(unescapeRe, function($0, $1) {
@@ -100,7 +100,6 @@ tokenize.unescape = unescape;
  * Tokenizes the given .proto source and returns an object with useful utility functions.
  * @param {string} source Source contents
  * @returns {ITokenizerHandle} Tokenizer handle
- * @property {function(string):string} unescape Unescapes a string
  */
 function tokenize(source) {
     /* eslint-disable callback-return */

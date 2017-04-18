@@ -143,7 +143,7 @@ var keepTags = [
 
 // parses a comment into text and tags
 function parseComment(comment) {
-    var lines = comment.replace(/^ *\/\*\* *|^ *\*\/| *\*\/ *$|^ *\* */mg, "").trim().split(/\r?\n/g);
+    var lines = comment.replace(/^ *\/\*\* *|^ *\*\/| *\*\/ *$|^ *\* */mg, "").trim().split(/\r?\n|\r/g); // property.description has just "\r" ?!
     var desc;
     var text = [];
     var tags = null;
@@ -174,7 +174,6 @@ function writeComment(comment, otherwiseNewline) {
             writeln();
         return;
     }
-
     if (typeof comment !== "object")
         comment = parseComment(comment);
     comment.tags = comment.tags.filter(function(tag) {
@@ -187,7 +186,10 @@ function writeComment(comment, otherwiseNewline) {
     }
     writeln("/**");
     comment.text.forEach(function(line) {
-        writeln(" * ", line);
+        if (line.length)
+            writeln(" * ", line);
+        else
+            writeln(" *");
     });
     comment.tags.forEach(function(tag) {
         var started = false;
@@ -393,8 +395,12 @@ function writeInterfaceBody(element) {
     write("}");
 }
 
-function writeProperty(property) {
-    writeComment(property.comment);
+function writeProperty(property, withLet) {
+    writeComment(property.description);
+    if (!/^[\w$]+$/.test(property.name)) // incompatible
+        write("// ");
+    if (withLet)
+        write("let ");
     write(property.name);
     if (property.optional)
         write("?");
@@ -454,6 +460,16 @@ function handleNamespace(element/*, parent*/) {
     if (!children.length)
         return;
     var first = true;
+    if (element.properties)
+        element.properties.forEach(function(property) {
+            if (first) {
+                begin(element);
+                writeln("namespace ", element.name, " {");
+                ++indent;
+                first = false;
+            }
+            writeProperty(property, true);
+        });
     children.forEach(function(child) {
         if (child.scope === "inner" || seen[child.longname])
             return;
@@ -521,7 +537,9 @@ function handleClass(element, parent) {
 
     // properties
     if (is_interface && element.properties)
-        element.properties.forEach(writeProperty);
+        element.properties.forEach(function(property) {
+            writeProperty(property);
+        });
 
     // class-compatible members
     var incompatible = [];
