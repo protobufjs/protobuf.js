@@ -1280,7 +1280,7 @@ type RPCImpl = (method: (Method|rpc.ServiceMethod<Message<{}>, Message<{}>>), re
  * @param error Error, if any, otherwise `null`
  * @param [response] Response data or `null` to signal end of stream, if there hasn't been an error
  */
-type RPCImplCallback = (error?: Error, response?: Uint8Array) => void;
+type RPCImplCallback = (error: Error, response?: Uint8Array) => void;
 
 /** Reflected service. */
 export class Service extends NamespaceBase {
