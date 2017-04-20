@@ -77,13 +77,13 @@ function Method(name, type, requestType, responseType, requestStream, responseSt
 
     /**
      * Resolved request type.
-     * @type {?Type}
+     * @type {Type|null}
      */
     this.resolvedRequestType = null;
 
     /**
      * Resolved response type.
-     * @type {?Type}
+     * @type {Type|null}
      */
     this.resolvedResponseType = null;
 }

@@ -99,7 +99,7 @@ Message.decodeDelimited = function decodeDelimited(reader) {
  * @name Message.verify
  * @function
  * @param {Object.<string,*>} message Plain object to verify
- * @returns {?string} `null` if valid, otherwise the reason why it is not
+ * @returns {string|null} `null` if valid, otherwise the reason why it is not
  */
 Message.verify = function verify(message) {
     return this.$type.verify(message);

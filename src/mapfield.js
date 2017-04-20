@@ -34,7 +34,7 @@ function MapField(name, id, keyType, type, options) {
 
     /**
      * Resolved key type if not a basic type.
-     * @type {?ReflectionObject}
+     * @type {ReflectionObject|null}
      */
     this.resolvedKeyType = null;
 

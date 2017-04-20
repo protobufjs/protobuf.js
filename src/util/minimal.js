@@ -121,23 +121,10 @@ util.Buffer = (function() {
     }
 })();
 
-/**
- * Internal alias of or polyfull for Buffer.from.
- * @type {?function}
- * @param {string|number[]} value Value
- * @param {string} [encoding] Encoding if value is a string
- * @returns {Uint8Array}
- * @private
- */
+// Internal alias of or polyfull for Buffer.from.
 util._Buffer_from = null;
 
-/**
- * Internal alias of or polyfill for Buffer.allocUnsafe.
- * @type {?function}
- * @param {number} size Buffer size
- * @returns {Uint8Array}
- * @private
- */
+// Internal alias of or polyfill for Buffer.allocUnsafe.
 util._Buffer_allocUnsafe = null;
 
 /**

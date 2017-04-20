@@ -57,7 +57,7 @@ Root.fromJSON = function fromJSON(json, root) {
  * @function
  * @param {string} origin The file name of the importing file
  * @param {string} target The file name being imported
- * @returns {?string} Resolved path to `target` or `null` to skip the file
+ * @returns {string|null} Resolved path to `target` or `null` to skip the file
  */
 Root.prototype.resolvePath = util.path.resolve;
 

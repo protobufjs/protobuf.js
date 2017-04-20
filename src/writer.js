@@ -54,7 +54,6 @@ function noop() {} // eslint-disable-line no-empty-function
  * @memberof Writer
  * @constructor
  * @param {Writer} writer Writer to copy state from
- * @private
  * @ignore
  */
 function State(writer) {
@@ -79,7 +78,7 @@ function State(writer) {
 
     /**
      * Next state.
-     * @type {?State}
+     * @type {State|null}
      */
     this.next = writer.states;
 }
@@ -111,7 +110,7 @@ function Writer() {
 
     /**
      * Linked forked states.
-     * @type {?Object}
+     * @type {Object|null}
      */
     this.states = null;
 

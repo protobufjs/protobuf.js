@@ -63,21 +63,21 @@ function Type(name, options) {
 
     /**
      * Cached fields by id.
-     * @type {?Object.<number,Field>}
+     * @type {Object.<number,Field>|null}
      * @private
      */
     this._fieldsById = null;
 
     /**
      * Cached fields as an array.
-     * @type {?Field[]}
+     * @type {Field[]|null}
      * @private
      */
     this._fieldsArray = null;
 
     /**
      * Cached oneofs as an array.
-     * @type {?OneOf[]}
+     * @type {OneOf[]|null}
      * @private
      */
     this._oneofsArray = null;
@@ -526,7 +526,7 @@ Type.prototype.decodeDelimited = function decodeDelimited(reader) {
 /**
  * Verifies that field values are valid and that required fields are present.
  * @param {Object.<string,*>} message Plain object to verify
- * @returns {?string} `null` if valid, otherwise the reason why it is not
+ * @returns {null|string} `null` if valid, otherwise the reason why it is not
  */
 Type.prototype.verify = function verify_setup(message) {
     return this.setup().verify(message); // overrides this method

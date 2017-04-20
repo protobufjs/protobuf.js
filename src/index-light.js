@@ -7,7 +7,7 @@ protobuf.build = "light";
  * A node-style callback as used by {@link load} and {@link Root#load}.
  * @typedef LoadCallback
  * @type {function}
- * @param {?Error} error Error, if any, otherwise `null`
+ * @param {Error|null} error Error, if any, otherwise `null`
  * @param {Root} [root] Root, if there hasn't been an error
  * @returns {undefined}
  */

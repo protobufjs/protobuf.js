@@ -83,7 +83,7 @@ Enum.prototype.toJSON = function toJSON() {
  * Adds a value to this enum.
  * @param {string} name Value name
  * @param {number} id Value id
- * @param {?string} comment Comment, if any
+ * @param {string} [comment] Comment, if any
  * @returns {Enum} `this`
  * @throws {TypeError} If arguments are invalid
  * @throws {Error} If there is already a value with this name or id

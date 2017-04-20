@@ -29,7 +29,7 @@ function Service(name, options) {
 
     /**
      * Cached methods as an array.
-     * @type {?Method[]}
+     * @type {Method[]|null}
      * @private
      */
     this._methodsArray = null;

@@ -42,14 +42,14 @@ tokenize.unescape = unescape;
  * Gets the next token and advances.
  * @typedef TokenizerHandleNext
  * @type {function}
- * @returns {?string} Next token or `null` on eof
+ * @returns {string|null} Next token or `null` on eof
  */
 
 /**
  * Peeks for the next token.
  * @typedef TokenizerHandlePeek
  * @type {function}
- * @returns {?string} Next token or `null` on eof
+ * @returns {string|null} Next token or `null` on eof
  */
 
 /**
@@ -75,7 +75,7 @@ tokenize.unescape = unescape;
  * @typedef TokenizerHandleCmnt
  * @type {function}
  * @param {number} [line] Line number
- * @returns {?string} Comment text or `null` if none
+ * @returns {string|null} Comment text or `null` if none
  */
 
 /**
@@ -179,7 +179,7 @@ function tokenize(source) {
 
     /**
      * Obtains the next token.
-     * @returns {?string} Next token or `null` on eof
+     * @returns {string|null} Next token or `null` on eof
      * @inner
      */
     function next() {
@@ -260,7 +260,7 @@ function tokenize(source) {
 
     /**
      * Peeks for the next token.
-     * @returns {?string} Token or `null` on eof
+     * @returns {string|null} Token or `null` on eof
      * @inner
      */
     function peek() {
@@ -296,7 +296,7 @@ function tokenize(source) {
     /**
      * Gets a comment.
      * @param {number} [trailingLine] Line number if looking for a trailing comment
-     * @returns {?string} Comment text
+     * @returns {string|null} Comment text
      * @inner
      */
     function cmnt(trailingLine) {

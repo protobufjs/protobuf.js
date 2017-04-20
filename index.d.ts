@@ -24,7 +24,7 @@ export namespace common {
      * @param file Proto file name
      * @returns Root definition or `null` if not defined
      */
-    function get(file: string): INamespace;
+    function get(file: string): (INamespace|null);
 
     /** Properties of a google.protobuf.Any message. */
     interface IAny {
@@ -186,12 +186,12 @@ export class Enum extends ReflectionObject {
      * Adds a value to this enum.
      * @param name Value name
      * @param id Value id
-     * @param comment Comment, if any
+     * @param [comment] Comment, if any
      * @returns `this`
      * @throws {TypeError} If arguments are invalid
      * @throws {Error} If there is already a value with this name or id
      */
-    public add(name: string, id: number, comment: string): Enum;
+    public add(name: string, id: number, comment?: string): Enum;
 
     /**
      * Removes a value from this enum
@@ -298,10 +298,10 @@ export class FieldBase extends ReflectionObject {
     public map: boolean;
 
     /** Message this field belongs to. */
-    public message: Type;
+    public message: (Type|null);
 
     /** OneOf this field belongs to, if any, */
-    public partOf: OneOf;
+    public partOf: (OneOf|null);
 
     /** The field type's default value. */
     public typeDefault: any;
@@ -316,13 +316,13 @@ export class FieldBase extends ReflectionObject {
     public bytes: boolean;
 
     /** Resolved type if not a basic type. */
-    public resolvedType: (Type|Enum);
+    public resolvedType: (Type|Enum|null);
 
     /** Sister-field within the extended type if a declaring extension field. */
-    public extensionField: Field;
+    public extensionField: (Field|null);
 
     /** Sister-field within the declaring namespace if an extended field. */
-    public declaringField: Field;
+    public declaringField: (Field|null);
 
     /**
      * Converts this field to a field descriptor.
@@ -373,7 +373,7 @@ type FieldDecorator = (prototype: object, fieldName: string) => void;
  * @param error Error, if any, otherwise `null`
  * @param [root] Root, if there hasn't been an error
  */
-type LoadCallback = (error: Error, root?: Root) => void;
+type LoadCallback = (error: (Error|null), root?: Root) => void;
 
 /**
  * Loads one or multiple .proto or preprocessed .json files into a common root namespace and calls the callback.
@@ -434,7 +434,7 @@ export class MapField extends FieldBase {
     public keyType: string;
 
     /** Resolved key type if not a basic type. */
-    public resolvedKeyType: ReflectionObject;
+    public resolvedKeyType: (ReflectionObject|null);
 
     /**
      * Constructs a map field from a map field descriptor.
@@ -532,7 +532,7 @@ export class Message<T extends object> {
      * @param message Plain object to verify
      * @returns `null` if valid, otherwise the reason why it is not
      */
-    public static verify(message: { [k: string]: any }): string;
+    public static verify(message: { [k: string]: any }): (string|null);
 
     /**
      * Creates a new message of this type from a plain object. Also converts values to their respective internal types.
@@ -587,10 +587,10 @@ export class Method extends ReflectionObject {
     public responseStream?: boolean;
 
     /** Resolved request type. */
-    public resolvedRequestType: Type;
+    public resolvedRequestType: (Type|null);
 
     /** Resolved response type. */
-    public resolvedResponseType: Type;
+    public resolvedResponseType: (Type|null);
 
     /**
      * Constructs a method from a method descriptor.
@@ -684,7 +684,7 @@ export abstract class NamespaceBase extends ReflectionObject {
      * @param name Nested object name
      * @returns The reflection object or `null` if it doesn't exist
      */
-    public get(name: string): ReflectionObject;
+    public get(name: string): (ReflectionObject|null);
 
     /**
      * Gets the values of the nested {@link Enum|enum} of the specified name.
@@ -734,7 +734,7 @@ export abstract class NamespaceBase extends ReflectionObject {
      * @param [parentAlreadyChecked=false] If known, whether the parent has already been checked
      * @returns Looked up object or `null` if none could be found
      */
-    public lookup(path: (string|string[]), filterTypes: (any|any[]), parentAlreadyChecked?: boolean): ReflectionObject;
+    public lookup(path: (string|string[]), filterTypes: (any|any[]), parentAlreadyChecked?: boolean): (ReflectionObject|null);
 
     /**
      * Looks up the reflection object at the specified path, relative to this namespace.
@@ -742,7 +742,7 @@ export abstract class NamespaceBase extends ReflectionObject {
      * @param [parentAlreadyChecked=false] Whether the parent has already been checked
      * @returns Looked up object or `null` if none could be found
      */
-    public lookup(path: (string|string[]), parentAlreadyChecked?: boolean): ReflectionObject;
+    public lookup(path: (string|string[]), parentAlreadyChecked?: boolean): (ReflectionObject|null);
 
     /**
      * Looks up the {@link Type|type} at the specified path, relative to this namespace.
@@ -807,16 +807,16 @@ export abstract class ReflectionObject {
     public name: string;
 
     /** Parent namespace. */
-    public parent: Namespace;
+    public parent: (Namespace|null);
 
     /** Whether already resolved or not. */
     public resolved: boolean;
 
     /** Comment text, if any. */
-    public comment: string;
+    public comment: (string|null);
 
     /** Defining file name. */
-    public filename: string;
+    public filename: (string|null);
 
     /** Reference to the root namespace. */
     public readonly root: Root;
@@ -1173,7 +1173,7 @@ export class Root extends NamespaceBase {
      * @param target The file name being imported
      * @returns Resolved path to `target` or `null` to skip the file
      */
-    public resolvePath(origin: string, target: string): string;
+    public resolvePath(origin: string, target: string): (string|null);
 
     /**
      * Loads one or multiple .proto or preprocessed .json files into this root namespace and calls the callback.
@@ -1218,7 +1218,7 @@ export namespace rpc {
      * @param error Error, if any
      * @param [response] Response message
      */
-    type ServiceMethodCallback<TRes extends Message<TRes>> = (error: Error, response?: TRes) => void;
+    type ServiceMethodCallback<TRes extends Message<TRes>> = (error: (Error|null), response?: TRes) => void;
 
     /**
      * A service method part of a {@link rpc.Service} as created by {@link Service.create}.
@@ -1240,7 +1240,7 @@ export namespace rpc {
         constructor(rpcImpl: RPCImpl, requestDelimited?: boolean, responseDelimited?: boolean);
 
         /** RPC implementation. Becomes `null` once the service is ended. */
-        public rpcImpl: RPCImpl;
+        public rpcImpl: (RPCImpl|null);
 
         /** Whether requests are length-delimited. */
         public requestDelimited: boolean;
@@ -1280,7 +1280,7 @@ type RPCImpl = (method: (Method|rpc.ServiceMethod<Message<{}>, Message<{}>>), re
  * @param error Error, if any, otherwise `null`
  * @param [response] Response data or `null` to signal end of stream, if there hasn't been an error
  */
-type RPCImplCallback = (error: Error, response?: Uint8Array) => void;
+type RPCImplCallback = (error: (Error|null), response?: (Uint8Array|null)) => void;
 
 /** Reflected service. */
 export class Service extends NamespaceBase {
@@ -1335,13 +1335,13 @@ export interface IService extends INamespace {
  * Gets the next token and advances.
  * @returns Next token or `null` on eof
  */
-type TokenizerHandleNext = () => string;
+type TokenizerHandleNext = () => (string|null);
 
 /**
  * Peeks for the next token.
  * @returns Next token or `null` on eof
  */
-type TokenizerHandlePeek = () => string;
+type TokenizerHandlePeek = () => (string|null);
 
 /**
  * Pushes a token back to the stack.
@@ -1363,7 +1363,7 @@ type TokenizerHandleSkip = (expected: string, optional?: boolean) => boolean;
  * @param [line] Line number
  * @returns Comment text or `null` if none
  */
-type TokenizerHandleCmnt = (line?: number) => string;
+type TokenizerHandleCmnt = (line?: number) => (string|null);
 
 /** Handle object returned from {@link tokenize}. */
 export interface ITokenizerHandle {
@@ -1547,7 +1547,7 @@ export class Type extends NamespaceBase {
      * @param message Plain object to verify
      * @returns `null` if valid, otherwise the reason why it is not
      */
-    public verify(message: { [k: string]: any }): string;
+    public verify(message: { [k: string]: any }): (null|string);
 
     /**
      * Creates a new message of this type from a plain object. Also converts values to their respective internal types.
@@ -2381,7 +2381,7 @@ export class Writer {
     public tail: object;
 
     /** Linked forked states. */
-    public states: object;
+    public states: (object|null);
 
     /**
      * Creates a new writer.

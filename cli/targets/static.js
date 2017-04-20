@@ -514,7 +514,7 @@ function buildType(ref, type) {
         pushComment([
             "Verifies " + aOrAn(type.name) + " message.",
             "@param {Object.<string,*>} " + (config.beautify ? "message" : "m") + " Plain object to verify",
-            "@returns {?string} `null` if valid, otherwise the reason why it is not"
+            "@returns {string|null} `null` if valid, otherwise the reason why it is not"
         ]);
         buildFunction(type, "verify", protobuf.verifier(type));
     }
@@ -597,7 +597,7 @@ function buildService(ref, service) {
             // This is a more specialized version of protobuf.rpc.ServiceCallback
             "@typedef " + cbName,
             "@type {function}",
-            "@param {?Error} error Error, if any",
+            "@param {Error|null} error Error, if any",
             "@param {" + method.resolvedResponseType.fullName.substring(1) + "} [response] " + method.resolvedResponseType.name
         ]);
         push("");

@@ -13,8 +13,8 @@ var util = require("../util/minimal");
  * @typedef rpc.ServiceMethodCallback
  * @template TRes extends Message<TRes>
  * @type {function}
- * @param {?Error} error Error, if any
- * @param {?TRes} [response] Response message
+ * @param {Error|null} error Error, if any
+ * @param {TRes} [response] Response message
  * @returns {undefined}
  */
 
@@ -48,7 +48,7 @@ function Service(rpcImpl, requestDelimited, responseDelimited) {
 
     /**
      * RPC implementation. Becomes `null` once the service is ended.
-     * @type {?RPCImpl}
+     * @type {RPCImpl|null}
      */
     this.rpcImpl = rpcImpl;
 

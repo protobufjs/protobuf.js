@@ -42,7 +42,7 @@ function common(name, json) {
  * @name common.get
  * @function
  * @param {string} file Proto file name
- * @returns {?INamespace} Root definition or `null` if not defined
+ * @returns {INamespace|null} Root definition or `null` if not defined
  */
 common.get = function get(file) {
     return common[file] || null;

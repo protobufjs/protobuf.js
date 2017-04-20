@@ -74,7 +74,7 @@ function Namespace(name, options) {
 
     /**
      * Cached nested objects as an array.
-     * @type {?ReflectionObject[]}
+     * @type {ReflectionObject[]|null}
      * @private
      */
     this._nestedArray = null;
@@ -158,7 +158,7 @@ Namespace.prototype.addJSON = function addJSON(nestedJson) {
 /**
  * Gets the nested object of the specified name.
  * @param {string} name Nested object name
- * @returns {?ReflectionObject} The reflection object or `null` if it doesn't exist
+ * @returns {ReflectionObject|null} The reflection object or `null` if it doesn't exist
  */
 Namespace.prototype.get = function get(name) {
     return this.nested && this.nested[name]
@@ -285,7 +285,7 @@ Namespace.prototype.resolveAll = function resolveAll() {
  * @param {string|string[]} path Path to look up
  * @param {*|Array.<*>} filterTypes Filter types, any combination of the constructors of `protobuf.Type`, `protobuf.Enum`, `protobuf.Service` etc.
  * @param {boolean} [parentAlreadyChecked=false] If known, whether the parent has already been checked
- * @returns {?ReflectionObject} Looked up object or `null` if none could be found
+ * @returns {ReflectionObject|null} Looked up object or `null` if none could be found
  */
 Namespace.prototype.lookup = function lookup(path, filterTypes, parentAlreadyChecked) {
 
@@ -334,7 +334,7 @@ Namespace.prototype.lookup = function lookup(path, filterTypes, parentAlreadyChe
  * @function
  * @param {string|string[]} path Path to look up
  * @param {boolean} [parentAlreadyChecked=false] Whether the parent has already been checked
- * @returns {?ReflectionObject} Looked up object or `null` if none could be found
+ * @returns {ReflectionObject|null} Looked up object or `null` if none could be found
  * @variation 2
  */
 // lookup(path: string, [parentAlreadyChecked: boolean])

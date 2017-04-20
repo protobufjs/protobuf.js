@@ -125,13 +125,13 @@ function Field(name, id, type, rule, extend, options) {
 
     /**
      * Message this field belongs to.
-     * @type {?Type}
+     * @type {Type|null}
      */
     this.message = null;
 
     /**
      * OneOf this field belongs to, if any,
-     * @type {?OneOf}
+     * @type {OneOf|null}
      */
     this.partOf = null;
 
@@ -161,25 +161,25 @@ function Field(name, id, type, rule, extend, options) {
 
     /**
      * Resolved type if not a basic type.
-     * @type {?(Type|Enum)}
+     * @type {Type|Enum|null}
      */
     this.resolvedType = null;
 
     /**
      * Sister-field within the extended type if a declaring extension field.
-     * @type {?Field}
+     * @type {Field|null}
      */
     this.extensionField = null;
 
     /**
      * Sister-field within the declaring namespace if an extended field.
-     * @type {?Field}
+     * @type {Field|null}
      */
     this.declaringField = null;
 
     /**
      * Internally remembers whether this field is packed.
-     * @type {?boolean}
+     * @type {boolean|null}
      * @private
      */
     this._packed = null;
