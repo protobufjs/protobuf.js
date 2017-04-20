@@ -50,11 +50,8 @@ tape.test("google.protobuf.Any", function(test) {
             bar: "a"
         }
     });
-    test.ok(foo.foo instanceof Bar.ctor, "should unwrap wrapped Bar in fromObject");
-    test.same(foo.foo, { bar: "a" }, "should unwrap wrapper Bar in fromObject properly");
-
-    obj = Foo.toObject(foo);
-    test.same(obj.foo, { "@type": ".Bar", bar: "a" }, "should wrap Bar in toObject properly");
+    test.ok(foo.foo instanceof Any.ctor, "should convert to Any in fromObject");
+    test.same(foo.foo, { type_url: ".Bar", value: [10, 1, 97] }, "should have correct Any object when converted with fromObject");
 
     test.end();
 });
