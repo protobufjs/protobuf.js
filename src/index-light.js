@@ -91,6 +91,7 @@ protobuf.Method           = require("./method");
 
 // Runtime
 protobuf.Message          = require("./message");
+protobuf.wrappers         = require("./wrappers");
 
 // Utility
 protobuf.types            = require("./types");

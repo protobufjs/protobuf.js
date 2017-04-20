@@ -1,7 +1,7 @@
 "use strict";
 module.exports = Message;
 
-var util = require("./util");
+var util = require("./util/minimal");
 
 /**
  * Constructs a new message instance.

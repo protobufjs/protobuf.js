@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.8.0 (c) 2016, daniel wirtz
- * compiled thu, 20 apr 2017 12:17:57 utc
+ * compiled thu, 20 apr 2017 13:25:15 utc
  * licensed under the bsd-3-clause license
  * see: https://github.com/dcodeio/protobuf.js for details
  */
@@ -1712,7 +1712,7 @@ Enum.prototype.toJSON = function toJSON() {
  * Adds a value to this enum.
  * @param {string} name Value name
  * @param {number} id Value id
- * @param {?string} comment Comment, if any
+ * @param {string} [comment] Comment, if any
  * @returns {Enum} `this`
  * @throws {TypeError} If arguments are invalid
  * @throws {Error} If there is already a value with this name or id
@@ -1891,13 +1891,13 @@ function Field(name, id, type, rule, extend, options) {
 
     /**
      * Message this field belongs to.
-     * @type {?Type}
+     * @type {Type|null}
      */
     this.message = null;
 
     /**
      * OneOf this field belongs to, if any,
-     * @type {?OneOf}
+     * @type {OneOf|null}
      */
     this.partOf = null;
 
@@ -1927,25 +1927,25 @@ function Field(name, id, type, rule, extend, options) {
 
     /**
      * Resolved type if not a basic type.
-     * @type {?(Type|Enum)}
+     * @type {Type|Enum|null}
      */
     this.resolvedType = null;
 
     /**
      * Sister-field within the extended type if a declaring extension field.
-     * @type {?Field}
+     * @type {Field|null}
      */
     this.extensionField = null;
 
     /**
      * Sister-field within the declaring namespace if an extended field.
-     * @type {?Field}
+     * @type {Field|null}
      */
     this.declaringField = null;
 
     /**
      * Internally remembers whether this field is packed.
-     * @type {?boolean}
+     * @type {boolean|null}
      * @private
      */
     this._packed = null;
@@ -2133,7 +2133,7 @@ protobuf.build = "light";
  * A node-style callback as used by {@link load} and {@link Root#load}.
  * @typedef LoadCallback
  * @type {function}
- * @param {?Error} error Error, if any, otherwise `null`
+ * @param {Error|null} error Error, if any, otherwise `null`
  * @param {Root} [root] Root, if there hasn't been an error
  * @returns {undefined}
  */
@@ -2217,6 +2217,7 @@ protobuf.Method           = require(20);
 
 // Runtime
 protobuf.Message          = require(19);
+protobuf.wrappers         = require(37);
 
 // Utility
 protobuf.types            = require(32);
@@ -2228,7 +2229,7 @@ protobuf.Namespace._configure(protobuf.Type, protobuf.Service);
 protobuf.Root._configure(protobuf.Type);
 protobuf.Field._configure(protobuf.Type);
 
-},{"11":11,"12":12,"13":13,"14":14,"15":15,"17":17,"18":18,"19":19,"20":20,"21":21,"22":22,"23":23,"26":26,"30":30,"31":31,"32":32,"33":33,"36":36}],17:[function(require,module,exports){
+},{"11":11,"12":12,"13":13,"14":14,"15":15,"17":17,"18":18,"19":19,"20":20,"21":21,"22":22,"23":23,"26":26,"30":30,"31":31,"32":32,"33":33,"36":36,"37":37}],17:[function(require,module,exports){
 "use strict";
 var protobuf = exports;
 
@@ -2250,7 +2251,6 @@ protobuf.BufferReader = require(25);
 protobuf.util         = require(35);
 protobuf.rpc          = require(28);
 protobuf.roots        = require(27);
-protobuf.wrappers     = require(37);
 protobuf.configure    = configure;
 
 /* istanbul ignore next */
@@ -2267,7 +2267,7 @@ function configure() {
 protobuf.Writer._configure(protobuf.BufferWriter);
 configure();
 
-},{"24":24,"25":25,"27":27,"28":28,"35":35,"37":37,"38":38,"39":39}],18:[function(require,module,exports){
+},{"24":24,"25":25,"27":27,"28":28,"35":35,"38":38,"39":39}],18:[function(require,module,exports){
 "use strict";
 module.exports = MapField;
 
@@ -2304,7 +2304,7 @@ function MapField(name, id, keyType, type, options) {
 
     /**
      * Resolved key type if not a basic type.
-     * @type {?ReflectionObject}
+     * @type {ReflectionObject|null}
      */
     this.resolvedKeyType = null;
 
@@ -2395,7 +2395,7 @@ MapField.d = function decorateMapField(fieldId, fieldKeyType, fieldValueType) {
 "use strict";
 module.exports = Message;
 
-var util = require(33);
+var util = require(35);
 
 /**
  * Constructs a new message instance.
@@ -2493,7 +2493,7 @@ Message.decodeDelimited = function decodeDelimited(reader) {
  * @name Message.verify
  * @function
  * @param {Object.<string,*>} message Plain object to verify
- * @returns {?string} `null` if valid, otherwise the reason why it is not
+ * @returns {string|null} `null` if valid, otherwise the reason why it is not
  */
 Message.verify = function verify(message) {
     return this.$type.verify(message);
@@ -2531,7 +2531,7 @@ Message.prototype.toJSON = function toJSON() {
 };
 
 /*eslint-enable valid-jsdoc*/
-},{"33":33}],20:[function(require,module,exports){
+},{"35":35}],20:[function(require,module,exports){
 "use strict";
 module.exports = Method;
 
@@ -2611,13 +2611,13 @@ function Method(name, type, requestType, responseType, requestStream, responseSt
 
     /**
      * Resolved request type.
-     * @type {?Type}
+     * @type {Type|null}
      */
     this.resolvedRequestType = null;
 
     /**
      * Resolved response type.
-     * @type {?Type}
+     * @type {Type|null}
      */
     this.resolvedResponseType = null;
 }
@@ -2751,7 +2751,7 @@ function Namespace(name, options) {
 
     /**
      * Cached nested objects as an array.
-     * @type {?ReflectionObject[]}
+     * @type {ReflectionObject[]|null}
      * @private
      */
     this._nestedArray = null;
@@ -2835,7 +2835,7 @@ Namespace.prototype.addJSON = function addJSON(nestedJson) {
 /**
  * Gets the nested object of the specified name.
  * @param {string} name Nested object name
- * @returns {?ReflectionObject} The reflection object or `null` if it doesn't exist
+ * @returns {ReflectionObject|null} The reflection object or `null` if it doesn't exist
  */
 Namespace.prototype.get = function get(name) {
     return this.nested && this.nested[name]
@@ -2962,7 +2962,7 @@ Namespace.prototype.resolveAll = function resolveAll() {
  * @param {string|string[]} path Path to look up
  * @param {*|Array.<*>} filterTypes Filter types, any combination of the constructors of `protobuf.Type`, `protobuf.Enum`, `protobuf.Service` etc.
  * @param {boolean} [parentAlreadyChecked=false] If known, whether the parent has already been checked
- * @returns {?ReflectionObject} Looked up object or `null` if none could be found
+ * @returns {ReflectionObject|null} Looked up object or `null` if none could be found
  */
 Namespace.prototype.lookup = function lookup(path, filterTypes, parentAlreadyChecked) {
 
@@ -3011,7 +3011,7 @@ Namespace.prototype.lookup = function lookup(path, filterTypes, parentAlreadyChe
  * @function
  * @param {string|string[]} path Path to look up
  * @param {boolean} [parentAlreadyChecked=false] Whether the parent has already been checked
- * @returns {?ReflectionObject} Looked up object or `null` if none could be found
+ * @returns {ReflectionObject|null} Looked up object or `null` if none could be found
  * @variation 2
  */
 // lookup(path: string, [parentAlreadyChecked: boolean])
@@ -3117,7 +3117,7 @@ function ReflectionObject(name, options) {
 
     /**
      * Parent namespace.
-     * @type {?Namespace}
+     * @type {Namespace|null}
      */
     this.parent = null;
 
@@ -3129,13 +3129,13 @@ function ReflectionObject(name, options) {
 
     /**
      * Comment text, if any.
-     * @type {?string}
+     * @type {string|null}
      */
     this.comment = null;
 
     /**
      * Defining file name.
-     * @type {?string}
+     * @type {string|null}
      */
     this.filename = null;
 }
@@ -3987,7 +3987,7 @@ Root.fromJSON = function fromJSON(json, root) {
  * @function
  * @param {string} origin The file name of the importing file
  * @param {string} target The file name being imported
- * @returns {?string} Resolved path to `target` or `null` to skip the file
+ * @returns {string|null} Resolved path to `target` or `null` to skip the file
  */
 Root.prototype.resolvePath = util.path.resolve;
 
@@ -4331,8 +4331,8 @@ var rpc = exports;
  * Node-style callback as used by {@link RPCImpl}.
  * @typedef RPCImplCallback
  * @type {function}
- * @param {?Error} error Error, if any, otherwise `null`
- * @param {?Uint8Array} [response] Response data or `null` to signal end of stream, if there hasn't been an error
+ * @param {Error|null} error Error, if any, otherwise `null`
+ * @param {Uint8Array|null} [response] Response data or `null` to signal end of stream, if there hasn't been an error
  * @returns {undefined}
  */
 
@@ -4354,8 +4354,8 @@ var util = require(35);
  * @typedef rpc.ServiceMethodCallback
  * @template TRes extends Message<TRes>
  * @type {function}
- * @param {?Error} error Error, if any
- * @param {?TRes} [response] Response message
+ * @param {Error|null} error Error, if any
+ * @param {TRes} [response] Response message
  * @returns {undefined}
  */
 
@@ -4389,7 +4389,7 @@ function Service(rpcImpl, requestDelimited, responseDelimited) {
 
     /**
      * RPC implementation. Becomes `null` once the service is ended.
-     * @type {?RPCImpl}
+     * @type {RPCImpl|null}
      */
     this.rpcImpl = rpcImpl;
 
@@ -4514,7 +4514,7 @@ function Service(name, options) {
 
     /**
      * Cached methods as an array.
-     * @type {?Method[]}
+     * @type {Method[]|null}
      * @private
      */
     this._methodsArray = null;
@@ -4712,21 +4712,21 @@ function Type(name, options) {
 
     /**
      * Cached fields by id.
-     * @type {?Object.<number,Field>}
+     * @type {Object.<number,Field>|null}
      * @private
      */
     this._fieldsById = null;
 
     /**
      * Cached fields as an array.
-     * @type {?Field[]}
+     * @type {Field[]|null}
      * @private
      */
     this._fieldsArray = null;
 
     /**
      * Cached oneofs as an array.
-     * @type {?OneOf[]}
+     * @type {OneOf[]|null}
      * @private
      */
     this._oneofsArray = null;
@@ -5175,7 +5175,7 @@ Type.prototype.decodeDelimited = function decodeDelimited(reader) {
 /**
  * Verifies that field values are valid and that required fields are present.
  * @param {Object.<string,*>} message Plain object to verify
- * @returns {?string} `null` if valid, otherwise the reason why it is not
+ * @returns {null|string} `null` if valid, otherwise the reason why it is not
  */
 Type.prototype.verify = function verify_setup(message) {
     return this.setup().verify(message); // overrides this method
@@ -5928,23 +5928,10 @@ util.Buffer = (function() {
     }
 })();
 
-/**
- * Internal alias of or polyfull for Buffer.from.
- * @type {?function}
- * @param {string|number[]} value Value
- * @param {string} [encoding] Encoding if value is a string
- * @returns {Uint8Array}
- * @private
- */
+// Internal alias of or polyfull for Buffer.from.
 util._Buffer_from = null;
 
-/**
- * Internal alias of or polyfill for Buffer.allocUnsafe.
- * @type {?function}
- * @param {number} size Buffer size
- * @returns {Uint8Array}
- * @private
- */
+// Internal alias of or polyfill for Buffer.allocUnsafe.
 util._Buffer_allocUnsafe = null;
 
 /**
@@ -6533,7 +6520,6 @@ function noop() {} // eslint-disable-line no-empty-function
  * @memberof Writer
  * @constructor
  * @param {Writer} writer Writer to copy state from
- * @private
  * @ignore
  */
 function State(writer) {
@@ -6558,7 +6544,7 @@ function State(writer) {
 
     /**
      * Next state.
-     * @type {?State}
+     * @type {State|null}
      */
     this.next = writer.states;
 }
@@ -6590,7 +6576,7 @@ function Writer() {
 
     /**
      * Linked forked states.
-     * @type {?Object}
+     * @type {Object|null}
      */
     this.states = null;
 
