@@ -28,7 +28,7 @@ var rpc = exports;
  * Node-style callback as used by {@link RPCImpl}.
  * @typedef RPCImplCallback
  * @type {function}
- * @param {?Error} error Error, if any, otherwise `null`
+ * @param {?Error} [error] Error, if any, otherwise `null`
  * @param {?Uint8Array} [response] Response data or `null` to signal end of stream, if there hasn't been an error
  * @returns {undefined}
  */
