@@ -1,8 +1,8 @@
 /*!
- * protobuf.js v6.8.0 (c) 2016, Daniel Wirtz
- * Compiled Sun, 16 Apr 2017 01:20:29 UTC
- * Licensed under the BSD-3-Clause License
- * see: https://github.com/dcodeIO/protobuf.js for details
+ * protobuf.js v6.8.0 (c) 2016, daniel wirtz
+ * compiled thu, 20 apr 2017 12:17:57 utc
+ * licensed under the bsd-3-clause license
+ * see: https://github.com/dcodeio/protobuf.js for details
  */
 (function(global,undefined){"use strict";(function prelude(modules, cache, entries) {
 
@@ -5193,13 +5193,13 @@ Type.prototype.fromObject = function fromObject(object) {
 /**
  * Conversion options as used by {@link Type#toObject} and {@link Message.toObject}.
  * @interface IConversionOptions
- * @property {*} [longs] Long conversion type.
+ * @property {Function} [longs] Long conversion type.
  * Valid values are `String` and `Number` (the global types).
  * Defaults to copy the present value, which is a possibly unsafe number without and a {@link Long} with a long library.
- * @property {*} [enums] Enum value conversion type.
+ * @property {Function} [enums] Enum value conversion type.
  * Only valid value is `String` (the global type).
  * Defaults to copy the present value, which is the numeric id.
- * @property {*} [bytes] Bytes value conversion type.
+ * @property {Function} [bytes] Bytes value conversion type.
  * Valid values are `Array` and (a base64 encoded) `String` (the global types).
  * Defaults to copy the present value, which usually is a Buffer under node and an Uint8Array in the browser.
  * @property {boolean} [defaults=false] Also sets default values on the resulting object
@@ -5510,6 +5510,19 @@ util.safeProp = function safeProp(prop) {
  */
 util.ucFirst = function ucFirst(str) {
     return str.charAt(0).toUpperCase() + str.substring(1);
+};
+
+var camelCaseRe = /_([a-z])/g;
+
+/**
+ * Converts a string to camel case.
+ * @param {string} str String to convert
+ * @returns {string} Converted string
+ */
+util.camelCase = function camelCase(str) {
+    return str.substring(0, 1)
+         + str.substring(1)
+               .replace(camelCaseRe, function($0, $1) { return $1.toUpperCase(); });
 };
 
 /**
@@ -5893,11 +5906,11 @@ util.isSet = function isSet(obj, prop) {
     return false;
 };
 
-/*
+/**
  * Any compatible Buffer instance.
  * This is a minimal stand-alone definition of a Buffer instance. The actual type is that exported by node's typings.
- * @typedef Buffer
- * @type {Uint8Array}
+ * @interface Buffer
+ * @extends Uint8Array
  */
 
 /**
@@ -5958,11 +5971,10 @@ util.newBuffer = function newBuffer(sizeOrArray) {
  */
 util.Array = typeof Uint8Array !== "undefined" ? Uint8Array /* istanbul ignore next */ : Array;
 
-/*
+/**
  * Any compatible Long instance.
  * This is a minimal stand-alone definition of a Long instance. The actual type is that exported by long.js.
- * @typedef Long
- * @type {Object}
+ * @interface Long
  * @property {number} low Low bits
  * @property {number} high High bits
  * @property {boolean} unsigned Whether unsigned or not
@@ -6403,7 +6415,7 @@ var Message = require(19);
  * @typedef WrapperFromObjectConverter
  * @type {function}
  * @param {Object.<string,*>} object Plain object
- * @returns {Message<{}>}
+ * @returns {Message<{}>} Message instance
  * @this Type
  */
 
@@ -6413,7 +6425,7 @@ var Message = require(19);
  * @type {function}
  * @param {Message<{}>} message Message instance
  * @param {IConversionOptions} [options] Conversion options
- * @returns {Object.<string,*>}
+ * @returns {Object.<string,*>} Plain object
  * @this Type
  */
 
@@ -6434,7 +6446,10 @@ wrappers[".google.protobuf.Any"] = {
             var type = this.lookup(object["@type"]);
             /* istanbul ignore else */
             if (type)
-                return type.fromObject(object);
+                return this.create({
+                    type_url: object["@type"],
+                    value: type.encode(object).finish()
+                });
         }
 
         return this.fromObject(object);

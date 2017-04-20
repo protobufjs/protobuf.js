@@ -2037,6 +2037,13 @@ export namespace util {
     function ucFirst(str: string): string;
 
     /**
+     * Converts a string to camel case.
+     * @param str String to convert
+     * @returns Converted string
+     */
+    function camelCase(str: string): string;
+
+    /**
      * Compares reflected fields by id.
      * @param a First field
      * @param b Second field

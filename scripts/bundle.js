@@ -23,10 +23,10 @@ var pkg = require(path.join(__dirname, "..", "package.json"));
 /*eslint-disable no-template-curly-in-string*/
 var license = [
     "/*!",
-    " * protobuf.js v${version} (c) 2016, Daniel Wirtz",
-    " * Compiled ${date}",
-    " * Licensed under the BSD-3-Clause License",
-    " * see: https://github.com/dcodeIO/protobuf.js for details",
+    " * protobuf.js v${version} (c) 2016, daniel wirtz",
+    " * compiled ${date}",
+    " * licensed under the bsd-3-clause license",
+    " * see: https://github.com/dcodeio/protobuf.js for details",
     " */"
 ].join("\n") + "\n";
 /*eslint-enable no-template-curly-in-string*/
@@ -81,11 +81,14 @@ function bundle(options) {
                         unused: true,
                         keep_fargs: false,
                         unsafe: true
+                    },
+                    output: {
+                        max_line_len: 0x7fffffff
                     }
                 }))
             )
             .pipe(header(license, {
-                date: (new Date()).toUTCString().replace("GMT", "UTC"),
+                date: (new Date()).toUTCString().replace("GMT", "UTC").toLowerCase(),
                 version: pkg.version
             }))
     .pipe(sourcemaps.write(".", { sourceRoot: "" }))

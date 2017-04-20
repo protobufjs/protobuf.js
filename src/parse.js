@@ -27,17 +27,6 @@ var base10Re    = /^[1-9][0-9]*$/,
     typeRefRe   = /^(?:\.?[a-zA-Z_][a-zA-Z_0-9]*)+$/,
     fqTypeRefRe = /^(?:\.[a-zA-Z][a-zA-Z_0-9]*)+$/;
 
-var camelCaseRe = /_([a-z])/g;
-
-function camelCase(str) {
-    return str.substring(0,1)
-         + str.substring(1)
-               .replace(camelCaseRe, function($0, $1) { return $1.toUpperCase(); });
-}
-
-parse.camelCase = camelCase;
-parse.numberRe = numberRe;
-
 /**
  * Result object returned from {@link parse}.
  * @interface IParserResult
@@ -88,7 +77,7 @@ function parse(source, root, options) {
 
     var ptr = root;
 
-    var applyCase = options.keepCase ? function(name) { return name; } : camelCase;
+    var applyCase = options.keepCase ? function(name) { return name; } : util.camelCase;
 
     /* istanbul ignore next */
     function illegal(token, name, insideTryCatch) {

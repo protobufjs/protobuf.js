@@ -1,5 +1,5 @@
 "use strict";
-var $protobuf = require("../.."); // requires the full library (uses parser exports)
+var $protobuf = require("../..");
 module.exports = exports = $protobuf.descriptor = $protobuf.Root.fromJSON(require("../../google/protobuf/descriptor.json")).lookup(".google.protobuf");
 
 var Namespace = $protobuf.Namespace,
@@ -365,6 +365,9 @@ Type.prototype.toDescriptor = function toDescriptor(syntax) {
  * @property {number} JS_NUMBER=2
  */
 
+// copied here from parse.js
+var numberRe = /^(?![eE])[0-9]*(?:\.[0-9]*)?(?:[eE][+-]?[0-9]+)?$/;
+
 /**
  * Creates a field from a descriptor.
  * @param {IFieldDescriptorProto|Reader|Uint8Array} descriptor Descriptor
@@ -417,7 +420,7 @@ Field.fromDescriptor = function fromDescriptor(descriptor, syntax) {
                 defaultValue = false;
                 break;
             default:
-                var match = $protobuf.parse.numberRe.exec(defaultValue);
+                var match = numberRe.exec(defaultValue);
                 if (match)
                     defaultValue = parseInt(defaultValue); // eslint-disable-line radix
                 break;
@@ -819,7 +822,7 @@ function toDescriptorOptions(options, type) {
         if (key === "default")
             continue;
         var field = type.fields[key];
-        if (!field && !(field = type.fields[key = $protobuf.parse.camelCase(key)]))
+        if (!field && !(field = type.fields[key = $protobuf.util.camelCase(key)]))
             continue;
         out.push(key, val);
     }

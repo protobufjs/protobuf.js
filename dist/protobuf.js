@@ -1,8 +1,8 @@
 /*!
- * protobuf.js v6.8.0 (c) 2016, Daniel Wirtz
- * Compiled Sun, 16 Apr 2017 01:20:29 UTC
- * Licensed under the BSD-3-Clause License
- * see: https://github.com/dcodeIO/protobuf.js for details
+ * protobuf.js v6.8.0 (c) 2016, daniel wirtz
+ * compiled thu, 20 apr 2017 12:17:57 utc
+ * licensed under the bsd-3-clause license
+ * see: https://github.com/dcodeio/protobuf.js for details
  */
 (function(global,undefined){"use strict";(function prelude(modules, cache, entries) {
 
@@ -1138,12 +1138,12 @@ module.exports = common;
  * @param {string} name Short name as in `google/protobuf/[name].proto` or full file name
  * @param {Object.<string,*>} json JSON definition within `google.protobuf` if a short name, otherwise the file's root definition
  * @returns {undefined}
- * @property {Object.<string,*>} google/protobuf/any.proto Any
- * @property {Object.<string,*>} google/protobuf/duration.proto Duration
- * @property {Object.<string,*>} google/protobuf/empty.proto Empty
- * @property {Object.<string,*>} google/protobuf/struct.proto Struct, Value, NullValue and ListValue
- * @property {Object.<string,*>} google/protobuf/timestamp.proto Timestamp
- * @property {Object.<string,*>} google/protobuf/wrappers.proto Wrappers
+ * @property {INamespace} google/protobuf/any.proto Any
+ * @property {INamespace} google/protobuf/duration.proto Duration
+ * @property {INamespace} google/protobuf/empty.proto Empty
+ * @property {INamespace} google/protobuf/struct.proto Struct, Value, NullValue and ListValue
+ * @property {INamespace} google/protobuf/timestamp.proto Timestamp
+ * @property {INamespace} google/protobuf/wrappers.proto Wrappers
  * @example
  * // manually provides descriptor.proto (assumes google/protobuf/ namespace and .proto extension)
  * protobuf.common("descriptor", descriptorJson);
@@ -1158,6 +1158,26 @@ function common(name, json) {
     }
     common[name] = json;
 }
+
+/**
+ * Gets the root definition of the specified common proto file.
+ *
+ * Bundled definitions are:
+ * - google/protobuf/any.proto
+ * - google/protobuf/duration.proto
+ * - google/protobuf/empty.proto
+ * - google/protobuf/struct.proto
+ * - google/protobuf/timestamp.proto
+ * - google/protobuf/wrappers.proto
+ *
+ * @name common.get
+ * @function
+ * @param {string} file Proto file name
+ * @returns {?INamespace} Root definition or `null` if not defined
+ */
+common.get = function get(file) {
+    return common[file] || null;
+};
 
 var commonRe = /\/|\./;
 
@@ -3878,17 +3898,6 @@ var base10Re    = /^[1-9][0-9]*$/,
     typeRefRe   = /^(?:\.?[a-zA-Z_][a-zA-Z_0-9]*)+$/,
     fqTypeRefRe = /^(?:\.[a-zA-Z][a-zA-Z_0-9]*)+$/;
 
-var camelCaseRe = /_([a-z])/g;
-
-function camelCase(str) {
-    return str.substring(0,1)
-         + str.substring(1)
-               .replace(camelCaseRe, function($0, $1) { return $1.toUpperCase(); });
-}
-
-parse.camelCase = camelCase;
-parse.numberRe = numberRe;
-
 /**
  * Result object returned from {@link parse}.
  * @interface IParserResult
@@ -3907,7 +3916,6 @@ parse.numberRe = numberRe;
 
 /**
  * Parses the given .proto source and returns an object with the parsed contents.
- * @function
  * @param {string} source Source contents
  * @param {Root} root Root to populate
  * @param {IParseOptions} [options] Parse options. Defaults to {@link parse.defaults} when omitted.
@@ -3940,14 +3948,14 @@ function parse(source, root, options) {
 
     var ptr = root;
 
-    var applyCase = options.keepCase ? function(name) { return name; } : camelCase;
+    var applyCase = options.keepCase ? function(name) { return name; } : util.camelCase;
 
     /* istanbul ignore next */
     function illegal(token, name, insideTryCatch) {
         var filename = parse.filename;
         if (!insideTryCatch)
             parse.filename = null;
-        return Error("illegal " + (name || "token") + " '" + token + "' (" + (filename ? filename + ", " : "") + "line " + tn.line() + ")");
+        return Error("illegal " + (name || "token") + " '" + token + "' (" + (filename ? filename + ", " : "") + "line " + tn.line + ")");
     }
 
     function readString() {
@@ -4131,7 +4139,7 @@ function parse(source, root, options) {
     }
 
     function ifBlock(obj, fnIf, fnElse) {
-        var trailingLine = tn.line();
+        var trailingLine = tn.line;
         if (obj) {
             obj.comment = cmnt(); // try block-type comment
             obj.filename = parse.filename;
@@ -5800,7 +5808,7 @@ var unescapeMap = {
  * @param {string} str String to unescape
  * @returns {string} Unescaped string
  * @property {Object.<string,string>} map Special characters map
- * @ignore
+ * @memberof tokenize
  */
 function unescape(str) {
     return str.replace(unescapeRe, function($0, $1) {
@@ -5815,13 +5823,6 @@ function unescape(str) {
 }
 
 tokenize.unescape = unescape;
-
-/**
- * Gets the current line number.
- * @typedef TokenizerHandleLine
- * @type {function}
- * @returns {number} Line number
- */
 
 /**
  * Gets the next token and advances.
@@ -5866,19 +5867,18 @@ tokenize.unescape = unescape;
 /**
  * Handle object returned from {@link tokenize}.
  * @interface ITokenizerHandle
- * @property {TokenizerHandleLine} line Gets the current line number
  * @property {TokenizerHandleNext} next Gets the next token and advances (`null` on eof)
  * @property {TokenizerHandlePeek} peek Peeks for the next token (`null` on eof)
  * @property {TokenizerHandlePush} push Pushes a token back to the stack
  * @property {TokenizerHandleSkip} skip Skips a token, returns its presence and advances or, if non-optional and not present, throws
  * @property {TokenizerHandleCmnt} cmnt Gets the comment on the previous line or the line comment on the specified line, if any
+ * @property {number} line Current line number
  */
 
 /**
  * Tokenizes the given .proto source and returns an object with useful utility functions.
  * @param {string} source Source contents
  * @returns {ITokenizerHandle} Tokenizer handle
- * @property {function(string):string} unescape Unescapes a string
  */
 function tokenize(source) {
     /* eslint-disable callback-return */
@@ -5889,7 +5889,8 @@ function tokenize(source) {
         line = 1,
         commentType = null,
         commentText = null,
-        commentLine = 0;
+        commentLine = 0,
+        commentLineEmpty = false;
 
     var stack = [];
 
@@ -5943,6 +5944,15 @@ function tokenize(source) {
     function setComment(start, end) {
         commentType = source.charAt(start++);
         commentLine = line;
+        commentLineEmpty = false;
+        var offset = start - 3, // "///" or "/**"
+            c;
+        do {
+            if (--offset < 0 || (c = source.charAt(offset)) === "\n") {
+                commentLineEmpty = true;
+                break;
+            }
+        } while (c === " " || c === "\t");
         var lines = source
             .substring(start, end)
             .split(setCommentSplitRe);
@@ -5967,7 +5977,7 @@ function tokenize(source) {
             prev,
             curr,
             start,
-            isComment;
+            isDoc;
         do {
             if (offset === length)
                 return null;
@@ -5982,17 +5992,17 @@ function tokenize(source) {
                 if (++offset === length)
                     throw illegal("comment");
                 if (charAt(offset) === "/") { // Line
-                    isComment = charAt(start = offset + 1) === "/";
+                    isDoc = charAt(start = offset + 1) === "/";
                     while (charAt(++offset) !== "\n")
                         if (offset === length)
                             return null;
                     ++offset;
-                    if (isComment)
+                    if (isDoc) /// Comment
                         setComment(start, offset - 1);
                     ++line;
                     repeat = true;
                 } else if ((curr = charAt(offset)) === "*") { /* Block */
-                    isComment = charAt(start = offset + 1) === "*";
+                    isDoc = charAt(start = offset + 1) === "*";
                     do {
                         if (curr === "\n")
                             ++line;
@@ -6002,7 +6012,7 @@ function tokenize(source) {
                         curr = charAt(offset);
                     } while (prev !== "*" || curr !== "/");
                     ++offset;
-                    if (isComment)
+                    if (isDoc) /** Comment */
                         setComment(start, offset - 2);
                     repeat = true;
                 } else
@@ -6071,34 +6081,34 @@ function tokenize(source) {
 
     /**
      * Gets a comment.
-     * @param {number} [trailingLine] Trailing line number if applicable
+     * @param {number} [trailingLine] Line number if looking for a trailing comment
      * @returns {?string} Comment text
      * @inner
      */
     function cmnt(trailingLine) {
-        var ret;
-        if (trailingLine === undefined)
-            ret = commentLine === line - 1 && commentText || null;
-        else {
-            if (!commentText)
+        var ret = null;
+        if (trailingLine === undefined) {
+            if (commentLine === line - 1 && (commentType === "*" || commentLineEmpty))
+                ret = commentText;
+        } else {
+            /* istanbul ignore else */
+            if (commentLine < trailingLine)
                 peek();
-            ret = commentLine === trailingLine && commentType === "/" && commentText || null;
+            if (commentLine === trailingLine && !commentLineEmpty && commentType === "/")
+                ret = commentText;
         }
-        commentType = commentText = null;
-        commentLine = 0;
         return ret;
     }
 
-    return {
+    return Object.defineProperty({
         next: next,
         peek: peek,
         push: push,
         skip: skip,
-        line: function() {
-            return line;
-        },
         cmnt: cmnt
-    };
+    }, "line", {
+        get: function() { return line; }
+    });
     /* eslint-enable callback-return */
 }
 
@@ -6649,13 +6659,13 @@ Type.prototype.fromObject = function fromObject(object) {
 /**
  * Conversion options as used by {@link Type#toObject} and {@link Message.toObject}.
  * @interface IConversionOptions
- * @property {*} [longs] Long conversion type.
+ * @property {Function} [longs] Long conversion type.
  * Valid values are `String` and `Number` (the global types).
  * Defaults to copy the present value, which is a possibly unsafe number without and a {@link Long} with a long library.
- * @property {*} [enums] Enum value conversion type.
+ * @property {Function} [enums] Enum value conversion type.
  * Only valid value is `String` (the global type).
  * Defaults to copy the present value, which is the numeric id.
- * @property {*} [bytes] Bytes value conversion type.
+ * @property {Function} [bytes] Bytes value conversion type.
  * Valid values are `Array` and (a base64 encoded) `String` (the global types).
  * Defaults to copy the present value, which usually is a Buffer under node and an Uint8Array in the browser.
  * @property {boolean} [defaults=false] Also sets default values on the resulting object
@@ -6966,6 +6976,19 @@ util.safeProp = function safeProp(prop) {
  */
 util.ucFirst = function ucFirst(str) {
     return str.charAt(0).toUpperCase() + str.substring(1);
+};
+
+var camelCaseRe = /_([a-z])/g;
+
+/**
+ * Converts a string to camel case.
+ * @param {string} str String to convert
+ * @returns {string} Converted string
+ */
+util.camelCase = function camelCase(str) {
+    return str.substring(0, 1)
+         + str.substring(1)
+               .replace(camelCaseRe, function($0, $1) { return $1.toUpperCase(); });
 };
 
 /**
@@ -7349,11 +7372,11 @@ util.isSet = function isSet(obj, prop) {
     return false;
 };
 
-/*
+/**
  * Any compatible Buffer instance.
  * This is a minimal stand-alone definition of a Buffer instance. The actual type is that exported by node's typings.
- * @typedef Buffer
- * @type {Uint8Array}
+ * @interface Buffer
+ * @extends Uint8Array
  */
 
 /**
@@ -7414,11 +7437,10 @@ util.newBuffer = function newBuffer(sizeOrArray) {
  */
 util.Array = typeof Uint8Array !== "undefined" ? Uint8Array /* istanbul ignore next */ : Array;
 
-/*
+/**
  * Any compatible Long instance.
  * This is a minimal stand-alone definition of a Long instance. The actual type is that exported by long.js.
- * @typedef Long
- * @type {Object}
+ * @interface Long
  * @property {number} low Low bits
  * @property {number} high High bits
  * @property {boolean} unsigned Whether unsigned or not
@@ -7859,7 +7881,7 @@ var Message = require(21);
  * @typedef WrapperFromObjectConverter
  * @type {function}
  * @param {Object.<string,*>} object Plain object
- * @returns {Message<{}>}
+ * @returns {Message<{}>} Message instance
  * @this Type
  */
 
@@ -7869,7 +7891,7 @@ var Message = require(21);
  * @type {function}
  * @param {Message<{}>} message Message instance
  * @param {IConversionOptions} [options] Conversion options
- * @returns {Object.<string,*>}
+ * @returns {Object.<string,*>} Plain object
  * @this Type
  */
 
@@ -7890,7 +7912,10 @@ wrappers[".google.protobuf.Any"] = {
             var type = this.lookup(object["@type"]);
             /* istanbul ignore else */
             if (type)
-                return type.fromObject(object);
+                return this.create({
+                    type_url: object["@type"],
+                    value: type.encode(object).finish()
+                });
         }
 
         return this.fromObject(object);
