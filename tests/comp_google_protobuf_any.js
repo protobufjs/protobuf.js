@@ -51,7 +51,11 @@ tape.test("google.protobuf.Any", function(test) {
         }
     });
     test.ok(foo.foo instanceof Any.ctor, "should convert to Any in fromObject");
-    test.same(foo.foo, { type_url: ".Bar", value: [10, 1, 97] }, "should have correct Any object when converted with fromObject");
+    var comp = protobuf.util.newBuffer(3);
+    comp[0] = 10;
+    comp[1] = 1;
+    comp[2] = 97;
+    test.same(foo.foo, { type_url: ".Bar", value: comp }, "should have correct Any object when converted with fromObject");
 
     test.end();
 });

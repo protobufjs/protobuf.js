@@ -305,7 +305,8 @@ function tokenize(source) {
             if (commentLine === line - 1 && (commentType === "*" || commentLineEmpty))
                 ret = commentText;
         } else {
-            if (commentLine !== trailingLine || commentLineEmpty || commentType !== "/")
+            /* istanbul ignore else */
+            if (commentLine < trailingLine)
                 peek();
             if (commentLine === trailingLine && !commentLineEmpty && commentType === "/")
                 ret = commentText;
