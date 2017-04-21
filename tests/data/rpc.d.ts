@@ -3,11 +3,14 @@ import * as $protobuf from "../..";
 export class MyService extends $protobuf.rpc.Service {
     constructor(rpcImpl: $protobuf.RPCImpl, requestDelimited?: boolean, responseDelimited?: boolean);
     public static create(rpcImpl: $protobuf.RPCImpl, requestDelimited?: boolean, responseDelimited?: boolean): MyService;
-    public myMethod(request: IMyRequest, callback: MyService_myMethod_Callback): void;
+    public myMethod(request: IMyRequest, callback: MyService.MyMethodCallback): void;
     public myMethod(request: IMyRequest): Promise<MyResponse>;
 }
 
-type MyService_myMethod_Callback = (error: (Error|null), response?: MyResponse) => void;
+export namespace MyService {
+
+    type MyMethodCallback = (error: (Error|null), response?: MyResponse) => void;
+}
 
 export interface IMyRequest {
     path?: string;

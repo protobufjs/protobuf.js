@@ -13,9 +13,10 @@ $root.Test1 = (function() {
 
     /**
      * Properties of a Test1.
+     * @exports ITest1
      * @interface ITest1
      * @property {string} [field1] Field with a comment.
-     * @property {number} [field2] Test1 field2.
+     * @property {number} [field2] Test1 field2
      * @property {boolean} [field3] Field with a comment and a <a href="http://example.com/foo/">link</a>
      */
 
@@ -213,13 +214,14 @@ $root.Test2 = (function() {
 
     /**
      * Properties of a Test2.
+     * @exports ITest2
      * @interface ITest2
      */
 
     /**
      * Constructs a new Test2.
      * @exports Test2
-     * @classdesc Represents a Test2
+     * @classdesc Represents a Test2.
      * @constructor
      * @param {ITest2=} [properties] Properties to set
      */

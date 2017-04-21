@@ -13,30 +13,31 @@ $root.Package = (function() {
 
     /**
      * Properties of a Package.
+     * @exports IPackage
      * @interface IPackage
-     * @property {string} [name] Package name.
-     * @property {string} [version] Package version.
-     * @property {string} [versionScheme] Package versionScheme.
-     * @property {string} [description] Package description.
-     * @property {string} [author] Package author.
-     * @property {string} [license] Package license.
-     * @property {Package.IRepository} [repository] Package repository.
-     * @property {string} [bugs] Package bugs.
-     * @property {string} [homepage] Package homepage.
-     * @property {Array.<string>} [keywords] Package keywords.
-     * @property {string} [main] Package main.
-     * @property {Object.<string,string>} [bin] Package bin.
-     * @property {Object.<string,string>} [scripts] Package scripts.
-     * @property {Object.<string,string>} [dependencies] Package dependencies.
-     * @property {Object.<string,string>} [devDependencies] Package devDependencies.
-     * @property {string} [types] Package types.
-     * @property {Array.<string>} [cliDependencies] Package cliDependencies.
+     * @property {string} [name] Package name
+     * @property {string} [version] Package version
+     * @property {string} [versionScheme] Package versionScheme
+     * @property {string} [description] Package description
+     * @property {string} [author] Package author
+     * @property {string} [license] Package license
+     * @property {Package.IRepository} [repository] Package repository
+     * @property {string} [bugs] Package bugs
+     * @property {string} [homepage] Package homepage
+     * @property {Array.<string>} [keywords] Package keywords
+     * @property {string} [main] Package main
+     * @property {Object.<string,string>} [bin] Package bin
+     * @property {Object.<string,string>} [scripts] Package scripts
+     * @property {Object.<string,string>} [dependencies] Package dependencies
+     * @property {Object.<string,string>} [devDependencies] Package devDependencies
+     * @property {string} [types] Package types
+     * @property {Array.<string>} [cliDependencies] Package cliDependencies
      */
 
     /**
      * Constructs a new Package.
      * @exports Package
-     * @classdesc Represents a Package
+     * @classdesc Represents a Package.
      * @constructor
      * @param {IPackage=} [properties] Properties to set
      */
@@ -609,15 +610,16 @@ $root.Package = (function() {
 
         /**
          * Properties of a Repository.
-         * @interface Package.IRepository
-         * @property {string} [type] Repository type.
-         * @property {string} [url] Repository url.
+         * @memberof Package
+         * @interface IRepository
+         * @property {string} [type] Repository type
+         * @property {string} [url] Repository url
          */
 
         /**
          * Constructs a new Repository.
-         * @exports Package.Repository
-         * @classdesc Represents a Repository
+         * @memberof Package
+         * @classdesc Represents a Repository.
          * @constructor
          * @param {Package.IRepository=} [properties] Properties to set
          */

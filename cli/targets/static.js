@@ -36,10 +36,11 @@ function static_target(root, options, callback) {
             push("");
         }
         if (config.comments) {
-            if (root.comment)
+            if (root.comment) {
                 pushComment("@fileoverview " + root.comment);
-            else
-                push("// Exported root namespace");
+                push("");
+            }
+            push("// Exported root namespace");
         }
         var rootProp = cliUtil.safeProp(config.root || "default");
         push((config.es6 ? "const" : "var") + " $root = $protobuf.roots" + rootProp + " || ($protobuf.roots" + rootProp + " = {});");
@@ -80,13 +81,18 @@ function pushComment(lines) {
 }
 
 function exportName(object, asInterface) {
+    if (asInterface) {
+        if (object.__interfaceName)
+            return object.__interfaceName;
+    } else if (object.__exportName)
+        return object.__exportName;
     var parts = object.fullName.substring(1).split("."),
         i = 0;
     while (i < parts.length)
         parts[i] = escapeName(parts[i++]);
     if (asInterface)
         parts[i - 1] = "I" + parts[i - 1];
-    return parts.join(".");
+    return object[asInterface ? "__interfaceName" : "__exportName"] = parts.join(".");
 }
 
 function escapeName(name) {
@@ -121,7 +127,7 @@ function buildNamespace(ref, ns) {
         push("");
         pushComment([
             ns.comment || "Namespace " + ns.name + ".",
-            "@exports " + exportName(ns),
+            ns.parent instanceof protobuf.Root ? "@exports " + escapeName(ns.name) : "@memberof " + exportName(ns.parent),
             "@namespace"
         ]);
         push((config.es6 ? "const" : "var") + " " + escapeName(ns.name) + " = {};");
@@ -352,12 +358,13 @@ function buildType(ref, type) {
     if (config.comments) {
         var typeDef = [
             "Properties of " + aOrAn(type.name) + ".",
-            "@interface " + exportName(type, true)
+            type.parent instanceof protobuf.Root ? "@exports " + escapeName("I" + type.name) : "@memberof " + exportName(type.parent),
+            "@interface " + escapeName("I" + type.name)
         ];
         type.fieldsArray.forEach(function(field) {
             var prop = util.safeProp(field.name);
             prop = prop.substring(1, prop.charAt(0) === "[" ? prop.length - 1 : prop.length);
-            typeDef.push("@property {" + toJsType(field) + "} " + (field.optional ? "[" + prop + "]" : field.name) + " " + (field.comment || type.name + " " + field.name + "."));
+            typeDef.push("@property {" + toJsType(field) + "} " + (field.optional ? "[" + prop + "]" : field.name) + " " + (field.comment || type.name + " " + field.name));
         });
         push("");
         pushComment(typeDef);
@@ -367,8 +374,8 @@ function buildType(ref, type) {
     push("");
     pushComment([
         "Constructs a new " + type.name + ".",
-        "@exports " + exportName(type),
-        "@classdesc " + (type.comment || "Represents " + aOrAn(type.name)),
+        type.parent instanceof protobuf.Root ? "@exports " + escapeName(type.name) : "@memberof " + exportName(type.parent),
+        "@classdesc " + (type.comment || "Represents " + aOrAn(type.name) + "."),
         "@constructor",
         "@param {" + exportName(type, true) + "=} [" + (config.beautify ? "properties" : "p") + "] Properties to set"
     ]);
@@ -552,7 +559,7 @@ function buildService(ref, service) {
     push("");
     pushComment([
         "Constructs a new " + service.name + " service.",
-        "@exports " + exportName(service),
+        service.parent instanceof protobuf.Root ? "@exports " + escapeName(service.name) : "@memberof " + exportName(service.parent),
         "@classdesc " + (service.comment || "Represents " + aOrAn(service.name)),
         "@extends $protobuf.rpc.Service",
         "@constructor",
@@ -586,12 +593,13 @@ function buildService(ref, service) {
 
     service.methodsArray.forEach(function(method) {
         method.resolve();
-        var lcName = method.name.substring(0, 1).toLowerCase() + method.name.substring(1);
+        var lcName = protobuf.util.lcFirst(method.name),
+            cbName = escapeName(method.name + "Callback");
         push("");
-        var cbName = escapeName(service.name) + "_" + escapeName(lcName) + "_Callback";
         pushComment([
-            "Callback as used by {@link " + escapeName(service.name) + "#" + escapeName(lcName) + "}.",
+            "Callback as used by {@link " + exportName(service) + "#" + escapeName(lcName) + "}.",
             // This is a more specialized version of protobuf.rpc.ServiceCallback
+            "@memberof " + exportName(service),
             "@typedef " + cbName,
             "@type {function}",
             "@param {Error|null} error Error, if any",
@@ -601,7 +609,7 @@ function buildService(ref, service) {
         pushComment([
             method.comment || "Calls " + method.name + ".",
             "@param {" + exportName(method.resolvedRequestType, !config.forceMessage) + "} request " + method.resolvedRequestType.name + " message or plain object",
-            "@param {" + cbName + "} callback Node-style callback called with the error, if any, and " + method.resolvedResponseType.name,
+            "@param {" + exportName(service) + "." + cbName + "} callback Node-style callback called with the error, if any, and " + method.resolvedResponseType.name,
             "@returns {undefined}"
         ]);
         push(escapeName(service.name) + ".prototype" + util.safeProp(lcName) + " = function " + escapeName(lcName) + "(request, callback) {");
@@ -613,7 +621,8 @@ function buildService(ref, service) {
             push("");
         pushComment([
             method.comment || "Calls " + method.name + ".",
-            "@function " + escapeName(service.name) + "#" + lcName,
+            "@memberof " + exportName(service) + ".prototype",
+            "@function " + lcName,
             "@param {" + exportName(method.resolvedRequestType, !config.forceMessage) + "} request " + method.resolvedRequestType.name + " message or plain object",
             "@returns {Promise<" + exportName(method.resolvedResponseType) + ">} Promise",
             "@variation 2"

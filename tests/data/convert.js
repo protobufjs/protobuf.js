@@ -13,22 +13,23 @@ $root.Message = (function() {
 
     /**
      * Properties of a Message.
+     * @exports IMessage
      * @interface IMessage
-     * @property {string} [stringVal] Message stringVal.
-     * @property {Array.<string>} [stringRepeated] Message stringRepeated.
-     * @property {number|Long} [uint64Val] Message uint64Val.
-     * @property {Array.<number|Long>} [uint64Repeated] Message uint64Repeated.
-     * @property {Uint8Array} [bytesVal] Message bytesVal.
-     * @property {Array.<Uint8Array>} [bytesRepeated] Message bytesRepeated.
-     * @property {Message.SomeEnum} [enumVal] Message enumVal.
-     * @property {Array.<Message.SomeEnum>} [enumRepeated] Message enumRepeated.
-     * @property {Object.<string,number|Long>} [int64Map] Message int64Map.
+     * @property {string} [stringVal] Message stringVal
+     * @property {Array.<string>} [stringRepeated] Message stringRepeated
+     * @property {number|Long} [uint64Val] Message uint64Val
+     * @property {Array.<number|Long>} [uint64Repeated] Message uint64Repeated
+     * @property {Uint8Array} [bytesVal] Message bytesVal
+     * @property {Array.<Uint8Array>} [bytesRepeated] Message bytesRepeated
+     * @property {Message.SomeEnum} [enumVal] Message enumVal
+     * @property {Array.<Message.SomeEnum>} [enumRepeated] Message enumRepeated
+     * @property {Object.<string,number|Long>} [int64Map] Message int64Map
      */
 
     /**
      * Constructs a new Message.
      * @exports Message
-     * @classdesc Represents a Message
+     * @classdesc Represents a Message.
      * @constructor
      * @param {IMessage=} [properties] Properties to set
      */

@@ -38,7 +38,8 @@ export const MyService = $root.MyService = (() => {
 
     /**
      * Callback as used by {@link MyService#myMethod}.
-     * @typedef MyService_myMethod_Callback
+     * @memberof MyService
+     * @typedef MyMethodCallback
      * @type {function}
      * @param {Error|null} error Error, if any
      * @param {MyResponse} [response] MyResponse
@@ -47,7 +48,7 @@ export const MyService = $root.MyService = (() => {
     /**
      * Calls MyMethod.
      * @param {IMyRequest} request MyRequest message or plain object
-     * @param {MyService_myMethod_Callback} callback Node-style callback called with the error, if any, and MyResponse
+     * @param {MyService.MyMethodCallback} callback Node-style callback called with the error, if any, and MyResponse
      * @returns {undefined}
      */
     MyService.prototype.myMethod = function myMethod(request, callback) {
@@ -56,7 +57,8 @@ export const MyService = $root.MyService = (() => {
 
     /**
      * Calls MyMethod.
-     * @function MyService#myMethod
+     * @memberof MyService.prototype
+     * @function myMethod
      * @param {IMyRequest} request MyRequest message or plain object
      * @returns {Promise<MyResponse>} Promise
      * @variation 2
@@ -69,14 +71,15 @@ export const MyRequest = $root.MyRequest = (() => {
 
     /**
      * Properties of a MyRequest.
+     * @exports IMyRequest
      * @interface IMyRequest
-     * @property {string} [path] MyRequest path.
+     * @property {string} [path] MyRequest path
      */
 
     /**
      * Constructs a new MyRequest.
      * @exports MyRequest
-     * @classdesc Represents a MyRequest
+     * @classdesc Represents a MyRequest.
      * @constructor
      * @param {IMyRequest=} [properties] Properties to set
      */
@@ -225,14 +228,15 @@ export const MyResponse = $root.MyResponse = (() => {
 
     /**
      * Properties of a MyResponse.
+     * @exports IMyResponse
      * @interface IMyResponse
-     * @property {number} [status] MyResponse status.
+     * @property {number} [status] MyResponse status
      */
 
     /**
      * Constructs a new MyResponse.
      * @exports MyResponse
-     * @classdesc Represents a MyResponse
+     * @classdesc Represents a MyResponse.
      * @constructor
      * @param {IMyResponse=} [properties] Properties to set
      */

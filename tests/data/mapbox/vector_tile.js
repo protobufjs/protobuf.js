@@ -22,14 +22,15 @@ $root.vector_tile = (function() {
 
         /**
          * Properties of a Tile.
-         * @interface vector_tile.ITile
-         * @property {Array.<vector_tile.Tile.ILayer>} [layers] Tile layers.
+         * @memberof vector_tile
+         * @interface ITile
+         * @property {Array.<vector_tile.Tile.ILayer>} [layers] Tile layers
          */
 
         /**
          * Constructs a new Tile.
-         * @exports vector_tile.Tile
-         * @classdesc Represents a Tile
+         * @memberof vector_tile
+         * @classdesc Represents a Tile.
          * @constructor
          * @param {vector_tile.ITile=} [properties] Properties to set
          */
@@ -213,20 +214,21 @@ $root.vector_tile = (function() {
 
             /**
              * Properties of a Value.
-             * @interface vector_tile.Tile.IValue
-             * @property {string} [stringValue] Value stringValue.
-             * @property {number} [floatValue] Value floatValue.
-             * @property {number} [doubleValue] Value doubleValue.
-             * @property {number|Long} [intValue] Value intValue.
-             * @property {number|Long} [uintValue] Value uintValue.
-             * @property {number|Long} [sintValue] Value sintValue.
-             * @property {boolean} [boolValue] Value boolValue.
+             * @memberof vector_tile.Tile
+             * @interface IValue
+             * @property {string} [stringValue] Value stringValue
+             * @property {number} [floatValue] Value floatValue
+             * @property {number} [doubleValue] Value doubleValue
+             * @property {number|Long} [intValue] Value intValue
+             * @property {number|Long} [uintValue] Value uintValue
+             * @property {number|Long} [sintValue] Value sintValue
+             * @property {boolean} [boolValue] Value boolValue
              */
 
             /**
              * Constructs a new Value.
-             * @exports vector_tile.Tile.Value
-             * @classdesc Represents a Value
+             * @memberof vector_tile.Tile
+             * @classdesc Represents a Value.
              * @constructor
              * @param {vector_tile.Tile.IValue=} [properties] Properties to set
              */
@@ -532,17 +534,18 @@ $root.vector_tile = (function() {
 
             /**
              * Properties of a Feature.
-             * @interface vector_tile.Tile.IFeature
-             * @property {number|Long} [id] Feature id.
-             * @property {Array.<number>} [tags] Feature tags.
-             * @property {vector_tile.Tile.GeomType} [type] Feature type.
-             * @property {Array.<number>} [geometry] Feature geometry.
+             * @memberof vector_tile.Tile
+             * @interface IFeature
+             * @property {number|Long} [id] Feature id
+             * @property {Array.<number>} [tags] Feature tags
+             * @property {vector_tile.Tile.GeomType} [type] Feature type
+             * @property {Array.<number>} [geometry] Feature geometry
              */
 
             /**
              * Constructs a new Feature.
-             * @exports vector_tile.Tile.Feature
-             * @classdesc Represents a Feature
+             * @memberof vector_tile.Tile
+             * @classdesc Represents a Feature.
              * @constructor
              * @param {vector_tile.Tile.IFeature=} [properties] Properties to set
              */
@@ -836,19 +839,20 @@ $root.vector_tile = (function() {
 
             /**
              * Properties of a Layer.
-             * @interface vector_tile.Tile.ILayer
-             * @property {number} version Layer version.
-             * @property {string} name Layer name.
-             * @property {Array.<vector_tile.Tile.IFeature>} [features] Layer features.
-             * @property {Array.<string>} [keys] Layer keys.
-             * @property {Array.<vector_tile.Tile.IValue>} [values] Layer values.
-             * @property {number} [extent] Layer extent.
+             * @memberof vector_tile.Tile
+             * @interface ILayer
+             * @property {number} version Layer version
+             * @property {string} name Layer name
+             * @property {Array.<vector_tile.Tile.IFeature>} [features] Layer features
+             * @property {Array.<string>} [keys] Layer keys
+             * @property {Array.<vector_tile.Tile.IValue>} [values] Layer values
+             * @property {number} [extent] Layer extent
              */
 
             /**
              * Constructs a new Layer.
-             * @exports vector_tile.Tile.Layer
-             * @classdesc Represents a Layer
+             * @memberof vector_tile.Tile
+             * @classdesc Represents a Layer.
              * @constructor
              * @param {vector_tile.Tile.ILayer=} [properties] Properties to set
              */

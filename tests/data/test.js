@@ -22,7 +22,7 @@ $root.jspb = (function() {
 
         /**
          * Namespace test.
-         * @exports jspb.test
+         * @memberof jspb
          * @namespace
          */
         var test = {};
@@ -31,13 +31,14 @@ $root.jspb = (function() {
 
             /**
              * Properties of an Empty.
-             * @interface jspb.test.IEmpty
+             * @memberof jspb.test
+             * @interface IEmpty
              */
 
             /**
              * Constructs a new Empty.
-             * @exports jspb.test.Empty
-             * @classdesc Represents an Empty
+             * @memberof jspb.test
+             * @classdesc Represents an Empty.
              * @constructor
              * @param {jspb.test.IEmpty=} [properties] Properties to set
              */
@@ -175,14 +176,15 @@ $root.jspb = (function() {
 
             /**
              * Properties of an EnumContainer.
-             * @interface jspb.test.IEnumContainer
-             * @property {jspb.test.OuterEnum} [outerEnum] EnumContainer outerEnum.
+             * @memberof jspb.test
+             * @interface IEnumContainer
+             * @property {jspb.test.OuterEnum} [outerEnum] EnumContainer outerEnum
              */
 
             /**
              * Constructs a new EnumContainer.
-             * @exports jspb.test.EnumContainer
-             * @classdesc Represents an EnumContainer
+             * @memberof jspb.test
+             * @classdesc Represents an EnumContainer.
              * @constructor
              * @param {jspb.test.IEnumContainer=} [properties] Properties to set
              */
@@ -344,16 +346,17 @@ $root.jspb = (function() {
 
             /**
              * Properties of a Simple1.
-             * @interface jspb.test.ISimple1
-             * @property {string} aString Simple1 aString.
-             * @property {Array.<string>} [aRepeatedString] Simple1 aRepeatedString.
-             * @property {boolean} [aBoolean] Simple1 aBoolean.
+             * @memberof jspb.test
+             * @interface ISimple1
+             * @property {string} aString Simple1 aString
+             * @property {Array.<string>} [aRepeatedString] Simple1 aRepeatedString
+             * @property {boolean} [aBoolean] Simple1 aBoolean
              */
 
             /**
              * Constructs a new Simple1.
-             * @exports jspb.test.Simple1
-             * @classdesc Represents a Simple1
+             * @memberof jspb.test
+             * @classdesc Represents a Simple1.
              * @constructor
              * @param {jspb.test.ISimple1=} [properties] Properties to set
              */
@@ -558,15 +561,16 @@ $root.jspb = (function() {
 
             /**
              * Properties of a Simple2.
-             * @interface jspb.test.ISimple2
-             * @property {string} aString Simple2 aString.
-             * @property {Array.<string>} [aRepeatedString] Simple2 aRepeatedString.
+             * @memberof jspb.test
+             * @interface ISimple2
+             * @property {string} aString Simple2 aString
+             * @property {Array.<string>} [aRepeatedString] Simple2 aRepeatedString
              */
 
             /**
              * Constructs a new Simple2.
-             * @exports jspb.test.Simple2
-             * @classdesc Represents a Simple2
+             * @memberof jspb.test
+             * @classdesc Represents a Simple2.
              * @constructor
              * @param {jspb.test.ISimple2=} [properties] Properties to set
              */
@@ -751,17 +755,18 @@ $root.jspb = (function() {
 
             /**
              * Properties of a SpecialCases.
-             * @interface jspb.test.ISpecialCases
-             * @property {string} normal SpecialCases normal.
-             * @property {string} default SpecialCases default.
-             * @property {string} function SpecialCases function.
-             * @property {string} var SpecialCases var.
+             * @memberof jspb.test
+             * @interface ISpecialCases
+             * @property {string} normal SpecialCases normal
+             * @property {string} default SpecialCases default
+             * @property {string} function SpecialCases function
+             * @property {string} var SpecialCases var
              */
 
             /**
              * Constructs a new SpecialCases.
-             * @exports jspb.test.SpecialCases
-             * @classdesc Represents a SpecialCases
+             * @memberof jspb.test
+             * @classdesc Represents a SpecialCases.
              * @constructor
              * @param {jspb.test.ISpecialCases=} [properties] Properties to set
              */
@@ -968,18 +973,19 @@ $root.jspb = (function() {
 
             /**
              * Properties of an OptionalFields.
-             * @interface jspb.test.IOptionalFields
-             * @property {string} [aString] OptionalFields aString.
-             * @property {boolean} aBool OptionalFields aBool.
-             * @property {jspb.test.OptionalFields.INested} [aNestedMessage] OptionalFields aNestedMessage.
-             * @property {Array.<jspb.test.OptionalFields.INested>} [aRepeatedMessage] OptionalFields aRepeatedMessage.
-             * @property {Array.<string>} [aRepeatedString] OptionalFields aRepeatedString.
+             * @memberof jspb.test
+             * @interface IOptionalFields
+             * @property {string} [aString] OptionalFields aString
+             * @property {boolean} aBool OptionalFields aBool
+             * @property {jspb.test.OptionalFields.INested} [aNestedMessage] OptionalFields aNestedMessage
+             * @property {Array.<jspb.test.OptionalFields.INested>} [aRepeatedMessage] OptionalFields aRepeatedMessage
+             * @property {Array.<string>} [aRepeatedString] OptionalFields aRepeatedString
              */
 
             /**
              * Constructs a new OptionalFields.
-             * @exports jspb.test.OptionalFields
-             * @classdesc Represents an OptionalFields
+             * @memberof jspb.test
+             * @classdesc Represents an OptionalFields.
              * @constructor
              * @param {jspb.test.IOptionalFields=} [properties] Properties to set
              */
@@ -1246,14 +1252,15 @@ $root.jspb = (function() {
 
                 /**
                  * Properties of a Nested.
-                 * @interface jspb.test.OptionalFields.INested
-                 * @property {number} [anInt] Nested anInt.
+                 * @memberof jspb.test.OptionalFields
+                 * @interface INested
+                 * @property {number} [anInt] Nested anInt
                  */
 
                 /**
                  * Constructs a new Nested.
-                 * @exports jspb.test.OptionalFields.Nested
-                 * @classdesc Represents a Nested
+                 * @memberof jspb.test.OptionalFields
+                 * @classdesc Represents a Nested.
                  * @constructor
                  * @param {jspb.test.OptionalFields.INested=} [properties] Properties to set
                  */
@@ -1405,22 +1412,23 @@ $root.jspb = (function() {
 
             /**
              * Properties of a HasExtensions.
-             * @interface jspb.test.IHasExtensions
-             * @property {string} [str1] HasExtensions str1.
-             * @property {string} [str2] HasExtensions str2.
-             * @property {string} [str3] HasExtensions str3.
-             * @property {jspb.test.IIsExtension} [".jspb.test.IsExtension.extField"] HasExtensions .jspb.test.IsExtension.extField.
-             * @property {jspb.test.ISimple1} [".jspb.test.IndirectExtension.simple"] HasExtensions .jspb.test.IndirectExtension.simple.
-             * @property {string} [".jspb.test.IndirectExtension.str"] HasExtensions .jspb.test.IndirectExtension.str.
-             * @property {Array.<string>} [".jspb.test.IndirectExtension.repeatedStr"] HasExtensions .jspb.test.IndirectExtension.repeatedStr.
-             * @property {Array.<jspb.test.ISimple1>} [".jspb.test.IndirectExtension.repeatedSimple"] HasExtensions .jspb.test.IndirectExtension.repeatedSimple.
-             * @property {jspb.test.ISimple1} [".jspb.test.simple1"] HasExtensions .jspb.test.simple1.
+             * @memberof jspb.test
+             * @interface IHasExtensions
+             * @property {string} [str1] HasExtensions str1
+             * @property {string} [str2] HasExtensions str2
+             * @property {string} [str3] HasExtensions str3
+             * @property {jspb.test.IIsExtension} [".jspb.test.IsExtension.extField"] HasExtensions .jspb.test.IsExtension.extField
+             * @property {jspb.test.ISimple1} [".jspb.test.IndirectExtension.simple"] HasExtensions .jspb.test.IndirectExtension.simple
+             * @property {string} [".jspb.test.IndirectExtension.str"] HasExtensions .jspb.test.IndirectExtension.str
+             * @property {Array.<string>} [".jspb.test.IndirectExtension.repeatedStr"] HasExtensions .jspb.test.IndirectExtension.repeatedStr
+             * @property {Array.<jspb.test.ISimple1>} [".jspb.test.IndirectExtension.repeatedSimple"] HasExtensions .jspb.test.IndirectExtension.repeatedSimple
+             * @property {jspb.test.ISimple1} [".jspb.test.simple1"] HasExtensions .jspb.test.simple1
              */
 
             /**
              * Constructs a new HasExtensions.
-             * @exports jspb.test.HasExtensions
-             * @classdesc Represents a HasExtensions
+             * @memberof jspb.test
+             * @classdesc Represents a HasExtensions.
              * @constructor
              * @param {jspb.test.IHasExtensions=} [properties] Properties to set
              */
@@ -1776,18 +1784,19 @@ $root.jspb = (function() {
 
             /**
              * Properties of a Complex.
-             * @interface jspb.test.IComplex
-             * @property {string} aString Complex aString.
-             * @property {boolean} anOutOfOrderBool Complex anOutOfOrderBool.
-             * @property {jspb.test.Complex.INested} [aNestedMessage] Complex aNestedMessage.
-             * @property {Array.<jspb.test.Complex.INested>} [aRepeatedMessage] Complex aRepeatedMessage.
-             * @property {Array.<string>} [aRepeatedString] Complex aRepeatedString.
+             * @memberof jspb.test
+             * @interface IComplex
+             * @property {string} aString Complex aString
+             * @property {boolean} anOutOfOrderBool Complex anOutOfOrderBool
+             * @property {jspb.test.Complex.INested} [aNestedMessage] Complex aNestedMessage
+             * @property {Array.<jspb.test.Complex.INested>} [aRepeatedMessage] Complex aRepeatedMessage
+             * @property {Array.<string>} [aRepeatedString] Complex aRepeatedString
              */
 
             /**
              * Constructs a new Complex.
-             * @exports jspb.test.Complex
-             * @classdesc Represents a Complex
+             * @memberof jspb.test
+             * @classdesc Represents a Complex.
              * @constructor
              * @param {jspb.test.IComplex=} [properties] Properties to set
              */
@@ -2054,14 +2063,15 @@ $root.jspb = (function() {
 
                 /**
                  * Properties of a Nested.
-                 * @interface jspb.test.Complex.INested
-                 * @property {number} anInt Nested anInt.
+                 * @memberof jspb.test.Complex
+                 * @interface INested
+                 * @property {number} anInt Nested anInt
                  */
 
                 /**
                  * Constructs a new Nested.
-                 * @exports jspb.test.Complex.Nested
-                 * @classdesc Represents a Nested
+                 * @memberof jspb.test.Complex
+                 * @classdesc Represents a Nested.
                  * @constructor
                  * @param {jspb.test.Complex.INested=} [properties] Properties to set
                  */
@@ -2213,13 +2223,14 @@ $root.jspb = (function() {
 
             /**
              * Properties of an OuterMessage.
-             * @interface jspb.test.IOuterMessage
+             * @memberof jspb.test
+             * @interface IOuterMessage
              */
 
             /**
              * Constructs a new OuterMessage.
-             * @exports jspb.test.OuterMessage
-             * @classdesc Represents an OuterMessage
+             * @memberof jspb.test
+             * @classdesc Represents an OuterMessage.
              * @constructor
              * @param {jspb.test.IOuterMessage=} [properties] Properties to set
              */
@@ -2341,14 +2352,15 @@ $root.jspb = (function() {
 
                 /**
                  * Properties of a Complex.
-                 * @interface jspb.test.OuterMessage.IComplex
-                 * @property {number} [innerComplexField] Complex innerComplexField.
+                 * @memberof jspb.test.OuterMessage
+                 * @interface IComplex
+                 * @property {number} [innerComplexField] Complex innerComplexField
                  */
 
                 /**
                  * Constructs a new Complex.
-                 * @exports jspb.test.OuterMessage.Complex
-                 * @classdesc Represents a Complex
+                 * @memberof jspb.test.OuterMessage
+                 * @classdesc Represents a Complex.
                  * @constructor
                  * @param {jspb.test.OuterMessage.IComplex=} [properties] Properties to set
                  */
@@ -2500,14 +2512,15 @@ $root.jspb = (function() {
 
             /**
              * Properties of an IsExtension.
-             * @interface jspb.test.IIsExtension
-             * @property {string} [ext1] IsExtension ext1.
+             * @memberof jspb.test
+             * @interface IIsExtension
+             * @property {string} [ext1] IsExtension ext1
              */
 
             /**
              * Constructs a new IsExtension.
-             * @exports jspb.test.IsExtension
-             * @classdesc Represents an IsExtension
+             * @memberof jspb.test
+             * @classdesc Represents an IsExtension.
              * @constructor
              * @param {jspb.test.IIsExtension=} [properties] Properties to set
              */
@@ -2656,13 +2669,14 @@ $root.jspb = (function() {
 
             /**
              * Properties of an IndirectExtension.
-             * @interface jspb.test.IIndirectExtension
+             * @memberof jspb.test
+             * @interface IIndirectExtension
              */
 
             /**
              * Constructs a new IndirectExtension.
-             * @exports jspb.test.IndirectExtension
-             * @classdesc Represents an IndirectExtension
+             * @memberof jspb.test
+             * @classdesc Represents an IndirectExtension.
              * @constructor
              * @param {jspb.test.IIndirectExtension=} [properties] Properties to set
              */
@@ -2787,19 +2801,20 @@ $root.jspb = (function() {
 
             /**
              * Properties of a DefaultValues.
-             * @interface jspb.test.IDefaultValues
-             * @property {string} [stringField] DefaultValues stringField.
-             * @property {boolean} [boolField] DefaultValues boolField.
-             * @property {number|Long} [intField] DefaultValues intField.
-             * @property {jspb.test.DefaultValues.Enum} [enumField] DefaultValues enumField.
-             * @property {string} [emptyField] DefaultValues emptyField.
-             * @property {Uint8Array} [bytesField] DefaultValues bytesField.
+             * @memberof jspb.test
+             * @interface IDefaultValues
+             * @property {string} [stringField] DefaultValues stringField
+             * @property {boolean} [boolField] DefaultValues boolField
+             * @property {number|Long} [intField] DefaultValues intField
+             * @property {jspb.test.DefaultValues.Enum} [enumField] DefaultValues enumField
+             * @property {string} [emptyField] DefaultValues emptyField
+             * @property {Uint8Array} [bytesField] DefaultValues bytesField
              */
 
             /**
              * Constructs a new DefaultValues.
-             * @exports jspb.test.DefaultValues
-             * @classdesc Represents a DefaultValues
+             * @memberof jspb.test
+             * @classdesc Represents a DefaultValues.
              * @constructor
              * @param {jspb.test.IDefaultValues=} [properties] Properties to set
              */
@@ -3091,21 +3106,22 @@ $root.jspb = (function() {
 
             /**
              * Properties of a FloatingPointFields.
-             * @interface jspb.test.IFloatingPointFields
-             * @property {number} [optionalFloatField] FloatingPointFields optionalFloatField.
-             * @property {number} requiredFloatField FloatingPointFields requiredFloatField.
-             * @property {Array.<number>} [repeatedFloatField] FloatingPointFields repeatedFloatField.
-             * @property {number} [defaultFloatField] FloatingPointFields defaultFloatField.
-             * @property {number} [optionalDoubleField] FloatingPointFields optionalDoubleField.
-             * @property {number} requiredDoubleField FloatingPointFields requiredDoubleField.
-             * @property {Array.<number>} [repeatedDoubleField] FloatingPointFields repeatedDoubleField.
-             * @property {number} [defaultDoubleField] FloatingPointFields defaultDoubleField.
+             * @memberof jspb.test
+             * @interface IFloatingPointFields
+             * @property {number} [optionalFloatField] FloatingPointFields optionalFloatField
+             * @property {number} requiredFloatField FloatingPointFields requiredFloatField
+             * @property {Array.<number>} [repeatedFloatField] FloatingPointFields repeatedFloatField
+             * @property {number} [defaultFloatField] FloatingPointFields defaultFloatField
+             * @property {number} [optionalDoubleField] FloatingPointFields optionalDoubleField
+             * @property {number} requiredDoubleField FloatingPointFields requiredDoubleField
+             * @property {Array.<number>} [repeatedDoubleField] FloatingPointFields repeatedDoubleField
+             * @property {number} [defaultDoubleField] FloatingPointFields defaultDoubleField
              */
 
             /**
              * Constructs a new FloatingPointFields.
-             * @exports jspb.test.FloatingPointFields
-             * @classdesc Represents a FloatingPointFields
+             * @memberof jspb.test
+             * @classdesc Represents a FloatingPointFields.
              * @constructor
              * @param {jspb.test.IFloatingPointFields=} [properties] Properties to set
              */
@@ -3432,19 +3448,20 @@ $root.jspb = (function() {
 
             /**
              * Properties of a TestClone.
-             * @interface jspb.test.ITestClone
-             * @property {string} [str] TestClone str.
-             * @property {jspb.test.ISimple1} [simple1] TestClone simple1.
-             * @property {Array.<jspb.test.ISimple1>} [simple2] TestClone simple2.
-             * @property {Uint8Array} [bytesField] TestClone bytesField.
-             * @property {string} [unused] TestClone unused.
-             * @property {jspb.test.ICloneExtension} [".jspb.test.CloneExtension.extField"] TestClone .jspb.test.CloneExtension.extField.
+             * @memberof jspb.test
+             * @interface ITestClone
+             * @property {string} [str] TestClone str
+             * @property {jspb.test.ISimple1} [simple1] TestClone simple1
+             * @property {Array.<jspb.test.ISimple1>} [simple2] TestClone simple2
+             * @property {Uint8Array} [bytesField] TestClone bytesField
+             * @property {string} [unused] TestClone unused
+             * @property {jspb.test.ICloneExtension} [".jspb.test.CloneExtension.extField"] TestClone .jspb.test.CloneExtension.extField
              */
 
             /**
              * Constructs a new TestClone.
-             * @exports jspb.test.TestClone
-             * @classdesc Represents a TestClone
+             * @memberof jspb.test
+             * @classdesc Represents a TestClone.
              * @constructor
              * @param {jspb.test.ITestClone=} [properties] Properties to set
              */
@@ -3724,14 +3741,15 @@ $root.jspb = (function() {
 
             /**
              * Properties of a CloneExtension.
-             * @interface jspb.test.ICloneExtension
-             * @property {string} [ext] CloneExtension ext.
+             * @memberof jspb.test
+             * @interface ICloneExtension
+             * @property {string} [ext] CloneExtension ext
              */
 
             /**
              * Constructs a new CloneExtension.
-             * @exports jspb.test.CloneExtension
-             * @classdesc Represents a CloneExtension
+             * @memberof jspb.test
+             * @classdesc Represents a CloneExtension.
              * @constructor
              * @param {jspb.test.ICloneExtension=} [properties] Properties to set
              */
@@ -3880,19 +3898,20 @@ $root.jspb = (function() {
 
             /**
              * Properties of a TestGroup.
-             * @interface jspb.test.ITestGroup
-             * @property {Array.<jspb.test.TestGroup.IRepeatedGroup>} [repeatedGroup] TestGroup repeatedGroup.
-             * @property {jspb.test.TestGroup.IRequiredGroup} requiredGroup TestGroup requiredGroup.
-             * @property {jspb.test.TestGroup.IOptionalGroup} [optionalGroup] TestGroup optionalGroup.
-             * @property {string} [id] TestGroup id.
-             * @property {jspb.test.ISimple2} requiredSimple TestGroup requiredSimple.
-             * @property {jspb.test.ISimple2} [optionalSimple] TestGroup optionalSimple.
+             * @memberof jspb.test
+             * @interface ITestGroup
+             * @property {Array.<jspb.test.TestGroup.IRepeatedGroup>} [repeatedGroup] TestGroup repeatedGroup
+             * @property {jspb.test.TestGroup.IRequiredGroup} requiredGroup TestGroup requiredGroup
+             * @property {jspb.test.TestGroup.IOptionalGroup} [optionalGroup] TestGroup optionalGroup
+             * @property {string} [id] TestGroup id
+             * @property {jspb.test.ISimple2} requiredSimple TestGroup requiredSimple
+             * @property {jspb.test.ISimple2} [optionalSimple] TestGroup optionalSimple
              */
 
             /**
              * Constructs a new TestGroup.
-             * @exports jspb.test.TestGroup
-             * @classdesc Represents a TestGroup
+             * @memberof jspb.test
+             * @classdesc Represents a TestGroup.
              * @constructor
              * @param {jspb.test.ITestGroup=} [properties] Properties to set
              */
@@ -4174,15 +4193,16 @@ $root.jspb = (function() {
 
                 /**
                  * Properties of a RepeatedGroup.
-                 * @interface jspb.test.TestGroup.IRepeatedGroup
-                 * @property {string} id RepeatedGroup id.
-                 * @property {Array.<boolean>} [someBool] RepeatedGroup someBool.
+                 * @memberof jspb.test.TestGroup
+                 * @interface IRepeatedGroup
+                 * @property {string} id RepeatedGroup id
+                 * @property {Array.<boolean>} [someBool] RepeatedGroup someBool
                  */
 
                 /**
                  * Constructs a new RepeatedGroup.
-                 * @exports jspb.test.TestGroup.RepeatedGroup
-                 * @classdesc Represents a RepeatedGroup
+                 * @memberof jspb.test.TestGroup
+                 * @classdesc Represents a RepeatedGroup.
                  * @constructor
                  * @param {jspb.test.TestGroup.IRepeatedGroup=} [properties] Properties to set
                  */
@@ -4374,14 +4394,15 @@ $root.jspb = (function() {
 
                 /**
                  * Properties of a RequiredGroup.
-                 * @interface jspb.test.TestGroup.IRequiredGroup
-                 * @property {string} id RequiredGroup id.
+                 * @memberof jspb.test.TestGroup
+                 * @interface IRequiredGroup
+                 * @property {string} id RequiredGroup id
                  */
 
                 /**
                  * Constructs a new RequiredGroup.
-                 * @exports jspb.test.TestGroup.RequiredGroup
-                 * @classdesc Represents a RequiredGroup
+                 * @memberof jspb.test.TestGroup
+                 * @classdesc Represents a RequiredGroup.
                  * @constructor
                  * @param {jspb.test.TestGroup.IRequiredGroup=} [properties] Properties to set
                  */
@@ -4532,14 +4553,15 @@ $root.jspb = (function() {
 
                 /**
                  * Properties of an OptionalGroup.
-                 * @interface jspb.test.TestGroup.IOptionalGroup
-                 * @property {string} id OptionalGroup id.
+                 * @memberof jspb.test.TestGroup
+                 * @interface IOptionalGroup
+                 * @property {string} id OptionalGroup id
                  */
 
                 /**
                  * Constructs a new OptionalGroup.
-                 * @exports jspb.test.TestGroup.OptionalGroup
-                 * @classdesc Represents an OptionalGroup
+                 * @memberof jspb.test.TestGroup
+                 * @classdesc Represents an OptionalGroup.
                  * @constructor
                  * @param {jspb.test.TestGroup.IOptionalGroup=} [properties] Properties to set
                  */
@@ -4693,14 +4715,15 @@ $root.jspb = (function() {
 
             /**
              * Properties of a TestGroup1.
-             * @interface jspb.test.ITestGroup1
-             * @property {jspb.test.TestGroup.IRepeatedGroup} [group] TestGroup1 group.
+             * @memberof jspb.test
+             * @interface ITestGroup1
+             * @property {jspb.test.TestGroup.IRepeatedGroup} [group] TestGroup1 group
              */
 
             /**
              * Constructs a new TestGroup1.
-             * @exports jspb.test.TestGroup1
-             * @classdesc Represents a TestGroup1
+             * @memberof jspb.test
+             * @classdesc Represents a TestGroup1.
              * @constructor
              * @param {jspb.test.ITestGroup1=} [properties] Properties to set
              */
@@ -4854,15 +4877,16 @@ $root.jspb = (function() {
 
             /**
              * Properties of a TestReservedNames.
-             * @interface jspb.test.ITestReservedNames
-             * @property {number} [extension] TestReservedNames extension.
-             * @property {number} [".jspb.test.TestReservedNamesExtension.foo"] TestReservedNames .jspb.test.TestReservedNamesExtension.foo.
+             * @memberof jspb.test
+             * @interface ITestReservedNames
+             * @property {number} [extension] TestReservedNames extension
+             * @property {number} [".jspb.test.TestReservedNamesExtension.foo"] TestReservedNames .jspb.test.TestReservedNamesExtension.foo
              */
 
             /**
              * Constructs a new TestReservedNames.
-             * @exports jspb.test.TestReservedNames
-             * @classdesc Represents a TestReservedNames
+             * @memberof jspb.test
+             * @classdesc Represents a TestReservedNames.
              * @constructor
              * @param {jspb.test.ITestReservedNames=} [properties] Properties to set
              */
@@ -5031,13 +5055,14 @@ $root.jspb = (function() {
 
             /**
              * Properties of a TestReservedNamesExtension.
-             * @interface jspb.test.ITestReservedNamesExtension
+             * @memberof jspb.test
+             * @interface ITestReservedNamesExtension
              */
 
             /**
              * Constructs a new TestReservedNamesExtension.
-             * @exports jspb.test.TestReservedNamesExtension
-             * @classdesc Represents a TestReservedNamesExtension
+             * @memberof jspb.test
+             * @classdesc Represents a TestReservedNamesExtension.
              * @constructor
              * @param {jspb.test.ITestReservedNamesExtension=} [properties] Properties to set
              */
@@ -5162,23 +5187,24 @@ $root.jspb = (function() {
 
             /**
              * Properties of a TestMessageWithOneof.
-             * @interface jspb.test.ITestMessageWithOneof
-             * @property {string} [pone] TestMessageWithOneof pone.
-             * @property {string} [pthree] TestMessageWithOneof pthree.
-             * @property {jspb.test.ITestMessageWithOneof} [rone] TestMessageWithOneof rone.
-             * @property {string} [rtwo] TestMessageWithOneof rtwo.
-             * @property {boolean} [normalField] TestMessageWithOneof normalField.
-             * @property {Array.<string>} [repeatedField] TestMessageWithOneof repeatedField.
-             * @property {number} [aone] TestMessageWithOneof aone.
-             * @property {number} [atwo] TestMessageWithOneof atwo.
-             * @property {number} [bone] TestMessageWithOneof bone.
-             * @property {number} [btwo] TestMessageWithOneof btwo.
+             * @memberof jspb.test
+             * @interface ITestMessageWithOneof
+             * @property {string} [pone] TestMessageWithOneof pone
+             * @property {string} [pthree] TestMessageWithOneof pthree
+             * @property {jspb.test.ITestMessageWithOneof} [rone] TestMessageWithOneof rone
+             * @property {string} [rtwo] TestMessageWithOneof rtwo
+             * @property {boolean} [normalField] TestMessageWithOneof normalField
+             * @property {Array.<string>} [repeatedField] TestMessageWithOneof repeatedField
+             * @property {number} [aone] TestMessageWithOneof aone
+             * @property {number} [atwo] TestMessageWithOneof atwo
+             * @property {number} [bone] TestMessageWithOneof bone
+             * @property {number} [btwo] TestMessageWithOneof btwo
              */
 
             /**
              * Constructs a new TestMessageWithOneof.
-             * @exports jspb.test.TestMessageWithOneof
-             * @classdesc Represents a TestMessageWithOneof
+             * @memberof jspb.test
+             * @classdesc Represents a TestMessageWithOneof.
              * @constructor
              * @param {jspb.test.ITestMessageWithOneof=} [properties] Properties to set
              */
@@ -5603,15 +5629,16 @@ $root.jspb = (function() {
 
             /**
              * Properties of a TestEndsWithBytes.
-             * @interface jspb.test.ITestEndsWithBytes
-             * @property {number} [value] TestEndsWithBytes value.
-             * @property {Uint8Array} [data] TestEndsWithBytes data.
+             * @memberof jspb.test
+             * @interface ITestEndsWithBytes
+             * @property {number} [value] TestEndsWithBytes value
+             * @property {Uint8Array} [data] TestEndsWithBytes data
              */
 
             /**
              * Constructs a new TestEndsWithBytes.
-             * @exports jspb.test.TestEndsWithBytes
-             * @classdesc Represents a TestEndsWithBytes
+             * @memberof jspb.test
+             * @classdesc Represents a TestEndsWithBytes.
              * @constructor
              * @param {jspb.test.ITestEndsWithBytes=} [properties] Properties to set
              */
@@ -5783,25 +5810,26 @@ $root.jspb = (function() {
 
             /**
              * Properties of a TestMapFieldsNoBinary.
-             * @interface jspb.test.ITestMapFieldsNoBinary
-             * @property {Object.<string,string>} [mapStringString] TestMapFieldsNoBinary mapStringString.
-             * @property {Object.<string,number>} [mapStringInt32] TestMapFieldsNoBinary mapStringInt32.
-             * @property {Object.<string,number|Long>} [mapStringInt64] TestMapFieldsNoBinary mapStringInt64.
-             * @property {Object.<string,boolean>} [mapStringBool] TestMapFieldsNoBinary mapStringBool.
-             * @property {Object.<string,number>} [mapStringDouble] TestMapFieldsNoBinary mapStringDouble.
-             * @property {Object.<string,jspb.test.MapValueEnumNoBinary>} [mapStringEnum] TestMapFieldsNoBinary mapStringEnum.
-             * @property {Object.<string,jspb.test.IMapValueMessageNoBinary>} [mapStringMsg] TestMapFieldsNoBinary mapStringMsg.
-             * @property {Object.<string,string>} [mapInt32String] TestMapFieldsNoBinary mapInt32String.
-             * @property {Object.<string,string>} [mapInt64String] TestMapFieldsNoBinary mapInt64String.
-             * @property {Object.<string,string>} [mapBoolString] TestMapFieldsNoBinary mapBoolString.
-             * @property {jspb.test.ITestMapFieldsNoBinary} [testMapFields] TestMapFieldsNoBinary testMapFields.
-             * @property {Object.<string,jspb.test.ITestMapFieldsNoBinary>} [mapStringTestmapfields] TestMapFieldsNoBinary mapStringTestmapfields.
+             * @memberof jspb.test
+             * @interface ITestMapFieldsNoBinary
+             * @property {Object.<string,string>} [mapStringString] TestMapFieldsNoBinary mapStringString
+             * @property {Object.<string,number>} [mapStringInt32] TestMapFieldsNoBinary mapStringInt32
+             * @property {Object.<string,number|Long>} [mapStringInt64] TestMapFieldsNoBinary mapStringInt64
+             * @property {Object.<string,boolean>} [mapStringBool] TestMapFieldsNoBinary mapStringBool
+             * @property {Object.<string,number>} [mapStringDouble] TestMapFieldsNoBinary mapStringDouble
+             * @property {Object.<string,jspb.test.MapValueEnumNoBinary>} [mapStringEnum] TestMapFieldsNoBinary mapStringEnum
+             * @property {Object.<string,jspb.test.IMapValueMessageNoBinary>} [mapStringMsg] TestMapFieldsNoBinary mapStringMsg
+             * @property {Object.<string,string>} [mapInt32String] TestMapFieldsNoBinary mapInt32String
+             * @property {Object.<string,string>} [mapInt64String] TestMapFieldsNoBinary mapInt64String
+             * @property {Object.<string,string>} [mapBoolString] TestMapFieldsNoBinary mapBoolString
+             * @property {jspb.test.ITestMapFieldsNoBinary} [testMapFields] TestMapFieldsNoBinary testMapFields
+             * @property {Object.<string,jspb.test.ITestMapFieldsNoBinary>} [mapStringTestmapfields] TestMapFieldsNoBinary mapStringTestmapfields
              */
 
             /**
              * Constructs a new TestMapFieldsNoBinary.
-             * @exports jspb.test.TestMapFieldsNoBinary
-             * @classdesc Represents a TestMapFieldsNoBinary
+             * @memberof jspb.test
+             * @classdesc Represents a TestMapFieldsNoBinary.
              * @constructor
              * @param {jspb.test.ITestMapFieldsNoBinary=} [properties] Properties to set
              */
@@ -6454,14 +6482,15 @@ $root.jspb = (function() {
 
             /**
              * Properties of a MapValueMessageNoBinary.
-             * @interface jspb.test.IMapValueMessageNoBinary
-             * @property {number} [foo] MapValueMessageNoBinary foo.
+             * @memberof jspb.test
+             * @interface IMapValueMessageNoBinary
+             * @property {number} [foo] MapValueMessageNoBinary foo
              */
 
             /**
              * Constructs a new MapValueMessageNoBinary.
-             * @exports jspb.test.MapValueMessageNoBinary
-             * @classdesc Represents a MapValueMessageNoBinary
+             * @memberof jspb.test
+             * @classdesc Represents a MapValueMessageNoBinary.
              * @constructor
              * @param {jspb.test.IMapValueMessageNoBinary=} [properties] Properties to set
              */
@@ -6610,13 +6639,14 @@ $root.jspb = (function() {
 
             /**
              * Properties of a Deeply.
-             * @interface jspb.test.IDeeply
+             * @memberof jspb.test
+             * @interface IDeeply
              */
 
             /**
              * Constructs a new Deeply.
-             * @exports jspb.test.Deeply
-             * @classdesc Represents a Deeply
+             * @memberof jspb.test
+             * @classdesc Represents a Deeply.
              * @constructor
              * @param {jspb.test.IDeeply=} [properties] Properties to set
              */
@@ -6738,13 +6768,14 @@ $root.jspb = (function() {
 
                 /**
                  * Properties of a Nested.
-                 * @interface jspb.test.Deeply.INested
+                 * @memberof jspb.test.Deeply
+                 * @interface INested
                  */
 
                 /**
                  * Constructs a new Nested.
-                 * @exports jspb.test.Deeply.Nested
-                 * @classdesc Represents a Nested
+                 * @memberof jspb.test.Deeply
+                 * @classdesc Represents a Nested.
                  * @constructor
                  * @param {jspb.test.Deeply.INested=} [properties] Properties to set
                  */
@@ -6866,14 +6897,15 @@ $root.jspb = (function() {
 
                     /**
                      * Properties of a Message.
-                     * @interface jspb.test.Deeply.Nested.IMessage
-                     * @property {number} [count] Message count.
+                     * @memberof jspb.test.Deeply.Nested
+                     * @interface IMessage
+                     * @property {number} [count] Message count
                      */
 
                     /**
                      * Constructs a new Message.
-                     * @exports jspb.test.Deeply.Nested.Message
-                     * @classdesc Represents a Message
+                     * @memberof jspb.test.Deeply.Nested
+                     * @classdesc Represents a Message.
                      * @constructor
                      * @param {jspb.test.Deeply.Nested.IMessage=} [properties] Properties to set
                      */
@@ -7043,7 +7075,7 @@ $root.google = (function() {
 
         /**
          * Namespace protobuf.
-         * @exports google.protobuf
+         * @memberof google
          * @namespace
          */
         var protobuf = {};
@@ -7052,14 +7084,15 @@ $root.google = (function() {
 
             /**
              * Properties of a FileDescriptorSet.
-             * @interface google.protobuf.IFileDescriptorSet
-             * @property {Array.<google.protobuf.IFileDescriptorProto>} [file] FileDescriptorSet file.
+             * @memberof google.protobuf
+             * @interface IFileDescriptorSet
+             * @property {Array.<google.protobuf.IFileDescriptorProto>} [file] FileDescriptorSet file
              */
 
             /**
              * Constructs a new FileDescriptorSet.
-             * @exports google.protobuf.FileDescriptorSet
-             * @classdesc Represents a FileDescriptorSet
+             * @memberof google.protobuf
+             * @classdesc Represents a FileDescriptorSet.
              * @constructor
              * @param {google.protobuf.IFileDescriptorSet=} [properties] Properties to set
              */
@@ -7229,25 +7262,26 @@ $root.google = (function() {
 
             /**
              * Properties of a FileDescriptorProto.
-             * @interface google.protobuf.IFileDescriptorProto
-             * @property {string} [name] FileDescriptorProto name.
-             * @property {string} ["package"] FileDescriptorProto package.
-             * @property {Array.<string>} [dependency] FileDescriptorProto dependency.
-             * @property {Array.<number>} [publicDependency] FileDescriptorProto publicDependency.
-             * @property {Array.<number>} [weakDependency] FileDescriptorProto weakDependency.
-             * @property {Array.<google.protobuf.IDescriptorProto>} [messageType] FileDescriptorProto messageType.
-             * @property {Array.<google.protobuf.IEnumDescriptorProto>} [enumType] FileDescriptorProto enumType.
-             * @property {Array.<google.protobuf.IServiceDescriptorProto>} [service] FileDescriptorProto service.
-             * @property {Array.<google.protobuf.IFieldDescriptorProto>} [extension] FileDescriptorProto extension.
-             * @property {google.protobuf.IFileOptions} [options] FileDescriptorProto options.
-             * @property {google.protobuf.ISourceCodeInfo} [sourceCodeInfo] FileDescriptorProto sourceCodeInfo.
-             * @property {string} [syntax] FileDescriptorProto syntax.
+             * @memberof google.protobuf
+             * @interface IFileDescriptorProto
+             * @property {string} [name] FileDescriptorProto name
+             * @property {string} ["package"] FileDescriptorProto package
+             * @property {Array.<string>} [dependency] FileDescriptorProto dependency
+             * @property {Array.<number>} [publicDependency] FileDescriptorProto publicDependency
+             * @property {Array.<number>} [weakDependency] FileDescriptorProto weakDependency
+             * @property {Array.<google.protobuf.IDescriptorProto>} [messageType] FileDescriptorProto messageType
+             * @property {Array.<google.protobuf.IEnumDescriptorProto>} [enumType] FileDescriptorProto enumType
+             * @property {Array.<google.protobuf.IServiceDescriptorProto>} [service] FileDescriptorProto service
+             * @property {Array.<google.protobuf.IFieldDescriptorProto>} [extension] FileDescriptorProto extension
+             * @property {google.protobuf.IFileOptions} [options] FileDescriptorProto options
+             * @property {google.protobuf.ISourceCodeInfo} [sourceCodeInfo] FileDescriptorProto sourceCodeInfo
+             * @property {string} [syntax] FileDescriptorProto syntax
              */
 
             /**
              * Constructs a new FileDescriptorProto.
-             * @exports google.protobuf.FileDescriptorProto
-             * @classdesc Represents a FileDescriptorProto
+             * @memberof google.protobuf
+             * @classdesc Represents a FileDescriptorProto.
              * @constructor
              * @param {google.protobuf.IFileDescriptorProto=} [properties] Properties to set
              */
@@ -7760,23 +7794,24 @@ $root.google = (function() {
 
             /**
              * Properties of a DescriptorProto.
-             * @interface google.protobuf.IDescriptorProto
-             * @property {string} [name] DescriptorProto name.
-             * @property {Array.<google.protobuf.IFieldDescriptorProto>} [field] DescriptorProto field.
-             * @property {Array.<google.protobuf.IFieldDescriptorProto>} [extension] DescriptorProto extension.
-             * @property {Array.<google.protobuf.IDescriptorProto>} [nestedType] DescriptorProto nestedType.
-             * @property {Array.<google.protobuf.IEnumDescriptorProto>} [enumType] DescriptorProto enumType.
-             * @property {Array.<google.protobuf.DescriptorProto.IExtensionRange>} [extensionRange] DescriptorProto extensionRange.
-             * @property {Array.<google.protobuf.IOneofDescriptorProto>} [oneofDecl] DescriptorProto oneofDecl.
-             * @property {google.protobuf.IMessageOptions} [options] DescriptorProto options.
-             * @property {Array.<google.protobuf.DescriptorProto.IReservedRange>} [reservedRange] DescriptorProto reservedRange.
-             * @property {Array.<string>} [reservedName] DescriptorProto reservedName.
+             * @memberof google.protobuf
+             * @interface IDescriptorProto
+             * @property {string} [name] DescriptorProto name
+             * @property {Array.<google.protobuf.IFieldDescriptorProto>} [field] DescriptorProto field
+             * @property {Array.<google.protobuf.IFieldDescriptorProto>} [extension] DescriptorProto extension
+             * @property {Array.<google.protobuf.IDescriptorProto>} [nestedType] DescriptorProto nestedType
+             * @property {Array.<google.protobuf.IEnumDescriptorProto>} [enumType] DescriptorProto enumType
+             * @property {Array.<google.protobuf.DescriptorProto.IExtensionRange>} [extensionRange] DescriptorProto extensionRange
+             * @property {Array.<google.protobuf.IOneofDescriptorProto>} [oneofDecl] DescriptorProto oneofDecl
+             * @property {google.protobuf.IMessageOptions} [options] DescriptorProto options
+             * @property {Array.<google.protobuf.DescriptorProto.IReservedRange>} [reservedRange] DescriptorProto reservedRange
+             * @property {Array.<string>} [reservedName] DescriptorProto reservedName
              */
 
             /**
              * Constructs a new DescriptorProto.
-             * @exports google.protobuf.DescriptorProto
-             * @classdesc Represents a DescriptorProto
+             * @memberof google.protobuf
+             * @classdesc Represents a DescriptorProto.
              * @constructor
              * @param {google.protobuf.IDescriptorProto=} [properties] Properties to set
              */
@@ -8264,15 +8299,16 @@ $root.google = (function() {
 
                 /**
                  * Properties of an ExtensionRange.
-                 * @interface google.protobuf.DescriptorProto.IExtensionRange
-                 * @property {number} [start] ExtensionRange start.
-                 * @property {number} [end] ExtensionRange end.
+                 * @memberof google.protobuf.DescriptorProto
+                 * @interface IExtensionRange
+                 * @property {number} [start] ExtensionRange start
+                 * @property {number} [end] ExtensionRange end
                  */
 
                 /**
                  * Constructs a new ExtensionRange.
-                 * @exports google.protobuf.DescriptorProto.ExtensionRange
-                 * @classdesc Represents an ExtensionRange
+                 * @memberof google.protobuf.DescriptorProto
+                 * @classdesc Represents an ExtensionRange.
                  * @constructor
                  * @param {google.protobuf.DescriptorProto.IExtensionRange=} [properties] Properties to set
                  */
@@ -8441,15 +8477,16 @@ $root.google = (function() {
 
                 /**
                  * Properties of a ReservedRange.
-                 * @interface google.protobuf.DescriptorProto.IReservedRange
-                 * @property {number} [start] ReservedRange start.
-                 * @property {number} [end] ReservedRange end.
+                 * @memberof google.protobuf.DescriptorProto
+                 * @interface IReservedRange
+                 * @property {number} [start] ReservedRange start
+                 * @property {number} [end] ReservedRange end
                  */
 
                 /**
                  * Constructs a new ReservedRange.
-                 * @exports google.protobuf.DescriptorProto.ReservedRange
-                 * @classdesc Represents a ReservedRange
+                 * @memberof google.protobuf.DescriptorProto
+                 * @classdesc Represents a ReservedRange.
                  * @constructor
                  * @param {google.protobuf.DescriptorProto.IReservedRange=} [properties] Properties to set
                  */
@@ -8621,23 +8658,24 @@ $root.google = (function() {
 
             /**
              * Properties of a FieldDescriptorProto.
-             * @interface google.protobuf.IFieldDescriptorProto
-             * @property {string} [name] FieldDescriptorProto name.
-             * @property {number} [number] FieldDescriptorProto number.
-             * @property {google.protobuf.FieldDescriptorProto.Label} [label] FieldDescriptorProto label.
-             * @property {google.protobuf.FieldDescriptorProto.Type} [type] FieldDescriptorProto type.
-             * @property {string} [typeName] FieldDescriptorProto typeName.
-             * @property {string} [extendee] FieldDescriptorProto extendee.
-             * @property {string} [defaultValue] FieldDescriptorProto defaultValue.
-             * @property {number} [oneofIndex] FieldDescriptorProto oneofIndex.
-             * @property {string} [jsonName] FieldDescriptorProto jsonName.
-             * @property {google.protobuf.IFieldOptions} [options] FieldDescriptorProto options.
+             * @memberof google.protobuf
+             * @interface IFieldDescriptorProto
+             * @property {string} [name] FieldDescriptorProto name
+             * @property {number} [number] FieldDescriptorProto number
+             * @property {google.protobuf.FieldDescriptorProto.Label} [label] FieldDescriptorProto label
+             * @property {google.protobuf.FieldDescriptorProto.Type} [type] FieldDescriptorProto type
+             * @property {string} [typeName] FieldDescriptorProto typeName
+             * @property {string} [extendee] FieldDescriptorProto extendee
+             * @property {string} [defaultValue] FieldDescriptorProto defaultValue
+             * @property {number} [oneofIndex] FieldDescriptorProto oneofIndex
+             * @property {string} [jsonName] FieldDescriptorProto jsonName
+             * @property {google.protobuf.IFieldOptions} [options] FieldDescriptorProto options
              */
 
             /**
              * Constructs a new FieldDescriptorProto.
-             * @exports google.protobuf.FieldDescriptorProto
-             * @classdesc Represents a FieldDescriptorProto
+             * @memberof google.protobuf
+             * @classdesc Represents a FieldDescriptorProto.
              * @constructor
              * @param {google.protobuf.IFieldDescriptorProto=} [properties] Properties to set
              */
@@ -9134,15 +9172,16 @@ $root.google = (function() {
 
             /**
              * Properties of an OneofDescriptorProto.
-             * @interface google.protobuf.IOneofDescriptorProto
-             * @property {string} [name] OneofDescriptorProto name.
-             * @property {google.protobuf.IOneofOptions} [options] OneofDescriptorProto options.
+             * @memberof google.protobuf
+             * @interface IOneofDescriptorProto
+             * @property {string} [name] OneofDescriptorProto name
+             * @property {google.protobuf.IOneofOptions} [options] OneofDescriptorProto options
              */
 
             /**
              * Constructs a new OneofDescriptorProto.
-             * @exports google.protobuf.OneofDescriptorProto
-             * @classdesc Represents an OneofDescriptorProto
+             * @memberof google.protobuf
+             * @classdesc Represents an OneofDescriptorProto.
              * @constructor
              * @param {google.protobuf.IOneofDescriptorProto=} [properties] Properties to set
              */
@@ -9316,16 +9355,17 @@ $root.google = (function() {
 
             /**
              * Properties of an EnumDescriptorProto.
-             * @interface google.protobuf.IEnumDescriptorProto
-             * @property {string} [name] EnumDescriptorProto name.
-             * @property {Array.<google.protobuf.IEnumValueDescriptorProto>} [value] EnumDescriptorProto value.
-             * @property {google.protobuf.IEnumOptions} [options] EnumDescriptorProto options.
+             * @memberof google.protobuf
+             * @interface IEnumDescriptorProto
+             * @property {string} [name] EnumDescriptorProto name
+             * @property {Array.<google.protobuf.IEnumValueDescriptorProto>} [value] EnumDescriptorProto value
+             * @property {google.protobuf.IEnumOptions} [options] EnumDescriptorProto options
              */
 
             /**
              * Constructs a new EnumDescriptorProto.
-             * @exports google.protobuf.EnumDescriptorProto
-             * @classdesc Represents an EnumDescriptorProto
+             * @memberof google.protobuf
+             * @classdesc Represents an EnumDescriptorProto.
              * @constructor
              * @param {google.protobuf.IEnumDescriptorProto=} [properties] Properties to set
              */
@@ -9540,16 +9580,17 @@ $root.google = (function() {
 
             /**
              * Properties of an EnumValueDescriptorProto.
-             * @interface google.protobuf.IEnumValueDescriptorProto
-             * @property {string} [name] EnumValueDescriptorProto name.
-             * @property {number} [number] EnumValueDescriptorProto number.
-             * @property {google.protobuf.IEnumValueOptions} [options] EnumValueDescriptorProto options.
+             * @memberof google.protobuf
+             * @interface IEnumValueDescriptorProto
+             * @property {string} [name] EnumValueDescriptorProto name
+             * @property {number} [number] EnumValueDescriptorProto number
+             * @property {google.protobuf.IEnumValueOptions} [options] EnumValueDescriptorProto options
              */
 
             /**
              * Constructs a new EnumValueDescriptorProto.
-             * @exports google.protobuf.EnumValueDescriptorProto
-             * @classdesc Represents an EnumValueDescriptorProto
+             * @memberof google.protobuf
+             * @classdesc Represents an EnumValueDescriptorProto.
              * @constructor
              * @param {google.protobuf.IEnumValueDescriptorProto=} [properties] Properties to set
              */
@@ -9742,16 +9783,17 @@ $root.google = (function() {
 
             /**
              * Properties of a ServiceDescriptorProto.
-             * @interface google.protobuf.IServiceDescriptorProto
-             * @property {string} [name] ServiceDescriptorProto name.
-             * @property {Array.<google.protobuf.IMethodDescriptorProto>} [method] ServiceDescriptorProto method.
-             * @property {google.protobuf.IServiceOptions} [options] ServiceDescriptorProto options.
+             * @memberof google.protobuf
+             * @interface IServiceDescriptorProto
+             * @property {string} [name] ServiceDescriptorProto name
+             * @property {Array.<google.protobuf.IMethodDescriptorProto>} [method] ServiceDescriptorProto method
+             * @property {google.protobuf.IServiceOptions} [options] ServiceDescriptorProto options
              */
 
             /**
              * Constructs a new ServiceDescriptorProto.
-             * @exports google.protobuf.ServiceDescriptorProto
-             * @classdesc Represents a ServiceDescriptorProto
+             * @memberof google.protobuf
+             * @classdesc Represents a ServiceDescriptorProto.
              * @constructor
              * @param {google.protobuf.IServiceDescriptorProto=} [properties] Properties to set
              */
@@ -9966,19 +10008,20 @@ $root.google = (function() {
 
             /**
              * Properties of a MethodDescriptorProto.
-             * @interface google.protobuf.IMethodDescriptorProto
-             * @property {string} [name] MethodDescriptorProto name.
-             * @property {string} [inputType] MethodDescriptorProto inputType.
-             * @property {string} [outputType] MethodDescriptorProto outputType.
-             * @property {google.protobuf.IMethodOptions} [options] MethodDescriptorProto options.
-             * @property {boolean} [clientStreaming] MethodDescriptorProto clientStreaming.
-             * @property {boolean} [serverStreaming] MethodDescriptorProto serverStreaming.
+             * @memberof google.protobuf
+             * @interface IMethodDescriptorProto
+             * @property {string} [name] MethodDescriptorProto name
+             * @property {string} [inputType] MethodDescriptorProto inputType
+             * @property {string} [outputType] MethodDescriptorProto outputType
+             * @property {google.protobuf.IMethodOptions} [options] MethodDescriptorProto options
+             * @property {boolean} [clientStreaming] MethodDescriptorProto clientStreaming
+             * @property {boolean} [serverStreaming] MethodDescriptorProto serverStreaming
              */
 
             /**
              * Constructs a new MethodDescriptorProto.
-             * @exports google.protobuf.MethodDescriptorProto
-             * @classdesc Represents a MethodDescriptorProto
+             * @memberof google.protobuf
+             * @classdesc Represents a MethodDescriptorProto.
              * @constructor
              * @param {google.protobuf.IMethodDescriptorProto=} [properties] Properties to set
              */
@@ -10228,28 +10271,29 @@ $root.google = (function() {
 
             /**
              * Properties of a FileOptions.
-             * @interface google.protobuf.IFileOptions
-             * @property {string} [javaPackage] FileOptions javaPackage.
-             * @property {string} [javaOuterClassname] FileOptions javaOuterClassname.
-             * @property {boolean} [javaMultipleFiles] FileOptions javaMultipleFiles.
-             * @property {boolean} [javaGenerateEqualsAndHash] FileOptions javaGenerateEqualsAndHash.
-             * @property {boolean} [javaStringCheckUtf8] FileOptions javaStringCheckUtf8.
-             * @property {google.protobuf.FileOptions.OptimizeMode} [optimizeFor] FileOptions optimizeFor.
-             * @property {string} [goPackage] FileOptions goPackage.
-             * @property {boolean} [ccGenericServices] FileOptions ccGenericServices.
-             * @property {boolean} [javaGenericServices] FileOptions javaGenericServices.
-             * @property {boolean} [pyGenericServices] FileOptions pyGenericServices.
-             * @property {boolean} [deprecated] FileOptions deprecated.
-             * @property {boolean} [ccEnableArenas] FileOptions ccEnableArenas.
-             * @property {string} [objcClassPrefix] FileOptions objcClassPrefix.
-             * @property {string} [csharpNamespace] FileOptions csharpNamespace.
-             * @property {Array.<google.protobuf.IUninterpretedOption>} [uninterpretedOption] FileOptions uninterpretedOption.
+             * @memberof google.protobuf
+             * @interface IFileOptions
+             * @property {string} [javaPackage] FileOptions javaPackage
+             * @property {string} [javaOuterClassname] FileOptions javaOuterClassname
+             * @property {boolean} [javaMultipleFiles] FileOptions javaMultipleFiles
+             * @property {boolean} [javaGenerateEqualsAndHash] FileOptions javaGenerateEqualsAndHash
+             * @property {boolean} [javaStringCheckUtf8] FileOptions javaStringCheckUtf8
+             * @property {google.protobuf.FileOptions.OptimizeMode} [optimizeFor] FileOptions optimizeFor
+             * @property {string} [goPackage] FileOptions goPackage
+             * @property {boolean} [ccGenericServices] FileOptions ccGenericServices
+             * @property {boolean} [javaGenericServices] FileOptions javaGenericServices
+             * @property {boolean} [pyGenericServices] FileOptions pyGenericServices
+             * @property {boolean} [deprecated] FileOptions deprecated
+             * @property {boolean} [ccEnableArenas] FileOptions ccEnableArenas
+             * @property {string} [objcClassPrefix] FileOptions objcClassPrefix
+             * @property {string} [csharpNamespace] FileOptions csharpNamespace
+             * @property {Array.<google.protobuf.IUninterpretedOption>} [uninterpretedOption] FileOptions uninterpretedOption
              */
 
             /**
              * Constructs a new FileOptions.
-             * @exports google.protobuf.FileOptions
-             * @classdesc Represents a FileOptions
+             * @memberof google.protobuf
+             * @classdesc Represents a FileOptions.
              * @constructor
              * @param {google.protobuf.IFileOptions=} [properties] Properties to set
              */
@@ -10720,18 +10764,19 @@ $root.google = (function() {
 
             /**
              * Properties of a MessageOptions.
-             * @interface google.protobuf.IMessageOptions
-             * @property {boolean} [messageSetWireFormat] MessageOptions messageSetWireFormat.
-             * @property {boolean} [noStandardDescriptorAccessor] MessageOptions noStandardDescriptorAccessor.
-             * @property {boolean} [deprecated] MessageOptions deprecated.
-             * @property {boolean} [mapEntry] MessageOptions mapEntry.
-             * @property {Array.<google.protobuf.IUninterpretedOption>} [uninterpretedOption] MessageOptions uninterpretedOption.
+             * @memberof google.protobuf
+             * @interface IMessageOptions
+             * @property {boolean} [messageSetWireFormat] MessageOptions messageSetWireFormat
+             * @property {boolean} [noStandardDescriptorAccessor] MessageOptions noStandardDescriptorAccessor
+             * @property {boolean} [deprecated] MessageOptions deprecated
+             * @property {boolean} [mapEntry] MessageOptions mapEntry
+             * @property {Array.<google.protobuf.IUninterpretedOption>} [uninterpretedOption] MessageOptions uninterpretedOption
              */
 
             /**
              * Constructs a new MessageOptions.
-             * @exports google.protobuf.MessageOptions
-             * @classdesc Represents a MessageOptions
+             * @memberof google.protobuf
+             * @classdesc Represents a MessageOptions.
              * @constructor
              * @param {google.protobuf.IMessageOptions=} [properties] Properties to set
              */
@@ -10979,20 +11024,21 @@ $root.google = (function() {
 
             /**
              * Properties of a FieldOptions.
-             * @interface google.protobuf.IFieldOptions
-             * @property {google.protobuf.FieldOptions.CType} [ctype] FieldOptions ctype.
-             * @property {boolean} [packed] FieldOptions packed.
-             * @property {google.protobuf.FieldOptions.JSType} [jstype] FieldOptions jstype.
-             * @property {boolean} [lazy] FieldOptions lazy.
-             * @property {boolean} [deprecated] FieldOptions deprecated.
-             * @property {boolean} [weak] FieldOptions weak.
-             * @property {Array.<google.protobuf.IUninterpretedOption>} [uninterpretedOption] FieldOptions uninterpretedOption.
+             * @memberof google.protobuf
+             * @interface IFieldOptions
+             * @property {google.protobuf.FieldOptions.CType} [ctype] FieldOptions ctype
+             * @property {boolean} [packed] FieldOptions packed
+             * @property {google.protobuf.FieldOptions.JSType} [jstype] FieldOptions jstype
+             * @property {boolean} [lazy] FieldOptions lazy
+             * @property {boolean} [deprecated] FieldOptions deprecated
+             * @property {boolean} [weak] FieldOptions weak
+             * @property {Array.<google.protobuf.IUninterpretedOption>} [uninterpretedOption] FieldOptions uninterpretedOption
              */
 
             /**
              * Constructs a new FieldOptions.
-             * @exports google.protobuf.FieldOptions
-             * @classdesc Represents a FieldOptions
+             * @memberof google.protobuf
+             * @classdesc Represents a FieldOptions.
              * @constructor
              * @param {google.protobuf.IFieldOptions=} [properties] Properties to set
              */
@@ -11344,14 +11390,15 @@ $root.google = (function() {
 
             /**
              * Properties of an OneofOptions.
-             * @interface google.protobuf.IOneofOptions
-             * @property {Array.<google.protobuf.IUninterpretedOption>} [uninterpretedOption] OneofOptions uninterpretedOption.
+             * @memberof google.protobuf
+             * @interface IOneofOptions
+             * @property {Array.<google.protobuf.IUninterpretedOption>} [uninterpretedOption] OneofOptions uninterpretedOption
              */
 
             /**
              * Constructs a new OneofOptions.
-             * @exports google.protobuf.OneofOptions
-             * @classdesc Represents an OneofOptions
+             * @memberof google.protobuf
+             * @classdesc Represents an OneofOptions.
              * @constructor
              * @param {google.protobuf.IOneofOptions=} [properties] Properties to set
              */
@@ -11521,17 +11568,18 @@ $root.google = (function() {
 
             /**
              * Properties of an EnumOptions.
-             * @interface google.protobuf.IEnumOptions
-             * @property {boolean} [allowAlias] EnumOptions allowAlias.
-             * @property {boolean} [deprecated] EnumOptions deprecated.
-             * @property {Array.<google.protobuf.IUninterpretedOption>} [uninterpretedOption] EnumOptions uninterpretedOption.
-             * @property {string} [".jspb.test.IsExtension.simpleOption"] EnumOptions .jspb.test.IsExtension.simpleOption.
+             * @memberof google.protobuf
+             * @interface IEnumOptions
+             * @property {boolean} [allowAlias] EnumOptions allowAlias
+             * @property {boolean} [deprecated] EnumOptions deprecated
+             * @property {Array.<google.protobuf.IUninterpretedOption>} [uninterpretedOption] EnumOptions uninterpretedOption
+             * @property {string} [".jspb.test.IsExtension.simpleOption"] EnumOptions .jspb.test.IsExtension.simpleOption
              */
 
             /**
              * Constructs a new EnumOptions.
-             * @exports google.protobuf.EnumOptions
-             * @classdesc Represents an EnumOptions
+             * @memberof google.protobuf
+             * @classdesc Represents an EnumOptions.
              * @constructor
              * @param {google.protobuf.IEnumOptions=} [properties] Properties to set
              */
@@ -11760,15 +11808,16 @@ $root.google = (function() {
 
             /**
              * Properties of an EnumValueOptions.
-             * @interface google.protobuf.IEnumValueOptions
-             * @property {boolean} [deprecated] EnumValueOptions deprecated.
-             * @property {Array.<google.protobuf.IUninterpretedOption>} [uninterpretedOption] EnumValueOptions uninterpretedOption.
+             * @memberof google.protobuf
+             * @interface IEnumValueOptions
+             * @property {boolean} [deprecated] EnumValueOptions deprecated
+             * @property {Array.<google.protobuf.IUninterpretedOption>} [uninterpretedOption] EnumValueOptions uninterpretedOption
              */
 
             /**
              * Constructs a new EnumValueOptions.
-             * @exports google.protobuf.EnumValueOptions
-             * @classdesc Represents an EnumValueOptions
+             * @memberof google.protobuf
+             * @classdesc Represents an EnumValueOptions.
              * @constructor
              * @param {google.protobuf.IEnumValueOptions=} [properties] Properties to set
              */
@@ -11958,15 +12007,16 @@ $root.google = (function() {
 
             /**
              * Properties of a ServiceOptions.
-             * @interface google.protobuf.IServiceOptions
-             * @property {boolean} [deprecated] ServiceOptions deprecated.
-             * @property {Array.<google.protobuf.IUninterpretedOption>} [uninterpretedOption] ServiceOptions uninterpretedOption.
+             * @memberof google.protobuf
+             * @interface IServiceOptions
+             * @property {boolean} [deprecated] ServiceOptions deprecated
+             * @property {Array.<google.protobuf.IUninterpretedOption>} [uninterpretedOption] ServiceOptions uninterpretedOption
              */
 
             /**
              * Constructs a new ServiceOptions.
-             * @exports google.protobuf.ServiceOptions
-             * @classdesc Represents a ServiceOptions
+             * @memberof google.protobuf
+             * @classdesc Represents a ServiceOptions.
              * @constructor
              * @param {google.protobuf.IServiceOptions=} [properties] Properties to set
              */
@@ -12156,16 +12206,17 @@ $root.google = (function() {
 
             /**
              * Properties of a MethodOptions.
-             * @interface google.protobuf.IMethodOptions
-             * @property {boolean} [deprecated] MethodOptions deprecated.
-             * @property {google.protobuf.MethodOptions.IdempotencyLevel} [idempotencyLevel] MethodOptions idempotencyLevel.
-             * @property {Array.<google.protobuf.IUninterpretedOption>} [uninterpretedOption] MethodOptions uninterpretedOption.
+             * @memberof google.protobuf
+             * @interface IMethodOptions
+             * @property {boolean} [deprecated] MethodOptions deprecated
+             * @property {google.protobuf.MethodOptions.IdempotencyLevel} [idempotencyLevel] MethodOptions idempotencyLevel
+             * @property {Array.<google.protobuf.IUninterpretedOption>} [uninterpretedOption] MethodOptions uninterpretedOption
              */
 
             /**
              * Constructs a new MethodOptions.
-             * @exports google.protobuf.MethodOptions
-             * @classdesc Represents a MethodOptions
+             * @memberof google.protobuf
+             * @classdesc Represents a MethodOptions.
              * @constructor
              * @param {google.protobuf.IMethodOptions=} [properties] Properties to set
              */
@@ -12408,20 +12459,21 @@ $root.google = (function() {
 
             /**
              * Properties of an UninterpretedOption.
-             * @interface google.protobuf.IUninterpretedOption
-             * @property {Array.<google.protobuf.UninterpretedOption.INamePart>} [name] UninterpretedOption name.
-             * @property {string} [identifierValue] UninterpretedOption identifierValue.
-             * @property {number|Long} [positiveIntValue] UninterpretedOption positiveIntValue.
-             * @property {number|Long} [negativeIntValue] UninterpretedOption negativeIntValue.
-             * @property {number} [doubleValue] UninterpretedOption doubleValue.
-             * @property {Uint8Array} [stringValue] UninterpretedOption stringValue.
-             * @property {string} [aggregateValue] UninterpretedOption aggregateValue.
+             * @memberof google.protobuf
+             * @interface IUninterpretedOption
+             * @property {Array.<google.protobuf.UninterpretedOption.INamePart>} [name] UninterpretedOption name
+             * @property {string} [identifierValue] UninterpretedOption identifierValue
+             * @property {number|Long} [positiveIntValue] UninterpretedOption positiveIntValue
+             * @property {number|Long} [negativeIntValue] UninterpretedOption negativeIntValue
+             * @property {number} [doubleValue] UninterpretedOption doubleValue
+             * @property {Uint8Array} [stringValue] UninterpretedOption stringValue
+             * @property {string} [aggregateValue] UninterpretedOption aggregateValue
              */
 
             /**
              * Constructs a new UninterpretedOption.
-             * @exports google.protobuf.UninterpretedOption
-             * @classdesc Represents an UninterpretedOption
+             * @memberof google.protobuf
+             * @classdesc Represents an UninterpretedOption.
              * @constructor
              * @param {google.protobuf.IUninterpretedOption=} [properties] Properties to set
              */
@@ -12735,15 +12787,16 @@ $root.google = (function() {
 
                 /**
                  * Properties of a NamePart.
-                 * @interface google.protobuf.UninterpretedOption.INamePart
-                 * @property {string} namePart NamePart namePart.
-                 * @property {boolean} isExtension NamePart isExtension.
+                 * @memberof google.protobuf.UninterpretedOption
+                 * @interface INamePart
+                 * @property {string} namePart NamePart namePart
+                 * @property {boolean} isExtension NamePart isExtension
                  */
 
                 /**
                  * Constructs a new NamePart.
-                 * @exports google.protobuf.UninterpretedOption.NamePart
-                 * @classdesc Represents a NamePart
+                 * @memberof google.protobuf.UninterpretedOption
+                 * @classdesc Represents a NamePart.
                  * @constructor
                  * @param {google.protobuf.UninterpretedOption.INamePart=} [properties] Properties to set
                  */
@@ -12915,14 +12968,15 @@ $root.google = (function() {
 
             /**
              * Properties of a SourceCodeInfo.
-             * @interface google.protobuf.ISourceCodeInfo
-             * @property {Array.<google.protobuf.SourceCodeInfo.ILocation>} [location] SourceCodeInfo location.
+             * @memberof google.protobuf
+             * @interface ISourceCodeInfo
+             * @property {Array.<google.protobuf.SourceCodeInfo.ILocation>} [location] SourceCodeInfo location
              */
 
             /**
              * Constructs a new SourceCodeInfo.
-             * @exports google.protobuf.SourceCodeInfo
-             * @classdesc Represents a SourceCodeInfo
+             * @memberof google.protobuf
+             * @classdesc Represents a SourceCodeInfo.
              * @constructor
              * @param {google.protobuf.ISourceCodeInfo=} [properties] Properties to set
              */
@@ -13089,18 +13143,19 @@ $root.google = (function() {
 
                 /**
                  * Properties of a Location.
-                 * @interface google.protobuf.SourceCodeInfo.ILocation
-                 * @property {Array.<number>} [path] Location path.
-                 * @property {Array.<number>} [span] Location span.
-                 * @property {string} [leadingComments] Location leadingComments.
-                 * @property {string} [trailingComments] Location trailingComments.
-                 * @property {Array.<string>} [leadingDetachedComments] Location leadingDetachedComments.
+                 * @memberof google.protobuf.SourceCodeInfo
+                 * @interface ILocation
+                 * @property {Array.<number>} [path] Location path
+                 * @property {Array.<number>} [span] Location span
+                 * @property {string} [leadingComments] Location leadingComments
+                 * @property {string} [trailingComments] Location trailingComments
+                 * @property {Array.<string>} [leadingDetachedComments] Location leadingDetachedComments
                  */
 
                 /**
                  * Constructs a new Location.
-                 * @exports google.protobuf.SourceCodeInfo.Location
-                 * @classdesc Represents a Location
+                 * @memberof google.protobuf.SourceCodeInfo
+                 * @classdesc Represents a Location.
                  * @constructor
                  * @param {google.protobuf.SourceCodeInfo.ILocation=} [properties] Properties to set
                  */
@@ -13395,14 +13450,15 @@ $root.google = (function() {
 
             /**
              * Properties of a GeneratedCodeInfo.
-             * @interface google.protobuf.IGeneratedCodeInfo
-             * @property {Array.<google.protobuf.GeneratedCodeInfo.IAnnotation>} [annotation] GeneratedCodeInfo annotation.
+             * @memberof google.protobuf
+             * @interface IGeneratedCodeInfo
+             * @property {Array.<google.protobuf.GeneratedCodeInfo.IAnnotation>} [annotation] GeneratedCodeInfo annotation
              */
 
             /**
              * Constructs a new GeneratedCodeInfo.
-             * @exports google.protobuf.GeneratedCodeInfo
-             * @classdesc Represents a GeneratedCodeInfo
+             * @memberof google.protobuf
+             * @classdesc Represents a GeneratedCodeInfo.
              * @constructor
              * @param {google.protobuf.IGeneratedCodeInfo=} [properties] Properties to set
              */
@@ -13569,17 +13625,18 @@ $root.google = (function() {
 
                 /**
                  * Properties of an Annotation.
-                 * @interface google.protobuf.GeneratedCodeInfo.IAnnotation
-                 * @property {Array.<number>} [path] Annotation path.
-                 * @property {string} [sourceFile] Annotation sourceFile.
-                 * @property {number} [begin] Annotation begin.
-                 * @property {number} [end] Annotation end.
+                 * @memberof google.protobuf.GeneratedCodeInfo
+                 * @interface IAnnotation
+                 * @property {Array.<number>} [path] Annotation path
+                 * @property {string} [sourceFile] Annotation sourceFile
+                 * @property {number} [begin] Annotation begin
+                 * @property {number} [end] Annotation end
                  */
 
                 /**
                  * Constructs a new Annotation.
-                 * @exports google.protobuf.GeneratedCodeInfo.Annotation
-                 * @classdesc Represents an Annotation
+                 * @memberof google.protobuf.GeneratedCodeInfo
+                 * @classdesc Represents an Annotation.
                  * @constructor
                  * @param {google.protobuf.GeneratedCodeInfo.IAnnotation=} [properties] Properties to set
                  */
