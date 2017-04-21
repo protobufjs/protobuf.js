@@ -13,8 +13,8 @@ $root.vector_tile = (function() {
 
     /**
      * Namespace vector_tile.
+     * @exports vector_tile
      * @namespace
-     * @name vector_tile
      */
     var vector_tile = {};
 
@@ -22,16 +22,16 @@ $root.vector_tile = (function() {
 
         /**
          * Properties of a Tile.
-         * @interface ITile
-         * @memberof vector_tile
+         * @interface vector_tile.ITile
          * @property {Array.<vector_tile.Tile.ILayer>} [layers] Tile layers.
          */
 
         /**
          * Constructs a new Tile.
+         * @exports vector_tile.Tile
+         * @classdesc Represents a Tile
          * @constructor
          * @param {vector_tile.ITile=} [properties] Properties to set
-         * @memberof vector_tile
          */
         function Tile(properties) {
             this.layers = [];
@@ -125,7 +125,7 @@ $root.vector_tile = (function() {
         /**
          * Verifies a Tile message.
          * @param {Object.<string,*>} message Plain object to verify
-         * @returns {?string} `null` if valid, otherwise the reason why it is not
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
          */
         Tile.verify = function verify(message) {
             if (typeof message !== "object" || message === null)
@@ -194,9 +194,7 @@ $root.vector_tile = (function() {
 
         /**
          * GeomType enum.
-         * @name GeomType
-         * @enum {number}
-         * @memberof vector_tile.Tile
+         * @enum {number} vector_tile.Tile.GeomType
          * @property {number} UNKNOWN=0 UNKNOWN value
          * @property {number} POINT=1 POINT value
          * @property {number} LINESTRING=2 LINESTRING value
@@ -215,8 +213,7 @@ $root.vector_tile = (function() {
 
             /**
              * Properties of a Value.
-             * @interface IValue
-             * @memberof vector_tile.Tile
+             * @interface vector_tile.Tile.IValue
              * @property {string} [stringValue] Value stringValue.
              * @property {number} [floatValue] Value floatValue.
              * @property {number} [doubleValue] Value doubleValue.
@@ -228,9 +225,10 @@ $root.vector_tile = (function() {
 
             /**
              * Constructs a new Value.
+             * @exports vector_tile.Tile.Value
+             * @classdesc Represents a Value
              * @constructor
              * @param {vector_tile.Tile.IValue=} [properties] Properties to set
-             * @memberof vector_tile.Tile
              */
             function Value(properties) {
                 if (properties)
@@ -386,7 +384,7 @@ $root.vector_tile = (function() {
             /**
              * Verifies a Value message.
              * @param {Object.<string,*>} message Plain object to verify
-             * @returns {?string} `null` if valid, otherwise the reason why it is not
+             * @returns {string|null} `null` if valid, otherwise the reason why it is not
              */
             Value.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
@@ -534,8 +532,7 @@ $root.vector_tile = (function() {
 
             /**
              * Properties of a Feature.
-             * @interface IFeature
-             * @memberof vector_tile.Tile
+             * @interface vector_tile.Tile.IFeature
              * @property {number|Long} [id] Feature id.
              * @property {Array.<number>} [tags] Feature tags.
              * @property {vector_tile.Tile.GeomType} [type] Feature type.
@@ -544,9 +541,10 @@ $root.vector_tile = (function() {
 
             /**
              * Constructs a new Feature.
+             * @exports vector_tile.Tile.Feature
+             * @classdesc Represents a Feature
              * @constructor
              * @param {vector_tile.Tile.IFeature=} [properties] Properties to set
-             * @memberof vector_tile.Tile
              */
             function Feature(properties) {
                 this.tags = [];
@@ -693,7 +691,7 @@ $root.vector_tile = (function() {
             /**
              * Verifies a Feature message.
              * @param {Object.<string,*>} message Plain object to verify
-             * @returns {?string} `null` if valid, otherwise the reason why it is not
+             * @returns {string|null} `null` if valid, otherwise the reason why it is not
              */
             Feature.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
@@ -838,8 +836,7 @@ $root.vector_tile = (function() {
 
             /**
              * Properties of a Layer.
-             * @interface ILayer
-             * @memberof vector_tile.Tile
+             * @interface vector_tile.Tile.ILayer
              * @property {number} version Layer version.
              * @property {string} name Layer name.
              * @property {Array.<vector_tile.Tile.IFeature>} [features] Layer features.
@@ -850,9 +847,10 @@ $root.vector_tile = (function() {
 
             /**
              * Constructs a new Layer.
+             * @exports vector_tile.Tile.Layer
+             * @classdesc Represents a Layer
              * @constructor
              * @param {vector_tile.Tile.ILayer=} [properties] Properties to set
-             * @memberof vector_tile.Tile
              */
             function Layer(properties) {
                 this.features = [];
@@ -1011,7 +1009,7 @@ $root.vector_tile = (function() {
             /**
              * Verifies a Layer message.
              * @param {Object.<string,*>} message Plain object to verify
-             * @returns {?string} `null` if valid, otherwise the reason why it is not
+             * @returns {string|null} `null` if valid, otherwise the reason why it is not
              */
             Layer.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)

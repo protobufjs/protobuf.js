@@ -1184,6 +1184,13 @@ export class Root extends NamespaceBase {
     public load(filename: (string|string[]), options: IParseOptions, callback: LoadCallback): void;
 
     /**
+     * Loads one or multiple .proto or preprocessed .json files into this root namespace and calls the callback.
+     * @param filename Names of one or multiple files to load
+     * @param callback Callback function
+     */
+    public load(filename: (string|string[]), callback: LoadCallback): void;
+
+    /**
      * Loads one or multiple .proto or preprocessed .json files into this root namespace and returns a promise.
      * @param filename Names of one or multiple files to load
      * @param [options] Parse options. Defaults to {@link parse.defaults} when omitted.

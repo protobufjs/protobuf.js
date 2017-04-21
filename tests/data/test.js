@@ -13,8 +13,8 @@ $root.jspb = (function() {
 
     /**
      * Namespace jspb.
+     * @exports jspb
      * @namespace
-     * @name jspb
      */
     var jspb = {};
 
@@ -22,8 +22,8 @@ $root.jspb = (function() {
 
         /**
          * Namespace test.
+         * @exports jspb.test
          * @namespace
-         * @memberof jspb
          */
         var test = {};
 
@@ -31,15 +31,15 @@ $root.jspb = (function() {
 
             /**
              * Properties of an Empty.
-             * @interface IEmpty
-             * @memberof jspb.test
+             * @interface jspb.test.IEmpty
              */
 
             /**
              * Constructs a new Empty.
+             * @exports jspb.test.Empty
+             * @classdesc Represents an Empty
              * @constructor
              * @param {jspb.test.IEmpty=} [properties] Properties to set
-             * @memberof jspb.test
              */
             function Empty(properties) {
                 if (properties)
@@ -118,7 +118,7 @@ $root.jspb = (function() {
             /**
              * Verifies an Empty message.
              * @param {Object.<string,*>} message Plain object to verify
-             * @returns {?string} `null` if valid, otherwise the reason why it is not
+             * @returns {string|null} `null` if valid, otherwise the reason why it is not
              */
             Empty.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
@@ -160,9 +160,7 @@ $root.jspb = (function() {
 
         /**
          * OuterEnum enum.
-         * @name OuterEnum
-         * @enum {number}
-         * @memberof jspb.test
+         * @enum {number} jspb.test.OuterEnum
          * @property {number} FOO=1 FOO value
          * @property {number} BAR=2 BAR value
          */
@@ -177,16 +175,16 @@ $root.jspb = (function() {
 
             /**
              * Properties of an EnumContainer.
-             * @interface IEnumContainer
-             * @memberof jspb.test
+             * @interface jspb.test.IEnumContainer
              * @property {jspb.test.OuterEnum} [outerEnum] EnumContainer outerEnum.
              */
 
             /**
              * Constructs a new EnumContainer.
+             * @exports jspb.test.EnumContainer
+             * @classdesc Represents an EnumContainer
              * @constructor
              * @param {jspb.test.IEnumContainer=} [properties] Properties to set
-             * @memberof jspb.test
              */
             function EnumContainer(properties) {
                 if (properties)
@@ -276,7 +274,7 @@ $root.jspb = (function() {
             /**
              * Verifies an EnumContainer message.
              * @param {Object.<string,*>} message Plain object to verify
-             * @returns {?string} `null` if valid, otherwise the reason why it is not
+             * @returns {string|null} `null` if valid, otherwise the reason why it is not
              */
             EnumContainer.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
@@ -346,8 +344,7 @@ $root.jspb = (function() {
 
             /**
              * Properties of a Simple1.
-             * @interface ISimple1
-             * @memberof jspb.test
+             * @interface jspb.test.ISimple1
              * @property {string} aString Simple1 aString.
              * @property {Array.<string>} [aRepeatedString] Simple1 aRepeatedString.
              * @property {boolean} [aBoolean] Simple1 aBoolean.
@@ -355,9 +352,10 @@ $root.jspb = (function() {
 
             /**
              * Constructs a new Simple1.
+             * @exports jspb.test.Simple1
+             * @classdesc Represents a Simple1
              * @constructor
              * @param {jspb.test.ISimple1=} [properties] Properties to set
-             * @memberof jspb.test
              */
             function Simple1(properties) {
                 this.aRepeatedString = [];
@@ -474,7 +472,7 @@ $root.jspb = (function() {
             /**
              * Verifies a Simple1 message.
              * @param {Object.<string,*>} message Plain object to verify
-             * @returns {?string} `null` if valid, otherwise the reason why it is not
+             * @returns {string|null} `null` if valid, otherwise the reason why it is not
              */
             Simple1.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
@@ -560,17 +558,17 @@ $root.jspb = (function() {
 
             /**
              * Properties of a Simple2.
-             * @interface ISimple2
-             * @memberof jspb.test
+             * @interface jspb.test.ISimple2
              * @property {string} aString Simple2 aString.
              * @property {Array.<string>} [aRepeatedString] Simple2 aRepeatedString.
              */
 
             /**
              * Constructs a new Simple2.
+             * @exports jspb.test.Simple2
+             * @classdesc Represents a Simple2
              * @constructor
              * @param {jspb.test.ISimple2=} [properties] Properties to set
-             * @memberof jspb.test
              */
             function Simple2(properties) {
                 this.aRepeatedString = [];
@@ -676,7 +674,7 @@ $root.jspb = (function() {
             /**
              * Verifies a Simple2 message.
              * @param {Object.<string,*>} message Plain object to verify
-             * @returns {?string} `null` if valid, otherwise the reason why it is not
+             * @returns {string|null} `null` if valid, otherwise the reason why it is not
              */
             Simple2.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
@@ -753,8 +751,7 @@ $root.jspb = (function() {
 
             /**
              * Properties of a SpecialCases.
-             * @interface ISpecialCases
-             * @memberof jspb.test
+             * @interface jspb.test.ISpecialCases
              * @property {string} normal SpecialCases normal.
              * @property {string} default SpecialCases default.
              * @property {string} function SpecialCases function.
@@ -763,9 +760,10 @@ $root.jspb = (function() {
 
             /**
              * Constructs a new SpecialCases.
+             * @exports jspb.test.SpecialCases
+             * @classdesc Represents a SpecialCases
              * @constructor
              * @param {jspb.test.ISpecialCases=} [properties] Properties to set
-             * @memberof jspb.test
              */
             function SpecialCases(properties) {
                 if (properties)
@@ -892,7 +890,7 @@ $root.jspb = (function() {
             /**
              * Verifies a SpecialCases message.
              * @param {Object.<string,*>} message Plain object to verify
-             * @returns {?string} `null` if valid, otherwise the reason why it is not
+             * @returns {string|null} `null` if valid, otherwise the reason why it is not
              */
             SpecialCases.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
@@ -970,8 +968,7 @@ $root.jspb = (function() {
 
             /**
              * Properties of an OptionalFields.
-             * @interface IOptionalFields
-             * @memberof jspb.test
+             * @interface jspb.test.IOptionalFields
              * @property {string} [aString] OptionalFields aString.
              * @property {boolean} aBool OptionalFields aBool.
              * @property {jspb.test.OptionalFields.INested} [aNestedMessage] OptionalFields aNestedMessage.
@@ -981,9 +978,10 @@ $root.jspb = (function() {
 
             /**
              * Constructs a new OptionalFields.
+             * @exports jspb.test.OptionalFields
+             * @classdesc Represents an OptionalFields
              * @constructor
              * @param {jspb.test.IOptionalFields=} [properties] Properties to set
-             * @memberof jspb.test
              */
             function OptionalFields(properties) {
                 this.aRepeatedMessage = [];
@@ -1126,7 +1124,7 @@ $root.jspb = (function() {
             /**
              * Verifies an OptionalFields message.
              * @param {Object.<string,*>} message Plain object to verify
-             * @returns {?string} `null` if valid, otherwise the reason why it is not
+             * @returns {string|null} `null` if valid, otherwise the reason why it is not
              */
             OptionalFields.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
@@ -1248,16 +1246,16 @@ $root.jspb = (function() {
 
                 /**
                  * Properties of a Nested.
-                 * @interface INested
-                 * @memberof jspb.test.OptionalFields
+                 * @interface jspb.test.OptionalFields.INested
                  * @property {number} [anInt] Nested anInt.
                  */
 
                 /**
                  * Constructs a new Nested.
+                 * @exports jspb.test.OptionalFields.Nested
+                 * @classdesc Represents a Nested
                  * @constructor
                  * @param {jspb.test.OptionalFields.INested=} [properties] Properties to set
-                 * @memberof jspb.test.OptionalFields
                  */
                 function Nested(properties) {
                     if (properties)
@@ -1347,7 +1345,7 @@ $root.jspb = (function() {
                 /**
                  * Verifies a Nested message.
                  * @param {Object.<string,*>} message Plain object to verify
-                 * @returns {?string} `null` if valid, otherwise the reason why it is not
+                 * @returns {string|null} `null` if valid, otherwise the reason why it is not
                  */
                 Nested.verify = function verify(message) {
                     if (typeof message !== "object" || message === null)
@@ -1407,8 +1405,7 @@ $root.jspb = (function() {
 
             /**
              * Properties of a HasExtensions.
-             * @interface IHasExtensions
-             * @memberof jspb.test
+             * @interface jspb.test.IHasExtensions
              * @property {string} [str1] HasExtensions str1.
              * @property {string} [str2] HasExtensions str2.
              * @property {string} [str3] HasExtensions str3.
@@ -1422,9 +1419,10 @@ $root.jspb = (function() {
 
             /**
              * Constructs a new HasExtensions.
+             * @exports jspb.test.HasExtensions
+             * @classdesc Represents a HasExtensions
              * @constructor
              * @param {jspb.test.IHasExtensions=} [properties] Properties to set
-             * @memberof jspb.test
              */
             function HasExtensions(properties) {
                 this[".jspb.test.IndirectExtension.repeatedStr"] = [];
@@ -1610,7 +1608,7 @@ $root.jspb = (function() {
             /**
              * Verifies a HasExtensions message.
              * @param {Object.<string,*>} message Plain object to verify
-             * @returns {?string} `null` if valid, otherwise the reason why it is not
+             * @returns {string|null} `null` if valid, otherwise the reason why it is not
              */
             HasExtensions.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
@@ -1778,8 +1776,7 @@ $root.jspb = (function() {
 
             /**
              * Properties of a Complex.
-             * @interface IComplex
-             * @memberof jspb.test
+             * @interface jspb.test.IComplex
              * @property {string} aString Complex aString.
              * @property {boolean} anOutOfOrderBool Complex anOutOfOrderBool.
              * @property {jspb.test.Complex.INested} [aNestedMessage] Complex aNestedMessage.
@@ -1789,9 +1786,10 @@ $root.jspb = (function() {
 
             /**
              * Constructs a new Complex.
+             * @exports jspb.test.Complex
+             * @classdesc Represents a Complex
              * @constructor
              * @param {jspb.test.IComplex=} [properties] Properties to set
-             * @memberof jspb.test
              */
             function Complex(properties) {
                 this.aRepeatedMessage = [];
@@ -1935,7 +1933,7 @@ $root.jspb = (function() {
             /**
              * Verifies a Complex message.
              * @param {Object.<string,*>} message Plain object to verify
-             * @returns {?string} `null` if valid, otherwise the reason why it is not
+             * @returns {string|null} `null` if valid, otherwise the reason why it is not
              */
             Complex.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
@@ -2056,16 +2054,16 @@ $root.jspb = (function() {
 
                 /**
                  * Properties of a Nested.
-                 * @interface INested
-                 * @memberof jspb.test.Complex
+                 * @interface jspb.test.Complex.INested
                  * @property {number} anInt Nested anInt.
                  */
 
                 /**
                  * Constructs a new Nested.
+                 * @exports jspb.test.Complex.Nested
+                 * @classdesc Represents a Nested
                  * @constructor
                  * @param {jspb.test.Complex.INested=} [properties] Properties to set
-                 * @memberof jspb.test.Complex
                  */
                 function Nested(properties) {
                     if (properties)
@@ -2156,7 +2154,7 @@ $root.jspb = (function() {
                 /**
                  * Verifies a Nested message.
                  * @param {Object.<string,*>} message Plain object to verify
-                 * @returns {?string} `null` if valid, otherwise the reason why it is not
+                 * @returns {string|null} `null` if valid, otherwise the reason why it is not
                  */
                 Nested.verify = function verify(message) {
                     if (typeof message !== "object" || message === null)
@@ -2215,15 +2213,15 @@ $root.jspb = (function() {
 
             /**
              * Properties of an OuterMessage.
-             * @interface IOuterMessage
-             * @memberof jspb.test
+             * @interface jspb.test.IOuterMessage
              */
 
             /**
              * Constructs a new OuterMessage.
+             * @exports jspb.test.OuterMessage
+             * @classdesc Represents an OuterMessage
              * @constructor
              * @param {jspb.test.IOuterMessage=} [properties] Properties to set
-             * @memberof jspb.test
              */
             function OuterMessage(properties) {
                 if (properties)
@@ -2302,7 +2300,7 @@ $root.jspb = (function() {
             /**
              * Verifies an OuterMessage message.
              * @param {Object.<string,*>} message Plain object to verify
-             * @returns {?string} `null` if valid, otherwise the reason why it is not
+             * @returns {string|null} `null` if valid, otherwise the reason why it is not
              */
             OuterMessage.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
@@ -2343,16 +2341,16 @@ $root.jspb = (function() {
 
                 /**
                  * Properties of a Complex.
-                 * @interface IComplex
-                 * @memberof jspb.test.OuterMessage
+                 * @interface jspb.test.OuterMessage.IComplex
                  * @property {number} [innerComplexField] Complex innerComplexField.
                  */
 
                 /**
                  * Constructs a new Complex.
+                 * @exports jspb.test.OuterMessage.Complex
+                 * @classdesc Represents a Complex
                  * @constructor
                  * @param {jspb.test.OuterMessage.IComplex=} [properties] Properties to set
-                 * @memberof jspb.test.OuterMessage
                  */
                 function Complex(properties) {
                     if (properties)
@@ -2442,7 +2440,7 @@ $root.jspb = (function() {
                 /**
                  * Verifies a Complex message.
                  * @param {Object.<string,*>} message Plain object to verify
-                 * @returns {?string} `null` if valid, otherwise the reason why it is not
+                 * @returns {string|null} `null` if valid, otherwise the reason why it is not
                  */
                 Complex.verify = function verify(message) {
                     if (typeof message !== "object" || message === null)
@@ -2502,16 +2500,16 @@ $root.jspb = (function() {
 
             /**
              * Properties of an IsExtension.
-             * @interface IIsExtension
-             * @memberof jspb.test
+             * @interface jspb.test.IIsExtension
              * @property {string} [ext1] IsExtension ext1.
              */
 
             /**
              * Constructs a new IsExtension.
+             * @exports jspb.test.IsExtension
+             * @classdesc Represents an IsExtension
              * @constructor
              * @param {jspb.test.IIsExtension=} [properties] Properties to set
-             * @memberof jspb.test
              */
             function IsExtension(properties) {
                 if (properties)
@@ -2601,7 +2599,7 @@ $root.jspb = (function() {
             /**
              * Verifies an IsExtension message.
              * @param {Object.<string,*>} message Plain object to verify
-             * @returns {?string} `null` if valid, otherwise the reason why it is not
+             * @returns {string|null} `null` if valid, otherwise the reason why it is not
              */
             IsExtension.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
@@ -2658,15 +2656,15 @@ $root.jspb = (function() {
 
             /**
              * Properties of an IndirectExtension.
-             * @interface IIndirectExtension
-             * @memberof jspb.test
+             * @interface jspb.test.IIndirectExtension
              */
 
             /**
              * Constructs a new IndirectExtension.
+             * @exports jspb.test.IndirectExtension
+             * @classdesc Represents an IndirectExtension
              * @constructor
              * @param {jspb.test.IIndirectExtension=} [properties] Properties to set
-             * @memberof jspb.test
              */
             function IndirectExtension(properties) {
                 if (properties)
@@ -2745,7 +2743,7 @@ $root.jspb = (function() {
             /**
              * Verifies an IndirectExtension message.
              * @param {Object.<string,*>} message Plain object to verify
-             * @returns {?string} `null` if valid, otherwise the reason why it is not
+             * @returns {string|null} `null` if valid, otherwise the reason why it is not
              */
             IndirectExtension.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
@@ -2789,8 +2787,7 @@ $root.jspb = (function() {
 
             /**
              * Properties of a DefaultValues.
-             * @interface IDefaultValues
-             * @memberof jspb.test
+             * @interface jspb.test.IDefaultValues
              * @property {string} [stringField] DefaultValues stringField.
              * @property {boolean} [boolField] DefaultValues boolField.
              * @property {number|Long} [intField] DefaultValues intField.
@@ -2801,9 +2798,10 @@ $root.jspb = (function() {
 
             /**
              * Constructs a new DefaultValues.
+             * @exports jspb.test.DefaultValues
+             * @classdesc Represents a DefaultValues
              * @constructor
              * @param {jspb.test.IDefaultValues=} [properties] Properties to set
-             * @memberof jspb.test
              */
             function DefaultValues(properties) {
                 if (properties)
@@ -2948,7 +2946,7 @@ $root.jspb = (function() {
             /**
              * Verifies a DefaultValues message.
              * @param {Object.<string,*>} message Plain object to verify
-             * @returns {?string} `null` if valid, otherwise the reason why it is not
+             * @returns {string|null} `null` if valid, otherwise the reason why it is not
              */
             DefaultValues.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
@@ -3075,9 +3073,7 @@ $root.jspb = (function() {
 
             /**
              * Enum enum.
-             * @name Enum
-             * @enum {number}
-             * @memberof jspb.test.DefaultValues
+             * @enum {number} jspb.test.DefaultValues.Enum
              * @property {number} E1=13 E1 value
              * @property {number} E2=77 E2 value
              */
@@ -3095,8 +3091,7 @@ $root.jspb = (function() {
 
             /**
              * Properties of a FloatingPointFields.
-             * @interface IFloatingPointFields
-             * @memberof jspb.test
+             * @interface jspb.test.IFloatingPointFields
              * @property {number} [optionalFloatField] FloatingPointFields optionalFloatField.
              * @property {number} requiredFloatField FloatingPointFields requiredFloatField.
              * @property {Array.<number>} [repeatedFloatField] FloatingPointFields repeatedFloatField.
@@ -3109,9 +3104,10 @@ $root.jspb = (function() {
 
             /**
              * Constructs a new FloatingPointFields.
+             * @exports jspb.test.FloatingPointFields
+             * @classdesc Represents a FloatingPointFields
              * @constructor
              * @param {jspb.test.IFloatingPointFields=} [properties] Properties to set
-             * @memberof jspb.test
              */
             function FloatingPointFields(properties) {
                 this.repeatedFloatField = [];
@@ -3298,7 +3294,7 @@ $root.jspb = (function() {
             /**
              * Verifies a FloatingPointFields message.
              * @param {Object.<string,*>} message Plain object to verify
-             * @returns {?string} `null` if valid, otherwise the reason why it is not
+             * @returns {string|null} `null` if valid, otherwise the reason why it is not
              */
             FloatingPointFields.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
@@ -3436,8 +3432,7 @@ $root.jspb = (function() {
 
             /**
              * Properties of a TestClone.
-             * @interface ITestClone
-             * @memberof jspb.test
+             * @interface jspb.test.ITestClone
              * @property {string} [str] TestClone str.
              * @property {jspb.test.ISimple1} [simple1] TestClone simple1.
              * @property {Array.<jspb.test.ISimple1>} [simple2] TestClone simple2.
@@ -3448,9 +3443,10 @@ $root.jspb = (function() {
 
             /**
              * Constructs a new TestClone.
+             * @exports jspb.test.TestClone
+             * @classdesc Represents a TestClone
              * @constructor
              * @param {jspb.test.ITestClone=} [properties] Properties to set
-             * @memberof jspb.test
              */
             function TestClone(properties) {
                 this.simple2 = [];
@@ -3599,7 +3595,7 @@ $root.jspb = (function() {
             /**
              * Verifies a TestClone message.
              * @param {Object.<string,*>} message Plain object to verify
-             * @returns {?string} `null` if valid, otherwise the reason why it is not
+             * @returns {string|null} `null` if valid, otherwise the reason why it is not
              */
             TestClone.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
@@ -3728,16 +3724,16 @@ $root.jspb = (function() {
 
             /**
              * Properties of a CloneExtension.
-             * @interface ICloneExtension
-             * @memberof jspb.test
+             * @interface jspb.test.ICloneExtension
              * @property {string} [ext] CloneExtension ext.
              */
 
             /**
              * Constructs a new CloneExtension.
+             * @exports jspb.test.CloneExtension
+             * @classdesc Represents a CloneExtension
              * @constructor
              * @param {jspb.test.ICloneExtension=} [properties] Properties to set
-             * @memberof jspb.test
              */
             function CloneExtension(properties) {
                 if (properties)
@@ -3827,7 +3823,7 @@ $root.jspb = (function() {
             /**
              * Verifies a CloneExtension message.
              * @param {Object.<string,*>} message Plain object to verify
-             * @returns {?string} `null` if valid, otherwise the reason why it is not
+             * @returns {string|null} `null` if valid, otherwise the reason why it is not
              */
             CloneExtension.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
@@ -3884,8 +3880,7 @@ $root.jspb = (function() {
 
             /**
              * Properties of a TestGroup.
-             * @interface ITestGroup
-             * @memberof jspb.test
+             * @interface jspb.test.ITestGroup
              * @property {Array.<jspb.test.TestGroup.IRepeatedGroup>} [repeatedGroup] TestGroup repeatedGroup.
              * @property {jspb.test.TestGroup.IRequiredGroup} requiredGroup TestGroup requiredGroup.
              * @property {jspb.test.TestGroup.IOptionalGroup} [optionalGroup] TestGroup optionalGroup.
@@ -3896,9 +3891,10 @@ $root.jspb = (function() {
 
             /**
              * Constructs a new TestGroup.
+             * @exports jspb.test.TestGroup
+             * @classdesc Represents a TestGroup
              * @constructor
              * @param {jspb.test.ITestGroup=} [properties] Properties to set
-             * @memberof jspb.test
              */
             function TestGroup(properties) {
                 this.repeatedGroup = [];
@@ -4049,7 +4045,7 @@ $root.jspb = (function() {
             /**
              * Verifies a TestGroup message.
              * @param {Object.<string,*>} message Plain object to verify
-             * @returns {?string} `null` if valid, otherwise the reason why it is not
+             * @returns {string|null} `null` if valid, otherwise the reason why it is not
              */
             TestGroup.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
@@ -4178,17 +4174,17 @@ $root.jspb = (function() {
 
                 /**
                  * Properties of a RepeatedGroup.
-                 * @interface IRepeatedGroup
-                 * @memberof jspb.test.TestGroup
+                 * @interface jspb.test.TestGroup.IRepeatedGroup
                  * @property {string} id RepeatedGroup id.
                  * @property {Array.<boolean>} [someBool] RepeatedGroup someBool.
                  */
 
                 /**
                  * Constructs a new RepeatedGroup.
+                 * @exports jspb.test.TestGroup.RepeatedGroup
+                 * @classdesc Represents a RepeatedGroup
                  * @constructor
                  * @param {jspb.test.TestGroup.IRepeatedGroup=} [properties] Properties to set
-                 * @memberof jspb.test.TestGroup
                  */
                 function RepeatedGroup(properties) {
                     this.someBool = [];
@@ -4301,7 +4297,7 @@ $root.jspb = (function() {
                 /**
                  * Verifies a RepeatedGroup message.
                  * @param {Object.<string,*>} message Plain object to verify
-                 * @returns {?string} `null` if valid, otherwise the reason why it is not
+                 * @returns {string|null} `null` if valid, otherwise the reason why it is not
                  */
                 RepeatedGroup.verify = function verify(message) {
                     if (typeof message !== "object" || message === null)
@@ -4378,16 +4374,16 @@ $root.jspb = (function() {
 
                 /**
                  * Properties of a RequiredGroup.
-                 * @interface IRequiredGroup
-                 * @memberof jspb.test.TestGroup
+                 * @interface jspb.test.TestGroup.IRequiredGroup
                  * @property {string} id RequiredGroup id.
                  */
 
                 /**
                  * Constructs a new RequiredGroup.
+                 * @exports jspb.test.TestGroup.RequiredGroup
+                 * @classdesc Represents a RequiredGroup
                  * @constructor
                  * @param {jspb.test.TestGroup.IRequiredGroup=} [properties] Properties to set
-                 * @memberof jspb.test.TestGroup
                  */
                 function RequiredGroup(properties) {
                     if (properties)
@@ -4480,7 +4476,7 @@ $root.jspb = (function() {
                 /**
                  * Verifies a RequiredGroup message.
                  * @param {Object.<string,*>} message Plain object to verify
-                 * @returns {?string} `null` if valid, otherwise the reason why it is not
+                 * @returns {string|null} `null` if valid, otherwise the reason why it is not
                  */
                 RequiredGroup.verify = function verify(message) {
                     if (typeof message !== "object" || message === null)
@@ -4536,16 +4532,16 @@ $root.jspb = (function() {
 
                 /**
                  * Properties of an OptionalGroup.
-                 * @interface IOptionalGroup
-                 * @memberof jspb.test.TestGroup
+                 * @interface jspb.test.TestGroup.IOptionalGroup
                  * @property {string} id OptionalGroup id.
                  */
 
                 /**
                  * Constructs a new OptionalGroup.
+                 * @exports jspb.test.TestGroup.OptionalGroup
+                 * @classdesc Represents an OptionalGroup
                  * @constructor
                  * @param {jspb.test.TestGroup.IOptionalGroup=} [properties] Properties to set
-                 * @memberof jspb.test.TestGroup
                  */
                 function OptionalGroup(properties) {
                     if (properties)
@@ -4638,7 +4634,7 @@ $root.jspb = (function() {
                 /**
                  * Verifies an OptionalGroup message.
                  * @param {Object.<string,*>} message Plain object to verify
-                 * @returns {?string} `null` if valid, otherwise the reason why it is not
+                 * @returns {string|null} `null` if valid, otherwise the reason why it is not
                  */
                 OptionalGroup.verify = function verify(message) {
                     if (typeof message !== "object" || message === null)
@@ -4697,16 +4693,16 @@ $root.jspb = (function() {
 
             /**
              * Properties of a TestGroup1.
-             * @interface ITestGroup1
-             * @memberof jspb.test
+             * @interface jspb.test.ITestGroup1
              * @property {jspb.test.TestGroup.IRepeatedGroup} [group] TestGroup1 group.
              */
 
             /**
              * Constructs a new TestGroup1.
+             * @exports jspb.test.TestGroup1
+             * @classdesc Represents a TestGroup1
              * @constructor
              * @param {jspb.test.ITestGroup1=} [properties] Properties to set
-             * @memberof jspb.test
              */
             function TestGroup1(properties) {
                 if (properties)
@@ -4796,7 +4792,7 @@ $root.jspb = (function() {
             /**
              * Verifies a TestGroup1 message.
              * @param {Object.<string,*>} message Plain object to verify
-             * @returns {?string} `null` if valid, otherwise the reason why it is not
+             * @returns {string|null} `null` if valid, otherwise the reason why it is not
              */
             TestGroup1.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
@@ -4858,17 +4854,17 @@ $root.jspb = (function() {
 
             /**
              * Properties of a TestReservedNames.
-             * @interface ITestReservedNames
-             * @memberof jspb.test
+             * @interface jspb.test.ITestReservedNames
              * @property {number} [extension] TestReservedNames extension.
              * @property {number} [".jspb.test.TestReservedNamesExtension.foo"] TestReservedNames .jspb.test.TestReservedNamesExtension.foo.
              */
 
             /**
              * Constructs a new TestReservedNames.
+             * @exports jspb.test.TestReservedNames
+             * @classdesc Represents a TestReservedNames
              * @constructor
              * @param {jspb.test.ITestReservedNames=} [properties] Properties to set
-             * @memberof jspb.test
              */
             function TestReservedNames(properties) {
                 if (properties)
@@ -4969,7 +4965,7 @@ $root.jspb = (function() {
             /**
              * Verifies a TestReservedNames message.
              * @param {Object.<string,*>} message Plain object to verify
-             * @returns {?string} `null` if valid, otherwise the reason why it is not
+             * @returns {string|null} `null` if valid, otherwise the reason why it is not
              */
             TestReservedNames.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
@@ -5035,15 +5031,15 @@ $root.jspb = (function() {
 
             /**
              * Properties of a TestReservedNamesExtension.
-             * @interface ITestReservedNamesExtension
-             * @memberof jspb.test
+             * @interface jspb.test.ITestReservedNamesExtension
              */
 
             /**
              * Constructs a new TestReservedNamesExtension.
+             * @exports jspb.test.TestReservedNamesExtension
+             * @classdesc Represents a TestReservedNamesExtension
              * @constructor
              * @param {jspb.test.ITestReservedNamesExtension=} [properties] Properties to set
-             * @memberof jspb.test
              */
             function TestReservedNamesExtension(properties) {
                 if (properties)
@@ -5122,7 +5118,7 @@ $root.jspb = (function() {
             /**
              * Verifies a TestReservedNamesExtension message.
              * @param {Object.<string,*>} message Plain object to verify
-             * @returns {?string} `null` if valid, otherwise the reason why it is not
+             * @returns {string|null} `null` if valid, otherwise the reason why it is not
              */
             TestReservedNamesExtension.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
@@ -5166,8 +5162,7 @@ $root.jspb = (function() {
 
             /**
              * Properties of a TestMessageWithOneof.
-             * @interface ITestMessageWithOneof
-             * @memberof jspb.test
+             * @interface jspb.test.ITestMessageWithOneof
              * @property {string} [pone] TestMessageWithOneof pone.
              * @property {string} [pthree] TestMessageWithOneof pthree.
              * @property {jspb.test.ITestMessageWithOneof} [rone] TestMessageWithOneof rone.
@@ -5182,9 +5177,10 @@ $root.jspb = (function() {
 
             /**
              * Constructs a new TestMessageWithOneof.
+             * @exports jspb.test.TestMessageWithOneof
+             * @classdesc Represents a TestMessageWithOneof
              * @constructor
              * @param {jspb.test.ITestMessageWithOneof=} [properties] Properties to set
-             * @memberof jspb.test
              */
             function TestMessageWithOneof(properties) {
                 this.repeatedField = [];
@@ -5420,7 +5416,7 @@ $root.jspb = (function() {
             /**
              * Verifies a TestMessageWithOneof message.
              * @param {Object.<string,*>} message Plain object to verify
-             * @returns {?string} `null` if valid, otherwise the reason why it is not
+             * @returns {string|null} `null` if valid, otherwise the reason why it is not
              */
             TestMessageWithOneof.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
@@ -5607,17 +5603,17 @@ $root.jspb = (function() {
 
             /**
              * Properties of a TestEndsWithBytes.
-             * @interface ITestEndsWithBytes
-             * @memberof jspb.test
+             * @interface jspb.test.ITestEndsWithBytes
              * @property {number} [value] TestEndsWithBytes value.
              * @property {Uint8Array} [data] TestEndsWithBytes data.
              */
 
             /**
              * Constructs a new TestEndsWithBytes.
+             * @exports jspb.test.TestEndsWithBytes
+             * @classdesc Represents a TestEndsWithBytes
              * @constructor
              * @param {jspb.test.ITestEndsWithBytes=} [properties] Properties to set
-             * @memberof jspb.test
              */
             function TestEndsWithBytes(properties) {
                 if (properties)
@@ -5718,7 +5714,7 @@ $root.jspb = (function() {
             /**
              * Verifies a TestEndsWithBytes message.
              * @param {Object.<string,*>} message Plain object to verify
-             * @returns {?string} `null` if valid, otherwise the reason why it is not
+             * @returns {string|null} `null` if valid, otherwise the reason why it is not
              */
             TestEndsWithBytes.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
@@ -5787,8 +5783,7 @@ $root.jspb = (function() {
 
             /**
              * Properties of a TestMapFieldsNoBinary.
-             * @interface ITestMapFieldsNoBinary
-             * @memberof jspb.test
+             * @interface jspb.test.ITestMapFieldsNoBinary
              * @property {Object.<string,string>} [mapStringString] TestMapFieldsNoBinary mapStringString.
              * @property {Object.<string,number>} [mapStringInt32] TestMapFieldsNoBinary mapStringInt32.
              * @property {Object.<string,number|Long>} [mapStringInt64] TestMapFieldsNoBinary mapStringInt64.
@@ -5805,9 +5800,10 @@ $root.jspb = (function() {
 
             /**
              * Constructs a new TestMapFieldsNoBinary.
+             * @exports jspb.test.TestMapFieldsNoBinary
+             * @classdesc Represents a TestMapFieldsNoBinary
              * @constructor
              * @param {jspb.test.ITestMapFieldsNoBinary=} [properties] Properties to set
-             * @memberof jspb.test
              */
             function TestMapFieldsNoBinary(properties) {
                 this.mapStringString = {};
@@ -6099,7 +6095,7 @@ $root.jspb = (function() {
             /**
              * Verifies a TestMapFieldsNoBinary message.
              * @param {Object.<string,*>} message Plain object to verify
-             * @returns {?string} `null` if valid, otherwise the reason why it is not
+             * @returns {string|null} `null` if valid, otherwise the reason why it is not
              */
             TestMapFieldsNoBinary.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
@@ -6441,9 +6437,7 @@ $root.jspb = (function() {
 
         /**
          * MapValueEnumNoBinary enum.
-         * @name MapValueEnumNoBinary
-         * @enum {number}
-         * @memberof jspb.test
+         * @enum {number} jspb.test.MapValueEnumNoBinary
          * @property {number} MAP_VALUE_FOO_NOBINARY=0 MAP_VALUE_FOO_NOBINARY value
          * @property {number} MAP_VALUE_BAR_NOBINARY=1 MAP_VALUE_BAR_NOBINARY value
          * @property {number} MAP_VALUE_BAZ_NOBINARY=2 MAP_VALUE_BAZ_NOBINARY value
@@ -6460,16 +6454,16 @@ $root.jspb = (function() {
 
             /**
              * Properties of a MapValueMessageNoBinary.
-             * @interface IMapValueMessageNoBinary
-             * @memberof jspb.test
+             * @interface jspb.test.IMapValueMessageNoBinary
              * @property {number} [foo] MapValueMessageNoBinary foo.
              */
 
             /**
              * Constructs a new MapValueMessageNoBinary.
+             * @exports jspb.test.MapValueMessageNoBinary
+             * @classdesc Represents a MapValueMessageNoBinary
              * @constructor
              * @param {jspb.test.IMapValueMessageNoBinary=} [properties] Properties to set
-             * @memberof jspb.test
              */
             function MapValueMessageNoBinary(properties) {
                 if (properties)
@@ -6559,7 +6553,7 @@ $root.jspb = (function() {
             /**
              * Verifies a MapValueMessageNoBinary message.
              * @param {Object.<string,*>} message Plain object to verify
-             * @returns {?string} `null` if valid, otherwise the reason why it is not
+             * @returns {string|null} `null` if valid, otherwise the reason why it is not
              */
             MapValueMessageNoBinary.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
@@ -6616,15 +6610,15 @@ $root.jspb = (function() {
 
             /**
              * Properties of a Deeply.
-             * @interface IDeeply
-             * @memberof jspb.test
+             * @interface jspb.test.IDeeply
              */
 
             /**
              * Constructs a new Deeply.
+             * @exports jspb.test.Deeply
+             * @classdesc Represents a Deeply
              * @constructor
              * @param {jspb.test.IDeeply=} [properties] Properties to set
-             * @memberof jspb.test
              */
             function Deeply(properties) {
                 if (properties)
@@ -6703,7 +6697,7 @@ $root.jspb = (function() {
             /**
              * Verifies a Deeply message.
              * @param {Object.<string,*>} message Plain object to verify
-             * @returns {?string} `null` if valid, otherwise the reason why it is not
+             * @returns {string|null} `null` if valid, otherwise the reason why it is not
              */
             Deeply.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
@@ -6744,15 +6738,15 @@ $root.jspb = (function() {
 
                 /**
                  * Properties of a Nested.
-                 * @interface INested
-                 * @memberof jspb.test.Deeply
+                 * @interface jspb.test.Deeply.INested
                  */
 
                 /**
                  * Constructs a new Nested.
+                 * @exports jspb.test.Deeply.Nested
+                 * @classdesc Represents a Nested
                  * @constructor
                  * @param {jspb.test.Deeply.INested=} [properties] Properties to set
-                 * @memberof jspb.test.Deeply
                  */
                 function Nested(properties) {
                     if (properties)
@@ -6831,7 +6825,7 @@ $root.jspb = (function() {
                 /**
                  * Verifies a Nested message.
                  * @param {Object.<string,*>} message Plain object to verify
-                 * @returns {?string} `null` if valid, otherwise the reason why it is not
+                 * @returns {string|null} `null` if valid, otherwise the reason why it is not
                  */
                 Nested.verify = function verify(message) {
                     if (typeof message !== "object" || message === null)
@@ -6872,16 +6866,16 @@ $root.jspb = (function() {
 
                     /**
                      * Properties of a Message.
-                     * @interface IMessage
-                     * @memberof jspb.test.Deeply.Nested
+                     * @interface jspb.test.Deeply.Nested.IMessage
                      * @property {number} [count] Message count.
                      */
 
                     /**
                      * Constructs a new Message.
+                     * @exports jspb.test.Deeply.Nested.Message
+                     * @classdesc Represents a Message
                      * @constructor
                      * @param {jspb.test.Deeply.Nested.IMessage=} [properties] Properties to set
-                     * @memberof jspb.test.Deeply.Nested
                      */
                     function Message(properties) {
                         if (properties)
@@ -6971,7 +6965,7 @@ $root.jspb = (function() {
                     /**
                      * Verifies a Message message.
                      * @param {Object.<string,*>} message Plain object to verify
-                     * @returns {?string} `null` if valid, otherwise the reason why it is not
+                     * @returns {string|null} `null` if valid, otherwise the reason why it is not
                      */
                     Message.verify = function verify(message) {
                         if (typeof message !== "object" || message === null)
@@ -7040,8 +7034,8 @@ $root.google = (function() {
 
     /**
      * Namespace google.
+     * @exports google
      * @namespace
-     * @name google
      */
     var google = {};
 
@@ -7049,8 +7043,8 @@ $root.google = (function() {
 
         /**
          * Namespace protobuf.
+         * @exports google.protobuf
          * @namespace
-         * @memberof google
          */
         var protobuf = {};
 
@@ -7058,16 +7052,16 @@ $root.google = (function() {
 
             /**
              * Properties of a FileDescriptorSet.
-             * @interface IFileDescriptorSet
-             * @memberof google.protobuf
+             * @interface google.protobuf.IFileDescriptorSet
              * @property {Array.<google.protobuf.IFileDescriptorProto>} [file] FileDescriptorSet file.
              */
 
             /**
              * Constructs a new FileDescriptorSet.
+             * @exports google.protobuf.FileDescriptorSet
+             * @classdesc Represents a FileDescriptorSet
              * @constructor
              * @param {google.protobuf.IFileDescriptorSet=} [properties] Properties to set
-             * @memberof google.protobuf
              */
             function FileDescriptorSet(properties) {
                 this.file = [];
@@ -7161,7 +7155,7 @@ $root.google = (function() {
             /**
              * Verifies a FileDescriptorSet message.
              * @param {Object.<string,*>} message Plain object to verify
-             * @returns {?string} `null` if valid, otherwise the reason why it is not
+             * @returns {string|null} `null` if valid, otherwise the reason why it is not
              */
             FileDescriptorSet.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
@@ -7235,8 +7229,7 @@ $root.google = (function() {
 
             /**
              * Properties of a FileDescriptorProto.
-             * @interface IFileDescriptorProto
-             * @memberof google.protobuf
+             * @interface google.protobuf.IFileDescriptorProto
              * @property {string} [name] FileDescriptorProto name.
              * @property {string} ["package"] FileDescriptorProto package.
              * @property {Array.<string>} [dependency] FileDescriptorProto dependency.
@@ -7253,9 +7246,10 @@ $root.google = (function() {
 
             /**
              * Constructs a new FileDescriptorProto.
+             * @exports google.protobuf.FileDescriptorProto
+             * @classdesc Represents a FileDescriptorProto
              * @constructor
              * @param {google.protobuf.IFileDescriptorProto=} [properties] Properties to set
-             * @memberof google.protobuf
              */
             function FileDescriptorProto(properties) {
                 this.dependency = [];
@@ -7504,7 +7498,7 @@ $root.google = (function() {
             /**
              * Verifies a FileDescriptorProto message.
              * @param {Object.<string,*>} message Plain object to verify
-             * @returns {?string} `null` if valid, otherwise the reason why it is not
+             * @returns {string|null} `null` if valid, otherwise the reason why it is not
              */
             FileDescriptorProto.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
@@ -7766,8 +7760,7 @@ $root.google = (function() {
 
             /**
              * Properties of a DescriptorProto.
-             * @interface IDescriptorProto
-             * @memberof google.protobuf
+             * @interface google.protobuf.IDescriptorProto
              * @property {string} [name] DescriptorProto name.
              * @property {Array.<google.protobuf.IFieldDescriptorProto>} [field] DescriptorProto field.
              * @property {Array.<google.protobuf.IFieldDescriptorProto>} [extension] DescriptorProto extension.
@@ -7782,9 +7775,10 @@ $root.google = (function() {
 
             /**
              * Constructs a new DescriptorProto.
+             * @exports google.protobuf.DescriptorProto
+             * @classdesc Represents a DescriptorProto
              * @constructor
              * @param {google.protobuf.IDescriptorProto=} [properties] Properties to set
-             * @memberof google.protobuf
              */
             function DescriptorProto(properties) {
                 this.field = [];
@@ -8005,7 +7999,7 @@ $root.google = (function() {
             /**
              * Verifies a DescriptorProto message.
              * @param {Object.<string,*>} message Plain object to verify
-             * @returns {?string} `null` if valid, otherwise the reason why it is not
+             * @returns {string|null} `null` if valid, otherwise the reason why it is not
              */
             DescriptorProto.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
@@ -8270,17 +8264,17 @@ $root.google = (function() {
 
                 /**
                  * Properties of an ExtensionRange.
-                 * @interface IExtensionRange
-                 * @memberof google.protobuf.DescriptorProto
+                 * @interface google.protobuf.DescriptorProto.IExtensionRange
                  * @property {number} [start] ExtensionRange start.
                  * @property {number} [end] ExtensionRange end.
                  */
 
                 /**
                  * Constructs a new ExtensionRange.
+                 * @exports google.protobuf.DescriptorProto.ExtensionRange
+                 * @classdesc Represents an ExtensionRange
                  * @constructor
                  * @param {google.protobuf.DescriptorProto.IExtensionRange=} [properties] Properties to set
-                 * @memberof google.protobuf.DescriptorProto
                  */
                 function ExtensionRange(properties) {
                     if (properties)
@@ -8381,7 +8375,7 @@ $root.google = (function() {
                 /**
                  * Verifies an ExtensionRange message.
                  * @param {Object.<string,*>} message Plain object to verify
-                 * @returns {?string} `null` if valid, otherwise the reason why it is not
+                 * @returns {string|null} `null` if valid, otherwise the reason why it is not
                  */
                 ExtensionRange.verify = function verify(message) {
                     if (typeof message !== "object" || message === null)
@@ -8447,17 +8441,17 @@ $root.google = (function() {
 
                 /**
                  * Properties of a ReservedRange.
-                 * @interface IReservedRange
-                 * @memberof google.protobuf.DescriptorProto
+                 * @interface google.protobuf.DescriptorProto.IReservedRange
                  * @property {number} [start] ReservedRange start.
                  * @property {number} [end] ReservedRange end.
                  */
 
                 /**
                  * Constructs a new ReservedRange.
+                 * @exports google.protobuf.DescriptorProto.ReservedRange
+                 * @classdesc Represents a ReservedRange
                  * @constructor
                  * @param {google.protobuf.DescriptorProto.IReservedRange=} [properties] Properties to set
-                 * @memberof google.protobuf.DescriptorProto
                  */
                 function ReservedRange(properties) {
                     if (properties)
@@ -8558,7 +8552,7 @@ $root.google = (function() {
                 /**
                  * Verifies a ReservedRange message.
                  * @param {Object.<string,*>} message Plain object to verify
-                 * @returns {?string} `null` if valid, otherwise the reason why it is not
+                 * @returns {string|null} `null` if valid, otherwise the reason why it is not
                  */
                 ReservedRange.verify = function verify(message) {
                     if (typeof message !== "object" || message === null)
@@ -8627,8 +8621,7 @@ $root.google = (function() {
 
             /**
              * Properties of a FieldDescriptorProto.
-             * @interface IFieldDescriptorProto
-             * @memberof google.protobuf
+             * @interface google.protobuf.IFieldDescriptorProto
              * @property {string} [name] FieldDescriptorProto name.
              * @property {number} [number] FieldDescriptorProto number.
              * @property {google.protobuf.FieldDescriptorProto.Label} [label] FieldDescriptorProto label.
@@ -8643,9 +8636,10 @@ $root.google = (function() {
 
             /**
              * Constructs a new FieldDescriptorProto.
+             * @exports google.protobuf.FieldDescriptorProto
+             * @classdesc Represents a FieldDescriptorProto
              * @constructor
              * @param {google.protobuf.IFieldDescriptorProto=} [properties] Properties to set
-             * @memberof google.protobuf
              */
             function FieldDescriptorProto(properties) {
                 if (properties)
@@ -8834,7 +8828,7 @@ $root.google = (function() {
             /**
              * Verifies a FieldDescriptorProto message.
              * @param {Object.<string,*>} message Plain object to verify
-             * @returns {?string} `null` if valid, otherwise the reason why it is not
+             * @returns {string|null} `null` if valid, otherwise the reason why it is not
              */
             FieldDescriptorProto.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
@@ -9075,9 +9069,7 @@ $root.google = (function() {
 
             /**
              * Type enum.
-             * @name Type
-             * @enum {number}
-             * @memberof google.protobuf.FieldDescriptorProto
+             * @enum {number} google.protobuf.FieldDescriptorProto.Type
              * @property {number} TYPE_DOUBLE=1 TYPE_DOUBLE value
              * @property {number} TYPE_FLOAT=2 TYPE_FLOAT value
              * @property {number} TYPE_INT64=3 TYPE_INT64 value
@@ -9122,9 +9114,7 @@ $root.google = (function() {
 
             /**
              * Label enum.
-             * @name Label
-             * @enum {number}
-             * @memberof google.protobuf.FieldDescriptorProto
+             * @enum {number} google.protobuf.FieldDescriptorProto.Label
              * @property {number} LABEL_OPTIONAL=1 LABEL_OPTIONAL value
              * @property {number} LABEL_REQUIRED=2 LABEL_REQUIRED value
              * @property {number} LABEL_REPEATED=3 LABEL_REPEATED value
@@ -9144,17 +9134,17 @@ $root.google = (function() {
 
             /**
              * Properties of an OneofDescriptorProto.
-             * @interface IOneofDescriptorProto
-             * @memberof google.protobuf
+             * @interface google.protobuf.IOneofDescriptorProto
              * @property {string} [name] OneofDescriptorProto name.
              * @property {google.protobuf.IOneofOptions} [options] OneofDescriptorProto options.
              */
 
             /**
              * Constructs a new OneofDescriptorProto.
+             * @exports google.protobuf.OneofDescriptorProto
+             * @classdesc Represents an OneofDescriptorProto
              * @constructor
              * @param {google.protobuf.IOneofDescriptorProto=} [properties] Properties to set
-             * @memberof google.protobuf
              */
             function OneofDescriptorProto(properties) {
                 if (properties)
@@ -9255,7 +9245,7 @@ $root.google = (function() {
             /**
              * Verifies an OneofDescriptorProto message.
              * @param {Object.<string,*>} message Plain object to verify
-             * @returns {?string} `null` if valid, otherwise the reason why it is not
+             * @returns {string|null} `null` if valid, otherwise the reason why it is not
              */
             OneofDescriptorProto.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
@@ -9326,8 +9316,7 @@ $root.google = (function() {
 
             /**
              * Properties of an EnumDescriptorProto.
-             * @interface IEnumDescriptorProto
-             * @memberof google.protobuf
+             * @interface google.protobuf.IEnumDescriptorProto
              * @property {string} [name] EnumDescriptorProto name.
              * @property {Array.<google.protobuf.IEnumValueDescriptorProto>} [value] EnumDescriptorProto value.
              * @property {google.protobuf.IEnumOptions} [options] EnumDescriptorProto options.
@@ -9335,9 +9324,10 @@ $root.google = (function() {
 
             /**
              * Constructs a new EnumDescriptorProto.
+             * @exports google.protobuf.EnumDescriptorProto
+             * @classdesc Represents an EnumDescriptorProto
              * @constructor
              * @param {google.protobuf.IEnumDescriptorProto=} [properties] Properties to set
-             * @memberof google.protobuf
              */
             function EnumDescriptorProto(properties) {
                 this.value = [];
@@ -9453,7 +9443,7 @@ $root.google = (function() {
             /**
              * Verifies an EnumDescriptorProto message.
              * @param {Object.<string,*>} message Plain object to verify
-             * @returns {?string} `null` if valid, otherwise the reason why it is not
+             * @returns {string|null} `null` if valid, otherwise the reason why it is not
              */
             EnumDescriptorProto.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
@@ -9550,8 +9540,7 @@ $root.google = (function() {
 
             /**
              * Properties of an EnumValueDescriptorProto.
-             * @interface IEnumValueDescriptorProto
-             * @memberof google.protobuf
+             * @interface google.protobuf.IEnumValueDescriptorProto
              * @property {string} [name] EnumValueDescriptorProto name.
              * @property {number} [number] EnumValueDescriptorProto number.
              * @property {google.protobuf.IEnumValueOptions} [options] EnumValueDescriptorProto options.
@@ -9559,9 +9548,10 @@ $root.google = (function() {
 
             /**
              * Constructs a new EnumValueDescriptorProto.
+             * @exports google.protobuf.EnumValueDescriptorProto
+             * @classdesc Represents an EnumValueDescriptorProto
              * @constructor
              * @param {google.protobuf.IEnumValueDescriptorProto=} [properties] Properties to set
-             * @memberof google.protobuf
              */
             function EnumValueDescriptorProto(properties) {
                 if (properties)
@@ -9673,7 +9663,7 @@ $root.google = (function() {
             /**
              * Verifies an EnumValueDescriptorProto message.
              * @param {Object.<string,*>} message Plain object to verify
-             * @returns {?string} `null` if valid, otherwise the reason why it is not
+             * @returns {string|null} `null` if valid, otherwise the reason why it is not
              */
             EnumValueDescriptorProto.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
@@ -9752,8 +9742,7 @@ $root.google = (function() {
 
             /**
              * Properties of a ServiceDescriptorProto.
-             * @interface IServiceDescriptorProto
-             * @memberof google.protobuf
+             * @interface google.protobuf.IServiceDescriptorProto
              * @property {string} [name] ServiceDescriptorProto name.
              * @property {Array.<google.protobuf.IMethodDescriptorProto>} [method] ServiceDescriptorProto method.
              * @property {google.protobuf.IServiceOptions} [options] ServiceDescriptorProto options.
@@ -9761,9 +9750,10 @@ $root.google = (function() {
 
             /**
              * Constructs a new ServiceDescriptorProto.
+             * @exports google.protobuf.ServiceDescriptorProto
+             * @classdesc Represents a ServiceDescriptorProto
              * @constructor
              * @param {google.protobuf.IServiceDescriptorProto=} [properties] Properties to set
-             * @memberof google.protobuf
              */
             function ServiceDescriptorProto(properties) {
                 this.method = [];
@@ -9879,7 +9869,7 @@ $root.google = (function() {
             /**
              * Verifies a ServiceDescriptorProto message.
              * @param {Object.<string,*>} message Plain object to verify
-             * @returns {?string} `null` if valid, otherwise the reason why it is not
+             * @returns {string|null} `null` if valid, otherwise the reason why it is not
              */
             ServiceDescriptorProto.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
@@ -9976,8 +9966,7 @@ $root.google = (function() {
 
             /**
              * Properties of a MethodDescriptorProto.
-             * @interface IMethodDescriptorProto
-             * @memberof google.protobuf
+             * @interface google.protobuf.IMethodDescriptorProto
              * @property {string} [name] MethodDescriptorProto name.
              * @property {string} [inputType] MethodDescriptorProto inputType.
              * @property {string} [outputType] MethodDescriptorProto outputType.
@@ -9988,9 +9977,10 @@ $root.google = (function() {
 
             /**
              * Constructs a new MethodDescriptorProto.
+             * @exports google.protobuf.MethodDescriptorProto
+             * @classdesc Represents a MethodDescriptorProto
              * @constructor
              * @param {google.protobuf.IMethodDescriptorProto=} [properties] Properties to set
-             * @memberof google.protobuf
              */
             function MethodDescriptorProto(properties) {
                 if (properties)
@@ -10135,7 +10125,7 @@ $root.google = (function() {
             /**
              * Verifies a MethodDescriptorProto message.
              * @param {Object.<string,*>} message Plain object to verify
-             * @returns {?string} `null` if valid, otherwise the reason why it is not
+             * @returns {string|null} `null` if valid, otherwise the reason why it is not
              */
             MethodDescriptorProto.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
@@ -10238,8 +10228,7 @@ $root.google = (function() {
 
             /**
              * Properties of a FileOptions.
-             * @interface IFileOptions
-             * @memberof google.protobuf
+             * @interface google.protobuf.IFileOptions
              * @property {string} [javaPackage] FileOptions javaPackage.
              * @property {string} [javaOuterClassname] FileOptions javaOuterClassname.
              * @property {boolean} [javaMultipleFiles] FileOptions javaMultipleFiles.
@@ -10259,9 +10248,10 @@ $root.google = (function() {
 
             /**
              * Constructs a new FileOptions.
+             * @exports google.protobuf.FileOptions
+             * @classdesc Represents a FileOptions
              * @constructor
              * @param {google.protobuf.IFileOptions=} [properties] Properties to set
-             * @memberof google.protobuf
              */
             function FileOptions(properties) {
                 this.uninterpretedOption = [];
@@ -10509,7 +10499,7 @@ $root.google = (function() {
             /**
              * Verifies a FileOptions message.
              * @param {Object.<string,*>} message Plain object to verify
-             * @returns {?string} `null` if valid, otherwise the reason why it is not
+             * @returns {string|null} `null` if valid, otherwise the reason why it is not
              */
             FileOptions.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
@@ -10710,9 +10700,7 @@ $root.google = (function() {
 
             /**
              * OptimizeMode enum.
-             * @name OptimizeMode
-             * @enum {number}
-             * @memberof google.protobuf.FileOptions
+             * @enum {number} google.protobuf.FileOptions.OptimizeMode
              * @property {number} SPEED=1 SPEED value
              * @property {number} CODE_SIZE=2 CODE_SIZE value
              * @property {number} LITE_RUNTIME=3 LITE_RUNTIME value
@@ -10732,8 +10720,7 @@ $root.google = (function() {
 
             /**
              * Properties of a MessageOptions.
-             * @interface IMessageOptions
-             * @memberof google.protobuf
+             * @interface google.protobuf.IMessageOptions
              * @property {boolean} [messageSetWireFormat] MessageOptions messageSetWireFormat.
              * @property {boolean} [noStandardDescriptorAccessor] MessageOptions noStandardDescriptorAccessor.
              * @property {boolean} [deprecated] MessageOptions deprecated.
@@ -10743,9 +10730,10 @@ $root.google = (function() {
 
             /**
              * Constructs a new MessageOptions.
+             * @exports google.protobuf.MessageOptions
+             * @classdesc Represents a MessageOptions
              * @constructor
              * @param {google.protobuf.IMessageOptions=} [properties] Properties to set
-             * @memberof google.protobuf
              */
             function MessageOptions(properties) {
                 this.uninterpretedOption = [];
@@ -10883,7 +10871,7 @@ $root.google = (function() {
             /**
              * Verifies a MessageOptions message.
              * @param {Object.<string,*>} message Plain object to verify
-             * @returns {?string} `null` if valid, otherwise the reason why it is not
+             * @returns {string|null} `null` if valid, otherwise the reason why it is not
              */
             MessageOptions.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
@@ -10991,8 +10979,7 @@ $root.google = (function() {
 
             /**
              * Properties of a FieldOptions.
-             * @interface IFieldOptions
-             * @memberof google.protobuf
+             * @interface google.protobuf.IFieldOptions
              * @property {google.protobuf.FieldOptions.CType} [ctype] FieldOptions ctype.
              * @property {boolean} [packed] FieldOptions packed.
              * @property {google.protobuf.FieldOptions.JSType} [jstype] FieldOptions jstype.
@@ -11004,9 +10991,10 @@ $root.google = (function() {
 
             /**
              * Constructs a new FieldOptions.
+             * @exports google.protobuf.FieldOptions
+             * @classdesc Represents a FieldOptions
              * @constructor
              * @param {google.protobuf.IFieldOptions=} [properties] Properties to set
-             * @memberof google.protobuf
              */
             function FieldOptions(properties) {
                 this.uninterpretedOption = [];
@@ -11166,7 +11154,7 @@ $root.google = (function() {
             /**
              * Verifies a FieldOptions message.
              * @param {Object.<string,*>} message Plain object to verify
-             * @returns {?string} `null` if valid, otherwise the reason why it is not
+             * @returns {string|null} `null` if valid, otherwise the reason why it is not
              */
             FieldOptions.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
@@ -11321,9 +11309,7 @@ $root.google = (function() {
 
             /**
              * CType enum.
-             * @name CType
-             * @enum {number}
-             * @memberof google.protobuf.FieldOptions
+             * @enum {number} google.protobuf.FieldOptions.CType
              * @property {number} STRING=0 STRING value
              * @property {number} CORD=1 CORD value
              * @property {number} STRING_PIECE=2 STRING_PIECE value
@@ -11338,9 +11324,7 @@ $root.google = (function() {
 
             /**
              * JSType enum.
-             * @name JSType
-             * @enum {number}
-             * @memberof google.protobuf.FieldOptions
+             * @enum {number} google.protobuf.FieldOptions.JSType
              * @property {number} JS_NORMAL=0 JS_NORMAL value
              * @property {number} JS_STRING=1 JS_STRING value
              * @property {number} JS_NUMBER=2 JS_NUMBER value
@@ -11360,16 +11344,16 @@ $root.google = (function() {
 
             /**
              * Properties of an OneofOptions.
-             * @interface IOneofOptions
-             * @memberof google.protobuf
+             * @interface google.protobuf.IOneofOptions
              * @property {Array.<google.protobuf.IUninterpretedOption>} [uninterpretedOption] OneofOptions uninterpretedOption.
              */
 
             /**
              * Constructs a new OneofOptions.
+             * @exports google.protobuf.OneofOptions
+             * @classdesc Represents an OneofOptions
              * @constructor
              * @param {google.protobuf.IOneofOptions=} [properties] Properties to set
-             * @memberof google.protobuf
              */
             function OneofOptions(properties) {
                 this.uninterpretedOption = [];
@@ -11463,7 +11447,7 @@ $root.google = (function() {
             /**
              * Verifies an OneofOptions message.
              * @param {Object.<string,*>} message Plain object to verify
-             * @returns {?string} `null` if valid, otherwise the reason why it is not
+             * @returns {string|null} `null` if valid, otherwise the reason why it is not
              */
             OneofOptions.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
@@ -11537,8 +11521,7 @@ $root.google = (function() {
 
             /**
              * Properties of an EnumOptions.
-             * @interface IEnumOptions
-             * @memberof google.protobuf
+             * @interface google.protobuf.IEnumOptions
              * @property {boolean} [allowAlias] EnumOptions allowAlias.
              * @property {boolean} [deprecated] EnumOptions deprecated.
              * @property {Array.<google.protobuf.IUninterpretedOption>} [uninterpretedOption] EnumOptions uninterpretedOption.
@@ -11547,9 +11530,10 @@ $root.google = (function() {
 
             /**
              * Constructs a new EnumOptions.
+             * @exports google.protobuf.EnumOptions
+             * @classdesc Represents an EnumOptions
              * @constructor
              * @param {google.protobuf.IEnumOptions=} [properties] Properties to set
-             * @memberof google.protobuf
              */
             function EnumOptions(properties) {
                 this.uninterpretedOption = [];
@@ -11676,7 +11660,7 @@ $root.google = (function() {
             /**
              * Verifies an EnumOptions message.
              * @param {Object.<string,*>} message Plain object to verify
-             * @returns {?string} `null` if valid, otherwise the reason why it is not
+             * @returns {string|null} `null` if valid, otherwise the reason why it is not
              */
             EnumOptions.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
@@ -11776,17 +11760,17 @@ $root.google = (function() {
 
             /**
              * Properties of an EnumValueOptions.
-             * @interface IEnumValueOptions
-             * @memberof google.protobuf
+             * @interface google.protobuf.IEnumValueOptions
              * @property {boolean} [deprecated] EnumValueOptions deprecated.
              * @property {Array.<google.protobuf.IUninterpretedOption>} [uninterpretedOption] EnumValueOptions uninterpretedOption.
              */
 
             /**
              * Constructs a new EnumValueOptions.
+             * @exports google.protobuf.EnumValueOptions
+             * @classdesc Represents an EnumValueOptions
              * @constructor
              * @param {google.protobuf.IEnumValueOptions=} [properties] Properties to set
-             * @memberof google.protobuf
              */
             function EnumValueOptions(properties) {
                 this.uninterpretedOption = [];
@@ -11891,7 +11875,7 @@ $root.google = (function() {
             /**
              * Verifies an EnumValueOptions message.
              * @param {Object.<string,*>} message Plain object to verify
-             * @returns {?string} `null` if valid, otherwise the reason why it is not
+             * @returns {string|null} `null` if valid, otherwise the reason why it is not
              */
             EnumValueOptions.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
@@ -11974,17 +11958,17 @@ $root.google = (function() {
 
             /**
              * Properties of a ServiceOptions.
-             * @interface IServiceOptions
-             * @memberof google.protobuf
+             * @interface google.protobuf.IServiceOptions
              * @property {boolean} [deprecated] ServiceOptions deprecated.
              * @property {Array.<google.protobuf.IUninterpretedOption>} [uninterpretedOption] ServiceOptions uninterpretedOption.
              */
 
             /**
              * Constructs a new ServiceOptions.
+             * @exports google.protobuf.ServiceOptions
+             * @classdesc Represents a ServiceOptions
              * @constructor
              * @param {google.protobuf.IServiceOptions=} [properties] Properties to set
-             * @memberof google.protobuf
              */
             function ServiceOptions(properties) {
                 this.uninterpretedOption = [];
@@ -12089,7 +12073,7 @@ $root.google = (function() {
             /**
              * Verifies a ServiceOptions message.
              * @param {Object.<string,*>} message Plain object to verify
-             * @returns {?string} `null` if valid, otherwise the reason why it is not
+             * @returns {string|null} `null` if valid, otherwise the reason why it is not
              */
             ServiceOptions.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
@@ -12172,8 +12156,7 @@ $root.google = (function() {
 
             /**
              * Properties of a MethodOptions.
-             * @interface IMethodOptions
-             * @memberof google.protobuf
+             * @interface google.protobuf.IMethodOptions
              * @property {boolean} [deprecated] MethodOptions deprecated.
              * @property {google.protobuf.MethodOptions.IdempotencyLevel} [idempotencyLevel] MethodOptions idempotencyLevel.
              * @property {Array.<google.protobuf.IUninterpretedOption>} [uninterpretedOption] MethodOptions uninterpretedOption.
@@ -12181,9 +12164,10 @@ $root.google = (function() {
 
             /**
              * Constructs a new MethodOptions.
+             * @exports google.protobuf.MethodOptions
+             * @classdesc Represents a MethodOptions
              * @constructor
              * @param {google.protobuf.IMethodOptions=} [properties] Properties to set
-             * @memberof google.protobuf
              */
             function MethodOptions(properties) {
                 this.uninterpretedOption = [];
@@ -12299,7 +12283,7 @@ $root.google = (function() {
             /**
              * Verifies a MethodOptions message.
              * @param {Object.<string,*>} message Plain object to verify
-             * @returns {?string} `null` if valid, otherwise the reason why it is not
+             * @returns {string|null} `null` if valid, otherwise the reason why it is not
              */
             MethodOptions.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
@@ -12404,9 +12388,7 @@ $root.google = (function() {
 
             /**
              * IdempotencyLevel enum.
-             * @name IdempotencyLevel
-             * @enum {number}
-             * @memberof google.protobuf.MethodOptions
+             * @enum {number} google.protobuf.MethodOptions.IdempotencyLevel
              * @property {number} IDEMPOTENCY_UNKNOWN=0 IDEMPOTENCY_UNKNOWN value
              * @property {number} NO_SIDE_EFFECTS=1 NO_SIDE_EFFECTS value
              * @property {number} IDEMPOTENT=2 IDEMPOTENT value
@@ -12426,8 +12408,7 @@ $root.google = (function() {
 
             /**
              * Properties of an UninterpretedOption.
-             * @interface IUninterpretedOption
-             * @memberof google.protobuf
+             * @interface google.protobuf.IUninterpretedOption
              * @property {Array.<google.protobuf.UninterpretedOption.INamePart>} [name] UninterpretedOption name.
              * @property {string} [identifierValue] UninterpretedOption identifierValue.
              * @property {number|Long} [positiveIntValue] UninterpretedOption positiveIntValue.
@@ -12439,9 +12420,10 @@ $root.google = (function() {
 
             /**
              * Constructs a new UninterpretedOption.
+             * @exports google.protobuf.UninterpretedOption
+             * @classdesc Represents an UninterpretedOption
              * @constructor
              * @param {google.protobuf.IUninterpretedOption=} [properties] Properties to set
-             * @memberof google.protobuf
              */
             function UninterpretedOption(properties) {
                 this.name = [];
@@ -12601,7 +12583,7 @@ $root.google = (function() {
             /**
              * Verifies an UninterpretedOption message.
              * @param {Object.<string,*>} message Plain object to verify
-             * @returns {?string} `null` if valid, otherwise the reason why it is not
+             * @returns {string|null} `null` if valid, otherwise the reason why it is not
              */
             UninterpretedOption.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
@@ -12753,17 +12735,17 @@ $root.google = (function() {
 
                 /**
                  * Properties of a NamePart.
-                 * @interface INamePart
-                 * @memberof google.protobuf.UninterpretedOption
+                 * @interface google.protobuf.UninterpretedOption.INamePart
                  * @property {string} namePart NamePart namePart.
                  * @property {boolean} isExtension NamePart isExtension.
                  */
 
                 /**
                  * Constructs a new NamePart.
+                 * @exports google.protobuf.UninterpretedOption.NamePart
+                 * @classdesc Represents a NamePart
                  * @constructor
                  * @param {google.protobuf.UninterpretedOption.INamePart=} [properties] Properties to set
-                 * @memberof google.protobuf.UninterpretedOption
                  */
                 function NamePart(properties) {
                     if (properties)
@@ -12866,7 +12848,7 @@ $root.google = (function() {
                 /**
                  * Verifies a NamePart message.
                  * @param {Object.<string,*>} message Plain object to verify
-                 * @returns {?string} `null` if valid, otherwise the reason why it is not
+                 * @returns {string|null} `null` if valid, otherwise the reason why it is not
                  */
                 NamePart.verify = function verify(message) {
                     if (typeof message !== "object" || message === null)
@@ -12933,16 +12915,16 @@ $root.google = (function() {
 
             /**
              * Properties of a SourceCodeInfo.
-             * @interface ISourceCodeInfo
-             * @memberof google.protobuf
+             * @interface google.protobuf.ISourceCodeInfo
              * @property {Array.<google.protobuf.SourceCodeInfo.ILocation>} [location] SourceCodeInfo location.
              */
 
             /**
              * Constructs a new SourceCodeInfo.
+             * @exports google.protobuf.SourceCodeInfo
+             * @classdesc Represents a SourceCodeInfo
              * @constructor
              * @param {google.protobuf.ISourceCodeInfo=} [properties] Properties to set
-             * @memberof google.protobuf
              */
             function SourceCodeInfo(properties) {
                 this.location = [];
@@ -13036,7 +13018,7 @@ $root.google = (function() {
             /**
              * Verifies a SourceCodeInfo message.
              * @param {Object.<string,*>} message Plain object to verify
-             * @returns {?string} `null` if valid, otherwise the reason why it is not
+             * @returns {string|null} `null` if valid, otherwise the reason why it is not
              */
             SourceCodeInfo.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
@@ -13107,8 +13089,7 @@ $root.google = (function() {
 
                 /**
                  * Properties of a Location.
-                 * @interface ILocation
-                 * @memberof google.protobuf.SourceCodeInfo
+                 * @interface google.protobuf.SourceCodeInfo.ILocation
                  * @property {Array.<number>} [path] Location path.
                  * @property {Array.<number>} [span] Location span.
                  * @property {string} [leadingComments] Location leadingComments.
@@ -13118,9 +13099,10 @@ $root.google = (function() {
 
                 /**
                  * Constructs a new Location.
+                 * @exports google.protobuf.SourceCodeInfo.Location
+                 * @classdesc Represents a Location
                  * @constructor
                  * @param {google.protobuf.SourceCodeInfo.ILocation=} [properties] Properties to set
-                 * @memberof google.protobuf.SourceCodeInfo
                  */
                 function Location(properties) {
                     this.path = [];
@@ -13282,7 +13264,7 @@ $root.google = (function() {
                 /**
                  * Verifies a Location message.
                  * @param {Object.<string,*>} message Plain object to verify
-                 * @returns {?string} `null` if valid, otherwise the reason why it is not
+                 * @returns {string|null} `null` if valid, otherwise the reason why it is not
                  */
                 Location.verify = function verify(message) {
                     if (typeof message !== "object" || message === null)
@@ -13413,16 +13395,16 @@ $root.google = (function() {
 
             /**
              * Properties of a GeneratedCodeInfo.
-             * @interface IGeneratedCodeInfo
-             * @memberof google.protobuf
+             * @interface google.protobuf.IGeneratedCodeInfo
              * @property {Array.<google.protobuf.GeneratedCodeInfo.IAnnotation>} [annotation] GeneratedCodeInfo annotation.
              */
 
             /**
              * Constructs a new GeneratedCodeInfo.
+             * @exports google.protobuf.GeneratedCodeInfo
+             * @classdesc Represents a GeneratedCodeInfo
              * @constructor
              * @param {google.protobuf.IGeneratedCodeInfo=} [properties] Properties to set
-             * @memberof google.protobuf
              */
             function GeneratedCodeInfo(properties) {
                 this.annotation = [];
@@ -13516,7 +13498,7 @@ $root.google = (function() {
             /**
              * Verifies a GeneratedCodeInfo message.
              * @param {Object.<string,*>} message Plain object to verify
-             * @returns {?string} `null` if valid, otherwise the reason why it is not
+             * @returns {string|null} `null` if valid, otherwise the reason why it is not
              */
             GeneratedCodeInfo.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
@@ -13587,8 +13569,7 @@ $root.google = (function() {
 
                 /**
                  * Properties of an Annotation.
-                 * @interface IAnnotation
-                 * @memberof google.protobuf.GeneratedCodeInfo
+                 * @interface google.protobuf.GeneratedCodeInfo.IAnnotation
                  * @property {Array.<number>} [path] Annotation path.
                  * @property {string} [sourceFile] Annotation sourceFile.
                  * @property {number} [begin] Annotation begin.
@@ -13597,9 +13578,10 @@ $root.google = (function() {
 
                 /**
                  * Constructs a new Annotation.
+                 * @exports google.protobuf.GeneratedCodeInfo.Annotation
+                 * @classdesc Represents an Annotation
                  * @constructor
                  * @param {google.protobuf.GeneratedCodeInfo.IAnnotation=} [properties] Properties to set
-                 * @memberof google.protobuf.GeneratedCodeInfo
                  */
                 function Annotation(properties) {
                     this.path = [];
@@ -13734,7 +13716,7 @@ $root.google = (function() {
                 /**
                  * Verifies an Annotation message.
                  * @param {Object.<string,*>} message Plain object to verify
-                 * @returns {?string} `null` if valid, otherwise the reason why it is not
+                 * @returns {string|null} `null` if valid, otherwise the reason why it is not
                  */
                 Annotation.verify = function verify(message) {
                     if (typeof message !== "object" || message === null)

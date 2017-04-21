@@ -14,7 +14,6 @@ $root.Message = (function() {
     /**
      * Properties of a Message.
      * @interface IMessage
-     * @name IMessage
      * @property {string} [stringVal] Message stringVal.
      * @property {Array.<string>} [stringRepeated] Message stringRepeated.
      * @property {number|Long} [uint64Val] Message uint64Val.
@@ -28,9 +27,10 @@ $root.Message = (function() {
 
     /**
      * Constructs a new Message.
+     * @exports Message
+     * @classdesc Represents a Message
      * @constructor
      * @param {IMessage=} [properties] Properties to set
-     * @name Message
      */
     function Message(properties) {
         this.stringRepeated = [];
@@ -247,7 +247,7 @@ $root.Message = (function() {
     /**
      * Verifies a Message message.
      * @param {Object.<string,*>} message Plain object to verify
-     * @returns {?string} `null` if valid, otherwise the reason why it is not
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
      */
     Message.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
@@ -497,9 +497,7 @@ $root.Message = (function() {
 
     /**
      * SomeEnum enum.
-     * @name SomeEnum
-     * @enum {number}
-     * @memberof Message
+     * @enum {number} Message.SomeEnum
      * @property {number} ONE=1 ONE value
      * @property {number} TWO=2 TWO value
      */

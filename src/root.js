@@ -203,6 +203,7 @@ Root.prototype.load = function load(filename, options, callback) {
 
 /**
  * Loads one or multiple .proto or preprocessed .json files into this root namespace and calls the callback.
+ * @function Root#load
  * @param {string|string[]} filename Names of one or multiple files to load
  * @param {LoadCallback} callback Callback function
  * @returns {undefined}
@@ -212,8 +213,7 @@ Root.prototype.load = function load(filename, options, callback) {
 
 /**
  * Loads one or multiple .proto or preprocessed .json files into this root namespace and returns a promise.
- * @name Root#load
- * @function
+ * @function Root#load
  * @param {string|string[]} filename Names of one or multiple files to load
  * @param {IParseOptions} [options] Parse options. Defaults to {@link parse.defaults} when omitted.
  * @returns {Promise<Root>} Promise
@@ -223,8 +223,7 @@ Root.prototype.load = function load(filename, options, callback) {
 
 /**
  * Synchronously loads one or multiple .proto or preprocessed .json files into this root namespace (node only).
- * @name Root#loadSync
- * @function
+ * @function Root#loadSync
  * @param {string|string[]} filename Names of one or multiple files to load
  * @param {IParseOptions} [options] Parse options. Defaults to {@link parse.defaults} when omitted.
  * @returns {Root} Root namespace

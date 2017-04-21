@@ -14,7 +14,6 @@ $root.Package = (function() {
     /**
      * Properties of a Package.
      * @interface IPackage
-     * @name IPackage
      * @property {string} [name] Package name.
      * @property {string} [version] Package version.
      * @property {string} [versionScheme] Package versionScheme.
@@ -36,9 +35,10 @@ $root.Package = (function() {
 
     /**
      * Constructs a new Package.
+     * @exports Package
+     * @classdesc Represents a Package
      * @constructor
      * @param {IPackage=} [properties] Properties to set
-     * @name Package
      */
     function Package(properties) {
         this.keywords = [];
@@ -340,7 +340,7 @@ $root.Package = (function() {
     /**
      * Verifies a Package message.
      * @param {Object.<string,*>} message Plain object to verify
-     * @returns {?string} `null` if valid, otherwise the reason why it is not
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
      */
     Package.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
@@ -609,17 +609,17 @@ $root.Package = (function() {
 
         /**
          * Properties of a Repository.
-         * @interface IRepository
-         * @memberof Package
+         * @interface Package.IRepository
          * @property {string} [type] Repository type.
          * @property {string} [url] Repository url.
          */
 
         /**
          * Constructs a new Repository.
+         * @exports Package.Repository
+         * @classdesc Represents a Repository
          * @constructor
          * @param {Package.IRepository=} [properties] Properties to set
-         * @memberof Package
          */
         function Repository(properties) {
             if (properties)
@@ -720,7 +720,7 @@ $root.Package = (function() {
         /**
          * Verifies a Repository message.
          * @param {Object.<string,*>} message Plain object to verify
-         * @returns {?string} `null` if valid, otherwise the reason why it is not
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
          */
         Repository.verify = function verify(message) {
             if (typeof message !== "object" || message === null)

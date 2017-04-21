@@ -13,12 +13,13 @@ $root.MyService = (function() {
 
     /**
      * Constructs a new MyService service.
+     * @exports MyService
+     * @classdesc Represents a MyService
      * @extends $protobuf.rpc.Service
      * @constructor
      * @param {$protobuf.RPCImpl} rpcImpl RPC implementation
      * @param {boolean} [requestDelimited=false] Whether requests are length-delimited
      * @param {boolean} [responseDelimited=false] Whether responses are length-delimited
-     * @name MyService
      */
     function MyService(rpcImpl, requestDelimited, responseDelimited) {
         $protobuf.rpc.Service.call(this, rpcImpl, requestDelimited, responseDelimited);
@@ -41,7 +42,7 @@ $root.MyService = (function() {
      * Callback as used by {@link MyService#myMethod}.
      * @typedef MyService_myMethod_Callback
      * @type {function}
-     * @param {?Error} error Error, if any
+     * @param {Error|null} error Error, if any
      * @param {MyResponse} [response] MyResponse
      */
 
@@ -57,8 +58,7 @@ $root.MyService = (function() {
 
     /**
      * Calls MyMethod.
-     * @name MyService#myMethod
-     * @function
+     * @function MyService#myMethod
      * @param {IMyRequest} request MyRequest message or plain object
      * @returns {Promise<MyResponse>} Promise
      * @variation 2
@@ -72,15 +72,15 @@ $root.MyRequest = (function() {
     /**
      * Properties of a MyRequest.
      * @interface IMyRequest
-     * @name IMyRequest
      * @property {string} [path] MyRequest path.
      */
 
     /**
      * Constructs a new MyRequest.
+     * @exports MyRequest
+     * @classdesc Represents a MyRequest
      * @constructor
      * @param {IMyRequest=} [properties] Properties to set
-     * @name MyRequest
      */
     function MyRequest(properties) {
         if (properties)
@@ -170,7 +170,7 @@ $root.MyRequest = (function() {
     /**
      * Verifies a MyRequest message.
      * @param {Object.<string,*>} message Plain object to verify
-     * @returns {?string} `null` if valid, otherwise the reason why it is not
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
      */
     MyRequest.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
@@ -228,15 +228,15 @@ $root.MyResponse = (function() {
     /**
      * Properties of a MyResponse.
      * @interface IMyResponse
-     * @name IMyResponse
      * @property {number} [status] MyResponse status.
      */
 
     /**
      * Constructs a new MyResponse.
+     * @exports MyResponse
+     * @classdesc Represents a MyResponse
      * @constructor
      * @param {IMyResponse=} [properties] Properties to set
-     * @name MyResponse
      */
     function MyResponse(properties) {
         if (properties)
@@ -326,7 +326,7 @@ $root.MyResponse = (function() {
     /**
      * Verifies a MyResponse message.
      * @param {Object.<string,*>} message Plain object to verify
-     * @returns {?string} `null` if valid, otherwise the reason why it is not
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
      */
     MyResponse.verify = function verify(message) {
         if (typeof message !== "object" || message === null)

@@ -14,7 +14,6 @@ $root.Test1 = (function() {
     /**
      * Properties of a Test1.
      * @interface ITest1
-     * @name ITest1
      * @property {string} [field1] Field with a comment.
      * @property {number} [field2] Test1 field2.
      * @property {boolean} [field3] Field with a comment and a <a href="http://example.com/foo/">link</a>
@@ -22,13 +21,13 @@ $root.Test1 = (function() {
 
     /**
      * Constructs a new Test1.
+     * @exports Test1
      * @classdesc Message
      * with
      * a
      * comment.
      * @constructor
      * @param {ITest1=} [properties] Properties to set
-     * @name Test1
      */
     function Test1(properties) {
         if (properties)
@@ -140,7 +139,7 @@ $root.Test1 = (function() {
     /**
      * Verifies a Test1 message.
      * @param {Object.<string,*>} message Plain object to verify
-     * @returns {?string} `null` if valid, otherwise the reason why it is not
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
      */
     Test1.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
@@ -215,14 +214,14 @@ $root.Test2 = (function() {
     /**
      * Properties of a Test2.
      * @interface ITest2
-     * @name ITest2
      */
 
     /**
      * Constructs a new Test2.
+     * @exports Test2
+     * @classdesc Represents a Test2
      * @constructor
      * @param {ITest2=} [properties] Properties to set
-     * @name Test2
      */
     function Test2(properties) {
         if (properties)
@@ -301,7 +300,7 @@ $root.Test2 = (function() {
     /**
      * Verifies a Test2 message.
      * @param {Object.<string,*>} message Plain object to verify
-     * @returns {?string} `null` if valid, otherwise the reason why it is not
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
      */
     Test2.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
@@ -343,18 +342,18 @@ $root.Test2 = (function() {
 
 /**
  * Test3 enum.
- * @name Test3
- * @enum {number}
- * @name Test3
+ * @enum {number} Test3
  * @property {number} ONE=1 Value with a comment.
  * @property {number} TWO=2 TWO value
- * @property {number} THREE=3 Value with a comment.
+ * @property {number} THREE=3 Preferred value with a comment.
+ * @property {number} FOUR=4 Other value with a comment.
  */
 $root.Test3 = (function() {
     var valuesById = {}, values = Object.create(valuesById);
     values[valuesById[1] = "ONE"] = 1;
     values[valuesById[2] = "TWO"] = 2;
     values[valuesById[3] = "THREE"] = 3;
+    values[valuesById[4] = "FOUR"] = 4;
     return values;
 })();
 
