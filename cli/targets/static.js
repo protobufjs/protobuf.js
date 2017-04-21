@@ -613,7 +613,7 @@ function buildService(ref, service) {
             push("");
         pushComment([
             method.comment || "Calls " + method.name + ".",
-            "@function " + escapeName(service.name) + "#" + lcName,
+            "@function " + escapeName(service.toString().split(" ")[1].substr(1)) + "#" + lcName,
             "@param {" + exportName(method.resolvedRequestType, !config.forceMessage) + "} request " + method.resolvedRequestType.name + " message or plain object",
             "@returns {Promise<" + exportName(method.resolvedResponseType) + ">} Promise",
             "@variation 2"
