@@ -161,7 +161,7 @@ $root.jspb = (function() {
 
         /**
          * OuterEnum enum.
-         * @enum {number} jspb.test.OuterEnum
+         * @enum {number}
          * @property {number} FOO=1 FOO value
          * @property {number} BAR=2 BAR value
          */
@@ -3088,7 +3088,7 @@ $root.jspb = (function() {
 
             /**
              * Enum enum.
-             * @enum {number} jspb.test.DefaultValues.Enum
+             * @enum {number}
              * @property {number} E1=13 E1 value
              * @property {number} E2=77 E2 value
              */
@@ -6465,7 +6465,7 @@ $root.jspb = (function() {
 
         /**
          * MapValueEnumNoBinary enum.
-         * @enum {number} jspb.test.MapValueEnumNoBinary
+         * @enum {number}
          * @property {number} MAP_VALUE_FOO_NOBINARY=0 MAP_VALUE_FOO_NOBINARY value
          * @property {number} MAP_VALUE_BAR_NOBINARY=1 MAP_VALUE_BAR_NOBINARY value
          * @property {number} MAP_VALUE_BAZ_NOBINARY=2 MAP_VALUE_BAZ_NOBINARY value
@@ -9107,7 +9107,7 @@ $root.google = (function() {
 
             /**
              * Type enum.
-             * @enum {number} google.protobuf.FieldDescriptorProto.Type
+             * @enum {number}
              * @property {number} TYPE_DOUBLE=1 TYPE_DOUBLE value
              * @property {number} TYPE_FLOAT=2 TYPE_FLOAT value
              * @property {number} TYPE_INT64=3 TYPE_INT64 value
@@ -9152,7 +9152,7 @@ $root.google = (function() {
 
             /**
              * Label enum.
-             * @enum {number} google.protobuf.FieldDescriptorProto.Label
+             * @enum {number}
              * @property {number} LABEL_OPTIONAL=1 LABEL_OPTIONAL value
              * @property {number} LABEL_REQUIRED=2 LABEL_REQUIRED value
              * @property {number} LABEL_REPEATED=3 LABEL_REPEATED value
@@ -10744,7 +10744,7 @@ $root.google = (function() {
 
             /**
              * OptimizeMode enum.
-             * @enum {number} google.protobuf.FileOptions.OptimizeMode
+             * @enum {number}
              * @property {number} SPEED=1 SPEED value
              * @property {number} CODE_SIZE=2 CODE_SIZE value
              * @property {number} LITE_RUNTIME=3 LITE_RUNTIME value
@@ -11355,7 +11355,7 @@ $root.google = (function() {
 
             /**
              * CType enum.
-             * @enum {number} google.protobuf.FieldOptions.CType
+             * @enum {number}
              * @property {number} STRING=0 STRING value
              * @property {number} CORD=1 CORD value
              * @property {number} STRING_PIECE=2 STRING_PIECE value
@@ -11370,7 +11370,7 @@ $root.google = (function() {
 
             /**
              * JSType enum.
-             * @enum {number} google.protobuf.FieldOptions.JSType
+             * @enum {number}
              * @property {number} JS_NORMAL=0 JS_NORMAL value
              * @property {number} JS_STRING=1 JS_STRING value
              * @property {number} JS_NUMBER=2 JS_NUMBER value
@@ -12439,7 +12439,7 @@ $root.google = (function() {
 
             /**
              * IdempotencyLevel enum.
-             * @enum {number} google.protobuf.MethodOptions.IdempotencyLevel
+             * @enum {number}
              * @property {number} IDEMPOTENCY_UNKNOWN=0 IDEMPOTENCY_UNKNOWN value
              * @property {number} NO_SIDE_EFFECTS=1 NO_SIDE_EFFECTS value
              * @property {number} IDEMPOTENT=2 IDEMPOTENT value

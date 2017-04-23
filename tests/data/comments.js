@@ -344,7 +344,8 @@ $root.Test2 = (function() {
 
 /**
  * Test3 enum.
- * @enum {number} Test3
+ * @exports Test3
+ * @enum {number}
  * @property {number} ONE=1 Value with a comment.
  * @property {number} TWO=2 TWO value
  * @property {number} THREE=3 Preferred value with a comment.

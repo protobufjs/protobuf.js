@@ -10,22 +10,6 @@ export function common(name: string, json: { [k: string]: any }): void;
 
 export namespace common {
 
-    /**
-     * Gets the root definition of the specified common proto file.
-     *
-     * Bundled definitions are:
-     * - google/protobuf/any.proto
-     * - google/protobuf/duration.proto
-     * - google/protobuf/empty.proto
-     * - google/protobuf/struct.proto
-     * - google/protobuf/timestamp.proto
-     * - google/protobuf/wrappers.proto
-     *
-     * @param file Proto file name
-     * @returns Root definition or `null` if not defined
-     */
-    function get(file: string): (INamespace|null);
-
     /** Properties of a google.protobuf.Any message. */
     interface IAny {
         typeUrl?: string;
@@ -113,6 +97,22 @@ export namespace common {
     interface IBytesValue {
         value?: Uint8Array;
     }
+
+    /**
+     * Gets the root definition of the specified common proto file.
+     *
+     * Bundled definitions are:
+     * - google/protobuf/any.proto
+     * - google/protobuf/duration.proto
+     * - google/protobuf/empty.proto
+     * - google/protobuf/struct.proto
+     * - google/protobuf/timestamp.proto
+     * - google/protobuf/wrappers.proto
+     *
+     * @param file Proto file name
+     * @returns Root definition or `null` if not defined
+     */
+    function get(file: string): (INamespace|null);
 }
 
 /** Runtime message from/to plain object converters. */
@@ -1450,10 +1450,10 @@ export class Type extends NamespaceBase {
 
     /**
      * Generates a constructor function for the specified type.
-     * @param type Type
+     * @param mtype Message type
      * @returns Codegen instance
      */
-    public static generateConstructor(type: Type): Codegen;
+    public static generateConstructor(mtype: Type): Codegen;
 
     /**
      * Creates a message type from a message type descriptor.
@@ -2123,23 +2123,12 @@ export namespace util {
     }
 
     /**
-     * A closure for generating functions programmatically.
-     * @param params Function parameter names
-     * @returns Codegen instance
+     * Begins generating a function.
+     * @param [functionParams] Function parameter names
+     * @param [functionName] Function name if not anonymous
+     * @returns Appender that appends code to the function's body
      */
-    function codegen(...params: string[]): Codegen;
-
-    namespace codegen {
-
-        /** Whether code generation is supported by the environment. */
-        let supported: boolean;
-
-        /** When set to true, codegen will log generated code to console. Useful for debugging. */
-        let verbose: boolean;
-
-        /** Underlying sprintf implementation */
-        let sprintf: Function;
-    }
+    function codegen(functionParams?: string[], functionName?: string): Codegen;
 
     /** A minimal event emitter. */
     class EventEmitter {
@@ -2567,12 +2556,12 @@ export class BufferWriter extends Writer {
 type asPromiseCallback = (error: (Error|null), ...params: any[]) => void;
 
 /**
- * A codegen instance as returned by {@link codegen}, that also is a sprintf-like appender function.
- * @param format Format string
- * @param args Replacements
- * @returns Itself
+ * Appends code to the function's body or finishes generation.
+ * @param [formatStringOrScope] Format string or, to finish the function, an object of additional scope variables, if any
+ * @param [formatParams] Format parameters
+ * @returns Itself or the generated function if finished
  */
-type Codegen = (format: string, ...args: any[]) => Codegen;
+type Codegen = (formatStringOrScope?: (string|{ [k: string]: any }), ...formatParams: any[]) => (Codegen|Function);
 
 /**
  * Event listener as used by {@link util.EventEmitter}.

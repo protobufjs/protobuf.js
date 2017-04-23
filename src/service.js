@@ -151,11 +151,11 @@ Service.prototype.remove = function remove(object) {
  */
 Service.prototype.create = function create(rpcImpl, requestDelimited, responseDelimited) {
     var rpcService = new rpc.Service(rpcImpl, requestDelimited, responseDelimited);
-    for (var i = 0; i < /* initializes */ this.methodsArray.length; ++i) {
-        rpcService[util.lcFirst(this._methodsArray[i].resolve().name)] = util.codegen("r","c")("return this.rpcCall(m,q,s,r,c)").eof(util.lcFirst(this._methodsArray[i].name), {
-            m: this._methodsArray[i],
-            q: this._methodsArray[i].resolvedRequestType.ctor,
-            s: this._methodsArray[i].resolvedResponseType.ctor
+    for (var i = 0, method; i < /* initializes */ this.methodsArray.length; ++i) {
+        rpcService[util.lcFirst((method = this._methodsArray[i]).resolve().name)] = util.codegen(["r","c"], util.lcFirst(method.name))("return this.rpcCall(m,q,s,r,c)")({
+            m: method,
+            q: method.resolvedRequestType.ctor,
+            s: method.resolvedResponseType.ctor
         });
     }
     return rpcService;

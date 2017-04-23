@@ -195,7 +195,7 @@ $root.vector_tile = (function() {
 
         /**
          * GeomType enum.
-         * @enum {number} vector_tile.Tile.GeomType
+         * @enum {number}
          * @property {number} UNKNOWN=0 UNKNOWN value
          * @property {number} POINT=1 POINT value
          * @property {number} LINESTRING=2 LINESTRING value

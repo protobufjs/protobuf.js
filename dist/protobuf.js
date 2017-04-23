@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.8.0 (c) 2016, daniel wirtz
- * compiled thu, 20 apr 2017 13:25:15 utc
+ * compiled sun, 23 apr 2017 12:49:51 utc
  * licensed under the bsd-3-clause license
  * see: https://github.com/dcodeio/protobuf.js for details
  */
@@ -212,146 +212,70 @@ base64.test = function test(string) {
 "use strict";
 module.exports = codegen;
 
-var blockOpenRe  = /[{[]$/,
-    blockCloseRe = /^[}\]]/,
-    casingRe     = /:$/,
-    branchRe     = /^\s*(?:if|}?else if|while|for)\b|\b(?:else)\s*$/,
-    breakRe      = /\b(?:break|continue)(?: \w+)?;?$|^\s*return\b/;
+codegen.verbose = false;
 
 /**
- * A closure for generating functions programmatically.
+ * Begins generating a function.
  * @memberof util
- * @namespace
- * @function
- * @param {...string} params Function parameter names
- * @returns {Codegen} Codegen instance
- * @property {boolean} supported Whether code generation is supported by the environment.
- * @property {boolean} verbose=false When set to true, codegen will log generated code to console. Useful for debugging.
- * @property {function(string, ...*):string} sprintf Underlying sprintf implementation
+ * @param {string[]} [functionParams] Function parameter names
+ * @param {string} [functionName] Function name if not anonymous
+ * @returns {Codegen} Appender that appends code to the function's body
+ * @property {boolean} verbose=false When set to `true`, codegen will log generated code to console. Useful for debugging.
  */
-function codegen() {
-    var params = [],
-        src    = [],
-        indent = 1,
-        inCase = false;
-    for (var i = 0; i < arguments.length;)
-        params.push(arguments[i++]);
+function codegen(functionParams, functionName) {
+
+    /* istanbul ignore if */
+    if (typeof functionParams === "string") {
+        functionName = functionParams;
+        functionParams = undefined;
+    }
+
+    var body = [];
 
     /**
-     * A codegen instance as returned by {@link codegen}, that also is a sprintf-like appender function.
+     * Appends code to the function's body or finishes generation.
      * @typedef Codegen
      * @type {function}
-     * @param {string} format Format string
-     * @param {...*} args Replacements
-     * @returns {Codegen} Itself
-     * @property {function(string=):string} str Stringifies the so far generated function source.
-     * @property {function(string=, Object=):function} eof Ends generation and builds the function whilst applying a scope.
+     * @param {string|Object.<string,*>} [formatStringOrScope] Format string or, to finish the function, an object of additional scope variables, if any
+     * @param {...*} [formatParams] Format parameters
+     * @returns {Codegen|Function} Itself or the generated function if finished
      */
-    /**/
-    function gen() {
-        var args = [],
-            i = 0;
-        for (; i < arguments.length;)
-            args.push(arguments[i++]);
-        var line = sprintf.apply(null, args);
-        var level = indent;
-        if (src.length) {
-            var prev = src[src.length - 1];
 
-            // block open or one time branch
-            if (blockOpenRe.test(prev))
-                level = ++indent; // keep
-            else if (branchRe.test(prev))
-                ++level; // once
-
-            // casing
-            if (casingRe.test(prev) && !casingRe.test(line)) {
-                level = ++indent;
-                inCase = true;
-            } else if (inCase && breakRe.test(prev)) {
-                level = --indent;
-                inCase = false;
-            }
-
-            // block close
-            if (blockCloseRe.test(line))
-                level = --indent;
+    function codegen(formatStringOrScope) {
+        if (typeof formatStringOrScope !== "string") {
+            var scopeParams = [],
+                scopeValues = [];
+            if (formatStringOrScope)
+                for (var i = 0, keys = Object.keys(formatStringOrScope); i < keys.length; ++i) {
+                    scopeParams.push(keys[i]);
+                    scopeValues.push(formatStringOrScope[keys[i]]);
+                }
+            var source = codegen.toString();
+            if (codegen.verbose)
+                console.log("codegen: " + source); // eslint-disable-line no-console
+            return Function.apply(null, scopeParams.concat("return " + source)).apply(null, scopeValues);
         }
-        for (i = 0; i < level; ++i)
-            line = "\t" + line;
-        src.push(line);
-        return gen;
+        var formatParams = Array.prototype.slice.call(arguments, 1),
+            formatParamsIndex = 0;
+        formatStringOrScope = formatStringOrScope.replace(/%([dfjs])/g, function($0, $1) {
+            var value = formatParams[formatParamsIndex++];
+            return $1 === "d" ? Math.floor(value)
+                 : $1 === "f" ? Number(value)
+                 : $1 === "j" ? JSON.stringify(value)
+                 : value;
+        });
+        if (formatParamsIndex !== formatParams.length)
+            throw Error("parameter count mismatch");
+        body.push(formatStringOrScope);
+        return codegen;
     }
 
-    /**
-     * Stringifies the so far generated function source.
-     * @param {string} [name] Function name, defaults to generate an anonymous function
-     * @returns {string} Function source using tabs for indentation
-     * @inner
-     */
-    function str(name) {
-        return "function" + (name ? " " + name.replace(/[^\w_$]/g, "_") : "") + "(" + params.join(",") + ") {\n" + src.join("\n") + "\n}";
-    }
+    codegen.toString = function(functionNameOverride) {
+        return "function " + (functionNameOverride || functionName || "") + "(" + (functionParams && functionParams.join(",") || "") + "){\n  " + body.join("\n  ") + "\n}";
+    };
 
-    gen.str = str;
-
-    /**
-     * Ends generation and builds the function whilst applying a scope.
-     * @param {string} [name] Function name, defaults to generate an anonymous function
-     * @param {Object.<string,*>} [scope] Function scope
-     * @returns {function} The generated function, with scope applied if specified
-     * @inner
-     */
-    function eof(name, scope) {
-        if (typeof name === "object") {
-            scope = name;
-            name = undefined;
-        }
-        var source = gen.str(name);
-        if (codegen.verbose)
-            console.log("--- codegen ---\n" + source.replace(/^/mg, "> ").replace(/\t/g, "  ")); // eslint-disable-line no-console
-        var keys = Object.keys(scope || (scope = {}));
-        return Function.apply(null, keys.concat("return " + source)).apply(null, keys.map(function(key) { return scope[key]; })); // eslint-disable-line no-new-func
-        //     ^ Creates a wrapper function with the scoped variable names as its parameters,
-        //       calls it with the respective scoped variable values ^
-        //       and returns our brand-new properly scoped function.
-        //
-        // This works because "Invoking the Function constructor as a function (without using the
-        // new operator) has the same effect as invoking it as a constructor."
-        // https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/Function
-    }
-
-    gen.eof = eof;
-
-    return gen;
+    return codegen;
 }
-
-function sprintf(format) {
-    var args = [],
-        i = 1;
-    for (; i < arguments.length;)
-        args.push(arguments[i++]);
-    i = 0;
-    format = format.replace(/%([dfjs])/g, function($0, $1) {
-        switch ($1) {
-            case "d":
-                return Math.floor(args[i++]);
-            case "f":
-                return Number(args[i++]);
-            case "j":
-                return JSON.stringify(args[i++]);
-            default:
-                return args[i++];
-        }
-    });
-    if (i !== args.length)
-        throw Error("argument count mismatch");
-    return format;
-}
-
-codegen.sprintf   = sprintf;
-codegen.supported = false; try { codegen.supported = codegen("a","b")("return a-b").eof()(2,1) === 1; } catch (e) {} // eslint-disable-line no-empty
-codegen.verbose   = false;
 
 },{}],4:[function(require,module,exports){
 "use strict";
@@ -1132,6 +1056,8 @@ utf8.write = function utf8_write(string, buffer, offset) {
 "use strict";
 module.exports = common;
 
+var commonRe = /\/|\./;
+
 /**
  * Provides common type definitions.
  * Can also be used to provide additional google types or your own custom types.
@@ -1158,28 +1084,6 @@ function common(name, json) {
     }
     common[name] = json;
 }
-
-/**
- * Gets the root definition of the specified common proto file.
- *
- * Bundled definitions are:
- * - google/protobuf/any.proto
- * - google/protobuf/duration.proto
- * - google/protobuf/empty.proto
- * - google/protobuf/struct.proto
- * - google/protobuf/timestamp.proto
- * - google/protobuf/wrappers.proto
- *
- * @name common.get
- * @function
- * @param {string} file Proto file name
- * @returns {INamespace|null} Root definition or `null` if not defined
- */
-common.get = function get(file) {
-    return common[file] || null;
-};
-
-var commonRe = /\/|\./;
 
 // Not provided because of limited use (feel free to discuss or to provide yourself):
 //
@@ -1510,6 +1414,24 @@ common("wrappers", {
     }
 });
 
+/**
+ * Gets the root definition of the specified common proto file.
+ *
+ * Bundled definitions are:
+ * - google/protobuf/any.proto
+ * - google/protobuf/duration.proto
+ * - google/protobuf/empty.proto
+ * - google/protobuf/struct.proto
+ * - google/protobuf/timestamp.proto
+ * - google/protobuf/wrappers.proto
+ *
+ * @param {string} file Proto file name
+ * @returns {INamespace|null} Root definition or `null` if not defined
+ */
+common.get = function get(file) {
+    return common[file] || null;
+};
+
 },{}],12:[function(require,module,exports){
 "use strict";
 /**
@@ -1610,7 +1532,7 @@ function genValuePartial_fromObject(gen, field, fieldIndex, prop) {
 converter.fromObject = function fromObject(mtype) {
     /* eslint-disable no-unexpected-multiline, block-scoped-var, no-redeclare */
     var fields = mtype.fieldsArray;
-    var gen = util.codegen("d")
+    var gen = util.codegen(["d"], mtype.name + "$fromObject")
     ("if(d instanceof this.ctor)")
         ("return d");
     if (!fields.length) return gen
@@ -1713,7 +1635,7 @@ converter.toObject = function toObject(mtype) {
     var fields = mtype.fieldsArray.slice().sort(util.compareFieldsById);
     if (!fields.length)
         return util.codegen()("return {}");
-    var gen = util.codegen("m", "o")
+    var gen = util.codegen(["m", "o"], mtype.name + "$toObject")
     ("if(!o)")
         ("o={}")
     ("var d={}");
@@ -1818,7 +1740,7 @@ function missing(field) {
  */
 function decoder(mtype) {
     /* eslint-disable no-unexpected-multiline */
-    var gen = util.codegen("r", "l")
+    var gen = util.codegen(["r", "l"], mtype.name + "$decode")
     ("if(!(r instanceof Reader))")
         ("r=Reader.create(r)")
     ("var c=l===undefined?r.len:r.pos+l,m=new this.ctor" + (mtype.fieldsArray.filter(function(field) { return field.map; }).length ? ",k" : ""))
@@ -1937,7 +1859,7 @@ function genTypePartial(gen, field, fieldIndex, ref) {
  */
 function encoder(mtype) {
     /* eslint-disable no-unexpected-multiline, block-scoped-var, no-redeclare */
-    var gen = util.codegen("m", "w")
+    var gen = util.codegen(["m", "w"], mtype.name + "$encode")
     ("if(!w)")
         ("w=Writer.create()");
 
@@ -5270,6 +5192,7 @@ Root.prototype.load = function load(filename, options, callback) {
 
 /**
  * Loads one or multiple .proto or preprocessed .json files into this root namespace and calls the callback.
+ * @function Root#load
  * @param {string|string[]} filename Names of one or multiple files to load
  * @param {LoadCallback} callback Callback function
  * @returns {undefined}
@@ -5279,8 +5202,7 @@ Root.prototype.load = function load(filename, options, callback) {
 
 /**
  * Loads one or multiple .proto or preprocessed .json files into this root namespace and returns a promise.
- * @name Root#load
- * @function
+ * @function Root#load
  * @param {string|string[]} filename Names of one or multiple files to load
  * @param {IParseOptions} [options] Parse options. Defaults to {@link parse.defaults} when omitted.
  * @returns {Promise<Root>} Promise
@@ -5290,8 +5212,7 @@ Root.prototype.load = function load(filename, options, callback) {
 
 /**
  * Synchronously loads one or multiple .proto or preprocessed .json files into this root namespace (node only).
- * @name Root#loadSync
- * @function
+ * @function Root#loadSync
  * @param {string|string[]} filename Names of one or multiple files to load
  * @param {IParseOptions} [options] Parse options. Defaults to {@link parse.defaults} when omitted.
  * @returns {Root} Root namespace
@@ -5773,11 +5694,11 @@ Service.prototype.remove = function remove(object) {
  */
 Service.prototype.create = function create(rpcImpl, requestDelimited, responseDelimited) {
     var rpcService = new rpc.Service(rpcImpl, requestDelimited, responseDelimited);
-    for (var i = 0; i < /* initializes */ this.methodsArray.length; ++i) {
-        rpcService[util.lcFirst(this._methodsArray[i].resolve().name)] = util.codegen("r","c")("return this.rpcCall(m,q,s,r,c)").eof(util.lcFirst(this._methodsArray[i].name), {
-            m: this._methodsArray[i],
-            q: this._methodsArray[i].resolvedRequestType.ctor,
-            s: this._methodsArray[i].resolvedResponseType.ctor
+    for (var i = 0, method; i < /* initializes */ this.methodsArray.length; ++i) {
+        rpcService[util.lcFirst((method = this._methodsArray[i]).resolve().name)] = util.codegen(["r","c"], util.lcFirst(method.name))("return this.rpcCall(m,q,s,r,c)")({
+            m: method,
+            q: method.resolvedRequestType.ctor,
+            s: method.resolvedResponseType.ctor
         });
     }
     return rpcService;
@@ -6267,7 +6188,7 @@ Object.defineProperties(Type.prototype, {
      */
     ctor: {
         get: function() {
-            return this._ctor || (this.ctor = Type.generateConstructor(this).eof(this.name));
+            return this._ctor || (this.ctor = Type.generateConstructor(this)());
         },
         set: function(ctor) {
 
@@ -6306,15 +6227,15 @@ Object.defineProperties(Type.prototype, {
 
 /**
  * Generates a constructor function for the specified type.
- * @param {Type} type Type
+ * @param {Type} mtype Message type
  * @returns {Codegen} Codegen instance
  */
-Type.generateConstructor = function generateConstructor(type) {
+Type.generateConstructor = function generateConstructor(mtype) {
     /* eslint-disable no-unexpected-multiline */
-    var gen = util.codegen("p");
+    var gen = util.codegen(["p"], mtype.name);
     // explicitly initialize mutable object/array fields so that these aren't just inherited from the prototype
-    for (var i = 0, field; i < type.fieldsArray.length; ++i)
-        if ((field = type._fieldsArray[i]).map) gen
+    for (var i = 0, field; i < mtype.fieldsArray.length; ++i)
+        if ((field = mtype._fieldsArray[i]).map) gen
             ("this%s={}", util.safeProp(field.name));
         else if (field.repeated) gen
             ("this%s=[]", util.safeProp(field.name));
@@ -6553,25 +6474,25 @@ Type.prototype.setup = function setup() {
         types.push(this._fieldsArray[i].resolve().resolvedType);
 
     // Replace setup methods with type-specific generated functions
-    this.encode = encoder(this).eof(fullName + "$encode", {
+    this.encode = encoder(this)({
         Writer : Writer,
         types  : types,
         util   : util
     });
-    this.decode = decoder(this).eof(fullName + "$decode", {
+    this.decode = decoder(this)({
         Reader : Reader,
         types  : types,
         util   : util
     });
-    this.verify = verifier(this).eof(fullName + "$verify", {
+    this.verify = verifier(this)({
         types : types,
         util  : util
     });
-    this.fromObject = converter.fromObject(this).eof(fullName + "$fromObject", {
+    this.fromObject = converter.fromObject(this)({
         types : types,
         util  : util
     });
-    this.toObject = converter.toObject(this).eof(fullName + "$toObject", {
+    this.toObject = converter.toObject(this)({
         types : types,
         util  : util
     });
@@ -7798,7 +7719,7 @@ function genVerifyKey(gen, field, ref) {
 function verifier(mtype) {
     /* eslint-disable no-unexpected-multiline */
 
-    var gen = util.codegen("m")
+    var gen = util.codegen(["m"], mtype.name + "$verify")
     ("if(typeof m!==\"object\"||m===null)")
         ("return%j", "object expected");
     var oneofs = mtype.oneofsArray,

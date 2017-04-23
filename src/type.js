@@ -152,7 +152,7 @@ Object.defineProperties(Type.prototype, {
      */
     ctor: {
         get: function() {
-            return this._ctor || (this.ctor = Type.generateConstructor(this).eof(this.name));
+            return this._ctor || (this.ctor = Type.generateConstructor(this)());
         },
         set: function(ctor) {
 
@@ -191,15 +191,15 @@ Object.defineProperties(Type.prototype, {
 
 /**
  * Generates a constructor function for the specified type.
- * @param {Type} type Type
+ * @param {Type} mtype Message type
  * @returns {Codegen} Codegen instance
  */
-Type.generateConstructor = function generateConstructor(type) {
+Type.generateConstructor = function generateConstructor(mtype) {
     /* eslint-disable no-unexpected-multiline */
-    var gen = util.codegen("p");
+    var gen = util.codegen(["p"], mtype.name);
     // explicitly initialize mutable object/array fields so that these aren't just inherited from the prototype
-    for (var i = 0, field; i < type.fieldsArray.length; ++i)
-        if ((field = type._fieldsArray[i]).map) gen
+    for (var i = 0, field; i < mtype.fieldsArray.length; ++i)
+        if ((field = mtype._fieldsArray[i]).map) gen
             ("this%s={}", util.safeProp(field.name));
         else if (field.repeated) gen
             ("this%s=[]", util.safeProp(field.name));
@@ -438,25 +438,25 @@ Type.prototype.setup = function setup() {
         types.push(this._fieldsArray[i].resolve().resolvedType);
 
     // Replace setup methods with type-specific generated functions
-    this.encode = encoder(this).eof(fullName + "$encode", {
+    this.encode = encoder(this)({
         Writer : Writer,
         types  : types,
         util   : util
     });
-    this.decode = decoder(this).eof(fullName + "$decode", {
+    this.decode = decoder(this)({
         Reader : Reader,
         types  : types,
         util   : util
     });
-    this.verify = verifier(this).eof(fullName + "$verify", {
+    this.verify = verifier(this)({
         types : types,
         util  : util
     });
-    this.fromObject = converter.fromObject(this).eof(fullName + "$fromObject", {
+    this.fromObject = converter.fromObject(this)({
         types : types,
         util  : util
     });
-    this.toObject = converter.toObject(this).eof(fullName + "$toObject", {
+    this.toObject = converter.toObject(this)({
         types : types,
         util  : util
     });

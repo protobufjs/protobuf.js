@@ -224,7 +224,7 @@ var renameVars = {
 };
 
 function buildFunction(type, functionName, gen, scope) {
-    var code = gen.str(functionName)
+    var code = gen.toString(functionName)
         .replace(/((?!\.)types\[\d+])(\.values)/g, "$1"); // enums: use types[N] instead of reflected types[N].values
 
     var ast = espree.parse(code);
@@ -635,7 +635,8 @@ function buildEnum(ref, enm) {
     push("");
     var comment = [
         enm.comment || enm.name + " enum.",
-        "@enum {number} " + exportName(enm)
+        enm.parent instanceof protobuf.Root ? "@exports " + escapeName(enm.name) : undefined,
+        "@enum {number}",
     ];
     Object.keys(enm.values).forEach(function(key) {
         var val = enm.values[key];

@@ -292,7 +292,7 @@ function getTypeOf(element) {
     });
 
     // Replace functions (there are no signatures) with Function
-    name = name.replace(/\bfunction(?:\(\))?([^\w]|$)/g, "Function");
+    name = name.replace(/\bfunction(?:\(\))?\b/g, "Function");
 
     // Convert plain Object back to just object
     name = name.replace(/\b(Object(?!\.))/g, function($0, $1) {

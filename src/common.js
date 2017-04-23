@@ -1,6 +1,8 @@
 "use strict";
 module.exports = common;
 
+var commonRe = /\/|\./;
+
 /**
  * Provides common type definitions.
  * Can also be used to provide additional google types or your own custom types.
@@ -27,28 +29,6 @@ function common(name, json) {
     }
     common[name] = json;
 }
-
-/**
- * Gets the root definition of the specified common proto file.
- *
- * Bundled definitions are:
- * - google/protobuf/any.proto
- * - google/protobuf/duration.proto
- * - google/protobuf/empty.proto
- * - google/protobuf/struct.proto
- * - google/protobuf/timestamp.proto
- * - google/protobuf/wrappers.proto
- *
- * @name common.get
- * @function
- * @param {string} file Proto file name
- * @returns {INamespace|null} Root definition or `null` if not defined
- */
-common.get = function get(file) {
-    return common[file] || null;
-};
-
-var commonRe = /\/|\./;
 
 // Not provided because of limited use (feel free to discuss or to provide yourself):
 //
@@ -378,3 +358,21 @@ common("wrappers", {
         }
     }
 });
+
+/**
+ * Gets the root definition of the specified common proto file.
+ *
+ * Bundled definitions are:
+ * - google/protobuf/any.proto
+ * - google/protobuf/duration.proto
+ * - google/protobuf/empty.proto
+ * - google/protobuf/struct.proto
+ * - google/protobuf/timestamp.proto
+ * - google/protobuf/wrappers.proto
+ *
+ * @param {string} file Proto file name
+ * @returns {INamespace|null} Root definition or `null` if not defined
+ */
+common.get = function get(file) {
+    return common[file] || null;
+};

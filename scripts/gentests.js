@@ -41,7 +41,13 @@ var fs   = require("fs"),
     });
 });
 
+process.stdout.write("\n");
+
 [
+    { file: "tests/data/comments.js" },
+    { file: "tests/data/convert.js" },
+    { file: "tests/data/mapbox/vector_tile.js" },
+    { file: "tests/data/package.js" },
     { file: "tests/data/rpc.js" },
     { file: "tests/data/test.js" },
     { file: "ext/descriptor/index.js", ext: true }

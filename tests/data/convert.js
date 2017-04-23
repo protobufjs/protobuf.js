@@ -498,7 +498,7 @@ $root.Message = (function() {
 
     /**
      * SomeEnum enum.
-     * @enum {number} Message.SomeEnum
+     * @enum {number}
      * @property {number} ONE=1 ONE value
      * @property {number} TWO=2 TWO value
      */
