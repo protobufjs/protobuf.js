@@ -25,12 +25,12 @@ function genVerifyValue(gen, field, fieldIndex, ref) {
                 ("default:")
                     ("return%j", invalid(field, "enum value"));
             for (var keys = Object.keys(field.resolvedType.values), j = 0; j < keys.length; ++j) gen
-                ("case %d:", field.resolvedType.values[keys[j]]);
+                ("case %i:", field.resolvedType.values[keys[j]]);
             gen
                     ("break")
             ("}");
         } else gen
-            ("var e=types[%d].verify(%s);", fieldIndex, ref)
+            ("var e=types[%i].verify(%s);", fieldIndex, ref)
             ("if(e)")
                 ("return%j+e", field.name + ".");
     } else {

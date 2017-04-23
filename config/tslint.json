@@ -14,6 +14,7 @@
         "object-literal-sort-keys": false,
         "no-string-literal": false,
         "prefer-const": false,
+        "adjacent-overload-signatures": false,
         "ban-types": [
             true,
             ["Object", "Avoid using the `Object` type. Did you mean `object`?"],

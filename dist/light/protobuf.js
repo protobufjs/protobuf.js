@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.8.0 (c) 2016, daniel wirtz
- * compiled sun, 23 apr 2017 12:49:51 utc
+ * compiled sun, 23 apr 2017 22:24:22 utc
  * licensed under the bsd-3-clause license
  * see: https://github.com/dcodeio/protobuf.js for details
  */
@@ -212,15 +212,12 @@ base64.test = function test(string) {
 "use strict";
 module.exports = codegen;
 
-codegen.verbose = false;
-
 /**
  * Begins generating a function.
  * @memberof util
- * @param {string[]} [functionParams] Function parameter names
+ * @param {string[]} functionParams Function parameter names
  * @param {string} [functionName] Function name if not anonymous
  * @returns {Codegen} Appender that appends code to the function's body
- * @property {boolean} verbose=false When set to `true`, codegen will log generated code to console. Useful for debugging.
  */
 function codegen(functionParams, functionName) {
 
@@ -239,43 +236,79 @@ function codegen(functionParams, functionName) {
      * @param {string|Object.<string,*>} [formatStringOrScope] Format string or, to finish the function, an object of additional scope variables, if any
      * @param {...*} [formatParams] Format parameters
      * @returns {Codegen|Function} Itself or the generated function if finished
+     * @throws {Error} If format parameter counts do not match
      */
 
-    function codegen(formatStringOrScope) {
+    function Codegen(formatStringOrScope) {
+        // note that explicit array handling below makes this ~50% faster
+
+        // finish the function
         if (typeof formatStringOrScope !== "string") {
-            var scopeParams = [],
-                scopeValues = [];
-            if (formatStringOrScope)
-                for (var i = 0, keys = Object.keys(formatStringOrScope); i < keys.length; ++i) {
-                    scopeParams.push(keys[i]);
-                    scopeValues.push(formatStringOrScope[keys[i]]);
-                }
-            var source = codegen.toString();
+            var source = toString();
             if (codegen.verbose)
                 console.log("codegen: " + source); // eslint-disable-line no-console
-            return Function.apply(null, scopeParams.concat("return " + source)).apply(null, scopeValues);
+            source = "return " + source;
+            if (formatStringOrScope) {
+                var scopeKeys   = Object.keys(formatStringOrScope),
+                    scopeParams = new Array(scopeKeys.length + 1),
+                    scopeValues = new Array(scopeKeys.length),
+                    scopeOffset = 0;
+                while (scopeOffset < scopeKeys.length) {
+                    scopeParams[scopeOffset] = scopeKeys[scopeOffset];
+                    scopeValues[scopeOffset] = formatStringOrScope[scopeKeys[scopeOffset++]];
+                }
+                scopeParams[scopeOffset] = source;
+                return Function.apply(null, scopeParams)
+                               .apply(null, scopeValues);
+            }
+            return Function(source)();
         }
-        var formatParams = Array.prototype.slice.call(arguments, 1),
-            formatParamsIndex = 0;
-        formatStringOrScope = formatStringOrScope.replace(/%([dfjs])/g, function($0, $1) {
-            var value = formatParams[formatParamsIndex++];
-            return $1 === "d" ? Math.floor(value)
-                 : $1 === "f" ? Number(value)
-                 : $1 === "j" ? JSON.stringify(value)
-                 : value;
+
+        // otherwise append to body
+        var formatParams = new Array(arguments.length - 1),
+            formatOffset = 0;
+        while (formatOffset < formatParams.length)
+            formatParams[formatOffset] = arguments[++formatOffset];
+        formatOffset = 0;
+        formatStringOrScope = formatStringOrScope.replace(/%([%dfijs])/g, function replace($0, $1) {
+            var value = formatParams[formatOffset++];
+            switch ($1) {
+                case "d": case "f": return String(Number(value));
+                case "i": return String(Math.floor(value));
+                case "j": return JSON.stringify(value);
+                case "s": return String(value);
+            }
+            return "%";
         });
-        if (formatParamsIndex !== formatParams.length)
+        if (formatOffset !== formatParams.length)
             throw Error("parameter count mismatch");
         body.push(formatStringOrScope);
-        return codegen;
+        return Codegen;
     }
 
-    codegen.toString = function(functionNameOverride) {
+    function toString(functionNameOverride) {
         return "function " + (functionNameOverride || functionName || "") + "(" + (functionParams && functionParams.join(",") || "") + "){\n  " + body.join("\n  ") + "\n}";
     };
 
-    return codegen;
+    Codegen.toString = toString;
+    return Codegen;
 }
+
+/**
+ * Begins generating a function.
+ * @memberof util
+ * @function codegen
+ * @param {string} [functionName] Function name if not anonymous
+ * @returns {Codegen} Appender that appends code to the function's body
+ * @variation 2
+ */
+
+/**
+ * When set to `true`, codegen will log generated code to console. Useful for debugging.
+ * @name util.codegen.verbose
+ * @type {boolean}
+ */
+codegen.verbose = false;
 
 },{}],4:[function(require,module,exports){
 "use strict";
@@ -1090,7 +1123,7 @@ function genValuePartial_fromObject(gen, field, fieldIndex, prop) {
         } else gen
             ("if(typeof d%s!==\"object\")", prop)
                 ("throw TypeError(%j)", field.fullName + ": object expected")
-            ("m%s=types[%d].fromObject(d%s)", prop, fieldIndex, prop);
+            ("m%s=types[%i].fromObject(d%s)", prop, fieldIndex, prop);
     } else {
         var isUnsigned = false;
         switch (field.type) {
@@ -1211,9 +1244,9 @@ function genValuePartial_toObject(gen, field, fieldIndex, prop) {
     /* eslint-disable no-unexpected-multiline, block-scoped-var, no-redeclare */
     if (field.resolvedType) {
         if (field.resolvedType instanceof Enum) gen
-            ("d%s=o.enums===String?types[%d].values[m%s]:m%s", prop, fieldIndex, prop, prop);
+            ("d%s=o.enums===String?types[%i].values[m%s]:m%s", prop, fieldIndex, prop, prop);
         else gen
-            ("d%s=types[%d].toObject(m%s,o)", prop, fieldIndex, prop);
+            ("d%s=types[%i].toObject(m%s,o)", prop, fieldIndex, prop);
     } else {
         var isUnsigned = false;
         switch (field.type) {
@@ -1295,10 +1328,10 @@ converter.toObject = function toObject(mtype) {
         ("d%s=o.enums===String?%j:%j", prop, field.resolvedType.valuesById[field.typeDefault], field.typeDefault);
             else if (field.long) gen
         ("if(util.Long){")
-            ("var n=new util.Long(%d,%d,%j)", field.typeDefault.low, field.typeDefault.high, field.typeDefault.unsigned)
+            ("var n=new util.Long(%i,%i,%j)", field.typeDefault.low, field.typeDefault.high, field.typeDefault.unsigned)
             ("d%s=o.longs===String?n.toString():o.longs===Number?n.toNumber():n", prop)
         ("}else")
-            ("d%s=o.longs===String?%j:%d", prop, field.typeDefault.toString(), field.typeDefault.toNumber());
+            ("d%s=o.longs===String?%j:%i", prop, field.typeDefault.toString(), field.typeDefault.toNumber());
             else if (field.bytes) gen
         ("d%s=o.bytes===String?%j:%s", prop, String.fromCharCode.apply(String, field.typeDefault), "[" + Array.prototype.slice.call(field.typeDefault).join(",") + "]");
             else gen
@@ -1377,7 +1410,7 @@ function decoder(mtype) {
         var field = mtype._fieldsArray[i].resolve(),
             type  = field.resolvedType instanceof Enum ? "int32" : field.type,
             ref   = "m" + util.safeProp(field.name); gen
-            ("case %d:", field.id);
+            ("case %i:", field.id);
 
         // Map fields
         if (field.map) { gen
@@ -1388,12 +1421,12 @@ function decoder(mtype) {
                 ("r.pos++"); // assumes id 2 + value wireType
             if (types.long[field.keyType] !== undefined) {
                 if (types.basic[type] === undefined) gen
-                ("%s[typeof k===\"object\"?util.longToHash(k):k]=types[%d].decode(r,r.uint32())", ref, i); // can't be groups
+                ("%s[typeof k===\"object\"?util.longToHash(k):k]=types[%i].decode(r,r.uint32())", ref, i); // can't be groups
                 else gen
                 ("%s[typeof k===\"object\"?util.longToHash(k):k]=r.%s()", ref, type);
             } else {
                 if (types.basic[type] === undefined) gen
-                ("%s[k]=types[%d].decode(r,r.uint32())", ref, i); // can't be groups
+                ("%s[k]=types[%i].decode(r,r.uint32())", ref, i); // can't be groups
                 else gen
                 ("%s[k]=r.%s()", ref, type);
             }
@@ -1414,15 +1447,15 @@ function decoder(mtype) {
 
             // Non-packed
             if (types.basic[type] === undefined) gen(field.resolvedType.group
-                    ? "%s.push(types[%d].decode(r))"
-                    : "%s.push(types[%d].decode(r,r.uint32()))", ref, i);
+                    ? "%s.push(types[%i].decode(r))"
+                    : "%s.push(types[%i].decode(r,r.uint32()))", ref, i);
             else gen
                     ("%s.push(r.%s())", ref, type);
 
         // Non-repeated
         } else if (types.basic[type] === undefined) gen(field.resolvedType.group
-                ? "%s=types[%d].decode(r)"
-                : "%s=types[%d].decode(r,r.uint32())", ref, i);
+                ? "%s=types[%i].decode(r)"
+                : "%s=types[%i].decode(r,r.uint32())", ref, i);
         else gen
                 ("%s=r.%s()", ref, type);
         gen
@@ -1468,8 +1501,8 @@ var Enum     = require(14),
  */
 function genTypePartial(gen, field, fieldIndex, ref) {
     return field.resolvedType.group
-        ? gen("types[%d].encode(%s,w.uint32(%d)).uint32(%d)", fieldIndex, ref, (field.id << 3 | 3) >>> 0, (field.id << 3 | 4) >>> 0)
-        : gen("types[%d].encode(%s,w.uint32(%d).fork()).ldelim()", fieldIndex, ref, (field.id << 3 | 2) >>> 0);
+        ? gen("types[%i].encode(%s,w.uint32(%i)).uint32(%i)", fieldIndex, ref, (field.id << 3 | 3) >>> 0, (field.id << 3 | 4) >>> 0)
+        : gen("types[%i].encode(%s,w.uint32(%i).fork()).ldelim()", fieldIndex, ref, (field.id << 3 | 2) >>> 0);
 }
 
 /**
@@ -1500,11 +1533,11 @@ function encoder(mtype) {
             gen
     ("if(%s!=null&&m.hasOwnProperty(%j)){", ref, field.name) // !== undefined && !== null
         ("for(var ks=Object.keys(%s),i=0;i<ks.length;++i){", ref)
-            ("w.uint32(%d).fork().uint32(%d).%s(ks[i])", (field.id << 3 | 2) >>> 0, 8 | types.mapKey[field.keyType], field.keyType);
+            ("w.uint32(%i).fork().uint32(%i).%s(ks[i])", (field.id << 3 | 2) >>> 0, 8 | types.mapKey[field.keyType], field.keyType);
             if (wireType === undefined) gen
-            ("types[%d].encode(%s[ks[i]],w.uint32(18).fork()).ldelim().ldelim()", index, ref); // can't be groups
+            ("types[%i].encode(%s[ks[i]],w.uint32(18).fork()).ldelim().ldelim()", index, ref); // can't be groups
             else gen
-            (".uint32(%d).%s(%s[ks[i]]).ldelim()", 16 | wireType, type, ref);
+            (".uint32(%i).%s(%s[ks[i]]).ldelim()", 16 | wireType, type, ref);
             gen
         ("}")
     ("}");
@@ -1516,7 +1549,7 @@ function encoder(mtype) {
             // Packed repeated
             if (field.packed && types.packed[type] !== undefined) { gen
 
-        ("w.uint32(%d).fork()", (field.id << 3 | 2) >>> 0)
+        ("w.uint32(%i).fork()", (field.id << 3 | 2) >>> 0)
         ("for(var i=0;i<%s.length;++i)", ref)
             ("w.%s(%s[i])", type, ref)
         ("w.ldelim()");
@@ -1528,7 +1561,7 @@ function encoder(mtype) {
                 if (wireType === undefined)
             genTypePartial(gen, field, index, ref + "[i]");
                 else gen
-            ("w.uint32(%d).%s(%s[i])", (field.id << 3 | wireType) >>> 0, type, ref);
+            ("w.uint32(%i).%s(%s[i])", (field.id << 3 | wireType) >>> 0, type, ref);
 
             } gen
     ("}");
@@ -1541,7 +1574,7 @@ function encoder(mtype) {
             if (wireType === undefined)
         genTypePartial(gen, field, index, ref);
             else gen
-        ("w.uint32(%d).%s(%s)", (field.id << 3 | wireType) >>> 0, type, ref);
+        ("w.uint32(%i).%s(%s)", (field.id << 3 | wireType) >>> 0, type, ref);
 
         }
     }
@@ -6162,12 +6195,12 @@ function genVerifyValue(gen, field, fieldIndex, ref) {
                 ("default:")
                     ("return%j", invalid(field, "enum value"));
             for (var keys = Object.keys(field.resolvedType.values), j = 0; j < keys.length; ++j) gen
-                ("case %d:", field.resolvedType.values[keys[j]]);
+                ("case %i:", field.resolvedType.values[keys[j]]);
             gen
                     ("break")
             ("}");
         } else gen
-            ("var e=types[%d].verify(%s);", fieldIndex, ref)
+            ("var e=types[%i].verify(%s);", fieldIndex, ref)
             ("if(e)")
                 ("return%j+e", field.name + ".");
     } else {

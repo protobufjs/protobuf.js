@@ -16,8 +16,8 @@ var Enum     = require("./enum"),
  */
 function genTypePartial(gen, field, fieldIndex, ref) {
     return field.resolvedType.group
-        ? gen("types[%d].encode(%s,w.uint32(%d)).uint32(%d)", fieldIndex, ref, (field.id << 3 | 3) >>> 0, (field.id << 3 | 4) >>> 0)
-        : gen("types[%d].encode(%s,w.uint32(%d).fork()).ldelim()", fieldIndex, ref, (field.id << 3 | 2) >>> 0);
+        ? gen("types[%i].encode(%s,w.uint32(%i)).uint32(%i)", fieldIndex, ref, (field.id << 3 | 3) >>> 0, (field.id << 3 | 4) >>> 0)
+        : gen("types[%i].encode(%s,w.uint32(%i).fork()).ldelim()", fieldIndex, ref, (field.id << 3 | 2) >>> 0);
 }
 
 /**
@@ -48,11 +48,11 @@ function encoder(mtype) {
             gen
     ("if(%s!=null&&m.hasOwnProperty(%j)){", ref, field.name) // !== undefined && !== null
         ("for(var ks=Object.keys(%s),i=0;i<ks.length;++i){", ref)
-            ("w.uint32(%d).fork().uint32(%d).%s(ks[i])", (field.id << 3 | 2) >>> 0, 8 | types.mapKey[field.keyType], field.keyType);
+            ("w.uint32(%i).fork().uint32(%i).%s(ks[i])", (field.id << 3 | 2) >>> 0, 8 | types.mapKey[field.keyType], field.keyType);
             if (wireType === undefined) gen
-            ("types[%d].encode(%s[ks[i]],w.uint32(18).fork()).ldelim().ldelim()", index, ref); // can't be groups
+            ("types[%i].encode(%s[ks[i]],w.uint32(18).fork()).ldelim().ldelim()", index, ref); // can't be groups
             else gen
-            (".uint32(%d).%s(%s[ks[i]]).ldelim()", 16 | wireType, type, ref);
+            (".uint32(%i).%s(%s[ks[i]]).ldelim()", 16 | wireType, type, ref);
             gen
         ("}")
     ("}");
@@ -64,7 +64,7 @@ function encoder(mtype) {
             // Packed repeated
             if (field.packed && types.packed[type] !== undefined) { gen
 
-        ("w.uint32(%d).fork()", (field.id << 3 | 2) >>> 0)
+        ("w.uint32(%i).fork()", (field.id << 3 | 2) >>> 0)
         ("for(var i=0;i<%s.length;++i)", ref)
             ("w.%s(%s[i])", type, ref)
         ("w.ldelim()");
@@ -76,7 +76,7 @@ function encoder(mtype) {
                 if (wireType === undefined)
             genTypePartial(gen, field, index, ref + "[i]");
                 else gen
-            ("w.uint32(%d).%s(%s[i])", (field.id << 3 | wireType) >>> 0, type, ref);
+            ("w.uint32(%i).%s(%s[i])", (field.id << 3 | wireType) >>> 0, type, ref);
 
             } gen
     ("}");
@@ -89,7 +89,7 @@ function encoder(mtype) {
             if (wireType === undefined)
         genTypePartial(gen, field, index, ref);
             else gen
-        ("w.uint32(%d).%s(%s)", (field.id << 3 | wireType) >>> 0, type, ref);
+        ("w.uint32(%i).%s(%s)", (field.id << 3 | wireType) >>> 0, type, ref);
 
         }
     }
