@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.8.0 (c) 2016, daniel wirtz
- * compiled sun, 23 apr 2017 22:24:22 utc
+ * compiled mon, 24 apr 2017 10:39:10 utc
  * licensed under the bsd-3-clause license
  * see: https://github.com/dcodeio/protobuf.js for details
  */
@@ -40,34 +40,46 @@
 module.exports = asPromise;
 
 /**
+ * Callback as used by {@link util.asPromise}.
+ * @typedef asPromiseCallback
+ * @type {function}
+ * @param {Error|null} error Error, if any
+ * @param {...*} params Additional arguments
+ * @returns {undefined}
+ */
+
+/**
  * Returns a promise from a node-style callback function.
  * @memberof util
- * @param {function(?Error, ...*)} fn Function to call
+ * @param {asPromiseCallback} fn Function to call
  * @param {*} ctx Function context
  * @param {...*} params Function arguments
  * @returns {Promise<*>} Promisified function
  */
 function asPromise(fn, ctx/*, varargs */) {
-    var params = [];
-    for (var i = 2; i < arguments.length;)
-        params.push(arguments[i++]);
-    var pending = true;
-    return new Promise(function asPromiseExecutor(resolve, reject) {
-        params.push(function asPromiseCallback(err/*, varargs */) {
+    var params  = new Array(arguments.length - 1),
+        offset  = 0,
+        index   = 2,
+        pending = true;
+    while (index < arguments.length)
+        params[offset++] = arguments[index++];
+    return new Promise(function executor(resolve, reject) {
+        params[offset] = function callback(err/*, varargs */) {
             if (pending) {
                 pending = false;
                 if (err)
                     reject(err);
                 else {
-                    var args = [];
-                    for (var i = 1; i < arguments.length;)
-                        args.push(arguments[i++]);
-                    resolve.apply(null, args);
+                    var params = new Array(arguments.length - 1),
+                        offset = 0;
+                    while (offset < params.length)
+                        params[offset++] = arguments[offset];
+                    resolve.apply(null, params);
                 }
             }
-        });
+        };
         try {
-            fn.apply(ctx || this, params); // eslint-disable-line no-invalid-this
+            fn.apply(ctx || null, params);
         } catch (err) {
             if (pending) {
                 pending = false;
