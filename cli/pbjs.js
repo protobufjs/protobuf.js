@@ -97,6 +97,7 @@ exports.main = function main(args, callback) {
                 "                   commonjs  CommonJS wrapper",
                 "                   amd       AMD wrapper",
                 "                   es6       ES6 wrapper (implies --es6)",
+                "                   closure   Just a closure adding to protobuf.roots (see -r)",
                 "",
                 "  -r, --root       Specifies an alternative protobuf.roots name.",
                 "",

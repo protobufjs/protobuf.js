@@ -178,9 +178,10 @@ OneOf.prototype.onRemove = function onRemove(parent) {
  * @template T extends string
  */
 OneOf.d = function decorateOneOf() {
-    var fieldNames = [];
-    for (var i = 0; i < arguments.length; ++i)
-        fieldNames.push(arguments[i]);
+    var fieldNames = new Array(arguments.length),
+        index = 0;
+    while (index < arguments.length)
+        fieldNames[index] = arguments[index++];
     return function oneOfDecorator(prototype, oneofName) {
         util.decorateType(prototype.constructor)
             .add(new OneOf(oneofName, fieldNames));

@@ -27,11 +27,15 @@ util.fs = util.inquire("fs");
  * @returns {Array.<*>} Converted array
  */
 util.toArray = function toArray(object) {
-    var array = [];
-    if (object)
-        for (var keys = Object.keys(object), i = 0; i < keys.length; ++i)
-            array.push(object[keys[i]]);
-    return array;
+    if (object) {
+        var keys  = Object.keys(object),
+            array = new Array(keys.length),
+            index = 0;
+        while (index < keys.length)
+            array[index] = object[keys[index++]];
+        return array;
+    }
+    return [];
 };
 
 /**
@@ -40,10 +44,11 @@ util.toArray = function toArray(object) {
  * @returns {Object.<string,*>} Converted object
  */
 util.toObject = function toObject(array) {
-    var object = {};
-    for (var i = 0; i < array.length; i += 2) {
-        var key = array[i    ],
-            val = array[i + 1];
+    var object = {},
+        index  = 0;
+    while (index < array.length) {
+        var key = array[index++],
+            val = array[index++];
         if (val !== undefined)
             object[key] = val;
     }
