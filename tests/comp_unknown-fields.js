@@ -22,8 +22,6 @@ tape.test("unknown fields", function (test) {
     var s2 = Simple_v2.create({ name: "v2", flags: 2, value: "dummy" });
     var s1 = Simple_v1.decode(Simple_v2.encode(s2).finish());
 
-    debugger;
-
     var restored = Simple_v2.decode(Simple_v1.encode(s1).finish());
 
     test.equal(s2.name, restored.name, "assert: even known fields are missing");

@@ -86,8 +86,7 @@ function decoder(mtype) {
     // Unknown fields
     } gen
             ("default:")
-                ("m[\"_unknownFields\"]=m[\"_unknownFields\"]||{};")
-                ("m[\"_unknownFields\"][t]=r.read_type_bytes(t&7)")
+                ("m[\"__unknownFields\"]=r.read_type_bytes(t,m[\"__unknownFields\"])")
                 //("r.skipType(t&7)")
                 ("break")
 

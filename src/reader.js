@@ -379,66 +379,37 @@ Reader.prototype.skipType = function(wireType) {
 
 /**
  * Returns the next element of the specified wire type as bytes
- * @param {number} wireType Wire type received
- * @param {Uint8Array} _out existing array output for subtypes, undefined otherwise
+ * @param {number} id_wireType field id and wire type
+ * @param {Uint8Array} append previously encountered unknown fields, if any
  * @returns {Uint8Array} value read
  */
-Reader.prototype.read_type_bytes = function (wireType, _out) {
-    //var length;
+Reader.prototype.read_type_bytes = function (id_wireType, append) {
+    var start = this.pos;
+    this.skipType(id_wireType & 7);
+    while (--start >= 0)  // roll id_wireType back
+        if ((this.buf[start] & 128) == 0)
+            break;
 
-    //switch (wireType) {
-    //    case 0:
-    //        length = -1;
-    //        break;
-    //    case 1:
-    //        length = 8;
-    //        break;
-    //    case 2:
-    //        length = this.uint32();
-    //        break;
-    //    case 3:
-    //        do { // eslint-disable-line no-constant-condition
-    //            if ((wireType = this.uint32() & 7) === 4)
-    //                break;
-    //            this.skipType(wireType);
-    //        } while (true);
-    //        break;
-    //    case 5:
-    //        length = 4;
-    //        break;
+    var skipped;
 
-    //        /* istanbul ignore next */
-    //    default:
-    //        throw Error("invalid wire type " + wireType + " at offset " + this.pos);
-    //}
-
-    //var length = this.uint32(),
-    //    start = this.pos,
-    //    end = this.pos + length;
-
-    ///* istanbul ignore if */
-    //if (end > this.len)
-    //    throw indexOutOfRange(this, length);
-
-    //this.pos += length;
-    //if (Array.isArray(this.buf)) // plain array
-    //    return this.buf.slice(start, end);
-    //return start === end // fix for IE 10/Win8 and others' subarray returning array of size 1
-    //    ? new this.buf.constructor(0)
-    //    : this._slice.call(this.buf, start, end);
-    console.log("would like to read type", wireType);
-
-    var rv;
-
-    if (Array.isArray(this.buf)) // plain array
-        rv = this.buf.slice(this.pos, this.pos);
-    else
-        rv = (this.pos === this.pos
+    if (Array.isArray(this.buf)) { // plain array
+        skipped = this.buf.slice(start, this.pos);
+        if (append)
+            skipped = append.concat(skipped);
+    }
+    else {
+        skipped = (start === this.pos
             ? new this.buf.constructor(0)
-            : this._slice.call(this.buf, this.pos, this.pos));
+            : this._slice.call(this.buf, start, this.pos));
+        if (append) {
+            var merged = new this.buf.constructor(skipped.length + append.length);
+            merged.set(append);
+            merged.set(append.length, skipped);
+            skipped = merged;
+        }
+    }
 
-    this.skipType(wireType);
-    return rv;
+    return skipped;
 };
 
 Reader._configure = function (BufferReader_) {
