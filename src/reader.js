@@ -385,10 +385,12 @@ Reader.prototype.skipType = function(wireType) {
  */
 Reader.prototype.read_type_bytes = function (id_wireType, append) {
     var start = this.pos;
+    do {  // roll id_wireType back
+        --start;
+        this.pos = start;
+    } while (this.uint32() != id_wireType);
+
     this.skipType(id_wireType & 7);
-    while (--start >= 0)  // roll id_wireType back
-        if ((this.buf[start] & 128) == 0)
-            break;
 
     var skipped;
 
