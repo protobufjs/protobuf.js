@@ -39,7 +39,7 @@ tape.test("discarded unknown fields", function (test) {
     var s1 = Simple_v1.decode(Simple_v2.encode(s2).finish());
 
     try {
-        s1.discardUnknownFields();
+        Simple_v1.discardUnknownFields(s1);
     }
     catch (ex) {
         test.end("discardUnknownFields() exception: " + ex);
@@ -48,6 +48,6 @@ tape.test("discarded unknown fields", function (test) {
 
     var restored = Simple_v2.decode(Simple_v1.encode(s1).finish());
 
-    test.equal(undefined, restored.flags, "are removed from the message");
+    test.equal(0, restored.flags, "are removed from the message");
     test.end();
 });
