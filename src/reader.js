@@ -377,7 +377,71 @@ Reader.prototype.skipType = function(wireType) {
     return this;
 };
 
-Reader._configure = function(BufferReader_) {
+/**
+ * Returns the next element of the specified wire type as bytes
+ * @param {number} wireType Wire type received
+ * @param {Uint8Array} _out existing array output for subtypes, undefined otherwise
+ * @returns {Uint8Array} value read
+ */
+Reader.prototype.read_type_bytes = function (wireType, _out) {
+    //var length;
+
+    //switch (wireType) {
+    //    case 0:
+    //        length = -1;
+    //        break;
+    //    case 1:
+    //        length = 8;
+    //        break;
+    //    case 2:
+    //        length = this.uint32();
+    //        break;
+    //    case 3:
+    //        do { // eslint-disable-line no-constant-condition
+    //            if ((wireType = this.uint32() & 7) === 4)
+    //                break;
+    //            this.skipType(wireType);
+    //        } while (true);
+    //        break;
+    //    case 5:
+    //        length = 4;
+    //        break;
+
+    //        /* istanbul ignore next */
+    //    default:
+    //        throw Error("invalid wire type " + wireType + " at offset " + this.pos);
+    //}
+
+    //var length = this.uint32(),
+    //    start = this.pos,
+    //    end = this.pos + length;
+
+    ///* istanbul ignore if */
+    //if (end > this.len)
+    //    throw indexOutOfRange(this, length);
+
+    //this.pos += length;
+    //if (Array.isArray(this.buf)) // plain array
+    //    return this.buf.slice(start, end);
+    //return start === end // fix for IE 10/Win8 and others' subarray returning array of size 1
+    //    ? new this.buf.constructor(0)
+    //    : this._slice.call(this.buf, start, end);
+    console.log("would like to read type", wireType);
+
+    var rv;
+
+    if (Array.isArray(this.buf)) // plain array
+        rv = this.buf.slice(this.pos, this.pos);
+    else
+        rv = (this.pos === this.pos
+            ? new this.buf.constructor(0)
+            : this._slice.call(this.buf, this.pos, this.pos));
+
+    this.skipType(wireType);
+    return rv;
+};
+
+Reader._configure = function (BufferReader_) {
     BufferReader = BufferReader_;
 
     var fn = util.Long ? "toLong" : /* istanbul ignore next */ "toNumber";
