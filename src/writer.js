@@ -352,12 +352,8 @@ Writer.prototype.double = function write_double(value) {
     return this._push(util.float.writeDoubleLE, 8, value);
 };
 
-var writeBytes = util.Array.prototype.set
-    ? function writeBytes_set(val, buf, pos) {
-        buf.set(val, pos); // also works for plain array values
-    }
-    /* istanbul ignore next */
-    : function writeBytes_for(val, buf, pos) {
+/* istanbul ignore next */
+var writeBytes = function writeBytes_for(val, buf, pos) {
         for (var i = 0; i < val.length; ++i)
             buf[pos + i] = val[i];
     };

@@ -405,8 +405,10 @@ Reader.prototype.rawBytes = function read_raw_bytes(id_wireType, append) {
             : this._slice.call(this.buf, start, this.pos);
         if (append) {
             var merged = new this.buf.constructor(skipped.length + append.length);
-            merged.set(append);
-            merged.set(skipped, append.length);
+            for (var i = 0; i < append.length; ++i)
+                merged[i] = append[i];
+            for (var j = 0; j < skipped.length; ++j)
+                merged[j + append.length] = skipped[j];
             skipped = merged;
         }
     }
