@@ -530,7 +530,7 @@ Type.prototype.decodeDelimited = function decodeDelimited(reader) {
  */
 Type.prototype.discardUnknownFields = function discardUnknownFields(message) {
     delete message["__unknownFields"];
-}
+};
 
 /**
  * Verifies that field values are valid and that required fields are present.

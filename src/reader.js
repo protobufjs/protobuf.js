@@ -388,7 +388,7 @@ Reader.prototype.rawBytes = function read_raw_bytes(id_wireType, append) {
     do {  // roll id_wireType back
         --start;
         this.pos = start;
-    } while (this.uint32() != id_wireType);
+    } while (this.uint32() !== id_wireType);
 
     this.skipType(id_wireType & 7);
 
@@ -400,9 +400,9 @@ Reader.prototype.rawBytes = function read_raw_bytes(id_wireType, append) {
             skipped = append.concat(skipped);
     }
     else {
-        skipped = (start === this.pos
+        skipped = start === this.pos
             ? new this.buf.constructor(0)
-            : this._slice.call(this.buf, start, this.pos));
+            : this._slice.call(this.buf, start, this.pos);
         if (append) {
             var merged = new this.buf.constructor(skipped.length + append.length);
             merged.set(append);
