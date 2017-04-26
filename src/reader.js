@@ -394,15 +394,14 @@ Reader.prototype.rawBytes = function read_raw_bytes(id_wireType, append) {
 
     var skipped;
 
+    /* istanbul ignore if */
     if (Array.isArray(this.buf)) { // plain array
         skipped = this.buf.slice(start, this.pos);
         if (append)
             skipped = append.concat(skipped);
     }
     else {
-        skipped = start === this.pos
-            ? new this.buf.constructor(0)
-            : this._slice.call(this.buf, start, this.pos);
+        skipped = this._slice.call(this.buf, start, this.pos);
         if (append) {
             var merged = new this.buf.constructor(skipped.length + append.length);
             for (var i = 0; i < append.length; ++i)
