@@ -406,7 +406,7 @@ Reader.prototype.read_type_bytes = function (id_wireType, append) {
         if (append) {
             var merged = new this.buf.constructor(skipped.length + append.length);
             merged.set(append);
-            merged.set(append.length, skipped);
+            merged.set(skipped, append.length);
             skipped = merged;
         }
     }
