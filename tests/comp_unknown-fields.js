@@ -102,3 +102,26 @@ tape.test("nested unknown fields", function (test) {
     test.end();
 });
 
+tape.test("multibyte-id unknown fields", function (test) {
+    var proto = "message Simple_v1 {\
+      optional string knownName  = 1;\
+      optional string knownValue = 3;\
+    }\
+    message Simple_v2 {\
+      optional string knownName  = 1;\
+      optional int32  unknownFlags = 296;\
+      optional string knownValue = 3;\
+    }";
+
+    var root = protobuf.parse(proto).root,
+        Simple_v1 = root.lookup("Simple_v1");
+        Simple_v2 = root.lookup("Simple_v2");
+
+    var s2 = Simple_v2.create({ knownName: "v2", unknownFlags: 2, knownValue: "dummy", unknownOptions: 3 });
+    var s1 = Simple_v1.decode(Simple_v2.encode(s2).finish());
+
+    var restored = Simple_v2.decode(Simple_v1.encode(s1).finish());
+
+    test.equal(2, restored.unknownFlags, "are preserved by default");
+    test.end();
+});
