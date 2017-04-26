@@ -96,7 +96,7 @@ function encoder(mtype) {
 
     // unkown fields
     gen("if(m[\"__unknownFields\"])")
-        ("w.raw_bytes(m[\"__unknownFields\"]);");
+        ("w.rawBytes(m[\"__unknownFields\"]);");
 
     return gen
     ("return w");

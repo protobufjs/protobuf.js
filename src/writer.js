@@ -384,7 +384,7 @@ Writer.prototype.bytes = function write_bytes(value) {
  * @param {Uint8Array} value bytes to add
  * @returns {Writer} `this`
  */
-Writer.prototype.raw_bytes = function write_raw_bytes(value) {
+Writer.prototype.rawBytes = function write_raw_bytes(value) {
     return this._push(writeBytes, value.length, value);
 };
 

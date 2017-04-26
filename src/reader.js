@@ -383,7 +383,7 @@ Reader.prototype.skipType = function(wireType) {
  * @param {Uint8Array} append previously encountered unknown fields, if any
  * @returns {Uint8Array} value read
  */
-Reader.prototype.read_type_bytes = function (id_wireType, append) {
+Reader.prototype.rawBytes = function read_raw_bytes(id_wireType, append) {
     var start = this.pos;
     do {  // roll id_wireType back
         --start;
