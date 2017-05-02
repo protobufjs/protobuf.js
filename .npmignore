@@ -8,5 +8,6 @@ docs/
 coverage/
 sandbox/
 examples/
+tests/
 pbjs.png
 pbjs.svg
