@@ -505,7 +505,7 @@ function buildType(ref, type) {
             ++indent;
                 push("if (!(reader instanceof $Reader))");
                 ++indent;
-                    push("reader = $Reader(reader);");
+                    push("reader = new $Reader(reader);");
                 --indent;
                 push("return this.decode(reader, reader.uint32());");
             --indent;
