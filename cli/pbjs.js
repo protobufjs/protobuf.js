@@ -23,7 +23,6 @@ exports.main = function main(args, callback) {
     var lintDefault = "eslint-disable block-scoped-var, no-redeclare, no-control-regex, no-prototype-builtins";
     var argv = minimist(args, {
         alias: {
-            constructor: "ct",
             target: "t",
             out: "o",
             path: "p",
@@ -38,7 +37,6 @@ exports.main = function main(args, callback) {
         boolean: [ "constructor", "create", "encode", "decode", "verify", "convert", "delimited", "beautify", "comments", "es6", "sparse", "keep-case", "force-long", "force-number", "force-enum-string", "force-message" ],
         default: {
             target: "json",
-            constructor: true,
             create: true,
             encode: true,
             decode: true,
