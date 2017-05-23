@@ -47,7 +47,7 @@ wrappers[".google.protobuf.Any"] = {
             if (type)
                 return this.create({
                     type_url: object["@type"],
-                    value: type.encode(object).finish()
+                    value: type.encode(type.fromObject(object)).finish()
                 });
         }
 
