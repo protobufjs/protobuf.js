@@ -115,7 +115,6 @@ exports.main = function main(args, callback) {
                 "",
                 chalk.bold.gray("   Static targets only:"),
                 "",
-                "  --no-constructor Does not generate constructor.",
                 "  --no-create      Does not generate create functions used for reflection compatibility.",
                 "  --no-encode      Does not generate encode functions.",
                 "  --no-decode      Does not generate decode functions.",
