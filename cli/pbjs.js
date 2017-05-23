@@ -23,6 +23,7 @@ exports.main = function main(args, callback) {
     var lintDefault = "eslint-disable block-scoped-var, no-redeclare, no-control-regex, no-prototype-builtins";
     var argv = minimist(args, {
         alias: {
+            constructor: "ct",
             target: "t",
             out: "o",
             path: "p",
@@ -34,9 +35,10 @@ exports.main = function main(args, callback) {
             "force-message": "strict-message"
         },
         string: [ "target", "out", "path", "wrap", "root", "lint" ],
-        boolean: [ "create", "encode", "decode", "verify", "convert", "delimited", "beautify", "comments", "es6", "sparse", "keep-case", "force-long", "force-message" ],
+        boolean: [ "constructor", "create", "encode", "decode", "verify", "convert", "delimited", "beautify", "comments", "es6", "sparse", "keep-case", "force-long", "force-number", "force-enum-string", "force-message" ],
         default: {
             target: "json",
+            constructor: true,
             create: true,
             encode: true,
             decode: true,
@@ -49,6 +51,8 @@ exports.main = function main(args, callback) {
             lint: lintDefault,
             "keep-case": false,
             "force-long": false,
+            "force-number": false,
+            "force-enum-string": false,
             "force-message": false
         }
     });
@@ -113,6 +117,7 @@ exports.main = function main(args, callback) {
                 "",
                 chalk.bold.gray("   Static targets only:"),
                 "",
+                "  --no-constructor Does not generate constructor.",
                 "  --no-create      Does not generate create functions used for reflection compatibility.",
                 "  --no-encode      Does not generate encode functions.",
                 "  --no-decode      Does not generate decode functions.",
@@ -123,6 +128,7 @@ exports.main = function main(args, callback) {
                 "  --no-comments    Does not output any JSDoc comments.",
                 "",
                 "  --force-long     Enfores the use of 'Long' for s-/u-/int64 and s-/fixed64 fields.",
+                "  --force-number   Enfores the use of 'number' for s-/u-/int64 and s-/fixed64 fields.",
                 "  --force-message  Enfores the use of message instances instead of plain objects.",
                 "",
                 "usage: " + chalk.bold.green("pbjs") + " [options] file1.proto file2.json ..." + chalk.gray("  (or)  ") + "other | " + chalk.bold.green("pbjs") + " [options] -",
