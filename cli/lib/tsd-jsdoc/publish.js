@@ -575,7 +575,7 @@ function handleMember(element, parent) {
 
     if (element.isEnum) {
         var stringEnum = false;
-        element.properties.forEach(function(property, i) {
+        element.properties.forEach(function(property) {
             if (isNaN(property.defaultvalue)) {
                 stringEnum = true;
             }

@@ -329,7 +329,7 @@ function toJsType(field) {
         case "sint64":
         case "fixed64":
         case "sfixed64":
-            type = config.forceLong ? "Long" : (config.forceNumber ? "number" : "number|Long");
+            type = config.forceLong ? "Long" : config.forceNumber ? "number" : "number|Long";
             break;
         case "bool":
             type = "boolean";
@@ -637,7 +637,7 @@ function buildEnum(ref, enm) {
     var comment = [
         enm.comment || enm.name + " enum.",
         enm.parent instanceof protobuf.Root ? "@exports " + escapeName(enm.name) : undefined,
-        (config.forceEnumString ? "@enum {number}" : "@enum {string}"),
+        config.forceEnumString ? "@enum {number}" : "@enum {string}",
     ];
     Object.keys(enm.values).forEach(function(key) {
         var val = config.forceEnumString ? key : enm.values[key];
