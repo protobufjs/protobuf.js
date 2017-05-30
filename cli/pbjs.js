@@ -33,7 +33,7 @@ exports.main = function main(args, callback) {
             "force-long": "strict-long",
             "force-message": "strict-message"
         },
-        string: [ "target", "out", "path", "wrap", "root", "lint" ],
+        string: [ "target", "out", "path", "wrap", "dependency", "root", "lint" ],
         boolean: [ "create", "encode", "decode", "verify", "convert", "delimited", "beautify", "comments", "es6", "sparse", "keep-case", "force-long", "force-number", "force-enum-string", "force-message" ],
         default: {
             target: "json",
@@ -100,6 +100,8 @@ exports.main = function main(args, callback) {
                 "                   amd       AMD wrapper",
                 "                   es6       ES6 wrapper (implies --es6)",
                 "                   closure   Just a closure adding to protobuf.roots (see -r)",
+                "",
+                "  --dependency     Specifies which version of protobuf to require. Accepts any valid module id",
                 "",
                 "  -r, --root       Specifies an alternative protobuf.roots name.",
                 "",
