@@ -313,6 +313,7 @@ function buildFunction(type, functionName, gen, scope) {
 
 function toJsType(field) {
     var type;
+
     switch (field.type) {
         case "double":
         case "float":
@@ -328,7 +329,7 @@ function toJsType(field) {
         case "sint64":
         case "fixed64":
         case "sfixed64":
-            type = config.forceLong ? "Long" : "number|Long";
+            type = config.forceLong ? "Long" : config.forceNumber ? "number" : "number|Long";
             break;
         case "bool":
             type = "boolean";
@@ -636,11 +637,11 @@ function buildEnum(ref, enm) {
     var comment = [
         enm.comment || enm.name + " enum.",
         enm.parent instanceof protobuf.Root ? "@exports " + escapeName(enm.name) : undefined,
-        "@enum {number}",
+        config.forceEnumString ? "@enum {number}" : "@enum {string}",
     ];
     Object.keys(enm.values).forEach(function(key) {
-        var val = enm.values[key];
-        comment.push("@property {number} " + key + "=" + val + " " + (enm.comments[key] || key + " value"));
+        var val = config.forceEnumString ? key : enm.values[key];
+        comment.push((config.forceEnumString ? "@property {string} " : "@property {number} ") + key + "=" + val + " " + (enm.comments[key] || key + " value"));
     });
     pushComment(comment);
     push(escapeName(ref) + "." + escapeName(enm.name) + " = (function() {");
@@ -648,12 +649,13 @@ function buildEnum(ref, enm) {
         push((config.es6 ? "const" : "var") + " valuesById = {}, values = Object.create(valuesById);");
         var aliased = [];
         Object.keys(enm.values).forEach(function(key) {
-            var val = enm.values[key];
-            if (aliased.indexOf(val) > -1)
+            var valueId = enm.values[key];
+            var val = config.forceEnumString ? JSON.stringify(key) : valueId;
+            if (aliased.indexOf(valueId) > -1)
                 push("values[" + JSON.stringify(key) + "] = " + val + ";");
             else {
-                push("values[valuesById[" + val + "] = " + JSON.stringify(key) + "] = " + val + ";");
-                aliased.push(val);
+                push("values[valuesById[" + valueId + "] = " + JSON.stringify(key) + "] = " + val + ";");
+                aliased.push(valueId);
             }
         });
         push("return values;");
