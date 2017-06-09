@@ -27,6 +27,7 @@ export const MyService = $root.MyService = (() => {
 
     /**
      * Creates new MyService service using the specified rpc implementation.
+     * @function create
      * @memberof MyService
      * @static
      * @param {$protobuf.RPCImpl} rpcImpl RPC implementation
@@ -49,6 +50,7 @@ export const MyService = $root.MyService = (() => {
 
     /**
      * Calls MyMethod.
+     * @function .myMethod
      * @memberof MyService
      * @instance
      * @param {IMyRequest} request MyRequest message or plain object
@@ -98,14 +100,15 @@ export const MyRequest = $root.MyRequest = (() => {
 
     /**
      * MyRequest path.
+     * @member {string}path
      * @memberof MyRequest
      * @instance
-     * @type {string}
      */
     MyRequest.prototype.path = "";
 
     /**
      * Creates a new MyRequest instance using the specified properties.
+     * @function create
      * @memberof MyRequest
      * @static
      * @param {IMyRequest=} [properties] Properties to set
@@ -117,6 +120,7 @@ export const MyRequest = $root.MyRequest = (() => {
 
     /**
      * Encodes the specified MyRequest message. Does not implicitly {@link MyRequest.verify|verify} messages.
+     * @function encode
      * @memberof MyRequest
      * @static
      * @param {IMyRequest} message MyRequest message or plain object to encode
@@ -133,6 +137,7 @@ export const MyRequest = $root.MyRequest = (() => {
 
     /**
      * Encodes the specified MyRequest message, length delimited. Does not implicitly {@link MyRequest.verify|verify} messages.
+     * @function encodeDelimited
      * @memberof MyRequest
      * @static
      * @param {IMyRequest} message MyRequest message or plain object to encode
@@ -145,6 +150,7 @@ export const MyRequest = $root.MyRequest = (() => {
 
     /**
      * Decodes a MyRequest message from the specified reader or buffer.
+     * @function decode
      * @memberof MyRequest
      * @static
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -173,6 +179,7 @@ export const MyRequest = $root.MyRequest = (() => {
 
     /**
      * Decodes a MyRequest message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
      * @memberof MyRequest
      * @static
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -188,6 +195,7 @@ export const MyRequest = $root.MyRequest = (() => {
 
     /**
      * Verifies a MyRequest message.
+     * @function verify
      * @memberof MyRequest
      * @static
      * @param {Object.<string,*>} message Plain object to verify
@@ -204,6 +212,7 @@ export const MyRequest = $root.MyRequest = (() => {
 
     /**
      * Creates a MyRequest message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
      * @memberof MyRequest
      * @static
      * @param {Object.<string,*>} object Plain object
@@ -220,6 +229,7 @@ export const MyRequest = $root.MyRequest = (() => {
 
     /**
      * Creates a plain object from a MyRequest message. Also converts values to other types if specified.
+     * @function toObject
      * @memberof MyRequest
      * @static
      * @param {MyRequest} message MyRequest
@@ -239,6 +249,7 @@ export const MyRequest = $root.MyRequest = (() => {
 
     /**
      * Converts this MyRequest to JSON.
+     * @function toJSON
      * @memberof MyRequest
      * @instance
      * @returns {Object.<string,*>} JSON object
@@ -275,14 +286,15 @@ export const MyResponse = $root.MyResponse = (() => {
 
     /**
      * MyResponse status.
+     * @member {number}status
      * @memberof MyResponse
      * @instance
-     * @type {number}
      */
     MyResponse.prototype.status = 0;
 
     /**
      * Creates a new MyResponse instance using the specified properties.
+     * @function create
      * @memberof MyResponse
      * @static
      * @param {IMyResponse=} [properties] Properties to set
@@ -294,6 +306,7 @@ export const MyResponse = $root.MyResponse = (() => {
 
     /**
      * Encodes the specified MyResponse message. Does not implicitly {@link MyResponse.verify|verify} messages.
+     * @function encode
      * @memberof MyResponse
      * @static
      * @param {IMyResponse} message MyResponse message or plain object to encode
@@ -310,6 +323,7 @@ export const MyResponse = $root.MyResponse = (() => {
 
     /**
      * Encodes the specified MyResponse message, length delimited. Does not implicitly {@link MyResponse.verify|verify} messages.
+     * @function encodeDelimited
      * @memberof MyResponse
      * @static
      * @param {IMyResponse} message MyResponse message or plain object to encode
@@ -322,6 +336,7 @@ export const MyResponse = $root.MyResponse = (() => {
 
     /**
      * Decodes a MyResponse message from the specified reader or buffer.
+     * @function decode
      * @memberof MyResponse
      * @static
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -350,6 +365,7 @@ export const MyResponse = $root.MyResponse = (() => {
 
     /**
      * Decodes a MyResponse message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
      * @memberof MyResponse
      * @static
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -365,6 +381,7 @@ export const MyResponse = $root.MyResponse = (() => {
 
     /**
      * Verifies a MyResponse message.
+     * @function verify
      * @memberof MyResponse
      * @static
      * @param {Object.<string,*>} message Plain object to verify
@@ -381,6 +398,7 @@ export const MyResponse = $root.MyResponse = (() => {
 
     /**
      * Creates a MyResponse message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
      * @memberof MyResponse
      * @static
      * @param {Object.<string,*>} object Plain object
@@ -397,6 +415,7 @@ export const MyResponse = $root.MyResponse = (() => {
 
     /**
      * Creates a plain object from a MyResponse message. Also converts values to other types if specified.
+     * @function toObject
      * @memberof MyResponse
      * @static
      * @param {MyResponse} message MyResponse
@@ -416,6 +435,7 @@ export const MyResponse = $root.MyResponse = (() => {
 
     /**
      * Converts this MyResponse to JSON.
+     * @function toJSON
      * @memberof MyResponse
      * @instance
      * @returns {Object.<string,*>} JSON object

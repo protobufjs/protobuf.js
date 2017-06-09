@@ -394,9 +394,9 @@ function buildType(ref, type) {
                 jsType = "(" + jsType + "|null)";
             pushComment([
                 field.comment || type.name + " " + field.name + ".",
+                "@member {" + jsType + "}" + escapeName(field.name),
                 "@memberof " + exportName(type),
-                "@instance",
-                "@type {" + jsType + "}"
+                "@instance"
             ]);
         } else if (firstField) {
             push("");
@@ -432,10 +432,9 @@ function buildType(ref, type) {
         push("");
         pushComment([
             oneof.comment || type.name + " " + oneof.name + ".",
-            "@property " + escapeName(oneof.name),
+            "@member {string|undefined} " + escapeName(oneof.name),
             "@memberof " + exportName(type),
-            "@instance",
-            "@type {string|undefined}"
+            "@instance"
         ]);
         push("Object.defineProperty(" + escapeName(type.name) + ".prototype, " + JSON.stringify(oneof.name) +", {");
         ++indent;
@@ -449,6 +448,7 @@ function buildType(ref, type) {
         push("");
         pushComment([
             "Creates a new " + type.name + " instance using the specified properties.",
+            "@function create",
             "@memberof " + exportName(type),
             "@static",
             "@param {" + exportName(type, true) + "=} [properties] Properties to set",
@@ -465,6 +465,7 @@ function buildType(ref, type) {
         push("");
         pushComment([
             "Encodes the specified " + type.name + " message. Does not implicitly {@link " + exportName(type) + ".verify|verify} messages.",
+            "@function encode",
             "@memberof " + exportName(type),
             "@static",
             "@param {" + exportName(type, !config.forceMessage) + "} " + (config.beautify ? "message" : "m") + " " + type.name + " message or plain object to encode",
@@ -477,6 +478,7 @@ function buildType(ref, type) {
             push("");
             pushComment([
                 "Encodes the specified " + type.name + " message, length delimited. Does not implicitly {@link " + exportName(type) + ".verify|verify} messages.",
+                "@function encodeDelimited",
                 "@memberof " + exportName(type),
                 "@static",
                 "@param {" + exportName(type, !config.forceMessage) + "} message " + type.name + " message or plain object to encode",
@@ -495,6 +497,7 @@ function buildType(ref, type) {
         push("");
         pushComment([
             "Decodes " + aOrAn(type.name) + " message from the specified reader or buffer.",
+            "@function decode",
             "@memberof " + exportName(type),
             "@static",
             "@param {$protobuf.Reader|Uint8Array} " + (config.beautify ? "reader" : "r") + " Reader or buffer to decode from",
@@ -509,6 +512,7 @@ function buildType(ref, type) {
             push("");
             pushComment([
                 "Decodes " + aOrAn(type.name) + " message from the specified reader or buffer, length delimited.",
+                "@function decodeDelimited",
                 "@memberof " + exportName(type),
                 "@static",
                 "@param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from",
@@ -532,6 +536,7 @@ function buildType(ref, type) {
         push("");
         pushComment([
             "Verifies " + aOrAn(type.name) + " message.",
+            "@function verify",
             "@memberof " + exportName(type),
             "@static",
             "@param {Object.<string,*>} " + (config.beautify ? "message" : "m") + " Plain object to verify",
@@ -544,6 +549,7 @@ function buildType(ref, type) {
         push("");
         pushComment([
             "Creates " + aOrAn(type.name) + " message from a plain object. Also converts values to their respective internal types.",
+            "@function fromObject",
             "@memberof " + exportName(type),
             "@static",
             "@param {Object.<string,*>} " + (config.beautify ? "object" : "d") + " Plain object",
@@ -554,6 +560,7 @@ function buildType(ref, type) {
         push("");
         pushComment([
             "Creates a plain object from " + aOrAn(type.name) + " message. Also converts values to other types if specified.",
+            "@function toObject",
             "@memberof " + exportName(type),
             "@static",
             "@param {" + exportName(type) + "} " + (config.beautify ? "message" : "m") + " " + type.name,
@@ -565,6 +572,7 @@ function buildType(ref, type) {
         push("");
         pushComment([
             "Converts this " + type.name + " to JSON.",
+            "@function toJSON",
             "@memberof " + exportName(type),
             "@instance",
             "@returns {Object.<string,*>} JSON object"
@@ -602,6 +610,7 @@ function buildService(ref, service) {
         push("");
         pushComment([
             "Creates new " + service.name + " service using the specified rpc implementation.",
+            "@function create",
             "@memberof " + exportName(service),
             "@static",
             "@param {$protobuf.RPCImpl} rpcImpl RPC implementation",
@@ -633,6 +642,7 @@ function buildService(ref, service) {
         push("");
         pushComment([
             method.comment || "Calls " + method.name + ".",
+            "@function " + util.safeProp(lcName),
             "@memberof " + exportName(service),
             "@instance",
             "@param {" + exportName(method.resolvedRequestType, !config.forceMessage) + "} request " + method.resolvedRequestType.name + " message or plain object",

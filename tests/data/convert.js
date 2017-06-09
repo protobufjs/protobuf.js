@@ -47,78 +47,79 @@ $root.Message = (function() {
 
     /**
      * Message stringVal.
+     * @member {string}stringVal
      * @memberof Message
      * @instance
-     * @type {string}
      */
     Message.prototype.stringVal = "";
 
     /**
      * Message stringRepeated.
+     * @member {Array.<string>}stringRepeated
      * @memberof Message
      * @instance
-     * @type {Array.<string>}
      */
     Message.prototype.stringRepeated = $util.emptyArray;
 
     /**
      * Message uint64Val.
+     * @member {number|Long}uint64Val
      * @memberof Message
      * @instance
-     * @type {number|Long}
      */
     Message.prototype.uint64Val = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
 
     /**
      * Message uint64Repeated.
+     * @member {Array.<number|Long>}uint64Repeated
      * @memberof Message
      * @instance
-     * @type {Array.<number|Long>}
      */
     Message.prototype.uint64Repeated = $util.emptyArray;
 
     /**
      * Message bytesVal.
+     * @member {Uint8Array}bytesVal
      * @memberof Message
      * @instance
-     * @type {Uint8Array}
      */
     Message.prototype.bytesVal = $util.newBuffer([]);
 
     /**
      * Message bytesRepeated.
+     * @member {Array.<Uint8Array>}bytesRepeated
      * @memberof Message
      * @instance
-     * @type {Array.<Uint8Array>}
      */
     Message.prototype.bytesRepeated = $util.emptyArray;
 
     /**
      * Message enumVal.
+     * @member {Message.SomeEnum}enumVal
      * @memberof Message
      * @instance
-     * @type {Message.SomeEnum}
      */
     Message.prototype.enumVal = 1;
 
     /**
      * Message enumRepeated.
+     * @member {Array.<Message.SomeEnum>}enumRepeated
      * @memberof Message
      * @instance
-     * @type {Array.<Message.SomeEnum>}
      */
     Message.prototype.enumRepeated = $util.emptyArray;
 
     /**
      * Message int64Map.
+     * @member {Object.<string,number|Long>}int64Map
      * @memberof Message
      * @instance
-     * @type {Object.<string,number|Long>}
      */
     Message.prototype.int64Map = $util.emptyObject;
 
     /**
      * Creates a new Message instance using the specified properties.
+     * @function create
      * @memberof Message
      * @static
      * @param {IMessage=} [properties] Properties to set
@@ -130,6 +131,7 @@ $root.Message = (function() {
 
     /**
      * Encodes the specified Message message. Does not implicitly {@link Message.verify|verify} messages.
+     * @function encode
      * @memberof Message
      * @static
      * @param {IMessage} message Message message or plain object to encode
@@ -173,6 +175,7 @@ $root.Message = (function() {
 
     /**
      * Encodes the specified Message message, length delimited. Does not implicitly {@link Message.verify|verify} messages.
+     * @function encodeDelimited
      * @memberof Message
      * @static
      * @param {IMessage} message Message message or plain object to encode
@@ -185,6 +188,7 @@ $root.Message = (function() {
 
     /**
      * Decodes a Message message from the specified reader or buffer.
+     * @function decode
      * @memberof Message
      * @static
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -260,6 +264,7 @@ $root.Message = (function() {
 
     /**
      * Decodes a Message message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
      * @memberof Message
      * @static
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -275,6 +280,7 @@ $root.Message = (function() {
 
     /**
      * Verifies a Message message.
+     * @function verify
      * @memberof Message
      * @static
      * @param {Object.<string,*>} message Plain object to verify
@@ -346,6 +352,7 @@ $root.Message = (function() {
 
     /**
      * Creates a Message message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
      * @memberof Message
      * @static
      * @param {Object.<string,*>} object Plain object
@@ -448,6 +455,7 @@ $root.Message = (function() {
 
     /**
      * Creates a plain object from a Message message. Also converts values to other types if specified.
+     * @function toObject
      * @memberof Message
      * @static
      * @param {Message} message Message
@@ -524,6 +532,7 @@ $root.Message = (function() {
 
     /**
      * Converts this Message to JSON.
+     * @function toJSON
      * @memberof Message
      * @instance
      * @returns {Object.<string,*>} JSON object

@@ -39,30 +39,31 @@ $root.Test1 = (function() {
 
     /**
      * Field with a comment.
+     * @member {string}field1
      * @memberof Test1
      * @instance
-     * @type {string}
      */
     Test1.prototype.field1 = "";
 
     /**
      * Test1 field2.
+     * @member {number}field2
      * @memberof Test1
      * @instance
-     * @type {number}
      */
     Test1.prototype.field2 = 0;
 
     /**
      * Field with a comment and a <a href="http://example.com/foo/">link</a>
+     * @member {boolean}field3
      * @memberof Test1
      * @instance
-     * @type {boolean}
      */
     Test1.prototype.field3 = false;
 
     /**
      * Creates a new Test1 instance using the specified properties.
+     * @function create
      * @memberof Test1
      * @static
      * @param {ITest1=} [properties] Properties to set
@@ -74,6 +75,7 @@ $root.Test1 = (function() {
 
     /**
      * Encodes the specified Test1 message. Does not implicitly {@link Test1.verify|verify} messages.
+     * @function encode
      * @memberof Test1
      * @static
      * @param {ITest1} message Test1 message or plain object to encode
@@ -94,6 +96,7 @@ $root.Test1 = (function() {
 
     /**
      * Encodes the specified Test1 message, length delimited. Does not implicitly {@link Test1.verify|verify} messages.
+     * @function encodeDelimited
      * @memberof Test1
      * @static
      * @param {ITest1} message Test1 message or plain object to encode
@@ -106,6 +109,7 @@ $root.Test1 = (function() {
 
     /**
      * Decodes a Test1 message from the specified reader or buffer.
+     * @function decode
      * @memberof Test1
      * @static
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -140,6 +144,7 @@ $root.Test1 = (function() {
 
     /**
      * Decodes a Test1 message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
      * @memberof Test1
      * @static
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -155,6 +160,7 @@ $root.Test1 = (function() {
 
     /**
      * Verifies a Test1 message.
+     * @function verify
      * @memberof Test1
      * @static
      * @param {Object.<string,*>} message Plain object to verify
@@ -177,6 +183,7 @@ $root.Test1 = (function() {
 
     /**
      * Creates a Test1 message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
      * @memberof Test1
      * @static
      * @param {Object.<string,*>} object Plain object
@@ -197,6 +204,7 @@ $root.Test1 = (function() {
 
     /**
      * Creates a plain object from a Test1 message. Also converts values to other types if specified.
+     * @function toObject
      * @memberof Test1
      * @static
      * @param {Test1} message Test1
@@ -223,6 +231,7 @@ $root.Test1 = (function() {
 
     /**
      * Converts this Test1 to JSON.
+     * @function toJSON
      * @memberof Test1
      * @instance
      * @returns {Object.<string,*>} JSON object
@@ -258,6 +267,7 @@ $root.Test2 = (function() {
 
     /**
      * Creates a new Test2 instance using the specified properties.
+     * @function create
      * @memberof Test2
      * @static
      * @param {ITest2=} [properties] Properties to set
@@ -269,6 +279,7 @@ $root.Test2 = (function() {
 
     /**
      * Encodes the specified Test2 message. Does not implicitly {@link Test2.verify|verify} messages.
+     * @function encode
      * @memberof Test2
      * @static
      * @param {ITest2} message Test2 message or plain object to encode
@@ -283,6 +294,7 @@ $root.Test2 = (function() {
 
     /**
      * Encodes the specified Test2 message, length delimited. Does not implicitly {@link Test2.verify|verify} messages.
+     * @function encodeDelimited
      * @memberof Test2
      * @static
      * @param {ITest2} message Test2 message or plain object to encode
@@ -295,6 +307,7 @@ $root.Test2 = (function() {
 
     /**
      * Decodes a Test2 message from the specified reader or buffer.
+     * @function decode
      * @memberof Test2
      * @static
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -320,6 +333,7 @@ $root.Test2 = (function() {
 
     /**
      * Decodes a Test2 message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
      * @memberof Test2
      * @static
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -335,6 +349,7 @@ $root.Test2 = (function() {
 
     /**
      * Verifies a Test2 message.
+     * @function verify
      * @memberof Test2
      * @static
      * @param {Object.<string,*>} message Plain object to verify
@@ -348,6 +363,7 @@ $root.Test2 = (function() {
 
     /**
      * Creates a Test2 message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
      * @memberof Test2
      * @static
      * @param {Object.<string,*>} object Plain object
@@ -361,6 +377,7 @@ $root.Test2 = (function() {
 
     /**
      * Creates a plain object from a Test2 message. Also converts values to other types if specified.
+     * @function toObject
      * @memberof Test2
      * @static
      * @param {Test2} message Test2
@@ -373,6 +390,7 @@ $root.Test2 = (function() {
 
     /**
      * Converts this Test2 to JSON.
+     * @function toJSON
      * @memberof Test2
      * @instance
      * @returns {Object.<string,*>} JSON object

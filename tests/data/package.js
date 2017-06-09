@@ -56,142 +56,143 @@ $root.Package = (function() {
 
     /**
      * Package name.
+     * @member {string}name
      * @memberof Package
      * @instance
-     * @type {string}
      */
     Package.prototype.name = "";
 
     /**
      * Package version.
+     * @member {string}version
      * @memberof Package
      * @instance
-     * @type {string}
      */
     Package.prototype.version = "";
 
     /**
      * Package versionScheme.
+     * @member {string}versionScheme
      * @memberof Package
      * @instance
-     * @type {string}
      */
     Package.prototype.versionScheme = "";
 
     /**
      * Package description.
+     * @member {string}description
      * @memberof Package
      * @instance
-     * @type {string}
      */
     Package.prototype.description = "";
 
     /**
      * Package author.
+     * @member {string}author
      * @memberof Package
      * @instance
-     * @type {string}
      */
     Package.prototype.author = "";
 
     /**
      * Package license.
+     * @member {string}license
      * @memberof Package
      * @instance
-     * @type {string}
      */
     Package.prototype.license = "";
 
     /**
      * Package repository.
+     * @member {(Package.IRepository|null)}repository
      * @memberof Package
      * @instance
-     * @type {(Package.IRepository|null)}
      */
     Package.prototype.repository = null;
 
     /**
      * Package bugs.
+     * @member {string}bugs
      * @memberof Package
      * @instance
-     * @type {string}
      */
     Package.prototype.bugs = "";
 
     /**
      * Package homepage.
+     * @member {string}homepage
      * @memberof Package
      * @instance
-     * @type {string}
      */
     Package.prototype.homepage = "";
 
     /**
      * Package keywords.
+     * @member {Array.<string>}keywords
      * @memberof Package
      * @instance
-     * @type {Array.<string>}
      */
     Package.prototype.keywords = $util.emptyArray;
 
     /**
      * Package main.
+     * @member {string}main
      * @memberof Package
      * @instance
-     * @type {string}
      */
     Package.prototype.main = "";
 
     /**
      * Package bin.
+     * @member {Object.<string,string>}bin
      * @memberof Package
      * @instance
-     * @type {Object.<string,string>}
      */
     Package.prototype.bin = $util.emptyObject;
 
     /**
      * Package scripts.
+     * @member {Object.<string,string>}scripts
      * @memberof Package
      * @instance
-     * @type {Object.<string,string>}
      */
     Package.prototype.scripts = $util.emptyObject;
 
     /**
      * Package dependencies.
+     * @member {Object.<string,string>}dependencies
      * @memberof Package
      * @instance
-     * @type {Object.<string,string>}
      */
     Package.prototype.dependencies = $util.emptyObject;
 
     /**
      * Package devDependencies.
+     * @member {Object.<string,string>}devDependencies
      * @memberof Package
      * @instance
-     * @type {Object.<string,string>}
      */
     Package.prototype.devDependencies = $util.emptyObject;
 
     /**
      * Package types.
+     * @member {string}types
      * @memberof Package
      * @instance
-     * @type {string}
      */
     Package.prototype.types = "";
 
     /**
      * Package cliDependencies.
+     * @member {Array.<string>}cliDependencies
      * @memberof Package
      * @instance
-     * @type {Array.<string>}
      */
     Package.prototype.cliDependencies = $util.emptyArray;
 
     /**
      * Creates a new Package instance using the specified properties.
+     * @function create
      * @memberof Package
      * @static
      * @param {IPackage=} [properties] Properties to set
@@ -203,6 +204,7 @@ $root.Package = (function() {
 
     /**
      * Encodes the specified Package message. Does not implicitly {@link Package.verify|verify} messages.
+     * @function encode
      * @memberof Package
      * @static
      * @param {IPackage} message Package message or plain object to encode
@@ -257,6 +259,7 @@ $root.Package = (function() {
 
     /**
      * Encodes the specified Package message, length delimited. Does not implicitly {@link Package.verify|verify} messages.
+     * @function encodeDelimited
      * @memberof Package
      * @static
      * @param {IPackage} message Package message or plain object to encode
@@ -269,6 +272,7 @@ $root.Package = (function() {
 
     /**
      * Decodes a Package message from the specified reader or buffer.
+     * @function decode
      * @memberof Package
      * @static
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -369,6 +373,7 @@ $root.Package = (function() {
 
     /**
      * Decodes a Package message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
      * @memberof Package
      * @static
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -384,6 +389,7 @@ $root.Package = (function() {
 
     /**
      * Verifies a Package message.
+     * @function verify
      * @memberof Package
      * @static
      * @param {Object.<string,*>} message Plain object to verify
@@ -478,6 +484,7 @@ $root.Package = (function() {
 
     /**
      * Creates a Package message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
      * @memberof Package
      * @static
      * @param {Object.<string,*>} object Plain object
@@ -559,6 +566,7 @@ $root.Package = (function() {
 
     /**
      * Creates a plain object from a Package message. Also converts values to other types if specified.
+     * @function toObject
      * @memberof Package
      * @static
      * @param {Package} message Package
@@ -650,6 +658,7 @@ $root.Package = (function() {
 
     /**
      * Converts this Package to JSON.
+     * @function toJSON
      * @memberof Package
      * @instance
      * @returns {Object.<string,*>} JSON object
@@ -684,22 +693,23 @@ $root.Package = (function() {
 
         /**
          * Repository type.
+         * @member {string}type
          * @memberof Package.Repository
          * @instance
-         * @type {string}
          */
         Repository.prototype.type = "";
 
         /**
          * Repository url.
+         * @member {string}url
          * @memberof Package.Repository
          * @instance
-         * @type {string}
          */
         Repository.prototype.url = "";
 
         /**
          * Creates a new Repository instance using the specified properties.
+         * @function create
          * @memberof Package.Repository
          * @static
          * @param {Package.IRepository=} [properties] Properties to set
@@ -711,6 +721,7 @@ $root.Package = (function() {
 
         /**
          * Encodes the specified Repository message. Does not implicitly {@link Package.Repository.verify|verify} messages.
+         * @function encode
          * @memberof Package.Repository
          * @static
          * @param {Package.IRepository} message Repository message or plain object to encode
@@ -729,6 +740,7 @@ $root.Package = (function() {
 
         /**
          * Encodes the specified Repository message, length delimited. Does not implicitly {@link Package.Repository.verify|verify} messages.
+         * @function encodeDelimited
          * @memberof Package.Repository
          * @static
          * @param {Package.IRepository} message Repository message or plain object to encode
@@ -741,6 +753,7 @@ $root.Package = (function() {
 
         /**
          * Decodes a Repository message from the specified reader or buffer.
+         * @function decode
          * @memberof Package.Repository
          * @static
          * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -772,6 +785,7 @@ $root.Package = (function() {
 
         /**
          * Decodes a Repository message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
          * @memberof Package.Repository
          * @static
          * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -787,6 +801,7 @@ $root.Package = (function() {
 
         /**
          * Verifies a Repository message.
+         * @function verify
          * @memberof Package.Repository
          * @static
          * @param {Object.<string,*>} message Plain object to verify
@@ -806,6 +821,7 @@ $root.Package = (function() {
 
         /**
          * Creates a Repository message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
          * @memberof Package.Repository
          * @static
          * @param {Object.<string,*>} object Plain object
@@ -824,6 +840,7 @@ $root.Package = (function() {
 
         /**
          * Creates a plain object from a Repository message. Also converts values to other types if specified.
+         * @function toObject
          * @memberof Package.Repository
          * @static
          * @param {Package.Repository} message Repository
@@ -847,6 +864,7 @@ $root.Package = (function() {
 
         /**
          * Converts this Repository to JSON.
+         * @function toJSON
          * @memberof Package.Repository
          * @instance
          * @returns {Object.<string,*>} JSON object

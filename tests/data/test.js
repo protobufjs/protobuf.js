@@ -51,6 +51,7 @@ $root.jspb = (function() {
 
             /**
              * Creates a new Empty instance using the specified properties.
+             * @function create
              * @memberof jspb.test.Empty
              * @static
              * @param {jspb.test.IEmpty=} [properties] Properties to set
@@ -62,6 +63,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified Empty message. Does not implicitly {@link jspb.test.Empty.verify|verify} messages.
+             * @function encode
              * @memberof jspb.test.Empty
              * @static
              * @param {jspb.test.IEmpty} message Empty message or plain object to encode
@@ -76,6 +78,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified Empty message, length delimited. Does not implicitly {@link jspb.test.Empty.verify|verify} messages.
+             * @function encodeDelimited
              * @memberof jspb.test.Empty
              * @static
              * @param {jspb.test.IEmpty} message Empty message or plain object to encode
@@ -88,6 +91,7 @@ $root.jspb = (function() {
 
             /**
              * Decodes an Empty message from the specified reader or buffer.
+             * @function decode
              * @memberof jspb.test.Empty
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -113,6 +117,7 @@ $root.jspb = (function() {
 
             /**
              * Decodes an Empty message from the specified reader or buffer, length delimited.
+             * @function decodeDelimited
              * @memberof jspb.test.Empty
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -128,6 +133,7 @@ $root.jspb = (function() {
 
             /**
              * Verifies an Empty message.
+             * @function verify
              * @memberof jspb.test.Empty
              * @static
              * @param {Object.<string,*>} message Plain object to verify
@@ -141,6 +147,7 @@ $root.jspb = (function() {
 
             /**
              * Creates an Empty message from a plain object. Also converts values to their respective internal types.
+             * @function fromObject
              * @memberof jspb.test.Empty
              * @static
              * @param {Object.<string,*>} object Plain object
@@ -154,6 +161,7 @@ $root.jspb = (function() {
 
             /**
              * Creates a plain object from an Empty message. Also converts values to other types if specified.
+             * @function toObject
              * @memberof jspb.test.Empty
              * @static
              * @param {jspb.test.Empty} message Empty
@@ -166,6 +174,7 @@ $root.jspb = (function() {
 
             /**
              * Converts this Empty to JSON.
+             * @function toJSON
              * @memberof jspb.test.Empty
              * @instance
              * @returns {Object.<string,*>} JSON object
@@ -215,14 +224,15 @@ $root.jspb = (function() {
 
             /**
              * EnumContainer outerEnum.
+             * @member {jspb.test.OuterEnum}outerEnum
              * @memberof jspb.test.EnumContainer
              * @instance
-             * @type {jspb.test.OuterEnum}
              */
             EnumContainer.prototype.outerEnum = 1;
 
             /**
              * Creates a new EnumContainer instance using the specified properties.
+             * @function create
              * @memberof jspb.test.EnumContainer
              * @static
              * @param {jspb.test.IEnumContainer=} [properties] Properties to set
@@ -234,6 +244,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified EnumContainer message. Does not implicitly {@link jspb.test.EnumContainer.verify|verify} messages.
+             * @function encode
              * @memberof jspb.test.EnumContainer
              * @static
              * @param {jspb.test.IEnumContainer} message EnumContainer message or plain object to encode
@@ -250,6 +261,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified EnumContainer message, length delimited. Does not implicitly {@link jspb.test.EnumContainer.verify|verify} messages.
+             * @function encodeDelimited
              * @memberof jspb.test.EnumContainer
              * @static
              * @param {jspb.test.IEnumContainer} message EnumContainer message or plain object to encode
@@ -262,6 +274,7 @@ $root.jspb = (function() {
 
             /**
              * Decodes an EnumContainer message from the specified reader or buffer.
+             * @function decode
              * @memberof jspb.test.EnumContainer
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -290,6 +303,7 @@ $root.jspb = (function() {
 
             /**
              * Decodes an EnumContainer message from the specified reader or buffer, length delimited.
+             * @function decodeDelimited
              * @memberof jspb.test.EnumContainer
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -305,6 +319,7 @@ $root.jspb = (function() {
 
             /**
              * Verifies an EnumContainer message.
+             * @function verify
              * @memberof jspb.test.EnumContainer
              * @static
              * @param {Object.<string,*>} message Plain object to verify
@@ -326,6 +341,7 @@ $root.jspb = (function() {
 
             /**
              * Creates an EnumContainer message from a plain object. Also converts values to their respective internal types.
+             * @function fromObject
              * @memberof jspb.test.EnumContainer
              * @static
              * @param {Object.<string,*>} object Plain object
@@ -350,6 +366,7 @@ $root.jspb = (function() {
 
             /**
              * Creates a plain object from an EnumContainer message. Also converts values to other types if specified.
+             * @function toObject
              * @memberof jspb.test.EnumContainer
              * @static
              * @param {jspb.test.EnumContainer} message EnumContainer
@@ -369,6 +386,7 @@ $root.jspb = (function() {
 
             /**
              * Converts this EnumContainer to JSON.
+             * @function toJSON
              * @memberof jspb.test.EnumContainer
              * @instance
              * @returns {Object.<string,*>} JSON object
@@ -408,30 +426,31 @@ $root.jspb = (function() {
 
             /**
              * Simple1 aString.
+             * @member {string}aString
              * @memberof jspb.test.Simple1
              * @instance
-             * @type {string}
              */
             Simple1.prototype.aString = "";
 
             /**
              * Simple1 aRepeatedString.
+             * @member {Array.<string>}aRepeatedString
              * @memberof jspb.test.Simple1
              * @instance
-             * @type {Array.<string>}
              */
             Simple1.prototype.aRepeatedString = $util.emptyArray;
 
             /**
              * Simple1 aBoolean.
+             * @member {boolean}aBoolean
              * @memberof jspb.test.Simple1
              * @instance
-             * @type {boolean}
              */
             Simple1.prototype.aBoolean = false;
 
             /**
              * Creates a new Simple1 instance using the specified properties.
+             * @function create
              * @memberof jspb.test.Simple1
              * @static
              * @param {jspb.test.ISimple1=} [properties] Properties to set
@@ -443,6 +462,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified Simple1 message. Does not implicitly {@link jspb.test.Simple1.verify|verify} messages.
+             * @function encode
              * @memberof jspb.test.Simple1
              * @static
              * @param {jspb.test.ISimple1} message Simple1 message or plain object to encode
@@ -463,6 +483,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified Simple1 message, length delimited. Does not implicitly {@link jspb.test.Simple1.verify|verify} messages.
+             * @function encodeDelimited
              * @memberof jspb.test.Simple1
              * @static
              * @param {jspb.test.ISimple1} message Simple1 message or plain object to encode
@@ -475,6 +496,7 @@ $root.jspb = (function() {
 
             /**
              * Decodes a Simple1 message from the specified reader or buffer.
+             * @function decode
              * @memberof jspb.test.Simple1
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -513,6 +535,7 @@ $root.jspb = (function() {
 
             /**
              * Decodes a Simple1 message from the specified reader or buffer, length delimited.
+             * @function decodeDelimited
              * @memberof jspb.test.Simple1
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -528,6 +551,7 @@ $root.jspb = (function() {
 
             /**
              * Verifies a Simple1 message.
+             * @function verify
              * @memberof jspb.test.Simple1
              * @static
              * @param {Object.<string,*>} message Plain object to verify
@@ -553,6 +577,7 @@ $root.jspb = (function() {
 
             /**
              * Creates a Simple1 message from a plain object. Also converts values to their respective internal types.
+             * @function fromObject
              * @memberof jspb.test.Simple1
              * @static
              * @param {Object.<string,*>} object Plain object
@@ -578,6 +603,7 @@ $root.jspb = (function() {
 
             /**
              * Creates a plain object from a Simple1 message. Also converts values to other types if specified.
+             * @function toObject
              * @memberof jspb.test.Simple1
              * @static
              * @param {jspb.test.Simple1} message Simple1
@@ -608,6 +634,7 @@ $root.jspb = (function() {
 
             /**
              * Converts this Simple1 to JSON.
+             * @function toJSON
              * @memberof jspb.test.Simple1
              * @instance
              * @returns {Object.<string,*>} JSON object
@@ -646,22 +673,23 @@ $root.jspb = (function() {
 
             /**
              * Simple2 aString.
+             * @member {string}aString
              * @memberof jspb.test.Simple2
              * @instance
-             * @type {string}
              */
             Simple2.prototype.aString = "";
 
             /**
              * Simple2 aRepeatedString.
+             * @member {Array.<string>}aRepeatedString
              * @memberof jspb.test.Simple2
              * @instance
-             * @type {Array.<string>}
              */
             Simple2.prototype.aRepeatedString = $util.emptyArray;
 
             /**
              * Creates a new Simple2 instance using the specified properties.
+             * @function create
              * @memberof jspb.test.Simple2
              * @static
              * @param {jspb.test.ISimple2=} [properties] Properties to set
@@ -673,6 +701,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified Simple2 message. Does not implicitly {@link jspb.test.Simple2.verify|verify} messages.
+             * @function encode
              * @memberof jspb.test.Simple2
              * @static
              * @param {jspb.test.ISimple2} message Simple2 message or plain object to encode
@@ -691,6 +720,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified Simple2 message, length delimited. Does not implicitly {@link jspb.test.Simple2.verify|verify} messages.
+             * @function encodeDelimited
              * @memberof jspb.test.Simple2
              * @static
              * @param {jspb.test.ISimple2} message Simple2 message or plain object to encode
@@ -703,6 +733,7 @@ $root.jspb = (function() {
 
             /**
              * Decodes a Simple2 message from the specified reader or buffer.
+             * @function decode
              * @memberof jspb.test.Simple2
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -738,6 +769,7 @@ $root.jspb = (function() {
 
             /**
              * Decodes a Simple2 message from the specified reader or buffer, length delimited.
+             * @function decodeDelimited
              * @memberof jspb.test.Simple2
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -753,6 +785,7 @@ $root.jspb = (function() {
 
             /**
              * Verifies a Simple2 message.
+             * @function verify
              * @memberof jspb.test.Simple2
              * @static
              * @param {Object.<string,*>} message Plain object to verify
@@ -775,6 +808,7 @@ $root.jspb = (function() {
 
             /**
              * Creates a Simple2 message from a plain object. Also converts values to their respective internal types.
+             * @function fromObject
              * @memberof jspb.test.Simple2
              * @static
              * @param {Object.<string,*>} object Plain object
@@ -798,6 +832,7 @@ $root.jspb = (function() {
 
             /**
              * Creates a plain object from a Simple2 message. Also converts values to other types if specified.
+             * @function toObject
              * @memberof jspb.test.Simple2
              * @static
              * @param {jspb.test.Simple2} message Simple2
@@ -824,6 +859,7 @@ $root.jspb = (function() {
 
             /**
              * Converts this Simple2 to JSON.
+             * @function toJSON
              * @memberof jspb.test.Simple2
              * @instance
              * @returns {Object.<string,*>} JSON object
@@ -863,38 +899,39 @@ $root.jspb = (function() {
 
             /**
              * SpecialCases normal.
+             * @member {string}normal
              * @memberof jspb.test.SpecialCases
              * @instance
-             * @type {string}
              */
             SpecialCases.prototype.normal = "";
 
             /**
              * SpecialCases default.
+             * @member {string}default_
              * @memberof jspb.test.SpecialCases
              * @instance
-             * @type {string}
              */
             SpecialCases.prototype["default"] = "";
 
             /**
              * SpecialCases function.
+             * @member {string}function_
              * @memberof jspb.test.SpecialCases
              * @instance
-             * @type {string}
              */
             SpecialCases.prototype["function"] = "";
 
             /**
              * SpecialCases var.
+             * @member {string}var_
              * @memberof jspb.test.SpecialCases
              * @instance
-             * @type {string}
              */
             SpecialCases.prototype["var"] = "";
 
             /**
              * Creates a new SpecialCases instance using the specified properties.
+             * @function create
              * @memberof jspb.test.SpecialCases
              * @static
              * @param {jspb.test.ISpecialCases=} [properties] Properties to set
@@ -906,6 +943,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified SpecialCases message. Does not implicitly {@link jspb.test.SpecialCases.verify|verify} messages.
+             * @function encode
              * @memberof jspb.test.SpecialCases
              * @static
              * @param {jspb.test.ISpecialCases} message SpecialCases message or plain object to encode
@@ -924,6 +962,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified SpecialCases message, length delimited. Does not implicitly {@link jspb.test.SpecialCases.verify|verify} messages.
+             * @function encodeDelimited
              * @memberof jspb.test.SpecialCases
              * @static
              * @param {jspb.test.ISpecialCases} message SpecialCases message or plain object to encode
@@ -936,6 +975,7 @@ $root.jspb = (function() {
 
             /**
              * Decodes a SpecialCases message from the specified reader or buffer.
+             * @function decode
              * @memberof jspb.test.SpecialCases
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -981,6 +1021,7 @@ $root.jspb = (function() {
 
             /**
              * Decodes a SpecialCases message from the specified reader or buffer, length delimited.
+             * @function decodeDelimited
              * @memberof jspb.test.SpecialCases
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -996,6 +1037,7 @@ $root.jspb = (function() {
 
             /**
              * Verifies a SpecialCases message.
+             * @function verify
              * @memberof jspb.test.SpecialCases
              * @static
              * @param {Object.<string,*>} message Plain object to verify
@@ -1017,6 +1059,7 @@ $root.jspb = (function() {
 
             /**
              * Creates a SpecialCases message from a plain object. Also converts values to their respective internal types.
+             * @function fromObject
              * @memberof jspb.test.SpecialCases
              * @static
              * @param {Object.<string,*>} object Plain object
@@ -1039,6 +1082,7 @@ $root.jspb = (function() {
 
             /**
              * Creates a plain object from a SpecialCases message. Also converts values to other types if specified.
+             * @function toObject
              * @memberof jspb.test.SpecialCases
              * @static
              * @param {jspb.test.SpecialCases} message SpecialCases
@@ -1068,6 +1112,7 @@ $root.jspb = (function() {
 
             /**
              * Converts this SpecialCases to JSON.
+             * @function toJSON
              * @memberof jspb.test.SpecialCases
              * @instance
              * @returns {Object.<string,*>} JSON object
@@ -1110,46 +1155,47 @@ $root.jspb = (function() {
 
             /**
              * OptionalFields aString.
+             * @member {string}aString
              * @memberof jspb.test.OptionalFields
              * @instance
-             * @type {string}
              */
             OptionalFields.prototype.aString = "";
 
             /**
              * OptionalFields aBool.
+             * @member {boolean}aBool
              * @memberof jspb.test.OptionalFields
              * @instance
-             * @type {boolean}
              */
             OptionalFields.prototype.aBool = false;
 
             /**
              * OptionalFields aNestedMessage.
+             * @member {(jspb.test.OptionalFields.INested|null)}aNestedMessage
              * @memberof jspb.test.OptionalFields
              * @instance
-             * @type {(jspb.test.OptionalFields.INested|null)}
              */
             OptionalFields.prototype.aNestedMessage = null;
 
             /**
              * OptionalFields aRepeatedMessage.
+             * @member {Array.<jspb.test.OptionalFields.INested>}aRepeatedMessage
              * @memberof jspb.test.OptionalFields
              * @instance
-             * @type {Array.<jspb.test.OptionalFields.INested>}
              */
             OptionalFields.prototype.aRepeatedMessage = $util.emptyArray;
 
             /**
              * OptionalFields aRepeatedString.
+             * @member {Array.<string>}aRepeatedString
              * @memberof jspb.test.OptionalFields
              * @instance
-             * @type {Array.<string>}
              */
             OptionalFields.prototype.aRepeatedString = $util.emptyArray;
 
             /**
              * Creates a new OptionalFields instance using the specified properties.
+             * @function create
              * @memberof jspb.test.OptionalFields
              * @static
              * @param {jspb.test.IOptionalFields=} [properties] Properties to set
@@ -1161,6 +1207,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified OptionalFields message. Does not implicitly {@link jspb.test.OptionalFields.verify|verify} messages.
+             * @function encode
              * @memberof jspb.test.OptionalFields
              * @static
              * @param {jspb.test.IOptionalFields} message OptionalFields message or plain object to encode
@@ -1186,6 +1233,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified OptionalFields message, length delimited. Does not implicitly {@link jspb.test.OptionalFields.verify|verify} messages.
+             * @function encodeDelimited
              * @memberof jspb.test.OptionalFields
              * @static
              * @param {jspb.test.IOptionalFields} message OptionalFields message or plain object to encode
@@ -1198,6 +1246,7 @@ $root.jspb = (function() {
 
             /**
              * Decodes an OptionalFields message from the specified reader or buffer.
+             * @function decode
              * @memberof jspb.test.OptionalFields
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -1244,6 +1293,7 @@ $root.jspb = (function() {
 
             /**
              * Decodes an OptionalFields message from the specified reader or buffer, length delimited.
+             * @function decodeDelimited
              * @memberof jspb.test.OptionalFields
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -1259,6 +1309,7 @@ $root.jspb = (function() {
 
             /**
              * Verifies an OptionalFields message.
+             * @function verify
              * @memberof jspb.test.OptionalFields
              * @static
              * @param {Object.<string,*>} message Plain object to verify
@@ -1298,6 +1349,7 @@ $root.jspb = (function() {
 
             /**
              * Creates an OptionalFields message from a plain object. Also converts values to their respective internal types.
+             * @function fromObject
              * @memberof jspb.test.OptionalFields
              * @static
              * @param {Object.<string,*>} object Plain object
@@ -1338,6 +1390,7 @@ $root.jspb = (function() {
 
             /**
              * Creates a plain object from an OptionalFields message. Also converts values to other types if specified.
+             * @function toObject
              * @memberof jspb.test.OptionalFields
              * @static
              * @param {jspb.test.OptionalFields} message OptionalFields
@@ -1378,6 +1431,7 @@ $root.jspb = (function() {
 
             /**
              * Converts this OptionalFields to JSON.
+             * @function toJSON
              * @memberof jspb.test.OptionalFields
              * @instance
              * @returns {Object.<string,*>} JSON object
@@ -1411,14 +1465,15 @@ $root.jspb = (function() {
 
                 /**
                  * Nested anInt.
+                 * @member {number}anInt
                  * @memberof jspb.test.OptionalFields.Nested
                  * @instance
-                 * @type {number}
                  */
                 Nested.prototype.anInt = 0;
 
                 /**
                  * Creates a new Nested instance using the specified properties.
+                 * @function create
                  * @memberof jspb.test.OptionalFields.Nested
                  * @static
                  * @param {jspb.test.OptionalFields.INested=} [properties] Properties to set
@@ -1430,6 +1485,7 @@ $root.jspb = (function() {
 
                 /**
                  * Encodes the specified Nested message. Does not implicitly {@link jspb.test.OptionalFields.Nested.verify|verify} messages.
+                 * @function encode
                  * @memberof jspb.test.OptionalFields.Nested
                  * @static
                  * @param {jspb.test.OptionalFields.INested} message Nested message or plain object to encode
@@ -1446,6 +1502,7 @@ $root.jspb = (function() {
 
                 /**
                  * Encodes the specified Nested message, length delimited. Does not implicitly {@link jspb.test.OptionalFields.Nested.verify|verify} messages.
+                 * @function encodeDelimited
                  * @memberof jspb.test.OptionalFields.Nested
                  * @static
                  * @param {jspb.test.OptionalFields.INested} message Nested message or plain object to encode
@@ -1458,6 +1515,7 @@ $root.jspb = (function() {
 
                 /**
                  * Decodes a Nested message from the specified reader or buffer.
+                 * @function decode
                  * @memberof jspb.test.OptionalFields.Nested
                  * @static
                  * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -1486,6 +1544,7 @@ $root.jspb = (function() {
 
                 /**
                  * Decodes a Nested message from the specified reader or buffer, length delimited.
+                 * @function decodeDelimited
                  * @memberof jspb.test.OptionalFields.Nested
                  * @static
                  * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -1501,6 +1560,7 @@ $root.jspb = (function() {
 
                 /**
                  * Verifies a Nested message.
+                 * @function verify
                  * @memberof jspb.test.OptionalFields.Nested
                  * @static
                  * @param {Object.<string,*>} message Plain object to verify
@@ -1517,6 +1577,7 @@ $root.jspb = (function() {
 
                 /**
                  * Creates a Nested message from a plain object. Also converts values to their respective internal types.
+                 * @function fromObject
                  * @memberof jspb.test.OptionalFields.Nested
                  * @static
                  * @param {Object.<string,*>} object Plain object
@@ -1533,6 +1594,7 @@ $root.jspb = (function() {
 
                 /**
                  * Creates a plain object from a Nested message. Also converts values to other types if specified.
+                 * @function toObject
                  * @memberof jspb.test.OptionalFields.Nested
                  * @static
                  * @param {jspb.test.OptionalFields.Nested} message Nested
@@ -1552,6 +1614,7 @@ $root.jspb = (function() {
 
                 /**
                  * Converts this Nested to JSON.
+                 * @function toJSON
                  * @memberof jspb.test.OptionalFields.Nested
                  * @instance
                  * @returns {Object.<string,*>} JSON object
@@ -1601,78 +1664,79 @@ $root.jspb = (function() {
 
             /**
              * HasExtensions str1.
+             * @member {string}str1
              * @memberof jspb.test.HasExtensions
              * @instance
-             * @type {string}
              */
             HasExtensions.prototype.str1 = "";
 
             /**
              * HasExtensions str2.
+             * @member {string}str2
              * @memberof jspb.test.HasExtensions
              * @instance
-             * @type {string}
              */
             HasExtensions.prototype.str2 = "";
 
             /**
              * HasExtensions str3.
+             * @member {string}str3
              * @memberof jspb.test.HasExtensions
              * @instance
-             * @type {string}
              */
             HasExtensions.prototype.str3 = "";
 
             /**
              * HasExtensions .jspb.test.IsExtension.extField.
+             * @member {(jspb.test.IIsExtension|null)}.jspb.test.IsExtension.extField
              * @memberof jspb.test.HasExtensions
              * @instance
-             * @type {(jspb.test.IIsExtension|null)}
              */
             HasExtensions.prototype[".jspb.test.IsExtension.extField"] = null;
 
             /**
              * HasExtensions .jspb.test.IndirectExtension.simple.
+             * @member {(jspb.test.ISimple1|null)}.jspb.test.IndirectExtension.simple
              * @memberof jspb.test.HasExtensions
              * @instance
-             * @type {(jspb.test.ISimple1|null)}
              */
             HasExtensions.prototype[".jspb.test.IndirectExtension.simple"] = null;
 
             /**
              * HasExtensions .jspb.test.IndirectExtension.str.
+             * @member {string}.jspb.test.IndirectExtension.str
              * @memberof jspb.test.HasExtensions
              * @instance
-             * @type {string}
              */
             HasExtensions.prototype[".jspb.test.IndirectExtension.str"] = "";
 
             /**
              * HasExtensions .jspb.test.IndirectExtension.repeatedStr.
+             * @member {Array.<string>}.jspb.test.IndirectExtension.repeatedStr
              * @memberof jspb.test.HasExtensions
              * @instance
-             * @type {Array.<string>}
              */
             HasExtensions.prototype[".jspb.test.IndirectExtension.repeatedStr"] = $util.emptyArray;
 
             /**
              * HasExtensions .jspb.test.IndirectExtension.repeatedSimple.
+             * @member {Array.<jspb.test.ISimple1>}.jspb.test.IndirectExtension.repeatedSimple
              * @memberof jspb.test.HasExtensions
              * @instance
-             * @type {Array.<jspb.test.ISimple1>}
              */
             HasExtensions.prototype[".jspb.test.IndirectExtension.repeatedSimple"] = $util.emptyArray;
 
             /**
              * HasExtensions .jspb.test.simple1.
+             * @member {(jspb.test.ISimple1|null)}.jspb.test.simple1
              * @memberof jspb.test.HasExtensions
              * @instance
-             * @type {(jspb.test.ISimple1|null)}
              */
             HasExtensions.prototype[".jspb.test.simple1"] = null;
 
             /**
              * Creates a new HasExtensions instance using the specified properties.
+             * @function create
              * @memberof jspb.test.HasExtensions
              * @static
              * @param {jspb.test.IHasExtensions=} [properties] Properties to set
@@ -1684,6 +1748,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified HasExtensions message. Does not implicitly {@link jspb.test.HasExtensions.verify|verify} messages.
+             * @function encode
              * @memberof jspb.test.HasExtensions
              * @static
              * @param {jspb.test.IHasExtensions} message HasExtensions message or plain object to encode
@@ -1718,6 +1783,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified HasExtensions message, length delimited. Does not implicitly {@link jspb.test.HasExtensions.verify|verify} messages.
+             * @function encodeDelimited
              * @memberof jspb.test.HasExtensions
              * @static
              * @param {jspb.test.IHasExtensions} message HasExtensions message or plain object to encode
@@ -1730,6 +1796,7 @@ $root.jspb = (function() {
 
             /**
              * Decodes a HasExtensions message from the specified reader or buffer.
+             * @function decode
              * @memberof jspb.test.HasExtensions
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -1786,6 +1853,7 @@ $root.jspb = (function() {
 
             /**
              * Decodes a HasExtensions message from the specified reader or buffer, length delimited.
+             * @function decodeDelimited
              * @memberof jspb.test.HasExtensions
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -1801,6 +1869,7 @@ $root.jspb = (function() {
 
             /**
              * Verifies a HasExtensions message.
+             * @function verify
              * @memberof jspb.test.HasExtensions
              * @static
              * @param {Object.<string,*>} message Plain object to verify
@@ -1857,6 +1926,7 @@ $root.jspb = (function() {
 
             /**
              * Creates a HasExtensions message from a plain object. Also converts values to their respective internal types.
+             * @function fromObject
              * @memberof jspb.test.HasExtensions
              * @static
              * @param {Object.<string,*>} object Plain object
@@ -1911,6 +1981,7 @@ $root.jspb = (function() {
 
             /**
              * Creates a plain object from a HasExtensions message. Also converts values to other types if specified.
+             * @function toObject
              * @memberof jspb.test.HasExtensions
              * @static
              * @param {jspb.test.HasExtensions} message HasExtensions
@@ -1963,6 +2034,7 @@ $root.jspb = (function() {
 
             /**
              * Converts this HasExtensions to JSON.
+             * @function toJSON
              * @memberof jspb.test.HasExtensions
              * @instance
              * @returns {Object.<string,*>} JSON object
@@ -2005,46 +2077,47 @@ $root.jspb = (function() {
 
             /**
              * Complex aString.
+             * @member {string}aString
              * @memberof jspb.test.Complex
              * @instance
-             * @type {string}
              */
             Complex.prototype.aString = "";
 
             /**
              * Complex anOutOfOrderBool.
+             * @member {boolean}anOutOfOrderBool
              * @memberof jspb.test.Complex
              * @instance
-             * @type {boolean}
              */
             Complex.prototype.anOutOfOrderBool = false;
 
             /**
              * Complex aNestedMessage.
+             * @member {(jspb.test.Complex.INested|null)}aNestedMessage
              * @memberof jspb.test.Complex
              * @instance
-             * @type {(jspb.test.Complex.INested|null)}
              */
             Complex.prototype.aNestedMessage = null;
 
             /**
              * Complex aRepeatedMessage.
+             * @member {Array.<jspb.test.Complex.INested>}aRepeatedMessage
              * @memberof jspb.test.Complex
              * @instance
-             * @type {Array.<jspb.test.Complex.INested>}
              */
             Complex.prototype.aRepeatedMessage = $util.emptyArray;
 
             /**
              * Complex aRepeatedString.
+             * @member {Array.<string>}aRepeatedString
              * @memberof jspb.test.Complex
              * @instance
-             * @type {Array.<string>}
              */
             Complex.prototype.aRepeatedString = $util.emptyArray;
 
             /**
              * Creates a new Complex instance using the specified properties.
+             * @function create
              * @memberof jspb.test.Complex
              * @static
              * @param {jspb.test.IComplex=} [properties] Properties to set
@@ -2056,6 +2129,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified Complex message. Does not implicitly {@link jspb.test.Complex.verify|verify} messages.
+             * @function encode
              * @memberof jspb.test.Complex
              * @static
              * @param {jspb.test.IComplex} message Complex message or plain object to encode
@@ -2080,6 +2154,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified Complex message, length delimited. Does not implicitly {@link jspb.test.Complex.verify|verify} messages.
+             * @function encodeDelimited
              * @memberof jspb.test.Complex
              * @static
              * @param {jspb.test.IComplex} message Complex message or plain object to encode
@@ -2092,6 +2167,7 @@ $root.jspb = (function() {
 
             /**
              * Decodes a Complex message from the specified reader or buffer.
+             * @function decode
              * @memberof jspb.test.Complex
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -2140,6 +2216,7 @@ $root.jspb = (function() {
 
             /**
              * Decodes a Complex message from the specified reader or buffer, length delimited.
+             * @function decodeDelimited
              * @memberof jspb.test.Complex
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -2155,6 +2232,7 @@ $root.jspb = (function() {
 
             /**
              * Verifies a Complex message.
+             * @function verify
              * @memberof jspb.test.Complex
              * @static
              * @param {Object.<string,*>} message Plain object to verify
@@ -2193,6 +2271,7 @@ $root.jspb = (function() {
 
             /**
              * Creates a Complex message from a plain object. Also converts values to their respective internal types.
+             * @function fromObject
              * @memberof jspb.test.Complex
              * @static
              * @param {Object.<string,*>} object Plain object
@@ -2233,6 +2312,7 @@ $root.jspb = (function() {
 
             /**
              * Creates a plain object from a Complex message. Also converts values to other types if specified.
+             * @function toObject
              * @memberof jspb.test.Complex
              * @static
              * @param {jspb.test.Complex} message Complex
@@ -2273,6 +2353,7 @@ $root.jspb = (function() {
 
             /**
              * Converts this Complex to JSON.
+             * @function toJSON
              * @memberof jspb.test.Complex
              * @instance
              * @returns {Object.<string,*>} JSON object
@@ -2306,14 +2387,15 @@ $root.jspb = (function() {
 
                 /**
                  * Nested anInt.
+                 * @member {number}anInt
                  * @memberof jspb.test.Complex.Nested
                  * @instance
-                 * @type {number}
                  */
                 Nested.prototype.anInt = 0;
 
                 /**
                  * Creates a new Nested instance using the specified properties.
+                 * @function create
                  * @memberof jspb.test.Complex.Nested
                  * @static
                  * @param {jspb.test.Complex.INested=} [properties] Properties to set
@@ -2325,6 +2407,7 @@ $root.jspb = (function() {
 
                 /**
                  * Encodes the specified Nested message. Does not implicitly {@link jspb.test.Complex.Nested.verify|verify} messages.
+                 * @function encode
                  * @memberof jspb.test.Complex.Nested
                  * @static
                  * @param {jspb.test.Complex.INested} message Nested message or plain object to encode
@@ -2340,6 +2423,7 @@ $root.jspb = (function() {
 
                 /**
                  * Encodes the specified Nested message, length delimited. Does not implicitly {@link jspb.test.Complex.Nested.verify|verify} messages.
+                 * @function encodeDelimited
                  * @memberof jspb.test.Complex.Nested
                  * @static
                  * @param {jspb.test.Complex.INested} message Nested message or plain object to encode
@@ -2352,6 +2436,7 @@ $root.jspb = (function() {
 
                 /**
                  * Decodes a Nested message from the specified reader or buffer.
+                 * @function decode
                  * @memberof jspb.test.Complex.Nested
                  * @static
                  * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -2382,6 +2467,7 @@ $root.jspb = (function() {
 
                 /**
                  * Decodes a Nested message from the specified reader or buffer, length delimited.
+                 * @function decodeDelimited
                  * @memberof jspb.test.Complex.Nested
                  * @static
                  * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -2397,6 +2483,7 @@ $root.jspb = (function() {
 
                 /**
                  * Verifies a Nested message.
+                 * @function verify
                  * @memberof jspb.test.Complex.Nested
                  * @static
                  * @param {Object.<string,*>} message Plain object to verify
@@ -2412,6 +2499,7 @@ $root.jspb = (function() {
 
                 /**
                  * Creates a Nested message from a plain object. Also converts values to their respective internal types.
+                 * @function fromObject
                  * @memberof jspb.test.Complex.Nested
                  * @static
                  * @param {Object.<string,*>} object Plain object
@@ -2428,6 +2516,7 @@ $root.jspb = (function() {
 
                 /**
                  * Creates a plain object from a Nested message. Also converts values to other types if specified.
+                 * @function toObject
                  * @memberof jspb.test.Complex.Nested
                  * @static
                  * @param {jspb.test.Complex.Nested} message Nested
@@ -2447,6 +2536,7 @@ $root.jspb = (function() {
 
                 /**
                  * Converts this Nested to JSON.
+                 * @function toJSON
                  * @memberof jspb.test.Complex.Nested
                  * @instance
                  * @returns {Object.<string,*>} JSON object
@@ -2485,6 +2575,7 @@ $root.jspb = (function() {
 
             /**
              * Creates a new OuterMessage instance using the specified properties.
+             * @function create
              * @memberof jspb.test.OuterMessage
              * @static
              * @param {jspb.test.IOuterMessage=} [properties] Properties to set
@@ -2496,6 +2587,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified OuterMessage message. Does not implicitly {@link jspb.test.OuterMessage.verify|verify} messages.
+             * @function encode
              * @memberof jspb.test.OuterMessage
              * @static
              * @param {jspb.test.IOuterMessage} message OuterMessage message or plain object to encode
@@ -2510,6 +2602,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified OuterMessage message, length delimited. Does not implicitly {@link jspb.test.OuterMessage.verify|verify} messages.
+             * @function encodeDelimited
              * @memberof jspb.test.OuterMessage
              * @static
              * @param {jspb.test.IOuterMessage} message OuterMessage message or plain object to encode
@@ -2522,6 +2615,7 @@ $root.jspb = (function() {
 
             /**
              * Decodes an OuterMessage message from the specified reader or buffer.
+             * @function decode
              * @memberof jspb.test.OuterMessage
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -2547,6 +2641,7 @@ $root.jspb = (function() {
 
             /**
              * Decodes an OuterMessage message from the specified reader or buffer, length delimited.
+             * @function decodeDelimited
              * @memberof jspb.test.OuterMessage
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -2562,6 +2657,7 @@ $root.jspb = (function() {
 
             /**
              * Verifies an OuterMessage message.
+             * @function verify
              * @memberof jspb.test.OuterMessage
              * @static
              * @param {Object.<string,*>} message Plain object to verify
@@ -2575,6 +2671,7 @@ $root.jspb = (function() {
 
             /**
              * Creates an OuterMessage message from a plain object. Also converts values to their respective internal types.
+             * @function fromObject
              * @memberof jspb.test.OuterMessage
              * @static
              * @param {Object.<string,*>} object Plain object
@@ -2588,6 +2685,7 @@ $root.jspb = (function() {
 
             /**
              * Creates a plain object from an OuterMessage message. Also converts values to other types if specified.
+             * @function toObject
              * @memberof jspb.test.OuterMessage
              * @static
              * @param {jspb.test.OuterMessage} message OuterMessage
@@ -2600,6 +2698,7 @@ $root.jspb = (function() {
 
             /**
              * Converts this OuterMessage to JSON.
+             * @function toJSON
              * @memberof jspb.test.OuterMessage
              * @instance
              * @returns {Object.<string,*>} JSON object
@@ -2633,14 +2732,15 @@ $root.jspb = (function() {
 
                 /**
                  * Complex innerComplexField.
+                 * @member {number}innerComplexField
                  * @memberof jspb.test.OuterMessage.Complex
                  * @instance
-                 * @type {number}
                  */
                 Complex.prototype.innerComplexField = 0;
 
                 /**
                  * Creates a new Complex instance using the specified properties.
+                 * @function create
                  * @memberof jspb.test.OuterMessage.Complex
                  * @static
                  * @param {jspb.test.OuterMessage.IComplex=} [properties] Properties to set
@@ -2652,6 +2752,7 @@ $root.jspb = (function() {
 
                 /**
                  * Encodes the specified Complex message. Does not implicitly {@link jspb.test.OuterMessage.Complex.verify|verify} messages.
+                 * @function encode
                  * @memberof jspb.test.OuterMessage.Complex
                  * @static
                  * @param {jspb.test.OuterMessage.IComplex} message Complex message or plain object to encode
@@ -2668,6 +2769,7 @@ $root.jspb = (function() {
 
                 /**
                  * Encodes the specified Complex message, length delimited. Does not implicitly {@link jspb.test.OuterMessage.Complex.verify|verify} messages.
+                 * @function encodeDelimited
                  * @memberof jspb.test.OuterMessage.Complex
                  * @static
                  * @param {jspb.test.OuterMessage.IComplex} message Complex message or plain object to encode
@@ -2680,6 +2782,7 @@ $root.jspb = (function() {
 
                 /**
                  * Decodes a Complex message from the specified reader or buffer.
+                 * @function decode
                  * @memberof jspb.test.OuterMessage.Complex
                  * @static
                  * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -2708,6 +2811,7 @@ $root.jspb = (function() {
 
                 /**
                  * Decodes a Complex message from the specified reader or buffer, length delimited.
+                 * @function decodeDelimited
                  * @memberof jspb.test.OuterMessage.Complex
                  * @static
                  * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -2723,6 +2827,7 @@ $root.jspb = (function() {
 
                 /**
                  * Verifies a Complex message.
+                 * @function verify
                  * @memberof jspb.test.OuterMessage.Complex
                  * @static
                  * @param {Object.<string,*>} message Plain object to verify
@@ -2739,6 +2844,7 @@ $root.jspb = (function() {
 
                 /**
                  * Creates a Complex message from a plain object. Also converts values to their respective internal types.
+                 * @function fromObject
                  * @memberof jspb.test.OuterMessage.Complex
                  * @static
                  * @param {Object.<string,*>} object Plain object
@@ -2755,6 +2861,7 @@ $root.jspb = (function() {
 
                 /**
                  * Creates a plain object from a Complex message. Also converts values to other types if specified.
+                 * @function toObject
                  * @memberof jspb.test.OuterMessage.Complex
                  * @static
                  * @param {jspb.test.OuterMessage.Complex} message Complex
@@ -2774,6 +2881,7 @@ $root.jspb = (function() {
 
                 /**
                  * Converts this Complex to JSON.
+                 * @function toJSON
                  * @memberof jspb.test.OuterMessage.Complex
                  * @instance
                  * @returns {Object.<string,*>} JSON object
@@ -2813,14 +2921,15 @@ $root.jspb = (function() {
 
             /**
              * IsExtension ext1.
+             * @member {string}ext1
              * @memberof jspb.test.IsExtension
              * @instance
-             * @type {string}
              */
             IsExtension.prototype.ext1 = "";
 
             /**
              * Creates a new IsExtension instance using the specified properties.
+             * @function create
              * @memberof jspb.test.IsExtension
              * @static
              * @param {jspb.test.IIsExtension=} [properties] Properties to set
@@ -2832,6 +2941,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified IsExtension message. Does not implicitly {@link jspb.test.IsExtension.verify|verify} messages.
+             * @function encode
              * @memberof jspb.test.IsExtension
              * @static
              * @param {jspb.test.IIsExtension} message IsExtension message or plain object to encode
@@ -2848,6 +2958,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified IsExtension message, length delimited. Does not implicitly {@link jspb.test.IsExtension.verify|verify} messages.
+             * @function encodeDelimited
              * @memberof jspb.test.IsExtension
              * @static
              * @param {jspb.test.IIsExtension} message IsExtension message or plain object to encode
@@ -2860,6 +2971,7 @@ $root.jspb = (function() {
 
             /**
              * Decodes an IsExtension message from the specified reader or buffer.
+             * @function decode
              * @memberof jspb.test.IsExtension
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -2888,6 +3000,7 @@ $root.jspb = (function() {
 
             /**
              * Decodes an IsExtension message from the specified reader or buffer, length delimited.
+             * @function decodeDelimited
              * @memberof jspb.test.IsExtension
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -2903,6 +3016,7 @@ $root.jspb = (function() {
 
             /**
              * Verifies an IsExtension message.
+             * @function verify
              * @memberof jspb.test.IsExtension
              * @static
              * @param {Object.<string,*>} message Plain object to verify
@@ -2919,6 +3033,7 @@ $root.jspb = (function() {
 
             /**
              * Creates an IsExtension message from a plain object. Also converts values to their respective internal types.
+             * @function fromObject
              * @memberof jspb.test.IsExtension
              * @static
              * @param {Object.<string,*>} object Plain object
@@ -2935,6 +3050,7 @@ $root.jspb = (function() {
 
             /**
              * Creates a plain object from an IsExtension message. Also converts values to other types if specified.
+             * @function toObject
              * @memberof jspb.test.IsExtension
              * @static
              * @param {jspb.test.IsExtension} message IsExtension
@@ -2954,6 +3070,7 @@ $root.jspb = (function() {
 
             /**
              * Converts this IsExtension to JSON.
+             * @function toJSON
              * @memberof jspb.test.IsExtension
              * @instance
              * @returns {Object.<string,*>} JSON object
@@ -2989,6 +3106,7 @@ $root.jspb = (function() {
 
             /**
              * Creates a new IndirectExtension instance using the specified properties.
+             * @function create
              * @memberof jspb.test.IndirectExtension
              * @static
              * @param {jspb.test.IIndirectExtension=} [properties] Properties to set
@@ -3000,6 +3118,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified IndirectExtension message. Does not implicitly {@link jspb.test.IndirectExtension.verify|verify} messages.
+             * @function encode
              * @memberof jspb.test.IndirectExtension
              * @static
              * @param {jspb.test.IIndirectExtension} message IndirectExtension message or plain object to encode
@@ -3014,6 +3133,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified IndirectExtension message, length delimited. Does not implicitly {@link jspb.test.IndirectExtension.verify|verify} messages.
+             * @function encodeDelimited
              * @memberof jspb.test.IndirectExtension
              * @static
              * @param {jspb.test.IIndirectExtension} message IndirectExtension message or plain object to encode
@@ -3026,6 +3146,7 @@ $root.jspb = (function() {
 
             /**
              * Decodes an IndirectExtension message from the specified reader or buffer.
+             * @function decode
              * @memberof jspb.test.IndirectExtension
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -3051,6 +3172,7 @@ $root.jspb = (function() {
 
             /**
              * Decodes an IndirectExtension message from the specified reader or buffer, length delimited.
+             * @function decodeDelimited
              * @memberof jspb.test.IndirectExtension
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -3066,6 +3188,7 @@ $root.jspb = (function() {
 
             /**
              * Verifies an IndirectExtension message.
+             * @function verify
              * @memberof jspb.test.IndirectExtension
              * @static
              * @param {Object.<string,*>} message Plain object to verify
@@ -3079,6 +3202,7 @@ $root.jspb = (function() {
 
             /**
              * Creates an IndirectExtension message from a plain object. Also converts values to their respective internal types.
+             * @function fromObject
              * @memberof jspb.test.IndirectExtension
              * @static
              * @param {Object.<string,*>} object Plain object
@@ -3092,6 +3216,7 @@ $root.jspb = (function() {
 
             /**
              * Creates a plain object from an IndirectExtension message. Also converts values to other types if specified.
+             * @function toObject
              * @memberof jspb.test.IndirectExtension
              * @static
              * @param {jspb.test.IndirectExtension} message IndirectExtension
@@ -3104,6 +3229,7 @@ $root.jspb = (function() {
 
             /**
              * Converts this IndirectExtension to JSON.
+             * @function toJSON
              * @memberof jspb.test.IndirectExtension
              * @instance
              * @returns {Object.<string,*>} JSON object
@@ -3145,54 +3271,55 @@ $root.jspb = (function() {
 
             /**
              * DefaultValues stringField.
+             * @member {string}stringField
              * @memberof jspb.test.DefaultValues
              * @instance
-             * @type {string}
              */
             DefaultValues.prototype.stringField = "default<>abc";
 
             /**
              * DefaultValues boolField.
+             * @member {boolean}boolField
              * @memberof jspb.test.DefaultValues
              * @instance
-             * @type {boolean}
              */
             DefaultValues.prototype.boolField = true;
 
             /**
              * DefaultValues intField.
+             * @member {number|Long}intField
              * @memberof jspb.test.DefaultValues
              * @instance
-             * @type {number|Long}
              */
             DefaultValues.prototype.intField = $util.Long ? $util.Long.fromBits(11,0,false) : 11;
 
             /**
              * DefaultValues enumField.
+             * @member {jspb.test.DefaultValues.Enum}enumField
              * @memberof jspb.test.DefaultValues
              * @instance
-             * @type {jspb.test.DefaultValues.Enum}
              */
             DefaultValues.prototype.enumField = 13;
 
             /**
              * DefaultValues emptyField.
+             * @member {string}emptyField
              * @memberof jspb.test.DefaultValues
              * @instance
-             * @type {string}
              */
             DefaultValues.prototype.emptyField = "";
 
             /**
              * DefaultValues bytesField.
+             * @member {Uint8Array}bytesField
              * @memberof jspb.test.DefaultValues
              * @instance
-             * @type {Uint8Array}
              */
             DefaultValues.prototype.bytesField = $util.newBuffer([109,111,111]);
 
             /**
              * Creates a new DefaultValues instance using the specified properties.
+             * @function create
              * @memberof jspb.test.DefaultValues
              * @static
              * @param {jspb.test.IDefaultValues=} [properties] Properties to set
@@ -3204,6 +3331,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified DefaultValues message. Does not implicitly {@link jspb.test.DefaultValues.verify|verify} messages.
+             * @function encode
              * @memberof jspb.test.DefaultValues
              * @static
              * @param {jspb.test.IDefaultValues} message DefaultValues message or plain object to encode
@@ -3230,6 +3358,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified DefaultValues message, length delimited. Does not implicitly {@link jspb.test.DefaultValues.verify|verify} messages.
+             * @function encodeDelimited
              * @memberof jspb.test.DefaultValues
              * @static
              * @param {jspb.test.IDefaultValues} message DefaultValues message or plain object to encode
@@ -3242,6 +3371,7 @@ $root.jspb = (function() {
 
             /**
              * Decodes a DefaultValues message from the specified reader or buffer.
+             * @function decode
              * @memberof jspb.test.DefaultValues
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -3285,6 +3415,7 @@ $root.jspb = (function() {
 
             /**
              * Decodes a DefaultValues message from the specified reader or buffer, length delimited.
+             * @function decodeDelimited
              * @memberof jspb.test.DefaultValues
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -3300,6 +3431,7 @@ $root.jspb = (function() {
 
             /**
              * Verifies a DefaultValues message.
+             * @function verify
              * @memberof jspb.test.DefaultValues
              * @static
              * @param {Object.<string,*>} message Plain object to verify
@@ -3336,6 +3468,7 @@ $root.jspb = (function() {
 
             /**
              * Creates a DefaultValues message from a plain object. Also converts values to their respective internal types.
+             * @function fromObject
              * @memberof jspb.test.DefaultValues
              * @static
              * @param {Object.<string,*>} object Plain object
@@ -3380,6 +3513,7 @@ $root.jspb = (function() {
 
             /**
              * Creates a plain object from a DefaultValues message. Also converts values to other types if specified.
+             * @function toObject
              * @memberof jspb.test.DefaultValues
              * @static
              * @param {jspb.test.DefaultValues} message DefaultValues
@@ -3426,6 +3560,7 @@ $root.jspb = (function() {
 
             /**
              * Converts this DefaultValues to JSON.
+             * @function toJSON
              * @memberof jspb.test.DefaultValues
              * @instance
              * @returns {Object.<string,*>} JSON object
@@ -3484,70 +3619,71 @@ $root.jspb = (function() {
 
             /**
              * FloatingPointFields optionalFloatField.
+             * @member {number}optionalFloatField
              * @memberof jspb.test.FloatingPointFields
              * @instance
-             * @type {number}
              */
             FloatingPointFields.prototype.optionalFloatField = 0;
 
             /**
              * FloatingPointFields requiredFloatField.
+             * @member {number}requiredFloatField
              * @memberof jspb.test.FloatingPointFields
              * @instance
-             * @type {number}
              */
             FloatingPointFields.prototype.requiredFloatField = 0;
 
             /**
              * FloatingPointFields repeatedFloatField.
+             * @member {Array.<number>}repeatedFloatField
              * @memberof jspb.test.FloatingPointFields
              * @instance
-             * @type {Array.<number>}
              */
             FloatingPointFields.prototype.repeatedFloatField = $util.emptyArray;
 
             /**
              * FloatingPointFields defaultFloatField.
+             * @member {number}defaultFloatField
              * @memberof jspb.test.FloatingPointFields
              * @instance
-             * @type {number}
              */
             FloatingPointFields.prototype.defaultFloatField = 2;
 
             /**
              * FloatingPointFields optionalDoubleField.
+             * @member {number}optionalDoubleField
              * @memberof jspb.test.FloatingPointFields
              * @instance
-             * @type {number}
              */
             FloatingPointFields.prototype.optionalDoubleField = 0;
 
             /**
              * FloatingPointFields requiredDoubleField.
+             * @member {number}requiredDoubleField
              * @memberof jspb.test.FloatingPointFields
              * @instance
-             * @type {number}
              */
             FloatingPointFields.prototype.requiredDoubleField = 0;
 
             /**
              * FloatingPointFields repeatedDoubleField.
+             * @member {Array.<number>}repeatedDoubleField
              * @memberof jspb.test.FloatingPointFields
              * @instance
-             * @type {Array.<number>}
              */
             FloatingPointFields.prototype.repeatedDoubleField = $util.emptyArray;
 
             /**
              * FloatingPointFields defaultDoubleField.
+             * @member {number}defaultDoubleField
              * @memberof jspb.test.FloatingPointFields
              * @instance
-             * @type {number}
              */
             FloatingPointFields.prototype.defaultDoubleField = 2;
 
             /**
              * Creates a new FloatingPointFields instance using the specified properties.
+             * @function create
              * @memberof jspb.test.FloatingPointFields
              * @static
              * @param {jspb.test.IFloatingPointFields=} [properties] Properties to set
@@ -3559,6 +3695,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified FloatingPointFields message. Does not implicitly {@link jspb.test.FloatingPointFields.verify|verify} messages.
+             * @function encode
              * @memberof jspb.test.FloatingPointFields
              * @static
              * @param {jspb.test.IFloatingPointFields} message FloatingPointFields message or plain object to encode
@@ -3589,6 +3726,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified FloatingPointFields message, length delimited. Does not implicitly {@link jspb.test.FloatingPointFields.verify|verify} messages.
+             * @function encodeDelimited
              * @memberof jspb.test.FloatingPointFields
              * @static
              * @param {jspb.test.IFloatingPointFields} message FloatingPointFields message or plain object to encode
@@ -3601,6 +3739,7 @@ $root.jspb = (function() {
 
             /**
              * Decodes a FloatingPointFields message from the specified reader or buffer.
+             * @function decode
              * @memberof jspb.test.FloatingPointFields
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -3668,6 +3807,7 @@ $root.jspb = (function() {
 
             /**
              * Decodes a FloatingPointFields message from the specified reader or buffer, length delimited.
+             * @function decodeDelimited
              * @memberof jspb.test.FloatingPointFields
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -3683,6 +3823,7 @@ $root.jspb = (function() {
 
             /**
              * Verifies a FloatingPointFields message.
+             * @function verify
              * @memberof jspb.test.FloatingPointFields
              * @static
              * @param {Object.<string,*>} message Plain object to verify
@@ -3726,6 +3867,7 @@ $root.jspb = (function() {
 
             /**
              * Creates a FloatingPointFields message from a plain object. Also converts values to their respective internal types.
+             * @function fromObject
              * @memberof jspb.test.FloatingPointFields
              * @static
              * @param {Object.<string,*>} object Plain object
@@ -3766,6 +3908,7 @@ $root.jspb = (function() {
 
             /**
              * Creates a plain object from a FloatingPointFields message. Also converts values to other types if specified.
+             * @function toObject
              * @memberof jspb.test.FloatingPointFields
              * @static
              * @param {jspb.test.FloatingPointFields} message FloatingPointFields
@@ -3815,6 +3958,7 @@ $root.jspb = (function() {
 
             /**
              * Converts this FloatingPointFields to JSON.
+             * @function toJSON
              * @memberof jspb.test.FloatingPointFields
              * @instance
              * @returns {Object.<string,*>} JSON object
@@ -3857,54 +4001,55 @@ $root.jspb = (function() {
 
             /**
              * TestClone str.
+             * @member {string}str
              * @memberof jspb.test.TestClone
              * @instance
-             * @type {string}
              */
             TestClone.prototype.str = "";
 
             /**
              * TestClone simple1.
+             * @member {(jspb.test.ISimple1|null)}simple1
              * @memberof jspb.test.TestClone
              * @instance
-             * @type {(jspb.test.ISimple1|null)}
              */
             TestClone.prototype.simple1 = null;
 
             /**
              * TestClone simple2.
+             * @member {Array.<jspb.test.ISimple1>}simple2
              * @memberof jspb.test.TestClone
              * @instance
-             * @type {Array.<jspb.test.ISimple1>}
              */
             TestClone.prototype.simple2 = $util.emptyArray;
 
             /**
              * TestClone bytesField.
+             * @member {Uint8Array}bytesField
              * @memberof jspb.test.TestClone
              * @instance
-             * @type {Uint8Array}
              */
             TestClone.prototype.bytesField = $util.newBuffer([]);
 
             /**
              * TestClone unused.
+             * @member {string}unused
              * @memberof jspb.test.TestClone
              * @instance
-             * @type {string}
              */
             TestClone.prototype.unused = "";
 
             /**
              * TestClone .jspb.test.CloneExtension.extField.
+             * @member {(jspb.test.ICloneExtension|null)}.jspb.test.CloneExtension.extField
              * @memberof jspb.test.TestClone
              * @instance
-             * @type {(jspb.test.ICloneExtension|null)}
              */
             TestClone.prototype[".jspb.test.CloneExtension.extField"] = null;
 
             /**
              * Creates a new TestClone instance using the specified properties.
+             * @function create
              * @memberof jspb.test.TestClone
              * @static
              * @param {jspb.test.ITestClone=} [properties] Properties to set
@@ -3916,6 +4061,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified TestClone message. Does not implicitly {@link jspb.test.TestClone.verify|verify} messages.
+             * @function encode
              * @memberof jspb.test.TestClone
              * @static
              * @param {jspb.test.ITestClone} message TestClone message or plain object to encode
@@ -3943,6 +4089,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified TestClone message, length delimited. Does not implicitly {@link jspb.test.TestClone.verify|verify} messages.
+             * @function encodeDelimited
              * @memberof jspb.test.TestClone
              * @static
              * @param {jspb.test.ITestClone} message TestClone message or plain object to encode
@@ -3955,6 +4102,7 @@ $root.jspb = (function() {
 
             /**
              * Decodes a TestClone message from the specified reader or buffer.
+             * @function decode
              * @memberof jspb.test.TestClone
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -4000,6 +4148,7 @@ $root.jspb = (function() {
 
             /**
              * Decodes a TestClone message from the specified reader or buffer, length delimited.
+             * @function decodeDelimited
              * @memberof jspb.test.TestClone
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -4015,6 +4164,7 @@ $root.jspb = (function() {
 
             /**
              * Verifies a TestClone message.
+             * @function verify
              * @memberof jspb.test.TestClone
              * @static
              * @param {Object.<string,*>} message Plain object to verify
@@ -4056,6 +4206,7 @@ $root.jspb = (function() {
 
             /**
              * Creates a TestClone message from a plain object. Also converts values to their respective internal types.
+             * @function fromObject
              * @memberof jspb.test.TestClone
              * @static
              * @param {Object.<string,*>} object Plain object
@@ -4099,6 +4250,7 @@ $root.jspb = (function() {
 
             /**
              * Creates a plain object from a TestClone message. Also converts values to other types if specified.
+             * @function toObject
              * @memberof jspb.test.TestClone
              * @static
              * @param {jspb.test.TestClone} message TestClone
@@ -4138,6 +4290,7 @@ $root.jspb = (function() {
 
             /**
              * Converts this TestClone to JSON.
+             * @function toJSON
              * @memberof jspb.test.TestClone
              * @instance
              * @returns {Object.<string,*>} JSON object
@@ -4174,14 +4327,15 @@ $root.jspb = (function() {
 
             /**
              * CloneExtension ext.
+             * @member {string}ext
              * @memberof jspb.test.CloneExtension
              * @instance
-             * @type {string}
              */
             CloneExtension.prototype.ext = "";
 
             /**
              * Creates a new CloneExtension instance using the specified properties.
+             * @function create
              * @memberof jspb.test.CloneExtension
              * @static
              * @param {jspb.test.ICloneExtension=} [properties] Properties to set
@@ -4193,6 +4347,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified CloneExtension message. Does not implicitly {@link jspb.test.CloneExtension.verify|verify} messages.
+             * @function encode
              * @memberof jspb.test.CloneExtension
              * @static
              * @param {jspb.test.ICloneExtension} message CloneExtension message or plain object to encode
@@ -4209,6 +4364,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified CloneExtension message, length delimited. Does not implicitly {@link jspb.test.CloneExtension.verify|verify} messages.
+             * @function encodeDelimited
              * @memberof jspb.test.CloneExtension
              * @static
              * @param {jspb.test.ICloneExtension} message CloneExtension message or plain object to encode
@@ -4221,6 +4377,7 @@ $root.jspb = (function() {
 
             /**
              * Decodes a CloneExtension message from the specified reader or buffer.
+             * @function decode
              * @memberof jspb.test.CloneExtension
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -4249,6 +4406,7 @@ $root.jspb = (function() {
 
             /**
              * Decodes a CloneExtension message from the specified reader or buffer, length delimited.
+             * @function decodeDelimited
              * @memberof jspb.test.CloneExtension
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -4264,6 +4422,7 @@ $root.jspb = (function() {
 
             /**
              * Verifies a CloneExtension message.
+             * @function verify
              * @memberof jspb.test.CloneExtension
              * @static
              * @param {Object.<string,*>} message Plain object to verify
@@ -4280,6 +4439,7 @@ $root.jspb = (function() {
 
             /**
              * Creates a CloneExtension message from a plain object. Also converts values to their respective internal types.
+             * @function fromObject
              * @memberof jspb.test.CloneExtension
              * @static
              * @param {Object.<string,*>} object Plain object
@@ -4296,6 +4456,7 @@ $root.jspb = (function() {
 
             /**
              * Creates a plain object from a CloneExtension message. Also converts values to other types if specified.
+             * @function toObject
              * @memberof jspb.test.CloneExtension
              * @static
              * @param {jspb.test.CloneExtension} message CloneExtension
@@ -4315,6 +4476,7 @@ $root.jspb = (function() {
 
             /**
              * Converts this CloneExtension to JSON.
+             * @function toJSON
              * @memberof jspb.test.CloneExtension
              * @instance
              * @returns {Object.<string,*>} JSON object
@@ -4357,54 +4519,55 @@ $root.jspb = (function() {
 
             /**
              * TestGroup repeatedGroup.
+             * @member {Array.<jspb.test.TestGroup.IRepeatedGroup>}repeatedGroup
              * @memberof jspb.test.TestGroup
              * @instance
-             * @type {Array.<jspb.test.TestGroup.IRepeatedGroup>}
              */
             TestGroup.prototype.repeatedGroup = $util.emptyArray;
 
             /**
              * TestGroup requiredGroup.
+             * @member {jspb.test.TestGroup.IRequiredGroup}requiredGroup
              * @memberof jspb.test.TestGroup
              * @instance
-             * @type {jspb.test.TestGroup.IRequiredGroup}
              */
             TestGroup.prototype.requiredGroup = null;
 
             /**
              * TestGroup optionalGroup.
+             * @member {(jspb.test.TestGroup.IOptionalGroup|null)}optionalGroup
              * @memberof jspb.test.TestGroup
              * @instance
-             * @type {(jspb.test.TestGroup.IOptionalGroup|null)}
              */
             TestGroup.prototype.optionalGroup = null;
 
             /**
              * TestGroup id.
+             * @member {string}id
              * @memberof jspb.test.TestGroup
              * @instance
-             * @type {string}
              */
             TestGroup.prototype.id = "";
 
             /**
              * TestGroup requiredSimple.
+             * @member {jspb.test.ISimple2}requiredSimple
              * @memberof jspb.test.TestGroup
              * @instance
-             * @type {jspb.test.ISimple2}
              */
             TestGroup.prototype.requiredSimple = null;
 
             /**
              * TestGroup optionalSimple.
+             * @member {(jspb.test.ISimple2|null)}optionalSimple
              * @memberof jspb.test.TestGroup
              * @instance
-             * @type {(jspb.test.ISimple2|null)}
              */
             TestGroup.prototype.optionalSimple = null;
 
             /**
              * Creates a new TestGroup instance using the specified properties.
+             * @function create
              * @memberof jspb.test.TestGroup
              * @static
              * @param {jspb.test.ITestGroup=} [properties] Properties to set
@@ -4416,6 +4579,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified TestGroup message. Does not implicitly {@link jspb.test.TestGroup.verify|verify} messages.
+             * @function encode
              * @memberof jspb.test.TestGroup
              * @static
              * @param {jspb.test.ITestGroup} message TestGroup message or plain object to encode
@@ -4441,6 +4605,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified TestGroup message, length delimited. Does not implicitly {@link jspb.test.TestGroup.verify|verify} messages.
+             * @function encodeDelimited
              * @memberof jspb.test.TestGroup
              * @static
              * @param {jspb.test.ITestGroup} message TestGroup message or plain object to encode
@@ -4453,6 +4618,7 @@ $root.jspb = (function() {
 
             /**
              * Decodes a TestGroup message from the specified reader or buffer.
+             * @function decode
              * @memberof jspb.test.TestGroup
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -4502,6 +4668,7 @@ $root.jspb = (function() {
 
             /**
              * Decodes a TestGroup message from the specified reader or buffer, length delimited.
+             * @function decodeDelimited
              * @memberof jspb.test.TestGroup
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -4517,6 +4684,7 @@ $root.jspb = (function() {
 
             /**
              * Verifies a TestGroup message.
+             * @function verify
              * @memberof jspb.test.TestGroup
              * @static
              * @param {Object.<string,*>} message Plain object to verify
@@ -4558,6 +4726,7 @@ $root.jspb = (function() {
 
             /**
              * Creates a TestGroup message from a plain object. Also converts values to their respective internal types.
+             * @function fromObject
              * @memberof jspb.test.TestGroup
              * @static
              * @param {Object.<string,*>} object Plain object
@@ -4604,6 +4773,7 @@ $root.jspb = (function() {
 
             /**
              * Creates a plain object from a TestGroup message. Also converts values to other types if specified.
+             * @function toObject
              * @memberof jspb.test.TestGroup
              * @static
              * @param {jspb.test.TestGroup} message TestGroup
@@ -4643,6 +4813,7 @@ $root.jspb = (function() {
 
             /**
              * Converts this TestGroup to JSON.
+             * @function toJSON
              * @memberof jspb.test.TestGroup
              * @instance
              * @returns {Object.<string,*>} JSON object
@@ -4678,22 +4849,23 @@ $root.jspb = (function() {
 
                 /**
                  * RepeatedGroup id.
+                 * @member {string}id
                  * @memberof jspb.test.TestGroup.RepeatedGroup
                  * @instance
-                 * @type {string}
                  */
                 RepeatedGroup.prototype.id = "";
 
                 /**
                  * RepeatedGroup someBool.
+                 * @member {Array.<boolean>}someBool
                  * @memberof jspb.test.TestGroup.RepeatedGroup
                  * @instance
-                 * @type {Array.<boolean>}
                  */
                 RepeatedGroup.prototype.someBool = $util.emptyArray;
 
                 /**
                  * Creates a new RepeatedGroup instance using the specified properties.
+                 * @function create
                  * @memberof jspb.test.TestGroup.RepeatedGroup
                  * @static
                  * @param {jspb.test.TestGroup.IRepeatedGroup=} [properties] Properties to set
@@ -4705,6 +4877,7 @@ $root.jspb = (function() {
 
                 /**
                  * Encodes the specified RepeatedGroup message. Does not implicitly {@link jspb.test.TestGroup.RepeatedGroup.verify|verify} messages.
+                 * @function encode
                  * @memberof jspb.test.TestGroup.RepeatedGroup
                  * @static
                  * @param {jspb.test.TestGroup.IRepeatedGroup} message RepeatedGroup message or plain object to encode
@@ -4723,6 +4896,7 @@ $root.jspb = (function() {
 
                 /**
                  * Encodes the specified RepeatedGroup message, length delimited. Does not implicitly {@link jspb.test.TestGroup.RepeatedGroup.verify|verify} messages.
+                 * @function encodeDelimited
                  * @memberof jspb.test.TestGroup.RepeatedGroup
                  * @static
                  * @param {jspb.test.TestGroup.IRepeatedGroup} message RepeatedGroup message or plain object to encode
@@ -4735,6 +4909,7 @@ $root.jspb = (function() {
 
                 /**
                  * Decodes a RepeatedGroup message from the specified reader or buffer.
+                 * @function decode
                  * @memberof jspb.test.TestGroup.RepeatedGroup
                  * @static
                  * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -4777,6 +4952,7 @@ $root.jspb = (function() {
 
                 /**
                  * Decodes a RepeatedGroup message from the specified reader or buffer, length delimited.
+                 * @function decodeDelimited
                  * @memberof jspb.test.TestGroup.RepeatedGroup
                  * @static
                  * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -4792,6 +4968,7 @@ $root.jspb = (function() {
 
                 /**
                  * Verifies a RepeatedGroup message.
+                 * @function verify
                  * @memberof jspb.test.TestGroup.RepeatedGroup
                  * @static
                  * @param {Object.<string,*>} message Plain object to verify
@@ -4814,6 +4991,7 @@ $root.jspb = (function() {
 
                 /**
                  * Creates a RepeatedGroup message from a plain object. Also converts values to their respective internal types.
+                 * @function fromObject
                  * @memberof jspb.test.TestGroup.RepeatedGroup
                  * @static
                  * @param {Object.<string,*>} object Plain object
@@ -4837,6 +5015,7 @@ $root.jspb = (function() {
 
                 /**
                  * Creates a plain object from a RepeatedGroup message. Also converts values to other types if specified.
+                 * @function toObject
                  * @memberof jspb.test.TestGroup.RepeatedGroup
                  * @static
                  * @param {jspb.test.TestGroup.RepeatedGroup} message RepeatedGroup
@@ -4863,6 +5042,7 @@ $root.jspb = (function() {
 
                 /**
                  * Converts this RepeatedGroup to JSON.
+                 * @function toJSON
                  * @memberof jspb.test.TestGroup.RepeatedGroup
                  * @instance
                  * @returns {Object.<string,*>} JSON object
@@ -4899,14 +5079,15 @@ $root.jspb = (function() {
 
                 /**
                  * RequiredGroup id.
+                 * @member {string}id
                  * @memberof jspb.test.TestGroup.RequiredGroup
                  * @instance
-                 * @type {string}
                  */
                 RequiredGroup.prototype.id = "";
 
                 /**
                  * Creates a new RequiredGroup instance using the specified properties.
+                 * @function create
                  * @memberof jspb.test.TestGroup.RequiredGroup
                  * @static
                  * @param {jspb.test.TestGroup.IRequiredGroup=} [properties] Properties to set
@@ -4918,6 +5099,7 @@ $root.jspb = (function() {
 
                 /**
                  * Encodes the specified RequiredGroup message. Does not implicitly {@link jspb.test.TestGroup.RequiredGroup.verify|verify} messages.
+                 * @function encode
                  * @memberof jspb.test.TestGroup.RequiredGroup
                  * @static
                  * @param {jspb.test.TestGroup.IRequiredGroup} message RequiredGroup message or plain object to encode
@@ -4933,6 +5115,7 @@ $root.jspb = (function() {
 
                 /**
                  * Encodes the specified RequiredGroup message, length delimited. Does not implicitly {@link jspb.test.TestGroup.RequiredGroup.verify|verify} messages.
+                 * @function encodeDelimited
                  * @memberof jspb.test.TestGroup.RequiredGroup
                  * @static
                  * @param {jspb.test.TestGroup.IRequiredGroup} message RequiredGroup message or plain object to encode
@@ -4945,6 +5128,7 @@ $root.jspb = (function() {
 
                 /**
                  * Decodes a RequiredGroup message from the specified reader or buffer.
+                 * @function decode
                  * @memberof jspb.test.TestGroup.RequiredGroup
                  * @static
                  * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -4977,6 +5161,7 @@ $root.jspb = (function() {
 
                 /**
                  * Decodes a RequiredGroup message from the specified reader or buffer, length delimited.
+                 * @function decodeDelimited
                  * @memberof jspb.test.TestGroup.RequiredGroup
                  * @static
                  * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -4992,6 +5177,7 @@ $root.jspb = (function() {
 
                 /**
                  * Verifies a RequiredGroup message.
+                 * @function verify
                  * @memberof jspb.test.TestGroup.RequiredGroup
                  * @static
                  * @param {Object.<string,*>} message Plain object to verify
@@ -5007,6 +5193,7 @@ $root.jspb = (function() {
 
                 /**
                  * Creates a RequiredGroup message from a plain object. Also converts values to their respective internal types.
+                 * @function fromObject
                  * @memberof jspb.test.TestGroup.RequiredGroup
                  * @static
                  * @param {Object.<string,*>} object Plain object
@@ -5023,6 +5210,7 @@ $root.jspb = (function() {
 
                 /**
                  * Creates a plain object from a RequiredGroup message. Also converts values to other types if specified.
+                 * @function toObject
                  * @memberof jspb.test.TestGroup.RequiredGroup
                  * @static
                  * @param {jspb.test.TestGroup.RequiredGroup} message RequiredGroup
@@ -5042,6 +5230,7 @@ $root.jspb = (function() {
 
                 /**
                  * Converts this RequiredGroup to JSON.
+                 * @function toJSON
                  * @memberof jspb.test.TestGroup.RequiredGroup
                  * @instance
                  * @returns {Object.<string,*>} JSON object
@@ -5078,14 +5267,15 @@ $root.jspb = (function() {
 
                 /**
                  * OptionalGroup id.
+                 * @member {string}id
                  * @memberof jspb.test.TestGroup.OptionalGroup
                  * @instance
-                 * @type {string}
                  */
                 OptionalGroup.prototype.id = "";
 
                 /**
                  * Creates a new OptionalGroup instance using the specified properties.
+                 * @function create
                  * @memberof jspb.test.TestGroup.OptionalGroup
                  * @static
                  * @param {jspb.test.TestGroup.IOptionalGroup=} [properties] Properties to set
@@ -5097,6 +5287,7 @@ $root.jspb = (function() {
 
                 /**
                  * Encodes the specified OptionalGroup message. Does not implicitly {@link jspb.test.TestGroup.OptionalGroup.verify|verify} messages.
+                 * @function encode
                  * @memberof jspb.test.TestGroup.OptionalGroup
                  * @static
                  * @param {jspb.test.TestGroup.IOptionalGroup} message OptionalGroup message or plain object to encode
@@ -5112,6 +5303,7 @@ $root.jspb = (function() {
 
                 /**
                  * Encodes the specified OptionalGroup message, length delimited. Does not implicitly {@link jspb.test.TestGroup.OptionalGroup.verify|verify} messages.
+                 * @function encodeDelimited
                  * @memberof jspb.test.TestGroup.OptionalGroup
                  * @static
                  * @param {jspb.test.TestGroup.IOptionalGroup} message OptionalGroup message or plain object to encode
@@ -5124,6 +5316,7 @@ $root.jspb = (function() {
 
                 /**
                  * Decodes an OptionalGroup message from the specified reader or buffer.
+                 * @function decode
                  * @memberof jspb.test.TestGroup.OptionalGroup
                  * @static
                  * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -5156,6 +5349,7 @@ $root.jspb = (function() {
 
                 /**
                  * Decodes an OptionalGroup message from the specified reader or buffer, length delimited.
+                 * @function decodeDelimited
                  * @memberof jspb.test.TestGroup.OptionalGroup
                  * @static
                  * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -5171,6 +5365,7 @@ $root.jspb = (function() {
 
                 /**
                  * Verifies an OptionalGroup message.
+                 * @function verify
                  * @memberof jspb.test.TestGroup.OptionalGroup
                  * @static
                  * @param {Object.<string,*>} message Plain object to verify
@@ -5186,6 +5381,7 @@ $root.jspb = (function() {
 
                 /**
                  * Creates an OptionalGroup message from a plain object. Also converts values to their respective internal types.
+                 * @function fromObject
                  * @memberof jspb.test.TestGroup.OptionalGroup
                  * @static
                  * @param {Object.<string,*>} object Plain object
@@ -5202,6 +5398,7 @@ $root.jspb = (function() {
 
                 /**
                  * Creates a plain object from an OptionalGroup message. Also converts values to other types if specified.
+                 * @function toObject
                  * @memberof jspb.test.TestGroup.OptionalGroup
                  * @static
                  * @param {jspb.test.TestGroup.OptionalGroup} message OptionalGroup
@@ -5221,6 +5418,7 @@ $root.jspb = (function() {
 
                 /**
                  * Converts this OptionalGroup to JSON.
+                 * @function toJSON
                  * @memberof jspb.test.TestGroup.OptionalGroup
                  * @instance
                  * @returns {Object.<string,*>} JSON object
@@ -5260,14 +5458,15 @@ $root.jspb = (function() {
 
             /**
              * TestGroup1 group.
+             * @member {(jspb.test.TestGroup.IRepeatedGroup|null)}group
              * @memberof jspb.test.TestGroup1
              * @instance
-             * @type {(jspb.test.TestGroup.IRepeatedGroup|null)}
              */
             TestGroup1.prototype.group = null;
 
             /**
              * Creates a new TestGroup1 instance using the specified properties.
+             * @function create
              * @memberof jspb.test.TestGroup1
              * @static
              * @param {jspb.test.ITestGroup1=} [properties] Properties to set
@@ -5279,6 +5478,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified TestGroup1 message. Does not implicitly {@link jspb.test.TestGroup1.verify|verify} messages.
+             * @function encode
              * @memberof jspb.test.TestGroup1
              * @static
              * @param {jspb.test.ITestGroup1} message TestGroup1 message or plain object to encode
@@ -5295,6 +5495,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified TestGroup1 message, length delimited. Does not implicitly {@link jspb.test.TestGroup1.verify|verify} messages.
+             * @function encodeDelimited
              * @memberof jspb.test.TestGroup1
              * @static
              * @param {jspb.test.ITestGroup1} message TestGroup1 message or plain object to encode
@@ -5307,6 +5508,7 @@ $root.jspb = (function() {
 
             /**
              * Decodes a TestGroup1 message from the specified reader or buffer.
+             * @function decode
              * @memberof jspb.test.TestGroup1
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -5335,6 +5537,7 @@ $root.jspb = (function() {
 
             /**
              * Decodes a TestGroup1 message from the specified reader or buffer, length delimited.
+             * @function decodeDelimited
              * @memberof jspb.test.TestGroup1
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -5350,6 +5553,7 @@ $root.jspb = (function() {
 
             /**
              * Verifies a TestGroup1 message.
+             * @function verify
              * @memberof jspb.test.TestGroup1
              * @static
              * @param {Object.<string,*>} message Plain object to verify
@@ -5368,6 +5572,7 @@ $root.jspb = (function() {
 
             /**
              * Creates a TestGroup1 message from a plain object. Also converts values to their respective internal types.
+             * @function fromObject
              * @memberof jspb.test.TestGroup1
              * @static
              * @param {Object.<string,*>} object Plain object
@@ -5387,6 +5592,7 @@ $root.jspb = (function() {
 
             /**
              * Creates a plain object from a TestGroup1 message. Also converts values to other types if specified.
+             * @function toObject
              * @memberof jspb.test.TestGroup1
              * @static
              * @param {jspb.test.TestGroup1} message TestGroup1
@@ -5406,6 +5612,7 @@ $root.jspb = (function() {
 
             /**
              * Converts this TestGroup1 to JSON.
+             * @function toJSON
              * @memberof jspb.test.TestGroup1
              * @instance
              * @returns {Object.<string,*>} JSON object
@@ -5443,22 +5650,23 @@ $root.jspb = (function() {
 
             /**
              * TestReservedNames extension.
+             * @member {number}extension
              * @memberof jspb.test.TestReservedNames
              * @instance
-             * @type {number}
              */
             TestReservedNames.prototype.extension = 0;
 
             /**
              * TestReservedNames .jspb.test.TestReservedNamesExtension.foo.
+             * @member {number}.jspb.test.TestReservedNamesExtension.foo
              * @memberof jspb.test.TestReservedNames
              * @instance
-             * @type {number}
              */
             TestReservedNames.prototype[".jspb.test.TestReservedNamesExtension.foo"] = 0;
 
             /**
              * Creates a new TestReservedNames instance using the specified properties.
+             * @function create
              * @memberof jspb.test.TestReservedNames
              * @static
              * @param {jspb.test.ITestReservedNames=} [properties] Properties to set
@@ -5470,6 +5678,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified TestReservedNames message. Does not implicitly {@link jspb.test.TestReservedNames.verify|verify} messages.
+             * @function encode
              * @memberof jspb.test.TestReservedNames
              * @static
              * @param {jspb.test.ITestReservedNames} message TestReservedNames message or plain object to encode
@@ -5488,6 +5697,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified TestReservedNames message, length delimited. Does not implicitly {@link jspb.test.TestReservedNames.verify|verify} messages.
+             * @function encodeDelimited
              * @memberof jspb.test.TestReservedNames
              * @static
              * @param {jspb.test.ITestReservedNames} message TestReservedNames message or plain object to encode
@@ -5500,6 +5710,7 @@ $root.jspb = (function() {
 
             /**
              * Decodes a TestReservedNames message from the specified reader or buffer.
+             * @function decode
              * @memberof jspb.test.TestReservedNames
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -5531,6 +5742,7 @@ $root.jspb = (function() {
 
             /**
              * Decodes a TestReservedNames message from the specified reader or buffer, length delimited.
+             * @function decodeDelimited
              * @memberof jspb.test.TestReservedNames
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -5546,6 +5758,7 @@ $root.jspb = (function() {
 
             /**
              * Verifies a TestReservedNames message.
+             * @function verify
              * @memberof jspb.test.TestReservedNames
              * @static
              * @param {Object.<string,*>} message Plain object to verify
@@ -5565,6 +5778,7 @@ $root.jspb = (function() {
 
             /**
              * Creates a TestReservedNames message from a plain object. Also converts values to their respective internal types.
+             * @function fromObject
              * @memberof jspb.test.TestReservedNames
              * @static
              * @param {Object.<string,*>} object Plain object
@@ -5583,6 +5797,7 @@ $root.jspb = (function() {
 
             /**
              * Creates a plain object from a TestReservedNames message. Also converts values to other types if specified.
+             * @function toObject
              * @memberof jspb.test.TestReservedNames
              * @static
              * @param {jspb.test.TestReservedNames} message TestReservedNames
@@ -5606,6 +5821,7 @@ $root.jspb = (function() {
 
             /**
              * Converts this TestReservedNames to JSON.
+             * @function toJSON
              * @memberof jspb.test.TestReservedNames
              * @instance
              * @returns {Object.<string,*>} JSON object
@@ -5641,6 +5857,7 @@ $root.jspb = (function() {
 
             /**
              * Creates a new TestReservedNamesExtension instance using the specified properties.
+             * @function create
              * @memberof jspb.test.TestReservedNamesExtension
              * @static
              * @param {jspb.test.ITestReservedNamesExtension=} [properties] Properties to set
@@ -5652,6 +5869,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified TestReservedNamesExtension message. Does not implicitly {@link jspb.test.TestReservedNamesExtension.verify|verify} messages.
+             * @function encode
              * @memberof jspb.test.TestReservedNamesExtension
              * @static
              * @param {jspb.test.ITestReservedNamesExtension} message TestReservedNamesExtension message or plain object to encode
@@ -5666,6 +5884,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified TestReservedNamesExtension message, length delimited. Does not implicitly {@link jspb.test.TestReservedNamesExtension.verify|verify} messages.
+             * @function encodeDelimited
              * @memberof jspb.test.TestReservedNamesExtension
              * @static
              * @param {jspb.test.ITestReservedNamesExtension} message TestReservedNamesExtension message or plain object to encode
@@ -5678,6 +5897,7 @@ $root.jspb = (function() {
 
             /**
              * Decodes a TestReservedNamesExtension message from the specified reader or buffer.
+             * @function decode
              * @memberof jspb.test.TestReservedNamesExtension
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -5703,6 +5923,7 @@ $root.jspb = (function() {
 
             /**
              * Decodes a TestReservedNamesExtension message from the specified reader or buffer, length delimited.
+             * @function decodeDelimited
              * @memberof jspb.test.TestReservedNamesExtension
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -5718,6 +5939,7 @@ $root.jspb = (function() {
 
             /**
              * Verifies a TestReservedNamesExtension message.
+             * @function verify
              * @memberof jspb.test.TestReservedNamesExtension
              * @static
              * @param {Object.<string,*>} message Plain object to verify
@@ -5731,6 +5953,7 @@ $root.jspb = (function() {
 
             /**
              * Creates a TestReservedNamesExtension message from a plain object. Also converts values to their respective internal types.
+             * @function fromObject
              * @memberof jspb.test.TestReservedNamesExtension
              * @static
              * @param {Object.<string,*>} object Plain object
@@ -5744,6 +5967,7 @@ $root.jspb = (function() {
 
             /**
              * Creates a plain object from a TestReservedNamesExtension message. Also converts values to other types if specified.
+             * @function toObject
              * @memberof jspb.test.TestReservedNamesExtension
              * @static
              * @param {jspb.test.TestReservedNamesExtension} message TestReservedNamesExtension
@@ -5756,6 +5980,7 @@ $root.jspb = (function() {
 
             /**
              * Converts this TestReservedNamesExtension to JSON.
+             * @function toJSON
              * @memberof jspb.test.TestReservedNamesExtension
              * @instance
              * @returns {Object.<string,*>} JSON object
@@ -5802,81 +6027,81 @@ $root.jspb = (function() {
 
             /**
              * TestMessageWithOneof pone.
+             * @member {string}pone
              * @memberof jspb.test.TestMessageWithOneof
              * @instance
-             * @type {string}
              */
             TestMessageWithOneof.prototype.pone = "";
 
             /**
              * TestMessageWithOneof pthree.
+             * @member {string}pthree
              * @memberof jspb.test.TestMessageWithOneof
              * @instance
-             * @type {string}
              */
             TestMessageWithOneof.prototype.pthree = "";
 
             /**
              * TestMessageWithOneof rone.
+             * @member {(jspb.test.ITestMessageWithOneof|null)}rone
              * @memberof jspb.test.TestMessageWithOneof
              * @instance
-             * @type {(jspb.test.ITestMessageWithOneof|null)}
              */
             TestMessageWithOneof.prototype.rone = null;
 
             /**
              * TestMessageWithOneof rtwo.
+             * @member {string}rtwo
              * @memberof jspb.test.TestMessageWithOneof
              * @instance
-             * @type {string}
              */
             TestMessageWithOneof.prototype.rtwo = "";
 
             /**
              * TestMessageWithOneof normalField.
+             * @member {boolean}normalField
              * @memberof jspb.test.TestMessageWithOneof
              * @instance
-             * @type {boolean}
              */
             TestMessageWithOneof.prototype.normalField = false;
 
             /**
              * TestMessageWithOneof repeatedField.
+             * @member {Array.<string>}repeatedField
              * @memberof jspb.test.TestMessageWithOneof
              * @instance
-             * @type {Array.<string>}
              */
             TestMessageWithOneof.prototype.repeatedField = $util.emptyArray;
 
             /**
              * TestMessageWithOneof aone.
+             * @member {number}aone
              * @memberof jspb.test.TestMessageWithOneof
              * @instance
-             * @type {number}
              */
             TestMessageWithOneof.prototype.aone = 1234;
 
             /**
              * TestMessageWithOneof atwo.
+             * @member {number}atwo
              * @memberof jspb.test.TestMessageWithOneof
              * @instance
-             * @type {number}
              */
             TestMessageWithOneof.prototype.atwo = 0;
 
             /**
              * TestMessageWithOneof bone.
+             * @member {number}bone
              * @memberof jspb.test.TestMessageWithOneof
              * @instance
-             * @type {number}
              */
             TestMessageWithOneof.prototype.bone = 0;
 
             /**
              * TestMessageWithOneof btwo.
+             * @member {number}btwo
              * @memberof jspb.test.TestMessageWithOneof
              * @instance
-             * @type {number}
              */
             TestMessageWithOneof.prototype.btwo = 1234;
 
@@ -5885,10 +6110,9 @@ $root.jspb = (function() {
 
             /**
              * TestMessageWithOneof partialOneof.
-             * @property partialOneof
+             * @member {string|undefined} partialOneof
              * @memberof jspb.test.TestMessageWithOneof
              * @instance
-             * @type {string|undefined}
              */
             Object.defineProperty(TestMessageWithOneof.prototype, "partialOneof", {
                 get: $util.oneOfGetter($oneOfFields = ["pone", "pthree"]),
@@ -5897,10 +6121,9 @@ $root.jspb = (function() {
 
             /**
              * TestMessageWithOneof recursiveOneof.
-             * @property recursiveOneof
+             * @member {string|undefined} recursiveOneof
              * @memberof jspb.test.TestMessageWithOneof
              * @instance
-             * @type {string|undefined}
              */
             Object.defineProperty(TestMessageWithOneof.prototype, "recursiveOneof", {
                 get: $util.oneOfGetter($oneOfFields = ["rone", "rtwo"]),
@@ -5909,10 +6132,9 @@ $root.jspb = (function() {
 
             /**
              * TestMessageWithOneof defaultOneofA.
-             * @property defaultOneofA
+             * @member {string|undefined} defaultOneofA
              * @memberof jspb.test.TestMessageWithOneof
              * @instance
-             * @type {string|undefined}
              */
             Object.defineProperty(TestMessageWithOneof.prototype, "defaultOneofA", {
                 get: $util.oneOfGetter($oneOfFields = ["aone", "atwo"]),
@@ -5921,10 +6143,9 @@ $root.jspb = (function() {
 
             /**
              * TestMessageWithOneof defaultOneofB.
-             * @property defaultOneofB
+             * @member {string|undefined} defaultOneofB
              * @memberof jspb.test.TestMessageWithOneof
              * @instance
-             * @type {string|undefined}
              */
             Object.defineProperty(TestMessageWithOneof.prototype, "defaultOneofB", {
                 get: $util.oneOfGetter($oneOfFields = ["bone", "btwo"]),
@@ -5933,6 +6154,7 @@ $root.jspb = (function() {
 
             /**
              * Creates a new TestMessageWithOneof instance using the specified properties.
+             * @function create
              * @memberof jspb.test.TestMessageWithOneof
              * @static
              * @param {jspb.test.ITestMessageWithOneof=} [properties] Properties to set
@@ -5944,6 +6166,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified TestMessageWithOneof message. Does not implicitly {@link jspb.test.TestMessageWithOneof.verify|verify} messages.
+             * @function encode
              * @memberof jspb.test.TestMessageWithOneof
              * @static
              * @param {jspb.test.ITestMessageWithOneof} message TestMessageWithOneof message or plain object to encode
@@ -5979,6 +6202,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified TestMessageWithOneof message, length delimited. Does not implicitly {@link jspb.test.TestMessageWithOneof.verify|verify} messages.
+             * @function encodeDelimited
              * @memberof jspb.test.TestMessageWithOneof
              * @static
              * @param {jspb.test.ITestMessageWithOneof} message TestMessageWithOneof message or plain object to encode
@@ -5991,6 +6215,7 @@ $root.jspb = (function() {
 
             /**
              * Decodes a TestMessageWithOneof message from the specified reader or buffer.
+             * @function decode
              * @memberof jspb.test.TestMessageWithOneof
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -6048,6 +6273,7 @@ $root.jspb = (function() {
 
             /**
              * Decodes a TestMessageWithOneof message from the specified reader or buffer, length delimited.
+             * @function decodeDelimited
              * @memberof jspb.test.TestMessageWithOneof
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -6063,6 +6289,7 @@ $root.jspb = (function() {
 
             /**
              * Verifies a TestMessageWithOneof message.
+             * @function verify
              * @memberof jspb.test.TestMessageWithOneof
              * @static
              * @param {Object.<string,*>} message Plain object to verify
@@ -6136,6 +6363,7 @@ $root.jspb = (function() {
 
             /**
              * Creates a TestMessageWithOneof message from a plain object. Also converts values to their respective internal types.
+             * @function fromObject
              * @memberof jspb.test.TestMessageWithOneof
              * @static
              * @param {Object.<string,*>} object Plain object
@@ -6178,6 +6406,7 @@ $root.jspb = (function() {
 
             /**
              * Creates a plain object from a TestMessageWithOneof message. Also converts values to other types if specified.
+             * @function toObject
              * @memberof jspb.test.TestMessageWithOneof
              * @static
              * @param {jspb.test.TestMessageWithOneof} message TestMessageWithOneof
@@ -6244,6 +6473,7 @@ $root.jspb = (function() {
 
             /**
              * Converts this TestMessageWithOneof to JSON.
+             * @function toJSON
              * @memberof jspb.test.TestMessageWithOneof
              * @instance
              * @returns {Object.<string,*>} JSON object
@@ -6281,22 +6511,23 @@ $root.jspb = (function() {
 
             /**
              * TestEndsWithBytes value.
+             * @member {number}value
              * @memberof jspb.test.TestEndsWithBytes
              * @instance
-             * @type {number}
              */
             TestEndsWithBytes.prototype.value = 0;
 
             /**
              * TestEndsWithBytes data.
+             * @member {Uint8Array}data
              * @memberof jspb.test.TestEndsWithBytes
              * @instance
-             * @type {Uint8Array}
              */
             TestEndsWithBytes.prototype.data = $util.newBuffer([]);
 
             /**
              * Creates a new TestEndsWithBytes instance using the specified properties.
+             * @function create
              * @memberof jspb.test.TestEndsWithBytes
              * @static
              * @param {jspb.test.ITestEndsWithBytes=} [properties] Properties to set
@@ -6308,6 +6539,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified TestEndsWithBytes message. Does not implicitly {@link jspb.test.TestEndsWithBytes.verify|verify} messages.
+             * @function encode
              * @memberof jspb.test.TestEndsWithBytes
              * @static
              * @param {jspb.test.ITestEndsWithBytes} message TestEndsWithBytes message or plain object to encode
@@ -6326,6 +6558,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified TestEndsWithBytes message, length delimited. Does not implicitly {@link jspb.test.TestEndsWithBytes.verify|verify} messages.
+             * @function encodeDelimited
              * @memberof jspb.test.TestEndsWithBytes
              * @static
              * @param {jspb.test.ITestEndsWithBytes} message TestEndsWithBytes message or plain object to encode
@@ -6338,6 +6571,7 @@ $root.jspb = (function() {
 
             /**
              * Decodes a TestEndsWithBytes message from the specified reader or buffer.
+             * @function decode
              * @memberof jspb.test.TestEndsWithBytes
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -6369,6 +6603,7 @@ $root.jspb = (function() {
 
             /**
              * Decodes a TestEndsWithBytes message from the specified reader or buffer, length delimited.
+             * @function decodeDelimited
              * @memberof jspb.test.TestEndsWithBytes
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -6384,6 +6619,7 @@ $root.jspb = (function() {
 
             /**
              * Verifies a TestEndsWithBytes message.
+             * @function verify
              * @memberof jspb.test.TestEndsWithBytes
              * @static
              * @param {Object.<string,*>} message Plain object to verify
@@ -6403,6 +6639,7 @@ $root.jspb = (function() {
 
             /**
              * Creates a TestEndsWithBytes message from a plain object. Also converts values to their respective internal types.
+             * @function fromObject
              * @memberof jspb.test.TestEndsWithBytes
              * @static
              * @param {Object.<string,*>} object Plain object
@@ -6424,6 +6661,7 @@ $root.jspb = (function() {
 
             /**
              * Creates a plain object from a TestEndsWithBytes message. Also converts values to other types if specified.
+             * @function toObject
              * @memberof jspb.test.TestEndsWithBytes
              * @static
              * @param {jspb.test.TestEndsWithBytes} message TestEndsWithBytes
@@ -6447,6 +6685,7 @@ $root.jspb = (function() {
 
             /**
              * Converts this TestEndsWithBytes to JSON.
+             * @function toJSON
              * @memberof jspb.test.TestEndsWithBytes
              * @instance
              * @returns {Object.<string,*>} JSON object
@@ -6505,102 +6744,103 @@ $root.jspb = (function() {
 
             /**
              * TestMapFieldsNoBinary mapStringString.
+             * @member {Object.<string,string>}mapStringString
              * @memberof jspb.test.TestMapFieldsNoBinary
              * @instance
-             * @type {Object.<string,string>}
              */
             TestMapFieldsNoBinary.prototype.mapStringString = $util.emptyObject;
 
             /**
              * TestMapFieldsNoBinary mapStringInt32.
+             * @member {Object.<string,number>}mapStringInt32
              * @memberof jspb.test.TestMapFieldsNoBinary
              * @instance
-             * @type {Object.<string,number>}
              */
             TestMapFieldsNoBinary.prototype.mapStringInt32 = $util.emptyObject;
 
             /**
              * TestMapFieldsNoBinary mapStringInt64.
+             * @member {Object.<string,number|Long>}mapStringInt64
              * @memberof jspb.test.TestMapFieldsNoBinary
              * @instance
-             * @type {Object.<string,number|Long>}
              */
             TestMapFieldsNoBinary.prototype.mapStringInt64 = $util.emptyObject;
 
             /**
              * TestMapFieldsNoBinary mapStringBool.
+             * @member {Object.<string,boolean>}mapStringBool
              * @memberof jspb.test.TestMapFieldsNoBinary
              * @instance
-             * @type {Object.<string,boolean>}
              */
             TestMapFieldsNoBinary.prototype.mapStringBool = $util.emptyObject;
 
             /**
              * TestMapFieldsNoBinary mapStringDouble.
+             * @member {Object.<string,number>}mapStringDouble
              * @memberof jspb.test.TestMapFieldsNoBinary
              * @instance
-             * @type {Object.<string,number>}
              */
             TestMapFieldsNoBinary.prototype.mapStringDouble = $util.emptyObject;
 
             /**
              * TestMapFieldsNoBinary mapStringEnum.
+             * @member {Object.<string,jspb.test.MapValueEnumNoBinary>}mapStringEnum
              * @memberof jspb.test.TestMapFieldsNoBinary
              * @instance
-             * @type {Object.<string,jspb.test.MapValueEnumNoBinary>}
              */
             TestMapFieldsNoBinary.prototype.mapStringEnum = $util.emptyObject;
 
             /**
              * TestMapFieldsNoBinary mapStringMsg.
+             * @member {Object.<string,jspb.test.IMapValueMessageNoBinary>}mapStringMsg
              * @memberof jspb.test.TestMapFieldsNoBinary
              * @instance
-             * @type {Object.<string,jspb.test.IMapValueMessageNoBinary>}
              */
             TestMapFieldsNoBinary.prototype.mapStringMsg = $util.emptyObject;
 
             /**
              * TestMapFieldsNoBinary mapInt32String.
+             * @member {Object.<string,string>}mapInt32String
              * @memberof jspb.test.TestMapFieldsNoBinary
              * @instance
-             * @type {Object.<string,string>}
              */
             TestMapFieldsNoBinary.prototype.mapInt32String = $util.emptyObject;
 
             /**
              * TestMapFieldsNoBinary mapInt64String.
+             * @member {Object.<string,string>}mapInt64String
              * @memberof jspb.test.TestMapFieldsNoBinary
              * @instance
-             * @type {Object.<string,string>}
              */
             TestMapFieldsNoBinary.prototype.mapInt64String = $util.emptyObject;
 
             /**
              * TestMapFieldsNoBinary mapBoolString.
+             * @member {Object.<string,string>}mapBoolString
              * @memberof jspb.test.TestMapFieldsNoBinary
              * @instance
-             * @type {Object.<string,string>}
              */
             TestMapFieldsNoBinary.prototype.mapBoolString = $util.emptyObject;
 
             /**
              * TestMapFieldsNoBinary testMapFields.
+             * @member {(jspb.test.ITestMapFieldsNoBinary|null)}testMapFields
              * @memberof jspb.test.TestMapFieldsNoBinary
              * @instance
-             * @type {(jspb.test.ITestMapFieldsNoBinary|null)}
              */
             TestMapFieldsNoBinary.prototype.testMapFields = null;
 
             /**
              * TestMapFieldsNoBinary mapStringTestmapfields.
+             * @member {Object.<string,jspb.test.ITestMapFieldsNoBinary>}mapStringTestmapfields
              * @memberof jspb.test.TestMapFieldsNoBinary
              * @instance
-             * @type {Object.<string,jspb.test.ITestMapFieldsNoBinary>}
              */
             TestMapFieldsNoBinary.prototype.mapStringTestmapfields = $util.emptyObject;
 
             /**
              * Creates a new TestMapFieldsNoBinary instance using the specified properties.
+             * @function create
              * @memberof jspb.test.TestMapFieldsNoBinary
              * @static
              * @param {jspb.test.ITestMapFieldsNoBinary=} [properties] Properties to set
@@ -6612,6 +6852,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified TestMapFieldsNoBinary message. Does not implicitly {@link jspb.test.TestMapFieldsNoBinary.verify|verify} messages.
+             * @function encode
              * @memberof jspb.test.TestMapFieldsNoBinary
              * @static
              * @param {jspb.test.ITestMapFieldsNoBinary} message TestMapFieldsNoBinary message or plain object to encode
@@ -6665,6 +6906,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified TestMapFieldsNoBinary message, length delimited. Does not implicitly {@link jspb.test.TestMapFieldsNoBinary.verify|verify} messages.
+             * @function encodeDelimited
              * @memberof jspb.test.TestMapFieldsNoBinary
              * @static
              * @param {jspb.test.ITestMapFieldsNoBinary} message TestMapFieldsNoBinary message or plain object to encode
@@ -6677,6 +6919,7 @@ $root.jspb = (function() {
 
             /**
              * Decodes a TestMapFieldsNoBinary message from the specified reader or buffer.
+             * @function decode
              * @memberof jspb.test.TestMapFieldsNoBinary
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -6793,6 +7036,7 @@ $root.jspb = (function() {
 
             /**
              * Decodes a TestMapFieldsNoBinary message from the specified reader or buffer, length delimited.
+             * @function decodeDelimited
              * @memberof jspb.test.TestMapFieldsNoBinary
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -6808,6 +7052,7 @@ $root.jspb = (function() {
 
             /**
              * Verifies a TestMapFieldsNoBinary message.
+             * @function verify
              * @memberof jspb.test.TestMapFieldsNoBinary
              * @static
              * @param {Object.<string,*>} message Plain object to verify
@@ -6933,6 +7178,7 @@ $root.jspb = (function() {
 
             /**
              * Creates a TestMapFieldsNoBinary message from a plain object. Also converts values to their respective internal types.
+             * @function fromObject
              * @memberof jspb.test.TestMapFieldsNoBinary
              * @static
              * @param {Object.<string,*>} object Plain object
@@ -7055,6 +7301,7 @@ $root.jspb = (function() {
 
             /**
              * Creates a plain object from a TestMapFieldsNoBinary message. Also converts values to other types if specified.
+             * @function toObject
              * @memberof jspb.test.TestMapFieldsNoBinary
              * @static
              * @param {jspb.test.TestMapFieldsNoBinary} message TestMapFieldsNoBinary
@@ -7146,6 +7393,7 @@ $root.jspb = (function() {
 
             /**
              * Converts this TestMapFieldsNoBinary to JSON.
+             * @function toJSON
              * @memberof jspb.test.TestMapFieldsNoBinary
              * @instance
              * @returns {Object.<string,*>} JSON object
@@ -7197,14 +7445,15 @@ $root.jspb = (function() {
 
             /**
              * MapValueMessageNoBinary foo.
+             * @member {number}foo
              * @memberof jspb.test.MapValueMessageNoBinary
              * @instance
-             * @type {number}
              */
             MapValueMessageNoBinary.prototype.foo = 0;
 
             /**
              * Creates a new MapValueMessageNoBinary instance using the specified properties.
+             * @function create
              * @memberof jspb.test.MapValueMessageNoBinary
              * @static
              * @param {jspb.test.IMapValueMessageNoBinary=} [properties] Properties to set
@@ -7216,6 +7465,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified MapValueMessageNoBinary message. Does not implicitly {@link jspb.test.MapValueMessageNoBinary.verify|verify} messages.
+             * @function encode
              * @memberof jspb.test.MapValueMessageNoBinary
              * @static
              * @param {jspb.test.IMapValueMessageNoBinary} message MapValueMessageNoBinary message or plain object to encode
@@ -7232,6 +7482,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified MapValueMessageNoBinary message, length delimited. Does not implicitly {@link jspb.test.MapValueMessageNoBinary.verify|verify} messages.
+             * @function encodeDelimited
              * @memberof jspb.test.MapValueMessageNoBinary
              * @static
              * @param {jspb.test.IMapValueMessageNoBinary} message MapValueMessageNoBinary message or plain object to encode
@@ -7244,6 +7495,7 @@ $root.jspb = (function() {
 
             /**
              * Decodes a MapValueMessageNoBinary message from the specified reader or buffer.
+             * @function decode
              * @memberof jspb.test.MapValueMessageNoBinary
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -7272,6 +7524,7 @@ $root.jspb = (function() {
 
             /**
              * Decodes a MapValueMessageNoBinary message from the specified reader or buffer, length delimited.
+             * @function decodeDelimited
              * @memberof jspb.test.MapValueMessageNoBinary
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -7287,6 +7540,7 @@ $root.jspb = (function() {
 
             /**
              * Verifies a MapValueMessageNoBinary message.
+             * @function verify
              * @memberof jspb.test.MapValueMessageNoBinary
              * @static
              * @param {Object.<string,*>} message Plain object to verify
@@ -7303,6 +7557,7 @@ $root.jspb = (function() {
 
             /**
              * Creates a MapValueMessageNoBinary message from a plain object. Also converts values to their respective internal types.
+             * @function fromObject
              * @memberof jspb.test.MapValueMessageNoBinary
              * @static
              * @param {Object.<string,*>} object Plain object
@@ -7319,6 +7574,7 @@ $root.jspb = (function() {
 
             /**
              * Creates a plain object from a MapValueMessageNoBinary message. Also converts values to other types if specified.
+             * @function toObject
              * @memberof jspb.test.MapValueMessageNoBinary
              * @static
              * @param {jspb.test.MapValueMessageNoBinary} message MapValueMessageNoBinary
@@ -7338,6 +7594,7 @@ $root.jspb = (function() {
 
             /**
              * Converts this MapValueMessageNoBinary to JSON.
+             * @function toJSON
              * @memberof jspb.test.MapValueMessageNoBinary
              * @instance
              * @returns {Object.<string,*>} JSON object
@@ -7373,6 +7630,7 @@ $root.jspb = (function() {
 
             /**
              * Creates a new Deeply instance using the specified properties.
+             * @function create
              * @memberof jspb.test.Deeply
              * @static
              * @param {jspb.test.IDeeply=} [properties] Properties to set
@@ -7384,6 +7642,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified Deeply message. Does not implicitly {@link jspb.test.Deeply.verify|verify} messages.
+             * @function encode
              * @memberof jspb.test.Deeply
              * @static
              * @param {jspb.test.IDeeply} message Deeply message or plain object to encode
@@ -7398,6 +7657,7 @@ $root.jspb = (function() {
 
             /**
              * Encodes the specified Deeply message, length delimited. Does not implicitly {@link jspb.test.Deeply.verify|verify} messages.
+             * @function encodeDelimited
              * @memberof jspb.test.Deeply
              * @static
              * @param {jspb.test.IDeeply} message Deeply message or plain object to encode
@@ -7410,6 +7670,7 @@ $root.jspb = (function() {
 
             /**
              * Decodes a Deeply message from the specified reader or buffer.
+             * @function decode
              * @memberof jspb.test.Deeply
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -7435,6 +7696,7 @@ $root.jspb = (function() {
 
             /**
              * Decodes a Deeply message from the specified reader or buffer, length delimited.
+             * @function decodeDelimited
              * @memberof jspb.test.Deeply
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -7450,6 +7712,7 @@ $root.jspb = (function() {
 
             /**
              * Verifies a Deeply message.
+             * @function verify
              * @memberof jspb.test.Deeply
              * @static
              * @param {Object.<string,*>} message Plain object to verify
@@ -7463,6 +7726,7 @@ $root.jspb = (function() {
 
             /**
              * Creates a Deeply message from a plain object. Also converts values to their respective internal types.
+             * @function fromObject
              * @memberof jspb.test.Deeply
              * @static
              * @param {Object.<string,*>} object Plain object
@@ -7476,6 +7740,7 @@ $root.jspb = (function() {
 
             /**
              * Creates a plain object from a Deeply message. Also converts values to other types if specified.
+             * @function toObject
              * @memberof jspb.test.Deeply
              * @static
              * @param {jspb.test.Deeply} message Deeply
@@ -7488,6 +7753,7 @@ $root.jspb = (function() {
 
             /**
              * Converts this Deeply to JSON.
+             * @function toJSON
              * @memberof jspb.test.Deeply
              * @instance
              * @returns {Object.<string,*>} JSON object
@@ -7520,6 +7786,7 @@ $root.jspb = (function() {
 
                 /**
                  * Creates a new Nested instance using the specified properties.
+                 * @function create
                  * @memberof jspb.test.Deeply.Nested
                  * @static
                  * @param {jspb.test.Deeply.INested=} [properties] Properties to set
@@ -7531,6 +7798,7 @@ $root.jspb = (function() {
 
                 /**
                  * Encodes the specified Nested message. Does not implicitly {@link jspb.test.Deeply.Nested.verify|verify} messages.
+                 * @function encode
                  * @memberof jspb.test.Deeply.Nested
                  * @static
                  * @param {jspb.test.Deeply.INested} message Nested message or plain object to encode
@@ -7545,6 +7813,7 @@ $root.jspb = (function() {
 
                 /**
                  * Encodes the specified Nested message, length delimited. Does not implicitly {@link jspb.test.Deeply.Nested.verify|verify} messages.
+                 * @function encodeDelimited
                  * @memberof jspb.test.Deeply.Nested
                  * @static
                  * @param {jspb.test.Deeply.INested} message Nested message or plain object to encode
@@ -7557,6 +7826,7 @@ $root.jspb = (function() {
 
                 /**
                  * Decodes a Nested message from the specified reader or buffer.
+                 * @function decode
                  * @memberof jspb.test.Deeply.Nested
                  * @static
                  * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -7582,6 +7852,7 @@ $root.jspb = (function() {
 
                 /**
                  * Decodes a Nested message from the specified reader or buffer, length delimited.
+                 * @function decodeDelimited
                  * @memberof jspb.test.Deeply.Nested
                  * @static
                  * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -7597,6 +7868,7 @@ $root.jspb = (function() {
 
                 /**
                  * Verifies a Nested message.
+                 * @function verify
                  * @memberof jspb.test.Deeply.Nested
                  * @static
                  * @param {Object.<string,*>} message Plain object to verify
@@ -7610,6 +7882,7 @@ $root.jspb = (function() {
 
                 /**
                  * Creates a Nested message from a plain object. Also converts values to their respective internal types.
+                 * @function fromObject
                  * @memberof jspb.test.Deeply.Nested
                  * @static
                  * @param {Object.<string,*>} object Plain object
@@ -7623,6 +7896,7 @@ $root.jspb = (function() {
 
                 /**
                  * Creates a plain object from a Nested message. Also converts values to other types if specified.
+                 * @function toObject
                  * @memberof jspb.test.Deeply.Nested
                  * @static
                  * @param {jspb.test.Deeply.Nested} message Nested
@@ -7635,6 +7909,7 @@ $root.jspb = (function() {
 
                 /**
                  * Converts this Nested to JSON.
+                 * @function toJSON
                  * @memberof jspb.test.Deeply.Nested
                  * @instance
                  * @returns {Object.<string,*>} JSON object
@@ -7668,14 +7943,15 @@ $root.jspb = (function() {
 
                     /**
                      * Message count.
+                     * @member {number}count
                      * @memberof jspb.test.Deeply.Nested.Message
                      * @instance
-                     * @type {number}
                      */
                     Message.prototype.count = 0;
 
                     /**
                      * Creates a new Message instance using the specified properties.
+                     * @function create
                      * @memberof jspb.test.Deeply.Nested.Message
                      * @static
                      * @param {jspb.test.Deeply.Nested.IMessage=} [properties] Properties to set
@@ -7687,6 +7963,7 @@ $root.jspb = (function() {
 
                     /**
                      * Encodes the specified Message message. Does not implicitly {@link jspb.test.Deeply.Nested.Message.verify|verify} messages.
+                     * @function encode
                      * @memberof jspb.test.Deeply.Nested.Message
                      * @static
                      * @param {jspb.test.Deeply.Nested.IMessage} message Message message or plain object to encode
@@ -7703,6 +7980,7 @@ $root.jspb = (function() {
 
                     /**
                      * Encodes the specified Message message, length delimited. Does not implicitly {@link jspb.test.Deeply.Nested.Message.verify|verify} messages.
+                     * @function encodeDelimited
                      * @memberof jspb.test.Deeply.Nested.Message
                      * @static
                      * @param {jspb.test.Deeply.Nested.IMessage} message Message message or plain object to encode
@@ -7715,6 +7993,7 @@ $root.jspb = (function() {
 
                     /**
                      * Decodes a Message message from the specified reader or buffer.
+                     * @function decode
                      * @memberof jspb.test.Deeply.Nested.Message
                      * @static
                      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -7743,6 +8022,7 @@ $root.jspb = (function() {
 
                     /**
                      * Decodes a Message message from the specified reader or buffer, length delimited.
+                     * @function decodeDelimited
                      * @memberof jspb.test.Deeply.Nested.Message
                      * @static
                      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -7758,6 +8038,7 @@ $root.jspb = (function() {
 
                     /**
                      * Verifies a Message message.
+                     * @function verify
                      * @memberof jspb.test.Deeply.Nested.Message
                      * @static
                      * @param {Object.<string,*>} message Plain object to verify
@@ -7774,6 +8055,7 @@ $root.jspb = (function() {
 
                     /**
                      * Creates a Message message from a plain object. Also converts values to their respective internal types.
+                     * @function fromObject
                      * @memberof jspb.test.Deeply.Nested.Message
                      * @static
                      * @param {Object.<string,*>} object Plain object
@@ -7790,6 +8072,7 @@ $root.jspb = (function() {
 
                     /**
                      * Creates a plain object from a Message message. Also converts values to other types if specified.
+                     * @function toObject
                      * @memberof jspb.test.Deeply.Nested.Message
                      * @static
                      * @param {jspb.test.Deeply.Nested.Message} message Message
@@ -7809,6 +8092,7 @@ $root.jspb = (function() {
 
                     /**
                      * Converts this Message to JSON.
+                     * @function toJSON
                      * @memberof jspb.test.Deeply.Nested.Message
                      * @instance
                      * @returns {Object.<string,*>} JSON object
@@ -7876,14 +8160,15 @@ $root.google = (function() {
 
             /**
              * FileDescriptorSet file.
+             * @member {Array.<google.protobuf.IFileDescriptorProto>}file
              * @memberof google.protobuf.FileDescriptorSet
              * @instance
-             * @type {Array.<google.protobuf.IFileDescriptorProto>}
              */
             FileDescriptorSet.prototype.file = $util.emptyArray;
 
             /**
              * Creates a new FileDescriptorSet instance using the specified properties.
+             * @function create
              * @memberof google.protobuf.FileDescriptorSet
              * @static
              * @param {google.protobuf.IFileDescriptorSet=} [properties] Properties to set
@@ -7895,6 +8180,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified FileDescriptorSet message. Does not implicitly {@link google.protobuf.FileDescriptorSet.verify|verify} messages.
+             * @function encode
              * @memberof google.protobuf.FileDescriptorSet
              * @static
              * @param {google.protobuf.IFileDescriptorSet} message FileDescriptorSet message or plain object to encode
@@ -7912,6 +8198,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified FileDescriptorSet message, length delimited. Does not implicitly {@link google.protobuf.FileDescriptorSet.verify|verify} messages.
+             * @function encodeDelimited
              * @memberof google.protobuf.FileDescriptorSet
              * @static
              * @param {google.protobuf.IFileDescriptorSet} message FileDescriptorSet message or plain object to encode
@@ -7924,6 +8211,7 @@ $root.google = (function() {
 
             /**
              * Decodes a FileDescriptorSet message from the specified reader or buffer.
+             * @function decode
              * @memberof google.protobuf.FileDescriptorSet
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -7954,6 +8242,7 @@ $root.google = (function() {
 
             /**
              * Decodes a FileDescriptorSet message from the specified reader or buffer, length delimited.
+             * @function decodeDelimited
              * @memberof google.protobuf.FileDescriptorSet
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -7969,6 +8258,7 @@ $root.google = (function() {
 
             /**
              * Verifies a FileDescriptorSet message.
+             * @function verify
              * @memberof google.protobuf.FileDescriptorSet
              * @static
              * @param {Object.<string,*>} message Plain object to verify
@@ -7991,6 +8281,7 @@ $root.google = (function() {
 
             /**
              * Creates a FileDescriptorSet message from a plain object. Also converts values to their respective internal types.
+             * @function fromObject
              * @memberof google.protobuf.FileDescriptorSet
              * @static
              * @param {Object.<string,*>} object Plain object
@@ -8015,6 +8306,7 @@ $root.google = (function() {
 
             /**
              * Creates a plain object from a FileDescriptorSet message. Also converts values to other types if specified.
+             * @function toObject
              * @memberof google.protobuf.FileDescriptorSet
              * @static
              * @param {google.protobuf.FileDescriptorSet} message FileDescriptorSet
@@ -8037,6 +8329,7 @@ $root.google = (function() {
 
             /**
              * Converts this FileDescriptorSet to JSON.
+             * @function toJSON
              * @memberof google.protobuf.FileDescriptorSet
              * @instance
              * @returns {Object.<string,*>} JSON object
@@ -8091,102 +8384,103 @@ $root.google = (function() {
 
             /**
              * FileDescriptorProto name.
+             * @member {string}name
              * @memberof google.protobuf.FileDescriptorProto
              * @instance
-             * @type {string}
              */
             FileDescriptorProto.prototype.name = "";
 
             /**
              * FileDescriptorProto package.
+             * @member {string}package_
              * @memberof google.protobuf.FileDescriptorProto
              * @instance
-             * @type {string}
              */
             FileDescriptorProto.prototype["package"] = "";
 
             /**
              * FileDescriptorProto dependency.
+             * @member {Array.<string>}dependency
              * @memberof google.protobuf.FileDescriptorProto
              * @instance
-             * @type {Array.<string>}
              */
             FileDescriptorProto.prototype.dependency = $util.emptyArray;
 
             /**
              * FileDescriptorProto publicDependency.
+             * @member {Array.<number>}publicDependency
              * @memberof google.protobuf.FileDescriptorProto
              * @instance
-             * @type {Array.<number>}
              */
             FileDescriptorProto.prototype.publicDependency = $util.emptyArray;
 
             /**
              * FileDescriptorProto weakDependency.
+             * @member {Array.<number>}weakDependency
              * @memberof google.protobuf.FileDescriptorProto
              * @instance
-             * @type {Array.<number>}
              */
             FileDescriptorProto.prototype.weakDependency = $util.emptyArray;
 
             /**
              * FileDescriptorProto messageType.
+             * @member {Array.<google.protobuf.IDescriptorProto>}messageType
              * @memberof google.protobuf.FileDescriptorProto
              * @instance
-             * @type {Array.<google.protobuf.IDescriptorProto>}
              */
             FileDescriptorProto.prototype.messageType = $util.emptyArray;
 
             /**
              * FileDescriptorProto enumType.
+             * @member {Array.<google.protobuf.IEnumDescriptorProto>}enumType
              * @memberof google.protobuf.FileDescriptorProto
              * @instance
-             * @type {Array.<google.protobuf.IEnumDescriptorProto>}
              */
             FileDescriptorProto.prototype.enumType = $util.emptyArray;
 
             /**
              * FileDescriptorProto service.
+             * @member {Array.<google.protobuf.IServiceDescriptorProto>}service
              * @memberof google.protobuf.FileDescriptorProto
              * @instance
-             * @type {Array.<google.protobuf.IServiceDescriptorProto>}
              */
             FileDescriptorProto.prototype.service = $util.emptyArray;
 
             /**
              * FileDescriptorProto extension.
+             * @member {Array.<google.protobuf.IFieldDescriptorProto>}extension
              * @memberof google.protobuf.FileDescriptorProto
              * @instance
-             * @type {Array.<google.protobuf.IFieldDescriptorProto>}
              */
             FileDescriptorProto.prototype.extension = $util.emptyArray;
 
             /**
              * FileDescriptorProto options.
+             * @member {(google.protobuf.IFileOptions|null)}options
              * @memberof google.protobuf.FileDescriptorProto
              * @instance
-             * @type {(google.protobuf.IFileOptions|null)}
              */
             FileDescriptorProto.prototype.options = null;
 
             /**
              * FileDescriptorProto sourceCodeInfo.
+             * @member {(google.protobuf.ISourceCodeInfo|null)}sourceCodeInfo
              * @memberof google.protobuf.FileDescriptorProto
              * @instance
-             * @type {(google.protobuf.ISourceCodeInfo|null)}
              */
             FileDescriptorProto.prototype.sourceCodeInfo = null;
 
             /**
              * FileDescriptorProto syntax.
+             * @member {string}syntax
              * @memberof google.protobuf.FileDescriptorProto
              * @instance
-             * @type {string}
              */
             FileDescriptorProto.prototype.syntax = "";
 
             /**
              * Creates a new FileDescriptorProto instance using the specified properties.
+             * @function create
              * @memberof google.protobuf.FileDescriptorProto
              * @static
              * @param {google.protobuf.IFileDescriptorProto=} [properties] Properties to set
@@ -8198,6 +8492,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified FileDescriptorProto message. Does not implicitly {@link google.protobuf.FileDescriptorProto.verify|verify} messages.
+             * @function encode
              * @memberof google.protobuf.FileDescriptorProto
              * @static
              * @param {google.protobuf.IFileDescriptorProto} message FileDescriptorProto message or plain object to encode
@@ -8243,6 +8538,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified FileDescriptorProto message, length delimited. Does not implicitly {@link google.protobuf.FileDescriptorProto.verify|verify} messages.
+             * @function encodeDelimited
              * @memberof google.protobuf.FileDescriptorProto
              * @static
              * @param {google.protobuf.IFileDescriptorProto} message FileDescriptorProto message or plain object to encode
@@ -8255,6 +8551,7 @@ $root.google = (function() {
 
             /**
              * Decodes a FileDescriptorProto message from the specified reader or buffer.
+             * @function decode
              * @memberof google.protobuf.FileDescriptorProto
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -8340,6 +8637,7 @@ $root.google = (function() {
 
             /**
              * Decodes a FileDescriptorProto message from the specified reader or buffer, length delimited.
+             * @function decodeDelimited
              * @memberof google.protobuf.FileDescriptorProto
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -8355,6 +8653,7 @@ $root.google = (function() {
 
             /**
              * Verifies a FileDescriptorProto message.
+             * @function verify
              * @memberof google.protobuf.FileDescriptorProto
              * @static
              * @param {Object.<string,*>} message Plain object to verify
@@ -8444,6 +8743,7 @@ $root.google = (function() {
 
             /**
              * Creates a FileDescriptorProto message from a plain object. Also converts values to their respective internal types.
+             * @function fromObject
              * @memberof google.protobuf.FileDescriptorProto
              * @static
              * @param {Object.<string,*>} object Plain object
@@ -8535,6 +8835,7 @@ $root.google = (function() {
 
             /**
              * Creates a plain object from a FileDescriptorProto message. Also converts values to other types if specified.
+             * @function toObject
              * @memberof google.protobuf.FileDescriptorProto
              * @static
              * @param {google.protobuf.FileDescriptorProto} message FileDescriptorProto
@@ -8611,6 +8912,7 @@ $root.google = (function() {
 
             /**
              * Converts this FileDescriptorProto to JSON.
+             * @function toJSON
              * @memberof google.protobuf.FileDescriptorProto
              * @instance
              * @returns {Object.<string,*>} JSON object
@@ -8664,86 +8966,87 @@ $root.google = (function() {
 
             /**
              * DescriptorProto name.
+             * @member {string}name
              * @memberof google.protobuf.DescriptorProto
              * @instance
-             * @type {string}
              */
             DescriptorProto.prototype.name = "";
 
             /**
              * DescriptorProto field.
+             * @member {Array.<google.protobuf.IFieldDescriptorProto>}field
              * @memberof google.protobuf.DescriptorProto
              * @instance
-             * @type {Array.<google.protobuf.IFieldDescriptorProto>}
              */
             DescriptorProto.prototype.field = $util.emptyArray;
 
             /**
              * DescriptorProto extension.
+             * @member {Array.<google.protobuf.IFieldDescriptorProto>}extension
              * @memberof google.protobuf.DescriptorProto
              * @instance
-             * @type {Array.<google.protobuf.IFieldDescriptorProto>}
              */
             DescriptorProto.prototype.extension = $util.emptyArray;
 
             /**
              * DescriptorProto nestedType.
+             * @member {Array.<google.protobuf.IDescriptorProto>}nestedType
              * @memberof google.protobuf.DescriptorProto
              * @instance
-             * @type {Array.<google.protobuf.IDescriptorProto>}
              */
             DescriptorProto.prototype.nestedType = $util.emptyArray;
 
             /**
              * DescriptorProto enumType.
+             * @member {Array.<google.protobuf.IEnumDescriptorProto>}enumType
              * @memberof google.protobuf.DescriptorProto
              * @instance
-             * @type {Array.<google.protobuf.IEnumDescriptorProto>}
              */
             DescriptorProto.prototype.enumType = $util.emptyArray;
 
             /**
              * DescriptorProto extensionRange.
+             * @member {Array.<google.protobuf.DescriptorProto.IExtensionRange>}extensionRange
              * @memberof google.protobuf.DescriptorProto
              * @instance
-             * @type {Array.<google.protobuf.DescriptorProto.IExtensionRange>}
              */
             DescriptorProto.prototype.extensionRange = $util.emptyArray;
 
             /**
              * DescriptorProto oneofDecl.
+             * @member {Array.<google.protobuf.IOneofDescriptorProto>}oneofDecl
              * @memberof google.protobuf.DescriptorProto
              * @instance
-             * @type {Array.<google.protobuf.IOneofDescriptorProto>}
              */
             DescriptorProto.prototype.oneofDecl = $util.emptyArray;
 
             /**
              * DescriptorProto options.
+             * @member {(google.protobuf.IMessageOptions|null)}options
              * @memberof google.protobuf.DescriptorProto
              * @instance
-             * @type {(google.protobuf.IMessageOptions|null)}
              */
             DescriptorProto.prototype.options = null;
 
             /**
              * DescriptorProto reservedRange.
+             * @member {Array.<google.protobuf.DescriptorProto.IReservedRange>}reservedRange
              * @memberof google.protobuf.DescriptorProto
              * @instance
-             * @type {Array.<google.protobuf.DescriptorProto.IReservedRange>}
              */
             DescriptorProto.prototype.reservedRange = $util.emptyArray;
 
             /**
              * DescriptorProto reservedName.
+             * @member {Array.<string>}reservedName
              * @memberof google.protobuf.DescriptorProto
              * @instance
-             * @type {Array.<string>}
              */
             DescriptorProto.prototype.reservedName = $util.emptyArray;
 
             /**
              * Creates a new DescriptorProto instance using the specified properties.
+             * @function create
              * @memberof google.protobuf.DescriptorProto
              * @static
              * @param {google.protobuf.IDescriptorProto=} [properties] Properties to set
@@ -8755,6 +9058,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified DescriptorProto message. Does not implicitly {@link google.protobuf.DescriptorProto.verify|verify} messages.
+             * @function encode
              * @memberof google.protobuf.DescriptorProto
              * @static
              * @param {google.protobuf.IDescriptorProto} message DescriptorProto message or plain object to encode
@@ -8797,6 +9101,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified DescriptorProto message, length delimited. Does not implicitly {@link google.protobuf.DescriptorProto.verify|verify} messages.
+             * @function encodeDelimited
              * @memberof google.protobuf.DescriptorProto
              * @static
              * @param {google.protobuf.IDescriptorProto} message DescriptorProto message or plain object to encode
@@ -8809,6 +9114,7 @@ $root.google = (function() {
 
             /**
              * Decodes a DescriptorProto message from the specified reader or buffer.
+             * @function decode
              * @memberof google.protobuf.DescriptorProto
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -8880,6 +9186,7 @@ $root.google = (function() {
 
             /**
              * Decodes a DescriptorProto message from the specified reader or buffer, length delimited.
+             * @function decodeDelimited
              * @memberof google.protobuf.DescriptorProto
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -8895,6 +9202,7 @@ $root.google = (function() {
 
             /**
              * Verifies a DescriptorProto message.
+             * @function verify
              * @memberof google.protobuf.DescriptorProto
              * @static
              * @param {Object.<string,*>} message Plain object to verify
@@ -8986,6 +9294,7 @@ $root.google = (function() {
 
             /**
              * Creates a DescriptorProto message from a plain object. Also converts values to their respective internal types.
+             * @function fromObject
              * @memberof google.protobuf.DescriptorProto
              * @static
              * @param {Object.<string,*>} object Plain object
@@ -9084,6 +9393,7 @@ $root.google = (function() {
 
             /**
              * Creates a plain object from a DescriptorProto message. Also converts values to other types if specified.
+             * @function toObject
              * @memberof google.protobuf.DescriptorProto
              * @static
              * @param {google.protobuf.DescriptorProto} message DescriptorProto
@@ -9157,6 +9467,7 @@ $root.google = (function() {
 
             /**
              * Converts this DescriptorProto to JSON.
+             * @function toJSON
              * @memberof google.protobuf.DescriptorProto
              * @instance
              * @returns {Object.<string,*>} JSON object
@@ -9191,22 +9502,23 @@ $root.google = (function() {
 
                 /**
                  * ExtensionRange start.
+                 * @member {number}start
                  * @memberof google.protobuf.DescriptorProto.ExtensionRange
                  * @instance
-                 * @type {number}
                  */
                 ExtensionRange.prototype.start = 0;
 
                 /**
                  * ExtensionRange end.
+                 * @member {number}end
                  * @memberof google.protobuf.DescriptorProto.ExtensionRange
                  * @instance
-                 * @type {number}
                  */
                 ExtensionRange.prototype.end = 0;
 
                 /**
                  * Creates a new ExtensionRange instance using the specified properties.
+                 * @function create
                  * @memberof google.protobuf.DescriptorProto.ExtensionRange
                  * @static
                  * @param {google.protobuf.DescriptorProto.IExtensionRange=} [properties] Properties to set
@@ -9218,6 +9530,7 @@ $root.google = (function() {
 
                 /**
                  * Encodes the specified ExtensionRange message. Does not implicitly {@link google.protobuf.DescriptorProto.ExtensionRange.verify|verify} messages.
+                 * @function encode
                  * @memberof google.protobuf.DescriptorProto.ExtensionRange
                  * @static
                  * @param {google.protobuf.DescriptorProto.IExtensionRange} message ExtensionRange message or plain object to encode
@@ -9236,6 +9549,7 @@ $root.google = (function() {
 
                 /**
                  * Encodes the specified ExtensionRange message, length delimited. Does not implicitly {@link google.protobuf.DescriptorProto.ExtensionRange.verify|verify} messages.
+                 * @function encodeDelimited
                  * @memberof google.protobuf.DescriptorProto.ExtensionRange
                  * @static
                  * @param {google.protobuf.DescriptorProto.IExtensionRange} message ExtensionRange message or plain object to encode
@@ -9248,6 +9562,7 @@ $root.google = (function() {
 
                 /**
                  * Decodes an ExtensionRange message from the specified reader or buffer.
+                 * @function decode
                  * @memberof google.protobuf.DescriptorProto.ExtensionRange
                  * @static
                  * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -9279,6 +9594,7 @@ $root.google = (function() {
 
                 /**
                  * Decodes an ExtensionRange message from the specified reader or buffer, length delimited.
+                 * @function decodeDelimited
                  * @memberof google.protobuf.DescriptorProto.ExtensionRange
                  * @static
                  * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -9294,6 +9610,7 @@ $root.google = (function() {
 
                 /**
                  * Verifies an ExtensionRange message.
+                 * @function verify
                  * @memberof google.protobuf.DescriptorProto.ExtensionRange
                  * @static
                  * @param {Object.<string,*>} message Plain object to verify
@@ -9313,6 +9630,7 @@ $root.google = (function() {
 
                 /**
                  * Creates an ExtensionRange message from a plain object. Also converts values to their respective internal types.
+                 * @function fromObject
                  * @memberof google.protobuf.DescriptorProto.ExtensionRange
                  * @static
                  * @param {Object.<string,*>} object Plain object
@@ -9331,6 +9649,7 @@ $root.google = (function() {
 
                 /**
                  * Creates a plain object from an ExtensionRange message. Also converts values to other types if specified.
+                 * @function toObject
                  * @memberof google.protobuf.DescriptorProto.ExtensionRange
                  * @static
                  * @param {google.protobuf.DescriptorProto.ExtensionRange} message ExtensionRange
@@ -9354,6 +9673,7 @@ $root.google = (function() {
 
                 /**
                  * Converts this ExtensionRange to JSON.
+                 * @function toJSON
                  * @memberof google.protobuf.DescriptorProto.ExtensionRange
                  * @instance
                  * @returns {Object.<string,*>} JSON object
@@ -9391,22 +9711,23 @@ $root.google = (function() {
 
                 /**
                  * ReservedRange start.
+                 * @member {number}start
                  * @memberof google.protobuf.DescriptorProto.ReservedRange
                  * @instance
-                 * @type {number}
                  */
                 ReservedRange.prototype.start = 0;
 
                 /**
                  * ReservedRange end.
+                 * @member {number}end
                  * @memberof google.protobuf.DescriptorProto.ReservedRange
                  * @instance
-                 * @type {number}
                  */
                 ReservedRange.prototype.end = 0;
 
                 /**
                  * Creates a new ReservedRange instance using the specified properties.
+                 * @function create
                  * @memberof google.protobuf.DescriptorProto.ReservedRange
                  * @static
                  * @param {google.protobuf.DescriptorProto.IReservedRange=} [properties] Properties to set
@@ -9418,6 +9739,7 @@ $root.google = (function() {
 
                 /**
                  * Encodes the specified ReservedRange message. Does not implicitly {@link google.protobuf.DescriptorProto.ReservedRange.verify|verify} messages.
+                 * @function encode
                  * @memberof google.protobuf.DescriptorProto.ReservedRange
                  * @static
                  * @param {google.protobuf.DescriptorProto.IReservedRange} message ReservedRange message or plain object to encode
@@ -9436,6 +9758,7 @@ $root.google = (function() {
 
                 /**
                  * Encodes the specified ReservedRange message, length delimited. Does not implicitly {@link google.protobuf.DescriptorProto.ReservedRange.verify|verify} messages.
+                 * @function encodeDelimited
                  * @memberof google.protobuf.DescriptorProto.ReservedRange
                  * @static
                  * @param {google.protobuf.DescriptorProto.IReservedRange} message ReservedRange message or plain object to encode
@@ -9448,6 +9771,7 @@ $root.google = (function() {
 
                 /**
                  * Decodes a ReservedRange message from the specified reader or buffer.
+                 * @function decode
                  * @memberof google.protobuf.DescriptorProto.ReservedRange
                  * @static
                  * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -9479,6 +9803,7 @@ $root.google = (function() {
 
                 /**
                  * Decodes a ReservedRange message from the specified reader or buffer, length delimited.
+                 * @function decodeDelimited
                  * @memberof google.protobuf.DescriptorProto.ReservedRange
                  * @static
                  * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -9494,6 +9819,7 @@ $root.google = (function() {
 
                 /**
                  * Verifies a ReservedRange message.
+                 * @function verify
                  * @memberof google.protobuf.DescriptorProto.ReservedRange
                  * @static
                  * @param {Object.<string,*>} message Plain object to verify
@@ -9513,6 +9839,7 @@ $root.google = (function() {
 
                 /**
                  * Creates a ReservedRange message from a plain object. Also converts values to their respective internal types.
+                 * @function fromObject
                  * @memberof google.protobuf.DescriptorProto.ReservedRange
                  * @static
                  * @param {Object.<string,*>} object Plain object
@@ -9531,6 +9858,7 @@ $root.google = (function() {
 
                 /**
                  * Creates a plain object from a ReservedRange message. Also converts values to other types if specified.
+                 * @function toObject
                  * @memberof google.protobuf.DescriptorProto.ReservedRange
                  * @static
                  * @param {google.protobuf.DescriptorProto.ReservedRange} message ReservedRange
@@ -9554,6 +9882,7 @@ $root.google = (function() {
 
                 /**
                  * Converts this ReservedRange to JSON.
+                 * @function toJSON
                  * @memberof google.protobuf.DescriptorProto.ReservedRange
                  * @instance
                  * @returns {Object.<string,*>} JSON object
@@ -9602,86 +9931,87 @@ $root.google = (function() {
 
             /**
              * FieldDescriptorProto name.
+             * @member {string}name
              * @memberof google.protobuf.FieldDescriptorProto
              * @instance
-             * @type {string}
              */
             FieldDescriptorProto.prototype.name = "";
 
             /**
              * FieldDescriptorProto number.
+             * @member {number}number
              * @memberof google.protobuf.FieldDescriptorProto
              * @instance
-             * @type {number}
              */
             FieldDescriptorProto.prototype.number = 0;
 
             /**
              * FieldDescriptorProto label.
+             * @member {google.protobuf.FieldDescriptorProto.Label}label
              * @memberof google.protobuf.FieldDescriptorProto
              * @instance
-             * @type {google.protobuf.FieldDescriptorProto.Label}
              */
             FieldDescriptorProto.prototype.label = 1;
 
             /**
              * FieldDescriptorProto type.
+             * @member {google.protobuf.FieldDescriptorProto.Type}type
              * @memberof google.protobuf.FieldDescriptorProto
              * @instance
-             * @type {google.protobuf.FieldDescriptorProto.Type}
              */
             FieldDescriptorProto.prototype.type = 1;
 
             /**
              * FieldDescriptorProto typeName.
+             * @member {string}typeName
              * @memberof google.protobuf.FieldDescriptorProto
              * @instance
-             * @type {string}
              */
             FieldDescriptorProto.prototype.typeName = "";
 
             /**
              * FieldDescriptorProto extendee.
+             * @member {string}extendee
              * @memberof google.protobuf.FieldDescriptorProto
              * @instance
-             * @type {string}
              */
             FieldDescriptorProto.prototype.extendee = "";
 
             /**
              * FieldDescriptorProto defaultValue.
+             * @member {string}defaultValue
              * @memberof google.protobuf.FieldDescriptorProto
              * @instance
-             * @type {string}
              */
             FieldDescriptorProto.prototype.defaultValue = "";
 
             /**
              * FieldDescriptorProto oneofIndex.
+             * @member {number}oneofIndex
              * @memberof google.protobuf.FieldDescriptorProto
              * @instance
-             * @type {number}
              */
             FieldDescriptorProto.prototype.oneofIndex = 0;
 
             /**
              * FieldDescriptorProto jsonName.
+             * @member {string}jsonName
              * @memberof google.protobuf.FieldDescriptorProto
              * @instance
-             * @type {string}
              */
             FieldDescriptorProto.prototype.jsonName = "";
 
             /**
              * FieldDescriptorProto options.
+             * @member {(google.protobuf.IFieldOptions|null)}options
              * @memberof google.protobuf.FieldDescriptorProto
              * @instance
-             * @type {(google.protobuf.IFieldOptions|null)}
              */
             FieldDescriptorProto.prototype.options = null;
 
             /**
              * Creates a new FieldDescriptorProto instance using the specified properties.
+             * @function create
              * @memberof google.protobuf.FieldDescriptorProto
              * @static
              * @param {google.protobuf.IFieldDescriptorProto=} [properties] Properties to set
@@ -9693,6 +10023,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified FieldDescriptorProto message. Does not implicitly {@link google.protobuf.FieldDescriptorProto.verify|verify} messages.
+             * @function encode
              * @memberof google.protobuf.FieldDescriptorProto
              * @static
              * @param {google.protobuf.IFieldDescriptorProto} message FieldDescriptorProto message or plain object to encode
@@ -9727,6 +10058,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified FieldDescriptorProto message, length delimited. Does not implicitly {@link google.protobuf.FieldDescriptorProto.verify|verify} messages.
+             * @function encodeDelimited
              * @memberof google.protobuf.FieldDescriptorProto
              * @static
              * @param {google.protobuf.IFieldDescriptorProto} message FieldDescriptorProto message or plain object to encode
@@ -9739,6 +10071,7 @@ $root.google = (function() {
 
             /**
              * Decodes a FieldDescriptorProto message from the specified reader or buffer.
+             * @function decode
              * @memberof google.protobuf.FieldDescriptorProto
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -9794,6 +10127,7 @@ $root.google = (function() {
 
             /**
              * Decodes a FieldDescriptorProto message from the specified reader or buffer, length delimited.
+             * @function decodeDelimited
              * @memberof google.protobuf.FieldDescriptorProto
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -9809,6 +10143,7 @@ $root.google = (function() {
 
             /**
              * Verifies a FieldDescriptorProto message.
+             * @function verify
              * @memberof google.protobuf.FieldDescriptorProto
              * @static
              * @param {Object.<string,*>} message Plain object to verify
@@ -9881,6 +10216,7 @@ $root.google = (function() {
 
             /**
              * Creates a FieldDescriptorProto message from a plain object. Also converts values to their respective internal types.
+             * @function fromObject
              * @memberof google.protobuf.FieldDescriptorProto
              * @static
              * @param {Object.<string,*>} object Plain object
@@ -10002,6 +10338,7 @@ $root.google = (function() {
 
             /**
              * Creates a plain object from a FieldDescriptorProto message. Also converts values to other types if specified.
+             * @function toObject
              * @memberof google.protobuf.FieldDescriptorProto
              * @static
              * @param {google.protobuf.FieldDescriptorProto} message FieldDescriptorProto
@@ -10049,6 +10386,7 @@ $root.google = (function() {
 
             /**
              * Converts this FieldDescriptorProto to JSON.
+             * @function toJSON
              * @memberof google.protobuf.FieldDescriptorProto
              * @instance
              * @returns {Object.<string,*>} JSON object
@@ -10146,22 +10484,23 @@ $root.google = (function() {
 
             /**
              * OneofDescriptorProto name.
+             * @member {string}name
              * @memberof google.protobuf.OneofDescriptorProto
              * @instance
-             * @type {string}
              */
             OneofDescriptorProto.prototype.name = "";
 
             /**
              * OneofDescriptorProto options.
+             * @member {(google.protobuf.IOneofOptions|null)}options
              * @memberof google.protobuf.OneofDescriptorProto
              * @instance
-             * @type {(google.protobuf.IOneofOptions|null)}
              */
             OneofDescriptorProto.prototype.options = null;
 
             /**
              * Creates a new OneofDescriptorProto instance using the specified properties.
+             * @function create
              * @memberof google.protobuf.OneofDescriptorProto
              * @static
              * @param {google.protobuf.IOneofDescriptorProto=} [properties] Properties to set
@@ -10173,6 +10512,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified OneofDescriptorProto message. Does not implicitly {@link google.protobuf.OneofDescriptorProto.verify|verify} messages.
+             * @function encode
              * @memberof google.protobuf.OneofDescriptorProto
              * @static
              * @param {google.protobuf.IOneofDescriptorProto} message OneofDescriptorProto message or plain object to encode
@@ -10191,6 +10531,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified OneofDescriptorProto message, length delimited. Does not implicitly {@link google.protobuf.OneofDescriptorProto.verify|verify} messages.
+             * @function encodeDelimited
              * @memberof google.protobuf.OneofDescriptorProto
              * @static
              * @param {google.protobuf.IOneofDescriptorProto} message OneofDescriptorProto message or plain object to encode
@@ -10203,6 +10544,7 @@ $root.google = (function() {
 
             /**
              * Decodes an OneofDescriptorProto message from the specified reader or buffer.
+             * @function decode
              * @memberof google.protobuf.OneofDescriptorProto
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -10234,6 +10576,7 @@ $root.google = (function() {
 
             /**
              * Decodes an OneofDescriptorProto message from the specified reader or buffer, length delimited.
+             * @function decodeDelimited
              * @memberof google.protobuf.OneofDescriptorProto
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -10249,6 +10592,7 @@ $root.google = (function() {
 
             /**
              * Verifies an OneofDescriptorProto message.
+             * @function verify
              * @memberof google.protobuf.OneofDescriptorProto
              * @static
              * @param {Object.<string,*>} message Plain object to verify
@@ -10270,6 +10614,7 @@ $root.google = (function() {
 
             /**
              * Creates an OneofDescriptorProto message from a plain object. Also converts values to their respective internal types.
+             * @function fromObject
              * @memberof google.protobuf.OneofDescriptorProto
              * @static
              * @param {Object.<string,*>} object Plain object
@@ -10291,6 +10636,7 @@ $root.google = (function() {
 
             /**
              * Creates a plain object from an OneofDescriptorProto message. Also converts values to other types if specified.
+             * @function toObject
              * @memberof google.protobuf.OneofDescriptorProto
              * @static
              * @param {google.protobuf.OneofDescriptorProto} message OneofDescriptorProto
@@ -10314,6 +10660,7 @@ $root.google = (function() {
 
             /**
              * Converts this OneofDescriptorProto to JSON.
+             * @function toJSON
              * @memberof google.protobuf.OneofDescriptorProto
              * @instance
              * @returns {Object.<string,*>} JSON object
@@ -10353,30 +10700,31 @@ $root.google = (function() {
 
             /**
              * EnumDescriptorProto name.
+             * @member {string}name
              * @memberof google.protobuf.EnumDescriptorProto
              * @instance
-             * @type {string}
              */
             EnumDescriptorProto.prototype.name = "";
 
             /**
              * EnumDescriptorProto value.
+             * @member {Array.<google.protobuf.IEnumValueDescriptorProto>}value
              * @memberof google.protobuf.EnumDescriptorProto
              * @instance
-             * @type {Array.<google.protobuf.IEnumValueDescriptorProto>}
              */
             EnumDescriptorProto.prototype.value = $util.emptyArray;
 
             /**
              * EnumDescriptorProto options.
+             * @member {(google.protobuf.IEnumOptions|null)}options
              * @memberof google.protobuf.EnumDescriptorProto
              * @instance
-             * @type {(google.protobuf.IEnumOptions|null)}
              */
             EnumDescriptorProto.prototype.options = null;
 
             /**
              * Creates a new EnumDescriptorProto instance using the specified properties.
+             * @function create
              * @memberof google.protobuf.EnumDescriptorProto
              * @static
              * @param {google.protobuf.IEnumDescriptorProto=} [properties] Properties to set
@@ -10388,6 +10736,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified EnumDescriptorProto message. Does not implicitly {@link google.protobuf.EnumDescriptorProto.verify|verify} messages.
+             * @function encode
              * @memberof google.protobuf.EnumDescriptorProto
              * @static
              * @param {google.protobuf.IEnumDescriptorProto} message EnumDescriptorProto message or plain object to encode
@@ -10409,6 +10758,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified EnumDescriptorProto message, length delimited. Does not implicitly {@link google.protobuf.EnumDescriptorProto.verify|verify} messages.
+             * @function encodeDelimited
              * @memberof google.protobuf.EnumDescriptorProto
              * @static
              * @param {google.protobuf.IEnumDescriptorProto} message EnumDescriptorProto message or plain object to encode
@@ -10421,6 +10771,7 @@ $root.google = (function() {
 
             /**
              * Decodes an EnumDescriptorProto message from the specified reader or buffer.
+             * @function decode
              * @memberof google.protobuf.EnumDescriptorProto
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -10457,6 +10808,7 @@ $root.google = (function() {
 
             /**
              * Decodes an EnumDescriptorProto message from the specified reader or buffer, length delimited.
+             * @function decodeDelimited
              * @memberof google.protobuf.EnumDescriptorProto
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -10472,6 +10824,7 @@ $root.google = (function() {
 
             /**
              * Verifies an EnumDescriptorProto message.
+             * @function verify
              * @memberof google.protobuf.EnumDescriptorProto
              * @static
              * @param {Object.<string,*>} message Plain object to verify
@@ -10502,6 +10855,7 @@ $root.google = (function() {
 
             /**
              * Creates an EnumDescriptorProto message from a plain object. Also converts values to their respective internal types.
+             * @function fromObject
              * @memberof google.protobuf.EnumDescriptorProto
              * @static
              * @param {Object.<string,*>} object Plain object
@@ -10533,6 +10887,7 @@ $root.google = (function() {
 
             /**
              * Creates a plain object from an EnumDescriptorProto message. Also converts values to other types if specified.
+             * @function toObject
              * @memberof google.protobuf.EnumDescriptorProto
              * @static
              * @param {google.protobuf.EnumDescriptorProto} message EnumDescriptorProto
@@ -10563,6 +10918,7 @@ $root.google = (function() {
 
             /**
              * Converts this EnumDescriptorProto to JSON.
+             * @function toJSON
              * @memberof google.protobuf.EnumDescriptorProto
              * @instance
              * @returns {Object.<string,*>} JSON object
@@ -10601,30 +10957,31 @@ $root.google = (function() {
 
             /**
              * EnumValueDescriptorProto name.
+             * @member {string}name
              * @memberof google.protobuf.EnumValueDescriptorProto
              * @instance
-             * @type {string}
              */
             EnumValueDescriptorProto.prototype.name = "";
 
             /**
              * EnumValueDescriptorProto number.
+             * @member {number}number
              * @memberof google.protobuf.EnumValueDescriptorProto
              * @instance
-             * @type {number}
              */
             EnumValueDescriptorProto.prototype.number = 0;
 
             /**
              * EnumValueDescriptorProto options.
+             * @member {(google.protobuf.IEnumValueOptions|null)}options
              * @memberof google.protobuf.EnumValueDescriptorProto
              * @instance
-             * @type {(google.protobuf.IEnumValueOptions|null)}
              */
             EnumValueDescriptorProto.prototype.options = null;
 
             /**
              * Creates a new EnumValueDescriptorProto instance using the specified properties.
+             * @function create
              * @memberof google.protobuf.EnumValueDescriptorProto
              * @static
              * @param {google.protobuf.IEnumValueDescriptorProto=} [properties] Properties to set
@@ -10636,6 +10993,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified EnumValueDescriptorProto message. Does not implicitly {@link google.protobuf.EnumValueDescriptorProto.verify|verify} messages.
+             * @function encode
              * @memberof google.protobuf.EnumValueDescriptorProto
              * @static
              * @param {google.protobuf.IEnumValueDescriptorProto} message EnumValueDescriptorProto message or plain object to encode
@@ -10656,6 +11014,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified EnumValueDescriptorProto message, length delimited. Does not implicitly {@link google.protobuf.EnumValueDescriptorProto.verify|verify} messages.
+             * @function encodeDelimited
              * @memberof google.protobuf.EnumValueDescriptorProto
              * @static
              * @param {google.protobuf.IEnumValueDescriptorProto} message EnumValueDescriptorProto message or plain object to encode
@@ -10668,6 +11027,7 @@ $root.google = (function() {
 
             /**
              * Decodes an EnumValueDescriptorProto message from the specified reader or buffer.
+             * @function decode
              * @memberof google.protobuf.EnumValueDescriptorProto
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -10702,6 +11062,7 @@ $root.google = (function() {
 
             /**
              * Decodes an EnumValueDescriptorProto message from the specified reader or buffer, length delimited.
+             * @function decodeDelimited
              * @memberof google.protobuf.EnumValueDescriptorProto
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -10717,6 +11078,7 @@ $root.google = (function() {
 
             /**
              * Verifies an EnumValueDescriptorProto message.
+             * @function verify
              * @memberof google.protobuf.EnumValueDescriptorProto
              * @static
              * @param {Object.<string,*>} message Plain object to verify
@@ -10741,6 +11103,7 @@ $root.google = (function() {
 
             /**
              * Creates an EnumValueDescriptorProto message from a plain object. Also converts values to their respective internal types.
+             * @function fromObject
              * @memberof google.protobuf.EnumValueDescriptorProto
              * @static
              * @param {Object.<string,*>} object Plain object
@@ -10764,6 +11127,7 @@ $root.google = (function() {
 
             /**
              * Creates a plain object from an EnumValueDescriptorProto message. Also converts values to other types if specified.
+             * @function toObject
              * @memberof google.protobuf.EnumValueDescriptorProto
              * @static
              * @param {google.protobuf.EnumValueDescriptorProto} message EnumValueDescriptorProto
@@ -10790,6 +11154,7 @@ $root.google = (function() {
 
             /**
              * Converts this EnumValueDescriptorProto to JSON.
+             * @function toJSON
              * @memberof google.protobuf.EnumValueDescriptorProto
              * @instance
              * @returns {Object.<string,*>} JSON object
@@ -10829,30 +11194,31 @@ $root.google = (function() {
 
             /**
              * ServiceDescriptorProto name.
+             * @member {string}name
              * @memberof google.protobuf.ServiceDescriptorProto
              * @instance
-             * @type {string}
              */
             ServiceDescriptorProto.prototype.name = "";
 
             /**
              * ServiceDescriptorProto method.
+             * @member {Array.<google.protobuf.IMethodDescriptorProto>}method
              * @memberof google.protobuf.ServiceDescriptorProto
              * @instance
-             * @type {Array.<google.protobuf.IMethodDescriptorProto>}
              */
             ServiceDescriptorProto.prototype.method = $util.emptyArray;
 
             /**
              * ServiceDescriptorProto options.
+             * @member {(google.protobuf.IServiceOptions|null)}options
              * @memberof google.protobuf.ServiceDescriptorProto
              * @instance
-             * @type {(google.protobuf.IServiceOptions|null)}
              */
             ServiceDescriptorProto.prototype.options = null;
 
             /**
              * Creates a new ServiceDescriptorProto instance using the specified properties.
+             * @function create
              * @memberof google.protobuf.ServiceDescriptorProto
              * @static
              * @param {google.protobuf.IServiceDescriptorProto=} [properties] Properties to set
@@ -10864,6 +11230,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified ServiceDescriptorProto message. Does not implicitly {@link google.protobuf.ServiceDescriptorProto.verify|verify} messages.
+             * @function encode
              * @memberof google.protobuf.ServiceDescriptorProto
              * @static
              * @param {google.protobuf.IServiceDescriptorProto} message ServiceDescriptorProto message or plain object to encode
@@ -10885,6 +11252,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified ServiceDescriptorProto message, length delimited. Does not implicitly {@link google.protobuf.ServiceDescriptorProto.verify|verify} messages.
+             * @function encodeDelimited
              * @memberof google.protobuf.ServiceDescriptorProto
              * @static
              * @param {google.protobuf.IServiceDescriptorProto} message ServiceDescriptorProto message or plain object to encode
@@ -10897,6 +11265,7 @@ $root.google = (function() {
 
             /**
              * Decodes a ServiceDescriptorProto message from the specified reader or buffer.
+             * @function decode
              * @memberof google.protobuf.ServiceDescriptorProto
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -10933,6 +11302,7 @@ $root.google = (function() {
 
             /**
              * Decodes a ServiceDescriptorProto message from the specified reader or buffer, length delimited.
+             * @function decodeDelimited
              * @memberof google.protobuf.ServiceDescriptorProto
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -10948,6 +11318,7 @@ $root.google = (function() {
 
             /**
              * Verifies a ServiceDescriptorProto message.
+             * @function verify
              * @memberof google.protobuf.ServiceDescriptorProto
              * @static
              * @param {Object.<string,*>} message Plain object to verify
@@ -10978,6 +11349,7 @@ $root.google = (function() {
 
             /**
              * Creates a ServiceDescriptorProto message from a plain object. Also converts values to their respective internal types.
+             * @function fromObject
              * @memberof google.protobuf.ServiceDescriptorProto
              * @static
              * @param {Object.<string,*>} object Plain object
@@ -11009,6 +11381,7 @@ $root.google = (function() {
 
             /**
              * Creates a plain object from a ServiceDescriptorProto message. Also converts values to other types if specified.
+             * @function toObject
              * @memberof google.protobuf.ServiceDescriptorProto
              * @static
              * @param {google.protobuf.ServiceDescriptorProto} message ServiceDescriptorProto
@@ -11039,6 +11412,7 @@ $root.google = (function() {
 
             /**
              * Converts this ServiceDescriptorProto to JSON.
+             * @function toJSON
              * @memberof google.protobuf.ServiceDescriptorProto
              * @instance
              * @returns {Object.<string,*>} JSON object
@@ -11080,54 +11454,55 @@ $root.google = (function() {
 
             /**
              * MethodDescriptorProto name.
+             * @member {string}name
              * @memberof google.protobuf.MethodDescriptorProto
              * @instance
-             * @type {string}
              */
             MethodDescriptorProto.prototype.name = "";
 
             /**
              * MethodDescriptorProto inputType.
+             * @member {string}inputType
              * @memberof google.protobuf.MethodDescriptorProto
              * @instance
-             * @type {string}
              */
             MethodDescriptorProto.prototype.inputType = "";
 
             /**
              * MethodDescriptorProto outputType.
+             * @member {string}outputType
              * @memberof google.protobuf.MethodDescriptorProto
              * @instance
-             * @type {string}
              */
             MethodDescriptorProto.prototype.outputType = "";
 
             /**
              * MethodDescriptorProto options.
+             * @member {(google.protobuf.IMethodOptions|null)}options
              * @memberof google.protobuf.MethodDescriptorProto
              * @instance
-             * @type {(google.protobuf.IMethodOptions|null)}
              */
             MethodDescriptorProto.prototype.options = null;
 
             /**
              * MethodDescriptorProto clientStreaming.
+             * @member {boolean}clientStreaming
              * @memberof google.protobuf.MethodDescriptorProto
              * @instance
-             * @type {boolean}
              */
             MethodDescriptorProto.prototype.clientStreaming = false;
 
             /**
              * MethodDescriptorProto serverStreaming.
+             * @member {boolean}serverStreaming
              * @memberof google.protobuf.MethodDescriptorProto
              * @instance
-             * @type {boolean}
              */
             MethodDescriptorProto.prototype.serverStreaming = false;
 
             /**
              * Creates a new MethodDescriptorProto instance using the specified properties.
+             * @function create
              * @memberof google.protobuf.MethodDescriptorProto
              * @static
              * @param {google.protobuf.IMethodDescriptorProto=} [properties] Properties to set
@@ -11139,6 +11514,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified MethodDescriptorProto message. Does not implicitly {@link google.protobuf.MethodDescriptorProto.verify|verify} messages.
+             * @function encode
              * @memberof google.protobuf.MethodDescriptorProto
              * @static
              * @param {google.protobuf.IMethodDescriptorProto} message MethodDescriptorProto message or plain object to encode
@@ -11165,6 +11541,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified MethodDescriptorProto message, length delimited. Does not implicitly {@link google.protobuf.MethodDescriptorProto.verify|verify} messages.
+             * @function encodeDelimited
              * @memberof google.protobuf.MethodDescriptorProto
              * @static
              * @param {google.protobuf.IMethodDescriptorProto} message MethodDescriptorProto message or plain object to encode
@@ -11177,6 +11554,7 @@ $root.google = (function() {
 
             /**
              * Decodes a MethodDescriptorProto message from the specified reader or buffer.
+             * @function decode
              * @memberof google.protobuf.MethodDescriptorProto
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -11220,6 +11598,7 @@ $root.google = (function() {
 
             /**
              * Decodes a MethodDescriptorProto message from the specified reader or buffer, length delimited.
+             * @function decodeDelimited
              * @memberof google.protobuf.MethodDescriptorProto
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -11235,6 +11614,7 @@ $root.google = (function() {
 
             /**
              * Verifies a MethodDescriptorProto message.
+             * @function verify
              * @memberof google.protobuf.MethodDescriptorProto
              * @static
              * @param {Object.<string,*>} message Plain object to verify
@@ -11268,6 +11648,7 @@ $root.google = (function() {
 
             /**
              * Creates a MethodDescriptorProto message from a plain object. Also converts values to their respective internal types.
+             * @function fromObject
              * @memberof google.protobuf.MethodDescriptorProto
              * @static
              * @param {Object.<string,*>} object Plain object
@@ -11297,6 +11678,7 @@ $root.google = (function() {
 
             /**
              * Creates a plain object from a MethodDescriptorProto message. Also converts values to other types if specified.
+             * @function toObject
              * @memberof google.protobuf.MethodDescriptorProto
              * @static
              * @param {google.protobuf.MethodDescriptorProto} message MethodDescriptorProto
@@ -11332,6 +11714,7 @@ $root.google = (function() {
 
             /**
              * Converts this MethodDescriptorProto to JSON.
+             * @function toJSON
              * @memberof google.protobuf.MethodDescriptorProto
              * @instance
              * @returns {Object.<string,*>} JSON object
@@ -11383,126 +11766,127 @@ $root.google = (function() {
 
             /**
              * FileOptions javaPackage.
+             * @member {string}javaPackage
              * @memberof google.protobuf.FileOptions
              * @instance
-             * @type {string}
              */
             FileOptions.prototype.javaPackage = "";
 
             /**
              * FileOptions javaOuterClassname.
+             * @member {string}javaOuterClassname
              * @memberof google.protobuf.FileOptions
              * @instance
-             * @type {string}
              */
             FileOptions.prototype.javaOuterClassname = "";
 
             /**
              * FileOptions javaMultipleFiles.
+             * @member {boolean}javaMultipleFiles
              * @memberof google.protobuf.FileOptions
              * @instance
-             * @type {boolean}
              */
             FileOptions.prototype.javaMultipleFiles = false;
 
             /**
              * FileOptions javaGenerateEqualsAndHash.
+             * @member {boolean}javaGenerateEqualsAndHash
              * @memberof google.protobuf.FileOptions
              * @instance
-             * @type {boolean}
              */
             FileOptions.prototype.javaGenerateEqualsAndHash = false;
 
             /**
              * FileOptions javaStringCheckUtf8.
+             * @member {boolean}javaStringCheckUtf8
              * @memberof google.protobuf.FileOptions
              * @instance
-             * @type {boolean}
              */
             FileOptions.prototype.javaStringCheckUtf8 = false;
 
             /**
              * FileOptions optimizeFor.
+             * @member {google.protobuf.FileOptions.OptimizeMode}optimizeFor
              * @memberof google.protobuf.FileOptions
              * @instance
-             * @type {google.protobuf.FileOptions.OptimizeMode}
              */
             FileOptions.prototype.optimizeFor = 1;
 
             /**
              * FileOptions goPackage.
+             * @member {string}goPackage
              * @memberof google.protobuf.FileOptions
              * @instance
-             * @type {string}
              */
             FileOptions.prototype.goPackage = "";
 
             /**
              * FileOptions ccGenericServices.
+             * @member {boolean}ccGenericServices
              * @memberof google.protobuf.FileOptions
              * @instance
-             * @type {boolean}
              */
             FileOptions.prototype.ccGenericServices = false;
 
             /**
              * FileOptions javaGenericServices.
+             * @member {boolean}javaGenericServices
              * @memberof google.protobuf.FileOptions
              * @instance
-             * @type {boolean}
              */
             FileOptions.prototype.javaGenericServices = false;
 
             /**
              * FileOptions pyGenericServices.
+             * @member {boolean}pyGenericServices
              * @memberof google.protobuf.FileOptions
              * @instance
-             * @type {boolean}
              */
             FileOptions.prototype.pyGenericServices = false;
 
             /**
              * FileOptions deprecated.
+             * @member {boolean}deprecated
              * @memberof google.protobuf.FileOptions
              * @instance
-             * @type {boolean}
              */
             FileOptions.prototype.deprecated = false;
 
             /**
              * FileOptions ccEnableArenas.
+             * @member {boolean}ccEnableArenas
              * @memberof google.protobuf.FileOptions
              * @instance
-             * @type {boolean}
              */
             FileOptions.prototype.ccEnableArenas = false;
 
             /**
              * FileOptions objcClassPrefix.
+             * @member {string}objcClassPrefix
              * @memberof google.protobuf.FileOptions
              * @instance
-             * @type {string}
              */
             FileOptions.prototype.objcClassPrefix = "";
 
             /**
              * FileOptions csharpNamespace.
+             * @member {string}csharpNamespace
              * @memberof google.protobuf.FileOptions
              * @instance
-             * @type {string}
              */
             FileOptions.prototype.csharpNamespace = "";
 
             /**
              * FileOptions uninterpretedOption.
+             * @member {Array.<google.protobuf.IUninterpretedOption>}uninterpretedOption
              * @memberof google.protobuf.FileOptions
              * @instance
-             * @type {Array.<google.protobuf.IUninterpretedOption>}
              */
             FileOptions.prototype.uninterpretedOption = $util.emptyArray;
 
             /**
              * Creates a new FileOptions instance using the specified properties.
+             * @function create
              * @memberof google.protobuf.FileOptions
              * @static
              * @param {google.protobuf.IFileOptions=} [properties] Properties to set
@@ -11514,6 +11898,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified FileOptions message. Does not implicitly {@link google.protobuf.FileOptions.verify|verify} messages.
+             * @function encode
              * @memberof google.protobuf.FileOptions
              * @static
              * @param {google.protobuf.IFileOptions} message FileOptions message or plain object to encode
@@ -11559,6 +11944,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified FileOptions message, length delimited. Does not implicitly {@link google.protobuf.FileOptions.verify|verify} messages.
+             * @function encodeDelimited
              * @memberof google.protobuf.FileOptions
              * @static
              * @param {google.protobuf.IFileOptions} message FileOptions message or plain object to encode
@@ -11571,6 +11957,7 @@ $root.google = (function() {
 
             /**
              * Decodes a FileOptions message from the specified reader or buffer.
+             * @function decode
              * @memberof google.protobuf.FileOptions
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -11643,6 +12030,7 @@ $root.google = (function() {
 
             /**
              * Decodes a FileOptions message from the specified reader or buffer, length delimited.
+             * @function decodeDelimited
              * @memberof google.protobuf.FileOptions
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -11658,6 +12046,7 @@ $root.google = (function() {
 
             /**
              * Verifies a FileOptions message.
+             * @function verify
              * @memberof google.protobuf.FileOptions
              * @static
              * @param {Object.<string,*>} message Plain object to verify
@@ -11728,6 +12117,7 @@ $root.google = (function() {
 
             /**
              * Creates a FileOptions message from a plain object. Also converts values to their respective internal types.
+             * @function fromObject
              * @memberof google.protobuf.FileOptions
              * @static
              * @param {Object.<string,*>} object Plain object
@@ -11792,6 +12182,7 @@ $root.google = (function() {
 
             /**
              * Creates a plain object from a FileOptions message. Also converts values to other types if specified.
+             * @function toObject
              * @memberof google.protobuf.FileOptions
              * @static
              * @param {google.protobuf.FileOptions} message FileOptions
@@ -11858,6 +12249,7 @@ $root.google = (function() {
 
             /**
              * Converts this FileOptions to JSON.
+             * @function toJSON
              * @memberof google.protobuf.FileOptions
              * @instance
              * @returns {Object.<string,*>} JSON object
@@ -11914,46 +12306,47 @@ $root.google = (function() {
 
             /**
              * MessageOptions messageSetWireFormat.
+             * @member {boolean}messageSetWireFormat
              * @memberof google.protobuf.MessageOptions
              * @instance
-             * @type {boolean}
              */
             MessageOptions.prototype.messageSetWireFormat = false;
 
             /**
              * MessageOptions noStandardDescriptorAccessor.
+             * @member {boolean}noStandardDescriptorAccessor
              * @memberof google.protobuf.MessageOptions
              * @instance
-             * @type {boolean}
              */
             MessageOptions.prototype.noStandardDescriptorAccessor = false;
 
             /**
              * MessageOptions deprecated.
+             * @member {boolean}deprecated
              * @memberof google.protobuf.MessageOptions
              * @instance
-             * @type {boolean}
              */
             MessageOptions.prototype.deprecated = false;
 
             /**
              * MessageOptions mapEntry.
+             * @member {boolean}mapEntry
              * @memberof google.protobuf.MessageOptions
              * @instance
-             * @type {boolean}
              */
             MessageOptions.prototype.mapEntry = false;
 
             /**
              * MessageOptions uninterpretedOption.
+             * @member {Array.<google.protobuf.IUninterpretedOption>}uninterpretedOption
              * @memberof google.protobuf.MessageOptions
              * @instance
-             * @type {Array.<google.protobuf.IUninterpretedOption>}
              */
             MessageOptions.prototype.uninterpretedOption = $util.emptyArray;
 
             /**
              * Creates a new MessageOptions instance using the specified properties.
+             * @function create
              * @memberof google.protobuf.MessageOptions
              * @static
              * @param {google.protobuf.IMessageOptions=} [properties] Properties to set
@@ -11965,6 +12358,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified MessageOptions message. Does not implicitly {@link google.protobuf.MessageOptions.verify|verify} messages.
+             * @function encode
              * @memberof google.protobuf.MessageOptions
              * @static
              * @param {google.protobuf.IMessageOptions} message MessageOptions message or plain object to encode
@@ -11990,6 +12384,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified MessageOptions message, length delimited. Does not implicitly {@link google.protobuf.MessageOptions.verify|verify} messages.
+             * @function encodeDelimited
              * @memberof google.protobuf.MessageOptions
              * @static
              * @param {google.protobuf.IMessageOptions} message MessageOptions message or plain object to encode
@@ -12002,6 +12397,7 @@ $root.google = (function() {
 
             /**
              * Decodes a MessageOptions message from the specified reader or buffer.
+             * @function decode
              * @memberof google.protobuf.MessageOptions
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -12044,6 +12440,7 @@ $root.google = (function() {
 
             /**
              * Decodes a MessageOptions message from the specified reader or buffer, length delimited.
+             * @function decodeDelimited
              * @memberof google.protobuf.MessageOptions
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -12059,6 +12456,7 @@ $root.google = (function() {
 
             /**
              * Verifies a MessageOptions message.
+             * @function verify
              * @memberof google.protobuf.MessageOptions
              * @static
              * @param {Object.<string,*>} message Plain object to verify
@@ -12093,6 +12491,7 @@ $root.google = (function() {
 
             /**
              * Creates a MessageOptions message from a plain object. Also converts values to their respective internal types.
+             * @function fromObject
              * @memberof google.protobuf.MessageOptions
              * @static
              * @param {Object.<string,*>} object Plain object
@@ -12125,6 +12524,7 @@ $root.google = (function() {
 
             /**
              * Creates a plain object from a MessageOptions message. Also converts values to other types if specified.
+             * @function toObject
              * @memberof google.protobuf.MessageOptions
              * @static
              * @param {google.protobuf.MessageOptions} message MessageOptions
@@ -12161,6 +12561,7 @@ $root.google = (function() {
 
             /**
              * Converts this MessageOptions to JSON.
+             * @function toJSON
              * @memberof google.protobuf.MessageOptions
              * @instance
              * @returns {Object.<string,*>} JSON object
@@ -12204,62 +12605,63 @@ $root.google = (function() {
 
             /**
              * FieldOptions ctype.
+             * @member {google.protobuf.FieldOptions.CType}ctype
              * @memberof google.protobuf.FieldOptions
              * @instance
-             * @type {google.protobuf.FieldOptions.CType}
              */
             FieldOptions.prototype.ctype = 0;
 
             /**
              * FieldOptions packed.
+             * @member {boolean}packed
              * @memberof google.protobuf.FieldOptions
              * @instance
-             * @type {boolean}
              */
             FieldOptions.prototype.packed = false;
 
             /**
              * FieldOptions jstype.
+             * @member {google.protobuf.FieldOptions.JSType}jstype
              * @memberof google.protobuf.FieldOptions
              * @instance
-             * @type {google.protobuf.FieldOptions.JSType}
              */
             FieldOptions.prototype.jstype = 0;
 
             /**
              * FieldOptions lazy.
+             * @member {boolean}lazy
              * @memberof google.protobuf.FieldOptions
              * @instance
-             * @type {boolean}
              */
             FieldOptions.prototype.lazy = false;
 
             /**
              * FieldOptions deprecated.
+             * @member {boolean}deprecated
              * @memberof google.protobuf.FieldOptions
              * @instance
-             * @type {boolean}
              */
             FieldOptions.prototype.deprecated = false;
 
             /**
              * FieldOptions weak.
+             * @member {boolean}weak
              * @memberof google.protobuf.FieldOptions
              * @instance
-             * @type {boolean}
              */
             FieldOptions.prototype.weak = false;
 
             /**
              * FieldOptions uninterpretedOption.
+             * @member {Array.<google.protobuf.IUninterpretedOption>}uninterpretedOption
              * @memberof google.protobuf.FieldOptions
              * @instance
-             * @type {Array.<google.protobuf.IUninterpretedOption>}
              */
             FieldOptions.prototype.uninterpretedOption = $util.emptyArray;
 
             /**
              * Creates a new FieldOptions instance using the specified properties.
+             * @function create
              * @memberof google.protobuf.FieldOptions
              * @static
              * @param {google.protobuf.IFieldOptions=} [properties] Properties to set
@@ -12271,6 +12673,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified FieldOptions message. Does not implicitly {@link google.protobuf.FieldOptions.verify|verify} messages.
+             * @function encode
              * @memberof google.protobuf.FieldOptions
              * @static
              * @param {google.protobuf.IFieldOptions} message FieldOptions message or plain object to encode
@@ -12300,6 +12703,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified FieldOptions message, length delimited. Does not implicitly {@link google.protobuf.FieldOptions.verify|verify} messages.
+             * @function encodeDelimited
              * @memberof google.protobuf.FieldOptions
              * @static
              * @param {google.protobuf.IFieldOptions} message FieldOptions message or plain object to encode
@@ -12312,6 +12716,7 @@ $root.google = (function() {
 
             /**
              * Decodes a FieldOptions message from the specified reader or buffer.
+             * @function decode
              * @memberof google.protobuf.FieldOptions
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -12360,6 +12765,7 @@ $root.google = (function() {
 
             /**
              * Decodes a FieldOptions message from the specified reader or buffer, length delimited.
+             * @function decodeDelimited
              * @memberof google.protobuf.FieldOptions
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -12375,6 +12781,7 @@ $root.google = (function() {
 
             /**
              * Verifies a FieldOptions message.
+             * @function verify
              * @memberof google.protobuf.FieldOptions
              * @static
              * @param {Object.<string,*>} message Plain object to verify
@@ -12427,6 +12834,7 @@ $root.google = (function() {
 
             /**
              * Creates a FieldOptions message from a plain object. Also converts values to their respective internal types.
+             * @function fromObject
              * @memberof google.protobuf.FieldOptions
              * @static
              * @param {Object.<string,*>} object Plain object
@@ -12487,6 +12895,7 @@ $root.google = (function() {
 
             /**
              * Creates a plain object from a FieldOptions message. Also converts values to other types if specified.
+             * @function toObject
              * @memberof google.protobuf.FieldOptions
              * @static
              * @param {google.protobuf.FieldOptions} message FieldOptions
@@ -12529,6 +12938,7 @@ $root.google = (function() {
 
             /**
              * Converts this FieldOptions to JSON.
+             * @function toJSON
              * @memberof google.protobuf.FieldOptions
              * @instance
              * @returns {Object.<string,*>} JSON object
@@ -12596,14 +13006,15 @@ $root.google = (function() {
 
             /**
              * OneofOptions uninterpretedOption.
+             * @member {Array.<google.protobuf.IUninterpretedOption>}uninterpretedOption
              * @memberof google.protobuf.OneofOptions
              * @instance
-             * @type {Array.<google.protobuf.IUninterpretedOption>}
              */
             OneofOptions.prototype.uninterpretedOption = $util.emptyArray;
 
             /**
              * Creates a new OneofOptions instance using the specified properties.
+             * @function create
              * @memberof google.protobuf.OneofOptions
              * @static
              * @param {google.protobuf.IOneofOptions=} [properties] Properties to set
@@ -12615,6 +13026,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified OneofOptions message. Does not implicitly {@link google.protobuf.OneofOptions.verify|verify} messages.
+             * @function encode
              * @memberof google.protobuf.OneofOptions
              * @static
              * @param {google.protobuf.IOneofOptions} message OneofOptions message or plain object to encode
@@ -12632,6 +13044,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified OneofOptions message, length delimited. Does not implicitly {@link google.protobuf.OneofOptions.verify|verify} messages.
+             * @function encodeDelimited
              * @memberof google.protobuf.OneofOptions
              * @static
              * @param {google.protobuf.IOneofOptions} message OneofOptions message or plain object to encode
@@ -12644,6 +13057,7 @@ $root.google = (function() {
 
             /**
              * Decodes an OneofOptions message from the specified reader or buffer.
+             * @function decode
              * @memberof google.protobuf.OneofOptions
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -12674,6 +13088,7 @@ $root.google = (function() {
 
             /**
              * Decodes an OneofOptions message from the specified reader or buffer, length delimited.
+             * @function decodeDelimited
              * @memberof google.protobuf.OneofOptions
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -12689,6 +13104,7 @@ $root.google = (function() {
 
             /**
              * Verifies an OneofOptions message.
+             * @function verify
              * @memberof google.protobuf.OneofOptions
              * @static
              * @param {Object.<string,*>} message Plain object to verify
@@ -12711,6 +13127,7 @@ $root.google = (function() {
 
             /**
              * Creates an OneofOptions message from a plain object. Also converts values to their respective internal types.
+             * @function fromObject
              * @memberof google.protobuf.OneofOptions
              * @static
              * @param {Object.<string,*>} object Plain object
@@ -12735,6 +13152,7 @@ $root.google = (function() {
 
             /**
              * Creates a plain object from an OneofOptions message. Also converts values to other types if specified.
+             * @function toObject
              * @memberof google.protobuf.OneofOptions
              * @static
              * @param {google.protobuf.OneofOptions} message OneofOptions
@@ -12757,6 +13175,7 @@ $root.google = (function() {
 
             /**
              * Converts this OneofOptions to JSON.
+             * @function toJSON
              * @memberof google.protobuf.OneofOptions
              * @instance
              * @returns {Object.<string,*>} JSON object
@@ -12797,38 +13216,39 @@ $root.google = (function() {
 
             /**
              * EnumOptions allowAlias.
+             * @member {boolean}allowAlias
              * @memberof google.protobuf.EnumOptions
              * @instance
-             * @type {boolean}
              */
             EnumOptions.prototype.allowAlias = false;
 
             /**
              * EnumOptions deprecated.
+             * @member {boolean}deprecated
              * @memberof google.protobuf.EnumOptions
              * @instance
-             * @type {boolean}
              */
             EnumOptions.prototype.deprecated = false;
 
             /**
              * EnumOptions uninterpretedOption.
+             * @member {Array.<google.protobuf.IUninterpretedOption>}uninterpretedOption
              * @memberof google.protobuf.EnumOptions
              * @instance
-             * @type {Array.<google.protobuf.IUninterpretedOption>}
              */
             EnumOptions.prototype.uninterpretedOption = $util.emptyArray;
 
             /**
              * EnumOptions .jspb.test.IsExtension.simpleOption.
+             * @member {string}.jspb.test.IsExtension.simpleOption
              * @memberof google.protobuf.EnumOptions
              * @instance
-             * @type {string}
              */
             EnumOptions.prototype[".jspb.test.IsExtension.simpleOption"] = "";
 
             /**
              * Creates a new EnumOptions instance using the specified properties.
+             * @function create
              * @memberof google.protobuf.EnumOptions
              * @static
              * @param {google.protobuf.IEnumOptions=} [properties] Properties to set
@@ -12840,6 +13260,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified EnumOptions message. Does not implicitly {@link google.protobuf.EnumOptions.verify|verify} messages.
+             * @function encode
              * @memberof google.protobuf.EnumOptions
              * @static
              * @param {google.protobuf.IEnumOptions} message EnumOptions message or plain object to encode
@@ -12863,6 +13284,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified EnumOptions message, length delimited. Does not implicitly {@link google.protobuf.EnumOptions.verify|verify} messages.
+             * @function encodeDelimited
              * @memberof google.protobuf.EnumOptions
              * @static
              * @param {google.protobuf.IEnumOptions} message EnumOptions message or plain object to encode
@@ -12875,6 +13297,7 @@ $root.google = (function() {
 
             /**
              * Decodes an EnumOptions message from the specified reader or buffer.
+             * @function decode
              * @memberof google.protobuf.EnumOptions
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -12914,6 +13337,7 @@ $root.google = (function() {
 
             /**
              * Decodes an EnumOptions message from the specified reader or buffer, length delimited.
+             * @function decodeDelimited
              * @memberof google.protobuf.EnumOptions
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -12929,6 +13353,7 @@ $root.google = (function() {
 
             /**
              * Verifies an EnumOptions message.
+             * @function verify
              * @memberof google.protobuf.EnumOptions
              * @static
              * @param {Object.<string,*>} message Plain object to verify
@@ -12960,6 +13385,7 @@ $root.google = (function() {
 
             /**
              * Creates an EnumOptions message from a plain object. Also converts values to their respective internal types.
+             * @function fromObject
              * @memberof google.protobuf.EnumOptions
              * @static
              * @param {Object.<string,*>} object Plain object
@@ -12990,6 +13416,7 @@ $root.google = (function() {
 
             /**
              * Creates a plain object from an EnumOptions message. Also converts values to other types if specified.
+             * @function toObject
              * @memberof google.protobuf.EnumOptions
              * @static
              * @param {google.protobuf.EnumOptions} message EnumOptions
@@ -13023,6 +13450,7 @@ $root.google = (function() {
 
             /**
              * Converts this EnumOptions to JSON.
+             * @function toJSON
              * @memberof google.protobuf.EnumOptions
              * @instance
              * @returns {Object.<string,*>} JSON object
@@ -13061,22 +13489,23 @@ $root.google = (function() {
 
             /**
              * EnumValueOptions deprecated.
+             * @member {boolean}deprecated
              * @memberof google.protobuf.EnumValueOptions
              * @instance
-             * @type {boolean}
              */
             EnumValueOptions.prototype.deprecated = false;
 
             /**
              * EnumValueOptions uninterpretedOption.
+             * @member {Array.<google.protobuf.IUninterpretedOption>}uninterpretedOption
              * @memberof google.protobuf.EnumValueOptions
              * @instance
-             * @type {Array.<google.protobuf.IUninterpretedOption>}
              */
             EnumValueOptions.prototype.uninterpretedOption = $util.emptyArray;
 
             /**
              * Creates a new EnumValueOptions instance using the specified properties.
+             * @function create
              * @memberof google.protobuf.EnumValueOptions
              * @static
              * @param {google.protobuf.IEnumValueOptions=} [properties] Properties to set
@@ -13088,6 +13517,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified EnumValueOptions message. Does not implicitly {@link google.protobuf.EnumValueOptions.verify|verify} messages.
+             * @function encode
              * @memberof google.protobuf.EnumValueOptions
              * @static
              * @param {google.protobuf.IEnumValueOptions} message EnumValueOptions message or plain object to encode
@@ -13107,6 +13537,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified EnumValueOptions message, length delimited. Does not implicitly {@link google.protobuf.EnumValueOptions.verify|verify} messages.
+             * @function encodeDelimited
              * @memberof google.protobuf.EnumValueOptions
              * @static
              * @param {google.protobuf.IEnumValueOptions} message EnumValueOptions message or plain object to encode
@@ -13119,6 +13550,7 @@ $root.google = (function() {
 
             /**
              * Decodes an EnumValueOptions message from the specified reader or buffer.
+             * @function decode
              * @memberof google.protobuf.EnumValueOptions
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -13152,6 +13584,7 @@ $root.google = (function() {
 
             /**
              * Decodes an EnumValueOptions message from the specified reader or buffer, length delimited.
+             * @function decodeDelimited
              * @memberof google.protobuf.EnumValueOptions
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -13167,6 +13600,7 @@ $root.google = (function() {
 
             /**
              * Verifies an EnumValueOptions message.
+             * @function verify
              * @memberof google.protobuf.EnumValueOptions
              * @static
              * @param {Object.<string,*>} message Plain object to verify
@@ -13192,6 +13626,7 @@ $root.google = (function() {
 
             /**
              * Creates an EnumValueOptions message from a plain object. Also converts values to their respective internal types.
+             * @function fromObject
              * @memberof google.protobuf.EnumValueOptions
              * @static
              * @param {Object.<string,*>} object Plain object
@@ -13218,6 +13653,7 @@ $root.google = (function() {
 
             /**
              * Creates a plain object from an EnumValueOptions message. Also converts values to other types if specified.
+             * @function toObject
              * @memberof google.protobuf.EnumValueOptions
              * @static
              * @param {google.protobuf.EnumValueOptions} message EnumValueOptions
@@ -13244,6 +13680,7 @@ $root.google = (function() {
 
             /**
              * Converts this EnumValueOptions to JSON.
+             * @function toJSON
              * @memberof google.protobuf.EnumValueOptions
              * @instance
              * @returns {Object.<string,*>} JSON object
@@ -13282,22 +13719,23 @@ $root.google = (function() {
 
             /**
              * ServiceOptions deprecated.
+             * @member {boolean}deprecated
              * @memberof google.protobuf.ServiceOptions
              * @instance
-             * @type {boolean}
              */
             ServiceOptions.prototype.deprecated = false;
 
             /**
              * ServiceOptions uninterpretedOption.
+             * @member {Array.<google.protobuf.IUninterpretedOption>}uninterpretedOption
              * @memberof google.protobuf.ServiceOptions
              * @instance
-             * @type {Array.<google.protobuf.IUninterpretedOption>}
              */
             ServiceOptions.prototype.uninterpretedOption = $util.emptyArray;
 
             /**
              * Creates a new ServiceOptions instance using the specified properties.
+             * @function create
              * @memberof google.protobuf.ServiceOptions
              * @static
              * @param {google.protobuf.IServiceOptions=} [properties] Properties to set
@@ -13309,6 +13747,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified ServiceOptions message. Does not implicitly {@link google.protobuf.ServiceOptions.verify|verify} messages.
+             * @function encode
              * @memberof google.protobuf.ServiceOptions
              * @static
              * @param {google.protobuf.IServiceOptions} message ServiceOptions message or plain object to encode
@@ -13328,6 +13767,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified ServiceOptions message, length delimited. Does not implicitly {@link google.protobuf.ServiceOptions.verify|verify} messages.
+             * @function encodeDelimited
              * @memberof google.protobuf.ServiceOptions
              * @static
              * @param {google.protobuf.IServiceOptions} message ServiceOptions message or plain object to encode
@@ -13340,6 +13780,7 @@ $root.google = (function() {
 
             /**
              * Decodes a ServiceOptions message from the specified reader or buffer.
+             * @function decode
              * @memberof google.protobuf.ServiceOptions
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -13373,6 +13814,7 @@ $root.google = (function() {
 
             /**
              * Decodes a ServiceOptions message from the specified reader or buffer, length delimited.
+             * @function decodeDelimited
              * @memberof google.protobuf.ServiceOptions
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -13388,6 +13830,7 @@ $root.google = (function() {
 
             /**
              * Verifies a ServiceOptions message.
+             * @function verify
              * @memberof google.protobuf.ServiceOptions
              * @static
              * @param {Object.<string,*>} message Plain object to verify
@@ -13413,6 +13856,7 @@ $root.google = (function() {
 
             /**
              * Creates a ServiceOptions message from a plain object. Also converts values to their respective internal types.
+             * @function fromObject
              * @memberof google.protobuf.ServiceOptions
              * @static
              * @param {Object.<string,*>} object Plain object
@@ -13439,6 +13883,7 @@ $root.google = (function() {
 
             /**
              * Creates a plain object from a ServiceOptions message. Also converts values to other types if specified.
+             * @function toObject
              * @memberof google.protobuf.ServiceOptions
              * @static
              * @param {google.protobuf.ServiceOptions} message ServiceOptions
@@ -13465,6 +13910,7 @@ $root.google = (function() {
 
             /**
              * Converts this ServiceOptions to JSON.
+             * @function toJSON
              * @memberof google.protobuf.ServiceOptions
              * @instance
              * @returns {Object.<string,*>} JSON object
@@ -13504,30 +13950,31 @@ $root.google = (function() {
 
             /**
              * MethodOptions deprecated.
+             * @member {boolean}deprecated
              * @memberof google.protobuf.MethodOptions
              * @instance
-             * @type {boolean}
              */
             MethodOptions.prototype.deprecated = false;
 
             /**
              * MethodOptions idempotencyLevel.
+             * @member {google.protobuf.MethodOptions.IdempotencyLevel}idempotencyLevel
              * @memberof google.protobuf.MethodOptions
              * @instance
-             * @type {google.protobuf.MethodOptions.IdempotencyLevel}
              */
             MethodOptions.prototype.idempotencyLevel = 0;
 
             /**
              * MethodOptions uninterpretedOption.
+             * @member {Array.<google.protobuf.IUninterpretedOption>}uninterpretedOption
              * @memberof google.protobuf.MethodOptions
              * @instance
-             * @type {Array.<google.protobuf.IUninterpretedOption>}
              */
             MethodOptions.prototype.uninterpretedOption = $util.emptyArray;
 
             /**
              * Creates a new MethodOptions instance using the specified properties.
+             * @function create
              * @memberof google.protobuf.MethodOptions
              * @static
              * @param {google.protobuf.IMethodOptions=} [properties] Properties to set
@@ -13539,6 +13986,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified MethodOptions message. Does not implicitly {@link google.protobuf.MethodOptions.verify|verify} messages.
+             * @function encode
              * @memberof google.protobuf.MethodOptions
              * @static
              * @param {google.protobuf.IMethodOptions} message MethodOptions message or plain object to encode
@@ -13560,6 +14008,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified MethodOptions message, length delimited. Does not implicitly {@link google.protobuf.MethodOptions.verify|verify} messages.
+             * @function encodeDelimited
              * @memberof google.protobuf.MethodOptions
              * @static
              * @param {google.protobuf.IMethodOptions} message MethodOptions message or plain object to encode
@@ -13572,6 +14021,7 @@ $root.google = (function() {
 
             /**
              * Decodes a MethodOptions message from the specified reader or buffer.
+             * @function decode
              * @memberof google.protobuf.MethodOptions
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -13608,6 +14058,7 @@ $root.google = (function() {
 
             /**
              * Decodes a MethodOptions message from the specified reader or buffer, length delimited.
+             * @function decodeDelimited
              * @memberof google.protobuf.MethodOptions
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -13623,6 +14074,7 @@ $root.google = (function() {
 
             /**
              * Verifies a MethodOptions message.
+             * @function verify
              * @memberof google.protobuf.MethodOptions
              * @static
              * @param {Object.<string,*>} message Plain object to verify
@@ -13657,6 +14109,7 @@ $root.google = (function() {
 
             /**
              * Creates a MethodOptions message from a plain object. Also converts values to their respective internal types.
+             * @function fromObject
              * @memberof google.protobuf.MethodOptions
              * @static
              * @param {Object.<string,*>} object Plain object
@@ -13697,6 +14150,7 @@ $root.google = (function() {
 
             /**
              * Creates a plain object from a MethodOptions message. Also converts values to other types if specified.
+             * @function toObject
              * @memberof google.protobuf.MethodOptions
              * @static
              * @param {google.protobuf.MethodOptions} message MethodOptions
@@ -13727,6 +14181,7 @@ $root.google = (function() {
 
             /**
              * Converts this MethodOptions to JSON.
+             * @function toJSON
              * @memberof google.protobuf.MethodOptions
              * @instance
              * @returns {Object.<string,*>} JSON object
@@ -13785,62 +14240,63 @@ $root.google = (function() {
 
             /**
              * UninterpretedOption name.
+             * @member {Array.<google.protobuf.UninterpretedOption.INamePart>}name
              * @memberof google.protobuf.UninterpretedOption
              * @instance
-             * @type {Array.<google.protobuf.UninterpretedOption.INamePart>}
              */
             UninterpretedOption.prototype.name = $util.emptyArray;
 
             /**
              * UninterpretedOption identifierValue.
+             * @member {string}identifierValue
              * @memberof google.protobuf.UninterpretedOption
              * @instance
-             * @type {string}
              */
             UninterpretedOption.prototype.identifierValue = "";
 
             /**
              * UninterpretedOption positiveIntValue.
+             * @member {number|Long}positiveIntValue
              * @memberof google.protobuf.UninterpretedOption
              * @instance
-             * @type {number|Long}
              */
             UninterpretedOption.prototype.positiveIntValue = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
 
             /**
              * UninterpretedOption negativeIntValue.
+             * @member {number|Long}negativeIntValue
              * @memberof google.protobuf.UninterpretedOption
              * @instance
-             * @type {number|Long}
              */
             UninterpretedOption.prototype.negativeIntValue = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
 
             /**
              * UninterpretedOption doubleValue.
+             * @member {number}doubleValue
              * @memberof google.protobuf.UninterpretedOption
              * @instance
-             * @type {number}
              */
             UninterpretedOption.prototype.doubleValue = 0;
 
             /**
              * UninterpretedOption stringValue.
+             * @member {Uint8Array}stringValue
              * @memberof google.protobuf.UninterpretedOption
              * @instance
-             * @type {Uint8Array}
              */
             UninterpretedOption.prototype.stringValue = $util.newBuffer([]);
 
             /**
              * UninterpretedOption aggregateValue.
+             * @member {string}aggregateValue
              * @memberof google.protobuf.UninterpretedOption
              * @instance
-             * @type {string}
              */
             UninterpretedOption.prototype.aggregateValue = "";
 
             /**
              * Creates a new UninterpretedOption instance using the specified properties.
+             * @function create
              * @memberof google.protobuf.UninterpretedOption
              * @static
              * @param {google.protobuf.IUninterpretedOption=} [properties] Properties to set
@@ -13852,6 +14308,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified UninterpretedOption message. Does not implicitly {@link google.protobuf.UninterpretedOption.verify|verify} messages.
+             * @function encode
              * @memberof google.protobuf.UninterpretedOption
              * @static
              * @param {google.protobuf.IUninterpretedOption} message UninterpretedOption message or plain object to encode
@@ -13881,6 +14338,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified UninterpretedOption message, length delimited. Does not implicitly {@link google.protobuf.UninterpretedOption.verify|verify} messages.
+             * @function encodeDelimited
              * @memberof google.protobuf.UninterpretedOption
              * @static
              * @param {google.protobuf.IUninterpretedOption} message UninterpretedOption message or plain object to encode
@@ -13893,6 +14351,7 @@ $root.google = (function() {
 
             /**
              * Decodes an UninterpretedOption message from the specified reader or buffer.
+             * @function decode
              * @memberof google.protobuf.UninterpretedOption
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -13941,6 +14400,7 @@ $root.google = (function() {
 
             /**
              * Decodes an UninterpretedOption message from the specified reader or buffer, length delimited.
+             * @function decodeDelimited
              * @memberof google.protobuf.UninterpretedOption
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -13956,6 +14416,7 @@ $root.google = (function() {
 
             /**
              * Verifies an UninterpretedOption message.
+             * @function verify
              * @memberof google.protobuf.UninterpretedOption
              * @static
              * @param {Object.<string,*>} message Plain object to verify
@@ -13996,6 +14457,7 @@ $root.google = (function() {
 
             /**
              * Creates an UninterpretedOption message from a plain object. Also converts values to their respective internal types.
+             * @function fromObject
              * @memberof google.protobuf.UninterpretedOption
              * @static
              * @param {Object.<string,*>} object Plain object
@@ -14049,6 +14511,7 @@ $root.google = (function() {
 
             /**
              * Creates a plain object from an UninterpretedOption message. Also converts values to other types if specified.
+             * @function toObject
              * @memberof google.protobuf.UninterpretedOption
              * @static
              * @param {google.protobuf.UninterpretedOption} message UninterpretedOption
@@ -14105,6 +14568,7 @@ $root.google = (function() {
 
             /**
              * Converts this UninterpretedOption to JSON.
+             * @function toJSON
              * @memberof google.protobuf.UninterpretedOption
              * @instance
              * @returns {Object.<string,*>} JSON object
@@ -14139,22 +14603,23 @@ $root.google = (function() {
 
                 /**
                  * NamePart namePart.
+                 * @member {string}namePart
                  * @memberof google.protobuf.UninterpretedOption.NamePart
                  * @instance
-                 * @type {string}
                  */
                 NamePart.prototype.namePart = "";
 
                 /**
                  * NamePart isExtension.
+                 * @member {boolean}isExtension
                  * @memberof google.protobuf.UninterpretedOption.NamePart
                  * @instance
-                 * @type {boolean}
                  */
                 NamePart.prototype.isExtension = false;
 
                 /**
                  * Creates a new NamePart instance using the specified properties.
+                 * @function create
                  * @memberof google.protobuf.UninterpretedOption.NamePart
                  * @static
                  * @param {google.protobuf.UninterpretedOption.INamePart=} [properties] Properties to set
@@ -14166,6 +14631,7 @@ $root.google = (function() {
 
                 /**
                  * Encodes the specified NamePart message. Does not implicitly {@link google.protobuf.UninterpretedOption.NamePart.verify|verify} messages.
+                 * @function encode
                  * @memberof google.protobuf.UninterpretedOption.NamePart
                  * @static
                  * @param {google.protobuf.UninterpretedOption.INamePart} message NamePart message or plain object to encode
@@ -14182,6 +14648,7 @@ $root.google = (function() {
 
                 /**
                  * Encodes the specified NamePart message, length delimited. Does not implicitly {@link google.protobuf.UninterpretedOption.NamePart.verify|verify} messages.
+                 * @function encodeDelimited
                  * @memberof google.protobuf.UninterpretedOption.NamePart
                  * @static
                  * @param {google.protobuf.UninterpretedOption.INamePart} message NamePart message or plain object to encode
@@ -14194,6 +14661,7 @@ $root.google = (function() {
 
                 /**
                  * Decodes a NamePart message from the specified reader or buffer.
+                 * @function decode
                  * @memberof google.protobuf.UninterpretedOption.NamePart
                  * @static
                  * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -14229,6 +14697,7 @@ $root.google = (function() {
 
                 /**
                  * Decodes a NamePart message from the specified reader or buffer, length delimited.
+                 * @function decodeDelimited
                  * @memberof google.protobuf.UninterpretedOption.NamePart
                  * @static
                  * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -14244,6 +14713,7 @@ $root.google = (function() {
 
                 /**
                  * Verifies a NamePart message.
+                 * @function verify
                  * @memberof google.protobuf.UninterpretedOption.NamePart
                  * @static
                  * @param {Object.<string,*>} message Plain object to verify
@@ -14261,6 +14731,7 @@ $root.google = (function() {
 
                 /**
                  * Creates a NamePart message from a plain object. Also converts values to their respective internal types.
+                 * @function fromObject
                  * @memberof google.protobuf.UninterpretedOption.NamePart
                  * @static
                  * @param {Object.<string,*>} object Plain object
@@ -14279,6 +14750,7 @@ $root.google = (function() {
 
                 /**
                  * Creates a plain object from a NamePart message. Also converts values to other types if specified.
+                 * @function toObject
                  * @memberof google.protobuf.UninterpretedOption.NamePart
                  * @static
                  * @param {google.protobuf.UninterpretedOption.NamePart} message NamePart
@@ -14302,6 +14774,7 @@ $root.google = (function() {
 
                 /**
                  * Converts this NamePart to JSON.
+                 * @function toJSON
                  * @memberof google.protobuf.UninterpretedOption.NamePart
                  * @instance
                  * @returns {Object.<string,*>} JSON object
@@ -14342,14 +14815,15 @@ $root.google = (function() {
 
             /**
              * SourceCodeInfo location.
+             * @member {Array.<google.protobuf.SourceCodeInfo.ILocation>}location
              * @memberof google.protobuf.SourceCodeInfo
              * @instance
-             * @type {Array.<google.protobuf.SourceCodeInfo.ILocation>}
              */
             SourceCodeInfo.prototype.location = $util.emptyArray;
 
             /**
              * Creates a new SourceCodeInfo instance using the specified properties.
+             * @function create
              * @memberof google.protobuf.SourceCodeInfo
              * @static
              * @param {google.protobuf.ISourceCodeInfo=} [properties] Properties to set
@@ -14361,6 +14835,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified SourceCodeInfo message. Does not implicitly {@link google.protobuf.SourceCodeInfo.verify|verify} messages.
+             * @function encode
              * @memberof google.protobuf.SourceCodeInfo
              * @static
              * @param {google.protobuf.ISourceCodeInfo} message SourceCodeInfo message or plain object to encode
@@ -14378,6 +14853,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified SourceCodeInfo message, length delimited. Does not implicitly {@link google.protobuf.SourceCodeInfo.verify|verify} messages.
+             * @function encodeDelimited
              * @memberof google.protobuf.SourceCodeInfo
              * @static
              * @param {google.protobuf.ISourceCodeInfo} message SourceCodeInfo message or plain object to encode
@@ -14390,6 +14866,7 @@ $root.google = (function() {
 
             /**
              * Decodes a SourceCodeInfo message from the specified reader or buffer.
+             * @function decode
              * @memberof google.protobuf.SourceCodeInfo
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -14420,6 +14897,7 @@ $root.google = (function() {
 
             /**
              * Decodes a SourceCodeInfo message from the specified reader or buffer, length delimited.
+             * @function decodeDelimited
              * @memberof google.protobuf.SourceCodeInfo
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -14435,6 +14913,7 @@ $root.google = (function() {
 
             /**
              * Verifies a SourceCodeInfo message.
+             * @function verify
              * @memberof google.protobuf.SourceCodeInfo
              * @static
              * @param {Object.<string,*>} message Plain object to verify
@@ -14457,6 +14936,7 @@ $root.google = (function() {
 
             /**
              * Creates a SourceCodeInfo message from a plain object. Also converts values to their respective internal types.
+             * @function fromObject
              * @memberof google.protobuf.SourceCodeInfo
              * @static
              * @param {Object.<string,*>} object Plain object
@@ -14481,6 +14961,7 @@ $root.google = (function() {
 
             /**
              * Creates a plain object from a SourceCodeInfo message. Also converts values to other types if specified.
+             * @function toObject
              * @memberof google.protobuf.SourceCodeInfo
              * @static
              * @param {google.protobuf.SourceCodeInfo} message SourceCodeInfo
@@ -14503,6 +14984,7 @@ $root.google = (function() {
 
             /**
              * Converts this SourceCodeInfo to JSON.
+             * @function toJSON
              * @memberof google.protobuf.SourceCodeInfo
              * @instance
              * @returns {Object.<string,*>} JSON object
@@ -14543,46 +15025,47 @@ $root.google = (function() {
 
                 /**
                  * Location path.
+                 * @member {Array.<number>}path
                  * @memberof google.protobuf.SourceCodeInfo.Location
                  * @instance
-                 * @type {Array.<number>}
                  */
                 Location.prototype.path = $util.emptyArray;
 
                 /**
                  * Location span.
+                 * @member {Array.<number>}span
                  * @memberof google.protobuf.SourceCodeInfo.Location
                  * @instance
-                 * @type {Array.<number>}
                  */
                 Location.prototype.span = $util.emptyArray;
 
                 /**
                  * Location leadingComments.
+                 * @member {string}leadingComments
                  * @memberof google.protobuf.SourceCodeInfo.Location
                  * @instance
-                 * @type {string}
                  */
                 Location.prototype.leadingComments = "";
 
                 /**
                  * Location trailingComments.
+                 * @member {string}trailingComments
                  * @memberof google.protobuf.SourceCodeInfo.Location
                  * @instance
-                 * @type {string}
                  */
                 Location.prototype.trailingComments = "";
 
                 /**
                  * Location leadingDetachedComments.
+                 * @member {Array.<string>}leadingDetachedComments
                  * @memberof google.protobuf.SourceCodeInfo.Location
                  * @instance
-                 * @type {Array.<string>}
                  */
                 Location.prototype.leadingDetachedComments = $util.emptyArray;
 
                 /**
                  * Creates a new Location instance using the specified properties.
+                 * @function create
                  * @memberof google.protobuf.SourceCodeInfo.Location
                  * @static
                  * @param {google.protobuf.SourceCodeInfo.ILocation=} [properties] Properties to set
@@ -14594,6 +15077,7 @@ $root.google = (function() {
 
                 /**
                  * Encodes the specified Location message. Does not implicitly {@link google.protobuf.SourceCodeInfo.Location.verify|verify} messages.
+                 * @function encode
                  * @memberof google.protobuf.SourceCodeInfo.Location
                  * @static
                  * @param {google.protobuf.SourceCodeInfo.ILocation} message Location message or plain object to encode
@@ -14627,6 +15111,7 @@ $root.google = (function() {
 
                 /**
                  * Encodes the specified Location message, length delimited. Does not implicitly {@link google.protobuf.SourceCodeInfo.Location.verify|verify} messages.
+                 * @function encodeDelimited
                  * @memberof google.protobuf.SourceCodeInfo.Location
                  * @static
                  * @param {google.protobuf.SourceCodeInfo.ILocation} message Location message or plain object to encode
@@ -14639,6 +15124,7 @@ $root.google = (function() {
 
                 /**
                  * Decodes a Location message from the specified reader or buffer.
+                 * @function decode
                  * @memberof google.protobuf.SourceCodeInfo.Location
                  * @static
                  * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -14695,6 +15181,7 @@ $root.google = (function() {
 
                 /**
                  * Decodes a Location message from the specified reader or buffer, length delimited.
+                 * @function decodeDelimited
                  * @memberof google.protobuf.SourceCodeInfo.Location
                  * @static
                  * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -14710,6 +15197,7 @@ $root.google = (function() {
 
                 /**
                  * Verifies a Location message.
+                 * @function verify
                  * @memberof google.protobuf.SourceCodeInfo.Location
                  * @static
                  * @param {Object.<string,*>} message Plain object to verify
@@ -14750,6 +15238,7 @@ $root.google = (function() {
 
                 /**
                  * Creates a Location message from a plain object. Also converts values to their respective internal types.
+                 * @function fromObject
                  * @memberof google.protobuf.SourceCodeInfo.Location
                  * @static
                  * @param {Object.<string,*>} object Plain object
@@ -14789,6 +15278,7 @@ $root.google = (function() {
 
                 /**
                  * Creates a plain object from a Location message. Also converts values to other types if specified.
+                 * @function toObject
                  * @memberof google.protobuf.SourceCodeInfo.Location
                  * @static
                  * @param {google.protobuf.SourceCodeInfo.Location} message Location
@@ -14832,6 +15322,7 @@ $root.google = (function() {
 
                 /**
                  * Converts this Location to JSON.
+                 * @function toJSON
                  * @memberof google.protobuf.SourceCodeInfo.Location
                  * @instance
                  * @returns {Object.<string,*>} JSON object
@@ -14872,14 +15363,15 @@ $root.google = (function() {
 
             /**
              * GeneratedCodeInfo annotation.
+             * @member {Array.<google.protobuf.GeneratedCodeInfo.IAnnotation>}annotation
              * @memberof google.protobuf.GeneratedCodeInfo
              * @instance
-             * @type {Array.<google.protobuf.GeneratedCodeInfo.IAnnotation>}
              */
             GeneratedCodeInfo.prototype.annotation = $util.emptyArray;
 
             /**
              * Creates a new GeneratedCodeInfo instance using the specified properties.
+             * @function create
              * @memberof google.protobuf.GeneratedCodeInfo
              * @static
              * @param {google.protobuf.IGeneratedCodeInfo=} [properties] Properties to set
@@ -14891,6 +15383,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified GeneratedCodeInfo message. Does not implicitly {@link google.protobuf.GeneratedCodeInfo.verify|verify} messages.
+             * @function encode
              * @memberof google.protobuf.GeneratedCodeInfo
              * @static
              * @param {google.protobuf.IGeneratedCodeInfo} message GeneratedCodeInfo message or plain object to encode
@@ -14908,6 +15401,7 @@ $root.google = (function() {
 
             /**
              * Encodes the specified GeneratedCodeInfo message, length delimited. Does not implicitly {@link google.protobuf.GeneratedCodeInfo.verify|verify} messages.
+             * @function encodeDelimited
              * @memberof google.protobuf.GeneratedCodeInfo
              * @static
              * @param {google.protobuf.IGeneratedCodeInfo} message GeneratedCodeInfo message or plain object to encode
@@ -14920,6 +15414,7 @@ $root.google = (function() {
 
             /**
              * Decodes a GeneratedCodeInfo message from the specified reader or buffer.
+             * @function decode
              * @memberof google.protobuf.GeneratedCodeInfo
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -14950,6 +15445,7 @@ $root.google = (function() {
 
             /**
              * Decodes a GeneratedCodeInfo message from the specified reader or buffer, length delimited.
+             * @function decodeDelimited
              * @memberof google.protobuf.GeneratedCodeInfo
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -14965,6 +15461,7 @@ $root.google = (function() {
 
             /**
              * Verifies a GeneratedCodeInfo message.
+             * @function verify
              * @memberof google.protobuf.GeneratedCodeInfo
              * @static
              * @param {Object.<string,*>} message Plain object to verify
@@ -14987,6 +15484,7 @@ $root.google = (function() {
 
             /**
              * Creates a GeneratedCodeInfo message from a plain object. Also converts values to their respective internal types.
+             * @function fromObject
              * @memberof google.protobuf.GeneratedCodeInfo
              * @static
              * @param {Object.<string,*>} object Plain object
@@ -15011,6 +15509,7 @@ $root.google = (function() {
 
             /**
              * Creates a plain object from a GeneratedCodeInfo message. Also converts values to other types if specified.
+             * @function toObject
              * @memberof google.protobuf.GeneratedCodeInfo
              * @static
              * @param {google.protobuf.GeneratedCodeInfo} message GeneratedCodeInfo
@@ -15033,6 +15532,7 @@ $root.google = (function() {
 
             /**
              * Converts this GeneratedCodeInfo to JSON.
+             * @function toJSON
              * @memberof google.protobuf.GeneratedCodeInfo
              * @instance
              * @returns {Object.<string,*>} JSON object
@@ -15070,38 +15570,39 @@ $root.google = (function() {
 
                 /**
                  * Annotation path.
+                 * @member {Array.<number>}path
                  * @memberof google.protobuf.GeneratedCodeInfo.Annotation
                  * @instance
-                 * @type {Array.<number>}
                  */
                 Annotation.prototype.path = $util.emptyArray;
 
                 /**
                  * Annotation sourceFile.
+                 * @member {string}sourceFile
                  * @memberof google.protobuf.GeneratedCodeInfo.Annotation
                  * @instance
-                 * @type {string}
                  */
                 Annotation.prototype.sourceFile = "";
 
                 /**
                  * Annotation begin.
+                 * @member {number}begin
                  * @memberof google.protobuf.GeneratedCodeInfo.Annotation
                  * @instance
-                 * @type {number}
                  */
                 Annotation.prototype.begin = 0;
 
                 /**
                  * Annotation end.
+                 * @member {number}end
                  * @memberof google.protobuf.GeneratedCodeInfo.Annotation
                  * @instance
-                 * @type {number}
                  */
                 Annotation.prototype.end = 0;
 
                 /**
                  * Creates a new Annotation instance using the specified properties.
+                 * @function create
                  * @memberof google.protobuf.GeneratedCodeInfo.Annotation
                  * @static
                  * @param {google.protobuf.GeneratedCodeInfo.IAnnotation=} [properties] Properties to set
@@ -15113,6 +15614,7 @@ $root.google = (function() {
 
                 /**
                  * Encodes the specified Annotation message. Does not implicitly {@link google.protobuf.GeneratedCodeInfo.Annotation.verify|verify} messages.
+                 * @function encode
                  * @memberof google.protobuf.GeneratedCodeInfo.Annotation
                  * @static
                  * @param {google.protobuf.GeneratedCodeInfo.IAnnotation} message Annotation message or plain object to encode
@@ -15139,6 +15641,7 @@ $root.google = (function() {
 
                 /**
                  * Encodes the specified Annotation message, length delimited. Does not implicitly {@link google.protobuf.GeneratedCodeInfo.Annotation.verify|verify} messages.
+                 * @function encodeDelimited
                  * @memberof google.protobuf.GeneratedCodeInfo.Annotation
                  * @static
                  * @param {google.protobuf.GeneratedCodeInfo.IAnnotation} message Annotation message or plain object to encode
@@ -15151,6 +15654,7 @@ $root.google = (function() {
 
                 /**
                  * Decodes an Annotation message from the specified reader or buffer.
+                 * @function decode
                  * @memberof google.protobuf.GeneratedCodeInfo.Annotation
                  * @static
                  * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -15195,6 +15699,7 @@ $root.google = (function() {
 
                 /**
                  * Decodes an Annotation message from the specified reader or buffer, length delimited.
+                 * @function decodeDelimited
                  * @memberof google.protobuf.GeneratedCodeInfo.Annotation
                  * @static
                  * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -15210,6 +15715,7 @@ $root.google = (function() {
 
                 /**
                  * Verifies an Annotation message.
+                 * @function verify
                  * @memberof google.protobuf.GeneratedCodeInfo.Annotation
                  * @static
                  * @param {Object.<string,*>} message Plain object to verify
@@ -15239,6 +15745,7 @@ $root.google = (function() {
 
                 /**
                  * Creates an Annotation message from a plain object. Also converts values to their respective internal types.
+                 * @function fromObject
                  * @memberof google.protobuf.GeneratedCodeInfo.Annotation
                  * @static
                  * @param {Object.<string,*>} object Plain object
@@ -15266,6 +15773,7 @@ $root.google = (function() {
 
                 /**
                  * Creates a plain object from an Annotation message. Also converts values to other types if specified.
+                 * @function toObject
                  * @memberof google.protobuf.GeneratedCodeInfo.Annotation
                  * @static
                  * @param {google.protobuf.GeneratedCodeInfo.Annotation} message Annotation
@@ -15299,6 +15807,7 @@ $root.google = (function() {
 
                 /**
                  * Converts this Annotation to JSON.
+                 * @function toJSON
                  * @memberof google.protobuf.GeneratedCodeInfo.Annotation
                  * @instance
                  * @returns {Object.<string,*>} JSON object

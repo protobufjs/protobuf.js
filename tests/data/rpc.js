@@ -29,6 +29,7 @@ $root.MyService = (function() {
 
     /**
      * Creates new MyService service using the specified rpc implementation.
+     * @function create
      * @memberof MyService
      * @static
      * @param {$protobuf.RPCImpl} rpcImpl RPC implementation
@@ -51,6 +52,7 @@ $root.MyService = (function() {
 
     /**
      * Calls MyMethod.
+     * @function .myMethod
      * @memberof MyService
      * @instance
      * @param {IMyRequest} request MyRequest message or plain object
@@ -100,14 +102,15 @@ $root.MyRequest = (function() {
 
     /**
      * MyRequest path.
+     * @member {string}path
      * @memberof MyRequest
      * @instance
-     * @type {string}
      */
     MyRequest.prototype.path = "";
 
     /**
      * Creates a new MyRequest instance using the specified properties.
+     * @function create
      * @memberof MyRequest
      * @static
      * @param {IMyRequest=} [properties] Properties to set
@@ -119,6 +122,7 @@ $root.MyRequest = (function() {
 
     /**
      * Encodes the specified MyRequest message. Does not implicitly {@link MyRequest.verify|verify} messages.
+     * @function encode
      * @memberof MyRequest
      * @static
      * @param {IMyRequest} message MyRequest message or plain object to encode
@@ -135,6 +139,7 @@ $root.MyRequest = (function() {
 
     /**
      * Encodes the specified MyRequest message, length delimited. Does not implicitly {@link MyRequest.verify|verify} messages.
+     * @function encodeDelimited
      * @memberof MyRequest
      * @static
      * @param {IMyRequest} message MyRequest message or plain object to encode
@@ -147,6 +152,7 @@ $root.MyRequest = (function() {
 
     /**
      * Decodes a MyRequest message from the specified reader or buffer.
+     * @function decode
      * @memberof MyRequest
      * @static
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -175,6 +181,7 @@ $root.MyRequest = (function() {
 
     /**
      * Decodes a MyRequest message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
      * @memberof MyRequest
      * @static
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -190,6 +197,7 @@ $root.MyRequest = (function() {
 
     /**
      * Verifies a MyRequest message.
+     * @function verify
      * @memberof MyRequest
      * @static
      * @param {Object.<string,*>} message Plain object to verify
@@ -206,6 +214,7 @@ $root.MyRequest = (function() {
 
     /**
      * Creates a MyRequest message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
      * @memberof MyRequest
      * @static
      * @param {Object.<string,*>} object Plain object
@@ -222,6 +231,7 @@ $root.MyRequest = (function() {
 
     /**
      * Creates a plain object from a MyRequest message. Also converts values to other types if specified.
+     * @function toObject
      * @memberof MyRequest
      * @static
      * @param {MyRequest} message MyRequest
@@ -241,6 +251,7 @@ $root.MyRequest = (function() {
 
     /**
      * Converts this MyRequest to JSON.
+     * @function toJSON
      * @memberof MyRequest
      * @instance
      * @returns {Object.<string,*>} JSON object
@@ -277,14 +288,15 @@ $root.MyResponse = (function() {
 
     /**
      * MyResponse status.
+     * @member {number}status
      * @memberof MyResponse
      * @instance
-     * @type {number}
      */
     MyResponse.prototype.status = 0;
 
     /**
      * Creates a new MyResponse instance using the specified properties.
+     * @function create
      * @memberof MyResponse
      * @static
      * @param {IMyResponse=} [properties] Properties to set
@@ -296,6 +308,7 @@ $root.MyResponse = (function() {
 
     /**
      * Encodes the specified MyResponse message. Does not implicitly {@link MyResponse.verify|verify} messages.
+     * @function encode
      * @memberof MyResponse
      * @static
      * @param {IMyResponse} message MyResponse message or plain object to encode
@@ -312,6 +325,7 @@ $root.MyResponse = (function() {
 
     /**
      * Encodes the specified MyResponse message, length delimited. Does not implicitly {@link MyResponse.verify|verify} messages.
+     * @function encodeDelimited
      * @memberof MyResponse
      * @static
      * @param {IMyResponse} message MyResponse message or plain object to encode
@@ -324,6 +338,7 @@ $root.MyResponse = (function() {
 
     /**
      * Decodes a MyResponse message from the specified reader or buffer.
+     * @function decode
      * @memberof MyResponse
      * @static
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -352,6 +367,7 @@ $root.MyResponse = (function() {
 
     /**
      * Decodes a MyResponse message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
      * @memberof MyResponse
      * @static
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
@@ -367,6 +383,7 @@ $root.MyResponse = (function() {
 
     /**
      * Verifies a MyResponse message.
+     * @function verify
      * @memberof MyResponse
      * @static
      * @param {Object.<string,*>} message Plain object to verify
@@ -383,6 +400,7 @@ $root.MyResponse = (function() {
 
     /**
      * Creates a MyResponse message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
      * @memberof MyResponse
      * @static
      * @param {Object.<string,*>} object Plain object
@@ -399,6 +417,7 @@ $root.MyResponse = (function() {
 
     /**
      * Creates a plain object from a MyResponse message. Also converts values to other types if specified.
+     * @function toObject
      * @memberof MyResponse
      * @static
      * @param {MyResponse} message MyResponse
@@ -418,6 +437,7 @@ $root.MyResponse = (function() {
 
     /**
      * Converts this MyResponse to JSON.
+     * @function toJSON
      * @memberof MyResponse
      * @instance
      * @returns {Object.<string,*>} JSON object
