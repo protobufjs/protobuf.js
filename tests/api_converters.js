@@ -134,7 +134,7 @@ tape.test("converters", function(test) {
         });
 
         test.test(test.name + " - Message.fromObject", function(test) {
-           
+
             var obj = {
                 uint64Val: 1,
                 uint64Repeated: [1, "2"],
@@ -176,7 +176,7 @@ tape.test("converters", function(test) {
             };
             msg.toJSON();
         });
-        
+
         test.end();
     });
 

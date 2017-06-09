@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.8.0 (c) 2016, daniel wirtz
- * compiled tue, 23 may 2017 20:06:03 utc
+ * compiled fri, 09 jun 2017 10:13:34 utc
  * licensed under the bsd-3-clause license
  * see: https://github.com/dcodeio/protobuf.js for details
  */
@@ -132,7 +132,8 @@ for (var i = 0; i < 64;)
  * @returns {string} Base64 encoded string
  */
 base64.encode = function encode(buffer, start, end) {
-    var string = []; // alt: new Array(Math.ceil((end - start) / 3) * 4);
+    var parts = null,
+        chunk = [];
     var i = 0, // output index
         j = 0, // goto index
         t;     // temporary
@@ -140,29 +141,38 @@ base64.encode = function encode(buffer, start, end) {
         var b = buffer[start++];
         switch (j) {
             case 0:
-                string[i++] = b64[b >> 2];
+                chunk[i++] = b64[b >> 2];
                 t = (b & 3) << 4;
                 j = 1;
                 break;
             case 1:
-                string[i++] = b64[t | b >> 4];
+                chunk[i++] = b64[t | b >> 4];
                 t = (b & 15) << 2;
                 j = 2;
                 break;
             case 2:
-                string[i++] = b64[t | b >> 6];
-                string[i++] = b64[b & 63];
+                chunk[i++] = b64[t | b >> 6];
+                chunk[i++] = b64[b & 63];
                 j = 0;
                 break;
         }
+        if (i > 8191) {
+            (parts || (parts = [])).push(String.fromCharCode.apply(String, chunk));
+            i = 0;
+        }
     }
     if (j) {
-        string[i++] = b64[t];
-        string[i  ] = 61;
+        chunk[i++] = b64[t];
+        chunk[i++] = 61;
         if (j === 1)
-            string[i + 1] = 61;
+            chunk[i++] = 61;
     }
-    return String.fromCharCode.apply(String, string);
+    if (parts) {
+        if (i)
+            parts.push(String.fromCharCode.apply(String, chunk.slice(0, i)));
+        return parts.join("");
+    }
+    return String.fromCharCode.apply(String, chunk.slice(0, i));
 };
 
 var invalidEncoding = "invalid encoding";
@@ -1507,7 +1517,7 @@ function genValuePartial_fromObject(gen, field, fieldIndex, prop) {
                 ("default:");
                 gen
                 ("case%j:", keys[i])
-                ("case %j:", values[keys[i]])
+                ("case %i:", values[keys[i]])
                     ("m%s=%j", prop, values[keys[i]])
                     ("break");
             } gen
@@ -7681,10 +7691,13 @@ function genVerifyValue(gen, field, fieldIndex, ref) {
             gen
                     ("break")
             ("}");
-        } else gen
-            ("var e=types[%i].verify(%s);", fieldIndex, ref)
+        } else {
+            gen
+            ((gen.hasErrorVar ? "" : "var ") + "e=types[%i].verify(%s);", fieldIndex, ref)
             ("if(e)")
                 ("return%j+e", field.name + ".");
+            gen.hasErrorVar = true;
+        }
     } else {
         switch (field.type) {
             case "int32":
