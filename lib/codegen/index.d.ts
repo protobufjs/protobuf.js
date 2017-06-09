@@ -24,7 +24,7 @@ declare function codegen(functionParams: string[], functionName?: string): Codeg
  */
 declare function codegen(functionName?: string): Codegen;
 
-namespace codegen {
+declare namespace codegen {
 
     /** When set to `true`, codegen will log generated code to console. Useful for debugging. */
     let verbose: boolean;
