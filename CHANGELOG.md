@@ -11,28 +11,62 @@
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/7a6f98b5e74f9e9142f9be3ba0683caeaff916c4) Removed deprecated features<br />
 
 ## Fixed
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/c306d19d806eb697913ffa2b8613f650127a4c50) Added 'undefined' besides 'null' as a valid value of an optional field, fixes [#826](https://github.com/dcodeIO/protobuf.js/issues/826)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/c5518c3bac0da9c2045e6f1baf0dee915afb4221) Fixed an issue with codegen typings, see [#819](https://github.com/dcodeIO/protobuf.js/issues/819)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/66d149e92ff1baddfdfd4b6a88ca9bcea6fc6195) Ported utf8 chunking mechanism to base64 as well, fixes [#800](https://github.com/dcodeIO/protobuf.js/issues/800)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/e1f9d9856c98a0f0eb1aa8bdf4ac0df467bee8b9) Also be more verbose when defining properties for ES6, fixes [#820](https://github.com/dcodeIO/protobuf.js/issues/820)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/cf36097305ab02047be5014eabeccc3154e18bde) Generate more verbose JSDoc comments for ES6 support, fixes [#820](https://github.com/dcodeIO/protobuf.js/issues/820)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/f2959795330966f13cb65bbb6034c88a01fc0bcc) Emit a maximum of one error var when generating verifiers, fixes [#786](https://github.com/dcodeIO/protobuf.js/issues/786)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/3b848a10b39c1897ca1ea3b5149ef72ae43fcd11) Fixed missing semicolon after 'extensions' and 'reserved' when generating proto files, fixes [#810](https://github.com/dcodeIO/protobuf.js/issues/810)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/eb1b40497e14a09facbc370676f486bed1376f52) Call npm with '--no-bin-links' when installing CLI deps, fixes [#823](https://github.com/dcodeIO/protobuf.js/issues/823)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/429de19d851477f1df2804d5bc0be30228cd0924) Fix Reader argument conversion in static module<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/03194c203d6ff61ae825e66f8a29ca204fa503b9) Use JSDoc, they said, it documents code, they said. Fixes [#770](https://github.com/dcodeIO/protobuf.js/issues/770)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/ec6a133ff541c638517e00f47b772990207c8640) parser should not confuse previous trailing line comments with comments for the next declaration, see [#762](https://github.com/dcodeIO/protobuf.js/issues/762)<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/0589ace4dc9e5c565ff996cf6e6bf94e63f43c4e) Types should not clear constructor with cache (fixes decorators)<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/056ecc3834a3b323aaaa676957efcbe3f52365a0) Namespace#lookup should also check in nested namespaces (wtf)<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/ed34b093839652db2ff7b84db87857fc57d96038) Reader#bytes should also support plain arrays<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/514afcfa890aa598e93254576c4fd6062e0eff3b) Fix markdown for pipe in code in table<br />
 
 ## New
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/17c2797592bc4effd9aaae3ba9777c9550bb75ac) Upgrade to codegen 2<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/57d7d35ddbb9e3a28c396b4ef1ae3b150eeb8035) ext/descriptor enables interoperability between reflection and descriptor.proto (experimental), see [#757](https://github.com/dcodeIO/protobuf.js/issues/757)<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/3939667ef1f37b025bd7f9476015890496d50e00) Added 'json' conversion option for proto3 JSON mapping compatibility of NaN and Infinity + additional documentation of util.toJSONOptions, see [#351](https://github.com/dcodeIO/protobuf.js/issues/351)<br />
 
 ## CLI
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/4eac28c7d3acefb0af7b82c62cf8d19bf3e7d37b) Use protobuf/minimal when pbjs target is static-module<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/3a959453fe63706c38ebbacda208e1f25f27dc99) Added closure wrapper<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/13bf9c2635e6a1a2711670fc8e28ae9d7b8d1c8f) Various improvements to statically generated JSDoc, also fixes [#772](https://github.com/dcodeIO/protobuf.js/issues/772)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/ffdc93c7cf7c8a716316b00864ea7c510e05b0c8) Check incompatible properties for namespaces only in tsd-jsdoc<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/fb3f9c70436d4f81bcd0bf62b71af4d253390e4f) Additional tsd-jsdoc handling of properties inside of namespaces and TS specific API exposure<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/2dcae25c99e2ed8afd01e27d21b106633b8c31b9) Several improvements to tsd-jsdoc emitted comments<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/ff858003f525db542cbb270777b6fab3a230c9bb) Further TypeScript definition improvements<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/22f907c49adbbdf09b72bde5299271dbe0ee9cbe) Relieved tsd files from unnecessary comments<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/22f907c49adbbdf09b72bde5299271dbe0ee9cbe) Generate TS namespaces for vars and functions with properties<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/b355115e619c6595ac9d91897cfe628ef0e46054) Prefer @tstype over @type when generating typedefs (tsd-jsdoc)<br />
 
 ## Docs
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/23f4b990375efcac2c144592cf4ca558722dcf2d) Replaced nullable types with explicit type|null for better tooling compatibility, also fixes [#766](https://github.com/dcodeIO/protobuf.js/issues/766) and fixes 767<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/6493f52013c92a34b8305a25068ec7b8c4c29d54) Added more info to ext/descriptor README, see [#757](https://github.com/dcodeIO/protobuf.js/issues/757)<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/ef92da3768d8746dbfe72e77232f78b879fc811d) Additional notes on ext/descriptor<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/b646cf7499791a41b75eef2de1a80fb558d4159e) Updated CHANGELOG so everyone knows what's going on (and soon, breaking)<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/35a663757efe188bea552aef017837bc6c6a481a) Additional docs on TS/decorators usage<br />
 
 ## Other
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/9726be0888a9461721447677e9dece16a682b9f6) Updated dist files<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/9726be0888a9461721447677e9dece16a682b9f6) Added package-lock.json<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/114f7ea9fa3813003afc3ebb453b2dd2262808e1) Minor formatting<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/8a6e464954b472fdbb4d46d9270fe3b4b3c7272d) Generate files<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/42f8a97630bcb30d197b0f1d6cbdd96879d27f96) Remove the no-constructor arg<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/6446247cd7edbb77f03dc42c557f568811286a39) Remove the ctor option.<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/2059ee0f6f951575d5c5d2dc5eb06b6fa34e27aa) Add support to generate types for JSON object.<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/7445da0f8cb2e450eff17723f25f366daaf3bbbb) aspromise performance pass<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/3f8b74ba6726567eaf68c4d447c120f75eac042f) codegen 2 performance pass, [#653](https://github.com/dcodeIO/protobuf.js/issues/653) might benefit<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/d44a7eec2fd393e5cb24196fb5818c8c278a0f34) Fixed minimal library including reflection functionality<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/a18e6db9f02696c66032bce7ef4c0eb0568a8048) Minor compression ratio tuning<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/b49a4edd38395e209bedac2e0bfb7b9d5c4e980b) Fixed failing test case + coverage<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/8f7111cacd236501b7e26791b9747b1974a2d9eb) Improved fromObject wrapper for google.protobuf.Any.<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/0e471a2516bde3cd3c27b2691afa0dcfbb01f042) Fixed failing tokenize test case<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/5867f076d8510fa97e3bd6642bbe61960f7fd196) Removed debug build, made it an extension<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/22f907c49adbbdf09b72bde5299271dbe0ee9cbe) Regenerated dist files<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/5bc3541d2da19e2857dc884f743d37c27e8e21f2) Even more documentation and typings for ext/descriptor<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/773e6347b57e4a5236b1ef0bb8d361e4b233caf7) ext/descriptor docs<br />
