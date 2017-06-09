@@ -39,24 +39,32 @@ $root.Test1 = (function() {
 
     /**
      * Field with a comment.
+     * @memberof Test1
+     * @instance
      * @type {string}
      */
     Test1.prototype.field1 = "";
 
     /**
      * Test1 field2.
+     * @memberof Test1
+     * @instance
      * @type {number}
      */
     Test1.prototype.field2 = 0;
 
     /**
      * Field with a comment and a <a href="http://example.com/foo/">link</a>
+     * @memberof Test1
+     * @instance
      * @type {boolean}
      */
     Test1.prototype.field3 = false;
 
     /**
      * Creates a new Test1 instance using the specified properties.
+     * @memberof Test1
+     * @static
      * @param {ITest1=} [properties] Properties to set
      * @returns {Test1} Test1 instance
      */
@@ -66,6 +74,8 @@ $root.Test1 = (function() {
 
     /**
      * Encodes the specified Test1 message. Does not implicitly {@link Test1.verify|verify} messages.
+     * @memberof Test1
+     * @static
      * @param {ITest1} message Test1 message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
@@ -84,6 +94,8 @@ $root.Test1 = (function() {
 
     /**
      * Encodes the specified Test1 message, length delimited. Does not implicitly {@link Test1.verify|verify} messages.
+     * @memberof Test1
+     * @static
      * @param {ITest1} message Test1 message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
@@ -94,6 +106,8 @@ $root.Test1 = (function() {
 
     /**
      * Decodes a Test1 message from the specified reader or buffer.
+     * @memberof Test1
+     * @static
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
      * @param {number} [length] Message length if known beforehand
      * @returns {Test1} Test1
@@ -126,6 +140,8 @@ $root.Test1 = (function() {
 
     /**
      * Decodes a Test1 message from the specified reader or buffer, length delimited.
+     * @memberof Test1
+     * @static
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
      * @returns {Test1} Test1
      * @throws {Error} If the payload is not a reader or valid buffer
@@ -133,12 +149,14 @@ $root.Test1 = (function() {
      */
     Test1.decodeDelimited = function decodeDelimited(reader) {
         if (!(reader instanceof $Reader))
-            reader = $Reader(reader);
+            reader = new $Reader(reader);
         return this.decode(reader, reader.uint32());
     };
 
     /**
      * Verifies a Test1 message.
+     * @memberof Test1
+     * @static
      * @param {Object.<string,*>} message Plain object to verify
      * @returns {string|null} `null` if valid, otherwise the reason why it is not
      */
@@ -159,6 +177,8 @@ $root.Test1 = (function() {
 
     /**
      * Creates a Test1 message from a plain object. Also converts values to their respective internal types.
+     * @memberof Test1
+     * @static
      * @param {Object.<string,*>} object Plain object
      * @returns {Test1} Test1
      */
@@ -177,6 +197,8 @@ $root.Test1 = (function() {
 
     /**
      * Creates a plain object from a Test1 message. Also converts values to other types if specified.
+     * @memberof Test1
+     * @static
      * @param {Test1} message Test1
      * @param {$protobuf.IConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
@@ -201,6 +223,8 @@ $root.Test1 = (function() {
 
     /**
      * Converts this Test1 to JSON.
+     * @memberof Test1
+     * @instance
      * @returns {Object.<string,*>} JSON object
      */
     Test1.prototype.toJSON = function toJSON() {
@@ -234,6 +258,8 @@ $root.Test2 = (function() {
 
     /**
      * Creates a new Test2 instance using the specified properties.
+     * @memberof Test2
+     * @static
      * @param {ITest2=} [properties] Properties to set
      * @returns {Test2} Test2 instance
      */
@@ -243,6 +269,8 @@ $root.Test2 = (function() {
 
     /**
      * Encodes the specified Test2 message. Does not implicitly {@link Test2.verify|verify} messages.
+     * @memberof Test2
+     * @static
      * @param {ITest2} message Test2 message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
@@ -255,6 +283,8 @@ $root.Test2 = (function() {
 
     /**
      * Encodes the specified Test2 message, length delimited. Does not implicitly {@link Test2.verify|verify} messages.
+     * @memberof Test2
+     * @static
      * @param {ITest2} message Test2 message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
@@ -265,6 +295,8 @@ $root.Test2 = (function() {
 
     /**
      * Decodes a Test2 message from the specified reader or buffer.
+     * @memberof Test2
+     * @static
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
      * @param {number} [length] Message length if known beforehand
      * @returns {Test2} Test2
@@ -288,6 +320,8 @@ $root.Test2 = (function() {
 
     /**
      * Decodes a Test2 message from the specified reader or buffer, length delimited.
+     * @memberof Test2
+     * @static
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
      * @returns {Test2} Test2
      * @throws {Error} If the payload is not a reader or valid buffer
@@ -295,12 +329,14 @@ $root.Test2 = (function() {
      */
     Test2.decodeDelimited = function decodeDelimited(reader) {
         if (!(reader instanceof $Reader))
-            reader = $Reader(reader);
+            reader = new $Reader(reader);
         return this.decode(reader, reader.uint32());
     };
 
     /**
      * Verifies a Test2 message.
+     * @memberof Test2
+     * @static
      * @param {Object.<string,*>} message Plain object to verify
      * @returns {string|null} `null` if valid, otherwise the reason why it is not
      */
@@ -312,6 +348,8 @@ $root.Test2 = (function() {
 
     /**
      * Creates a Test2 message from a plain object. Also converts values to their respective internal types.
+     * @memberof Test2
+     * @static
      * @param {Object.<string,*>} object Plain object
      * @returns {Test2} Test2
      */
@@ -323,6 +361,8 @@ $root.Test2 = (function() {
 
     /**
      * Creates a plain object from a Test2 message. Also converts values to other types if specified.
+     * @memberof Test2
+     * @static
      * @param {Test2} message Test2
      * @param {$protobuf.IConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
@@ -333,6 +373,8 @@ $root.Test2 = (function() {
 
     /**
      * Converts this Test2 to JSON.
+     * @memberof Test2
+     * @instance
      * @returns {Object.<string,*>} JSON object
      */
     Test2.prototype.toJSON = function toJSON() {
@@ -345,7 +387,7 @@ $root.Test2 = (function() {
 /**
  * Test3 enum.
  * @exports Test3
- * @enum {number}
+ * @enum {string}
  * @property {number} ONE=1 Value with a comment.
  * @property {number} TWO=2 TWO value
  * @property {number} THREE=3 Preferred value with a comment.

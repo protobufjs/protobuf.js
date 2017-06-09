@@ -394,6 +394,8 @@ function buildType(ref, type) {
                 jsType = "(" + jsType + "|null)";
             pushComment([
                 field.comment || type.name + " " + field.name + ".",
+                "@memberof " + exportName(type),
+                "@instance",
                 "@type {" + jsType + "}"
             ]);
         } else if (firstField) {
@@ -430,7 +432,9 @@ function buildType(ref, type) {
         push("");
         pushComment([
             oneof.comment || type.name + " " + oneof.name + ".",
-            "@name " + exportName(type) + "#" + escapeName(oneof.name),
+            "@property " + escapeName(oneof.name),
+            "@memberof " + exportName(type),
+            "@instance",
             "@type {string|undefined}"
         ]);
         push("Object.defineProperty(" + escapeName(type.name) + ".prototype, " + JSON.stringify(oneof.name) +", {");
@@ -445,6 +449,8 @@ function buildType(ref, type) {
         push("");
         pushComment([
             "Creates a new " + type.name + " instance using the specified properties.",
+            "@memberof " + exportName(type),
+            "@static",
             "@param {" + exportName(type, true) + "=} [properties] Properties to set",
             "@returns {" + exportName(type) + "} " + type.name + " instance"
         ]);
@@ -459,6 +465,8 @@ function buildType(ref, type) {
         push("");
         pushComment([
             "Encodes the specified " + type.name + " message. Does not implicitly {@link " + exportName(type) + ".verify|verify} messages.",
+            "@memberof " + exportName(type),
+            "@static",
             "@param {" + exportName(type, !config.forceMessage) + "} " + (config.beautify ? "message" : "m") + " " + type.name + " message or plain object to encode",
             "@param {$protobuf.Writer} [" + (config.beautify ? "writer" : "w") + "] Writer to encode to",
             "@returns {$protobuf.Writer} Writer"
@@ -469,6 +477,8 @@ function buildType(ref, type) {
             push("");
             pushComment([
                 "Encodes the specified " + type.name + " message, length delimited. Does not implicitly {@link " + exportName(type) + ".verify|verify} messages.",
+                "@memberof " + exportName(type),
+                "@static",
                 "@param {" + exportName(type, !config.forceMessage) + "} message " + type.name + " message or plain object to encode",
                 "@param {$protobuf.Writer} [writer] Writer to encode to",
                 "@returns {$protobuf.Writer} Writer"
@@ -485,6 +495,8 @@ function buildType(ref, type) {
         push("");
         pushComment([
             "Decodes " + aOrAn(type.name) + " message from the specified reader or buffer.",
+            "@memberof " + exportName(type),
+            "@static",
             "@param {$protobuf.Reader|Uint8Array} " + (config.beautify ? "reader" : "r") + " Reader or buffer to decode from",
             "@param {number} [" + (config.beautify ? "length" : "l") + "] Message length if known beforehand",
             "@returns {" + exportName(type) + "} " + type.name,
@@ -497,6 +509,8 @@ function buildType(ref, type) {
             push("");
             pushComment([
                 "Decodes " + aOrAn(type.name) + " message from the specified reader or buffer, length delimited.",
+                "@memberof " + exportName(type),
+                "@static",
                 "@param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from",
                 "@returns {" + exportName(type) + "} " + type.name,
                 "@throws {Error} If the payload is not a reader or valid buffer",
@@ -518,6 +532,8 @@ function buildType(ref, type) {
         push("");
         pushComment([
             "Verifies " + aOrAn(type.name) + " message.",
+            "@memberof " + exportName(type),
+            "@static",
             "@param {Object.<string,*>} " + (config.beautify ? "message" : "m") + " Plain object to verify",
             "@returns {string|null} `null` if valid, otherwise the reason why it is not"
         ]);
@@ -528,6 +544,8 @@ function buildType(ref, type) {
         push("");
         pushComment([
             "Creates " + aOrAn(type.name) + " message from a plain object. Also converts values to their respective internal types.",
+            "@memberof " + exportName(type),
+            "@static",
             "@param {Object.<string,*>} " + (config.beautify ? "object" : "d") + " Plain object",
             "@returns {" + exportName(type) + "} " + type.name
         ]);
@@ -536,6 +554,8 @@ function buildType(ref, type) {
         push("");
         pushComment([
             "Creates a plain object from " + aOrAn(type.name) + " message. Also converts values to other types if specified.",
+            "@memberof " + exportName(type),
+            "@static",
             "@param {" + exportName(type) + "} " + (config.beautify ? "message" : "m") + " " + type.name,
             "@param {$protobuf.IConversionOptions} [" + (config.beautify ? "options" : "o") + "] Conversion options",
             "@returns {Object.<string,*>} Plain object"
@@ -545,6 +565,8 @@ function buildType(ref, type) {
         push("");
         pushComment([
             "Converts this " + type.name + " to JSON.",
+            "@memberof " + exportName(type),
+            "@instance",
             "@returns {Object.<string,*>} JSON object"
         ]);
         push(escapeName(type.name) + ".prototype.toJSON = function toJSON() {");
@@ -580,6 +602,8 @@ function buildService(ref, service) {
         push("");
         pushComment([
             "Creates new " + service.name + " service using the specified rpc implementation.",
+            "@memberof " + exportName(service),
+            "@static",
             "@param {$protobuf.RPCImpl} rpcImpl RPC implementation",
             "@param {boolean} [requestDelimited=false] Whether requests are length-delimited",
             "@param {boolean} [responseDelimited=false] Whether responses are length-delimited",
@@ -609,9 +633,12 @@ function buildService(ref, service) {
         push("");
         pushComment([
             method.comment || "Calls " + method.name + ".",
+            "@memberof " + exportName(service),
+            "@instance",
             "@param {" + exportName(method.resolvedRequestType, !config.forceMessage) + "} request " + method.resolvedRequestType.name + " message or plain object",
             "@param {" + exportName(service) + "." + cbName + "} callback Node-style callback called with the error, if any, and " + method.resolvedResponseType.name,
-            "@returns {undefined}"
+            "@returns {undefined}",
+            "@variation 1"
         ]);
         push(escapeName(service.name) + ".prototype" + util.safeProp(lcName) + " = function " + escapeName(lcName) + "(request, callback) {");
             ++indent;
@@ -622,8 +649,9 @@ function buildService(ref, service) {
             push("");
         pushComment([
             method.comment || "Calls " + method.name + ".",
-            "@memberof " + exportName(service) + ".prototype",
             "@function " + lcName,
+            "@memberof " + exportName(service),
+            "@instance",
             "@param {" + exportName(method.resolvedRequestType, !config.forceMessage) + "} request " + method.resolvedRequestType.name + " message or plain object",
             "@returns {Promise<" + exportName(method.resolvedResponseType) + ">} Promise",
             "@variation 2"

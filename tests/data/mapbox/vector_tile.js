@@ -44,12 +44,16 @@ $root.vector_tile = (function() {
 
         /**
          * Tile layers.
+         * @memberof vector_tile.Tile
+         * @instance
          * @type {Array.<vector_tile.Tile.ILayer>}
          */
         Tile.prototype.layers = $util.emptyArray;
 
         /**
          * Creates a new Tile instance using the specified properties.
+         * @memberof vector_tile.Tile
+         * @static
          * @param {vector_tile.ITile=} [properties] Properties to set
          * @returns {vector_tile.Tile} Tile instance
          */
@@ -59,6 +63,8 @@ $root.vector_tile = (function() {
 
         /**
          * Encodes the specified Tile message. Does not implicitly {@link vector_tile.Tile.verify|verify} messages.
+         * @memberof vector_tile.Tile
+         * @static
          * @param {vector_tile.ITile} message Tile message or plain object to encode
          * @param {$protobuf.Writer} [writer] Writer to encode to
          * @returns {$protobuf.Writer} Writer
@@ -74,6 +80,8 @@ $root.vector_tile = (function() {
 
         /**
          * Encodes the specified Tile message, length delimited. Does not implicitly {@link vector_tile.Tile.verify|verify} messages.
+         * @memberof vector_tile.Tile
+         * @static
          * @param {vector_tile.ITile} message Tile message or plain object to encode
          * @param {$protobuf.Writer} [writer] Writer to encode to
          * @returns {$protobuf.Writer} Writer
@@ -84,6 +92,8 @@ $root.vector_tile = (function() {
 
         /**
          * Decodes a Tile message from the specified reader or buffer.
+         * @memberof vector_tile.Tile
+         * @static
          * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
          * @param {number} [length] Message length if known beforehand
          * @returns {vector_tile.Tile} Tile
@@ -112,6 +122,8 @@ $root.vector_tile = (function() {
 
         /**
          * Decodes a Tile message from the specified reader or buffer, length delimited.
+         * @memberof vector_tile.Tile
+         * @static
          * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
          * @returns {vector_tile.Tile} Tile
          * @throws {Error} If the payload is not a reader or valid buffer
@@ -119,12 +131,14 @@ $root.vector_tile = (function() {
          */
         Tile.decodeDelimited = function decodeDelimited(reader) {
             if (!(reader instanceof $Reader))
-                reader = $Reader(reader);
+                reader = new $Reader(reader);
             return this.decode(reader, reader.uint32());
         };
 
         /**
          * Verifies a Tile message.
+         * @memberof vector_tile.Tile
+         * @static
          * @param {Object.<string,*>} message Plain object to verify
          * @returns {string|null} `null` if valid, otherwise the reason why it is not
          */
@@ -145,6 +159,8 @@ $root.vector_tile = (function() {
 
         /**
          * Creates a Tile message from a plain object. Also converts values to their respective internal types.
+         * @memberof vector_tile.Tile
+         * @static
          * @param {Object.<string,*>} object Plain object
          * @returns {vector_tile.Tile} Tile
          */
@@ -167,6 +183,8 @@ $root.vector_tile = (function() {
 
         /**
          * Creates a plain object from a Tile message. Also converts values to other types if specified.
+         * @memberof vector_tile.Tile
+         * @static
          * @param {vector_tile.Tile} message Tile
          * @param {$protobuf.IConversionOptions} [options] Conversion options
          * @returns {Object.<string,*>} Plain object
@@ -187,6 +205,8 @@ $root.vector_tile = (function() {
 
         /**
          * Converts this Tile to JSON.
+         * @memberof vector_tile.Tile
+         * @instance
          * @returns {Object.<string,*>} JSON object
          */
         Tile.prototype.toJSON = function toJSON() {
@@ -195,7 +215,7 @@ $root.vector_tile = (function() {
 
         /**
          * GeomType enum.
-         * @enum {number}
+         * @enum {string}
          * @property {number} UNKNOWN=0 UNKNOWN value
          * @property {number} POINT=1 POINT value
          * @property {number} LINESTRING=2 LINESTRING value
@@ -241,48 +261,64 @@ $root.vector_tile = (function() {
 
             /**
              * Value stringValue.
+             * @memberof vector_tile.Tile.Value
+             * @instance
              * @type {string}
              */
             Value.prototype.stringValue = "";
 
             /**
              * Value floatValue.
+             * @memberof vector_tile.Tile.Value
+             * @instance
              * @type {number}
              */
             Value.prototype.floatValue = 0;
 
             /**
              * Value doubleValue.
+             * @memberof vector_tile.Tile.Value
+             * @instance
              * @type {number}
              */
             Value.prototype.doubleValue = 0;
 
             /**
              * Value intValue.
+             * @memberof vector_tile.Tile.Value
+             * @instance
              * @type {number|Long}
              */
             Value.prototype.intValue = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
 
             /**
              * Value uintValue.
+             * @memberof vector_tile.Tile.Value
+             * @instance
              * @type {number|Long}
              */
             Value.prototype.uintValue = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
 
             /**
              * Value sintValue.
+             * @memberof vector_tile.Tile.Value
+             * @instance
              * @type {number|Long}
              */
             Value.prototype.sintValue = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
 
             /**
              * Value boolValue.
+             * @memberof vector_tile.Tile.Value
+             * @instance
              * @type {boolean}
              */
             Value.prototype.boolValue = false;
 
             /**
              * Creates a new Value instance using the specified properties.
+             * @memberof vector_tile.Tile.Value
+             * @static
              * @param {vector_tile.Tile.IValue=} [properties] Properties to set
              * @returns {vector_tile.Tile.Value} Value instance
              */
@@ -292,6 +328,8 @@ $root.vector_tile = (function() {
 
             /**
              * Encodes the specified Value message. Does not implicitly {@link vector_tile.Tile.Value.verify|verify} messages.
+             * @memberof vector_tile.Tile.Value
+             * @static
              * @param {vector_tile.Tile.IValue} message Value message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -318,6 +356,8 @@ $root.vector_tile = (function() {
 
             /**
              * Encodes the specified Value message, length delimited. Does not implicitly {@link vector_tile.Tile.Value.verify|verify} messages.
+             * @memberof vector_tile.Tile.Value
+             * @static
              * @param {vector_tile.Tile.IValue} message Value message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -328,6 +368,8 @@ $root.vector_tile = (function() {
 
             /**
              * Decodes a Value message from the specified reader or buffer.
+             * @memberof vector_tile.Tile.Value
+             * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {vector_tile.Tile.Value} Value
@@ -372,6 +414,8 @@ $root.vector_tile = (function() {
 
             /**
              * Decodes a Value message from the specified reader or buffer, length delimited.
+             * @memberof vector_tile.Tile.Value
+             * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @returns {vector_tile.Tile.Value} Value
              * @throws {Error} If the payload is not a reader or valid buffer
@@ -379,12 +423,14 @@ $root.vector_tile = (function() {
              */
             Value.decodeDelimited = function decodeDelimited(reader) {
                 if (!(reader instanceof $Reader))
-                    reader = $Reader(reader);
+                    reader = new $Reader(reader);
                 return this.decode(reader, reader.uint32());
             };
 
             /**
              * Verifies a Value message.
+             * @memberof vector_tile.Tile.Value
+             * @static
              * @param {Object.<string,*>} message Plain object to verify
              * @returns {string|null} `null` if valid, otherwise the reason why it is not
              */
@@ -417,6 +463,8 @@ $root.vector_tile = (function() {
 
             /**
              * Creates a Value message from a plain object. Also converts values to their respective internal types.
+             * @memberof vector_tile.Tile.Value
+             * @static
              * @param {Object.<string,*>} object Plain object
              * @returns {vector_tile.Tile.Value} Value
              */
@@ -464,6 +512,8 @@ $root.vector_tile = (function() {
 
             /**
              * Creates a plain object from a Value message. Also converts values to other types if specified.
+             * @memberof vector_tile.Tile.Value
+             * @static
              * @param {vector_tile.Tile.Value} message Value
              * @param {$protobuf.IConversionOptions} [options] Conversion options
              * @returns {Object.<string,*>} Plain object
@@ -521,6 +571,8 @@ $root.vector_tile = (function() {
 
             /**
              * Converts this Value to JSON.
+             * @memberof vector_tile.Tile.Value
+             * @instance
              * @returns {Object.<string,*>} JSON object
              */
             Value.prototype.toJSON = function toJSON() {
@@ -560,30 +612,40 @@ $root.vector_tile = (function() {
 
             /**
              * Feature id.
+             * @memberof vector_tile.Tile.Feature
+             * @instance
              * @type {number|Long}
              */
             Feature.prototype.id = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
 
             /**
              * Feature tags.
+             * @memberof vector_tile.Tile.Feature
+             * @instance
              * @type {Array.<number>}
              */
             Feature.prototype.tags = $util.emptyArray;
 
             /**
              * Feature type.
+             * @memberof vector_tile.Tile.Feature
+             * @instance
              * @type {vector_tile.Tile.GeomType}
              */
             Feature.prototype.type = 0;
 
             /**
              * Feature geometry.
+             * @memberof vector_tile.Tile.Feature
+             * @instance
              * @type {Array.<number>}
              */
             Feature.prototype.geometry = $util.emptyArray;
 
             /**
              * Creates a new Feature instance using the specified properties.
+             * @memberof vector_tile.Tile.Feature
+             * @static
              * @param {vector_tile.Tile.IFeature=} [properties] Properties to set
              * @returns {vector_tile.Tile.Feature} Feature instance
              */
@@ -593,6 +655,8 @@ $root.vector_tile = (function() {
 
             /**
              * Encodes the specified Feature message. Does not implicitly {@link vector_tile.Tile.Feature.verify|verify} messages.
+             * @memberof vector_tile.Tile.Feature
+             * @static
              * @param {vector_tile.Tile.IFeature} message Feature message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -621,6 +685,8 @@ $root.vector_tile = (function() {
 
             /**
              * Encodes the specified Feature message, length delimited. Does not implicitly {@link vector_tile.Tile.Feature.verify|verify} messages.
+             * @memberof vector_tile.Tile.Feature
+             * @static
              * @param {vector_tile.Tile.IFeature} message Feature message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -631,6 +697,8 @@ $root.vector_tile = (function() {
 
             /**
              * Decodes a Feature message from the specified reader or buffer.
+             * @memberof vector_tile.Tile.Feature
+             * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {vector_tile.Tile.Feature} Feature
@@ -680,6 +748,8 @@ $root.vector_tile = (function() {
 
             /**
              * Decodes a Feature message from the specified reader or buffer, length delimited.
+             * @memberof vector_tile.Tile.Feature
+             * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @returns {vector_tile.Tile.Feature} Feature
              * @throws {Error} If the payload is not a reader or valid buffer
@@ -687,12 +757,14 @@ $root.vector_tile = (function() {
              */
             Feature.decodeDelimited = function decodeDelimited(reader) {
                 if (!(reader instanceof $Reader))
-                    reader = $Reader(reader);
+                    reader = new $Reader(reader);
                 return this.decode(reader, reader.uint32());
             };
 
             /**
              * Verifies a Feature message.
+             * @memberof vector_tile.Tile.Feature
+             * @static
              * @param {Object.<string,*>} message Plain object to verify
              * @returns {string|null} `null` if valid, otherwise the reason why it is not
              */
@@ -731,6 +803,8 @@ $root.vector_tile = (function() {
 
             /**
              * Creates a Feature message from a plain object. Also converts values to their respective internal types.
+             * @memberof vector_tile.Tile.Feature
+             * @static
              * @param {Object.<string,*>} object Plain object
              * @returns {vector_tile.Tile.Feature} Feature
              */
@@ -784,6 +858,8 @@ $root.vector_tile = (function() {
 
             /**
              * Creates a plain object from a Feature message. Also converts values to other types if specified.
+             * @memberof vector_tile.Tile.Feature
+             * @static
              * @param {vector_tile.Tile.Feature} message Feature
              * @param {$protobuf.IConversionOptions} [options] Conversion options
              * @returns {Object.<string,*>} Plain object
@@ -826,6 +902,8 @@ $root.vector_tile = (function() {
 
             /**
              * Converts this Feature to JSON.
+             * @memberof vector_tile.Tile.Feature
+             * @instance
              * @returns {Object.<string,*>} JSON object
              */
             Feature.prototype.toJSON = function toJSON() {
@@ -868,42 +946,56 @@ $root.vector_tile = (function() {
 
             /**
              * Layer version.
+             * @memberof vector_tile.Tile.Layer
+             * @instance
              * @type {number}
              */
             Layer.prototype.version = 1;
 
             /**
              * Layer name.
+             * @memberof vector_tile.Tile.Layer
+             * @instance
              * @type {string}
              */
             Layer.prototype.name = "";
 
             /**
              * Layer features.
+             * @memberof vector_tile.Tile.Layer
+             * @instance
              * @type {Array.<vector_tile.Tile.IFeature>}
              */
             Layer.prototype.features = $util.emptyArray;
 
             /**
              * Layer keys.
+             * @memberof vector_tile.Tile.Layer
+             * @instance
              * @type {Array.<string>}
              */
             Layer.prototype.keys = $util.emptyArray;
 
             /**
              * Layer values.
+             * @memberof vector_tile.Tile.Layer
+             * @instance
              * @type {Array.<vector_tile.Tile.IValue>}
              */
             Layer.prototype.values = $util.emptyArray;
 
             /**
              * Layer extent.
+             * @memberof vector_tile.Tile.Layer
+             * @instance
              * @type {number}
              */
             Layer.prototype.extent = 4096;
 
             /**
              * Creates a new Layer instance using the specified properties.
+             * @memberof vector_tile.Tile.Layer
+             * @static
              * @param {vector_tile.Tile.ILayer=} [properties] Properties to set
              * @returns {vector_tile.Tile.Layer} Layer instance
              */
@@ -913,6 +1005,8 @@ $root.vector_tile = (function() {
 
             /**
              * Encodes the specified Layer message. Does not implicitly {@link vector_tile.Tile.Layer.verify|verify} messages.
+             * @memberof vector_tile.Tile.Layer
+             * @static
              * @param {vector_tile.Tile.ILayer} message Layer message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -938,6 +1032,8 @@ $root.vector_tile = (function() {
 
             /**
              * Encodes the specified Layer message, length delimited. Does not implicitly {@link vector_tile.Tile.Layer.verify|verify} messages.
+             * @memberof vector_tile.Tile.Layer
+             * @static
              * @param {vector_tile.Tile.ILayer} message Layer message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
@@ -948,6 +1044,8 @@ $root.vector_tile = (function() {
 
             /**
              * Decodes a Layer message from the specified reader or buffer.
+             * @memberof vector_tile.Tile.Layer
+             * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {vector_tile.Tile.Layer} Layer
@@ -999,6 +1097,8 @@ $root.vector_tile = (function() {
 
             /**
              * Decodes a Layer message from the specified reader or buffer, length delimited.
+             * @memberof vector_tile.Tile.Layer
+             * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @returns {vector_tile.Tile.Layer} Layer
              * @throws {Error} If the payload is not a reader or valid buffer
@@ -1006,12 +1106,14 @@ $root.vector_tile = (function() {
              */
             Layer.decodeDelimited = function decodeDelimited(reader) {
                 if (!(reader instanceof $Reader))
-                    reader = $Reader(reader);
+                    reader = new $Reader(reader);
                 return this.decode(reader, reader.uint32());
             };
 
             /**
              * Verifies a Layer message.
+             * @memberof vector_tile.Tile.Layer
+             * @static
              * @param {Object.<string,*>} message Plain object to verify
              * @returns {string|null} `null` if valid, otherwise the reason why it is not
              */
@@ -1042,7 +1144,7 @@ $root.vector_tile = (function() {
                     if (!Array.isArray(message.values))
                         return "values: array expected";
                     for (var i = 0; i < message.values.length; ++i) {
-                        var error = $root.vector_tile.Tile.Value.verify(message.values[i]);
+                        error = $root.vector_tile.Tile.Value.verify(message.values[i]);
                         if (error)
                             return "values." + error;
                     }
@@ -1055,6 +1157,8 @@ $root.vector_tile = (function() {
 
             /**
              * Creates a Layer message from a plain object. Also converts values to their respective internal types.
+             * @memberof vector_tile.Tile.Layer
+             * @static
              * @param {Object.<string,*>} object Plain object
              * @returns {vector_tile.Tile.Layer} Layer
              */
@@ -1100,6 +1204,8 @@ $root.vector_tile = (function() {
 
             /**
              * Creates a plain object from a Layer message. Also converts values to other types if specified.
+             * @memberof vector_tile.Tile.Layer
+             * @static
              * @param {vector_tile.Tile.Layer} message Layer
              * @param {$protobuf.IConversionOptions} [options] Conversion options
              * @returns {Object.<string,*>} Plain object
@@ -1144,6 +1250,8 @@ $root.vector_tile = (function() {
 
             /**
              * Converts this Layer to JSON.
+             * @memberof vector_tile.Tile.Layer
+             * @instance
              * @returns {Object.<string,*>} JSON object
              */
             Layer.prototype.toJSON = function toJSON() {
