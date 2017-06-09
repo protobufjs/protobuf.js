@@ -586,12 +586,12 @@ Translates between file formats and generates static code.
 
   -t, --target     Specifies the target format. Also accepts a path to require a custom target.
 
-                  json          JSON representation
-                  json-module   JSON representation as a module
-                  proto2        Protocol Buffers, Version 2
-                  proto3        Protocol Buffers, Version 3
-                  static        Static code without reflection (non-functional on its own)
-                  static-module Static code without reflection as a module
+                   json          JSON representation
+                   json-module   JSON representation as a module
+                   proto2        Protocol Buffers, Version 2
+                   proto3        Protocol Buffers, Version 3
+                   static        Static code without reflection (non-functional on its own)
+                   static-module Static code without reflection as a module
 
   -p, --path       Adds a directory to the include path.
 
@@ -599,7 +599,7 @@ Translates between file formats and generates static code.
 
   --sparse         Exports only those types referenced from a main file (experimental).
 
-   Module targets only:
+  Module targets only:
 
   -w, --wrap       Specifies the wrapper to use. Also accepts a path to require a custom wrapper.
 
@@ -607,6 +607,7 @@ Translates between file formats and generates static code.
                    commonjs  CommonJS wrapper
                    amd       AMD wrapper
                    es6       ES6 wrapper (implies --es6)
+                   closure   A closure adding to protobuf.roots where protobuf is a global
 
   -r, --root       Specifies an alternative protobuf.roots name.
 
@@ -616,11 +617,11 @@ Translates between file formats and generates static code.
 
   --es6            Enables ES6 syntax (const/let instead of var)
 
-   Proto sources only:
+  Proto sources only:
 
   --keep-case      Keeps field casing instead of converting to camel case.
 
-   Static targets only:
+  Static targets only:
 
   --no-create      Does not generate create functions used for reflection compatibility.
   --no-encode      Does not generate encode functions.
@@ -634,7 +635,7 @@ Translates between file formats and generates static code.
   --force-long     Enfores the use of 'Long' for s-/u-/int64 and s-/fixed64 fields.
   --force-message  Enfores the use of message instances instead of plain objects.
 
-usage: pbjs [options] file1.proto file2.json ...  (or)  other | pbjs [options] -
+usage: pbjs [options] file1.proto file2.json ...  (or pipe)  other | pbjs [options] -
 ```
 
 For production environments it is recommended to bundle all your .proto files to a single .json file, which minimizes the number of network requests and avoids any parser overhead (hint: works with just the **light** library):

@@ -126,7 +126,7 @@ function modExists(name, version) {
 }
 
 function modInstall(install) {
-    child_process.execSync("npm --silent --no-bin-links install " + (typeof install === "string" ? install : install.join(" ")), {
+    child_process.execSync("npm --silent install " + (typeof install === "string" ? install : install.join(" ")), {
         cwd: __dirname,
         stdio: "ignore"
     });

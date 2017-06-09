@@ -69,7 +69,7 @@ exports.main = function main(args, callback) {
 
     if (!files.length) {
         var descs = Object.keys(targets).filter(function(key) { return !targets[key].private; }).map(function(key) {
-            return "                  " + util.pad(key, 14, true) + targets[key].description;
+            return "                   " + util.pad(key, 14, true) + targets[key].description;
         });
         if (callback)
             callback(Error("usage")); // eslint-disable-line callback-return
@@ -89,7 +89,7 @@ exports.main = function main(args, callback) {
                 "",
                 "  --sparse         Exports only those types referenced from a main file (experimental).",
                 "",
-                chalk.bold.gray("   Module targets only:"),
+                chalk.bold.gray("  Module targets only:"),
                 "",
                 "  -w, --wrap       Specifies the wrapper to use. Also accepts a path to require a custom wrapper.",
                 "",
@@ -97,7 +97,7 @@ exports.main = function main(args, callback) {
                 "                   commonjs  CommonJS wrapper",
                 "                   amd       AMD wrapper",
                 "                   es6       ES6 wrapper (implies --es6)",
-                "                   closure   Just a closure adding to protobuf.roots (see -r)",
+                "                   closure   A closure adding to protobuf.roots where protobuf is a global",
                 "",
                 "  -r, --root       Specifies an alternative protobuf.roots name.",
                 "",
@@ -107,11 +107,11 @@ exports.main = function main(args, callback) {
                 "",
                 "  --es6            Enables ES6 syntax (const/let instead of var)",
                 "",
-                chalk.bold.gray("   Proto sources only:"),
+                chalk.bold.gray("  Proto sources only:"),
                 "",
                 "  --keep-case      Keeps field casing instead of converting to camel case.",
                 "",
-                chalk.bold.gray("   Static targets only:"),
+                chalk.bold.gray("  Static targets only:"),
                 "",
                 "  --no-create      Does not generate create functions used for reflection compatibility.",
                 "  --no-encode      Does not generate encode functions.",
@@ -125,7 +125,7 @@ exports.main = function main(args, callback) {
                 "  --force-long     Enfores the use of 'Long' for s-/u-/int64 and s-/fixed64 fields.",
                 "  --force-message  Enfores the use of message instances instead of plain objects.",
                 "",
-                "usage: " + chalk.bold.green("pbjs") + " [options] file1.proto file2.json ..." + chalk.gray("  (or)  ") + "other | " + chalk.bold.green("pbjs") + " [options] -",
+                "usage: " + chalk.bold.green("pbjs") + " [options] file1.proto file2.json ..." + chalk.gray("  (or pipe)  ") + "other | " + chalk.bold.green("pbjs") + " [options] -",
                 ""
             ].join("\n"));
         return 1;
