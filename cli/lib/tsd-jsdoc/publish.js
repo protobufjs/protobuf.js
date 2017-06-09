@@ -574,20 +574,35 @@ function handleMember(element, parent) {
     begin(element);
 
     if (element.isEnum) {
-
-        writeln("enum ", element.name, " {");
-        ++indent;
-        element.properties.forEach(function(property, i) {
-            write(property.name);
-            if (property.defaultvalue !== undefined)
-                write(" = ", JSON.stringify(property.defaultvalue));
-            if (i < element.properties.length - 1)
-                writeln(",");
-            else
-                writeln();
+        var stringEnum = false;
+        element.properties.forEach(function(property) {
+            if (isNaN(property.defaultvalue)) {
+                stringEnum = true;
+            }
         });
-        --indent;
-        writeln("}");
+        if (stringEnum) {
+            writeln("type ", element.name, " =");
+            ++indent;
+            element.properties.forEach(function(property, i) {
+                write(i === 0 ? "" : "| ", JSON.stringify(property.defaultvalue));
+            });
+            --indent;
+            writeln(";");
+        } else {
+            writeln("enum ", element.name, " {");
+            ++indent;
+            element.properties.forEach(function(property, i) {
+                write(property.name);
+                if (property.defaultvalue !== undefined)
+                    write(" = ", JSON.stringify(property.defaultvalue));
+                if (i < element.properties.length - 1)
+                    writeln(",");
+                else
+                    writeln();
+            });
+            --indent;
+            writeln("}");
+        }
 
     } else {
 
