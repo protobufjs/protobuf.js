@@ -391,7 +391,7 @@ function buildType(ref, type) {
             push("");
             var jsType = toJsType(field);
             if (field.optional && !field.map && !field.repeated && field.resolvedType instanceof Type)
-                jsType = "(" + jsType + "|null)";
+                jsType = "(" + jsType + "|null|undefined)";
             pushComment([
                 field.comment || type.name + " " + field.name + ".",
                 "@member {" + jsType + "}" + escapeName(field.name),
