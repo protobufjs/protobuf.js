@@ -127,8 +127,6 @@
             
                 <li data-name="rpc.ServiceMethodCallback"><a href="rpc.html#.ServiceMethodCallback">ServiceMethodCallback</a></li>
             
-                <li data-name="rpc.ServiceMethodMixin"><a href="rpc.html#.ServiceMethodMixin">ServiceMethodMixin</a></li>
-            
             </ul>
             <ul class="methods itemMembers">
             
@@ -508,8 +506,6 @@
             
             <span class="subtitle">Methods</span>
             
-                <li data-name="Class.create"><a href="Class.html#.create">create</a></li>
-            
                 <li data-name="Class.generate"><a href="Class.html#.generate">generate</a></li>
             
                 <li data-name="Class#decode"><a href="Class.html#decode">decode</a></li>
@@ -519,8 +515,6 @@
                 <li data-name="Class#encode"><a href="Class.html#encode">encode</a></li>
             
                 <li data-name="Class#encodeDelimited"><a href="Class.html#encodeDelimited">encodeDelimited</a></li>
-            
-                <li data-name="Class#from"><a href="Class.html#from">from</a></li>
             
                 <li data-name="Class#fromObject"><a href="Class.html#fromObject">fromObject</a></li>
             
@@ -670,9 +664,13 @@
             
             <span class="subtitle">Methods</span>
             
+                <li data-name="Field.d"><a href="Field.html#.d">d</a></li>
+            
                 <li data-name="Field.fromJSON"><a href="Field.html#.fromJSON">fromJSON</a></li>
             
                 <li data-name="Field#getOption"><a href="Field.html#getOption">getOption</a></li>
+            
+                <li data-name="Field#initDefault"><a href="Field.html#initDefault">initDefault</a></li>
             
                 <li data-name="Field#onAdd"><a href="Field.html#onAdd">onAdd</a></li>
             
@@ -771,6 +769,8 @@
             
                 <li data-name="MapField#getOption"><a href="MapField.html#getOption">getOption</a></li>
             
+                <li data-name="MapField#initDefault"><a href="MapField.html#initDefault">initDefault</a></li>
+            
                 <li data-name="MapField#onAdd"><a href="MapField.html#onAdd">onAdd</a></li>
             
                 <li data-name="MapField#onRemove"><a href="MapField.html#onRemove">onRemove</a></li>
@@ -819,8 +819,6 @@
                 <li data-name="Message.encode"><a href="Message.html#.encode">encode</a></li>
             
                 <li data-name="Message.encodeDelimited"><a href="Message.html#.encodeDelimited">encodeDelimited</a></li>
-            
-                <li data-name="Message.from"><a href="Message.html#.from">from</a></li>
             
                 <li data-name="Message.fromObject"><a href="Message.html#.fromObject">fromObject</a></li>
             
@@ -1570,8 +1568,6 @@
             
                 <li data-name="Type#encodeDelimited"><a href="Type.html#encodeDelimited">encodeDelimited</a></li>
             
-                <li data-name="Type#from"><a href="Type.html#from">from</a></li>
-            
                 <li data-name="Type#fromObject"><a href="Type.html#fromObject">fromObject</a></li>
             
                 <li data-name="Type#get"><a href="Type.html#get">get</a></li>
@@ -1829,12 +1825,12 @@
     <div class="nameContainer">
         <h4 class="name" id="Class">
             
-            new Class<span class="signature">(type, <span class="optional">ctor</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ <a href="Message.html">Message</a> }</span>
+            new Class<span class="signature">(type, <span class="optional">ctor</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ <a href="Message.html">Message</a>.&lt;T> }</span>
         </h4>
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/class.js">src/class.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/class.js#L17">line 17</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/class.js">src/class.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/class.js#L19">line 19</a>
         </div>
         
     </div>
@@ -1910,7 +1906,7 @@
             <td class="type">
             
                 
-<span class="param-type">*</span>
+<span class="param-type"><a href="global.html#TSNew">TSNew</a>.&lt;T></span>
 
 
             
@@ -1988,7 +1984,7 @@
             
             <td class="type">
             
-                        <a href="Message.html">Message</a>
+                        <a href="Message.html">Message</a>.&lt;T>
                         
                     
             </td>
@@ -2006,6 +2002,12 @@
     
     </div>
     
+    
+        <h3 class="subsection-title">Extends</h3>
+        
+        <ul>
+            <li>Function</li>
+        </ul>
     
     
     
@@ -2025,188 +2027,6 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id=".create">
-            
-            Class.create<span class="signature">(type, <span class="optional">ctor</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ <a href="Message.html">Message</a> }</span>
-        </h4>
-    
-        
-        <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/class.js">src/class.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/class.js#L100">line 100</a>
-        </div>
-        
-    </div>
-
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>Constructs a new message prototype for the specified reflected type and sets up its constructor.</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>type</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="Type.html">Type</a></span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                    
-                        
-                    
-                
-                <p>Reflected message type</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>ctor</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">*</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                
-                <p>Custom constructor to set up, defaults to create a generic one if omitted</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-        <dt class="important tag-deprecated">Deprecated</dt><dd><ul class="dummy"><li>since 6.7.0 it's possible to just assign a new constructor to <a href="Type.html#ctor">Type#ctor</a></li><ul></dd>
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Type</th>
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-    <tbody>
-    
-        <tr>
-            
-            <td class="type">
-            
-                        <a href="Message.html">Message</a>
-                        
-                    
-            </td>
-            <td class="description last">Message prototype</td>
-        </tr>
-    
-    </tbody>
-</table>
-
-    
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer">
         <h4 class="name" id=".generate">
             
             Class.generate<span class="signature">(type)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ <a href="global.html#Codegen">Codegen</a> }</span>
@@ -2214,7 +2034,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/class.js">src/class.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/class.js#L77">line 77</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/class.js">src/class.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/class.js#L71">line 71</a>
         </div>
         
     </div>
@@ -2354,12 +2174,12 @@
     <div class="nameContainer">
         <h4 class="name" id="decode">
             
-            decode<span class="signature">(reader)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ <a href="Message.html">Message</a> }</span>
+            decode<span class="signature">(reader)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ <a href="Message.html">Message</a>.&lt;T> }</span>
         </h4>
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/class.js">src/class.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/class.js#L149">line 149</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/class.js">src/class.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/class.js#L124">line 124</a>
         </div>
         
     </div>
@@ -2481,7 +2301,7 @@
             
             <td class="type">
             
-                        <a href="Message.html">Message</a>
+                        <a href="Message.html">Message</a>.&lt;T>
                         
                     
             </td>
@@ -2502,12 +2322,12 @@
     <div class="nameContainer">
         <h4 class="name" id="decodeDelimited">
             
-            decodeDelimited<span class="signature">(reader)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ <a href="Message.html">Message</a> }</span>
+            decodeDelimited<span class="signature">(reader)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ <a href="Message.html">Message</a>.&lt;T> }</span>
         </h4>
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/class.js">src/class.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/class.js#L157">line 157</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/class.js">src/class.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/class.js#L132">line 132</a>
         </div>
         
     </div>
@@ -2629,7 +2449,7 @@
             
             <td class="type">
             
-                        <a href="Message.html">Message</a>
+                        <a href="Message.html">Message</a>.&lt;T>
                         
                     
             </td>
@@ -2655,7 +2475,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/class.js">src/class.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/class.js#L131">line 131</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/class.js">src/class.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/class.js#L106">line 106</a>
         </div>
         
     </div>
@@ -2703,7 +2523,7 @@
             <td class="type">
             
                 
-<span class="param-type"><a href="Message.html">Message</a></span>
+<span class="param-type"><a href="Message.html">Message</a>.&lt;T></span>
 |
 
 <span class="param-type">Object.&lt;string, *></span>
@@ -2838,7 +2658,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/class.js">src/class.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/class.js#L140">line 140</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/class.js">src/class.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/class.js#L115">line 115</a>
         </div>
         
     </div>
@@ -2886,7 +2706,7 @@
             <td class="type">
             
                 
-<span class="param-type"><a href="Message.html">Message</a></span>
+<span class="param-type"><a href="Message.html">Message</a>.&lt;T></span>
 |
 
 <span class="param-type">Object.&lt;string, *></span>
@@ -3014,159 +2834,14 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="from">
-            
-            from<span class="signature">(object)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ <a href="Message.html">Message</a> }</span>
-        </h4>
-    
-        
-        <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/class.js">src/class.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/class.js#L113">line 113</a>
-        </div>
-        
-    </div>
-
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>Creates a new message of this type from a plain object. Also converts values to their respective internal types.<br>This is an alias of <a href="Class.html#fromObject">Class#fromObject</a>.</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>object</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Object.&lt;string, *></span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                <p>Plain object</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Type</th>
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-    <tbody>
-    
-        <tr>
-            
-            <td class="type">
-            
-                        <a href="Message.html">Message</a>
-                        
-                    
-            </td>
-            <td class="description last">Message instance</td>
-        </tr>
-    
-    </tbody>
-</table>
-
-    
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer">
         <h4 class="name" id="fromObject">
             
-            fromObject<span class="signature">(object)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ <a href="Message.html">Message</a> }</span>
+            fromObject<span class="signature">(object)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ <a href="Message.html">Message</a>.&lt;T> }</span>
         </h4>
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/class.js">src/class.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/class.js#L105">line 105</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/class.js">src/class.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/class.js#L89">line 89</a>
         </div>
         
     </div>
@@ -3285,7 +2960,7 @@
             
             <td class="type">
             
-                        <a href="Message.html">Message</a>
+                        <a href="Message.html">Message</a>.&lt;T>
                         
                     
             </td>
@@ -3311,7 +2986,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/class.js">src/class.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/class.js#L122">line 122</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/class.js">src/class.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/class.js#L97">line 97</a>
         </div>
         
     </div>
@@ -3359,7 +3034,7 @@
             <td class="type">
             
                 
-<span class="param-type"><a href="Message.html">Message</a></span>
+<span class="param-type"><a href="Message.html">Message</a>.&lt;T></span>
 
 
             
@@ -3491,7 +3166,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/class.js">src/class.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/class.js#L165">line 165</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/class.js">src/class.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/class.js#L140">line 140</a>
         </div>
         
     </div>
@@ -3539,7 +3214,7 @@
             <td class="type">
             
                 
-<span class="param-type"><a href="Message.html">Message</a></span>
+<span class="param-type"><a href="Message.html">Message</a>.&lt;T></span>
 |
 
 <span class="param-type">Object.&lt;string, *></span>
