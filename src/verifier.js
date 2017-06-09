@@ -29,10 +29,13 @@ function genVerifyValue(gen, field, fieldIndex, ref) {
             gen
                     ("break")
             ("}");
-        } else gen
-            ("var e=types[%i].verify(%s);", fieldIndex, ref)
+        } else {
+            gen
+            ((gen.hasErrorVar ? "" : "var ") + "e=types[%i].verify(%s);", fieldIndex, ref)
             ("if(e)")
                 ("return%j+e", field.name + ".");
+            gen.hasErrorVar = true;
+        }
     } else {
         switch (field.type) {
             case "int32":
