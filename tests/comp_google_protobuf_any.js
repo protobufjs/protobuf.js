@@ -31,15 +31,15 @@ tape.test("google.protobuf.Any", function(test) {
 
     var foo = Foo.fromObject({
         foo: {
-            type_url: ".Bar",
+            type_url: "Bar",
             value: [1 << 3 | 2, 1, 97] // value = "a"
         }
     });
     test.ok(foo.foo instanceof Any.ctor, "should keep explicit Any in fromObject");
-    test.same(foo.foo, { type_url: ".Bar", value: [10, 1, 97] }, "should keep explicit Any in fromObject properly");
+    test.same(foo.foo, { type_url: "Bar", value: [10, 1, 97] }, "should keep explicit Any in fromObject properly");
 
     var obj = Foo.toObject(foo);
-    test.same(obj.foo, { type_url: ".Bar", value: [10, 1, 97] }, "should keep explicit Any in toObject properly");
+    test.same(obj.foo, { type_url: "Bar", value: [10, 1, 97] }, "should keep explicit Any in toObject properly");
 
     obj = Foo.toObject(foo, { json: true });
     test.same(obj.foo, { "@type": ".Bar", bar: "a" }, "should decode explicitly Any in toObject if requested");
@@ -51,7 +51,7 @@ tape.test("google.protobuf.Any", function(test) {
         }
     });
     test.ok(foo.foo instanceof Any.ctor, "should convert to Any in fromObject");
-    test.same(foo.foo, { type_url: ".Bar", value: protobuf.util.newBuffer([10, 1, 97]) }, "should have correct Any object when converted with fromObject");
+    test.same(foo.foo, { type_url: "Bar", value: protobuf.util.newBuffer([10, 1, 97]) }, "should have correct Any object when converted with fromObject");
 
     test.end();
 });
