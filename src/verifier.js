@@ -31,10 +31,11 @@ function genVerifyValue(gen, field, fieldIndex, ref) {
             ("}");
         } else {
             gen
-            ((gen.hasErrorVar ? "" : "var ") + "e=types[%i].verify(%s);", fieldIndex, ref)
-            ("if(e)")
-                ("return%j+e", field.name + ".");
-            gen.hasErrorVar = true;
+            ("{")
+                ("var e=types[%i].verify(%s);", fieldIndex, ref)
+                ("if(e)")
+                    ("return%j+e", field.name + ".")
+            ("}");
         }
     } else {
         switch (field.type) {
