@@ -44,11 +44,15 @@ wrappers[".google.protobuf.Any"] = {
         if (object && object["@type"]) {
             var type = this.lookup(object["@type"]);
             /* istanbul ignore else */
-            if (type)
+            if (type) {
+                // type_url does not accept leading "."
+                var type_url = object["@type"].charAt(0) === "." ?
+                    object["@type"].substr(1) : object["@type"];
                 return this.create({
-                    type_url: object["@type"],
+                    type_url: type_url,
                     value: type.encode(type.fromObject(object)).finish()
                 });
+            }
         }
 
         return this.fromObject(object);
