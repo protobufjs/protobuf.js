@@ -1171,7 +1171,7 @@ $root.jspb = (function() {
 
             /**
              * OptionalFields aNestedMessage.
-             * @member {(jspb.test.OptionalFields.INested|null|undefined)}aNestedMessage
+             * @member {(jspb.test.OptionalFields.INested|undefined)}aNestedMessage
              * @memberof jspb.test.OptionalFields
              * @instance
              */
@@ -1688,7 +1688,7 @@ $root.jspb = (function() {
 
             /**
              * HasExtensions .jspb.test.IsExtension.extField.
-             * @member {(jspb.test.IIsExtension|null|undefined)}.jspb.test.IsExtension.extField
+             * @member {(jspb.test.IIsExtension|undefined)}.jspb.test.IsExtension.extField
              * @memberof jspb.test.HasExtensions
              * @instance
              */
@@ -1696,7 +1696,7 @@ $root.jspb = (function() {
 
             /**
              * HasExtensions .jspb.test.IndirectExtension.simple.
-             * @member {(jspb.test.ISimple1|null|undefined)}.jspb.test.IndirectExtension.simple
+             * @member {(jspb.test.ISimple1|undefined)}.jspb.test.IndirectExtension.simple
              * @memberof jspb.test.HasExtensions
              * @instance
              */
@@ -1728,7 +1728,7 @@ $root.jspb = (function() {
 
             /**
              * HasExtensions .jspb.test.simple1.
-             * @member {(jspb.test.ISimple1|null|undefined)}.jspb.test.simple1
+             * @member {(jspb.test.ISimple1|undefined)}.jspb.test.simple1
              * @memberof jspb.test.HasExtensions
              * @instance
              */
@@ -2093,7 +2093,7 @@ $root.jspb = (function() {
 
             /**
              * Complex aNestedMessage.
-             * @member {(jspb.test.Complex.INested|null|undefined)}aNestedMessage
+             * @member {(jspb.test.Complex.INested|undefined)}aNestedMessage
              * @memberof jspb.test.Complex
              * @instance
              */
@@ -4009,7 +4009,7 @@ $root.jspb = (function() {
 
             /**
              * TestClone simple1.
-             * @member {(jspb.test.ISimple1|null|undefined)}simple1
+             * @member {(jspb.test.ISimple1|undefined)}simple1
              * @memberof jspb.test.TestClone
              * @instance
              */
@@ -4041,7 +4041,7 @@ $root.jspb = (function() {
 
             /**
              * TestClone .jspb.test.CloneExtension.extField.
-             * @member {(jspb.test.ICloneExtension|null|undefined)}.jspb.test.CloneExtension.extField
+             * @member {(jspb.test.ICloneExtension|undefined)}.jspb.test.CloneExtension.extField
              * @memberof jspb.test.TestClone
              * @instance
              */
@@ -4535,7 +4535,7 @@ $root.jspb = (function() {
 
             /**
              * TestGroup optionalGroup.
-             * @member {(jspb.test.TestGroup.IOptionalGroup|null|undefined)}optionalGroup
+             * @member {(jspb.test.TestGroup.IOptionalGroup|undefined)}optionalGroup
              * @memberof jspb.test.TestGroup
              * @instance
              */
@@ -4559,7 +4559,7 @@ $root.jspb = (function() {
 
             /**
              * TestGroup optionalSimple.
-             * @member {(jspb.test.ISimple2|null|undefined)}optionalSimple
+             * @member {(jspb.test.ISimple2|undefined)}optionalSimple
              * @memberof jspb.test.TestGroup
              * @instance
              */
@@ -5458,7 +5458,7 @@ $root.jspb = (function() {
 
             /**
              * TestGroup1 group.
-             * @member {(jspb.test.TestGroup.IRepeatedGroup|null|undefined)}group
+             * @member {(jspb.test.TestGroup.IRepeatedGroup|undefined)}group
              * @memberof jspb.test.TestGroup1
              * @instance
              */
@@ -6043,7 +6043,7 @@ $root.jspb = (function() {
 
             /**
              * TestMessageWithOneof rone.
-             * @member {(jspb.test.ITestMessageWithOneof|null|undefined)}rone
+             * @member {(jspb.test.ITestMessageWithOneof|undefined)}rone
              * @memberof jspb.test.TestMessageWithOneof
              * @instance
              */
@@ -6824,7 +6824,7 @@ $root.jspb = (function() {
 
             /**
              * TestMapFieldsNoBinary testMapFields.
-             * @member {(jspb.test.ITestMapFieldsNoBinary|null|undefined)}testMapFields
+             * @member {(jspb.test.ITestMapFieldsNoBinary|undefined)}testMapFields
              * @memberof jspb.test.TestMapFieldsNoBinary
              * @instance
              */
@@ -8456,7 +8456,7 @@ $root.google = (function() {
 
             /**
              * FileDescriptorProto options.
-             * @member {(google.protobuf.IFileOptions|null|undefined)}options
+             * @member {(google.protobuf.IFileOptions|undefined)}options
              * @memberof google.protobuf.FileDescriptorProto
              * @instance
              */
@@ -8464,7 +8464,7 @@ $root.google = (function() {
 
             /**
              * FileDescriptorProto sourceCodeInfo.
-             * @member {(google.protobuf.ISourceCodeInfo|null|undefined)}sourceCodeInfo
+             * @member {(google.protobuf.ISourceCodeInfo|undefined)}sourceCodeInfo
              * @memberof google.protobuf.FileDescriptorProto
              * @instance
              */
@@ -9022,7 +9022,7 @@ $root.google = (function() {
 
             /**
              * DescriptorProto options.
-             * @member {(google.protobuf.IMessageOptions|null|undefined)}options
+             * @member {(google.protobuf.IMessageOptions|undefined)}options
              * @memberof google.protobuf.DescriptorProto
              * @instance
              */
@@ -10003,7 +10003,7 @@ $root.google = (function() {
 
             /**
              * FieldDescriptorProto options.
-             * @member {(google.protobuf.IFieldOptions|null|undefined)}options
+             * @member {(google.protobuf.IFieldOptions|undefined)}options
              * @memberof google.protobuf.FieldDescriptorProto
              * @instance
              */
@@ -10492,7 +10492,7 @@ $root.google = (function() {
 
             /**
              * OneofDescriptorProto options.
-             * @member {(google.protobuf.IOneofOptions|null|undefined)}options
+             * @member {(google.protobuf.IOneofOptions|undefined)}options
              * @memberof google.protobuf.OneofDescriptorProto
              * @instance
              */
@@ -10716,7 +10716,7 @@ $root.google = (function() {
 
             /**
              * EnumDescriptorProto options.
-             * @member {(google.protobuf.IEnumOptions|null|undefined)}options
+             * @member {(google.protobuf.IEnumOptions|undefined)}options
              * @memberof google.protobuf.EnumDescriptorProto
              * @instance
              */
@@ -10973,7 +10973,7 @@ $root.google = (function() {
 
             /**
              * EnumValueDescriptorProto options.
-             * @member {(google.protobuf.IEnumValueOptions|null|undefined)}options
+             * @member {(google.protobuf.IEnumValueOptions|undefined)}options
              * @memberof google.protobuf.EnumValueDescriptorProto
              * @instance
              */
@@ -11210,7 +11210,7 @@ $root.google = (function() {
 
             /**
              * ServiceDescriptorProto options.
-             * @member {(google.protobuf.IServiceOptions|null|undefined)}options
+             * @member {(google.protobuf.IServiceOptions|undefined)}options
              * @memberof google.protobuf.ServiceDescriptorProto
              * @instance
              */
@@ -11478,7 +11478,7 @@ $root.google = (function() {
 
             /**
              * MethodDescriptorProto options.
-             * @member {(google.protobuf.IMethodOptions|null|undefined)}options
+             * @member {(google.protobuf.IMethodOptions|undefined)}options
              * @memberof google.protobuf.MethodDescriptorProto
              * @instance
              */
