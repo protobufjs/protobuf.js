@@ -39,7 +39,7 @@ function decoder(mtype) {
         if (field.map) { gen
                 ("il=r.pos+r.uint32()")
                 ("if(%s===util.emptyObject)", ref)
-                    ("%s={}", ref)
+                    ("%s={}", ref);
             if (types.defaults[field.keyType] !== undefined) gen
                 ("k = %j", types.defaults[field.keyType]);
             if (types.defaults[type] !== undefined) gen
@@ -52,7 +52,7 @@ function decoder(mtype) {
                             ("break")
                         ("case 2:");
             if (types.basic[type] === undefined) gen
-                            ("v=types[%i].decode(r,r.uint32())", i)
+                            ("v=types[%i].decode(r,r.uint32())", i);
             else gen
                             ("v=r.%s()", type);
             gen
@@ -60,7 +60,7 @@ function decoder(mtype) {
                     ("}")
                 ("}");
             if (types.long[field.keyType] !== undefined) gen
-                ("%s[typeof k===\"object\"?util.longToHash(k):k]=v", ref)
+                ("%s[typeof k===\"object\"?util.longToHash(k):k]=v", ref);
             else gen
                 ("%s[k]=v", ref);
         // Repeated fields
