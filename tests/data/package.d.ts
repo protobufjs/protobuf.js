@@ -28,7 +28,7 @@ export class Package {
     public description: string;
     public author: string;
     public license: string;
-    public repository?: (Package.IRepository|null);
+    public repository?: Package.IRepository;
     public bugs: string;
     public homepage: string;
     public keywords: string[];

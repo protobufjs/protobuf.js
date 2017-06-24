@@ -104,7 +104,7 @@ $root.Package = (function() {
 
     /**
      * Package repository.
-     * @member {(Package.IRepository|null|undefined)}repository
+     * @member {(Package.IRepository|undefined)}repository
      * @memberof Package
      * @instance
      */
