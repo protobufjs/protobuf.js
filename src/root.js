@@ -103,17 +103,18 @@ Root.prototype.load = function load(filename, options, callback) {
             if (!util.isString(source))
                 self.setOptions(source.options).addJSON(source.nested);
             else {
+                var protoPath = options && options.protoPath || filename;
                 parse.filename = filename;
                 var parsed = parse(source, self, options),
                     resolved,
                     i = 0;
                 if (parsed.imports)
                     for (; i < parsed.imports.length; ++i)
-                        if (resolved = self.resolvePath(filename, parsed.imports[i]))
+                        if (resolved = self.resolvePath(protoPath, parsed.imports[i]))
                             fetch(resolved);
                 if (parsed.weakImports)
                     for (i = 0; i < parsed.weakImports.length; ++i)
-                        if (resolved = self.resolvePath(filename, parsed.weakImports[i]))
+                        if (resolved = self.resolvePath(protoPath, parsed.weakImports[i]))
                             fetch(resolved, true);
             }
         } catch (err) {
