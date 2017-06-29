@@ -51,7 +51,16 @@ tape.test("google.protobuf.Any", function(test) {
         }
     });
     test.ok(foo.foo instanceof Any.ctor, "should convert to Any in fromObject");
-    test.same(foo.foo, { type_url: "Bar", value: protobuf.util.newBuffer([10, 1, 97]) }, "should have correct Any object when converted with fromObject");
+    test.same(foo.foo, { type_url: "/Bar", value: protobuf.util.newBuffer([10, 1, 97]) }, "should have correct Any object when converted with fromObject");
+
+    var baz = Foo.fromObject({
+        foo: {
+            type_url: "type.someurl.com/Bar",
+            value: [1 << 3 | 2, 1, 97] // value = "a"
+        }
+    });
+    obj = Foo.toObject(baz, { json: true });
+    test.same(obj.foo, { "@type": ".Bar", bar: "a" }, "should not care about prefix in type url");
 
     test.end();
 });
