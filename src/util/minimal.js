@@ -397,7 +397,7 @@ util._configure = function() {
         function Buffer_from(value, encoding) {
             return new Buffer(value, encoding);
         };
-    util._Buffer_allocUnsafe = Buffer.allocUnsafe ||
+    util._Buffer_allocUnsafe = Buffer.allocUnsafeSlow ||
         /* istanbul ignore next */
         function Buffer_allocUnsafe(size) {
             return new Buffer(size);
