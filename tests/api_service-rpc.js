@@ -32,6 +32,7 @@ tape.test("reflected services", function(test) {
     function rpcImpl(method, requestData, callback) {
         if (requestData) {
             test.equal(method, DoSomething, "rpcImpl should reference the correct method");
+            test.equal(method.methodName, method.name, "should contain methodName with name of rpc method");
             test.ok(callback, "rpcImpl should provide a callback");
             setTimeout(function() {
                 callback(null, DoSomethingResponse.create());

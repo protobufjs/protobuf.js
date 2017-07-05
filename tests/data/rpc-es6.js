@@ -61,6 +61,7 @@ export const MyService = $root.MyService = (() => {
     MyService.prototype.myMethod = function myMethod(request, callback) {
         return this.rpcCall(myMethod, $root.MyRequest, $root.MyResponse, request, callback);
     };
+    MyService.prototype.myMethod.methodName = 'myMethod';
 
     /**
      * Calls MyMethod.
