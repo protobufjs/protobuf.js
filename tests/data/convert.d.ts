@@ -1,15 +1,15 @@
 import * as $protobuf from "../..";
 
 export interface IMessage {
-    stringVal?: string;
-    stringRepeated?: string[];
-    uint64Val?: (number|Long);
-    uint64Repeated?: (number|Long)[];
-    bytesVal?: Uint8Array;
-    bytesRepeated?: Uint8Array[];
-    enumVal?: Message.SomeEnum;
-    enumRepeated?: Message.SomeEnum[];
-    int64Map?: { [k: string]: (number|Long) };
+    stringVal?: (string|null);
+    stringRepeated?: (string[]|null);
+    uint64Val?: (number|Long|null);
+    uint64Repeated?: ((number|Long)[]|null);
+    bytesVal?: (Uint8Array|null);
+    bytesRepeated?: (Uint8Array[]|null);
+    enumVal?: (Message.SomeEnum|null);
+    enumRepeated?: (Message.SomeEnum[]|null);
+    int64Map?: ({ [k: string]: (number|Long) }|null);
 }
 
 export class Message {

@@ -15,15 +15,15 @@ $root.Message = (function() {
      * Properties of a Message.
      * @exports IMessage
      * @interface IMessage
-     * @property {string} [stringVal] Message stringVal
-     * @property {Array.<string>} [stringRepeated] Message stringRepeated
-     * @property {number|Long} [uint64Val] Message uint64Val
-     * @property {Array.<number|Long>} [uint64Repeated] Message uint64Repeated
-     * @property {Uint8Array} [bytesVal] Message bytesVal
-     * @property {Array.<Uint8Array>} [bytesRepeated] Message bytesRepeated
-     * @property {Message.SomeEnum} [enumVal] Message enumVal
-     * @property {Array.<Message.SomeEnum>} [enumRepeated] Message enumRepeated
-     * @property {Object.<string,number|Long>} [int64Map] Message int64Map
+     * @property {string|null} [stringVal] Message stringVal
+     * @property {Array.<string>|null} [stringRepeated] Message stringRepeated
+     * @property {number|Long|null} [uint64Val] Message uint64Val
+     * @property {Array.<number|Long>|null} [uint64Repeated] Message uint64Repeated
+     * @property {Uint8Array|null} [bytesVal] Message bytesVal
+     * @property {Array.<Uint8Array>|null} [bytesRepeated] Message bytesRepeated
+     * @property {Message.SomeEnum|null} [enumVal] Message enumVal
+     * @property {Array.<Message.SomeEnum>|null} [enumRepeated] Message enumRepeated
+     * @property {Object.<string,number|Long>|null} [int64Map] Message int64Map
      */
 
     /**
@@ -47,7 +47,7 @@ $root.Message = (function() {
 
     /**
      * Message stringVal.
-     * @member {string}stringVal
+     * @member {string} stringVal
      * @memberof Message
      * @instance
      */
@@ -55,7 +55,7 @@ $root.Message = (function() {
 
     /**
      * Message stringRepeated.
-     * @member {Array.<string>}stringRepeated
+     * @member {Array.<string>} stringRepeated
      * @memberof Message
      * @instance
      */
@@ -63,7 +63,7 @@ $root.Message = (function() {
 
     /**
      * Message uint64Val.
-     * @member {number|Long}uint64Val
+     * @member {number|Long} uint64Val
      * @memberof Message
      * @instance
      */
@@ -71,7 +71,7 @@ $root.Message = (function() {
 
     /**
      * Message uint64Repeated.
-     * @member {Array.<number|Long>}uint64Repeated
+     * @member {Array.<number|Long>} uint64Repeated
      * @memberof Message
      * @instance
      */
@@ -79,7 +79,7 @@ $root.Message = (function() {
 
     /**
      * Message bytesVal.
-     * @member {Uint8Array}bytesVal
+     * @member {Uint8Array} bytesVal
      * @memberof Message
      * @instance
      */
@@ -87,7 +87,7 @@ $root.Message = (function() {
 
     /**
      * Message bytesRepeated.
-     * @member {Array.<Uint8Array>}bytesRepeated
+     * @member {Array.<Uint8Array>} bytesRepeated
      * @memberof Message
      * @instance
      */
@@ -95,7 +95,7 @@ $root.Message = (function() {
 
     /**
      * Message enumVal.
-     * @member {Message.SomeEnum}enumVal
+     * @member {Message.SomeEnum} enumVal
      * @memberof Message
      * @instance
      */
@@ -103,7 +103,7 @@ $root.Message = (function() {
 
     /**
      * Message enumRepeated.
-     * @member {Array.<Message.SomeEnum>}enumRepeated
+     * @member {Array.<Message.SomeEnum>} enumRepeated
      * @memberof Message
      * @instance
      */
@@ -111,7 +111,7 @@ $root.Message = (function() {
 
     /**
      * Message int64Map.
-     * @member {Object.<string,number|Long>}int64Map
+     * @member {Object.<string,number|Long>} int64Map
      * @memberof Message
      * @instance
      */

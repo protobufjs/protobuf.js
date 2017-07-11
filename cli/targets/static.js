@@ -365,7 +365,10 @@ function buildType(ref, type) {
         type.fieldsArray.forEach(function(field) {
             var prop = util.safeProp(field.name);
             prop = prop.substring(1, prop.charAt(0) === "[" ? prop.length - 1 : prop.length);
-            typeDef.push("@property {" + toJsType(field) + "} " + (field.optional ? "[" + prop + "]" : field.name) + " " + (field.comment || type.name + " " + field.name));
+            var jsType = toJsType(field);
+            if (field.optional)
+                jsType = jsType + "|null";
+            typeDef.push("@property {" + jsType + "} " + (field.optional ? "[" + prop + "]" : prop) + " " + (field.comment || type.name + " " + field.name));
         });
         push("");
         pushComment(typeDef);
@@ -391,10 +394,10 @@ function buildType(ref, type) {
             push("");
             var jsType = toJsType(field);
             if (field.optional && !field.map && !field.repeated && field.resolvedType instanceof Type)
-                jsType = "(" + jsType + "|null|undefined)";
+                jsType = jsType + "|null|undefined";
             pushComment([
                 field.comment || type.name + " " + field.name + ".",
-                "@member {" + jsType + "}" + escapeName(field.name),
+                "@member {" + jsType + "} " + escapeName(field.name),
                 "@memberof " + exportName(type),
                 "@instance"
             ]);

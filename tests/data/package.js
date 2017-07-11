@@ -15,23 +15,23 @@ $root.Package = (function() {
      * Properties of a Package.
      * @exports IPackage
      * @interface IPackage
-     * @property {string} [name] Package name
-     * @property {string} [version] Package version
-     * @property {string} [versionScheme] Package versionScheme
-     * @property {string} [description] Package description
-     * @property {string} [author] Package author
-     * @property {string} [license] Package license
-     * @property {Package.IRepository} [repository] Package repository
-     * @property {string} [bugs] Package bugs
-     * @property {string} [homepage] Package homepage
-     * @property {Array.<string>} [keywords] Package keywords
-     * @property {string} [main] Package main
-     * @property {Object.<string,string>} [bin] Package bin
-     * @property {Object.<string,string>} [scripts] Package scripts
-     * @property {Object.<string,string>} [dependencies] Package dependencies
-     * @property {Object.<string,string>} [devDependencies] Package devDependencies
-     * @property {string} [types] Package types
-     * @property {Array.<string>} [cliDependencies] Package cliDependencies
+     * @property {string|null} [name] Package name
+     * @property {string|null} [version] Package version
+     * @property {string|null} [versionScheme] Package versionScheme
+     * @property {string|null} [description] Package description
+     * @property {string|null} [author] Package author
+     * @property {string|null} [license] Package license
+     * @property {Package.IRepository|null} [repository] Package repository
+     * @property {string|null} [bugs] Package bugs
+     * @property {string|null} [homepage] Package homepage
+     * @property {Array.<string>|null} [keywords] Package keywords
+     * @property {string|null} [main] Package main
+     * @property {Object.<string,string>|null} [bin] Package bin
+     * @property {Object.<string,string>|null} [scripts] Package scripts
+     * @property {Object.<string,string>|null} [dependencies] Package dependencies
+     * @property {Object.<string,string>|null} [devDependencies] Package devDependencies
+     * @property {string|null} [types] Package types
+     * @property {Array.<string>|null} [cliDependencies] Package cliDependencies
      */
 
     /**
@@ -56,7 +56,7 @@ $root.Package = (function() {
 
     /**
      * Package name.
-     * @member {string}name
+     * @member {string} name
      * @memberof Package
      * @instance
      */
@@ -64,7 +64,7 @@ $root.Package = (function() {
 
     /**
      * Package version.
-     * @member {string}version
+     * @member {string} version
      * @memberof Package
      * @instance
      */
@@ -72,7 +72,7 @@ $root.Package = (function() {
 
     /**
      * Package versionScheme.
-     * @member {string}versionScheme
+     * @member {string} versionScheme
      * @memberof Package
      * @instance
      */
@@ -80,7 +80,7 @@ $root.Package = (function() {
 
     /**
      * Package description.
-     * @member {string}description
+     * @member {string} description
      * @memberof Package
      * @instance
      */
@@ -88,7 +88,7 @@ $root.Package = (function() {
 
     /**
      * Package author.
-     * @member {string}author
+     * @member {string} author
      * @memberof Package
      * @instance
      */
@@ -96,7 +96,7 @@ $root.Package = (function() {
 
     /**
      * Package license.
-     * @member {string}license
+     * @member {string} license
      * @memberof Package
      * @instance
      */
@@ -104,7 +104,7 @@ $root.Package = (function() {
 
     /**
      * Package repository.
-     * @member {(Package.IRepository|null|undefined)}repository
+     * @member {Package.IRepository|null|undefined} repository
      * @memberof Package
      * @instance
      */
@@ -112,7 +112,7 @@ $root.Package = (function() {
 
     /**
      * Package bugs.
-     * @member {string}bugs
+     * @member {string} bugs
      * @memberof Package
      * @instance
      */
@@ -120,7 +120,7 @@ $root.Package = (function() {
 
     /**
      * Package homepage.
-     * @member {string}homepage
+     * @member {string} homepage
      * @memberof Package
      * @instance
      */
@@ -128,7 +128,7 @@ $root.Package = (function() {
 
     /**
      * Package keywords.
-     * @member {Array.<string>}keywords
+     * @member {Array.<string>} keywords
      * @memberof Package
      * @instance
      */
@@ -136,7 +136,7 @@ $root.Package = (function() {
 
     /**
      * Package main.
-     * @member {string}main
+     * @member {string} main
      * @memberof Package
      * @instance
      */
@@ -144,7 +144,7 @@ $root.Package = (function() {
 
     /**
      * Package bin.
-     * @member {Object.<string,string>}bin
+     * @member {Object.<string,string>} bin
      * @memberof Package
      * @instance
      */
@@ -152,7 +152,7 @@ $root.Package = (function() {
 
     /**
      * Package scripts.
-     * @member {Object.<string,string>}scripts
+     * @member {Object.<string,string>} scripts
      * @memberof Package
      * @instance
      */
@@ -160,7 +160,7 @@ $root.Package = (function() {
 
     /**
      * Package dependencies.
-     * @member {Object.<string,string>}dependencies
+     * @member {Object.<string,string>} dependencies
      * @memberof Package
      * @instance
      */
@@ -168,7 +168,7 @@ $root.Package = (function() {
 
     /**
      * Package devDependencies.
-     * @member {Object.<string,string>}devDependencies
+     * @member {Object.<string,string>} devDependencies
      * @memberof Package
      * @instance
      */
@@ -176,7 +176,7 @@ $root.Package = (function() {
 
     /**
      * Package types.
-     * @member {string}types
+     * @member {string} types
      * @memberof Package
      * @instance
      */
@@ -184,7 +184,7 @@ $root.Package = (function() {
 
     /**
      * Package cliDependencies.
-     * @member {Array.<string>}cliDependencies
+     * @member {Array.<string>} cliDependencies
      * @memberof Package
      * @instance
      */
@@ -673,8 +673,8 @@ $root.Package = (function() {
          * Properties of a Repository.
          * @memberof Package
          * @interface IRepository
-         * @property {string} [type] Repository type
-         * @property {string} [url] Repository url
+         * @property {string|null} [type] Repository type
+         * @property {string|null} [url] Repository url
          */
 
         /**
@@ -693,7 +693,7 @@ $root.Package = (function() {
 
         /**
          * Repository type.
-         * @member {string}type
+         * @member {string} type
          * @memberof Package.Repository
          * @instance
          */
@@ -701,7 +701,7 @@ $root.Package = (function() {
 
         /**
          * Repository url.
-         * @member {string}url
+         * @member {string} url
          * @memberof Package.Repository
          * @instance
          */

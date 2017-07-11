@@ -1,6 +1,6 @@
 /*!
- * protobuf.js v6.8.0 (c) 2016, daniel wirtz
- * compiled fri, 09 jun 2017 21:00:38 utc
+ * protobuf.js v6.8.1 (c) 2016, daniel wirtz
+ * compiled tue, 11 jul 2017 15:52:11 utc
  * licensed under the bsd-3-clause license
  * see: https://github.com/dcodeio/protobuf.js for details
  */
@@ -6229,10 +6229,11 @@ function genVerifyValue(gen, field, fieldIndex, ref) {
             ("}");
         } else {
             gen
-            ((gen.hasErrorVar ? "" : "var ") + "e=types[%i].verify(%s);", fieldIndex, ref)
-            ("if(e)")
-                ("return%j+e", field.name + ".");
-            gen.hasErrorVar = true;
+            ("{")
+                ("var e=types[%i].verify(%s);", fieldIndex, ref)
+                ("if(e)")
+                    ("return%j+e", field.name + ".")
+            ("}");
         }
     } else {
         switch (field.type) {
@@ -6419,11 +6420,15 @@ wrappers[".google.protobuf.Any"] = {
         if (object && object["@type"]) {
             var type = this.lookup(object["@type"]);
             /* istanbul ignore else */
-            if (type)
+            if (type) {
+                // type_url does not accept leading "."
+                var type_url = object["@type"].charAt(0) === "." ?
+                    object["@type"].substr(1) : object["@type"];
                 return this.create({
-                    type_url: object["@type"],
-                    value: type.encode(object).finish()
+                    type_url: type_url,
+                    value: type.encode(type.fromObject(object)).finish()
                 });
+            }
         }
 
         return this.fromObject(object);

@@ -81,7 +81,7 @@ export const MyRequest = $root.MyRequest = (() => {
      * Properties of a MyRequest.
      * @exports IMyRequest
      * @interface IMyRequest
-     * @property {string} [path] MyRequest path
+     * @property {string|null} [path] MyRequest path
      */
 
     /**
@@ -100,7 +100,7 @@ export const MyRequest = $root.MyRequest = (() => {
 
     /**
      * MyRequest path.
-     * @member {string}path
+     * @member {string} path
      * @memberof MyRequest
      * @instance
      */
@@ -267,7 +267,7 @@ export const MyResponse = $root.MyResponse = (() => {
      * Properties of a MyResponse.
      * @exports IMyResponse
      * @interface IMyResponse
-     * @property {number} [status] MyResponse status
+     * @property {number|null} [status] MyResponse status
      */
 
     /**
@@ -286,7 +286,7 @@ export const MyResponse = $root.MyResponse = (() => {
 
     /**
      * MyResponse status.
-     * @member {number}status
+     * @member {number} status
      * @memberof MyResponse
      * @instance
      */

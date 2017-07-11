@@ -83,7 +83,7 @@ $root.MyRequest = (function() {
      * Properties of a MyRequest.
      * @exports IMyRequest
      * @interface IMyRequest
-     * @property {string} [path] MyRequest path
+     * @property {string|null} [path] MyRequest path
      */
 
     /**
@@ -102,7 +102,7 @@ $root.MyRequest = (function() {
 
     /**
      * MyRequest path.
-     * @member {string}path
+     * @member {string} path
      * @memberof MyRequest
      * @instance
      */
@@ -269,7 +269,7 @@ $root.MyResponse = (function() {
      * Properties of a MyResponse.
      * @exports IMyResponse
      * @interface IMyResponse
-     * @property {number} [status] MyResponse status
+     * @property {number|null} [status] MyResponse status
      */
 
     /**
@@ -288,7 +288,7 @@ $root.MyResponse = (function() {
 
     /**
      * MyResponse status.
-     * @member {number}status
+     * @member {number} status
      * @memberof MyResponse
      * @instance
      */

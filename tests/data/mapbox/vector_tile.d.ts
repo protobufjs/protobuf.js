@@ -3,7 +3,7 @@ import * as $protobuf from "../../..";
 export namespace vector_tile {
 
     interface ITile {
-        layers?: vector_tile.Tile.ILayer[];
+        layers?: (vector_tile.Tile.ILayer[]|null);
     }
 
     class Tile {
@@ -30,13 +30,13 @@ export namespace vector_tile {
         }
 
         interface IValue {
-            stringValue?: string;
-            floatValue?: number;
-            doubleValue?: number;
-            intValue?: (number|Long);
-            uintValue?: (number|Long);
-            sintValue?: (number|Long);
-            boolValue?: boolean;
+            stringValue?: (string|null);
+            floatValue?: (number|null);
+            doubleValue?: (number|null);
+            intValue?: (number|Long|null);
+            uintValue?: (number|Long|null);
+            sintValue?: (number|Long|null);
+            boolValue?: (boolean|null);
         }
 
         class Value {
@@ -60,10 +60,10 @@ export namespace vector_tile {
         }
 
         interface IFeature {
-            id?: (number|Long);
-            tags?: number[];
-            type?: vector_tile.Tile.GeomType;
-            geometry?: number[];
+            id?: (number|Long|null);
+            tags?: (number[]|null);
+            type?: (vector_tile.Tile.GeomType|null);
+            geometry?: (number[]|null);
         }
 
         class Feature {
@@ -86,10 +86,10 @@ export namespace vector_tile {
         interface ILayer {
             version: number;
             name: string;
-            features?: vector_tile.Tile.IFeature[];
-            keys?: string[];
-            values?: vector_tile.Tile.IValue[];
-            extent?: number;
+            features?: (vector_tile.Tile.IFeature[]|null);
+            keys?: (string[]|null);
+            values?: (vector_tile.Tile.IValue[]|null);
+            extent?: (number|null);
         }
 
         class Layer {

@@ -205,7 +205,7 @@ $root.jspb = (function() {
              * Properties of an EnumContainer.
              * @memberof jspb.test
              * @interface IEnumContainer
-             * @property {jspb.test.OuterEnum} [outerEnum] EnumContainer outerEnum
+             * @property {jspb.test.OuterEnum|null} [outerEnum] EnumContainer outerEnum
              */
 
             /**
@@ -224,7 +224,7 @@ $root.jspb = (function() {
 
             /**
              * EnumContainer outerEnum.
-             * @member {jspb.test.OuterEnum}outerEnum
+             * @member {jspb.test.OuterEnum} outerEnum
              * @memberof jspb.test.EnumContainer
              * @instance
              */
@@ -405,8 +405,8 @@ $root.jspb = (function() {
              * @memberof jspb.test
              * @interface ISimple1
              * @property {string} aString Simple1 aString
-             * @property {Array.<string>} [aRepeatedString] Simple1 aRepeatedString
-             * @property {boolean} [aBoolean] Simple1 aBoolean
+             * @property {Array.<string>|null} [aRepeatedString] Simple1 aRepeatedString
+             * @property {boolean|null} [aBoolean] Simple1 aBoolean
              */
 
             /**
@@ -426,7 +426,7 @@ $root.jspb = (function() {
 
             /**
              * Simple1 aString.
-             * @member {string}aString
+             * @member {string} aString
              * @memberof jspb.test.Simple1
              * @instance
              */
@@ -434,7 +434,7 @@ $root.jspb = (function() {
 
             /**
              * Simple1 aRepeatedString.
-             * @member {Array.<string>}aRepeatedString
+             * @member {Array.<string>} aRepeatedString
              * @memberof jspb.test.Simple1
              * @instance
              */
@@ -442,7 +442,7 @@ $root.jspb = (function() {
 
             /**
              * Simple1 aBoolean.
-             * @member {boolean}aBoolean
+             * @member {boolean} aBoolean
              * @memberof jspb.test.Simple1
              * @instance
              */
@@ -653,7 +653,7 @@ $root.jspb = (function() {
              * @memberof jspb.test
              * @interface ISimple2
              * @property {string} aString Simple2 aString
-             * @property {Array.<string>} [aRepeatedString] Simple2 aRepeatedString
+             * @property {Array.<string>|null} [aRepeatedString] Simple2 aRepeatedString
              */
 
             /**
@@ -673,7 +673,7 @@ $root.jspb = (function() {
 
             /**
              * Simple2 aString.
-             * @member {string}aString
+             * @member {string} aString
              * @memberof jspb.test.Simple2
              * @instance
              */
@@ -681,7 +681,7 @@ $root.jspb = (function() {
 
             /**
              * Simple2 aRepeatedString.
-             * @member {Array.<string>}aRepeatedString
+             * @member {Array.<string>} aRepeatedString
              * @memberof jspb.test.Simple2
              * @instance
              */
@@ -878,9 +878,9 @@ $root.jspb = (function() {
              * @memberof jspb.test
              * @interface ISpecialCases
              * @property {string} normal SpecialCases normal
-             * @property {string} default SpecialCases default
-             * @property {string} function SpecialCases function
-             * @property {string} var SpecialCases var
+             * @property {string} "default" SpecialCases default
+             * @property {string} "function" SpecialCases function
+             * @property {string} "var" SpecialCases var
              */
 
             /**
@@ -899,7 +899,7 @@ $root.jspb = (function() {
 
             /**
              * SpecialCases normal.
-             * @member {string}normal
+             * @member {string} normal
              * @memberof jspb.test.SpecialCases
              * @instance
              */
@@ -907,7 +907,7 @@ $root.jspb = (function() {
 
             /**
              * SpecialCases default.
-             * @member {string}default_
+             * @member {string} default_
              * @memberof jspb.test.SpecialCases
              * @instance
              */
@@ -915,7 +915,7 @@ $root.jspb = (function() {
 
             /**
              * SpecialCases function.
-             * @member {string}function_
+             * @member {string} function_
              * @memberof jspb.test.SpecialCases
              * @instance
              */
@@ -923,7 +923,7 @@ $root.jspb = (function() {
 
             /**
              * SpecialCases var.
-             * @member {string}var_
+             * @member {string} var_
              * @memberof jspb.test.SpecialCases
              * @instance
              */
@@ -1130,11 +1130,11 @@ $root.jspb = (function() {
              * Properties of an OptionalFields.
              * @memberof jspb.test
              * @interface IOptionalFields
-             * @property {string} [aString] OptionalFields aString
+             * @property {string|null} [aString] OptionalFields aString
              * @property {boolean} aBool OptionalFields aBool
-             * @property {jspb.test.OptionalFields.INested} [aNestedMessage] OptionalFields aNestedMessage
-             * @property {Array.<jspb.test.OptionalFields.INested>} [aRepeatedMessage] OptionalFields aRepeatedMessage
-             * @property {Array.<string>} [aRepeatedString] OptionalFields aRepeatedString
+             * @property {jspb.test.OptionalFields.INested|null} [aNestedMessage] OptionalFields aNestedMessage
+             * @property {Array.<jspb.test.OptionalFields.INested>|null} [aRepeatedMessage] OptionalFields aRepeatedMessage
+             * @property {Array.<string>|null} [aRepeatedString] OptionalFields aRepeatedString
              */
 
             /**
@@ -1155,7 +1155,7 @@ $root.jspb = (function() {
 
             /**
              * OptionalFields aString.
-             * @member {string}aString
+             * @member {string} aString
              * @memberof jspb.test.OptionalFields
              * @instance
              */
@@ -1163,7 +1163,7 @@ $root.jspb = (function() {
 
             /**
              * OptionalFields aBool.
-             * @member {boolean}aBool
+             * @member {boolean} aBool
              * @memberof jspb.test.OptionalFields
              * @instance
              */
@@ -1171,7 +1171,7 @@ $root.jspb = (function() {
 
             /**
              * OptionalFields aNestedMessage.
-             * @member {(jspb.test.OptionalFields.INested|null|undefined)}aNestedMessage
+             * @member {jspb.test.OptionalFields.INested|null|undefined} aNestedMessage
              * @memberof jspb.test.OptionalFields
              * @instance
              */
@@ -1179,7 +1179,7 @@ $root.jspb = (function() {
 
             /**
              * OptionalFields aRepeatedMessage.
-             * @member {Array.<jspb.test.OptionalFields.INested>}aRepeatedMessage
+             * @member {Array.<jspb.test.OptionalFields.INested>} aRepeatedMessage
              * @memberof jspb.test.OptionalFields
              * @instance
              */
@@ -1187,7 +1187,7 @@ $root.jspb = (function() {
 
             /**
              * OptionalFields aRepeatedString.
-             * @member {Array.<string>}aRepeatedString
+             * @member {Array.<string>} aRepeatedString
              * @memberof jspb.test.OptionalFields
              * @instance
              */
@@ -1446,7 +1446,7 @@ $root.jspb = (function() {
                  * Properties of a Nested.
                  * @memberof jspb.test.OptionalFields
                  * @interface INested
-                 * @property {number} [anInt] Nested anInt
+                 * @property {number|null} [anInt] Nested anInt
                  */
 
                 /**
@@ -1465,7 +1465,7 @@ $root.jspb = (function() {
 
                 /**
                  * Nested anInt.
-                 * @member {number}anInt
+                 * @member {number} anInt
                  * @memberof jspb.test.OptionalFields.Nested
                  * @instance
                  */
@@ -1635,15 +1635,15 @@ $root.jspb = (function() {
              * Properties of a HasExtensions.
              * @memberof jspb.test
              * @interface IHasExtensions
-             * @property {string} [str1] HasExtensions str1
-             * @property {string} [str2] HasExtensions str2
-             * @property {string} [str3] HasExtensions str3
-             * @property {jspb.test.IIsExtension} [".jspb.test.IsExtension.extField"] HasExtensions .jspb.test.IsExtension.extField
-             * @property {jspb.test.ISimple1} [".jspb.test.IndirectExtension.simple"] HasExtensions .jspb.test.IndirectExtension.simple
-             * @property {string} [".jspb.test.IndirectExtension.str"] HasExtensions .jspb.test.IndirectExtension.str
-             * @property {Array.<string>} [".jspb.test.IndirectExtension.repeatedStr"] HasExtensions .jspb.test.IndirectExtension.repeatedStr
-             * @property {Array.<jspb.test.ISimple1>} [".jspb.test.IndirectExtension.repeatedSimple"] HasExtensions .jspb.test.IndirectExtension.repeatedSimple
-             * @property {jspb.test.ISimple1} [".jspb.test.simple1"] HasExtensions .jspb.test.simple1
+             * @property {string|null} [str1] HasExtensions str1
+             * @property {string|null} [str2] HasExtensions str2
+             * @property {string|null} [str3] HasExtensions str3
+             * @property {jspb.test.IIsExtension|null} [".jspb.test.IsExtension.extField"] HasExtensions .jspb.test.IsExtension.extField
+             * @property {jspb.test.ISimple1|null} [".jspb.test.IndirectExtension.simple"] HasExtensions .jspb.test.IndirectExtension.simple
+             * @property {string|null} [".jspb.test.IndirectExtension.str"] HasExtensions .jspb.test.IndirectExtension.str
+             * @property {Array.<string>|null} [".jspb.test.IndirectExtension.repeatedStr"] HasExtensions .jspb.test.IndirectExtension.repeatedStr
+             * @property {Array.<jspb.test.ISimple1>|null} [".jspb.test.IndirectExtension.repeatedSimple"] HasExtensions .jspb.test.IndirectExtension.repeatedSimple
+             * @property {jspb.test.ISimple1|null} [".jspb.test.simple1"] HasExtensions .jspb.test.simple1
              */
 
             /**
@@ -1664,7 +1664,7 @@ $root.jspb = (function() {
 
             /**
              * HasExtensions str1.
-             * @member {string}str1
+             * @member {string} str1
              * @memberof jspb.test.HasExtensions
              * @instance
              */
@@ -1672,7 +1672,7 @@ $root.jspb = (function() {
 
             /**
              * HasExtensions str2.
-             * @member {string}str2
+             * @member {string} str2
              * @memberof jspb.test.HasExtensions
              * @instance
              */
@@ -1680,7 +1680,7 @@ $root.jspb = (function() {
 
             /**
              * HasExtensions str3.
-             * @member {string}str3
+             * @member {string} str3
              * @memberof jspb.test.HasExtensions
              * @instance
              */
@@ -1688,7 +1688,7 @@ $root.jspb = (function() {
 
             /**
              * HasExtensions .jspb.test.IsExtension.extField.
-             * @member {(jspb.test.IIsExtension|null|undefined)}.jspb.test.IsExtension.extField
+             * @member {jspb.test.IIsExtension|null|undefined} .jspb.test.IsExtension.extField
              * @memberof jspb.test.HasExtensions
              * @instance
              */
@@ -1696,7 +1696,7 @@ $root.jspb = (function() {
 
             /**
              * HasExtensions .jspb.test.IndirectExtension.simple.
-             * @member {(jspb.test.ISimple1|null|undefined)}.jspb.test.IndirectExtension.simple
+             * @member {jspb.test.ISimple1|null|undefined} .jspb.test.IndirectExtension.simple
              * @memberof jspb.test.HasExtensions
              * @instance
              */
@@ -1704,7 +1704,7 @@ $root.jspb = (function() {
 
             /**
              * HasExtensions .jspb.test.IndirectExtension.str.
-             * @member {string}.jspb.test.IndirectExtension.str
+             * @member {string} .jspb.test.IndirectExtension.str
              * @memberof jspb.test.HasExtensions
              * @instance
              */
@@ -1712,7 +1712,7 @@ $root.jspb = (function() {
 
             /**
              * HasExtensions .jspb.test.IndirectExtension.repeatedStr.
-             * @member {Array.<string>}.jspb.test.IndirectExtension.repeatedStr
+             * @member {Array.<string>} .jspb.test.IndirectExtension.repeatedStr
              * @memberof jspb.test.HasExtensions
              * @instance
              */
@@ -1720,7 +1720,7 @@ $root.jspb = (function() {
 
             /**
              * HasExtensions .jspb.test.IndirectExtension.repeatedSimple.
-             * @member {Array.<jspb.test.ISimple1>}.jspb.test.IndirectExtension.repeatedSimple
+             * @member {Array.<jspb.test.ISimple1>} .jspb.test.IndirectExtension.repeatedSimple
              * @memberof jspb.test.HasExtensions
              * @instance
              */
@@ -1728,7 +1728,7 @@ $root.jspb = (function() {
 
             /**
              * HasExtensions .jspb.test.simple1.
-             * @member {(jspb.test.ISimple1|null|undefined)}.jspb.test.simple1
+             * @member {jspb.test.ISimple1|null|undefined} .jspb.test.simple1
              * @memberof jspb.test.HasExtensions
              * @instance
              */
@@ -2054,9 +2054,9 @@ $root.jspb = (function() {
              * @interface IComplex
              * @property {string} aString Complex aString
              * @property {boolean} anOutOfOrderBool Complex anOutOfOrderBool
-             * @property {jspb.test.Complex.INested} [aNestedMessage] Complex aNestedMessage
-             * @property {Array.<jspb.test.Complex.INested>} [aRepeatedMessage] Complex aRepeatedMessage
-             * @property {Array.<string>} [aRepeatedString] Complex aRepeatedString
+             * @property {jspb.test.Complex.INested|null} [aNestedMessage] Complex aNestedMessage
+             * @property {Array.<jspb.test.Complex.INested>|null} [aRepeatedMessage] Complex aRepeatedMessage
+             * @property {Array.<string>|null} [aRepeatedString] Complex aRepeatedString
              */
 
             /**
@@ -2077,7 +2077,7 @@ $root.jspb = (function() {
 
             /**
              * Complex aString.
-             * @member {string}aString
+             * @member {string} aString
              * @memberof jspb.test.Complex
              * @instance
              */
@@ -2085,7 +2085,7 @@ $root.jspb = (function() {
 
             /**
              * Complex anOutOfOrderBool.
-             * @member {boolean}anOutOfOrderBool
+             * @member {boolean} anOutOfOrderBool
              * @memberof jspb.test.Complex
              * @instance
              */
@@ -2093,7 +2093,7 @@ $root.jspb = (function() {
 
             /**
              * Complex aNestedMessage.
-             * @member {(jspb.test.Complex.INested|null|undefined)}aNestedMessage
+             * @member {jspb.test.Complex.INested|null|undefined} aNestedMessage
              * @memberof jspb.test.Complex
              * @instance
              */
@@ -2101,7 +2101,7 @@ $root.jspb = (function() {
 
             /**
              * Complex aRepeatedMessage.
-             * @member {Array.<jspb.test.Complex.INested>}aRepeatedMessage
+             * @member {Array.<jspb.test.Complex.INested>} aRepeatedMessage
              * @memberof jspb.test.Complex
              * @instance
              */
@@ -2109,7 +2109,7 @@ $root.jspb = (function() {
 
             /**
              * Complex aRepeatedString.
-             * @member {Array.<string>}aRepeatedString
+             * @member {Array.<string>} aRepeatedString
              * @memberof jspb.test.Complex
              * @instance
              */
@@ -2387,7 +2387,7 @@ $root.jspb = (function() {
 
                 /**
                  * Nested anInt.
-                 * @member {number}anInt
+                 * @member {number} anInt
                  * @memberof jspb.test.Complex.Nested
                  * @instance
                  */
@@ -2713,7 +2713,7 @@ $root.jspb = (function() {
                  * Properties of a Complex.
                  * @memberof jspb.test.OuterMessage
                  * @interface IComplex
-                 * @property {number} [innerComplexField] Complex innerComplexField
+                 * @property {number|null} [innerComplexField] Complex innerComplexField
                  */
 
                 /**
@@ -2732,7 +2732,7 @@ $root.jspb = (function() {
 
                 /**
                  * Complex innerComplexField.
-                 * @member {number}innerComplexField
+                 * @member {number} innerComplexField
                  * @memberof jspb.test.OuterMessage.Complex
                  * @instance
                  */
@@ -2902,7 +2902,7 @@ $root.jspb = (function() {
              * Properties of an IsExtension.
              * @memberof jspb.test
              * @interface IIsExtension
-             * @property {string} [ext1] IsExtension ext1
+             * @property {string|null} [ext1] IsExtension ext1
              */
 
             /**
@@ -2921,7 +2921,7 @@ $root.jspb = (function() {
 
             /**
              * IsExtension ext1.
-             * @member {string}ext1
+             * @member {string} ext1
              * @memberof jspb.test.IsExtension
              * @instance
              */
@@ -3247,12 +3247,12 @@ $root.jspb = (function() {
              * Properties of a DefaultValues.
              * @memberof jspb.test
              * @interface IDefaultValues
-             * @property {string} [stringField] DefaultValues stringField
-             * @property {boolean} [boolField] DefaultValues boolField
-             * @property {number|Long} [intField] DefaultValues intField
-             * @property {jspb.test.DefaultValues.Enum} [enumField] DefaultValues enumField
-             * @property {string} [emptyField] DefaultValues emptyField
-             * @property {Uint8Array} [bytesField] DefaultValues bytesField
+             * @property {string|null} [stringField] DefaultValues stringField
+             * @property {boolean|null} [boolField] DefaultValues boolField
+             * @property {number|Long|null} [intField] DefaultValues intField
+             * @property {jspb.test.DefaultValues.Enum|null} [enumField] DefaultValues enumField
+             * @property {string|null} [emptyField] DefaultValues emptyField
+             * @property {Uint8Array|null} [bytesField] DefaultValues bytesField
              */
 
             /**
@@ -3271,7 +3271,7 @@ $root.jspb = (function() {
 
             /**
              * DefaultValues stringField.
-             * @member {string}stringField
+             * @member {string} stringField
              * @memberof jspb.test.DefaultValues
              * @instance
              */
@@ -3279,7 +3279,7 @@ $root.jspb = (function() {
 
             /**
              * DefaultValues boolField.
-             * @member {boolean}boolField
+             * @member {boolean} boolField
              * @memberof jspb.test.DefaultValues
              * @instance
              */
@@ -3287,7 +3287,7 @@ $root.jspb = (function() {
 
             /**
              * DefaultValues intField.
-             * @member {number|Long}intField
+             * @member {number|Long} intField
              * @memberof jspb.test.DefaultValues
              * @instance
              */
@@ -3295,7 +3295,7 @@ $root.jspb = (function() {
 
             /**
              * DefaultValues enumField.
-             * @member {jspb.test.DefaultValues.Enum}enumField
+             * @member {jspb.test.DefaultValues.Enum} enumField
              * @memberof jspb.test.DefaultValues
              * @instance
              */
@@ -3303,7 +3303,7 @@ $root.jspb = (function() {
 
             /**
              * DefaultValues emptyField.
-             * @member {string}emptyField
+             * @member {string} emptyField
              * @memberof jspb.test.DefaultValues
              * @instance
              */
@@ -3311,7 +3311,7 @@ $root.jspb = (function() {
 
             /**
              * DefaultValues bytesField.
-             * @member {Uint8Array}bytesField
+             * @member {Uint8Array} bytesField
              * @memberof jspb.test.DefaultValues
              * @instance
              */
@@ -3591,14 +3591,14 @@ $root.jspb = (function() {
              * Properties of a FloatingPointFields.
              * @memberof jspb.test
              * @interface IFloatingPointFields
-             * @property {number} [optionalFloatField] FloatingPointFields optionalFloatField
+             * @property {number|null} [optionalFloatField] FloatingPointFields optionalFloatField
              * @property {number} requiredFloatField FloatingPointFields requiredFloatField
-             * @property {Array.<number>} [repeatedFloatField] FloatingPointFields repeatedFloatField
-             * @property {number} [defaultFloatField] FloatingPointFields defaultFloatField
-             * @property {number} [optionalDoubleField] FloatingPointFields optionalDoubleField
+             * @property {Array.<number>|null} [repeatedFloatField] FloatingPointFields repeatedFloatField
+             * @property {number|null} [defaultFloatField] FloatingPointFields defaultFloatField
+             * @property {number|null} [optionalDoubleField] FloatingPointFields optionalDoubleField
              * @property {number} requiredDoubleField FloatingPointFields requiredDoubleField
-             * @property {Array.<number>} [repeatedDoubleField] FloatingPointFields repeatedDoubleField
-             * @property {number} [defaultDoubleField] FloatingPointFields defaultDoubleField
+             * @property {Array.<number>|null} [repeatedDoubleField] FloatingPointFields repeatedDoubleField
+             * @property {number|null} [defaultDoubleField] FloatingPointFields defaultDoubleField
              */
 
             /**
@@ -3619,7 +3619,7 @@ $root.jspb = (function() {
 
             /**
              * FloatingPointFields optionalFloatField.
-             * @member {number}optionalFloatField
+             * @member {number} optionalFloatField
              * @memberof jspb.test.FloatingPointFields
              * @instance
              */
@@ -3627,7 +3627,7 @@ $root.jspb = (function() {
 
             /**
              * FloatingPointFields requiredFloatField.
-             * @member {number}requiredFloatField
+             * @member {number} requiredFloatField
              * @memberof jspb.test.FloatingPointFields
              * @instance
              */
@@ -3635,7 +3635,7 @@ $root.jspb = (function() {
 
             /**
              * FloatingPointFields repeatedFloatField.
-             * @member {Array.<number>}repeatedFloatField
+             * @member {Array.<number>} repeatedFloatField
              * @memberof jspb.test.FloatingPointFields
              * @instance
              */
@@ -3643,7 +3643,7 @@ $root.jspb = (function() {
 
             /**
              * FloatingPointFields defaultFloatField.
-             * @member {number}defaultFloatField
+             * @member {number} defaultFloatField
              * @memberof jspb.test.FloatingPointFields
              * @instance
              */
@@ -3651,7 +3651,7 @@ $root.jspb = (function() {
 
             /**
              * FloatingPointFields optionalDoubleField.
-             * @member {number}optionalDoubleField
+             * @member {number} optionalDoubleField
              * @memberof jspb.test.FloatingPointFields
              * @instance
              */
@@ -3659,7 +3659,7 @@ $root.jspb = (function() {
 
             /**
              * FloatingPointFields requiredDoubleField.
-             * @member {number}requiredDoubleField
+             * @member {number} requiredDoubleField
              * @memberof jspb.test.FloatingPointFields
              * @instance
              */
@@ -3667,7 +3667,7 @@ $root.jspb = (function() {
 
             /**
              * FloatingPointFields repeatedDoubleField.
-             * @member {Array.<number>}repeatedDoubleField
+             * @member {Array.<number>} repeatedDoubleField
              * @memberof jspb.test.FloatingPointFields
              * @instance
              */
@@ -3675,7 +3675,7 @@ $root.jspb = (function() {
 
             /**
              * FloatingPointFields defaultDoubleField.
-             * @member {number}defaultDoubleField
+             * @member {number} defaultDoubleField
              * @memberof jspb.test.FloatingPointFields
              * @instance
              */
@@ -3976,12 +3976,12 @@ $root.jspb = (function() {
              * Properties of a TestClone.
              * @memberof jspb.test
              * @interface ITestClone
-             * @property {string} [str] TestClone str
-             * @property {jspb.test.ISimple1} [simple1] TestClone simple1
-             * @property {Array.<jspb.test.ISimple1>} [simple2] TestClone simple2
-             * @property {Uint8Array} [bytesField] TestClone bytesField
-             * @property {string} [unused] TestClone unused
-             * @property {jspb.test.ICloneExtension} [".jspb.test.CloneExtension.extField"] TestClone .jspb.test.CloneExtension.extField
+             * @property {string|null} [str] TestClone str
+             * @property {jspb.test.ISimple1|null} [simple1] TestClone simple1
+             * @property {Array.<jspb.test.ISimple1>|null} [simple2] TestClone simple2
+             * @property {Uint8Array|null} [bytesField] TestClone bytesField
+             * @property {string|null} [unused] TestClone unused
+             * @property {jspb.test.ICloneExtension|null} [".jspb.test.CloneExtension.extField"] TestClone .jspb.test.CloneExtension.extField
              */
 
             /**
@@ -4001,7 +4001,7 @@ $root.jspb = (function() {
 
             /**
              * TestClone str.
-             * @member {string}str
+             * @member {string} str
              * @memberof jspb.test.TestClone
              * @instance
              */
@@ -4009,7 +4009,7 @@ $root.jspb = (function() {
 
             /**
              * TestClone simple1.
-             * @member {(jspb.test.ISimple1|null|undefined)}simple1
+             * @member {jspb.test.ISimple1|null|undefined} simple1
              * @memberof jspb.test.TestClone
              * @instance
              */
@@ -4017,7 +4017,7 @@ $root.jspb = (function() {
 
             /**
              * TestClone simple2.
-             * @member {Array.<jspb.test.ISimple1>}simple2
+             * @member {Array.<jspb.test.ISimple1>} simple2
              * @memberof jspb.test.TestClone
              * @instance
              */
@@ -4025,7 +4025,7 @@ $root.jspb = (function() {
 
             /**
              * TestClone bytesField.
-             * @member {Uint8Array}bytesField
+             * @member {Uint8Array} bytesField
              * @memberof jspb.test.TestClone
              * @instance
              */
@@ -4033,7 +4033,7 @@ $root.jspb = (function() {
 
             /**
              * TestClone unused.
-             * @member {string}unused
+             * @member {string} unused
              * @memberof jspb.test.TestClone
              * @instance
              */
@@ -4041,7 +4041,7 @@ $root.jspb = (function() {
 
             /**
              * TestClone .jspb.test.CloneExtension.extField.
-             * @member {(jspb.test.ICloneExtension|null|undefined)}.jspb.test.CloneExtension.extField
+             * @member {jspb.test.ICloneExtension|null|undefined} .jspb.test.CloneExtension.extField
              * @memberof jspb.test.TestClone
              * @instance
              */
@@ -4308,7 +4308,7 @@ $root.jspb = (function() {
              * Properties of a CloneExtension.
              * @memberof jspb.test
              * @interface ICloneExtension
-             * @property {string} [ext] CloneExtension ext
+             * @property {string|null} [ext] CloneExtension ext
              */
 
             /**
@@ -4327,7 +4327,7 @@ $root.jspb = (function() {
 
             /**
              * CloneExtension ext.
-             * @member {string}ext
+             * @member {string} ext
              * @memberof jspb.test.CloneExtension
              * @instance
              */
@@ -4494,12 +4494,12 @@ $root.jspb = (function() {
              * Properties of a TestGroup.
              * @memberof jspb.test
              * @interface ITestGroup
-             * @property {Array.<jspb.test.TestGroup.IRepeatedGroup>} [repeatedGroup] TestGroup repeatedGroup
+             * @property {Array.<jspb.test.TestGroup.IRepeatedGroup>|null} [repeatedGroup] TestGroup repeatedGroup
              * @property {jspb.test.TestGroup.IRequiredGroup} requiredGroup TestGroup requiredGroup
-             * @property {jspb.test.TestGroup.IOptionalGroup} [optionalGroup] TestGroup optionalGroup
-             * @property {string} [id] TestGroup id
+             * @property {jspb.test.TestGroup.IOptionalGroup|null} [optionalGroup] TestGroup optionalGroup
+             * @property {string|null} [id] TestGroup id
              * @property {jspb.test.ISimple2} requiredSimple TestGroup requiredSimple
-             * @property {jspb.test.ISimple2} [optionalSimple] TestGroup optionalSimple
+             * @property {jspb.test.ISimple2|null} [optionalSimple] TestGroup optionalSimple
              */
 
             /**
@@ -4519,7 +4519,7 @@ $root.jspb = (function() {
 
             /**
              * TestGroup repeatedGroup.
-             * @member {Array.<jspb.test.TestGroup.IRepeatedGroup>}repeatedGroup
+             * @member {Array.<jspb.test.TestGroup.IRepeatedGroup>} repeatedGroup
              * @memberof jspb.test.TestGroup
              * @instance
              */
@@ -4527,7 +4527,7 @@ $root.jspb = (function() {
 
             /**
              * TestGroup requiredGroup.
-             * @member {jspb.test.TestGroup.IRequiredGroup}requiredGroup
+             * @member {jspb.test.TestGroup.IRequiredGroup} requiredGroup
              * @memberof jspb.test.TestGroup
              * @instance
              */
@@ -4535,7 +4535,7 @@ $root.jspb = (function() {
 
             /**
              * TestGroup optionalGroup.
-             * @member {(jspb.test.TestGroup.IOptionalGroup|null|undefined)}optionalGroup
+             * @member {jspb.test.TestGroup.IOptionalGroup|null|undefined} optionalGroup
              * @memberof jspb.test.TestGroup
              * @instance
              */
@@ -4543,7 +4543,7 @@ $root.jspb = (function() {
 
             /**
              * TestGroup id.
-             * @member {string}id
+             * @member {string} id
              * @memberof jspb.test.TestGroup
              * @instance
              */
@@ -4551,7 +4551,7 @@ $root.jspb = (function() {
 
             /**
              * TestGroup requiredSimple.
-             * @member {jspb.test.ISimple2}requiredSimple
+             * @member {jspb.test.ISimple2} requiredSimple
              * @memberof jspb.test.TestGroup
              * @instance
              */
@@ -4559,7 +4559,7 @@ $root.jspb = (function() {
 
             /**
              * TestGroup optionalSimple.
-             * @member {(jspb.test.ISimple2|null|undefined)}optionalSimple
+             * @member {jspb.test.ISimple2|null|undefined} optionalSimple
              * @memberof jspb.test.TestGroup
              * @instance
              */
@@ -4829,7 +4829,7 @@ $root.jspb = (function() {
                  * @memberof jspb.test.TestGroup
                  * @interface IRepeatedGroup
                  * @property {string} id RepeatedGroup id
-                 * @property {Array.<boolean>} [someBool] RepeatedGroup someBool
+                 * @property {Array.<boolean>|null} [someBool] RepeatedGroup someBool
                  */
 
                 /**
@@ -4849,7 +4849,7 @@ $root.jspb = (function() {
 
                 /**
                  * RepeatedGroup id.
-                 * @member {string}id
+                 * @member {string} id
                  * @memberof jspb.test.TestGroup.RepeatedGroup
                  * @instance
                  */
@@ -4857,7 +4857,7 @@ $root.jspb = (function() {
 
                 /**
                  * RepeatedGroup someBool.
-                 * @member {Array.<boolean>}someBool
+                 * @member {Array.<boolean>} someBool
                  * @memberof jspb.test.TestGroup.RepeatedGroup
                  * @instance
                  */
@@ -5079,7 +5079,7 @@ $root.jspb = (function() {
 
                 /**
                  * RequiredGroup id.
-                 * @member {string}id
+                 * @member {string} id
                  * @memberof jspb.test.TestGroup.RequiredGroup
                  * @instance
                  */
@@ -5267,7 +5267,7 @@ $root.jspb = (function() {
 
                 /**
                  * OptionalGroup id.
-                 * @member {string}id
+                 * @member {string} id
                  * @memberof jspb.test.TestGroup.OptionalGroup
                  * @instance
                  */
@@ -5439,7 +5439,7 @@ $root.jspb = (function() {
              * Properties of a TestGroup1.
              * @memberof jspb.test
              * @interface ITestGroup1
-             * @property {jspb.test.TestGroup.IRepeatedGroup} [group] TestGroup1 group
+             * @property {jspb.test.TestGroup.IRepeatedGroup|null} [group] TestGroup1 group
              */
 
             /**
@@ -5458,7 +5458,7 @@ $root.jspb = (function() {
 
             /**
              * TestGroup1 group.
-             * @member {(jspb.test.TestGroup.IRepeatedGroup|null|undefined)}group
+             * @member {jspb.test.TestGroup.IRepeatedGroup|null|undefined} group
              * @memberof jspb.test.TestGroup1
              * @instance
              */
@@ -5630,8 +5630,8 @@ $root.jspb = (function() {
              * Properties of a TestReservedNames.
              * @memberof jspb.test
              * @interface ITestReservedNames
-             * @property {number} [extension] TestReservedNames extension
-             * @property {number} [".jspb.test.TestReservedNamesExtension.foo"] TestReservedNames .jspb.test.TestReservedNamesExtension.foo
+             * @property {number|null} [extension] TestReservedNames extension
+             * @property {number|null} [".jspb.test.TestReservedNamesExtension.foo"] TestReservedNames .jspb.test.TestReservedNamesExtension.foo
              */
 
             /**
@@ -5650,7 +5650,7 @@ $root.jspb = (function() {
 
             /**
              * TestReservedNames extension.
-             * @member {number}extension
+             * @member {number} extension
              * @memberof jspb.test.TestReservedNames
              * @instance
              */
@@ -5658,7 +5658,7 @@ $root.jspb = (function() {
 
             /**
              * TestReservedNames .jspb.test.TestReservedNamesExtension.foo.
-             * @member {number}.jspb.test.TestReservedNamesExtension.foo
+             * @member {number} .jspb.test.TestReservedNamesExtension.foo
              * @memberof jspb.test.TestReservedNames
              * @instance
              */
@@ -5998,16 +5998,16 @@ $root.jspb = (function() {
              * Properties of a TestMessageWithOneof.
              * @memberof jspb.test
              * @interface ITestMessageWithOneof
-             * @property {string} [pone] TestMessageWithOneof pone
-             * @property {string} [pthree] TestMessageWithOneof pthree
-             * @property {jspb.test.ITestMessageWithOneof} [rone] TestMessageWithOneof rone
-             * @property {string} [rtwo] TestMessageWithOneof rtwo
-             * @property {boolean} [normalField] TestMessageWithOneof normalField
-             * @property {Array.<string>} [repeatedField] TestMessageWithOneof repeatedField
-             * @property {number} [aone] TestMessageWithOneof aone
-             * @property {number} [atwo] TestMessageWithOneof atwo
-             * @property {number} [bone] TestMessageWithOneof bone
-             * @property {number} [btwo] TestMessageWithOneof btwo
+             * @property {string|null} [pone] TestMessageWithOneof pone
+             * @property {string|null} [pthree] TestMessageWithOneof pthree
+             * @property {jspb.test.ITestMessageWithOneof|null} [rone] TestMessageWithOneof rone
+             * @property {string|null} [rtwo] TestMessageWithOneof rtwo
+             * @property {boolean|null} [normalField] TestMessageWithOneof normalField
+             * @property {Array.<string>|null} [repeatedField] TestMessageWithOneof repeatedField
+             * @property {number|null} [aone] TestMessageWithOneof aone
+             * @property {number|null} [atwo] TestMessageWithOneof atwo
+             * @property {number|null} [bone] TestMessageWithOneof bone
+             * @property {number|null} [btwo] TestMessageWithOneof btwo
              */
 
             /**
@@ -6027,7 +6027,7 @@ $root.jspb = (function() {
 
             /**
              * TestMessageWithOneof pone.
-             * @member {string}pone
+             * @member {string} pone
              * @memberof jspb.test.TestMessageWithOneof
              * @instance
              */
@@ -6035,7 +6035,7 @@ $root.jspb = (function() {
 
             /**
              * TestMessageWithOneof pthree.
-             * @member {string}pthree
+             * @member {string} pthree
              * @memberof jspb.test.TestMessageWithOneof
              * @instance
              */
@@ -6043,7 +6043,7 @@ $root.jspb = (function() {
 
             /**
              * TestMessageWithOneof rone.
-             * @member {(jspb.test.ITestMessageWithOneof|null|undefined)}rone
+             * @member {jspb.test.ITestMessageWithOneof|null|undefined} rone
              * @memberof jspb.test.TestMessageWithOneof
              * @instance
              */
@@ -6051,7 +6051,7 @@ $root.jspb = (function() {
 
             /**
              * TestMessageWithOneof rtwo.
-             * @member {string}rtwo
+             * @member {string} rtwo
              * @memberof jspb.test.TestMessageWithOneof
              * @instance
              */
@@ -6059,7 +6059,7 @@ $root.jspb = (function() {
 
             /**
              * TestMessageWithOneof normalField.
-             * @member {boolean}normalField
+             * @member {boolean} normalField
              * @memberof jspb.test.TestMessageWithOneof
              * @instance
              */
@@ -6067,7 +6067,7 @@ $root.jspb = (function() {
 
             /**
              * TestMessageWithOneof repeatedField.
-             * @member {Array.<string>}repeatedField
+             * @member {Array.<string>} repeatedField
              * @memberof jspb.test.TestMessageWithOneof
              * @instance
              */
@@ -6075,7 +6075,7 @@ $root.jspb = (function() {
 
             /**
              * TestMessageWithOneof aone.
-             * @member {number}aone
+             * @member {number} aone
              * @memberof jspb.test.TestMessageWithOneof
              * @instance
              */
@@ -6083,7 +6083,7 @@ $root.jspb = (function() {
 
             /**
              * TestMessageWithOneof atwo.
-             * @member {number}atwo
+             * @member {number} atwo
              * @memberof jspb.test.TestMessageWithOneof
              * @instance
              */
@@ -6091,7 +6091,7 @@ $root.jspb = (function() {
 
             /**
              * TestMessageWithOneof bone.
-             * @member {number}bone
+             * @member {number} bone
              * @memberof jspb.test.TestMessageWithOneof
              * @instance
              */
@@ -6099,7 +6099,7 @@ $root.jspb = (function() {
 
             /**
              * TestMessageWithOneof btwo.
-             * @member {number}btwo
+             * @member {number} btwo
              * @memberof jspb.test.TestMessageWithOneof
              * @instance
              */
@@ -6491,8 +6491,8 @@ $root.jspb = (function() {
              * Properties of a TestEndsWithBytes.
              * @memberof jspb.test
              * @interface ITestEndsWithBytes
-             * @property {number} [value] TestEndsWithBytes value
-             * @property {Uint8Array} [data] TestEndsWithBytes data
+             * @property {number|null} [value] TestEndsWithBytes value
+             * @property {Uint8Array|null} [data] TestEndsWithBytes data
              */
 
             /**
@@ -6511,7 +6511,7 @@ $root.jspb = (function() {
 
             /**
              * TestEndsWithBytes value.
-             * @member {number}value
+             * @member {number} value
              * @memberof jspb.test.TestEndsWithBytes
              * @instance
              */
@@ -6519,7 +6519,7 @@ $root.jspb = (function() {
 
             /**
              * TestEndsWithBytes data.
-             * @member {Uint8Array}data
+             * @member {Uint8Array} data
              * @memberof jspb.test.TestEndsWithBytes
              * @instance
              */
@@ -6703,18 +6703,18 @@ $root.jspb = (function() {
              * Properties of a TestMapFieldsNoBinary.
              * @memberof jspb.test
              * @interface ITestMapFieldsNoBinary
-             * @property {Object.<string,string>} [mapStringString] TestMapFieldsNoBinary mapStringString
-             * @property {Object.<string,number>} [mapStringInt32] TestMapFieldsNoBinary mapStringInt32
-             * @property {Object.<string,number|Long>} [mapStringInt64] TestMapFieldsNoBinary mapStringInt64
-             * @property {Object.<string,boolean>} [mapStringBool] TestMapFieldsNoBinary mapStringBool
-             * @property {Object.<string,number>} [mapStringDouble] TestMapFieldsNoBinary mapStringDouble
-             * @property {Object.<string,jspb.test.MapValueEnumNoBinary>} [mapStringEnum] TestMapFieldsNoBinary mapStringEnum
-             * @property {Object.<string,jspb.test.IMapValueMessageNoBinary>} [mapStringMsg] TestMapFieldsNoBinary mapStringMsg
-             * @property {Object.<string,string>} [mapInt32String] TestMapFieldsNoBinary mapInt32String
-             * @property {Object.<string,string>} [mapInt64String] TestMapFieldsNoBinary mapInt64String
-             * @property {Object.<string,string>} [mapBoolString] TestMapFieldsNoBinary mapBoolString
-             * @property {jspb.test.ITestMapFieldsNoBinary} [testMapFields] TestMapFieldsNoBinary testMapFields
-             * @property {Object.<string,jspb.test.ITestMapFieldsNoBinary>} [mapStringTestmapfields] TestMapFieldsNoBinary mapStringTestmapfields
+             * @property {Object.<string,string>|null} [mapStringString] TestMapFieldsNoBinary mapStringString
+             * @property {Object.<string,number>|null} [mapStringInt32] TestMapFieldsNoBinary mapStringInt32
+             * @property {Object.<string,number|Long>|null} [mapStringInt64] TestMapFieldsNoBinary mapStringInt64
+             * @property {Object.<string,boolean>|null} [mapStringBool] TestMapFieldsNoBinary mapStringBool
+             * @property {Object.<string,number>|null} [mapStringDouble] TestMapFieldsNoBinary mapStringDouble
+             * @property {Object.<string,jspb.test.MapValueEnumNoBinary>|null} [mapStringEnum] TestMapFieldsNoBinary mapStringEnum
+             * @property {Object.<string,jspb.test.IMapValueMessageNoBinary>|null} [mapStringMsg] TestMapFieldsNoBinary mapStringMsg
+             * @property {Object.<string,string>|null} [mapInt32String] TestMapFieldsNoBinary mapInt32String
+             * @property {Object.<string,string>|null} [mapInt64String] TestMapFieldsNoBinary mapInt64String
+             * @property {Object.<string,string>|null} [mapBoolString] TestMapFieldsNoBinary mapBoolString
+             * @property {jspb.test.ITestMapFieldsNoBinary|null} [testMapFields] TestMapFieldsNoBinary testMapFields
+             * @property {Object.<string,jspb.test.ITestMapFieldsNoBinary>|null} [mapStringTestmapfields] TestMapFieldsNoBinary mapStringTestmapfields
              */
 
             /**
@@ -6744,7 +6744,7 @@ $root.jspb = (function() {
 
             /**
              * TestMapFieldsNoBinary mapStringString.
-             * @member {Object.<string,string>}mapStringString
+             * @member {Object.<string,string>} mapStringString
              * @memberof jspb.test.TestMapFieldsNoBinary
              * @instance
              */
@@ -6752,7 +6752,7 @@ $root.jspb = (function() {
 
             /**
              * TestMapFieldsNoBinary mapStringInt32.
-             * @member {Object.<string,number>}mapStringInt32
+             * @member {Object.<string,number>} mapStringInt32
              * @memberof jspb.test.TestMapFieldsNoBinary
              * @instance
              */
@@ -6760,7 +6760,7 @@ $root.jspb = (function() {
 
             /**
              * TestMapFieldsNoBinary mapStringInt64.
-             * @member {Object.<string,number|Long>}mapStringInt64
+             * @member {Object.<string,number|Long>} mapStringInt64
              * @memberof jspb.test.TestMapFieldsNoBinary
              * @instance
              */
@@ -6768,7 +6768,7 @@ $root.jspb = (function() {
 
             /**
              * TestMapFieldsNoBinary mapStringBool.
-             * @member {Object.<string,boolean>}mapStringBool
+             * @member {Object.<string,boolean>} mapStringBool
              * @memberof jspb.test.TestMapFieldsNoBinary
              * @instance
              */
@@ -6776,7 +6776,7 @@ $root.jspb = (function() {
 
             /**
              * TestMapFieldsNoBinary mapStringDouble.
-             * @member {Object.<string,number>}mapStringDouble
+             * @member {Object.<string,number>} mapStringDouble
              * @memberof jspb.test.TestMapFieldsNoBinary
              * @instance
              */
@@ -6784,7 +6784,7 @@ $root.jspb = (function() {
 
             /**
              * TestMapFieldsNoBinary mapStringEnum.
-             * @member {Object.<string,jspb.test.MapValueEnumNoBinary>}mapStringEnum
+             * @member {Object.<string,jspb.test.MapValueEnumNoBinary>} mapStringEnum
              * @memberof jspb.test.TestMapFieldsNoBinary
              * @instance
              */
@@ -6792,7 +6792,7 @@ $root.jspb = (function() {
 
             /**
              * TestMapFieldsNoBinary mapStringMsg.
-             * @member {Object.<string,jspb.test.IMapValueMessageNoBinary>}mapStringMsg
+             * @member {Object.<string,jspb.test.IMapValueMessageNoBinary>} mapStringMsg
              * @memberof jspb.test.TestMapFieldsNoBinary
              * @instance
              */
@@ -6800,7 +6800,7 @@ $root.jspb = (function() {
 
             /**
              * TestMapFieldsNoBinary mapInt32String.
-             * @member {Object.<string,string>}mapInt32String
+             * @member {Object.<string,string>} mapInt32String
              * @memberof jspb.test.TestMapFieldsNoBinary
              * @instance
              */
@@ -6808,7 +6808,7 @@ $root.jspb = (function() {
 
             /**
              * TestMapFieldsNoBinary mapInt64String.
-             * @member {Object.<string,string>}mapInt64String
+             * @member {Object.<string,string>} mapInt64String
              * @memberof jspb.test.TestMapFieldsNoBinary
              * @instance
              */
@@ -6816,7 +6816,7 @@ $root.jspb = (function() {
 
             /**
              * TestMapFieldsNoBinary mapBoolString.
-             * @member {Object.<string,string>}mapBoolString
+             * @member {Object.<string,string>} mapBoolString
              * @memberof jspb.test.TestMapFieldsNoBinary
              * @instance
              */
@@ -6824,7 +6824,7 @@ $root.jspb = (function() {
 
             /**
              * TestMapFieldsNoBinary testMapFields.
-             * @member {(jspb.test.ITestMapFieldsNoBinary|null|undefined)}testMapFields
+             * @member {jspb.test.ITestMapFieldsNoBinary|null|undefined} testMapFields
              * @memberof jspb.test.TestMapFieldsNoBinary
              * @instance
              */
@@ -6832,7 +6832,7 @@ $root.jspb = (function() {
 
             /**
              * TestMapFieldsNoBinary mapStringTestmapfields.
-             * @member {Object.<string,jspb.test.ITestMapFieldsNoBinary>}mapStringTestmapfields
+             * @member {Object.<string,jspb.test.ITestMapFieldsNoBinary>} mapStringTestmapfields
              * @memberof jspb.test.TestMapFieldsNoBinary
              * @instance
              */
@@ -7426,7 +7426,7 @@ $root.jspb = (function() {
              * Properties of a MapValueMessageNoBinary.
              * @memberof jspb.test
              * @interface IMapValueMessageNoBinary
-             * @property {number} [foo] MapValueMessageNoBinary foo
+             * @property {number|null} [foo] MapValueMessageNoBinary foo
              */
 
             /**
@@ -7445,7 +7445,7 @@ $root.jspb = (function() {
 
             /**
              * MapValueMessageNoBinary foo.
-             * @member {number}foo
+             * @member {number} foo
              * @memberof jspb.test.MapValueMessageNoBinary
              * @instance
              */
@@ -7924,7 +7924,7 @@ $root.jspb = (function() {
                      * Properties of a Message.
                      * @memberof jspb.test.Deeply.Nested
                      * @interface IMessage
-                     * @property {number} [count] Message count
+                     * @property {number|null} [count] Message count
                      */
 
                     /**
@@ -7943,7 +7943,7 @@ $root.jspb = (function() {
 
                     /**
                      * Message count.
-                     * @member {number}count
+                     * @member {number} count
                      * @memberof jspb.test.Deeply.Nested.Message
                      * @instance
                      */
@@ -8140,7 +8140,7 @@ $root.google = (function() {
              * Properties of a FileDescriptorSet.
              * @memberof google.protobuf
              * @interface IFileDescriptorSet
-             * @property {Array.<google.protobuf.IFileDescriptorProto>} [file] FileDescriptorSet file
+             * @property {Array.<google.protobuf.IFileDescriptorProto>|null} [file] FileDescriptorSet file
              */
 
             /**
@@ -8160,7 +8160,7 @@ $root.google = (function() {
 
             /**
              * FileDescriptorSet file.
-             * @member {Array.<google.protobuf.IFileDescriptorProto>}file
+             * @member {Array.<google.protobuf.IFileDescriptorProto>} file
              * @memberof google.protobuf.FileDescriptorSet
              * @instance
              */
@@ -8347,18 +8347,18 @@ $root.google = (function() {
              * Properties of a FileDescriptorProto.
              * @memberof google.protobuf
              * @interface IFileDescriptorProto
-             * @property {string} [name] FileDescriptorProto name
-             * @property {string} ["package"] FileDescriptorProto package
-             * @property {Array.<string>} [dependency] FileDescriptorProto dependency
-             * @property {Array.<number>} [publicDependency] FileDescriptorProto publicDependency
-             * @property {Array.<number>} [weakDependency] FileDescriptorProto weakDependency
-             * @property {Array.<google.protobuf.IDescriptorProto>} [messageType] FileDescriptorProto messageType
-             * @property {Array.<google.protobuf.IEnumDescriptorProto>} [enumType] FileDescriptorProto enumType
-             * @property {Array.<google.protobuf.IServiceDescriptorProto>} [service] FileDescriptorProto service
-             * @property {Array.<google.protobuf.IFieldDescriptorProto>} [extension] FileDescriptorProto extension
-             * @property {google.protobuf.IFileOptions} [options] FileDescriptorProto options
-             * @property {google.protobuf.ISourceCodeInfo} [sourceCodeInfo] FileDescriptorProto sourceCodeInfo
-             * @property {string} [syntax] FileDescriptorProto syntax
+             * @property {string|null} [name] FileDescriptorProto name
+             * @property {string|null} ["package"] FileDescriptorProto package
+             * @property {Array.<string>|null} [dependency] FileDescriptorProto dependency
+             * @property {Array.<number>|null} [publicDependency] FileDescriptorProto publicDependency
+             * @property {Array.<number>|null} [weakDependency] FileDescriptorProto weakDependency
+             * @property {Array.<google.protobuf.IDescriptorProto>|null} [messageType] FileDescriptorProto messageType
+             * @property {Array.<google.protobuf.IEnumDescriptorProto>|null} [enumType] FileDescriptorProto enumType
+             * @property {Array.<google.protobuf.IServiceDescriptorProto>|null} [service] FileDescriptorProto service
+             * @property {Array.<google.protobuf.IFieldDescriptorProto>|null} [extension] FileDescriptorProto extension
+             * @property {google.protobuf.IFileOptions|null} [options] FileDescriptorProto options
+             * @property {google.protobuf.ISourceCodeInfo|null} [sourceCodeInfo] FileDescriptorProto sourceCodeInfo
+             * @property {string|null} [syntax] FileDescriptorProto syntax
              */
 
             /**
@@ -8384,7 +8384,7 @@ $root.google = (function() {
 
             /**
              * FileDescriptorProto name.
-             * @member {string}name
+             * @member {string} name
              * @memberof google.protobuf.FileDescriptorProto
              * @instance
              */
@@ -8392,7 +8392,7 @@ $root.google = (function() {
 
             /**
              * FileDescriptorProto package.
-             * @member {string}package_
+             * @member {string} package_
              * @memberof google.protobuf.FileDescriptorProto
              * @instance
              */
@@ -8400,7 +8400,7 @@ $root.google = (function() {
 
             /**
              * FileDescriptorProto dependency.
-             * @member {Array.<string>}dependency
+             * @member {Array.<string>} dependency
              * @memberof google.protobuf.FileDescriptorProto
              * @instance
              */
@@ -8408,7 +8408,7 @@ $root.google = (function() {
 
             /**
              * FileDescriptorProto publicDependency.
-             * @member {Array.<number>}publicDependency
+             * @member {Array.<number>} publicDependency
              * @memberof google.protobuf.FileDescriptorProto
              * @instance
              */
@@ -8416,7 +8416,7 @@ $root.google = (function() {
 
             /**
              * FileDescriptorProto weakDependency.
-             * @member {Array.<number>}weakDependency
+             * @member {Array.<number>} weakDependency
              * @memberof google.protobuf.FileDescriptorProto
              * @instance
              */
@@ -8424,7 +8424,7 @@ $root.google = (function() {
 
             /**
              * FileDescriptorProto messageType.
-             * @member {Array.<google.protobuf.IDescriptorProto>}messageType
+             * @member {Array.<google.protobuf.IDescriptorProto>} messageType
              * @memberof google.protobuf.FileDescriptorProto
              * @instance
              */
@@ -8432,7 +8432,7 @@ $root.google = (function() {
 
             /**
              * FileDescriptorProto enumType.
-             * @member {Array.<google.protobuf.IEnumDescriptorProto>}enumType
+             * @member {Array.<google.protobuf.IEnumDescriptorProto>} enumType
              * @memberof google.protobuf.FileDescriptorProto
              * @instance
              */
@@ -8440,7 +8440,7 @@ $root.google = (function() {
 
             /**
              * FileDescriptorProto service.
-             * @member {Array.<google.protobuf.IServiceDescriptorProto>}service
+             * @member {Array.<google.protobuf.IServiceDescriptorProto>} service
              * @memberof google.protobuf.FileDescriptorProto
              * @instance
              */
@@ -8448,7 +8448,7 @@ $root.google = (function() {
 
             /**
              * FileDescriptorProto extension.
-             * @member {Array.<google.protobuf.IFieldDescriptorProto>}extension
+             * @member {Array.<google.protobuf.IFieldDescriptorProto>} extension
              * @memberof google.protobuf.FileDescriptorProto
              * @instance
              */
@@ -8456,7 +8456,7 @@ $root.google = (function() {
 
             /**
              * FileDescriptorProto options.
-             * @member {(google.protobuf.IFileOptions|null|undefined)}options
+             * @member {google.protobuf.IFileOptions|null|undefined} options
              * @memberof google.protobuf.FileDescriptorProto
              * @instance
              */
@@ -8464,7 +8464,7 @@ $root.google = (function() {
 
             /**
              * FileDescriptorProto sourceCodeInfo.
-             * @member {(google.protobuf.ISourceCodeInfo|null|undefined)}sourceCodeInfo
+             * @member {google.protobuf.ISourceCodeInfo|null|undefined} sourceCodeInfo
              * @memberof google.protobuf.FileDescriptorProto
              * @instance
              */
@@ -8472,7 +8472,7 @@ $root.google = (function() {
 
             /**
              * FileDescriptorProto syntax.
-             * @member {string}syntax
+             * @member {string} syntax
              * @memberof google.protobuf.FileDescriptorProto
              * @instance
              */
@@ -8930,16 +8930,16 @@ $root.google = (function() {
              * Properties of a DescriptorProto.
              * @memberof google.protobuf
              * @interface IDescriptorProto
-             * @property {string} [name] DescriptorProto name
-             * @property {Array.<google.protobuf.IFieldDescriptorProto>} [field] DescriptorProto field
-             * @property {Array.<google.protobuf.IFieldDescriptorProto>} [extension] DescriptorProto extension
-             * @property {Array.<google.protobuf.IDescriptorProto>} [nestedType] DescriptorProto nestedType
-             * @property {Array.<google.protobuf.IEnumDescriptorProto>} [enumType] DescriptorProto enumType
-             * @property {Array.<google.protobuf.DescriptorProto.IExtensionRange>} [extensionRange] DescriptorProto extensionRange
-             * @property {Array.<google.protobuf.IOneofDescriptorProto>} [oneofDecl] DescriptorProto oneofDecl
-             * @property {google.protobuf.IMessageOptions} [options] DescriptorProto options
-             * @property {Array.<google.protobuf.DescriptorProto.IReservedRange>} [reservedRange] DescriptorProto reservedRange
-             * @property {Array.<string>} [reservedName] DescriptorProto reservedName
+             * @property {string|null} [name] DescriptorProto name
+             * @property {Array.<google.protobuf.IFieldDescriptorProto>|null} [field] DescriptorProto field
+             * @property {Array.<google.protobuf.IFieldDescriptorProto>|null} [extension] DescriptorProto extension
+             * @property {Array.<google.protobuf.IDescriptorProto>|null} [nestedType] DescriptorProto nestedType
+             * @property {Array.<google.protobuf.IEnumDescriptorProto>|null} [enumType] DescriptorProto enumType
+             * @property {Array.<google.protobuf.DescriptorProto.IExtensionRange>|null} [extensionRange] DescriptorProto extensionRange
+             * @property {Array.<google.protobuf.IOneofDescriptorProto>|null} [oneofDecl] DescriptorProto oneofDecl
+             * @property {google.protobuf.IMessageOptions|null} [options] DescriptorProto options
+             * @property {Array.<google.protobuf.DescriptorProto.IReservedRange>|null} [reservedRange] DescriptorProto reservedRange
+             * @property {Array.<string>|null} [reservedName] DescriptorProto reservedName
              */
 
             /**
@@ -8966,7 +8966,7 @@ $root.google = (function() {
 
             /**
              * DescriptorProto name.
-             * @member {string}name
+             * @member {string} name
              * @memberof google.protobuf.DescriptorProto
              * @instance
              */
@@ -8974,7 +8974,7 @@ $root.google = (function() {
 
             /**
              * DescriptorProto field.
-             * @member {Array.<google.protobuf.IFieldDescriptorProto>}field
+             * @member {Array.<google.protobuf.IFieldDescriptorProto>} field
              * @memberof google.protobuf.DescriptorProto
              * @instance
              */
@@ -8982,7 +8982,7 @@ $root.google = (function() {
 
             /**
              * DescriptorProto extension.
-             * @member {Array.<google.protobuf.IFieldDescriptorProto>}extension
+             * @member {Array.<google.protobuf.IFieldDescriptorProto>} extension
              * @memberof google.protobuf.DescriptorProto
              * @instance
              */
@@ -8990,7 +8990,7 @@ $root.google = (function() {
 
             /**
              * DescriptorProto nestedType.
-             * @member {Array.<google.protobuf.IDescriptorProto>}nestedType
+             * @member {Array.<google.protobuf.IDescriptorProto>} nestedType
              * @memberof google.protobuf.DescriptorProto
              * @instance
              */
@@ -8998,7 +8998,7 @@ $root.google = (function() {
 
             /**
              * DescriptorProto enumType.
-             * @member {Array.<google.protobuf.IEnumDescriptorProto>}enumType
+             * @member {Array.<google.protobuf.IEnumDescriptorProto>} enumType
              * @memberof google.protobuf.DescriptorProto
              * @instance
              */
@@ -9006,7 +9006,7 @@ $root.google = (function() {
 
             /**
              * DescriptorProto extensionRange.
-             * @member {Array.<google.protobuf.DescriptorProto.IExtensionRange>}extensionRange
+             * @member {Array.<google.protobuf.DescriptorProto.IExtensionRange>} extensionRange
              * @memberof google.protobuf.DescriptorProto
              * @instance
              */
@@ -9014,7 +9014,7 @@ $root.google = (function() {
 
             /**
              * DescriptorProto oneofDecl.
-             * @member {Array.<google.protobuf.IOneofDescriptorProto>}oneofDecl
+             * @member {Array.<google.protobuf.IOneofDescriptorProto>} oneofDecl
              * @memberof google.protobuf.DescriptorProto
              * @instance
              */
@@ -9022,7 +9022,7 @@ $root.google = (function() {
 
             /**
              * DescriptorProto options.
-             * @member {(google.protobuf.IMessageOptions|null|undefined)}options
+             * @member {google.protobuf.IMessageOptions|null|undefined} options
              * @memberof google.protobuf.DescriptorProto
              * @instance
              */
@@ -9030,7 +9030,7 @@ $root.google = (function() {
 
             /**
              * DescriptorProto reservedRange.
-             * @member {Array.<google.protobuf.DescriptorProto.IReservedRange>}reservedRange
+             * @member {Array.<google.protobuf.DescriptorProto.IReservedRange>} reservedRange
              * @memberof google.protobuf.DescriptorProto
              * @instance
              */
@@ -9038,7 +9038,7 @@ $root.google = (function() {
 
             /**
              * DescriptorProto reservedName.
-             * @member {Array.<string>}reservedName
+             * @member {Array.<string>} reservedName
              * @memberof google.protobuf.DescriptorProto
              * @instance
              */
@@ -9482,8 +9482,8 @@ $root.google = (function() {
                  * Properties of an ExtensionRange.
                  * @memberof google.protobuf.DescriptorProto
                  * @interface IExtensionRange
-                 * @property {number} [start] ExtensionRange start
-                 * @property {number} [end] ExtensionRange end
+                 * @property {number|null} [start] ExtensionRange start
+                 * @property {number|null} [end] ExtensionRange end
                  */
 
                 /**
@@ -9502,7 +9502,7 @@ $root.google = (function() {
 
                 /**
                  * ExtensionRange start.
-                 * @member {number}start
+                 * @member {number} start
                  * @memberof google.protobuf.DescriptorProto.ExtensionRange
                  * @instance
                  */
@@ -9510,7 +9510,7 @@ $root.google = (function() {
 
                 /**
                  * ExtensionRange end.
-                 * @member {number}end
+                 * @member {number} end
                  * @memberof google.protobuf.DescriptorProto.ExtensionRange
                  * @instance
                  */
@@ -9691,8 +9691,8 @@ $root.google = (function() {
                  * Properties of a ReservedRange.
                  * @memberof google.protobuf.DescriptorProto
                  * @interface IReservedRange
-                 * @property {number} [start] ReservedRange start
-                 * @property {number} [end] ReservedRange end
+                 * @property {number|null} [start] ReservedRange start
+                 * @property {number|null} [end] ReservedRange end
                  */
 
                 /**
@@ -9711,7 +9711,7 @@ $root.google = (function() {
 
                 /**
                  * ReservedRange start.
-                 * @member {number}start
+                 * @member {number} start
                  * @memberof google.protobuf.DescriptorProto.ReservedRange
                  * @instance
                  */
@@ -9719,7 +9719,7 @@ $root.google = (function() {
 
                 /**
                  * ReservedRange end.
-                 * @member {number}end
+                 * @member {number} end
                  * @memberof google.protobuf.DescriptorProto.ReservedRange
                  * @instance
                  */
@@ -9903,16 +9903,16 @@ $root.google = (function() {
              * Properties of a FieldDescriptorProto.
              * @memberof google.protobuf
              * @interface IFieldDescriptorProto
-             * @property {string} [name] FieldDescriptorProto name
-             * @property {number} [number] FieldDescriptorProto number
-             * @property {google.protobuf.FieldDescriptorProto.Label} [label] FieldDescriptorProto label
-             * @property {google.protobuf.FieldDescriptorProto.Type} [type] FieldDescriptorProto type
-             * @property {string} [typeName] FieldDescriptorProto typeName
-             * @property {string} [extendee] FieldDescriptorProto extendee
-             * @property {string} [defaultValue] FieldDescriptorProto defaultValue
-             * @property {number} [oneofIndex] FieldDescriptorProto oneofIndex
-             * @property {string} [jsonName] FieldDescriptorProto jsonName
-             * @property {google.protobuf.IFieldOptions} [options] FieldDescriptorProto options
+             * @property {string|null} [name] FieldDescriptorProto name
+             * @property {number|null} [number] FieldDescriptorProto number
+             * @property {google.protobuf.FieldDescriptorProto.Label|null} [label] FieldDescriptorProto label
+             * @property {google.protobuf.FieldDescriptorProto.Type|null} [type] FieldDescriptorProto type
+             * @property {string|null} [typeName] FieldDescriptorProto typeName
+             * @property {string|null} [extendee] FieldDescriptorProto extendee
+             * @property {string|null} [defaultValue] FieldDescriptorProto defaultValue
+             * @property {number|null} [oneofIndex] FieldDescriptorProto oneofIndex
+             * @property {string|null} [jsonName] FieldDescriptorProto jsonName
+             * @property {google.protobuf.IFieldOptions|null} [options] FieldDescriptorProto options
              */
 
             /**
@@ -9931,7 +9931,7 @@ $root.google = (function() {
 
             /**
              * FieldDescriptorProto name.
-             * @member {string}name
+             * @member {string} name
              * @memberof google.protobuf.FieldDescriptorProto
              * @instance
              */
@@ -9939,7 +9939,7 @@ $root.google = (function() {
 
             /**
              * FieldDescriptorProto number.
-             * @member {number}number
+             * @member {number} number
              * @memberof google.protobuf.FieldDescriptorProto
              * @instance
              */
@@ -9947,7 +9947,7 @@ $root.google = (function() {
 
             /**
              * FieldDescriptorProto label.
-             * @member {google.protobuf.FieldDescriptorProto.Label}label
+             * @member {google.protobuf.FieldDescriptorProto.Label} label
              * @memberof google.protobuf.FieldDescriptorProto
              * @instance
              */
@@ -9955,7 +9955,7 @@ $root.google = (function() {
 
             /**
              * FieldDescriptorProto type.
-             * @member {google.protobuf.FieldDescriptorProto.Type}type
+             * @member {google.protobuf.FieldDescriptorProto.Type} type
              * @memberof google.protobuf.FieldDescriptorProto
              * @instance
              */
@@ -9963,7 +9963,7 @@ $root.google = (function() {
 
             /**
              * FieldDescriptorProto typeName.
-             * @member {string}typeName
+             * @member {string} typeName
              * @memberof google.protobuf.FieldDescriptorProto
              * @instance
              */
@@ -9971,7 +9971,7 @@ $root.google = (function() {
 
             /**
              * FieldDescriptorProto extendee.
-             * @member {string}extendee
+             * @member {string} extendee
              * @memberof google.protobuf.FieldDescriptorProto
              * @instance
              */
@@ -9979,7 +9979,7 @@ $root.google = (function() {
 
             /**
              * FieldDescriptorProto defaultValue.
-             * @member {string}defaultValue
+             * @member {string} defaultValue
              * @memberof google.protobuf.FieldDescriptorProto
              * @instance
              */
@@ -9987,7 +9987,7 @@ $root.google = (function() {
 
             /**
              * FieldDescriptorProto oneofIndex.
-             * @member {number}oneofIndex
+             * @member {number} oneofIndex
              * @memberof google.protobuf.FieldDescriptorProto
              * @instance
              */
@@ -9995,7 +9995,7 @@ $root.google = (function() {
 
             /**
              * FieldDescriptorProto jsonName.
-             * @member {string}jsonName
+             * @member {string} jsonName
              * @memberof google.protobuf.FieldDescriptorProto
              * @instance
              */
@@ -10003,7 +10003,7 @@ $root.google = (function() {
 
             /**
              * FieldDescriptorProto options.
-             * @member {(google.protobuf.IFieldOptions|null|undefined)}options
+             * @member {google.protobuf.IFieldOptions|null|undefined} options
              * @memberof google.protobuf.FieldDescriptorProto
              * @instance
              */
@@ -10464,8 +10464,8 @@ $root.google = (function() {
              * Properties of an OneofDescriptorProto.
              * @memberof google.protobuf
              * @interface IOneofDescriptorProto
-             * @property {string} [name] OneofDescriptorProto name
-             * @property {google.protobuf.IOneofOptions} [options] OneofDescriptorProto options
+             * @property {string|null} [name] OneofDescriptorProto name
+             * @property {google.protobuf.IOneofOptions|null} [options] OneofDescriptorProto options
              */
 
             /**
@@ -10484,7 +10484,7 @@ $root.google = (function() {
 
             /**
              * OneofDescriptorProto name.
-             * @member {string}name
+             * @member {string} name
              * @memberof google.protobuf.OneofDescriptorProto
              * @instance
              */
@@ -10492,7 +10492,7 @@ $root.google = (function() {
 
             /**
              * OneofDescriptorProto options.
-             * @member {(google.protobuf.IOneofOptions|null|undefined)}options
+             * @member {google.protobuf.IOneofOptions|null|undefined} options
              * @memberof google.protobuf.OneofDescriptorProto
              * @instance
              */
@@ -10678,9 +10678,9 @@ $root.google = (function() {
              * Properties of an EnumDescriptorProto.
              * @memberof google.protobuf
              * @interface IEnumDescriptorProto
-             * @property {string} [name] EnumDescriptorProto name
-             * @property {Array.<google.protobuf.IEnumValueDescriptorProto>} [value] EnumDescriptorProto value
-             * @property {google.protobuf.IEnumOptions} [options] EnumDescriptorProto options
+             * @property {string|null} [name] EnumDescriptorProto name
+             * @property {Array.<google.protobuf.IEnumValueDescriptorProto>|null} [value] EnumDescriptorProto value
+             * @property {google.protobuf.IEnumOptions|null} [options] EnumDescriptorProto options
              */
 
             /**
@@ -10700,7 +10700,7 @@ $root.google = (function() {
 
             /**
              * EnumDescriptorProto name.
-             * @member {string}name
+             * @member {string} name
              * @memberof google.protobuf.EnumDescriptorProto
              * @instance
              */
@@ -10708,7 +10708,7 @@ $root.google = (function() {
 
             /**
              * EnumDescriptorProto value.
-             * @member {Array.<google.protobuf.IEnumValueDescriptorProto>}value
+             * @member {Array.<google.protobuf.IEnumValueDescriptorProto>} value
              * @memberof google.protobuf.EnumDescriptorProto
              * @instance
              */
@@ -10716,7 +10716,7 @@ $root.google = (function() {
 
             /**
              * EnumDescriptorProto options.
-             * @member {(google.protobuf.IEnumOptions|null|undefined)}options
+             * @member {google.protobuf.IEnumOptions|null|undefined} options
              * @memberof google.protobuf.EnumDescriptorProto
              * @instance
              */
@@ -10936,9 +10936,9 @@ $root.google = (function() {
              * Properties of an EnumValueDescriptorProto.
              * @memberof google.protobuf
              * @interface IEnumValueDescriptorProto
-             * @property {string} [name] EnumValueDescriptorProto name
-             * @property {number} [number] EnumValueDescriptorProto number
-             * @property {google.protobuf.IEnumValueOptions} [options] EnumValueDescriptorProto options
+             * @property {string|null} [name] EnumValueDescriptorProto name
+             * @property {number|null} [number] EnumValueDescriptorProto number
+             * @property {google.protobuf.IEnumValueOptions|null} [options] EnumValueDescriptorProto options
              */
 
             /**
@@ -10957,7 +10957,7 @@ $root.google = (function() {
 
             /**
              * EnumValueDescriptorProto name.
-             * @member {string}name
+             * @member {string} name
              * @memberof google.protobuf.EnumValueDescriptorProto
              * @instance
              */
@@ -10965,7 +10965,7 @@ $root.google = (function() {
 
             /**
              * EnumValueDescriptorProto number.
-             * @member {number}number
+             * @member {number} number
              * @memberof google.protobuf.EnumValueDescriptorProto
              * @instance
              */
@@ -10973,7 +10973,7 @@ $root.google = (function() {
 
             /**
              * EnumValueDescriptorProto options.
-             * @member {(google.protobuf.IEnumValueOptions|null|undefined)}options
+             * @member {google.protobuf.IEnumValueOptions|null|undefined} options
              * @memberof google.protobuf.EnumValueDescriptorProto
              * @instance
              */
@@ -11172,9 +11172,9 @@ $root.google = (function() {
              * Properties of a ServiceDescriptorProto.
              * @memberof google.protobuf
              * @interface IServiceDescriptorProto
-             * @property {string} [name] ServiceDescriptorProto name
-             * @property {Array.<google.protobuf.IMethodDescriptorProto>} [method] ServiceDescriptorProto method
-             * @property {google.protobuf.IServiceOptions} [options] ServiceDescriptorProto options
+             * @property {string|null} [name] ServiceDescriptorProto name
+             * @property {Array.<google.protobuf.IMethodDescriptorProto>|null} [method] ServiceDescriptorProto method
+             * @property {google.protobuf.IServiceOptions|null} [options] ServiceDescriptorProto options
              */
 
             /**
@@ -11194,7 +11194,7 @@ $root.google = (function() {
 
             /**
              * ServiceDescriptorProto name.
-             * @member {string}name
+             * @member {string} name
              * @memberof google.protobuf.ServiceDescriptorProto
              * @instance
              */
@@ -11202,7 +11202,7 @@ $root.google = (function() {
 
             /**
              * ServiceDescriptorProto method.
-             * @member {Array.<google.protobuf.IMethodDescriptorProto>}method
+             * @member {Array.<google.protobuf.IMethodDescriptorProto>} method
              * @memberof google.protobuf.ServiceDescriptorProto
              * @instance
              */
@@ -11210,7 +11210,7 @@ $root.google = (function() {
 
             /**
              * ServiceDescriptorProto options.
-             * @member {(google.protobuf.IServiceOptions|null|undefined)}options
+             * @member {google.protobuf.IServiceOptions|null|undefined} options
              * @memberof google.protobuf.ServiceDescriptorProto
              * @instance
              */
@@ -11430,12 +11430,12 @@ $root.google = (function() {
              * Properties of a MethodDescriptorProto.
              * @memberof google.protobuf
              * @interface IMethodDescriptorProto
-             * @property {string} [name] MethodDescriptorProto name
-             * @property {string} [inputType] MethodDescriptorProto inputType
-             * @property {string} [outputType] MethodDescriptorProto outputType
-             * @property {google.protobuf.IMethodOptions} [options] MethodDescriptorProto options
-             * @property {boolean} [clientStreaming] MethodDescriptorProto clientStreaming
-             * @property {boolean} [serverStreaming] MethodDescriptorProto serverStreaming
+             * @property {string|null} [name] MethodDescriptorProto name
+             * @property {string|null} [inputType] MethodDescriptorProto inputType
+             * @property {string|null} [outputType] MethodDescriptorProto outputType
+             * @property {google.protobuf.IMethodOptions|null} [options] MethodDescriptorProto options
+             * @property {boolean|null} [clientStreaming] MethodDescriptorProto clientStreaming
+             * @property {boolean|null} [serverStreaming] MethodDescriptorProto serverStreaming
              */
 
             /**
@@ -11454,7 +11454,7 @@ $root.google = (function() {
 
             /**
              * MethodDescriptorProto name.
-             * @member {string}name
+             * @member {string} name
              * @memberof google.protobuf.MethodDescriptorProto
              * @instance
              */
@@ -11462,7 +11462,7 @@ $root.google = (function() {
 
             /**
              * MethodDescriptorProto inputType.
-             * @member {string}inputType
+             * @member {string} inputType
              * @memberof google.protobuf.MethodDescriptorProto
              * @instance
              */
@@ -11470,7 +11470,7 @@ $root.google = (function() {
 
             /**
              * MethodDescriptorProto outputType.
-             * @member {string}outputType
+             * @member {string} outputType
              * @memberof google.protobuf.MethodDescriptorProto
              * @instance
              */
@@ -11478,7 +11478,7 @@ $root.google = (function() {
 
             /**
              * MethodDescriptorProto options.
-             * @member {(google.protobuf.IMethodOptions|null|undefined)}options
+             * @member {google.protobuf.IMethodOptions|null|undefined} options
              * @memberof google.protobuf.MethodDescriptorProto
              * @instance
              */
@@ -11486,7 +11486,7 @@ $root.google = (function() {
 
             /**
              * MethodDescriptorProto clientStreaming.
-             * @member {boolean}clientStreaming
+             * @member {boolean} clientStreaming
              * @memberof google.protobuf.MethodDescriptorProto
              * @instance
              */
@@ -11494,7 +11494,7 @@ $root.google = (function() {
 
             /**
              * MethodDescriptorProto serverStreaming.
-             * @member {boolean}serverStreaming
+             * @member {boolean} serverStreaming
              * @memberof google.protobuf.MethodDescriptorProto
              * @instance
              */
@@ -11732,21 +11732,21 @@ $root.google = (function() {
              * Properties of a FileOptions.
              * @memberof google.protobuf
              * @interface IFileOptions
-             * @property {string} [javaPackage] FileOptions javaPackage
-             * @property {string} [javaOuterClassname] FileOptions javaOuterClassname
-             * @property {boolean} [javaMultipleFiles] FileOptions javaMultipleFiles
-             * @property {boolean} [javaGenerateEqualsAndHash] FileOptions javaGenerateEqualsAndHash
-             * @property {boolean} [javaStringCheckUtf8] FileOptions javaStringCheckUtf8
-             * @property {google.protobuf.FileOptions.OptimizeMode} [optimizeFor] FileOptions optimizeFor
-             * @property {string} [goPackage] FileOptions goPackage
-             * @property {boolean} [ccGenericServices] FileOptions ccGenericServices
-             * @property {boolean} [javaGenericServices] FileOptions javaGenericServices
-             * @property {boolean} [pyGenericServices] FileOptions pyGenericServices
-             * @property {boolean} [deprecated] FileOptions deprecated
-             * @property {boolean} [ccEnableArenas] FileOptions ccEnableArenas
-             * @property {string} [objcClassPrefix] FileOptions objcClassPrefix
-             * @property {string} [csharpNamespace] FileOptions csharpNamespace
-             * @property {Array.<google.protobuf.IUninterpretedOption>} [uninterpretedOption] FileOptions uninterpretedOption
+             * @property {string|null} [javaPackage] FileOptions javaPackage
+             * @property {string|null} [javaOuterClassname] FileOptions javaOuterClassname
+             * @property {boolean|null} [javaMultipleFiles] FileOptions javaMultipleFiles
+             * @property {boolean|null} [javaGenerateEqualsAndHash] FileOptions javaGenerateEqualsAndHash
+             * @property {boolean|null} [javaStringCheckUtf8] FileOptions javaStringCheckUtf8
+             * @property {google.protobuf.FileOptions.OptimizeMode|null} [optimizeFor] FileOptions optimizeFor
+             * @property {string|null} [goPackage] FileOptions goPackage
+             * @property {boolean|null} [ccGenericServices] FileOptions ccGenericServices
+             * @property {boolean|null} [javaGenericServices] FileOptions javaGenericServices
+             * @property {boolean|null} [pyGenericServices] FileOptions pyGenericServices
+             * @property {boolean|null} [deprecated] FileOptions deprecated
+             * @property {boolean|null} [ccEnableArenas] FileOptions ccEnableArenas
+             * @property {string|null} [objcClassPrefix] FileOptions objcClassPrefix
+             * @property {string|null} [csharpNamespace] FileOptions csharpNamespace
+             * @property {Array.<google.protobuf.IUninterpretedOption>|null} [uninterpretedOption] FileOptions uninterpretedOption
              */
 
             /**
@@ -11766,7 +11766,7 @@ $root.google = (function() {
 
             /**
              * FileOptions javaPackage.
-             * @member {string}javaPackage
+             * @member {string} javaPackage
              * @memberof google.protobuf.FileOptions
              * @instance
              */
@@ -11774,7 +11774,7 @@ $root.google = (function() {
 
             /**
              * FileOptions javaOuterClassname.
-             * @member {string}javaOuterClassname
+             * @member {string} javaOuterClassname
              * @memberof google.protobuf.FileOptions
              * @instance
              */
@@ -11782,7 +11782,7 @@ $root.google = (function() {
 
             /**
              * FileOptions javaMultipleFiles.
-             * @member {boolean}javaMultipleFiles
+             * @member {boolean} javaMultipleFiles
              * @memberof google.protobuf.FileOptions
              * @instance
              */
@@ -11790,7 +11790,7 @@ $root.google = (function() {
 
             /**
              * FileOptions javaGenerateEqualsAndHash.
-             * @member {boolean}javaGenerateEqualsAndHash
+             * @member {boolean} javaGenerateEqualsAndHash
              * @memberof google.protobuf.FileOptions
              * @instance
              */
@@ -11798,7 +11798,7 @@ $root.google = (function() {
 
             /**
              * FileOptions javaStringCheckUtf8.
-             * @member {boolean}javaStringCheckUtf8
+             * @member {boolean} javaStringCheckUtf8
              * @memberof google.protobuf.FileOptions
              * @instance
              */
@@ -11806,7 +11806,7 @@ $root.google = (function() {
 
             /**
              * FileOptions optimizeFor.
-             * @member {google.protobuf.FileOptions.OptimizeMode}optimizeFor
+             * @member {google.protobuf.FileOptions.OptimizeMode} optimizeFor
              * @memberof google.protobuf.FileOptions
              * @instance
              */
@@ -11814,7 +11814,7 @@ $root.google = (function() {
 
             /**
              * FileOptions goPackage.
-             * @member {string}goPackage
+             * @member {string} goPackage
              * @memberof google.protobuf.FileOptions
              * @instance
              */
@@ -11822,7 +11822,7 @@ $root.google = (function() {
 
             /**
              * FileOptions ccGenericServices.
-             * @member {boolean}ccGenericServices
+             * @member {boolean} ccGenericServices
              * @memberof google.protobuf.FileOptions
              * @instance
              */
@@ -11830,7 +11830,7 @@ $root.google = (function() {
 
             /**
              * FileOptions javaGenericServices.
-             * @member {boolean}javaGenericServices
+             * @member {boolean} javaGenericServices
              * @memberof google.protobuf.FileOptions
              * @instance
              */
@@ -11838,7 +11838,7 @@ $root.google = (function() {
 
             /**
              * FileOptions pyGenericServices.
-             * @member {boolean}pyGenericServices
+             * @member {boolean} pyGenericServices
              * @memberof google.protobuf.FileOptions
              * @instance
              */
@@ -11846,7 +11846,7 @@ $root.google = (function() {
 
             /**
              * FileOptions deprecated.
-             * @member {boolean}deprecated
+             * @member {boolean} deprecated
              * @memberof google.protobuf.FileOptions
              * @instance
              */
@@ -11854,7 +11854,7 @@ $root.google = (function() {
 
             /**
              * FileOptions ccEnableArenas.
-             * @member {boolean}ccEnableArenas
+             * @member {boolean} ccEnableArenas
              * @memberof google.protobuf.FileOptions
              * @instance
              */
@@ -11862,7 +11862,7 @@ $root.google = (function() {
 
             /**
              * FileOptions objcClassPrefix.
-             * @member {string}objcClassPrefix
+             * @member {string} objcClassPrefix
              * @memberof google.protobuf.FileOptions
              * @instance
              */
@@ -11870,7 +11870,7 @@ $root.google = (function() {
 
             /**
              * FileOptions csharpNamespace.
-             * @member {string}csharpNamespace
+             * @member {string} csharpNamespace
              * @memberof google.protobuf.FileOptions
              * @instance
              */
@@ -11878,7 +11878,7 @@ $root.google = (function() {
 
             /**
              * FileOptions uninterpretedOption.
-             * @member {Array.<google.protobuf.IUninterpretedOption>}uninterpretedOption
+             * @member {Array.<google.protobuf.IUninterpretedOption>} uninterpretedOption
              * @memberof google.protobuf.FileOptions
              * @instance
              */
@@ -12282,11 +12282,11 @@ $root.google = (function() {
              * Properties of a MessageOptions.
              * @memberof google.protobuf
              * @interface IMessageOptions
-             * @property {boolean} [messageSetWireFormat] MessageOptions messageSetWireFormat
-             * @property {boolean} [noStandardDescriptorAccessor] MessageOptions noStandardDescriptorAccessor
-             * @property {boolean} [deprecated] MessageOptions deprecated
-             * @property {boolean} [mapEntry] MessageOptions mapEntry
-             * @property {Array.<google.protobuf.IUninterpretedOption>} [uninterpretedOption] MessageOptions uninterpretedOption
+             * @property {boolean|null} [messageSetWireFormat] MessageOptions messageSetWireFormat
+             * @property {boolean|null} [noStandardDescriptorAccessor] MessageOptions noStandardDescriptorAccessor
+             * @property {boolean|null} [deprecated] MessageOptions deprecated
+             * @property {boolean|null} [mapEntry] MessageOptions mapEntry
+             * @property {Array.<google.protobuf.IUninterpretedOption>|null} [uninterpretedOption] MessageOptions uninterpretedOption
              */
 
             /**
@@ -12306,7 +12306,7 @@ $root.google = (function() {
 
             /**
              * MessageOptions messageSetWireFormat.
-             * @member {boolean}messageSetWireFormat
+             * @member {boolean} messageSetWireFormat
              * @memberof google.protobuf.MessageOptions
              * @instance
              */
@@ -12314,7 +12314,7 @@ $root.google = (function() {
 
             /**
              * MessageOptions noStandardDescriptorAccessor.
-             * @member {boolean}noStandardDescriptorAccessor
+             * @member {boolean} noStandardDescriptorAccessor
              * @memberof google.protobuf.MessageOptions
              * @instance
              */
@@ -12322,7 +12322,7 @@ $root.google = (function() {
 
             /**
              * MessageOptions deprecated.
-             * @member {boolean}deprecated
+             * @member {boolean} deprecated
              * @memberof google.protobuf.MessageOptions
              * @instance
              */
@@ -12330,7 +12330,7 @@ $root.google = (function() {
 
             /**
              * MessageOptions mapEntry.
-             * @member {boolean}mapEntry
+             * @member {boolean} mapEntry
              * @memberof google.protobuf.MessageOptions
              * @instance
              */
@@ -12338,7 +12338,7 @@ $root.google = (function() {
 
             /**
              * MessageOptions uninterpretedOption.
-             * @member {Array.<google.protobuf.IUninterpretedOption>}uninterpretedOption
+             * @member {Array.<google.protobuf.IUninterpretedOption>} uninterpretedOption
              * @memberof google.protobuf.MessageOptions
              * @instance
              */
@@ -12579,13 +12579,13 @@ $root.google = (function() {
              * Properties of a FieldOptions.
              * @memberof google.protobuf
              * @interface IFieldOptions
-             * @property {google.protobuf.FieldOptions.CType} [ctype] FieldOptions ctype
-             * @property {boolean} [packed] FieldOptions packed
-             * @property {google.protobuf.FieldOptions.JSType} [jstype] FieldOptions jstype
-             * @property {boolean} [lazy] FieldOptions lazy
-             * @property {boolean} [deprecated] FieldOptions deprecated
-             * @property {boolean} [weak] FieldOptions weak
-             * @property {Array.<google.protobuf.IUninterpretedOption>} [uninterpretedOption] FieldOptions uninterpretedOption
+             * @property {google.protobuf.FieldOptions.CType|null} [ctype] FieldOptions ctype
+             * @property {boolean|null} [packed] FieldOptions packed
+             * @property {google.protobuf.FieldOptions.JSType|null} [jstype] FieldOptions jstype
+             * @property {boolean|null} [lazy] FieldOptions lazy
+             * @property {boolean|null} [deprecated] FieldOptions deprecated
+             * @property {boolean|null} [weak] FieldOptions weak
+             * @property {Array.<google.protobuf.IUninterpretedOption>|null} [uninterpretedOption] FieldOptions uninterpretedOption
              */
 
             /**
@@ -12605,7 +12605,7 @@ $root.google = (function() {
 
             /**
              * FieldOptions ctype.
-             * @member {google.protobuf.FieldOptions.CType}ctype
+             * @member {google.protobuf.FieldOptions.CType} ctype
              * @memberof google.protobuf.FieldOptions
              * @instance
              */
@@ -12613,7 +12613,7 @@ $root.google = (function() {
 
             /**
              * FieldOptions packed.
-             * @member {boolean}packed
+             * @member {boolean} packed
              * @memberof google.protobuf.FieldOptions
              * @instance
              */
@@ -12621,7 +12621,7 @@ $root.google = (function() {
 
             /**
              * FieldOptions jstype.
-             * @member {google.protobuf.FieldOptions.JSType}jstype
+             * @member {google.protobuf.FieldOptions.JSType} jstype
              * @memberof google.protobuf.FieldOptions
              * @instance
              */
@@ -12629,7 +12629,7 @@ $root.google = (function() {
 
             /**
              * FieldOptions lazy.
-             * @member {boolean}lazy
+             * @member {boolean} lazy
              * @memberof google.protobuf.FieldOptions
              * @instance
              */
@@ -12637,7 +12637,7 @@ $root.google = (function() {
 
             /**
              * FieldOptions deprecated.
-             * @member {boolean}deprecated
+             * @member {boolean} deprecated
              * @memberof google.protobuf.FieldOptions
              * @instance
              */
@@ -12645,7 +12645,7 @@ $root.google = (function() {
 
             /**
              * FieldOptions weak.
-             * @member {boolean}weak
+             * @member {boolean} weak
              * @memberof google.protobuf.FieldOptions
              * @instance
              */
@@ -12653,7 +12653,7 @@ $root.google = (function() {
 
             /**
              * FieldOptions uninterpretedOption.
-             * @member {Array.<google.protobuf.IUninterpretedOption>}uninterpretedOption
+             * @member {Array.<google.protobuf.IUninterpretedOption>} uninterpretedOption
              * @memberof google.protobuf.FieldOptions
              * @instance
              */
@@ -12986,7 +12986,7 @@ $root.google = (function() {
              * Properties of an OneofOptions.
              * @memberof google.protobuf
              * @interface IOneofOptions
-             * @property {Array.<google.protobuf.IUninterpretedOption>} [uninterpretedOption] OneofOptions uninterpretedOption
+             * @property {Array.<google.protobuf.IUninterpretedOption>|null} [uninterpretedOption] OneofOptions uninterpretedOption
              */
 
             /**
@@ -13006,7 +13006,7 @@ $root.google = (function() {
 
             /**
              * OneofOptions uninterpretedOption.
-             * @member {Array.<google.protobuf.IUninterpretedOption>}uninterpretedOption
+             * @member {Array.<google.protobuf.IUninterpretedOption>} uninterpretedOption
              * @memberof google.protobuf.OneofOptions
              * @instance
              */
@@ -13193,10 +13193,10 @@ $root.google = (function() {
              * Properties of an EnumOptions.
              * @memberof google.protobuf
              * @interface IEnumOptions
-             * @property {boolean} [allowAlias] EnumOptions allowAlias
-             * @property {boolean} [deprecated] EnumOptions deprecated
-             * @property {Array.<google.protobuf.IUninterpretedOption>} [uninterpretedOption] EnumOptions uninterpretedOption
-             * @property {string} [".jspb.test.IsExtension.simpleOption"] EnumOptions .jspb.test.IsExtension.simpleOption
+             * @property {boolean|null} [allowAlias] EnumOptions allowAlias
+             * @property {boolean|null} [deprecated] EnumOptions deprecated
+             * @property {Array.<google.protobuf.IUninterpretedOption>|null} [uninterpretedOption] EnumOptions uninterpretedOption
+             * @property {string|null} [".jspb.test.IsExtension.simpleOption"] EnumOptions .jspb.test.IsExtension.simpleOption
              */
 
             /**
@@ -13216,7 +13216,7 @@ $root.google = (function() {
 
             /**
              * EnumOptions allowAlias.
-             * @member {boolean}allowAlias
+             * @member {boolean} allowAlias
              * @memberof google.protobuf.EnumOptions
              * @instance
              */
@@ -13224,7 +13224,7 @@ $root.google = (function() {
 
             /**
              * EnumOptions deprecated.
-             * @member {boolean}deprecated
+             * @member {boolean} deprecated
              * @memberof google.protobuf.EnumOptions
              * @instance
              */
@@ -13232,7 +13232,7 @@ $root.google = (function() {
 
             /**
              * EnumOptions uninterpretedOption.
-             * @member {Array.<google.protobuf.IUninterpretedOption>}uninterpretedOption
+             * @member {Array.<google.protobuf.IUninterpretedOption>} uninterpretedOption
              * @memberof google.protobuf.EnumOptions
              * @instance
              */
@@ -13240,7 +13240,7 @@ $root.google = (function() {
 
             /**
              * EnumOptions .jspb.test.IsExtension.simpleOption.
-             * @member {string}.jspb.test.IsExtension.simpleOption
+             * @member {string} .jspb.test.IsExtension.simpleOption
              * @memberof google.protobuf.EnumOptions
              * @instance
              */
@@ -13468,8 +13468,8 @@ $root.google = (function() {
              * Properties of an EnumValueOptions.
              * @memberof google.protobuf
              * @interface IEnumValueOptions
-             * @property {boolean} [deprecated] EnumValueOptions deprecated
-             * @property {Array.<google.protobuf.IUninterpretedOption>} [uninterpretedOption] EnumValueOptions uninterpretedOption
+             * @property {boolean|null} [deprecated] EnumValueOptions deprecated
+             * @property {Array.<google.protobuf.IUninterpretedOption>|null} [uninterpretedOption] EnumValueOptions uninterpretedOption
              */
 
             /**
@@ -13489,7 +13489,7 @@ $root.google = (function() {
 
             /**
              * EnumValueOptions deprecated.
-             * @member {boolean}deprecated
+             * @member {boolean} deprecated
              * @memberof google.protobuf.EnumValueOptions
              * @instance
              */
@@ -13497,7 +13497,7 @@ $root.google = (function() {
 
             /**
              * EnumValueOptions uninterpretedOption.
-             * @member {Array.<google.protobuf.IUninterpretedOption>}uninterpretedOption
+             * @member {Array.<google.protobuf.IUninterpretedOption>} uninterpretedOption
              * @memberof google.protobuf.EnumValueOptions
              * @instance
              */
@@ -13698,8 +13698,8 @@ $root.google = (function() {
              * Properties of a ServiceOptions.
              * @memberof google.protobuf
              * @interface IServiceOptions
-             * @property {boolean} [deprecated] ServiceOptions deprecated
-             * @property {Array.<google.protobuf.IUninterpretedOption>} [uninterpretedOption] ServiceOptions uninterpretedOption
+             * @property {boolean|null} [deprecated] ServiceOptions deprecated
+             * @property {Array.<google.protobuf.IUninterpretedOption>|null} [uninterpretedOption] ServiceOptions uninterpretedOption
              */
 
             /**
@@ -13719,7 +13719,7 @@ $root.google = (function() {
 
             /**
              * ServiceOptions deprecated.
-             * @member {boolean}deprecated
+             * @member {boolean} deprecated
              * @memberof google.protobuf.ServiceOptions
              * @instance
              */
@@ -13727,7 +13727,7 @@ $root.google = (function() {
 
             /**
              * ServiceOptions uninterpretedOption.
-             * @member {Array.<google.protobuf.IUninterpretedOption>}uninterpretedOption
+             * @member {Array.<google.protobuf.IUninterpretedOption>} uninterpretedOption
              * @memberof google.protobuf.ServiceOptions
              * @instance
              */
@@ -13928,9 +13928,9 @@ $root.google = (function() {
              * Properties of a MethodOptions.
              * @memberof google.protobuf
              * @interface IMethodOptions
-             * @property {boolean} [deprecated] MethodOptions deprecated
-             * @property {google.protobuf.MethodOptions.IdempotencyLevel} [idempotencyLevel] MethodOptions idempotencyLevel
-             * @property {Array.<google.protobuf.IUninterpretedOption>} [uninterpretedOption] MethodOptions uninterpretedOption
+             * @property {boolean|null} [deprecated] MethodOptions deprecated
+             * @property {google.protobuf.MethodOptions.IdempotencyLevel|null} [idempotencyLevel] MethodOptions idempotencyLevel
+             * @property {Array.<google.protobuf.IUninterpretedOption>|null} [uninterpretedOption] MethodOptions uninterpretedOption
              */
 
             /**
@@ -13950,7 +13950,7 @@ $root.google = (function() {
 
             /**
              * MethodOptions deprecated.
-             * @member {boolean}deprecated
+             * @member {boolean} deprecated
              * @memberof google.protobuf.MethodOptions
              * @instance
              */
@@ -13958,7 +13958,7 @@ $root.google = (function() {
 
             /**
              * MethodOptions idempotencyLevel.
-             * @member {google.protobuf.MethodOptions.IdempotencyLevel}idempotencyLevel
+             * @member {google.protobuf.MethodOptions.IdempotencyLevel} idempotencyLevel
              * @memberof google.protobuf.MethodOptions
              * @instance
              */
@@ -13966,7 +13966,7 @@ $root.google = (function() {
 
             /**
              * MethodOptions uninterpretedOption.
-             * @member {Array.<google.protobuf.IUninterpretedOption>}uninterpretedOption
+             * @member {Array.<google.protobuf.IUninterpretedOption>} uninterpretedOption
              * @memberof google.protobuf.MethodOptions
              * @instance
              */
@@ -14214,13 +14214,13 @@ $root.google = (function() {
              * Properties of an UninterpretedOption.
              * @memberof google.protobuf
              * @interface IUninterpretedOption
-             * @property {Array.<google.protobuf.UninterpretedOption.INamePart>} [name] UninterpretedOption name
-             * @property {string} [identifierValue] UninterpretedOption identifierValue
-             * @property {number|Long} [positiveIntValue] UninterpretedOption positiveIntValue
-             * @property {number|Long} [negativeIntValue] UninterpretedOption negativeIntValue
-             * @property {number} [doubleValue] UninterpretedOption doubleValue
-             * @property {Uint8Array} [stringValue] UninterpretedOption stringValue
-             * @property {string} [aggregateValue] UninterpretedOption aggregateValue
+             * @property {Array.<google.protobuf.UninterpretedOption.INamePart>|null} [name] UninterpretedOption name
+             * @property {string|null} [identifierValue] UninterpretedOption identifierValue
+             * @property {number|Long|null} [positiveIntValue] UninterpretedOption positiveIntValue
+             * @property {number|Long|null} [negativeIntValue] UninterpretedOption negativeIntValue
+             * @property {number|null} [doubleValue] UninterpretedOption doubleValue
+             * @property {Uint8Array|null} [stringValue] UninterpretedOption stringValue
+             * @property {string|null} [aggregateValue] UninterpretedOption aggregateValue
              */
 
             /**
@@ -14240,7 +14240,7 @@ $root.google = (function() {
 
             /**
              * UninterpretedOption name.
-             * @member {Array.<google.protobuf.UninterpretedOption.INamePart>}name
+             * @member {Array.<google.protobuf.UninterpretedOption.INamePart>} name
              * @memberof google.protobuf.UninterpretedOption
              * @instance
              */
@@ -14248,7 +14248,7 @@ $root.google = (function() {
 
             /**
              * UninterpretedOption identifierValue.
-             * @member {string}identifierValue
+             * @member {string} identifierValue
              * @memberof google.protobuf.UninterpretedOption
              * @instance
              */
@@ -14256,7 +14256,7 @@ $root.google = (function() {
 
             /**
              * UninterpretedOption positiveIntValue.
-             * @member {number|Long}positiveIntValue
+             * @member {number|Long} positiveIntValue
              * @memberof google.protobuf.UninterpretedOption
              * @instance
              */
@@ -14264,7 +14264,7 @@ $root.google = (function() {
 
             /**
              * UninterpretedOption negativeIntValue.
-             * @member {number|Long}negativeIntValue
+             * @member {number|Long} negativeIntValue
              * @memberof google.protobuf.UninterpretedOption
              * @instance
              */
@@ -14272,7 +14272,7 @@ $root.google = (function() {
 
             /**
              * UninterpretedOption doubleValue.
-             * @member {number}doubleValue
+             * @member {number} doubleValue
              * @memberof google.protobuf.UninterpretedOption
              * @instance
              */
@@ -14280,7 +14280,7 @@ $root.google = (function() {
 
             /**
              * UninterpretedOption stringValue.
-             * @member {Uint8Array}stringValue
+             * @member {Uint8Array} stringValue
              * @memberof google.protobuf.UninterpretedOption
              * @instance
              */
@@ -14288,7 +14288,7 @@ $root.google = (function() {
 
             /**
              * UninterpretedOption aggregateValue.
-             * @member {string}aggregateValue
+             * @member {string} aggregateValue
              * @memberof google.protobuf.UninterpretedOption
              * @instance
              */
@@ -14603,7 +14603,7 @@ $root.google = (function() {
 
                 /**
                  * NamePart namePart.
-                 * @member {string}namePart
+                 * @member {string} namePart
                  * @memberof google.protobuf.UninterpretedOption.NamePart
                  * @instance
                  */
@@ -14611,7 +14611,7 @@ $root.google = (function() {
 
                 /**
                  * NamePart isExtension.
-                 * @member {boolean}isExtension
+                 * @member {boolean} isExtension
                  * @memberof google.protobuf.UninterpretedOption.NamePart
                  * @instance
                  */
@@ -14795,7 +14795,7 @@ $root.google = (function() {
              * Properties of a SourceCodeInfo.
              * @memberof google.protobuf
              * @interface ISourceCodeInfo
-             * @property {Array.<google.protobuf.SourceCodeInfo.ILocation>} [location] SourceCodeInfo location
+             * @property {Array.<google.protobuf.SourceCodeInfo.ILocation>|null} [location] SourceCodeInfo location
              */
 
             /**
@@ -14815,7 +14815,7 @@ $root.google = (function() {
 
             /**
              * SourceCodeInfo location.
-             * @member {Array.<google.protobuf.SourceCodeInfo.ILocation>}location
+             * @member {Array.<google.protobuf.SourceCodeInfo.ILocation>} location
              * @memberof google.protobuf.SourceCodeInfo
              * @instance
              */
@@ -14999,11 +14999,11 @@ $root.google = (function() {
                  * Properties of a Location.
                  * @memberof google.protobuf.SourceCodeInfo
                  * @interface ILocation
-                 * @property {Array.<number>} [path] Location path
-                 * @property {Array.<number>} [span] Location span
-                 * @property {string} [leadingComments] Location leadingComments
-                 * @property {string} [trailingComments] Location trailingComments
-                 * @property {Array.<string>} [leadingDetachedComments] Location leadingDetachedComments
+                 * @property {Array.<number>|null} [path] Location path
+                 * @property {Array.<number>|null} [span] Location span
+                 * @property {string|null} [leadingComments] Location leadingComments
+                 * @property {string|null} [trailingComments] Location trailingComments
+                 * @property {Array.<string>|null} [leadingDetachedComments] Location leadingDetachedComments
                  */
 
                 /**
@@ -15025,7 +15025,7 @@ $root.google = (function() {
 
                 /**
                  * Location path.
-                 * @member {Array.<number>}path
+                 * @member {Array.<number>} path
                  * @memberof google.protobuf.SourceCodeInfo.Location
                  * @instance
                  */
@@ -15033,7 +15033,7 @@ $root.google = (function() {
 
                 /**
                  * Location span.
-                 * @member {Array.<number>}span
+                 * @member {Array.<number>} span
                  * @memberof google.protobuf.SourceCodeInfo.Location
                  * @instance
                  */
@@ -15041,7 +15041,7 @@ $root.google = (function() {
 
                 /**
                  * Location leadingComments.
-                 * @member {string}leadingComments
+                 * @member {string} leadingComments
                  * @memberof google.protobuf.SourceCodeInfo.Location
                  * @instance
                  */
@@ -15049,7 +15049,7 @@ $root.google = (function() {
 
                 /**
                  * Location trailingComments.
-                 * @member {string}trailingComments
+                 * @member {string} trailingComments
                  * @memberof google.protobuf.SourceCodeInfo.Location
                  * @instance
                  */
@@ -15057,7 +15057,7 @@ $root.google = (function() {
 
                 /**
                  * Location leadingDetachedComments.
-                 * @member {Array.<string>}leadingDetachedComments
+                 * @member {Array.<string>} leadingDetachedComments
                  * @memberof google.protobuf.SourceCodeInfo.Location
                  * @instance
                  */
@@ -15343,7 +15343,7 @@ $root.google = (function() {
              * Properties of a GeneratedCodeInfo.
              * @memberof google.protobuf
              * @interface IGeneratedCodeInfo
-             * @property {Array.<google.protobuf.GeneratedCodeInfo.IAnnotation>} [annotation] GeneratedCodeInfo annotation
+             * @property {Array.<google.protobuf.GeneratedCodeInfo.IAnnotation>|null} [annotation] GeneratedCodeInfo annotation
              */
 
             /**
@@ -15363,7 +15363,7 @@ $root.google = (function() {
 
             /**
              * GeneratedCodeInfo annotation.
-             * @member {Array.<google.protobuf.GeneratedCodeInfo.IAnnotation>}annotation
+             * @member {Array.<google.protobuf.GeneratedCodeInfo.IAnnotation>} annotation
              * @memberof google.protobuf.GeneratedCodeInfo
              * @instance
              */
@@ -15547,10 +15547,10 @@ $root.google = (function() {
                  * Properties of an Annotation.
                  * @memberof google.protobuf.GeneratedCodeInfo
                  * @interface IAnnotation
-                 * @property {Array.<number>} [path] Annotation path
-                 * @property {string} [sourceFile] Annotation sourceFile
-                 * @property {number} [begin] Annotation begin
-                 * @property {number} [end] Annotation end
+                 * @property {Array.<number>|null} [path] Annotation path
+                 * @property {string|null} [sourceFile] Annotation sourceFile
+                 * @property {number|null} [begin] Annotation begin
+                 * @property {number|null} [end] Annotation end
                  */
 
                 /**
@@ -15570,7 +15570,7 @@ $root.google = (function() {
 
                 /**
                  * Annotation path.
-                 * @member {Array.<number>}path
+                 * @member {Array.<number>} path
                  * @memberof google.protobuf.GeneratedCodeInfo.Annotation
                  * @instance
                  */
@@ -15578,7 +15578,7 @@ $root.google = (function() {
 
                 /**
                  * Annotation sourceFile.
-                 * @member {string}sourceFile
+                 * @member {string} sourceFile
                  * @memberof google.protobuf.GeneratedCodeInfo.Annotation
                  * @instance
                  */
@@ -15586,7 +15586,7 @@ $root.google = (function() {
 
                 /**
                  * Annotation begin.
-                 * @member {number}begin
+                 * @member {number} begin
                  * @memberof google.protobuf.GeneratedCodeInfo.Annotation
                  * @instance
                  */
@@ -15594,7 +15594,7 @@ $root.google = (function() {
 
                 /**
                  * Annotation end.
-                 * @member {number}end
+                 * @member {number} end
                  * @memberof google.protobuf.GeneratedCodeInfo.Annotation
                  * @instance
                  */

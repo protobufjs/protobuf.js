@@ -15,9 +15,9 @@ $root.Test1 = (function() {
      * Properties of a Test1.
      * @exports ITest1
      * @interface ITest1
-     * @property {string} [field1] Field with a comment.
-     * @property {number} [field2] Test1 field2
-     * @property {boolean} [field3] Field with a comment and a <a href="http://example.com/foo/">link</a>
+     * @property {string|null} [field1] Field with a comment.
+     * @property {number|null} [field2] Test1 field2
+     * @property {boolean|null} [field3] Field with a comment and a <a href="http://example.com/foo/">link</a>
      */
 
     /**
@@ -39,7 +39,7 @@ $root.Test1 = (function() {
 
     /**
      * Field with a comment.
-     * @member {string}field1
+     * @member {string} field1
      * @memberof Test1
      * @instance
      */
@@ -47,7 +47,7 @@ $root.Test1 = (function() {
 
     /**
      * Test1 field2.
-     * @member {number}field2
+     * @member {number} field2
      * @memberof Test1
      * @instance
      */
@@ -55,7 +55,7 @@ $root.Test1 = (function() {
 
     /**
      * Field with a comment and a <a href="http://example.com/foo/">link</a>
-     * @member {boolean}field3
+     * @member {boolean} field3
      * @memberof Test1
      * @instance
      */

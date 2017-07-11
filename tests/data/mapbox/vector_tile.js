@@ -24,7 +24,7 @@ $root.vector_tile = (function() {
          * Properties of a Tile.
          * @memberof vector_tile
          * @interface ITile
-         * @property {Array.<vector_tile.Tile.ILayer>} [layers] Tile layers
+         * @property {Array.<vector_tile.Tile.ILayer>|null} [layers] Tile layers
          */
 
         /**
@@ -44,7 +44,7 @@ $root.vector_tile = (function() {
 
         /**
          * Tile layers.
-         * @member {Array.<vector_tile.Tile.ILayer>}layers
+         * @member {Array.<vector_tile.Tile.ILayer>} layers
          * @memberof vector_tile.Tile
          * @instance
          */
@@ -245,13 +245,13 @@ $root.vector_tile = (function() {
              * Properties of a Value.
              * @memberof vector_tile.Tile
              * @interface IValue
-             * @property {string} [stringValue] Value stringValue
-             * @property {number} [floatValue] Value floatValue
-             * @property {number} [doubleValue] Value doubleValue
-             * @property {number|Long} [intValue] Value intValue
-             * @property {number|Long} [uintValue] Value uintValue
-             * @property {number|Long} [sintValue] Value sintValue
-             * @property {boolean} [boolValue] Value boolValue
+             * @property {string|null} [stringValue] Value stringValue
+             * @property {number|null} [floatValue] Value floatValue
+             * @property {number|null} [doubleValue] Value doubleValue
+             * @property {number|Long|null} [intValue] Value intValue
+             * @property {number|Long|null} [uintValue] Value uintValue
+             * @property {number|Long|null} [sintValue] Value sintValue
+             * @property {boolean|null} [boolValue] Value boolValue
              */
 
             /**
@@ -270,7 +270,7 @@ $root.vector_tile = (function() {
 
             /**
              * Value stringValue.
-             * @member {string}stringValue
+             * @member {string} stringValue
              * @memberof vector_tile.Tile.Value
              * @instance
              */
@@ -278,7 +278,7 @@ $root.vector_tile = (function() {
 
             /**
              * Value floatValue.
-             * @member {number}floatValue
+             * @member {number} floatValue
              * @memberof vector_tile.Tile.Value
              * @instance
              */
@@ -286,7 +286,7 @@ $root.vector_tile = (function() {
 
             /**
              * Value doubleValue.
-             * @member {number}doubleValue
+             * @member {number} doubleValue
              * @memberof vector_tile.Tile.Value
              * @instance
              */
@@ -294,7 +294,7 @@ $root.vector_tile = (function() {
 
             /**
              * Value intValue.
-             * @member {number|Long}intValue
+             * @member {number|Long} intValue
              * @memberof vector_tile.Tile.Value
              * @instance
              */
@@ -302,7 +302,7 @@ $root.vector_tile = (function() {
 
             /**
              * Value uintValue.
-             * @member {number|Long}uintValue
+             * @member {number|Long} uintValue
              * @memberof vector_tile.Tile.Value
              * @instance
              */
@@ -310,7 +310,7 @@ $root.vector_tile = (function() {
 
             /**
              * Value sintValue.
-             * @member {number|Long}sintValue
+             * @member {number|Long} sintValue
              * @memberof vector_tile.Tile.Value
              * @instance
              */
@@ -318,7 +318,7 @@ $root.vector_tile = (function() {
 
             /**
              * Value boolValue.
-             * @member {boolean}boolValue
+             * @member {boolean} boolValue
              * @memberof vector_tile.Tile.Value
              * @instance
              */
@@ -606,10 +606,10 @@ $root.vector_tile = (function() {
              * Properties of a Feature.
              * @memberof vector_tile.Tile
              * @interface IFeature
-             * @property {number|Long} [id] Feature id
-             * @property {Array.<number>} [tags] Feature tags
-             * @property {vector_tile.Tile.GeomType} [type] Feature type
-             * @property {Array.<number>} [geometry] Feature geometry
+             * @property {number|Long|null} [id] Feature id
+             * @property {Array.<number>|null} [tags] Feature tags
+             * @property {vector_tile.Tile.GeomType|null} [type] Feature type
+             * @property {Array.<number>|null} [geometry] Feature geometry
              */
 
             /**
@@ -630,7 +630,7 @@ $root.vector_tile = (function() {
 
             /**
              * Feature id.
-             * @member {number|Long}id
+             * @member {number|Long} id
              * @memberof vector_tile.Tile.Feature
              * @instance
              */
@@ -638,7 +638,7 @@ $root.vector_tile = (function() {
 
             /**
              * Feature tags.
-             * @member {Array.<number>}tags
+             * @member {Array.<number>} tags
              * @memberof vector_tile.Tile.Feature
              * @instance
              */
@@ -646,7 +646,7 @@ $root.vector_tile = (function() {
 
             /**
              * Feature type.
-             * @member {vector_tile.Tile.GeomType}type
+             * @member {vector_tile.Tile.GeomType} type
              * @memberof vector_tile.Tile.Feature
              * @instance
              */
@@ -654,7 +654,7 @@ $root.vector_tile = (function() {
 
             /**
              * Feature geometry.
-             * @member {Array.<number>}geometry
+             * @member {Array.<number>} geometry
              * @memberof vector_tile.Tile.Feature
              * @instance
              */
@@ -948,10 +948,10 @@ $root.vector_tile = (function() {
              * @interface ILayer
              * @property {number} version Layer version
              * @property {string} name Layer name
-             * @property {Array.<vector_tile.Tile.IFeature>} [features] Layer features
-             * @property {Array.<string>} [keys] Layer keys
-             * @property {Array.<vector_tile.Tile.IValue>} [values] Layer values
-             * @property {number} [extent] Layer extent
+             * @property {Array.<vector_tile.Tile.IFeature>|null} [features] Layer features
+             * @property {Array.<string>|null} [keys] Layer keys
+             * @property {Array.<vector_tile.Tile.IValue>|null} [values] Layer values
+             * @property {number|null} [extent] Layer extent
              */
 
             /**
@@ -973,7 +973,7 @@ $root.vector_tile = (function() {
 
             /**
              * Layer version.
-             * @member {number}version
+             * @member {number} version
              * @memberof vector_tile.Tile.Layer
              * @instance
              */
@@ -981,7 +981,7 @@ $root.vector_tile = (function() {
 
             /**
              * Layer name.
-             * @member {string}name
+             * @member {string} name
              * @memberof vector_tile.Tile.Layer
              * @instance
              */
@@ -989,7 +989,7 @@ $root.vector_tile = (function() {
 
             /**
              * Layer features.
-             * @member {Array.<vector_tile.Tile.IFeature>}features
+             * @member {Array.<vector_tile.Tile.IFeature>} features
              * @memberof vector_tile.Tile.Layer
              * @instance
              */
@@ -997,7 +997,7 @@ $root.vector_tile = (function() {
 
             /**
              * Layer keys.
-             * @member {Array.<string>}keys
+             * @member {Array.<string>} keys
              * @memberof vector_tile.Tile.Layer
              * @instance
              */
@@ -1005,7 +1005,7 @@ $root.vector_tile = (function() {
 
             /**
              * Layer values.
-             * @member {Array.<vector_tile.Tile.IValue>}values
+             * @member {Array.<vector_tile.Tile.IValue>} values
              * @memberof vector_tile.Tile.Layer
              * @instance
              */
@@ -1013,7 +1013,7 @@ $root.vector_tile = (function() {
 
             /**
              * Layer extent.
-             * @member {number}extent
+             * @member {number} extent
              * @memberof vector_tile.Tile.Layer
              * @instance
              */
