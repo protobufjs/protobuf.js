@@ -67,16 +67,14 @@ var protobuf = require("protobufjs");
 Development:
 
 ```
-<script src="//cdn.rawgit.com/dcodeIO/protobuf.js/6.X.X/dist/protobuf.js"></script>
+<script src="https://unpkg.com/protobufjs@^6.8.0/dist/protobuf.js"></script>
 ```
 
 Production:
 
 ```
-<script src="//cdn.rawgit.com/dcodeIO/protobuf.js/6.X.X/dist/protobuf.min.js"></script>
+<script src="https://unpkg.com/protobufjs@^6.8.0/dist/protobuf.min.js"></script>
 ```
-
-**Remember** to replace the version tag with the exact [release](https://github.com/dcodeIO/protobuf.js/tags) your project depends upon.
 
 The library supports CommonJS and AMD loaders and also exports globally as `protobuf`.
 
