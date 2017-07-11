@@ -19,7 +19,7 @@ function json_module(root, options, callback) {
         }
         var json = util.jsonSafeProp(JSON.stringify(root.nested, null, 2).trim());
         output.push(".addJSON(" + json + ");");
-        output = util.wrap(output.join(""), protobuf.util.merge({ dependency: "protobufjs/minimal" }, options));
+        output = util.wrap(output.join(""), protobuf.util.merge({ dependency: "protobufjs/light" }, options));
         process.nextTick(function() {
             callback(null, output);
         });
