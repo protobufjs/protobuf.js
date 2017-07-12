@@ -106,8 +106,14 @@ exports.main = function(args, callback) {
             maxBuffer: 1 << 24 // 16mb
         });
         var out = [];
+        var ended = false;
+        var closed = false;
         child.stdout.on("data", function(data) {
             out.push(data);
+        });
+        child.stdout.on("end", function() {
+            if (closed) finish();
+            else ended = true;
         });
         child.stderr.pipe(process.stderr);
         child.on("close", function(code) {
@@ -123,6 +129,11 @@ exports.main = function(args, callback) {
                 throw err;
             }
 
+            if (ended) finish();
+            else closed = true;
+        });
+
+        function finish() {
             var output = [];
             if (argv.global)
                 output.push(
@@ -149,7 +160,7 @@ exports.main = function(args, callback) {
                     return callback(err);
                 throw err;
             }
-        });
+        }
     }
 
     return undefined;
