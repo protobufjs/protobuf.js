@@ -13,7 +13,7 @@ export namespace MyService {
 }
 
 export interface IMyRequest {
-    path?: (string|null);
+    path?: string;
 }
 
 export class MyRequest {
@@ -31,7 +31,7 @@ export class MyRequest {
 }
 
 export interface IMyResponse {
-    status?: (number|null);
+    status?: number;
 }
 
 export class MyResponse {
