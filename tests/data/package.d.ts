@@ -1,23 +1,23 @@
 import * as $protobuf from "../..";
 
 export interface IPackage {
-    name?: (string|null);
-    version?: (string|null);
-    versionScheme?: (string|null);
-    description?: (string|null);
-    author?: (string|null);
-    license?: (string|null);
-    repository?: (Package.IRepository|null);
-    bugs?: (string|null);
-    homepage?: (string|null);
-    keywords?: (string[]|null);
-    main?: (string|null);
-    bin?: ({ [k: string]: string }|null);
-    scripts?: ({ [k: string]: string }|null);
-    dependencies?: ({ [k: string]: string }|null);
-    devDependencies?: ({ [k: string]: string }|null);
-    types?: (string|null);
-    cliDependencies?: (string[]|null);
+    name?: string;
+    version?: string;
+    versionScheme?: string;
+    description?: string;
+    author?: string;
+    license?: string;
+    repository?: Package.IRepository;
+    bugs?: string;
+    homepage?: string;
+    keywords?: string[];
+    main?: string;
+    bin?: { [k: string]: string };
+    scripts?: { [k: string]: string };
+    dependencies?: { [k: string]: string };
+    devDependencies?: { [k: string]: string };
+    types?: string;
+    cliDependencies?: string[];
 }
 
 export class Package {
@@ -28,7 +28,7 @@ export class Package {
     public description: string;
     public author: string;
     public license: string;
-    public repository?: (Package.IRepository|null);
+    public repository?: Package.IRepository;
     public bugs: string;
     public homepage: string;
     public keywords: string[];
@@ -53,8 +53,8 @@ export class Package {
 export namespace Package {
 
     interface IRepository {
-        type?: (string|null);
-        url?: (string|null);
+        type?: string;
+        url?: string;
     }
 
     class Repository {

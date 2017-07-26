@@ -1233,7 +1233,10 @@ export namespace rpc {
      * @param [callback] Node-style callback called with the error, if any, and the response message
      * @returns Promise if `callback` has been omitted, otherwise `undefined`
      */
-    type ServiceMethod<TReq extends Message<TReq>, TRes extends Message<TRes>> = (request: (TReq|Properties<TReq>), callback?: rpc.ServiceMethodCallback<TRes>) => Promise<Message<TRes>>;
+    interface ServiceMethod<TReq extends Message<TReq>, TRes extends Message<TRes>> {
+        (request: (TReq|Properties<TReq>), callback?: rpc.ServiceMethodCallback<TRes>): Promise<Message<TRes>>;
+        methodName: string;
+    }
 
     /** An RPC service as returned by {@link Service#create}. */
     class Service extends util.EventEmitter {
@@ -1275,12 +1278,17 @@ export namespace rpc {
 }
 
 /**
+ * Method name enhanced with methodName required to determine service methods after minification
+ */
+export type RpcServiceMethod = Method & rpc.ServiceMethod<Message<{}>, Message<{}>>;
+
+/**
  * RPC implementation passed to {@link Service#create} performing a service request on network level, i.e. by utilizing http requests or websockets.
  * @param method Reflected or static method being called
  * @param requestData Request data
  * @param callback Callback function
  */
-type RPCImpl = (method: (Method|rpc.ServiceMethod<Message<{}>, Message<{}>>), requestData: Uint8Array, callback: RPCImplCallback) => void;
+type RPCImpl = (method: RpcServiceMethod, requestData: Uint8Array, callback: RPCImplCallback) => void;
 
 /**
  * Node-style callback as used by {@link RPCImpl}.

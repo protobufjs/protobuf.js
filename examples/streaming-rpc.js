@@ -78,7 +78,7 @@ function performRequestOverTransportChannel(requestData, callback) {
 // Listen for events:
 
 greeter.on("data", function(response, method) {
-    console.log("data in " + method.name + ":", response.message);
+    console.log("data in " + method.nameName + ":", response.message);
 });
 
 greeter.on("end", function() {
@@ -86,7 +86,7 @@ greeter.on("end", function() {
 });
 
 greeter.on("error", function(err, method) {
-    console.log("error in " + method.name + ":", err);
+    console.log("error in " + method.nameName + ":", err);
 });
 
 // Call methods:

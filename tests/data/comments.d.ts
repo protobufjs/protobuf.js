@@ -1,9 +1,9 @@
 import * as $protobuf from "../..";
 
 export interface ITest1 {
-    field1?: (string|null);
-    field2?: (number|null);
-    field3?: (boolean|null);
+    field1?: string;
+    field2?: number;
+    field3?: boolean;
 }
 
 export class Test1 {

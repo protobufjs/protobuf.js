@@ -26,7 +26,7 @@ export namespace jspb {
         }
 
         interface IEnumContainer {
-            outerEnum?: (jspb.test.OuterEnum|null);
+            outerEnum?: jspb.test.OuterEnum;
         }
 
         class EnumContainer {
@@ -45,8 +45,8 @@ export namespace jspb {
 
         interface ISimple1 {
             aString: string;
-            aRepeatedString?: (string[]|null);
-            aBoolean?: (boolean|null);
+            aRepeatedString?: string[];
+            aBoolean?: boolean;
         }
 
         class Simple1 {
@@ -67,7 +67,7 @@ export namespace jspb {
 
         interface ISimple2 {
             aString: string;
-            aRepeatedString?: (string[]|null);
+            aRepeatedString?: string[];
         }
 
         class Simple2 {
@@ -87,9 +87,9 @@ export namespace jspb {
 
         interface ISpecialCases {
             normal: string;
-            "default": string;
-            "function": string;
-            "var": string;
+            default: string;
+            function: string;
+            var: string;
         }
 
         class SpecialCases {
@@ -110,18 +110,18 @@ export namespace jspb {
         }
 
         interface IOptionalFields {
-            aString?: (string|null);
+            aString?: string;
             aBool: boolean;
-            aNestedMessage?: (jspb.test.OptionalFields.INested|null);
-            aRepeatedMessage?: (jspb.test.OptionalFields.INested[]|null);
-            aRepeatedString?: (string[]|null);
+            aNestedMessage?: jspb.test.OptionalFields.INested;
+            aRepeatedMessage?: jspb.test.OptionalFields.INested[];
+            aRepeatedString?: string[];
         }
 
         class OptionalFields {
             constructor(properties?: jspb.test.IOptionalFields);
             public aString: string;
             public aBool: boolean;
-            public aNestedMessage?: (jspb.test.OptionalFields.INested|null);
+            public aNestedMessage?: jspb.test.OptionalFields.INested;
             public aRepeatedMessage: jspb.test.OptionalFields.INested[];
             public aRepeatedString: string[];
             public static create(properties?: jspb.test.IOptionalFields): jspb.test.OptionalFields;
@@ -138,7 +138,7 @@ export namespace jspb {
         namespace OptionalFields {
 
             interface INested {
-                anInt?: (number|null);
+                anInt?: number;
             }
 
             class Nested {
@@ -157,15 +157,15 @@ export namespace jspb {
         }
 
         interface IHasExtensions {
-            str1?: (string|null);
-            str2?: (string|null);
-            str3?: (string|null);
-            ".jspb.test.IsExtension.extField"?: (jspb.test.IIsExtension|null);
-            ".jspb.test.IndirectExtension.simple"?: (jspb.test.ISimple1|null);
-            ".jspb.test.IndirectExtension.str"?: (string|null);
-            ".jspb.test.IndirectExtension.repeatedStr"?: (string[]|null);
-            ".jspb.test.IndirectExtension.repeatedSimple"?: (jspb.test.ISimple1[]|null);
-            ".jspb.test.simple1"?: (jspb.test.ISimple1|null);
+            str1?: string;
+            str2?: string;
+            str3?: string;
+            ".jspb.test.IsExtension.extField"?: jspb.test.IIsExtension;
+            ".jspb.test.IndirectExtension.simple"?: jspb.test.ISimple1;
+            ".jspb.test.IndirectExtension.str"?: string;
+            ".jspb.test.IndirectExtension.repeatedStr"?: string[];
+            ".jspb.test.IndirectExtension.repeatedSimple"?: jspb.test.ISimple1[];
+            ".jspb.test.simple1"?: jspb.test.ISimple1;
         }
 
         class HasExtensions {
@@ -187,16 +187,16 @@ export namespace jspb {
         interface IComplex {
             aString: string;
             anOutOfOrderBool: boolean;
-            aNestedMessage?: (jspb.test.Complex.INested|null);
-            aRepeatedMessage?: (jspb.test.Complex.INested[]|null);
-            aRepeatedString?: (string[]|null);
+            aNestedMessage?: jspb.test.Complex.INested;
+            aRepeatedMessage?: jspb.test.Complex.INested[];
+            aRepeatedString?: string[];
         }
 
         class Complex {
             constructor(properties?: jspb.test.IComplex);
             public aString: string;
             public anOutOfOrderBool: boolean;
-            public aNestedMessage?: (jspb.test.Complex.INested|null);
+            public aNestedMessage?: jspb.test.Complex.INested;
             public aRepeatedMessage: jspb.test.Complex.INested[];
             public aRepeatedString: string[];
             public static create(properties?: jspb.test.IComplex): jspb.test.Complex;
@@ -250,7 +250,7 @@ export namespace jspb {
         namespace OuterMessage {
 
             interface IComplex {
-                innerComplexField?: (number|null);
+                innerComplexField?: number;
             }
 
             class Complex {
@@ -269,7 +269,7 @@ export namespace jspb {
         }
 
         interface IIsExtension {
-            ext1?: (string|null);
+            ext1?: string;
         }
 
         class IsExtension {
@@ -303,12 +303,12 @@ export namespace jspb {
         }
 
         interface IDefaultValues {
-            stringField?: (string|null);
-            boolField?: (boolean|null);
-            intField?: (number|Long|null);
-            enumField?: (jspb.test.DefaultValues.Enum|null);
-            emptyField?: (string|null);
-            bytesField?: (Uint8Array|null);
+            stringField?: string;
+            boolField?: boolean;
+            intField?: (number|Long);
+            enumField?: jspb.test.DefaultValues.Enum;
+            emptyField?: string;
+            bytesField?: Uint8Array;
         }
 
         class DefaultValues {
@@ -339,14 +339,14 @@ export namespace jspb {
         }
 
         interface IFloatingPointFields {
-            optionalFloatField?: (number|null);
+            optionalFloatField?: number;
             requiredFloatField: number;
-            repeatedFloatField?: (number[]|null);
-            defaultFloatField?: (number|null);
-            optionalDoubleField?: (number|null);
+            repeatedFloatField?: number[];
+            defaultFloatField?: number;
+            optionalDoubleField?: number;
             requiredDoubleField: number;
-            repeatedDoubleField?: (number[]|null);
-            defaultDoubleField?: (number|null);
+            repeatedDoubleField?: number[];
+            defaultDoubleField?: number;
         }
 
         class FloatingPointFields {
@@ -371,18 +371,18 @@ export namespace jspb {
         }
 
         interface ITestClone {
-            str?: (string|null);
-            simple1?: (jspb.test.ISimple1|null);
-            simple2?: (jspb.test.ISimple1[]|null);
-            bytesField?: (Uint8Array|null);
-            unused?: (string|null);
-            ".jspb.test.CloneExtension.extField"?: (jspb.test.ICloneExtension|null);
+            str?: string;
+            simple1?: jspb.test.ISimple1;
+            simple2?: jspb.test.ISimple1[];
+            bytesField?: Uint8Array;
+            unused?: string;
+            ".jspb.test.CloneExtension.extField"?: jspb.test.ICloneExtension;
         }
 
         class TestClone {
             constructor(properties?: jspb.test.ITestClone);
             public str: string;
-            public simple1?: (jspb.test.ISimple1|null);
+            public simple1?: jspb.test.ISimple1;
             public simple2: jspb.test.ISimple1[];
             public bytesField: Uint8Array;
             public unused: string;
@@ -398,7 +398,7 @@ export namespace jspb {
         }
 
         interface ICloneExtension {
-            ext?: (string|null);
+            ext?: string;
         }
 
         class CloneExtension {
@@ -416,22 +416,22 @@ export namespace jspb {
         }
 
         interface ITestGroup {
-            repeatedGroup?: (jspb.test.TestGroup.IRepeatedGroup[]|null);
+            repeatedGroup?: jspb.test.TestGroup.IRepeatedGroup[];
             requiredGroup: jspb.test.TestGroup.IRequiredGroup;
-            optionalGroup?: (jspb.test.TestGroup.IOptionalGroup|null);
-            id?: (string|null);
+            optionalGroup?: jspb.test.TestGroup.IOptionalGroup;
+            id?: string;
             requiredSimple: jspb.test.ISimple2;
-            optionalSimple?: (jspb.test.ISimple2|null);
+            optionalSimple?: jspb.test.ISimple2;
         }
 
         class TestGroup {
             constructor(properties?: jspb.test.ITestGroup);
             public repeatedGroup: jspb.test.TestGroup.IRepeatedGroup[];
             public requiredGroup: jspb.test.TestGroup.IRequiredGroup;
-            public optionalGroup?: (jspb.test.TestGroup.IOptionalGroup|null);
+            public optionalGroup?: jspb.test.TestGroup.IOptionalGroup;
             public id: string;
             public requiredSimple: jspb.test.ISimple2;
-            public optionalSimple?: (jspb.test.ISimple2|null);
+            public optionalSimple?: jspb.test.ISimple2;
             public static create(properties?: jspb.test.ITestGroup): jspb.test.TestGroup;
             public static encode(message: jspb.test.ITestGroup, writer?: $protobuf.Writer): $protobuf.Writer;
             public static encodeDelimited(message: jspb.test.ITestGroup, writer?: $protobuf.Writer): $protobuf.Writer;
@@ -447,7 +447,7 @@ export namespace jspb {
 
             interface IRepeatedGroup {
                 id: string;
-                someBool?: (boolean[]|null);
+                someBool?: boolean[];
             }
 
             class RepeatedGroup {
@@ -503,12 +503,12 @@ export namespace jspb {
         }
 
         interface ITestGroup1 {
-            group?: (jspb.test.TestGroup.IRepeatedGroup|null);
+            group?: jspb.test.TestGroup.IRepeatedGroup;
         }
 
         class TestGroup1 {
             constructor(properties?: jspb.test.ITestGroup1);
-            public group?: (jspb.test.TestGroup.IRepeatedGroup|null);
+            public group?: jspb.test.TestGroup.IRepeatedGroup;
             public static create(properties?: jspb.test.ITestGroup1): jspb.test.TestGroup1;
             public static encode(message: jspb.test.ITestGroup1, writer?: $protobuf.Writer): $protobuf.Writer;
             public static encodeDelimited(message: jspb.test.ITestGroup1, writer?: $protobuf.Writer): $protobuf.Writer;
@@ -521,8 +521,8 @@ export namespace jspb {
         }
 
         interface ITestReservedNames {
-            extension?: (number|null);
-            ".jspb.test.TestReservedNamesExtension.foo"?: (number|null);
+            extension?: number;
+            ".jspb.test.TestReservedNamesExtension.foo"?: number;
         }
 
         class TestReservedNames {
@@ -556,23 +556,23 @@ export namespace jspb {
         }
 
         interface ITestMessageWithOneof {
-            pone?: (string|null);
-            pthree?: (string|null);
-            rone?: (jspb.test.ITestMessageWithOneof|null);
-            rtwo?: (string|null);
-            normalField?: (boolean|null);
-            repeatedField?: (string[]|null);
-            aone?: (number|null);
-            atwo?: (number|null);
-            bone?: (number|null);
-            btwo?: (number|null);
+            pone?: string;
+            pthree?: string;
+            rone?: jspb.test.ITestMessageWithOneof;
+            rtwo?: string;
+            normalField?: boolean;
+            repeatedField?: string[];
+            aone?: number;
+            atwo?: number;
+            bone?: number;
+            btwo?: number;
         }
 
         class TestMessageWithOneof {
             constructor(properties?: jspb.test.ITestMessageWithOneof);
             public pone: string;
             public pthree: string;
-            public rone?: (jspb.test.ITestMessageWithOneof|null);
+            public rone?: jspb.test.ITestMessageWithOneof;
             public rtwo: string;
             public normalField: boolean;
             public repeatedField: string[];
@@ -596,8 +596,8 @@ export namespace jspb {
         }
 
         interface ITestEndsWithBytes {
-            value?: (number|null);
-            data?: (Uint8Array|null);
+            value?: number;
+            data?: Uint8Array;
         }
 
         class TestEndsWithBytes {
@@ -616,18 +616,18 @@ export namespace jspb {
         }
 
         interface ITestMapFieldsNoBinary {
-            mapStringString?: ({ [k: string]: string }|null);
-            mapStringInt32?: ({ [k: string]: number }|null);
-            mapStringInt64?: ({ [k: string]: (number|Long) }|null);
-            mapStringBool?: ({ [k: string]: boolean }|null);
-            mapStringDouble?: ({ [k: string]: number }|null);
-            mapStringEnum?: ({ [k: string]: jspb.test.MapValueEnumNoBinary }|null);
-            mapStringMsg?: ({ [k: string]: jspb.test.IMapValueMessageNoBinary }|null);
-            mapInt32String?: ({ [k: string]: string }|null);
-            mapInt64String?: ({ [k: string]: string }|null);
-            mapBoolString?: ({ [k: string]: string }|null);
-            testMapFields?: (jspb.test.ITestMapFieldsNoBinary|null);
-            mapStringTestmapfields?: ({ [k: string]: jspb.test.ITestMapFieldsNoBinary }|null);
+            mapStringString?: { [k: string]: string };
+            mapStringInt32?: { [k: string]: number };
+            mapStringInt64?: { [k: string]: (number|Long) };
+            mapStringBool?: { [k: string]: boolean };
+            mapStringDouble?: { [k: string]: number };
+            mapStringEnum?: { [k: string]: jspb.test.MapValueEnumNoBinary };
+            mapStringMsg?: { [k: string]: jspb.test.IMapValueMessageNoBinary };
+            mapInt32String?: { [k: string]: string };
+            mapInt64String?: { [k: string]: string };
+            mapBoolString?: { [k: string]: string };
+            testMapFields?: jspb.test.ITestMapFieldsNoBinary;
+            mapStringTestmapfields?: { [k: string]: jspb.test.ITestMapFieldsNoBinary };
         }
 
         class TestMapFieldsNoBinary {
@@ -642,7 +642,7 @@ export namespace jspb {
             public mapInt32String: { [k: string]: string };
             public mapInt64String: { [k: string]: string };
             public mapBoolString: { [k: string]: string };
-            public testMapFields?: (jspb.test.ITestMapFieldsNoBinary|null);
+            public testMapFields?: jspb.test.ITestMapFieldsNoBinary;
             public mapStringTestmapfields: { [k: string]: jspb.test.ITestMapFieldsNoBinary };
             public static create(properties?: jspb.test.ITestMapFieldsNoBinary): jspb.test.TestMapFieldsNoBinary;
             public static encode(message: jspb.test.ITestMapFieldsNoBinary, writer?: $protobuf.Writer): $protobuf.Writer;
@@ -662,7 +662,7 @@ export namespace jspb {
         }
 
         interface IMapValueMessageNoBinary {
-            foo?: (number|null);
+            foo?: number;
         }
 
         class MapValueMessageNoBinary {
@@ -716,7 +716,7 @@ export namespace jspb {
             namespace Nested {
 
                 interface IMessage {
-                    count?: (number|null);
+                    count?: number;
                 }
 
                 class Message {
@@ -742,7 +742,7 @@ export namespace google {
     namespace protobuf {
 
         interface IFileDescriptorSet {
-            file?: (google.protobuf.IFileDescriptorProto[]|null);
+            file?: google.protobuf.IFileDescriptorProto[];
         }
 
         class FileDescriptorSet {
@@ -760,18 +760,18 @@ export namespace google {
         }
 
         interface IFileDescriptorProto {
-            name?: (string|null);
-            "package"?: (string|null);
-            dependency?: (string[]|null);
-            publicDependency?: (number[]|null);
-            weakDependency?: (number[]|null);
-            messageType?: (google.protobuf.IDescriptorProto[]|null);
-            enumType?: (google.protobuf.IEnumDescriptorProto[]|null);
-            service?: (google.protobuf.IServiceDescriptorProto[]|null);
-            extension?: (google.protobuf.IFieldDescriptorProto[]|null);
-            options?: (google.protobuf.IFileOptions|null);
-            sourceCodeInfo?: (google.protobuf.ISourceCodeInfo|null);
-            syntax?: (string|null);
+            name?: string;
+            "package"?: string;
+            dependency?: string[];
+            publicDependency?: number[];
+            weakDependency?: number[];
+            messageType?: google.protobuf.IDescriptorProto[];
+            enumType?: google.protobuf.IEnumDescriptorProto[];
+            service?: google.protobuf.IServiceDescriptorProto[];
+            extension?: google.protobuf.IFieldDescriptorProto[];
+            options?: google.protobuf.IFileOptions;
+            sourceCodeInfo?: google.protobuf.ISourceCodeInfo;
+            syntax?: string;
         }
 
         class FileDescriptorProto {
@@ -785,8 +785,8 @@ export namespace google {
             public enumType: google.protobuf.IEnumDescriptorProto[];
             public service: google.protobuf.IServiceDescriptorProto[];
             public extension: google.protobuf.IFieldDescriptorProto[];
-            public options?: (google.protobuf.IFileOptions|null);
-            public sourceCodeInfo?: (google.protobuf.ISourceCodeInfo|null);
+            public options?: google.protobuf.IFileOptions;
+            public sourceCodeInfo?: google.protobuf.ISourceCodeInfo;
             public syntax: string;
             public static create(properties?: google.protobuf.IFileDescriptorProto): google.protobuf.FileDescriptorProto;
             public static encode(message: google.protobuf.IFileDescriptorProto, writer?: $protobuf.Writer): $protobuf.Writer;
@@ -800,16 +800,16 @@ export namespace google {
         }
 
         interface IDescriptorProto {
-            name?: (string|null);
-            field?: (google.protobuf.IFieldDescriptorProto[]|null);
-            extension?: (google.protobuf.IFieldDescriptorProto[]|null);
-            nestedType?: (google.protobuf.IDescriptorProto[]|null);
-            enumType?: (google.protobuf.IEnumDescriptorProto[]|null);
-            extensionRange?: (google.protobuf.DescriptorProto.IExtensionRange[]|null);
-            oneofDecl?: (google.protobuf.IOneofDescriptorProto[]|null);
-            options?: (google.protobuf.IMessageOptions|null);
-            reservedRange?: (google.protobuf.DescriptorProto.IReservedRange[]|null);
-            reservedName?: (string[]|null);
+            name?: string;
+            field?: google.protobuf.IFieldDescriptorProto[];
+            extension?: google.protobuf.IFieldDescriptorProto[];
+            nestedType?: google.protobuf.IDescriptorProto[];
+            enumType?: google.protobuf.IEnumDescriptorProto[];
+            extensionRange?: google.protobuf.DescriptorProto.IExtensionRange[];
+            oneofDecl?: google.protobuf.IOneofDescriptorProto[];
+            options?: google.protobuf.IMessageOptions;
+            reservedRange?: google.protobuf.DescriptorProto.IReservedRange[];
+            reservedName?: string[];
         }
 
         class DescriptorProto {
@@ -821,7 +821,7 @@ export namespace google {
             public enumType: google.protobuf.IEnumDescriptorProto[];
             public extensionRange: google.protobuf.DescriptorProto.IExtensionRange[];
             public oneofDecl: google.protobuf.IOneofDescriptorProto[];
-            public options?: (google.protobuf.IMessageOptions|null);
+            public options?: google.protobuf.IMessageOptions;
             public reservedRange: google.protobuf.DescriptorProto.IReservedRange[];
             public reservedName: string[];
             public static create(properties?: google.protobuf.IDescriptorProto): google.protobuf.DescriptorProto;
@@ -838,8 +838,8 @@ export namespace google {
         namespace DescriptorProto {
 
             interface IExtensionRange {
-                start?: (number|null);
-                end?: (number|null);
+                start?: number;
+                end?: number;
             }
 
             class ExtensionRange {
@@ -858,8 +858,8 @@ export namespace google {
             }
 
             interface IReservedRange {
-                start?: (number|null);
-                end?: (number|null);
+                start?: number;
+                end?: number;
             }
 
             class ReservedRange {
@@ -879,16 +879,16 @@ export namespace google {
         }
 
         interface IFieldDescriptorProto {
-            name?: (string|null);
-            number?: (number|null);
-            label?: (google.protobuf.FieldDescriptorProto.Label|null);
-            type?: (google.protobuf.FieldDescriptorProto.Type|null);
-            typeName?: (string|null);
-            extendee?: (string|null);
-            defaultValue?: (string|null);
-            oneofIndex?: (number|null);
-            jsonName?: (string|null);
-            options?: (google.protobuf.IFieldOptions|null);
+            name?: string;
+            number?: number;
+            label?: google.protobuf.FieldDescriptorProto.Label;
+            type?: google.protobuf.FieldDescriptorProto.Type;
+            typeName?: string;
+            extendee?: string;
+            defaultValue?: string;
+            oneofIndex?: number;
+            jsonName?: string;
+            options?: google.protobuf.IFieldOptions;
         }
 
         class FieldDescriptorProto {
@@ -902,7 +902,7 @@ export namespace google {
             public defaultValue: string;
             public oneofIndex: number;
             public jsonName: string;
-            public options?: (google.protobuf.IFieldOptions|null);
+            public options?: google.protobuf.IFieldOptions;
             public static create(properties?: google.protobuf.IFieldDescriptorProto): google.protobuf.FieldDescriptorProto;
             public static encode(message: google.protobuf.IFieldDescriptorProto, writer?: $protobuf.Writer): $protobuf.Writer;
             public static encodeDelimited(message: google.protobuf.IFieldDescriptorProto, writer?: $protobuf.Writer): $protobuf.Writer;
@@ -945,14 +945,14 @@ export namespace google {
         }
 
         interface IOneofDescriptorProto {
-            name?: (string|null);
-            options?: (google.protobuf.IOneofOptions|null);
+            name?: string;
+            options?: google.protobuf.IOneofOptions;
         }
 
         class OneofDescriptorProto {
             constructor(properties?: google.protobuf.IOneofDescriptorProto);
             public name: string;
-            public options?: (google.protobuf.IOneofOptions|null);
+            public options?: google.protobuf.IOneofOptions;
             public static create(properties?: google.protobuf.IOneofDescriptorProto): google.protobuf.OneofDescriptorProto;
             public static encode(message: google.protobuf.IOneofDescriptorProto, writer?: $protobuf.Writer): $protobuf.Writer;
             public static encodeDelimited(message: google.protobuf.IOneofDescriptorProto, writer?: $protobuf.Writer): $protobuf.Writer;
@@ -965,16 +965,16 @@ export namespace google {
         }
 
         interface IEnumDescriptorProto {
-            name?: (string|null);
-            value?: (google.protobuf.IEnumValueDescriptorProto[]|null);
-            options?: (google.protobuf.IEnumOptions|null);
+            name?: string;
+            value?: google.protobuf.IEnumValueDescriptorProto[];
+            options?: google.protobuf.IEnumOptions;
         }
 
         class EnumDescriptorProto {
             constructor(properties?: google.protobuf.IEnumDescriptorProto);
             public name: string;
             public value: google.protobuf.IEnumValueDescriptorProto[];
-            public options?: (google.protobuf.IEnumOptions|null);
+            public options?: google.protobuf.IEnumOptions;
             public static create(properties?: google.protobuf.IEnumDescriptorProto): google.protobuf.EnumDescriptorProto;
             public static encode(message: google.protobuf.IEnumDescriptorProto, writer?: $protobuf.Writer): $protobuf.Writer;
             public static encodeDelimited(message: google.protobuf.IEnumDescriptorProto, writer?: $protobuf.Writer): $protobuf.Writer;
@@ -987,16 +987,16 @@ export namespace google {
         }
 
         interface IEnumValueDescriptorProto {
-            name?: (string|null);
-            number?: (number|null);
-            options?: (google.protobuf.IEnumValueOptions|null);
+            name?: string;
+            number?: number;
+            options?: google.protobuf.IEnumValueOptions;
         }
 
         class EnumValueDescriptorProto {
             constructor(properties?: google.protobuf.IEnumValueDescriptorProto);
             public name: string;
             public number: number;
-            public options?: (google.protobuf.IEnumValueOptions|null);
+            public options?: google.protobuf.IEnumValueOptions;
             public static create(properties?: google.protobuf.IEnumValueDescriptorProto): google.protobuf.EnumValueDescriptorProto;
             public static encode(message: google.protobuf.IEnumValueDescriptorProto, writer?: $protobuf.Writer): $protobuf.Writer;
             public static encodeDelimited(message: google.protobuf.IEnumValueDescriptorProto, writer?: $protobuf.Writer): $protobuf.Writer;
@@ -1009,16 +1009,16 @@ export namespace google {
         }
 
         interface IServiceDescriptorProto {
-            name?: (string|null);
-            method?: (google.protobuf.IMethodDescriptorProto[]|null);
-            options?: (google.protobuf.IServiceOptions|null);
+            name?: string;
+            method?: google.protobuf.IMethodDescriptorProto[];
+            options?: google.protobuf.IServiceOptions;
         }
 
         class ServiceDescriptorProto {
             constructor(properties?: google.protobuf.IServiceDescriptorProto);
             public name: string;
             public method: google.protobuf.IMethodDescriptorProto[];
-            public options?: (google.protobuf.IServiceOptions|null);
+            public options?: google.protobuf.IServiceOptions;
             public static create(properties?: google.protobuf.IServiceDescriptorProto): google.protobuf.ServiceDescriptorProto;
             public static encode(message: google.protobuf.IServiceDescriptorProto, writer?: $protobuf.Writer): $protobuf.Writer;
             public static encodeDelimited(message: google.protobuf.IServiceDescriptorProto, writer?: $protobuf.Writer): $protobuf.Writer;
@@ -1031,12 +1031,12 @@ export namespace google {
         }
 
         interface IMethodDescriptorProto {
-            name?: (string|null);
-            inputType?: (string|null);
-            outputType?: (string|null);
-            options?: (google.protobuf.IMethodOptions|null);
-            clientStreaming?: (boolean|null);
-            serverStreaming?: (boolean|null);
+            name?: string;
+            inputType?: string;
+            outputType?: string;
+            options?: google.protobuf.IMethodOptions;
+            clientStreaming?: boolean;
+            serverStreaming?: boolean;
         }
 
         class MethodDescriptorProto {
@@ -1044,7 +1044,7 @@ export namespace google {
             public name: string;
             public inputType: string;
             public outputType: string;
-            public options?: (google.protobuf.IMethodOptions|null);
+            public options?: google.protobuf.IMethodOptions;
             public clientStreaming: boolean;
             public serverStreaming: boolean;
             public static create(properties?: google.protobuf.IMethodDescriptorProto): google.protobuf.MethodDescriptorProto;
@@ -1059,21 +1059,21 @@ export namespace google {
         }
 
         interface IFileOptions {
-            javaPackage?: (string|null);
-            javaOuterClassname?: (string|null);
-            javaMultipleFiles?: (boolean|null);
-            javaGenerateEqualsAndHash?: (boolean|null);
-            javaStringCheckUtf8?: (boolean|null);
-            optimizeFor?: (google.protobuf.FileOptions.OptimizeMode|null);
-            goPackage?: (string|null);
-            ccGenericServices?: (boolean|null);
-            javaGenericServices?: (boolean|null);
-            pyGenericServices?: (boolean|null);
-            deprecated?: (boolean|null);
-            ccEnableArenas?: (boolean|null);
-            objcClassPrefix?: (string|null);
-            csharpNamespace?: (string|null);
-            uninterpretedOption?: (google.protobuf.IUninterpretedOption[]|null);
+            javaPackage?: string;
+            javaOuterClassname?: string;
+            javaMultipleFiles?: boolean;
+            javaGenerateEqualsAndHash?: boolean;
+            javaStringCheckUtf8?: boolean;
+            optimizeFor?: google.protobuf.FileOptions.OptimizeMode;
+            goPackage?: string;
+            ccGenericServices?: boolean;
+            javaGenericServices?: boolean;
+            pyGenericServices?: boolean;
+            deprecated?: boolean;
+            ccEnableArenas?: boolean;
+            objcClassPrefix?: string;
+            csharpNamespace?: string;
+            uninterpretedOption?: google.protobuf.IUninterpretedOption[];
         }
 
         class FileOptions {
@@ -1114,11 +1114,11 @@ export namespace google {
         }
 
         interface IMessageOptions {
-            messageSetWireFormat?: (boolean|null);
-            noStandardDescriptorAccessor?: (boolean|null);
-            deprecated?: (boolean|null);
-            mapEntry?: (boolean|null);
-            uninterpretedOption?: (google.protobuf.IUninterpretedOption[]|null);
+            messageSetWireFormat?: boolean;
+            noStandardDescriptorAccessor?: boolean;
+            deprecated?: boolean;
+            mapEntry?: boolean;
+            uninterpretedOption?: google.protobuf.IUninterpretedOption[];
         }
 
         class MessageOptions {
@@ -1140,13 +1140,13 @@ export namespace google {
         }
 
         interface IFieldOptions {
-            ctype?: (google.protobuf.FieldOptions.CType|null);
-            packed?: (boolean|null);
-            jstype?: (google.protobuf.FieldOptions.JSType|null);
-            lazy?: (boolean|null);
-            deprecated?: (boolean|null);
-            weak?: (boolean|null);
-            uninterpretedOption?: (google.protobuf.IUninterpretedOption[]|null);
+            ctype?: google.protobuf.FieldOptions.CType;
+            packed?: boolean;
+            jstype?: google.protobuf.FieldOptions.JSType;
+            lazy?: boolean;
+            deprecated?: boolean;
+            weak?: boolean;
+            uninterpretedOption?: google.protobuf.IUninterpretedOption[];
         }
 
         class FieldOptions {
@@ -1185,7 +1185,7 @@ export namespace google {
         }
 
         interface IOneofOptions {
-            uninterpretedOption?: (google.protobuf.IUninterpretedOption[]|null);
+            uninterpretedOption?: google.protobuf.IUninterpretedOption[];
         }
 
         class OneofOptions {
@@ -1203,10 +1203,10 @@ export namespace google {
         }
 
         interface IEnumOptions {
-            allowAlias?: (boolean|null);
-            deprecated?: (boolean|null);
-            uninterpretedOption?: (google.protobuf.IUninterpretedOption[]|null);
-            ".jspb.test.IsExtension.simpleOption"?: (string|null);
+            allowAlias?: boolean;
+            deprecated?: boolean;
+            uninterpretedOption?: google.protobuf.IUninterpretedOption[];
+            ".jspb.test.IsExtension.simpleOption"?: string;
         }
 
         class EnumOptions {
@@ -1226,8 +1226,8 @@ export namespace google {
         }
 
         interface IEnumValueOptions {
-            deprecated?: (boolean|null);
-            uninterpretedOption?: (google.protobuf.IUninterpretedOption[]|null);
+            deprecated?: boolean;
+            uninterpretedOption?: google.protobuf.IUninterpretedOption[];
         }
 
         class EnumValueOptions {
@@ -1246,8 +1246,8 @@ export namespace google {
         }
 
         interface IServiceOptions {
-            deprecated?: (boolean|null);
-            uninterpretedOption?: (google.protobuf.IUninterpretedOption[]|null);
+            deprecated?: boolean;
+            uninterpretedOption?: google.protobuf.IUninterpretedOption[];
         }
 
         class ServiceOptions {
@@ -1266,9 +1266,9 @@ export namespace google {
         }
 
         interface IMethodOptions {
-            deprecated?: (boolean|null);
-            idempotencyLevel?: (google.protobuf.MethodOptions.IdempotencyLevel|null);
-            uninterpretedOption?: (google.protobuf.IUninterpretedOption[]|null);
+            deprecated?: boolean;
+            idempotencyLevel?: google.protobuf.MethodOptions.IdempotencyLevel;
+            uninterpretedOption?: google.protobuf.IUninterpretedOption[];
         }
 
         class MethodOptions {
@@ -1297,13 +1297,13 @@ export namespace google {
         }
 
         interface IUninterpretedOption {
-            name?: (google.protobuf.UninterpretedOption.INamePart[]|null);
-            identifierValue?: (string|null);
-            positiveIntValue?: (number|Long|null);
-            negativeIntValue?: (number|Long|null);
-            doubleValue?: (number|null);
-            stringValue?: (Uint8Array|null);
-            aggregateValue?: (string|null);
+            name?: google.protobuf.UninterpretedOption.INamePart[];
+            identifierValue?: string;
+            positiveIntValue?: (number|Long);
+            negativeIntValue?: (number|Long);
+            doubleValue?: number;
+            stringValue?: Uint8Array;
+            aggregateValue?: string;
         }
 
         class UninterpretedOption {
@@ -1350,7 +1350,7 @@ export namespace google {
         }
 
         interface ISourceCodeInfo {
-            location?: (google.protobuf.SourceCodeInfo.ILocation[]|null);
+            location?: google.protobuf.SourceCodeInfo.ILocation[];
         }
 
         class SourceCodeInfo {
@@ -1370,11 +1370,11 @@ export namespace google {
         namespace SourceCodeInfo {
 
             interface ILocation {
-                path?: (number[]|null);
-                span?: (number[]|null);
-                leadingComments?: (string|null);
-                trailingComments?: (string|null);
-                leadingDetachedComments?: (string[]|null);
+                path?: number[];
+                span?: number[];
+                leadingComments?: string;
+                trailingComments?: string;
+                leadingDetachedComments?: string[];
             }
 
             class Location {
@@ -1397,7 +1397,7 @@ export namespace google {
         }
 
         interface IGeneratedCodeInfo {
-            annotation?: (google.protobuf.GeneratedCodeInfo.IAnnotation[]|null);
+            annotation?: google.protobuf.GeneratedCodeInfo.IAnnotation[];
         }
 
         class GeneratedCodeInfo {
@@ -1417,10 +1417,10 @@ export namespace google {
         namespace GeneratedCodeInfo {
 
             interface IAnnotation {
-                path?: (number[]|null);
-                sourceFile?: (string|null);
-                begin?: (number|null);
-                end?: (number|null);
+                path?: number[];
+                sourceFile?: string;
+                begin?: number;
+                end?: number;
             }
 
             class Annotation {

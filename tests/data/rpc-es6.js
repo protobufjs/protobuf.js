@@ -61,6 +61,7 @@ export const MyService = $root.MyService = (() => {
     MyService.prototype.myMethod = function myMethod(request, callback) {
         return this.rpcCall(myMethod, $root.MyRequest, $root.MyResponse, request, callback);
     };
+    MyService.prototype.myMethod.methodName = 'myMethod';
 
     /**
      * Calls MyMethod.
@@ -81,7 +82,7 @@ export const MyRequest = $root.MyRequest = (() => {
      * Properties of a MyRequest.
      * @exports IMyRequest
      * @interface IMyRequest
-     * @property {string|null} [path] MyRequest path
+     * @property {string} [path] MyRequest path
      */
 
     /**
@@ -100,7 +101,7 @@ export const MyRequest = $root.MyRequest = (() => {
 
     /**
      * MyRequest path.
-     * @member {string} path
+     * @member {string}path
      * @memberof MyRequest
      * @instance
      */
@@ -267,7 +268,7 @@ export const MyResponse = $root.MyResponse = (() => {
      * Properties of a MyResponse.
      * @exports IMyResponse
      * @interface IMyResponse
-     * @property {number|null} [status] MyResponse status
+     * @property {number} [status] MyResponse status
      */
 
     /**
@@ -286,7 +287,7 @@ export const MyResponse = $root.MyResponse = (() => {
 
     /**
      * MyResponse status.
-     * @member {number} status
+     * @member {number}status
      * @memberof MyResponse
      * @instance
      */
