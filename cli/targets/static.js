@@ -435,7 +435,7 @@ function buildType(ref, type) {
         push("");
         pushComment([
             oneof.comment || type.name + " " + oneof.name + ".",
-            "@member {string|undefined} " + escapeName(oneof.name),
+            "@member {" + oneof.oneof.map(JSON.stringify).join("|") + "|undefined} " + escapeName(oneof.name),
             "@memberof " + exportName(type),
             "@instance"
         ]);
