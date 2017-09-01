@@ -130,7 +130,7 @@ MessagePrototype.set = function(keyOrObj, value, noAssert) {
         var currentField = this[field.oneof.name]; // Virtual field references currently set field
         if (value !== null) {
             if (currentField !== null && currentField !== field.name)
-                this[currentField] = null; // Clear currently set field
+                this[currentField] = T._fieldsByName[currentField].defaultValue; // Clear currently set field
             this[field.oneof.name] = field.name; // Point virtual field at this field
         } else if (/* value === null && */currentField === keyOrObj)
             this[field.oneof.name] = null; // Clear virtual field (current field explicitly cleared)
