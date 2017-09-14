@@ -55,6 +55,9 @@ function load(filename, root, callback) {
 
 protobuf.load = load;
 
+// Configure base import paths for loading
+protobuf.configureOriginPaths = require("./configure_origin_paths");
+
 /**
  * Synchronously loads one or multiple .proto or preprocessed .json files into a common root namespace (node only).
  * @param {string|string[]} filename One or multiple files to load

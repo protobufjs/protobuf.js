@@ -1,0 +1,14 @@
+/**
+ * Test import from a different origin path
+ */
+
+syntax = "proto3";
+
+import "otherpath/othermessage.proto";
+
+/**
+ * Some Message
+ */
+message SomeMessage {
+    // Doesn't need any fields, we're testing to see if the import works
+}
