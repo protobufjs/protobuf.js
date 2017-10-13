@@ -78,3 +78,78 @@ wrappers[".google.protobuf.Any"] = {
         return this.toObject(message, options);
     }
 };
+
+// Custom wrapper for Struct
+wrappers[".google.protobuf.Struct"] = {
+
+    // given a plain javascript object, return a protobuf Struct object
+    fromObject: function(object) {
+        var Struct = this.lookup("google.protobuf.Struct");
+        var Value = this.lookup("google.protobuf.Value");
+
+        var toValue = function(v) {
+            var valueDef;
+            if (v === null) {
+                valueDef = {nullValue: 0};
+            } else if (typeof v === "number") {
+                valueDef = {numberValue: v};
+            } else if (typeof v === "string") {
+                valueDef = {stringValue: v};
+            } else if (typeof v === "boolean") {
+                valueDef = {boolValue: v};
+            } else if (Array.isArray(v)) {
+                valueDef = {listValue: {
+                    values: v.map(function(i) { return toValue(i); })
+                }};
+            } else if (typeof v === "object") {
+                valueDef = {structValue: toStruct(v)};
+            } else {
+                return valueDef = {nullValue: 0};
+            }
+            return Value.create(valueDef);
+        };
+
+        var toStruct = function(o) {
+            var structDef = {fields: {}};
+
+            Object.keys(o).forEach(function (k) {
+                structDef.fields[k] = toValue(o[k]);
+            });
+            return Struct.create(structDef);
+        };
+
+        return toStruct(object);
+    },
+
+    // given a protobuf Struct object, return a plain JS object
+    toObject: function(message, options) {
+        function fromValue(v) {
+            if (v.kind === "nullValue") {
+                v = null;
+            } else if (v.kind === "numberValue") {
+                v = v.numberValue;
+            } else if (v.kind === "stringValue") {
+                v = v.stringValue;
+            } else if (v.kind === "boolValue") {
+                v = v.boolValue;
+            } else if (v.kind === "structValue") {
+                v = fromStruct(v.structValue);
+            } else if (v.kind === "listValue") {
+                v = v.listValue.values.map(fromValue);
+            }
+            return v;
+        }
+
+        function fromStruct(struct) {
+            var object = {};
+            var fields = struct.fields;
+            Object.keys(fields).forEach(function (k) {
+                object[k] = fromValue(fields[k]);
+            });
+            return object;
+        }
+
+        return fromStruct(message);
+    }
+};
+
