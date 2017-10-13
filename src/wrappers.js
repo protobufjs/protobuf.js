@@ -79,6 +79,57 @@ wrappers[".google.protobuf.Any"] = {
     }
 };
 
+// Custom wrapper for Value
+wrappers[".google.protobuf.Value"] = {
+    // given a plain javascript scalar or object, return a protobuf Value
+    fromObject: function(object) {
+        var Struct = this.lookup("google.protobuf.Struct");
+        var Value = this.lookup("google.protobuf.Value");
+
+        var valueDef;
+        if (object === null) {
+            valueDef = {nullValue: 0};
+        } else if (typeof object === "number") {
+            valueDef = {numberValue: object};
+        } else if (typeof object === "string") {
+            valueDef = {stringValue: object};
+        } else if (typeof object === "boolean") {
+            valueDef = {boolValue: object};
+        } else if (Array.isArray(object)) {
+            valueDef = {listValue: {
+                values: object.map(function(i) { return Value.fromObject(i); })
+            }};
+        } else if (typeof object === "object") {
+            valueDef = {structValue: Struct.fromObject(object)};
+        } else {
+            return valueDef = {nullValue: 0};
+        }
+        return Value.create(valueDef);
+    },
+
+    toObject: function(message, options) {
+        var Struct = this.lookup("google.protobuf.Struct");
+        var Value = this.lookup("google.protobuf.Value");
+
+        var object;
+        if (message.kind === "nullValue") {
+            object = null;
+        } else if (message.kind === "numberValue") {
+            object = message.numberValue;
+        } else if (message.kind === "stringValue") {
+            object = message.stringValue;
+        } else if (message.kind === "boolValue") {
+            object = message.boolValue;
+        } else if (message.kind === "structValue") {
+            object = Struct.toObject(message.structValue);
+        } else if (message.kind === "listValue") {
+            object = message.listValue.values.map(Value.toObject.bind(Value));
+        }
+
+        return object;
+    }
+};
+
 // Custom wrapper for Struct
 wrappers[".google.protobuf.Struct"] = {
 
@@ -86,70 +137,23 @@ wrappers[".google.protobuf.Struct"] = {
     fromObject: function(object) {
         var Struct = this.lookup("google.protobuf.Struct");
         var Value = this.lookup("google.protobuf.Value");
+        var structDef = {fields: {}};
 
-        var toValue = function(v) {
-            var valueDef;
-            if (v === null) {
-                valueDef = {nullValue: 0};
-            } else if (typeof v === "number") {
-                valueDef = {numberValue: v};
-            } else if (typeof v === "string") {
-                valueDef = {stringValue: v};
-            } else if (typeof v === "boolean") {
-                valueDef = {boolValue: v};
-            } else if (Array.isArray(v)) {
-                valueDef = {listValue: {
-                    values: v.map(function(i) { return toValue(i); })
-                }};
-            } else if (typeof v === "object") {
-                valueDef = {structValue: toStruct(v)};
-            } else {
-                return valueDef = {nullValue: 0};
-            }
-            return Value.create(valueDef);
-        };
-
-        var toStruct = function(o) {
-            var structDef = {fields: {}};
-
-            Object.keys(o).forEach(function (k) {
-                structDef.fields[k] = toValue(o[k]);
-            });
-            return Struct.create(structDef);
-        };
-
-        return toStruct(object);
+        Object.keys(object).forEach(function (k) {
+            structDef.fields[k] = Value.fromObject(object[k]);
+        });
+        return Struct.create(structDef);
     },
 
     // given a protobuf Struct object, return a plain JS object
     toObject: function(message, options) {
-        function fromValue(v) {
-            if (v.kind === "nullValue") {
-                v = null;
-            } else if (v.kind === "numberValue") {
-                v = v.numberValue;
-            } else if (v.kind === "stringValue") {
-                v = v.stringValue;
-            } else if (v.kind === "boolValue") {
-                v = v.boolValue;
-            } else if (v.kind === "structValue") {
-                v = fromStruct(v.structValue);
-            } else if (v.kind === "listValue") {
-                v = v.listValue.values.map(fromValue);
-            }
-            return v;
-        }
+        var Value = this.lookup("google.protobuf.Value");
+        var object = {};
+        var fields = message.fields;
 
-        function fromStruct(struct) {
-            var object = {};
-            var fields = struct.fields;
-            Object.keys(fields).forEach(function (k) {
-                object[k] = fromValue(fields[k]);
-            });
-            return object;
-        }
-
-        return fromStruct(message);
+        Object.keys(fields).forEach(function (k) {
+            object[k] = Value.toObject(fields[k], options);
+        });
+        return object;
     }
 };
-

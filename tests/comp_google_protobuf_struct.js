@@ -21,8 +21,8 @@ var Struct = root.lookupType("protobuf.Struct"),
     Value = root.lookupType("protobuf.Value"),
     Foo = root.lookupType(".Foo");
 
-tape.test.only("google.protobuf.Struct", function(test) {
-    foo = Foo.fromObject({foo: {
+tape.test("google.protobuf.Struct", function(test) {
+    var foo = Foo.fromObject({foo: {
         a: null,
         b: 1,
         c: 'd',
