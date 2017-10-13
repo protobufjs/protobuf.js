@@ -17,15 +17,15 @@ var root = protobuf.Root.fromJSON({
     .addJSON(protobuf.common["google/protobuf/struct.proto"].nested)
     .resolveAll();
 
-var Struct = root.lookupType("protobuf.Struct"),
-    Value = root.lookupType("protobuf.Value"),
+var Value = root.lookupType("protobuf.Value"),
     Foo = root.lookupType(".Foo");
 
-tape.test("google.protobuf.Value", function(test) {
+tape.test.only("google.protobuf.Value", function(test) {
     // null
     var foo = Foo.fromObject({foo: null});
     test.ok(foo.foo instanceof Value.ctor, "foo should be Value");
-    test.same(foo.foo, {nullValue: 0});
+    test.same(foo.foo.kind, "nullValue");
+    test.same(foo.foo.nullValue, 0);
 
     var obj = Foo.toObject(foo);
     test.same(obj.foo, null);
@@ -33,7 +33,8 @@ tape.test("google.protobuf.Value", function(test) {
     // number
     foo = Foo.fromObject({foo: 1});
     test.ok(foo.foo instanceof Value.ctor, "foo should be Value");
-    test.same(foo.foo, {numberValue: 1});
+    test.same(foo.foo.kind, "numberValue");
+    test.same(foo.foo.numberValue, 1);
 
     obj = Foo.toObject(foo);
     test.same(obj.foo, 1);
@@ -41,7 +42,8 @@ tape.test("google.protobuf.Value", function(test) {
     // string
     foo = Foo.fromObject({foo: "a"});
     test.ok(foo.foo instanceof Value.ctor, "foo should be Value");
-    test.same(foo.foo, {stringValue: "a"});
+    test.same(foo.foo.kind, "stringValue");
+    test.same(foo.foo.stringValue, "a");
 
     obj = Foo.toObject(foo);
     test.same(obj.foo, "a");
@@ -49,7 +51,8 @@ tape.test("google.protobuf.Value", function(test) {
     // boolean
     foo = Foo.fromObject({foo: false});
     test.ok(foo.foo instanceof Value.ctor, "foo should be Value");
-    test.same(foo.foo, {boolValue: false});
+    test.same(foo.foo.kind, "boolValue");
+    test.same(foo.foo.boolValue, false);
 
     obj = Foo.toObject(foo);
     test.same(obj.foo, false);
@@ -57,8 +60,8 @@ tape.test("google.protobuf.Value", function(test) {
     // object
     foo = Foo.fromObject({foo: {a: 1}});
     test.ok(foo.foo instanceof Value.ctor, "foo should be Value");
-    test.ok(foo.foo.structValue instanceof Struct.ctor, "foo should contain Struct");
-    test.same(foo.foo, {structValue: {fields: {a: {numberValue: 1}}}});
+    test.same(foo.foo.kind, "structValue");
+    test.same(foo.foo.structValue, {fields: {a: {numberValue: 1}}});
 
     obj = Foo.toObject(foo);
     test.same(obj.foo, {a: 1});
@@ -66,7 +69,8 @@ tape.test("google.protobuf.Value", function(test) {
     // list
     foo = Foo.fromObject({foo: [null, 1, "a", true]});
     test.ok(foo.foo instanceof Value.ctor, "foo should be Value");
-    test.same(foo.foo, {listValue: {values: [{nullValue: 0}, {numberValue: 1}, {stringValue: "a"}, {boolValue: true}]}});
+    test.same(foo.foo.kind, "listValue");
+    test.same(foo.foo.listValue, {values: [{nullValue: 0}, {numberValue: 1}, {stringValue: "a"}, {boolValue: true}]});
 
     obj = Foo.toObject(foo);
     test.same(obj.foo, [null, 1, "a", true]);
