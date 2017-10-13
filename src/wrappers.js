@@ -107,7 +107,7 @@ wrappers[".google.protobuf.Value"] = {
         return Value.create(valueDef);
     },
 
-    toObject: function(message, options) {
+    toObject: function(message /*, options */) {
         var Struct = this.lookup("google.protobuf.Struct");
         var Value = this.lookup("google.protobuf.Value");
 
@@ -146,7 +146,7 @@ wrappers[".google.protobuf.Struct"] = {
     },
 
     // given a protobuf Struct object, return a plain JS object
-    toObject: function(message, options) {
+    toObject: function(message /*, options */) {
         var Value = this.lookup("google.protobuf.Value");
         var object = {};
         var fields = message.fields;
