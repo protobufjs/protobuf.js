@@ -78,3 +78,78 @@ wrappers[".google.protobuf.Any"] = {
         return this.toObject(message, options);
     }
 };
+
+wrappers['.google.protobuf.DoubleValue'] = {
+  fromObject: function (object) {
+    return this.create({value: object})
+  },
+  toObject: function (message, options) {
+    return this.toObject(message, options).value
+  }
+}
+wrappers['.google.protobuf.FloatValue'] = {
+  fromObject: function (object) {
+    return this.create({value: object})
+  },
+  toObject: function (message, options) {
+
+    return this.toObject(message, options).value
+  }
+}
+wrappers['.google.protobuf.Int64Value'] = {
+  fromObject: function (object) {
+    return this.create({value: object})
+  },
+  toObject: function (message, options) {
+    return this.toObject(message, options).value
+  }
+}
+wrappers['.google.protobuf.UInt64Value'] = {
+  fromObject: function (object) {
+    return this.create({value: object})
+  },
+  toObject: function (message, options) {
+    return this.toObject(message, options).value
+  }
+}
+wrappers['.google.protobuf.Int32Value'] = {
+  fromObject: function (object) {
+    return this.create({value: object})
+  },
+  toObject: function (message, options) {
+    return this.toObject(message, options).value
+  }
+}
+wrappers['.google.protobuf.UInt32Value'] = {
+  fromObject: function (object) {
+    return this.create({value: object})
+  },
+  toObject: function (message, options) {
+    return this.toObject(message, options).value
+  }
+}
+wrappers['.google.protobuf.BoolValue'] = {
+  fromObject: function (object) {
+    if (object === null) {
+      return
+    }
+    if (object !== false) {
+      return this.create({value: object})
+    }
+    return this.create()
+  },
+  toObject: function (message, options) {
+    if (message === null) {
+      return
+    }
+    return this.toObject(message, options).value || false
+  }
+}
+wrappers['.google.protobuf.StringValue'] = {
+  fromObject: function (object) {
+    return this.create({value: object})
+  },
+  toObject: function (message, options) {
+    return this.toObject(message, options).value
+  }
+}
