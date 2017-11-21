@@ -355,12 +355,15 @@ function toJsType(field) {
 }
 
 function buildType(ref, type) {
+    type.name = escapeName(type.name)
 
     if (config.comments) {
+        var interfaceName = escapeName("I" + type.name)
+
         var typeDef = [
             "Properties of " + aOrAn(type.name) + ".",
-            type.parent instanceof protobuf.Root ? "@exports " + escapeName("I" + type.name) : "@memberof " + exportName(type.parent),
-            "@interface " + escapeName("I" + type.name)
+            type.parent instanceof protobuf.Root ? "@exports " + interfaceName : "@memberof " + exportName(type.parent),
+            "@interface " + interfaceName
         ];
         type.fieldsArray.forEach(function(field) {
             var prop = util.safeProp(field.name);
