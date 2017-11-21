@@ -99,7 +99,7 @@ function exportName(object, asInterface) {
 
 function escapeNamespaceNames(ns) {
     if (ns.name) {
-        ns.name = ns.name
+        ns.name = escapeName(ns.name);
     }
 
     if (ns.nestedArray) {
@@ -397,6 +397,7 @@ function buildType(ref, type) {
         "@constructor",
         "@param {" + exportName(type, true) + "=} [" + (config.beautify ? "properties" : "p") + "] Properties to set"
     ]);
+
     buildFunction(type, type.name, Type.generateConstructor(type));
 
     // default values
