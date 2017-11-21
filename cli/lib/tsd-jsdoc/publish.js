@@ -296,7 +296,7 @@ function getTypeOf(element) {
 
     // Convert plain Object back to just object
     name = name.replace(/\bObject\b(?!\.)/g, "object");
-    
+
     return name;
 }
 
