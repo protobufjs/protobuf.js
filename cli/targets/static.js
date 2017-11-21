@@ -44,6 +44,9 @@ function static_target(root, options, callback) {
         }
         var rootProp = cliUtil.safeProp(config.root || "default");
         push((config.es6 ? "const" : "var") + " $root = $protobuf.roots" + rootProp + " || ($protobuf.roots" + rootProp + " = {});");
+
+        escapeNamespace(root);
+
         buildNamespace(null, root);
         return callback(null, out.join("\n"));
     } catch (err) {
@@ -54,7 +57,6 @@ function static_target(root, options, callback) {
         config = {};
     }
 }
-
 function push(line) {
     if (line === "")
         return out.push("");
@@ -95,6 +97,18 @@ function exportName(object, asInterface) {
     return object[asInterface ? "__interfaceName" : "__exportName"] = parts.join(".");
 }
 
+function escapeNamespace(ns) {
+    if(ns.name) {
+        ns.name = escapeName(ns.name)
+    }
+
+    if(ns.nestedArray){
+        ns.nestedArray.forEach(function(nested) {
+            escapeNamespace(nested);
+        })
+    }
+}
+
 function escapeName(name) {
     if (!name)
         return "$root";
@@ -121,9 +135,9 @@ function buildNamespace(ref, ns) {
 
     if (ns instanceof Type) {
         buildType(undefined, ns);
-    } else if (ns instanceof Service)
+    } else if (ns instanceof Service) {
         buildService(undefined, ns);
-    else if (ns.name !== "") {
+    } else if (ns.name !== "") {
         push("");
         pushComment([
             ns.comment || "Namespace " + ns.name + ".",
@@ -292,9 +306,9 @@ function buildFunction(type, functionName, gen, scope) {
     if (isCtor) // constructor
         push(lines[0]);
     else if (hasScope) // enclose in an iife
-        push(escapeName(type.name) + "." + escapeName(functionName) + " = (function(" + Object.keys(scope).map(escapeName).join(", ") + ") { return " + lines[0]);
+        push(type.name + "." + escapeName(functionName) + " = (function(" + Object.keys(scope).map(escapeName).join(", ") + ") { return " + lines[0]);
     else
-        push(escapeName(type.name) + "." + escapeName(functionName) + " = " + lines[0]);
+        push(type.name + "." + escapeName(functionName) + " = " + lines[0]);
     lines.slice(1, lines.length - 1).forEach(function(line) {
         var prev = indent;
         var i = 0;
@@ -355,15 +369,12 @@ function toJsType(field) {
 }
 
 function buildType(ref, type) {
-    type.name = escapeName(type.name)
 
     if (config.comments) {
-        var interfaceName = escapeName("I" + type.name)
-
         var typeDef = [
             "Properties of " + aOrAn(type.name) + ".",
-            type.parent instanceof protobuf.Root ? "@exports " + interfaceName : "@memberof " + exportName(type.parent),
-            "@interface " + interfaceName
+            type.parent instanceof protobuf.Root ? "@exports " + escapeName("I" + type.name) : "@memberof " + exportName(type.parent),
+            "@interface " + escapeName("I" + type.name)
         ];
         type.fieldsArray.forEach(function(field) {
             var prop = util.safeProp(field.name);
@@ -381,7 +392,7 @@ function buildType(ref, type) {
     push("");
     pushComment([
         "Constructs a new " + type.name + ".",
-        type.parent instanceof protobuf.Root ? "@exports " + escapeName(type.name) : "@memberof " + exportName(type.parent),
+        type.parent instanceof protobuf.Root ? "@exports " + type.name : "@memberof " + exportName(type.parent),
         "@classdesc " + (type.comment || "Represents " + aOrAn(type.name) + "."),
         "@constructor",
         "@param {" + exportName(type, true) + "=} [" + (config.beautify ? "properties" : "p") + "] Properties to set"
@@ -409,19 +420,19 @@ function buildType(ref, type) {
             firstField = false;
         }
         if (field.repeated)
-            push(escapeName(type.name) + ".prototype" + prop + " = $util.emptyArray;"); // overwritten in constructor
+            push(type.name + ".prototype" + prop + " = $util.emptyArray;"); // overwritten in constructor
         else if (field.map)
-            push(escapeName(type.name) + ".prototype" + prop + " = $util.emptyObject;"); // overwritten in constructor
+            push(type.name + ".prototype" + prop + " = $util.emptyObject;"); // overwritten in constructor
         else if (field.long)
-            push(escapeName(type.name) + ".prototype" + prop + " = $util.Long ? $util.Long.fromBits("
+            push(type.name + ".prototype" + prop + " = $util.Long ? $util.Long.fromBits("
                     + JSON.stringify(field.typeDefault.low) + ","
                     + JSON.stringify(field.typeDefault.high) + ","
                     + JSON.stringify(field.typeDefault.unsigned)
                 + ") : " + field.typeDefault.toNumber(field.type.charAt(0) === "u") + ";");
         else if (field.bytes) {
-            push(escapeName(type.name) + ".prototype" + prop + " = $util.newBuffer(" + JSON.stringify(Array.prototype.slice.call(field.typeDefault)) + ");");
+            push(type.name + ".prototype" + prop + " = $util.newBuffer(" + JSON.stringify(Array.prototype.slice.call(field.typeDefault)) + ");");
         } else
-            push(escapeName(type.name) + ".prototype" + prop + " = " + JSON.stringify(field.typeDefault) + ";");
+            push(type.name + ".prototype" + prop + " = " + JSON.stringify(field.typeDefault) + ";");
     });
 
     // virtual oneof fields
@@ -442,7 +453,7 @@ function buildType(ref, type) {
             "@memberof " + exportName(type),
             "@instance"
         ]);
-        push("Object.defineProperty(" + escapeName(type.name) + ".prototype, " + JSON.stringify(oneof.name) +", {");
+        push("Object.defineProperty(" + type.name + ".prototype, " + JSON.stringify(oneof.name) +", {");
         ++indent;
             push("get: $util.oneOfGetter($oneOfFields = [" + oneof.oneof.map(JSON.stringify).join(", ") + "]),");
             push("set: $util.oneOfSetter($oneOfFields)");
@@ -460,9 +471,9 @@ function buildType(ref, type) {
             "@param {" + exportName(type, true) + "=} [properties] Properties to set",
             "@returns {" + exportName(type) + "} " + type.name + " instance"
         ]);
-        push(escapeName(type.name) + ".create = function create(properties) {");
+        push(type.name + ".create = function create(properties) {");
             ++indent;
-            push("return new " + escapeName(type.name) + "(properties);");
+            push("return new " + type.name + "(properties);");
             --indent;
         push("};");
     }
@@ -491,7 +502,7 @@ function buildType(ref, type) {
                 "@param {$protobuf.Writer} [writer] Writer to encode to",
                 "@returns {$protobuf.Writer} Writer"
             ]);
-            push(escapeName(type.name) + ".encodeDelimited = function encodeDelimited(message, writer) {");
+            push(type.name + ".encodeDelimited = function encodeDelimited(message, writer) {");
             ++indent;
             push("return this.encode(message, writer).ldelim();");
             --indent;
@@ -526,7 +537,7 @@ function buildType(ref, type) {
                 "@throws {Error} If the payload is not a reader or valid buffer",
                 "@throws {$protobuf.util.ProtocolError} If required fields are missing"
             ]);
-            push(escapeName(type.name) + ".decodeDelimited = function decodeDelimited(reader) {");
+            push(type.name + ".decodeDelimited = function decodeDelimited(reader) {");
             ++indent;
                 push("if (!(reader instanceof $Reader))");
                 ++indent;
@@ -583,7 +594,7 @@ function buildType(ref, type) {
             "@instance",
             "@returns {Object.<string,*>} JSON object"
         ]);
-        push(escapeName(type.name) + ".prototype.toJSON = function toJSON() {");
+        push(type.name + ".prototype.toJSON = function toJSON() {");
         ++indent;
             push("return this.constructor.toObject(this, $protobuf.util.toJSONOptions);");
         --indent;
