@@ -99,7 +99,7 @@ function exportName(object, asInterface) {
 
 function escapeNamespaceNames(ns) {
     if (ns.name) {
-        ns.name = escapeName(ns.name)
+        ns.name = ns.name
     }
 
     if (ns.nestedArray) {
@@ -127,24 +127,24 @@ function buildNamespace(ref, ns) {
     if (ns.name !== "") {
         push("");
         if (!ref && config.es6)
-            push("export const " + escapeName(ns.name) + " = " + escapeName(ref) + "." + escapeName(ns.name) + " = (() => {");
+            push("export const " + ns.name + " = " + escapeName(ref) + "." + ns.name + " = (() => {");
         else
-            push(escapeName(ref) + "." + escapeName(ns.name) + " = (function() {");
+            push(escapeName(ref) + "." + ns.name + " = (function() {");
         ++indent;
     }
 
     if (ns instanceof Type) {
         buildType(undefined, ns);
-    } else if (ns instanceof Service) {
+    } else if (ns instanceof Service)
         buildService(undefined, ns);
-    } else if (ns.name !== "") {
+    else if (ns.name !== "") {
         push("");
         pushComment([
             ns.comment || "Namespace " + ns.name + ".",
-            ns.parent instanceof protobuf.Root ? "@exports " + escapeName(ns.name) : "@memberof " + exportName(ns.parent),
+            ns.parent instanceof protobuf.Root ? "@exports " + ns.name : "@memberof " + exportName(ns.parent),
             "@namespace"
         ]);
-        push((config.es6 ? "const" : "var") + " " + escapeName(ns.name) + " = {};");
+        push((config.es6 ? "const" : "var") + " " + ns.name + " = {};");
     }
 
     ns.nestedArray.forEach(function(nested) {
@@ -155,7 +155,7 @@ function buildNamespace(ref, ns) {
     });
     if (ns.name !== "") {
         push("");
-        push("return " + escapeName(ns.name) + ";");
+        push("return " + ns.name + ";");
         --indent;
         push("})();");
     }
@@ -411,7 +411,7 @@ function buildType(ref, type) {
                 jsType = jsType + "|null|undefined";
             pushComment([
                 field.comment || type.name + " " + field.name + ".",
-                "@member {" + jsType + "} " + escapeName(field.name),
+                "@member {" + jsType + "} " + field.name,
                 "@memberof " + exportName(type),
                 "@instance"
             ]);
@@ -449,7 +449,7 @@ function buildType(ref, type) {
         push("");
         pushComment([
             oneof.comment || type.name + " " + oneof.name + ".",
-            "@member {string|undefined} " + escapeName(oneof.name),
+            "@member {string|undefined} " + oneof.name,
             "@memberof " + exportName(type),
             "@instance"
         ]);
@@ -607,7 +607,7 @@ function buildService(ref, service) {
     push("");
     pushComment([
         "Constructs a new " + service.name + " service.",
-        service.parent instanceof protobuf.Root ? "@exports " + escapeName(service.name) : "@memberof " + exportName(service.parent),
+        service.parent instanceof protobuf.Root ? "@exports " + service.name : "@memberof " + exportName(service.parent),
         "@classdesc " + (service.comment || "Represents " + aOrAn(service.name)),
         "@extends $protobuf.rpc.Service",
         "@constructor",
@@ -615,13 +615,13 @@ function buildService(ref, service) {
         "@param {boolean} [requestDelimited=false] Whether requests are length-delimited",
         "@param {boolean} [responseDelimited=false] Whether responses are length-delimited"
     ]);
-    push("function " + escapeName(service.name) + "(rpcImpl, requestDelimited, responseDelimited) {");
+    push("function " + service.name + "(rpcImpl, requestDelimited, responseDelimited) {");
     ++indent;
     push("$protobuf.rpc.Service.call(this, rpcImpl, requestDelimited, responseDelimited);");
     --indent;
     push("}");
     push("");
-    push("(" + escapeName(service.name) + ".prototype = Object.create($protobuf.rpc.Service.prototype)).constructor = " + escapeName(service.name) + ";");
+    push("(" + service.name + ".prototype = Object.create($protobuf.rpc.Service.prototype)).constructor = " + service.name + ";");
 
     if (config.create) {
         push("");
@@ -633,9 +633,9 @@ function buildService(ref, service) {
             "@param {$protobuf.RPCImpl} rpcImpl RPC implementation",
             "@param {boolean} [requestDelimited=false] Whether requests are length-delimited",
             "@param {boolean} [responseDelimited=false] Whether responses are length-delimited",
-            "@returns {" + escapeName(service.name) + "} RPC service. Useful where requests and/or responses are streamed."
+            "@returns {" + service.name + "} RPC service. Useful where requests and/or responses are streamed."
         ]);
-        push(escapeName(service.name) + ".create = function create(rpcImpl, requestDelimited, responseDelimited) {");
+        push(service.name + ".create = function create(rpcImpl, requestDelimited, responseDelimited) {");
             ++indent;
             push("return new this(rpcImpl, requestDelimited, responseDelimited);");
             --indent;
@@ -667,7 +667,7 @@ function buildService(ref, service) {
             "@returns {undefined}",
             "@variation 1"
         ]);
-        push(escapeName(service.name) + ".prototype" + util.safeProp(lcName) + " = function " + escapeName(lcName) + "(request, callback) {");
+        push(service.name + ".prototype" + util.safeProp(lcName) + " = function " + escapeName(lcName) + "(request, callback) {");
             ++indent;
             push("return this.rpcCall(" + escapeName(lcName) + ", $root." + exportName(method.resolvedRequestType) + ", $root." + exportName(method.resolvedResponseType) + ", request, callback);");
             --indent;
@@ -691,7 +691,7 @@ function buildEnum(ref, enm) {
     push("");
     var comment = [
         enm.comment || enm.name + " enum.",
-        enm.parent instanceof protobuf.Root ? "@exports " + escapeName(enm.name) : undefined,
+        enm.parent instanceof protobuf.Root ? "@exports " + enm.name : undefined,
         config.forceEnumString ? "@enum {number}" : "@enum {string}",
     ];
     Object.keys(enm.values).forEach(function(key) {
@@ -699,7 +699,7 @@ function buildEnum(ref, enm) {
         comment.push((config.forceEnumString ? "@property {string} " : "@property {number} ") + key + "=" + val + " " + (enm.comments[key] || key + " value"));
     });
     pushComment(comment);
-    push(escapeName(ref) + "." + escapeName(enm.name) + " = (function() {");
+    push(escapeName(ref) + "." + enm.name + " = (function() {");
     ++indent;
         push((config.es6 ? "const" : "var") + " valuesById = {}, values = Object.create(valuesById);");
         var aliased = [];
