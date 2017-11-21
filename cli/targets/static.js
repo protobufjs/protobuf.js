@@ -45,7 +45,7 @@ function static_target(root, options, callback) {
         var rootProp = cliUtil.safeProp(config.root || "default");
         push((config.es6 ? "const" : "var") + " $root = $protobuf.roots" + rootProp + " || ($protobuf.roots" + rootProp + " = {});");
 
-        escapeNamespace(root);
+        escapeNamespaceNames(root);
 
         buildNamespace(null, root);
         return callback(null, out.join("\n"));
@@ -97,14 +97,14 @@ function exportName(object, asInterface) {
     return object[asInterface ? "__interfaceName" : "__exportName"] = parts.join(".");
 }
 
-function escapeNamespace(ns) {
-    if(ns.name) {
+function escapeNamespaceNames(ns) {
+    if (ns.name) {
         ns.name = escapeName(ns.name)
     }
 
-    if(ns.nestedArray){
-        ns.nestedArray.forEach(function(nested) {
-            escapeNamespace(nested);
+    if (ns.nestedArray) {
+        ns.nestedArray.forEach(function (nested) {
+            escapeNamespaceNames(nested);
         })
     }
 }
