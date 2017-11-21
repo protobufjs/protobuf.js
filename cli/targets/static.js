@@ -105,7 +105,7 @@ function escapeNamespaceNames(ns) {
     if (ns.nestedArray) {
         ns.nestedArray.forEach(function (nested) {
             escapeNamespaceNames(nested);
-        })
+        });
     }
 }
 
