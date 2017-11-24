@@ -96,21 +96,3 @@ function bundle(options) {
     .on("log", gutil.log)
     .on("error", gutil.log);
 }
-
-/**
- * Compresses a file using zopfli gzip.
- * @param {string} sourceFile Source file
- * @param {string} destinationFile Destination file
- * @param {function(?Error)} callback Node-style callback
- * @returns {undefined}
- */
-bundle.compress = function compress(sourceFile, destinationFile, callback) {
-    var src = fs.createReadStream(sourceFile);
-    var dst = fs.createWriteStream(destinationFile);
-    src.on("error", callback);
-    dst.on("error", callback);
-    dst.on("close", function() {
-        callback(null);
-    });
-    src.pipe(zopfli.createGzip()).pipe(dst);
-};
