@@ -16,8 +16,6 @@ var buffer     = require("vinyl-buffer");
 var vinylfs    = require("vinyl-fs");
 var source     = require("vinyl-source-stream");
 
-var zopfli     = require("node-zopfli");
-
 var pkg = require(path.join(__dirname, "..", "package.json"));
 
 /*eslint-disable no-template-curly-in-string*/

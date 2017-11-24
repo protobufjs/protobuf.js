@@ -129,8 +129,9 @@ exports.main = function(args, callback) {
                 throw err;
             }
 
-            if (ended) finish();
-            else closed = true;
+            if (ended) return finish();
+            closed = true;
+            return undefined;
         });
 
         function finish() {
