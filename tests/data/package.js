@@ -38,6 +38,7 @@ $root.Package = (function() {
      * Constructs a new Package.
      * @exports Package
      * @classdesc Represents a Package.
+     * @implements IPackage
      * @constructor
      * @param {IPackage=} [properties] Properties to set
      */
@@ -681,6 +682,7 @@ $root.Package = (function() {
          * Constructs a new Repository.
          * @memberof Package
          * @classdesc Represents a Repository.
+         * @implements IRepository
          * @constructor
          * @param {Package.IRepository=} [properties] Properties to set
          */

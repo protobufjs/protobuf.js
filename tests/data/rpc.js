@@ -90,6 +90,7 @@ $root.MyRequest = (function() {
      * Constructs a new MyRequest.
      * @exports MyRequest
      * @classdesc Represents a MyRequest.
+     * @implements IMyRequest
      * @constructor
      * @param {IMyRequest=} [properties] Properties to set
      */
@@ -276,6 +277,7 @@ $root.MyResponse = (function() {
      * Constructs a new MyResponse.
      * @exports MyResponse
      * @classdesc Represents a MyResponse.
+     * @implements IMyResponse
      * @constructor
      * @param {IMyResponse=} [properties] Properties to set
      */

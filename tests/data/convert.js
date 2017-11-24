@@ -30,6 +30,7 @@ $root.Message = (function() {
      * Constructs a new Message.
      * @exports Message
      * @classdesc Represents a Message.
+     * @implements IMessage
      * @constructor
      * @param {IMessage=} [properties] Properties to set
      */
@@ -543,6 +544,7 @@ $root.Message = (function() {
 
     /**
      * SomeEnum enum.
+     * @name Message.SomeEnum
      * @enum {string}
      * @property {number} ONE=1 ONE value
      * @property {number} TWO=2 TWO value

@@ -117,8 +117,8 @@
     "scripts/postinstall.js",
     "bin/**",
     "cli/**",
-    "ext/**",   
-    "google/**",    
+    "ext/**",
+    "google/**",
     "src/**"
   ]
 }

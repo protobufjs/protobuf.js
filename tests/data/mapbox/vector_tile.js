@@ -31,6 +31,7 @@ $root.vector_tile = (function() {
          * Constructs a new Tile.
          * @memberof vector_tile
          * @classdesc Represents a Tile.
+         * @implements ITile
          * @constructor
          * @param {vector_tile.ITile=} [properties] Properties to set
          */
@@ -224,6 +225,7 @@ $root.vector_tile = (function() {
 
         /**
          * GeomType enum.
+         * @name vector_tile.Tile.GeomType
          * @enum {string}
          * @property {number} UNKNOWN=0 UNKNOWN value
          * @property {number} POINT=1 POINT value
@@ -258,6 +260,7 @@ $root.vector_tile = (function() {
              * Constructs a new Value.
              * @memberof vector_tile.Tile
              * @classdesc Represents a Value.
+             * @implements IValue
              * @constructor
              * @param {vector_tile.Tile.IValue=} [properties] Properties to set
              */
@@ -616,6 +619,7 @@ $root.vector_tile = (function() {
              * Constructs a new Feature.
              * @memberof vector_tile.Tile
              * @classdesc Represents a Feature.
+             * @implements IFeature
              * @constructor
              * @param {vector_tile.Tile.IFeature=} [properties] Properties to set
              */
@@ -958,6 +962,7 @@ $root.vector_tile = (function() {
              * Constructs a new Layer.
              * @memberof vector_tile.Tile
              * @classdesc Represents a Layer.
+             * @implements ILayer
              * @constructor
              * @param {vector_tile.Tile.ILayer=} [properties] Properties to set
              */
@@ -1177,7 +1182,7 @@ $root.vector_tile = (function() {
                     if (!Array.isArray(message.values))
                         return "values: array expected";
                     for (var i = 0; i < message.values.length; ++i) {
-                        error = $root.vector_tile.Tile.Value.verify(message.values[i]);
+                        var error = $root.vector_tile.Tile.Value.verify(message.values[i]);
                         if (error)
                             return "values." + error;
                     }

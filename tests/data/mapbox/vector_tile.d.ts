@@ -6,7 +6,7 @@ export namespace vector_tile {
         layers?: (vector_tile.Tile.ILayer[]|null);
     }
 
-    class Tile {
+    class Tile implements ITile {
         constructor(properties?: vector_tile.ITile);
         public layers: vector_tile.Tile.ILayer[];
         public static create(properties?: vector_tile.ITile): vector_tile.Tile;
@@ -39,7 +39,7 @@ export namespace vector_tile {
             boolValue?: (boolean|null);
         }
 
-        class Value {
+        class Value implements IValue {
             constructor(properties?: vector_tile.Tile.IValue);
             public stringValue: string;
             public floatValue: number;
@@ -66,7 +66,7 @@ export namespace vector_tile {
             geometry?: (number[]|null);
         }
 
-        class Feature {
+        class Feature implements IFeature {
             constructor(properties?: vector_tile.Tile.IFeature);
             public id: (number|Long);
             public tags: number[];
@@ -92,7 +92,7 @@ export namespace vector_tile {
             extent?: (number|null);
         }
 
-        class Layer {
+        class Layer implements ILayer {
             constructor(properties?: vector_tile.Tile.ILayer);
             public version: number;
             public name: string;
