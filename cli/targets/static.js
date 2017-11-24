@@ -677,7 +677,7 @@ function buildEnum(ref, enm) {
     push("");
     var comment = [
         enm.comment || enm.name + " enum.",
-        enm.parent instanceof protobuf.Root ? "@exports " + escapeName(enm.name) : undefined,
+        enm.parent instanceof protobuf.Root ? "@exports " + escapeName(enm.name) :  "@memberof " + exportName(enm.parent),
         config.forceEnumString ? "@enum {number}" : "@enum {string}",
     ];
     Object.keys(enm.values).forEach(function(key) {
