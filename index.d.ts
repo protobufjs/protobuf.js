@@ -950,6 +950,14 @@ export interface IOneOf {
  */
 type OneOfDecorator = (prototype: object, oneofName: string) => void;
 
+/**
+ * Parses the given .proto source and returns an object with the parsed contents.
+ * @param source Source contents
+ * @param [options] Parse options. Defaults to {@link parse.defaults} when omitted.
+ * @returns Parser result
+ */
+export function parse(source: string, options?: IParseOptions): IParserResult;
+
 /** Result object returned from {@link parse}. */
 export interface IParserResult {
 
@@ -984,14 +992,6 @@ export interface IParseOptions {
  * @returns Parser result
  */
 export function parse(source: string, root: Root, options?: IParseOptions): IParserResult;
-
-/**
- * Parses the given .proto source and returns an object with the parsed contents.
- * @param source Source contents
- * @param [options] Parse options. Defaults to {@link parse.defaults} when omitted.
- * @returns Parser result
- */
-export function parse(source: string, options?: IParseOptions): IParserResult;
 
 /** Wire format reader using `Uint8Array` if available, otherwise `Array`. */
 export class Reader {
@@ -1132,9 +1132,6 @@ export class BufferReader extends Reader {
      * @param buffer Buffer to read from
      */
     constructor(buffer: Buffer);
-
-    /** Read buffer. */
-    public buf: Buffer;
 
     /**
      * Reads a sequence of bytes preceeded by its length as a varint.
@@ -2548,17 +2545,17 @@ export class BufferWriter extends Writer {
     constructor();
 
     /**
+     * Finishes the write operation.
+     * @returns Finished buffer
+     */
+    public finish(): Buffer;
+
+    /**
      * Allocates a buffer of the specified size.
      * @param size Buffer size
      * @returns Buffer
      */
     public static alloc(size: number): Buffer;
-
-    /**
-     * Finishes the write operation.
-     * @returns Finished buffer
-     */
-    public finish(): Buffer;
 }
 
 /**

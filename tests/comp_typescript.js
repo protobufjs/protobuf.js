@@ -42,7 +42,7 @@ var root = __1.Root.fromJSON({
 var HelloReflected = root.lookupType("Hello");
 HelloReflected.create({ value: "hi" });
 // Custom classes
-var Hello = (function (_super) {
+var Hello = /** @class */ (function (_super) {
     __extends(Hello, _super);
     function Hello() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -66,56 +66,56 @@ var AwesomeEnum;
     AwesomeEnum[AwesomeEnum["ONE"] = 1] = "ONE";
     AwesomeEnum[AwesomeEnum["TWO"] = 2] = "TWO";
 })(AwesomeEnum = exports.AwesomeEnum || (exports.AwesomeEnum = {}));
-var AwesomeSubMessage = (function (_super) {
+var AwesomeSubMessage = /** @class */ (function (_super) {
     __extends(AwesomeSubMessage, _super);
     function AwesomeSubMessage() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
+    __decorate([
+        __1.Field.d(1, "string"),
+        __metadata("design:type", String)
+    ], AwesomeSubMessage.prototype, "awesomeString");
+    __decorate([
+        __1.MapField.d(2, "string", "string"),
+        __metadata("design:type", Object)
+    ], AwesomeSubMessage.prototype, "awesomeMapString");
+    __decorate([
+        __1.MapField.d(3, "string", AwesomeEnum),
+        __metadata("design:type", Object)
+    ], AwesomeSubMessage.prototype, "awesomeMapEnum");
+    __decorate([
+        __1.MapField.d(4, "string", AwesomeSubMessage),
+        __metadata("design:type", Object)
+    ], AwesomeSubMessage.prototype, "awesomeMapMessage");
     return AwesomeSubMessage;
 }(__1.Message));
-__decorate([
-    __1.Field.d(1, "string"),
-    __metadata("design:type", String)
-], AwesomeSubMessage.prototype, "awesomeString");
-__decorate([
-    __1.MapField.d(2, "string", "string"),
-    __metadata("design:type", Object)
-], AwesomeSubMessage.prototype, "awesomeMapString");
-__decorate([
-    __1.MapField.d(3, "string", AwesomeEnum),
-    __metadata("design:type", Object)
-], AwesomeSubMessage.prototype, "awesomeMapEnum");
-__decorate([
-    __1.MapField.d(4, "string", AwesomeSubMessage),
-    __metadata("design:type", Object)
-], AwesomeSubMessage.prototype, "awesomeMapMessage");
 exports.AwesomeSubMessage = AwesomeSubMessage;
-var AwesomeMessage = (function (_super) {
+var AwesomeMessage = /** @class */ (function (_super) {
     __extends(AwesomeMessage, _super);
     function AwesomeMessage() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
+    __decorate([
+        __1.Field.d(1, "string", "optional", "awesome default string"),
+        __metadata("design:type", String)
+    ], AwesomeMessage.prototype, "awesomeField");
+    __decorate([
+        __1.Field.d(2, AwesomeSubMessage),
+        __metadata("design:type", AwesomeSubMessage)
+    ], AwesomeMessage.prototype, "awesomeSubMessage");
+    __decorate([
+        __1.Field.d(3, AwesomeEnum, "optional", AwesomeEnum.ONE),
+        __metadata("design:type", Number)
+    ], AwesomeMessage.prototype, "awesomeEnum");
+    __decorate([
+        __1.OneOf.d("awesomeSubMessage", "awesomeEnum"),
+        __metadata("design:type", String)
+    ], AwesomeMessage.prototype, "which");
+    AwesomeMessage = __decorate([
+        __1.Type.d("SuperAwesomeMessage")
+    ], AwesomeMessage);
     return AwesomeMessage;
 }(__1.Message));
-__decorate([
-    __1.Field.d(1, "string", "optional", "awesome default string"),
-    __metadata("design:type", String)
-], AwesomeMessage.prototype, "awesomeField");
-__decorate([
-    __1.Field.d(2, AwesomeSubMessage),
-    __metadata("design:type", AwesomeSubMessage)
-], AwesomeMessage.prototype, "awesomeSubMessage");
-__decorate([
-    __1.Field.d(3, AwesomeEnum, "optional", AwesomeEnum.ONE),
-    __metadata("design:type", Number)
-], AwesomeMessage.prototype, "awesomeEnum");
-__decorate([
-    __1.OneOf.d("awesomeSubMessage", "awesomeEnum"),
-    __metadata("design:type", String)
-], AwesomeMessage.prototype, "which");
-AwesomeMessage = __decorate([
-    __1.Type.d("SuperAwesomeMessage")
-], AwesomeMessage);
 exports.AwesomeMessage = AwesomeMessage;
 var awesomeMessage = new AwesomeMessage({ awesomeField: "hi" });
 var awesomeBuffer = AwesomeMessage.encode(awesomeMessage).finish();
