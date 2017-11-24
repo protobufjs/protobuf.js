@@ -104,5 +104,21 @@
     "espree",
     "escodegen",
     "estraverse"
+  ],
+  "files": [
+    "index.js",
+    "index.d.ts",
+    "light.d.ts",
+    "light.js",
+    "minimal.d.ts",
+    "minimal.js",
+    "package-lock.json",
+    "tsconfig.json",
+    "scripts/postinstall.js",
+    "bin/**",
+    "cli/**",
+    "ext/**",   
+    "google/**",    
+    "src/**"
   ]
 }
