@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.8.1 (c) 2016, daniel wirtz
- * compiled fri, 24 nov 2017 17:49:39 utc
+ * compiled fri, 24 nov 2017 22:32:02 utc
  * licensed under the bsd-3-clause license
  * see: https://github.com/dcodeio/protobuf.js for details
  */
@@ -7887,8 +7887,9 @@ wrappers[".google.protobuf.Any"] = {
                 // type_url does not accept leading "."
                 var type_url = object["@type"].charAt(0) === "." ?
                     object["@type"].substr(1) : object["@type"];
+                // type_url prefix is optional, but path seperator is required
                 return this.create({
-                    type_url: type_url,
+                    type_url: "/" + type_url,
                     value: type.encode(type.fromObject(object)).finish()
                 });
             }
@@ -7901,7 +7902,9 @@ wrappers[".google.protobuf.Any"] = {
 
         // decode value if requested and unmapped
         if (options && options.json && message.type_url && message.value) {
-            var type = this.lookup(message.type_url);
+            // Only use fully qualified type name after the last '/'
+            var name = message.type_url.substring(message.type_url.lastIndexOf("/") + 1);
+            var type = this.lookup(name);
             /* istanbul ignore else */
             if (type)
                 message = type.decode(message.value);
