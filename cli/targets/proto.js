@@ -238,6 +238,8 @@ function buildFieldOptions(field) {
                     return;
                 break;
             case "default":
+                if (syntax === 3)
+                    return;
                 // skip default (resolved) default values
                 if (field.long && !util.longNeq(field.defaultValue, types.defaults[field.type]) || !field.long && field.defaultValue === types.defaults[field.type])
                     return;
