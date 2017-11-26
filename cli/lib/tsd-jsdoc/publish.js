@@ -259,7 +259,7 @@ function getChildrenOf(parent) {
 // gets the literal type of an element
 function getTypeOf(element) {
     if (element.tsType)
-        return element.tsType;
+        return element.tsType.replace(/\r?\n|\r/g, "\n");
     var name = "any";
     var type = element.type;
     if (type && type.names && type.names.length) {
@@ -388,7 +388,7 @@ function writeInterfaceBody(element) {
     writeln("{");
     ++indent;
     if (element.tsType)
-        writeln(element.tsType);
+        writeln(element.tsType.replace(/\r?\n|\r/g, "\n"));
     else if (element.properties && element.properties.length)
         element.properties.forEach(writeProperty);
     --indent;
@@ -529,7 +529,7 @@ function handleClass(element, parent) {
     ++indent;
 
     if (element.tsType)
-        writeln(element.tsType);
+        writeln(element.tsType.replace(/\r?\n|\r/g, "\n"));
 
     // constructor
     if (!is_interface && !element.virtual)
@@ -675,7 +675,7 @@ function handleTypeDef(element, parent) {
             write("<", element.templates.join(", "), ">");
         write(" = ");
         if (element.tsType)
-            write(element.tsType);
+            write(element.tsType.replace(/\r?\n|\r/g, "\n"));
         else {
             var type = getTypeOf(element);
             if (element.type && element.type.names.length === 1 && element.type.names[0] === "function")
