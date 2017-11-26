@@ -2,7 +2,6 @@
 module.exports = static_target;
 
 var protobuf   = require("../.."),
-    cliUtil    = require("../util"),
     UglifyJS   = require("uglify-js"),
     espree     = require("espree"),
     escodegen  = require("escodegen"),
@@ -42,7 +41,7 @@ function static_target(root, options, callback) {
             }
             push("// Exported root namespace");
         }
-        var rootProp = cliUtil.safeProp(config.root || "default");
+        var rootProp = util.safeProp(config.root || "default");
         push((config.es6 ? "const" : "var") + " $root = $protobuf.roots" + rootProp + " || ($protobuf.roots" + rootProp + " = {});");
         buildNamespace(null, root);
         return callback(null, out.join("\n"));
@@ -98,7 +97,7 @@ function exportName(object, asInterface) {
 function escapeName(name) {
     if (!name)
         return "$root";
-    return cliUtil.reserved(name) ? name + "_" : name;
+    return util.isReserved(name) ? name + "_" : name;
 }
 
 function aOrAn(name) {
@@ -363,7 +362,7 @@ function buildType(ref, type) {
             "@interface " + escapeName("I" + type.name)
         ];
         type.fieldsArray.forEach(function(field) {
-            var prop = util.safeProp(field.name);
+            var prop = util.safeProp(field.name); // either .name or ["name"]
             prop = prop.substring(1, prop.charAt(0) === "[" ? prop.length - 1 : prop.length);
             var jsType = toJsType(field);
             if (field.optional)
@@ -398,7 +397,7 @@ function buildType(ref, type) {
                 jsType = jsType + "|null|undefined";
             pushComment([
                 field.comment || type.name + " " + field.name + ".",
-                "@member {" + jsType + "} " + escapeName(field.name),
+                "@member {" + jsType + "} " + field.name,
                 "@memberof " + exportName(type),
                 "@instance"
             ]);

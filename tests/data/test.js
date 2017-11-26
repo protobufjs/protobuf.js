@@ -913,7 +913,7 @@ $root.jspb = (function() {
 
             /**
              * SpecialCases default.
-             * @member {string} default_
+             * @member {string} default
              * @memberof jspb.test.SpecialCases
              * @instance
              */
@@ -921,7 +921,7 @@ $root.jspb = (function() {
 
             /**
              * SpecialCases function.
-             * @member {string} function_
+             * @member {string} function
              * @memberof jspb.test.SpecialCases
              * @instance
              */
@@ -929,7 +929,7 @@ $root.jspb = (function() {
 
             /**
              * SpecialCases var.
-             * @member {string} var_
+             * @member {string} var
              * @memberof jspb.test.SpecialCases
              * @instance
              */
@@ -6142,7 +6142,7 @@ $root.jspb = (function() {
 
             /**
              * TestMessageWithOneof partialOneof.
-             * @member {string|undefined} partialOneof
+             * @member {"pone"|"pthree"|undefined} partialOneof
              * @memberof jspb.test.TestMessageWithOneof
              * @instance
              */
@@ -6153,7 +6153,7 @@ $root.jspb = (function() {
 
             /**
              * TestMessageWithOneof recursiveOneof.
-             * @member {string|undefined} recursiveOneof
+             * @member {"rone"|"rtwo"|undefined} recursiveOneof
              * @memberof jspb.test.TestMessageWithOneof
              * @instance
              */
@@ -6164,7 +6164,7 @@ $root.jspb = (function() {
 
             /**
              * TestMessageWithOneof defaultOneofA.
-             * @member {string|undefined} defaultOneofA
+             * @member {"aone"|"atwo"|undefined} defaultOneofA
              * @memberof jspb.test.TestMessageWithOneof
              * @instance
              */
@@ -6175,7 +6175,7 @@ $root.jspb = (function() {
 
             /**
              * TestMessageWithOneof defaultOneofB.
-             * @member {string|undefined} defaultOneofB
+             * @member {"bone"|"btwo"|undefined} defaultOneofB
              * @memberof jspb.test.TestMessageWithOneof
              * @instance
              */
@@ -8435,7 +8435,7 @@ $root.google = (function() {
 
             /**
              * FileDescriptorProto package.
-             * @member {string} package_
+             * @member {string} package
              * @memberof google.protobuf.FileDescriptorProto
              * @instance
              */

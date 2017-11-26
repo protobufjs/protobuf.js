@@ -181,21 +181,6 @@ exports.pad = function(str, len, l) {
     return str;
 };
 
-exports.reserved = function reserved(name) {
-    return /^(?:do|if|in|for|let|new|try|var|case|else|enum|eval|false|null|this|true|void|with|break|catch|class|const|super|throw|while|yield|delete|export|import|public|return|static|switch|typeof|default|extends|finally|package|private|continue|debugger|function|arguments|interface|protected|implements|instanceof)$/.test(name);
-};
-
-// generate dot-notation property accessors where possible. this saves a few chars (i.e. m.hello
-// instead of m["hello"]) but has no measurable performance impact (on V8). not present within the
-// library itself because the reserved words check requires a rather longish regex.
-exports.safeProp = protobuf.util.safeProp = (function(safeProp) {
-    return function safeProp_dn(name) {
-        return !/^[$\w]+$/.test(name) || exports.reserved(name)
-            ? safeProp(name)
-            : "." + name;
-    };
-})(protobuf.util.safeProp);
-
 exports.jsonSafeProp = function(json) {
     return json.replace(/^( +)"(\w+)":/mg, function($0, $1, $2) {
         return exports.safeProp($2).charAt(0) === "."

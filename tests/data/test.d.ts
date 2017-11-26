@@ -95,9 +95,9 @@ export namespace jspb {
         class SpecialCases implements ISpecialCases {
             constructor(properties?: jspb.test.ISpecialCases);
             public normal: string;
-            public default_: string;
-            public function_: string;
-            public var_: string;
+            public default: string;
+            public function: string;
+            public var: string;
             public static create(properties?: jspb.test.ISpecialCases): jspb.test.SpecialCases;
             public static encode(message: jspb.test.ISpecialCases, writer?: $protobuf.Writer): $protobuf.Writer;
             public static encodeDelimited(message: jspb.test.ISpecialCases, writer?: $protobuf.Writer): $protobuf.Writer;
@@ -580,10 +580,10 @@ export namespace jspb {
             public atwo: number;
             public bone: number;
             public btwo: number;
-            public partialOneof?: string;
-            public recursiveOneof?: string;
-            public defaultOneofA?: string;
-            public defaultOneofB?: string;
+            public partialOneof?: ("pone"|"pthree");
+            public recursiveOneof?: ("rone"|"rtwo");
+            public defaultOneofA?: ("aone"|"atwo");
+            public defaultOneofB?: ("bone"|"btwo");
             public static create(properties?: jspb.test.ITestMessageWithOneof): jspb.test.TestMessageWithOneof;
             public static encode(message: jspb.test.ITestMessageWithOneof, writer?: $protobuf.Writer): $protobuf.Writer;
             public static encodeDelimited(message: jspb.test.ITestMessageWithOneof, writer?: $protobuf.Writer): $protobuf.Writer;
@@ -777,7 +777,7 @@ export namespace google {
         class FileDescriptorProto implements IFileDescriptorProto {
             constructor(properties?: google.protobuf.IFileDescriptorProto);
             public name: string;
-            public package_: string;
+            public package: string;
             public dependency: string[];
             public publicDependency: number[];
             public weakDependency: number[];

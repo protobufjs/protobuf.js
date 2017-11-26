@@ -1,9 +1,5 @@
 "use strict";
-// uncomment for browser only / non long.js versions
-/*
-/// <reference path="../stub-long.d.ts" />
-/// <reference path="../stub-node.d.ts" />
-*/
+// test currently consists only of not throwing
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -120,4 +116,3 @@ exports.AwesomeMessage = AwesomeMessage;
 var awesomeMessage = new AwesomeMessage({ awesomeField: "hi" });
 var awesomeBuffer = AwesomeMessage.encode(awesomeMessage).finish();
 var awesomeDecoded = AwesomeMessage.decode(awesomeBuffer);
-// test currently consists only of not throwing

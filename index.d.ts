@@ -2027,7 +2027,14 @@ export namespace util {
     function toObject(array: any[]): { [k: string]: any };
 
     /**
-     * Returns a safe property accessor for the specified properly name.
+     * Tests whether the specified name is a reserved word in JS.
+     * @param name Name to test
+     * @returns `true` if reserved, otherwise `false`
+     */
+    function isReserved(name: string): boolean;
+
+    /**
+     * Returns a safe property accessor for the specified property name.
      * @param prop Property name
      * @returns Safe accessor
      */
