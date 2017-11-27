@@ -555,7 +555,10 @@ function parse(source, root, options) {
                     parseOptionValue(parent, name + "." + token);
                 else {
                     skip(":");
-                    setOption(parent, name + "." + token, readValue(true));
+                    if (peek() === "{")
+                        parseOptionValue(parent, name + "." + token);
+                    else
+                        setOption(parent, name + "." + token, readValue(true));
                 }
             } while (!skip("}", true));
         } else
