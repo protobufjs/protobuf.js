@@ -1,25 +1,16 @@
+dist: trusty
 language: node_js
 node_js:
   - 0.12
   - 4
   - 4.3.2
   - 6
-  - 7
+  - 8
 branches:
   only: master
 script: npm test && npm run bench
 
-env: CXX=g++-4.8
-addons:
-  apt:
-    sources: ubuntu-toolchain-r-test
-    packages: g++-4.8
-  code_climate:
-    repo_token: 20d88c0ad0ae53be53f48ef57cfec8ff6d8fc86381f742b50747335f3cebdc69
-
 matrix:
   include:
-  - node_js: 6
-    script: set -e; if [ -n "$SAUCE_USERNAME" ]; then npm install zuul@^3.11.1 zuul-ngrok@^4.0.0; travis_wait npm run zuul; sleep 3; fi
-  - node_js: 6
-    script: npm install codeclimate-test-reporter@^0.4.1; npm run coverage-ci
+  - node_js: 8
+    script: set -e; if [ -n "$CODECLIMATE_REPO_TOKEN" ]; then npm run coverage-ci; fi

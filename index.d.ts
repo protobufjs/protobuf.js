@@ -167,6 +167,9 @@ export class Enum extends ReflectionObject {
     /** Value comment texts, if any. */
     public comments: { [k: string]: string };
 
+    /** Reserved ranges, if any. */
+    public reserved: (number[]|string)[];
+
     /**
      * Constructs an enum from an enum descriptor.
      * @param name Enum name
@@ -201,6 +204,20 @@ export class Enum extends ReflectionObject {
      * @throws {Error} If `name` is not a name of this enum
      */
     public remove(name: string): Enum;
+
+    /**
+     * Tests if the specified id is reserved.
+     * @param id Id to test
+     * @returns `true` if reserved, otherwise `false`
+     */
+    public isReservedId(id: number): boolean;
+
+    /**
+     * Tests if the specified name is reserved.
+     * @param name Name to test
+     * @returns `true` if reserved, otherwise `false`
+     */
+    public isReservedName(name: string): boolean;
 }
 
 /** Enum descriptor. */
@@ -655,6 +672,22 @@ export class Namespace extends NamespaceBase {
      * @returns JSON object or `undefined` when array is empty
      */
     public static arrayToJSON(array: ReflectionObject[]): ({ [k: string]: any }|undefined);
+
+    /**
+     * Tests if the specified id is reserved.
+     * @param reserved Array of reserved ranges and names
+     * @param id Id to test
+     * @returns `true` if reserved, otherwise `false`
+     */
+    public static isReservedId(reserved: ((number[]|string)[]|undefined), id: number): boolean;
+
+    /**
+     * Tests if the specified name is reserved.
+     * @param reserved Array of reserved ranges and names
+     * @param name Name to test
+     * @returns `true` if reserved, otherwise `false`
+     */
+    public static isReservedName(reserved: ((number[]|string)[]|undefined), name: string): boolean;
 }
 
 /** Base class of all reflection objects containing nested objects. This is not an actual class but here for the sake of having consistent type definitions. */
@@ -950,6 +983,14 @@ export interface IOneOf {
  */
 type OneOfDecorator = (prototype: object, oneofName: string) => void;
 
+/**
+ * Parses the given .proto source and returns an object with the parsed contents.
+ * @param source Source contents
+ * @param [options] Parse options. Defaults to {@link parse.defaults} when omitted.
+ * @returns Parser result
+ */
+export function parse(source: string, options?: IParseOptions): IParserResult;
+
 /** Result object returned from {@link parse}. */
 export interface IParserResult {
 
@@ -984,14 +1025,6 @@ export interface IParseOptions {
  * @returns Parser result
  */
 export function parse(source: string, root: Root, options?: IParseOptions): IParserResult;
-
-/**
- * Parses the given .proto source and returns an object with the parsed contents.
- * @param source Source contents
- * @param [options] Parse options. Defaults to {@link parse.defaults} when omitted.
- * @returns Parser result
- */
-export function parse(source: string, options?: IParseOptions): IParserResult;
 
 /** Wire format reader using `Uint8Array` if available, otherwise `Array`. */
 export class Reader {
@@ -1132,9 +1165,6 @@ export class BufferReader extends Reader {
      * @param buffer Buffer to read from
      */
     constructor(buffer: Buffer);
-
-    /** Read buffer. */
-    public buf: Buffer;
 
     /**
      * Reads a sequence of bytes preceeded by its length as a varint.
@@ -2030,7 +2060,14 @@ export namespace util {
     function toObject(array: any[]): { [k: string]: any };
 
     /**
-     * Returns a safe property accessor for the specified properly name.
+     * Tests whether the specified name is a reserved word in JS.
+     * @param name Name to test
+     * @returns `true` if reserved, otherwise `false`
+     */
+    function isReserved(name: string): boolean;
+
+    /**
+     * Returns a safe property accessor for the specified property name.
      * @param prop Property name
      * @returns Safe accessor
      */
@@ -2548,17 +2585,17 @@ export class BufferWriter extends Writer {
     constructor();
 
     /**
+     * Finishes the write operation.
+     * @returns Finished buffer
+     */
+    public finish(): Buffer;
+
+    /**
      * Allocates a buffer of the specified size.
      * @param size Buffer size
      * @returns Buffer
      */
     public static alloc(size: number): Buffer;
-
-    /**
-     * Finishes the write operation.
-     * @returns Finished buffer
-     */
-    public finish(): Buffer;
 }
 
 /**

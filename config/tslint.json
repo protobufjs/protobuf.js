@@ -15,6 +15,7 @@
         "no-string-literal": false,
         "prefer-const": false,
         "adjacent-overload-signatures": false,
+        "no-shadowed-variable": false,
         "ban-types": [
             true,
             ["Object", "Avoid using the `Object` type. Did you mean `object`?"],

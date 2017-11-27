@@ -50,7 +50,7 @@ export const MyService = $root.MyService = (() => {
 
     /**
      * Calls MyMethod.
-     * @function .myMethod
+     * @function myMethod
      * @memberof MyService
      * @instance
      * @param {IMyRequest} request MyRequest message or plain object
@@ -88,6 +88,7 @@ export const MyRequest = $root.MyRequest = (() => {
      * Constructs a new MyRequest.
      * @exports MyRequest
      * @classdesc Represents a MyRequest.
+     * @implements IMyRequest
      * @constructor
      * @param {IMyRequest=} [properties] Properties to set
      */
@@ -274,6 +275,7 @@ export const MyResponse = $root.MyResponse = (() => {
      * Constructs a new MyResponse.
      * @exports MyResponse
      * @classdesc Represents a MyResponse.
+     * @implements IMyResponse
      * @constructor
      * @param {IMyResponse=} [properties] Properties to set
      */

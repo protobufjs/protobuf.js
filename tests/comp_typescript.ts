@@ -1,8 +1,4 @@
-// uncomment for browser only / non long.js versions
-/*
-/// <reference path="../stub-long.d.ts" />
-/// <reference path="../stub-node.d.ts" />
-*/
+// test currently consists only of not throwing
 
 import { Root, Message, Type, Field, MapField, OneOf } from "..";
 
@@ -88,5 +84,3 @@ export class AwesomeMessage extends Message<AwesomeMessage> {
 let awesomeMessage = new AwesomeMessage({ awesomeField: "hi" });
 let awesomeBuffer  = AwesomeMessage.encode(awesomeMessage).finish();
 let awesomeDecoded = AwesomeMessage.decode(awesomeBuffer);
-
-// test currently consists only of not throwing

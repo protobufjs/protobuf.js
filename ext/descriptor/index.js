@@ -400,12 +400,16 @@ Field.fromDescriptor = function fromDescriptor(descriptor, syntax) {
         default: throw Error("illegal label: " + descriptor.label);
     }
 
+	var extendee = descriptor.extendee;
+	if (descriptor.extendee !== undefined) {
+		extendee = extendee.length ? extendee : undefined;
+	}
     var field = new Field(
         descriptor.name.length ? descriptor.name : "field" + descriptor.number,
         descriptor.number,
         fieldType,
         fieldRule,
-        descriptor.extendee.length ? descriptor.extendee : undefined
+        extendee
     );
 
     field.options = fromDescriptorOptions(descriptor.options, exports.FieldOptions);

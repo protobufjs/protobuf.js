@@ -13,14 +13,7 @@ function defineTask(name, entry, target) {
         target   : target,
         compress : true
     }));
-    gulp.task(name + "-compress", [ name + "-minify" ], function(callback) {
-        bundle.compress(
-            target + "/protobuf.min.js",
-            target + "/protobuf.min.js.gz",
-            callback
-        );
-    });
-    defaultTask.push(name + "-bundle", name + "-minify", name + "-compress");
+    defaultTask.push(name + "-bundle", name + "-minify");
 }
 
 defineTask("full"   , "../src/index"        , "../dist"        );

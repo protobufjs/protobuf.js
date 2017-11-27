@@ -3,13 +3,13 @@ import * as $protobuf from "../..";
 export class MyService extends $protobuf.rpc.Service {
     constructor(rpcImpl: $protobuf.RPCImpl, requestDelimited?: boolean, responseDelimited?: boolean);
     public static create(rpcImpl: $protobuf.RPCImpl, requestDelimited?: boolean, responseDelimited?: boolean): MyService;
-    public myMethod(request: IMyRequest, callback: MyService.MyMethodCallback): void;
-    public myMethod(request: IMyRequest): Promise<MyResponse>;
+    public delete(request: IMyRequest, callback: MyService.DeleteCallback): void;
+    public delete(request: IMyRequest): Promise<MyResponse>;
 }
 
 export namespace MyService {
 
-    type MyMethodCallback = (error: (Error|null), response?: MyResponse) => void;
+    type DeleteCallback = (error: (Error|null), response?: MyResponse) => void;
 }
 
 export interface IMyRequest {

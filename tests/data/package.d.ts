@@ -20,7 +20,7 @@ export interface IPackage {
     cliDependencies?: (string[]|null);
 }
 
-export class Package {
+export class Package implements IPackage {
     constructor(properties?: IPackage);
     public name: string;
     public version: string;
@@ -57,7 +57,7 @@ export namespace Package {
         url?: (string|null);
     }
 
-    class Repository {
+    class Repository implements IRepository {
         constructor(properties?: Package.IRepository);
         public type: string;
         public url: string;

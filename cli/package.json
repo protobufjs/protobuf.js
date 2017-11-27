@@ -1,1 +1,8 @@
-{"version": "6.7.0"}
+{
+  "version": "6.7.0",
+  "dependencies": {
+    "espree": "^3.5.2",
+    "tmp": "0.0.33",
+    "uglify-js": "^2.8.29"
+  }
+}

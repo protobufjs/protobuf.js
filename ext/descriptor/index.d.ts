@@ -1,5 +1,62 @@
 import * as $protobuf from "../..";
 
+export const FileDescriptorSet: $protobuf.Type;
+
+export const FileDescriptorProto: $protobuf.Type;
+
+export const DescriptorProto: $protobuf.Type & {
+    ExtensionRange: $protobuf.Type,
+    ReservedRange: $protobuf.Type
+};
+
+export const FieldDescriptorProto: $protobuf.Type & {
+    Label: $protobuf.Enum,
+    Type: $protobuf.Enum
+};
+
+export const OneofDescriptorProto: $protobuf.Type;
+
+export const EnumDescriptorProto: $protobuf.Type;
+
+export const ServiceDescriptorProto: $protobuf.Type;
+
+export const EnumValueDescriptorProto: $protobuf.Type;
+
+export const MethodDescriptorProto: $protobuf.Type;
+
+export const FileOptions: $protobuf.Type & {
+    OptimizeMode: $protobuf.Enum
+};
+
+export const MessageOptions: $protobuf.Type;
+
+export const FieldOptions: $protobuf.Type & {
+    CType: $protobuf.Enum,
+    JSType: $protobuf.Enum
+};
+
+export const OneofOptions: $protobuf.Type;
+
+export const EnumOptions: $protobuf.Type;
+
+export const EnumValueOptions: $protobuf.Type;
+
+export const ServiceOptions: $protobuf.Type;
+
+export const MethodOptions: $protobuf.Type;
+
+export const UninterpretedOption: $protobuf.Type & {
+    NamePart: $protobuf.Type
+};
+
+export const SourceCodeInfo: $protobuf.Type & {
+    Location: $protobuf.Type
+};
+
+export const GeneratedCodeInfo: $protobuf.Type & {
+    Annotation: $protobuf.Type
+};
+
 export interface IFileDescriptorSet {
     file: IFileDescriptorProto[];
 }
@@ -133,43 +190,3 @@ export interface IMethodDescriptorProto {
 export interface IMethodOptions {
     deprecated?: boolean;
 }
-
-export const FileDescriptorSet: $protobuf.Type;
-
-export const FileDescriptorProto: $protobuf.Type;
-
-export const DescriptorProto: $protobuf.Type & {    ExtensionRange: $protobuf.Type,    ReservedRange: $protobuf.Type};
-
-export const FieldDescriptorProto: $protobuf.Type & {    Label: $protobuf.Enum,    Type: $protobuf.Enum};
-
-export const OneofDescriptorProto: $protobuf.Type;
-
-export const EnumDescriptorProto: $protobuf.Type;
-
-export const ServiceDescriptorProto: $protobuf.Type;
-
-export const EnumValueDescriptorProto: $protobuf.Type;
-
-export const MethodDescriptorProto: $protobuf.Type;
-
-export const FileOptions: $protobuf.Type & {    OptimizeMode: $protobuf.Enum};
-
-export const MessageOptions: $protobuf.Type;
-
-export const FieldOptions: $protobuf.Type & {    CType: $protobuf.Enum,    JSType: $protobuf.Enum};
-
-export const OneofOptions: $protobuf.Type;
-
-export const EnumOptions: $protobuf.Type;
-
-export const EnumValueOptions: $protobuf.Type;
-
-export const ServiceOptions: $protobuf.Type;
-
-export const MethodOptions: $protobuf.Type;
-
-export const UninterpretedOption: $protobuf.Type & {    NamePart: $protobuf.Type};
-
-export const SourceCodeInfo: $protobuf.Type & {    Location: $protobuf.Type};
-
-export const GeneratedCodeInfo: $protobuf.Type & {    Annotation: $protobuf.Type};

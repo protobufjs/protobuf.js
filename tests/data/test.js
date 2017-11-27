@@ -39,6 +39,7 @@ $root.jspb = (function() {
              * Constructs a new Empty.
              * @memberof jspb.test
              * @classdesc Represents an Empty.
+             * @implements IEmpty
              * @constructor
              * @param {jspb.test.IEmpty=} [properties] Properties to set
              */
@@ -188,6 +189,7 @@ $root.jspb = (function() {
 
         /**
          * OuterEnum enum.
+         * @name jspb.test.OuterEnum
          * @enum {string}
          * @property {number} FOO=1 FOO value
          * @property {number} BAR=2 BAR value
@@ -212,6 +214,7 @@ $root.jspb = (function() {
              * Constructs a new EnumContainer.
              * @memberof jspb.test
              * @classdesc Represents an EnumContainer.
+             * @implements IEnumContainer
              * @constructor
              * @param {jspb.test.IEnumContainer=} [properties] Properties to set
              */
@@ -413,6 +416,7 @@ $root.jspb = (function() {
              * Constructs a new Simple1.
              * @memberof jspb.test
              * @classdesc Represents a Simple1.
+             * @implements ISimple1
              * @constructor
              * @param {jspb.test.ISimple1=} [properties] Properties to set
              */
@@ -660,6 +664,7 @@ $root.jspb = (function() {
              * Constructs a new Simple2.
              * @memberof jspb.test
              * @classdesc Represents a Simple2.
+             * @implements ISimple2
              * @constructor
              * @param {jspb.test.ISimple2=} [properties] Properties to set
              */
@@ -887,6 +892,7 @@ $root.jspb = (function() {
              * Constructs a new SpecialCases.
              * @memberof jspb.test
              * @classdesc Represents a SpecialCases.
+             * @implements ISpecialCases
              * @constructor
              * @param {jspb.test.ISpecialCases=} [properties] Properties to set
              */
@@ -907,7 +913,7 @@ $root.jspb = (function() {
 
             /**
              * SpecialCases default.
-             * @member {string} default_
+             * @member {string} default
              * @memberof jspb.test.SpecialCases
              * @instance
              */
@@ -915,7 +921,7 @@ $root.jspb = (function() {
 
             /**
              * SpecialCases function.
-             * @member {string} function_
+             * @member {string} function
              * @memberof jspb.test.SpecialCases
              * @instance
              */
@@ -923,7 +929,7 @@ $root.jspb = (function() {
 
             /**
              * SpecialCases var.
-             * @member {string} var_
+             * @member {string} var
              * @memberof jspb.test.SpecialCases
              * @instance
              */
@@ -1141,6 +1147,7 @@ $root.jspb = (function() {
              * Constructs a new OptionalFields.
              * @memberof jspb.test
              * @classdesc Represents an OptionalFields.
+             * @implements IOptionalFields
              * @constructor
              * @param {jspb.test.IOptionalFields=} [properties] Properties to set
              */
@@ -1332,7 +1339,7 @@ $root.jspb = (function() {
                     if (!Array.isArray(message.aRepeatedMessage))
                         return "aRepeatedMessage: array expected";
                     for (var i = 0; i < message.aRepeatedMessage.length; ++i) {
-                        error = $root.jspb.test.OptionalFields.Nested.verify(message.aRepeatedMessage[i]);
+                        var error = $root.jspb.test.OptionalFields.Nested.verify(message.aRepeatedMessage[i]);
                         if (error)
                             return "aRepeatedMessage." + error;
                     }
@@ -1453,6 +1460,7 @@ $root.jspb = (function() {
                  * Constructs a new Nested.
                  * @memberof jspb.test.OptionalFields
                  * @classdesc Represents a Nested.
+                 * @implements INested
                  * @constructor
                  * @param {jspb.test.OptionalFields.INested=} [properties] Properties to set
                  */
@@ -1650,6 +1658,7 @@ $root.jspb = (function() {
              * Constructs a new HasExtensions.
              * @memberof jspb.test
              * @classdesc Represents a HasExtensions.
+             * @implements IHasExtensions
              * @constructor
              * @param {jspb.test.IHasExtensions=} [properties] Properties to set
              */
@@ -1893,7 +1902,7 @@ $root.jspb = (function() {
                         return ".jspb.test.IsExtension.extField." + error;
                 }
                 if (message[".jspb.test.IndirectExtension.simple"] != null && message.hasOwnProperty(".jspb.test.IndirectExtension.simple")) {
-                    error = $root.jspb.test.Simple1.verify(message[".jspb.test.IndirectExtension.simple"]);
+                    var error = $root.jspb.test.Simple1.verify(message[".jspb.test.IndirectExtension.simple"]);
                     if (error)
                         return ".jspb.test.IndirectExtension.simple." + error;
                 }
@@ -1911,13 +1920,13 @@ $root.jspb = (function() {
                     if (!Array.isArray(message[".jspb.test.IndirectExtension.repeatedSimple"]))
                         return ".jspb.test.IndirectExtension.repeatedSimple: array expected";
                     for (var i = 0; i < message[".jspb.test.IndirectExtension.repeatedSimple"].length; ++i) {
-                        error = $root.jspb.test.Simple1.verify(message[".jspb.test.IndirectExtension.repeatedSimple"][i]);
+                        var error = $root.jspb.test.Simple1.verify(message[".jspb.test.IndirectExtension.repeatedSimple"][i]);
                         if (error)
                             return ".jspb.test.IndirectExtension.repeatedSimple." + error;
                     }
                 }
                 if (message[".jspb.test.simple1"] != null && message.hasOwnProperty(".jspb.test.simple1")) {
-                    error = $root.jspb.test.Simple1.verify(message[".jspb.test.simple1"]);
+                    var error = $root.jspb.test.Simple1.verify(message[".jspb.test.simple1"]);
                     if (error)
                         return ".jspb.test.simple1." + error;
                 }
@@ -2063,6 +2072,7 @@ $root.jspb = (function() {
              * Constructs a new Complex.
              * @memberof jspb.test
              * @classdesc Represents a Complex.
+             * @implements IComplex
              * @constructor
              * @param {jspb.test.IComplex=} [properties] Properties to set
              */
@@ -2254,7 +2264,7 @@ $root.jspb = (function() {
                     if (!Array.isArray(message.aRepeatedMessage))
                         return "aRepeatedMessage: array expected";
                     for (var i = 0; i < message.aRepeatedMessage.length; ++i) {
-                        error = $root.jspb.test.Complex.Nested.verify(message.aRepeatedMessage[i]);
+                        var error = $root.jspb.test.Complex.Nested.verify(message.aRepeatedMessage[i]);
                         if (error)
                             return "aRepeatedMessage." + error;
                     }
@@ -2375,6 +2385,7 @@ $root.jspb = (function() {
                  * Constructs a new Nested.
                  * @memberof jspb.test.Complex
                  * @classdesc Represents a Nested.
+                 * @implements INested
                  * @constructor
                  * @param {jspb.test.Complex.INested=} [properties] Properties to set
                  */
@@ -2563,6 +2574,7 @@ $root.jspb = (function() {
              * Constructs a new OuterMessage.
              * @memberof jspb.test
              * @classdesc Represents an OuterMessage.
+             * @implements IOuterMessage
              * @constructor
              * @param {jspb.test.IOuterMessage=} [properties] Properties to set
              */
@@ -2720,6 +2732,7 @@ $root.jspb = (function() {
                  * Constructs a new Complex.
                  * @memberof jspb.test.OuterMessage
                  * @classdesc Represents a Complex.
+                 * @implements IComplex
                  * @constructor
                  * @param {jspb.test.OuterMessage.IComplex=} [properties] Properties to set
                  */
@@ -2909,6 +2922,7 @@ $root.jspb = (function() {
              * Constructs a new IsExtension.
              * @memberof jspb.test
              * @classdesc Represents an IsExtension.
+             * @implements IIsExtension
              * @constructor
              * @param {jspb.test.IIsExtension=} [properties] Properties to set
              */
@@ -3094,6 +3108,7 @@ $root.jspb = (function() {
              * Constructs a new IndirectExtension.
              * @memberof jspb.test
              * @classdesc Represents an IndirectExtension.
+             * @implements IIndirectExtension
              * @constructor
              * @param {jspb.test.IIndirectExtension=} [properties] Properties to set
              */
@@ -3259,6 +3274,7 @@ $root.jspb = (function() {
              * Constructs a new DefaultValues.
              * @memberof jspb.test
              * @classdesc Represents a DefaultValues.
+             * @implements IDefaultValues
              * @constructor
              * @param {jspb.test.IDefaultValues=} [properties] Properties to set
              */
@@ -3571,6 +3587,7 @@ $root.jspb = (function() {
 
             /**
              * Enum enum.
+             * @name jspb.test.DefaultValues.Enum
              * @enum {string}
              * @property {number} E1=13 E1 value
              * @property {number} E2=77 E2 value
@@ -3605,6 +3622,7 @@ $root.jspb = (function() {
              * Constructs a new FloatingPointFields.
              * @memberof jspb.test
              * @classdesc Represents a FloatingPointFields.
+             * @implements IFloatingPointFields
              * @constructor
              * @param {jspb.test.IFloatingPointFields=} [properties] Properties to set
              */
@@ -3988,6 +4006,7 @@ $root.jspb = (function() {
              * Constructs a new TestClone.
              * @memberof jspb.test
              * @classdesc Represents a TestClone.
+             * @implements ITestClone
              * @constructor
              * @param {jspb.test.ITestClone=} [properties] Properties to set
              */
@@ -4185,7 +4204,7 @@ $root.jspb = (function() {
                     if (!Array.isArray(message.simple2))
                         return "simple2: array expected";
                     for (var i = 0; i < message.simple2.length; ++i) {
-                        error = $root.jspb.test.Simple1.verify(message.simple2[i]);
+                        var error = $root.jspb.test.Simple1.verify(message.simple2[i]);
                         if (error)
                             return "simple2." + error;
                     }
@@ -4197,7 +4216,7 @@ $root.jspb = (function() {
                     if (!$util.isString(message.unused))
                         return "unused: string expected";
                 if (message[".jspb.test.CloneExtension.extField"] != null && message.hasOwnProperty(".jspb.test.CloneExtension.extField")) {
-                    error = $root.jspb.test.CloneExtension.verify(message[".jspb.test.CloneExtension.extField"]);
+                    var error = $root.jspb.test.CloneExtension.verify(message[".jspb.test.CloneExtension.extField"]);
                     if (error)
                         return ".jspb.test.CloneExtension.extField." + error;
                 }
@@ -4315,6 +4334,7 @@ $root.jspb = (function() {
              * Constructs a new CloneExtension.
              * @memberof jspb.test
              * @classdesc Represents a CloneExtension.
+             * @implements ICloneExtension
              * @constructor
              * @param {jspb.test.ICloneExtension=} [properties] Properties to set
              */
@@ -4506,6 +4526,7 @@ $root.jspb = (function() {
              * Constructs a new TestGroup.
              * @memberof jspb.test
              * @classdesc Represents a TestGroup.
+             * @implements ITestGroup
              * @constructor
              * @param {jspb.test.ITestGroup=} [properties] Properties to set
              */
@@ -4702,22 +4723,26 @@ $root.jspb = (function() {
                             return "repeatedGroup." + error;
                     }
                 }
-                error = $root.jspb.test.TestGroup.RequiredGroup.verify(message.requiredGroup);
-                if (error)
-                    return "requiredGroup." + error;
+                {
+                    var error = $root.jspb.test.TestGroup.RequiredGroup.verify(message.requiredGroup);
+                    if (error)
+                        return "requiredGroup." + error;
+                }
                 if (message.optionalGroup != null && message.hasOwnProperty("optionalGroup")) {
-                    error = $root.jspb.test.TestGroup.OptionalGroup.verify(message.optionalGroup);
+                    var error = $root.jspb.test.TestGroup.OptionalGroup.verify(message.optionalGroup);
                     if (error)
                         return "optionalGroup." + error;
                 }
                 if (message.id != null && message.hasOwnProperty("id"))
                     if (!$util.isString(message.id))
                         return "id: string expected";
-                error = $root.jspb.test.Simple2.verify(message.requiredSimple);
-                if (error)
-                    return "requiredSimple." + error;
+                {
+                    var error = $root.jspb.test.Simple2.verify(message.requiredSimple);
+                    if (error)
+                        return "requiredSimple." + error;
+                }
                 if (message.optionalSimple != null && message.hasOwnProperty("optionalSimple")) {
-                    error = $root.jspb.test.Simple2.verify(message.optionalSimple);
+                    var error = $root.jspb.test.Simple2.verify(message.optionalSimple);
                     if (error)
                         return "optionalSimple." + error;
                 }
@@ -4836,6 +4861,7 @@ $root.jspb = (function() {
                  * Constructs a new RepeatedGroup.
                  * @memberof jspb.test.TestGroup
                  * @classdesc Represents a RepeatedGroup.
+                 * @implements IRepeatedGroup
                  * @constructor
                  * @param {jspb.test.TestGroup.IRepeatedGroup=} [properties] Properties to set
                  */
@@ -5067,6 +5093,7 @@ $root.jspb = (function() {
                  * Constructs a new RequiredGroup.
                  * @memberof jspb.test.TestGroup
                  * @classdesc Represents a RequiredGroup.
+                 * @implements IRequiredGroup
                  * @constructor
                  * @param {jspb.test.TestGroup.IRequiredGroup=} [properties] Properties to set
                  */
@@ -5255,6 +5282,7 @@ $root.jspb = (function() {
                  * Constructs a new OptionalGroup.
                  * @memberof jspb.test.TestGroup
                  * @classdesc Represents an OptionalGroup.
+                 * @implements IOptionalGroup
                  * @constructor
                  * @param {jspb.test.TestGroup.IOptionalGroup=} [properties] Properties to set
                  */
@@ -5446,6 +5474,7 @@ $root.jspb = (function() {
              * Constructs a new TestGroup1.
              * @memberof jspb.test
              * @classdesc Represents a TestGroup1.
+             * @implements ITestGroup1
              * @constructor
              * @param {jspb.test.ITestGroup1=} [properties] Properties to set
              */
@@ -5638,6 +5667,7 @@ $root.jspb = (function() {
              * Constructs a new TestReservedNames.
              * @memberof jspb.test
              * @classdesc Represents a TestReservedNames.
+             * @implements ITestReservedNames
              * @constructor
              * @param {jspb.test.ITestReservedNames=} [properties] Properties to set
              */
@@ -5845,6 +5875,7 @@ $root.jspb = (function() {
              * Constructs a new TestReservedNamesExtension.
              * @memberof jspb.test
              * @classdesc Represents a TestReservedNamesExtension.
+             * @implements ITestReservedNamesExtension
              * @constructor
              * @param {jspb.test.ITestReservedNamesExtension=} [properties] Properties to set
              */
@@ -6014,6 +6045,7 @@ $root.jspb = (function() {
              * Constructs a new TestMessageWithOneof.
              * @memberof jspb.test
              * @classdesc Represents a TestMessageWithOneof.
+             * @implements ITestMessageWithOneof
              * @constructor
              * @param {jspb.test.ITestMessageWithOneof=} [properties] Properties to set
              */
@@ -6110,7 +6142,7 @@ $root.jspb = (function() {
 
             /**
              * TestMessageWithOneof partialOneof.
-             * @member {string|undefined} partialOneof
+             * @member {"pone"|"pthree"|undefined} partialOneof
              * @memberof jspb.test.TestMessageWithOneof
              * @instance
              */
@@ -6121,7 +6153,7 @@ $root.jspb = (function() {
 
             /**
              * TestMessageWithOneof recursiveOneof.
-             * @member {string|undefined} recursiveOneof
+             * @member {"rone"|"rtwo"|undefined} recursiveOneof
              * @memberof jspb.test.TestMessageWithOneof
              * @instance
              */
@@ -6132,7 +6164,7 @@ $root.jspb = (function() {
 
             /**
              * TestMessageWithOneof defaultOneofA.
-             * @member {string|undefined} defaultOneofA
+             * @member {"aone"|"atwo"|undefined} defaultOneofA
              * @memberof jspb.test.TestMessageWithOneof
              * @instance
              */
@@ -6143,7 +6175,7 @@ $root.jspb = (function() {
 
             /**
              * TestMessageWithOneof defaultOneofB.
-             * @member {string|undefined} defaultOneofB
+             * @member {"bone"|"btwo"|undefined} defaultOneofB
              * @memberof jspb.test.TestMessageWithOneof
              * @instance
              */
@@ -6313,9 +6345,11 @@ $root.jspb = (function() {
                 }
                 if (message.rone != null && message.hasOwnProperty("rone")) {
                     properties.recursiveOneof = 1;
-                    var error = $root.jspb.test.TestMessageWithOneof.verify(message.rone);
-                    if (error)
-                        return "rone." + error;
+                    {
+                        var error = $root.jspb.test.TestMessageWithOneof.verify(message.rone);
+                        if (error)
+                            return "rone." + error;
+                    }
                 }
                 if (message.rtwo != null && message.hasOwnProperty("rtwo")) {
                     if (properties.recursiveOneof === 1)
@@ -6499,6 +6533,7 @@ $root.jspb = (function() {
              * Constructs a new TestEndsWithBytes.
              * @memberof jspb.test
              * @classdesc Represents a TestEndsWithBytes.
+             * @implements ITestEndsWithBytes
              * @constructor
              * @param {jspb.test.ITestEndsWithBytes=} [properties] Properties to set
              */
@@ -6721,6 +6756,7 @@ $root.jspb = (function() {
              * Constructs a new TestMapFieldsNoBinary.
              * @memberof jspb.test
              * @classdesc Represents a TestMapFieldsNoBinary.
+             * @implements ITestMapFieldsNoBinary
              * @constructor
              * @param {jspb.test.ITestMapFieldsNoBinary=} [properties] Properties to set
              */
@@ -7159,7 +7195,7 @@ $root.jspb = (function() {
                     }
                 }
                 if (message.testMapFields != null && message.hasOwnProperty("testMapFields")) {
-                    error = $root.jspb.test.TestMapFieldsNoBinary.verify(message.testMapFields);
+                    var error = $root.jspb.test.TestMapFieldsNoBinary.verify(message.testMapFields);
                     if (error)
                         return "testMapFields." + error;
                 }
@@ -7168,7 +7204,7 @@ $root.jspb = (function() {
                         return "mapStringTestmapfields: object expected";
                     var key = Object.keys(message.mapStringTestmapfields);
                     for (var i = 0; i < key.length; ++i) {
-                        error = $root.jspb.test.TestMapFieldsNoBinary.verify(message.mapStringTestmapfields[key[i]]);
+                        var error = $root.jspb.test.TestMapFieldsNoBinary.verify(message.mapStringTestmapfields[key[i]]);
                         if (error)
                             return "mapStringTestmapfields." + error;
                     }
@@ -7407,6 +7443,7 @@ $root.jspb = (function() {
 
         /**
          * MapValueEnumNoBinary enum.
+         * @name jspb.test.MapValueEnumNoBinary
          * @enum {string}
          * @property {number} MAP_VALUE_FOO_NOBINARY=0 MAP_VALUE_FOO_NOBINARY value
          * @property {number} MAP_VALUE_BAR_NOBINARY=1 MAP_VALUE_BAR_NOBINARY value
@@ -7433,6 +7470,7 @@ $root.jspb = (function() {
              * Constructs a new MapValueMessageNoBinary.
              * @memberof jspb.test
              * @classdesc Represents a MapValueMessageNoBinary.
+             * @implements IMapValueMessageNoBinary
              * @constructor
              * @param {jspb.test.IMapValueMessageNoBinary=} [properties] Properties to set
              */
@@ -7618,6 +7656,7 @@ $root.jspb = (function() {
              * Constructs a new Deeply.
              * @memberof jspb.test
              * @classdesc Represents a Deeply.
+             * @implements IDeeply
              * @constructor
              * @param {jspb.test.IDeeply=} [properties] Properties to set
              */
@@ -7774,6 +7813,7 @@ $root.jspb = (function() {
                  * Constructs a new Nested.
                  * @memberof jspb.test.Deeply
                  * @classdesc Represents a Nested.
+                 * @implements INested
                  * @constructor
                  * @param {jspb.test.Deeply.INested=} [properties] Properties to set
                  */
@@ -7931,6 +7971,7 @@ $root.jspb = (function() {
                      * Constructs a new Message.
                      * @memberof jspb.test.Deeply.Nested
                      * @classdesc Represents a Message.
+                     * @implements IMessage
                      * @constructor
                      * @param {jspb.test.Deeply.Nested.IMessage=} [properties] Properties to set
                      */
@@ -8147,6 +8188,7 @@ $root.google = (function() {
              * Constructs a new FileDescriptorSet.
              * @memberof google.protobuf
              * @classdesc Represents a FileDescriptorSet.
+             * @implements IFileDescriptorSet
              * @constructor
              * @param {google.protobuf.IFileDescriptorSet=} [properties] Properties to set
              */
@@ -8365,6 +8407,7 @@ $root.google = (function() {
              * Constructs a new FileDescriptorProto.
              * @memberof google.protobuf
              * @classdesc Represents a FileDescriptorProto.
+             * @implements IFileDescriptorProto
              * @constructor
              * @param {google.protobuf.IFileDescriptorProto=} [properties] Properties to set
              */
@@ -8392,7 +8435,7 @@ $root.google = (function() {
 
             /**
              * FileDescriptorProto package.
-             * @member {string} package_
+             * @member {string} package
              * @memberof google.protobuf.FileDescriptorProto
              * @instance
              */
@@ -8702,7 +8745,7 @@ $root.google = (function() {
                     if (!Array.isArray(message.enumType))
                         return "enumType: array expected";
                     for (var i = 0; i < message.enumType.length; ++i) {
-                        error = $root.google.protobuf.EnumDescriptorProto.verify(message.enumType[i]);
+                        var error = $root.google.protobuf.EnumDescriptorProto.verify(message.enumType[i]);
                         if (error)
                             return "enumType." + error;
                     }
@@ -8711,7 +8754,7 @@ $root.google = (function() {
                     if (!Array.isArray(message.service))
                         return "service: array expected";
                     for (var i = 0; i < message.service.length; ++i) {
-                        error = $root.google.protobuf.ServiceDescriptorProto.verify(message.service[i]);
+                        var error = $root.google.protobuf.ServiceDescriptorProto.verify(message.service[i]);
                         if (error)
                             return "service." + error;
                     }
@@ -8720,18 +8763,18 @@ $root.google = (function() {
                     if (!Array.isArray(message.extension))
                         return "extension: array expected";
                     for (var i = 0; i < message.extension.length; ++i) {
-                        error = $root.google.protobuf.FieldDescriptorProto.verify(message.extension[i]);
+                        var error = $root.google.protobuf.FieldDescriptorProto.verify(message.extension[i]);
                         if (error)
                             return "extension." + error;
                     }
                 }
                 if (message.options != null && message.hasOwnProperty("options")) {
-                    error = $root.google.protobuf.FileOptions.verify(message.options);
+                    var error = $root.google.protobuf.FileOptions.verify(message.options);
                     if (error)
                         return "options." + error;
                 }
                 if (message.sourceCodeInfo != null && message.hasOwnProperty("sourceCodeInfo")) {
-                    error = $root.google.protobuf.SourceCodeInfo.verify(message.sourceCodeInfo);
+                    var error = $root.google.protobuf.SourceCodeInfo.verify(message.sourceCodeInfo);
                     if (error)
                         return "sourceCodeInfo." + error;
                 }
@@ -8946,6 +8989,7 @@ $root.google = (function() {
              * Constructs a new DescriptorProto.
              * @memberof google.protobuf
              * @classdesc Represents a DescriptorProto.
+             * @implements IDescriptorProto
              * @constructor
              * @param {google.protobuf.IDescriptorProto=} [properties] Properties to set
              */
@@ -9227,7 +9271,7 @@ $root.google = (function() {
                     if (!Array.isArray(message.extension))
                         return "extension: array expected";
                     for (var i = 0; i < message.extension.length; ++i) {
-                        error = $root.google.protobuf.FieldDescriptorProto.verify(message.extension[i]);
+                        var error = $root.google.protobuf.FieldDescriptorProto.verify(message.extension[i]);
                         if (error)
                             return "extension." + error;
                     }
@@ -9236,7 +9280,7 @@ $root.google = (function() {
                     if (!Array.isArray(message.nestedType))
                         return "nestedType: array expected";
                     for (var i = 0; i < message.nestedType.length; ++i) {
-                        error = $root.google.protobuf.DescriptorProto.verify(message.nestedType[i]);
+                        var error = $root.google.protobuf.DescriptorProto.verify(message.nestedType[i]);
                         if (error)
                             return "nestedType." + error;
                     }
@@ -9245,7 +9289,7 @@ $root.google = (function() {
                     if (!Array.isArray(message.enumType))
                         return "enumType: array expected";
                     for (var i = 0; i < message.enumType.length; ++i) {
-                        error = $root.google.protobuf.EnumDescriptorProto.verify(message.enumType[i]);
+                        var error = $root.google.protobuf.EnumDescriptorProto.verify(message.enumType[i]);
                         if (error)
                             return "enumType." + error;
                     }
@@ -9254,7 +9298,7 @@ $root.google = (function() {
                     if (!Array.isArray(message.extensionRange))
                         return "extensionRange: array expected";
                     for (var i = 0; i < message.extensionRange.length; ++i) {
-                        error = $root.google.protobuf.DescriptorProto.ExtensionRange.verify(message.extensionRange[i]);
+                        var error = $root.google.protobuf.DescriptorProto.ExtensionRange.verify(message.extensionRange[i]);
                         if (error)
                             return "extensionRange." + error;
                     }
@@ -9263,13 +9307,13 @@ $root.google = (function() {
                     if (!Array.isArray(message.oneofDecl))
                         return "oneofDecl: array expected";
                     for (var i = 0; i < message.oneofDecl.length; ++i) {
-                        error = $root.google.protobuf.OneofDescriptorProto.verify(message.oneofDecl[i]);
+                        var error = $root.google.protobuf.OneofDescriptorProto.verify(message.oneofDecl[i]);
                         if (error)
                             return "oneofDecl." + error;
                     }
                 }
                 if (message.options != null && message.hasOwnProperty("options")) {
-                    error = $root.google.protobuf.MessageOptions.verify(message.options);
+                    var error = $root.google.protobuf.MessageOptions.verify(message.options);
                     if (error)
                         return "options." + error;
                 }
@@ -9277,7 +9321,7 @@ $root.google = (function() {
                     if (!Array.isArray(message.reservedRange))
                         return "reservedRange: array expected";
                     for (var i = 0; i < message.reservedRange.length; ++i) {
-                        error = $root.google.protobuf.DescriptorProto.ReservedRange.verify(message.reservedRange[i]);
+                        var error = $root.google.protobuf.DescriptorProto.ReservedRange.verify(message.reservedRange[i]);
                         if (error)
                             return "reservedRange." + error;
                     }
@@ -9490,6 +9534,7 @@ $root.google = (function() {
                  * Constructs a new ExtensionRange.
                  * @memberof google.protobuf.DescriptorProto
                  * @classdesc Represents an ExtensionRange.
+                 * @implements IExtensionRange
                  * @constructor
                  * @param {google.protobuf.DescriptorProto.IExtensionRange=} [properties] Properties to set
                  */
@@ -9699,6 +9744,7 @@ $root.google = (function() {
                  * Constructs a new ReservedRange.
                  * @memberof google.protobuf.DescriptorProto
                  * @classdesc Represents a ReservedRange.
+                 * @implements IReservedRange
                  * @constructor
                  * @param {google.protobuf.DescriptorProto.IReservedRange=} [properties] Properties to set
                  */
@@ -9919,6 +9965,7 @@ $root.google = (function() {
              * Constructs a new FieldDescriptorProto.
              * @memberof google.protobuf
              * @classdesc Represents a FieldDescriptorProto.
+             * @implements IFieldDescriptorProto
              * @constructor
              * @param {google.protobuf.IFieldDescriptorProto=} [properties] Properties to set
              */
@@ -10397,6 +10444,7 @@ $root.google = (function() {
 
             /**
              * Type enum.
+             * @name google.protobuf.FieldDescriptorProto.Type
              * @enum {string}
              * @property {number} TYPE_DOUBLE=1 TYPE_DOUBLE value
              * @property {number} TYPE_FLOAT=2 TYPE_FLOAT value
@@ -10442,6 +10490,7 @@ $root.google = (function() {
 
             /**
              * Label enum.
+             * @name google.protobuf.FieldDescriptorProto.Label
              * @enum {string}
              * @property {number} LABEL_OPTIONAL=1 LABEL_OPTIONAL value
              * @property {number} LABEL_REQUIRED=2 LABEL_REQUIRED value
@@ -10472,6 +10521,7 @@ $root.google = (function() {
              * Constructs a new OneofDescriptorProto.
              * @memberof google.protobuf
              * @classdesc Represents an OneofDescriptorProto.
+             * @implements IOneofDescriptorProto
              * @constructor
              * @param {google.protobuf.IOneofDescriptorProto=} [properties] Properties to set
              */
@@ -10687,6 +10737,7 @@ $root.google = (function() {
              * Constructs a new EnumDescriptorProto.
              * @memberof google.protobuf
              * @classdesc Represents an EnumDescriptorProto.
+             * @implements IEnumDescriptorProto
              * @constructor
              * @param {google.protobuf.IEnumDescriptorProto=} [properties] Properties to set
              */
@@ -10846,7 +10897,7 @@ $root.google = (function() {
                     }
                 }
                 if (message.options != null && message.hasOwnProperty("options")) {
-                    error = $root.google.protobuf.EnumOptions.verify(message.options);
+                    var error = $root.google.protobuf.EnumOptions.verify(message.options);
                     if (error)
                         return "options." + error;
                 }
@@ -10945,6 +10996,7 @@ $root.google = (function() {
              * Constructs a new EnumValueDescriptorProto.
              * @memberof google.protobuf
              * @classdesc Represents an EnumValueDescriptorProto.
+             * @implements IEnumValueDescriptorProto
              * @constructor
              * @param {google.protobuf.IEnumValueDescriptorProto=} [properties] Properties to set
              */
@@ -11181,6 +11233,7 @@ $root.google = (function() {
              * Constructs a new ServiceDescriptorProto.
              * @memberof google.protobuf
              * @classdesc Represents a ServiceDescriptorProto.
+             * @implements IServiceDescriptorProto
              * @constructor
              * @param {google.protobuf.IServiceDescriptorProto=} [properties] Properties to set
              */
@@ -11340,7 +11393,7 @@ $root.google = (function() {
                     }
                 }
                 if (message.options != null && message.hasOwnProperty("options")) {
-                    error = $root.google.protobuf.ServiceOptions.verify(message.options);
+                    var error = $root.google.protobuf.ServiceOptions.verify(message.options);
                     if (error)
                         return "options." + error;
                 }
@@ -11442,6 +11495,7 @@ $root.google = (function() {
              * Constructs a new MethodDescriptorProto.
              * @memberof google.protobuf
              * @classdesc Represents a MethodDescriptorProto.
+             * @implements IMethodDescriptorProto
              * @constructor
              * @param {google.protobuf.IMethodDescriptorProto=} [properties] Properties to set
              */
@@ -11753,6 +11807,7 @@ $root.google = (function() {
              * Constructs a new FileOptions.
              * @memberof google.protobuf
              * @classdesc Represents a FileOptions.
+             * @implements IFileOptions
              * @constructor
              * @param {google.protobuf.IFileOptions=} [properties] Properties to set
              */
@@ -12260,6 +12315,7 @@ $root.google = (function() {
 
             /**
              * OptimizeMode enum.
+             * @name google.protobuf.FileOptions.OptimizeMode
              * @enum {string}
              * @property {number} SPEED=1 SPEED value
              * @property {number} CODE_SIZE=2 CODE_SIZE value
@@ -12293,6 +12349,7 @@ $root.google = (function() {
              * Constructs a new MessageOptions.
              * @memberof google.protobuf
              * @classdesc Represents a MessageOptions.
+             * @implements IMessageOptions
              * @constructor
              * @param {google.protobuf.IMessageOptions=} [properties] Properties to set
              */
@@ -12592,6 +12649,7 @@ $root.google = (function() {
              * Constructs a new FieldOptions.
              * @memberof google.protobuf
              * @classdesc Represents a FieldOptions.
+             * @implements IFieldOptions
              * @constructor
              * @param {google.protobuf.IFieldOptions=} [properties] Properties to set
              */
@@ -12949,6 +13007,7 @@ $root.google = (function() {
 
             /**
              * CType enum.
+             * @name google.protobuf.FieldOptions.CType
              * @enum {string}
              * @property {number} STRING=0 STRING value
              * @property {number} CORD=1 CORD value
@@ -12964,6 +13023,7 @@ $root.google = (function() {
 
             /**
              * JSType enum.
+             * @name google.protobuf.FieldOptions.JSType
              * @enum {string}
              * @property {number} JS_NORMAL=0 JS_NORMAL value
              * @property {number} JS_STRING=1 JS_STRING value
@@ -12993,6 +13053,7 @@ $root.google = (function() {
              * Constructs a new OneofOptions.
              * @memberof google.protobuf
              * @classdesc Represents an OneofOptions.
+             * @implements IOneofOptions
              * @constructor
              * @param {google.protobuf.IOneofOptions=} [properties] Properties to set
              */
@@ -13203,6 +13264,7 @@ $root.google = (function() {
              * Constructs a new EnumOptions.
              * @memberof google.protobuf
              * @classdesc Represents an EnumOptions.
+             * @implements IEnumOptions
              * @constructor
              * @param {google.protobuf.IEnumOptions=} [properties] Properties to set
              */
@@ -13476,6 +13538,7 @@ $root.google = (function() {
              * Constructs a new EnumValueOptions.
              * @memberof google.protobuf
              * @classdesc Represents an EnumValueOptions.
+             * @implements IEnumValueOptions
              * @constructor
              * @param {google.protobuf.IEnumValueOptions=} [properties] Properties to set
              */
@@ -13706,6 +13769,7 @@ $root.google = (function() {
              * Constructs a new ServiceOptions.
              * @memberof google.protobuf
              * @classdesc Represents a ServiceOptions.
+             * @implements IServiceOptions
              * @constructor
              * @param {google.protobuf.IServiceOptions=} [properties] Properties to set
              */
@@ -13937,6 +14001,7 @@ $root.google = (function() {
              * Constructs a new MethodOptions.
              * @memberof google.protobuf
              * @classdesc Represents a MethodOptions.
+             * @implements IMethodOptions
              * @constructor
              * @param {google.protobuf.IMethodOptions=} [properties] Properties to set
              */
@@ -14192,6 +14257,7 @@ $root.google = (function() {
 
             /**
              * IdempotencyLevel enum.
+             * @name google.protobuf.MethodOptions.IdempotencyLevel
              * @enum {string}
              * @property {number} IDEMPOTENCY_UNKNOWN=0 IDEMPOTENCY_UNKNOWN value
              * @property {number} NO_SIDE_EFFECTS=1 NO_SIDE_EFFECTS value
@@ -14227,6 +14293,7 @@ $root.google = (function() {
              * Constructs a new UninterpretedOption.
              * @memberof google.protobuf
              * @classdesc Represents an UninterpretedOption.
+             * @implements IUninterpretedOption
              * @constructor
              * @param {google.protobuf.IUninterpretedOption=} [properties] Properties to set
              */
@@ -14591,6 +14658,7 @@ $root.google = (function() {
                  * Constructs a new NamePart.
                  * @memberof google.protobuf.UninterpretedOption
                  * @classdesc Represents a NamePart.
+                 * @implements INamePart
                  * @constructor
                  * @param {google.protobuf.UninterpretedOption.INamePart=} [properties] Properties to set
                  */
@@ -14802,6 +14870,7 @@ $root.google = (function() {
              * Constructs a new SourceCodeInfo.
              * @memberof google.protobuf
              * @classdesc Represents a SourceCodeInfo.
+             * @implements ISourceCodeInfo
              * @constructor
              * @param {google.protobuf.ISourceCodeInfo=} [properties] Properties to set
              */
@@ -15010,6 +15079,7 @@ $root.google = (function() {
                  * Constructs a new Location.
                  * @memberof google.protobuf.SourceCodeInfo
                  * @classdesc Represents a Location.
+                 * @implements ILocation
                  * @constructor
                  * @param {google.protobuf.SourceCodeInfo.ILocation=} [properties] Properties to set
                  */
@@ -15350,6 +15420,7 @@ $root.google = (function() {
              * Constructs a new GeneratedCodeInfo.
              * @memberof google.protobuf
              * @classdesc Represents a GeneratedCodeInfo.
+             * @implements IGeneratedCodeInfo
              * @constructor
              * @param {google.protobuf.IGeneratedCodeInfo=} [properties] Properties to set
              */
@@ -15557,6 +15628,7 @@ $root.google = (function() {
                  * Constructs a new Annotation.
                  * @memberof google.protobuf.GeneratedCodeInfo
                  * @classdesc Represents an Annotation.
+                 * @implements IAnnotation
                  * @constructor
                  * @param {google.protobuf.GeneratedCodeInfo.IAnnotation=} [properties] Properties to set
                  */

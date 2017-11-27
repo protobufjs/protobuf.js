@@ -482,11 +482,19 @@ function parse(source, root, options) {
 
         var enm = new Enum(token);
         ifBlock(enm, function parseEnum_block(token) {
-            if (token === "option") {
-                parseOption(enm, token);
-                skip(";");
-            } else
-                parseEnumValue(enm, token);
+          switch(token) {
+            case "option":
+              parseOption(enm, token);
+              skip(";");
+              break;
+
+            case "reserved":
+              readRanges(enm.reserved || (enm.reserved = []), true);
+              break;
+
+            default:
+              parseEnumValue(enm, token);
+          }
         });
         parent.add(enm);
     }
@@ -547,7 +555,10 @@ function parse(source, root, options) {
                     parseOptionValue(parent, name + "." + token);
                 else {
                     skip(":");
-                    setOption(parent, name + "." + token, readValue(true));
+                    if (peek() === "{")
+                        parseOptionValue(parent, name + "." + token);
+                    else
+                        setOption(parent, name + "." + token, readValue(true));
                 }
             } while (!skip("}", true));
         } else

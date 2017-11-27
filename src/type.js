@@ -395,11 +395,7 @@ Type.prototype.remove = function remove(object) {
  * @returns {boolean} `true` if reserved, otherwise `false`
  */
 Type.prototype.isReservedId = function isReservedId(id) {
-    if (this.reserved)
-        for (var i = 0; i < this.reserved.length; ++i)
-            if (typeof this.reserved[i] !== "string" && this.reserved[i][0] <= id && this.reserved[i][1] >= id)
-                return true;
-    return false;
+    return Namespace.isReservedId(this.reserved, id);
 };
 
 /**
@@ -408,11 +404,7 @@ Type.prototype.isReservedId = function isReservedId(id) {
  * @returns {boolean} `true` if reserved, otherwise `false`
  */
 Type.prototype.isReservedName = function isReservedName(name) {
-    if (this.reserved)
-        for (var i = 0; i < this.reserved.length; ++i)
-            if (this.reserved[i] === name)
-                return true;
-    return false;
+    return Namespace.isReservedName(this.reserved, name);
 };
 
 /**

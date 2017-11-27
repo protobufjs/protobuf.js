@@ -2,11 +2,6 @@
     "tags": {
         "allowUnknownTags": false
     },
-    "source": {
-        "exclude": [],
-        "includePattern": ".+\\.js(doc)?$",
-        "excludePattern": "(^|\\/|\\\\)_"
-    },
     "plugins": [
         "./tsd-jsdoc/plugin"
     ],

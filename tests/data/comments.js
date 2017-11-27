@@ -27,6 +27,7 @@ $root.Test1 = (function() {
      * with
      * a
      * comment.
+     * @implements ITest1
      * @constructor
      * @param {ITest1=} [properties] Properties to set
      */
@@ -255,6 +256,7 @@ $root.Test2 = (function() {
      * Constructs a new Test2.
      * @exports Test2
      * @classdesc Represents a Test2.
+     * @implements ITest2
      * @constructor
      * @param {ITest2=} [properties] Properties to set
      */

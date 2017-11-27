@@ -12,7 +12,7 @@ export interface IMessage {
     int64Map?: ({ [k: string]: (number|Long) }|null);
 }
 
-export class Message {
+export class Message implements IMessage {
     constructor(properties?: IMessage);
     public stringVal: string;
     public stringRepeated: string[];
