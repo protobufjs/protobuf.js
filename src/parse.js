@@ -551,11 +551,11 @@ function parse(source, root, options) {
                 if (!nameRe.test(token = next()))
                     throw illegal(token, "name");
 
+                skip(":");
                 if (peek() === "{")
                     parseOptionValue(parent, name + "." + token);
                 else {
-                    skip(":");
-                    setOption(parent, name + "." + token, readValue(true));
+                    setOption(parent, name + "." + token, parseOptionValue(true));
                 }
             } while (!skip("}", true));
         } else
