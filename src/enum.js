@@ -40,6 +40,12 @@ function Enum(name, values, options) {
      */
     this.comments = {};
 
+    /**
+     * Reserved ranges, if any.
+     * @type {Array.<number[]|string>}
+     */
+    this.reserved = undefined; // toJSON
+
     // Note that values inherit valuesById on their prototype which makes them a TypeScript-
     // compatible enum. This is used by pbts to write actual enum definitions that work for
     // static and reflection code alike instead of emitting generic object definitions.
@@ -65,7 +71,9 @@ function Enum(name, values, options) {
  * @throws {TypeError} If arguments are invalid
  */
 Enum.fromJSON = function fromJSON(name, json) {
-    return new Enum(name, json.values, json.options);
+    var enm = new Enum(name, json.values, json.options);
+    enm.reserved = json.reserved;
+    return enm;
 };
 
 /**
@@ -74,8 +82,9 @@ Enum.fromJSON = function fromJSON(name, json) {
  */
 Enum.prototype.toJSON = function toJSON() {
     return util.toObject([
-        "options" , this.options,
-        "values"  , this.values
+        "options"  , this.options,
+        "values"   , this.values,
+        "reserved" , this.reserved
     ]);
 };
 
