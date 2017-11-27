@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.8.1 (c) 2016, daniel wirtz
- * compiled sun, 26 nov 2017 21:39:19 utc
+ * compiled mon, 27 nov 2017 16:46:30 utc
  * licensed under the bsd-3-clause license
  * see: https://github.com/dcodeio/protobuf.js for details
  */
@@ -1992,7 +1992,8 @@ module.exports = Enum;
 var ReflectionObject = require(24);
 ((Enum.prototype = Object.create(ReflectionObject.prototype)).constructor = Enum).className = "Enum";
 
-var util = require(37);
+var Namespace = require(23),
+    util = require(37);
 
 /**
  * Constructs a new enum instance.
@@ -2027,6 +2028,12 @@ function Enum(name, values, options) {
      */
     this.comments = {};
 
+    /**
+     * Reserved ranges, if any.
+     * @type {Array.<number[]|string>}
+     */
+    this.reserved = undefined; // toJSON
+
     // Note that values inherit valuesById on their prototype which makes them a TypeScript-
     // compatible enum. This is used by pbts to write actual enum definitions that work for
     // static and reflection code alike instead of emitting generic object definitions.
@@ -2052,7 +2059,9 @@ function Enum(name, values, options) {
  * @throws {TypeError} If arguments are invalid
  */
 Enum.fromJSON = function fromJSON(name, json) {
-    return new Enum(name, json.values, json.options);
+    var enm = new Enum(name, json.values, json.options);
+    enm.reserved = json.reserved;
+    return enm;
 };
 
 /**
@@ -2061,8 +2070,9 @@ Enum.fromJSON = function fromJSON(name, json) {
  */
 Enum.prototype.toJSON = function toJSON() {
     return util.toObject([
-        "options" , this.options,
-        "values"  , this.values
+        "options"  , this.options,
+        "values"   , this.values,
+        "reserved" , this.reserved && this.reserved.length ? this.reserved : undefined
     ]);
 };
 
@@ -2075,7 +2085,7 @@ Enum.prototype.toJSON = function toJSON() {
  * @throws {TypeError} If arguments are invalid
  * @throws {Error} If there is already a value with this name or id
  */
-Enum.prototype.add = function(name, id, comment) {
+Enum.prototype.add = function add(name, id, comment) {
     // utilized by the parser but not by .fromJSON
 
     if (!util.isString(name))
@@ -2085,11 +2095,17 @@ Enum.prototype.add = function(name, id, comment) {
         throw TypeError("id must be an integer");
 
     if (this.values[name] !== undefined)
-        throw Error("duplicate name");
+        throw Error("duplicate name '" + name + "' in " + this);
+
+    if (this.isReservedId(id))
+        throw Error("id " + id + " is reserved in " + this);
+
+    if (this.isReservedName(name))
+        throw Error("name '" + name + "' is reserved in " + this);
 
     if (this.valuesById[id] !== undefined) {
         if (!(this.options && this.options.allow_alias))
-            throw Error("duplicate id");
+            throw Error("duplicate id " + id + " in " + this);
         this.values[name] = id;
     } else
         this.valuesById[this.values[name] = id] = name;
@@ -2105,14 +2121,14 @@ Enum.prototype.add = function(name, id, comment) {
  * @throws {TypeError} If arguments are invalid
  * @throws {Error} If `name` is not a name of this enum
  */
-Enum.prototype.remove = function(name) {
+Enum.prototype.remove = function remove(name) {
 
     if (!util.isString(name))
         throw TypeError("name must be a string");
 
     var val = this.values[name];
-    if (val === undefined)
-        throw Error("name does not exist");
+    if (val == null)
+        throw Error("name '" + name + "' does not exist in " + this);
 
     delete this.valuesById[val];
     delete this.values[name];
@@ -2121,7 +2137,25 @@ Enum.prototype.remove = function(name) {
     return this;
 };
 
-},{"24":24,"37":37}],16:[function(require,module,exports){
+/**
+ * Tests if the specified id is reserved.
+ * @param {number} id Id to test
+ * @returns {boolean} `true` if reserved, otherwise `false`
+ */
+Enum.prototype.isReservedId = function isReservedId(id) {
+    return Namespace.isReservedId(this.reserved, id);
+};
+
+/**
+ * Tests if the specified name is reserved.
+ * @param {string} name Name to test
+ * @returns {boolean} `true` if reserved, otherwise `false`
+ */
+Enum.prototype.isReservedName = function isReservedName(name) {
+    return Namespace.isReservedName(this.reserved, name);
+};
+
+},{"23":23,"24":24,"37":37}],16:[function(require,module,exports){
 "use strict";
 module.exports = Field;
 
@@ -3100,6 +3134,34 @@ function arrayToJSON(array) {
 }
 
 Namespace.arrayToJSON = arrayToJSON;
+
+/**
+ * Tests if the specified id is reserved.
+ * @param {Array.<number[]|string>|undefined} reserved Array of reserved ranges and names
+ * @param {number} id Id to test
+ * @returns {boolean} `true` if reserved, otherwise `false`
+ */
+Namespace.isReservedId = function isReservedId(reserved, id) {
+    if (reserved)
+        for (var i = 0; i < reserved.length; ++i)
+            if (typeof reserved[i] !== "string" && reserved[i][0] <= id && reserved[i][1] >= id)
+                return true;
+    return false;
+};
+
+/**
+ * Tests if the specified name is reserved.
+ * @param {Array.<number[]|string>|undefined} reserved Array of reserved ranges and names
+ * @param {string} name Name to test
+ * @returns {boolean} `true` if reserved, otherwise `false`
+ */
+Namespace.isReservedName = function isReservedName(reserved, name) {
+    if (reserved)
+        for (var i = 0; i < reserved.length; ++i)
+            if (reserved[i] === name)
+                return true;
+    return false;
+};
 
 /**
  * Not an actual constructor. Use {@link Namespace} instead.
@@ -4330,11 +4392,19 @@ function parse(source, root, options) {
 
         var enm = new Enum(token);
         ifBlock(enm, function parseEnum_block(token) {
-            if (token === "option") {
-                parseOption(enm, token);
-                skip(";");
-            } else
-                parseEnumValue(enm, token);
+          switch(token) {
+            case "option":
+              parseOption(enm, token);
+              skip(";");
+              break;
+
+            case "reserved":
+              readRanges(enm.reserved || (enm.reserved = []), true);
+              break;
+
+            default:
+              parseEnumValue(enm, token);
+          }
         });
         parent.add(enm);
     }
@@ -4395,7 +4465,10 @@ function parse(source, root, options) {
                     parseOptionValue(parent, name + "." + token);
                 else {
                     skip(":");
-                    setOption(parent, name + "." + token, readValue(true));
+                    if (peek() === "{")
+                        parseOptionValue(parent, name + "." + token);
+                    else
+                        setOption(parent, name + "." + token, readValue(true));
                 }
             } while (!skip("}", true));
         } else
@@ -5750,7 +5823,8 @@ Service.prototype.remove = function remove(object) {
 Service.prototype.create = function create(rpcImpl, requestDelimited, responseDelimited) {
     var rpcService = new rpc.Service(rpcImpl, requestDelimited, responseDelimited);
     for (var i = 0, method; i < /* initializes */ this.methodsArray.length; ++i) {
-        rpcService[util.lcFirst((method = this._methodsArray[i]).resolve().name)] = util.codegen(["r","c"], util.lcFirst(method.name))("return this.rpcCall(m,q,s,r,c)")({
+        var methodName = util.lcFirst((method = this._methodsArray[i]).resolve().name).replace(/[^$\w_]/g, "");
+        rpcService[methodName] = util.codegen(["r","c"], util.isReserved(methodName) ? methodName + "_" : methodName)("return this.rpcCall(m,q,s,r,c)")({
             m: method,
             q: method.resolvedRequestType.ctor,
             s: method.resolvedResponseType.ctor
@@ -6486,11 +6560,7 @@ Type.prototype.remove = function remove(object) {
  * @returns {boolean} `true` if reserved, otherwise `false`
  */
 Type.prototype.isReservedId = function isReservedId(id) {
-    if (this.reserved)
-        for (var i = 0; i < this.reserved.length; ++i)
-            if (typeof this.reserved[i] !== "string" && this.reserved[i][0] <= id && this.reserved[i][1] >= id)
-                return true;
-    return false;
+    return Namespace.isReservedId(this.reserved, id);
 };
 
 /**
@@ -6499,11 +6569,7 @@ Type.prototype.isReservedId = function isReservedId(id) {
  * @returns {boolean} `true` if reserved, otherwise `false`
  */
 Type.prototype.isReservedName = function isReservedName(name) {
-    if (this.reserved)
-        for (var i = 0; i < this.reserved.length; ++i)
-            if (this.reserved[i] === name)
-                return true;
-    return false;
+    return Namespace.isReservedName(this.reserved, name);
 };
 
 /**

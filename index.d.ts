@@ -167,6 +167,9 @@ export class Enum extends ReflectionObject {
     /** Value comment texts, if any. */
     public comments: { [k: string]: string };
 
+    /** Reserved ranges, if any. */
+    public reserved: (number[]|string)[];
+
     /**
      * Constructs an enum from an enum descriptor.
      * @param name Enum name
@@ -201,6 +204,20 @@ export class Enum extends ReflectionObject {
      * @throws {Error} If `name` is not a name of this enum
      */
     public remove(name: string): Enum;
+
+    /**
+     * Tests if the specified id is reserved.
+     * @param id Id to test
+     * @returns `true` if reserved, otherwise `false`
+     */
+    public isReservedId(id: number): boolean;
+
+    /**
+     * Tests if the specified name is reserved.
+     * @param name Name to test
+     * @returns `true` if reserved, otherwise `false`
+     */
+    public isReservedName(name: string): boolean;
 }
 
 /** Enum descriptor. */
@@ -655,6 +672,22 @@ export class Namespace extends NamespaceBase {
      * @returns JSON object or `undefined` when array is empty
      */
     public static arrayToJSON(array: ReflectionObject[]): ({ [k: string]: any }|undefined);
+
+    /**
+     * Tests if the specified id is reserved.
+     * @param reserved Array of reserved ranges and names
+     * @param id Id to test
+     * @returns `true` if reserved, otherwise `false`
+     */
+    public static isReservedId(reserved: ((number[]|string)[]|undefined), id: number): boolean;
+
+    /**
+     * Tests if the specified name is reserved.
+     * @param reserved Array of reserved ranges and names
+     * @param name Name to test
+     * @returns `true` if reserved, otherwise `false`
+     */
+    public static isReservedName(reserved: ((number[]|string)[]|undefined), name: string): boolean;
 }
 
 /** Base class of all reflection objects containing nested objects. This is not an actual class but here for the sake of having consistent type definitions. */
