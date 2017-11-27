@@ -7,7 +7,7 @@ var $protobuf = require("../../minimal");
 var $Reader = $protobuf.Reader, $Writer = $protobuf.Writer, $util = $protobuf.util;
 
 // Exported root namespace
-var $root = $protobuf.roots.test_rpc || ($protobuf.roots.test_rpc = {});
+var $root = $protobuf.roots["test_rpc-reserved"] || ($protobuf.roots["test_rpc-reserved"] = {});
 
 $root.MyService = (function() {
 
@@ -42,31 +42,31 @@ $root.MyService = (function() {
     };
 
     /**
-     * Callback as used by {@link MyService#myMethod}.
+     * Callback as used by {@link MyService#delete_}.
      * @memberof MyService
-     * @typedef MyMethodCallback
+     * @typedef DeleteCallback
      * @type {function}
      * @param {Error|null} error Error, if any
      * @param {MyResponse} [response] MyResponse
      */
 
     /**
-     * Calls MyMethod.
-     * @function myMethod
+     * Calls Delete.
+     * @function delete
      * @memberof MyService
      * @instance
      * @param {IMyRequest} request MyRequest message or plain object
-     * @param {MyService.MyMethodCallback} callback Node-style callback called with the error, if any, and MyResponse
+     * @param {MyService.DeleteCallback} callback Node-style callback called with the error, if any, and MyResponse
      * @returns {undefined}
      * @variation 1
      */
-    MyService.prototype.myMethod = function myMethod(request, callback) {
-        return this.rpcCall(myMethod, $root.MyRequest, $root.MyResponse, request, callback);
+    MyService.prototype["delete"] = function delete_(request, callback) {
+        return this.rpcCall(delete_, $root.MyRequest, $root.MyResponse, request, callback);
     };
 
     /**
-     * Calls MyMethod.
-     * @function myMethod
+     * Calls Delete.
+     * @function delete
      * @memberof MyService
      * @instance
      * @param {IMyRequest} request MyRequest message or plain object

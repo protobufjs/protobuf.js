@@ -11,6 +11,7 @@ var fs   = require("fs"),
     { file: "tests/data/package.proto", flags: [] },
     { file: "tests/data/rpc.proto", flags: [ "es6" ] },
     { file: "tests/data/rpc.proto", flags: [] },
+    { file: "tests/data/rpc-reserved.proto", flags: [] },
     { file: "tests/data/test.proto", flags: [] },
     { file: "bench/data/bench.proto", flags: ["no-create", "no-verify", "no-delimited", "no-convert", "no-comments"], out: "bench/data/static_pbjs.js" }
 ]
@@ -50,6 +51,7 @@ process.stdout.write("\n");
     { file: "tests/data/package.js" },
     { file: "tests/data/rpc.js" },
     { file: "tests/data/rpc-es6.js" },
+    { file: "tests/data/rpc-reserved.js" },
     { file: "tests/data/test.js" },
     { file: "ext/descriptor/index.js", ext: true }
 ]
