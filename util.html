@@ -209,9 +209,11 @@
             
                 <li data-name="util.isObject"><a href="util.html#.isObject">isObject</a></li>
             
-                <li data-name="util.isSet"><a href="util.html#.isSet">isSet</a></li>
+                <li data-name="util.isReserved"><a href="util.html#.isReserved">isReserved</a></li>
             
                 <li data-name="util.isset"><a href="util.html#.isset">isset</a></li>
+            
+                <li data-name="util.isSet"><a href="util.html#.isSet">isSet</a></li>
             
                 <li data-name="util.isString"><a href="util.html#.isString">isString</a></li>
             
@@ -493,6 +495,8 @@
             
                 <li data-name="Enum#parent"><a href="Enum.html#parent">parent</a></li>
             
+                <li data-name="Enum#reserved"><a href="Enum.html#reserved">reserved</a></li>
+            
                 <li data-name="Enum#resolved"><a href="Enum.html#resolved">resolved</a></li>
             
                 <li data-name="Enum#root"><a href="Enum.html#root">root</a></li>
@@ -514,6 +518,10 @@
                 <li data-name="Enum#add"><a href="Enum.html#add">add</a></li>
             
                 <li data-name="Enum#getOption"><a href="Enum.html#getOption">getOption</a></li>
+            
+                <li data-name="Enum#isReservedId"><a href="Enum.html#isReservedId">isReservedId</a></li>
+            
+                <li data-name="Enum#isReservedName"><a href="Enum.html#isReservedName">isReservedName</a></li>
             
                 <li data-name="Enum#onAdd"><a href="Enum.html#onAdd">onAdd</a></li>
             
@@ -976,6 +984,10 @@
                 <li data-name="Namespace.arrayToJSON"><a href="Namespace.html#.arrayToJSON">arrayToJSON</a></li>
             
                 <li data-name="Namespace.fromJSON"><a href="Namespace.html#.fromJSON">fromJSON</a></li>
+            
+                <li data-name="Namespace.isReservedId"><a href="Namespace.html#.isReservedId">isReservedId</a></li>
+            
+                <li data-name="Namespace.isReservedName"><a href="Namespace.html#.isReservedName">isReservedName</a></li>
             
                 <li data-name="Namespace#add"><a href="Namespace.html#add">add</a></li>
             
@@ -2708,7 +2720,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/util.js">src/util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/util.js#L86">line 86</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/util.js">src/util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/util.js#L97">line 97</a>
         </div>
         
     </div>
@@ -3185,7 +3197,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/util.js">src/util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/util.js#L98">line 98</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/util.js">src/util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/util.js#L109">line 109</a>
         </div>
         
     </div>
@@ -3353,7 +3365,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/util.js">src/util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/util.js#L141">line 141</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/util.js">src/util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/util.js#L152">line 152</a>
         </div>
         
     </div>
@@ -3498,7 +3510,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/util.js">src/util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/util.js#L110">line 110</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/util.js">src/util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/util.js#L121">line 121</a>
         </div>
         
     </div>
@@ -4696,14 +4708,14 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id=".isSet">
+        <h4 class="name" id=".isReserved">
             
-            util.isSet<span class="signature">(obj, prop)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ boolean }</span>
+            util.isReserved<span class="signature">(name)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ boolean }</span>
         </h4>
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/util/minimal.js">src/util/minimal.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/util/minimal.js#L95">line 95</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/util.js">src/util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/util.js#L66">line 66</a>
         </div>
         
     </div>
@@ -4714,7 +4726,152 @@
     
     
     <div class="description">
-        <p>Checks if a property on a message is considered to be present.</p>
+        <p>Tests whether the specified name is a reserved word in JS.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>Name to test</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Type</th>
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    
+        <tr>
+            
+            <td class="type">
+            
+                        boolean
+                        
+                    
+            </td>
+            <td class="description last"><code>true</code> if reserved, otherwise <code>false</code></td>
+        </tr>
+    
+    </tbody>
+</table>
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id=".isset">
+            
+            util.isset<span class="signature">(obj, prop)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ boolean }</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/util/minimal.js">src/util/minimal.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/util/minimal.js#L87">line 87</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Checks if a property on a message is considered to be present.<br>This is an alias of <a href="util.html#.isSet">util.isSet</a>.</p>
     </div>
     
 
@@ -4864,14 +5021,14 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id=".isset">
+        <h4 class="name" id=".isSet">
             
-            util.isset<span class="signature">(obj, prop)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ boolean }</span>
+            util.isSet<span class="signature">(obj, prop)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ boolean }</span>
         </h4>
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/util/minimal.js">src/util/minimal.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/util/minimal.js#L87">line 87</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/util/minimal.js">src/util/minimal.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/util/minimal.js#L95">line 95</a>
         </div>
         
     </div>
@@ -4882,7 +5039,7 @@
     
     
     <div class="description">
-        <p>Checks if a property on a message is considered to be present.<br>This is an alias of <a href="util.html#.isSet">util.isSet</a>.</p>
+        <p>Checks if a property on a message is considered to be present.</p>
     </div>
     
 
@@ -6721,7 +6878,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/util.js">src/util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/util.js#L66">line 66</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/util.js">src/util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/util.js#L75">line 75</a>
         </div>
         
     </div>
@@ -6732,7 +6889,7 @@
     
     
     <div class="description">
-        <p>Returns a safe property accessor for the specified properly name.</p>
+        <p>Returns a safe property accessor for the specified property name.</p>
     </div>
     
 
@@ -7156,7 +7313,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/util.js">src/util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/util.js#L75">line 75</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/util.js">src/util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/src/util.js#L86">line 86</a>
         </div>
         
     </div>

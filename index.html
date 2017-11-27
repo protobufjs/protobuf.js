@@ -209,9 +209,11 @@
             
                 <li data-name="util.isObject"><a href="util.html#.isObject">isObject</a></li>
             
-                <li data-name="util.isSet"><a href="util.html#.isSet">isSet</a></li>
+                <li data-name="util.isReserved"><a href="util.html#.isReserved">isReserved</a></li>
             
                 <li data-name="util.isset"><a href="util.html#.isset">isset</a></li>
+            
+                <li data-name="util.isSet"><a href="util.html#.isSet">isSet</a></li>
             
                 <li data-name="util.isString"><a href="util.html#.isString">isString</a></li>
             
@@ -493,6 +495,8 @@
             
                 <li data-name="Enum#parent"><a href="Enum.html#parent">parent</a></li>
             
+                <li data-name="Enum#reserved"><a href="Enum.html#reserved">reserved</a></li>
+            
                 <li data-name="Enum#resolved"><a href="Enum.html#resolved">resolved</a></li>
             
                 <li data-name="Enum#root"><a href="Enum.html#root">root</a></li>
@@ -514,6 +518,10 @@
                 <li data-name="Enum#add"><a href="Enum.html#add">add</a></li>
             
                 <li data-name="Enum#getOption"><a href="Enum.html#getOption">getOption</a></li>
+            
+                <li data-name="Enum#isReservedId"><a href="Enum.html#isReservedId">isReservedId</a></li>
+            
+                <li data-name="Enum#isReservedName"><a href="Enum.html#isReservedName">isReservedName</a></li>
             
                 <li data-name="Enum#onAdd"><a href="Enum.html#onAdd">onAdd</a></li>
             
@@ -976,6 +984,10 @@
                 <li data-name="Namespace.arrayToJSON"><a href="Namespace.html#.arrayToJSON">arrayToJSON</a></li>
             
                 <li data-name="Namespace.fromJSON"><a href="Namespace.html#.fromJSON">fromJSON</a></li>
+            
+                <li data-name="Namespace.isReservedId"><a href="Namespace.html#.isReservedId">isReservedId</a></li>
+            
+                <li data-name="Namespace.isReservedName"><a href="Namespace.html#.isReservedName">isReservedName</a></li>
             
                 <li data-name="Namespace#add"><a href="Namespace.html#add">add</a></li>
             
@@ -1863,7 +1875,7 @@
 
     <section>
         <article class="readme"><p><h1><p align="center"><img alt="protobuf.js" src="https://github.com/dcodeIO/protobuf.js/raw/master/pbjs.png" width="120" height="104" /></p></h1></p>
-<p align="center"><a target="_blank" href="https://npmjs.org/package/protobufjs"><img src="https://img.shields.io/npm/v/protobufjs.svg" alt=""></a> <a target="_blank" href="https://travis-ci.org/dcodeIO/protobuf.js"><img src="https://travis-ci.org/dcodeIO/protobuf.js.svg?branch=master" alt=""></a> <a target="_blank" href="https://codeclimate.com/github/dcodeIO/protobuf.js/coverage"><img src="https://codeclimate.com/github/dcodeIO/protobuf.js/badges/coverage.svg" /></a> <a target="_blank" href="https://codeclimate.com/github/dcodeIO/protobuf.js"><img src="https://codeclimate.com/github/dcodeIO/protobuf.js/badges/gpa.svg" /></a> <a target="_blank" href="https://npmjs.org/package/protobufjs"><img src="https://img.shields.io/npm/dm/protobufjs.svg" alt=""></a> <a target="_blank" href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=dcode%40dcode.io&item_name=Open%20Source%20Software%20Donation&item_number=dcodeIO%2Fprotobuf.js"><img alt="donate ❤" src="https://img.shields.io/badge/donate-❤-ff2244.svg"></a></p>
+<p align="center"><a target="_blank" href="https://npmjs.org/package/protobufjs"><img src="https://img.shields.io/npm/v/protobufjs.svg" alt=""></a> <a target="_blank" href="https://travis-ci.org/dcodeIO/protobuf.js"><img src="https://travis-ci.org/dcodeIO/protobuf.js.svg?branch=master" alt=""></a> <a target="_blank" href="https://codeclimate.com/github/dcodeIO/protobuf.js/coverage"><img src="https://codeclimate.com/github/dcodeIO/protobuf.js/badges/coverage.svg" /></a> <a target="_blank" href="https://npmjs.org/package/protobufjs"><img src="https://img.shields.io/npm/dm/protobufjs.svg" alt=""></a> <a target="_blank" href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=dcode%40dcode.io&item_name=Open%20Source%20Software%20Donation&item_number=dcodeIO%2Fprotobuf.js"><img alt="donate ❤" src="https://img.shields.io/badge/donate-❤-ff2244.svg"></a></p>
 
 <p><strong>Protocol Buffers</strong> are a language-neutral, platform-neutral, extensible way of serializing structured data for use in communications protocols, data storage, and more, originally designed at Google (<a target="_blank" href="https://developers.google.com/protocol-buffers/">see</a>).</p>
 <p><strong>protobuf.js</strong> is a pure JavaScript implementation with <a target="_blank" href="https://www.typescriptlang.org">TypeScript</a> support for <a target="_blank" href="https://nodejs.org">node.js</a> and the browser. It's easy to use, blazingly fast and works out of the box with <a target="_blank" href="https://developers.google.com/protocol-buffers/docs/proto">.proto</a> files!</p>
@@ -2542,8 +2554,8 @@ google-protobuf x 42,050 ops/sec ±0.85% (91 runs sampled)
 <pre class="prettyprint source"><code>$> npm run bench</code></pre><p>and <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/bench/prof.js">the profiler</a> yourself (the latter requires a recent version of node):</p>
 <pre class="prettyprint source"><code>$> npm run prof &lt;encode|decode|encode-browser|decode-browser> [iterations=10000000]</code></pre><p>Note that as of this writing, the benchmark suite performs significantly slower on node 7.2.0 compared to 6.9.1 because moths.</p>
 <h2 id="compatibility">Compatibility</h2>
-<p><a target="_blank" href="https://saucelabs.com/u/protobuf"><img src="https://saucelabs.com/browser-matrix/protobuf.svg" alt="Sauce Test Status"></a></p>
 <ul>
+<li>Works in all modern and not-so-modern browsers except IE8.</li>
 <li>Because the internals of this package do not rely on <code>google/protobuf/descriptor.proto</code>, options are parsed and presented literally.</li>
 <li>If typed arrays are not supported by the environment, plain arrays will be used instead.</li>
 <li>Support for pre-ES5 environments (except IE8) can be achieved by <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/scripts/polyfill.js">using a polyfill</a>.</li>
