@@ -1,3 +1,8 @@
+# [6.8.2](https://github.com/dcodeIO/protobuf.js/releases/tag/6.8.2)
+
+## Other
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/6fc6481d790648e9e2169a961ad31a732398c911) Include dist files in npm package, see [#955](https://github.com/dcodeIO/protobuf.js/issues/955)<br />
+
 # [6.8.1](https://github.com/dcodeIO/protobuf.js/releases/tag/6.8.1)
 
 ## Fixed
