@@ -1,3 +1,8 @@
+# [6.8.3](https://github.com/dcodeIO/protobuf.js/releases/tag/6.8.3)
+
+## CLI
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/cc991a058b0636f3454166c76de7b664cf23a8f4) Use correct safeProp in json-module target, see [#956](https://github.com/dcodeIO/protobuf.js/issues/956)<br />
+
 # [6.8.2](https://github.com/dcodeIO/protobuf.js/releases/tag/6.8.2)
 
 ## Other
