@@ -181,10 +181,3 @@ exports.pad = function(str, len, l) {
     return str;
 };
 
-exports.jsonSafeProp = function(json) {
-    return json.replace(/^( +)"(\w+)":/mg, function($0, $1, $2) {
-        return exports.safeProp($2).charAt(0) === "."
-            ? $1 + $2 + ":"
-            : $0;
-    });
-};
