@@ -1,6 +1,6 @@
 {
   "name": "protobufjs",
-  "version": "6.8.3",
+  "version": "6.8.4",
   "versionScheme": "~",
   "description": "Protocol Buffers for JavaScript (& TypeScript).",
   "author": "Daniel Wirtz <dcode+protobufjs@dcode.io>",
@@ -53,7 +53,7 @@
     "@protobufjs/pool": "^1.1.0",
     "@protobufjs/utf8": "^1.1.0",
     "@types/long": "^3.0.32",
-    "@types/node": "^8.0.53",
+    "@types/node": "^8.5.5",
     "long": "^3.2.0"
   },
   "devDependencies": {
@@ -75,7 +75,7 @@
     "gulp": "^3.9.1",
     "gulp-header": "^1.8.9",
     "gulp-if": "^2.0.1",
-    "gulp-sourcemaps": "^2.6.1",
+    "gulp-sourcemaps": "^2.6.3",
     "gulp-uglify": "^2.1.2",
     "istanbul": "^0.4.5",
     "jaguarjs-jsdoc": "github:dcodeIO/jaguarjs-jsdoc",
@@ -87,11 +87,11 @@
     "tape": "^4.8.0",
     "tmp": "0.0.33",
     "tslint": "^5.8.0",
-    "typescript": "^2.6.1",
+    "typescript": "^2.6.2",
     "uglify-js": "^2.8.29",
-    "vinyl-buffer": "^1.0.0",
+    "vinyl-buffer": "^1.0.1",
     "vinyl-fs": "^2.4.4",
-    "vinyl-source-stream": "^1.1.0"
+    "vinyl-source-stream": "^1.1.2"
   },
   "cliDependencies": [
     "semver",
