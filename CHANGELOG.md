@@ -1,3 +1,8 @@
+# [6.8.4](https://github.com/dcodeIO/protobuf.js/releases/tag/6.8.4)
+
+## Other
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/69440c023e6962c644715a0c95363ddf19db648f) Update jsdoc dependency (pinned vulnerable marked)<br />
+
 # [6.8.3](https://github.com/dcodeIO/protobuf.js/releases/tag/6.8.3)
 
 ## CLI
