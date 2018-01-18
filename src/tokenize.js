@@ -202,7 +202,7 @@ function tokenize(source, alternateCommentMode) {
     function findEndOfLine(cursor) {
         // find end of cursor's line
         var endOffset = cursor;
-        while (endOffset < length && charAt(endOffset) !== '\n') {
+        while (endOffset < length && charAt(endOffset) !== "\n") {
             endOffset++;
         }
         return endOffset;
@@ -238,9 +238,8 @@ function tokenize(source, alternateCommentMode) {
                 if (++offset === length) {
                     throw illegal("comment");
                 }
-                if (!alternateCommentMode) {
-                    // standard comment parsing
-                    if (charAt(offset) === "/") { // Line
+                if (charAt(offset) === "/") { // Line
+                    if (!alternateCommentMode) {
                         // check for triple-slash comment
                         isDoc = charAt(start = offset + 1) === "/";
 
@@ -255,32 +254,8 @@ function tokenize(source, alternateCommentMode) {
                         }
                         ++line;
                         repeat = true;
-                    } else if ((curr = charAt(offset)) === "*") { /* Block */
-                        // check for /** doc comment
-                        isDoc = charAt(start = offset + 1) === "*";
-                        do {
-                            if (curr === "\n") {
-                                ++line;
-                            }
-                            if (++offset === length) {
-                                throw illegal("comment");
-                            }
-                            prev = curr;
-                            curr = charAt(offset);
-                        } while (prev !== "*" || curr !== "/");
-                        ++offset;
-                        if (isDoc) { /** Comment */
-                            setComment(start, offset - 2);
-                        }
-                        repeat = true;
                     } else {
-                        return "/";
-                    }
-                } else {
-                    // alternate comment parsing
-                    // check for double-slash comments, coalescing consecutive
-                    // lines into one multi-line comment.
-                    if (charAt(offset) === "/") {
+                        // check for double-slash comments, consolidating consecutive lines
                         start = offset;
                         isDoc = false;
                         if (isDoubleSlashCommentLine(offset)) {
@@ -300,25 +275,28 @@ function tokenize(source, alternateCommentMode) {
                         }
                         line++;
                         repeat = true;
-                    } else if ((curr = charAt(offset)) === "*") { /* Block */
-                        // found /* doc comment
-                        start = offset + 1;
-                        do {
-                            if (curr === "\n") {
-                                ++line;
-                            }
-                            if (++offset === length) {
-                                throw illegal("comment");
-                            }
-                            prev = curr;
-                            curr = charAt(offset);
-                        } while (prev !== "*" || curr !== "/");
-                        ++offset;
-                        setComment(start, offset - 2);
-                        repeat = true;
-                    } else {
-                        return "/";
                     }
+                } else if ((curr = charAt(offset)) === "*") { /* Block */
+                    // check for /** (regular comment mode) or /* (alternate comment mode)
+                    start = offset + 1;
+                    isDoc = alternateCommentMode || charAt(start) === "*";
+                    do {
+                        if (curr === "\n") {
+                            ++line;
+                        }
+                        if (++offset === length) {
+                            throw illegal("comment");
+                        }
+                        prev = curr;
+                        curr = charAt(offset);
+                    } while (prev !== "*" || curr !== "/");
+                    ++offset;
+                    if (isDoc) {
+                        setComment(start, offset - 2);
+                    }
+                    repeat = true;
+                } else {
+                    return "/";
                 }
             }
         } while (repeat);
@@ -390,32 +368,17 @@ function tokenize(source, alternateCommentMode) {
      */
     function cmnt(trailingLine) {
         var ret = null;
-        if (alternateCommentMode) {
-            if (trailingLine === undefined) {
-                if (commentLine === line - 1) {
-                    ret = commentText;
-                }
-            } else {
-                if (commentLine < trailingLine) {
-                    peek();
-                }
-                if (commentLine === trailingLine && !commentLineEmpty) {
-                    ret = commentText;
-                }
+        if (trailingLine === undefined) {
+            if (commentLine === line - 1 && (alternateCommentMode || commentType === "*" || commentLineEmpty)) {
+                ret = commentText;
             }
         } else {
-            if (trailingLine === undefined) {
-                if (commentLine === line - 1 && (commentType === "*" || commentLineEmpty)) {
-                    ret = commentText;
-                }
-            } else {
-                /* istanbul ignore else */
-                if (commentLine < trailingLine) {
-                    peek();
-                }
-                if (commentLine === trailingLine && !commentLineEmpty && commentType === "/") {
-                    ret = commentText;
-                }
+            /* istanbul ignore else */
+            if (commentLine < trailingLine) {
+                peek();
+            }
+            if (commentLine === trailingLine && !commentLineEmpty && (alternateCommentMode || commentType === "/")) {
+                ret = commentText;
             }
         }
         return ret;
