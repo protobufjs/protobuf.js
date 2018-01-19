@@ -6,7 +6,8 @@ var def = {
     methods: {},
     nested: {
         SomeEnum: {
-            values: {}
+            values: {},
+            comments: {}
         }
     }
 };
