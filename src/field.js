@@ -35,7 +35,7 @@ var ruleRe = /^required|optional|repeated$/;
  * @throws {TypeError} If arguments are invalid
  */
 Field.fromJSON = function fromJSON(name, json) {
-    return new Field(name, json.id, json.type, json.rule, json.extend, json.options);
+    return new Field(name, json.id, json.type, json.rule, json.extend, json.options, json.comment);
 };
 
 /**
@@ -50,8 +50,9 @@ Field.fromJSON = function fromJSON(name, json) {
  * @param {string|Object.<string,*>} [rule="optional"] Field rule
  * @param {string|Object.<string,*>} [extend] Extended type if different from parent
  * @param {Object.<string,*>} [options] Declared options
+ * @param {string} comment Comment associated with this field
  */
-function Field(name, id, type, rule, extend, options) {
+function Field(name, id, type, rule, extend, options, comment) {
 
     if (util.isObject(rule)) {
         options = rule;
@@ -183,6 +184,12 @@ function Field(name, id, type, rule, extend, options) {
      * @private
      */
     this._packed = null;
+
+    /**
+     * Comment for this field.
+     * @type {string|undefined}
+     */
+    this.comment = comment;
 }
 
 /**
@@ -235,7 +242,8 @@ Field.prototype.toJSON = function toJSON() {
         "type"    , this.type,
         "id"      , this.id,
         "extend"  , this.extend,
-        "options" , this.options
+        "options" , this.options,
+        "comment" , this.comment
     ]);
 };
 
