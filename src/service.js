@@ -57,6 +57,7 @@ Service.fromJSON = function fromJSON(name, json) {
             service.add(Method.fromJSON(names[i], json.methods[names[i]]));
     if (json.nested)
         service.addJSON(json.nested);
+    service.comment = json.comment;
     return service;
 };
 
@@ -69,7 +70,8 @@ Service.prototype.toJSON = function toJSON() {
     return util.toObject([
         "options" , inherited && inherited.options || undefined,
         "methods" , Namespace.arrayToJSON(this.methodsArray) || /* istanbul ignore next */ {},
-        "nested"  , inherited && inherited.nested || undefined
+        "nested"  , inherited && inherited.nested || undefined,
+        "comment" , this.comment
     ]);
 };
 

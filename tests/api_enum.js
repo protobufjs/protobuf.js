@@ -71,6 +71,9 @@ tape.test("reflected enums", function(test) {
         values: {
             a: 1,
             c: 3
+        },
+        comments: {
+            c: null
         }
     }, "should export values to JSON");
 

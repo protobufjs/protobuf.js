@@ -270,6 +270,8 @@ Type.fromJSON = function fromJSON(name, json) {
         type.reserved = json.reserved;
     if (json.group)
         type.group = true;
+    if (json.comment)
+        type.comment = json.comment;
     return type;
 };
 
@@ -286,7 +288,8 @@ Type.prototype.toJSON = function toJSON() {
         "extensions" , this.extensions && this.extensions.length ? this.extensions : undefined,
         "reserved"   , this.reserved && this.reserved.length ? this.reserved : undefined,
         "group"      , this.group || undefined,
-        "nested"     , inherited && inherited.nested || undefined
+        "nested"     , inherited && inherited.nested || undefined,
+        "comment"    , this.comment || undefined
     ]);
 };
 

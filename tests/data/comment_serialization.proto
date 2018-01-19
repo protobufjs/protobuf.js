@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+/// message comment
+message TestMessage {
+    /// field comment
+    string testField = 1;
+}
+
+/// service comment
+service TestService {
+  /// method comment
+  rpc testMethod(TestMessage) returns (TestMessage) {}
+}
+
+/// enum comment
+enum TestEnum {
+    /// enum value comment
+    VALUE = 1;
+}

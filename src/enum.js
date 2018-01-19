@@ -16,8 +16,10 @@ var Namespace = require("./namespace"),
  * @param {string} name Unique name within its namespace
  * @param {Object.<string,number>} [values] Enum values as an object, by name
  * @param {Object.<string,*>} [options] Declared options
+ * @param {string} comment The comment for this enum
+ * @param {Object.<string,string>} comments The value comments for this enum
  */
-function Enum(name, values, options) {
+function Enum(name, values, options, comment, comments) {
     ReflectionObject.call(this, name, options);
 
     if (values && typeof values !== "object")
@@ -36,10 +38,16 @@ function Enum(name, values, options) {
     this.values = Object.create(this.valuesById); // toJSON, marker
 
     /**
+     * Enum comment text.
+     * @type {string|undefined}
+     */
+    this.comment = comment;
+
+    /**
      * Value comment texts, if any.
      * @type {Object.<string,string>}
      */
-    this.comments = {};
+    this.comments = comments || {};
 
     /**
      * Reserved ranges, if any.
@@ -72,7 +80,7 @@ function Enum(name, values, options) {
  * @throws {TypeError} If arguments are invalid
  */
 Enum.fromJSON = function fromJSON(name, json) {
-    var enm = new Enum(name, json.values, json.options);
+    var enm = new Enum(name, json.values, json.options, json.comment, json.comments);
     enm.reserved = json.reserved;
     return enm;
 };
@@ -85,7 +93,9 @@ Enum.prototype.toJSON = function toJSON() {
     return util.toObject([
         "options"  , this.options,
         "values"   , this.values,
-        "reserved" , this.reserved && this.reserved.length ? this.reserved : undefined
+        "reserved" , this.reserved && this.reserved.length ? this.reserved : undefined,
+        "comment"  , this.comment,
+        "comments" , this.comments
     ]);
 };
 

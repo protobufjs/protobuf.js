@@ -19,8 +19,9 @@ var util = require("./util");
  * @param {boolean|Object.<string,*>} [requestStream] Whether the request is streamed
  * @param {boolean|Object.<string,*>} [responseStream] Whether the response is streamed
  * @param {Object.<string,*>} [options] Declared options
+ * @param {string} comment The comment for this method
  */
-function Method(name, type, requestType, responseType, requestStream, responseStream, options) {
+function Method(name, type, requestType, responseType, requestStream, responseStream, options, comment) {
 
     /* istanbul ignore next */
     if (util.isObject(requestStream)) {
@@ -86,6 +87,12 @@ function Method(name, type, requestType, responseType, requestStream, responseSt
      * @type {Type|null}
      */
     this.resolvedResponseType = null;
+
+    /**
+     * Comment for this method
+     * @type {string|undefined}
+     */
+    this.comment = comment;
 }
 
 /**
@@ -107,7 +114,7 @@ function Method(name, type, requestType, responseType, requestStream, responseSt
  * @throws {TypeError} If arguments are invalid
  */
 Method.fromJSON = function fromJSON(name, json) {
-    return new Method(name, json.type, json.requestType, json.responseType, json.requestStream, json.responseStream, json.options);
+    return new Method(name, json.type, json.requestType, json.responseType, json.requestStream, json.responseStream, json.options, json.comment);
 };
 
 /**
@@ -121,7 +128,8 @@ Method.prototype.toJSON = function toJSON() {
         "requestStream"  , this.requestStream,
         "responseType"   , this.responseType,
         "responseStream" , this.responseStream,
-        "options"        , this.options
+        "options"        , this.options,
+        "comment"        , this.comment
     ]);
 };
 
