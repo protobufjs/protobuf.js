@@ -12,6 +12,7 @@ var commonRe = /\/|\./;
  * @property {INamespace} google/protobuf/any.proto Any
  * @property {INamespace} google/protobuf/duration.proto Duration
  * @property {INamespace} google/protobuf/empty.proto Empty
+ * @property {INamespace} google/protobuf/field_mask.proto FieldMask
  * @property {INamespace} google/protobuf/struct.proto Struct, Value, NullValue and ListValue
  * @property {INamespace} google/protobuf/timestamp.proto Timestamp
  * @property {INamespace} google/protobuf/wrappers.proto Wrappers
@@ -33,7 +34,6 @@ function common(name, json) {
 // Not provided because of limited use (feel free to discuss or to provide yourself):
 //
 // google/protobuf/descriptor.proto
-// google/protobuf/field_mask.proto
 // google/protobuf/source_context.proto
 // google/protobuf/type.proto
 //
@@ -359,6 +359,26 @@ common("wrappers", {
     }
 });
 
+common("field_mask", {
+
+    /**
+     * Properties of a google.protobuf.FieldMask message.
+     * @interface IDoubleValue
+     * @type {Object}
+     * @property {number} [value]
+     * @memberof common
+     */
+    FieldMask: {
+        fields: {
+            paths: {
+                rule: "repeated",
+                type: "string",
+                id: 1
+            }
+        }
+    }
+});
+
 /**
  * Gets the root definition of the specified common proto file.
  *
@@ -366,6 +386,7 @@ common("wrappers", {
  * - google/protobuf/any.proto
  * - google/protobuf/duration.proto
  * - google/protobuf/empty.proto
+ * - google/protobuf/field_mask.proto
  * - google/protobuf/struct.proto
  * - google/protobuf/timestamp.proto
  * - google/protobuf/wrappers.proto
