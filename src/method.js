@@ -119,9 +119,11 @@ Method.fromJSON = function fromJSON(name, json) {
 
 /**
  * Converts this method to a method descriptor.
+ * @param {IToJSONOptions} [toJSONOptions] JSON conversion options
  * @returns {IMethod} Method descriptor
  */
-Method.prototype.toJSON = function toJSON() {
+Method.prototype.toJSON = function toJSON(toJSONOptions) {
+    var keepComments = toJSONOptions ? (!!toJSONOptions.keepComments) : false;
     return util.toObject([
         "type"           , this.type !== "rpc" && /* istanbul ignore next */ this.type || undefined,
         "requestType"    , this.requestType,
@@ -129,7 +131,7 @@ Method.prototype.toJSON = function toJSON() {
         "responseType"   , this.responseType,
         "responseStream" , this.responseStream,
         "options"        , this.options,
-        "comment"        , this.comment
+        "comment"        , keepComments ? this.comment : undefined
     ]);
 };
 

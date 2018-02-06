@@ -234,16 +234,18 @@ Field.prototype.setOption = function setOption(name, value, ifNotSet) {
 
 /**
  * Converts this field to a field descriptor.
+ * @param {IToJSONOptions} [toJSONOptions] JSON conversion options
  * @returns {IField} Field descriptor
  */
-Field.prototype.toJSON = function toJSON() {
+Field.prototype.toJSON = function toJSON(toJSONOptions) {
+    var keepComments = toJSONOptions ? (!!toJSONOptions.keepComments) : false;
     return util.toObject([
         "rule"    , this.rule !== "optional" && this.rule || undefined,
         "type"    , this.type,
         "id"      , this.id,
         "extend"  , this.extend,
         "options" , this.options,
-        "comment" , this.comment
+        "comment" , keepComments ? this.comment : undefined
     ]);
 };
 

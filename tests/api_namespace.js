@@ -113,7 +113,7 @@ tape.test("reflected namespaces", function(test) {
     ns = protobuf.Namespace.fromJSON("My", {
         nested: {
             Message: { fields: {} },
-            Enum: { values: {}, comments: {} },
+            Enum: { values: {} },
             Service: { methods: {} },
             extensionField: { type: "string", id: 1000, extend: "Message" },
             Other: { nested: {} }
@@ -122,7 +122,7 @@ tape.test("reflected namespaces", function(test) {
     test.same(ns.toJSON(), {
         nested: {
             Message: { fields: {} },
-            Enum: { values: {}, comments: {} },
+            Enum: { values: {} },
             Service: { methods: {} },
             extensionField: { extend: "Message", id: 1000, type: "string" },
             Other: { }

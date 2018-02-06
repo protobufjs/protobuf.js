@@ -22,8 +22,7 @@ var def2 = {
     reserved: [[900, 999], "b"],
     nested: {
         Type: {
-            values: { ONE: 1, TWO: 2 },
-            comments: {}
+            values: { ONE: 1, TWO: 2 }
         },
         Service: {
             methods: {}
@@ -75,7 +74,7 @@ tape.test("reflected types", function(test) {
         reserved: [[900, 999], "b"],
         nested: {
             Type: { fields: {} },
-            Enum: { values: {}, comments: {} },
+            Enum: { values: {} },
             Service: { methods: {} },
             extensionField: { extend: "Message", id: 1000, type: "string" },
             Other: { }

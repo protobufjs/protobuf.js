@@ -39,14 +39,15 @@ Namespace.fromJSON = function fromJSON(name, json) {
  * Converts an array of reflection objects to JSON.
  * @memberof Namespace
  * @param {ReflectionObject[]} array Object array
+ * @param {IToJSONOptions} [toJSONOptions] JSON conversion options
  * @returns {Object.<string,*>|undefined} JSON object or `undefined` when array is empty
  */
-function arrayToJSON(array) {
+function arrayToJSON(array, toJSONOptions) {
     if (!(array && array.length))
         return undefined;
     var obj = {};
     for (var i = 0; i < array.length; ++i)
-        obj[array[i].name] = array[i].toJSON();
+        obj[array[i].name] = array[i].toJSON(toJSONOptions);
     return obj;
 }
 
@@ -147,12 +148,13 @@ Object.defineProperty(Namespace.prototype, "nestedArray", {
 
 /**
  * Converts this namespace to a namespace descriptor.
+ * @param {IToJSONOptions} [toJSONOptions] JSON conversion options
  * @returns {INamespace} Namespace descriptor
  */
-Namespace.prototype.toJSON = function toJSON() {
+Namespace.prototype.toJSON = function toJSON(toJSONOptions) {
     return util.toObject([
         "options" , this.options,
-        "nested"  , arrayToJSON(this.nestedArray)
+        "nested"  , arrayToJSON(this.nestedArray, toJSONOptions)
     ]);
 };
 
