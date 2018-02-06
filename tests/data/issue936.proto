@@ -1,0 +1,8 @@
+message Meta {
+  extensions 10 to 20;
+}
+
+extend Meta {
+  required string workflow_id = 10;
+  required string task_id = 11;
+}

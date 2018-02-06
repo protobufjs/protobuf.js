@@ -105,6 +105,7 @@ export namespace common {
      * - google/protobuf/any.proto
      * - google/protobuf/duration.proto
      * - google/protobuf/empty.proto
+     * - google/protobuf/field_mask.proto
      * - google/protobuf/struct.proto
      * - google/protobuf/timestamp.proto
      * - google/protobuf/wrappers.proto
@@ -1015,12 +1016,6 @@ export interface IParseOptions {
 
     /** Keeps field casing instead of converting to camel case */
     keepCase?: boolean;
-
-    /**
-     * Turns on an alternate comment parsing mode that preserves double-slash
-     * and slash-star comments as documentation.
-     */
-    alternateCommentMode?: boolean;
 }
 
 /**
@@ -1433,9 +1428,10 @@ export interface ITokenizerHandle {
 /**
  * Tokenizes the given .proto source and returns an object with useful utility functions.
  * @param source Source contents
+ * @param alternateCommentMode Whether we should activate alternate comment parsing mode.
  * @returns Tokenizer handle
  */
-export function tokenize(source: string): ITokenizerHandle;
+export function tokenize(source: string, alternateCommentMode: boolean): ITokenizerHandle;
 
 export namespace tokenize {
 

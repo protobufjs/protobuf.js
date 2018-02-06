@@ -1,6 +1,6 @@
 /*!
- * protobuf.js v6.8.4 (c) 2016, daniel wirtz
- * compiled thu, 04 jan 2018 21:51:39 utc
+ * protobuf.js v6.8.5 (c) 2016, daniel wirtz
+ * compiled tue, 06 feb 2018 13:15:39 utc
  * licensed under the bsd-3-clause license
  * see: https://github.com/dcodeio/protobuf.js for details
  */
@@ -1121,6 +1121,7 @@ var commonRe = /\/|\./;
  * @property {INamespace} google/protobuf/any.proto Any
  * @property {INamespace} google/protobuf/duration.proto Duration
  * @property {INamespace} google/protobuf/empty.proto Empty
+ * @property {INamespace} google/protobuf/field_mask.proto FieldMask
  * @property {INamespace} google/protobuf/struct.proto Struct, Value, NullValue and ListValue
  * @property {INamespace} google/protobuf/timestamp.proto Timestamp
  * @property {INamespace} google/protobuf/wrappers.proto Wrappers
@@ -1142,7 +1143,6 @@ function common(name, json) {
 // Not provided because of limited use (feel free to discuss or to provide yourself):
 //
 // google/protobuf/descriptor.proto
-// google/protobuf/field_mask.proto
 // google/protobuf/source_context.proto
 // google/protobuf/type.proto
 //
@@ -1468,6 +1468,26 @@ common("wrappers", {
     }
 });
 
+common("field_mask", {
+
+    /**
+     * Properties of a google.protobuf.FieldMask message.
+     * @interface IDoubleValue
+     * @type {Object}
+     * @property {number} [value]
+     * @memberof common
+     */
+    FieldMask: {
+        fields: {
+            paths: {
+                rule: "repeated",
+                type: "string",
+                id: 1
+            }
+        }
+    }
+});
+
 /**
  * Gets the root definition of the specified common proto file.
  *
@@ -1475,6 +1495,7 @@ common("wrappers", {
  * - google/protobuf/any.proto
  * - google/protobuf/duration.proto
  * - google/protobuf/empty.proto
+ * - google/protobuf/field_mask.proto
  * - google/protobuf/struct.proto
  * - google/protobuf/timestamp.proto
  * - google/protobuf/wrappers.proto
@@ -3286,7 +3307,7 @@ Namespace.prototype.get = function get(name) {
 Namespace.prototype.getEnum = function getEnum(name) {
     if (this.nested && this.nested[name] instanceof Enum)
         return this.nested[name].values;
-    throw Error("no such enum");
+    throw Error("no such enum: " + name);
 };
 
 /**
@@ -3460,7 +3481,7 @@ Namespace.prototype.lookup = function lookup(path, filterTypes, parentAlreadyChe
 Namespace.prototype.lookupType = function lookupType(path) {
     var found = this.lookup(path, [ Type ]);
     if (!found)
-        throw Error("no such type");
+        throw Error("no such type: " + path);
     return found;
 };
 
@@ -3971,7 +3992,7 @@ function parse(source, root, options) {
     if (!options)
         options = parse.defaults;
 
-    var tn = tokenize(source),
+    var tn = tokenize(source, options.alternateCommentMode || false),
         next = tn.next,
         push = tn.push,
         peek = tn.peek,
@@ -5842,6 +5863,7 @@ var delimRe        = /[\s{}=;:[\],'"()<>]/g,
     stringSingleRe = /(?:'([^'\\]*(?:\\.[^'\\]*)*)')/g;
 
 var setCommentRe = /^ *[*/]+ */,
+    setCommentAltRe = /^\s*\*?\/*/,
     setCommentSplitRe = /\n/g,
     whitespaceRe = /\s/,
     unescapeRe = /\\(.?)/g;
@@ -5928,9 +5950,10 @@ tokenize.unescape = unescape;
 /**
  * Tokenizes the given .proto source and returns an object with useful utility functions.
  * @param {string} source Source contents
+ * @param {boolean} alternateCommentMode Whether we should activate alternate comment parsing mode.
  * @returns {ITokenizerHandle} Tokenizer handle
  */
-function tokenize(source) {
+function tokenize(source, alternateCommentMode) {
     /* eslint-disable callback-return */
     source = source.toString();
 
@@ -5995,10 +6018,17 @@ function tokenize(source) {
         commentType = source.charAt(start++);
         commentLine = line;
         commentLineEmpty = false;
-        var offset = start - 3, // "///" or "/**"
+        var lookback;
+        if (alternateCommentMode) {
+            lookback = 2;  // alternate comment parsing: "//" or "/*"
+        } else {
+            lookback = 3;  // "///" or "/**"
+        }
+        var commentOffset = start - lookback,
             c;
         do {
-            if (--offset < 0 || (c = source.charAt(offset)) === "\n") {
+            if (--commentOffset < 0 ||
+                    (c = source.charAt(commentOffset)) === "\n") {
                 commentLineEmpty = true;
                 break;
             }
@@ -6007,10 +6037,32 @@ function tokenize(source) {
             .substring(start, end)
             .split(setCommentSplitRe);
         for (var i = 0; i < lines.length; ++i)
-            lines[i] = lines[i].replace(setCommentRe, "").trim();
+            lines[i] = lines[i]
+                .replace(alternateCommentMode ? setCommentAltRe : setCommentRe, "")
+                .trim();
         commentText = lines
             .join("\n")
             .trim();
+    }
+
+    function isDoubleSlashCommentLine(startOffset) {
+        var endOffset = findEndOfLine(startOffset);
+
+        // see if remaining line matches comment pattern
+        var lineText = source.substring(startOffset, endOffset);
+        // look for 1 or 2 slashes since startOffset would already point past
+        // the first slash that started the comment.
+        var isComment = /^\s*\/{1,2}/.test(lineText);
+        return isComment;
+    }
+
+    function findEndOfLine(cursor) {
+        // find end of cursor's line
+        var endOffset = cursor;
+        while (endOffset < length && charAt(endOffset) !== "\n") {
+            endOffset++;
+        }
+        return endOffset;
     }
 
     /**
@@ -6038,35 +6090,71 @@ function tokenize(source) {
                 if (++offset === length)
                     return null;
             }
+
             if (charAt(offset) === "/") {
-                if (++offset === length)
+                if (++offset === length) {
                     throw illegal("comment");
+                }
                 if (charAt(offset) === "/") { // Line
-                    isDoc = charAt(start = offset + 1) === "/";
-                    while (charAt(++offset) !== "\n")
-                        if (offset === length)
-                            return null;
-                    ++offset;
-                    if (isDoc) /// Comment
-                        setComment(start, offset - 1);
-                    ++line;
-                    repeat = true;
+                    if (!alternateCommentMode) {
+                        // check for triple-slash comment
+                        isDoc = charAt(start = offset + 1) === "/";
+
+                        while (charAt(++offset) !== "\n") {
+                            if (offset === length) {
+                                return null;
+                            }
+                        }
+                        ++offset;
+                        if (isDoc) {
+                            setComment(start, offset - 1);
+                        }
+                        ++line;
+                        repeat = true;
+                    } else {
+                        // check for double-slash comments, consolidating consecutive lines
+                        start = offset;
+                        isDoc = false;
+                        if (isDoubleSlashCommentLine(offset)) {
+                            isDoc = true;
+                            do {
+                                offset = findEndOfLine(offset);
+                                if (offset === length) {
+                                    break;
+                                }
+                                offset++;
+                            } while (isDoubleSlashCommentLine(offset));
+                        } else {
+                            offset = Math.min(length, findEndOfLine(offset) + 1);
+                        }
+                        if (isDoc) {
+                            setComment(start, offset);
+                        }
+                        line++;
+                        repeat = true;
+                    }
                 } else if ((curr = charAt(offset)) === "*") { /* Block */
-                    isDoc = charAt(start = offset + 1) === "*";
+                    // check for /** (regular comment mode) or /* (alternate comment mode)
+                    start = offset + 1;
+                    isDoc = alternateCommentMode || charAt(start) === "*";
                     do {
-                        if (curr === "\n")
+                        if (curr === "\n") {
                             ++line;
-                        if (++offset === length)
+                        }
+                        if (++offset === length) {
                             throw illegal("comment");
+                        }
                         prev = curr;
                         curr = charAt(offset);
                     } while (prev !== "*" || curr !== "/");
                     ++offset;
-                    if (isDoc) /** Comment */
+                    if (isDoc) {
                         setComment(start, offset - 2);
+                    }
                     repeat = true;
-                } else
+                } else {
                     return "/";
+                }
             }
         } while (repeat);
 
@@ -6138,14 +6226,17 @@ function tokenize(source) {
     function cmnt(trailingLine) {
         var ret = null;
         if (trailingLine === undefined) {
-            if (commentLine === line - 1 && (commentType === "*" || commentLineEmpty))
+            if (commentLine === line - 1 && (alternateCommentMode || commentType === "*" || commentLineEmpty)) {
                 ret = commentText;
+            }
         } else {
             /* istanbul ignore else */
-            if (commentLine < trailingLine)
+            if (commentLine < trailingLine) {
                 peek();
-            if (commentLine === trailingLine && !commentLineEmpty && commentType === "/")
+            }
+            if (commentLine === trailingLine && !commentLineEmpty && (alternateCommentMode || commentType === "/")) {
                 ret = commentText;
+            }
         }
         return ret;
     }

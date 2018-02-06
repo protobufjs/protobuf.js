@@ -1,6 +1,6 @@
 /*!
- * protobuf.js v6.8.4 (c) 2016, daniel wirtz
- * compiled thu, 04 jan 2018 21:51:39 utc
+ * protobuf.js v6.8.5 (c) 2016, daniel wirtz
+ * compiled tue, 06 feb 2018 13:15:39 utc
  * licensed under the bsd-3-clause license
  * see: https://github.com/dcodeio/protobuf.js for details
  */
@@ -2892,7 +2892,7 @@ Namespace.prototype.get = function get(name) {
 Namespace.prototype.getEnum = function getEnum(name) {
     if (this.nested && this.nested[name] instanceof Enum)
         return this.nested[name].values;
-    throw Error("no such enum");
+    throw Error("no such enum: " + name);
 };
 
 /**
@@ -3066,7 +3066,7 @@ Namespace.prototype.lookup = function lookup(path, filterTypes, parentAlreadyChe
 Namespace.prototype.lookupType = function lookupType(path) {
     var found = this.lookup(path, [ Type ]);
     if (!found)
-        throw Error("no such type");
+        throw Error("no such type: " + path);
     return found;
 };
 
