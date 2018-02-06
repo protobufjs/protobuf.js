@@ -55,9 +55,11 @@ Field.fromJSON = function fromJSON(name, json) {
 function Field(name, id, type, rule, extend, options, comment) {
 
     if (util.isObject(rule)) {
+        comment = extend;
         options = rule;
         rule = extend = undefined;
     } else if (util.isObject(extend)) {
+        comment = options
         options = extend;
         extend = undefined;
     }
