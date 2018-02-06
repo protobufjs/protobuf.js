@@ -73,7 +73,7 @@ OneOf.fromJSON = function fromJSON(name, json) {
  * @returns {IOneOf} Oneof descriptor
  */
 OneOf.prototype.toJSON = function toJSON(toJSONOptions) {
-    var keepComments = toJSONOptions ? (!!toJSONOptions.keepComments) : false;
+    var keepComments = toJSONOptions ? Boolean(toJSONOptions.keepComments) : false;
     return util.toObject([
         "options" , this.options,
         "oneof"   , this.oneof,

@@ -74,7 +74,7 @@ MapField.fromJSON = function fromJSON(name, json) {
  * @returns {IMapField} Map field descriptor
  */
 MapField.prototype.toJSON = function toJSON(toJSONOptions) {
-    var keepComments = toJSONOptions ? (!!toJSONOptions.keepComments) : false;
+    var keepComments = toJSONOptions ? Boolean(toJSONOptions.keepComments) : false;
     return util.toObject([
         "keyType" , this.keyType,
         "type"    , this.type,

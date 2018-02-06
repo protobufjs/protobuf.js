@@ -63,12 +63,12 @@ Service.fromJSON = function fromJSON(name, json) {
 
 /**
  * Converts this service to a service descriptor.
- * @param {IToJSONOptions} [options] JSON conversion options
+ * @param {IToJSONOptions} [toJSONOptions] JSON conversion options
  * @returns {IService} Service descriptor
  */
 Service.prototype.toJSON = function toJSON(toJSONOptions) {
     var inherited = Namespace.prototype.toJSON.call(this, toJSONOptions);
-    var keepComments = toJSONOptions ? (!!toJSONOptions.keepComments) : false;
+    var keepComments = toJSONOptions ? Boolean(toJSONOptions.keepComments) : false;
     return util.toObject([
         "options" , inherited && inherited.options || undefined,
         "methods" , Namespace.arrayToJSON(this.methodsArray, toJSONOptions) || /* istanbul ignore next */ {},

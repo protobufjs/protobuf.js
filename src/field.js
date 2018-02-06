@@ -238,7 +238,7 @@ Field.prototype.setOption = function setOption(name, value, ifNotSet) {
  * @returns {IField} Field descriptor
  */
 Field.prototype.toJSON = function toJSON(toJSONOptions) {
-    var keepComments = toJSONOptions ? (!!toJSONOptions.keepComments) : false;
+    var keepComments = toJSONOptions ? Boolean(toJSONOptions.keepComments) : false;
     return util.toObject([
         "rule"    , this.rule !== "optional" && this.rule || undefined,
         "type"    , this.type,

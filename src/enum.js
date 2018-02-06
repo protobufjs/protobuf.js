@@ -91,7 +91,7 @@ Enum.fromJSON = function fromJSON(name, json) {
  * @returns {IEnum} Enum descriptor
  */
 Enum.prototype.toJSON = function toJSON(toJSONOptions) {
-    var keepComments = toJSONOptions ? (!!toJSONOptions.keepComments) : false;
+    var keepComments = toJSONOptions ? Boolean(toJSONOptions.keepComments) : false;
     return util.toObject([
         "options"  , this.options,
         "values"   , this.values,

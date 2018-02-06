@@ -123,7 +123,7 @@ Method.fromJSON = function fromJSON(name, json) {
  * @returns {IMethod} Method descriptor
  */
 Method.prototype.toJSON = function toJSON(toJSONOptions) {
-    var keepComments = toJSONOptions ? (!!toJSONOptions.keepComments) : false;
+    var keepComments = toJSONOptions ? Boolean(toJSONOptions.keepComments) : false;
     return util.toObject([
         "type"           , this.type !== "rpc" && /* istanbul ignore next */ this.type || undefined,
         "requestType"    , this.requestType,
