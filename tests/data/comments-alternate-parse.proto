@@ -1,0 +1,73 @@
+/**
+ * File with alternate comment syntax.
+ * This file uses double slash and regular star-slash comment styles for doc
+ * strings.
+ */
+
+syntax = "proto3";
+
+// Message with
+// a
+// multi-line comment.
+message Test1 {
+
+    /**
+     * Field with a doc-block comment.
+     */
+    string field1 = 1;
+
+    // Field with a single-line comment starting with two slashes.
+    uint32 field2 = 2;
+
+    /// Field with a single-line comment starting with three slashes.
+    bool field3 = 3;
+
+    /* Field with a single-line slash-star comment. */
+    bool field4 = 4;
+
+    bool field5 = 5; // Field with a trailing single-line two-slash comment.
+
+    bool field6 = 6; /// Field with a trailing single-line three-slash comment.
+
+    bool field7 = 7; /* Field with a trailing single-line slash-star comment. */
+
+    bool field8 = 8;
+
+    // Field with a
+    // multi-line comment.
+    bool field9 = 9;
+
+    /**
+     * Field with a
+     * multi-line doc-block comment.
+     */
+    string field10 = 10;
+}
+
+/* Message
+   with
+   a multiline plain slash-star
+   comment.
+*/
+message Test2 {
+}
+
+/*
+ * Message
+ * with
+ * a
+ * comment and stars.
+ */
+enum Test3 {
+
+    /** Value with a comment. */
+    ONE = 1;
+
+    // Value with a single-line comment.
+    TWO = 2;
+
+    /// Value with a triple-slash comment.
+    THREE = 3;  // ignored
+
+    FOUR = 4; /// Other value with a comment.
+}

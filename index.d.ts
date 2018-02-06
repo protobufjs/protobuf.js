@@ -1015,6 +1015,12 @@ export interface IParseOptions {
 
     /** Keeps field casing instead of converting to camel case */
     keepCase?: boolean;
+
+    /**
+     * Turns on an alternate comment parsing mode that preserves double-slash
+     * and slash-star comments as documentation.
+     */
+    alternateCommentMode?: boolean;
 }
 
 /**

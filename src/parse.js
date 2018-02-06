@@ -61,7 +61,7 @@ function parse(source, root, options) {
     if (!options)
         options = parse.defaults;
 
-    var tn = tokenize(source),
+    var tn = tokenize(source, options.alternateCommentMode || false),
         next = tn.next,
         push = tn.push,
         peek = tn.peek,
