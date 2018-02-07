@@ -59,7 +59,7 @@ function Field(name, id, type, rule, extend, options, comment) {
         options = rule;
         rule = extend = undefined;
     } else if (util.isObject(extend)) {
-        comment = options
+        comment = options;
         options = extend;
         extend = undefined;
     }
