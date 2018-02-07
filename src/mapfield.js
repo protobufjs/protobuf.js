@@ -18,7 +18,7 @@ var types   = require("./types"),
  * @param {string} keyType Key type
  * @param {string} type Value type
  * @param {Object.<string,*>} [options] Declared options
- * @param {string} comment Comment associated with this field
+ * @param {string} [comment] Comment associated with this field
  */
 function MapField(name, id, keyType, type, options, comment) {
     Field.call(this, name, id, type, undefined, undefined, options, comment);

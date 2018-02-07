@@ -19,7 +19,7 @@ var util = require("./util");
  * @param {boolean|Object.<string,*>} [requestStream] Whether the request is streamed
  * @param {boolean|Object.<string,*>} [responseStream] Whether the response is streamed
  * @param {Object.<string,*>} [options] Declared options
- * @param {string} comment The comment for this method
+ * @param {string} [comment] The comment for this method
  */
 function Method(name, type, requestType, responseType, requestStream, responseStream, options, comment) {
 
@@ -90,7 +90,7 @@ function Method(name, type, requestType, responseType, requestStream, responseSt
 
     /**
      * Comment for this method
-     * @type {string|undefined}
+     * @type {string|null}
      */
     this.comment = comment;
 }

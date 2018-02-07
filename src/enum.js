@@ -16,8 +16,8 @@ var Namespace = require("./namespace"),
  * @param {string} name Unique name within its namespace
  * @param {Object.<string,number>} [values] Enum values as an object, by name
  * @param {Object.<string,*>} [options] Declared options
- * @param {string} comment The comment for this enum
- * @param {Object.<string,string>} comments The value comments for this enum
+ * @param {string} [comment] The comment for this enum
+ * @param {Object.<string,string>} [comments] The value comments for this enum
  */
 function Enum(name, values, options, comment, comments) {
     ReflectionObject.call(this, name, options);
@@ -39,7 +39,7 @@ function Enum(name, values, options, comment, comments) {
 
     /**
      * Enum comment text.
-     * @type {string|undefined}
+     * @type {string|null}
      */
     this.comment = comment;
 

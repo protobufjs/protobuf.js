@@ -156,14 +156,19 @@ export class Enum extends ReflectionObject {
      * @param name Unique name within its namespace
      * @param [values] Enum values as an object, by name
      * @param [options] Declared options
+     * @param [comment] The comment for this enum
+     * @param [comments] The value comments for this enum
      */
-    constructor(name: string, values?: { [k: string]: number }, options?: { [k: string]: any });
+    constructor(name: string, values?: { [k: string]: number }, options?: { [k: string]: any }, comment?: string, comments?: { [k: string]: string });
 
     /** Enum values by id. */
     public valuesById: { [k: number]: string };
 
     /** Enum values by name. */
     public values: { [k: string]: number };
+
+    /** Enum comment text. */
+    public comment: (string|null);
 
     /** Value comment texts, if any. */
     public comments: { [k: string]: string };
@@ -182,9 +187,10 @@ export class Enum extends ReflectionObject {
 
     /**
      * Converts this enum to an enum descriptor.
+     * @param [toJSONOptions] JSON conversion options
      * @returns Enum descriptor
      */
-    public toJSON(): IEnum;
+    public toJSON(toJSONOptions?: IToJSONOptions): IEnum;
 
     /**
      * Adds a value to this enum.
@@ -288,8 +294,9 @@ export class FieldBase extends ReflectionObject {
      * @param [rule="optional"] Field rule
      * @param [extend] Extended type if different from parent
      * @param [options] Declared options
+     * @param [comment] Comment associated with this field
      */
-    constructor(name: string, id: number, type: string, rule?: (string|{ [k: string]: any }), extend?: (string|{ [k: string]: any }), options?: { [k: string]: any });
+    constructor(name: string, id: number, type: string, rule?: (string|{ [k: string]: any }), extend?: (string|{ [k: string]: any }), options?: { [k: string]: any }, comment?: string);
 
     /** Field rule, if any. */
     public rule?: string;
@@ -342,11 +349,15 @@ export class FieldBase extends ReflectionObject {
     /** Sister-field within the declaring namespace if an extended field. */
     public declaringField: (Field|null);
 
+    /** Comment for this field. */
+    public comment: (string|null);
+
     /**
      * Converts this field to a field descriptor.
+     * @param [toJSONOptions] JSON conversion options
      * @returns Field descriptor
      */
-    public toJSON(): IField;
+    public toJSON(toJSONOptions?: IToJSONOptions): IField;
 
     /**
      * Resolves this field's type references.
@@ -445,8 +456,9 @@ export class MapField extends FieldBase {
      * @param keyType Key type
      * @param type Value type
      * @param [options] Declared options
+     * @param [comment] Comment associated with this field
      */
-    constructor(name: string, id: number, keyType: string, type: string, options?: { [k: string]: any });
+    constructor(name: string, id: number, keyType: string, type: string, options?: { [k: string]: any }, comment?: string);
 
     /** Key type. */
     public keyType: string;
@@ -465,9 +477,10 @@ export class MapField extends FieldBase {
 
     /**
      * Converts this map field to a map field descriptor.
+     * @param [toJSONOptions] JSON conversion options
      * @returns Map field descriptor
      */
-    public toJSON(): IMapField;
+    public toJSON(toJSONOptions?: IToJSONOptions): IMapField;
 
     /**
      * Map field decorator (TypeScript).
@@ -586,8 +599,9 @@ export class Method extends ReflectionObject {
      * @param [requestStream] Whether the request is streamed
      * @param [responseStream] Whether the response is streamed
      * @param [options] Declared options
+     * @param [comment] The comment for this method
      */
-    constructor(name: string, type: (string|undefined), requestType: string, responseType: string, requestStream?: (boolean|{ [k: string]: any }), responseStream?: (boolean|{ [k: string]: any }), options?: { [k: string]: any });
+    constructor(name: string, type: (string|undefined), requestType: string, responseType: string, requestStream?: (boolean|{ [k: string]: any }), responseStream?: (boolean|{ [k: string]: any }), options?: { [k: string]: any }, comment?: string);
 
     /** Method type. */
     public type: string;
@@ -610,6 +624,9 @@ export class Method extends ReflectionObject {
     /** Resolved response type. */
     public resolvedResponseType: (Type|null);
 
+    /** Comment for this method */
+    public comment: (string|null);
+
     /**
      * Constructs a method from a method descriptor.
      * @param name Method name
@@ -621,9 +638,10 @@ export class Method extends ReflectionObject {
 
     /**
      * Converts this method to a method descriptor.
+     * @param [toJSONOptions] JSON conversion options
      * @returns Method descriptor
      */
-    public toJSON(): IMethod;
+    public toJSON(toJSONOptions?: IToJSONOptions): IMethod;
 }
 
 /** Method descriptor. */
@@ -670,9 +688,10 @@ export class Namespace extends NamespaceBase {
     /**
      * Converts an array of reflection objects to JSON.
      * @param array Object array
+     * @param [toJSONOptions] JSON conversion options
      * @returns JSON object or `undefined` when array is empty
      */
-    public static arrayToJSON(array: ReflectionObject[]): ({ [k: string]: any }|undefined);
+    public static arrayToJSON(array: ReflectionObject[], toJSONOptions?: IToJSONOptions): ({ [k: string]: any }|undefined);
 
     /**
      * Tests if the specified id is reserved.
@@ -702,9 +721,10 @@ export abstract class NamespaceBase extends ReflectionObject {
 
     /**
      * Converts this namespace to a namespace descriptor.
+     * @param [toJSONOptions] JSON conversion options
      * @returns Namespace descriptor
      */
-    public toJSON(): INamespace;
+    public toJSON(toJSONOptions?: IToJSONOptions): INamespace;
 
     /**
      * Adds nested objects to this namespace from nested object descriptors.
@@ -921,14 +941,18 @@ export class OneOf extends ReflectionObject {
      * @param name Oneof name
      * @param [fieldNames] Field names
      * @param [options] Declared options
+     * @param [comment] Comment associated with this field
      */
-    constructor(name: string, fieldNames?: (string[]|{ [k: string]: any }), options?: { [k: string]: any });
+    constructor(name: string, fieldNames?: (string[]|{ [k: string]: any }), options?: { [k: string]: any }, comment?: string);
 
     /** Field names that belong to this oneof. */
     public oneof: string[];
 
     /** Fields that belong to this oneof as an array for iteration. */
     public readonly fieldsArray: Field[];
+
+    /** Comment for this field. */
+    public comment: (string|null);
 
     /**
      * Constructs a oneof from a oneof descriptor.
@@ -941,9 +965,10 @@ export class OneOf extends ReflectionObject {
 
     /**
      * Converts this oneof to a oneof descriptor.
+     * @param [toJSONOptions] JSON conversion options
      * @returns Oneof descriptor
      */
-    public toJSON(): IOneOf;
+    public toJSON(toJSONOptions?: IToJSONOptions): IOneOf;
 
     /**
      * Adds a field to this oneof and removes it from its current parent, if any.
@@ -1016,6 +1041,16 @@ export interface IParseOptions {
 
     /** Keeps field casing instead of converting to camel case */
     keepCase?: boolean;
+
+    /** Recognize double-slash comments in addition to doc-block comments. */
+    alternateCommentMode?: boolean;
+}
+
+/** Options modifying the behavior of JSON serialization. */
+export interface IToJSONOptions {
+
+    /** Serializes comments. */
+    keepComments?: boolean;
 }
 
 /**
@@ -1345,9 +1380,10 @@ export class Service extends NamespaceBase {
 
     /**
      * Converts this service to a service descriptor.
+     * @param [toJSONOptions] JSON conversion options
      * @returns Service descriptor
      */
-    public toJSON(): IService;
+    public toJSON(toJSONOptions?: IToJSONOptions): IService;
 
     /** Methods of this service as an array for iteration. */
     public readonly methodsArray: Method[];
@@ -1497,9 +1533,10 @@ export class Type extends NamespaceBase {
 
     /**
      * Converts this message type to a message type descriptor.
+     * @param [toJSONOptions] JSON conversion options
      * @returns Message type descriptor
      */
-    public toJSON(): IType;
+    public toJSON(toJSONOptions?: IToJSONOptions): IType;
 
     /**
      * Adds a nested object to this type.

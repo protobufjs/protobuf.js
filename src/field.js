@@ -50,7 +50,7 @@ Field.fromJSON = function fromJSON(name, json) {
  * @param {string|Object.<string,*>} [rule="optional"] Field rule
  * @param {string|Object.<string,*>} [extend] Extended type if different from parent
  * @param {Object.<string,*>} [options] Declared options
- * @param {string} comment Comment associated with this field
+ * @param {string} [comment] Comment associated with this field
  */
 function Field(name, id, type, rule, extend, options, comment) {
 
@@ -189,7 +189,7 @@ function Field(name, id, type, rule, extend, options, comment) {
 
     /**
      * Comment for this field.
-     * @type {string|undefined}
+     * @type {string|null}
      */
     this.comment = comment;
 }

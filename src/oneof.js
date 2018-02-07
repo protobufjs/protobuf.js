@@ -16,7 +16,7 @@ var Field = require("./field"),
  * @param {string} name Oneof name
  * @param {string[]|Object.<string,*>} [fieldNames] Field names
  * @param {Object.<string,*>} [options] Declared options
- * @param {string} comment Comment associated with this field
+ * @param {string} [comment] Comment associated with this field
  */
 function OneOf(name, fieldNames, options, comment) {
     if (!Array.isArray(fieldNames)) {
@@ -44,7 +44,7 @@ function OneOf(name, fieldNames, options, comment) {
 
     /**
      * Comment for this field.
-     * @type {string|undefined}
+     * @type {string|null}
      */
     this.comment = comment;
 }
