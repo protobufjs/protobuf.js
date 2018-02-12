@@ -35,7 +35,7 @@ var ruleRe = /^required|optional|repeated$/;
  * @throws {TypeError} If arguments are invalid
  */
 Field.fromJSON = function fromJSON(name, json) {
-    return new Field(name, json.id, json.type, json.rule, json.extend, json.options);
+    return new Field(name, json.id, json.type, json.rule, json.extend, json.options, json.comment);
 };
 
 /**
@@ -50,13 +50,16 @@ Field.fromJSON = function fromJSON(name, json) {
  * @param {string|Object.<string,*>} [rule="optional"] Field rule
  * @param {string|Object.<string,*>} [extend] Extended type if different from parent
  * @param {Object.<string,*>} [options] Declared options
+ * @param {string} [comment] Comment associated with this field
  */
-function Field(name, id, type, rule, extend, options) {
+function Field(name, id, type, rule, extend, options, comment) {
 
     if (util.isObject(rule)) {
+        comment = extend;
         options = rule;
         rule = extend = undefined;
     } else if (util.isObject(extend)) {
+        comment = options;
         options = extend;
         extend = undefined;
     }
@@ -183,6 +186,12 @@ function Field(name, id, type, rule, extend, options) {
      * @private
      */
     this._packed = null;
+
+    /**
+     * Comment for this field.
+     * @type {string|null}
+     */
+    this.comment = comment;
 }
 
 /**
@@ -227,15 +236,18 @@ Field.prototype.setOption = function setOption(name, value, ifNotSet) {
 
 /**
  * Converts this field to a field descriptor.
+ * @param {IToJSONOptions} [toJSONOptions] JSON conversion options
  * @returns {IField} Field descriptor
  */
-Field.prototype.toJSON = function toJSON() {
+Field.prototype.toJSON = function toJSON(toJSONOptions) {
+    var keepComments = toJSONOptions ? Boolean(toJSONOptions.keepComments) : false;
     return util.toObject([
         "rule"    , this.rule !== "optional" && this.rule || undefined,
         "type"    , this.type,
         "id"      , this.id,
         "extend"  , this.extend,
-        "options" , this.options
+        "options" , this.options,
+        "comment" , keepComments ? this.comment : undefined
     ]);
 };
 

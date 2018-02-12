@@ -18,9 +18,10 @@ var types   = require("./types"),
  * @param {string} keyType Key type
  * @param {string} type Value type
  * @param {Object.<string,*>} [options] Declared options
+ * @param {string} [comment] Comment associated with this field
  */
-function MapField(name, id, keyType, type, options) {
-    Field.call(this, name, id, type, options);
+function MapField(name, id, keyType, type, options, comment) {
+    Field.call(this, name, id, type, undefined, undefined, options, comment);
 
     /* istanbul ignore if */
     if (!util.isString(keyType))
@@ -64,20 +65,23 @@ function MapField(name, id, keyType, type, options) {
  * @throws {TypeError} If arguments are invalid
  */
 MapField.fromJSON = function fromJSON(name, json) {
-    return new MapField(name, json.id, json.keyType, json.type, json.options);
+    return new MapField(name, json.id, json.keyType, json.type, json.options, json.comment);
 };
 
 /**
  * Converts this map field to a map field descriptor.
+ * @param {IToJSONOptions} [toJSONOptions] JSON conversion options
  * @returns {IMapField} Map field descriptor
  */
-MapField.prototype.toJSON = function toJSON() {
+MapField.prototype.toJSON = function toJSON(toJSONOptions) {
+    var keepComments = toJSONOptions ? Boolean(toJSONOptions.keepComments) : false;
     return util.toObject([
         "keyType" , this.keyType,
         "type"    , this.type,
         "id"      , this.id,
         "extend"  , this.extend,
-        "options" , this.options
+        "options" , this.options,
+        "comment" , keepComments ? this.comment : undefined
     ]);
 };
 

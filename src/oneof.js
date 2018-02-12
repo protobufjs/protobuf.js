@@ -16,8 +16,9 @@ var Field = require("./field"),
  * @param {string} name Oneof name
  * @param {string[]|Object.<string,*>} [fieldNames] Field names
  * @param {Object.<string,*>} [options] Declared options
+ * @param {string} [comment] Comment associated with this field
  */
-function OneOf(name, fieldNames, options) {
+function OneOf(name, fieldNames, options, comment) {
     if (!Array.isArray(fieldNames)) {
         options = fieldNames;
         fieldNames = undefined;
@@ -40,6 +41,12 @@ function OneOf(name, fieldNames, options) {
      * @readonly
      */
     this.fieldsArray = []; // declared readonly for conformance, possibly not yet added to parent
+
+    /**
+     * Comment for this field.
+     * @type {string|null}
+     */
+    this.comment = comment;
 }
 
 /**
@@ -57,17 +64,20 @@ function OneOf(name, fieldNames, options) {
  * @throws {TypeError} If arguments are invalid
  */
 OneOf.fromJSON = function fromJSON(name, json) {
-    return new OneOf(name, json.oneof, json.options);
+    return new OneOf(name, json.oneof, json.options, json.comment);
 };
 
 /**
  * Converts this oneof to a oneof descriptor.
+ * @param {IToJSONOptions} [toJSONOptions] JSON conversion options
  * @returns {IOneOf} Oneof descriptor
  */
-OneOf.prototype.toJSON = function toJSON() {
+OneOf.prototype.toJSON = function toJSON(toJSONOptions) {
+    var keepComments = toJSONOptions ? Boolean(toJSONOptions.keepComments) : false;
     return util.toObject([
         "options" , this.options,
-        "oneof"   , this.oneof
+        "oneof"   , this.oneof,
+        "comment" , keepComments ? this.comment : undefined
     ]);
 };
 
