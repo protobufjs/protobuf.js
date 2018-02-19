@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.8.5 (c) 2016, daniel wirtz
- * compiled tue, 06 feb 2018 13:15:39 utc
+ * compiled mon, 19 feb 2018 11:50:08 utc
  * licensed under the bsd-3-clause license
  * see: https://github.com/dcodeio/protobuf.js for details
  */
@@ -1623,8 +1623,10 @@ var Namespace = require(21),
  * @param {string} name Unique name within its namespace
  * @param {Object.<string,number>} [values] Enum values as an object, by name
  * @param {Object.<string,*>} [options] Declared options
+ * @param {string} [comment] The comment for this enum
+ * @param {Object.<string,string>} [comments] The value comments for this enum
  */
-function Enum(name, values, options) {
+function Enum(name, values, options, comment, comments) {
     ReflectionObject.call(this, name, options);
 
     if (values && typeof values !== "object")
@@ -1643,10 +1645,16 @@ function Enum(name, values, options) {
     this.values = Object.create(this.valuesById); // toJSON, marker
 
     /**
+     * Enum comment text.
+     * @type {string|null}
+     */
+    this.comment = comment;
+
+    /**
      * Value comment texts, if any.
      * @type {Object.<string,string>}
      */
-    this.comments = {};
+    this.comments = comments || {};
 
     /**
      * Reserved ranges, if any.
@@ -1679,20 +1687,24 @@ function Enum(name, values, options) {
  * @throws {TypeError} If arguments are invalid
  */
 Enum.fromJSON = function fromJSON(name, json) {
-    var enm = new Enum(name, json.values, json.options);
+    var enm = new Enum(name, json.values, json.options, json.comment, json.comments);
     enm.reserved = json.reserved;
     return enm;
 };
 
 /**
  * Converts this enum to an enum descriptor.
+ * @param {IToJSONOptions} [toJSONOptions] JSON conversion options
  * @returns {IEnum} Enum descriptor
  */
-Enum.prototype.toJSON = function toJSON() {
+Enum.prototype.toJSON = function toJSON(toJSONOptions) {
+    var keepComments = toJSONOptions ? Boolean(toJSONOptions.keepComments) : false;
     return util.toObject([
         "options"  , this.options,
         "values"   , this.values,
-        "reserved" , this.reserved && this.reserved.length ? this.reserved : undefined
+        "reserved" , this.reserved && this.reserved.length ? this.reserved : undefined,
+        "comment"  , keepComments ? this.comment : undefined,
+        "comments" , keepComments ? this.comments : undefined
     ]);
 };
 
@@ -1813,7 +1825,7 @@ var ruleRe = /^required|optional|repeated$/;
  * @throws {TypeError} If arguments are invalid
  */
 Field.fromJSON = function fromJSON(name, json) {
-    return new Field(name, json.id, json.type, json.rule, json.extend, json.options);
+    return new Field(name, json.id, json.type, json.rule, json.extend, json.options, json.comment);
 };
 
 /**
@@ -1828,13 +1840,16 @@ Field.fromJSON = function fromJSON(name, json) {
  * @param {string|Object.<string,*>} [rule="optional"] Field rule
  * @param {string|Object.<string,*>} [extend] Extended type if different from parent
  * @param {Object.<string,*>} [options] Declared options
+ * @param {string} [comment] Comment associated with this field
  */
-function Field(name, id, type, rule, extend, options) {
+function Field(name, id, type, rule, extend, options, comment) {
 
     if (util.isObject(rule)) {
+        comment = extend;
         options = rule;
         rule = extend = undefined;
     } else if (util.isObject(extend)) {
+        comment = options;
         options = extend;
         extend = undefined;
     }
@@ -1961,6 +1976,12 @@ function Field(name, id, type, rule, extend, options) {
      * @private
      */
     this._packed = null;
+
+    /**
+     * Comment for this field.
+     * @type {string|null}
+     */
+    this.comment = comment;
 }
 
 /**
@@ -2005,15 +2026,18 @@ Field.prototype.setOption = function setOption(name, value, ifNotSet) {
 
 /**
  * Converts this field to a field descriptor.
+ * @param {IToJSONOptions} [toJSONOptions] JSON conversion options
  * @returns {IField} Field descriptor
  */
-Field.prototype.toJSON = function toJSON() {
+Field.prototype.toJSON = function toJSON(toJSONOptions) {
+    var keepComments = toJSONOptions ? Boolean(toJSONOptions.keepComments) : false;
     return util.toObject([
         "rule"    , this.rule !== "optional" && this.rule || undefined,
         "type"    , this.type,
         "id"      , this.id,
         "extend"  , this.extend,
-        "options" , this.options
+        "options" , this.options,
+        "comment" , keepComments ? this.comment : undefined
     ]);
 };
 
@@ -2300,9 +2324,10 @@ var types   = require(32),
  * @param {string} keyType Key type
  * @param {string} type Value type
  * @param {Object.<string,*>} [options] Declared options
+ * @param {string} [comment] Comment associated with this field
  */
-function MapField(name, id, keyType, type, options) {
-    Field.call(this, name, id, type, options);
+function MapField(name, id, keyType, type, options, comment) {
+    Field.call(this, name, id, type, undefined, undefined, options, comment);
 
     /* istanbul ignore if */
     if (!util.isString(keyType))
@@ -2346,20 +2371,23 @@ function MapField(name, id, keyType, type, options) {
  * @throws {TypeError} If arguments are invalid
  */
 MapField.fromJSON = function fromJSON(name, json) {
-    return new MapField(name, json.id, json.keyType, json.type, json.options);
+    return new MapField(name, json.id, json.keyType, json.type, json.options, json.comment);
 };
 
 /**
  * Converts this map field to a map field descriptor.
+ * @param {IToJSONOptions} [toJSONOptions] JSON conversion options
  * @returns {IMapField} Map field descriptor
  */
-MapField.prototype.toJSON = function toJSON() {
+MapField.prototype.toJSON = function toJSON(toJSONOptions) {
+    var keepComments = toJSONOptions ? Boolean(toJSONOptions.keepComments) : false;
     return util.toObject([
         "keyType" , this.keyType,
         "type"    , this.type,
         "id"      , this.id,
         "extend"  , this.extend,
-        "options" , this.options
+        "options" , this.options,
+        "comment" , keepComments ? this.comment : undefined
     ]);
 };
 
@@ -2565,8 +2593,9 @@ var util = require(33);
  * @param {boolean|Object.<string,*>} [requestStream] Whether the request is streamed
  * @param {boolean|Object.<string,*>} [responseStream] Whether the response is streamed
  * @param {Object.<string,*>} [options] Declared options
+ * @param {string} [comment] The comment for this method
  */
-function Method(name, type, requestType, responseType, requestStream, responseStream, options) {
+function Method(name, type, requestType, responseType, requestStream, responseStream, options, comment) {
 
     /* istanbul ignore next */
     if (util.isObject(requestStream)) {
@@ -2632,6 +2661,12 @@ function Method(name, type, requestType, responseType, requestStream, responseSt
      * @type {Type|null}
      */
     this.resolvedResponseType = null;
+
+    /**
+     * Comment for this method
+     * @type {string|null}
+     */
+    this.comment = comment;
 }
 
 /**
@@ -2653,21 +2688,24 @@ function Method(name, type, requestType, responseType, requestStream, responseSt
  * @throws {TypeError} If arguments are invalid
  */
 Method.fromJSON = function fromJSON(name, json) {
-    return new Method(name, json.type, json.requestType, json.responseType, json.requestStream, json.responseStream, json.options);
+    return new Method(name, json.type, json.requestType, json.responseType, json.requestStream, json.responseStream, json.options, json.comment);
 };
 
 /**
  * Converts this method to a method descriptor.
+ * @param {IToJSONOptions} [toJSONOptions] JSON conversion options
  * @returns {IMethod} Method descriptor
  */
-Method.prototype.toJSON = function toJSON() {
+Method.prototype.toJSON = function toJSON(toJSONOptions) {
+    var keepComments = toJSONOptions ? Boolean(toJSONOptions.keepComments) : false;
     return util.toObject([
         "type"           , this.type !== "rpc" && /* istanbul ignore next */ this.type || undefined,
         "requestType"    , this.requestType,
         "requestStream"  , this.requestStream,
         "responseType"   , this.responseType,
         "responseStream" , this.responseStream,
-        "options"        , this.options
+        "options"        , this.options,
+        "comment"        , keepComments ? this.comment : undefined
     ]);
 };
 
@@ -2728,14 +2766,15 @@ Namespace.fromJSON = function fromJSON(name, json) {
  * Converts an array of reflection objects to JSON.
  * @memberof Namespace
  * @param {ReflectionObject[]} array Object array
+ * @param {IToJSONOptions} [toJSONOptions] JSON conversion options
  * @returns {Object.<string,*>|undefined} JSON object or `undefined` when array is empty
  */
-function arrayToJSON(array) {
+function arrayToJSON(array, toJSONOptions) {
     if (!(array && array.length))
         return undefined;
     var obj = {};
     for (var i = 0; i < array.length; ++i)
-        obj[array[i].name] = array[i].toJSON();
+        obj[array[i].name] = array[i].toJSON(toJSONOptions);
     return obj;
 }
 
@@ -2836,12 +2875,13 @@ Object.defineProperty(Namespace.prototype, "nestedArray", {
 
 /**
  * Converts this namespace to a namespace descriptor.
+ * @param {IToJSONOptions} [toJSONOptions] JSON conversion options
  * @returns {INamespace} Namespace descriptor
  */
-Namespace.prototype.toJSON = function toJSON() {
+Namespace.prototype.toJSON = function toJSON(toJSONOptions) {
     return util.toObject([
         "options" , this.options,
-        "nested"  , arrayToJSON(this.nestedArray)
+        "nested"  , arrayToJSON(this.nestedArray, toJSONOptions)
     ]);
 };
 
@@ -3337,8 +3377,9 @@ var Field = require(15),
  * @param {string} name Oneof name
  * @param {string[]|Object.<string,*>} [fieldNames] Field names
  * @param {Object.<string,*>} [options] Declared options
+ * @param {string} [comment] Comment associated with this field
  */
-function OneOf(name, fieldNames, options) {
+function OneOf(name, fieldNames, options, comment) {
     if (!Array.isArray(fieldNames)) {
         options = fieldNames;
         fieldNames = undefined;
@@ -3361,6 +3402,12 @@ function OneOf(name, fieldNames, options) {
      * @readonly
      */
     this.fieldsArray = []; // declared readonly for conformance, possibly not yet added to parent
+
+    /**
+     * Comment for this field.
+     * @type {string|null}
+     */
+    this.comment = comment;
 }
 
 /**
@@ -3378,17 +3425,20 @@ function OneOf(name, fieldNames, options) {
  * @throws {TypeError} If arguments are invalid
  */
 OneOf.fromJSON = function fromJSON(name, json) {
-    return new OneOf(name, json.oneof, json.options);
+    return new OneOf(name, json.oneof, json.options, json.comment);
 };
 
 /**
  * Converts this oneof to a oneof descriptor.
+ * @param {IToJSONOptions} [toJSONOptions] JSON conversion options
  * @returns {IOneOf} Oneof descriptor
  */
-OneOf.prototype.toJSON = function toJSON() {
+OneOf.prototype.toJSON = function toJSON(toJSONOptions) {
+    var keepComments = toJSONOptions ? Boolean(toJSONOptions.keepComments) : false;
     return util.toObject([
         "options" , this.options,
-        "oneof"   , this.oneof
+        "oneof"   , this.oneof,
+        "comment" , keepComments ? this.comment : undefined
     ]);
 };
 
@@ -4582,19 +4632,23 @@ Service.fromJSON = function fromJSON(name, json) {
             service.add(Method.fromJSON(names[i], json.methods[names[i]]));
     if (json.nested)
         service.addJSON(json.nested);
+    service.comment = json.comment;
     return service;
 };
 
 /**
  * Converts this service to a service descriptor.
+ * @param {IToJSONOptions} [toJSONOptions] JSON conversion options
  * @returns {IService} Service descriptor
  */
-Service.prototype.toJSON = function toJSON() {
-    var inherited = Namespace.prototype.toJSON.call(this);
+Service.prototype.toJSON = function toJSON(toJSONOptions) {
+    var inherited = Namespace.prototype.toJSON.call(this, toJSONOptions);
+    var keepComments = toJSONOptions ? Boolean(toJSONOptions.keepComments) : false;
     return util.toObject([
         "options" , inherited && inherited.options || undefined,
-        "methods" , Namespace.arrayToJSON(this.methodsArray) || /* istanbul ignore next */ {},
-        "nested"  , inherited && inherited.nested || undefined
+        "methods" , Namespace.arrayToJSON(this.methodsArray, toJSONOptions) || /* istanbul ignore next */ {},
+        "nested"  , inherited && inherited.nested || undefined,
+        "comment" , keepComments ? this.comment : undefined
     ]);
 };
 
@@ -4960,23 +5014,28 @@ Type.fromJSON = function fromJSON(name, json) {
         type.reserved = json.reserved;
     if (json.group)
         type.group = true;
+    if (json.comment)
+        type.comment = json.comment;
     return type;
 };
 
 /**
  * Converts this message type to a message type descriptor.
+ * @param {IToJSONOptions} [toJSONOptions] JSON conversion options
  * @returns {IType} Message type descriptor
  */
-Type.prototype.toJSON = function toJSON() {
-    var inherited = Namespace.prototype.toJSON.call(this);
+Type.prototype.toJSON = function toJSON(toJSONOptions) {
+    var inherited = Namespace.prototype.toJSON.call(this, toJSONOptions);
+    var keepComments = toJSONOptions ? Boolean(toJSONOptions.keepComments) : false;
     return util.toObject([
         "options"    , inherited && inherited.options || undefined,
-        "oneofs"     , Namespace.arrayToJSON(this.oneofsArray),
-        "fields"     , Namespace.arrayToJSON(this.fieldsArray.filter(function(obj) { return !obj.declaringField; })) || {},
+        "oneofs"     , Namespace.arrayToJSON(this.oneofsArray, toJSONOptions),
+        "fields"     , Namespace.arrayToJSON(this.fieldsArray.filter(function(obj) { return !obj.declaringField; }), toJSONOptions) || {},
         "extensions" , this.extensions && this.extensions.length ? this.extensions : undefined,
         "reserved"   , this.reserved && this.reserved.length ? this.reserved : undefined,
         "group"      , this.group || undefined,
-        "nested"     , inherited && inherited.nested || undefined
+        "nested"     , inherited && inherited.nested || undefined,
+        "comment"    , keepComments ? this.comment : undefined
     ]);
 };
 

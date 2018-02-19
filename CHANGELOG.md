@@ -1,3 +1,14 @@
+# [6.8.5](https://github.com/dcodeIO/protobuf.js/releases/tag/6.8.6)
+
+## New
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/462132f222d8febb8211d839635aad5b82dc6315) Preserve comments when serializing/deserializing with toJSON and fromJSON. ([#983](https://github.com/dcodeIO/protobuf.js/issues/983))<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/d29c0caa715a14214fc755b3cf10ac119cdaf199) Add more details to some frequent error messages ([#962](https://github.com/dcodeIO/protobuf.js/issues/962))<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/8400f87ad8ed2b47e659bc8bb6c3cf2467802425) Add IParseOptions#alternateCommentMode ([#968](https://github.com/dcodeIO/protobuf.js/issues/968))<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/d6e3b9e218896ec1910e02448b5ee87e4d96ede6) Added field_mask to built-in common wrappers ([#982](https://github.com/dcodeIO/protobuf.js/issues/982))<br />
+
+## Other
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/635fef013fbb3523536d92c690ffd7d84829db35) Remove code climate config in order to use 'in-app' config instead<br />
+
 # [6.8.4](https://github.com/dcodeIO/protobuf.js/releases/tag/6.8.4)
 
 ## Other
