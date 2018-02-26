@@ -1,3 +1,8 @@
+# [6.8.6](https://github.com/dcodeIO/protobuf.js/releases/tag/6.8.6)
+
+## Fixed
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/2ee1028d631a328e152d7e09f2a0e0c5c83dc2aa) Fix typeRefRe being vulnerable to ReDoS<br />
+
 # [6.8.5](https://github.com/dcodeIO/protobuf.js/releases/tag/6.8.6)
 
 ## New
