@@ -1,6 +1,6 @@
 /*!
- * protobuf.js v6.8.5 (c) 2016, daniel wirtz
- * compiled mon, 19 feb 2018 11:50:08 utc
+ * protobuf.js v6.8.6 (c) 2016, daniel wirtz
+ * compiled mon, 26 feb 2018 11:35:34 utc
  * licensed under the bsd-3-clause license
  * see: https://github.com/dcodeio/protobuf.js for details
  */
@@ -4005,8 +4005,8 @@ var base10Re    = /^[1-9][0-9]*$/,
     base8NegRe  = /^-?0[0-7]+$/,
     numberRe    = /^(?![eE])[0-9]*(?:\.[0-9]*)?(?:[eE][+-]?[0-9]+)?$/,
     nameRe      = /^[a-zA-Z_][a-zA-Z_0-9]*$/,
-    typeRefRe   = /^(?:\.?[a-zA-Z_][a-zA-Z_0-9]*)+$/,
-    fqTypeRefRe = /^(?:\.[a-zA-Z][a-zA-Z_0-9]*)+$/;
+    typeRefRe   = /^(?:\.?[a-zA-Z_][a-zA-Z_0-9]*)(?:\.[a-zA-Z_][a-zA-Z_0-9]*)*$/,
+    fqTypeRefRe = /^(?:\.[a-zA-Z_][a-zA-Z_0-9]*)+$/;
 
 /**
  * Result object returned from {@link parse}.
