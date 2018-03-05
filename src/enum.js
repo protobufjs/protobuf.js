@@ -5,7 +5,7 @@ module.exports = Enum;
 var ReflectionObject = require("./object");
 ((Enum.prototype = Object.create(ReflectionObject.prototype)).constructor = Enum).className = "Enum";
 
-var getNamespace = ()=> require("./namespace"),
+var getNamespace = function () { return require("./namespace") },
     util = require("./util");
 
 /**
