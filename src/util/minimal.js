@@ -46,7 +46,7 @@ util.emptyObject = Object.freeze ? Object.freeze({}) : /* istanbul ignore next *
  * @type {boolean}
  * @const
  */
-util.isNode = Boolean(global.process && global.process.versions && global.process.versions.node);
+util.isNode = Boolean(typeof global !== "undefined" && global.process && global.process.versions && global.process.versions.node);
 
 /**
  * Tests if the specified value is an integer.
@@ -164,7 +164,7 @@ util.Array = typeof Uint8Array !== "undefined" ? Uint8Array /* istanbul ignore n
  * Long.js's Long class if available.
  * @type {Constructor<Long>}
  */
-util.Long = /* istanbul ignore next */ global.dcodeIO && /* istanbul ignore next */ global.dcodeIO.Long || util.inquire("long");
+util.Long = /* istanbul ignore next */ typeof global !== "undefined" && /* istanbul ignore next */ global.dcodeIO && /* istanbul ignore next */ global.dcodeIO.Long || util.inquire("long");
 
 /**
  * Regular expression used to verify 2 bit (`bool`) map keys.
