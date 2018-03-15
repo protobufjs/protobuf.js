@@ -567,6 +567,7 @@ function parse(source, root, options) {
                     else
                         setOption(parent, name + "." + token, readValue(true));
                 }
+                skip(",", true);
             } while (!skip("}", true));
         } else
             setOption(parent, name, readValue(true));
