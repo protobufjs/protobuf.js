@@ -5,7 +5,7 @@ module.exports = Enum;
 var ReflectionObject = require("./object");
 ((Enum.prototype = Object.create(ReflectionObject.prototype)).constructor = Enum).className = "Enum";
 
-var getNamespace = function () { return require("./namespace") },
+var Namespace = require("./namespace"),
     util = require("./util");
 
 /**
@@ -168,7 +168,7 @@ Enum.prototype.remove = function remove(name) {
  * @returns {boolean} `true` if reserved, otherwise `false`
  */
 Enum.prototype.isReservedId = function isReservedId(id) {
-    return getNamespace().isReservedId(this.reserved, id);
+    return Namespace.isReservedId(this.reserved, id);
 };
 
 /**
@@ -177,5 +177,5 @@ Enum.prototype.isReservedId = function isReservedId(id) {
  * @returns {boolean} `true` if reserved, otherwise `false`
  */
 Enum.prototype.isReservedName = function isReservedName(name) {
-    return getNamespace().isReservedName(this.reserved, name);
+    return Namespace.isReservedName(this.reserved, name);
 };

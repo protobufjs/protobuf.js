@@ -5,12 +5,12 @@ module.exports = Namespace;
 var ReflectionObject = require("./object");
 ((Namespace.prototype = Object.create(ReflectionObject.prototype)).constructor = Namespace).className = "Namespace";
 
-var Enum     = require("./enum"),
-    Field    = require("./field"),
+var Field    = require("./field"),
     util     = require("./util");
 
 var Type,    // cyclic
-    Service; // "
+    Service,
+    Enum;
 
 /**
  * Constructs a new namespace instance.
@@ -428,4 +428,5 @@ Namespace.prototype.lookupService = function lookupService(path) {
 Namespace._configure = function(Type_, Service_) {
     Type    = Type_;
     Service = Service_;
+    Enum = require("./enum");
 };
