@@ -25,6 +25,12 @@ util.pool = require("@protobufjs/pool");
 // utility to work with the low and high bits of a 64 bit value
 util.LongBits = require("./longbits");
 
+// global object reference
+util.global = typeof window !== "undefined" && window
+           || typeof global !== "undefined" && global
+           || typeof self   !== "undefined" && self
+           || this; // eslint-disable-line no-invalid-this
+
 /**
  * An immuable empty array.
  * @memberof util
@@ -46,7 +52,7 @@ util.emptyObject = Object.freeze ? Object.freeze({}) : /* istanbul ignore next *
  * @type {boolean}
  * @const
  */
-util.isNode = Boolean(global.process && global.process.versions && global.process.versions.node);
+util.isNode = Boolean(util.global.process && util.global.process.versions && util.global.process.versions.node);
 
 /**
  * Tests if the specified value is an integer.
@@ -164,7 +170,9 @@ util.Array = typeof Uint8Array !== "undefined" ? Uint8Array /* istanbul ignore n
  * Long.js's Long class if available.
  * @type {Constructor<Long>}
  */
-util.Long = /* istanbul ignore next */ global.dcodeIO && /* istanbul ignore next */ global.dcodeIO.Long || util.inquire("long");
+util.Long = /* istanbul ignore next */ util.global.dcodeIO && /* istanbul ignore next */ util.global.dcodeIO.Long
+         || /* istanbul ignore next */ util.global.Long
+         || util.inquire("long");
 
 /**
  * Regular expression used to verify 2 bit (`bool`) map keys.
@@ -383,6 +391,7 @@ util.toJSONOptions = {
     json: true
 };
 
+// Sets up buffer utility according to the environment (called in index-minimal)
 util._configure = function() {
     var Buffer = util.Buffer;
     /* istanbul ignore if */

@@ -31,6 +31,6 @@ function configure() {
     protobuf.util._configure();
 }
 
-// Configure serialization
+// Set up buffer utility according to the environment
 protobuf.Writer._configure(protobuf.BufferWriter);
 configure();

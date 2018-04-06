@@ -1,3 +1,15 @@
+# [6.8.7](https://github.com/dcodeIO/protobuf.js/releases/tag/6.8.7)
+
+## Fixed
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/f13a81fb41fbef2ce9dcee13f23b7276c83fbcfd) Fix circular dependency of Namespace and Enum ([#994](https://github.com/dcodeIO/protobuf.js/issues/994))<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/c05c58fad61c16e5ce20ca19758e4782cdd5d2e3) Ignore optional commas in aggregate options ([#999](https://github.com/dcodeIO/protobuf.js/issues/999))<br />
+
+## New
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/07c5d59e1da8c5533a39007ba332928206281408) Also handle services in ext/descriptor ([#1001](https://github.com/dcodeIO/protobuf.js/issues/1001))<br />
+
+## Other
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/7c391d6333fb028b96ca84950a80914cf56ddc27) Add browser entry to package.json, see [#995](https://github.com/dcodeIO/protobuf.js/issues/995)<br />
+
 # [6.8.6](https://github.com/dcodeIO/protobuf.js/releases/tag/6.8.6)
 
 ## Fixed

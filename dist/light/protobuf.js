@@ -1,15 +1,15 @@
 /*!
- * protobuf.js v6.8.6 (c) 2016, daniel wirtz
- * compiled mon, 26 feb 2018 11:35:35 utc
+ * protobuf.js v6.8.7 (c) 2016, daniel wirtz
+ * compiled fri, 06 apr 2018 11:31:39 utc
  * licensed under the bsd-3-clause license
  * see: https://github.com/dcodeio/protobuf.js for details
  */
-(function(global,undefined){"use strict";(function prelude(modules, cache, entries) {
+(function(undefined){"use strict";(function prelude(modules, cache, entries) {
 
     // This is the prelude used to bundle protobuf.js for the browser. Wraps up the CommonJS
     // sources through a conflict-free require shim and is again wrapped within an iife that
-    // provides a unified `global` and a minification-friendly `undefined` var plus a global
-    // "use strict" directive so that minification can remove the directives of each module.
+    // provides a minification-friendly `undefined` var plus a global "use strict" directive
+    // so that minification can remove the directives of each module.
 
     function $require(name) {
         var $module = cache[name];
@@ -18,8 +18,10 @@
         return $module.exports;
     }
 
+    var protobuf = $require(entries[0]);
+
     // Expose globally
-    var protobuf = global.protobuf = $require(entries[0]);
+    protobuf.util.global.protobuf = protobuf;
 
     // Be nice to AMD
     if (typeof define === "function" && define.amd)
@@ -2155,6 +2157,7 @@ Field.d = function decorateField(fieldId, fieldType, fieldRule, defaultValue) {
  */
 // like Field.d but without a default value
 
+// Sets up cyclic dependencies (called in index-light)
 Field._configure = function configure(Type_) {
     Type = Type_;
 };
@@ -2259,9 +2262,9 @@ protobuf.wrappers         = require(37);
 protobuf.types            = require(32);
 protobuf.util             = require(33);
 
-// Configure reflection
+// Set up possibly cyclic reflection dependencies
 protobuf.ReflectionObject._configure(protobuf.Root);
-protobuf.Namespace._configure(protobuf.Type, protobuf.Service);
+protobuf.Namespace._configure(protobuf.Type, protobuf.Service, protobuf.Enum);
 protobuf.Root._configure(protobuf.Type);
 protobuf.Field._configure(protobuf.Type);
 
@@ -2299,7 +2302,7 @@ function configure() {
     protobuf.util._configure();
 }
 
-// Configure serialization
+// Set up buffer utility according to the environment
 protobuf.Writer._configure(protobuf.BufferWriter);
 configure();
 
@@ -2732,12 +2735,12 @@ module.exports = Namespace;
 var ReflectionObject = require(22);
 ((Namespace.prototype = Object.create(ReflectionObject.prototype)).constructor = Namespace).className = "Namespace";
 
-var Enum     = require(14),
-    Field    = require(15),
+var Field    = require(15),
     util     = require(33);
 
 var Type,    // cyclic
-    Service; // "
+    Service,
+    Enum;
 
 /**
  * Constructs a new namespace instance.
@@ -3152,12 +3155,14 @@ Namespace.prototype.lookupService = function lookupService(path) {
     return found;
 };
 
-Namespace._configure = function(Type_, Service_) {
+// Sets up cyclic dependencies (called in index-light)
+Namespace._configure = function(Type_, Service_, Enum_) {
     Type    = Type_;
     Service = Service_;
+    Enum    = Enum_;
 };
 
-},{"14":14,"15":15,"22":22,"33":33}],22:[function(require,module,exports){
+},{"15":15,"22":22,"33":33}],22:[function(require,module,exports){
 "use strict";
 module.exports = ReflectionObject;
 
@@ -3354,6 +3359,7 @@ ReflectionObject.prototype.toString = function toString() {
     return className;
 };
 
+// Sets up cyclic dependencies (called in index-light)
 ReflectionObject._configure = function(Root_) {
     Root = Root_;
 };
@@ -4364,9 +4370,10 @@ Root.prototype._handleRemove = function _handleRemove(object) {
     }
 };
 
+// Sets up cyclic dependencies (called in index-light)
 Root._configure = function(Type_, parse_, common_) {
-    Type = Type_;
-    parse = parse_;
+    Type   = Type_;
+    parse  = parse_;
     common = common_;
 };
 
@@ -5940,6 +5947,12 @@ util.pool = require(9);
 // utility to work with the low and high bits of a 64 bit value
 util.LongBits = require(34);
 
+// global object reference
+util.global = typeof window !== "undefined" && window
+           || typeof global !== "undefined" && global
+           || typeof self   !== "undefined" && self
+           || this; // eslint-disable-line no-invalid-this
+
 /**
  * An immuable empty array.
  * @memberof util
@@ -5961,7 +5974,7 @@ util.emptyObject = Object.freeze ? Object.freeze({}) : /* istanbul ignore next *
  * @type {boolean}
  * @const
  */
-util.isNode = Boolean(global.process && global.process.versions && global.process.versions.node);
+util.isNode = Boolean(util.global.process && util.global.process.versions && util.global.process.versions.node);
 
 /**
  * Tests if the specified value is an integer.
@@ -6079,7 +6092,9 @@ util.Array = typeof Uint8Array !== "undefined" ? Uint8Array /* istanbul ignore n
  * Long.js's Long class if available.
  * @type {Constructor<Long>}
  */
-util.Long = /* istanbul ignore next */ global.dcodeIO && /* istanbul ignore next */ global.dcodeIO.Long || util.inquire("long");
+util.Long = /* istanbul ignore next */ util.global.dcodeIO && /* istanbul ignore next */ util.global.dcodeIO.Long
+         || /* istanbul ignore next */ util.global.Long
+         || util.inquire("long");
 
 /**
  * Regular expression used to verify 2 bit (`bool`) map keys.
@@ -6298,6 +6313,7 @@ util.toJSONOptions = {
     json: true
 };
 
+// Sets up buffer utility according to the environment (called in index-minimal)
 util._configure = function() {
     var Buffer = util.Buffer;
     /* istanbul ignore if */
@@ -7128,5 +7144,5 @@ BufferWriter.prototype.string = function write_string_buffer(value) {
 
 },{"35":35,"38":38}]},{},[16])
 
-})(typeof window==="object"&&window||typeof self==="object"&&self||this);
+})();
 //# sourceMappingURL=protobuf.js.map

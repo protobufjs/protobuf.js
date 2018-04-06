@@ -365,6 +365,7 @@ Field.d = function decorateField(fieldId, fieldType, fieldRule, defaultValue) {
  */
 // like Field.d but without a default value
 
+// Sets up cyclic dependencies (called in index-light)
 Field._configure = function configure(Type_) {
     Type = Type_;
 };

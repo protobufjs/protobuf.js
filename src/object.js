@@ -194,6 +194,7 @@ ReflectionObject.prototype.toString = function toString() {
     return className;
 };
 
+// Sets up cyclic dependencies (called in index-light)
 ReflectionObject._configure = function(Root_) {
     Root = Root_;
 };

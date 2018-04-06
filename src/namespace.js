@@ -425,8 +425,9 @@ Namespace.prototype.lookupService = function lookupService(path) {
     return found;
 };
 
-Namespace._configure = function(Type_, Service_) {
+// Sets up cyclic dependencies (called in index-light)
+Namespace._configure = function(Type_, Service_, Enum_) {
     Type    = Type_;
     Service = Service_;
-    Enum = require("./enum");
+    Enum    = Enum_;
 };

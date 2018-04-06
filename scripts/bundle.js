@@ -56,10 +56,9 @@ function bundle(options) {
         options.exclude.forEach(bundler.exclude, bundler);
     return bundler
     .plugin(require("browserify-wrap"), {
-        // + global object for convenience
-        // + undefined var and global strict-mode for uglify
-        prefix: "(function(global,undefined){\"use strict\";",
-        suffix: "})(typeof window===\"object\"&&window||typeof self===\"object\"&&self||this);"
+        // undefined var and global strict-mode for uglify
+        prefix: "(function(undefined){\"use strict\";",
+        suffix: "})();"
     })
     .plugin(require("bundle-collapser/plugin"))
     .bundle()

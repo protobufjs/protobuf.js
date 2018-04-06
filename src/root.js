@@ -343,8 +343,9 @@ Root.prototype._handleRemove = function _handleRemove(object) {
     }
 };
 
+// Sets up cyclic dependencies (called in index-light)
 Root._configure = function(Type_, parse_, common_) {
-    Type = Type_;
-    parse = parse_;
+    Type   = Type_;
+    parse  = parse_;
     common = common_;
 };
