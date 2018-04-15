@@ -245,7 +245,7 @@ converter.toObject = function toObject(mtype) {
         ("}else")
             ("d%s=o.longs===String?%j:%i", prop, field.typeDefault.toString(), field.typeDefault.toNumber());
             else if (field.bytes) gen
-        ("d%s=o.bytes===String?%j:o.bytes===Array?%s:%s", prop, String.fromCharCode.apply(String, field.typeDefault), "[" + Array.prototype.slice.call(field.typeDefault).join(",") + "]", "Buffer.from([])");
+        ("d%s=o.bytes===String?%j:o.bytes===Array?%s:%s", prop, String.fromCharCode.apply(String, field.typeDefault), "[" + Array.prototype.slice.call(field.typeDefault).join(",") + "]", "util.newBuffer([])");
             else gen
         ("d%s=%j", prop, field.typeDefault); // also messages (=null)
         } gen
