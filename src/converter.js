@@ -244,9 +244,11 @@ converter.toObject = function toObject(mtype) {
             ("d%s=o.longs===String?n.toString():o.longs===Number?n.toNumber():n", prop)
         ("}else")
             ("d%s=o.longs===String?%j:%i", prop, field.typeDefault.toString(), field.typeDefault.toNumber());
-            else if (field.bytes) gen
-        ("d%s=o.bytes===String?%j:o.bytes===Array?%s:%s", prop, String.fromCharCode.apply(String, field.typeDefault), "[" + Array.prototype.slice.call(field.typeDefault).join(",") + "]", "util.newBuffer([])");
-            else gen
+            else if (field.bytes) {
+                var arrayDefault = "[" + Array.prototype.slice.call(field.typeDefault).join(",") + "]";
+                gen
+        ("d%s=o.bytes===String?%j:o.bytes===Array?%s:%s", prop, String.fromCharCode.apply(String, field.typeDefault), arrayDefault, "util.newBuffer(" + arrayDefault + ")");
+            } else gen
         ("d%s=%j", prop, field.typeDefault); // also messages (=null)
         } gen
     ("}");
