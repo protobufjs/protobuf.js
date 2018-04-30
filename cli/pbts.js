@@ -99,7 +99,7 @@ exports.main = function(args, callback) {
         var basedir = path.join(__dirname, ".");
         var moduleName = argv.name || "null";
         var nodePath = process.execPath;
-        var cmd = nodePath + " \"" + require.resolve("jsdoc/jsdoc.js") + "\" -c \"" + path.join(basedir, "lib", "tsd-jsdoc.json") + "\" -q \"module=" + encodeURIComponent(moduleName) + "&comments=" + Boolean(argv.comments) + "\" " + files.map(function(file) { return "\"" + file + "\""; }).join(" ");
+        var cmd = "\"" + nodePath + "\" \"" + require.resolve("jsdoc/jsdoc.js") + "\" -c \"" + path.join(basedir, "lib", "tsd-jsdoc.json") + "\" -q \"module=" + encodeURIComponent(moduleName) + "&comments=" + Boolean(argv.comments) + "\" " + files.map(function(file) { return "\"" + file + "\""; }).join(" ");
         var child = child_process.exec(cmd, {
             cwd: process.cwd(),
             argv0: "node",

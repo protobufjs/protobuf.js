@@ -251,7 +251,7 @@ converter.toObject = function toObject(mtype) {
         ("else{")
             ("d%s=%s", prop, arrayDefault)
             ("if(o.bytes!==Array)d%s=util.newBuffer(d%s)", prop, prop)
-        ("}")
+        ("}");
             } else gen
         ("d%s=%j", prop, field.typeDefault); // also messages (=null)
         } gen
