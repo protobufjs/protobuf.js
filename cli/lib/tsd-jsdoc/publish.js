@@ -645,10 +645,10 @@ function handleFunction(element, parent, isConstructor) {
         insideClass = isClassLike(parent);
         if (insideClass) {
             write(element.access || "public", " ");
-            if (element.virtual)
-                write("abstract ");
-            else if (element.scope === "static")
+            if (element.scope === "static")
                 write("static ");
+            else if (element.virtual)
+                write("abstract ");
         } else
             write("function ");
         write(element.name);
