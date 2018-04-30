@@ -21,10 +21,10 @@ ProtoBuf.Lang = {
     TYPEDEF: /^[a-zA-Z][a-zA-Z_0-9]*$/,
 
     // Type references
-    TYPEREF: /^(?:\.?[a-zA-Z_][a-zA-Z_0-9]*)+$/,
+    TYPEREF: /^(?:\.?[a-zA-Z_][a-zA-Z_0-9]*)(?:\.[a-zA-Z_][a-zA-Z_0-9]*)*$/,
 
     // Fully qualified type references
-    FQTYPEREF: /^(?:\.[a-zA-Z][a-zA-Z_0-9]*)+$/,
+    FQTYPEREF: /^(?:\.[a-zA-Z_][a-zA-Z_0-9]*)+$/,
 
     // All numbers
     NUMBER: /^-?(?:[1-9][0-9]*|0|0[xX][0-9a-fA-F]+|0[0-7]+|([0-9]*(\.[0-9]*)?([Ee][+-]?[0-9]+)?)|inf|nan)$/,
