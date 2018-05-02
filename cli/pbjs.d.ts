@@ -1,4 +1,4 @@
-type pbjsCallback = (err: Error|null, output?: string) => number|undefined;
+type pbjsCallback = (err: Error|null, output?: string) => void;
 
 /**
  * Runs pbjs programmatically.
