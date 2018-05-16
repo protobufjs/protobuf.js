@@ -101,7 +101,7 @@
         "no-undefined": 0,                  // produces shorter code when testing against this
         "no-use-before-define": 0,          // can actually be used for a better overview, i.e. with module.exports
         "no-unused-vars": 1,                // a warning is sufficient
- 
+
         // Node.js and CommonJS
         "callback-return": 1,
         "global-require": 0,                // only way to resolve cyclic references

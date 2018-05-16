@@ -360,11 +360,9 @@ Reader.prototype.skipType = function(wireType) {
             this.skip(this.uint32());
             break;
         case 3:
-            do { // eslint-disable-line no-constant-condition
-                if ((wireType = this.uint32() & 7) === 4)
-                    break;
+            while ((wireType = this.uint32() & 7) !== 4) {
                 this.skipType(wireType);
-            } while (true);
+            }
             break;
         case 5:
             this.skip(4);

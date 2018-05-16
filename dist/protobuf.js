@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.8.7 (c) 2016, daniel wirtz
- * compiled mon, 30 apr 2018 19:47:12 utc
+ * compiled wed, 16 may 2018 10:54:58 utc
  * licensed under the bsd-3-clause license
  * see: https://github.com/dcodeio/protobuf.js for details
  */
@@ -5113,11 +5113,9 @@ Reader.prototype.skipType = function(wireType) {
             this.skip(this.uint32());
             break;
         case 3:
-            do { // eslint-disable-line no-constant-condition
-                if ((wireType = this.uint32() & 7) === 4)
-                    break;
+            while ((wireType = this.uint32() & 7) !== 4) {
                 this.skipType(wireType);
-            } while (true);
+            }
             break;
         case 5:
             this.skip(4);

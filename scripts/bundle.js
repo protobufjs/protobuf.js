@@ -10,7 +10,6 @@ var header     = require("gulp-header");
 var gulpif     = require("gulp-if");
 var sourcemaps = require("gulp-sourcemaps");
 var uglify     = require("gulp-uglify");
-var gutil      = require("gulp-util");
 
 var buffer     = require("vinyl-buffer");
 var vinylfs    = require("vinyl-fs");
@@ -67,15 +66,13 @@ function bundle(options) {
     .pipe(sourcemaps.init({ loadMaps: true }))
             .pipe(
                 gulpif(options.compress, uglify({
-                    mangleProperties: {
-                        regex: /^_/
-                    },
                     mangle: {
                         eval: true,
-                        toplevel: false
+                        properties: {
+                            regex: /^_/
+                        }
                     },
                     compress: {
-                        unused: true,
                         keep_fargs: false,
                         unsafe: true
                     },
@@ -90,6 +87,6 @@ function bundle(options) {
             }))
     .pipe(sourcemaps.write(".", { sourceRoot: "" }))
     .pipe(vinylfs.dest(options.target))
-    .on("log", gutil.log)
-    .on("error", gutil.log);
+    .on("log", console.log)
+    .on("error", console.error);
 }

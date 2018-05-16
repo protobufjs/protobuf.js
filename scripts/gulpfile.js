@@ -1,26 +1,31 @@
 var gulp   = require("gulp"),
     bundle = require("./bundle");
 
-var defaultTask = [];
-
 function defineTask(name, entry, target) {
     gulp.task(name + "-bundle", bundle.bind(this, {
         entry    : entry,
         target   : target
     }));
-    gulp.task(name + "-minify" , [ name + "-bundle" ], bundle.bind(this, {
+    gulp.task(name + "-minify", bundle.bind(this, {
         entry    : entry,
         target   : target,
         compress : true
     }));
-    defaultTask.push(name + "-bundle", name + "-minify");
+    gulp.task(name, gulp.series(
+        name + "-bundle",
+        name + "-minify"
+    ), function(done) { done(); });
 }
 
 defineTask("full"   , "../src/index"        , "../dist"        );
 defineTask("light"  , "../src/index-light"  , "../dist/light"  );
 defineTask("minimal", "../src/index-minimal", "../dist/minimal");
 
-gulp.task("default", defaultTask);
+gulp.task("default", gulp.parallel(
+    "full",
+    "light",
+    "minimal"
+, function(done) { done(); }));
 
 /* var typedoc = require("gulp-typedoc");
 gulp.task("typedoc", function() {

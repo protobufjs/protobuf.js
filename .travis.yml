@@ -6,6 +6,7 @@ node_js:
   - 4.3.2
   - 6
   - 8
+  - 10
 branches:
   only: master
 script: npm test && npm run bench
