@@ -1,17 +1,10 @@
 dist: trusty
 language: node_js
 node_js:
-  - 0.12
-  - 4
+  - node
+  - lts/*
   - 4.3.2
-  - 6
-  - 8
-  - 10
+  - 4
 branches:
   only: master
 script: npm test && npm run bench
-
-matrix:
-  include:
-  - node_js: 8
-    script: set -e; if [ -n "$CODECLIMATE_REPO_TOKEN" ]; then npm run coverage-ci; fi
