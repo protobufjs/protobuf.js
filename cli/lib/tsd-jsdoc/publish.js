@@ -543,7 +543,49 @@ function handleClass(element, parent) {
 
     // class-compatible members
     var incompatible = [];
-    getChildrenOf(element).forEach(function(child) {
+
+    var childs = getChildrenOf(element);
+
+    for (var i = 0; i < childs.length; i++) {
+
+        var child = childs[i];
+
+        if (
+            child.kind === "function" &&
+            child.params &&
+            child.params[0].name === "request" && (
+                child.params.length === 1 || (
+                    child.params.length === 2 &&
+                    child.params[1].name === "callback"
+                )
+            )
+        ) {
+
+            var metaMethod = JSON.parse(JSON.stringify(child));
+
+            metaMethod.params.splice(1, 0, {
+                "name": "metadata",
+                "type": {
+                    "names": ["gRPC.Metadata"]
+                },
+                "variable": false,
+                "optional": false
+            });
+            metaMethod.longname = metaMethod.longname.slice(0, -1) + "1)";
+            var comment = metaMethod.comment.split("\n");
+            comment.splice(
+                comment.findIndex(x => x.indexOf("@param") > -1) + 1,
+                0,
+                comment[0].split("/", 1) + " * @param metadata GRPC request metadata"
+            );
+            metaMethod.comment = comment.join("\n");
+
+            childs.splice(i + 1, 0, metaMethod);
+            i++;
+        }
+    }
+
+    childs.forEach(function(child) {
         if (isClassLike(child) || child.kind === "module" || child.kind === "typedef" || child.isEnum) {
             incompatible.push(child);
             return;

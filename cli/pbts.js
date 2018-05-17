@@ -142,11 +142,22 @@ exports.main = function(args, callback) {
                     "export as namespace " + argv.global + ";",
                     ""
                 );
-            if (!argv.main)
+            if (!argv.main) {
+
                 output.push(
-                    "import * as $protobuf from \"protobufjs\";",
+                    "import * as $protobuf from \"protobufjs\";"
+                );
+
+                if (out.find(x => x.indexOf("gRPC.Metadata") > -1)) {
+
+                    output.push(
+                        "import * as gRPC from \"grpc\";",
+                    );
+                }
+                output.push(
                     ""
                 );
+            }
             output = output.join("\n") + "\n" + out.join("");
 
             try {
