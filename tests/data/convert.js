@@ -482,7 +482,13 @@ $root.Message = (function() {
                 object.uint64Val = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
             } else
                 object.uint64Val = options.longs === String ? "0" : 0;
-            object.bytesVal = options.bytes === String ? "" : [];
+            if (options.bytes === String)
+                object.bytesVal = "";
+            else {
+                object.bytesVal = [];
+                if (options.bytes !== Array)
+                    object.bytesVal = $util.newBuffer(object.bytesVal);
+            }
             object.enumVal = options.enums === String ? "ONE" : 1;
         }
         if (message.stringVal != null && message.hasOwnProperty("stringVal"))

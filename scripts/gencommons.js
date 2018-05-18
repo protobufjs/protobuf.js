@@ -4,7 +4,6 @@ var pbjs = require("../cli/pbjs");
 [
     "google/protobuf/api.proto",
     "google/protobuf/descriptor.proto",
-    "google/protobuf/field_mask.proto",
     "google/protobuf/source_context.proto",
     "google/protobuf/type.proto",
 

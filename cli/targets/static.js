@@ -172,12 +172,9 @@ var shortVars = {
 function beautifyCode(code) {
     // Add semicolons
     code = UglifyJS.minify(code, {
-        fromString: true,
         compress: false,
         mangle: false,
-        output: {
-            beautify: true
-        }
+        output: { beautify: true }
     }).code;
     // Properly beautify
     var ast = espree.parse(code);
@@ -653,11 +650,11 @@ function buildService(ref, service) {
             "@returns {undefined}",
             "@variation 1"
         ]);
-        push(escapeName(service.name) + ".prototype" + util.safeProp(lcName) + " = function " + escapeName(lcName) + "(request, callback) {");
+        push("Object.defineProperty(" + escapeName(service.name) + ".prototype" + util.safeProp(lcName) + " = function " + escapeName(lcName) + "(request, callback) {");
             ++indent;
             push("return this.rpcCall(" + escapeName(lcName) + ", $root." + exportName(method.resolvedRequestType) + ", $root." + exportName(method.resolvedResponseType) + ", request, callback);");
             --indent;
-        push("};");
+        push("}, \"name\", { value: " + JSON.stringify(method.name) + " });");
         if (config.comments)
             push("");
         pushComment([

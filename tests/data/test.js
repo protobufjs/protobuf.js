@@ -3550,11 +3550,17 @@ $root.jspb = (function() {
                         object.intField = options.longs === String ? "11" : 11;
                     object.enumField = options.enums === String ? "E1" : 13;
                     object.emptyField = "";
-                    object.bytesField = options.bytes === String ? "moo" : [
-                        109,
-                        111,
-                        111
-                    ];
+                    if (options.bytes === String)
+                        object.bytesField = "moo";
+                    else {
+                        object.bytesField = [
+                            109,
+                            111,
+                            111
+                        ];
+                        if (options.bytes !== Array)
+                            object.bytesField = $util.newBuffer(object.bytesField);
+                    }
                 }
                 if (message.stringField != null && message.hasOwnProperty("stringField"))
                     object.stringField = message.stringField;
@@ -4285,7 +4291,13 @@ $root.jspb = (function() {
                 if (options.defaults) {
                     object.str = "";
                     object.simple1 = null;
-                    object.bytesField = options.bytes === String ? "" : [];
+                    if (options.bytes === String)
+                        object.bytesField = "";
+                    else {
+                        object.bytesField = [];
+                        if (options.bytes !== Array)
+                            object.bytesField = $util.newBuffer(object.bytesField);
+                    }
                     object.unused = "";
                     object[".jspb.test.CloneExtension.extField"] = null;
                 }
@@ -6709,7 +6721,13 @@ $root.jspb = (function() {
                 var object = {};
                 if (options.defaults) {
                     object.value = 0;
-                    object.data = options.bytes === String ? "" : [];
+                    if (options.bytes === String)
+                        object.data = "";
+                    else {
+                        object.data = [];
+                        if (options.bytes !== Array)
+                            object.data = $util.newBuffer(object.data);
+                    }
                 }
                 if (message.value != null && message.hasOwnProperty("value"))
                     object.value = message.value;
@@ -14604,7 +14622,13 @@ $root.google = (function() {
                     } else
                         object.negativeIntValue = options.longs === String ? "0" : 0;
                     object.doubleValue = 0;
-                    object.stringValue = options.bytes === String ? "" : [];
+                    if (options.bytes === String)
+                        object.stringValue = "";
+                    else {
+                        object.stringValue = [];
+                        if (options.bytes !== Array)
+                            object.stringValue = $util.newBuffer(object.stringValue);
+                    }
                     object.aggregateValue = "";
                 }
                 if (message.name && message.name.length) {

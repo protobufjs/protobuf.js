@@ -60,9 +60,9 @@ $root.MyService = (function() {
      * @returns {undefined}
      * @variation 1
      */
-    MyService.prototype["delete"] = function delete_(request, callback) {
+    Object.defineProperty(MyService.prototype["delete"] = function delete_(request, callback) {
         return this.rpcCall(delete_, $root.MyRequest, $root.MyResponse, request, callback);
-    };
+    }, "name", { value: "Delete" });
 
     /**
      * Calls Delete.

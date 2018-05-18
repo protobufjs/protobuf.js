@@ -58,9 +58,9 @@ export const MyService = $root.MyService = (() => {
      * @returns {undefined}
      * @variation 1
      */
-    MyService.prototype.myMethod = function myMethod(request, callback) {
+    Object.defineProperty(MyService.prototype.myMethod = function myMethod(request, callback) {
         return this.rpcCall(myMethod, $root.MyRequest, $root.MyResponse, request, callback);
-    };
+    }, "name", { value: "MyMethod" });
 
     /**
      * Calls MyMethod.
