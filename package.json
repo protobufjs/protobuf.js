@@ -19,9 +19,9 @@
   ],
   "main": "index.js",
   "browser": {
-    "protobufjs": "./src/index.js",
-    "protobufjs-light": "./src/index-light.js",
-    "protobufjs-minimal": "./src/index-minimal.js"
+    "protobufjs": "./index.js",
+    "protobufjs/light": "./light.js",
+    "protobufjs/minimal": "./minimal.js"
   },
   "types": "index.d.ts",
   "bin": {
