@@ -18,7 +18,6 @@
     "typescript"
   ],
   "main": "index.js",
-  "browser": "dist/protobuf.js",
   "types": "index.d.ts",
   "bin": {
     "pbjs": "bin/pbjs",
