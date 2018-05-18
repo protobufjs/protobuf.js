@@ -18,6 +18,11 @@
     "typescript"
   ],
   "main": "index.js",
+  "browser": {
+    "protobufjs": "./src/index.js",
+    "protobufjs-light": "./src/index-light.js",
+    "protobufjs-minimal": "./src/index-minimal.js"
+  },
   "types": "index.d.ts",
   "bin": {
     "pbjs": "bin/pbjs",
