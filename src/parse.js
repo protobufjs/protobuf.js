@@ -391,8 +391,8 @@ function parse(source, root, options) {
         if (!nameRe.test(name))
             throw illegal(name, "name");
 
-        var fieldName = util.lcFirst(name);
-        if (name === fieldName)
+        var fieldName = options.keepCaseAll ? name : util.lcFirst(name);
+        if (name === fieldName && !options.keepCaseAll)
             name = util.ucFirst(name);
         skip("=");
         var id = parseId(next());

@@ -627,7 +627,7 @@ function buildService(ref, service) {
 
     service.methodsArray.forEach(function(method) {
         method.resolve();
-        var lcName = protobuf.util.lcFirst(method.name),
+        var lcName = config.keepCaseAll ? method.name : protobuf.util.lcFirst(method.name),
             cbName = escapeName(method.name + "Callback");
         push("");
         pushComment([

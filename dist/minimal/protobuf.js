@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.8.7 (c) 2016, daniel wirtz
- * compiled fri, 18 may 2018 08:55:41 utc
+ * compiled mon, 21 may 2018 19:32:54 utc
  * licensed under the bsd-3-clause license
  * see: https://github.com/dcodeio/protobuf.js for details
  */
@@ -1492,7 +1492,8 @@ Service.prototype.rpcCall = function rpcCall(method, requestCtor, responseCtor, 
 
                 self.emit("data", response, method);
                 return callback(null, response);
-            }
+            },
+            responseCtor
         );
     } catch (err) {
         self.emit("error", err, method);

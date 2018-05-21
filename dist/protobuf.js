@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.8.7 (c) 2016, daniel wirtz
- * compiled fri, 18 may 2018 08:55:41 utc
+ * compiled mon, 21 may 2018 19:32:54 utc
  * licensed under the bsd-3-clause license
  * see: https://github.com/dcodeio/protobuf.js for details
  */
@@ -4384,8 +4384,8 @@ function parse(source, root, options) {
         if (!nameRe.test(name))
             throw illegal(name, "name");
 
-        var fieldName = util.lcFirst(name);
-        if (name === fieldName)
+        var fieldName = options.keepCaseAll ? name : util.lcFirst(name);
+        if (name === fieldName && !options.keepCaseAll)
             name = util.ucFirst(name);
         skip("=");
         var id = parseId(next());
@@ -5734,7 +5734,8 @@ Service.prototype.rpcCall = function rpcCall(method, requestCtor, responseCtor, 
 
                 self.emit("data", response, method);
                 return callback(null, response);
-            }
+            },
+            responseCtor
         );
     } catch (err) {
         self.emit("error", err, method);
