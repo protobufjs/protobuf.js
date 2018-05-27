@@ -34,7 +34,7 @@ exports.main = function main(args, callback) {
             "force-message": "strict-message"
         },
         string: [ "target", "out", "path", "wrap", "dependency", "root", "lint" ],
-        boolean: [ "create", "encode", "decode", "verify", "convert", "delimited", "beautify", "comments", "es6", "sparse", "keep-case", "force-long", "force-number", "force-enum-string", "force-message" ],
+        boolean: [ "create", "encode", "decode", "verify", "convert", "delimited", "beautify", "comments", "es6", "sparse", "keep-case", "keep-case-all", "force-long", "force-number", "force-enum-string", "force-message" ],
         default: {
             target: "json",
             create: true,
@@ -48,6 +48,7 @@ exports.main = function main(args, callback) {
             es6: null,
             lint: lintDefault,
             "keep-case": false,
+            "keep-case-all": false,
             "force-long": false,
             "force-number": false,
             "force-enum-string": false,
@@ -114,6 +115,8 @@ exports.main = function main(args, callback) {
                 chalk.bold.gray("  Proto sources only:"),
                 "",
                 "  --keep-case      Keeps field casing instead of converting to camel case.",
+                "",
+                "  --keep-case-all  Keeps all casing instead of converting to camel case (methods as well as fields)",
                 "",
                 chalk.bold.gray("  Static targets only:"),
                 "",
@@ -191,7 +194,8 @@ exports.main = function main(args, callback) {
     }
 
     var parseOptions = {
-        "keepCase": argv["keep-case"] || false
+        "keepCase": argv["keep-case"] || argv["keep-case-all"] || false,
+        "keepCaseAll": argv["keep-case-all"] || false
     };
 
     // Read from stdin
