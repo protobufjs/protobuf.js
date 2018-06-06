@@ -596,11 +596,12 @@ function buildService(ref, service) {
         "@constructor",
         "@param {$protobuf.RPCImpl} rpcImpl RPC implementation",
         "@param {boolean} [requestDelimited=false] Whether requests are length-delimited",
-        "@param {boolean} [responseDelimited=false] Whether responses are length-delimited"
+        "@param {boolean} [responseDelimited=false] Whether responses are length-delimited",
+        "@param {boolean} [rawMessages=false] Whether to disable message encoding and decoding"
     ]);
-    push("function " + escapeName(service.name) + "(rpcImpl, requestDelimited, responseDelimited) {");
+    push("function " + escapeName(service.name) + "(rpcImpl, requestDelimited, responseDelimited, rawMessages) {");
     ++indent;
-    push("$protobuf.rpc.Service.call(this, rpcImpl, requestDelimited, responseDelimited);");
+    push("$protobuf.rpc.Service.call(this, rpcImpl, requestDelimited, responseDelimited, rawMessages);");
     --indent;
     push("}");
     push("");
@@ -616,11 +617,12 @@ function buildService(ref, service) {
             "@param {$protobuf.RPCImpl} rpcImpl RPC implementation",
             "@param {boolean} [requestDelimited=false] Whether requests are length-delimited",
             "@param {boolean} [responseDelimited=false] Whether responses are length-delimited",
+            "@param {boolean} [rawMessages=false] Whether to disable message encoding and decoding",
             "@returns {" + escapeName(service.name) + "} RPC service. Useful where requests and/or responses are streamed."
         ]);
-        push(escapeName(service.name) + ".create = function create(rpcImpl, requestDelimited, responseDelimited) {");
+        push(escapeName(service.name) + ".create = function create(rpcImpl, requestDelimited, responseDelimited, rawMessages) {");
             ++indent;
-            push("return new this(rpcImpl, requestDelimited, responseDelimited);");
+            push("return new this(rpcImpl, requestDelimited, responseDelimited, rawMessages);");
             --indent;
         push("};");
     }
