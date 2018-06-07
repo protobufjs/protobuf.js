@@ -65,7 +65,7 @@
     "eslint": "^4.19.1",
     "espree": "^3.5.4",
     "estraverse": "^4.2.0",
-    "gh-pages": "^1.1.0",
+    "gh-pages": "^1.2.0",
     "git-raw-commits": "^1.3.6",
     "git-semver-tags": "^1.3.6",
     "glob": "^7.1.2",

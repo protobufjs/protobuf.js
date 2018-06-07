@@ -139,8 +139,8 @@ exports.main = function(args, callback) {
         });
 
         function getImportName(importItem) {
-            var result = path.basename(importItem, ".js")
-            return result.replace(/([-_~.+]\w)/g, match => {
+            var result = path.basename(importItem, ".js");
+            return result.replace(/([-_~.+]\w)/g, function (match) {
                 return match[1].toUpperCase();
             });
         }
