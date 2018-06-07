@@ -99,7 +99,6 @@ Service.prototype.rpcCall = function rpcCall(method, requestCtor, responseCtor, 
 
     try {
         var encodeMethod = requestCtor[self.requestDelimited ? "encodeDelimited" : "encode"];
-        var decodeMethod = responseCtor[self.responseDelimited ? "decodeDelimited" : "decode"];
 
         return self.rpcImpl(
             method,
@@ -118,6 +117,7 @@ Service.prototype.rpcCall = function rpcCall(method, requestCtor, responseCtor, 
 
                 if (!(response instanceof responseCtor)) {
                     try {
+                        var decodeMethod = responseCtor[self.responseDelimited ? "decodeDelimited" : "decode"];
                         response = self.rawMessages ? response : decodeMethod(response);
                     } catch (err) {
                         self.emit("error", err, method);
