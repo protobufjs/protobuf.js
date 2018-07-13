@@ -32,10 +32,12 @@ function genValuePartial_fromObject(gen, field, fieldIndex, prop) {
                     ("break");
             } gen
             ("}");
-        } else gen
-            ("if(typeof d%s!==\"object\")", prop)
-                ("throw TypeError(%j)", field.fullName + ": object expected")
+        } else {
+            gen
+            // ("if(typeof d%s!==\"object\")", prop)
+            //     ("throw TypeError(%j)", field.fullName + ": object expected")
             ("m%s=types[%i].fromObject(d%s)", prop, fieldIndex, prop);
+        }
     } else {
         var isUnsigned = false;
         switch (field.type) {
@@ -133,10 +135,10 @@ converter.fromObject = function fromObject(mtype) {
         // Non-repeated fields
         } else {
             if (!(field.resolvedType instanceof Enum)) gen // no need to test for null/undefined if an enum (uses switch)
-    ("if(d%s!=null){", prop); // !== undefined && !== null
-        genValuePartial_fromObject(gen, field, /* not sorted */ i, prop);
-            if (!(field.resolvedType instanceof Enum)) gen
-    ("}");
+    // ("if(d%s!=null){", prop); // !== undefined && !== null
+    genValuePartial_fromObject(gen, field, /* not sorted */ i, prop);
+        // if (!(field.resolvedType instanceof Enum)) gen
+    // ("}");
         }
     } return gen
     ("return m");
