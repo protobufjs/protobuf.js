@@ -44,7 +44,7 @@
         "lenient"       : false,
         "destination"   : "./docs",
         "template"      : "./node_modules/jaguarjs-jsdoc",
-        "sourceRoot"    : "https://github.com/dcodeIO/protobuf.js/blob/master/src/",
+        "sourceRoot"    : "https://github.com/dcodeIO/protobuf.js/blob/master/",
         "repo"          : "https://github.com/dcodeIO/protobuf.js"
     }
 }
