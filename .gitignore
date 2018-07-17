@@ -5,3 +5,5 @@ cli/node_modules/
 docs/
 coverage/
 sandbox/
+/.vs
+/cli/.vs
