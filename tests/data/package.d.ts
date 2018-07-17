@@ -1,5 +1,4 @@
 import * as $protobuf from "../..";
-
 export interface IPackage {
     name?: (string|null);
     version?: (string|null);
