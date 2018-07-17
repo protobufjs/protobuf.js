@@ -507,7 +507,7 @@ export interface IExtensionMapField extends IMapField {
 }
 
 /** Abstract runtime message. */
-export class Message<T extends object> {
+export class Message<T extends object = object> {
 
     /**
      * Constructs a new message instance.
