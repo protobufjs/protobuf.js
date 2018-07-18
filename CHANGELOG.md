@@ -1,14 +1,27 @@
 # [6.8.7](https://github.com/dcodeIO/protobuf.js/releases/tag/6.8.7)
 
 ## Fixed
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/e8449c4bf1269a2cc423708db6f0b47a383d33f0) Fix package browser field descriptor ([#1046](https://github.com/dcodeIO/protobuf.js/issues/1046))<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/996b3fa0c598ecc73302bfc39208c44830f07b1a) Fix static codegen issues with uglifyjs3<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/a06317139b92fdd8c6b3b188fb7b9704dc8ccbf1) Fix lint issues / pbts on windows<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/a927a6646e8fdddebcb3e13bc8b28b041b3ee40a) Fix empty 'bytes' field decoding, now using Buffer where applicable ([#1020](https://github.com/dcodeIO/protobuf.js/issues/1020))<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/f13a81fb41fbef2ce9dcee13f23b7276c83fbcfd) Fix circular dependency of Namespace and Enum ([#994](https://github.com/dcodeIO/protobuf.js/issues/994))<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/c05c58fad61c16e5ce20ca19758e4782cdd5d2e3) Ignore optional commas in aggregate options ([#999](https://github.com/dcodeIO/protobuf.js/issues/999))<br />
 
 ## New
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/36fc964b8db1e4372c76b1baf9f03857cd875b07) Make Message<T> have a default type param ([#1086](https://github.com/dcodeIO/protobuf.js/issues/1086))<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/996b3fa0c598ecc73302bfc39208c44830f07b1a) Explicitly define service method names when generating static code, see [#857](https://github.com/dcodeIO/protobuf.js/issues/857)<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/07c5d59e1da8c5533a39007ba332928206281408) Also handle services in ext/descriptor ([#1001](https://github.com/dcodeIO/protobuf.js/issues/1001))<br />
 
+## CLI
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/2c5ef95818a310243f88ffba0331cd47ee603c0a) Extend list of ignored ESLint rules for pbjs, fixes [#1085](https://github.com/dcodeIO/protobuf.js/issues/1085)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/8576b49ad3e55b8beae2a8f044c51040484eef12) Fix declared return type of pbjs/pbts callback ([#1025](https://github.com/dcodeIO/protobuf.js/issues/1025))<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/9fceaa69667895e609a3ed78eb2efa7a0ecfb890) Added an option to pbts to allow custom imports ([#1038](https://github.com/dcodeIO/protobuf.js/issues/1038))<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/65d113b0079fa2570837f3cf95268ce24714a248) Get node executable path from process.execPath ([#1018](https://github.com/dcodeIO/protobuf.js/issues/1018))<br />
+
 ## Other
-[:hash:](https://github.com/dcodeIO/protobuf.js/commit/7c391d6333fb028b96ca84950a80914cf56ddc27) Add browser entry to package.json, see [#995](https://github.com/dcodeIO/protobuf.js/issues/995)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/b611875cfbc1f98d8973a2e86f1506de84f00049) Slim down CI testing and remove some not ultimately necesssary dependencies with audit issues<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/812b38ddabb35e154f9ff94f32ad8ce2a70310f1) Move global handling to util, see [#995](https://github.com/dcodeIO/protobuf.js/issues/995)<br />
 
 # [6.8.6](https://github.com/dcodeIO/protobuf.js/releases/tag/6.8.6)
 
