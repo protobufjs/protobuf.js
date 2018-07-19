@@ -1,3 +1,8 @@
+# [6.8.8](https://github.com/dcodeIO/protobuf.js/releases/tag/6.8.8)
+
+## Fixed
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/3001425b0d896d14188307cd0cc84ce195ad9e04) Persist recent index.d.ts changes in JSDoc<br />
+
 # [6.8.7](https://github.com/dcodeIO/protobuf.js/releases/tag/6.8.7)
 
 ## Fixed
