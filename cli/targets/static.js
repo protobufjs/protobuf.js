@@ -481,6 +481,14 @@ function buildType(ref, type) {
   push("}");
   /* Constructor */
 
+  /* Type */
+  push("");
+  push(escapeName(type.name) + ".type = '" + escapeName(type.name) + "';");
+  push(
+    escapeName(type.name) + ".prototype.type = '" + escapeName(type.name) + "';"
+  );
+  /* Type */
+
   // default values
   var firstField = true;
   type.fieldsArray.forEach(function(field) {
