@@ -1,3 +1,5 @@
+// DO NOT EDIT! This is a generated file. Edit the JSDoc in src/*.js instead and run 'npm run types'.
+
 export as namespace protobuf;
 
 /**
@@ -507,7 +509,7 @@ export interface IExtensionMapField extends IMapField {
 }
 
 /** Abstract runtime message. */
-export class Message<T extends object> {
+export class Message<T extends object = object> {
 
     /**
      * Constructs a new message instance.

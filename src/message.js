@@ -8,7 +8,7 @@ var util = require("./util/minimal");
  * @classdesc Abstract runtime message.
  * @constructor
  * @param {Properties<T>} [properties] Properties to set
- * @template T extends object
+ * @template T extends object = object
  */
 function Message(properties) {
     // not used internally

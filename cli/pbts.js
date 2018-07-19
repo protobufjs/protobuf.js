@@ -146,6 +146,11 @@ exports.main = function(args, callback) {
 
         function finish() {
             var output = [];
+            if (argv.main)
+                output.push(
+                    "// DO NOT EDIT! This is a generated file. Edit the JSDoc in src/*.js instead and run 'npm run types'.",
+                    ""
+                );
             if (argv.global)
                 output.push(
                     "export as namespace " + argv.global + ";",
