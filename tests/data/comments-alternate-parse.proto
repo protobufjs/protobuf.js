@@ -71,3 +71,14 @@ enum Test3 {
 
     FOUR = 4; /// Other value with a comment.
 }
+
+/* One-line block comment. */
+message Test4 {}
+
+// I'm a distraction and should not part of the comment.
+/* Block comment under a line comment. */
+message Test5 {}
+
+/* I'm a distraction and should not part of the comment. */
+// Line comment under a block comment.
+message Test6 {}

@@ -3,7 +3,7 @@ var tape = require("tape");
 var protobuf = require("..");
 
 tape.test("proto comments", function(test) {
-    test.plan(10);
+    test.plan(13);
     protobuf.load("tests/data/comments.proto", function(err, root) {
         if (err)
             throw test.fail(err.message);
@@ -11,6 +11,9 @@ tape.test("proto comments", function(test) {
         test.equal(root.lookup("Test1").comment, "Message\nwith\na\ncomment.", "should parse /**-blocks");
         test.equal(root.lookup("Test2").comment, null, "should not parse //-blocks");
         test.equal(root.lookup("Test3").comment, null, "should not parse /*-blocks");
+        test.equal(root.lookup("Test4").comment, null, "should not parse one-line block comment");
+        test.equal(root.lookup("Test5").comment, null, "should not parse block comment under line comment");
+        test.equal(root.lookup("Test6").comment, null, "should not parse line comment under block comment");
 
         test.equal(root.lookup("Test1.field1").comment, "Field with a comment.", "should parse blocks for message fields");
         test.equal(root.lookup("Test1.field2").comment, null, "should not parse lines for message fields");
