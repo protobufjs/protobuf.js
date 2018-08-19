@@ -552,25 +552,46 @@ function parse(source, root, options) {
     }
 
     function parseOptionValue(parent, name) {
-        if (skip("{", true)) { // { a: "foo" b { c: "bar" } }
-            do {
+        // OptionValue = string
+        //     | "{" "}"
+        //     | "{" Members "}"
+        // 
+        // Members = Pair
+        //     | Pair Members
+        // 
+        // Pair = name [ ":" ] Value
+        // 
+        // Value = OptionValue [ ";" | "," ]
+        if (skip("{", true)) {
+            while (!skip("}", true)) {
+                // name
                 /* istanbul ignore if */
                 if (!nameRe.test(token = next()))
                     throw illegal(token, "name");
 
-                if (peek() === "{")
+                // [ ":" ]
+                skip(":", true);
+
+                // Value
+                if (peek() === "{") {
+                    // "{" "}"
+                    // | "{" Members "}"
                     parseOptionValue(parent, name + "." + token);
-                else {
-                    skip(":");
-                    if (peek() === "{")
-                        parseOptionValue(parent, name + "." + token);
-                    else
-                        setOption(parent, name + "." + token, readValue(true));
+                } else {
+                    // string
+                    setOption(parent, name + "." + token, readValue(true));
                 }
-                skip(",", true);
-            } while (!skip("}", true));
-        } else
+
+                // [ ";" | "," ]
+                if (peek() === ";") {
+                    skip(";");
+                } else if (peek() === ",") {
+                    skip(",");
+                }
+            }
+        } else {
             setOption(parent, name, readValue(true));
+        }
         // Does not enforce a delimiter to be universal
     }
 
