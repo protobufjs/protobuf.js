@@ -1305,14 +1305,13 @@ export namespace rpc {
 
     /** An RPC service as returned by {@link Service#create}. */
     class Service extends util.EventEmitter {
-
         /**
          * Constructs a new RPC service instance.
          * @param rpcImpl RPC implementation
          * @param [requestDelimited=false] Whether requests are length-delimited
          * @param [responseDelimited=false] Whether responses are length-delimited
          */
-        constructor(rpcImpl: RPCImpl, requestDelimited?: boolean, responseDelimited?: boolean);
+        constructor(rpcImpl: RPCImpl | RPCHandler, requestDelimited?: boolean, responseDelimited?: boolean);
 
         /** RPC implementation. Becomes `null` once the service is ended. */
         public rpcImpl: (RPCImpl|null);
@@ -1342,13 +1341,24 @@ export namespace rpc {
     }
 }
 
+type RPCUnaryCall = (method: (Method|rpc.ServiceMethod<Message<{}>, Message<{}>>), requestData: Uint8Array, callback: RPCImplCallback) => void;
+type RPCStreamingCall = (method: (Method|rpc.ServiceMethod<Message<{}>, Message<{}>>), requestData: Uint8Array, responseFn: (responseData: Uint8Array) => protobuf.Message): util.EventEmitter;
+
+/**
+ * RPCHandler allows to pass custom RPC implementation for unary and streaming calls
+ */
+export interface RPCHandler {
+    unaryCall: RPCUnaryCall;
+    streamingCall: RPCStreamingCall;
+}
+
 /**
  * RPC implementation passed to {@link Service#create} performing a service request on network level, i.e. by utilizing http requests or websockets.
  * @param method Reflected or static method being called
  * @param requestData Request data
  * @param callback Callback function
  */
-type RPCImpl = (method: (Method|rpc.ServiceMethod<Message<{}>, Message<{}>>), requestData: Uint8Array, callback: RPCImplCallback) => void;
+type RPCImpl = RPCUnaryCall;
 
 /**
  * Node-style callback as used by {@link RPCImpl}.
@@ -1397,7 +1407,7 @@ export class Service extends NamespaceBase {
      * @param [responseDelimited=false] Whether responses are length-delimited
      * @returns RPC service. Useful where requests and/or responses are streamed.
      */
-    public create(rpcImpl: RPCImpl, requestDelimited?: boolean, responseDelimited?: boolean): rpc.Service;
+    public create(rpcImpl: RPCImpl | RPCHandler, requestDelimited?: boolean, responseDelimited?: boolean): rpc.Service;
 }
 
 /** Service descriptor. */

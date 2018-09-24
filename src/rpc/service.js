@@ -40,9 +40,12 @@ var util = require("../util/minimal");
  * @param {boolean} [responseDelimited=false] Whether responses are length-delimited
  */
 function Service(rpcImpl, requestDelimited, responseDelimited) {
-
-    if (typeof rpcImpl !== "function")
+    
+    if (typeof rpcImpl !== "object" && typeof rpcImpl !== "function") {
         throw TypeError("rpcImpl must be a function");
+    } else if (typeof rpcImpl === "object" && (typeof rpcImpl.unaryCall !== "function" || typeof rpcImpl.streamingCall !== "function")) {
+        throw TypeError("rpcImpl should implement RPCHandler")
+    }
 
     util.EventEmitter.call(this);
 
@@ -77,7 +80,6 @@ function Service(rpcImpl, requestDelimited, responseDelimited) {
  * @template TRes extends Message<TRes>
  */
 Service.prototype.rpcCall = function rpcCall(method, requestCtor, responseCtor, request, callback) {
-
     if (!request)
         throw TypeError("request must be specified");
 
@@ -85,13 +87,17 @@ Service.prototype.rpcCall = function rpcCall(method, requestCtor, responseCtor, 
     if (!callback)
         return util.asPromise(rpcCall, self, method, requestCtor, responseCtor, request);
 
-    if (!self.rpcImpl) {
+    var rpcUnaryImpl = self.rpcImpl;
+    if (typeof rpcUnaryImpl.unaryCall === "function") {
+        rpcUnaryImpl = rpcUnaryImpl.unaryCall;
+    }
+    if (!rpcUnaryImpl) {
         setTimeout(function() { callback(Error("already ended")); }, 0);
         return undefined;
     }
 
     try {
-        return self.rpcImpl(
+        return rpcUnaryImpl(
             method,
             requestCtor[self.requestDelimited ? "encodeDelimited" : "encode"](request).finish(),
             function rpcCallback(err, response) {
@@ -124,6 +130,33 @@ Service.prototype.rpcCall = function rpcCall(method, requestCtor, responseCtor, 
         setTimeout(function() { callback(err); }, 0);
         return undefined;
     }
+};
+
+/**
+ * Calls a service method through {@link rpc.Service#rpcStreamingImpl|rpcStreamingImpl}.
+ * @param {Method|rpc.ServiceMethod<TReq,TRes>} method Reflected or static method
+ * @param {Constructor<TReq>} requestCtor Request constructor
+ * @param {Constructor<TRes>} responseCtor Response constructor
+ * @param {TReq|Properties<TReq>} request Request message or plain object
+ * @returns {undefined}
+ */
+Service.prototype.rpcStreamingCall = function rpcStreamingCall(method, requestCtor, responseCtor, request) {
+    if (!request)
+        throw TypeError("request must be specified");
+
+    var self = this;
+
+    if (typeof self.rpcImpl.streamingCall !== "function") {
+        throw new Error("rpcImpl should implement RPCHandler to support streaming");
+    }
+
+    return self.rpcImpl.streamingCall(
+        method,
+        requestCtor[self.requestDelimited ? "encodeDelimited" : "encode"](request).finish(),
+        function responseFn (response) {
+            return responseCtor[self.responseDelimited ? "decodeDelimited" : "decode"](response);
+        }
+    );
 };
 
 /**
