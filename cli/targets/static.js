@@ -626,47 +626,86 @@ function buildService(ref, service) {
     }
 
     service.methodsArray.forEach(function(method) {
-        method.resolve();
-        var lcName = protobuf.util.lcFirst(method.name),
-            cbName = escapeName(method.name + "Callback");
-        push("");
-        pushComment([
-            "Callback as used by {@link " + exportName(service) + "#" + escapeName(lcName) + "}.",
-            // This is a more specialized version of protobuf.rpc.ServiceCallback
-            "@memberof " + exportName(service),
-            "@typedef " + cbName,
-            "@type {function}",
-            "@param {Error|null} error Error, if any",
-            "@param {" + exportName(method.resolvedResponseType) + "} [response] " + method.resolvedResponseType.name
-        ]);
-        push("");
-        pushComment([
-            method.comment || "Calls " + method.name + ".",
-            "@function " + lcName,
-            "@memberof " + exportName(service),
-            "@instance",
-            "@param {" + exportName(method.resolvedRequestType, !config.forceMessage) + "} request " + method.resolvedRequestType.name + " message or plain object",
-            "@param {" + exportName(service) + "." + cbName + "} callback Node-style callback called with the error, if any, and " + method.resolvedResponseType.name,
-            "@returns {undefined}",
-            "@variation 1"
-        ]);
-        push("Object.defineProperty(" + escapeName(service.name) + ".prototype" + util.safeProp(lcName) + " = function " + escapeName(lcName) + "(request, callback) {");
-            ++indent;
-            push("return this.rpcCall(" + escapeName(lcName) + ", $root." + exportName(method.resolvedRequestType) + ", $root." + exportName(method.resolvedResponseType) + ", request, callback);");
-            --indent;
-        push("}, \"name\", { value: " + JSON.stringify(method.name) + " });");
-        if (config.comments)
-            push("");
-        pushComment([
-            method.comment || "Calls " + method.name + ".",
-            "@function " + lcName,
-            "@memberof " + exportName(service),
-            "@instance",
-            "@param {" + exportName(method.resolvedRequestType, !config.forceMessage) + "} request " + method.resolvedRequestType.name + " message or plain object",
-            "@returns {Promise<" + exportName(method.resolvedResponseType) + ">} Promise",
-            "@variation 2"
-        ]);
+        if (method.responseStream) {
+            buildStreamingServiceMethod(service, method);
+        } else {
+            buildUnaryServiceMethod(service, method);
+        }
     });
+}
+
+function buildUnaryServiceMethod(service, method) {
+    method.resolve();
+    var lcName = protobuf.util.lcFirst(method.name),
+        cbName = escapeName(method.name + "Callback");
+    push("");
+    pushComment([
+        "Callback as used by {@link " + exportName(service) + "#" + escapeName(lcName) + "}.",
+        // This is a more specialized version of protobuf.rpc.ServiceCallback
+        "@memberof " + exportName(service),
+        "@typedef " + cbName,
+        "@type {function}",
+        "@param {Error|null} error Error, if any",
+        "@param {" + exportName(method.resolvedResponseType) + "} [response] " + method.resolvedResponseType.name
+    ]);
+    push("");
+    pushComment([
+        method.comment || "Calls " + method.name + ".",
+        "@function " + lcName,
+        "@memberof " + exportName(service),
+        "@instance",
+        "@param {" + exportName(method.resolvedRequestType, !config.forceMessage) + "} request " + method.resolvedRequestType.name + " message or plain object",
+        "@param {" + exportName(service) + "." + cbName + "} callback Node-style callback called with the error, if any, and " + method.resolvedResponseType.name,
+        "@returns {undefined}",
+        "@variation 1"
+    ]);
+    push("Object.defineProperty(" + escapeName(service.name) + ".prototype" + util.safeProp(lcName) + " = function " + escapeName(lcName) + "(request, callback) {");
+        ++indent;
+        push("return this.rpcCall(" + escapeName(lcName) + ", $root." + exportName(method.resolvedRequestType) + ", $root." + exportName(method.resolvedResponseType) + ", request, callback);");
+        --indent;
+    push("}, \"name\", { value: " + JSON.stringify(method.name) + " });");
+    if (config.comments)
+        push("");
+    pushComment([
+        method.comment || "Calls " + method.name + ".",
+        "@function " + lcName,
+        "@memberof " + exportName(service),
+        "@instance",
+        "@param {" + exportName(method.resolvedRequestType, !config.forceMessage) + "} request " + method.resolvedRequestType.name + " message or plain object",
+        "@returns {Promise<" + exportName(method.resolvedResponseType) + ">} Promise",
+        "@variation 2"
+    ]);
+}
+
+function buildStreamingServiceMethod(service, method) {
+    method.resolve();
+    var lcName = protobuf.util.lcFirst(method.name),
+        cbName = escapeName(method.name + "Callback");
+    push("");
+    pushComment([
+        "Callback as used by {@link " + exportName(service) + "#" + escapeName(lcName) + "}.",
+        // This is a more specialized version of protobuf.rpc.ServiceCallback
+        "@memberof " + exportName(service),
+        "@typedef " + cbName,
+        "@type {function}",
+        "@param {Error|null} error Error, if any",
+        "@param {" + exportName(method.resolvedResponseType) + "} [response] " + method.resolvedResponseType.name
+    ]);
+    push("");
+    pushComment([
+        method.comment || "Calls " + method.name + ".",
+        "@function " + lcName,
+        "@memberof " + exportName(service),
+        "@instance",
+        "@param {" + exportName(method.resolvedRequestType, !config.forceMessage) + "} request " + method.resolvedRequestType.name + " message or plain object",
+        "@returns {util.EventEmitter}",
+        "@variation 1"
+    ]);
+    push("Object.defineProperty(" + escapeName(service.name) + ".prototype" + util.safeProp(lcName) + " = function " + escapeName(lcName) + "(request, callback) {");
+        ++indent;
+        push("return this.rpcStreamingCall(" + escapeName(lcName) + ", $root." + exportName(method.resolvedRequestType) + ", $root." + exportName(method.resolvedResponseType) + ", request);");
+        --indent;
+    push("}, \"name\", { value: " + JSON.stringify(method.name) + " });");
 }
 
 function buildEnum(ref, enm) {

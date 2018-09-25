@@ -1342,7 +1342,7 @@ export namespace rpc {
 }
 
 type RPCUnaryCall = (method: (Method|rpc.ServiceMethod<Message<{}>, Message<{}>>), requestData: Uint8Array, callback: RPCImplCallback) => void;
-type RPCStreamingCall = (method: (Method|rpc.ServiceMethod<Message<{}>, Message<{}>>), requestData: Uint8Array, responseFn: (responseData: Uint8Array) => protobuf.Message): util.EventEmitter;
+type RPCStreamingCall = (method: (Method|rpc.ServiceMethod<Message<{}>, Message<{}>>), requestData: Uint8Array, responseFn: (responseData: Uint8Array) => protobuf.Message) => util.EventEmitter;
 
 /**
  * RPCHandler allows to pass custom RPC implementation for unary and streaming calls
