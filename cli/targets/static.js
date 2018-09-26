@@ -626,8 +626,12 @@ function buildService(ref, service) {
     }
 
     service.methodsArray.forEach(function(method) {
-        if (method.responseStream) {
-            buildStreamingServiceMethod(service, method);
+        if (method.requestStream && method.responseStream) {
+            buildBidiStreamingMethod(service, method);
+        } else if (method.requestStream) {
+            buildClientStreamingMethod(service, method);
+        } else if (method.responseStream) {
+            buildServerStreamingMethod(service, method);
         } else {
             buildUnaryServiceMethod(service, method);
         }
@@ -677,33 +681,57 @@ function buildUnaryServiceMethod(service, method) {
     ]);
 }
 
-function buildStreamingServiceMethod(service, method) {
+function buildServerStreamingMethod(service, method) {
     method.resolve();
-    var lcName = protobuf.util.lcFirst(method.name),
-        cbName = escapeName(method.name + "Callback");
-    push("");
-    pushComment([
-        "Callback as used by {@link " + exportName(service) + "#" + escapeName(lcName) + "}.",
-        // This is a more specialized version of protobuf.rpc.ServiceCallback
-        "@memberof " + exportName(service),
-        "@typedef " + cbName,
-        "@type {function}",
-        "@param {Error|null} error Error, if any",
-        "@param {" + exportName(method.resolvedResponseType) + "} [response] " + method.resolvedResponseType.name
-    ]);
-    push("");
+    var lcName = protobuf.util.lcFirst(method.name);
     pushComment([
         method.comment || "Calls " + method.name + ".",
         "@function " + lcName,
         "@memberof " + exportName(service),
         "@instance",
         "@param {" + exportName(method.resolvedRequestType, !config.forceMessage) + "} request " + method.resolvedRequestType.name + " message or plain object",
-        "@returns {util.EventEmitter}",
+        "@returns {RPCServerStream<" + exportName(method.resolvedResponseType) + ">}",
         "@variation 1"
     ]);
     push("Object.defineProperty(" + escapeName(service.name) + ".prototype" + util.safeProp(lcName) + " = function " + escapeName(lcName) + "(request, callback) {");
         ++indent;
-        push("return this.rpcStreamingCall(" + escapeName(lcName) + ", $root." + exportName(method.resolvedRequestType) + ", $root." + exportName(method.resolvedResponseType) + ", request);");
+        push("return this.serverStreamCall(" + escapeName(lcName) + ", $root." + exportName(method.resolvedRequestType) + ", $root." + exportName(method.resolvedResponseType) + ", request);");
+        --indent;
+    push("}, \"name\", { value: " + JSON.stringify(method.name) + " });");
+}
+
+function buildClientStreamingMethod(service, method) {
+    method.resolve();
+    var lcName = protobuf.util.lcFirst(method.name);
+    pushComment([
+        method.comment || "Calls " + method.name + ".",
+        "@function " + lcName,
+        "@memberof " + exportName(service),
+        "@instance",
+        "@returns {RPCClientStream<" + exportName(method.resolvedRequestType) + ">}",
+        "@variation 1"
+    ]);
+    push("Object.defineProperty(" + escapeName(service.name) + ".prototype" + util.safeProp(lcName) + " = function " + escapeName(lcName) + "() {");
+        ++indent;
+        push("return this.clientStreamCall(" + escapeName(lcName) + ", $root." + exportName(method.resolvedRequestType) + ", $root." + exportName(method.resolvedResponseType) + ");");
+        --indent;
+    push("}, \"name\", { value: " + JSON.stringify(method.name) + " });");
+}
+
+function buildBidiStreamingMethod(service, method) {
+    method.resolve();
+    var lcName = protobuf.util.lcFirst(method.name);
+    pushComment([
+        method.comment || "Calls " + method.name + ".",
+        "@function " + lcName,
+        "@memberof " + exportName(service),
+        "@instance",
+        "@returns {RPCBidiStream<" + exportName(method.resolvedRequestType) + ", " + exportName(method.resolvedResponseType) + ">}",
+        "@variation 1"
+    ]);
+    push("Object.defineProperty(" + escapeName(service.name) + ".prototype" + util.safeProp(lcName) + " = function " + escapeName(lcName) + "() {");
+        ++indent;
+        push("return this.bidiStreamCall(" + escapeName(lcName) + ", $root." + exportName(method.resolvedRequestType) + ", $root." + exportName(method.resolvedResponseType) + ");");
         --indent;
     push("}, \"name\", { value: " + JSON.stringify(method.name) + " });");
 }

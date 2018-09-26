@@ -43,7 +43,7 @@ function Service(rpcImpl, requestDelimited, responseDelimited) {
     
     if (typeof rpcImpl !== "object" && typeof rpcImpl !== "function") {
         throw TypeError("rpcImpl must be a function");
-    } else if (typeof rpcImpl === "object" && (typeof rpcImpl.unaryCall !== "function" || typeof rpcImpl.streamingCall !== "function")) {
+    } else if (!isRPCV2(rpcImpl)) {
         throw TypeError("rpcImpl should implement RPCHandler")
     }
 
@@ -66,6 +66,14 @@ function Service(rpcImpl, requestDelimited, responseDelimited) {
      * @type {boolean}
      */
     this.responseDelimited = Boolean(responseDelimited);
+}
+
+function isRPCV2(rpcImpl) {
+    return typeof rpcImpl === "object" &&
+    typeof rpcImpl.unaryCall === "function" &&
+    typeof rpcImpl.serverStreamCall === "function" &&
+    typeof rpcImpl.clientStreamCall === "function" &&
+    typeof rpcImpl.bidiStreamCall === "function";
 }
 
 /**
@@ -132,27 +140,58 @@ Service.prototype.rpcCall = function rpcCall(method, requestCtor, responseCtor, 
     }
 };
 
-/**
- * Calls a service method through {@link rpc.Service#rpcStreamingImpl|rpcStreamingImpl}.
- * @param {Method|rpc.ServiceMethod<TReq,TRes>} method Reflected or static method
- * @param {Constructor<TReq>} requestCtor Request constructor
- * @param {Constructor<TRes>} responseCtor Response constructor
- * @param {TReq|Properties<TReq>} request Request message or plain object
- * @returns {undefined}
- */
-Service.prototype.rpcStreamingCall = function rpcStreamingCall(method, requestCtor, responseCtor, request) {
+// TODO: docs
+Service.prototype.serverStreamCall = function serverStreamCall(method, requestCtor, responseCtor, request) {
     if (!request)
         throw TypeError("request must be specified");
 
     var self = this;
 
-    if (typeof self.rpcImpl.streamingCall !== "function") {
-        throw new Error("rpcImpl should implement RPCHandler to support streaming");
+    if (typeof self.rpcImpl.serverStreamCall !== "function") {
+        throw new Error("rpcImpl should implement serverStreamCall to support server streaming");
     }
 
-    return self.rpcImpl.streamingCall(
+    return self.rpcImpl.serverStreamCall(
         method,
         requestCtor[self.requestDelimited ? "encodeDelimited" : "encode"](request).finish(),
+        function responseFn (response) {
+            return responseCtor[self.responseDelimited ? "decodeDelimited" : "decode"](response);
+        }
+    );
+};
+
+// TODO: docs
+Service.prototype.clientStreamCall = function clientStreamCall(method, requestCtor, responseCtor) {
+    var self = this;
+
+    if (typeof self.rpcImpl.clientStreamCall !== "function") {
+        throw new Error("rpcImpl should implement clientStreamCall to support client streaming");
+    }
+
+    return self.rpcImpl.clientStreamCall(
+        method,
+        function requestFn (request) {
+            return requestCtor[self.requestDelimited ? "encodeDelimited" : "encode"](request).finish()
+        },
+        function responseFn (response) {
+            return responseCtor[self.responseDelimited ? "decodeDelimited" : "decode"](response);
+        }
+    );
+};
+
+// TODO: docs
+Service.prototype.bidiStreamCall = function bidiStreamCall(method, requestCtor, responseCtor) {
+    var self = this;
+
+    if (typeof self.rpcImpl.bidiStreamCall !== "function") {
+        throw new Error("rpcImpl should implement bidiStreamCall to support bidi streaming");
+    }
+
+    return self.rpcImpl.bidiStreamCall(
+        method,
+        function requestFn (request) {
+            return requestCtor[self.requestDelimited ? "encodeDelimited" : "encode"](request).finish()
+        },
         function responseFn (response) {
             return responseCtor[self.responseDelimited ? "decodeDelimited" : "decode"](response);
         }
