@@ -1342,14 +1342,44 @@ export namespace rpc {
 }
 
 type RPCUnaryCall = (method: (Method|rpc.ServiceMethod<Message<{}>, Message<{}>>), requestData: Uint8Array, callback: RPCImplCallback) => void;
-type RPCStreamingCall = (method: (Method|rpc.ServiceMethod<Message<{}>, Message<{}>>), requestData: Uint8Array, responseFn: (responseData: Uint8Array) => protobuf.Message) => util.EventEmitter;
+// TODO: check if all args are valid
+type RPCServerStreamCall = (method: (Method|rpc.ServiceMethod<Message<{}>, Message<{}>>), requestData: Uint8Array, responseFn: (responseData: Uint8Array) => protobuf.Message) => util.EventEmitter;
+type RPCClientStreamCall = (method: (Method|rpc.ServiceMethod<Message<{}>, Message<{}>>), requestFn: (requestData: Uint8Array) => protobuf.Message, responseFn: (responseData: Uint8Array) => protobuf.Message) => util.EventEmitter;
+type RPCBidiStreamCall = (method: (Method|rpc.ServiceMethod<Message<{}>, Message<{}>>), requestFn: (requestData: Uint8Array) => protobuf.Message, responseFn: (responseData: Uint8Array) => protobuf.Message) => util.EventEmitter;
 
 /**
  * RPCHandler allows to pass custom RPC implementation for unary and streaming calls
  */
 export interface RPCHandler {
     unaryCall: RPCUnaryCall;
-    streamingCall: RPCStreamingCall;
+    serverStreamCall: RPCServerStreamCall;
+    clientStreamCall: RPCClientStreamCall;
+    bidiStreamCall: RPCBidiStreamCall;
+}
+
+export interface RPCBidiStream<T, U = {}> {
+    on(evt: 'recv', fn: (data: U) => any, ctx?: any): util.EventEmitter;
+    on(evt: 'error', fn: (data: any) => any, ctx?: any): util.EventEmitter;
+    on(evt: 'end', fn: (data: any) => any, ctx?: any): util.EventEmitter;
+    // TODO: handle off event
+    off(evt?: string, fn?: () => any): util.EventEmitter;
+    emit(evt: 'send', data: T): util.EventEmitter;
+}
+
+export interface RPCServerStream<T> {
+    on(evt: 'recv', fn: (data: T) => any, ctx?: any): util.EventEmitter;
+    on(evt: 'error', fn: (data: any) => any, ctx?: any): util.EventEmitter;
+    on(evt: 'end', fn: (data: any) => any, ctx?: any): util.EventEmitter;
+    // TODO: handle off event
+    off(evt?: string, fn?: () => any): util.EventEmitter;
+}
+
+export interface RPCClientStream<T> {
+    on(evt: 'error', fn: (data: any) => any, ctx?: any): util.EventEmitter;
+    on(evt: 'end', fn: (data: any) => any, ctx?: any): util.EventEmitter;
+    // TODO: handle off event
+    off(evt?: string, fn?: () => any): util.EventEmitter;
+    emit(evt: 'send', value: T): util.EventEmitter;
 }
 
 /**
