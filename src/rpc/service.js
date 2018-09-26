@@ -43,7 +43,7 @@ function Service(rpcImpl, requestDelimited, responseDelimited) {
     
     if (typeof rpcImpl !== "object" && typeof rpcImpl !== "function") {
         throw TypeError("rpcImpl must be a function");
-    } else if (!isRPCV2(rpcImpl)) {
+    } else if (typeof rpcImpl === "object" && !isRPCV2(rpcImpl)) {
         throw TypeError("rpcImpl should implement RPCHandler")
     }
 
@@ -69,8 +69,7 @@ function Service(rpcImpl, requestDelimited, responseDelimited) {
 }
 
 function isRPCV2(rpcImpl) {
-    return typeof rpcImpl === "object" &&
-    typeof rpcImpl.unaryCall === "function" &&
+    return typeof rpcImpl.unaryCall === "function" &&
     typeof rpcImpl.serverStreamCall === "function" &&
     typeof rpcImpl.clientStreamCall === "function" &&
     typeof rpcImpl.bidiStreamCall === "function";
@@ -96,12 +95,13 @@ Service.prototype.rpcCall = function rpcCall(method, requestCtor, responseCtor, 
         return util.asPromise(rpcCall, self, method, requestCtor, responseCtor, request);
 
     var rpcUnaryImpl = self.rpcImpl;
-    if (typeof rpcUnaryImpl.unaryCall === "function") {
-        rpcUnaryImpl = rpcUnaryImpl.unaryCall;
-    }
     if (!rpcUnaryImpl) {
         setTimeout(function() { callback(Error("already ended")); }, 0);
         return undefined;
+    }
+
+    if (typeof rpcUnaryImpl.unaryCall === "function") {
+        rpcUnaryImpl = rpcUnaryImpl.unaryCall;
     }
 
     try {
