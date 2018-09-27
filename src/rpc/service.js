@@ -170,10 +170,10 @@ Service.prototype.clientStreamCall = function clientStreamCall(method, requestCt
 
     return self.rpcImpl.clientStreamCall(
         method,
-        function requestFn (request) {
+        function encodeFn (request) {
             return requestCtor[self.requestDelimited ? "encodeDelimited" : "encode"](request).finish()
         },
-        function responseFn (response) {
+        function decodeFn (response) {
             return responseCtor[self.responseDelimited ? "decodeDelimited" : "decode"](response);
         }
     );
@@ -189,10 +189,10 @@ Service.prototype.bidiStreamCall = function bidiStreamCall(method, requestCtor, 
 
     return self.rpcImpl.bidiStreamCall(
         method,
-        function requestFn (request) {
+        function encodeFn (request) {
             return requestCtor[self.requestDelimited ? "encodeDelimited" : "encode"](request).finish()
         },
-        function responseFn (response) {
+        function decodeFn (response) {
             return responseCtor[self.responseDelimited ? "decodeDelimited" : "decode"](response);
         }
     );
