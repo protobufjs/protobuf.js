@@ -690,7 +690,7 @@ function buildServerStreamingMethod(service, method) {
         "@memberof " + exportName(service),
         "@instance",
         "@param {" + exportName(method.resolvedRequestType, !config.forceMessage) + "} request " + method.resolvedRequestType.name + " message or plain object",
-        "@returns {RPCServerStream<" + exportName(method.resolvedResponseType) + ">}",
+        "@returns {$protobuf.RPCServerStream<" + exportName(method.resolvedResponseType) + ">}",
         "@variation 1"
     ]);
     push("Object.defineProperty(" + escapeName(service.name) + ".prototype" + util.safeProp(lcName) + " = function " + escapeName(lcName) + "(request, callback) {");
@@ -708,7 +708,7 @@ function buildClientStreamingMethod(service, method) {
         "@function " + lcName,
         "@memberof " + exportName(service),
         "@instance",
-        "@returns {RPCClientStream<" + exportName(method.resolvedRequestType) + ">}",
+        "@returns {$protobuf.RPCClientStream<" + exportName(method.resolvedRequestType) + ">}",
         "@variation 1"
     ]);
     push("Object.defineProperty(" + escapeName(service.name) + ".prototype" + util.safeProp(lcName) + " = function " + escapeName(lcName) + "() {");
@@ -726,7 +726,7 @@ function buildBidiStreamingMethod(service, method) {
         "@function " + lcName,
         "@memberof " + exportName(service),
         "@instance",
-        "@returns {RPCBidiStream<" + exportName(method.resolvedRequestType) + ", " + exportName(method.resolvedResponseType) + ">}",
+        "@returns {$protobuf.RPCBidiStream<" + exportName(method.resolvedRequestType) + ", " + exportName(method.resolvedResponseType) + ">}",
         "@variation 1"
     ]);
     push("Object.defineProperty(" + escapeName(service.name) + ".prototype" + util.safeProp(lcName) + " = function " + escapeName(lcName) + "() {");
