@@ -387,7 +387,7 @@ AwesomeMessage.prototype.customInstanceMethod = function() { ... };
 * `AwesomeMessage.encode` and `AwesomeMessage.encodeDelimited`
 * `AwesomeMessage.decode` and `AwesomeMessage.decodeDelimited`
 * `AwesomeMessage.verify`
-* `AwesomeMessage.fromObject`, `AwesomeMessage.toObject`, `AwesomeMessage#toObject` and `AwesomeMessage#toJSON`
+* `AwesomeMessage.fromObject`, `AwesomeMessage.toObject` and `AwesomeMessage#toJSON`
 
 Afterwards, decoded messages of this type are `instanceof AwesomeMessage`.
 
