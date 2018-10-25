@@ -514,23 +514,24 @@ function parse(source, root, options) {
 
         skip("=");
         var value = parseId(next(), true),
-            dummy = {};
+            dummy = {},
+            valueOptionSetter = parent.setValueOption.bind(parent, token);
         ifBlock(dummy, function parseEnumValue_block(token) {
 
             /* istanbul ignore else */
             if (token === "option") {
-                parseOption(dummy, token); // skip
+                parseOption(valueOptionSetter, token);
                 skip(";");
             } else
                 throw illegal(token);
 
         }, function parseEnumValue_line() {
-            parseInlineOptions(dummy); // skip
+            parseInlineOptions(valueOptionSetter);
         });
         parent.add(token, value, dummy.comment);
     }
 
-    function parseOption(parent, token) {
+    function parseOption(parentOrSetter, token) {
         var isCustom = skip("(", true);
 
         /* istanbul ignore if */
@@ -548,10 +549,10 @@ function parse(source, root, options) {
             }
         }
         skip("=");
-        parseOptionValue(parent, name);
+        parseOptionValue(parentOrSetter, name);
     }
 
-    function parseOptionValue(parent, name) {
+    function parseOptionValue(parentOrSetter, name) {
         if (skip("{", true)) { // { a: "foo" b { c: "bar" } }
             do {
                 /* istanbul ignore if */
@@ -559,34 +560,36 @@ function parse(source, root, options) {
                     throw illegal(token, "name");
 
                 if (peek() === "{")
-                    parseOptionValue(parent, name + "." + token);
+                    parseOptionValue(parentOrSetter, name + "." + token);
                 else {
                     skip(":");
                     if (peek() === "{")
-                        parseOptionValue(parent, name + "." + token);
+                        parseOptionValue(parentOrSetter, name + "." + token);
                     else
-                        setOption(parent, name + "." + token, readValue(true));
+                        setOption(parentOrSetter, name + "." + token, readValue(true));
                 }
                 skip(",", true);
             } while (!skip("}", true));
         } else
-            setOption(parent, name, readValue(true));
+            setOption(parentOrSetter, name, readValue(true));
         // Does not enforce a delimiter to be universal
     }
 
-    function setOption(parent, name, value) {
-        if (parent.setOption)
-            parent.setOption(name, value);
+    function setOption(parentOrSetter, name, value) {
+        if (typeof parentOrSetter === "function")
+            parentOrSetter(name, value);
+        else if (parentOrSetter.setOption)
+            parentOrSetter.setOption(name, value);
     }
 
-    function parseInlineOptions(parent) {
+    function parseInlineOptions(parentOrSetter) {
         if (skip("[", true)) {
             do {
-                parseOption(parent, "option");
+                parseOption(parentOrSetter, "option");
             } while (skip(",", true));
             skip("]");
         }
-        return parent;
+        return parentOrSetter;
     }
 
     function parseService(parent, token) {

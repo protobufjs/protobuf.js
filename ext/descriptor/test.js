@@ -29,12 +29,12 @@ var protobuf   = require("../../"),
 
 // var root = protobuf.Root.fromJSON(proto).resolveAll();
 var root = protobuf.loadSync("tests/data/google/protobuf/descriptor.proto").resolveAll();
-
+root.loadSync("tests/data/options.proto").resolveAll();
 // console.log("Original proto", JSON.stringify(root, null, 2));
 
 var msg  = root.toDescriptor();
 
-// console.log("\nDescriptor", JSON.stringify(msg.toObject(), null, 2));
+// console.log("\nDescriptor", msg.toJSON());
 
 var buf  = descriptor.FileDescriptorSet.encode(msg).finish();
 var root2 = protobuf.Root.fromDescriptor(buf, "proto2").resolveAll();

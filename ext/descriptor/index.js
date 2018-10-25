@@ -543,17 +543,27 @@ Enum.fromDescriptor = function fromDescriptor(descriptor) {
 
     // Construct values object
     var values = {};
+    var valueOptions = {};
     if (descriptor.value)
         for (var i = 0; i < descriptor.value.length; ++i) {
             var name  = descriptor.value[i].name,
-                value = descriptor.value[i].number || 0;
+                value = descriptor.value[i].number || 0,
+                options = descriptor.value[i].options;
             values[name && name.length ? name : "NAME" + value] = value;
+            if (options)
+                valueOptions[name] = fromDescriptorOptions(options, exports.EnumValueOptions);
         }
+
+    if (Object.keys(valueOptions).length === 0)
+        valueOptions = undefined;
 
     return new Enum(
         descriptor.name && descriptor.name.length ? descriptor.name : "Enum" + unnamedEnumIndex++,
         values,
-        fromDescriptorOptions(descriptor.options, exports.EnumOptions)
+        fromDescriptorOptions(descriptor.options, exports.EnumOptions),
+        undefined,
+        undefined,
+        valueOptions
     );
 };
 
@@ -565,8 +575,14 @@ Enum.prototype.toDescriptor = function toDescriptor() {
 
     // Values
     var values = [];
-    for (var i = 0, ks = Object.keys(this.values); i < ks.length; ++i)
-        values.push(exports.EnumValueDescriptorProto.create({ name: ks[i], number: this.values[ks[i]] }));
+    for (var i = 0, ks = Object.keys(this.values); i < ks.length; ++i) {
+        var options = this.valueOptions && toDescriptorOptions(this.valueOptions[ks[i]], exports.EnumValueOptions);
+        values.push(exports.EnumValueDescriptorProto.create({
+            name: ks[i],
+            number: this.values[ks[i]],
+            options
+        }));
+    }
 
     return exports.EnumDescriptorProto.create({
         name: this.name,

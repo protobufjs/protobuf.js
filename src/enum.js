@@ -18,8 +18,9 @@ var Namespace = require("./namespace"),
  * @param {Object.<string,*>} [options] Declared options
  * @param {string} [comment] The comment for this enum
  * @param {Object.<string,string>} [comments] The value comments for this enum
+ * @param {Object.<string,Object<string,*>>} [valueOptions] Declared options for values of this enum
  */
-function Enum(name, values, options, comment, comments) {
+function Enum(name, values, options, comment, comments, valueOptions) {
     ReflectionObject.call(this, name, options);
 
     if (values && typeof values !== "object")
@@ -55,6 +56,12 @@ function Enum(name, values, options, comment, comments) {
      */
     this.reserved = undefined; // toJSON
 
+    /**
+     *  Declared options for values of this enum.
+     * @type {Object.<string,Object<string,*>>}
+     */
+    this.valueOptions = valueOptions; // toJSON
+
     // Note that values inherit valuesById on their prototype which makes them a TypeScript-
     // compatible enum. This is used by pbts to write actual enum definitions that work for
     // static and reflection code alike instead of emitting generic object definitions.
@@ -70,6 +77,7 @@ function Enum(name, values, options, comment, comments) {
  * @interface IEnum
  * @property {Object.<string,number>} values Enum values
  * @property {Object.<string,*>} [options] Enum options
+ * @property {Object.<string,Object<string,*>>} [valueOptions] Declared options for values of this enum
  */
 
 /**
@@ -80,7 +88,7 @@ function Enum(name, values, options, comment, comments) {
  * @throws {TypeError} If arguments are invalid
  */
 Enum.fromJSON = function fromJSON(name, json) {
-    var enm = new Enum(name, json.values, json.options, json.comment, json.comments);
+    var enm = new Enum(name, json.values, json.options, json.comment, json.comments, json.valueOptions);
     enm.reserved = json.reserved;
     return enm;
 };
@@ -94,12 +102,29 @@ Enum.prototype.toJSON = function toJSON(toJSONOptions) {
     var keepComments = toJSONOptions ? Boolean(toJSONOptions.keepComments) : false;
     return util.toObject([
         "options"  , this.options,
+        "valueOptions"  , this.valueOptions,
         "values"   , this.values,
         "reserved" , this.reserved && this.reserved.length ? this.reserved : undefined,
         "comment"  , keepComments ? this.comment : undefined,
         "comments" , keepComments ? this.comments : undefined
     ]);
 };
+
+/**
+ * Adds an option for a specific enum value.
+ * @param {string} [valueName] Enum value for option
+ * @param {string} [optionName] Name of option
+ * @param {*} [optionValue] Value of option
+ * @returns {Enum} `this`
+ */
+Enum.prototype.setValueOption = function(valueName, optionName, optionValue) {
+  if (!this.valueOptions)
+    this.valueOptions = {};
+  if (!this.valueOptions[valueName])
+    this.valueOptions[valueName] = {};
+  this.valueOptions[valueName][optionName] = optionValue;
+  return this;
+}
 
 /**
  * Adds a value to this enum.

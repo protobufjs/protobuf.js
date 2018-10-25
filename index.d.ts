@@ -160,8 +160,9 @@ export class Enum extends ReflectionObject {
      * @param [options] Declared options
      * @param [comment] The comment for this enum
      * @param [comments] The value comments for this enum
+     * @param [valueOptions] Declared options for values of this enum
      */
-    constructor(name: string, values?: { [k: string]: number }, options?: { [k: string]: any }, comment?: string, comments?: { [k: string]: string });
+    constructor(name: string, values?: { [k: string]: number }, options?: { [k: string]: any }, comment?: string, comments?: { [k: string]: string }, valueOptions?: { [k: string]: { [k: string]: any } });
 
     /** Enum values by id. */
     public valuesById: { [k: number]: string };
@@ -178,6 +179,9 @@ export class Enum extends ReflectionObject {
     /** Reserved ranges, if any. */
     public reserved: (number[]|string)[];
 
+    /** Declared options for values of this enum. */
+    public valueOptions: { [k: string]: { [k: string]: any } };
+
     /**
      * Constructs an enum from an enum descriptor.
      * @param name Enum name
@@ -193,6 +197,15 @@ export class Enum extends ReflectionObject {
      * @returns Enum descriptor
      */
     public toJSON(toJSONOptions?: IToJSONOptions): IEnum;
+
+    /**
+     * Adds an option for a specific enum value.
+     * @param [valueName] Enum value for option
+     * @param [optionName] Name of option
+     * @param [optionValue] Value of option
+     * @returns `this`
+     */
+    public setValueOption(valueName?: string, optionName?: string, optionValue?: any): Enum;
 
     /**
      * Adds a value to this enum.
@@ -237,6 +250,9 @@ export interface IEnum {
 
     /** Enum options */
     options?: { [k: string]: any };
+
+    /** Declared options for values of this enum */
+    valueOptions?: { [k: string]: { [k: string]: any } };
 }
 
 /** Reflected message field. */

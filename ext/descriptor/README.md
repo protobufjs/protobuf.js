@@ -59,7 +59,7 @@ The extension adds `.fromDescriptor(descriptor[, syntax])` and `#toDescriptor([s
 | **EnumDescriptorProto**       | Enum             |
 | EnumOptions                   |                  |
 | EnumValueDescriptorProto      |                  |
-| EnumValueOptions              |                  | not supported
+| EnumValueOptions              |                  |
 | **ServiceDescriptorProto**    | Service          |
 | ServiceOptions                |                  |
 | **MethodDescriptorProto**     | Method           |
