@@ -58,7 +58,7 @@ function Enum(name, values, options, comment, comments, valueOptions) {
 
     /**
      *  Declared options for values of this enum.
-     * @type {Object.<string,Object<string,*>>}
+     * @type {Object.<string,Object<string,*>>|undefined}
      */
     this.valueOptions = valueOptions; // toJSON
 

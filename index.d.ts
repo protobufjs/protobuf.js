@@ -180,7 +180,7 @@ export class Enum extends ReflectionObject {
     public reserved: (number[]|string)[];
 
     /** Declared options for values of this enum. */
-    public valueOptions: { [k: string]: { [k: string]: any } };
+    public valueOptions?: { [k: string]: { [k: string]: any } };
 
     /**
      * Constructs an enum from an enum descriptor.
