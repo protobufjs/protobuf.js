@@ -252,10 +252,16 @@ exports.main = function main(args, callback) {
         if (tobj.fieldsArray)
             tobj.fieldsArray.forEach(function(fobj) {
                 fobj.referenced = true;
+
+                if (fobj.resolvedType)
+                    util.traverse(fobj.resolvedType, markReferenced);
             });
         if (tobj.oneofsArray)
             tobj.oneofsArray.forEach(function(oobj) {
                 oobj.referenced = true;
+
+                if (oobj.resolvedType)
+                    util.traverse(oobj.resolvedType, markReferenced);
             });
         // also mark an extension field's extended type, but not its (other) fields
         if (tobj.extensionField)
