@@ -80,7 +80,7 @@ function decoder(mtype) {
                 ? "%s=types[%i].decode(r)"
                 : "%s=types[%i].decode(r,r.uint32())", ref, i);
         else gen
-                ("%s=r.%s()", ref, type);
+                ("%s=r.%s", ref, type + (field.js_specific_type === "string" ? "().toString()" : "()"));
         gen
                 ("break");
     // Unknown fields

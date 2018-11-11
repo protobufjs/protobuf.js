@@ -38,7 +38,7 @@ function genVerifyValue(gen, field, fieldIndex, ref) {
             ("}");
         }
     } else {
-        switch (field.type) {
+        switch (field.js_specific_type || field.type) {
             case "int32":
             case "uint32":
             case "sint32":
