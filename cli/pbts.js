@@ -19,33 +19,17 @@ var defaults = {
 
 /**
  * Runs pbts programmatically.
- * @param {string[] | object} args Command line arguments
+ * @param {object} options Parsed command line options
+ * @param {?{content: (string | object)}} source Object containing the sourcecode
  * @param {function(?Error, string=)} [callback] Optional completion callback
- * @param {?{content: (string | object)}} source Object containing the sourcecode and filename
  * @returns {number|undefined} Exit code, if known
  */
-exports.main = function(args, callback, source) {
-    var argv;
-    if (args.indexOf) {
-        argv = minimist(args, {
-            alias: {
-                name: "n",
-                out: "o",
-                main: "m",
-                global: "g",
-                import: "i"
-            },
-            string: ["name", "out", "global", "import"],
-            boolean: ["comments", "main"],
-            default: defaults
-        });
-    } else {
-        argv = Object.assign({}, defaults, args);
-    }
+function pbts(options, source, callback) {
+    var argv = Object.assign({}, defaults, options);
 
-    var files = argv._;
+    var files = argv._ || [];
 
-    if (!files.length) {
+    if (!files.length && !source) {
         if (callback)
             callback(Error("usage")); // eslint-disable-line callback-return
         else
@@ -209,4 +193,29 @@ exports.main = function(args, callback, source) {
     }
 
     return undefined;
+}
+
+exports.pbts = pbts;
+
+
+/**
+ * Runs pbts programmatically.
+ * @param {string[]} args Command line arguments
+ * @param {function(?Error, string=)} [callback] Optional completion callback
+ * @returns {number|undefined} Exit code, if known
+ */
+exports.main = function (args, callback) {
+    var argv = minimist(args, {
+        alias: {
+            name: "n",
+            out: "o",
+            main: "m",
+            global: "g",
+            import: "i"
+        },
+        string: ["name", "out", "global", "import"],
+        boolean: ["comments", "main"],
+        default: defaults
+    });
+    return pbts(argv, null, callback);
 };

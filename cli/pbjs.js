@@ -46,33 +46,13 @@ var defaults = {
 
 /**
  * Runs pbjs programmatically.
- * @param {string[]|object} args Command line arguments
- * @param {function(?Error, string=)} [callback] Optional completion callback
+ * @param {string[]|object} options Parsed command line arguments
  * @param {?{content: (string | Object), name: ?string}} source Object containing the sourcecode and filename
+ * @param {function(?Error, string=)} [callback] Optional completion callback
  * @returns {number|undefined} Exit code, if known
  */
-exports.main = function main(args, callback, source) {
-    var argv;
-    if (args.indexOf) {
-        argv = minimist(args, {
-            alias: {
-                target: "t",
-                out: "o",
-                path: "p",
-                wrap: "w",
-                root: "r",
-                lint: "l",
-                // backward compatibility:
-                "force-long": "strict-long",
-                "force-message": "strict-message"
-            },
-            string: ["target", "out", "path", "wrap", "dependency", "root", "lint"],
-            boolean: ["create", "encode", "decode", "verify", "convert", "delimited", "beautify", "comments", "es6", "sparse", "keep-case", "force-long", "force-number", "force-enum-string", "force-message"],
-            default: defaults
-        });
-    } else {
-        argv = Object.assign({}, defaults, args);
-    }
+function pbjs(options, source, callback) {
+    var argv = Object.assign({}, defaults, options);
 
     var target = targets[argv.target],
         files  = argv._,
@@ -357,4 +337,32 @@ exports.main = function main(args, callback, source) {
     }
 
     return undefined;
+}
+
+exports.pbjs = pbjs;
+
+/**
+ * Runs pbjs programmatically.
+ * @param {string[]|object} args Command line arguments
+ * @param {function(?Error, string=)} [callback] Optional completion callback
+ * @returns {number|undefined} Exit code, if known
+ */
+exports.main = function (args, callback) {
+    var argv = minimist(args, {
+        alias: {
+            target: "t",
+            out: "o",
+            path: "p",
+            wrap: "w",
+            root: "r",
+            lint: "l",
+            // backward compatibility:
+            "force-long": "strict-long",
+            "force-message": "strict-message"
+        },
+        string: ["target", "out", "path", "wrap", "dependency", "root", "lint"],
+        boolean: ["create", "encode", "decode", "verify", "convert", "delimited", "beautify", "comments", "es6", "sparse", "keep-case", "force-long", "force-number", "force-enum-string", "force-message"],
+        default: defaults
+    });
+    return pbjs(argv, null, callback);
 };
