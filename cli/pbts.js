@@ -19,9 +19,9 @@ var defaults = {
 
 /**
  * Runs pbts programmatically.
- * @param {string[]} args Command line arguments
+ * @param {string[] | object} args Command line arguments
  * @param {function(?Error, string=)} [callback] Optional completion callback
- * @param {?{content: (string | Object)}} source Object containing the sourcecode and filename
+ * @param {?{content: (string | object)}} source Object containing the sourcecode and filename
  * @returns {number|undefined} Exit code, if known
  */
 exports.main = function(args, callback, source) {
