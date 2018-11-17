@@ -55,7 +55,7 @@ function pbjs(options, source, callback) {
     var argv = Object.assign({}, defaults, options);
 
     var target = targets[argv.target],
-        files  = argv._,
+        files  = argv._ || [],
         paths  = typeof argv.path === "string" ? [ argv.path ] : argv.path || [];
 
     // alias hyphen args in camel case
