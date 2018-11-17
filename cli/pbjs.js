@@ -13,57 +13,66 @@ var protobuf = require(util.pathToProtobufJs),
 
 var targets  = util.requireAll("./targets");
 
+var lintDefault = "eslint-disable " + [
+    "block-scoped-var",
+    "id-length",
+    "no-control-regex",
+    "no-magic-numbers",
+    "no-prototype-builtins",
+    "no-redeclare",
+    "no-shadow",
+    "no-var",
+    "sort-vars"
+].join(", ");
+
+var defaults = {
+    target: "json",
+    create: true,
+    encode: true,
+    decode: true,
+    verify: true,
+    convert: true,
+    delimited: true,
+    beautify: true,
+    comments: true,
+    es6: null,
+    lint: lintDefault,
+    "keep-case": false,
+    "force-long": false,
+    "force-number": false,
+    "force-enum-string": false,
+    "force-message": false
+};
+
 /**
  * Runs pbjs programmatically.
- * @param {string[]} args Command line arguments
+ * @param {string[]|object} args Command line arguments
  * @param {function(?Error, string=)} [callback] Optional completion callback
+ * @param {?{content: (string | Object), name: ?string}} source Object containing the sourcecode and filename
  * @returns {number|undefined} Exit code, if known
  */
-exports.main = function main(args, callback) {
-    var lintDefault = "eslint-disable " + [
-        "block-scoped-var",
-        "id-length",
-        "no-control-regex",
-        "no-magic-numbers",
-        "no-prototype-builtins",
-        "no-redeclare",
-        "no-shadow",
-        "no-var",
-        "sort-vars"
-    ].join(", ");
-    var argv = minimist(args, {
-        alias: {
-            target: "t",
-            out: "o",
-            path: "p",
-            wrap: "w",
-            root: "r",
-            lint: "l",
-            // backward compatibility:
-            "force-long": "strict-long",
-            "force-message": "strict-message"
-        },
-        string: [ "target", "out", "path", "wrap", "dependency", "root", "lint" ],
-        boolean: [ "create", "encode", "decode", "verify", "convert", "delimited", "beautify", "comments", "es6", "sparse", "keep-case", "force-long", "force-number", "force-enum-string", "force-message" ],
-        default: {
-            target: "json",
-            create: true,
-            encode: true,
-            decode: true,
-            verify: true,
-            convert: true,
-            delimited: true,
-            beautify: true,
-            comments: true,
-            es6: null,
-            lint: lintDefault,
-            "keep-case": false,
-            "force-long": false,
-            "force-number": false,
-            "force-enum-string": false,
-            "force-message": false
-        }
-    });
+exports.main = function main(args, callback, source) {
+    var argv;
+    if (args.indexOf) {
+        argv = minimist(args, {
+            alias: {
+                target: "t",
+                out: "o",
+                path: "p",
+                wrap: "w",
+                root: "r",
+                lint: "l",
+                // backward compatibility:
+                "force-long": "strict-long",
+                "force-message": "strict-message"
+            },
+            string: ["target", "out", "path", "wrap", "dependency", "root", "lint"],
+            boolean: ["create", "encode", "decode", "verify", "convert", "delimited", "beautify", "comments", "es6", "sparse", "keep-case", "force-long", "force-number", "force-enum-string", "force-message"],
+            default: defaults
+        });
+    } else {
+        argv = Object.assign({}, defaults, args);
+    }
 
     var target = targets[argv.target],
         files  = argv._,
@@ -79,7 +88,7 @@ exports.main = function main(args, callback) {
     // protobuf.js package directory contains additional, otherwise non-bundled google types
     paths.push(path.relative(process.cwd(), path.join(__dirname, "..")) || ".");
 
-    if (!files.length) {
+    if (!files.length && !source) {
         var descs = Object.keys(targets).filter(function(key) { return !targets[key].private; }).map(function(key) {
             return "                   " + util.pad(key, 14, true) + targets[key].description;
         });
@@ -149,14 +158,16 @@ exports.main = function main(args, callback) {
     if (typeof argv["strict-long"] === "boolean")
         argv["force-long"] = argv["strict-long"];
 
-    // Resolve glob expressions
-    for (var i = 0; i < files.length;) {
-        if (glob.hasMagic(files[i])) {
-            var matches = glob.sync(files[i]);
-            Array.prototype.splice.apply(files, [i, 1].concat(matches));
-            i += matches.length;
-        } else
-            ++i;
+    if (!source) {
+        // Resolve glob expressions
+        for (var i = 0; i < files.length;) {
+            if (glob.hasMagic(files[i])) {
+                var matches = glob.sync(files[i]);
+                Array.prototype.splice.apply(files, [i, 1].concat(matches));
+                i += matches.length;
+            } else
+                ++i;
+        }
     }
 
     // Require custom target
@@ -204,8 +215,28 @@ exports.main = function main(args, callback) {
         "keepCase": argv["keep-case"] || false
     };
 
+    // passed to function
+    if (source) {
+        try {
+            if (typeof source.content === "string") {
+                protobuf.parse.filename = source.name || "-";
+                protobuf.parse(source.content, root, parseOptions);
+            } else {
+                root.setOptions(source.content.options).addJSON(source.content);
+            }
+            if (argv.sparse) {
+                sparsify(root);
+            }
+            callTarget();
+        } catch (err) {
+            if (callback) {
+                callback(err);
+                return undefined;
+            }
+            throw err;
+        }
     // Read from stdin
-    if (files.length === 1 && files[0] === "-") {
+    } else if (files.length === 1 && files[0] === "-") {
         var data = [];
         process.stdin.on("data", function(chunk) {
             data.push(chunk);
