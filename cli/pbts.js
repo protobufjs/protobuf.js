@@ -12,30 +12,38 @@ var minimist = require("minimist"),
     glob     = require("glob"),
     tmp      = require("tmp");
 
+var defaults = {
+    comments: true,
+    main: false
+};
+
 /**
  * Runs pbts programmatically.
  * @param {string[]} args Command line arguments
  * @param {function(?Error, string=)} [callback] Optional completion callback
+ * @param {?{content: (string | Object)}} source Object containing the sourcecode and filename
  * @returns {number|undefined} Exit code, if known
  */
-exports.main = function(args, callback) {
-    var argv = minimist(args, {
-        alias: {
-            name: "n",
-            out : "o",
-            main: "m",
-            global: "g",
-            import: "i"
-        },
-        string: [ "name", "out", "global", "import" ],
-        boolean: [ "comments", "main" ],
-        default: {
-            comments: true,
-            main: false
-        }
-    });
+exports.main = function(args, callback, source) {
+    var argv;
+    if (args.indexOf) {
+        argv = minimist(args, {
+            alias: {
+                name: "n",
+                out: "o",
+                main: "m",
+                global: "g",
+                import: "i"
+            },
+            string: ["name", "out", "global", "import"],
+            boolean: ["comments", "main"],
+            default: defaults
+        });
+    } else {
+        argv = Object.assign({}, defaults, args);
+    }
 
-    var files  = argv._;
+    var files = argv._;
 
     if (!files.length) {
         if (callback)
@@ -67,19 +75,26 @@ exports.main = function(args, callback) {
     }
 
     // Resolve glob expressions
-    for (var i = 0; i < files.length;) {
-        if (glob.hasMagic(files[i])) {
-            var matches = glob.sync(files[i]);
-            Array.prototype.splice.apply(files, [i, 1].concat(matches));
-            i += matches.length;
-        } else
-            ++i;
+    if (!source) {
+        for (var i = 0; i < files.length;) {
+            if (glob.hasMagic(files[i])) {
+                var matches = glob.sync(files[i]);
+                Array.prototype.splice.apply(files, [i, 1].concat(matches));
+                i += matches.length;
+            } else
+                ++i;
+        }
     }
 
     var cleanup = [];
 
+    if (source) {
+        files[0] = tmp.tmpNameSync() + ".js";
+        fs.writeFileSync(files[0], source.content);
+        cleanup.push(files[0]);
+        callJsdoc();
     // Read from stdin (to a temporary file)
-    if (files.length === 1 && files[0] === "-") {
+    } else if (files.length === 1 && files[0] === "-") {
         var data = [];
         process.stdin.on("data", function(chunk) {
             data.push(chunk);
