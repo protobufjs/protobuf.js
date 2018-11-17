@@ -1,17 +1,17 @@
 type pbtsCallback = (err: Error|null, output?: string) => void;
 
-export interface IPBTSArgs {
+export interface IPBTSOptions {
     [paramater: string]: any;
 }
 
 /**
  * Runs pbts as API.
- * @param {IPBTSArgs} options Command line arguments
+ * @param {IPBTSOptions} options Command line arguments
  * @param {?{content: (string | Object), name: ?string}} source Object containing the sourcecode
  * @param {function(?Error, string=)} [callback] Optional completion callback
  * @returns {number|undefined} Exit code, if known
  */
-export function pbts(options: IPBTSArgs, source?: {content: string | object}, callback?: pbtsCallback): number|undefined;
+export function pbts(options: IPBTSOptions, source?: {content: string | object}, callback?: pbtsCallback): number|undefined;
 
 /**
  * Runs pbts programmatically.
