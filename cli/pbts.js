@@ -25,7 +25,7 @@ var defaults = {
  * @returns {number|undefined} Exit code, if known
  */
 function pbts(options, source, callback) {
-    var argv = Object.assign({}, defaults, options);
+    var argv = util.assign({}, defaults, options);
 
     var files = argv._ || [];
 

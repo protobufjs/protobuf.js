@@ -52,7 +52,7 @@ var defaults = {
  * @returns {number|undefined} Exit code, if known
  */
 function pbjs(options, source, callback) {
-    var argv = Object.assign({}, defaults, options);
+    var argv = util.assign({}, defaults, options);
 
     var target = targets[argv.target],
         files  = argv._ || [],
