@@ -79,8 +79,19 @@ function decoder(mtype) {
         } else if (types.basic[type] === undefined) gen(field.resolvedType.group
                 ? "%s=types[%i].decode(r)"
                 : "%s=types[%i].decode(r,r.uint32())", ref, i);
-        else gen
-                ("%s=r.%s", ref, type + (field.js_specific_type === "string" ? "().toString()" : "()"));
+        else {
+            let suffix = "()";
+            switch (field.js_specific_type){
+                case "string":
+                    suffix += ".toString()";
+                    break;
+                case "number":
+                    suffix += ".toNumber()";
+                    break;
+            }
+            gen
+                ("%s=r.%s", ref, type + suffix);
+        } 
         gen
                 ("break");
     // Unknown fields

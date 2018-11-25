@@ -39,6 +39,7 @@ function genValuePartial_fromObject(gen, field, fieldIndex, prop) {
     } else {
         var isUnsigned = false;
         switch (field.js_specific_type || field.type) {
+            case "number":
             case "double":
             case "float": gen
                 ("m%s=Number(d%s)", prop, prop); // also catches "NaN", "Infinity"

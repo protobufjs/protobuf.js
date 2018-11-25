@@ -293,7 +293,8 @@ Field.prototype.resolve = function resolve() {
 				this.js_specific_type = "string";
 				break;
 			case "JS_NUMBER":
-				this.long = false;
+                this.long = false;
+                this.js_specific_type = "number";
 				break;
 		}
 	}
