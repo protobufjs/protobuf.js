@@ -9,8 +9,14 @@
 // same data using node buffers. Actual JSON performance on the network level should be somewhere
 // in between.
 
-var newSuite  = require("./suite"),
-    payload   = require("./data/bench.json");
+var fs          = require("fs"),
+    path        = require("path"),
+    newSuite    = require("./suite"),
+    payload     = require("./data/bench.json"),
+    protobuf    = require("protocol-buffers"),
+    Pbf         = require("pbf"),
+    pbfCompile  = require("pbf/compile"),
+    pbfResolve  = require("resolve-protobuf-schema");
 
 var Buffer_from = Buffer.from !== Uint8Array.from && Buffer.from || function(value, encoding) { return new Buffer(value, encoding); };
 
@@ -32,6 +38,14 @@ var jspbCls = require("./data/static_jspb.js").Test;
 var jspbBuf = new Uint8Array(Array.prototype.slice.call(pbjsBuf));
 var jspbMsg = jspbCls.deserializeBinary(jspbBuf);
 
+// pbf: compile the proto, set up a message
+var pbfCls = pbfCompile(pbfResolve.sync(path.resolve(__dirname, "data/bench.proto"))).Test;
+var pbfMsg = pbfCls.read(new Pbf(pbjsBuf));
+
+// protocol-buffers: compile the proto, set up a message
+var protobufCls = protobuf(fs.readFileSync(path.resolve(__dirname, "data/bench.proto"))).Test;
+var protobufMsg = protobufCls.decode(pbjsBuf);
+
 newSuite("encoding")
 
 .add("protobuf.js (reflect)", function() {
@@ -48,6 +62,14 @@ newSuite("encoding")
 })
 .add("google-protobuf", function() {
     jspbMsg.serializeBinary();
+})
+.add("pbf", function () {
+    var pbf = new Pbf();
+    pbfCls.write(pbfMsg, new Pbf());
+    pbf.finish()
+})
+.add("protocol-buffers", function () {
+  protobufCls.encode(protobufMsg);
 })
 .run();
 
@@ -68,6 +90,12 @@ newSuite("decoding")
 .add("google-protobuf", function() {
     jspbCls.deserializeBinary(jspbBuf);
 })
+.add("pbf", function () {
+  pbfCls.read(new Pbf(pbjsBuf));
+})
+.add("protocol-buffers", function () {
+  protobufCls.decode(pbjsBuf);
+})
 .run();
 
 newSuite("combined")
@@ -86,5 +114,13 @@ newSuite("combined")
 })
 .add("google-protobuf", function() {
     jspbCls.deserializeBinary(jspbMsg.serializeBinary());
+})
+.add("pbf", function() {
+  var pbf = new Pbf();
+  pbfCls.write(pbfMsg, pbf);
+  pbfCls.read(new Pbf(pbf.finish()));
+})
+.add("protocol-buffers", function () {
+  protobufCls.decode(protobufCls.encode(protobufMsg));
 })
 .run();
