@@ -37,8 +37,8 @@ tape.test("load sync", function(test) {
 });
 
 tape.test("should load bundled definitions even if resolvePath method was overrided", function(test) {
-    const protoFilePath = "tests/data/common.proto";
-    let root = new protobuf.Root();
+    var protoFilePath = "tests/data/common.proto";
+    var root = new protobuf.Root();
     root.resolvePath = (origin, target) => origin === "" && target === protoFilePath ? target : null;
 
     root.loadSync(protoFilePath);
