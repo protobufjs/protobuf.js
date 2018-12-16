@@ -16,6 +16,7 @@ var Type      = protobuf.Type,
 var out = [];
 var indent = 0;
 var config = {};
+var rpcList = [];
 
 static_target.description = "Static code without reflection (non-functional on its own)";
 
@@ -44,6 +45,7 @@ function static_target(root, options, callback) {
         var rootProp = util.safeProp(config.root || "default");
         push((config.es6 ? "const" : "var") + " $root = $protobuf.roots" + rootProp + " || ($protobuf.roots" + rootProp + " = {});");
         buildNamespace(null, root);
+        buildRpcList();
         return callback(null, out.join("\n"));
     } catch (err) {
         return callback(err);
@@ -627,6 +629,8 @@ function buildService(ref, service) {
 
     service.methodsArray.forEach(function(method) {
         method.resolve();
+        method.serviceName = exportName(service);
+        rpcList.push(method);
         var lcName = protobuf.util.lcFirst(method.name),
             cbName = escapeName(method.name + "Callback");
         push("");
@@ -699,4 +703,29 @@ function buildEnum(ref, enm) {
         push("return values;");
     --indent;
     push("})();");
+}
+
+function buildRpcList() {
+  push("");
+  pushComment(["Generate rpc list",]);
+  if (config.es6)
+    push('export const rpcList = $root.rpcList = (() => {');
+  else
+    push('$root.rpcList = (function() {');
+
+  let list = rpcList.map(function(method) {
+    return {
+      options: method.options,
+      serviceName: method.serviceName,
+      method: method.name,
+      requestStream: !!method.requestStream,
+      responseStream: !!method.responseStream,
+      requestType: exportName(method.resolvedRequestType),
+      responseType: exportName(method.resolvedResponseType),
+    };
+  });
+  let code = JSON.stringify(list, null, 2);
+  code = code.replace(/(request|response)Type":\s"(.*?)"/g, '$1Type": \$root.$2');
+  push(' return ' + code + ';');
+  push('})();');
 }
