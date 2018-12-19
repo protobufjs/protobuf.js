@@ -23,14 +23,16 @@ function genValuePartial_fromObject(gen, field, fieldIndex, prop) {
         if (field.resolvedType instanceof Enum) { gen
             ("switch(d%s){", prop);
             for (var values = field.resolvedType.values, keys = Object.keys(values), i = 0; i < keys.length; ++i) {
-                if (field.repeated && values[keys[i]] === field.typeDefault) gen
-                ("default:");
                 gen
                 ("case%j:", keys[i])
                 ("case %i:", values[keys[i]])
                     ("m%s=%j", prop, values[keys[i]])
                     ("break");
-            } gen
+            }
+            if (field.repeated) gen
+                ("default:")
+                    ("throw TypeError(\"%s: unknown enum value '\"+d%s+\"'\")", field.fullName, prop);
+            gen
             ("}");
         } else gen
             ("if(typeof d%s!==\"object\")", prop)
