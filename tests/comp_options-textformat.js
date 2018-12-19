@@ -28,7 +28,7 @@ tape.test("options in textformat", function(test) {
     test.same(Test.fields.value.options, { "(my_options).a": "foo", "(my_options).b": "bar" }, "should parse correctly");
     test.same(Test.fields.value2.options, { "(my_options).a": "foo", "(my_options).c.a": "bar" }, "should parse correctly when nested");
     test.same(Test.fields.value3.options, { "(my_options).a": "foo", "(my_options).b": "bar" }, "should parse correctly when comma-separated");
-    test.same(Test.fields.value4.options, { "(my_options).d": ["foo", "bar"] }, "should parse repeated option correctly");
-    test.same(Test.fields.value5.options, { "(my_options).e.d": ["foo", "bar"] }, "should parse nested repeated option correctly");
+    test.same(Test.fields.value4.options, { "(my_options).d[0]": "foo", "(my_options).d[1]": "bar" }, "should parse repeated option correctly");
+    test.same(Test.fields.value5.options, { "(my_options).e[0].d[0]": "foo", "(my_options).e[0].d[1]": "bar" }, "should parse nested repeated option correctly");
     test.end();
 });

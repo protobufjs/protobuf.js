@@ -562,15 +562,23 @@ function parse(source, root, options) {
                     parseOptionValue(parent, name + "." + token);
                 else {
                     skip(":");
-                    if (peek() === "{")
+                    if (peek() === "{" || peek() === "[")
                         parseOptionValue(parent, name + "." + token);
                     else
                         setOption(parent, name + "." + token, readValue(true));
                 }
                 skip(",", true);
             } while (!skip("}", true));
-        } else
+        } else if (skip("[", true)) {
+            var index = 0;
+            while (!skip("]", true)) {
+                parseOptionValue(parent, name + "[" + index + "]");
+                index++;
+                skip(",", true);
+            }
+        } else {
             setOption(parent, name, readValue(true));
+        }
         // Does not enforce a delimiter to be universal
     }
 
