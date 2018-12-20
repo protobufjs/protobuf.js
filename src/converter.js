@@ -29,10 +29,9 @@ function genValuePartial_fromObject(gen, field, fieldIndex, prop) {
                     ("m%s=%j", prop, values[keys[i]])
                     ("break");
             }
-            if (field.repeated) gen
-                ("default:")
-                    ("throw TypeError(\"%s: unknown enum value '\"+d%s+\"'\")", field.fullName, prop);
             gen
+                ("default:")
+                    ("throw TypeError(\"%s: unknown enum value '\"+d%s+\"'\")", field.fullName, prop)
             ("}");
         } else gen
             ("if(typeof d%s!==\"object\")", prop)
@@ -134,10 +133,10 @@ converter.fromObject = function fromObject(mtype) {
 
         // Non-repeated fields
         } else {
-            if (!(field.resolvedType instanceof Enum)) gen // no need to test for null/undefined if an enum (uses switch)
+            gen
     ("if(d%s!=null){", prop); // !== undefined && !== null
         genValuePartial_fromObject(gen, field, /* not sorted */ i, prop);
-            if (!(field.resolvedType instanceof Enum)) gen
+            gen
     ("}");
         }
     } return gen
