@@ -12,7 +12,7 @@ tape.test("converters", function(test) {
 
         test.test(test.name + " - Message#toObject", function(test) {
 
-            test.plan(5);
+            test.plan(6);
 
             test.test(test.name + " - called with defaults = true", function(test) {
                 var obj = Message.toObject(Message.create(), { defaults: true });
@@ -127,6 +127,20 @@ tape.test("converters", function(test) {
                     test.ok(Buffer.isBuffer(Message.toObject(msg, { bytes: Buffer }).bytesVal), "bytes to buffers");
 
                 test.equal(Message.toObject(msg, { enums: String }).enumVal, "TWO", "enums to strings");
+
+                test.end();
+            });
+
+            test.test(test.name + " - camelCase", function(test) {
+                var obj = Message.toObject(Message.create(), { defaults: true });
+
+
+                test.same(obj.snakeCase, "", "snake_case should convert to snakeCase");
+                test.same(obj.snakeCase1, "", "snake_case__1 should convert to snakeCase1");
+                test.same(obj.snakeCase2, "", "snake_Case2 should convert to snakeCase2");
+                test.same(obj.snakeCase3, "", "snake__Case3 should convert to snakeCase3");
+                test.same(obj.snakeCASE4, "", "snake___CASE4 should convert to snakeCASE4");
+                test.same(obj.snakeCase5, "", "snake_Case5_ should convert to snakeCase5");
 
                 test.end();
             });

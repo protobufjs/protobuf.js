@@ -20,4 +20,11 @@ message Message {
     }
 
     map<string,int64> int64_map = 9;
+
+    string snake_case = 10;
+    string snake_case__1 = 11;
+    string snake_Case2 = 12;
+    string snake__Case3 = 13;
+    string snake___CASE4 = 14;
+    string snake_Case5_ = 15;
 }
