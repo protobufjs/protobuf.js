@@ -73,8 +73,11 @@ util.isReserved = function isReserved(name) {
  * @returns {string} Safe accessor
  */
 util.safeProp = function safeProp(prop) {
-    if (!/^[$\w_]+$/.test(prop) || util.isReserved(prop))
+    if (!/^[$\w_]+$/.test(prop) || util.isReserved(prop)) {
         return "[\"" + prop.replace(safePropBackslashRe, "\\\\").replace(safePropQuoteRe, "\\\"") + "\"]";
+    } else if (/^[\d]+$/.test(prop)) {
+        return "[\"" + prop + "\"]";
+    }
     return "." + prop;
 };
 

@@ -532,10 +532,11 @@ Type.prototype.verify = function verify_setup(message) {
 /**
  * Creates a new message of this type from a plain object. Also converts values to their respective internal types.
  * @param {Object.<string,*>} object Plain object to convert
+ * @param {Boolean} useId use the id of the fields instead of the names
  * @returns {Message<{}>} Message instance
  */
-Type.prototype.fromObject = function fromObject(object) {
-    return this.setup().fromObject(object);
+Type.prototype.fromObject = function fromObject(object, useId) {
+    return this.setup().fromObject(object, useId);
 };
 
 /**
