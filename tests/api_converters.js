@@ -96,8 +96,7 @@ tape.test("converters", function(test) {
 
             test.test(test.name + " - called with useId = true", function(test) {
                 var obj = Message.toObject(Message.create(), { useId: true, defaults: true });
-console.log('obj', JSON.stringify(obj));
-// {"1":"","2":[],"3":{"low":0,"high":0,"unsigned":true},"4":[],"5":{"type":"Buffer","data":[]},"6":[],"7":1,"8":[],"9":{}}
+
                 test.equal(obj["1"], "", "should set 1 for stringVal");
                 test.same(obj["2"], [], "should set 2 for stringRepeated");
 
