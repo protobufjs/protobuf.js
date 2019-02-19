@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.8.8 (c) 2016, daniel wirtz
- * compiled thu, 19 jul 2018 00:33:25 utc
+ * compiled tue, 19 feb 2019 14:14:53 utc
  * licensed under the bsd-3-clause license
  * see: https://github.com/dcodeio/protobuf.js for details
  */
@@ -1124,75 +1124,76 @@ var Enum = require(14),
  * @param {Codegen} gen Codegen instance
  * @param {Field} field Reflected field
  * @param {number} fieldIndex Field index
- * @param {string} prop Property reference
+ * @param {string} propName Property reference by name
+ * @param {string} dQual Property qualification for the d object we generate
  * @returns {Codegen} Codegen instance
  * @ignore
  */
-function genValuePartial_fromObject(gen, field, fieldIndex, prop) {
+function genValuePartial_fromObject(gen, field, fieldIndex, propName, dQual) {
     /* eslint-disable no-unexpected-multiline, block-scoped-var, no-redeclare */
     if (field.resolvedType) {
         if (field.resolvedType instanceof Enum) { gen
-            ("switch(d%s){", prop);
+            ("switch(d%s){", dQual);
             for (var values = field.resolvedType.values, keys = Object.keys(values), i = 0; i < keys.length; ++i) {
                 if (field.repeated && values[keys[i]] === field.typeDefault) gen
                 ("default:");
                 gen
                 ("case%j:", keys[i])
                 ("case %i:", values[keys[i]])
-                    ("m%s=%j", prop, values[keys[i]])
+                    ("m%s=%j", propName, values[keys[i]])
                     ("break");
             } gen
             ("}");
         } else gen
-            ("if(typeof d%s!==\"object\")", prop)
+            ("if(typeof d%s!==\"object\")", dQual)
                 ("throw TypeError(%j)", field.fullName + ": object expected")
-            ("m%s=types[%i].fromObject(d%s)", prop, fieldIndex, prop);
+            ("m%s=types[%i].fromObject(d%s, k)", propName, fieldIndex, dQual);
     } else {
         var isUnsigned = false;
         switch (field.type) {
             case "double":
             case "float": gen
-                ("m%s=Number(d%s)", prop, prop); // also catches "NaN", "Infinity"
+                ("m%s=Number(d%s)", propName, dQual); // also catches "NaN", "Infinity"
                 break;
             case "uint32":
             case "fixed32": gen
-                ("m%s=d%s>>>0", prop, prop);
+                ("m%s=d%s>>>0", propName, dQual);
                 break;
             case "int32":
             case "sint32":
             case "sfixed32": gen
-                ("m%s=d%s|0", prop, prop);
+                ("m%s=d%s|0", propName, dQual);
                 break;
             case "uint64":
                 isUnsigned = true;
-                // eslint-disable-line no-fallthrough
+            // eslint-disable-line no-fallthrough
             case "int64":
             case "sint64":
             case "fixed64":
             case "sfixed64": gen
                 ("if(util.Long)")
-                    ("(m%s=util.Long.fromValue(d%s)).unsigned=%j", prop, prop, isUnsigned)
-                ("else if(typeof d%s===\"string\")", prop)
-                    ("m%s=parseInt(d%s,10)", prop, prop)
-                ("else if(typeof d%s===\"number\")", prop)
-                    ("m%s=d%s", prop, prop)
-                ("else if(typeof d%s===\"object\")", prop)
-                    ("m%s=new util.LongBits(d%s.low>>>0,d%s.high>>>0).toNumber(%s)", prop, prop, prop, isUnsigned ? "true" : "");
+                    ("(m%s=util.Long.fromValue(d%s)).unsigned=%j", propName, dQual, isUnsigned)
+                ("else if(typeof d%s===\"string\")", dQual)
+                    ("m%s=parseInt(d%s,10)", propName, dQual)
+                ("else if(typeof d%s===\"number\")", dQual)
+                    ("m%s=d%s", propName, dQual)
+                ("else if(typeof d%s===\"object\")", dQual)
+                    ("m%s=new util.LongBits(d%s.low>>>0,d%s.high>>>0).toNumber(%s)", propName, dQual, dQual, isUnsigned ? "true" : "");
                 break;
             case "bytes": gen
-                ("if(typeof d%s===\"string\")", prop)
-                    ("util.base64.decode(d%s,m%s=util.newBuffer(util.base64.length(d%s)),0)", prop, prop, prop)
-                ("else if(d%s.length)", prop)
-                    ("m%s=d%s", prop, prop);
+                ("if(typeof d%s===\"string\")", dQual)
+                    ("util.base64.decode(d%s,m%s=util.newBuffer(util.base64.length(d%s)),0)", dQual, propName, dQual)
+                ("else if(d%s.length)", dQual)
+                    ("m%s=d%s", propName, dQual);
                 break;
             case "string": gen
-                ("m%s=String(d%s)", prop, prop);
+                ("m%s=String(d%s)", propName, dQual);
                 break;
             case "bool": gen
-                ("m%s=Boolean(d%s)", prop, prop);
+                ("m%s=Boolean(d%s)", propName, dQual);
                 break;
             /* default: gen
-                ("m%s=d%s", prop, prop);
+                ("m%s=d%s", propName, dQual);
                 break; */
         }
     }
@@ -1201,6 +1202,55 @@ function genValuePartial_fromObject(gen, field, fieldIndex, prop) {
 }
 
 /**
+ * Generates a converter able to produce an object using fields id as keys
+ * @param {Codegen} gen Codegen instance
+ * @param {Array<Field>} fields Reflected fields
+ * @param {Boolean=} useId use id to qualify the fields
+ * @returns {Codegen} Codegen instance
+ * @ignore
+ */
+function generate_fromObject(gen, fields, useId) {
+    /* eslint-disable no-unexpected-multiline, block-scoped-var, no-redeclare */
+    for (var i = 0; i < fields.length; ++i) {
+        var field  = fields[i].resolve(),
+            propName  = util.safeProp(field.name),
+            dQual = useId ? util.safeProp(field.id) : propName;
+
+        // Map fields
+        if (field.map) { gen
+    ("if(d%s){", dQual)
+        ("if(typeof d%s!==\"object\")", dQual)
+            ("throw TypeError(%j)", field.fullName + ": object expected")
+        ("m%s={}", propName)
+        ("for(var ks=Object.keys(d%s),i=0;i<ks.length;++i){", dQual);
+            genValuePartial_fromObject(gen, field, /* not sorted */ i, propName + "[ks[i]]", dQual + "[ks[i]]")
+        ("}")
+    ("}");
+
+            // Repeated fields
+        } else if (field.repeated) { gen
+    ("if(d%s){", dQual)
+        ("if(!Array.isArray(d%s))", dQual)
+            ("throw TypeError(%j)", field.fullName + ": array expected")
+        ("m%s=[]", propName)
+        ("for(var i=0;i<d%s.length;++i){", dQual);
+            genValuePartial_fromObject(gen, field, /* not sorted */ i, propName + "[i]", dQual + "[i]")
+        ("}")
+    ("}");
+
+            // Non-repeated fields
+        } else {
+            if (!(field.resolvedType instanceof Enum)) gen // no need to test for null/undefined if an enum (uses switch)
+    ("if(d%s!=null){", dQual); // !== undefined && !== null
+        genValuePartial_fromObject(gen, field, /* not sorted */ i, propName, dQual);
+            if (!(field.resolvedType instanceof Enum)) gen
+    ("}");
+        }
+    }
+    return gen;
+    /* eslint-enable no-unexpected-multiline, block-scoped-var, no-redeclare */
+}
+/**
  * Generates a plain object to runtime message converter specific to the specified message type.
  * @param {Type} mtype Message type
  * @returns {Codegen} Codegen instance
@@ -1208,48 +1258,19 @@ function genValuePartial_fromObject(gen, field, fieldIndex, prop) {
 converter.fromObject = function fromObject(mtype) {
     /* eslint-disable no-unexpected-multiline, block-scoped-var, no-redeclare */
     var fields = mtype.fieldsArray;
-    var gen = util.codegen(["d"], mtype.name + "$fromObject")
+    var gen = util.codegen(["d", "k"], mtype.name + "$fromObject")
     ("if(d instanceof this.ctor)")
         ("return d");
     if (!fields.length) return gen
     ("return new this.ctor");
     gen
-    ("var m=new this.ctor");
-    for (var i = 0; i < fields.length; ++i) {
-        var field  = fields[i].resolve(),
-            prop   = util.safeProp(field.name);
-
-        // Map fields
-        if (field.map) { gen
-    ("if(d%s){", prop)
-        ("if(typeof d%s!==\"object\")", prop)
-            ("throw TypeError(%j)", field.fullName + ": object expected")
-        ("m%s={}", prop)
-        ("for(var ks=Object.keys(d%s),i=0;i<ks.length;++i){", prop);
-            genValuePartial_fromObject(gen, field, /* not sorted */ i, prop + "[ks[i]]")
-        ("}")
+    ("var m=new this.ctor")
+    ("if(!!k){");
+        generate_fromObject(gen, fields, true)
+    ("}else{");
+        generate_fromObject(gen, fields)
     ("}");
-
-        // Repeated fields
-        } else if (field.repeated) { gen
-    ("if(d%s){", prop)
-        ("if(!Array.isArray(d%s))", prop)
-            ("throw TypeError(%j)", field.fullName + ": array expected")
-        ("m%s=[]", prop)
-        ("for(var i=0;i<d%s.length;++i){", prop);
-            genValuePartial_fromObject(gen, field, /* not sorted */ i, prop + "[i]")
-        ("}")
-    ("}");
-
-        // Non-repeated fields
-        } else {
-            if (!(field.resolvedType instanceof Enum)) gen // no need to test for null/undefined if an enum (uses switch)
-    ("if(d%s!=null){", prop); // !== undefined && !== null
-        genValuePartial_fromObject(gen, field, /* not sorted */ i, prop);
-            if (!(field.resolvedType instanceof Enum)) gen
-    ("}");
-        }
-    } return gen
+    return gen
     ("return m");
     /* eslint-enable no-unexpected-multiline, block-scoped-var, no-redeclare */
 };
@@ -1259,43 +1280,144 @@ converter.fromObject = function fromObject(mtype) {
  * @param {Codegen} gen Codegen instance
  * @param {Field} field Reflected field
  * @param {number} fieldIndex Field index
- * @param {string} prop Property reference
+ * @param {string} propName Property reference by its name
+ * @param {string} dQual Property qualification for the d object we generate
  * @returns {Codegen} Codegen instance
  * @ignore
  */
-function genValuePartial_toObject(gen, field, fieldIndex, prop) {
+function genValuePartial_toObject(gen, field, fieldIndex, propName, dQual) {
     /* eslint-disable no-unexpected-multiline, block-scoped-var, no-redeclare */
     if (field.resolvedType) {
         if (field.resolvedType instanceof Enum) gen
-            ("d%s=o.enums===String?types[%i].values[m%s]:m%s", prop, fieldIndex, prop, prop);
+        ("d%s=o.enums===String?types[%i].values[m%s]:m%s", dQual, fieldIndex, propName, propName);
         else gen
-            ("d%s=types[%i].toObject(m%s,o)", prop, fieldIndex, prop);
+        ("d%s=types[%i].toObject(m%s,o)", dQual, fieldIndex, propName);
     } else {
         var isUnsigned = false;
         switch (field.type) {
             case "double":
             case "float": gen
-            ("d%s=o.json&&!isFinite(m%s)?String(m%s):m%s", prop, prop, prop, prop);
+            ("d%s=o.json&&!isFinite(m%s)?String(m%s):m%s", dQual, propName, propName, propName);
                 break;
             case "uint64":
                 isUnsigned = true;
-                // eslint-disable-line no-fallthrough
+            // eslint-disable-line no-fallthrough
             case "int64":
             case "sint64":
             case "fixed64":
             case "sfixed64": gen
-            ("if(typeof m%s===\"number\")", prop)
-                ("d%s=o.longs===String?String(m%s):m%s", prop, prop, prop)
+            ("if(typeof m%s===\"number\")", propName)
+                ("d%s=o.longs===String?String(m%s):m%s", dQual, propName, propName)
             ("else") // Long-like
-                ("d%s=o.longs===String?util.Long.prototype.toString.call(m%s):o.longs===Number?new util.LongBits(m%s.low>>>0,m%s.high>>>0).toNumber(%s):m%s", prop, prop, prop, prop, isUnsigned ? "true": "", prop);
+                ("d%s=o.longs===String?util.Long.prototype.toString.call(m%s):o.longs===Number?new util.LongBits(m%s.low>>>0,m%s.high>>>0).toNumber(%s):m%s", dQual, propName, propName, propName, isUnsigned ? "true": "", propName);
                 break;
             case "bytes": gen
-            ("d%s=o.bytes===String?util.base64.encode(m%s,0,m%s.length):o.bytes===Array?Array.prototype.slice.call(m%s):m%s", prop, prop, prop, prop, prop);
+            ("d%s=o.bytes===String?util.base64.encode(m%s,0,m%s.length):o.bytes===Array?Array.prototype.slice.call(m%s):m%s", dQual, propName, propName, propName, propName);
                 break;
             default: gen
-            ("d%s=m%s", prop, prop);
+            ("d%s=m%s", dQual, propName);
                 break;
         }
+    }
+    return gen;
+    /* eslint-enable no-unexpected-multiline, block-scoped-var, no-redeclare */
+}
+
+/**
+ * Generates a converter able to produce an object using fields id as keys
+ * @param {Codegen} gen Codegen instance
+ * @param {Type} mtype Message type
+ * @param {Array<Field>} fields Reflected fields
+ * @param {Boolean=} useId use id to qualify the fields
+ * @returns {Codegen} Codegen instance
+ * @ignore
+ */
+function generate_toObject(gen, mtype, fields, useId){
+    /* eslint-disable no-unexpected-multiline, block-scoped-var, no-redeclare */
+    var repeatedFields = [],
+        mapFields = [],
+        normalFields = [],
+        i = 0,
+        attr = useId ? "id" : "name";
+
+    for (; i < fields.length; ++i)
+        if (!fields[i].partOf)
+            ( fields[i].resolve().repeated ? repeatedFields
+                : fields[i].map ? mapFields
+                    : normalFields).push(fields[i]);
+
+    if (repeatedFields.length) { gen
+    ("if(o.arrays||o.defaults){");
+        for (i = 0; i < repeatedFields.length; ++i) gen
+        ("d%s=[]", util.safeProp(repeatedFields[i][attr]));
+        gen
+        ("}");
+    }
+
+    if (mapFields.length) { gen
+    ("if(o.objects||o.defaults){");
+        for (i = 0; i < mapFields.length; ++i) gen
+        ("d%s={}", util.safeProp(mapFields[i][attr]));
+        gen
+        ("}");
+    }
+
+    if (normalFields.length) { gen
+    ("if(o.defaults){");
+        for (i = 0; i < normalFields.length; ++i) {
+            var field = normalFields[i],
+                prop = useId ? util.safeProp(field.id) : util.safeProp(field.name);
+            if (field.resolvedType instanceof Enum) gen
+            ("d%s=o.enums===String?%j:%j", prop, field.resolvedType.valuesById[field.typeDefault], field.typeDefault);
+            else if (field.long) gen
+            ("if(util.Long){")
+            ("var n=new util.Long(%i,%i,%j)", field.typeDefault.low, field.typeDefault.high, field.typeDefault.unsigned)
+            ("d%s=o.longs===String?n.toString():o.longs===Number?n.toNumber():n", prop)
+            ("}else")
+            ("d%s=o.longs===String?%j:%i", prop, field.typeDefault.toString(), field.typeDefault.toNumber());
+            else if (field.bytes) {
+                var arrayDefault = "[" + Array.prototype.slice.call(field.typeDefault).join(",") + "]";
+                gen
+                ("if(o.bytes===String)d%s=%j", prop, String.fromCharCode.apply(String, field.typeDefault))
+                ("else{")
+                ("d%s=%s", prop, arrayDefault)
+                ("if(o.bytes!==Array)d%s=util.newBuffer(d%s)", prop, prop)
+                ("}");
+            } else gen
+            ("d%s=%j", prop, field.typeDefault); // also messages (=null)
+        } gen
+        ("}");
+    }
+    var hasKs2 = false;
+    for (i = 0; i < fields.length; ++i) {
+        var field = fields[i],
+            index = mtype._fieldsArray.indexOf(field),
+            propName  = util.safeProp(field.name),
+            dQual = useId ? util.safeProp(field.id) : propName;
+        if (field.map) {
+            if (!hasKs2) { hasKs2 = true; gen
+            ("var ks2");
+            } gen
+            ("if(m%s&&(ks2=Object.keys(m%s)).length){", propName, propName)
+            ("d%s={}", dQual)
+            ("for(var j=0;j<ks2.length;++j){");
+            genValuePartial_toObject(gen, field, /* sorted */ index, propName + "[ks2[j]]", dQual + "[ks2[j]]")
+            ("}");
+        } else if (field.repeated) { gen
+        ("if(m%s&&m%s.length){", propName, propName)
+        ("d%s=[]", dQual)
+        ("for(var j=0;j<m%s.length;++j){", propName);
+            genValuePartial_toObject(gen, field, /* sorted */ index, propName + "[j]", dQual + "[j]")
+            ("}");
+        } else { gen
+        ("if(m%s!=null&&m.hasOwnProperty(%j)){", propName, field.name); // !== undefined && !== null
+            genValuePartial_toObject(gen, field, /* sorted */ index, propName, dQual);
+            if (field.partOf) gen
+            ("if(o.oneofs)")
+            ("d%s=%j", util.safeProp(field.partOf.name), field.name);
+        }
+        gen
+        ("}");
     }
     return gen;
     /* eslint-enable no-unexpected-multiline, block-scoped-var, no-redeclare */
@@ -1316,88 +1438,12 @@ converter.toObject = function toObject(mtype) {
         ("o={}")
     ("var d={}");
 
-    var repeatedFields = [],
-        mapFields = [],
-        normalFields = [],
-        i = 0;
-    for (; i < fields.length; ++i)
-        if (!fields[i].partOf)
-            ( fields[i].resolve().repeated ? repeatedFields
-            : fields[i].map ? mapFields
-            : normalFields).push(fields[i]);
-
-    if (repeatedFields.length) { gen
-    ("if(o.arrays||o.defaults){");
-        for (i = 0; i < repeatedFields.length; ++i) gen
-        ("d%s=[]", util.safeProp(repeatedFields[i].name));
-        gen
+    gen
+    ("if(o.useId){");
+        generate_toObject(gen, mtype, fields, true)
+    ("}  else {");
+        generate_toObject(gen, mtype, fields)
     ("}");
-    }
-
-    if (mapFields.length) { gen
-    ("if(o.objects||o.defaults){");
-        for (i = 0; i < mapFields.length; ++i) gen
-        ("d%s={}", util.safeProp(mapFields[i].name));
-        gen
-    ("}");
-    }
-
-    if (normalFields.length) { gen
-    ("if(o.defaults){");
-        for (i = 0; i < normalFields.length; ++i) {
-            var field = normalFields[i],
-                prop  = util.safeProp(field.name);
-            if (field.resolvedType instanceof Enum) gen
-        ("d%s=o.enums===String?%j:%j", prop, field.resolvedType.valuesById[field.typeDefault], field.typeDefault);
-            else if (field.long) gen
-        ("if(util.Long){")
-            ("var n=new util.Long(%i,%i,%j)", field.typeDefault.low, field.typeDefault.high, field.typeDefault.unsigned)
-            ("d%s=o.longs===String?n.toString():o.longs===Number?n.toNumber():n", prop)
-        ("}else")
-            ("d%s=o.longs===String?%j:%i", prop, field.typeDefault.toString(), field.typeDefault.toNumber());
-            else if (field.bytes) {
-                var arrayDefault = "[" + Array.prototype.slice.call(field.typeDefault).join(",") + "]";
-                gen
-        ("if(o.bytes===String)d%s=%j", prop, String.fromCharCode.apply(String, field.typeDefault))
-        ("else{")
-            ("d%s=%s", prop, arrayDefault)
-            ("if(o.bytes!==Array)d%s=util.newBuffer(d%s)", prop, prop)
-        ("}");
-            } else gen
-        ("d%s=%j", prop, field.typeDefault); // also messages (=null)
-        } gen
-    ("}");
-    }
-    var hasKs2 = false;
-    for (i = 0; i < fields.length; ++i) {
-        var field = fields[i],
-            index = mtype._fieldsArray.indexOf(field),
-            prop  = util.safeProp(field.name);
-        if (field.map) {
-            if (!hasKs2) { hasKs2 = true; gen
-    ("var ks2");
-            } gen
-    ("if(m%s&&(ks2=Object.keys(m%s)).length){", prop, prop)
-        ("d%s={}", prop)
-        ("for(var j=0;j<ks2.length;++j){");
-            genValuePartial_toObject(gen, field, /* sorted */ index, prop + "[ks2[j]]")
-        ("}");
-        } else if (field.repeated) { gen
-    ("if(m%s&&m%s.length){", prop, prop)
-        ("d%s=[]", prop)
-        ("for(var j=0;j<m%s.length;++j){", prop);
-            genValuePartial_toObject(gen, field, /* sorted */ index, prop + "[j]")
-        ("}");
-        } else { gen
-    ("if(m%s!=null&&m.hasOwnProperty(%j)){", prop, field.name); // !== undefined && !== null
-        genValuePartial_toObject(gen, field, /* sorted */ index, prop);
-        if (field.partOf) gen
-        ("if(o.oneofs)")
-            ("d%s=%j", util.safeProp(field.partOf.name), field.name);
-        }
-        gen
-    ("}");
-    }
     return gen
     ("return d");
     /* eslint-enable no-unexpected-multiline, block-scoped-var, no-redeclare */
@@ -2542,21 +2588,23 @@ Message.decodeDelimited = function decodeDelimited(reader) {
  * @name Message.verify
  * @function
  * @param {Object.<string,*>} message Plain object to verify
+ * @param {Boolean=} useId use the id of the fields instead of the names
  * @returns {string|null} `null` if valid, otherwise the reason why it is not
  */
-Message.verify = function verify(message) {
-    return this.$type.verify(message);
+Message.verify = function verify(message, useId) {
+    return this.$type.verify(message, useId);
 };
 
 /**
  * Creates a new message of this type from a plain object. Also converts values to their respective internal types.
  * @param {Object.<string,*>} object Plain object
+ * @param {Boolean=} useId use the id of the fields instead of the names
  * @returns {T} Message instance
  * @template T extends Message<T>
  * @this Constructor<T>
  */
-Message.fromObject = function fromObject(object) {
-    return this.$type.fromObject(object);
+Message.fromObject = function fromObject(object, useId) {
+    return this.$type.fromObject(object, useId);
 };
 
 /**
@@ -2580,6 +2628,7 @@ Message.prototype.toJSON = function toJSON() {
 };
 
 /*eslint-enable valid-jsdoc*/
+
 },{"35":35}],20:[function(require,module,exports){
 "use strict";
 module.exports = Method;
@@ -2798,7 +2847,7 @@ Namespace.arrayToJSON = arrayToJSON;
 Namespace.isReservedId = function isReservedId(reserved, id) {
     if (reserved)
         for (var i = 0; i < reserved.length; ++i)
-            if (typeof reserved[i] !== "string" && reserved[i][0] <= id && reserved[i][1] >= id)
+            if (typeof reserved[i] !== "string" && reserved[i][0] <= id && reserved[i][1] > id)
                 return true;
     return false;
 };
@@ -5278,19 +5327,21 @@ Type.prototype.decodeDelimited = function decodeDelimited(reader) {
 /**
  * Verifies that field values are valid and that required fields are present.
  * @param {Object.<string,*>} message Plain object to verify
+ * @param {Boolean=} useId use the id of the fields instead of the names
  * @returns {null|string} `null` if valid, otherwise the reason why it is not
  */
-Type.prototype.verify = function verify_setup(message) {
-    return this.setup().verify(message); // overrides this method
+Type.prototype.verify = function verify_setup(message, useId) {
+    return this.setup().verify(message, useId); // overrides this method
 };
 
 /**
  * Creates a new message of this type from a plain object. Also converts values to their respective internal types.
  * @param {Object.<string,*>} object Plain object to convert
+ * @param {Boolean=} useId use the id of the fields instead of the names
  * @returns {Message<{}>} Message instance
  */
-Type.prototype.fromObject = function fromObject(object) {
-    return this.setup().fromObject(object);
+Type.prototype.fromObject = function fromObject(object, useId) {
+    return this.setup().fromObject(object, useId);
 };
 
 /**
@@ -5310,6 +5361,7 @@ Type.prototype.fromObject = function fromObject(object) {
  * @property {boolean} [objects=false] Sets empty objects for missing map fields even if `defaults=false`
  * @property {boolean} [oneofs=false] Includes virtual oneof properties set to the present field's name, if any
  * @property {boolean} [json=false] Performs additional JSON compatibility conversions, i.e. NaN and Infinity to strings
+ * @property {boolean} [useId=false] keys of the generated object are fields ids instead of names
  */
 
 /**
@@ -5617,8 +5669,11 @@ util.isReserved = function isReserved(name) {
  * @returns {string} Safe accessor
  */
 util.safeProp = function safeProp(prop) {
-    if (!/^[$\w_]+$/.test(prop) || util.isReserved(prop))
+    if (!/^[$\w_]+$/.test(prop) || util.isReserved(prop)) {
         return "[\"" + prop.replace(safePropBackslashRe, "\\\\").replace(safePropQuoteRe, "\\\"") + "\"]";
+    } else if (/^[\d]+$/.test(prop)) {
+        return "[\"" + prop + "\"]";
+    }
     return "." + prop;
 };
 
@@ -6374,7 +6429,7 @@ function genVerifyValue(gen, field, fieldIndex, ref) {
         } else {
             gen
             ("{")
-                ("var e=types[%i].verify(%s);", fieldIndex, ref)
+                ("var e=types[%i].verify(%s,u);", fieldIndex, ref)
                 ("if(e)")
                     ("return%j+e", field.name + ".")
             ("}");
@@ -6457,27 +6512,22 @@ function genVerifyKey(gen, field, ref) {
 }
 
 /**
- * Generates a verifier specific to the specified message type.
+ * Generates a verifier able to control the message fields by their name or id
+ * @param {Codegen} gen Codegen instance
  * @param {Type} mtype Message type
+ * @param {Boolean=} useId use id to qualify the fields
  * @returns {Codegen} Codegen instance
+ * @ignore
  */
-function verifier(mtype) {
+function generateVerifier(gen, mtype, useId) {
     /* eslint-disable no-unexpected-multiline */
-
-    var gen = util.codegen(["m"], mtype.name + "$verify")
-    ("if(typeof m!==\"object\"||m===null)")
-        ("return%j", "object expected");
-    var oneofs = mtype.oneofsArray,
-        seenFirstField = {};
-    if (oneofs.length) gen
-    ("var p={}");
-
+    var seenFirstField = {};
     for (var i = 0; i < /* initializes */ mtype.fieldsArray.length; ++i) {
         var field = mtype._fieldsArray[i].resolve(),
-            ref   = "m" + util.safeProp(field.name);
+            ref   = "m" + (useId ? util.safeProp(field.id) : util.safeProp(field.name));
 
         if (field.optional) gen
-        ("if(%s!=null&&m.hasOwnProperty(%j)){", ref, field.name); // !== undefined && !== null
+        ("if(%s!=null&&m.hasOwnProperty(%j)){", ref, useId ? String(field.id) : field.name); // !== undefined && !== null
 
         // map fields
         if (field.map) { gen
@@ -6513,10 +6563,34 @@ function verifier(mtype) {
         if (field.optional) gen
         ("}");
     }
+    return gen;
+    /* eslint-enable no-unexpected-multiline */
+}
+
+/**
+ * Generates a verifier specific to the specified message type.
+ * @param {Type} mtype Message type
+ * @returns {Codegen} Codegen instance
+ */
+function verifier(mtype) {
+    /* eslint-disable no-unexpected-multiline */
+    var gen = util.codegen(["m", "u"], mtype.name + "$verify")
+    ("if(typeof m!==\"object\"||m===null)")
+        ("return%j", "object expected");
+    if (mtype.oneofsArray.length) gen
+    ("var p={}");
+
+    gen
+    ("if(!!u){");
+        generateVerifier(gen, mtype, true)
+    ("}else{");
+        generateVerifier(gen, mtype)
+    ("}");
     return gen
     ("return null");
     /* eslint-enable no-unexpected-multiline */
 }
+
 },{"14":14,"33":33}],37:[function(require,module,exports){
 "use strict";
 
