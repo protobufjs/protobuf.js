@@ -177,7 +177,6 @@ function generateVerifier(gen, mtype, useId) {
  */
 function verifier(mtype) {
     /* eslint-disable no-unexpected-multiline */
-    util.codegen.verbose = true;
     var gen = util.codegen(["m", "u"], mtype.name + "$verify")
     ("if(typeof m!==\"object\"||m===null)")
         ("return%j", "object expected");
