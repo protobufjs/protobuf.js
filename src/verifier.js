@@ -120,6 +120,7 @@ function genVerifyKey(gen, field, ref) {
  * @param {Type} mtype Message type
  * @param {Boolean=} useId use id to qualify the fields
  * @returns {Codegen} Codegen instance
+ * @ignore
  */
 function generateVerifier(gen, mtype, useId) {
     /* eslint-disable no-unexpected-multiline */

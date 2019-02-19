@@ -99,6 +99,7 @@ function genValuePartial_fromObject(gen, field, fieldIndex, propName, dQual) {
  * @ignore
  */
 function generate_fromObject(gen, fields, useId) {
+    /* eslint-disable no-unexpected-multiline, block-scoped-var, no-redeclare */
     for (var i = 0; i < fields.length; ++i) {
         var field  = fields[i].resolve(),
             propName  = util.safeProp(field.name),
@@ -136,6 +137,7 @@ function generate_fromObject(gen, fields, useId) {
         }
     }
     return gen;
+    /* eslint-enable no-unexpected-multiline, block-scoped-var, no-redeclare */
 }
 /**
  * Generates a plain object to runtime message converter specific to the specified message type.
@@ -220,6 +222,7 @@ function genValuePartial_toObject(gen, field, fieldIndex, propName, dQual) {
  * @ignore
  */
 function generate_toObject(gen, mtype, fields, useId){
+    /* eslint-disable no-unexpected-multiline, block-scoped-var, no-redeclare */
     var repeatedFields = [],
         mapFields = [],
         normalFields = [],
@@ -306,6 +309,7 @@ function generate_toObject(gen, mtype, fields, useId){
         ("}");
     }
     return gen;
+    /* eslint-enable no-unexpected-multiline, block-scoped-var, no-redeclare */
 }
 
 /**
@@ -331,4 +335,5 @@ converter.toObject = function toObject(mtype) {
     ("}");
     return gen
     ("return d");
+    /* eslint-enable no-unexpected-multiline, block-scoped-var, no-redeclare */
 };
