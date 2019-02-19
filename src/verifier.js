@@ -32,7 +32,7 @@ function genVerifyValue(gen, field, fieldIndex, ref) {
         } else {
             gen
             ("{")
-                ("var e=types[%i].verify(%s);", fieldIndex, ref)
+                ("var e=types[%i].verify(%s,u);", fieldIndex, ref)
                 ("if(e)")
                     ("return%j+e", field.name + ".")
             ("}");
@@ -115,27 +115,21 @@ function genVerifyKey(gen, field, ref) {
 }
 
 /**
- * Generates a verifier specific to the specified message type.
+ * Generates a verifier able to control the message fields by their name or id
+ * @param {Codegen} gen Codegen instance
  * @param {Type} mtype Message type
+ * @param {Boolean=} useId use id to qualify the fields
  * @returns {Codegen} Codegen instance
  */
-function verifier(mtype) {
+function generateVerifier(gen, mtype, useId) {
     /* eslint-disable no-unexpected-multiline */
-
-    var gen = util.codegen(["m"], mtype.name + "$verify")
-    ("if(typeof m!==\"object\"||m===null)")
-        ("return%j", "object expected");
-    var oneofs = mtype.oneofsArray,
-        seenFirstField = {};
-    if (oneofs.length) gen
-    ("var p={}");
-
+    var seenFirstField = {};
     for (var i = 0; i < /* initializes */ mtype.fieldsArray.length; ++i) {
         var field = mtype._fieldsArray[i].resolve(),
-            ref   = "m" + util.safeProp(field.name);
+            ref   = "m" + (useId ? util.safeProp(field.id) : util.safeProp(field.name));
 
         if (field.optional) gen
-        ("if(%s!=null&&m.hasOwnProperty(%j)){", ref, field.name); // !== undefined && !== null
+        ("if(%s!=null&&m.hasOwnProperty(%j)){", ref, useId ? String(field.id) : field.name); // !== undefined && !== null
 
         // map fields
         if (field.map) { gen
@@ -171,6 +165,30 @@ function verifier(mtype) {
         if (field.optional) gen
         ("}");
     }
+    return gen;
+    /* eslint-enable no-unexpected-multiline */
+}
+
+/**
+ * Generates a verifier specific to the specified message type.
+ * @param {Type} mtype Message type
+ * @returns {Codegen} Codegen instance
+ */
+function verifier(mtype) {
+    /* eslint-disable no-unexpected-multiline */
+    util.codegen.verbose = true;
+    var gen = util.codegen(["m", "u"], mtype.name + "$verify")
+    ("if(typeof m!==\"object\"||m===null)")
+        ("return%j", "object expected");
+    if (mtype.oneofsArray.length) gen
+    ("var p={}");
+
+    gen
+    ("if(!!u){");
+        generateVerifier(gen, mtype, true)
+    ("}else{");
+        generateVerifier(gen, mtype)
+    ("}");
     return gen
     ("return null");
     /* eslint-enable no-unexpected-multiline */
