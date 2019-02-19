@@ -12,7 +12,7 @@ tape.test("converters", function(test) {
 
         test.test(test.name + " - Message#toObject", function(test) {
 
-            test.plan(5);
+            test.plan(6);
 
             test.test(test.name + " - called with defaults = true", function(test) {
                 var obj = Message.toObject(Message.create(), { defaults: true });
@@ -94,6 +94,27 @@ tape.test("converters", function(test) {
                 test.end();
             });
 
+            test.test(test.name + " - called with useId = true", function(test) {
+                var obj = Message.toObject(Message.create(), { useId: true, defaults: true });
+console.log('obj', JSON.stringify(obj));
+// {"1":"","2":[],"3":{"low":0,"high":0,"unsigned":true},"4":[],"5":{"type":"Buffer","data":[]},"6":[],"7":1,"8":[],"9":{}}
+                test.equal(obj["1"], "", "should set 1 for stringVal");
+                test.same(obj["2"], [], "should set 2 for stringRepeated");
+
+                test.same(obj["3"], { low: 0, high: 0, unsigned: true }, "should set 3 for uint64Val");
+                test.same(obj["4"], [], "should set 4 for uint64Repeated");
+
+                test.same(obj["5"], [], "should set 5 for bytesVal");
+                test.same(obj["6"], [], "should set 6 for bytesRepeated");
+
+                test.equal(obj["7"], 1, "should set 7 for enumVal, to the first defined value");
+                test.same(obj["8"], [], "should set 8 for enumRepeated");
+
+                test.same(obj["9"], {}, "should set 9 for int64Map");
+
+                test.end();
+            });
+
             test.test(test.name + " - should convert", function(test) {
                 var buf = protobuf.util.newBuffer(3);
                 buf[0] = buf[1] = buf[2] = 49; // "111"
@@ -135,35 +156,76 @@ tape.test("converters", function(test) {
 
         test.test(test.name + " - Message.fromObject", function(test) {
 
-            var obj = {
-                uint64Val: 1,
-                uint64Repeated: [1, "2"],
-                bytesVal: "MTEx",
-                bytesRepeated: ["MTEx", [49, 49, 49]],
-                enumVal: "ONE",
-                enumRepeated: [2, "TWO"],
-                int64Map: {
-                    a: 2,
-                    b: "3"
-                }
-            };
-            var msg = Message.fromObject(obj);
+            test.plan(2);
 
-            test.same(Message.ctor.fromObject(obj), msg, "should convert the same using the static and the instance method");
-            test.equal(Message.fromObject(msg), msg, "should just return the object if already a runtime message");
+            test.test(test.name + " - called with no useId param", function(test) {
+                var obj = {
+                    uint64Val: 1,
+                    uint64Repeated: [1, "2"],
+                    bytesVal: "MTEx",
+                    bytesRepeated: ["MTEx", [49, 49, 49]],
+                    enumVal: "ONE",
+                    enumRepeated: [2, "TWO"],
+                    int64Map: {
+                        a: 2,
+                        b: "3"
+                    }
+                };
+                var msg = Message.fromObject(obj);
 
-            var buf = protobuf.util.newBuffer(3);
-            buf[0] = buf[1] = buf[2] = 49; // "111"
+                test.same(Message.ctor.fromObject(obj), msg, "should convert the same using the static and the instance method");
+                test.equal(Message.fromObject(msg), msg, "should just return the object if already a runtime message");
 
-            test.same(msg.uint64Val, { low: 1, high: 0, unsigned: true }, "should set uint64Val from a number");
-            test.same(msg.uint64Repeated, [ { low: 1, high: 0, unsigned: true}, { low: 2, high: 0, unsigned: true } ], "should set uint64Repeated from a number and a string");
-            test.same(msg.bytesVal, buf, "should set bytesVal from a base64 string");
-            test.same(msg.bytesRepeated, [ buf, buf ], "should set bytesRepeated from a base64 string and a plain array");
-            test.equal(msg.enumVal, 1, "should set enumVal from a string");
-            test.same(msg.enumRepeated, [ 2, 2 ], "should set enumRepeated from a number and a string");
-            test.same(msg.int64Map, { a: { low: 2, high: 0, unsigned: false }, b: { low: 3, high: 0, unsigned: false } }, "should set int64Map from a number and a string");
+                var buf = protobuf.util.newBuffer(3);
+                buf[0] = buf[1] = buf[2] = 49; // "111"
 
-            test.end();
+                test.same(msg.uint64Val, { low: 1, high: 0, unsigned: true }, "should set uint64Val from a number");
+                test.same(msg.uint64Repeated, [ { low: 1, high: 0, unsigned: true}, { low: 2, high: 0, unsigned: true } ], "should set uint64Repeated from a number and a string");
+                test.same(msg.bytesVal, buf, "should set bytesVal from a base64 string");
+                test.same(msg.bytesRepeated, [ buf, buf ], "should set bytesRepeated from a base64 string and a plain array");
+                test.equal(msg.enumVal, 1, "should set enumVal from a string");
+                test.same(msg.enumRepeated, [ 2, 2 ], "should set enumRepeated from a number and a string");
+                test.same(msg.int64Map, { a: { low: 2, high: 0, unsigned: false }, b: { low: 3, high: 0, unsigned: false } }, "should set int64Map from a number and a string");
+
+                test.end();
+            });
+
+            test.test(test.name + " - called with useId = true", function(test) {
+                var obj = {
+                    "1": "TEXT",
+                    "2": ["STR1", "STR2"],
+                    "3": 1,
+                    "4": [1, "2"],
+                    "5": "MTEx",
+                    "6": ["MTEx", [49, 49, 49]],
+                    "7": "ONE",
+                    "8": [2, "TWO"],
+                    "9": {
+                        a: 2,
+                        b: "3"
+                    }
+                };
+
+                var msg = Message.fromObject(obj, true);
+
+                test.same(Message.ctor.fromObject(obj, true), msg, "should convert the same using the static and the instance method");
+                test.equal(Message.fromObject(msg, true), msg, "should just return the object if already a runtime message");
+
+                var buf = protobuf.util.newBuffer(3);
+                buf[0] = buf[1] = buf[2] = 49; // "111"
+
+                test.same(msg.uint64Val, { low: 1, high: 0, unsigned: true }, "should set uint64Val from a number");
+                test.same(msg.uint64Repeated, [ { low: 1, high: 0, unsigned: true}, { low: 2, high: 0, unsigned: true } ], "should set uint64Repeated from a number and a string");
+                test.same(msg.bytesVal, buf, "should set bytesVal from a base64 string");
+                test.same(msg.bytesRepeated, [ buf, buf ], "should set bytesRepeated from a base64 string and a plain array");
+                test.equal(msg.enumVal, 1, "should set enumVal from a string");
+                test.same(msg.enumRepeated, [ 2, 2 ], "should set enumRepeated from a number and a string");
+                test.same(msg.int64Map, { a: { low: 2, high: 0, unsigned: false }, b: { low: 3, high: 0, unsigned: false } }, "should set int64Map from a number and a string");
+
+                test.end();
+            });
+
+
         });
 
         test.test(test.name + " - Message#toJSON", function(test) {

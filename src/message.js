@@ -99,21 +99,23 @@ Message.decodeDelimited = function decodeDelimited(reader) {
  * @name Message.verify
  * @function
  * @param {Object.<string,*>} message Plain object to verify
+ * @param {Boolean=} useId use the id of the fields instead of the names
  * @returns {string|null} `null` if valid, otherwise the reason why it is not
  */
-Message.verify = function verify(message) {
-    return this.$type.verify(message);
+Message.verify = function verify(message, useId) {
+    return this.$type.verify(message, useId);
 };
 
 /**
  * Creates a new message of this type from a plain object. Also converts values to their respective internal types.
  * @param {Object.<string,*>} object Plain object
+ * @param {Boolean=} useId use the id of the fields instead of the names
  * @returns {T} Message instance
  * @template T extends Message<T>
  * @this Constructor<T>
  */
-Message.fromObject = function fromObject(object) {
-    return this.$type.fromObject(object);
+Message.fromObject = function fromObject(object, useId) {
+    return this.$type.fromObject(object, useId);
 };
 
 /**

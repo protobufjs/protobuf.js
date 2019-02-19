@@ -71,7 +71,7 @@ function genValuePartial_fromObject(gen, field, fieldIndex, propName, dQual) {
                 break;
             case "bytes": gen
                 ("if(typeof d%s===\"string\")", dQual)
-                    ("util.base64.decode(d%s,m%s=util.newBuffer(util.base64.length(d%s)),0)", propName, dQual, dQual)
+                    ("util.base64.decode(d%s,m%s=util.newBuffer(util.base64.length(d%s)),0)", dQual, propName, dQual)
                 ("else if(d%s.length)", dQual)
                     ("m%s=d%s", propName, dQual);
                 break;
@@ -246,7 +246,7 @@ function generate_toObject(gen, mtype, fields, useId){
     if (mapFields.length) { gen
     ("if(o.objects||o.defaults){");
         for (i = 0; i < mapFields.length; ++i) gen
-        ("d%s={}", util.safeProp(repeatedFields[i][attr]));
+        ("d%s={}", util.safeProp(mapFields[i][attr]));
         gen
         ("}");
     }
