@@ -824,15 +824,21 @@ function toDescriptorOptions(options, type) {
     if (!options)
         return undefined;
     var out = [];
+    var uninterpretedOptions = [];
     for (var i = 0, ks = Object.keys(options), key, val; i < ks.length; ++i) {
         val = options[key = ks[i]];
         if (key === "default")
             continue;
         var field = type.fields[key];
-        if (!field && !(field = type.fields[key = $protobuf.util.camelCase(key)]))
+        var originalKey = key;
+        if (!field && !(field = type.fields[key = $protobuf.util.camelCase(key)])) {
+            uninterpretedOptions.push({ name: [{ namePart: originalKey }] });
             continue;
+        }
         out.push(key, val);
     }
+    if (uninterpretedOptions.length > 0)
+        out.push('uninterpretedOption', uninterpretedOptions);
     return out.length ? type.fromObject($protobuf.util.toObject(out)) : undefined;
 }
 
