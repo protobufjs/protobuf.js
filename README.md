@@ -421,8 +421,6 @@ function rpcImpl(method, requestData, callback) {
 
 Below is a working example with a typescript implementation using grpc npm package.
 ```ts
-import config from '../../config'
-
 const grpc = require('grpc')
 
 const Client = grpc.makeGenericClientConstructor({})
