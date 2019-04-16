@@ -17,15 +17,15 @@ tape.test("extension fields", function(test) {
 
     var extendedType = new Type("ExtendedType");
     ns.add(extendedType);
-    var extensionField = extendedType.get(declaringField.fullName);
+    var extensionField = extendedType.get(declaringField.name);
     test.equal(extensionField, declaringField.extensionField, "should become available once their extended type is known");
 
     type.remove(declaringField);
-    extensionField = extendedType.get(declaringField.fullName);
+    extensionField = extendedType.get(declaringField.name);
     test.equal(extensionField, null, "should become unavailable when their declaring field is removed");
 
     type.add(declaringField);
-    extensionField = extendedType.get(declaringField.fullName);
+    extensionField = extendedType.get(declaringField.name);
     test.equal(extensionField, declaringField.extensionField, "should become instantly available if their extended type is knwon");
 
     ns.remove(extendedType);
