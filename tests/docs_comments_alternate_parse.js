@@ -3,7 +3,7 @@ var tape = require("tape");
 var protobuf = require("..");
 
 tape.test("proto comments in alternate-parse mode", function(test) {
-    test.plan(17);
+    test.plan(21);
     var options = {alternateCommentMode: true};
     var root = new protobuf.Root();
     root.load("tests/data/comments-alternate-parse.proto", options, function(err, root) {
@@ -29,6 +29,11 @@ tape.test("proto comments in alternate-parse mode", function(test) {
         test.equal(root.lookup("Test3").comments.TWO, "Value with a single-line comment.", "should parse double-slash comments for enum values");
         test.equal(root.lookup("Test3").comments.THREE, "Value with a triple-slash comment.", "should parse lines for enum values and prefer on top over trailing");
         test.equal(root.lookup("Test3").comments.FOUR, "Other value with a comment.", "should not confuse previous trailing comments with comments for the next field");
+
+        test.equal(root.lookup("ServiceTest.SingleLineMethod").comment, 'My method does things');
+        test.equal(root.lookup("ServiceTest.TwoLineMethodWithComment").comment, 'TwoLineMethodWithComment documentation');
+        test.equal(root.lookup("ServiceTest.ThreeLine012345678901234567890123456712345671234567123456783927483923473892837489238749832432874983274983274983274").comment, 'Very very long method');
+        test.equal(root.lookup("ServiceTest.TwoLineMethodNoComment").comment, null);
 
         test.end();
     });
