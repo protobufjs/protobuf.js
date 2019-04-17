@@ -611,7 +611,7 @@ function parse(source, root, options) {
         parent.add(service);
     }
 
-      function parseMethod(parent, token) {
+    function parseMethod(parent, token) {
         // Get the comment of the preceding line now (if one exists) in case the
         // method is defined across multiple lines.
         var commentText = cmnt();
