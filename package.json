@@ -51,11 +51,11 @@
     "@protobufjs/path": "^1.1.2",
     "@protobufjs/pool": "^1.1.0",
     "@protobufjs/utf8": "^1.1.0",
-    "@types/long": "^4.0.0",
-    "@types/node": "^10.1.0",
     "long": "^4.0.0"
   },
   "devDependencies": {
+    "@types/long": "^4.0.0",
+    "@types/node": "^10.1.0",    
     "benchmark": "^2.1.4",
     "browserify": "^16.2.3",
     "browserify-wrap": "^1.0.2",
