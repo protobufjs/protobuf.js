@@ -721,10 +721,6 @@ function parse(source, root, options) {
 
             case "option":
 
-                /* istanbul ignore if */
-                if (!head)
-                    throw illegal(token);
-
                 parseOption(ptr, token);
                 skip(";");
                 break;

@@ -419,6 +419,27 @@ function rpcImpl(method, requestData, callback) {
 }
 ```
 
+Below is a working example with a typescript implementation using grpc npm package.
+```ts
+const grpc = require('grpc')
+
+const Client = grpc.makeGenericClientConstructor({})
+const client = new Client(
+  grpcServerUrl,
+  grpc.credentials.createInsecure()
+)
+
+const rpcImpl = function(method, requestData, callback) {
+  client.makeUnaryRequest(
+    method.name,
+    arg => arg,
+    arg => arg,
+    requestData,
+    callback
+  )
+}
+```
+
 Example:
 
 ```protobuf
@@ -633,6 +654,7 @@ Translates between file formats and generates static code.
   --no-comments    Does not output any JSDoc comments.
 
   --force-long     Enfores the use of 'Long' for s-/u-/int64 and s-/fixed64 fields.
+  --force-number   Enfores the use of 'number' for s-/u-/int64 and s-/fixed64 fields.
   --force-message  Enfores the use of message instances instead of plain objects.
 
 usage: pbjs [options] file1.proto file2.json ...  (or pipe)  other | pbjs [options] -
