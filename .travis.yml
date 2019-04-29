@@ -3,6 +3,11 @@ language: node_js
 node_js:
   - node
   - lts/*
+  - 12
+  - 11
+  - 10
+  - 8
+  - 6
   - 4.3.2
   - 4
 branches:
