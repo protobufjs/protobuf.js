@@ -92,4 +92,15 @@ tape.test("reflected roots", function(test) {
             test.end();
         });
     });
+    
+    test.test(test.name + " - proto path", function(test) {
+        var root = new Root();
+        test.plan(3);
+        root.load("tests/data/protoPath/common.proto", { protoPath: 'tests/data/' }, function(err) {
+            test.notOk(err, "should skip files without error when resolvePath returns null");
+            test.ok(root.lookupType('Something', 'should load main resource in proto path'));
+            test.ok(root.lookupType('SomethingOther', 'should load other resources in proto path'));
+            test.end();
+        });
+    });
 });
