@@ -134,13 +134,13 @@ function parse(source, root, options) {
         }
     }
 
-    function readRanges(target, acceptStrings) {
+    function readRanges(target, acceptStrings, acceptNegatives) {
         var token, start;
         do {
             if (acceptStrings && ((token = peek()) === "\"" || token === "'"))
                 target.push(readString());
             else
-                target.push([ start = parseId(next()), skip("to", true) ? parseId(next()) : start ]);
+                target.push([ start = parseId(next(), acceptNegatives), skip("to", true) ? parseId(next(), acceptNegatives) : start ]);
         } while (skip(",", true));
         skip(";");
     }
@@ -496,7 +496,7 @@ function parse(source, root, options) {
               break;
 
             case "reserved":
-              readRanges(enm.reserved || (enm.reserved = []), true);
+              readRanges(enm.reserved || (enm.reserved = []), true, true);
               break;
 
             default:
