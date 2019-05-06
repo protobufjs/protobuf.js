@@ -68,13 +68,19 @@ var Namespace = $protobuf.Namespace,
 /**
  * Creates a root from a descriptor set.
  * @param {IFileDescriptorSet|Reader|Uint8Array} descriptor Descriptor
+ * @param {Namespace|undefined} protobufNamespace Optional replacement for google.protobuf namespace to use to decode the Descriptor
+ * @param {boolean|undefined} camelCaseFieldNames Enable camel casing of field names
  * @returns {Root} Root instance
  */
-Root.fromDescriptor = function fromDescriptor(descriptor) {
+Root.fromDescriptor = function fromDescriptor(descriptor, protobufNamespace, camelCaseFieldNames) {
+
+    // If present, use a replacement namespace for decoding the messages within the descriptor
+    if (!protobufNamespace)
+        protobufNamespace = $protobuf.descriptor;
 
     // Decode the descriptor message if specified as a buffer:
     if (typeof descriptor.length === "number")
-        descriptor = exports.FileDescriptorSet.decode(descriptor);
+        descriptor = protobufNamespace.FileDescriptorSet.decode(descriptor);
 
     var root = new Root();
 
@@ -89,16 +95,16 @@ Root.fromDescriptor = function fromDescriptor(descriptor) {
                 root.files.push(filePackage.filename = fileDescriptor.name);
             if (fileDescriptor.messageType)
                 for (i = 0; i < fileDescriptor.messageType.length; ++i)
-                    filePackage.add(Type.fromDescriptor(fileDescriptor.messageType[i], fileDescriptor.syntax));
+                    filePackage.add(Type.fromDescriptor(fileDescriptor.messageType[i], fileDescriptor.syntax, protobufNamespace, camelCaseFieldNames));
             if (fileDescriptor.enumType)
                 for (i = 0; i < fileDescriptor.enumType.length; ++i)
-                    filePackage.add(Enum.fromDescriptor(fileDescriptor.enumType[i]));
+                    filePackage.add(Enum.fromDescriptor(fileDescriptor.enumType[i], protobufNamespace));
             if (fileDescriptor.extension)
                 for (i = 0; i < fileDescriptor.extension.length; ++i)
-                    filePackage.add(Field.fromDescriptor(fileDescriptor.extension[i]));
+                    filePackage.add(Field.fromDescriptor(fileDescriptor.extension[i], fileDescriptor.syntax, protobufNamespace, camelCaseFieldNames));
             if (fileDescriptor.service)
                 for (i = 0; i < fileDescriptor.service.length; ++i)
-                    filePackage.add(Service.fromDescriptor(fileDescriptor.service[i]));
+                    filePackage.add(Service.fromDescriptor(fileDescriptor.service[i], protobufNamespace));
             var opts = fromDescriptorOptions(fileDescriptor.options, exports.FileOptions);
             if (opts) {
                 var ks = Object.keys(opts);
@@ -113,20 +119,28 @@ Root.fromDescriptor = function fromDescriptor(descriptor) {
 
 /**
  * Converts a root to a descriptor set.
- * @returns {Message<IFileDescriptorSet>} Descriptor
  * @param {string} [syntax="proto2"] Syntax
+ * @param {Namespace|undefined} protobufNamespace Optional replacement for google.protobuf namespace to use to decode the Descriptor
+ * @returns {Message<IFileDescriptorSet>} Descriptor
  */
-Root.prototype.toDescriptor = function toDescriptor(syntax) {
-    var set = exports.FileDescriptorSet.create();
-    Root_toDescriptorRecursive(this, set.file, syntax);
+Root.prototype.toDescriptor = function toDescriptor(syntax, protobufNamespace) {
+
+    if (!protobufNamespace)
+        protobufNamespace = $protobuf.descriptor;
+
+    var set = protobufNamespace.FileDescriptorSet.create();
+    Root_toDescriptorRecursive(this, set.file, syntax, protobufNamespace);
     return set;
 };
 
 // Traverses a namespace and assembles the descriptor set
-function Root_toDescriptorRecursive(ns, files, syntax) {
+function Root_toDescriptorRecursive(ns, files, syntax, protobufNamespace) {
+
+    if (!protobufNamespace)
+        protobufNamespace = $protobuf.descriptor;
 
     // Create a new file
-    var file = exports.FileDescriptorProto.create({ name: ns.filename || (ns.fullName.substring(1).replace(/\./g, "_") || "root") + ".proto" });
+    var file = protobufNamespace.FileDescriptorProto.create({ name: ns.filename || (ns.fullName.substring(1).replace(/\./g, "_") || "root") + ".proto" });
     if (syntax)
         file.syntax = syntax;
     if (!(ns instanceof Root))
@@ -135,18 +149,18 @@ function Root_toDescriptorRecursive(ns, files, syntax) {
     // Add nested types
     for (var i = 0, nested; i < ns.nestedArray.length; ++i)
         if ((nested = ns._nestedArray[i]) instanceof Type)
-            file.messageType.push(nested.toDescriptor(syntax));
+            file.messageType.push(nested.toDescriptor(syntax, protobufNamespace));
         else if (nested instanceof Enum)
-            file.enumType.push(nested.toDescriptor());
+            file.enumType.push(nested.toDescriptor(protobufNamespace));
         else if (nested instanceof Field)
-            file.extension.push(nested.toDescriptor(syntax));
+            file.extension.push(nested.toDescriptor(syntax, protobufNamespace));
         else if (nested instanceof Service)
-            file.service.push(nested.toDescriptor());
+            file.service.push(nested.toDescriptor(protobufNamespace));
         else if (nested instanceof /* plain */ Namespace)
-            Root_toDescriptorRecursive(nested, files, syntax); // requires new file
+            Root_toDescriptorRecursive(nested, files, syntax, protobufNamespace); // requires new file
 
     // Keep package-level options
-    file.options = toDescriptorOptions(ns.options, exports.FileOptions);
+    file.options = toDescriptorOptions(ns.options, protobufNamespace.FileOptions);
 
     // And keep the file only if there is at least one nested object
     if (file.messageType.length + file.enumType.length + file.extension.length + file.service.length)
@@ -196,40 +210,45 @@ var unnamedMessageIndex = 0;
  * Creates a type from a descriptor.
  * @param {IDescriptorProto|Reader|Uint8Array} descriptor Descriptor
  * @param {string} [syntax="proto2"] Syntax
+ * @param {Namespace|undefined} protobufNamespace Optional replacement for google.protobuf namespace to use to decode the Descriptor
+ * @param {boolean|undefined} camelCaseFieldNames Enable camel casing of field names
  * @returns {Type} Type instance
  */
-Type.fromDescriptor = function fromDescriptor(descriptor, syntax) {
+Type.fromDescriptor = function fromDescriptor(descriptor, syntax, protobufNamespace, camelCaseFieldNames) {
+
+    if (!protobufNamespace)
+        protobufNamespace = $protobuf.descriptor;
 
     // Decode the descriptor message if specified as a buffer:
     if (typeof descriptor.length === "number")
-        descriptor = exports.DescriptorProto.decode(descriptor);
+        descriptor = protobufNamespace.DescriptorProto.decode(descriptor);
 
     // Create the message type
-    var type = new Type(descriptor.name.length ? descriptor.name : "Type" + unnamedMessageIndex++, fromDescriptorOptions(descriptor.options, exports.MessageOptions)),
+    var type = new Type(descriptor.name.length ? descriptor.name : "Type" + unnamedMessageIndex++, fromDescriptorOptions(descriptor.options, protobufNamespace.MessageOptions)),
         i;
 
     /* Oneofs */ if (descriptor.oneofDecl)
         for (i = 0; i < descriptor.oneofDecl.length; ++i)
-            type.add(OneOf.fromDescriptor(descriptor.oneofDecl[i]));
+            type.add(OneOf.fromDescriptor(descriptor.oneofDecl[i], protobufNamespace));
     /* Fields */ if (descriptor.field)
         for (i = 0; i < descriptor.field.length; ++i) {
-            var field = Field.fromDescriptor(descriptor.field[i], syntax);
+            var field = Field.fromDescriptor(descriptor.field[i], syntax, protobufNamespace, camelCaseFieldNames);
             type.add(field);
             if (descriptor.field[i].hasOwnProperty("oneofIndex")) // eslint-disable-line no-prototype-builtins
                 type.oneofsArray[descriptor.field[i].oneofIndex].add(field);
         }
     /* Extension fields */ if (descriptor.extension)
         for (i = 0; i < descriptor.extension.length; ++i)
-            type.add(Field.fromDescriptor(descriptor.extension[i], syntax));
+            type.add(Field.fromDescriptor(descriptor.extension[i], syntax, protobufNamespace, camelCaseFieldNames));
     /* Nested types */ if (descriptor.nestedType)
         for (i = 0; i < descriptor.nestedType.length; ++i) {
-            type.add(Type.fromDescriptor(descriptor.nestedType[i], syntax));
+            type.add(Type.fromDescriptor(descriptor.nestedType[i], syntax, protobufNamespace, camelCaseFieldNames));
             if (descriptor.nestedType[i].options && descriptor.nestedType[i].options.mapEntry)
                 type.setOption("map_entry", true);
         }
     /* Nested enums */ if (descriptor.enumType)
         for (i = 0; i < descriptor.enumType.length; ++i)
-            type.add(Enum.fromDescriptor(descriptor.enumType[i]));
+            type.add(Enum.fromDescriptor(descriptor.enumType[i], protobufNamespace));
     /* Extension ranges */ if (descriptor.extensionRange && descriptor.extensionRange.length) {
         type.extensions = [];
         for (i = 0; i < descriptor.extensionRange.length; ++i)
@@ -250,54 +269,59 @@ Type.fromDescriptor = function fromDescriptor(descriptor, syntax) {
 
 /**
  * Converts a type to a descriptor.
- * @returns {Message<IDescriptorProto>} Descriptor
  * @param {string} [syntax="proto2"] Syntax
+ * @param {Namespace|undefined} protobufNamespace Optional replacement for google.protobuf namespace to use to decode the Descriptor
+ * @returns {Message<IDescriptorProto>} Descriptor
  */
-Type.prototype.toDescriptor = function toDescriptor(syntax) {
-    var descriptor = exports.DescriptorProto.create({ name: this.name }),
+Type.prototype.toDescriptor = function toDescriptor(syntax, protobufNamespace) {
+
+    if (!protobufNamespace)
+        protobufNamespace = $protobuf.descriptor;
+
+    var descriptor = protobufNamespace.DescriptorProto.create({ name: this.name }),
         i;
 
     /* Fields */ for (i = 0; i < this.fieldsArray.length; ++i) {
         var fieldDescriptor;
-        descriptor.field.push(fieldDescriptor = this._fieldsArray[i].toDescriptor(syntax));
+        descriptor.field.push(fieldDescriptor = this._fieldsArray[i].toDescriptor(syntax, protobufNamespace));
         if (this._fieldsArray[i] instanceof MapField) { // map fields are repeated FieldNameEntry
             var keyType = toDescriptorType(this._fieldsArray[i].keyType, this._fieldsArray[i].resolvedKeyType),
                 valueType = toDescriptorType(this._fieldsArray[i].type, this._fieldsArray[i].resolvedType),
                 valueTypeName = valueType === /* type */ 11 || valueType === /* enum */ 14
                     ? this._fieldsArray[i].resolvedType && shortname(this.parent, this._fieldsArray[i].resolvedType) || this._fieldsArray[i].type
                     : undefined;
-            descriptor.nestedType.push(exports.DescriptorProto.create({
+            descriptor.nestedType.push(protobufNamespace.DescriptorProto.create({
                 name: fieldDescriptor.typeName,
                 field: [
-                    exports.FieldDescriptorProto.create({ name: "key", number: 1, label: 1, type: keyType }), // can't reference a type or enum
-                    exports.FieldDescriptorProto.create({ name: "value", number: 2, label: 1, type: valueType, typeName: valueTypeName })
+                    protobufNamespace.FieldDescriptorProto.create({ name: "key", number: 1, label: 1, type: keyType }), // can't reference a type or enum
+                    protobufNamespace.FieldDescriptorProto.create({ name: "value", number: 2, label: 1, type: valueType, typeName: valueTypeName })
                 ],
-                options: exports.MessageOptions.create({ mapEntry: true })
+                options: protobufNamespace.MessageOptions.create({ mapEntry: true })
             }));
         }
     }
     /* Oneofs */ for (i = 0; i < this.oneofsArray.length; ++i)
-        descriptor.oneofDecl.push(this._oneofsArray[i].toDescriptor());
+        descriptor.oneofDecl.push(this._oneofsArray[i].toDescriptor(protobufNamespace));
     /* Nested... */ for (i = 0; i < this.nestedArray.length; ++i) {
         /* Extension fields */ if (this._nestedArray[i] instanceof Field)
-            descriptor.field.push(this._nestedArray[i].toDescriptor(syntax));
+            descriptor.field.push(this._nestedArray[i].toDescriptor(syntax, protobufNamespace));
         /* Types */ else if (this._nestedArray[i] instanceof Type)
-            descriptor.nestedType.push(this._nestedArray[i].toDescriptor(syntax));
+            descriptor.nestedType.push(this._nestedArray[i].toDescriptor(syntax, protobufNamespace));
         /* Enums */ else if (this._nestedArray[i] instanceof Enum)
-            descriptor.enumType.push(this._nestedArray[i].toDescriptor());
+            descriptor.enumType.push(this._nestedArray[i].toDescriptor(protobufNamespace));
         // plain nested namespaces become packages instead in Root#toDescriptor
     }
     /* Extension ranges */ if (this.extensions)
         for (i = 0; i < this.extensions.length; ++i)
-            descriptor.extensionRange.push(exports.DescriptorProto.ExtensionRange.create({ start: this.extensions[i][0], end: this.extensions[i][1] }));
+            descriptor.extensionRange.push(protobufNamespace.DescriptorProto.ExtensionRange.create({ start: this.extensions[i][0], end: this.extensions[i][1] }));
     /* Reserved... */ if (this.reserved)
         for (i = 0; i < this.reserved.length; ++i)
             /* Names */ if (typeof this.reserved[i] === "string")
                 descriptor.reservedName.push(this.reserved[i]);
             /* Ranges */ else
-                descriptor.reservedRange.push(exports.DescriptorProto.ReservedRange.create({ start: this.reserved[i][0], end: this.reserved[i][1] }));
+                descriptor.reservedRange.push(protobufNamespace.DescriptorProto.ReservedRange.create({ start: this.reserved[i][0], end: this.reserved[i][1] }));
 
-    descriptor.options = toDescriptorOptions(this.options, exports.MessageOptions);
+    descriptor.options = toDescriptorOptions(this.options, protobufNamespace.MessageOptions);
 
     return descriptor;
 };
@@ -375,13 +399,18 @@ var numberRe = /^(?![eE])[0-9]*(?:\.[0-9]*)?(?:[eE][+-]?[0-9]+)?$/;
  * Creates a field from a descriptor.
  * @param {IFieldDescriptorProto|Reader|Uint8Array} descriptor Descriptor
  * @param {string} [syntax="proto2"] Syntax
+ * @param {Namespace|undefined} protobufNamespace Optional replacement for google.protobuf namespace to use to decode the Descriptor
+ * @param {boolean|undefined} camelCaseFieldNames Enable camel casing of field names
  * @returns {Field} Field instance
  */
-Field.fromDescriptor = function fromDescriptor(descriptor, syntax) {
+Field.fromDescriptor = function fromDescriptor(descriptor, syntax, protobufNamespace, camelCaseFieldNames) {
+
+    if (!protobufNamespace)
+        protobufNamespace = $protobuf.descriptor;
 
     // Decode the descriptor message if specified as a buffer:
     if (typeof descriptor.length === "number")
-        descriptor = exports.DescriptorProto.decode(descriptor);
+        descriptor = protobufNamespace.DescriptorProto.decode(descriptor);
 
     if (typeof descriptor.number !== "number")
         throw Error("missing field id");
@@ -403,19 +432,22 @@ Field.fromDescriptor = function fromDescriptor(descriptor, syntax) {
         default: throw Error("illegal label: " + descriptor.label);
     }
 
-	var extendee = descriptor.extendee;
-	if (descriptor.extendee !== undefined) {
-		extendee = extendee.length ? extendee : undefined;
-	}
+    var extendee = descriptor.extendee;
+    if (descriptor.extendee !== undefined) {
+        extendee = extendee.length ? extendee : undefined;
+    }
+
+    var rawFieldName = descriptor.name.length ? descriptor.name : "field" + descriptor.number;
+    var fieldName = camelCaseFieldNames ? $protobuf.util.camelCase(rawFieldName) : rawFieldName;
     var field = new Field(
-        descriptor.name.length ? descriptor.name : "field" + descriptor.number,
+        fieldName,
         descriptor.number,
         fieldType,
         fieldRule,
         extendee
     );
 
-    field.options = fromDescriptorOptions(descriptor.options, exports.FieldOptions);
+    field.options = fromDescriptorOptions(descriptor.options, protobufNamespace.FieldOptions);
 
     if (descriptor.defaultValue && descriptor.defaultValue.length) {
         var defaultValue = descriptor.defaultValue;
@@ -448,11 +480,16 @@ Field.fromDescriptor = function fromDescriptor(descriptor, syntax) {
 
 /**
  * Converts a field to a descriptor.
- * @returns {Message<IFieldDescriptorProto>} Descriptor
  * @param {string} [syntax="proto2"] Syntax
+ * @param {Namespace|undefined} protobufNamespace Optional replacement for google.protobuf namespace to use to decode the Descriptor
+ * @returns {Message<IFieldDescriptorProto>} Descriptor
  */
-Field.prototype.toDescriptor = function toDescriptor(syntax) {
-    var descriptor = exports.FieldDescriptorProto.create({ name: this.name, number: this.id });
+Field.prototype.toDescriptor = function toDescriptor(syntax, protobufNamespace) {
+
+    if (!protobufNamespace)
+        protobufNamespace = $protobuf.descriptor;
+
+    var descriptor = protobufNamespace.FieldDescriptorProto.create({ name: this.name, number: this.id });
 
     if (this.map) {
 
@@ -489,16 +526,16 @@ Field.prototype.toDescriptor = function toDescriptor(syntax) {
             throw Error("missing oneof");
 
     if (this.options) {
-        descriptor.options = toDescriptorOptions(this.options, exports.FieldOptions);
+        descriptor.options = toDescriptorOptions(this.options, protobufNamespace.FieldOptions);
         if (this.options["default"] != null)
             descriptor.defaultValue = String(this.options["default"]);
     }
 
     if (syntax === "proto3") { // defaults to packed=true
         if (!this.packed)
-            (descriptor.options || (descriptor.options = exports.FieldOptions.create())).packed = false;
+            (descriptor.options || (descriptor.options = protobufNamespace.FieldOptions.create())).packed = false;
     } else if (this.packed) // defaults to packed=false
-        (descriptor.options || (descriptor.options = exports.FieldOptions.create())).packed = true;
+        (descriptor.options || (descriptor.options = protobufNamespace.FieldOptions.create())).packed = true;
 
     return descriptor;
 };
@@ -533,13 +570,17 @@ var unnamedEnumIndex = 0;
 /**
  * Creates an enum from a descriptor.
  * @param {IEnumDescriptorProto|Reader|Uint8Array} descriptor Descriptor
+ * @param {Namespace|undefined} protobufNamespace Optional replacement for google.protobuf namespace to use to decode the Descriptor
  * @returns {Enum} Enum instance
  */
-Enum.fromDescriptor = function fromDescriptor(descriptor) {
+Enum.fromDescriptor = function fromDescriptor(descriptor, protobufNamespace) {
+
+    if (!protobufNamespace)
+        protobufNamespace = $protobuf.descriptor;
 
     // Decode the descriptor message if specified as a buffer:
     if (typeof descriptor.length === "number")
-        descriptor = exports.EnumDescriptorProto.decode(descriptor);
+        descriptor = protobufNamespace.EnumDescriptorProto.decode(descriptor);
 
     // Construct values object
     var values = {};
@@ -553,25 +594,29 @@ Enum.fromDescriptor = function fromDescriptor(descriptor) {
     return new Enum(
         descriptor.name && descriptor.name.length ? descriptor.name : "Enum" + unnamedEnumIndex++,
         values,
-        fromDescriptorOptions(descriptor.options, exports.EnumOptions)
+        fromDescriptorOptions(descriptor.options, protobufNamespace.EnumOptions)
     );
 };
 
 /**
  * Converts an enum to a descriptor.
+ * @param {Namespace|undefined} protobufNamespace Optional replacement for google.protobuf namespace to use to decode the Descriptor
  * @returns {Message<IEnumDescriptorProto>} Descriptor
  */
-Enum.prototype.toDescriptor = function toDescriptor() {
+Enum.prototype.toDescriptor = function toDescriptor(protobufNamespace) {
+
+    if (!protobufNamespace)
+        protobufNamespace = $protobuf.descriptor;
 
     // Values
     var values = [];
     for (var i = 0, ks = Object.keys(this.values); i < ks.length; ++i)
-        values.push(exports.EnumValueDescriptorProto.create({ name: ks[i], number: this.values[ks[i]] }));
+        values.push(protobufNamespace.EnumValueDescriptorProto.create({ name: ks[i], number: this.values[ks[i]] }));
 
-    return exports.EnumDescriptorProto.create({
+    return protobufNamespace.EnumDescriptorProto.create({
         name: this.name,
         value: values,
-        options: toDescriptorOptions(this.options, exports.EnumOptions)
+        options: toDescriptorOptions(this.options, protobufNamespace.EnumOptions)
     });
 };
 
@@ -589,29 +634,38 @@ var unnamedOneofIndex = 0;
 /**
  * Creates a oneof from a descriptor.
  * @param {IOneofDescriptorProto|Reader|Uint8Array} descriptor Descriptor
+ * @param {Namespace|undefined} protobufNamespace Optional replacement for google.protobuf namespace to use to decode the Descriptor
  * @returns {OneOf} OneOf instance
  */
-OneOf.fromDescriptor = function fromDescriptor(descriptor) {
+OneOf.fromDescriptor = function fromDescriptor(descriptor, protobufNamespace) {
+
+    if (!protobufNamespace)
+        protobufNamespace = $protobuf.descriptor;
 
     // Decode the descriptor message if specified as a buffer:
     if (typeof descriptor.length === "number")
-        descriptor = exports.OneofDescriptorProto.decode(descriptor);
+        descriptor = protobufNamespace.OneofDescriptorProto.decode(descriptor);
 
     return new OneOf(
         // unnamedOneOfIndex is global, not per type, because we have no ref to a type here
         descriptor.name && descriptor.name.length ? descriptor.name : "oneof" + unnamedOneofIndex++
-        // fromDescriptorOptions(descriptor.options, exports.OneofOptions) - only uninterpreted_option
+        // fromDescriptorOptions(descriptor.options, protobufNamespace.OneofOptions) - only uninterpreted_option
     );
 };
 
 /**
  * Converts a oneof to a descriptor.
+ * @param {Namespace|undefined} protobufNamespace Optional replacement for google.protobuf namespace to use to decode the Descriptor
  * @returns {Message<IOneofDescriptorProto>} Descriptor
  */
-OneOf.prototype.toDescriptor = function toDescriptor() {
-    return exports.OneofDescriptorProto.create({
+OneOf.prototype.toDescriptor = function toDescriptor(protobufNamespace) {
+
+    if (!protobufNamespace)
+        protobufNamespace = $protobuf.descriptor;
+
+    return protobufNamespace.OneofDescriptorProto.create({
         name: this.name
-        // options: toDescriptorOptions(this.options, exports.OneofOptions) - only uninterpreted_option
+        // options: toDescriptorOptions(this.options, protobufNamespace.OneofOptions) - only uninterpreted_option
     });
 };
 
@@ -636,37 +690,45 @@ var unnamedServiceIndex = 0;
 /**
  * Creates a service from a descriptor.
  * @param {IServiceDescriptorProto|Reader|Uint8Array} descriptor Descriptor
+ * @param {Namespace|undefined} protobufNamespace Optional replacement for google.protobuf namespace to use to decode the Descriptor
  * @returns {Service} Service instance
  */
-Service.fromDescriptor = function fromDescriptor(descriptor) {
+Service.fromDescriptor = function fromDescriptor(descriptor, protobufNamespace) {
+
+    if (!protobufNamespace)
+        protobufNamespace = $protobuf.descriptor;
 
     // Decode the descriptor message if specified as a buffer:
     if (typeof descriptor.length === "number")
-        descriptor = exports.ServiceDescriptorProto.decode(descriptor);
+        descriptor = protobufNamespace.ServiceDescriptorProto.decode(descriptor);
 
-    var service = new Service(descriptor.name && descriptor.name.length ? descriptor.name : "Service" + unnamedServiceIndex++, fromDescriptorOptions(descriptor.options, exports.ServiceOptions));
+    var service = new Service(descriptor.name && descriptor.name.length ? descriptor.name : "Service" + unnamedServiceIndex++, fromDescriptorOptions(descriptor.options, protobufNamespace.ServiceOptions));
     if (descriptor.method)
         for (var i = 0; i < descriptor.method.length; ++i)
-            service.add(Method.fromDescriptor(descriptor.method[i]));
+            service.add(Method.fromDescriptor(descriptor.method[i], protobufNamespace));
 
     return service;
 };
 
 /**
  * Converts a service to a descriptor.
+ * @param {Namespace|undefined} protobufNamespace Optional replacement for google.protobuf namespace to use to decode the Descriptor
  * @returns {Message<IServiceDescriptorProto>} Descriptor
  */
-Service.prototype.toDescriptor = function toDescriptor() {
+Service.prototype.toDescriptor = function toDescriptor(protobufNamespace) {
+
+    if (!protobufNamespace)
+        protobufNamespace = $protobuf.descriptor;
 
     // Methods
     var methods = [];
     for (var i = 0; i < this.methodsArray; ++i)
-        methods.push(this._methodsArray[i].toDescriptor());
+        methods.push(this._methodsArray[i].toDescriptor(protobufNamespace));
 
-    return exports.ServiceDescriptorProto.create({
+    return protobufNamespace.ServiceDescriptorProto.create({
         name: this.name,
         methods: methods,
-        options: toDescriptorOptions(this.options, exports.ServiceOptions)
+        options: toDescriptorOptions(this.options, protobufNamespace.ServiceOptions)
     });
 };
 
@@ -694,13 +756,17 @@ var unnamedMethodIndex = 0;
 /**
  * Creates a method from a descriptor.
  * @param {IMethodDescriptorProto|Reader|Uint8Array} descriptor Descriptor
+ * @param {Namespace|undefined} protobufNamespace Optional replacement for google.protobuf namespace to use to decode the Descriptor
  * @returns {Method} Reflected method instance
  */
-Method.fromDescriptor = function fromDescriptor(descriptor) {
+Method.fromDescriptor = function fromDescriptor(descriptor, protobufNamespace) {
+
+    if (!protobufNamespace)
+        protobufNamespace = $protobuf.descriptor;
 
     // Decode the descriptor message if specified as a buffer:
     if (typeof descriptor.length === "number")
-        descriptor = exports.MethodDescriptorProto.decode(descriptor);
+        descriptor = protobufNamespace.MethodDescriptorProto.decode(descriptor);
 
     return new Method(
         // unnamedMethodIndex is global, not per service, because we have no ref to a service here
@@ -710,22 +776,23 @@ Method.fromDescriptor = function fromDescriptor(descriptor) {
         descriptor.outputType,
         Boolean(descriptor.clientStreaming),
         Boolean(descriptor.serverStreaming),
-        fromDescriptorOptions(descriptor.options, exports.MethodOptions)
+        fromDescriptorOptions(descriptor.options, protobufNamespace.MethodOptions)
     );
 };
 
 /**
  * Converts a method to a descriptor.
+ * @param {Namespace|undefined} protobufNamespace Optional replacement for google.protobuf namespace to use to decode the Descriptor
  * @returns {Message<IMethodDescriptorProto>} Descriptor
  */
-Method.prototype.toDescriptor = function toDescriptor() {
-    return exports.MethodDescriptorProto.create({
+Method.prototype.toDescriptor = function toDescriptor(protobufNamespace) {
+    return protobufNamespace.MethodDescriptorProto.create({
         name: this.name,
         inputType: this.resolvedRequestType ? this.resolvedRequestType.fullName : this.requestType,
         outputType: this.resolvedResponseType ? this.resolvedResponseType.fullName : this.responseType,
         clientStreaming: this.requestStream,
         serverStreaming: this.responseStream,
-        options: toDescriptorOptions(this.options, exports.MethodOptions)
+        options: toDescriptorOptions(this.options, protobufNamespace.MethodOptions)
     });
 };
 
@@ -744,6 +811,7 @@ function fromDescriptorType(type) {
         case 7: return "fixed32";
         case 8: return "bool";
         case 9: return "string";
+        case 11: return "message";
         case 12: return "bytes";
         case 13: return "uint32";
         case 15: return "sfixed32";
@@ -765,6 +833,7 @@ function packableDescriptorType(type) {
         case 6: // fixed64
         case 7: // fixed32
         case 8: // bool
+        case 11: // message
         case 13: // uint32
         case 14: // enum (!)
         case 15: // sfixed32
@@ -789,6 +858,7 @@ function toDescriptorType(type, resolvedType) {
         case "fixed32": return 7;
         case "bool": return 8;
         case "string": return 9;
+        case "message": return 11;
         case "bytes": return 12;
         case "uint32": return 13;
         case "sfixed32": return 15;
