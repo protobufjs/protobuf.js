@@ -660,12 +660,12 @@ Service.prototype.toDescriptor = function toDescriptor() {
 
     // Methods
     var methods = [];
-    for (var i = 0; i < this.methodsArray; ++i)
+    for (var i = 0; i < this.methodsArray.length; ++i)
         methods.push(this._methodsArray[i].toDescriptor());
 
     return exports.ServiceDescriptorProto.create({
         name: this.name,
-        methods: methods,
+        method: methods,
         options: toDescriptorOptions(this.options, exports.ServiceOptions)
     });
 };
