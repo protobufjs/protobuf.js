@@ -97,7 +97,7 @@ Root.prototype.load = function load(filename, options, callback) {
 	
     // Bundled definition existence checking
     function getBundledFileName(filename) {
-	const idx = filename.lastIndexOf("google/protobuf/");
+        const idx = filename.lastIndexOf("google/protobuf/");
         if (idx > -1) {
             var altname = filename.substring(idx);
             if (altname in common) return altname; 
