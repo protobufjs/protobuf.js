@@ -95,15 +95,15 @@ Root.prototype.load = function load(filename, options, callback) {
         cb(err, root);
     }
 	
-	// Bundled definition existence checking
-	function getBundledFileName(filename) {
-		const idx = filename.lastIndexOf("google/protobuf/");
-		if (idx > -1) {
+    // Bundled definition existence checking
+    function getBundledFileName(filename) {
+	const idx = filename.lastIndexOf("google/protobuf/");
+        if (idx > -1) {
             var altname = filename.substring(idx);
             if (altname in common) return altname; 
         }
-		return null;
-	}
+        return null;
+    }
 
     // Processes a single file
     function process(filename, source) {
