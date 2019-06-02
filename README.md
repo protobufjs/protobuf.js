@@ -765,7 +765,7 @@ Additional documentation
 * [Google's Developer Guide](https://developers.google.com/protocol-buffers/docs/overview)
 
 #### protobuf.js
-* [API Documentation](https://protobufjs.github.io/protobuf.js/)
+* [API Documentation](https://protobufjs.github.io/protobuf.js)
 * [CHANGELOG](https://github.com/dcodeIO/protobuf.js/blob/master/CHANGELOG.md)
 * [Frequently asked questions](https://github.com/dcodeIO/protobuf.js/wiki) on our wiki
 
