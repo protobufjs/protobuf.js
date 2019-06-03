@@ -208,7 +208,7 @@ With that in mind and again for performance reasons, each message class provides
 
 For reference, the following diagram aims to display relationships between the different methods and the concept of a valid message:
 
-<p align="center"><img alt="Toolset Diagram" src="http://dcode.io/protobuf.js/toolset.svg" /></p>
+<p align="center"><img alt="Toolset Diagram" src="https://protobufjs.github.io/protobuf.js/toolset.svg" /></p>
 
 > In other words: `verify` indicates that calling `create` or `encode` directly on the plain object will [result in a valid message respectively] succeed. `fromObject`, on the other hand, does conversion from a broader range of plain objects to create valid messages. ([ref](https://github.com/dcodeIO/protobuf.js/issues/748#issuecomment-291925749))
 
@@ -765,7 +765,7 @@ Additional documentation
 * [Google's Developer Guide](https://developers.google.com/protocol-buffers/docs/overview)
 
 #### protobuf.js
-* [API Documentation](http://dcode.io/protobuf.js)
+* [API Documentation](https://protobufjs.github.io/protobuf.js)
 * [CHANGELOG](https://github.com/dcodeIO/protobuf.js/blob/master/CHANGELOG.md)
 * [Frequently asked questions](https://github.com/dcodeIO/protobuf.js/wiki) on our wiki
 
