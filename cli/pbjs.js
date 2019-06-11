@@ -44,7 +44,7 @@ exports.main = function main(args, callback) {
             "force-message": "strict-message"
         },
         string: [ "target", "out", "path", "wrap", "dependency", "root", "lint" ],
-        boolean: [ "create", "encode", "decode", "verify", "convert", "delimited", "beautify", "comments", "es6", "sparse", "keep-case", "force-long", "force-number", "force-enum-string", "force-message" ],
+        boolean: [ "create", "encode", "decode", "decode-text", "verify", "convert", "delimited", "beautify", "comments", "es6", "sparse", "keep-case", "force-long", "force-number", "force-enum-string", "force-message" ],
         default: {
             target: "json",
             create: true,
@@ -57,6 +57,7 @@ exports.main = function main(args, callback) {
             comments: true,
             es6: null,
             lint: lintDefault,
+            "decode-text": false,
             "keep-case": false,
             "force-long": false,
             "force-number": false,
@@ -127,6 +128,7 @@ exports.main = function main(args, callback) {
                 "",
                 chalk.bold.gray("  Static targets only:"),
                 "",
+                "  --decode-text    Generate decodeText functions (requires --keep-case).",
                 "  --no-create      Does not generate create functions used for reflection compatibility.",
                 "  --no-encode      Does not generate encode functions.",
                 "  --no-decode      Does not generate decode functions.",
@@ -198,6 +200,16 @@ exports.main = function main(args, callback) {
     if (argv.wrap === "es6" || argv.es6) {
         argv.wrap = "es6";
         argv.es6 = true;
+    }
+
+    if (argv["decode-text"] && !argv["keep-case"]) {
+        process.stderr.write("The --decode-text option requires the --keep-case option to be specified.\n");
+        return 1;
+    }
+
+    if (argv["decode-text"] && argv && argv.target != 'static-module') {
+        process.stderr.write("The --decode-text option requires the --target static-module option to be specified.\n");
+        return 1;
     }
 
     var parseOptions = {

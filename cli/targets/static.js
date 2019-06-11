@@ -532,6 +532,22 @@ function buildType(ref, type) {
         }
     }
 
+    if (config["decode-text"]) {
+        push("");
+        pushComment([
+            "Decodes " + aOrAn(type.name) + " message from the specified text representation.",
+            "@function decodeText",
+            "@memberof " + exportName(type),
+            "@static",
+            "@param {$protobuf.TextReaders} [" + (config.beautify ? "reader" : "r") + "] TextReader to decode from",
+            "@param {boolean} [" + (config.beautify ? "block" : "b") + "] Assert enclosing curly braces when decoding nested objects (false by default)",
+            "@returns {" + exportName(type) + "} " + type.name,
+            "@throws {Error} If the payload is not a reader or valid string",
+            "@throws {$protobuf.util.ProtocolError} If required fields are missing"
+        ]);
+        buildFunction(type, "decodeText", require("../../ext/prototxt/decoder_text")(type));
+    }
+
     if (config.verify) {
         push("");
         pushComment([
