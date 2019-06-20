@@ -166,6 +166,9 @@ ReflectionObject.prototype.getOption = function getOption(name) {
 ReflectionObject.prototype.setOption = function setOption(name, value, ifNotSet) {
     if (!ifNotSet || !this.options || this.options[name] === undefined)
         (this.options || (this.options = {}))[name] = value;
+    var rawOption = {};
+    rawOption[name] = value;
+    (this.rawOptions || (this.rawOptions = [])).push(rawOption);
     return this;
 };
 
