@@ -23,7 +23,7 @@ message TestRepeated {\
 }\
 ";
 
-tape.only("options in textformat", function(test) {
+tape.test("options in textformat", function(test) {
     var root = protobuf.parse(proto).root;
     test.test("test single options", function (test) {
         var Test = root.lookup("Test");
