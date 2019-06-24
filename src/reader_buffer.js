@@ -24,9 +24,12 @@ function BufferReader(buffer) {
      */
 }
 
-/* istanbul ignore else */
-if (util.Buffer)
-    BufferReader.prototype._slice = util.Buffer.prototype.slice;
+BufferReader._configure = function () {
+    /* istanbul ignore else */
+    if (util.Buffer)
+        BufferReader.prototype._slice = util.Buffer.prototype.slice;
+};
+
 
 /**
  * @override
@@ -42,3 +45,5 @@ BufferReader.prototype.string = function read_string_buffer() {
  * @function
  * @returns {Buffer} Value read
  */
+
+BufferReader._configure();
