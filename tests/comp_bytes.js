@@ -1,39 +1,54 @@
 var tape = require("tape");
 
-class CustomBuffer extends Buffer {
-    static toCustom(b) {
-        b._isCustom = true;
-        return b;
-    }
+var protobuf = require("..");
 
-    static isCustom(b) {
-        return !!b._isCustom;
-    }
+var oldBufferImpl = Buffer.alloc === undefined;
 
-    static from(...args) {
-        return CustomBuffer.toCustom(Buffer.from(...args));
-    }
+// extends Buffer
+(CustomBuffer.prototype = Object.create(Buffer.prototype)).constructor = CustomBuffer;
 
-    static alloc(...args) {
-        return CustomBuffer.toCustom(Buffer.alloc(...args));
-    }
+function CustomBuffer(arg, encodingOrOffset, length) {
+    Buffer.call(this, arg, encodingOrOffset, length);
+    CustomBuffer.toCustom(this);
+}
 
-    static allocUnsafe(...args) {
-        return CustomBuffer.toCustom(Buffer.allocUnsafe(...args));
-    }
+CustomBuffer.isBuffer = Buffer.isBuffer.bind(Buffer);
 
-    static allocUnsafeSlow(...args) {
-        return CustomBuffer.toCustom(Buffer.allocUnsafeSlow(...args));
-    }
+CustomBuffer.toCustom = function (b) {
+    b._isCustom = true;
+    return b;
+}
 
-    slice(...args) {
-        return CustomBuffer.toCustom(super.slice(...args));
-    }
+CustomBuffer.isCustom = function (b) {
+    return !!b._isCustom;
+}
+
+CustomBuffer.from = function (valueOf, encodingOrOffset, length) {
+    return CustomBuffer.toCustom(oldBufferImpl
+        ?  new Buffer(valueOf, encodingOrOffset, length)
+        : Buffer.from(valueOf, encodingOrOffset, length)
+    );
+}
+
+CustomBuffer.alloc = function (size, fill, encoding) {
+    return CustomBuffer.toCustom(oldBufferImpl
+        ?  new Buffer(size, fill, encoding)
+        : Buffer.alloc(size, fill, encoding)
+    );
+}
+
+CustomBuffer.allocUnsafe = function (size) {
+    return CustomBuffer.toCustom(oldBufferImpl
+        ?  new Buffer(size)
+        : Buffer.allocUnsafe(size)
+    );
+}
+
+CustomBuffer.prototype.slice = function (start, end) {
+    return CustomBuffer.toCustom(this.slice(start, end));
 }
 
 tape.test("configure a custom encoder/decoder for bytes", function(test) {
-
-    var protobuf = require("..");
     var oldBuffer = protobuf.util.Buffer;
 
     protobuf.util.Buffer = CustomBuffer;
@@ -59,7 +74,7 @@ tape.test("configure a custom encoder/decoder for bytes", function(test) {
     var Test = root.lookup("test.Test");
 
     var buffer = Test.encode({
-        data: Buffer.from('some-data')
+        data: CustomBuffer.from('some-data')
     }).finish();
     test.ok(CustomBuffer.isCustom(buffer), "should encode the message with a custom buffer");
 
