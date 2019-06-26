@@ -90,8 +90,16 @@ wrappers[".google.protobuf.Any"] = {
 // https://github.com/protocolbuffers/protobuf/blob/5bc250b084b88b6ec98046054f5836b6b60132ef/src/google/protobuf/timestamp.proto#L101
 wrappers[".google.protobuf.Timestamp"] = {
   fromObject: function fromObject(object) {
+        if (typeof object !== 'string') {
+            return this.fromObject(object);
+        }
         //Convert ISO-8601 to epoch millis
         var dt = Date.parse(object);
+        if (isNaN(dt)) {
+            // not a number, default to the parent implementation.
+            return this.fromObject(object);
+        }
+
         return this.create({
             seconds: Math.floor(dt/1000),
             nanos: (dt % 1000) * 1000000
@@ -99,6 +107,16 @@ wrappers[".google.protobuf.Timestamp"] = {
     },
 
     toObject: function toObject(message, options) {
-        return new Date(message.seconds*1000 + message.nanos/1000000).toISOString();
+        // TODO: question for reviewer, how do we want to make this backwards
+        // compatible in a more explicit way. it seems dangerous to assume
+        // that anyone who was using .toJSON() was not relying on the old
+        // behaviour.
+
+        // decode value if requested
+        if (options && options.json) {
+            return new Date(message.seconds*1000 + message.nanos/1000000).toISOString();
+        }
+
+        return this.toObject(message, options);
     }
 };
