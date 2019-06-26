@@ -81,3 +81,24 @@ wrappers[".google.protobuf.Any"] = {
         return this.toObject(message, options);
     }
 };
+
+// Custom wrapper for Timestamp.
+//
+// Implements the JSON serialization / deserialization as specified by
+// proto specification.
+//
+// https://github.com/protocolbuffers/protobuf/blob/5bc250b084b88b6ec98046054f5836b6b60132ef/src/google/protobuf/timestamp.proto#L101
+wrappers[".google.protobuf.Timestamp"] = {
+  fromObject: function(object) {
+        //Convert ISO-8601 to epoch millis
+        var dt = Date.parse(object);
+        return this.create({
+            seconds: Math.floor(dt/1000),
+            nanos: (dt % 1000) * 1000000
+        });
+    },
+
+    toObject: function(message, options) {
+        return new Date(message.seconds*1000 + message.nanos/1000000).toISOString();
+    }
+};
