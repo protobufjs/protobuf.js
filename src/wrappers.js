@@ -38,7 +38,7 @@ var Message = require("./message");
 // Custom wrapper for Any
 wrappers[".google.protobuf.Any"] = {
 
-    fromObject: function(object) {
+    fromObject: function fromObject(object) {
 
         // unwrap value type if mapped
         if (object && object["@type"]) {
@@ -59,7 +59,7 @@ wrappers[".google.protobuf.Any"] = {
         return this.fromObject(object);
     },
 
-    toObject: function(message, options) {
+    toObject: function toObject(message, options) {
 
         // decode value if requested and unmapped
         if (options && options.json && message.type_url && message.value) {
@@ -89,7 +89,7 @@ wrappers[".google.protobuf.Any"] = {
 //
 // https://github.com/protocolbuffers/protobuf/blob/5bc250b084b88b6ec98046054f5836b6b60132ef/src/google/protobuf/timestamp.proto#L101
 wrappers[".google.protobuf.Timestamp"] = {
-  fromObject: function(object) {
+  fromObject: function fromObject(object) {
         //Convert ISO-8601 to epoch millis
         var dt = Date.parse(object);
         return this.create({
@@ -98,7 +98,7 @@ wrappers[".google.protobuf.Timestamp"] = {
         });
     },
 
-    toObject: function(message, options) {
+    toObject: function toObject(message, options) {
         return new Date(message.seconds*1000 + message.nanos/1000000).toISOString();
     }
 };
