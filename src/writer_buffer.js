@@ -57,7 +57,7 @@ function writeStringBuffer(val, buf, pos) {
     if (val.length < 40) // plain js is faster for short strings (probably due to redundant assertions)
         util.utf8.write(val, buf, pos);
     else
-        buf.utf8Write(val, pos);
+        buf.utf8Write ? buf.utf8Write(val, pos) : buf.write(val, pos);
 }
 
 /**
