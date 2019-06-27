@@ -555,8 +555,14 @@ function parse(source, root, options) {
         if (skip("{", true)) { // { a: "foo" b { c: "bar" } }
             do {
                 /* istanbul ignore if */
-                if (!nameRe.test(token = next()))
+                if (!nameRe.test(token = next())) {
+                    if (token === "}") {
+                        skip("}", true);
+                        break;
+                    }
+
                     throw illegal(token, "name");
+                }
 
                 if (peek() === "{")
                     parseOptionValue(parent, name + "." + token);
