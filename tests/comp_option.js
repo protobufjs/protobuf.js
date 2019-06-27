@@ -12,7 +12,6 @@ message DoSomethingResponse {\
 service MyService {\
   rpc DoSomething(DoSomethingRequest) returns (DoSomethingResponse) {\
     option (google.api.http) = {\
-      // Some TODO comment \
     };\
   };\
 }';
