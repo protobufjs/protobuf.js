@@ -81,3 +81,26 @@ wrappers[".google.protobuf.Any"] = {
         return this.toObject(message, options);
     }
 };
+
+wrappers[".google.protobuf.Timestamp"] = {
+    fromObject: function(object) {
+        if (typeof object === 'string') {
+            var dt = Date.parse(object);
+            if (isNaN(dt)) {
+                throw TypeError("Unable to parse to timestamp");
+            }
+            return this.fromObject({
+                seconds: Math.floor(dt/1000),
+                nanos: (dt % 1000) * 1000000
+            });
+        }
+        return this.fromObject(object);
+    },
+
+    toObject: function(message, options) {
+        if (options && options.standard) {
+            return new Date(message.seconds*1000 + message.nanos/1000000).toISOString();
+        }
+        return this.toObject(message, options);
+    }
+};
