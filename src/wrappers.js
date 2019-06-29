@@ -8,6 +8,7 @@
 var wrappers = exports;
 
 var Message = require("./message");
+var LongBits = require("./util/longbits")
 
 /**
  * From object converter part of an {@link IWrapper}.
@@ -120,7 +121,7 @@ wrappers[".google.protobuf.Duration"] = {
                 nanos: nanos
             });
         }
-        return this.fromObject(object)
+        return this.fromObject(object);
     },
 
     toObject: function(message, options) {
@@ -130,6 +131,168 @@ wrappers[".google.protobuf.Duration"] = {
                 duration += message.nanos / 1000000000;
             }
             return `${duration}s`;
+        }
+        return this.toObject(message, options);
+    }
+};
+
+wrappers[".google.protobuf.DoubleValue"] = {
+    fromObject: function(object) {
+        if (typeof object === 'number') {
+            return this.fromObject({
+                value: object
+            });
+        }
+        return this.fromObject(object);
+    },
+
+    toObject: function(message, options) {
+        if (options && options.standard) {
+            return message.value;
+        }
+        return this.toObject(message, options);
+    }
+};
+
+wrappers[".google.protobuf.FloatValue"] = {
+    fromObject: function(object) {
+        if (typeof object === 'number') {
+            return this.fromObject({
+                value: object
+            });
+        }
+        return this.fromObject(object);
+    },
+
+    toObject: function(message, options) {
+        if (options && options.standard) {
+            return message.value;
+        }
+        return this.toObject(message, options);
+    }
+};
+
+wrappers[".google.protobuf.Int64Value"] = {
+    fromObject: function(object) {
+        if (typeof object === 'string') {
+            if (isNaN(object)) {
+                throw TypeError("Should be a number");
+            }
+            var longbits = LongBits.from(object);
+            return this.fromObject({
+                value: {
+                    low: longbits.lo,
+                    high: longbits.hi,
+                    unsigned: false
+                }
+            });
+        }
+        return this.fromObject(object);
+    },
+
+    toObject: function(message, options) {
+        if (options && options.standard) {
+            var long = new LongBits(message.value.low, message.value.high);
+            return `${long.toNumber(false)}`;
+        }
+        return this.toObject(message, options);
+    }
+};
+
+wrappers[".google.protobuf.UInt64Value"] = {
+    fromObject: function(object) {
+        if (typeof object === 'string') {
+            if (isNaN(object)) {
+                throw TypeError("Should be a number");
+            }
+            var longbits = LongBits.from(object);
+            return this.fromObject({
+                value: {
+                    low: longbits.lo,
+                    high: longbits.hi,
+                    unsigned: true
+                }
+            });
+        }
+        return this.fromObject(object);
+    },
+
+    toObject: function(message, options) {
+        if (options && options.standard) {
+            var long = new LongBits(message.value.low, message.value.high);
+            return `${long.toNumber(true)}`;
+        }
+        return this.toObject(message, options);
+    }
+};
+
+wrappers[".google.protobuf.Int32Value"] = {
+    fromObject: function(object) {
+        if (typeof object === 'number') {
+            return this.fromObject({
+                value: object
+            });
+        }
+        return this.fromObject(object);
+    },
+
+    toObject: function(message, options) {
+        if (options && options.standard) {
+            return message.value;
+        }
+        return this.toObject(message, options);
+    }
+};
+
+wrappers[".google.protobuf.UInt32Value"] = {
+    fromObject: function(object) {
+        if (typeof object === 'number') {
+            return this.fromObject({
+                value: object
+            });
+        }
+        return this.fromObject(object);
+    },
+
+    toObject: function(message, options) {
+        if (options && options.standard) {
+            return message.value;
+        }
+        return this.toObject(message, options);
+    }
+};
+
+wrappers[".google.protobuf.StringValue"] = {
+    fromObject: function(object) {
+        if (typeof object === 'string') {
+            return this.fromObject({
+                value: object
+            });
+        }
+        return this.fromObject(object);
+    },
+
+    toObject: function(message, options) {
+        if (options && options.standard) {
+            return message.value;
+        }
+        return this.toObject(message, options);
+    }
+};
+
+wrappers[".google.protobuf.BoolValue"] = {
+    fromObject: function(object) {
+        if (typeof object === 'boolean') {
+            return this.fromObject({
+                value: object
+            });
+        }
+        return this.fromObject(object);
+    },
+
+    toObject: function(message, options) {
+        if (options && options.standard) {
+            return message.value;
         }
         return this.toObject(message, options);
     }
