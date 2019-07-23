@@ -1,7 +1,12 @@
-type pbtsCallback = (err: Error|null, output?: string) => void;
+type pbtsCallback = (err: Error | null, output?: string) => void;
 
 export interface IPBTSOptions {
-    [paramater: string]: any;
+    name: string;
+    out: string;
+    global: string;
+    import: string;
+    comments: boolean;
+    main: boolean;
 }
 
 /**
@@ -11,7 +16,7 @@ export interface IPBTSOptions {
  * @param {function(?Error, string=)} [callback] Optional completion callback
  * @returns {number|undefined} Exit code, if known
  */
-export function pbts(options: IPBTSOptions, source?: {content: string | object}, callback?: pbtsCallback): number|undefined;
+export function pbts(options: IPBTSOptions, source?: { content: string | object }, callback?: pbtsCallback): number | undefined;
 
 /**
  * Runs pbts programmatically.
@@ -19,4 +24,4 @@ export function pbts(options: IPBTSOptions, source?: {content: string | object},
  * @param {function(?Error, string=)} [callback] Optional completion callback
  * @returns {number|undefined} Exit code, if known
  */
-export function main(args: string[], callback?: pbtsCallback): number|undefined;
+export function main(args: string[], callback?: pbtsCallback): number | undefined;
