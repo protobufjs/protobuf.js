@@ -8,6 +8,7 @@
 var wrappers = exports;
 
 var Message = require("./message");
+var $root;
 
 /**
  * From object converter part of an {@link IWrapper}.
@@ -91,6 +92,25 @@ wrappers[".google.protobuf.Any"] = {
 wrappers[".google.protobuf.Timestamp"] = {
   fromObject: function fromObject(object) {
         if (typeof object !== 'string') {
+            // for the static target, include the generated code.
+            if ($root) {
+                if (object instanceof $root.google.protobuf.Timestamp)
+                    return object;
+                var message = new $root.google.protobuf.Timestamp();
+                if (object.seconds != null)
+                    if ($util.Long)
+                        (message.seconds = $util.Long.fromValue(object.seconds)).unsigned = false;
+                    else if (typeof object.seconds === "string")
+                        message.seconds = parseInt(object.seconds, 10);
+                    else if (typeof object.seconds === "number")
+                        message.seconds = object.seconds;
+                    else if (typeof object.seconds === "object")
+                        message.seconds = new $util.LongBits(object.seconds.low >>> 0, object.seconds.high >>> 0).toNumber();
+                if (object.nanos != null)
+                    message.nanos = object.nanos | 0;
+                return message;
+            }
+
             return this.fromObject(object);
         }
         //Convert ISO-8601 to epoch millis
