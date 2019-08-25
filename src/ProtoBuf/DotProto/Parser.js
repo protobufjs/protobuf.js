@@ -10,7 +10,7 @@
  * @param {string} source Source
  * @constructor
  */
-var Parser = function(source) {
+var Parser = function (source) {
 
     /**
      * Tokenizer.
@@ -38,7 +38,7 @@ var ParserPrototype = Parser.prototype;
  * @throws {Error} If the source cannot be parsed
  * @expose
  */
-ParserPrototype.parse = function() {
+ParserPrototype.parse = function () {
     var topLevel = {
         "name": "[ROOT]", // temporary
         "package": null,
@@ -105,7 +105,7 @@ ParserPrototype.parse = function() {
             }
         }
     } catch (e) {
-        e.message = "Parse error at line "+this.tn.line+": " + e.message;
+        e.message = "Parse error at line " + this.tn.line + ": " + e.message;
         throw e;
     }
     delete topLevel["name"];
@@ -118,7 +118,7 @@ ParserPrototype.parse = function() {
  * @throws {Error} If the source cannot be parsed
  * @expose
  */
-Parser.parse = function(source) {
+Parser.parse = function (source) {
     return new Parser(source).parse();
 };
 
@@ -146,7 +146,7 @@ function mkId(value, mayBeNegative) {
         id = parseInt(value.substring(1), 8);
     else
         throw Error("illegal id value: " + (sign < 0 ? '-' : '') + value);
-    id = (sign*id)|0; // Force to 32bit
+    id = (sign * id) | 0; // Force to 32bit
     if (!mayBeNegative && id < 0)
         throw Error("illegal id value: " + (sign < 0 ? '-' : '') + value);
     return id;
@@ -186,14 +186,14 @@ function mkNumber(val) {
  * @returns {string}
  * @private
  */
-ParserPrototype._readString = function() {
+ParserPrototype._readString = function () {
     var value = "",
         token,
         delim;
     do {
         delim = this.tn.next();
         if (delim !== "'" && delim !== '"')
-            throw Error("illegal string delimiter: "+delim);
+            throw Error("illegal string delimiter: " + delim);
         value += this.tn.next();
         this.tn.skip(delim);
         token = this.tn.peek();
@@ -207,7 +207,7 @@ ParserPrototype._readString = function() {
  * @returns {number|boolean|string}
  * @private
  */
-ParserPrototype._readValue = function(mayBeTypeRef) {
+ParserPrototype._readValue = function (mayBeTypeRef) {
     var token = this.tn.peek(),
         value;
     if (token === '"' || token === "'")
@@ -219,7 +219,7 @@ ParserPrototype._readValue = function(mayBeTypeRef) {
         return (token.toLowerCase() === 'true');
     if (mayBeTypeRef && Lang.TYPEREF.test(token))
         return token;
-    throw Error("illegal value: "+token);
+    throw Error("illegal value: " + token);
 
 };
 
@@ -231,7 +231,7 @@ ParserPrototype._readValue = function(mayBeTypeRef) {
  * @param {boolean=} isList
  * @private
  */
-ParserPrototype._parseOption = function(parent, isList) {
+ParserPrototype._parseOption = function (parent, isList) {
     var token = this.tn.next(),
         custom = false;
     if (token === '(') {
@@ -241,11 +241,11 @@ ParserPrototype._parseOption = function(parent, isList) {
     if (!Lang.TYPEREF.test(token))
         // we can allow options of the form google.protobuf.* since they will just get ignored anyways
         // if (!/google\.protobuf\./.test(token)) // FIXME: Why should that not be a valid typeref?
-            throw Error("illegal option name: "+token);
+        throw Error("illegal option name: " + token);
     var name = token;
     if (custom) { // (my_method_option).foo, (my_method_option), some_method_option, (foo.my_option).bar
         this.tn.skip(')');
-        name = '('+name+')';
+        name = '(' + name + ')';
         token = this.tn.peek();
         if (Lang.FQTYPEREF.test(token)) {
             name += token;
@@ -270,7 +270,7 @@ function setOption(options, name, value) {
         options[name] = value;
     else {
         if (!Array.isArray(options[name]))
-            options[name] = [ options[name] ];
+            options[name] = [options[name]];
         options[name].push(value);
     }
 }
@@ -281,7 +281,7 @@ function setOption(options, name, value) {
  * @param {string} name
  * @private
  */
-ParserPrototype._parseOptionValue = function(parent, name) {
+ParserPrototype._parseOptionValue = function (parent, name) {
     var token = this.tn.peek();
     if (token !== '{') { // Plain value
         setOption(parent["options"], name, this._readValue(true));
@@ -303,10 +303,10 @@ ParserPrototype._parseOptionValue = function(parent, name) {
  * @param {!Object} parent Parent definition
  * @private
  */
-ParserPrototype._parseService = function(parent) {
+ParserPrototype._parseService = function (parent) {
     var token = this.tn.next();
     if (!Lang.NAME.test(token))
-        throw Error("illegal service name at line "+this.tn.line+": "+token);
+        throw Error("illegal service name at line " + this.tn.line + ": " + token);
     var name = token;
     var svc = {
         "name": name,
@@ -320,7 +320,7 @@ ParserPrototype._parseService = function(parent) {
         else if (token === 'rpc')
             this._parseServiceRPC(svc);
         else
-            throw Error("illegal service token: "+token);
+            throw Error("illegal service token: " + token);
     }
     this.tn.omit(";");
     parent["services"].push(svc);
@@ -331,11 +331,11 @@ ParserPrototype._parseService = function(parent) {
  * @param {!Object} svc Service definition
  * @private
  */
-ParserPrototype._parseServiceRPC = function(svc) {
+ParserPrototype._parseServiceRPC = function (svc) {
     var type = "rpc",
         token = this.tn.next();
     if (!Lang.NAME.test(token))
-        throw Error("illegal rpc service method name: "+token);
+        throw Error("illegal rpc service method name: " + token);
     var name = token;
     var method = {
         "request": null,
@@ -347,21 +347,21 @@ ParserPrototype._parseServiceRPC = function(svc) {
     this.tn.skip("(");
     token = this.tn.next();
     if (token.toLowerCase() === "stream") {
-      method["request_stream"] = true;
-      token = this.tn.next();
+        method["request_stream"] = true;
+        token = this.tn.next();
     }
     if (!Lang.TYPEREF.test(token))
-        throw Error("illegal rpc service request type: "+token);
+        throw Error("illegal rpc service request type: " + token);
     method["request"] = token;
     this.tn.skip(")");
     token = this.tn.next();
     if (token.toLowerCase() !== "returns")
-        throw Error("illegal rpc service request type delimiter: "+token);
+        throw Error("illegal rpc service request type delimiter: " + token);
     this.tn.skip("(");
     token = this.tn.next();
     if (token.toLowerCase() === "stream") {
-      method["response_stream"] = true;
-      token = this.tn.next();
+        method["response_stream"] = true;
+        token = this.tn.next();
     }
     method["response"] = token;
     this.tn.skip(")");
@@ -389,7 +389,7 @@ ParserPrototype._parseServiceRPC = function(svc) {
  * @returns {!Object}
  * @private
  */
-ParserPrototype._parseMessage = function(parent, fld) {
+ParserPrototype._parseMessage = function (parent, fld) {
     var isGroup = !!fld,
         token = this.tn.next();
     var msg = {
@@ -403,7 +403,7 @@ ParserPrototype._parseMessage = function(parent, fld) {
         // "extensions": undefined
     };
     if (!Lang.NAME.test(token))
-        throw Error("illegal "+(isGroup ? "group" : "message")+" name: "+token);
+        throw Error("illegal " + (isGroup ? "group" : "message") + " name: " + token);
     msg["name"] = token;
     if (isGroup) {
         this.tn.skip("=");
@@ -439,10 +439,10 @@ ParserPrototype._parseMessage = function(parent, fld) {
             this._parseExtend(msg);
         else if (Lang.TYPEREF.test(token)) {
             if (!this.proto3)
-                throw Error("illegal field rule: "+token);
+                throw Error("illegal field rule: " + token);
             this._parseMessageField(msg, "optional", token);
         } else
-            throw Error("illegal message token: "+token);
+            throw Error("illegal message token: " + token);
     }
     this.tn.omit(";");
     parent["messages"].push(msg);
@@ -453,7 +453,7 @@ ParserPrototype._parseMessage = function(parent, fld) {
  * Parses an ignored statement.
  * @private
  */
-ParserPrototype._parseIgnored = function() {
+ParserPrototype._parseIgnored = function () {
     while (this.tn.peek() !== ';')
         this.tn.next();
     this.tn.skip(";");
@@ -467,9 +467,9 @@ ParserPrototype._parseIgnored = function() {
  * @returns {!Object} Field descriptor
  * @private
  */
-ParserPrototype._parseMessageField = function(msg, rule, type) {
+ParserPrototype._parseMessageField = function (msg, rule, type) {
     if (!Lang.RULE.test(rule))
-        throw Error("illegal message field rule: "+rule);
+        throw Error("illegal message field rule: " + rule);
     var fld = {
         "rule": rule,
         "type": "",
@@ -515,7 +515,7 @@ ParserPrototype._parseMessageField = function(msg, rule, type) {
             // converted to lower-case so that it does not conflict with the former)."
             var grp = this._parseMessage(msg, fld);
             if (!/^[A-Z]/.test(grp["name"]))
-                throw Error('illegal group name: '+grp["name"]);
+                throw Error('illegal group name: ' + grp["name"]);
             fld["type"] = grp["name"];
             fld["name"] = grp["name"].toLowerCase();
             this.tn.omit(";");
@@ -547,10 +547,10 @@ ParserPrototype._parseMessageField = function(msg, rule, type) {
  * @param {!Object} msg Message definition
  * @private
  */
-ParserPrototype._parseMessageOneOf = function(msg) {
+ParserPrototype._parseMessageOneOf = function (msg) {
     var token = this.tn.next();
     if (!Lang.NAME.test(token))
-        throw Error("illegal oneof name: "+token);
+        throw Error("illegal oneof name: " + token);
     var name = token,
         fld;
     var fields = [];
@@ -569,7 +569,7 @@ ParserPrototype._parseMessageOneOf = function(msg) {
  * @param {!Object} fld Field definition
  * @private
  */
-ParserPrototype._parseFieldOptions = function(fld) {
+ParserPrototype._parseFieldOptions = function (fld) {
     this.tn.skip("[");
     var token,
         first = true;
@@ -587,7 +587,7 @@ ParserPrototype._parseFieldOptions = function(fld) {
  * @param {!Object} msg Message definition
  * @private
  */
-ParserPrototype._parseEnum = function(msg) {
+ParserPrototype._parseEnum = function (msg) {
     var enm = {
         "name": "",
         "values": [],
@@ -595,25 +595,30 @@ ParserPrototype._parseEnum = function(msg) {
     };
     var token = this.tn.next();
     if (!Lang.NAME.test(token))
-        throw Error("illegal name: "+token);
+        throw Error("illegal name: " + token);
     enm["name"] = token;
     this.tn.skip("{");
     while ((token = this.tn.next()) !== '}') {
-        if (token === "option")
-            this._parseOption(enm);
-        else {
-            if (!Lang.NAME.test(token))
-                throw Error("illegal name: "+token);
-            this.tn.skip("=");
-            var val = {
-                "name": token,
-                "id": mkId(this.tn.next(), true)
-            };
-            token = this.tn.peek();
-            if (token === "[")
-                this._parseFieldOptions({ "options": {} });
-            this.tn.skip(";");
-            enm["values"].push(val);
+        switch (token) {
+            case "option":
+                this._parseOption(enm);
+                break;
+            case "reserved":
+                this._parseIgnored();
+                break;
+            default:
+                if (!Lang.NAME.test(token))
+                    throw Error("illegal name: " + token);
+                this.tn.skip("=");
+                var val = {
+                    "name": token,
+                    "id": mkId(this.tn.next(), true)
+                };
+                token = this.tn.peek();
+                if (token === "[")
+                    this._parseFieldOptions({ "options": {} });
+                this.tn.skip(";");
+                enm["values"].push(val);
         }
     }
     this.tn.omit(";");
@@ -625,7 +630,7 @@ ParserPrototype._parseEnum = function(msg) {
  * @returns {!Array.<!Array.<number>>}
  * @private
  */
-ParserPrototype._parseExtensionRanges = function() {
+ParserPrototype._parseExtensionRanges = function () {
     var ranges = [];
     var token,
         range,
@@ -665,10 +670,10 @@ ParserPrototype._parseExtensionRanges = function() {
  * @param {!Object} parent Parent object
  * @private
  */
-ParserPrototype._parseExtend = function(parent) {
+ParserPrototype._parseExtend = function (parent) {
     var token = this.tn.next();
     if (!Lang.TYPEREF.test(token))
-        throw Error("illegal extend reference: "+token);
+        throw Error("illegal extend reference: " + token);
     var ext = {
         "ref": token,
         "fields": []
@@ -679,10 +684,10 @@ ParserPrototype._parseExtend = function(parent) {
             this._parseMessageField(ext, token);
         else if (Lang.TYPEREF.test(token)) {
             if (!this.proto3)
-                throw Error("illegal field rule: "+token);
+                throw Error("illegal field rule: " + token);
             this._parseMessageField(ext, "optional", token);
         } else
-            throw Error("illegal extend token: "+token);
+            throw Error("illegal extend token: " + token);
     }
     this.tn.omit(";");
     parent["messages"].push(ext);
@@ -695,6 +700,6 @@ ParserPrototype._parseExtend = function(parent) {
  * Returns a string representation of this parser.
  * @returns {string}
  */
-ParserPrototype.toString = function() {
-    return "Parser at line "+this.tn.line;
+ParserPrototype.toString = function () {
+    return "Parser at line " + this.tn.line;
 };
