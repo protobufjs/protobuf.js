@@ -647,6 +647,9 @@ Translates between file formats and generates static code.
   --no-create      Does not generate create functions used for reflection compatibility.
   --no-encode      Does not generate encode functions.
   --no-decode      Does not generate decode functions.
+  --no-from-object Does not generate fromObject functions.
+  --no-to-object   Does not generate toObject functions.
+  --no-to-json     Does not generate toJSON functions.
   --no-verify      Does not generate verify functions.
   --no-convert     Does not generate convert functions like from/toObject
   --no-delimited   Does not generate delimited encode/decode functions.
