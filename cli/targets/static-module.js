@@ -8,7 +8,7 @@ module.exports = static_module_target;
 
 var util = require("../util");
 
-var protobuf = require("../..");
+var protobuf = util.protobuf;
 
 static_module_target.description = "Static code without reflection as a module";
 

@@ -6,7 +6,7 @@ var path     = require("path"),
 
 util.setup();
 
-var protobuf = require(util.pathToProtobufJs),
+var protobuf = util.protobuf,
     minimist = require("minimist"),
     chalk    = require("chalk"),
     glob     = require("glob");
