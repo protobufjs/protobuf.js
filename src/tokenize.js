@@ -189,13 +189,14 @@ function tokenize(source, alternateCommentMode) {
     }
 
     function isDoubleSlashCommentLine(startOffset) {
+        if (source[startOffset - 1] === "/")
+          return source[startOffset] === "/";
+
         var endOffset = findEndOfLine(startOffset);
 
         // see if remaining line matches comment pattern
         var lineText = source.substring(startOffset, endOffset);
-        // look for 1 or 2 slashes since startOffset would already point past
-        // the first slash that started the comment.
-        var isComment = /^\s*\/{1,2}/.test(lineText);
+        var isComment = /^\s*\/{2}/.test(lineText);
         return isComment;
     }
 
