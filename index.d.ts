@@ -1,5 +1,7 @@
 // DO NOT EDIT! This is a generated file. Edit the JSDoc in src/*.js instead and run 'npm run types'.
 
+import * as Long from "long";
+
 export as namespace protobuf;
 
 /**
@@ -1807,6 +1809,11 @@ export interface Constructor<T> extends Function {
 
 /** Properties type. */
 type Properties<T> = { [P in keyof T]?: T[P] };
+
+/** Type that is convertible to array. */
+export interface ToArray<T> {
+    toArray(): T[];
+}
 
 /**
  * Any compatible Buffer instance.

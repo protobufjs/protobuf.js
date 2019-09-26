@@ -58,25 +58,31 @@ function encoder(mtype) {
     ("}");
 
             // Repeated fields
-        } else if (field.repeated) { gen
-    ("if(%s!=null&&%s.length){", ref, ref); // !== undefined && !== null
-
+        } else if (field.repeated) {
+          var arrayRef = ref;
+          if (field.useToArray()) {
+            arrayRef = "array" + field.id;
+            gen("var %s", arrayRef);
+            gen("if (%s!=null&&%s.toArray) { %s = %s.toArray() } else { %s = %s }",
+                ref, ref, arrayRef, ref, arrayRef, ref);
+          }
+          gen("if(%s!=null&&%s.length){", arrayRef, arrayRef); // !== undefined && !== null
             // Packed repeated
             if (field.packed && types.packed[type] !== undefined) { gen
 
         ("w.uint32(%i).fork()", (field.id << 3 | 2) >>> 0)
-        ("for(var i=0;i<%s.length;++i)", ref)
-            ("w.%s(%s[i])", type, ref)
+        ("for(var i=0;i<%s.length;++i)", arrayRef)
+            ("w.%s(%s[i])", type, arrayRef)
         ("w.ldelim()");
 
             // Non-packed
             } else { gen
 
-        ("for(var i=0;i<%s.length;++i)", ref);
+        ("for(var i=0;i<%s.length;++i)", arrayRef);
                 if (wireType === undefined)
-            genTypePartial(gen, field, index, ref + "[i]");
+            genTypePartial(gen, field, index, arrayRef + "[i]");
                 else gen
-            ("w.uint32(%i).%s(%s[i])", (field.id << 3 | wireType) >>> 0, type, ref);
+            ("w.uint32(%i).%s(%s[i])", (field.id << 3 | wireType) >>> 0, type, arrayRef);
 
             } gen
     ("}");

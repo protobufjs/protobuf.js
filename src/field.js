@@ -316,6 +316,10 @@ Field.prototype.resolve = function resolve() {
     return ReflectionObject.prototype.resolve.call(this);
 };
 
+Field.prototype.useToArray = function useToArray() {
+    return !!this.getOption("(js_use_toArray)");
+};
+
 /**
  * Decorator function as returned by {@link Field.d} and {@link MapField.d} (TypeScript).
  * @typedef FieldDecorator

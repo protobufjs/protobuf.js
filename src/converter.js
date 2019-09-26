@@ -17,11 +17,14 @@ var Enum = require("./enum"),
  * @returns {Codegen} Codegen instance
  * @ignore
  */
-function genValuePartial_fromObject(gen, field, fieldIndex, prop) {
+function genValuePartial_fromObject(gen, field, fieldIndex, prop, ref) {
     /* eslint-disable no-unexpected-multiline, block-scoped-var, no-redeclare */
+    if (ref === undefined) {
+      ref = "d" + prop;
+    }
     if (field.resolvedType) {
         if (field.resolvedType instanceof Enum) { gen
-            ("switch(d%s){", prop);
+            ("switch(%s){", ref);
             for (var values = field.resolvedType.values, keys = Object.keys(values), i = 0; i < keys.length; ++i) {
                 if (field.repeated && values[keys[i]] === field.typeDefault) gen
                 ("default:");
@@ -33,24 +36,24 @@ function genValuePartial_fromObject(gen, field, fieldIndex, prop) {
             } gen
             ("}");
         } else gen
-            ("if(typeof d%s!==\"object\")", prop)
+            ("if(typeof %s!==\"object\")", ref)
                 ("throw TypeError(%j)", field.fullName + ": object expected")
-            ("m%s=types[%i].fromObject(d%s)", prop, fieldIndex, prop);
+            ("m%s=types[%i].fromObject(%s)", prop, fieldIndex, ref);
     } else {
         var isUnsigned = false;
         switch (field.type) {
             case "double":
             case "float": gen
-                ("m%s=Number(d%s)", prop, prop); // also catches "NaN", "Infinity"
+                ("m%s=Number(%s)", prop, ref); // also catches "NaN", "Infinity"
                 break;
             case "uint32":
             case "fixed32": gen
-                ("m%s=d%s>>>0", prop, prop);
+                ("m%s=%s>>>0", prop, ref);
                 break;
             case "int32":
             case "sint32":
             case "sfixed32": gen
-                ("m%s=d%s|0", prop, prop);
+                ("m%s=%s|0", prop, ref);
                 break;
             case "uint64":
                 isUnsigned = true;
@@ -60,28 +63,28 @@ function genValuePartial_fromObject(gen, field, fieldIndex, prop) {
             case "fixed64":
             case "sfixed64": gen
                 ("if(util.Long)")
-                    ("(m%s=util.Long.fromValue(d%s)).unsigned=%j", prop, prop, isUnsigned)
-                ("else if(typeof d%s===\"string\")", prop)
-                    ("m%s=parseInt(d%s,10)", prop, prop)
-                ("else if(typeof d%s===\"number\")", prop)
-                    ("m%s=d%s", prop, prop)
-                ("else if(typeof d%s===\"object\")", prop)
-                    ("m%s=new util.LongBits(d%s.low>>>0,d%s.high>>>0).toNumber(%s)", prop, prop, prop, isUnsigned ? "true" : "");
+                    ("(m%s=util.Long.fromValue(%s)).unsigned=%j", prop, ref, isUnsigned)
+                ("else if(typeof %s===\"string\")", ref)
+                    ("m%s=parseInt(%s,10)", prop, ref)
+                ("else if(typeof %s===\"number\")", ref)
+                    ("m%s=%s", prop, ref)
+                ("else if(typeof %s===\"object\")", ref)
+                    ("m%s=new util.LongBits(%s.low>>>0,%s.high>>>0).toNumber(%s)", prop, ref, ref, isUnsigned ? "true" : "");
                 break;
             case "bytes": gen
-                ("if(typeof d%s===\"string\")", prop)
-                    ("util.base64.decode(d%s,m%s=util.newBuffer(util.base64.length(d%s)),0)", prop, prop, prop)
-                ("else if(d%s.length)", prop)
-                    ("m%s=d%s", prop, prop);
+                ("if(typeof %s===\"string\")", ref)
+                    ("util.base64.decode(%s,m%s=util.newBuffer(util.base64.length(%s)),0)", ref, prop, ref)
+                ("else if(%s.length)", ref)
+                    ("m%s=%s", prop, ref);
                 break;
             case "string": gen
-                ("m%s=String(d%s)", prop, prop);
+                ("m%s=String(%s)", prop, ref);
                 break;
             case "bool": gen
-                ("m%s=Boolean(d%s)", prop, prop);
+                ("m%s=Boolean(%s)", prop, ref);
                 break;
             /* default: gen
-                ("m%s=d%s", prop, prop);
+                ("m%s=%s", prop, ref);
                 break; */
         }
     }
@@ -120,13 +123,21 @@ converter.fromObject = function fromObject(mtype) {
     ("}");
 
         // Repeated fields
-        } else if (field.repeated) { gen
-    ("if(d%s){", prop)
-        ("if(!Array.isArray(d%s))", prop)
+        } else if (field.repeated) {
+          gen("if(d%s){", prop);
+          var arrayRef = "d" + prop;
+          if (field.useToArray()) {
+            arrayRef = "array" + field.id;
+            gen("var %s", arrayRef);
+            gen("if (d%s!=null&&d%s.toArray) { %s = d%s.toArray() } else { %s = d%s }",
+                prop, prop, arrayRef, prop, arrayRef, prop);
+          }
+          gen
+        ("if(!Array.isArray(%s))", arrayRef)
             ("throw TypeError(%j)", field.fullName + ": array expected")
         ("m%s=[]", prop)
-        ("for(var i=0;i<d%s.length;++i){", prop);
-            genValuePartial_fromObject(gen, field, /* not sorted */ i, prop + "[i]")
+        ("for(var i=0;i<%s.length;++i){", arrayRef);
+            genValuePartial_fromObject(gen, field, /* not sorted */ i, prop + "[i]", arrayRef + "[i]")
         ("}")
     ("}");
 
