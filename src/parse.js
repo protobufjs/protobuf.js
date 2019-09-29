@@ -279,6 +279,7 @@ function parse(source, root, options) {
         if (obj) {
             obj.comment = cmnt(); // try block-type comment
             obj.filename = parse.filename;
+            obj.line = tn.line;
         }
         if (skip("{", true)) {
             var token;

@@ -58,6 +58,12 @@ function ReflectionObject(name, options) {
      * @type {string|null}
      */
     this.filename = null;
+
+    /**
+     * Defining file line number.
+     * @type {number|null}
+     */
+    this.line = null;
 }
 
 Object.defineProperties(ReflectionObject.prototype, {
