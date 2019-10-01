@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.8.8 (c) 2016, daniel wirtz
- * compiled thu, 19 jul 2018 00:33:25 utc
+ * compiled tue, 01 oct 2019 13:25:48 utc
  * licensed under the bsd-3-clause license
  * see: https://github.com/dcodeio/protobuf.js for details
  */
@@ -1518,7 +1518,8 @@ common.get = function get(file) {
 var converter = exports;
 
 var Enum = require(15),
-    util = require(37);
+    util = require(37),
+    wrappers = require(41);
 
 /**
  * Generates a partial value fromObject conveter.
@@ -1544,7 +1545,9 @@ function genValuePartial_fromObject(gen, field, fieldIndex, prop) {
                     ("break");
             } gen
             ("}");
-        } else gen
+        } else if (wrappers[field.resolvedType.fullName]) gen
+            ("m%s=types[%i].fromObject(d%s)", prop, fieldIndex, prop);
+          else gen
             ("if(typeof d%s!==\"object\")", prop)
                 ("throw TypeError(%j)", field.fullName + ": object expected")
             ("m%s=types[%i].fromObject(d%s)", prop, fieldIndex, prop);
@@ -1804,7 +1807,7 @@ converter.toObject = function toObject(mtype) {
     /* eslint-enable no-unexpected-multiline, block-scoped-var, no-redeclare */
 };
 
-},{"15":15,"37":37}],13:[function(require,module,exports){
+},{"15":15,"37":37,"41":41}],13:[function(require,module,exports){
 "use strict";
 module.exports = decoder;
 
@@ -3213,7 +3216,7 @@ Namespace.arrayToJSON = arrayToJSON;
 Namespace.isReservedId = function isReservedId(reserved, id) {
     if (reserved)
         for (var i = 0; i < reserved.length; ++i)
-            if (typeof reserved[i] !== "string" && reserved[i][0] <= id && reserved[i][1] >= id)
+            if (typeof reserved[i] !== "string" && reserved[i][0] <= id && reserved[i][1] > id)
                 return true;
     return false;
 };
@@ -3644,6 +3647,12 @@ function ReflectionObject(name, options) {
      * @type {string|null}
      */
     this.filename = null;
+
+    /**
+     * Defining file line number.
+     * @type {number|null}
+     */
+    this.line = null;
 }
 
 Object.defineProperties(ReflectionObject.prototype, {
@@ -4084,7 +4093,7 @@ function parse(source, root, options) {
         var filename = parse.filename;
         if (!insideTryCatch)
             parse.filename = null;
-        return Error("illegal " + (name || "token") + " '" + token + "' (" + (filename ? filename + ", " : "") + "line " + tn.line + ")");
+        return Error("illegal " + (name || "token") + " '" + token + "' (" + (filename ? filename + ", " : "") + "line " + tn.line + " offset " + tn.offset + " )");
     }
 
     function readString() {
@@ -4272,6 +4281,7 @@ function parse(source, root, options) {
         if (obj) {
             obj.comment = cmnt(); // try block-type comment
             obj.filename = parse.filename;
+            obj.line = tn.line;
         }
         if (skip("{", true)) {
             var token;
@@ -4282,8 +4292,9 @@ function parse(source, root, options) {
             if (fnElse)
                 fnElse();
             skip(";");
+            var trailingComment = cmnt(trailingLine)
             if (obj && typeof obj.comment !== "string")
-                obj.comment = cmnt(trailingLine); // try line-type comment if no block
+                obj.comment = trailingComment; // try line-type comment if no block
         }
     }
 
@@ -4706,10 +4717,6 @@ function parse(source, root, options) {
                 break;
 
             case "option":
-
-                /* istanbul ignore if */
-                if (!head)
-                    throw illegal(token);
 
                 parseOption(ptr, token);
                 skip(";");
@@ -6033,6 +6040,7 @@ function tokenize(source, alternateCommentMode) {
     var offset = 0,
         length = source.length,
         line = 1,
+        trailerCommentText = false,
         commentType = null,
         commentText = null,
         commentLine = 0,
@@ -6053,6 +6061,21 @@ function tokenize(source, alternateCommentMode) {
         return Error("illegal " + subject + " (line " + line + ")");
     }
 
+    function advance() {
+        return advanceTo(offset + 1)
+    }
+
+    function advanceTo(to) {
+        for (let index = offset + 1; index <= to; index++) {
+            if (charAt(index) === '\n') {
+                line++
+            }            
+        }
+        
+        offset = to
+        return offset
+    }
+
     /**
      * Reads a string till its end.
      * @returns {string} String read
@@ -6064,7 +6087,7 @@ function tokenize(source, alternateCommentMode) {
         var match = re.exec(source);
         if (!match)
             throw illegal("string");
-        offset = re.lastIndex;
+        advanceTo(re.lastIndex);
         push(stringDelim);
         stringDelim = null;
         return unescape(match[1]);
@@ -6088,8 +6111,7 @@ function tokenize(source, alternateCommentMode) {
      * @inner
      */
     function setComment(start, end) {
-        commentType = source.charAt(start++);
-        commentLine = line;
+        commentType = source.charAt(start++);        
         commentLineEmpty = false;
         var lookback;
         if (alternateCommentMode) {
@@ -6119,13 +6141,14 @@ function tokenize(source, alternateCommentMode) {
     }
 
     function isDoubleSlashCommentLine(startOffset) {
+        if (source[startOffset - 1] === "/")
+          return source[startOffset] === "/";
+
         var endOffset = findEndOfLine(startOffset);
 
         // see if remaining line matches comment pattern
         var lineText = source.substring(startOffset, endOffset);
-        // look for 1 or 2 slashes since startOffset would already point past
-        // the first slash that started the comment.
-        var isComment = /^\s*\/{1,2}/.test(lineText);
+        var isComment = /^\s*\/{2}/.test(lineText);
         return isComment;
     }
 
@@ -6158,14 +6181,14 @@ function tokenize(source, alternateCommentMode) {
                 return null;
             repeat = false;
             while (whitespaceRe.test(curr = charAt(offset))) {
-                if (curr === "\n")
-                    ++line;
-                if (++offset === length)
+                if (advance() === length)
                     return null;
             }
 
             if (charAt(offset) === "/") {
-                if (++offset === length) {
+                commentLine = line;
+
+                if (advance() === length) {
                     throw illegal("comment");
                 }
                 if (charAt(offset) === "/") { // Line
@@ -6173,17 +6196,17 @@ function tokenize(source, alternateCommentMode) {
                         // check for triple-slash comment
                         isDoc = charAt(start = offset + 1) === "/";
 
-                        while (charAt(++offset) !== "\n") {
+                        while (charAt(advance()) !== "\n") {
                             if (offset === length) {
                                 return null;
                             }
                         }
-                        ++offset;
+                        advance()
                         if (isDoc) {
                             setComment(start, offset - 1);
                         }
-                        ++line;
-                        repeat = true;
+
+                        repeat = !trailerCommentText;
                     } else {
                         // check for double-slash comments, consolidating consecutive lines
                         start = offset;
@@ -6191,45 +6214,46 @@ function tokenize(source, alternateCommentMode) {
                         if (isDoubleSlashCommentLine(offset)) {
                             isDoc = true;
                             do {
-                                offset = findEndOfLine(offset);
+                                advanceTo(findEndOfLine(offset));
                                 if (offset === length) {
                                     break;
                                 }
-                                offset++;
+                                advance();
                             } while (isDoubleSlashCommentLine(offset));
                         } else {
-                            offset = Math.min(length, findEndOfLine(offset) + 1);
+                            advance(Math.min(length, findEndOfLine(offset) + 1));
                         }
                         if (isDoc) {
                             setComment(start, offset);
                         }
-                        line++;
-                        repeat = true;
+                        
+                        repeat = !trailerCommentText;
                     }
                 } else if ((curr = charAt(offset)) === "*") { /* Block */
                     // check for /** (regular comment mode) or /* (alternate comment mode)
                     start = offset + 1;
                     isDoc = alternateCommentMode || charAt(start) === "*";
-                    do {
-                        if (curr === "\n") {
-                            ++line;
-                        }
-                        if (++offset === length) {
+                    do {                        
+                        if (advance() === length) {
                             throw illegal("comment");
                         }
                         prev = curr;
                         curr = charAt(offset);
                     } while (prev !== "*" || curr !== "/");
-                    ++offset;
+                    advance();
                     if (isDoc) {
                         setComment(start, offset - 2);
                     }
-                    repeat = true;
+                    repeat = !trailerCommentText;
                 } else {
                     return "/";
                 }
             }
         } while (repeat);
+
+        if (trailerCommentText) {
+            return null
+        }
 
         // offset !== length if we got here
 
@@ -6239,7 +6263,7 @@ function tokenize(source, alternateCommentMode) {
         if (!delim)
             while (end < length && !delimRe.test(charAt(end)))
                 ++end;
-        var token = source.substring(offset, offset = end);
+        var token = source.substring(offset, advanceTo(end));
         if (token === "\"" || token === "'")
             stringDelim = token;
         return token;
@@ -6299,29 +6323,40 @@ function tokenize(source, alternateCommentMode) {
     function cmnt(trailingLine) {
         var ret = null;
         if (trailingLine === undefined) {
-            if (commentLine === line - 1 && (alternateCommentMode || commentType === "*" || commentLineEmpty)) {
+            if (commentLine < line && (alternateCommentMode || commentType === "*" || commentLineEmpty)) {
                 ret = commentText;
+                commentText = null
             }
-        } else {
+        } else {            
             /* istanbul ignore else */
             if (commentLine < trailingLine) {
+                trailerCommentText = true;
                 peek();
+                trailerCommentText = false;
             }
             if (commentLine === trailingLine && !commentLineEmpty && (alternateCommentMode || commentType === "/")) {
                 ret = commentText;
+                commentText = null
             }
         }
+
+        
         return ret;
     }
 
-    return Object.defineProperty({
+    return Object.defineProperties({
         next: next,
         peek: peek,
         push: push,
         skip: skip,
         cmnt: cmnt
-    }, "line", {
-        get: function() { return line; }
+    }, {        
+        "line": {
+            get: function() { return line; }        
+        },
+        "offset": {
+            get: function() { return offset; }        
+        }
     });
     /* eslint-enable callback-return */
 }

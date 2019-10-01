@@ -1,5 +1,7 @@
 // DO NOT EDIT! This is a generated file. Edit the JSDoc in src/*.js instead and run 'npm run types'.
 
+import * as Long from "long";
+
 export as namespace protobuf;
 
 /**
@@ -873,6 +875,9 @@ export abstract class ReflectionObject {
 
     /** Defining file name. */
     public filename: (string|null);
+
+    /** Defining file line number. */
+    public line: (number|null);
 
     /** Reference to the root namespace. */
     public readonly root: Root;

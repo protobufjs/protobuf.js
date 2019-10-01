@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.8.8 (c) 2016, daniel wirtz
- * compiled thu, 19 jul 2018 00:33:25 utc
+ * compiled tue, 01 oct 2019 13:25:48 utc
  * licensed under the bsd-3-clause license
  * see: https://github.com/dcodeio/protobuf.js for details
  */
@@ -1117,7 +1117,8 @@ utf8.write = function utf8_write(string, buffer, offset) {
 var converter = exports;
 
 var Enum = require(14),
-    util = require(33);
+    util = require(33),
+    wrappers = require(37);
 
 /**
  * Generates a partial value fromObject conveter.
@@ -1143,7 +1144,9 @@ function genValuePartial_fromObject(gen, field, fieldIndex, prop) {
                     ("break");
             } gen
             ("}");
-        } else gen
+        } else if (wrappers[field.resolvedType.fullName]) gen
+            ("m%s=types[%i].fromObject(d%s)", prop, fieldIndex, prop);
+          else gen
             ("if(typeof d%s!==\"object\")", prop)
                 ("throw TypeError(%j)", field.fullName + ": object expected")
             ("m%s=types[%i].fromObject(d%s)", prop, fieldIndex, prop);
@@ -1403,7 +1406,7 @@ converter.toObject = function toObject(mtype) {
     /* eslint-enable no-unexpected-multiline, block-scoped-var, no-redeclare */
 };
 
-},{"14":14,"33":33}],12:[function(require,module,exports){
+},{"14":14,"33":33,"37":37}],12:[function(require,module,exports){
 "use strict";
 module.exports = decoder;
 
@@ -2798,7 +2801,7 @@ Namespace.arrayToJSON = arrayToJSON;
 Namespace.isReservedId = function isReservedId(reserved, id) {
     if (reserved)
         for (var i = 0; i < reserved.length; ++i)
-            if (typeof reserved[i] !== "string" && reserved[i][0] <= id && reserved[i][1] >= id)
+            if (typeof reserved[i] !== "string" && reserved[i][0] <= id && reserved[i][1] > id)
                 return true;
     return false;
 };
@@ -3229,6 +3232,12 @@ function ReflectionObject(name, options) {
      * @type {string|null}
      */
     this.filename = null;
+
+    /**
+     * Defining file line number.
+     * @type {number|null}
+     */
+    this.line = null;
 }
 
 Object.defineProperties(ReflectionObject.prototype, {
