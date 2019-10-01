@@ -91,7 +91,7 @@ function parse(source, root, options) {
         var filename = parse.filename;
         if (!insideTryCatch)
             parse.filename = null;
-        return Error("illegal " + (name || "token") + " '" + token + "' (" + (filename ? filename + ", " : "") + "line " + tn.line + ")");
+        return Error("illegal " + (name || "token") + " '" + token + "' (" + (filename ? filename + ", " : "") + "line " + tn.line + " offset " + tn.offset + " )");
     }
 
     function readString() {
@@ -290,8 +290,9 @@ function parse(source, root, options) {
             if (fnElse)
                 fnElse();
             skip(";");
+            var trailingComment = cmnt(trailingLine)
             if (obj && typeof obj.comment !== "string")
-                obj.comment = cmnt(trailingLine); // try line-type comment if no block
+                obj.comment = trailingComment; // try line-type comment if no block
         }
     }
 

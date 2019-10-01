@@ -103,6 +103,7 @@ function tokenize(source, alternateCommentMode) {
     var offset = 0,
         length = source.length,
         line = 1,
+        trailerCommentText = false,
         commentType = null,
         commentText = null,
         commentLine = 0,
@@ -123,6 +124,21 @@ function tokenize(source, alternateCommentMode) {
         return Error("illegal " + subject + " (line " + line + ")");
     }
 
+    function advance() {
+        return advanceTo(offset + 1)
+    }
+
+    function advanceTo(to) {
+        for (let index = offset + 1; index <= to; index++) {
+            if (charAt(index) === '\n') {
+                line++
+            }            
+        }
+        
+        offset = to
+        return offset
+    }
+
     /**
      * Reads a string till its end.
      * @returns {string} String read
@@ -134,7 +150,7 @@ function tokenize(source, alternateCommentMode) {
         var match = re.exec(source);
         if (!match)
             throw illegal("string");
-        offset = re.lastIndex;
+        advanceTo(re.lastIndex);
         push(stringDelim);
         stringDelim = null;
         return unescape(match[1]);
@@ -158,8 +174,7 @@ function tokenize(source, alternateCommentMode) {
      * @inner
      */
     function setComment(start, end) {
-        commentType = source.charAt(start++);
-        commentLine = line;
+        commentType = source.charAt(start++);        
         commentLineEmpty = false;
         var lookback;
         if (alternateCommentMode) {
@@ -229,14 +244,14 @@ function tokenize(source, alternateCommentMode) {
                 return null;
             repeat = false;
             while (whitespaceRe.test(curr = charAt(offset))) {
-                if (curr === "\n")
-                    ++line;
-                if (++offset === length)
+                if (advance() === length)
                     return null;
             }
 
             if (charAt(offset) === "/") {
-                if (++offset === length) {
+                commentLine = line;
+
+                if (advance() === length) {
                     throw illegal("comment");
                 }
                 if (charAt(offset) === "/") { // Line
@@ -244,17 +259,17 @@ function tokenize(source, alternateCommentMode) {
                         // check for triple-slash comment
                         isDoc = charAt(start = offset + 1) === "/";
 
-                        while (charAt(++offset) !== "\n") {
+                        while (charAt(advance()) !== "\n") {
                             if (offset === length) {
                                 return null;
                             }
                         }
-                        ++offset;
+                        advance()
                         if (isDoc) {
                             setComment(start, offset - 1);
                         }
-                        ++line;
-                        repeat = true;
+
+                        repeat = !trailerCommentText;
                     } else {
                         // check for double-slash comments, consolidating consecutive lines
                         start = offset;
@@ -262,45 +277,46 @@ function tokenize(source, alternateCommentMode) {
                         if (isDoubleSlashCommentLine(offset)) {
                             isDoc = true;
                             do {
-                                offset = findEndOfLine(offset);
+                                advanceTo(findEndOfLine(offset));
                                 if (offset === length) {
                                     break;
                                 }
-                                offset++;
+                                advance();
                             } while (isDoubleSlashCommentLine(offset));
                         } else {
-                            offset = Math.min(length, findEndOfLine(offset) + 1);
+                            advance(Math.min(length, findEndOfLine(offset) + 1));
                         }
                         if (isDoc) {
                             setComment(start, offset);
                         }
-                        line++;
-                        repeat = true;
+                        
+                        repeat = !trailerCommentText;
                     }
                 } else if ((curr = charAt(offset)) === "*") { /* Block */
                     // check for /** (regular comment mode) or /* (alternate comment mode)
                     start = offset + 1;
                     isDoc = alternateCommentMode || charAt(start) === "*";
-                    do {
-                        if (curr === "\n") {
-                            ++line;
-                        }
-                        if (++offset === length) {
+                    do {                        
+                        if (advance() === length) {
                             throw illegal("comment");
                         }
                         prev = curr;
                         curr = charAt(offset);
                     } while (prev !== "*" || curr !== "/");
-                    ++offset;
+                    advance();
                     if (isDoc) {
                         setComment(start, offset - 2);
                     }
-                    repeat = true;
+                    repeat = !trailerCommentText;
                 } else {
                     return "/";
                 }
             }
         } while (repeat);
+
+        if (trailerCommentText) {
+            return null
+        }
 
         // offset !== length if we got here
 
@@ -310,7 +326,7 @@ function tokenize(source, alternateCommentMode) {
         if (!delim)
             while (end < length && !delimRe.test(charAt(end)))
                 ++end;
-        var token = source.substring(offset, offset = end);
+        var token = source.substring(offset, advanceTo(end));
         if (token === "\"" || token === "'")
             stringDelim = token;
         return token;
@@ -370,29 +386,40 @@ function tokenize(source, alternateCommentMode) {
     function cmnt(trailingLine) {
         var ret = null;
         if (trailingLine === undefined) {
-            if (commentLine === line - 1 && (alternateCommentMode || commentType === "*" || commentLineEmpty)) {
+            if (commentLine < line && (alternateCommentMode || commentType === "*" || commentLineEmpty)) {
                 ret = commentText;
+                commentText = null
             }
-        } else {
+        } else {            
             /* istanbul ignore else */
             if (commentLine < trailingLine) {
+                trailerCommentText = true;
                 peek();
+                trailerCommentText = false;
             }
             if (commentLine === trailingLine && !commentLineEmpty && (alternateCommentMode || commentType === "/")) {
                 ret = commentText;
+                commentText = null
             }
         }
+
+        
         return ret;
     }
 
-    return Object.defineProperty({
+    return Object.defineProperties({
         next: next,
         peek: peek,
         push: push,
         skip: skip,
         cmnt: cmnt
-    }, "line", {
-        get: function() { return line; }
+    }, {        
+        "line": {
+            get: function() { return line; }        
+        },
+        "offset": {
+            get: function() { return offset; }        
+        }
     });
     /* eslint-enable callback-return */
 }
