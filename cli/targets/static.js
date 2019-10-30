@@ -41,9 +41,10 @@ function static_target(root, options, callback) {
             }
             push("// Exported root namespace");
         }
+        var includeServices = config.services;
         var rootProp = util.safeProp(config.root || "default");
         push((config.es6 ? "const" : "var") + " $root = $protobuf.roots" + rootProp + " || ($protobuf.roots" + rootProp + " = {});");
-        buildNamespace(null, root);
+        buildNamespace(null, root, includeServices);
         return callback(null, out.join("\n"));
     } catch (err) {
         return callback(err);
@@ -106,10 +107,12 @@ function aOrAn(name) {
         : "a ") + name;
 }
 
-function buildNamespace(ref, ns) {
+function buildNamespace(ref, ns, includeServices) {
     if (!ns)
         return;
-    if (ns.name !== "") {
+
+    var shouldGenerateServiceForNS = !(ns instanceof Service && !includeServices);
+    if (ns.name !== "" && shouldGenerateServiceForNS) {
         push("");
         if (!ref && config.es6)
             push("export const " + escapeName(ns.name) + " = " + escapeName(ref) + "." + escapeName(ns.name) + " = (() => {");
@@ -120,9 +123,9 @@ function buildNamespace(ref, ns) {
 
     if (ns instanceof Type) {
         buildType(undefined, ns);
-    } else if (ns instanceof Service)
+    } else if (ns instanceof Service && includeServices)
         buildService(undefined, ns);
-    else if (ns.name !== "") {
+    else if (ns.name !== "" && shouldGenerateServiceForNS) {
         push("");
         pushComment([
             ns.comment || "Namespace " + ns.name + ".",
@@ -136,9 +139,9 @@ function buildNamespace(ref, ns) {
         if (nested instanceof Enum)
             buildEnum(ns.name, nested);
         else if (nested instanceof Namespace)
-            buildNamespace(ns.name, nested);
+            buildNamespace(ns.name, nested, includeServices);
     });
-    if (ns.name !== "") {
+    if (ns.name !== "" && shouldGenerateServiceForNS) {
         push("");
         push("return " + escapeName(ns.name) + ";");
         --indent;
