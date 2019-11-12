@@ -129,7 +129,7 @@ function tokenize(source, alternateCommentMode) {
     }
 
     function advanceTo(to) {
-        for (let index = offset + 1; index <= to; index++) {
+        for (var index = offset + 1; index <= to; index++) {
             if (charAt(index) === '\n') {
                 line++
             }            
