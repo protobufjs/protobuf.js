@@ -77,7 +77,7 @@
     "gulp-uglify": "^3.0.0",
     "istanbul": "^0.4.5",
     "jaguarjs-jsdoc": "github:dcodeIO/jaguarjs-jsdoc",
-    "jsdoc": "^3.5.5",
+    "jsdoc": "^3.6.3",
     "minimist": "^1.2.0",
     "reflect-metadata": "^0.1.12",
     "semver": "^5.5.0",
