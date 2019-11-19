@@ -1,3 +1,8 @@
+# [1.0.1](https://github.com/apollographql/protobuf.js/releases/tag/1.0.1)
+
+## Fixed
+[:hash:](https://github.com/apollographql/protobuf.js/commit/19bf8d5ae77c0f272a625a2d93140bb65d6e480b) Rename pbjs and pbts to include apollo- prefix and update version.<br />
+
 # [1.0.0](https://github.com/apollographql/protobuf.js/releases/tag/1.0.0)
 
 ## Fixed
