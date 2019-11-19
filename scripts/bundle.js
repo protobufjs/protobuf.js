@@ -23,7 +23,7 @@ var license = [
     " * protobuf.js v${version} (c) 2016, daniel wirtz",
     " * compiled ${date}",
     " * licensed under the bsd-3-clause license",
-    " * see: https://github.com/dcodeio/protobuf.js for details",
+    " * see: https://github.com/apollographql/protobuf.js for details",
     " */"
 ].join("\n") + "\n";
 /*eslint-enable no-template-curly-in-string*/

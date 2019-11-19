@@ -7,8 +7,8 @@ Usage
 -----
 
 ```js
-var protobuf   = require("protobufjs"), // requires the full library
-    descriptor = require("protobufjs/ext/descriptor");
+var protobuf   = require("@apollo/protobufjs"), // requires the full library
+    descriptor = require("@apollo/protobufjs/ext/descriptor");
 
 var root = ...;
 

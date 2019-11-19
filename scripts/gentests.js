@@ -30,7 +30,7 @@ var fs   = require("fs"),
         if (err)
             throw err;
         var pathToProtobufjs = path.relative(path.dirname(out), "minimal").replace(/\\/g, "/");
-        fs.writeFileSync(out, output.replace(/"protobufjs\/minimal"/g, JSON.stringify(pathToProtobufjs)));
+        fs.writeFileSync(out, output.replace(/"@apollo\/protobufjs\/minimal"/g, JSON.stringify(pathToProtobufjs)));
         process.stdout.write("pbjs: " + file + " -> " + out + "\n");
         try {
             require(path.join(__dirname, "..", out));
@@ -62,7 +62,7 @@ process.stdout.write("\n");
         if (err)
             throw err;
         var pathToProtobufjs = path.relative(path.dirname(out), "").replace(/\\/g, "/");
-        output = output.replace(/"protobufjs"/g, JSON.stringify(pathToProtobufjs));
+        output = output.replace(/"@apollo\/protobufjs"/g, JSON.stringify(pathToProtobufjs));
         fs.writeFileSync(out, output);
         process.stdout.write("pbts: " + file + " -> " + out + "\n");
     });

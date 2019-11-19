@@ -1,7 +1,7 @@
 /*eslint-disable block-scoped-var, no-redeclare, no-control-regex, no-prototype-builtins*/
 "use strict";
 
-var $protobuf = require("protobufjs");
+var $protobuf = require("@apollo/protobufjs");
 
 var $root = ($protobuf.roots.split || ($protobuf.roots.split = new $protobuf.Root()))
 .setOptions({

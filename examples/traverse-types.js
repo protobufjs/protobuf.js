@@ -2,7 +2,7 @@
 // for each message type within.
 
 /*eslint-disable strict, no-console*/
-var protobuf = require(".."); // require("protobufjs");
+var protobuf = require(".."); // require("@apollo/protobufjs");
 
 // traverse-types.proto
 var proto = "syntax=\"proto3\";\

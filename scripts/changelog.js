@@ -34,7 +34,7 @@ var validCategories = {
 };
 var breakingFallback = /removed|stripped|dropped/i;
 
-var repo = "https://github.com/dcodeIO/protobuf.js";
+var repo = "https://github.com/apollographql/protobuf.js";
 
 gitSemverTags(function(err, tags) {
     if (err)
