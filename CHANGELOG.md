@@ -1,3 +1,39 @@
+# [1.0.0](https://github.com/apollographql/protobuf.js/releases/tag/1.0.0)
+
+## Fixed
+[:hash:](https://github.com/apollographql/protobuf.js/commit/fb5d62fdc9bba52036f8ea3a7ec17c3c1292c99f) Fix minify build error in root.js<br />
+[:hash:](https://github.com/apollographql/protobuf.js/commit/7bacfc8f34a1e096bca38a0ea38ecee089e8cdb5) fix typo ([#1241](https://github.com/apollographql/protobuf.js/issues/1241))<br />
+[:hash:](https://github.com/apollographql/protobuf.js/commit/41b91535ce2737649d6b500131abc895f9f99fe8) fix stale links to API documentation ([#1235](https://github.com/apollographql/protobuf.js/issues/1235))<br />
+[:hash:](https://github.com/apollographql/protobuf.js/commit/314b2dbbbc5a98b59cd81191c635dadc2a5e0584) Fix spacing in root.js again<br />
+[:hash:](https://github.com/apollographql/protobuf.js/commit/f01e1d2c118f7d82fcc990ac7efe3b58588fb9ec) Fix spacing of root.js<br />
+[:hash:](https://github.com/apollographql/protobuf.js/commit/b7ce052ff9a6e32a1c1ed94e8bac6cac324ac73c) Properly iterate and return method descriptors<br />
+[:hash:](https://github.com/apollographql/protobuf.js/commit/b5b66321762a24c5ac2753b68331cbe115969da7) run npm audit fix ([#1208](https://github.com/apollographql/protobuf.js/issues/1208))<br />
+[:hash:](https://github.com/apollographql/protobuf.js/commit/0ffa2a3cf943daef946753277d95b43df853122f) Fix indentation to match existing styles.<br />
+[:hash:](https://github.com/apollographql/protobuf.js/commit/4af852395e82ba061b4e81fd19b3b4cd48342488) Fixed descriptor README code problem<br />
+[:hash:](https://github.com/apollographql/protobuf.js/commit/1f32910873dab94c0c475e22dbdfc2d70f640a01) npm audit fixes<br />
+[:hash:](https://github.com/apollographql/protobuf.js/commit/8a858634f3add3a2d8567f72699b907e9f543eca) Import Long types<br />
+[:hash:](https://github.com/apollographql/protobuf.js/commit/15ee83ffa6cfd755ea04208110ddb5003adf98b1) Bundled definitions were loaded correctly<br />
+[:hash:](https://github.com/apollographql/protobuf.js/commit/6fa4c3487c50f9e2647a384bf64cfb009752b6a7) Second part of a reserved range is exclusive ([#1122](https://github.com/apollographql/protobuf.js/issues/1122))<br />
+
+## CLI
+[:hash:](https://github.com/apollographql/protobuf.js/commit/7485d4b20b17adf8888ebf9cdc0e0b7a79f3b2f2) Add missing 'force-number' pbjs option<br />
+
+## Docs
+[:hash:](https://github.com/apollographql/protobuf.js/commit/02482a69f0aaf32731b0155deec3a48cfa4c4151) Remove non-existent method from README ([#1119](https://github.com/apollographql/protobuf.js/issues/1119))<br />
+
+## Other
+[:hash:](https://github.com/apollographql/protobuf.js/commit/d16084c520fe20c4f33fda209c57b29fb0569262) package-lock changes after running npm install<br />
+[:hash:](https://github.com/apollographql/protobuf.js/commit/8f311df44bbad4e31b3f4f1f12d4da78eaa648ca) Change all appropriate references from protobufjs to @apollo/protobufjs<br />
+[:hash:](https://github.com/apollographql/protobuf.js/commit/e91de84fe2dea787f168c5b513643d8f7c96c7ad) Update build artifacts after running `npm run make`<br />
+[:hash:](https://github.com/apollographql/protobuf.js/commit/0e316cf2c875ee71e922d89640e90138e0d012cd) Update jsdoc version to 3.6.3 to make the project build with Node 12<br />
+[:hash:](https://github.com/apollographql/protobuf.js/commit/4d490eb1bf71f5c5c4c9d253a2ffd36edea12386) Use Object.hasOwnProperty instead of prototype ([#1233](https://github.com/apollographql/protobuf.js/issues/1233))<br />
+[:hash:](https://github.com/apollographql/protobuf.js/commit/2e1d1ace02322ac742edd5e0208fa1d512d4a817) Revert generated files, since other pull requests do not appear to<br />
+[:hash:](https://github.com/apollographql/protobuf.js/commit/c72c752352347555406bafd7121acaed240fbf23) be more explicit about tested versions of nodejs ([#1213](https://github.com/apollographql/protobuf.js/issues/1213))<br />
+[:hash:](https://github.com/apollographql/protobuf.js/commit/299f0ceed2087044bbc53dc20a274947a672c481) //github.com/protobufjs/protobuf.js/issues/1200<br />
+[:hash:](https://github.com/apollographql/protobuf.js/commit/ea7b9c6fcfafab92d0b96fb372831afd14561943) Remove useless config import<br />
+[:hash:](https://github.com/apollographql/protobuf.js/commit/9450f4d340519ad84a09e515a2795144d222e058) Add working rpcImpl with grpc node package<br />
+[:hash:](https://github.com/apollographql/protobuf.js/commit/892db94d0036e0e89f0cf9b4af21f6c349aadd00) allow file-level options everywhere in the file<br />
+
 # [6.8.8](https://github.com/dcodeIO/protobuf.js/releases/tag/6.8.8)
 
 ## Fixed
