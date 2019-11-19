@@ -1,6 +1,6 @@
 {
   "name": "@apollo/protobufjs",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "versionScheme": "~",
   "description": "Protocol Buffers for JavaScript (& TypeScript).",
   "author": "Daniel Wirtz <dcode+protobufjs@dcode.io>",
@@ -20,8 +20,8 @@
   "main": "index.js",
   "types": "index.d.ts",
   "bin": {
-    "pbjs": "bin/pbjs",
-    "pbts": "bin/pbts"
+    "apollo-pbjs": "bin/pbjs",
+    "apollo-pbts": "bin/pbts"
   },
   "scripts": {
     "bench": "node bench",
