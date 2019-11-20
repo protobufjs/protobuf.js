@@ -1,3 +1,10 @@
+# [1.0.2](https://github.com/apollographql/protobuf.js/releases/tag/1.0.2)
+
+## Other
+[:hash:](https://github.com/apollographql/protobuf.js/commit/ec3577b8cc18f5478ea0b5f5d20145039cd4f8e2) update version to 1.0.2 and npm install<br />
+[:hash:](https://github.com/apollographql/protobuf.js/commit/6392ab621710868588f629f229d8d2743f4d8b03) commit changes after running npm install<br />
+[:hash:](https://github.com/apollographql/protobuf.js/commit/e58bb28d6c8f80c96a48c1b7f27b0b0f9cede058) update peerDependencies in pacakge.standalone.json @apollo/protobufjs version to be the correct 1.0.1<br />
+
 # [1.0.1](https://github.com/apollographql/protobuf.js/releases/tag/1.0.1)
 
 ## Fixed
