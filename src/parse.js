@@ -86,6 +86,12 @@ function parse(source, root, options) {
 
     var applyCase = options.keepCase ? function(name) { return name; } : util.camelCase;
 
+    function skip_all(token, optional) {
+        if (skip(token, optional)) {
+            while (skip(token, true)) { /* loop */ }
+        }
+    }
+
     /* istanbul ignore next */
     function illegal(token, name, insideTryCatch) {
         var filename = parse.filename;
@@ -142,7 +148,7 @@ function parse(source, root, options) {
             else
                 target.push([ start = parseId(next()), skip("to", true) ? parseId(next()) : start ]);
         } while (skip(",", true));
-        skip(";");
+        skip_all(";");
     }
 
     function parseNumber(token, insideTryCatch) {
@@ -212,7 +218,7 @@ function parse(source, root, options) {
             throw illegal(pkg, "name");
 
         ptr = ptr.define(pkg);
-        skip(";");
+        skip_all(";");
     }
 
     function parseImport() {
@@ -231,7 +237,7 @@ function parse(source, root, options) {
                 break;
         }
         token = readString();
-        skip(";");
+        skip_all(";");
         whichImports.push(token);
     }
 
@@ -244,11 +250,13 @@ function parse(source, root, options) {
         if (!isProto3 && syntax !== "proto2")
             throw illegal(syntax, "syntax");
 
-        skip(";");
+        skip_all(";");
     }
 
     function parseCommon(parent, token) {
         switch (token) {
+            case ";":
+                return true;
 
             case "option":
                 parseOption(parent, token);
@@ -286,11 +294,11 @@ function parse(source, root, options) {
             var token;
             while ((token = next()) !== "}")
                 fnIf(token);
-            skip(";", true);
+            skip_all(";", true);
         } else {
             if (fnElse)
                 fnElse();
-            skip(";");
+            skip_all(";");
             if (obj && typeof obj.comment !== "string")
                 obj.comment = cmnt(trailingLine); // try line-type comment if no block
         }
@@ -308,7 +316,6 @@ function parse(source, root, options) {
                 return;
 
             switch (token) {
-
                 case "map":
                     parseMapField(type, token);
                     break;
@@ -370,7 +377,7 @@ function parse(source, root, options) {
             /* istanbul ignore else */
             if (token === "option") {
                 parseOption(field, token);
-                skip(";");
+                skip_all(";");
             } else
                 throw illegal(token);
 
@@ -407,7 +414,7 @@ function parse(source, root, options) {
 
                 case "option":
                     parseOption(type, token);
-                    skip(";");
+                    skip_all(";");
                     break;
 
                 case "required":
@@ -454,7 +461,7 @@ function parse(source, root, options) {
             /* istanbul ignore else */
             if (token === "option") {
                 parseOption(field, token);
-                skip(";");
+                skip_all(";");
             } else
                 throw illegal(token);
 
@@ -474,7 +481,7 @@ function parse(source, root, options) {
         ifBlock(oneof, function parseOneOf_block(token) {
             if (token === "option") {
                 parseOption(oneof, token);
-                skip(";");
+                skip_all(";");
             } else {
                 push(token);
                 parseField(oneof, "optional");
@@ -492,9 +499,13 @@ function parse(source, root, options) {
         var enm = new Enum(token);
         ifBlock(enm, function parseEnum_block(token) {
           switch(token) {
+
+            case ";":
+                break;
+
             case "option":
               parseOption(enm, token);
-              skip(";");
+              skip_all(";");
               break;
 
             case "reserved":
@@ -522,7 +533,7 @@ function parse(source, root, options) {
             /* istanbul ignore else */
             if (token === "option") {
                 parseOption(dummy, token); // skip
-                skip(";");
+                skip_all(";");
             } else
                 throw illegal(token);
 
@@ -649,14 +660,20 @@ function parse(source, root, options) {
         var method = new Method(name, type, requestType, responseType, requestStream, responseStream);
         method.comment = commentText;
         ifBlock(method, function parseMethod_block(token) {
+            switch (token) {
 
-            /* istanbul ignore else */
-            if (token === "option") {
-                parseOption(method, token);
-                skip(";");
-            } else
-                throw illegal(token);
+                case ";":
+                    break;
 
+                case "option":
+                    parseOption(method, token);
+                    skip_all(";");
+                    break;
+
+                default:
+                        throw illegal(token);
+
+            }
         });
         parent.add(method);
     }
@@ -691,6 +708,8 @@ function parse(source, root, options) {
     var token;
     while ((token = next()) !== null) {
         switch (token) {
+            case ";":
+                break;
 
             case "package":
 
@@ -722,7 +741,7 @@ function parse(source, root, options) {
             case "option":
 
                 parseOption(ptr, token);
-                skip(";");
+                skip_all(";");
                 break;
 
             default:
