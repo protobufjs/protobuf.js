@@ -121,21 +121,25 @@ function Writer() {
     // part is just a linked list walk calling operations with already prepared values.
 }
 
+var create = function create() {
+    return util.Buffer
+        ? function create_buffer_setup() {
+            return (Writer.create = function create_buffer() {
+                return new BufferWriter();
+            })();
+        }
+        /* istanbul ignore next */
+        : function create_array() {
+            return new Writer();
+        };
+};
+
 /**
  * Creates a new writer.
  * @function
  * @returns {BufferWriter|Writer} A {@link BufferWriter} when Buffers are supported, otherwise a {@link Writer}
  */
-Writer.create = util.Buffer
-    ? function create_buffer_setup() {
-        return (Writer.create = function create_buffer() {
-            return new BufferWriter();
-        })();
-    }
-    /* istanbul ignore next */
-    : function create_array() {
-        return new Writer();
-    };
+Writer.create = create();
 
 /**
  * Allocates a buffer of the specified size.
@@ -456,4 +460,6 @@ Writer.prototype.finish = function finish() {
 
 Writer._configure = function(BufferWriter_) {
     BufferWriter = BufferWriter_;
+    Writer.create = create();
+    BufferWriter._configure();
 };
