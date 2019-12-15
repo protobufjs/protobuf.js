@@ -566,6 +566,14 @@ function parse(source, root, options) {
                     skip(":");
                     if (peek() === "{")
                         parseOptionValue(parent, name + "." + token);
+                    else if (skip("[", true)) {
+                        let i = 0;
+                        do {
+                            parseOptionValue(parent, name + "." + token + "[" + i + "]");
+                            skip(',', true);
+                            ++i;
+                        } while (!skip("]", true));
+                    }
                     else
                         setOption(parent, name + "." + token, readValue(true));
                 }
