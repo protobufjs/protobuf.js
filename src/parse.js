@@ -567,9 +567,10 @@ function parse(source, root, options) {
                     if (peek() === "{")
                         parseOptionValue(parent, name + "." + token);
                     else if (skip("[", true)) {
-                        let i = 0;
+                        var i = 0;
+                        var prefix = name + "." + token;
                         do {
-                            parseOptionValue(parent, name + "." + token + "[" + i + "]");
+                            parseOptionValue(parent, prefix + "[" + i + "]");
                             skip(',', true);
                             ++i;
                         } while (!skip("]", true));
