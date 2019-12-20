@@ -131,12 +131,30 @@ wrappers[".google.protobuf.Timestamp"] = {
         // compatible in a more explicit way. it seems dangerous to assume
         // that anyone who was using .toJSON() was not relying on the old
         // behaviour.
+        if (!options)
+            options = {};
 
         // decode value if requested
         if (options && options.json) {
             return new Date(message.seconds*1000 + message.nanos/1000000).toISOString();
         }
 
-        return this.toObject(message, options);
+        var object = {};
+        if (options.defaults) {
+            if ($util.Long) {
+                var long = new $util.Long(0, 0, false);
+                object.seconds = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+            } else
+                object.seconds = options.longs === String ? "0" : 0;
+            object.nanos = 0;
+        }
+        if (message.seconds != null && message.hasOwnProperty("seconds"))
+            if (typeof message.seconds === "number")
+                object.seconds = options.longs === String ? String(message.seconds) : message.seconds;
+            else
+                object.seconds = options.longs === String ? $util.Long.prototype.toString.call(message.seconds) : options.longs === Number ? new $util.LongBits(message.seconds.low >>> 0, message.seconds.high >>> 0).toNumber() : message.seconds;
+        if (message.nanos != null && message.hasOwnProperty("nanos"))
+            object.nanos = message.nanos;
+        return object;
     }
 };
