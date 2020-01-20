@@ -23,7 +23,7 @@ var root = protobuf.Root.fromJSON({
     }
 }).addJSON(protobuf.common["google/protobuf/any.proto"].nested).resolveAll();
 
-var Any = root.lookupType("protobuf.Any"),
+var Any = root.lookupType("google.protobuf.Any"),
     Foo = root.lookupType(".Foo"),
     Bar = root.lookupType(".Bar");
 

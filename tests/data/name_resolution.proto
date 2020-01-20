@@ -1,0 +1,16 @@
+syntax = "proto3";
+package mytest;
+
+message Foo {
+    string foo_outer_field = 1;
+}
+
+message MyMessage {
+    message MyInnerMessage {
+        message Foo {
+            string foo_inner_field = 1;
+        }
+    }
+
+    Foo foo_field = 1;
+}
