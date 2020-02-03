@@ -2,10 +2,7 @@
 var child_process = require("child_process"),
     path     = require("path"),
     fs       = require("fs"),
-    pkg      = require("./package.json"),
-    util     = require("./util");
-
-util.setup();
+    pkg      = require("./package.json");
 
 var minimist = require("minimist"),
     chalk    = require("chalk"),
