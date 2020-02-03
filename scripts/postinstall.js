@@ -4,9 +4,6 @@ var path = require("path"),
     fs   = require("fs"),
     pkg  = require(path.join(__dirname, "..", "package.json"));
 
-// ensure that there is a node_modules folder for cli dependencies
-try { fs.mkdirSync(path.join(__dirname, "..", "cli", "node_modules")); } catch (e) {/**/}
-
 // check version scheme used by dependents
 if (!pkg.versionScheme)
     return;
