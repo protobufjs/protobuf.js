@@ -228,6 +228,8 @@ Namespace.prototype.add = function add(object) {
             if (prev instanceof Namespace && object instanceof Namespace && !(prev instanceof Type || prev instanceof Service)) {
                 // replace plain namespace but keep existing nested elements and options
                 var nested = prev.nestedArray;
+                if (prev.filename)
+                    object.filename = prev.filename;
                 for (var i = 0; i < nested.length; ++i)
                     object.add(nested[i]);
                 this.remove(prev);
@@ -272,8 +274,7 @@ Namespace.prototype.remove = function remove(object) {
  * @param {*} [json] Nested types to create from JSON
  * @returns {Namespace} Pointer to the last namespace created or `this` if path is empty
  */
-Namespace.prototype.define = function define(path, json) {
-
+Namespace.prototype.define = function define(path, filename, json) {
     if (util.isString(path))
         path = path.split(".");
     else if (!Array.isArray(path))
@@ -290,6 +291,8 @@ Namespace.prototype.define = function define(path, json) {
                 throw Error("path conflicts with non-namespace objects");
         } else
             ptr.add(ptr = new Namespace(part));
+            if (!ptr.filename)
+                ptr.filename = filename;
     }
     if (json)
         ptr.addJSON(json);
