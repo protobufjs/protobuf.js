@@ -1,0 +1,7 @@
+syntax = "proto2";
+
+message Role {
+    optional uint32 parent_id     = 8 [(dry.pblint.rules).uint32.gte = 0];
+    optional uint32 user_limit    = 10 [(dry.pblint.rules).uint32.gte = 0];
+    optional uint32 role_type     = 9 [(dry.pblint.rules).uint32 = {in: [0, 1]}];
+}
