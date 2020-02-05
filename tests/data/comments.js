@@ -86,11 +86,11 @@ $root.Test1 = (function() {
     Test1.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.field1 != null && message.hasOwnProperty("field1"))
+        if (message.field1 != null && Object.hasOwnProperty.call(message, "field1"))
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.field1);
-        if (message.field2 != null && message.hasOwnProperty("field2"))
+        if (message.field2 != null && Object.hasOwnProperty.call(message, "field2"))
             writer.uint32(/* id 2, wireType 0 =*/16).uint32(message.field2);
-        if (message.field3 != null && message.hasOwnProperty("field3"))
+        if (message.field3 != null && Object.hasOwnProperty.call(message, "field3"))
             writer.uint32(/* id 3, wireType 0 =*/24).bool(message.field3);
         return writer;
     };
