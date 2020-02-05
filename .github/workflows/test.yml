@@ -16,8 +16,8 @@ jobs:
       run: npm install
     - name: "Lint sources"
       run: npm run lint:sources -- --max-warnings 0
-    - name: "Lint definitions"
-      run: npm run lint:definitions
+    - name: "Lint types"
+      run: npm run lint:types
   build:
     runs-on: ubuntu-latest
     needs: lint
