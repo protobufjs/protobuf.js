@@ -36,3 +36,10 @@ export class Test2 implements ITest2 {
     public static toObject(message: Test2, options?: $protobuf.IConversionOptions): { [k: string]: any };
     public toJSON(): { [k: string]: any };
 }
+
+export enum Test3 {
+    ONE = 1,
+    TWO = 2,
+    THREE = 3,
+    FOUR = 4
+}
