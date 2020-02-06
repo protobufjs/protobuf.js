@@ -318,10 +318,10 @@ function begin(element, is_interface) {
         seen[element.longname] = element;
     } else
         writeln();
-    // FIXME: something changed in JSDoc 3.6.0? so that @exports + @enum does
+    // ????: something changed in JSDoc 3.6.0? so that @exports + @enum does
     // no longer yield a 'global' scope, but is some sort of unscoped module
     // element now. The additional condition added below works around this.
-    if ((element.scope === "global" || (element.isEnum && element.scope === undefined)) && !options.module)
+    if ((element.scope === "global" || element.isEnum && element.scope === undefined) && !options.module)
         write("export ");
 }
 
@@ -435,9 +435,10 @@ function handleElement(element, parent) {
     else switch (element.kind) {
         case "module":
             if (element.isEnum) {
-                handleEnum(element,parent);
+                handleEnum(element, parent);
                 break;
             }
+            // eslint-disable-line no-fallthrough
         case "namespace":
             handleNamespace(element, parent);
             break;
@@ -576,7 +577,7 @@ function handleClass(element, parent) {
 }
 
 // handles an enum
-function handleEnum(element, parent) {
+function handleEnum(element) {
     begin(element);
 
     var stringEnum = false;
@@ -613,7 +614,7 @@ function handleEnum(element, parent) {
 // handles a namespace or class member
 function handleMember(element, parent) {
     if (element.isEnum) {
-        handleEnum(element, parent);
+        handleEnum(element);
         return;
     }
     begin(element);
