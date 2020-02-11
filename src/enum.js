@@ -114,7 +114,7 @@ Enum.prototype.toJSON = function toJSON(toJSONOptions) {
  * @param {string} name Value name
  * @param {number} id Value id
  * @param {string} [comment] Comment, if any
- * @param {Object.<string, string>} [options] Options, if any
+ * @param {Object.<string, *>|undefined} [options] Options, if any
  * @returns {Enum} `this`
  * @throws {TypeError} If arguments are invalid
  * @throws {Error} If there is already a value with this name or id
