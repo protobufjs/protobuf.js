@@ -22,7 +22,8 @@ static_target.description = "Static code without reflection (non-functional on i
 
 function static_target(root, options, callback) {
     var importInfo = {
-        moduleAliases: {},
+        aliasToModule: {},
+        moduleToAlias: {},
         exportNames: {},
     };
     config = options;
@@ -34,15 +35,14 @@ function static_target(root, options, callback) {
             // of the form `import "module"` is also included.
             for (let i of root.imports) {
                 var moduleName = getModuleName(i);
-                importInfo.moduleAliases[moduleName] = alias(moduleName);
+                assignAlias(moduleName, importInfo);
                 push("import \"" + moduleName + "\";");
             }
             push("");
             //
             for (let i of root.imports) {
                 var moduleName = getModuleName(i);
-                importInfo.moduleAliases[moduleName] = alias(moduleName);
-                push("import * as " + importInfo.moduleAliases[moduleName] + " from \"" + moduleName + "\";");
+                push("import * as " + importInfo.moduleToAlias[moduleName] + " from \"" + moduleName + "\";");
             }
             push("");
         }
@@ -79,11 +79,19 @@ function static_target(root, options, callback) {
     }
 }
 
-function alias(path) {
-    return escapeName(path.replace(/^([A-Z])|[\s.\/_-]+(\w)/g, function(match, p1, p2, offset) {
+function assignAlias(moduleName, importInfo) {
+    if (importInfo.moduleToAlias[moduleName])
+        return importInfo.moduleToAlias[moduleName];
+
+    let alias = escapeName(moduleName.replace(/^([A-Z])|[\s.\/_-]+(\w)/g, function(match, p1, p2, offset) {
         if (p2) return p2.toUpperCase();
         return p1.toLowerCase();
     }));
+    while (importInfo.aliasToModule[alias])
+        alias += '_';
+    importInfo.moduleToAlias[moduleName] = alias;
+    importInfo.aliasToModule[alias] = moduleName;
+    return alias
 }
 
 function getModuleName(path) {
@@ -407,9 +415,9 @@ function toJsType(field, bundle, importInfo) {
                         break;
                     }
 
-                    for (var moduleName in importInfo.moduleAliases){
+                    for (var moduleName in importInfo.moduleToAlias) {
                         if (fieldModuleName && fieldModuleName.endsWith(moduleName)) {
-                            type = importInfo.moduleAliases[moduleName] + "." + type;
+                            type = importInfo.moduleToAlias[moduleName] + "." + type;
                             importInfo.exportNames[fieldModuleName] = type;
                             break;
                         }
