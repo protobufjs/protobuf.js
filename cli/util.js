@@ -181,3 +181,17 @@ exports.pad = function(str, len, l) {
     return str;
 };
 
+exports.assign = function() {
+    var first = arguments[0];
+    Array.from(arguments).forEach(function (o) {
+        if (o) {
+            for (var key in o) {
+                // eslint-disable-next-line no-prototype-builtins
+                if (o.hasOwnProperty(key) && typeof o[key] !== "undefined") {
+                    first[key] = o[key];
+                }
+            }
+        }
+    });
+    return first;
+};

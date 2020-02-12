@@ -5,3 +5,4 @@ cli/node_modules/
 docs/
 coverage/
 sandbox/
+.idea
