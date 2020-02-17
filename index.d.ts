@@ -563,16 +563,18 @@ export class Message<T extends object = object> {
     /**
      * Verifies a message of this type.
      * @param message Plain object to verify
+     * @param useId use the id of the fields instead of the names
      * @returns `null` if valid, otherwise the reason why it is not
      */
-    public static verify(message: { [k: string]: any }): (string|null);
+    public static verify(message: { [k: string]: any }, useId?: Boolean): (string|null);
 
     /**
      * Creates a new message of this type from a plain object. Also converts values to their respective internal types.
      * @param object Plain object
+     * @param useId use the id of the fields instead of the names
      * @returns Message instance
      */
-    public static fromObject<T extends Message<T>>(this: Constructor<T>, object: { [k: string]: any }): T;
+    public static fromObject<T extends Message<T>>(this: Constructor<T>, object: { [k: string]: any }, useId?: Boolean): T;
 
     /**
      * Creates a plain object from a message of this type. Also converts values to other types if specified.
@@ -1623,16 +1625,18 @@ export class Type extends NamespaceBase {
     /**
      * Verifies that field values are valid and that required fields are present.
      * @param message Plain object to verify
+     * @param useId use the id of the fields instead of the names
      * @returns `null` if valid, otherwise the reason why it is not
      */
-    public verify(message: { [k: string]: any }): (null|string);
+    public verify(message: { [k: string]: any }, useId?: Boolean): (null|string);
 
     /**
      * Creates a new message of this type from a plain object. Also converts values to their respective internal types.
      * @param object Plain object to convert
+     * @param useId use the id of the fields instead of the names
      * @returns Message instance
      */
-    public fromObject(object: { [k: string]: any }): Message<{}>;
+    public fromObject(object: { [k: string]: any }, useId?: Boolean): Message<{}>;
 
     /**
      * Creates a plain object from a message of this type. Also converts values to other types if specified.
@@ -1707,6 +1711,9 @@ export interface IConversionOptions {
 
     /** Performs additional JSON compatibility conversions, i.e. NaN and Infinity to strings */
     json?: boolean;
+
+    /** keys of the generated object are fields ids instead of names */
+    useId?: boolean;
 }
 
 /**
