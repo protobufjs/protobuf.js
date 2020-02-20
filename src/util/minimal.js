@@ -52,7 +52,7 @@ util.emptyObject = Object.freeze ? Object.freeze({}) : /* istanbul ignore next *
  * @type {boolean}
  * @const
  */
-util.isNode = Boolean(util.global.process && util.global.process.versions && util.global.process.versions.node);
+util.isNode = Boolean(process && process.versions && process.versions.node);
 
 /**
  * Tests if the specified value is an integer.
