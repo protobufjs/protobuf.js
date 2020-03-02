@@ -410,15 +410,9 @@ function toJsType(field, bundle, importInfo) {
                     else
                         fieldModuleName = getModuleName(field.resolvedType.filename);
 
-                    if (importInfo.exportNames[fieldModuleName]) {
-                        type = importInfo.exportNames[fieldModuleName];
-                        break;
-                    }
-
                     for (var moduleName in importInfo.moduleToAlias) {
                         if (fieldModuleName && fieldModuleName.endsWith(moduleName)) {
                             type = importInfo.moduleToAlias[moduleName] + "." + type;
-                            importInfo.exportNames[fieldModuleName] = type;
                             break;
                         }
                     }
