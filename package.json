@@ -5,10 +5,7 @@
   "description": "Protocol Buffers for JavaScript (& TypeScript).",
   "author": "Daniel Wirtz <dcode+protobufjs@dcode.io>",
   "license": "BSD-3-Clause",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/dcodeIO/protobuf.js.git"
-  },
+  "repository": "protobufjs/protobuf.js",
   "bugs": "https://github.com/dcodeIO/protobuf.js/issues",
   "homepage": "http://dcode.io/protobuf.js",
   "keywords": [
