@@ -5,3 +5,5 @@ cli/node_modules/
 docs/
 coverage/
 sandbox/
+.nyc_output
+
