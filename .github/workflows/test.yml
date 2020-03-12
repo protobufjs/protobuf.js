@@ -1,0 +1,35 @@
+name: "Test"
+on:
+  push:
+    branches:
+    - master
+  pull_request:
+jobs:
+  test:
+    name: "Test"
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node_version: ["4", "4.3.2", "6", "8", "10", "12"]
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node_version }}
+    - name: "Install dependencies"
+      run: npm install
+    - name: "Run tests"
+      run: npm test
+  bench:
+    name: "Bench"
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/setup-node@v1
+      with:
+        node-version: "12"
+    - name: "Install dependencies"
+      run: npm install
+    - name: "Run benchmark"
+      run: npm run bench
