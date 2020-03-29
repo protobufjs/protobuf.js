@@ -6,4 +6,5 @@ docs/
 coverage/
 sandbox/
 .nyc_output
+.vscode
 

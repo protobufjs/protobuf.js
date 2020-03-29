@@ -106,6 +106,7 @@ function tokenize(source, alternateCommentMode) {
         trailerCommentText = false,
         commentType = null,
         commentText = null,
+        emptyLineBelowComment = false,
         commentLine = 0,
         commentLineEmpty = false;
 
@@ -166,6 +167,26 @@ function tokenize(source, alternateCommentMode) {
         return source.charAt(pos);
     }
 
+    function emptyLineBelow() {        
+        let i = findEndOfLine(offset - 1)
+        while (i < length) {
+            i += 1;
+            switch (charAt(i)) {
+                case ' ':
+                case '\t':
+                case '\r':
+                case '\v':
+                    continue
+                case '\n':
+                    return true
+                default:
+                    return false
+            }                    
+        }
+
+        return false
+    }
+
     /**
      * Sets the current comment text.
      * @param {number} start Start offset
@@ -176,6 +197,8 @@ function tokenize(source, alternateCommentMode) {
     function setComment(start, end) {
         commentType = source.charAt(start++);        
         commentLineEmpty = false;
+        emptyLineBelowComment = emptyLineBelow();
+        
         var lookback;
         if (alternateCommentMode) {
             lookback = 2;  // alternate comment parsing: "//" or "/*"
@@ -386,7 +409,7 @@ function tokenize(source, alternateCommentMode) {
     function cmnt(trailingLine) {
         var ret = null;
         if (trailingLine === undefined) {
-            if (commentLine < line && (alternateCommentMode || commentType === "*" || commentLineEmpty)) {
+            if ((commentLine < line && !emptyLineBelowComment) && (alternateCommentMode || commentType === "*" || commentLineEmpty)) {
                 ret = commentText;
                 commentText = null
             }
