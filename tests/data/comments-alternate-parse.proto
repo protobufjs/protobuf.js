@@ -71,3 +71,30 @@ enum Test3 {
 
     FOUR = 4; /// Other value with a comment.
 }
+
+service ServiceTest {
+    // My method does things
+    rpc SingleLineMethod (MyRequest) returns (MyResponse);
+
+    // TwoLineMethodWithComment documentation
+    rpc TwoLineMethodWithComment (MyRequest)
+      returns (MyResponse);
+
+    // Very very long method
+    rpc
+      ThreeLine012345678901234567890123456712345671234567123456783927483923473892837489238749832432874983274983274983274(MyRequest)
+      returns (MyResponse);
+
+    // Random comment
+
+    rpc TwoLineMethodNoComment (MyRequest)
+      returns (MyResponse);
+}
+
+message MyRequest {
+    string path = 1;
+}
+
+message MyResponse {
+    int32 status = 2;
+}

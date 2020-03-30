@@ -208,7 +208,7 @@ With that in mind and again for performance reasons, each message class provides
 
 For reference, the following diagram aims to display relationships between the different methods and the concept of a valid message:
 
-<p align="center"><img alt="Toolset Diagram" src="http://dcode.io/protobuf.js/toolset.svg" /></p>
+<p align="center"><img alt="Toolset Diagram" src="https://protobufjs.github.io/protobuf.js/toolset.svg" /></p>
 
 > In other words: `verify` indicates that calling `create` or `encode` directly on the plain object will [result in a valid message respectively] succeed. `fromObject`, on the other hand, does conversion from a broader range of plain objects to create valid messages. ([ref](https://github.com/dcodeIO/protobuf.js/issues/748#issuecomment-291925749))
 
@@ -653,9 +653,9 @@ Translates between file formats and generates static code.
   --no-beautify    Does not beautify generated code.
   --no-comments    Does not output any JSDoc comments.
 
-  --force-long     Enfores the use of 'Long' for s-/u-/int64 and s-/fixed64 fields.
-  --force-number   Enfores the use of 'number' for s-/u-/int64 and s-/fixed64 fields.
-  --force-message  Enfores the use of message instances instead of plain objects.
+  --force-long     Enforces the use of 'Long' for s-/u-/int64 and s-/fixed64 fields.
+  --force-number   Enforces the use of 'number' for s-/u-/int64 and s-/fixed64 fields.
+  --force-message  Enforces the use of message instances instead of plain objects.
 
 usage: pbjs [options] file1.proto file2.json ...  (or pipe)  other | pbjs [options] -
 ```
@@ -765,7 +765,7 @@ Additional documentation
 * [Google's Developer Guide](https://developers.google.com/protocol-buffers/docs/overview)
 
 #### protobuf.js
-* [API Documentation](http://dcode.io/protobuf.js)
+* [API Documentation](https://protobufjs.github.io/protobuf.js)
 * [CHANGELOG](https://github.com/dcodeIO/protobuf.js/blob/master/CHANGELOG.md)
 * [Frequently asked questions](https://github.com/dcodeIO/protobuf.js/wiki) on our wiki
 
