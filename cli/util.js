@@ -7,8 +7,8 @@ var semver;
 
 try {
     // installed as a peer dependency
-    require.resolve("protobufjs");
-    exports.pathToProtobufJs = "protobufjs";
+    require.resolve("@pgherveou/protobufjs");
+    exports.pathToProtobufJs = "@pgherveou/protobufjs";
 } catch (e) {
     // local development, i.e. forked from github
     exports.pathToProtobufJs = "..";
@@ -166,7 +166,7 @@ exports.wrap = function(OUTPUT, options) {
         // otherwise fetch the custom one
         wrap = fs.readFileSync(path.resolve(process.cwd(), name)).toString("utf8");
     }
-    wrap = wrap.replace(/\$DEPENDENCY/g, JSON.stringify(options.dependency || "protobufjs"));
+    wrap = wrap.replace(/\$DEPENDENCY/g, JSON.stringify(options.dependency || "@pgherveou/protobufjs"));
     wrap = wrap.replace(/( *)\$OUTPUT;/, function($0, $1) {
         return $1.length ? OUTPUT.replace(/^/mg, $1) : OUTPUT;
     });

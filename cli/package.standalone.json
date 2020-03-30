@@ -15,7 +15,7 @@
     "pbts": "bin/pbts"
   },
   "peerDependencies": {
-    "protobufjs": "~6.7.0"
+    "@pgherveou/protobufjs": "~1.0.0"
   },
   "dependencies": {
     "chalk": "^1.1.3",
