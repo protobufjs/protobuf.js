@@ -168,7 +168,7 @@ function tokenize(source, alternateCommentMode) {
     }
 
     function emptyLineBelow() {        
-        let i = findEndOfLine(offset - 1)
+        var i = findEndOfLine(offset - 1);
         while (i < length) {
             i += 1;
             switch (charAt(i)) {

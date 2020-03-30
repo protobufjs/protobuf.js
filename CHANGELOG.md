@@ -1,3 +1,5 @@
+## [6.8.9](https://github.com/protobufjs/protobuf.js/releases/tag/6.8.9)
+
 # Changelog
 
 ## [6.8.8](https://github.com/protobufjs/protobuf.js/releases/tag/6.8.8)
