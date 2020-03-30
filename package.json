@@ -1,13 +1,16 @@
 {
-  "name": "protobufjs",
-  "version": "6.8.9",
+  "name": "@pgherveou/protobufjs",
+  "version": "1.0.0",
   "versionScheme": "~",
   "description": "Protocol Buffers for JavaScript (& TypeScript).",
   "author": "Daniel Wirtz <dcode+protobufjs@dcode.io>",
   "license": "BSD-3-Clause",
-  "repository": "protobufjs/protobuf.js",
-  "bugs": "https://github.com/dcodeIO/protobuf.js/issues",
-  "homepage": "http://dcode.io/protobuf.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pgherveou/protobuf.js"
+  },
+  "bugs": "https://github.com/pgherveou/protobuf.js/issues",
+  "homepage": "https://github.com/pgherveou/protobuf.js",
   "keywords": [
     "protobuf",
     "protocol-buffers",
@@ -17,8 +20,8 @@
   "main": "index.js",
   "types": "index.d.ts",
   "bin": {
-    "pbjs": "bin/pbjs",
-    "pbts": "bin/pbts"
+    "pgh-pbjs": "bin/pbjs",
+    "pgh-pbts": "bin/pbts"
   },
   "scripts": {
     "bench": "node bench",

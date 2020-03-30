@@ -2,7 +2,7 @@
 // protobuf wire format.
 
 /*eslint-disable strict, no-console*/
-var protobuf = require("../runtime"); // require("protobufjs/runtime");
+var protobuf = require("../runtime"); // require("@pgherveou/protobufjs/runtime");
 
 // writing
 var buffer = protobuf.Writer.create()
