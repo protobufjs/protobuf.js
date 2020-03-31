@@ -35,7 +35,7 @@ function Type(name, options) {
      * Message fields.
      * @type {Object.<string,Field>}
      */
-    this.fields = {};  // toJSON, marker
+    this.fields = Object.create(null);  // toJSON, marker
 
     /**
      * Oneofs declared within this namespace, if any.
@@ -105,7 +105,7 @@ Object.defineProperties(Type.prototype, {
             if (this._fieldsById)
                 return this._fieldsById;
 
-            this._fieldsById = {};
+            this._fieldsById = Object.create(null);
             for (var names = Object.keys(this.fields), i = 0; i < names.length; ++i) {
                 var field = this.fields[names[i]],
                     id = field.id;
@@ -177,7 +177,7 @@ Object.defineProperties(Type.prototype, {
                 this._fieldsArray[i].resolve(); // ensures a proper value
 
             // Messages have non-enumerable getters and setters for each virtual oneof field
-            var ctorProperties = {};
+            var ctorProperties = Object.create(null);
             for (i = 0; i < /* initializes */ this.oneofsArray.length; ++i)
                 ctorProperties[this._oneofsArray[i].resolve().name] = {
                     get: util.oneOfGetter(this._oneofsArray[i].oneof),
@@ -352,7 +352,7 @@ Type.prototype.add = function add(object) {
     }
     if (object instanceof OneOf) {
         if (!this.oneofs)
-            this.oneofs = {};
+            this.oneofs = Object.create(null);
         this.oneofs[object.name] = object;
         object.onAdd(this);
         return clearCache(this);
