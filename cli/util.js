@@ -5,16 +5,18 @@ var fs            = require("fs"),
 
 var semver;
 
+var pathToProtobufJs;
 try {
     // installed as a peer dependency
     require.resolve("protobufjs");
-    exports.pathToProtobufJs = "protobufjs";
+    pathToProtobufJs = "protobufjs";
 } catch (e) {
     // local development, i.e. forked from github
-    exports.pathToProtobufJs = "..";
+    pathToProtobufJs = "..";
 }
 
-var protobuf = require(exports.pathToProtobufJs);
+var protobuf = require(pathToProtobufJs);
+exports.protobuf = protobuf;
 
 function basenameCompare(a, b) {
     var aa = String(a).replace(/\.\w+$/, "").split(/(-?\d*\.?\d+)/g),
