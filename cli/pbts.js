@@ -151,6 +151,12 @@ exports.main = function(args, callback) {
                     "// DO NOT EDIT! This is a generated file. Edit the JSDoc in src/*.js instead and run 'npm run types'.",
                     ""
                 );
+
+                output.push(
+                    "import * as Long from \"long\";",
+                    ""
+                );               
+                    
             if (argv.global)
                 output.push(
                     "export as namespace " + argv.global + ";",

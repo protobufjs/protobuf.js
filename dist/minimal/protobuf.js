@@ -1,8 +1,8 @@
 /*!
- * protobuf.js v6.8.9 (c) 2016, daniel wirtz
- * compiled mon, 30 mar 2020 17:57:55 utc
+ * protobuf.js v1.0.2 (c) 2016, daniel wirtz
+ * compiled thu, 02 apr 2020 18:31:59 utc
  * licensed under the bsd-3-clause license
- * see: https://github.com/dcodeio/protobuf.js for details
+ * see: https://github.com/pgherveou/protobuf.js for details
  */
 (function(undefined){"use strict";(function prelude(modules, cache, entries) {
 
@@ -1890,15 +1890,6 @@ util.newBuffer = function newBuffer(sizeOrArray) {
  * @type {Constructor<Uint8Array>}
  */
 util.Array = typeof Uint8Array !== "undefined" ? Uint8Array /* istanbul ignore next */ : Array;
-
-/**
- * Any compatible Long instance.
- * This is a minimal stand-alone definition of a Long instance. The actual type is that exported by long.js.
- * @interface Long
- * @property {number} low Low bits
- * @property {number} high High bits
- * @property {boolean} unsigned Whether unsigned or not
- */
 
 /**
  * Long.js's Long class if available.

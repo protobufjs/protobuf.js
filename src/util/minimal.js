@@ -158,15 +158,6 @@ util.newBuffer = function newBuffer(sizeOrArray) {
 util.Array = typeof Uint8Array !== "undefined" ? Uint8Array /* istanbul ignore next */ : Array;
 
 /**
- * Any compatible Long instance.
- * This is a minimal stand-alone definition of a Long instance. The actual type is that exported by long.js.
- * @interface Long
- * @property {number} low Low bits
- * @property {number} high High bits
- * @property {boolean} unsigned Whether unsigned or not
- */
-
-/**
  * Long.js's Long class if available.
  * @type {Constructor<Long>}
  */

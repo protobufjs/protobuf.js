@@ -1,8 +1,8 @@
 /*!
- * protobuf.js v6.8.9 (c) 2016, daniel wirtz
- * compiled mon, 30 mar 2020 17:57:55 utc
+ * protobuf.js v1.0.2 (c) 2016, daniel wirtz
+ * compiled thu, 02 apr 2020 18:31:59 utc
  * licensed under the bsd-3-clause license
- * see: https://github.com/dcodeio/protobuf.js for details
+ * see: https://github.com/pgherveou/protobuf.js for details
  */
 (function(undefined){"use strict";(function prelude(modules, cache, entries) {
 
@@ -4815,7 +4815,7 @@ function Type(name, options) {
      * Message fields.
      * @type {Object.<string,Field>}
      */
-    this.fields = {};  // toJSON, marker
+    this.fields = Object.create(null);  // toJSON, marker
 
     /**
      * Oneofs declared within this namespace, if any.
@@ -4885,7 +4885,7 @@ Object.defineProperties(Type.prototype, {
             if (this._fieldsById)
                 return this._fieldsById;
 
-            this._fieldsById = {};
+            this._fieldsById = Object.create(null);
             for (var names = Object.keys(this.fields), i = 0; i < names.length; ++i) {
                 var field = this.fields[names[i]],
                     id = field.id;
@@ -4957,7 +4957,7 @@ Object.defineProperties(Type.prototype, {
                 this._fieldsArray[i].resolve(); // ensures a proper value
 
             // Messages have non-enumerable getters and setters for each virtual oneof field
-            var ctorProperties = {};
+            var ctorProperties = Object.create(null);
             for (i = 0; i < /* initializes */ this.oneofsArray.length; ++i)
                 ctorProperties[this._oneofsArray[i].resolve().name] = {
                     get: util.oneOfGetter(this._oneofsArray[i].oneof),
@@ -5132,7 +5132,7 @@ Type.prototype.add = function add(object) {
     }
     if (object instanceof OneOf) {
         if (!this.oneofs)
-            this.oneofs = {};
+            this.oneofs = Object.create(null);
         this.oneofs[object.name] = object;
         object.onAdd(this);
         return clearCache(this);
@@ -6107,15 +6107,6 @@ util.newBuffer = function newBuffer(sizeOrArray) {
  * @type {Constructor<Uint8Array>}
  */
 util.Array = typeof Uint8Array !== "undefined" ? Uint8Array /* istanbul ignore next */ : Array;
-
-/**
- * Any compatible Long instance.
- * This is a minimal stand-alone definition of a Long instance. The actual type is that exported by long.js.
- * @interface Long
- * @property {number} low Low bits
- * @property {number} high High bits
- * @property {boolean} unsigned Whether unsigned or not
- */
 
 /**
  * Long.js's Long class if available.
