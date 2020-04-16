@@ -8,3 +8,5 @@ cli/package-lock.json
 docs/
 coverage/
 sandbox/
+.nyc_output
+
