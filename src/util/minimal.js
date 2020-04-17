@@ -267,7 +267,7 @@ function newError(name) {
         if (Error.captureStackTrace) // node
             Error.captureStackTrace(this, CustomError);
         else
-            Object.defineProperty(this, "stack", { value: (new Error()).stack || "" });
+            Object.defineProperty(this, "stack", { value: new Error().stack || "" });
 
         if (properties)
             merge(this, properties);
