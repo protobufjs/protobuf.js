@@ -1,5 +1,23 @@
 # Changelog
 
+## [6.9.0](https://www.github.com/protobufjs/protobuf.js/compare/6.8.8...v6.9.0) (2020-04-17)
+
+
+### Features
+
+* add support for buffer configuration ([#1372](https://www.github.com/protobufjs/protobuf.js/issues/1372)) ([101aa1a](https://www.github.com/protobufjs/protobuf.js/commit/101aa1a4f148516fdc83a74f54a229f06e24a5de))
+* update dependencies / general cleanup ([#1356](https://www.github.com/protobufjs/protobuf.js/issues/1356)) ([42f49b4](https://www.github.com/protobufjs/protobuf.js/commit/42f49b43f692c24c2bc1ae081b4d1ad9fa173cd7))
+
+
+### Bug Fixes
+
+* allow file-level options everywhere in the file ([b70eebd](https://www.github.com/protobufjs/protobuf.js/commit/b70eebd86e113effaa7d13b24b19ee4a0cb9e1e5))
+* Import Long types ([1d98cb8](https://www.github.com/protobufjs/protobuf.js/commit/1d98cb86fcbc69bd54fb3d3254b348da6ac0a96b))
+* npm audit fixes ([ca52447](https://www.github.com/protobufjs/protobuf.js/commit/ca524478621bd2e08120eb444c7ad8089dba1929))
+* properly iterate and return method descriptors ([d96bb7a](https://www.github.com/protobufjs/protobuf.js/commit/d96bb7ae991ca7d5ef8eea3bca75a2089c6f1212))
+* run npm audit fix ([#1208](https://www.github.com/protobufjs/protobuf.js/issues/1208)) ([b5b6632](https://www.github.com/protobufjs/protobuf.js/commit/b5b66321762a24c5ac2753b68331cbe115969da7))
+* **docs:** update CHANGELOG to match format of release-please ([#1376](https://www.github.com/protobufjs/protobuf.js/issues/1376)) ([15ed8a0](https://www.github.com/protobufjs/protobuf.js/commit/15ed8a0fbe72b2e408b87ba25028f877796cc191))
+
 ## [6.8.8](https://github.com/protobufjs/protobuf.js/releases/tag/6.8.8)
 
 ### Fixed
