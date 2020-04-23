@@ -107,7 +107,7 @@ exports.main = function(args, callback) {
 
         if (argv["copy-imports"]) {
             copiedImports = fs.readFileSync(files[0], 'utf-8').split('\n').filter(function(line) {
-                return line.startsWith("import *") && !line.startsWith("import * as $protobuf")
+                return line.startsWith("import *")
             })
         }
 
@@ -175,9 +175,7 @@ exports.main = function(args, callback) {
                 var importArray = typeof argv.import === "string" ? argv.import.split(",") : argv.import || [];
 
                 // Build an object of imports and paths
-                var imports = {
-                    $protobuf: "protobufjs"
-                };
+                var imports = {};
 
                 importArray.forEach(function(importItem) {
                     imports[getImportName(importItem)] = importItem;
