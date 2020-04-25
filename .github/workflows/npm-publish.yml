@@ -1,7 +1,7 @@
-name: "Publish Node.js Package"
+name: "npm-publish"
 on:
   release:
-    types: [published]
+    types: [published, edited]
 jobs:
   build:
     runs-on: ubuntu-latest
