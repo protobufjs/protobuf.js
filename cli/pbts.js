@@ -152,11 +152,11 @@ exports.main = function(args, callback) {
                     ""
                 );
 
-                output.push(
-                    "import * as Long from \"long\";",
-                    ""
-                );               
-                    
+            output.push(
+                "import * as Long from \"long\";",
+                ""
+            );
+
             if (argv.global)
                 output.push(
                     "export as namespace " + argv.global + ";",

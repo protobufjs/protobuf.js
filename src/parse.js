@@ -292,7 +292,7 @@ function parse(source, root, options) {
             if (fnElse)
                 fnElse();
             skip(";");
-            var trailingComment = cmnt(trailingLine)
+            var trailingComment = cmnt(trailingLine);
             if (obj && typeof obj.comment !== "string")
                 obj.comment = trailingComment; // try line-type comment if no block
         }

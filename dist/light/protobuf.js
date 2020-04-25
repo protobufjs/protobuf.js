@@ -1,6 +1,6 @@
 /*!
- * protobuf.js v1.0.2 (c) 2016, daniel wirtz
- * compiled thu, 02 apr 2020 18:31:59 utc
+ * protobuf.js v1.0.3 (c) 2016, daniel wirtz
+ * compiled sat, 25 apr 2020 18:19:26 utc
  * licensed under the bsd-3-clause license
  * see: https://github.com/pgherveou/protobuf.js for details
  */
@@ -4039,7 +4039,7 @@ BufferReader.prototype.string = function read_string_buffer() {
     var len = this.uint32(); // modifies pos
     return this.buf.utf8Slice
         ? this.buf.utf8Slice(this.pos, this.pos = Math.min(this.pos + len, this.len))
-        : this.buf.toString('utf-8', this.pos, this.pos = Math.min(this.pos + len, this.len))
+        : this.buf.toString("utf-8", this.pos, this.pos = Math.min(this.pos + len, this.len));
 };
 
 /**
@@ -4148,13 +4148,13 @@ Root.prototype.load = function load(filename, options, callback) {
             throw err;
         cb(err, root);
     }
-	
+
     // Bundled definition existence checking
     function getBundledFileName(filename) {
         var idx = filename.lastIndexOf("google/protobuf/");
         if (idx > -1) {
             var altname = filename.substring(idx);
-            if (altname in common) return altname; 
+            if (altname in common) return altname;
         }
         return null;
     }
@@ -4173,11 +4173,11 @@ Root.prototype.load = function load(filename, options, callback) {
                     i = 0;
                 if (parsed.imports)
                     for (; i < parsed.imports.length; ++i)
-                        if (resolved = (getBundledFileName(parsed.imports[i]) || self.resolvePath(filename, parsed.imports[i])))
+                        if (resolved = getBundledFileName(parsed.imports[i]) || self.resolvePath(filename, parsed.imports[i]))
                             fetch(resolved);
                 if (parsed.weakImports)
                     for (i = 0; i < parsed.weakImports.length; ++i)
-                        if (resolved = (getBundledFileName(parsed.weakImports[i]) || self.resolvePath(filename, parsed.weakImports[i])))
+                        if (resolved = getBundledFileName(parsed.weakImports[i]) || self.resolvePath(filename, parsed.weakImports[i]))
                             fetch(resolved, true);
             }
         } catch (err) {
@@ -6209,7 +6209,7 @@ function newError(name) {
         if (Error.captureStackTrace) // node
             Error.captureStackTrace(this, CustomError);
         else
-            Object.defineProperty(this, "stack", { value: (new Error()).stack || "" });
+            Object.defineProperty(this, "stack", { value: new Error().stack || "" });
 
         if (properties)
             merge(this, properties);
@@ -7108,6 +7108,7 @@ function BufferWriter() {
 BufferWriter._configure = function () {
     /**
      * Allocates a buffer of the specified size.
+     * @function
      * @param {number} size Buffer size
      * @returns {Buffer} Buffer
      */
@@ -7144,8 +7145,10 @@ BufferWriter.prototype.bytes = function write_bytes_buffer(value) {
 function writeStringBuffer(val, buf, pos) {
     if (val.length < 40) // plain js is faster for short strings (probably due to redundant assertions)
         util.utf8.write(val, buf, pos);
+    else if (buf.utf8Write)
+        buf.utf8Write(val, pos);
     else
-        buf.utf8Write ? buf.utf8Write(val, pos) : buf.write(val, pos);
+        buf.write(val, pos);
 }
 
 /**

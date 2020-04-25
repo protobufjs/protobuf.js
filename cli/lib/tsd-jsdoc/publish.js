@@ -318,9 +318,11 @@ function begin(element, is_interface) {
         seen[element.longname] = element;
     } else
         writeln();
-    if (element.scope !== "global" || options.module)
-        return;
-    write("export ");
+    // ????: something changed in JSDoc 3.6.0? so that @exports + @enum does
+    // no longer yield a 'global' scope, but is some sort of unscoped module
+    // element now. The additional condition added below works around this.
+    if ((element.scope === "global" || element.isEnum && element.scope === undefined) && !options.module)
+        write("export ");
 }
 
 // writes the function signature describing element
@@ -432,6 +434,11 @@ function handleElement(element, parent) {
         handleClass(element, parent);
     else switch (element.kind) {
         case "module":
+            if (element.isEnum) {
+                handleEnum(element, parent);
+                break;
+            }
+            // eslint-disable-line no-fallthrough
         case "namespace":
             handleNamespace(element, parent);
             break;
@@ -569,69 +576,74 @@ function handleClass(element, parent) {
     }
 }
 
-// handles a namespace or class member
-function handleMember(element, parent) {
+// handles an enum
+function handleEnum(element) {
     begin(element);
 
-    if (element.isEnum) {
-        var stringEnum = false;
-        element.properties.forEach(function(property) {
-            if (isNaN(property.defaultvalue)) {
-                stringEnum = true;
-            }
-        });
-        if (stringEnum) {
-            writeln("type ", element.name, " =");
-            ++indent;
-            element.properties.forEach(function(property, i) {
-                write(i === 0 ? "" : "| ", JSON.stringify(property.defaultvalue));
-            });
-            --indent;
-            writeln(";");
-        } else {
-            writeln("enum ", element.name, " {");
-            ++indent;
-            element.properties.forEach(function(property, i) {
-                write(property.name);
-                if (property.defaultvalue !== undefined)
-                    write(" = ", JSON.stringify(property.defaultvalue));
-                if (i < element.properties.length - 1)
-                    writeln(",");
-                else
-                    writeln();
-            });
-            --indent;
-            writeln("}");
+    var stringEnum = false;
+    element.properties.forEach(function(property) {
+        if (isNaN(property.defaultvalue)) {
+            stringEnum = true;
         }
-
+    });
+    if (stringEnum) {
+        writeln("type ", element.name, " =");
+        ++indent;
+        element.properties.forEach(function(property, i) {
+            write(i === 0 ? "" : "| ", JSON.stringify(property.defaultvalue));
+        });
+        --indent;
+        writeln(";");
     } else {
-
-        var inClass = isClassLike(parent);
-        if (inClass) {
-            write(element.access || "public", " ");
-            if (element.scope === "static")
-                write("static ");
-            if (element.readonly)
-                write("readonly ");
-        } else
-            write(element.kind === "constant" ? "const " : "let ");
-
-        write(element.name);
-        if (element.optional)
-            write("?");
-        write(": ");
-
-        if (element.type && element.type.names && /^Object\b/i.test(element.type.names[0]) && element.properties) {
-            writeln("{");
-            ++indent;
-            element.properties.forEach(function(property, i) {
-                writeln(JSON.stringify(property.name), ": ", getTypeOf(property), i < element.properties.length - 1 ? "," : "");
-            });
-            --indent;
-            writeln("};");
-        } else
-            writeln(getTypeOf(element), ";");
+        writeln("enum ", element.name, " {");
+        ++indent;
+        element.properties.forEach(function(property, i) {
+            write(property.name);
+            if (property.defaultvalue !== undefined)
+                write(" = ", JSON.stringify(property.defaultvalue));
+            if (i < element.properties.length - 1)
+                writeln(",");
+            else
+                writeln();
+        });
+        --indent;
+        writeln("}");
     }
+}
+
+// handles a namespace or class member
+function handleMember(element, parent) {
+    if (element.isEnum) {
+        handleEnum(element);
+        return;
+    }
+    begin(element);
+
+    var inClass = isClassLike(parent);
+    if (inClass) {
+        write(element.access || "public", " ");
+        if (element.scope === "static")
+            write("static ");
+        if (element.readonly)
+            write("readonly ");
+    } else
+        write(element.kind === "constant" ? "const " : "let ");
+
+    write(element.name);
+    if (element.optional)
+        write("?");
+    write(": ");
+
+    if (element.type && element.type.names && /^Object\b/i.test(element.type.names[0]) && element.properties) {
+        writeln("{");
+        ++indent;
+        element.properties.forEach(function(property, i) {
+            writeln(JSON.stringify(property.name), ": ", getTypeOf(property), i < element.properties.length - 1 ? "," : "");
+        });
+        --indent;
+        writeln("};");
+    } else
+        writeln(getTypeOf(element), ";");
 }
 
 // handles a function or method

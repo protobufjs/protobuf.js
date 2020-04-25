@@ -1,6 +1,6 @@
 /*!
- * protobuf.js v1.0.2 (c) 2016, daniel wirtz
- * compiled thu, 02 apr 2020 18:31:59 utc
+ * protobuf.js v1.0.3 (c) 2016, daniel wirtz
+ * compiled sat, 25 apr 2020 18:19:26 utc
  * licensed under the bsd-3-clause license
  * see: https://github.com/pgherveou/protobuf.js for details
  */
@@ -1315,7 +1315,7 @@ BufferReader.prototype.string = function read_string_buffer() {
     var len = this.uint32(); // modifies pos
     return this.buf.utf8Slice
         ? this.buf.utf8Slice(this.pos, this.pos = Math.min(this.pos + len, this.len))
-        : this.buf.toString('utf-8', this.pos, this.pos = Math.min(this.pos + len, this.len))
+        : this.buf.toString("utf-8", this.pos, this.pos = Math.min(this.pos + len, this.len));
 };
 
 /**
@@ -1992,7 +1992,7 @@ function newError(name) {
         if (Error.captureStackTrace) // node
             Error.captureStackTrace(this, CustomError);
         else
-            Object.defineProperty(this, "stack", { value: (new Error()).stack || "" });
+            Object.defineProperty(this, "stack", { value: new Error().stack || "" });
 
         if (properties)
             merge(this, properties);
@@ -2628,6 +2628,7 @@ function BufferWriter() {
 BufferWriter._configure = function () {
     /**
      * Allocates a buffer of the specified size.
+     * @function
      * @param {number} size Buffer size
      * @returns {Buffer} Buffer
      */
@@ -2664,8 +2665,10 @@ BufferWriter.prototype.bytes = function write_bytes_buffer(value) {
 function writeStringBuffer(val, buf, pos) {
     if (val.length < 40) // plain js is faster for short strings (probably due to redundant assertions)
         util.utf8.write(val, buf, pos);
+    else if (buf.utf8Write)
+        buf.utf8Write(val, pos);
     else
-        buf.utf8Write ? buf.utf8Write(val, pos) : buf.write(val, pos);
+        buf.write(val, pos);
 }
 
 /**

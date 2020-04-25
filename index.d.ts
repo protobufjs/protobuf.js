@@ -2619,7 +2619,7 @@ export class BufferWriter extends Writer {
      * @param size Buffer size
      * @returns Buffer
      */
-    public static alloc: any;
+    public static alloc(size: number): Buffer;
 
     /**
      * Finishes the write operation.

@@ -126,18 +126,18 @@ function tokenize(source, alternateCommentMode) {
     }
 
     function advance() {
-        return advanceTo(offset + 1)
+        return advanceTo(offset + 1);
     }
 
     function advanceTo(to) {
         for (var index = offset + 1; index <= to; index++) {
-            if (charAt(index) === '\n') {
-                line++
-            }            
+            if (charAt(index) === "\n") {
+                line++;
+            }
         }
-        
-        offset = to
-        return offset
+
+        offset = to;
+        return offset;
     }
 
     /**
@@ -167,24 +167,24 @@ function tokenize(source, alternateCommentMode) {
         return source.charAt(pos);
     }
 
-    function emptyLineBelow() {        
+    function emptyLineBelow() {
         var i = findEndOfLine(offset - 1);
         while (i < length) {
             i += 1;
             switch (charAt(i)) {
-                case ' ':
-                case '\t':
-                case '\r':
-                case '\v':
-                    continue
-                case '\n':
-                    return true
+                case " ":
+                case "\t":
+                case "\r":
+                case "\v":
+                    continue;
+                case "\n":
+                    return true;
                 default:
-                    return false
-            }                    
+                    return false;
+            }
         }
 
-        return false
+        return false;
     }
 
     /**
@@ -195,10 +195,10 @@ function tokenize(source, alternateCommentMode) {
      * @inner
      */
     function setComment(start, end) {
-        commentType = source.charAt(start++);        
+        commentType = source.charAt(start++);
         commentLineEmpty = false;
         emptyLineBelowComment = emptyLineBelow();
-        
+
         var lookback;
         if (alternateCommentMode) {
             lookback = 2;  // alternate comment parsing: "//" or "/*"
@@ -287,7 +287,7 @@ function tokenize(source, alternateCommentMode) {
                                 return null;
                             }
                         }
-                        advance()
+                        advance();
                         if (isDoc) {
                             setComment(start, offset - 1);
                         }
@@ -312,14 +312,14 @@ function tokenize(source, alternateCommentMode) {
                         if (isDoc) {
                             setComment(start, offset);
                         }
-                        
+
                         repeat = !trailerCommentText;
                     }
                 } else if ((curr = charAt(offset)) === "*") { /* Block */
                     // check for /** (regular comment mode) or /* (alternate comment mode)
                     start = offset + 1;
                     isDoc = alternateCommentMode || charAt(start) === "*";
-                    do {                        
+                    do {
                         if (advance() === length) {
                             throw illegal("comment");
                         }
@@ -338,7 +338,7 @@ function tokenize(source, alternateCommentMode) {
         } while (repeat);
 
         if (trailerCommentText) {
-            return null
+            return null;
         }
 
         // offset !== length if we got here
@@ -409,11 +409,11 @@ function tokenize(source, alternateCommentMode) {
     function cmnt(trailingLine) {
         var ret = null;
         if (trailingLine === undefined) {
-            if ((commentLine < line && !emptyLineBelowComment) && (alternateCommentMode || commentType === "*" || commentLineEmpty)) {
+            if (commentLine < line && !emptyLineBelowComment && (alternateCommentMode || commentType === "*" || commentLineEmpty)) {
                 ret = commentText;
-                commentText = null
+                commentText = null;
             }
-        } else {            
+        } else {
             /* istanbul ignore else */
             if (commentLine < trailingLine) {
                 trailerCommentText = true;
@@ -422,11 +422,11 @@ function tokenize(source, alternateCommentMode) {
             }
             if (commentLine === trailingLine && !commentLineEmpty && (alternateCommentMode || commentType === "/")) {
                 ret = commentText;
-                commentText = null
+                commentText = null;
             }
         }
 
-        
+
         return ret;
     }
 
@@ -436,12 +436,12 @@ function tokenize(source, alternateCommentMode) {
         push: push,
         skip: skip,
         cmnt: cmnt
-    }, {        
+    }, {
         "line": {
-            get: function() { return line; }        
+            get: function() { return line; }
         },
         "offset": {
-            get: function() { return offset; }        
+            get: function() { return offset; }
         }
     });
     /* eslint-enable callback-return */
