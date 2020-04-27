@@ -103,12 +103,12 @@ exports.main = function(args, callback) {
     }
 
     function callJsdoc() {
-        var copiedImports = []
+        var copiedImports = [];
 
         if (argv["copy-imports"]) {
-            copiedImports = fs.readFileSync(files[0], 'utf-8').split('\n').filter(function(line) {
-                return line.startsWith("import *")
-            })
+            copiedImports = fs.readFileSync(files[0], "utf-8").split("\n").filter(function(line) {
+                return line.startsWith("import *");
+            });
         }
 
         // There is no proper API for jsdoc, so this executes the CLI and pipes the output

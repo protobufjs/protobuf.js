@@ -180,7 +180,7 @@ function buildNamespace(ref, ns, bundle, filename, importInfo) {
     if (ns instanceof Type) {
         buildType(undefined, ns, bundle, importInfo);
     } else if (ns instanceof Service)
-        buildService(undefined, ns);
+        buildService(undefined, ns, bundle, importInfo);
 
     ns.nestedArray.forEach(function(nested) {
         if (nested instanceof Enum)
@@ -357,6 +357,39 @@ function buildFunction(type, functionName, gen, scope) {
         push("};");
 }
 
+function getAliasedType(resolvedType, bundle, importInfo) {
+    var type = exportName(resolvedType, !(resolvedType instanceof protobuf.Enum || config.forceMessage));
+    if (!bundle) {
+        var memberModuleName;
+        if (resolvedType.filename === null) {
+            // The set of common types are handled differently than other types
+            // and don't have an associated filename, so we'll just look up
+            // the module name
+            var memberModuleName = {
+                "google.protobuf.Any": "google/protobuf/any",
+                "google.protobuf.Empty": "google/protobuf/empty",
+                "google.protobuf.FieldMask": "google/protobuf/field_mask",
+                "google.protobuf.Struct": "google/protobuf/struct",
+                "google.protobuf.Value": "google/protobuf/struct",
+                "google.protobuf.NullValue": "google/protobuf/struct",
+                "google.protobuf.ListValue": "google/protobuf/struct",
+                "google.protobuf.Timestamp": "google/protobuf/timestamp",
+                "google.protobuf.Wrappers": "google/protobuf/wrappers",
+            }[resolvedType.__exportName];
+        }
+        else
+            memberModuleName = getModuleName(resolvedType.filename);
+
+        for (var moduleName in importInfo.moduleToAlias) {
+            if (memberModuleName && memberModuleName.endsWith(moduleName)) {
+                type = importInfo.moduleToAlias[moduleName] + "." + type;
+                break;
+            }
+        }
+    }
+    return type
+}
+
 function toJsType(field, bundle, importInfo) {
     var type;
 
@@ -387,37 +420,8 @@ function toJsType(field, bundle, importInfo) {
             type = "Uint8Array";
             break;
         default:
-            if (field.resolve().resolvedType) {
-                type = exportName(field.resolvedType, !(field.resolvedType instanceof protobuf.Enum || config.forceMessage));
-                if (!bundle) {
-                    var fieldModuleName;
-                    if (field.resolvedType.filename === null) {
-                        // The set of common types are handled differently than other types
-                        // and don't have an associated filename, so we'll just look up
-                        // the module name
-                        var fieldModuleName = {
-                            "google.protobuf.Any": "google/protobuf/any",
-                            "google.protobuf.Empty": "google/protobuf/empty",
-                            "google.protobuf.FieldMask": "google/protobuf/field_mask",
-                            "google.protobuf.Struct": "google/protobuf/struct",
-                            "google.protobuf.Value": "google/protobuf/struct",
-                            "google.protobuf.NullValue": "google/protobuf/struct",
-                            "google.protobuf.ListValue": "google/protobuf/struct",
-                            "google.protobuf.Timestamp": "google/protobuf/timestamp",
-                            "google.protobuf.Wrappers": "google/protobuf/wrappers",
-                        }[field.resolvedType.__exportName];
-                    }
-                    else
-                        fieldModuleName = getModuleName(field.resolvedType.filename);
-
-                    for (var moduleName in importInfo.moduleToAlias) {
-                        if (fieldModuleName && fieldModuleName.endsWith(moduleName)) {
-                            type = importInfo.moduleToAlias[moduleName] + "." + type;
-                            break;
-                        }
-                    }
-                }
-            }
+            if (field.resolve().resolvedType)
+                type = getAliasedType(field.resolvedType, bundle, importInfo)
             else
                 type = "*"; // should not happen
             break;
@@ -664,7 +668,7 @@ function buildType(ref, type, bundle, importInfo) {
     }
 }
 
-function buildService(ref, service) {
+function buildService(ref, service, bundle, importInfo) {
 
     push("");
     pushComment([
@@ -706,6 +710,9 @@ function buildService(ref, service) {
 
     service.methodsArray.forEach(function(method) {
         method.resolve();
+        var requestType = getAliasedType(method.resolvedRequestType, bundle, importInfo);
+        var responseType = getAliasedType(method.resolvedResponseType, bundle, importInfo);
+
         var lcName = protobuf.util.lcFirst(method.name),
             cbName = escapeName(method.name + "Callback");
         push("");
@@ -716,7 +723,7 @@ function buildService(ref, service) {
             "@typedef " + cbName,
             "@type {function}",
             "@param {Error|null} error Error, if any",
-            "@param {" + exportName(method.resolvedResponseType) + "} [response] " + method.resolvedResponseType.name
+            "@param {" + responseType + "} [response] " + method.resolvedResponseType.name
         ]);
         push("");
         pushComment([
@@ -724,7 +731,7 @@ function buildService(ref, service) {
             "@function " + lcName,
             "@memberof " + exportName(service),
             "@instance",
-            "@param {" + exportName(method.resolvedRequestType, !config.forceMessage) + "} request " + method.resolvedRequestType.name + " message or plain object",
+            "@param {" + requestType + "} request " + method.resolvedRequestType.name + " message or plain object",
             "@param {" + exportName(service) + "." + cbName + "} callback Node-style callback called with the error, if any, and " + method.resolvedResponseType.name,
             "@returns {undefined}",
             "@variation 1"
@@ -741,8 +748,8 @@ function buildService(ref, service) {
             "@function " + lcName,
             "@memberof " + exportName(service),
             "@instance",
-            "@param {" + exportName(method.resolvedRequestType, !config.forceMessage) + "} request " + method.resolvedRequestType.name + " message or plain object",
-            "@returns {Promise<" + exportName(method.resolvedResponseType) + ">} Promise",
+            "@param {" + requestType + "} request " + method.resolvedRequestType.name + " message or plain object",
+            "@returns {Promise<" + responseType + ">} Promise",
             "@variation 2"
         ]);
     });
