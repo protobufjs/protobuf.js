@@ -2626,17 +2626,17 @@ export class BufferWriter extends Writer {
     constructor();
 
     /**
-     * Finishes the write operation.
-     * @returns Finished buffer
-     */
-    public finish(): Buffer;
-
-    /**
      * Allocates a buffer of the specified size.
      * @param size Buffer size
      * @returns Buffer
      */
     public static alloc(size: number): Buffer;
+
+    /**
+     * Finishes the write operation.
+     * @returns Finished buffer
+     */
+    public finish(): Buffer;
 }
 
 /**

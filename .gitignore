@@ -1,7 +1,12 @@
+.nyc_output
+.vscode
 *.log
 npm-debug.*
 node_modules/
 cli/node_modules/
+cli/package-lock.json
 docs/
 coverage/
 sandbox/
+.nyc_output
+
