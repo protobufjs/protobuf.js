@@ -13,11 +13,11 @@ var protobuf   = require("protobufjs"), // requires the full library
 var root = ...;
 
 // convert any existing root instance to the corresponding descriptor type
-var descriptor = root.toDescriptor("proto2");
+var descriptorMsg = root.toDescriptor("proto2");
 // ^ returns a FileDescriptorSet message, see table below
 
 // encode to a descriptor buffer
-var buffer = descriptor.FileDescriptorSet.encode(descriptor).finish();
+var buffer = descriptor.FileDescriptorSet.encode(descriptorMsg).finish();
 
 // decode from a descriptor buffer
 var decodedDescriptor = descriptor.FileDescriptorSet.decode(buffer);

@@ -139,14 +139,18 @@ exports.main = function(args, callback) {
         });
 
         function getImportName(importItem) {
-            var result = path.basename(importItem, ".js")
-            return result.replace(/([-_~.+]\w)/g, match => {
+            return path.basename(importItem, ".js").replace(/([-_~.+]\w)/g, function(match) {
                 return match[1].toUpperCase();
             });
         }
 
         function finish() {
             var output = [];
+            if (argv.main)
+                output.push(
+                    "// DO NOT EDIT! This is a generated file. Edit the JSDoc in src/*.js instead and run 'npm run types'.",
+                    ""
+                );
             if (argv.global)
                 output.push(
                     "export as namespace " + argv.global + ";",

@@ -1,5 +1,4 @@
 import * as $protobuf from "../..";
-
 export namespace jspb {
 
     namespace test {

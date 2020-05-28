@@ -35,3 +35,14 @@ tape.test("load sync", function(test) {
 
     test.end();
 });
+
+tape.test("should load bundled definitions even if resolvePath method was overrided", function(test) {
+    var protoFilePath = "tests/data/common.proto";
+    var root = new protobuf.Root();
+    root.resolvePath = (origin, target) => origin === "" && target === protoFilePath ? target : null;
+
+    root.loadSync(protoFilePath);
+
+    test.ok(root.lookup("Something"), "should parse message Something");
+    test.end();
+});
