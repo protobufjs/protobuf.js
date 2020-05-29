@@ -81,7 +81,7 @@
     "nyc": "^15.0.0",
     "reflect-metadata": "^0.1.13",
     "semver": "^7.1.2",
-    "tape": "^4.13.0",
+    "tape": "^5.0.0",
     "tmp": "^0.1.0",
     "tslint": "^5.20.1",
     "typescript": "^3.7.5",
