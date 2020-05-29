@@ -60,7 +60,7 @@ wrappers[".google.protobuf.Any"] = {
                 });
             }
         }
-    
+
         return this.fromObject(object);
     },
 
@@ -76,7 +76,7 @@ wrappers[".google.protobuf.Any"] = {
             // Only use fully qualified type name after the last '/'
             name = message.type_url.substring(message.type_url.lastIndexOf("/") + 1);
             // Separate the prefix used
-            prefix = message.type_url.substring(0, message.type_url.lastIndexOf('/') + 1);
+            prefix = message.type_url.substring(0, message.type_url.lastIndexOf("/") + 1);
             var type = this.lookup(name);
             /* istanbul ignore else */
             if (type)
