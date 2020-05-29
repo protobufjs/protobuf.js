@@ -69,11 +69,12 @@ wrappers[".google.protobuf.Any"] = {
         // Default prefix
         var googleApi = "type.googleapis.com/";
         var prefix = "";
+        var name = "";
 
         // decode value if requested and unmapped
         if (options && options.json && message.type_url && message.value) {
             // Only use fully qualified type name after the last '/'
-            var name = message.type_url.substring(message.type_url.lastIndexOf("/") + 1);
+            name = message.type_url.substring(message.type_url.lastIndexOf("/") + 1);
             // Separate the prefix used
             prefix = message.type_url.substring(0, message.type_url.lastIndexOf('/') + 1);
             var type = this.lookup(name);
@@ -91,7 +92,7 @@ wrappers[".google.protobuf.Any"] = {
             if (prefix === "") {
                 prefix = googleApi;
             }
-            var name = prefix + messageName;
+            name = prefix + messageName;
             object["@type"] = name;
             return object;
         }
