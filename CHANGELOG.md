@@ -1,5 +1,13 @@
 # Changelog
 
+### [6.9.1](https://www.github.com/protobufjs/protobuf.js/compare/v6.9.0...v6.9.1) (2020-05-30)
+
+
+### Bug Fixes
+
+* google.protobuf.Any type_url fixes ([#1068](https://www.github.com/protobufjs/protobuf.js/issues/1068)) ([192f5f1](https://www.github.com/protobufjs/protobuf.js/commit/192f5f12d071fa534ac625290d4666c839a46a9e))
+* updated isNode check ([#1221](https://www.github.com/protobufjs/protobuf.js/issues/1221)) ([#1363](https://www.github.com/protobufjs/protobuf.js/issues/1363)) ([5564e7b](https://www.github.com/protobufjs/protobuf.js/commit/5564e7b5f07d3eab99762528e8ce88507af5a5a3))
+
 ## [6.9.0](https://www.github.com/protobufjs/protobuf.js/compare/6.8.8...v6.9.0) (2020-04-17)
 
 
