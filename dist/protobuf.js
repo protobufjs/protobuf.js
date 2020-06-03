@@ -1,6 +1,6 @@
 /*!
- * protobuf.js v1.0.3 (c) 2016, daniel wirtz
- * compiled sat, 25 apr 2020 18:19:26 utc
+ * protobuf.js v1.0.4 (c) 2016, daniel wirtz
+ * compiled wed, 03 jun 2020 15:30:35 utc
  * licensed under the bsd-3-clause license
  * see: https://github.com/pgherveou/protobuf.js for details
  */
@@ -1671,7 +1671,7 @@ function genValuePartial_toObject(gen, field, fieldIndex, prop) {
     /* eslint-disable no-unexpected-multiline, block-scoped-var, no-redeclare */
     if (field.resolvedType) {
         if (field.resolvedType instanceof Enum) gen
-            ("d%s=o.enums===String?types[%i].values[m%s]:m%s", prop, fieldIndex, prop, prop);
+            ("d%s=o.enums===String?types[%i].values[m%s]:o.enums?o.enums(m%s,types[%i]):m%s", prop, fieldIndex, prop, prop, fieldIndex, prop);
         else gen
             ("d%s=types[%i].toObject(m%s,o)", prop, fieldIndex, prop);
     } else {
@@ -1751,8 +1751,10 @@ converter.toObject = function toObject(mtype) {
         for (i = 0; i < normalFields.length; ++i) {
             var field = normalFields[i],
                 prop  = util.safeProp(field.name);
-            if (field.resolvedType instanceof Enum) gen
-        ("d%s=o.enums===String?%j:%j", prop, field.resolvedType.valuesById[field.typeDefault], field.typeDefault);
+            if (field.resolvedType instanceof Enum) {
+                var fieldIndex = fields.indexOf(field);
+                gen ("d%s=o.enums===String?%j:o.enums?o.enums(%j,types[%i]):%j;", prop, field.resolvedType.valuesById[field.typeDefault], field.typeDefault, fieldIndex, field.typeDefault);
+            }
             else if (field.long) gen
         ("if(util.Long){")
             ("var n=new util.Long(%i,%i,%j)", field.typeDefault.low, field.typeDefault.high, field.typeDefault.unsigned)
@@ -4295,7 +4297,7 @@ function parse(source, root, options) {
             if (fnElse)
                 fnElse();
             skip(";");
-            var trailingComment = cmnt(trailingLine)
+            var trailingComment = cmnt(trailingLine);
             if (obj && typeof obj.comment !== "string")
                 obj.comment = trailingComment; // try line-type comment if no block
         }
@@ -6086,18 +6088,18 @@ function tokenize(source, alternateCommentMode) {
     }
 
     function advance() {
-        return advanceTo(offset + 1)
+        return advanceTo(offset + 1);
     }
 
     function advanceTo(to) {
         for (var index = offset + 1; index <= to; index++) {
-            if (charAt(index) === '\n') {
-                line++
-            }            
+            if (charAt(index) === "\n") {
+                line++;
+            }
         }
-        
-        offset = to
-        return offset
+
+        offset = to;
+        return offset;
     }
 
     /**
@@ -6127,24 +6129,24 @@ function tokenize(source, alternateCommentMode) {
         return source.charAt(pos);
     }
 
-    function emptyLineBelow() {        
+    function emptyLineBelow() {
         var i = findEndOfLine(offset - 1);
         while (i < length) {
             i += 1;
             switch (charAt(i)) {
-                case ' ':
-                case '\t':
-                case '\r':
-                case '\v':
-                    continue
-                case '\n':
-                    return true
+                case " ":
+                case "\t":
+                case "\r":
+                case "\v":
+                    continue;
+                case "\n":
+                    return true;
                 default:
-                    return false
-            }                    
+                    return false;
+            }
         }
 
-        return false
+        return false;
     }
 
     /**
@@ -6155,10 +6157,10 @@ function tokenize(source, alternateCommentMode) {
      * @inner
      */
     function setComment(start, end) {
-        commentType = source.charAt(start++);        
+        commentType = source.charAt(start++);
         commentLineEmpty = false;
         emptyLineBelowComment = emptyLineBelow();
-        
+
         var lookback;
         if (alternateCommentMode) {
             lookback = 2;  // alternate comment parsing: "//" or "/*"
@@ -6247,7 +6249,7 @@ function tokenize(source, alternateCommentMode) {
                                 return null;
                             }
                         }
-                        advance()
+                        advance();
                         if (isDoc) {
                             setComment(start, offset - 1);
                         }
@@ -6272,14 +6274,14 @@ function tokenize(source, alternateCommentMode) {
                         if (isDoc) {
                             setComment(start, offset);
                         }
-                        
+
                         repeat = !trailerCommentText;
                     }
                 } else if ((curr = charAt(offset)) === "*") { /* Block */
                     // check for /** (regular comment mode) or /* (alternate comment mode)
                     start = offset + 1;
                     isDoc = alternateCommentMode || charAt(start) === "*";
-                    do {                        
+                    do {
                         if (advance() === length) {
                             throw illegal("comment");
                         }
@@ -6298,7 +6300,7 @@ function tokenize(source, alternateCommentMode) {
         } while (repeat);
 
         if (trailerCommentText) {
-            return null
+            return null;
         }
 
         // offset !== length if we got here
@@ -6369,9 +6371,9 @@ function tokenize(source, alternateCommentMode) {
     function cmnt(trailingLine) {
         var ret = null;
         if (trailingLine === undefined) {
-            if ((commentLine < line && !emptyLineBelowComment) && (alternateCommentMode || commentType === "*" || commentLineEmpty)) {
+            if (commentLine < line && !emptyLineBelowComment && (alternateCommentMode || commentType === "*" || commentLineEmpty)) {
                 ret = commentText;
-                commentText = null
+                commentText = null;
             }
         } else {
             /* istanbul ignore else */
@@ -6382,11 +6384,11 @@ function tokenize(source, alternateCommentMode) {
             }
             if (commentLine === trailingLine && !commentLineEmpty && (alternateCommentMode || commentType === "/")) {
                 ret = commentText;
-                commentText = null
+                commentText = null;
             }
         }
 
-        
+
         return ret;
     }
 
@@ -6396,12 +6398,12 @@ function tokenize(source, alternateCommentMode) {
         push: push,
         skip: skip,
         cmnt: cmnt
-    }, {        
+    }, {
         "line": {
-            get: function() { return line; }        
+            get: function() { return line; }
         },
         "offset": {
-            get: function() { return offset; }        
+            get: function() { return offset; }
         }
     });
     /* eslint-enable callback-return */

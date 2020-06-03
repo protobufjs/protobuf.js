@@ -1,6 +1,6 @@
 /*!
- * protobuf.js v1.0.3 (c) 2016, daniel wirtz
- * compiled sat, 25 apr 2020 18:19:26 utc
+ * protobuf.js v1.0.4 (c) 2016, daniel wirtz
+ * compiled wed, 03 jun 2020 15:30:35 utc
  * licensed under the bsd-3-clause license
  * see: https://github.com/pgherveou/protobuf.js for details
  */
@@ -1270,7 +1270,7 @@ function genValuePartial_toObject(gen, field, fieldIndex, prop) {
     /* eslint-disable no-unexpected-multiline, block-scoped-var, no-redeclare */
     if (field.resolvedType) {
         if (field.resolvedType instanceof Enum) gen
-            ("d%s=o.enums===String?types[%i].values[m%s]:m%s", prop, fieldIndex, prop, prop);
+            ("d%s=o.enums===String?types[%i].values[m%s]:o.enums?o.enums(m%s,types[%i]):m%s", prop, fieldIndex, prop, prop, fieldIndex, prop);
         else gen
             ("d%s=types[%i].toObject(m%s,o)", prop, fieldIndex, prop);
     } else {
@@ -1350,8 +1350,10 @@ converter.toObject = function toObject(mtype) {
         for (i = 0; i < normalFields.length; ++i) {
             var field = normalFields[i],
                 prop  = util.safeProp(field.name);
-            if (field.resolvedType instanceof Enum) gen
-        ("d%s=o.enums===String?%j:%j", prop, field.resolvedType.valuesById[field.typeDefault], field.typeDefault);
+            if (field.resolvedType instanceof Enum) {
+                var fieldIndex = fields.indexOf(field);
+                gen ("d%s=o.enums===String?%j:o.enums?o.enums(%j,types[%i]):%j;", prop, field.resolvedType.valuesById[field.typeDefault], field.typeDefault, fieldIndex, field.typeDefault);
+            }
             else if (field.long) gen
         ("if(util.Long){")
             ("var n=new util.Long(%i,%i,%j)", field.typeDefault.low, field.typeDefault.high, field.typeDefault.unsigned)
