@@ -1046,6 +1046,9 @@ export interface IParseOptions {
 
     /** Recognize double-slash comments in addition to doc-block comments. */
     alternateCommentMode?: boolean;
+
+    /** Use trailing comment when both leading comment and trailing comment exist. */
+    preferTrailingComment?: boolean;
 }
 
 /** Options modifying the behavior of JSON serialization. */
