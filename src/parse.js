@@ -42,6 +42,7 @@ var base10Re    = /^[1-9][0-9]*$/,
  * @interface IParseOptions
  * @property {boolean} [keepCase=false] Keeps field casing instead of converting to camel case
  * @property {boolean} [alternateCommentMode=false] Recognize double-slash comments in addition to doc-block comments.
+ * @property {boolean} [preferTrailingComment=false] Use trailing comment when both block comment and trailing comment exist.
  */
 
 /**
@@ -68,6 +69,7 @@ function parse(source, root, options) {
     if (!options)
         options = parse.defaults;
 
+    var preferTrailingComment = options.preferTrailingComment || false;
     var tn = tokenize(source, options.alternateCommentMode || false),
         next = tn.next,
         push = tn.push,
@@ -291,8 +293,8 @@ function parse(source, root, options) {
             if (fnElse)
                 fnElse();
             skip(";");
-            if (obj && typeof obj.comment !== "string")
-                obj.comment = cmnt(trailingLine); // try line-type comment if no block
+            if (obj && (typeof obj.comment !== "string" || preferTrailingComment))
+                obj.comment = cmnt(trailingLine) || obj.comment; // try line-type comment
         }
     }
 
