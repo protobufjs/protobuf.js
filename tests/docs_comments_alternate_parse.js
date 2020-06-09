@@ -3,7 +3,7 @@ var tape = require("tape");
 var protobuf = require("..");
 
 tape.test("proto comments in alternate-parse mode", function(test) {
-    test.plan(21);
+    test.plan(23);
     var options = {alternateCommentMode: true};
     var root = new protobuf.Root();
     root.load("tests/data/comments-alternate-parse.proto", options, function(err, root) {
@@ -24,6 +24,8 @@ tape.test("proto comments in alternate-parse mode", function(test) {
         test.equal(root.lookup("Test1.field8").comment, null, "should parse no comment");
         test.equal(root.lookup("Test1.field9").comment, "Field with a\nmulti-line comment.", "should parse multiline double-slash field comment");
         test.equal(root.lookup("Test1.field10").comment, "Field with a\nmulti-line doc-block comment.", "should parse multiline doc-block field comment");
+        test.equal(root.lookup("Test1.field11").comment, "Field with both block comment", "should parse both trailing comment and trailing comment");
+        test.equal(root.lookup("Test1.field12").comment, "Trailing comment in last line should not be recognized as block comment for this field.", "trailing comment in last line should not be recognized as block comment for this field");
 
         test.equal(root.lookup("Test3").comments.ONE, "Value with a comment.", "should parse blocks for enum values");
         test.equal(root.lookup("Test3").comments.TWO, "Value with a single-line comment.", "should parse double-slash comments for enum values");
