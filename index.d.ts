@@ -1712,6 +1712,9 @@ export interface IConversionOptions {
 
     /** Performs additional JSON compatibility conversions, i.e. NaN and Infinity to strings */
     json?: boolean;
+
+    /** Whether or not to include deprecated properties */
+    deprecated?: boolean;
 }
 
 /**

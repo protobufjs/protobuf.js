@@ -206,6 +206,7 @@ converter.toObject = function toObject(mtype) {
     var gen = util.codegen(["m", "o"], mtype.name + "$toObject")
     ("if(!o)")
         ("o={}")
+    ("var deprecated=Boolean(o.deprecated)")
     ("var d={}");
 
     var repeatedFields = [],
@@ -265,25 +266,27 @@ converter.toObject = function toObject(mtype) {
     var hasKs2 = false;
     for (i = 0; i < fields.length; ++i) {
         var field = fields[i],
+            isDeprecated = field.options && field.options.deprecated,
+            deprecatedCond = isDeprecated ? "&&deprecated": "",
             index = mtype._fieldsArray.indexOf(field),
             prop  = util.safeProp(field.name);
         if (field.map) {
             if (!hasKs2) { hasKs2 = true; gen
     ("var ks2");
             } gen
-    ("if(m%s&&(ks2=Object.keys(m%s)).length){", prop, prop)
+    ("if(m%s&&(ks2=Object.keys(m%s)).length%s){", prop, prop, deprecatedCond)
         ("d%s={}", prop)
         ("for(var j=0;j<ks2.length;++j){");
             genValuePartial_toObject(gen, field, /* sorted */ index, prop + "[ks2[j]]")
         ("}");
         } else if (field.repeated) { gen
-    ("if(m%s&&m%s.length){", prop, prop)
+    ("if(m%s&&m%s.length%s){", prop, prop,deprecatedCond)
         ("d%s=[]", prop)
         ("for(var j=0;j<m%s.length;++j){", prop);
             genValuePartial_toObject(gen, field, /* sorted */ index, prop + "[j]")
         ("}");
         } else { gen
-    ("if(m%s!=null&&m.hasOwnProperty(%j)){", prop, field.name); // !== undefined && !== null
+    ("if(m%s!=null&&m.hasOwnProperty(%j)%s){", prop, field.name,deprecatedCond); // !== undefined && !== null
         genValuePartial_toObject(gen, field, /* sorted */ index, prop);
         if (field.partOf) gen
         ("if(o.oneofs)")

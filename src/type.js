@@ -555,6 +555,7 @@ Type.prototype.fromObject = function fromObject(object) {
  * @property {boolean} [objects=false] Sets empty objects for missing map fields even if `defaults=false`
  * @property {boolean} [oneofs=false] Includes virtual oneof properties set to the present field's name, if any
  * @property {boolean} [json=false] Performs additional JSON compatibility conversions, i.e. NaN and Infinity to strings
+ * @property {boolean} [deprecated=true] Whether or not to include deprecated properties
  */
 
 /**

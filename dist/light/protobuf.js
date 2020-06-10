@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v1.0.4 (c) 2016, daniel wirtz
- * compiled wed, 03 jun 2020 15:30:35 utc
+ * compiled wed, 10 jun 2020 01:54:17 utc
  * licensed under the bsd-3-clause license
  * see: https://github.com/pgherveou/protobuf.js for details
  */
@@ -1317,6 +1317,7 @@ converter.toObject = function toObject(mtype) {
     var gen = util.codegen(["m", "o"], mtype.name + "$toObject")
     ("if(!o)")
         ("o={}")
+    ("var deprecated=Boolean(o.deprecated)")
     ("var d={}");
 
     var repeatedFields = [],
@@ -1376,25 +1377,27 @@ converter.toObject = function toObject(mtype) {
     var hasKs2 = false;
     for (i = 0; i < fields.length; ++i) {
         var field = fields[i],
+            isDeprecated = field.options && field.options.deprecated,
+            deprecatedCond = isDeprecated ? "&&deprecated": "",
             index = mtype._fieldsArray.indexOf(field),
             prop  = util.safeProp(field.name);
         if (field.map) {
             if (!hasKs2) { hasKs2 = true; gen
     ("var ks2");
             } gen
-    ("if(m%s&&(ks2=Object.keys(m%s)).length){", prop, prop)
+    ("if(m%s&&(ks2=Object.keys(m%s)).length%s){", prop, prop, deprecatedCond)
         ("d%s={}", prop)
         ("for(var j=0;j<ks2.length;++j){");
             genValuePartial_toObject(gen, field, /* sorted */ index, prop + "[ks2[j]]")
         ("}");
         } else if (field.repeated) { gen
-    ("if(m%s&&m%s.length){", prop, prop)
+    ("if(m%s&&m%s.length%s){", prop, prop,deprecatedCond)
         ("d%s=[]", prop)
         ("for(var j=0;j<m%s.length;++j){", prop);
             genValuePartial_toObject(gen, field, /* sorted */ index, prop + "[j]")
         ("}");
         } else { gen
-    ("if(m%s!=null&&m.hasOwnProperty(%j)){", prop, field.name); // !== undefined && !== null
+    ("if(m%s!=null&&m.hasOwnProperty(%j)%s){", prop, field.name,deprecatedCond); // !== undefined && !== null
         genValuePartial_toObject(gen, field, /* sorted */ index, prop);
         if (field.partOf) gen
         ("if(o.oneofs)")
@@ -5337,6 +5340,7 @@ Type.prototype.fromObject = function fromObject(object) {
  * @property {boolean} [objects=false] Sets empty objects for missing map fields even if `defaults=false`
  * @property {boolean} [oneofs=false] Includes virtual oneof properties set to the present field's name, if any
  * @property {boolean} [json=false] Performs additional JSON compatibility conversions, i.e. NaN and Infinity to strings
+ * @property {boolean} [deprecated=true] Whether or not to include deprecated properties
  */
 
 /**
