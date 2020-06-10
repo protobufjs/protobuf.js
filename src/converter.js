@@ -206,7 +206,7 @@ converter.toObject = function toObject(mtype) {
     var gen = util.codegen(["m", "o"], mtype.name + "$toObject")
     ("if(!o)")
         ("o={}")
-    ("var deprecated=Boolean(o.deprecated)")
+    ("var deprecated=o.deprecated!==undefined?o.deprecated:true")
     ("var d={}");
 
     var repeatedFields = [],

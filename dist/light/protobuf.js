@@ -1,6 +1,6 @@
 /*!
- * protobuf.js v1.0.6 (c) 2016, daniel wirtz
- * compiled wed, 10 jun 2020 01:56:26 utc
+ * protobuf.js v1.0.7 (c) 2016, daniel wirtz
+ * compiled wed, 10 jun 2020 02:21:00 utc
  * licensed under the bsd-3-clause license
  * see: https://github.com/pgherveou/protobuf.js for details
  */
@@ -1317,7 +1317,7 @@ converter.toObject = function toObject(mtype) {
     var gen = util.codegen(["m", "o"], mtype.name + "$toObject")
     ("if(!o)")
         ("o={}")
-    ("var deprecated=Boolean(o.deprecated)")
+    ("var deprecated=o.deprecated!==undefined?o.deprecated:true")
     ("var d={}");
 
     var repeatedFields = [],
