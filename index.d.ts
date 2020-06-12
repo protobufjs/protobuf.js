@@ -1244,6 +1244,14 @@ export class Root extends NamespaceBase {
     public resolvePath(origin: string, target: string): (string|null);
 
     /**
+     * Fetch content from file path or url
+     * This method exists so you can override it with your own logic.
+     * @param path File path or url
+     * @param callback Callback function
+     */
+    public fetch(path: string, callback: FetchCallback): void;
+
+    /**
      * Loads one or multiple .proto or preprocessed .json files into this root namespace and calls the callback.
      * @param filename Names of one or multiple files to load
      * @param options Parse options
