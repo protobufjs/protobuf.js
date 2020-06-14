@@ -31,6 +31,8 @@ message Test2 {
 
     map<uint64,Test> longmap = 10;
 
+    Test5_Enum negative_enum = 11;
+
     /** pre */
     oneof kind;
     oneof kind2; /// post
@@ -60,6 +62,13 @@ enum Test4{
 
 enum Test4_1{
     OPTION = 1;
+}
+
+enum Test5_Enum {
+    reserved -1;
+    INVALID = 0;
+    OK = 1;
+    OK_BUT_WARNINGS = 2;
 }
 
 service Test5;
