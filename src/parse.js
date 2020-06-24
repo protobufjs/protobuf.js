@@ -555,7 +555,7 @@ function parse(source, root, options) {
 
     function parseOptionValue(parent, name) {
         if (skip("{", true)) { // { a: "foo" b { c: "bar" } }
-            do {
+            while (!skip("}", true)) {
                 /* istanbul ignore if */
                 if (!nameRe.test(token = next()))
                     throw illegal(token, "name");
@@ -570,7 +570,7 @@ function parse(source, root, options) {
                         setOption(parent, name + "." + token, readValue(true));
                 }
                 skip(",", true);
-            } while (!skip("}", true));
+            }
         } else
             setOption(parent, name, readValue(true));
         // Does not enforce a delimiter to be universal
