@@ -31,6 +31,8 @@ message Test2 {
 
     map<uint64,Test> longmap = 10;
 
+    int32 optionTest = 11 [(my_options) = { a: "foo" b {} }];
+
     /** pre */
     oneof kind;
     oneof kind2; /// post
