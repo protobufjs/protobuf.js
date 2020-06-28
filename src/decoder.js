@@ -19,7 +19,7 @@ function decoder(mtype) {
     var gen = util.codegen(["r", "l"], mtype.name + "$decode")
     ("if(!(r instanceof Reader))")
         ("r=Reader.create(r)")
-    ("var c=l===undefined?r.len:r.pos+l,m=new this.ctor" + (mtype.fieldsArray.filter(function(field) { return field.map; }).length ? ",k" : ""))
+        ("var c=l===undefined?r.len:r.pos+l,m=new this.ctor" + (mtype.fieldsArray.filter(function (field) { return field.map; }).length ? ",il,k,v" : ""))
     ("while(r.pos<c){")
         ("var t=r.uint32()");
     if (mtype.group) gen
@@ -37,23 +37,32 @@ function decoder(mtype) {
 
         // Map fields
         if (field.map) { gen
-                ("r.skip().pos++") // assumes id 1 + key wireType
+                ("il=r.pos+r.uint32()")
                 ("if(%s===util.emptyObject)", ref)
-                    ("%s={}", ref)
-                ("k=r.%s()", field.keyType)
-                ("r.pos++"); // assumes id 2 + value wireType
-            if (types.long[field.keyType] !== undefined) {
-                if (types.basic[type] === undefined) gen
-                ("%s[typeof k===\"object\"?util.longToHash(k):k]=types[%i].decode(r,r.uint32())", ref, i); // can't be groups
-                else gen
-                ("%s[typeof k===\"object\"?util.longToHash(k):k]=r.%s()", ref, type);
-            } else {
-                if (types.basic[type] === undefined) gen
-                ("%s[k]=types[%i].decode(r,r.uint32())", ref, i); // can't be groups
-                else gen
-                ("%s[k]=r.%s()", ref, type);
-            }
-
+                    ("%s={}", ref);
+            if (types.defaults[field.keyType] !== undefined) gen
+                ("k = %j", types.defaults[field.keyType]);
+            if (types.defaults[type] !== undefined) gen
+                ("v = %j", types.defaults[type]);
+            gen
+                ("while(r.pos<il){")
+                    ("switch(r.uint32()>>>3){")
+                        ("case 1:")
+                            ("k=r.%s()", field.keyType)
+                            ("break")
+                        ("case 2:");
+            if (types.basic[type] === undefined) gen
+                            ("v=types[%i].decode(r,r.uint32())", i);
+            else gen
+                            ("v=r.%s()", type);
+            gen
+                            ("break")
+                    ("}")
+                ("}");
+            if (types.long[field.keyType] !== undefined) gen
+                ("%s[typeof k===\"object\"?util.longToHash(k):k]=v", ref);
+            else gen
+                ("%s[k]=v", ref);
         // Repeated fields
         } else if (field.repeated) { gen
 
