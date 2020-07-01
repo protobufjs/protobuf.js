@@ -1058,6 +1058,9 @@ export interface IParseOptions {
 
     /** Recognize double-slash comments in addition to doc-block comments. */
     alternateCommentMode?: boolean;
+
+    /** Use trailing comment when both leading comment and trailing comment exist. */
+    preferTrailingComment?: boolean;
 }
 
 /** Options modifying the behavior of JSON serialization. */
@@ -1254,6 +1257,14 @@ export class Root extends NamespaceBase {
      * @returns Resolved path to `target` or `null` to skip the file
      */
     public resolvePath(origin: string, target: string): (string|null);
+
+    /**
+     * Fetch content from file path or url
+     * This method exists so you can override it with your own logic.
+     * @param path File path or url
+     * @param callback Callback function
+     */
+    public fetch(path: string, callback: FetchCallback): void;
 
     /**
      * Loads one or multiple .proto or preprocessed .json files into this root namespace and calls the callback.

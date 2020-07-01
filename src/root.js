@@ -61,6 +61,16 @@ Root.fromJSON = function fromJSON(json, root) {
  */
 Root.prototype.resolvePath = util.path.resolve;
 
+/**
+ * Fetch content from file path or url
+ * This method exists so you can override it with your own logic.
+ * @function
+ * @param {string} path File path or url
+ * @param {FetchCallback} callback Callback function
+ * @returns {undefined}
+ */
+Root.prototype.fetch = util.fetch;
+
 // A symbol-like function to safely signal synchronous loading
 /* istanbul ignore next */
 function SYNC() {} // eslint-disable-line no-empty-function
@@ -168,7 +178,7 @@ Root.prototype.load = function load(filename, options, callback) {
             process(filename, source);
         } else {
             ++queued;
-            util.fetch(filename, function(err, source) {
+            self.fetch(filename, function(err, source) {
                 --queued;
                 /* istanbul ignore if */
                 if (!callback)
