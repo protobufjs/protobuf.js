@@ -564,6 +564,7 @@ function parse(source, root, options) {
     function parseOptionValue(parent, name) {
         if (skip("{", true)) { // { a: "foo" b { c: "bar" } }
             var result = {};
+            while (!skip("}", true)) {
                 /* istanbul ignore if */
                 if (!nameRe.test(token = next()))
                     throw illegal(token, "name");
