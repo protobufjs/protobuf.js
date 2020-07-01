@@ -2174,7 +2174,6 @@ export namespace util {
      */
     function decorateEnum(object: object): Enum;
 
-
     /**
      * Sets the value of a property by property path. If a value already exists, it is turned to an array
      * @param dst Destination object
