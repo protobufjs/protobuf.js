@@ -590,7 +590,7 @@ function parse(source, root, options) {
             }
             return result;
         }
-        
+
         var simpleValue = readValue(true);
         setOption(parent, name, simpleValue);
         return simpleValue;
