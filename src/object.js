@@ -183,25 +183,28 @@ ReflectionObject.prototype.setOption = function setOption(name, value, ifNotSet)
  * @returns {ReflectionObject} `this`
  */
 ReflectionObject.prototype.setParsedOption = function setParsedOption(name, value, propName) {
-    var parsedOptions = (this.parsedOptions || (this.parsedOptions = []));
+    if (!this.parsedOptions) {
+        this.parsedOptions = [];
+    }
+    var parsedOptions = this.parsedOptions;
     if (propName) {
-        //If setting a sub property of an option then try to merge it
-        //with an existing option
+        // If setting a sub property of an option then try to merge it
+        // with an existing option
         var opt = parsedOptions.find(function (opt) {
-            return opt.hasOwnProperty(name)
+            return Object.prototype.hasOwnProperty.call(opt, name);
         });
         if (opt) {
-            //If we found an existing option - just merge the property value
+            // If we found an existing option - just merge the property value
             var newValue = opt[name];
             util.setProperty(newValue, propName, value);
         } else {
-            //otherwise, create a new option, set it's property and add it to the list
+            // otherwise, create a new option, set it's property and add it to the list
             opt = {};
             opt[name] = util.setProperty({}, propName, value);
             parsedOptions.push(opt);
         }
     } else {
-        //Always create a new option when setting the value of the option itself
+        // Always create a new option when setting the value of the option itself
         var newOpt = {};
         newOpt[name] = value;
         parsedOptions.push(newOpt);
