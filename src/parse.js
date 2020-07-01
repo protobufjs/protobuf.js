@@ -589,11 +589,11 @@ function parse(source, root, options) {
                 skip(",", true);
             }
             return result;
-        } else {
-            var simpleValue = readValue(true);
-            setOption(parent, name, simpleValue);
-            return simpleValue;
         }
+        
+        var simpleValue = readValue(true);
+        setOption(parent, name, simpleValue);
+        return simpleValue;
         // Does not enforce a delimiter to be universal
     }
 
