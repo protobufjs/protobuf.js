@@ -31,7 +31,7 @@ function ReflectionObject(name, options) {
 
     /**
      * Parsed Options.
-     * @type {Object.<string,*>[]|undefined}
+     * @type {Array.<Object.<string,*>>|undefined}
      */
     this.parsedOptions = null;
 
