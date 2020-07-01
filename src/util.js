@@ -177,7 +177,7 @@ util.setProperty = function setProperty(dst, path, value) {
     function setProp(dst, path, value) {
         var part = path.shift();
         if (path.length > 0) {
-            dst[part] = setProp(dst[part] || {}, path, value)
+            dst[part] = setProp(dst[part] || {}, path, value);
         } else {
             var prevValue = dst[part];
             if (prevValue)
@@ -193,7 +193,7 @@ util.setProperty = function setProperty(dst, path, value) {
         throw TypeError("path must be specified");
 
     path = path.split(".");
-    return setProp(dst, path, value)
+    return setProp(dst, path, value);
 };
 
 /**
