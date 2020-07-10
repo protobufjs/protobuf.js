@@ -859,6 +859,9 @@ export abstract class ReflectionObject {
     /** Options. */
     public options?: { [k: string]: any };
 
+    /** Options. */
+    public parsedOptions?: { [k: string]: any }[];
+
     /** Unique name within its namespace. */
     public name: string;
 
@@ -919,6 +922,15 @@ export abstract class ReflectionObject {
      * @returns `this`
      */
     public setOption(name: string, value: any, ifNotSet?: boolean): ReflectionObject;
+
+    /**
+     * Sets a parsed option.
+     * @param name parsed Option name
+     * @param value Option value
+     * @param [propName] dot '.' delimited full path of property within the option to set. if undefined\empty, will add a new option with that value
+     * @returns `this`
+     */
+    public setParsedOption(name: string, value: any, propName?: string): ReflectionObject;
 
     /**
      * Sets multiple options.
@@ -2161,6 +2173,15 @@ export namespace util {
      * @returns Reflected enum
      */
     function decorateEnum(object: object): Enum;
+
+    /**
+     * Sets the value of a property by property path. If a value already exists, it is turned to an array
+     * @param dst Destination object
+     * @param path dot '.' delimited path of the property to set
+     * @param value the value to set
+     * @returns Destination object
+     */
+    function setProperty(dst: { [k: string]: any }, path: string, value: object);
 
     /** Decorator root (TypeScript). */
     let decorateRoot: Root;
