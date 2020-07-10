@@ -34,7 +34,7 @@ var validCategories = {
 };
 var breakingFallback = /removed|stripped|dropped/i;
 
-var repo = "https://github.com/dcodeIO/protobuf.js";
+var repo = "https://github.com/protobufjs/protobuf.js";
 
 gitSemverTags(function(err, tags) {
     if (err)
@@ -71,7 +71,7 @@ gitSemverTags(function(err, tags) {
 
     commits.on("data", function(chunk) {
         var message = chunk.toString("utf8").trim();
-        var match = /#([0-9a-f]{40})$/.exec(message);
+        var match = /##([0-9a-f]{40})$/.exec(message);
         var hash;
         if (match) {
             message = message.substring(0, message.length - match[1].length).trim();
@@ -116,12 +116,12 @@ gitSemverTags(function(err, tags) {
     });
 
     commits.on("end", function() {
-        output.push("# [" + tag + "](" + repo + "/releases/tag/" + tag + ")\n");
+        output.push("## [" + tag + "](" + repo + "/releases/tag/" + tag + ")\n");
         Object.keys(categories).forEach(function(category) {
             var messages = categories[category];
             if (!messages.length)
                 return;
-            output.push("\n## " + category + "\n");
+            output.push("\n### " + category + "\n");
             messages.forEach(function(message) {
                 var text = message.text.replace(/#(\d+)/g, "[#$1](" + repo + "/issues/$1)");
                 output.push("[:hash:](" + repo + "/commit/" + message.hash + ") " + text + "<br />\n");
@@ -133,9 +133,9 @@ gitSemverTags(function(err, tags) {
         } catch (e) {
             current = "";
         }
-        var re = new RegExp("^# \\[" + tag + "\\]");
+        var re = new RegExp("^## \\[" + tag + "\\]");
         if (re.test(current)) { // regenerated, replace
-            var pos = current.indexOf("# [", 1);
+            var pos = current.indexOf("## [", 1);
             if (pos > -1)
                 current = current.substring(pos).trim();
             else

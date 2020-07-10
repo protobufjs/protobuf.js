@@ -194,9 +194,8 @@ exports.main = function main(args, callback) {
         return resolved;
     };
 
-    // Use es6 syntax if not explicitly specified on the command line and the es6 wrapper is used
-    if (argv.wrap === "es6" || argv.es6) {
-        argv.wrap = "es6";
+    // `--wrap es6` implies `--es6` but not the other way around. You can still use e.g. `--es6 --wrap commonjs`
+    if (argv.wrap === "es6") {
         argv.es6 = true;
     }
 
