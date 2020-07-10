@@ -1,6 +1,6 @@
 /*!
- * protobuf.js v6.8.8 (c) 2016, daniel wirtz
- * compiled tue, 10 mar 2020 18:44:49 utc
+ * protobuf.js v6.8.9 (c) 2016, daniel wirtz
+ * compiled fri, 17 apr 2020 21:58:51 utc
  * licensed under the bsd-3-clause license
  * see: https://github.com/dcodeio/protobuf.js for details
  */
@@ -1560,7 +1560,7 @@ function encoder(mtype) {
         // Map fields
         if (field.map) {
             gen
-    ("if(%s!=null&&m.hasOwnProperty(%j)){", ref, field.name) // !== undefined && !== null
+    ("if(%s!=null&&Object.hasOwnProperty.call(m,%j)){", ref, field.name) // !== undefined && !== null
         ("for(var ks=Object.keys(%s),i=0;i<ks.length;++i){", ref)
             ("w.uint32(%i).fork().uint32(%i).%s(ks[i])", (field.id << 3 | 2) >>> 0, 8 | types.mapKey[field.keyType], field.keyType);
             if (wireType === undefined) gen
@@ -1598,7 +1598,7 @@ function encoder(mtype) {
         // Non-repeated
         } else {
             if (field.optional) gen
-    ("if(%s!=null&&m.hasOwnProperty(%j))", ref, field.name); // !== undefined && !== null
+    ("if(%s!=null&&Object.hasOwnProperty.call(m,%j))", ref, field.name); // !== undefined && !== null
 
             if (wireType === undefined)
         genTypePartial(gen, field, index, ref);
@@ -1612,6 +1612,7 @@ function encoder(mtype) {
     ("return w");
     /* eslint-enable no-unexpected-multiline, block-scoped-var, no-redeclare */
 }
+
 },{"14":14,"32":32,"33":33}],14:[function(require,module,exports){
 "use strict";
 module.exports = Enum;
@@ -2304,12 +2305,12 @@ protobuf.configure    = configure;
  * @returns {undefined}
  */
 function configure() {
-    protobuf.Reader._configure(protobuf.BufferReader);
     protobuf.util._configure();
+    protobuf.Writer._configure(protobuf.BufferWriter);
+    protobuf.Reader._configure(protobuf.BufferReader);
 }
 
 // Set up buffer utility according to the environment
-protobuf.Writer._configure(protobuf.BufferWriter);
 configure();
 
 },{"24":24,"25":25,"27":27,"28":28,"35":35,"38":38,"39":39}],18:[function(require,module,exports){
@@ -2798,7 +2799,7 @@ Namespace.arrayToJSON = arrayToJSON;
 Namespace.isReservedId = function isReservedId(reserved, id) {
     if (reserved)
         for (var i = 0; i < reserved.length; ++i)
-            if (typeof reserved[i] !== "string" && reserved[i][0] <= id && reserved[i][1] >= id)
+            if (typeof reserved[i] !== "string" && reserved[i][0] <= id && reserved[i][1] > id)
                 return true;
     return false;
 };
@@ -3631,6 +3632,20 @@ var create_array = typeof Uint8Array !== "undefined"
         throw Error("illegal buffer");
     };
 
+var create = function create() {
+    return util.Buffer
+        ? function create_buffer_setup(buffer) {
+            return (Reader.create = function create_buffer(buffer) {
+                return util.Buffer.isBuffer(buffer)
+                    ? new BufferReader(buffer)
+                    /* istanbul ignore next */
+                    : create_array(buffer);
+            })(buffer);
+        }
+        /* istanbul ignore next */
+        : create_array;
+};
+
 /**
  * Creates a new reader using the specified buffer.
  * @function
@@ -3638,17 +3653,7 @@ var create_array = typeof Uint8Array !== "undefined"
  * @returns {Reader|BufferReader} A {@link BufferReader} if `buffer` is a Buffer, otherwise a {@link Reader}
  * @throws {Error} If `buffer` is not a valid buffer
  */
-Reader.create = util.Buffer
-    ? function create_buffer_setup(buffer) {
-        return (Reader.create = function create_buffer(buffer) {
-            return util.Buffer.isBuffer(buffer)
-                ? new BufferReader(buffer)
-                /* istanbul ignore next */
-                : create_array(buffer);
-        })(buffer);
-    }
-    /* istanbul ignore next */
-    : create_array;
+Reader.create = create();
 
 Reader.prototype._slice = util.Array.prototype.subarray || /* istanbul ignore next */ util.Array.prototype.slice;
 
@@ -3955,6 +3960,8 @@ Reader.prototype.skipType = function(wireType) {
 
 Reader._configure = function(BufferReader_) {
     BufferReader = BufferReader_;
+    Reader.create = create();
+    BufferReader._configure();
 
     var fn = util.Long ? "toLong" : /* istanbul ignore next */ "toNumber";
     util.merge(Reader.prototype, {
@@ -4009,16 +4016,21 @@ function BufferReader(buffer) {
      */
 }
 
-/* istanbul ignore else */
-if (util.Buffer)
-    BufferReader.prototype._slice = util.Buffer.prototype.slice;
+BufferReader._configure = function () {
+    /* istanbul ignore else */
+    if (util.Buffer)
+        BufferReader.prototype._slice = util.Buffer.prototype.slice;
+};
+
 
 /**
  * @override
  */
 BufferReader.prototype.string = function read_string_buffer() {
     var len = this.uint32(); // modifies pos
-    return this.buf.utf8Slice(this.pos, this.pos = Math.min(this.pos + len, this.len));
+    return this.buf.utf8Slice
+        ? this.buf.utf8Slice(this.pos, this.pos = Math.min(this.pos + len, this.len))
+        : this.buf.toString("utf-8", this.pos, this.pos = Math.min(this.pos + len, this.len));
 };
 
 /**
@@ -4027,6 +4039,8 @@ BufferReader.prototype.string = function read_string_buffer() {
  * @function
  * @returns {Buffer} Value read
  */
+
+BufferReader._configure();
 
 },{"24":24,"35":35}],26:[function(require,module,exports){
 "use strict";
@@ -4126,6 +4140,16 @@ Root.prototype.load = function load(filename, options, callback) {
         cb(err, root);
     }
 
+    // Bundled definition existence checking
+    function getBundledFileName(filename) {
+        var idx = filename.lastIndexOf("google/protobuf/");
+        if (idx > -1) {
+            var altname = filename.substring(idx);
+            if (altname in common) return altname;
+        }
+        return null;
+    }
+
     // Processes a single file
     function process(filename, source) {
         try {
@@ -4140,11 +4164,11 @@ Root.prototype.load = function load(filename, options, callback) {
                     i = 0;
                 if (parsed.imports)
                     for (; i < parsed.imports.length; ++i)
-                        if (resolved = self.resolvePath(filename, parsed.imports[i]))
+                        if (resolved = getBundledFileName(parsed.imports[i]) || self.resolvePath(filename, parsed.imports[i]))
                             fetch(resolved);
                 if (parsed.weakImports)
                     for (i = 0; i < parsed.weakImports.length; ++i)
-                        if (resolved = self.resolvePath(filename, parsed.weakImports[i]))
+                        if (resolved = getBundledFileName(parsed.weakImports[i]) || self.resolvePath(filename, parsed.weakImports[i]))
                             fetch(resolved, true);
             }
         } catch (err) {
@@ -4156,14 +4180,6 @@ Root.prototype.load = function load(filename, options, callback) {
 
     // Fetches a single file
     function fetch(filename, weak) {
-
-        // Strip path if this file references a bundled definition
-        var idx = filename.lastIndexOf("google/protobuf/");
-        if (idx > -1) {
-            var altname = filename.substring(idx);
-            if (altname in common)
-                filename = altname;
-        }
 
         // Skip if already loaded / attempted
         if (self.files.indexOf(filename) > -1)
@@ -6193,7 +6209,7 @@ function newError(name) {
         if (Error.captureStackTrace) // node
             Error.captureStackTrace(this, CustomError);
         else
-            Object.defineProperty(this, "stack", { value: (new Error()).stack || "" });
+            Object.defineProperty(this, "stack", { value: new Error().stack || "" });
 
         if (properties)
             merge(this, properties);
@@ -6726,21 +6742,25 @@ function Writer() {
     // part is just a linked list walk calling operations with already prepared values.
 }
 
+var create = function create() {
+    return util.Buffer
+        ? function create_buffer_setup() {
+            return (Writer.create = function create_buffer() {
+                return new BufferWriter();
+            })();
+        }
+        /* istanbul ignore next */
+        : function create_array() {
+            return new Writer();
+        };
+};
+
 /**
  * Creates a new writer.
  * @function
  * @returns {BufferWriter|Writer} A {@link BufferWriter} when Buffers are supported, otherwise a {@link Writer}
  */
-Writer.create = util.Buffer
-    ? function create_buffer_setup() {
-        return (Writer.create = function create_buffer() {
-            return new BufferWriter();
-        })();
-    }
-    /* istanbul ignore next */
-    : function create_array() {
-        return new Writer();
-    };
+Writer.create = create();
 
 /**
  * Allocates a buffer of the specified size.
@@ -7061,6 +7081,8 @@ Writer.prototype.finish = function finish() {
 
 Writer._configure = function(BufferWriter_) {
     BufferWriter = BufferWriter_;
+    Writer.create = create();
+    BufferWriter._configure();
 };
 
 },{"35":35}],39:[function(require,module,exports){
@@ -7073,8 +7095,6 @@ var Writer = require(38);
 
 var util = require(35);
 
-var Buffer = util.Buffer;
-
 /**
  * Constructs a new buffer writer instance.
  * @classdesc Wire format writer using node buffers.
@@ -7085,27 +7105,29 @@ function BufferWriter() {
     Writer.call(this);
 }
 
-/**
- * Allocates a buffer of the specified size.
- * @param {number} size Buffer size
- * @returns {Buffer} Buffer
- */
-BufferWriter.alloc = function alloc_buffer(size) {
-    return (BufferWriter.alloc = util._Buffer_allocUnsafe)(size);
+BufferWriter._configure = function () {
+    /**
+     * Allocates a buffer of the specified size.
+     * @function
+     * @param {number} size Buffer size
+     * @returns {Buffer} Buffer
+     */
+    BufferWriter.alloc = util._Buffer_allocUnsafe;
+
+    BufferWriter.writeBytesBuffer = util.Buffer && util.Buffer.prototype instanceof Uint8Array && util.Buffer.prototype.set.name === "set"
+        ? function writeBytesBuffer_set(val, buf, pos) {
+          buf.set(val, pos); // faster than copy (requires node >= 4 where Buffers extend Uint8Array and set is properly inherited)
+          // also works for plain array values
+        }
+        /* istanbul ignore next */
+        : function writeBytesBuffer_copy(val, buf, pos) {
+          if (val.copy) // Buffer values
+            val.copy(buf, pos, 0, val.length);
+          else for (var i = 0; i < val.length;) // plain array values
+            buf[pos++] = val[i++];
+        };
 };
 
-var writeBytesBuffer = Buffer && Buffer.prototype instanceof Uint8Array && Buffer.prototype.set.name === "set"
-    ? function writeBytesBuffer_set(val, buf, pos) {
-        buf.set(val, pos); // faster than copy (requires node >= 4 where Buffers extend Uint8Array and set is properly inherited)
-                           // also works for plain array values
-    }
-    /* istanbul ignore next */
-    : function writeBytesBuffer_copy(val, buf, pos) {
-        if (val.copy) // Buffer values
-            val.copy(buf, pos, 0, val.length);
-        else for (var i = 0; i < val.length;) // plain array values
-            buf[pos++] = val[i++];
-    };
 
 /**
  * @override
@@ -7116,22 +7138,24 @@ BufferWriter.prototype.bytes = function write_bytes_buffer(value) {
     var len = value.length >>> 0;
     this.uint32(len);
     if (len)
-        this._push(writeBytesBuffer, len, value);
+        this._push(BufferWriter.writeBytesBuffer, len, value);
     return this;
 };
 
 function writeStringBuffer(val, buf, pos) {
     if (val.length < 40) // plain js is faster for short strings (probably due to redundant assertions)
         util.utf8.write(val, buf, pos);
-    else
+    else if (buf.utf8Write)
         buf.utf8Write(val, pos);
+    else
+        buf.write(val, pos);
 }
 
 /**
  * @override
  */
 BufferWriter.prototype.string = function write_string_buffer(value) {
-    var len = Buffer.byteLength(value);
+    var len = util.Buffer.byteLength(value);
     this.uint32(len);
     if (len)
         this._push(writeStringBuffer, len, value);
@@ -7145,6 +7169,8 @@ BufferWriter.prototype.string = function write_string_buffer(value) {
  * @function
  * @returns {Buffer} Finished buffer
  */
+
+BufferWriter._configure();
 
 },{"35":35,"38":38}]},{},[16])
 

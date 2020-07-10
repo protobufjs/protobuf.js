@@ -106,7 +106,8 @@ function tokenize(source, alternateCommentMode) {
         commentType = null,
         commentText = null,
         commentLine = 0,
-        commentLineEmpty = false;
+        commentLineEmpty = false,
+        commentIsLeading = false;
 
     var stack = [];
 
@@ -154,13 +155,15 @@ function tokenize(source, alternateCommentMode) {
      * Sets the current comment text.
      * @param {number} start Start offset
      * @param {number} end End offset
+     * @param {boolean} isLeading set if a leading comment
      * @returns {undefined}
      * @inner
      */
-    function setComment(start, end) {
+    function setComment(start, end, isLeading) {
         commentType = source.charAt(start++);
         commentLine = line;
         commentLineEmpty = false;
+        commentIsLeading = isLeading;
         var lookback;
         if (alternateCommentMode) {
             lookback = 2;  // alternate comment parsing: "//" or "/*"
@@ -222,14 +225,17 @@ function tokenize(source, alternateCommentMode) {
             prev,
             curr,
             start,
-            isDoc;
+            isDoc,
+            isLeadingComment = offset === 0;
         do {
             if (offset === length)
                 return null;
             repeat = false;
             while (whitespaceRe.test(curr = charAt(offset))) {
-                if (curr === "\n")
+                if (curr === "\n") {
+                    isLeadingComment = true;
                     ++line;
+                }
                 if (++offset === length)
                     return null;
             }
@@ -250,7 +256,7 @@ function tokenize(source, alternateCommentMode) {
                         }
                         ++offset;
                         if (isDoc) {
-                            setComment(start, offset - 1);
+                            setComment(start, offset - 1, isLeadingComment);
                         }
                         ++line;
                         repeat = true;
@@ -271,7 +277,7 @@ function tokenize(source, alternateCommentMode) {
                             offset = Math.min(length, findEndOfLine(offset) + 1);
                         }
                         if (isDoc) {
-                            setComment(start, offset);
+                            setComment(start, offset, isLeadingComment);
                         }
                         line++;
                         repeat = true;
@@ -292,7 +298,7 @@ function tokenize(source, alternateCommentMode) {
                     } while (prev !== "*" || curr !== "/");
                     ++offset;
                     if (isDoc) {
-                        setComment(start, offset - 2);
+                        setComment(start, offset - 2, isLeadingComment);
                     }
                     repeat = true;
                 } else {
@@ -370,7 +376,7 @@ function tokenize(source, alternateCommentMode) {
         var ret = null;
         if (trailingLine === undefined) {
             if (commentLine === line - 1 && (alternateCommentMode || commentType === "*" || commentLineEmpty)) {
-                ret = commentText;
+                ret = commentIsLeading ? commentText : null;
             }
         } else {
             /* istanbul ignore else */
@@ -378,7 +384,7 @@ function tokenize(source, alternateCommentMode) {
                 peek();
             }
             if (commentLine === trailingLine && !commentLineEmpty && (alternateCommentMode || commentType === "/")) {
-                ret = commentText;
+                ret = commentIsLeading ? null : commentText;
             }
         }
         return ret;
