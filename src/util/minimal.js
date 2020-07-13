@@ -26,8 +26,8 @@ util.pool = require("@protobufjs/pool");
 util.LongBits = require("./longbits");
 
 // global object reference
-util.global = typeof window !== "undefined" && window
-           || typeof global !== "undefined" && global
+util.global = typeof global !== "undefined" && Object.prototype.toString.call(global) === "[object global]" && global
+           || typeof window !== "undefined" && window
            || typeof self   !== "undefined" && self
            || this; // eslint-disable-line no-invalid-this
 
@@ -52,7 +52,7 @@ util.emptyObject = Object.freeze ? Object.freeze({}) : /* istanbul ignore next *
  * @type {boolean}
  * @const
  */
-util.isNode = Boolean(process && process.versions && process.versions.node);
+util.isNode = Boolean(util.global.process && util.global.process.versions && util.global.process.versions.node);
 
 /**
  * Tests if the specified value is an integer.
