@@ -1,6 +1,6 @@
 /*!
- * protobuf.js v6.8.9 (c) 2016, daniel wirtz
- * compiled fri, 17 apr 2020 21:58:51 utc
+ * protobuf.js v6.9.0 (c) 2016, daniel wirtz
+ * compiled mon, 13 jul 2020 22:57:44 utc
  * licensed under the bsd-3-clause license
  * see: https://github.com/dcodeio/protobuf.js for details
  */
@@ -1760,8 +1760,8 @@ util.pool = require(6);
 util.LongBits = require(14);
 
 // global object reference
-util.global = typeof window !== "undefined" && window
-           || typeof global !== "undefined" && global
+util.global = typeof global !== "undefined" && Object.prototype.toString.call(global) === "[object global]" && global
+           || typeof window !== "undefined" && window
            || typeof self   !== "undefined" && self
            || this; // eslint-disable-line no-invalid-this
 
