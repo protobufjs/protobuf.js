@@ -30,11 +30,11 @@ util.LongBits = require("./longbits");
  * @memberof util
  * @type {boolean}
  */
-util.isNode = typeof global !== "undefined"
-           && global
-           && global.process
-           && global.process.versions
-           && global.process.versions.node;
+util.isNode = Boolean(typeof global !== "undefined"
+                   && global
+                   && global.process
+                   && global.process.versions
+                   && global.process.versions.node);
 
 /**
  * Global object reference.
