@@ -26,7 +26,12 @@ util.pool = require("@protobufjs/pool");
 util.LongBits = require("./longbits");
 
 // global object reference
-util.global = typeof global !== "undefined" && Object.prototype.toString.call(global) === "[object global]" && global
+util.global = typeof global !== "undefined" &&
+            (
+                Object.prototype.toString.call(global) === "[object global]" ||
+                Object.prototype.toString.call(global) === "[object Object]"
+            )
+            && global
            || typeof window !== "undefined" && window
            || typeof self   !== "undefined" && self
            || this; // eslint-disable-line no-invalid-this
