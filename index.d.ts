@@ -1951,14 +1951,17 @@ export namespace util {
         public length(): number;
     }
 
+    /** Whether running within node or not. */
+    let isNode: boolean;
+
+    /** Global object reference. */
+    let global: object;
+
     /** An immuable empty array. */
     const emptyArray: any[];
 
     /** An immutable empty object. */
     const emptyObject: object;
-
-    /** Whether running within node or not. */
-    const isNode: boolean;
 
     /**
      * Tests if the specified value is an integer.
