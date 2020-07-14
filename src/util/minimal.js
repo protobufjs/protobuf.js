@@ -25,8 +25,18 @@ util.pool = require("@protobufjs/pool");
 // utility to work with the low and high bits of a 64 bit value
 util.LongBits = require("./longbits");
 
+/** Tests whether the specified object is most likely a node.js process. */
+function isNodeProcess(process) {
+    return Boolean(process && process.versions && process.versions.node);
+}
+
+/** Tests whether the specified object is most likely a node.js global. */
+function isNodeGlobal(global) {
+    return global && isNodeProcess(global.process);
+}
+
 // global object reference
-util.global = typeof global !== "undefined" && Object.prototype.toString.call(global) === "[object global]" && global
+util.global = typeof global !== "undefined" && isNodeGlobal(global) && global
            || typeof window !== "undefined" && window
            || typeof self   !== "undefined" && self
            || this; // eslint-disable-line no-invalid-this
@@ -52,7 +62,7 @@ util.emptyObject = Object.freeze ? Object.freeze({}) : /* istanbul ignore next *
  * @type {boolean}
  * @const
  */
-util.isNode = Boolean(util.global.process && util.global.process.versions && util.global.process.versions.node);
+util.isNode = isNodeProcess(util.global.process);
 
 /**
  * Tests if the specified value is an integer.
