@@ -1,6 +1,6 @@
 /*!
- * protobuf.js v6.9.0 (c) 2016, daniel wirtz
- * compiled mon, 13 jul 2020 22:57:44 utc
+ * protobuf.js v6.10.0 (c) 2016, daniel wirtz
+ * compiled wed, 15 jul 2020 23:34:13 utc
  * licensed under the bsd-3-clause license
  * see: https://github.com/dcodeio/protobuf.js for details
  */
@@ -6073,8 +6073,23 @@ util.pool = require(9);
 // utility to work with the low and high bits of a 64 bit value
 util.LongBits = require(34);
 
-// global object reference
-util.global = typeof global !== "undefined" && Object.prototype.toString.call(global) === "[object global]" && global
+/**
+ * Whether running within node or not.
+ * @memberof util
+ * @type {boolean}
+ */
+util.isNode = Boolean(typeof global !== "undefined"
+                   && global
+                   && global.process
+                   && global.process.versions
+                   && global.process.versions.node);
+
+/**
+ * Global object reference.
+ * @memberof util
+ * @type {Object}
+ */
+util.global = util.isNode && global
            || typeof window !== "undefined" && window
            || typeof self   !== "undefined" && self
            || this; // eslint-disable-line no-invalid-this
@@ -6093,14 +6108,6 @@ util.emptyArray = Object.freeze ? Object.freeze([]) : /* istanbul ignore next */
  * @const
  */
 util.emptyObject = Object.freeze ? Object.freeze({}) : /* istanbul ignore next */ {}; // used on prototypes
-
-/**
- * Whether running within node or not.
- * @memberof util
- * @type {boolean}
- * @const
- */
-util.isNode = Boolean(util.global.process && util.global.process.versions && util.global.process.versions.node);
 
 /**
  * Tests if the specified value is an integer.
