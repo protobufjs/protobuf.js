@@ -1,5 +1,12 @@
 # Changelog
 
+### [6.10.1](https://www.github.com/protobufjs/protobuf.js/compare/v6.10.0...v6.10.1) (2020-07-16)
+
+
+### Bug Fixes
+
+* make node detection a bit more forgiving ([#1445](https://www.github.com/protobufjs/protobuf.js/issues/1445)) ([4e75f6d](https://www.github.com/protobufjs/protobuf.js/commit/4e75f6de4a2e49f28c24b59107f262d472b68977))
+
 ## [6.10.0](https://www.github.com/protobufjs/protobuf.js/compare/v6.9.0...v6.10.0) (2020-07-13)
 
 
