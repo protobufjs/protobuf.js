@@ -13,10 +13,10 @@
   "types": "index.d.ts",
   "devDependencies": {
     "benchmark": "^2.1.4",
-    "chalk": "^1.1.3",
+    "chalk": "^4.0.0",
     "ieee754": "^1.1.8",
     "istanbul": "^0.4.5",
-    "tape": "^4.6.3"
+    "tape": "^5.0.0"
   },
   "scripts": {
     "test": "tape tests/*.js",
