@@ -92,6 +92,50 @@ tape.test("maps", function(test) {
         test.end();
     });
 
+    test.test(test.name + " - omitted fields", function(test) {
+
+        var mapRoot = protobuf.Root.fromJSON({
+            nested: {
+                MapMessage: {
+                    fields: {
+                        value: {
+                            keyType: "int32",
+                            type: "string",
+                            id: 1
+                        }
+                    }
+                }
+            }
+        });
+
+        var MapMessage = mapRoot.lookup("MapMessage");
+
+        var value = {
+            value: {
+                0: ''
+            }
+        };
+        var dec;
+
+        // 1 <chunk> = message(1 <varint> = 0, 2 <chunk> = empty chunk)
+        dec = MapMessage.decode(Uint8Array.of(0x0a, 0x04, 0x08, 0x00, 0x12, 0x00));
+        test.deepEqual(dec, value, "should correct decode the buffer without omitted fields");
+
+        // 1 <chunk> = message(1 <varint> = 0)
+        dec = MapMessage.decode(Uint8Array.of(0x0a, 0x02, 0x08, 0x00));
+        test.deepEqual(dec, value, "should correct decode the buffer with omitted value");
+
+        // 1 <chunk> = message(2 <chunk> = empty chunk)
+        dec = MapMessage.decode(Uint8Array.of(0x0a, 0x02, 0x12, 0x00));
+        test.deepEqual(dec, value, "should correct decode the buffer with omitted key");
+
+        // 1 <chunk> = empty chunk
+        dec = MapMessage.decode(Uint8Array.of(0x0a, 0x00));
+        test.deepEqual(dec, value, "should correct decode the buffer with both key and value omitted");
+
+        test.end();
+    });
+
     test.end();
 });
 
