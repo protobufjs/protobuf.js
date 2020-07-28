@@ -650,6 +650,7 @@ Translates between file formats and generates static code.
   --no-verify      Does not generate verify functions.
   --no-convert     Does not generate convert functions like from/toObject
   --no-delimited   Does not generate delimited encode/decode functions.
+  --no-typeurl     Does not generate getTypeUrl function.
   --no-beautify    Does not beautify generated code.
   --no-comments    Does not output any JSDoc comments.
 
