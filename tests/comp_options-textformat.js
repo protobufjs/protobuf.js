@@ -2,20 +2,36 @@ var tape = require("tape");
 
 var protobuf = require("..");
 
-var proto = "syntax = \"proto3\";\
-import \"google/protobuf/descriptor.proto\";\
-message MyOptions {\
-  string a = 1;\
-  string b = 2;\
-}\
-extend google.protobuf.FieldOptions {\
-  MyOptions my_options = 50000;\
-}\
-message Test {\
-  string value = 1 [(my_options) = { a: \"foo\" b: \"bar\" }];\
-  string value2 = 2 [(my_options) = { a: \"foo\" b { c: \"bar\" } }];\
-  string value3 = 3 [(my_options) = { a: \"foo\", b: \"bar\" }];\
-}";
+var proto = `
+syntax = "proto3";
+import "google/protobuf/descriptor.proto";
+message MyOptions {
+  string a = 1;
+  string b = 2;
+}
+extend google.protobuf.FieldOptions {
+  MyOptions my_options = 50000;
+}
+message Test {
+  string value = 1 [(my_options) = { a: "foo" b: "bar" }];
+  string value2 = 2 [(my_options) = { a: "foo" b { c: "bar" } }];
+  string value3 = 3 [(my_options) = { a: "foo", b: "bar" }];
+}
+`;
+
+var proto2 = `
+syntax = "proto3";
+import "google/protobuf/descriptor.proto";
+
+message Test {
+  option (odie.db_options) = {database_backends:[DYNAMO]};
+  string value = 1 [(my_options) = { a: "foo" b: "bar" }];
+  string value2 = 2 [(my_options) = { a: "foo" b { c: "bar" } }];
+  string value3 = 3 [(my_options) = { a: "foo", b: "bar" }];
+}
+
+
+`
 
 tape.test("options in textformat", function(test) {
     var root = protobuf.parse(proto).root;
@@ -23,5 +39,10 @@ tape.test("options in textformat", function(test) {
     test.same(Test.fields.value.options, { "(my_options).a": "foo", "(my_options).b": "bar" }, "should parse correctly");
     test.same(Test.fields.value2.options, { "(my_options).a": "foo", "(my_options).b.c": "bar" }, "should parse correctly when nested");
     test.same(Test.fields.value3.options, { "(my_options).a": "foo", "(my_options).b": "bar" }, "should parse correctly when comma-separated");
+    test.end();
+});
+
+tape.test("options with extension", function(test) {
+    protobuf.parse(proto2).root;
     test.end();
 });
