@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v1.0.8 (c) 2016, daniel wirtz
- * compiled tue, 11 aug 2020 14:18:08 utc
+ * compiled tue, 11 aug 2020 15:12:00 utc
  * licensed under the bsd-3-clause license
  * see: https://github.com/pgherveou/protobuf.js for details
  */
@@ -4182,6 +4182,47 @@ function parse(source, root, options) {
         return values.join("");
     }
 
+    function isNumber(number) {
+        if (/[0-9]/.test(number)) {
+            return number;
+        } else {
+            return false;
+        }
+    }
+    
+    function readArray() {
+        var values = [],
+            token;
+        
+        skip("[")
+        while ((token = next()) !== ']') {
+            if (token !== undefined && token !== ',') {
+                switch (token) {
+                    case "'":
+                    case "\"":
+                        push(token);
+                        values.push(readString());
+                        break;
+                    case "true": 
+                    case "TRUE":
+                        values.push(true);
+                        break;
+                    case "false": 
+                    case "FALSE":
+                        values.push(false);
+                        break;
+                    case isNumber(token):
+                        values.push(Number(token));
+                        break;
+                    default:
+                        values.push(token);
+                }
+            }
+        }
+
+        return values;
+    }
+
     function readValue(acceptTypeRef) {
         var token = next();
         switch (token) {
@@ -4641,6 +4682,8 @@ function parse(source, root, options) {
                     skip(":");
                     if (peek() === "{")
                         parseOptionValue(parent, name + "." + token);
+                    else if (peek() === "[")
+                        setOption(parent, name + "." + token, readArray());
                     else
                         setOption(parent, name + "." + token, readValue(true));
                 }
@@ -5151,7 +5194,7 @@ Reader.prototype.bytes = function read_bytes() {
     if (Array.isArray(this.buf)) // plain array
         return this.buf.slice(start, end);
     return start === end // fix for IE 10/Win8 and others' subarray returning array of size 1
-        ? new this.buf.constructor(0)
+        ? util.newBuffer(0)
         : this._slice.call(this.buf, start, end);
 };
 

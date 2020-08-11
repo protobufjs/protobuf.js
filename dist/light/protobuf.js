@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v1.0.8 (c) 2016, daniel wirtz
- * compiled tue, 11 aug 2020 14:18:08 utc
+ * compiled tue, 11 aug 2020 15:12:00 utc
  * licensed under the bsd-3-clause license
  * see: https://github.com/pgherveou/protobuf.js for details
  */
@@ -3971,7 +3971,7 @@ Reader.prototype.bytes = function read_bytes() {
     if (Array.isArray(this.buf)) // plain array
         return this.buf.slice(start, end);
     return start === end // fix for IE 10/Win8 and others' subarray returning array of size 1
-        ? new this.buf.constructor(0)
+        ? util.newBuffer(0)
         : this._slice.call(this.buf, start, end);
 };
 

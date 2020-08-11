@@ -109,6 +109,47 @@ function parse(source, root, options) {
         return values.join("");
     }
 
+    function isNumber(number) {
+        if (/[0-9]/.test(number)) {
+            return number;
+        } else {
+            return false;
+        }
+    }
+    
+    function readArray() {
+        var values = [],
+            token;
+        
+        skip("[")
+        while ((token = next()) !== ']') {
+            if (token !== undefined && token !== ',') {
+                switch (token) {
+                    case "'":
+                    case "\"":
+                        push(token);
+                        values.push(readString());
+                        break;
+                    case "true": 
+                    case "TRUE":
+                        values.push(true);
+                        break;
+                    case "false": 
+                    case "FALSE":
+                        values.push(false);
+                        break;
+                    case isNumber(token):
+                        values.push(Number(token));
+                        break;
+                    default:
+                        values.push(token);
+                }
+            }
+        }
+
+        return values;
+    }
+
     function readValue(acceptTypeRef) {
         var token = next();
         switch (token) {
@@ -568,6 +609,8 @@ function parse(source, root, options) {
                     skip(":");
                     if (peek() === "{")
                         parseOptionValue(parent, name + "." + token);
+                    else if (peek() === "[")
+                        setOption(parent, name + "." + token, readArray());
                     else
                         setOption(parent, name + "." + token, readValue(true));
                 }
