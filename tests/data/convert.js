@@ -201,7 +201,7 @@ $root.Message = (function() {
     Message.decode = function decode(reader, length) {
         if (!(reader instanceof $Reader))
             reader = $Reader.create(reader);
-        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Message(), key;
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Message(), key, value;
         while (reader.pos < end) {
             var tag = reader.uint32();
             switch (tag >>> 3) {
@@ -248,12 +248,26 @@ $root.Message = (function() {
                     message.enumRepeated.push(reader.int32());
                 break;
             case 9:
-                reader.skip().pos++;
                 if (message.int64Map === $util.emptyObject)
                     message.int64Map = {};
-                key = reader.string();
-                reader.pos++;
-                message.int64Map[key] = reader.int64();
+                var end2 = reader.uint32() + reader.pos;
+                key = "";
+                value = 0;
+                while (reader.pos < end2) {
+                    var tag2 = reader.uint32();
+                    switch (tag2 >>> 3) {
+                    case 1:
+                        key = reader.string();
+                        break;
+                    case 2:
+                        value = reader.int64();
+                        break;
+                    default:
+                        reader.skipType(tag2 & 7);
+                        break;
+                    }
+                }
+                message.int64Map[key] = value;
                 break;
             default:
                 reader.skipType(tag & 7);
