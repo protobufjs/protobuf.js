@@ -313,7 +313,7 @@ Reader.prototype.bytes = function read_bytes() {
     if (Array.isArray(this.buf)) // plain array
         return this.buf.slice(start, end);
     return start === end // fix for IE 10/Win8 and others' subarray returning array of size 1
-        ? new this.buf.constructor(0)
+        ? util.newBuffer(0)
         : this._slice.call(this.buf, start, end);
 };
 

@@ -24,6 +24,18 @@ tape.test("reflection objects", function(test) {
     obj.setOption("c", 3);
     test.same(obj.options, { a: 1, b: 2, c: 3 }, "should set single options");
 
+    obj.setParsedOption("opt1", {a: 1, b: 2});
+    test.same(obj.parsedOptions, [{"opt1": {a: 1, b: 2}}], "should set single parsed option");
+    obj.setParsedOption("opt1", {a: 3, b: 4});
+    test.same(obj.parsedOptions, [{"opt1": {a: 1, b: 2}}, {"opt1": {a: 3, b: 4}}], "should allow same option twice");
+    obj.setParsedOption("opt2", 1, "x");
+    test.same(obj.parsedOptions, [{"opt1": {a: 1, b: 2}}, {"opt1": {a: 3, b: 4}}, {"opt2": {x: 1}}], "should create new option using property path");
+    obj.setParsedOption("opt2", 5, "a.b");
+    test.same(obj.parsedOptions, [{"opt1": {a: 1, b: 2}}, {"opt1": {a: 3, b: 4}}, {"opt2": {x: 1, a: {b :5}}}], "should merge new property path in existing option");
+    obj.setParsedOption("opt2", 6, "x");
+    test.same(obj.parsedOptions, [{"opt1": {a: 1, b: 2}}, {"opt1": {a: 3, b: 4}}, {"opt2": {x: [1,6], a: {b :5}}}], "should convert property to array when set more than once");
+
+
     test.equal(obj.toString(), "ReflectionObject Test", "should convert to a string (even if not part of a root)");
     obj.name = "";
     test.equal(obj.toString(), "ReflectionObject", "should convert to a string even with no full name");

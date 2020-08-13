@@ -1,6 +1,6 @@
 /*!
- * protobuf.js v1.0.7 (c) 2016, daniel wirtz
- * compiled wed, 10 jun 2020 02:21:00 utc
+ * protobuf.js v1.0.8 (c) 2016, daniel wirtz
+ * compiled tue, 11 aug 2020 15:12:00 utc
  * licensed under the bsd-3-clause license
  * see: https://github.com/pgherveou/protobuf.js for details
  */
@@ -1177,7 +1177,7 @@ Reader.prototype.bytes = function read_bytes() {
     if (Array.isArray(this.buf)) // plain array
         return this.buf.slice(start, end);
     return start === end // fix for IE 10/Win8 and others' subarray returning array of size 1
-        ? new this.buf.constructor(0)
+        ? util.newBuffer(0)
         : this._slice.call(this.buf, start, end);
 };
 
@@ -1759,9 +1759,24 @@ util.pool = require(6);
 // utility to work with the low and high bits of a 64 bit value
 util.LongBits = require(14);
 
-// global object reference
-util.global = typeof window !== "undefined" && window
-           || typeof global !== "undefined" && global
+/**
+ * Whether running within node or not.
+ * @memberof util
+ * @type {boolean}
+ */
+util.isNode = Boolean(typeof global !== "undefined"
+                   && global
+                   && global.process
+                   && global.process.versions
+                   && global.process.versions.node);
+
+/**
+ * Global object reference.
+ * @memberof util
+ * @type {Object}
+ */
+util.global = util.isNode && global
+           || typeof window !== "undefined" && window
            || typeof self   !== "undefined" && self
            || this; // eslint-disable-line no-invalid-this
 
@@ -1779,14 +1794,6 @@ util.emptyArray = Object.freeze ? Object.freeze([]) : /* istanbul ignore next */
  * @const
  */
 util.emptyObject = Object.freeze ? Object.freeze({}) : /* istanbul ignore next */ {}; // used on prototypes
-
-/**
- * Whether running within node or not.
- * @memberof util
- * @type {boolean}
- * @const
- */
-util.isNode = Boolean(util.global.process && util.global.process.versions && util.global.process.versions.node);
 
 /**
  * Tests if the specified value is an integer.

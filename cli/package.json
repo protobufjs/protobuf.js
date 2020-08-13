@@ -1,1 +1,7 @@
-{"version": "1.0.3"}
+{
+  "version": "1.0.8",
+  "dependencies": {
+    "espree": "^7.1.0",
+    "tmp": "^0.2.1"
+  }
+}
