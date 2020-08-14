@@ -217,7 +217,7 @@ Type.fromDescriptor = function fromDescriptor(descriptor, syntax) {
             if (descriptor.nestedType[i].options && descriptor.nestedType[i].options.mapEntry && descriptor.field.length === 2){
                 mapTypes[descriptor.name] = [fromDescriptorType(descriptor.field[0].type), fromDescriptorType(descriptor.field[1].type)]
             }else{
-                type.add(protobuf.Type['fromDescriptor'](descriptor.nestedType[i], syntax));
+                type.add(Type.fromDescriptor(descriptor.nestedType[i], syntax));
             }
         }
     /* Fields */ if (descriptor.field)
