@@ -215,7 +215,7 @@ Type.fromDescriptor = function fromDescriptor(descriptor, syntax) {
     /* Nested types */ if (descriptor.nestedType)
         for (i = 0; i < descriptor.nestedType.length; ++i) {
             if (descriptor.nestedType[i].options && descriptor.nestedType[i].options.mapEntry && descriptor.field.length === 2){
-                mapTypes[descriptor.name] = [fromDescriptorType(descriptor.field[0].type), fromDescriptorType(descriptor.field[1].type)]
+                mapTypes[descriptor.name] = [fromDescriptorType(descriptor.field[0].type), fromDescriptorType(descriptor.field[1].type)];
             }else{
                 type.add(Type.fromDescriptor(descriptor.nestedType[i], syntax));
             }
@@ -225,8 +225,8 @@ Type.fromDescriptor = function fromDescriptor(descriptor, syntax) {
             var field = null;
             while(!field) {
                 if(descriptor.field[i].typeName) {
-                    var nameParts = descriptor.field[i].typeName.split('.'+type.name+'.');
-                    if(nameParts.length==2 && mapTypes[nameParts[1]]) {
+                    var nameParts = descriptor.field[i].typeName.split("."+type.name+".");
+                    if(nameParts.length===2 && mapTypes[nameParts[1]]) {
                         field = Field.fromDescriptor(descriptor.field[i], syntax, mapTypes[nameParts[1]]);
                         break;
                     }
@@ -388,7 +388,7 @@ var numberRe = /^(?![eE])[0-9]*(?:\.[0-9]*)?(?:[eE][+-]?[0-9]+)?$/;
  * Creates a field from a descriptor.
  * @param {IFieldDescriptorProto|Reader|Uint8Array} descriptor Descriptor
  * @param {string} [syntax="proto2"] Syntax
- * @param {string[]} key & value types for map field
+ * @param {string[]} mapKv Key & value types for map field
  * @returns {Field|MapField} Field instance
  */
 Field.fromDescriptor = function fromDescriptor(descriptor, syntax, mapKv) {
