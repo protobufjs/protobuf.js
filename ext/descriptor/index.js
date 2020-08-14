@@ -213,11 +213,11 @@ Type.fromDescriptor = function fromDescriptor(descriptor, syntax) {
         for (i = 0; i < descriptor.oneofDecl.length; ++i)
             type.add(OneOf.fromDescriptor(descriptor.oneofDecl[i]));
     /* Nested types */ if (descriptor.nestedType)
-        for (i = 0; i < descriptorInput.nestedType.length; ++i) {
-            if (descriptorInput.nestedType[i].options && descriptorInput.nestedType[i].options.mapEntry && descriptorInput.field.length === 2){
-                mapTypes[descriptorInput.name] = [fromDescriptorType(descriptorInput.field[0].type), fromDescriptorType(descriptorInput.field[1].type)]
+        for (i = 0; i < descriptor.nestedType.length; ++i) {
+            if (descriptor.nestedType[i].options && descriptor.nestedType[i].options.mapEntry && descriptor.field.length === 2){
+                mapTypes[descriptor.name] = [fromDescriptorType(descriptor.field[0].type), fromDescriptorType(descriptor.field[1].type)]
             }else{
-                type.add(protobuf.Type['fromDescriptor'](descriptorInput.nestedType[i], syntax));
+                type.add(protobuf.Type['fromDescriptor'](descriptor.nestedType[i], syntax));
             }
         }
     /* Fields */ if (descriptor.field)
