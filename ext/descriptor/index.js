@@ -214,8 +214,8 @@ Type.fromDescriptor = function fromDescriptor(descriptor, syntax) {
             type.add(OneOf.fromDescriptor(descriptor.oneofDecl[i]));
     /* Nested types */ if (descriptor.nestedType)
         for (i = 0; i < descriptor.nestedType.length; ++i) {
-            if (descriptor.nestedType[i].options && descriptor.nestedType[i].options.mapEntry && descriptorInput.nestedType[i].field.length === 2){
-                mapTypes[descriptorInput.nestedType[i].name] = [fromDescriptorType(descriptorInput.nestedType[i].field[0].type), fromDescriptorType(descriptorInput.nestedType[i].field[1].type)];
+            if (descriptor.nestedType[i].options && descriptor.nestedType[i].options.mapEntry && descriptor.nestedType[i].field.length === 2){
+                mapTypes[descriptor.nestedType[i].name] = [fromDescriptorType(descriptor.nestedType[i].field[0].type), descriptor.nestedType[i].field[1].typeName ? descriptor.nestedType[i].field[1].typeName : fromDescriptorType(descriptor.nestedType[i].field[1].type)];
             }else{
                 type.add(Type.fromDescriptor(descriptor.nestedType[i], syntax));
             }
