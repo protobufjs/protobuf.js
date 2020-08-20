@@ -7,4 +7,4 @@ module.exports = function requireProtobufjs() {
     } catch (e) {
         return require("protobufjs");
     }
-}
+};
