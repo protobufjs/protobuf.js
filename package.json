@@ -20,7 +20,7 @@
     "bench": "node bench",
     "build": "npm run build:bundle && npm run build:types",
     "build:bundle": "gulp --gulpfile scripts/gulpfile.js",
-    "build:types": "node bin/pbts --main --global protobuf --out index.d.ts src/ lib/aspromise/index.js lib/base64/index.js lib/codegen/index.js lib/eventemitter/index.js lib/float/index.js lib/fetch/index.js lib/inquire/index.js lib/path/index.js lib/pool/index.js lib/utf8/index.js",
+    "build:types": "node cli/bin/pbts --main --global protobuf --out index.d.ts src/ lib/aspromise/index.js lib/base64/index.js lib/codegen/index.js lib/eventemitter/index.js lib/float/index.js lib/fetch/index.js lib/inquire/index.js lib/path/index.js lib/pool/index.js lib/utf8/index.js",
     "changelog": "node scripts/changelog -w",
     "coverage": "nyc tape -r ./lib/tape-adapter tests/*.js tests/node/*.js",
     "docs": "jsdoc -c config/jsdoc.json -R README.md --verbose --pedantic",
