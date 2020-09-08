@@ -1,6 +1,6 @@
 /*!
- * protobuf.js v1.0.8 (c) 2016, daniel wirtz
- * compiled tue, 11 aug 2020 15:12:00 utc
+ * protobuf.js v1.0.9 (c) 2016, daniel wirtz
+ * compiled tue, 08 sep 2020 14:56:01 utc
  * licensed under the bsd-3-clause license
  * see: https://github.com/pgherveou/protobuf.js for details
  */
@@ -4185,29 +4185,29 @@ function parse(source, root, options) {
     function isNumber(number) {
         if (/[0-9]/.test(number)) {
             return number;
-        } else {
-            return false;
         }
+
+        return false;
     }
-    
+
     function readArray() {
         var values = [],
             token;
-        
-        skip("[")
-        while ((token = next()) !== ']') {
-            if (token !== undefined && token !== ',') {
+
+        skip("[");
+        while ((token = next()) !== "]") {
+            if (token !== undefined && token !== ",") {
                 switch (token) {
                     case "'":
                     case "\"":
                         push(token);
                         values.push(readString());
                         break;
-                    case "true": 
+                    case "true":
                     case "TRUE":
                         values.push(true);
                         break;
-                    case "false": 
+                    case "false":
                     case "FALSE":
                         values.push(false);
                         break;
@@ -4649,54 +4649,78 @@ function parse(source, root, options) {
     }
 
     function parseOption(parent, token) {
-        var isCustom = skip("(", true);
+      var isCustom = skip("(", true);
 
-        /* istanbul ignore if */
-        if (!typeRefRe.test(token = next()))
-            throw illegal(token, "name");
+      /* istanbul ignore if */
+      if (!typeRefRe.test(token = next()))
+          throw illegal(token, "name");
 
-        var name = token;
-        if (isCustom) {
-            skip(")");
-            name = "(" + name + ")";
-            token = peek();
-            if (fqTypeRefRe.test(token)) {
-                name += token;
-                next();
-            }
-        }
-        skip("=");
-        parseOptionValue(parent, name);
+      var name = token;
+      var option = name;
+      var propName;
+
+      if (isCustom) {
+          skip(")");
+          name = "(" + name + ")";
+          option = name;
+          token = peek();
+          if (fqTypeRefRe.test(token)) {
+              propName = token.substr(1); //remove '.' before property name
+              name += token;
+              next();
+          }
+      }
+      skip("=");
+      var optionValue = parseOptionValue(parent, name);
+      setParsedOption(parent, option, optionValue, propName);
     }
 
     function parseOptionValue(parent, name) {
-        if (skip("{", true)) { // { a: "foo" b { c: "bar" } }
-            do {
-                /* istanbul ignore if */
-                if (!nameRe.test(token = next()))
-                    throw illegal(token, "name");
+      if (skip("{", true)) { // { a: "foo" b { c: "bar" } }
+          var result = {};
+          while (!skip("}", true)) {
+              /* istanbul ignore if */
+              if (!nameRe.test(token = next()))
+                  throw illegal(token, "name");
 
-                if (peek() === "{")
-                    parseOptionValue(parent, name + "." + token);
-                else {
-                    skip(":");
-                    if (peek() === "{")
-                        parseOptionValue(parent, name + "." + token);
-                    else if (peek() === "[")
-                        setOption(parent, name + "." + token, readArray());
-                    else
-                        setOption(parent, name + "." + token, readValue(true));
-                }
-                skip(",", true);
-            } while (!skip("}", true));
-        } else
-            setOption(parent, name, readValue(true));
-        // Does not enforce a delimiter to be universal
+              var value;
+              var propName = token;
+              if (peek() === "{")
+                  value = parseOptionValue(parent, name + "." + token);
+              else {
+                  skip(":");
+                  if (peek() === "{")
+                      value = parseOptionValue(parent, name + "." + token);
+                  else if (peek() === "[")
+                      setOption(parent, name + "." + token, readArray());	
+                  else {
+                      value = readValue(true);
+                      setOption(parent, name + "." + token, value);
+                  }
+              }
+              var prevValue = result[propName];
+              if (prevValue)
+                  value = [].concat(prevValue).concat(value);
+              result[propName] = value;
+              skip(",", true);
+          }
+          return result;
+      }
+
+      var simpleValue = readValue(true);
+      setOption(parent, name, simpleValue);
+      return simpleValue;
+      // Does not enforce a delimiter to be universal
     }
 
     function setOption(parent, name, value) {
         if (parent.setOption)
             parent.setOption(name, value);
+    }
+
+    function setParsedOption(parent, name, value, propName) {
+      if (parent.setParsedOption)
+          parent.setParsedOption(name, value, propName);
     }
 
     function parseInlineOptions(parent) {

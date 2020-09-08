@@ -29,9 +29,7 @@ message Test {
   string value2 = 2 [(my_options) = { a: "foo" b { c: "bar" } }];
   string value3 = 3 [(my_options) = { a: "foo", b: "bar" }];
 }
-
-
-`
+`;
 
 tape.test("options in textformat", function(test) {
     var root = protobuf.parse(proto).root;
