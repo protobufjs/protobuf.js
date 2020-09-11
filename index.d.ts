@@ -1070,6 +1070,9 @@ export interface IToJSONOptions {
 
     /** Serializes comments. */
     keepComments?: boolean;
+
+    /** Serializes options. */
+    dropOptions?: boolean;
 }
 
 /**

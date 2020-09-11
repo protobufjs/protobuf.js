@@ -1,6 +1,6 @@
 /*!
- * protobuf.js v1.0.9 (c) 2016, daniel wirtz
- * compiled tue, 08 sep 2020 14:56:01 utc
+ * protobuf.js v1.0.10 (c) 2016, daniel wirtz
+ * compiled fri, 11 sep 2020 00:37:11 utc
  * licensed under the bsd-3-clause license
  * see: https://github.com/pgherveou/protobuf.js for details
  */
@@ -2139,12 +2139,13 @@ Enum.fromJSON = function fromJSON(name, json) {
  */
 Enum.prototype.toJSON = function toJSON(toJSONOptions) {
     var keepComments = toJSONOptions ? Boolean(toJSONOptions.keepComments) : false;
+    var dropOptions = toJSONOptions ? Boolean(toJSONOptions.dropOptions) : false;
+
     return util.toObject([
-        "options"  , this.options,
+        "options"  , dropOptions ? undefined  : this.options,
         "values"   , this.values,
         "reserved" , this.reserved && this.reserved.length ? this.reserved : undefined,
         "comment"  , keepComments ? this.comment : undefined,
-        "comments" , keepComments ? this.comments : undefined
     ]);
 };
 
@@ -2471,12 +2472,14 @@ Field.prototype.setOption = function setOption(name, value, ifNotSet) {
  */
 Field.prototype.toJSON = function toJSON(toJSONOptions) {
     var keepComments = toJSONOptions ? Boolean(toJSONOptions.keepComments) : false;
+    var dropOptions = toJSONOptions ? Boolean(toJSONOptions.dropOptions) : false;
+
     return util.toObject([
+        "options"  , dropOptions ? undefined  : this.options,
         "rule"    , this.rule !== "optional" && this.rule || undefined,
         "type"    , this.type,
         "id"      , this.id,
         "extend"  , this.extend,
-        "options" , this.options,
         "comment" , keepComments ? this.comment : undefined
     ]);
 };
@@ -2836,12 +2839,14 @@ MapField.fromJSON = function fromJSON(name, json) {
  */
 MapField.prototype.toJSON = function toJSON(toJSONOptions) {
     var keepComments = toJSONOptions ? Boolean(toJSONOptions.keepComments) : false;
+    var dropOptions = toJSONOptions ? Boolean(toJSONOptions.dropOptions) : false;
+
     return util.toObject([
+        "options"  , dropOptions ? undefined  : this.options,
         "keyType" , this.keyType,
         "type"    , this.type,
         "id"      , this.id,
         "extend"  , this.extend,
-        "options" , this.options,
         "comment" , keepComments ? this.comment : undefined
     ]);
 };
@@ -3153,13 +3158,15 @@ Method.fromJSON = function fromJSON(name, json) {
  */
 Method.prototype.toJSON = function toJSON(toJSONOptions) {
     var keepComments = toJSONOptions ? Boolean(toJSONOptions.keepComments) : false;
+    var dropOptions = toJSONOptions ? Boolean(toJSONOptions.dropOptions) : false;
+
     return util.toObject([
+        "options"  , dropOptions ? undefined  : this.options,
         "type"           , this.type !== "rpc" && /* istanbul ignore next */ this.type || undefined,
         "requestType"    , this.requestType,
         "requestStream"  , this.requestStream,
         "responseType"   , this.responseType,
         "responseStream" , this.responseStream,
-        "options"        , this.options,
         "comment"        , keepComments ? this.comment : undefined
     ]);
 };
@@ -3334,8 +3341,10 @@ Object.defineProperty(Namespace.prototype, "nestedArray", {
  * @returns {INamespace} Namespace descriptor
  */
 Namespace.prototype.toJSON = function toJSON(toJSONOptions) {
+    var dropOptions = toJSONOptions ? Boolean(toJSONOptions.dropOptions) : false;
+
     return util.toObject([
-        "options" , this.options,
+        "options"  , dropOptions ? undefined  : this.options,
         "nested"  , arrayToJSON(this.nestedArray, toJSONOptions)
     ]);
 };
@@ -3942,8 +3951,10 @@ OneOf.fromJSON = function fromJSON(name, json) {
  */
 OneOf.prototype.toJSON = function toJSON(toJSONOptions) {
     var keepComments = toJSONOptions ? Boolean(toJSONOptions.keepComments) : false;
+    var dropOptions = toJSONOptions ? Boolean(toJSONOptions.dropOptions) : false;
+
     return util.toObject([
-        "options" , this.options,
+        "options"  , dropOptions ? undefined  : this.options,
         "oneof"   , this.oneof,
         "comment" , keepComments ? this.comment : undefined
     ]);
@@ -4121,6 +4132,7 @@ var base10Re    = /^[1-9][0-9]*$/,
  * Options modifying the behavior of JSON serialization.
  * @interface IToJSONOptions
  * @property {boolean} [keepComments=false] Serializes comments.
+ * @property {boolean} [dropOptions=false] Serializes options.
  */
 
 /**
@@ -4692,7 +4704,7 @@ function parse(source, root, options) {
                   if (peek() === "{")
                       value = parseOptionValue(parent, name + "." + token);
                   else if (peek() === "[")
-                      setOption(parent, name + "." + token, readArray());	
+                      setOption(parent, name + "." + token, readArray());
                   else {
                       value = readValue(true);
                       setOption(parent, name + "." + token, value);
@@ -6007,8 +6019,10 @@ Service.fromJSON = function fromJSON(name, json) {
 Service.prototype.toJSON = function toJSON(toJSONOptions) {
     var inherited = Namespace.prototype.toJSON.call(this, toJSONOptions);
     var keepComments = toJSONOptions ? Boolean(toJSONOptions.keepComments) : false;
+    var dropOptions = toJSONOptions ? Boolean(toJSONOptions.dropOptions) : false;
+
     return util.toObject([
-        "options" , inherited && inherited.options || undefined,
+        "options"  , dropOptions ? undefined  : this.options,
         "methods" , Namespace.arrayToJSON(this.methodsArray, toJSONOptions) || /* istanbul ignore next */ {},
         "nested"  , inherited && inherited.nested || undefined,
         "comment" , keepComments ? this.comment : undefined
@@ -6840,8 +6854,10 @@ Type.fromJSON = function fromJSON(name, json) {
 Type.prototype.toJSON = function toJSON(toJSONOptions) {
     var inherited = Namespace.prototype.toJSON.call(this, toJSONOptions);
     var keepComments = toJSONOptions ? Boolean(toJSONOptions.keepComments) : false;
+    var dropOptions = toJSONOptions ? Boolean(toJSONOptions.dropOptions) : false;
+
     return util.toObject([
-        "options"    , inherited && inherited.options || undefined,
+        "options"  , dropOptions ? undefined  : inherited && inherited.options || undefined,
         "oneofs"     , Namespace.arrayToJSON(this.oneofsArray, toJSONOptions),
         "fields"     , Namespace.arrayToJSON(this.fieldsArray.filter(function(obj) { return !obj.declaringField; }), toJSONOptions) || {},
         "extensions" , this.extensions && this.extensions.length ? this.extensions : undefined,

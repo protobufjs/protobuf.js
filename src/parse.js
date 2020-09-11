@@ -48,6 +48,7 @@ var base10Re    = /^[1-9][0-9]*$/,
  * Options modifying the behavior of JSON serialization.
  * @interface IToJSONOptions
  * @property {boolean} [keepComments=false] Serializes comments.
+ * @property {boolean} [dropOptions=false] Serializes options.
  */
 
 /**

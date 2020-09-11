@@ -74,8 +74,10 @@ OneOf.fromJSON = function fromJSON(name, json) {
  */
 OneOf.prototype.toJSON = function toJSON(toJSONOptions) {
     var keepComments = toJSONOptions ? Boolean(toJSONOptions.keepComments) : false;
+    var dropOptions = toJSONOptions ? Boolean(toJSONOptions.dropOptions) : false;
+
     return util.toObject([
-        "options" , this.options,
+        "options"  , dropOptions ? undefined  : this.options,
         "oneof"   , this.oneof,
         "comment" , keepComments ? this.comment : undefined
     ]);

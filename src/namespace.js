@@ -152,8 +152,10 @@ Object.defineProperty(Namespace.prototype, "nestedArray", {
  * @returns {INamespace} Namespace descriptor
  */
 Namespace.prototype.toJSON = function toJSON(toJSONOptions) {
+    var dropOptions = toJSONOptions ? Boolean(toJSONOptions.dropOptions) : false;
+
     return util.toObject([
-        "options" , this.options,
+        "options"  , dropOptions ? undefined  : this.options,
         "nested"  , arrayToJSON(this.nestedArray, toJSONOptions)
     ]);
 };

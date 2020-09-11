@@ -69,8 +69,10 @@ Service.fromJSON = function fromJSON(name, json) {
 Service.prototype.toJSON = function toJSON(toJSONOptions) {
     var inherited = Namespace.prototype.toJSON.call(this, toJSONOptions);
     var keepComments = toJSONOptions ? Boolean(toJSONOptions.keepComments) : false;
+    var dropOptions = toJSONOptions ? Boolean(toJSONOptions.dropOptions) : false;
+
     return util.toObject([
-        "options" , inherited && inherited.options || undefined,
+        "options"  , dropOptions ? undefined  : this.options,
         "methods" , Namespace.arrayToJSON(this.methodsArray, toJSONOptions) || /* istanbul ignore next */ {},
         "nested"  , inherited && inherited.nested || undefined,
         "comment" , keepComments ? this.comment : undefined

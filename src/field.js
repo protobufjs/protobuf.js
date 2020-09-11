@@ -241,12 +241,14 @@ Field.prototype.setOption = function setOption(name, value, ifNotSet) {
  */
 Field.prototype.toJSON = function toJSON(toJSONOptions) {
     var keepComments = toJSONOptions ? Boolean(toJSONOptions.keepComments) : false;
+    var dropOptions = toJSONOptions ? Boolean(toJSONOptions.dropOptions) : false;
+
     return util.toObject([
+        "options"  , dropOptions ? undefined  : this.options,
         "rule"    , this.rule !== "optional" && this.rule || undefined,
         "type"    , this.type,
         "id"      , this.id,
         "extend"  , this.extend,
-        "options" , this.options,
         "comment" , keepComments ? this.comment : undefined
     ]);
 };

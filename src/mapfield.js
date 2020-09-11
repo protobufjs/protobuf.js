@@ -75,12 +75,14 @@ MapField.fromJSON = function fromJSON(name, json) {
  */
 MapField.prototype.toJSON = function toJSON(toJSONOptions) {
     var keepComments = toJSONOptions ? Boolean(toJSONOptions.keepComments) : false;
+    var dropOptions = toJSONOptions ? Boolean(toJSONOptions.dropOptions) : false;
+
     return util.toObject([
+        "options"  , dropOptions ? undefined  : this.options,
         "keyType" , this.keyType,
         "type"    , this.type,
         "id"      , this.id,
         "extend"  , this.extend,
-        "options" , this.options,
         "comment" , keepComments ? this.comment : undefined
     ]);
 };

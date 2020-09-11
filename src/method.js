@@ -124,13 +124,15 @@ Method.fromJSON = function fromJSON(name, json) {
  */
 Method.prototype.toJSON = function toJSON(toJSONOptions) {
     var keepComments = toJSONOptions ? Boolean(toJSONOptions.keepComments) : false;
+    var dropOptions = toJSONOptions ? Boolean(toJSONOptions.dropOptions) : false;
+
     return util.toObject([
+        "options"  , dropOptions ? undefined  : this.options,
         "type"           , this.type !== "rpc" && /* istanbul ignore next */ this.type || undefined,
         "requestType"    , this.requestType,
         "requestStream"  , this.requestStream,
         "responseType"   , this.responseType,
         "responseStream" , this.responseStream,
-        "options"        , this.options,
         "comment"        , keepComments ? this.comment : undefined
     ]);
 };
