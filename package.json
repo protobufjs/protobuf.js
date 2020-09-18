@@ -7,7 +7,7 @@
   "license": "BSD-3-Clause",
   "repository": "protobufjs/protobuf.js",
   "bugs": "https://github.com/dcodeIO/protobuf.js/issues",
-  "homepage": "http://dcode.io/protobuf.js",
+  "homepage": "https://protobufjs.github.io/protobuf.js/",
   "keywords": [
     "protobuf",
     "protocol-buffers",
@@ -83,7 +83,7 @@
     "semver": "^7.1.2",
     "tape": "^5.0.0",
     "tmp": "^0.2.0",
-    "tslint": "^5.20.1",
+    "tslint": "^6.0.0",
     "typescript": "^3.7.5",
     "uglify-js": "^3.7.7",
     "vinyl-buffer": "^1.0.1",
