@@ -285,7 +285,7 @@ $root.Package = (function() {
     Package.decode = function decode(reader, length) {
         if (!(reader instanceof $Reader))
             reader = $Reader.create(reader);
-        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Package(), key;
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Package(), key, value;
         while (reader.pos < end) {
             var tag = reader.uint32();
             switch (tag >>> 3) {
@@ -325,36 +325,92 @@ $root.Package = (function() {
                 message.main = reader.string();
                 break;
             case 11:
-                reader.skip().pos++;
                 if (message.bin === $util.emptyObject)
                     message.bin = {};
-                key = reader.string();
-                reader.pos++;
-                message.bin[key] = reader.string();
+                var end2 = reader.uint32() + reader.pos;
+                key = "";
+                value = "";
+                while (reader.pos < end2) {
+                    var tag2 = reader.uint32();
+                    switch (tag2 >>> 3) {
+                    case 1:
+                        key = reader.string();
+                        break;
+                    case 2:
+                        value = reader.string();
+                        break;
+                    default:
+                        reader.skipType(tag2 & 7);
+                        break;
+                    }
+                }
+                message.bin[key] = value;
                 break;
             case 12:
-                reader.skip().pos++;
                 if (message.scripts === $util.emptyObject)
                     message.scripts = {};
-                key = reader.string();
-                reader.pos++;
-                message.scripts[key] = reader.string();
+                var end2 = reader.uint32() + reader.pos;
+                key = "";
+                value = "";
+                while (reader.pos < end2) {
+                    var tag2 = reader.uint32();
+                    switch (tag2 >>> 3) {
+                    case 1:
+                        key = reader.string();
+                        break;
+                    case 2:
+                        value = reader.string();
+                        break;
+                    default:
+                        reader.skipType(tag2 & 7);
+                        break;
+                    }
+                }
+                message.scripts[key] = value;
                 break;
             case 13:
-                reader.skip().pos++;
                 if (message.dependencies === $util.emptyObject)
                     message.dependencies = {};
-                key = reader.string();
-                reader.pos++;
-                message.dependencies[key] = reader.string();
+                var end2 = reader.uint32() + reader.pos;
+                key = "";
+                value = "";
+                while (reader.pos < end2) {
+                    var tag2 = reader.uint32();
+                    switch (tag2 >>> 3) {
+                    case 1:
+                        key = reader.string();
+                        break;
+                    case 2:
+                        value = reader.string();
+                        break;
+                    default:
+                        reader.skipType(tag2 & 7);
+                        break;
+                    }
+                }
+                message.dependencies[key] = value;
                 break;
             case 15:
-                reader.skip().pos++;
                 if (message.devDependencies === $util.emptyObject)
                     message.devDependencies = {};
-                key = reader.string();
-                reader.pos++;
-                message.devDependencies[key] = reader.string();
+                var end2 = reader.uint32() + reader.pos;
+                key = "";
+                value = "";
+                while (reader.pos < end2) {
+                    var tag2 = reader.uint32();
+                    switch (tag2 >>> 3) {
+                    case 1:
+                        key = reader.string();
+                        break;
+                    case 2:
+                        value = reader.string();
+                        break;
+                    default:
+                        reader.skipType(tag2 & 7);
+                        break;
+                    }
+                }
+                message.devDependencies[key] = value;
                 break;
             case 17:
                 message.types = reader.string();

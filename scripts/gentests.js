@@ -21,7 +21,7 @@ var fs   = require("fs"),
         out = [ basename ].concat(flags).join("-") + ".js";
     pbjs.main([
         "--target", "static-module",
-        "--wrap", "commonjs",
+        "--wrap", flags.includes('es6') ? 'es6' : "commonjs",
         "--root", "test_" + path.basename(basename, ".js"),
         file
     ].concat(flags.map(function(flag) {
