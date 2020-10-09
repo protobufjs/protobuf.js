@@ -287,7 +287,7 @@ The library utilizes JSON descriptors that are equivalent to a .proto definition
   "nested": {
     "awesomepackage": {
       "nested": {
-          "AwesomeMessage": {
+        "AwesomeMessage": {
           "fields": {
             "awesomeField": {
               "type": "string",
