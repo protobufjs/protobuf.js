@@ -169,9 +169,10 @@ $root.MyRequest = (function() {
         while (reader.pos < end) {
             var tag = reader.uint32();
             switch (tag >>> 3) {
-            case 1:
-                message.path = reader.string();
-                break;
+            case 1: {
+                    message.path = reader.string();
+                    break;
+                }
             default:
                 reader.skipType(tag & 7);
                 break;
@@ -356,9 +357,10 @@ $root.MyResponse = (function() {
         while (reader.pos < end) {
             var tag = reader.uint32();
             switch (tag >>> 3) {
-            case 2:
-                message.status = reader.int32();
-                break;
+            case 2: {
+                    message.status = reader.int32();
+                    break;
+                }
             default:
                 reader.skipType(tag & 7);
                 break;

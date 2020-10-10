@@ -126,15 +126,18 @@ $root.Test1 = (function() {
         while (reader.pos < end) {
             var tag = reader.uint32();
             switch (tag >>> 3) {
-            case 1:
-                message.field1 = reader.string();
-                break;
-            case 2:
-                message.field2 = reader.uint32();
-                break;
-            case 3:
-                message.field3 = reader.bool();
-                break;
+            case 1: {
+                    message.field1 = reader.string();
+                    break;
+                }
+            case 2: {
+                    message.field2 = reader.uint32();
+                    break;
+                }
+            case 3: {
+                    message.field3 = reader.bool();
+                    break;
+                }
             default:
                 reader.skipType(tag & 7);
                 break;

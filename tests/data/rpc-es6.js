@@ -167,9 +167,10 @@ export const MyRequest = $root.MyRequest = (() => {
         while (reader.pos < end) {
             let tag = reader.uint32();
             switch (tag >>> 3) {
-            case 1:
-                message.path = reader.string();
-                break;
+            case 1: {
+                    message.path = reader.string();
+                    break;
+                }
             default:
                 reader.skipType(tag & 7);
                 break;
@@ -354,9 +355,10 @@ export const MyResponse = $root.MyResponse = (() => {
         while (reader.pos < end) {
             let tag = reader.uint32();
             switch (tag >>> 3) {
-            case 2:
-                message.status = reader.int32();
-                break;
+            case 2: {
+                    message.status = reader.int32();
+                    break;
+                }
             default:
                 reader.skipType(tag & 7);
                 break;
