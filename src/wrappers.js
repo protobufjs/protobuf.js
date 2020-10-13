@@ -7,6 +7,8 @@
  */
 var wrappers = exports;
 
+var common = require("./common");
+var Root = require("./root");
 var Message = require("./message");
 
 /**
@@ -213,6 +215,59 @@ wrappers[".google.protobuf.Value"] = {
             if (typeof object !== "undefined") {
                 return object;
             }
+        }
+
+        return this.toObject(message, options);
+    }
+};
+
+// custom wrapper for google.protobuf.Struct
+wrappers[".google.protobuf.Struct"] = {
+    fromObject: function(object) {
+        if (typeof object === "object" && object) {
+            var names = Object.keys(object),
+                i = 0,
+                fields = {};
+
+            // heuristic: if an object looks like a regular representation of google.protobuf.Struct,
+            // with just one field called `fields`, just accept it as is for compatibility.
+            if (names.length === 1 && names[0] === "fields") {
+                return this.fromObject(object);
+            }
+
+            // decoding Struct requires Value; make a fake Root to get it
+            var root = new Root().addJSON(common["google/protobuf/struct.proto"].nested).resolveAll();
+            var Value = root.lookup("google.protobuf.Value");
+
+            for (; i < names.length; ++i) {
+                fields[names[i]] = googleProtobufValueFromObject(
+                    object[names[i]],
+                    function(obj) { return Value.create(obj); }
+                );
+            }
+            return this.create({
+                fields: fields
+            });
+        }
+
+        // fallback to the normal .fromObject if decoding failed
+        return this.fromObject(object);
+    },
+
+    toObject: function(message, options) {
+        // decode value if requested
+        // In the next major version we will get rid of "options.values".
+        if (options && options.json && options.values) {
+            if (!message.fields) {
+                return {};
+            }
+            var names = Object.keys(message.fields),
+                i = 0,
+                struct = {};
+            for (; i < names.length; ++i) {
+                struct[names[i]] = googleProtobufValueToObject(message["fields"][names[i]]);
+            }
+            return struct;
         }
 
         return this.toObject(message, options);

@@ -136,7 +136,6 @@ tape.test("google.protobuf.Value", function(test) {
     // it should still accept objects in the original format
     var msg = Test.fromObject(originalNestedMessage);
     test.same(msg, originalNestedMessageNoKind, "fromObject should accept regular google.protobuf.Value");
-    console.log(JSON.stringify(Test.toObject(msg), null, '  '));
     test.same(Test.toObject(msg), originalNestedMessageNoKind, "toObject should generate regular Value object by default");
 
     test.end();

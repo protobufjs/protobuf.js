@@ -22,7 +22,7 @@ var root = protobuf.Root.fromJSON({
 
 var Test = root.lookupType("test.Test");
 
-tape.test.only("google.protobuf.Duration", function(test) {
+tape.test("google.protobuf.Duration", function(test) {
     // examples from google/protobuf/duration.proto
     var integerDuration = {value: "3s"};
     var fractionalDuration1 = {value: "3.000000001s"};
