@@ -421,7 +421,7 @@ $root.Message = (function() {
             for (var i = 0; i < object.bytesRepeated.length; ++i)
                 if (typeof object.bytesRepeated[i] === "string")
                     $util.base64.decode(object.bytesRepeated[i], message.bytesRepeated[i] = $util.newBuffer($util.base64.length(object.bytesRepeated[i])), 0);
-                else if (object.bytesRepeated[i].length)
+                else if (object.bytesRepeated[i].length >= 0)
                     message.bytesRepeated[i] = object.bytesRepeated[i];
         }
         switch (object.enumVal) {
