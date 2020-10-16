@@ -7,8 +7,6 @@
  */
 var wrappers = exports;
 
-var common = require("./common");
-var Root = require("./root");
 var Message = require("./message");
 
 /**
@@ -235,10 +233,7 @@ wrappers[".google.protobuf.Struct"] = {
                 return this.fromObject(object);
             }
 
-            // decoding Struct requires Value; make a fake Root to get it
-            var root = new Root().addJSON(common["google/protobuf/struct.proto"].nested).resolveAll();
-            var Value = root.lookup("google.protobuf.Value");
-
+            var Value = this.fields.fields.resolvedType;
             for (; i < names.length; ++i) {
                 fields[names[i]] = googleProtobufValueFromObject(
                     object[names[i]],
