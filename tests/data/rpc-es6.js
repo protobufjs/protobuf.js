@@ -1,5 +1,7 @@
 /*eslint-disable block-scoped-var, id-length, no-control-regex, no-magic-numbers, no-prototype-builtins, no-redeclare, no-shadow, no-var, sort-vars*/
-import * as $protobuf from "../../minimal";
+"use strict";
+
+var $protobuf = require("../../minimal");
 
 // Common aliases
 const $Reader = $protobuf.Reader, $Writer = $protobuf.Writer, $util = $protobuf.util;
@@ -7,7 +9,7 @@ const $Reader = $protobuf.Reader, $Writer = $protobuf.Writer, $util = $protobuf.
 // Exported root namespace
 const $root = $protobuf.roots.test_rpc || ($protobuf.roots.test_rpc = {});
 
-export const MyService = $root.MyService = (() => {
+export const MyService = $root.MyService = ((MyService) => {
 
     /**
      * Constructs a new MyService service.
@@ -73,9 +75,9 @@ export const MyService = $root.MyService = (() => {
      */
 
     return MyService;
-})();
+})($root.MyService || {});
 
-export const MyRequest = $root.MyRequest = (() => {
+export const MyRequest = $root.MyRequest = ((MyRequest) => {
 
     /**
      * Properties of a MyRequest.
@@ -260,9 +262,9 @@ export const MyRequest = $root.MyRequest = (() => {
     };
 
     return MyRequest;
-})();
+})($root.MyRequest || {});
 
-export const MyResponse = $root.MyResponse = (() => {
+export const MyResponse = $root.MyResponse = ((MyResponse) => {
 
     /**
      * Properties of a MyResponse.
@@ -447,6 +449,6 @@ export const MyResponse = $root.MyResponse = (() => {
     };
 
     return MyResponse;
-})();
+})($root.MyResponse || {});
 
-export { $root as default };
+module.exports = $root;

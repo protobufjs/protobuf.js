@@ -7,7 +7,7 @@ var $Reader = $protobuf.Reader, $Writer = $protobuf.Writer, $util = $protobuf.ut
 
 var $root = $protobuf.roots.test_bench || ($protobuf.roots.test_bench = {});
 
-$root.Test = (function() {
+$root.Test = (function(Test) {
 
     function Test(properties) {
         if (properties)
@@ -62,7 +62,7 @@ $root.Test = (function() {
         return message;
     };
 
-    Test.Inner = (function() {
+    Test.Inner = (function(Inner) {
 
         function Inner(properties) {
             if (properties)
@@ -111,7 +111,7 @@ $root.Test = (function() {
             return message;
         };
 
-        Inner.InnerInner = (function() {
+        Inner.InnerInner = (function(InnerInner) {
 
             function InnerInner(properties) {
                 if (properties)
@@ -161,10 +161,10 @@ $root.Test = (function() {
             };
 
             return InnerInner;
-        })();
+        })(Inner.InnerInner || {});
 
         return Inner;
-    })();
+    })(Test.Inner || {});
 
     Test.Enum = (function() {
         var valuesById = {}, values = Object.create(valuesById);
@@ -177,9 +177,9 @@ $root.Test = (function() {
     })();
 
     return Test;
-})();
+})($root.Test || {});
 
-$root.Outer = (function() {
+$root.Outer = (function(Outer) {
 
     function Outer(properties) {
         this.bool = [];
@@ -235,6 +235,6 @@ $root.Outer = (function() {
     };
 
     return Outer;
-})();
+})($root.Outer || {});
 
 module.exports = $root;

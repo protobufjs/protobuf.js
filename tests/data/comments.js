@@ -9,7 +9,7 @@ var $Reader = $protobuf.Reader, $Writer = $protobuf.Writer, $util = $protobuf.ut
 // Exported root namespace
 var $root = $protobuf.roots.test_comments || ($protobuf.roots.test_comments = {});
 
-$root.Test1 = (function() {
+$root.Test1 = (function(Test1) {
 
     /**
      * Properties of a Test1.
@@ -242,9 +242,9 @@ $root.Test1 = (function() {
     };
 
     return Test1;
-})();
+})($root.Test1 || {});
 
-$root.Test2 = (function() {
+$root.Test2 = (function(Test2) {
 
     /**
      * Properties of a Test2.
@@ -402,7 +402,7 @@ $root.Test2 = (function() {
     };
 
     return Test2;
-})();
+})($root.Test2 || {});
 
 /**
  * Test3 enum.

@@ -7,6 +7,8 @@ var fs   = require("fs"),
 [
     { file: "tests/data/comments.proto", flags: [] },
     { file: "tests/data/convert.proto", flags: [] },
+    { file: "tests/data/same_package_1.proto", flags: [], defaultRoot: true, },
+    { file: "tests/data/same_package_2.proto", flags: [], defaultRoot: true, },
     { file: "tests/data/mapbox/vector_tile.proto", flags: [] },
     { file: "tests/data/package.proto", flags: [] },
     { file: "tests/data/rpc.proto", flags: [ "es6" ] },
@@ -15,18 +17,27 @@ var fs   = require("fs"),
     { file: "tests/data/test.proto", flags: [] },
     { file: "bench/data/bench.proto", flags: ["no-create", "no-verify", "no-delimited", "no-convert", "no-comments"], out: "bench/data/static_pbjs.js" }
 ]
-.forEach(function({ file, flags, out }) {
+.forEach(function({ file, flags, defaultRoot, out }) {
     var basename = file.replace(/\.proto$/, "");
     if (!out)
         out = [ basename ].concat(flags).join("-") + ".js";
-    pbjs.main([
+
+    var cliArgs = [];
+    if (!defaultRoot) {
+        cliArgs = ["--root", "test_" + path.basename(basename, ".js")];
+    }
+
+    cliArgs = cliArgs.concat([
         "--target", "static-module",
         "--wrap", "commonjs",
-        "--root", "test_" + path.basename(basename, ".js"),
         file
-    ].concat(flags.map(function(flag) {
+    ]);
+
+    cliArgs = cliArgs.concat(flags.map(function(flag) {
         return "--" + flag;
-    })), function(err, output) {
+    }));
+
+    pbjs.main(cliArgs, function(err, output) {
         if (err)
             throw err;
         var pathToProtobufjs = path.relative(path.dirname(out), "minimal").replace(/\\/g, "/");

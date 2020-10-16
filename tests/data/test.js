@@ -9,25 +9,23 @@ var $Reader = $protobuf.Reader, $Writer = $protobuf.Writer, $util = $protobuf.ut
 // Exported root namespace
 var $root = $protobuf.roots.test_test || ($protobuf.roots.test_test = {});
 
-$root.jspb = (function() {
+/**
+ * Namespace jspb.
+ * @exports jspb
+ * @namespace
+ */
+
+$root.jspb = (function(jspb) {
 
     /**
-     * Namespace jspb.
-     * @exports jspb
+     * Namespace test.
+     * @memberof jspb
      * @namespace
      */
-    var jspb = {};
 
-    jspb.test = (function() {
+    jspb.test = (function(test) {
 
-        /**
-         * Namespace test.
-         * @memberof jspb
-         * @namespace
-         */
-        var test = {};
-
-        test.Empty = (function() {
+        test.Empty = (function(Empty) {
 
             /**
              * Properties of an Empty.
@@ -185,7 +183,7 @@ $root.jspb = (function() {
             };
 
             return Empty;
-        })();
+        })(test.Empty || {});
 
         /**
          * OuterEnum enum.
@@ -201,7 +199,7 @@ $root.jspb = (function() {
             return values;
         })();
 
-        test.EnumContainer = (function() {
+        test.EnumContainer = (function(EnumContainer) {
 
             /**
              * Properties of an EnumContainer.
@@ -399,9 +397,9 @@ $root.jspb = (function() {
             };
 
             return EnumContainer;
-        })();
+        })(test.EnumContainer || {});
 
-        test.Simple1 = (function() {
+        test.Simple1 = (function(Simple1) {
 
             /**
              * Properties of a Simple1.
@@ -648,9 +646,9 @@ $root.jspb = (function() {
             };
 
             return Simple1;
-        })();
+        })(test.Simple1 || {});
 
-        test.Simple2 = (function() {
+        test.Simple2 = (function(Simple2) {
 
             /**
              * Properties of a Simple2.
@@ -874,9 +872,9 @@ $root.jspb = (function() {
             };
 
             return Simple2;
-        })();
+        })(test.Simple2 || {});
 
-        test.SpecialCases = (function() {
+        test.SpecialCases = (function(SpecialCases) {
 
             /**
              * Properties of a SpecialCases.
@@ -1128,9 +1126,9 @@ $root.jspb = (function() {
             };
 
             return SpecialCases;
-        })();
+        })(test.SpecialCases || {});
 
-        test.OptionalFields = (function() {
+        test.OptionalFields = (function(OptionalFields) {
 
             /**
              * Properties of an OptionalFields.
@@ -1447,7 +1445,7 @@ $root.jspb = (function() {
                 return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
-            OptionalFields.Nested = (function() {
+            OptionalFields.Nested = (function(Nested) {
 
                 /**
                  * Properties of a Nested.
@@ -1632,12 +1630,12 @@ $root.jspb = (function() {
                 };
 
                 return Nested;
-            })();
+            })(OptionalFields.Nested || {});
 
             return OptionalFields;
-        })();
+        })(test.OptionalFields || {});
 
-        test.HasExtensions = (function() {
+        test.HasExtensions = (function(HasExtensions) {
 
             /**
              * Properties of a HasExtensions.
@@ -2053,9 +2051,9 @@ $root.jspb = (function() {
             };
 
             return HasExtensions;
-        })();
+        })(test.HasExtensions || {});
 
-        test.Complex = (function() {
+        test.Complex = (function(Complex) {
 
             /**
              * Properties of a Complex.
@@ -2372,7 +2370,7 @@ $root.jspb = (function() {
                 return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
-            Complex.Nested = (function() {
+            Complex.Nested = (function(Nested) {
 
                 /**
                  * Properties of a Nested.
@@ -2557,12 +2555,12 @@ $root.jspb = (function() {
                 };
 
                 return Nested;
-            })();
+            })(Complex.Nested || {});
 
             return Complex;
-        })();
+        })(test.Complex || {});
 
-        test.OuterMessage = (function() {
+        test.OuterMessage = (function(OuterMessage) {
 
             /**
              * Properties of an OuterMessage.
@@ -2719,7 +2717,7 @@ $root.jspb = (function() {
                 return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
-            OuterMessage.Complex = (function() {
+            OuterMessage.Complex = (function(Complex) {
 
                 /**
                  * Properties of a Complex.
@@ -2904,12 +2902,12 @@ $root.jspb = (function() {
                 };
 
                 return Complex;
-            })();
+            })(OuterMessage.Complex || {});
 
             return OuterMessage;
-        })();
+        })(test.OuterMessage || {});
 
-        test.IsExtension = (function() {
+        test.IsExtension = (function(IsExtension) {
 
             /**
              * Properties of an IsExtension.
@@ -3094,9 +3092,9 @@ $root.jspb = (function() {
             };
 
             return IsExtension;
-        })();
+        })(test.IsExtension || {});
 
-        test.IndirectExtension = (function() {
+        test.IndirectExtension = (function(IndirectExtension) {
 
             /**
              * Properties of an IndirectExtension.
@@ -3254,9 +3252,9 @@ $root.jspb = (function() {
             };
 
             return IndirectExtension;
-        })();
+        })(test.IndirectExtension || {});
 
-        test.DefaultValues = (function() {
+        test.DefaultValues = (function(DefaultValues) {
 
             /**
              * Properties of a DefaultValues.
@@ -3606,9 +3604,9 @@ $root.jspb = (function() {
             })();
 
             return DefaultValues;
-        })();
+        })(test.DefaultValues || {});
 
-        test.FloatingPointFields = (function() {
+        test.FloatingPointFields = (function(FloatingPointFields) {
 
             /**
              * Properties of a FloatingPointFields.
@@ -3992,9 +3990,9 @@ $root.jspb = (function() {
             };
 
             return FloatingPointFields;
-        })();
+        })(test.FloatingPointFields || {});
 
-        test.TestClone = (function() {
+        test.TestClone = (function(TestClone) {
 
             /**
              * Properties of a TestClone.
@@ -4331,9 +4329,9 @@ $root.jspb = (function() {
             };
 
             return TestClone;
-        })();
+        })(test.TestClone || {});
 
-        test.CloneExtension = (function() {
+        test.CloneExtension = (function(CloneExtension) {
 
             /**
              * Properties of a CloneExtension.
@@ -4518,9 +4516,9 @@ $root.jspb = (function() {
             };
 
             return CloneExtension;
-        })();
+        })(test.CloneExtension || {});
 
-        test.TestGroup = (function() {
+        test.TestGroup = (function(TestGroup) {
 
             /**
              * Properties of a TestGroup.
@@ -4859,7 +4857,7 @@ $root.jspb = (function() {
                 return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
-            TestGroup.RepeatedGroup = (function() {
+            TestGroup.RepeatedGroup = (function(RepeatedGroup) {
 
                 /**
                  * Properties of a RepeatedGroup.
@@ -5090,9 +5088,9 @@ $root.jspb = (function() {
                 };
 
                 return RepeatedGroup;
-            })();
+            })(TestGroup.RepeatedGroup || {});
 
-            TestGroup.RequiredGroup = (function() {
+            TestGroup.RequiredGroup = (function(RequiredGroup) {
 
                 /**
                  * Properties of a RequiredGroup.
@@ -5279,9 +5277,9 @@ $root.jspb = (function() {
                 };
 
                 return RequiredGroup;
-            })();
+            })(TestGroup.RequiredGroup || {});
 
-            TestGroup.OptionalGroup = (function() {
+            TestGroup.OptionalGroup = (function(OptionalGroup) {
 
                 /**
                  * Properties of an OptionalGroup.
@@ -5468,12 +5466,12 @@ $root.jspb = (function() {
                 };
 
                 return OptionalGroup;
-            })();
+            })(TestGroup.OptionalGroup || {});
 
             return TestGroup;
-        })();
+        })(test.TestGroup || {});
 
-        test.TestGroup1 = (function() {
+        test.TestGroup1 = (function(TestGroup1) {
 
             /**
              * Properties of a TestGroup1.
@@ -5663,9 +5661,9 @@ $root.jspb = (function() {
             };
 
             return TestGroup1;
-        })();
+        })(test.TestGroup1 || {});
 
-        test.TestReservedNames = (function() {
+        test.TestReservedNames = (function(TestReservedNames) {
 
             /**
              * Properties of a TestReservedNames.
@@ -5873,9 +5871,9 @@ $root.jspb = (function() {
             };
 
             return TestReservedNames;
-        })();
+        })(test.TestReservedNames || {});
 
-        test.TestReservedNamesExtension = (function() {
+        test.TestReservedNamesExtension = (function(TestReservedNamesExtension) {
 
             /**
              * Properties of a TestReservedNamesExtension.
@@ -6033,9 +6031,9 @@ $root.jspb = (function() {
             };
 
             return TestReservedNamesExtension;
-        })();
+        })(test.TestReservedNamesExtension || {});
 
-        test.TestMessageWithOneof = (function() {
+        test.TestMessageWithOneof = (function(TestMessageWithOneof) {
 
             /**
              * Properties of a TestMessageWithOneof.
@@ -6529,9 +6527,9 @@ $root.jspb = (function() {
             };
 
             return TestMessageWithOneof;
-        })();
+        })(test.TestMessageWithOneof || {});
 
-        test.TestEndsWithBytes = (function() {
+        test.TestEndsWithBytes = (function(TestEndsWithBytes) {
 
             /**
              * Properties of a TestEndsWithBytes.
@@ -6748,9 +6746,9 @@ $root.jspb = (function() {
             };
 
             return TestEndsWithBytes;
-        })();
+        })(test.TestEndsWithBytes || {});
 
-        test.TestMapFieldsNoBinary = (function() {
+        test.TestMapFieldsNoBinary = (function(TestMapFieldsNoBinary) {
 
             /**
              * Properties of a TestMapFieldsNoBinary.
@@ -6985,100 +6983,254 @@ $root.jspb = (function() {
             TestMapFieldsNoBinary.decode = function decode(reader, length) {
                 if (!(reader instanceof $Reader))
                     reader = $Reader.create(reader);
-                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.TestMapFieldsNoBinary(), key;
+                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.TestMapFieldsNoBinary(), key, value;
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     switch (tag >>> 3) {
                     case 1:
-                        reader.skip().pos++;
                         if (message.mapStringString === $util.emptyObject)
                             message.mapStringString = {};
-                        key = reader.string();
-                        reader.pos++;
-                        message.mapStringString[key] = reader.string();
+                        var end2 = reader.uint32() + reader.pos;
+                        key = "";
+                        value = "";
+                        while (reader.pos < end2) {
+                            var tag2 = reader.uint32();
+                            switch (tag2 >>> 3) {
+                            case 1:
+                                key = reader.string();
+                                break;
+                            case 2:
+                                value = reader.string();
+                                break;
+                            default:
+                                reader.skipType(tag2 & 7);
+                                break;
+                            }
+                        }
+                        message.mapStringString[key] = value;
                         break;
                     case 2:
-                        reader.skip().pos++;
                         if (message.mapStringInt32 === $util.emptyObject)
                             message.mapStringInt32 = {};
-                        key = reader.string();
-                        reader.pos++;
-                        message.mapStringInt32[key] = reader.int32();
+                        var end2 = reader.uint32() + reader.pos;
+                        key = "";
+                        value = 0;
+                        while (reader.pos < end2) {
+                            var tag2 = reader.uint32();
+                            switch (tag2 >>> 3) {
+                            case 1:
+                                key = reader.string();
+                                break;
+                            case 2:
+                                value = reader.int32();
+                                break;
+                            default:
+                                reader.skipType(tag2 & 7);
+                                break;
+                            }
+                        }
+                        message.mapStringInt32[key] = value;
                         break;
                     case 3:
-                        reader.skip().pos++;
                         if (message.mapStringInt64 === $util.emptyObject)
                             message.mapStringInt64 = {};
-                        key = reader.string();
-                        reader.pos++;
-                        message.mapStringInt64[key] = reader.int64();
+                        var end2 = reader.uint32() + reader.pos;
+                        key = "";
+                        value = 0;
+                        while (reader.pos < end2) {
+                            var tag2 = reader.uint32();
+                            switch (tag2 >>> 3) {
+                            case 1:
+                                key = reader.string();
+                                break;
+                            case 2:
+                                value = reader.int64();
+                                break;
+                            default:
+                                reader.skipType(tag2 & 7);
+                                break;
+                            }
+                        }
+                        message.mapStringInt64[key] = value;
                         break;
                     case 4:
-                        reader.skip().pos++;
                         if (message.mapStringBool === $util.emptyObject)
                             message.mapStringBool = {};
-                        key = reader.string();
-                        reader.pos++;
-                        message.mapStringBool[key] = reader.bool();
+                        var end2 = reader.uint32() + reader.pos;
+                        key = "";
+                        value = false;
+                        while (reader.pos < end2) {
+                            var tag2 = reader.uint32();
+                            switch (tag2 >>> 3) {
+                            case 1:
+                                key = reader.string();
+                                break;
+                            case 2:
+                                value = reader.bool();
+                                break;
+                            default:
+                                reader.skipType(tag2 & 7);
+                                break;
+                            }
+                        }
+                        message.mapStringBool[key] = value;
                         break;
                     case 5:
-                        reader.skip().pos++;
                         if (message.mapStringDouble === $util.emptyObject)
                             message.mapStringDouble = {};
-                        key = reader.string();
-                        reader.pos++;
-                        message.mapStringDouble[key] = reader.double();
+                        var end2 = reader.uint32() + reader.pos;
+                        key = "";
+                        value = 0;
+                        while (reader.pos < end2) {
+                            var tag2 = reader.uint32();
+                            switch (tag2 >>> 3) {
+                            case 1:
+                                key = reader.string();
+                                break;
+                            case 2:
+                                value = reader.double();
+                                break;
+                            default:
+                                reader.skipType(tag2 & 7);
+                                break;
+                            }
+                        }
+                        message.mapStringDouble[key] = value;
                         break;
                     case 6:
-                        reader.skip().pos++;
                         if (message.mapStringEnum === $util.emptyObject)
                             message.mapStringEnum = {};
-                        key = reader.string();
-                        reader.pos++;
-                        message.mapStringEnum[key] = reader.int32();
+                        var end2 = reader.uint32() + reader.pos;
+                        key = "";
+                        value = 0;
+                        while (reader.pos < end2) {
+                            var tag2 = reader.uint32();
+                            switch (tag2 >>> 3) {
+                            case 1:
+                                key = reader.string();
+                                break;
+                            case 2:
+                                value = reader.int32();
+                                break;
+                            default:
+                                reader.skipType(tag2 & 7);
+                                break;
+                            }
+                        }
+                        message.mapStringEnum[key] = value;
                         break;
                     case 7:
-                        reader.skip().pos++;
                         if (message.mapStringMsg === $util.emptyObject)
                             message.mapStringMsg = {};
-                        key = reader.string();
-                        reader.pos++;
-                        message.mapStringMsg[key] = $root.jspb.test.MapValueMessageNoBinary.decode(reader, reader.uint32());
+                        var end2 = reader.uint32() + reader.pos;
+                        key = "";
+                        value = null;
+                        while (reader.pos < end2) {
+                            var tag2 = reader.uint32();
+                            switch (tag2 >>> 3) {
+                            case 1:
+                                key = reader.string();
+                                break;
+                            case 2:
+                                value = $root.jspb.test.MapValueMessageNoBinary.decode(reader, reader.uint32());
+                                break;
+                            default:
+                                reader.skipType(tag2 & 7);
+                                break;
+                            }
+                        }
+                        message.mapStringMsg[key] = value;
                         break;
                     case 8:
-                        reader.skip().pos++;
                         if (message.mapInt32String === $util.emptyObject)
                             message.mapInt32String = {};
-                        key = reader.int32();
-                        reader.pos++;
-                        message.mapInt32String[key] = reader.string();
+                        var end2 = reader.uint32() + reader.pos;
+                        key = 0;
+                        value = "";
+                        while (reader.pos < end2) {
+                            var tag2 = reader.uint32();
+                            switch (tag2 >>> 3) {
+                            case 1:
+                                key = reader.int32();
+                                break;
+                            case 2:
+                                value = reader.string();
+                                break;
+                            default:
+                                reader.skipType(tag2 & 7);
+                                break;
+                            }
+                        }
+                        message.mapInt32String[key] = value;
                         break;
                     case 9:
-                        reader.skip().pos++;
                         if (message.mapInt64String === $util.emptyObject)
                             message.mapInt64String = {};
-                        key = reader.int64();
-                        reader.pos++;
-                        message.mapInt64String[typeof key === "object" ? $util.longToHash(key) : key] = reader.string();
+                        var end2 = reader.uint32() + reader.pos;
+                        key = 0;
+                        value = "";
+                        while (reader.pos < end2) {
+                            var tag2 = reader.uint32();
+                            switch (tag2 >>> 3) {
+                            case 1:
+                                key = reader.int64();
+                                break;
+                            case 2:
+                                value = reader.string();
+                                break;
+                            default:
+                                reader.skipType(tag2 & 7);
+                                break;
+                            }
+                        }
+                        message.mapInt64String[typeof key === "object" ? $util.longToHash(key) : key] = value;
                         break;
                     case 10:
-                        reader.skip().pos++;
                         if (message.mapBoolString === $util.emptyObject)
                             message.mapBoolString = {};
-                        key = reader.bool();
-                        reader.pos++;
-                        message.mapBoolString[key] = reader.string();
+                        var end2 = reader.uint32() + reader.pos;
+                        key = false;
+                        value = "";
+                        while (reader.pos < end2) {
+                            var tag2 = reader.uint32();
+                            switch (tag2 >>> 3) {
+                            case 1:
+                                key = reader.bool();
+                                break;
+                            case 2:
+                                value = reader.string();
+                                break;
+                            default:
+                                reader.skipType(tag2 & 7);
+                                break;
+                            }
+                        }
+                        message.mapBoolString[key] = value;
                         break;
                     case 11:
                         message.testMapFields = $root.jspb.test.TestMapFieldsNoBinary.decode(reader, reader.uint32());
                         break;
                     case 12:
-                        reader.skip().pos++;
                         if (message.mapStringTestmapfields === $util.emptyObject)
                             message.mapStringTestmapfields = {};
-                        key = reader.string();
-                        reader.pos++;
-                        message.mapStringTestmapfields[key] = $root.jspb.test.TestMapFieldsNoBinary.decode(reader, reader.uint32());
+                        var end2 = reader.uint32() + reader.pos;
+                        key = "";
+                        value = null;
+                        while (reader.pos < end2) {
+                            var tag2 = reader.uint32();
+                            switch (tag2 >>> 3) {
+                            case 1:
+                                key = reader.string();
+                                break;
+                            case 2:
+                                value = $root.jspb.test.TestMapFieldsNoBinary.decode(reader, reader.uint32());
+                                break;
+                            default:
+                                reader.skipType(tag2 & 7);
+                                break;
+                            }
+                        }
+                        message.mapStringTestmapfields[key] = value;
                         break;
                     default:
                         reader.skipType(tag & 7);
@@ -7457,7 +7609,7 @@ $root.jspb = (function() {
             };
 
             return TestMapFieldsNoBinary;
-        })();
+        })(test.TestMapFieldsNoBinary || {});
 
         /**
          * MapValueEnumNoBinary enum.
@@ -7475,7 +7627,7 @@ $root.jspb = (function() {
             return values;
         })();
 
-        test.MapValueMessageNoBinary = (function() {
+        test.MapValueMessageNoBinary = (function(MapValueMessageNoBinary) {
 
             /**
              * Properties of a MapValueMessageNoBinary.
@@ -7660,9 +7812,9 @@ $root.jspb = (function() {
             };
 
             return MapValueMessageNoBinary;
-        })();
+        })(test.MapValueMessageNoBinary || {});
 
-        test.Deeply = (function() {
+        test.Deeply = (function(Deeply) {
 
             /**
              * Properties of a Deeply.
@@ -7819,7 +7971,7 @@ $root.jspb = (function() {
                 return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
-            Deeply.Nested = (function() {
+            Deeply.Nested = (function(Nested) {
 
                 /**
                  * Properties of a Nested.
@@ -7976,7 +8128,7 @@ $root.jspb = (function() {
                     return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
                 };
 
-                Nested.Message = (function() {
+                Nested.Message = (function(Message) {
 
                     /**
                      * Properties of a Message.
@@ -8161,39 +8313,37 @@ $root.jspb = (function() {
                     };
 
                     return Message;
-                })();
+                })(Nested.Message || {});
 
                 return Nested;
-            })();
+            })(Deeply.Nested || {});
 
             return Deeply;
-        })();
+        })(test.Deeply || {});
 
         return test;
-    })();
+    })(jspb.test || {});
 
     return jspb;
-})();
+})($root.jspb || {});
 
-$root.google = (function() {
+/**
+ * Namespace google.
+ * @exports google
+ * @namespace
+ */
+
+$root.google = (function(google) {
 
     /**
-     * Namespace google.
-     * @exports google
+     * Namespace protobuf.
+     * @memberof google
      * @namespace
      */
-    var google = {};
 
-    google.protobuf = (function() {
+    google.protobuf = (function(protobuf) {
 
-        /**
-         * Namespace protobuf.
-         * @memberof google
-         * @namespace
-         */
-        var protobuf = {};
-
-        protobuf.FileDescriptorSet = (function() {
+        protobuf.FileDescriptorSet = (function(FileDescriptorSet) {
 
             /**
              * Properties of a FileDescriptorSet.
@@ -8399,9 +8549,9 @@ $root.google = (function() {
             };
 
             return FileDescriptorSet;
-        })();
+        })(protobuf.FileDescriptorSet || {});
 
-        protobuf.FileDescriptorProto = (function() {
+        protobuf.FileDescriptorProto = (function(FileDescriptorProto) {
 
             /**
              * Properties of a FileDescriptorProto.
@@ -8983,9 +9133,9 @@ $root.google = (function() {
             };
 
             return FileDescriptorProto;
-        })();
+        })(protobuf.FileDescriptorProto || {});
 
-        protobuf.DescriptorProto = (function() {
+        protobuf.DescriptorProto = (function(DescriptorProto) {
 
             /**
              * Properties of a DescriptorProto.
@@ -9538,7 +9688,7 @@ $root.google = (function() {
                 return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
-            DescriptorProto.ExtensionRange = (function() {
+            DescriptorProto.ExtensionRange = (function(ExtensionRange) {
 
                 /**
                  * Properties of an ExtensionRange.
@@ -9746,9 +9896,9 @@ $root.google = (function() {
                 };
 
                 return ExtensionRange;
-            })();
+            })(DescriptorProto.ExtensionRange || {});
 
-            DescriptorProto.ReservedRange = (function() {
+            DescriptorProto.ReservedRange = (function(ReservedRange) {
 
                 /**
                  * Properties of a ReservedRange.
@@ -9956,12 +10106,12 @@ $root.google = (function() {
                 };
 
                 return ReservedRange;
-            })();
+            })(DescriptorProto.ReservedRange || {});
 
             return DescriptorProto;
-        })();
+        })(protobuf.DescriptorProto || {});
 
-        protobuf.FieldDescriptorProto = (function() {
+        protobuf.FieldDescriptorProto = (function(FieldDescriptorProto) {
 
             /**
              * Properties of a FieldDescriptorProto.
@@ -10523,9 +10673,9 @@ $root.google = (function() {
             })();
 
             return FieldDescriptorProto;
-        })();
+        })(protobuf.FieldDescriptorProto || {});
 
-        protobuf.OneofDescriptorProto = (function() {
+        protobuf.OneofDescriptorProto = (function(OneofDescriptorProto) {
 
             /**
              * Properties of an OneofDescriptorProto.
@@ -10738,9 +10888,9 @@ $root.google = (function() {
             };
 
             return OneofDescriptorProto;
-        })();
+        })(protobuf.OneofDescriptorProto || {});
 
-        protobuf.EnumDescriptorProto = (function() {
+        protobuf.EnumDescriptorProto = (function(EnumDescriptorProto) {
 
             /**
              * Properties of an EnumDescriptorProto.
@@ -10997,9 +11147,9 @@ $root.google = (function() {
             };
 
             return EnumDescriptorProto;
-        })();
+        })(protobuf.EnumDescriptorProto || {});
 
-        protobuf.EnumValueDescriptorProto = (function() {
+        protobuf.EnumValueDescriptorProto = (function(EnumValueDescriptorProto) {
 
             /**
              * Properties of an EnumValueDescriptorProto.
@@ -11234,9 +11384,9 @@ $root.google = (function() {
             };
 
             return EnumValueDescriptorProto;
-        })();
+        })(protobuf.EnumValueDescriptorProto || {});
 
-        protobuf.ServiceDescriptorProto = (function() {
+        protobuf.ServiceDescriptorProto = (function(ServiceDescriptorProto) {
 
             /**
              * Properties of a ServiceDescriptorProto.
@@ -11493,9 +11643,9 @@ $root.google = (function() {
             };
 
             return ServiceDescriptorProto;
-        })();
+        })(protobuf.ServiceDescriptorProto || {});
 
-        protobuf.MethodDescriptorProto = (function() {
+        protobuf.MethodDescriptorProto = (function(MethodDescriptorProto) {
 
             /**
              * Properties of a MethodDescriptorProto.
@@ -11796,9 +11946,9 @@ $root.google = (function() {
             };
 
             return MethodDescriptorProto;
-        })();
+        })(protobuf.MethodDescriptorProto || {});
 
-        protobuf.FileOptions = (function() {
+        protobuf.FileOptions = (function(FileOptions) {
 
             /**
              * Properties of a FileOptions.
@@ -12348,9 +12498,9 @@ $root.google = (function() {
             })();
 
             return FileOptions;
-        })();
+        })(protobuf.FileOptions || {});
 
-        protobuf.MessageOptions = (function() {
+        protobuf.MessageOptions = (function(MessageOptions) {
 
             /**
              * Properties of a MessageOptions.
@@ -12646,9 +12796,9 @@ $root.google = (function() {
             };
 
             return MessageOptions;
-        })();
+        })(protobuf.MessageOptions || {});
 
-        protobuf.FieldOptions = (function() {
+        protobuf.FieldOptions = (function(FieldOptions) {
 
             /**
              * Properties of a FieldOptions.
@@ -13056,9 +13206,9 @@ $root.google = (function() {
             })();
 
             return FieldOptions;
-        })();
+        })(protobuf.FieldOptions || {});
 
-        protobuf.OneofOptions = (function() {
+        protobuf.OneofOptions = (function(OneofOptions) {
 
             /**
              * Properties of an OneofOptions.
@@ -13264,9 +13414,9 @@ $root.google = (function() {
             };
 
             return OneofOptions;
-        })();
+        })(protobuf.OneofOptions || {});
 
-        protobuf.EnumOptions = (function() {
+        protobuf.EnumOptions = (function(EnumOptions) {
 
             /**
              * Properties of an EnumOptions.
@@ -13540,9 +13690,9 @@ $root.google = (function() {
             };
 
             return EnumOptions;
-        })();
+        })(protobuf.EnumOptions || {});
 
-        protobuf.EnumValueOptions = (function() {
+        protobuf.EnumValueOptions = (function(EnumValueOptions) {
 
             /**
              * Properties of an EnumValueOptions.
@@ -13771,9 +13921,9 @@ $root.google = (function() {
             };
 
             return EnumValueOptions;
-        })();
+        })(protobuf.EnumValueOptions || {});
 
-        protobuf.ServiceOptions = (function() {
+        protobuf.ServiceOptions = (function(ServiceOptions) {
 
             /**
              * Properties of a ServiceOptions.
@@ -14002,9 +14152,9 @@ $root.google = (function() {
             };
 
             return ServiceOptions;
-        })();
+        })(protobuf.ServiceOptions || {});
 
-        protobuf.MethodOptions = (function() {
+        protobuf.MethodOptions = (function(MethodOptions) {
 
             /**
              * Properties of a MethodOptions.
@@ -14290,9 +14440,9 @@ $root.google = (function() {
             })();
 
             return MethodOptions;
-        })();
+        })(protobuf.MethodOptions || {});
 
-        protobuf.UninterpretedOption = (function() {
+        protobuf.UninterpretedOption = (function(UninterpretedOption) {
 
             /**
              * Properties of an UninterpretedOption.
@@ -14668,7 +14818,7 @@ $root.google = (function() {
                 return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
-            UninterpretedOption.NamePart = (function() {
+            UninterpretedOption.NamePart = (function(NamePart) {
 
                 /**
                  * Properties of a NamePart.
@@ -14876,12 +15026,12 @@ $root.google = (function() {
                 };
 
                 return NamePart;
-            })();
+            })(UninterpretedOption.NamePart || {});
 
             return UninterpretedOption;
-        })();
+        })(protobuf.UninterpretedOption || {});
 
-        protobuf.SourceCodeInfo = (function() {
+        protobuf.SourceCodeInfo = (function(SourceCodeInfo) {
 
             /**
              * Properties of a SourceCodeInfo.
@@ -15086,7 +15236,7 @@ $root.google = (function() {
                 return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
-            SourceCodeInfo.Location = (function() {
+            SourceCodeInfo.Location = (function(Location) {
 
                 /**
                  * Properties of a Location.
@@ -15426,12 +15576,12 @@ $root.google = (function() {
                 };
 
                 return Location;
-            })();
+            })(SourceCodeInfo.Location || {});
 
             return SourceCodeInfo;
-        })();
+        })(protobuf.SourceCodeInfo || {});
 
-        protobuf.GeneratedCodeInfo = (function() {
+        protobuf.GeneratedCodeInfo = (function(GeneratedCodeInfo) {
 
             /**
              * Properties of a GeneratedCodeInfo.
@@ -15636,7 +15786,7 @@ $root.google = (function() {
                 return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
-            GeneratedCodeInfo.Annotation = (function() {
+            GeneratedCodeInfo.Annotation = (function(Annotation) {
 
                 /**
                  * Properties of an Annotation.
@@ -15913,15 +16063,15 @@ $root.google = (function() {
                 };
 
                 return Annotation;
-            })();
+            })(GeneratedCodeInfo.Annotation || {});
 
             return GeneratedCodeInfo;
-        })();
+        })(protobuf.GeneratedCodeInfo || {});
 
         return protobuf;
-    })();
+    })(google.protobuf || {});
 
     return google;
-})();
+})($root.google || {});
 
 module.exports = $root;

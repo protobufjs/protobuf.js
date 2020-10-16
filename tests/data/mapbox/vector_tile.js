@@ -9,16 +9,15 @@ var $Reader = $protobuf.Reader, $Writer = $protobuf.Writer, $util = $protobuf.ut
 // Exported root namespace
 var $root = $protobuf.roots.test_vector_tile || ($protobuf.roots.test_vector_tile = {});
 
-$root.vector_tile = (function() {
+/**
+ * Namespace vector_tile.
+ * @exports vector_tile
+ * @namespace
+ */
 
-    /**
-     * Namespace vector_tile.
-     * @exports vector_tile
-     * @namespace
-     */
-    var vector_tile = {};
+$root.vector_tile = (function(vector_tile) {
 
-    vector_tile.Tile = (function() {
+    vector_tile.Tile = (function(Tile) {
 
         /**
          * Properties of a Tile.
@@ -241,7 +240,7 @@ $root.vector_tile = (function() {
             return values;
         })();
 
-        Tile.Value = (function() {
+        Tile.Value = (function(Value) {
 
             /**
              * Properties of a Value.
@@ -601,9 +600,9 @@ $root.vector_tile = (function() {
             };
 
             return Value;
-        })();
+        })(Tile.Value || {});
 
-        Tile.Feature = (function() {
+        Tile.Feature = (function(Feature) {
 
             /**
              * Properties of a Feature.
@@ -942,9 +941,9 @@ $root.vector_tile = (function() {
             };
 
             return Feature;
-        })();
+        })(Tile.Feature || {});
 
-        Tile.Layer = (function() {
+        Tile.Layer = (function(Layer) {
 
             /**
              * Properties of a Layer.
@@ -1300,12 +1299,12 @@ $root.vector_tile = (function() {
             };
 
             return Layer;
-        })();
+        })(Tile.Layer || {});
 
         return Tile;
-    })();
+    })(vector_tile.Tile || {});
 
     return vector_tile;
-})();
+})($root.vector_tile || {});
 
 module.exports = $root;

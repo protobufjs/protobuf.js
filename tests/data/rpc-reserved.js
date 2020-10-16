@@ -9,7 +9,7 @@ var $Reader = $protobuf.Reader, $Writer = $protobuf.Writer, $util = $protobuf.ut
 // Exported root namespace
 var $root = $protobuf.roots["test_rpc-reserved"] || ($protobuf.roots["test_rpc-reserved"] = {});
 
-$root.MyService = (function() {
+$root.MyService = (function(MyService) {
 
     /**
      * Constructs a new MyService service.
@@ -75,9 +75,9 @@ $root.MyService = (function() {
      */
 
     return MyService;
-})();
+})($root.MyService || {});
 
-$root.MyRequest = (function() {
+$root.MyRequest = (function(MyRequest) {
 
     /**
      * Properties of a MyRequest.
@@ -262,9 +262,9 @@ $root.MyRequest = (function() {
     };
 
     return MyRequest;
-})();
+})($root.MyRequest || {});
 
-$root.MyResponse = (function() {
+$root.MyResponse = (function(MyResponse) {
 
     /**
      * Properties of a MyResponse.
@@ -449,6 +449,6 @@ $root.MyResponse = (function() {
     };
 
     return MyResponse;
-})();
+})($root.MyResponse || {});
 
 module.exports = $root;
