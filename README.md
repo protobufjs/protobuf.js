@@ -285,11 +285,15 @@ The library utilizes JSON descriptors that are equivalent to a .proto definition
 // awesome.json
 {
   "nested": {
-    "AwesomeMessage": {
-      "fields": {
-        "awesomeField": {
-          "type": "string",
-          "id": 1
+    "awesomepackage": {
+      "nested": {
+        "AwesomeMessage": {
+          "fields": {
+            "awesomeField": {
+              "type": "string",
+              "id": 1
+            }
+          }
         }
       }
     }
