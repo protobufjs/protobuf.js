@@ -29,7 +29,7 @@ var fs   = require("fs"),
 
     cliArgs = cliArgs.concat([
         "--target", "static-module",
-        "--wrap", "commonjs",
+        "--wrap", flags.includes('es6') ? 'es6' : "commonjs",
         file
     ]);
 
