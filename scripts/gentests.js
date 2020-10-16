@@ -13,7 +13,8 @@ var fs   = require("fs"),
     { file: "tests/data/rpc.proto", flags: [] },
     { file: "tests/data/rpc-reserved.proto", flags: [] },
     { file: "tests/data/test.proto", flags: [] },
-    { file: "bench/data/bench.proto", flags: ["no-create", "no-verify", "no-delimited", "no-convert", "no-comments"], out: "bench/data/static_pbjs.js" }
+    { file: "tests/data/type_url.proto", flags: [] },
+    { file: "bench/data/bench.proto", flags: ["no-create", "no-verify", "no-delimited", "no-convert", "no-verify", "no-typeurl", "no-comments"], out: "bench/data/static_pbjs.js" }
 ]
 .forEach(function({ file, flags, out }) {
     var basename = file.replace(/\.proto$/, "");

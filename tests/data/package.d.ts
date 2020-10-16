@@ -47,6 +47,7 @@ export class Package implements IPackage {
     public static fromObject(object: { [k: string]: any }): Package;
     public static toObject(message: Package, options?: $protobuf.IConversionOptions): { [k: string]: any };
     public toJSON(): { [k: string]: any };
+    public static getTypeUrl(): string;
 }
 
 export namespace Package {
@@ -69,5 +70,6 @@ export namespace Package {
         public static fromObject(object: { [k: string]: any }): Package.Repository;
         public static toObject(message: Package.Repository, options?: $protobuf.IConversionOptions): { [k: string]: any };
         public toJSON(): { [k: string]: any };
+        public static getTypeUrl(): string;
     }
 }
