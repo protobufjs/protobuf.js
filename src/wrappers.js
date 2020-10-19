@@ -225,7 +225,8 @@ wrappers[".google.protobuf.Struct"] = {
         if (typeof object === "object" && object) {
             var names = Object.keys(object),
                 i = 0,
-                fields = {};
+                fields = {},
+                Value = this.fields.fields.resolvedType;
 
             // heuristic: if an object looks like a regular representation of google.protobuf.Struct,
             // with just one field called `fields`, just accept it as is for compatibility.
@@ -233,12 +234,8 @@ wrappers[".google.protobuf.Struct"] = {
                 return this.fromObject(object);
             }
 
-            var Value = this.fields.fields.resolvedType;
             for (; i < names.length; ++i) {
-                fields[names[i]] = googleProtobufValueFromObject(
-                    object[names[i]],
-                    function(obj) { return Value.create(obj); }
-                );
+                fields[names[i]] = Value.fromObject(object[names[i]]);
             }
             return this.create({
                 fields: fields
@@ -258,9 +255,10 @@ wrappers[".google.protobuf.Struct"] = {
             }
             var names = Object.keys(message.fields),
                 i = 0,
-                struct = {};
+                struct = {},
+                Value = this.fields.fields.resolvedType;
             for (; i < names.length; ++i) {
-                struct[names[i]] = googleProtobufValueToObject(message["fields"][names[i]]);
+                struct[names[i]] = Value.toObject(message["fields"][names[i]], options);
             }
             return struct;
         }
