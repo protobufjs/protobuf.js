@@ -7,9 +7,7 @@ module.exports = static_module_target;
 // - AMD and global scope depend on the full library for now.
 
 var util          = require("../util"),
-    requireProtobufjs = require("../require-protobufjs");
-
-var protobuf = requireProtobufjs();
+    protobuf      = require("protobufjs");
 
 static_module_target.description = "Static code without reflection as a module";
 

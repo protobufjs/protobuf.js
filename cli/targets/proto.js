@@ -3,8 +3,7 @@ module.exports = proto_target;
 
 proto_target.private = true;
 
-var requireProtobufjs = require("../require-protobufjs");
-var protobuf = requireProtobufjs();
+var protobuf = require("protobufjs");
 
 var Namespace  = protobuf.Namespace,
     Enum       = protobuf.Enum,

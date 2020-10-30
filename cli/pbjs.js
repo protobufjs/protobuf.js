@@ -6,9 +6,8 @@ var path     = require("path"),
     chalk    = require("chalk"),
     pkg      = require("./package.json"),
     util     = require("./util"),
-    requireProtobufjs = require("./require-protobufjs");
-
-var protobuf = requireProtobufjs();
+    glob     = require("glob"),
+    protobuf = require("protobufjs");
 
 var targets  = util.requireAll("./targets");
 

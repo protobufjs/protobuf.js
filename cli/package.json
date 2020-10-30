@@ -1,7 +1,7 @@
 {
   "name": "protobufjs-cli",
   "description": "Translates between file formats and generates static code as well as TypeScript definitions.",
-  "version": "7.0.0",
+  "version": "1.0.0",
   "author": "Daniel Wirtz <dcode+protobufjs@dcode.io>",
   "repository": {
     "type": "git",
@@ -15,7 +15,7 @@
     "pbts": "bin/pbts"
   },
   "peerDependencies": {
-    "protobufjs": "~6.9.0"
+    "protobufjs": "~7.0.0"
   },
   "dependencies": {
     "chalk": "^4.0.0",
@@ -28,5 +28,8 @@
     "semver": "^7.1.2",
     "tmp": "^0.2.1",
     "uglify-js": "^3.7.7"
+  },
+  "devDependencies": {
+    "protobufjs": "file://.."
   }
 }
