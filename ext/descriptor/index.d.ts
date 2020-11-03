@@ -1,5 +1,4 @@
 import * as $protobuf from "../..";
-
 export const FileDescriptorSet: $protobuf.Type;
 
 export const FileDescriptorProto: $protobuf.Type;

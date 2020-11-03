@@ -20,7 +20,17 @@ var targets  = util.requireAll("./targets");
  * @returns {number|undefined} Exit code, if known
  */
 exports.main = function main(args, callback) {
-    var lintDefault = "eslint-disable block-scoped-var, no-redeclare, no-control-regex, no-prototype-builtins";
+    var lintDefault = "eslint-disable " + [
+        "block-scoped-var",
+        "id-length",
+        "no-control-regex",
+        "no-magic-numbers",
+        "no-prototype-builtins",
+        "no-redeclare",
+        "no-shadow",
+        "no-var",
+        "sort-vars"
+    ].join(", ");
     var argv = minimist(args, {
         alias: {
             target: "t",
@@ -184,9 +194,8 @@ exports.main = function main(args, callback) {
         return resolved;
     };
 
-    // Use es6 syntax if not explicitly specified on the command line and the es6 wrapper is used
-    if (argv.wrap === "es6" || argv.es6) {
-        argv.wrap = "es6";
+    // `--wrap es6` implies `--es6` but not the other way around. You can still use e.g. `--es6 --wrap commonjs`
+    if (argv.wrap === "es6") {
         argv.es6 = true;
     }
 

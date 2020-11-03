@@ -61,6 +61,16 @@ Root.fromJSON = function fromJSON(json, root) {
  */
 Root.prototype.resolvePath = util.path.resolve;
 
+/**
+ * Fetch content from file path or url
+ * This method exists so you can override it with your own logic.
+ * @function
+ * @param {string} path File path or url
+ * @param {FetchCallback} callback Callback function
+ * @returns {undefined}
+ */
+Root.prototype.fetch = util.fetch;
+
 // A symbol-like function to safely signal synchronous loading
 /* istanbul ignore next */
 function SYNC() {} // eslint-disable-line no-empty-function
@@ -95,6 +105,16 @@ Root.prototype.load = function load(filename, options, callback) {
         cb(err, root);
     }
 
+    // Bundled definition existence checking
+    function getBundledFileName(filename) {
+        var idx = filename.lastIndexOf("google/protobuf/");
+        if (idx > -1) {
+            var altname = filename.substring(idx);
+            if (altname in common) return altname;
+        }
+        return null;
+    }
+
     // Processes a single file
     function process(filename, source) {
         try {
@@ -109,11 +129,11 @@ Root.prototype.load = function load(filename, options, callback) {
                     i = 0;
                 if (parsed.imports)
                     for (; i < parsed.imports.length; ++i)
-                        if (resolved = self.resolvePath(filename, parsed.imports[i]))
+                        if (resolved = getBundledFileName(parsed.imports[i]) || self.resolvePath(filename, parsed.imports[i]))
                             fetch(resolved);
                 if (parsed.weakImports)
                     for (i = 0; i < parsed.weakImports.length; ++i)
-                        if (resolved = self.resolvePath(filename, parsed.weakImports[i]))
+                        if (resolved = getBundledFileName(parsed.weakImports[i]) || self.resolvePath(filename, parsed.weakImports[i]))
                             fetch(resolved, true);
             }
         } catch (err) {
@@ -125,14 +145,6 @@ Root.prototype.load = function load(filename, options, callback) {
 
     // Fetches a single file
     function fetch(filename, weak) {
-
-        // Strip path if this file references a bundled definition
-        var idx = filename.lastIndexOf("google/protobuf/");
-        if (idx > -1) {
-            var altname = filename.substring(idx);
-            if (altname in common)
-                filename = altname;
-        }
 
         // Skip if already loaded / attempted
         if (self.files.indexOf(filename) > -1)
@@ -166,7 +178,7 @@ Root.prototype.load = function load(filename, options, callback) {
             process(filename, source);
         } else {
             ++queued;
-            util.fetch(filename, function(err, source) {
+            self.fetch(filename, function(err, source) {
                 --queued;
                 /* istanbul ignore if */
                 if (!callback)

@@ -1,4 +1,4 @@
-type pbtsCallback = (err: Error|null, output?: string) => {};
+type pbtsCallback = (err: Error|null, output?: string) => void;
 
 /**
  * Runs pbts programmatically.

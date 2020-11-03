@@ -1,4 +1,4 @@
-/*eslint-disable block-scoped-var, no-redeclare, no-control-regex, no-prototype-builtins*/
+/*eslint-disable block-scoped-var, id-length, no-control-regex, no-magic-numbers, no-prototype-builtins, no-redeclare, no-shadow, no-var, sort-vars*/
 "use strict";
 
 var $protobuf = require("../../minimal");
@@ -60,9 +60,9 @@ $root.MyService = (function() {
      * @returns {undefined}
      * @variation 1
      */
-    MyService.prototype["delete"] = function delete_(request, callback) {
+    Object.defineProperty(MyService.prototype["delete"] = function delete_(request, callback) {
         return this.rpcCall(delete_, $root.MyRequest, $root.MyResponse, request, callback);
-    };
+    }, "name", { value: "Delete" });
 
     /**
      * Calls Delete.
@@ -133,7 +133,7 @@ $root.MyRequest = (function() {
     MyRequest.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.path != null && message.hasOwnProperty("path"))
+        if (message.path != null && Object.hasOwnProperty.call(message, "path"))
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.path);
         return writer;
     };
@@ -320,7 +320,7 @@ $root.MyResponse = (function() {
     MyResponse.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.status != null && message.hasOwnProperty("status"))
+        if (message.status != null && Object.hasOwnProperty.call(message, "status"))
             writer.uint32(/* id 2, wireType 0 =*/16).int32(message.status);
         return writer;
     };

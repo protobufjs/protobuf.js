@@ -1,5 +1,4 @@
 import * as $protobuf from "../../..";
-
 export namespace vector_tile {
 
     interface ITile {

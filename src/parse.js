@@ -42,6 +42,7 @@ var base10Re    = /^[1-9][0-9]*$/,
  * @interface IParseOptions
  * @property {boolean} [keepCase=false] Keeps field casing instead of converting to camel case
  * @property {boolean} [alternateCommentMode=false] Recognize double-slash comments in addition to doc-block comments.
+ * @property {boolean} [preferTrailingComment=false] Use trailing comment when both leading comment and trailing comment exist.
  */
 
 /**
@@ -68,6 +69,7 @@ function parse(source, root, options) {
     if (!options)
         options = parse.defaults;
 
+    var preferTrailingComment = options.preferTrailingComment || false;
     var tn = tokenize(source, options.alternateCommentMode || false),
         next = tn.next,
         push = tn.push,
@@ -277,7 +279,9 @@ function parse(source, root, options) {
     function ifBlock(obj, fnIf, fnElse) {
         var trailingLine = tn.line;
         if (obj) {
-            obj.comment = cmnt(); // try block-type comment
+            if(typeof obj.comment !== "string") {
+              obj.comment = cmnt(); // try block-type comment
+            }
             obj.filename = parse.filename;
         }
         if (skip("{", true)) {
@@ -289,8 +293,8 @@ function parse(source, root, options) {
             if (fnElse)
                 fnElse();
             skip(";");
-            if (obj && typeof obj.comment !== "string")
-                obj.comment = cmnt(trailingLine); // try line-type comment if no block
+            if (obj && (typeof obj.comment !== "string" || preferTrailingComment))
+                obj.comment = cmnt(trailingLine) || obj.comment; // try line-type comment
         }
     }
 
@@ -538,45 +542,69 @@ function parse(source, root, options) {
             throw illegal(token, "name");
 
         var name = token;
+        var option = name;
+        var propName;
+
         if (isCustom) {
             skip(")");
             name = "(" + name + ")";
+            option = name;
             token = peek();
             if (fqTypeRefRe.test(token)) {
+                propName = token.substr(1); //remove '.' before property name
                 name += token;
                 next();
             }
         }
         skip("=");
-        parseOptionValue(parent, name);
+        var optionValue = parseOptionValue(parent, name);
+        setParsedOption(parent, option, optionValue, propName);
     }
 
     function parseOptionValue(parent, name) {
         if (skip("{", true)) { // { a: "foo" b { c: "bar" } }
-            do {
+            var result = {};
+            while (!skip("}", true)) {
                 /* istanbul ignore if */
                 if (!nameRe.test(token = next()))
                     throw illegal(token, "name");
 
+                var value;
+                var propName = token;
                 if (peek() === "{")
-                    parseOptionValue(parent, name + "." + token);
+                    value = parseOptionValue(parent, name + "." + token);
                 else {
                     skip(":");
                     if (peek() === "{")
-                        parseOptionValue(parent, name + "." + token);
-                    else
-                        setOption(parent, name + "." + token, readValue(true));
+                        value = parseOptionValue(parent, name + "." + token);
+                    else {
+                        value = readValue(true);
+                        setOption(parent, name + "." + token, value);
+                    }
                 }
+                var prevValue = result[propName];
+                if (prevValue)
+                    value = [].concat(prevValue).concat(value);
+                result[propName] = value;
                 skip(",", true);
-            } while (!skip("}", true));
-        } else
-            setOption(parent, name, readValue(true));
+            }
+            return result;
+        }
+
+        var simpleValue = readValue(true);
+        setOption(parent, name, simpleValue);
+        return simpleValue;
         // Does not enforce a delimiter to be universal
     }
 
     function setOption(parent, name, value) {
         if (parent.setOption)
             parent.setOption(name, value);
+    }
+
+    function setParsedOption(parent, name, value, propName) {
+        if (parent.setParsedOption)
+            parent.setParsedOption(name, value, propName);
     }
 
     function parseInlineOptions(parent) {
@@ -610,6 +638,10 @@ function parse(source, root, options) {
     }
 
     function parseMethod(parent, token) {
+        // Get the comment of the preceding line now (if one exists) in case the
+        // method is defined across multiple lines.
+        var commentText = cmnt();
+
         var type = token;
 
         /* istanbul ignore if */
@@ -641,6 +673,7 @@ function parse(source, root, options) {
         skip(")");
 
         var method = new Method(name, type, requestType, responseType, requestStream, responseStream);
+        method.comment = commentText;
         ifBlock(method, function parseMethod_block(token) {
 
             /* istanbul ignore else */
@@ -713,10 +746,6 @@ function parse(source, root, options) {
                 break;
 
             case "option":
-
-                /* istanbul ignore if */
-                if (!head)
-                    throw illegal(token);
 
                 parseOption(ptr, token);
                 skip(";");

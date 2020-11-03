@@ -1,4 +1,4 @@
-/*eslint-disable block-scoped-var, no-redeclare, no-control-regex, no-prototype-builtins*/
+/*eslint-disable block-scoped-var, id-length, no-control-regex, no-magic-numbers, no-prototype-builtins, no-redeclare, no-shadow, no-var, sort-vars*/
 "use strict";
 
 var $protobuf = require("../../minimal");
@@ -24,13 +24,13 @@ $root.Test = (function() {
     Test.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.string != null && message.hasOwnProperty("string"))
+        if (message.string != null && Object.hasOwnProperty.call(message, "string"))
             writer.uint32(10).string(message.string);
-        if (message.uint32 != null && message.hasOwnProperty("uint32"))
+        if (message.uint32 != null && Object.hasOwnProperty.call(message, "uint32"))
             writer.uint32(16).uint32(message.uint32);
-        if (message.inner != null && message.hasOwnProperty("inner"))
+        if (message.inner != null && Object.hasOwnProperty.call(message, "inner"))
             $root.Test.Inner.encode(message.inner, writer.uint32(26).fork()).ldelim();
-        if (message.float != null && message.hasOwnProperty("float"))
+        if (message.float != null && Object.hasOwnProperty.call(message, "float"))
             writer.uint32(37).float(message.float);
         return writer;
     };
@@ -78,11 +78,11 @@ $root.Test = (function() {
         Inner.encode = function encode(message, writer) {
             if (!writer)
                 writer = $Writer.create();
-            if (message.int32 != null && message.hasOwnProperty("int32"))
+            if (message.int32 != null && Object.hasOwnProperty.call(message, "int32"))
                 writer.uint32(8).int32(message.int32);
-            if (message.innerInner != null && message.hasOwnProperty("innerInner"))
+            if (message.innerInner != null && Object.hasOwnProperty.call(message, "innerInner"))
                 $root.Test.Inner.InnerInner.encode(message.innerInner, writer.uint32(18).fork()).ldelim();
-            if (message.outer != null && message.hasOwnProperty("outer"))
+            if (message.outer != null && Object.hasOwnProperty.call(message, "outer"))
                 $root.Outer.encode(message.outer, writer.uint32(26).fork()).ldelim();
             return writer;
         };
@@ -127,11 +127,11 @@ $root.Test = (function() {
             InnerInner.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
-                if (message.long != null && message.hasOwnProperty("long"))
+                if (message.long != null && Object.hasOwnProperty.call(message, "long"))
                     writer.uint32(8).int64(message.long);
-                if (message["enum"] != null && message.hasOwnProperty("enum"))
+                if (message["enum"] != null && Object.hasOwnProperty.call(message, "enum"))
                     writer.uint32(16).int32(message["enum"]);
-                if (message.sint32 != null && message.hasOwnProperty("sint32"))
+                if (message.sint32 != null && Object.hasOwnProperty.call(message, "sint32"))
                     writer.uint32(24).sint32(message.sint32);
                 return writer;
             };
@@ -201,7 +201,7 @@ $root.Outer = (function() {
                 writer.bool(message.bool[i]);
             writer.ldelim();
         }
-        if (message.double != null && message.hasOwnProperty("double"))
+        if (message.double != null && Object.hasOwnProperty.call(message, "double"))
             writer.uint32(17).double(message.double);
         return writer;
     };

@@ -42,6 +42,10 @@ message Test1 {
      * multi-line doc-block comment.
      */
     string field10 = 10;
+
+    // Field with both block comment
+    string field11 = 11; // and trailing comment.
+    string field12 = 12; // Trailing comment in last line should not be recognized as leading comment for this field.
 }
 
 /* Message
@@ -70,4 +74,31 @@ enum Test3 {
     THREE = 3;  // ignored
 
     FOUR = 4; /// Other value with a comment.
+}
+
+service ServiceTest {
+    // My method does things
+    rpc SingleLineMethod (MyRequest) returns (MyResponse);
+
+    // TwoLineMethodWithComment documentation
+    rpc TwoLineMethodWithComment (MyRequest)
+      returns (MyResponse);
+
+    // Very very long method
+    rpc
+      ThreeLine012345678901234567890123456712345671234567123456783927483923473892837489238749832432874983274983274983274(MyRequest)
+      returns (MyResponse);
+
+    // Random comment
+
+    rpc TwoLineMethodNoComment (MyRequest)
+      returns (MyResponse);
+}
+
+message MyRequest {
+    string path = 1;
+}
+
+message MyResponse {
+    int32 status = 2;
 }

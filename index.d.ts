@@ -1,3 +1,5 @@
+// DO NOT EDIT! This is a generated file. Edit the JSDoc in src/*.js instead and run 'npm run types'.
+
 export as namespace protobuf;
 
 /**
@@ -507,7 +509,7 @@ export interface IExtensionMapField extends IMapField {
 }
 
 /** Abstract runtime message. */
-export class Message<T extends object> {
+export class Message<T extends object = object> {
 
     /**
      * Constructs a new message instance.
@@ -857,6 +859,9 @@ export abstract class ReflectionObject {
     /** Options. */
     public options?: { [k: string]: any };
 
+    /** Parsed Options. */
+    public parsedOptions?: { [k: string]: any[] };
+
     /** Unique name within its namespace. */
     public name: string;
 
@@ -917,6 +922,15 @@ export abstract class ReflectionObject {
      * @returns `this`
      */
     public setOption(name: string, value: any, ifNotSet?: boolean): ReflectionObject;
+
+    /**
+     * Sets a parsed option.
+     * @param name parsed Option name
+     * @param value Option value
+     * @param propName dot '.' delimited full path of property within the option to set. if undefined\empty, will add a new option with that value
+     * @returns `this`
+     */
+    public setParsedOption(name: string, value: any, propName: string): ReflectionObject;
 
     /**
      * Sets multiple options.
@@ -1044,6 +1058,9 @@ export interface IParseOptions {
 
     /** Recognize double-slash comments in addition to doc-block comments. */
     alternateCommentMode?: boolean;
+
+    /** Use trailing comment when both leading comment and trailing comment exist. */
+    preferTrailingComment?: boolean;
 }
 
 /** Options modifying the behavior of JSON serialization. */
@@ -1240,6 +1257,14 @@ export class Root extends NamespaceBase {
      * @returns Resolved path to `target` or `null` to skip the file
      */
     public resolvePath(origin: string, target: string): (string|null);
+
+    /**
+     * Fetch content from file path or url
+     * This method exists so you can override it with your own logic.
+     * @param path File path or url
+     * @param callback Callback function
+     */
+    public fetch(path: string, callback: FetchCallback): void;
 
     /**
      * Loads one or multiple .proto or preprocessed .json files into this root namespace and calls the callback.
@@ -1926,14 +1951,17 @@ export namespace util {
         public length(): number;
     }
 
+    /** Whether running within node or not. */
+    let isNode: boolean;
+
+    /** Global object reference. */
+    let global: object;
+
     /** An immuable empty array. */
     const emptyArray: any[];
 
     /** An immutable empty object. */
     const emptyObject: object;
-
-    /** Whether running within node or not. */
-    const isNode: boolean;
 
     /**
      * Tests if the specified value is an integer.
@@ -2148,6 +2176,15 @@ export namespace util {
      * @returns Reflected enum
      */
     function decorateEnum(object: object): Enum;
+
+    /**
+     * Sets the value of a property by property path. If a value already exists, it is turned to an array
+     * @param dst Destination object
+     * @param path dot '.' delimited path of the property to set
+     * @param value the value to set
+     * @returns Destination object
+     */
+    function setProperty(dst: { [k: string]: any }, path: string, value: object): { [k: string]: any };
 
     /** Decorator root (TypeScript). */
     let decorateRoot: Root;
@@ -2624,17 +2661,17 @@ export class BufferWriter extends Writer {
     constructor();
 
     /**
-     * Finishes the write operation.
-     * @returns Finished buffer
-     */
-    public finish(): Buffer;
-
-    /**
      * Allocates a buffer of the specified size.
      * @param size Buffer size
      * @returns Buffer
      */
     public static alloc(size: number): Buffer;
+
+    /**
+     * Finishes the write operation.
+     * @returns Finished buffer
+     */
+    public finish(): Buffer;
 }
 
 /**

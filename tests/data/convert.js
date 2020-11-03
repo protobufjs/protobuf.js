@@ -1,4 +1,4 @@
-/*eslint-disable block-scoped-var, no-redeclare, no-control-regex, no-prototype-builtins*/
+/*eslint-disable block-scoped-var, id-length, no-control-regex, no-magic-numbers, no-prototype-builtins, no-redeclare, no-shadow, no-var, sort-vars*/
 "use strict";
 
 var $protobuf = require("../../minimal");
@@ -142,12 +142,12 @@ $root.Message = (function() {
     Message.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.stringVal != null && message.hasOwnProperty("stringVal"))
+        if (message.stringVal != null && Object.hasOwnProperty.call(message, "stringVal"))
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.stringVal);
         if (message.stringRepeated != null && message.stringRepeated.length)
             for (var i = 0; i < message.stringRepeated.length; ++i)
                 writer.uint32(/* id 2, wireType 2 =*/18).string(message.stringRepeated[i]);
-        if (message.uint64Val != null && message.hasOwnProperty("uint64Val"))
+        if (message.uint64Val != null && Object.hasOwnProperty.call(message, "uint64Val"))
             writer.uint32(/* id 3, wireType 0 =*/24).uint64(message.uint64Val);
         if (message.uint64Repeated != null && message.uint64Repeated.length) {
             writer.uint32(/* id 4, wireType 2 =*/34).fork();
@@ -155,12 +155,12 @@ $root.Message = (function() {
                 writer.uint64(message.uint64Repeated[i]);
             writer.ldelim();
         }
-        if (message.bytesVal != null && message.hasOwnProperty("bytesVal"))
+        if (message.bytesVal != null && Object.hasOwnProperty.call(message, "bytesVal"))
             writer.uint32(/* id 5, wireType 2 =*/42).bytes(message.bytesVal);
         if (message.bytesRepeated != null && message.bytesRepeated.length)
             for (var i = 0; i < message.bytesRepeated.length; ++i)
                 writer.uint32(/* id 6, wireType 2 =*/50).bytes(message.bytesRepeated[i]);
-        if (message.enumVal != null && message.hasOwnProperty("enumVal"))
+        if (message.enumVal != null && Object.hasOwnProperty.call(message, "enumVal"))
             writer.uint32(/* id 7, wireType 0 =*/56).int32(message.enumVal);
         if (message.enumRepeated != null && message.enumRepeated.length) {
             writer.uint32(/* id 8, wireType 2 =*/66).fork();
@@ -168,7 +168,7 @@ $root.Message = (function() {
                 writer.int32(message.enumRepeated[i]);
             writer.ldelim();
         }
-        if (message.int64Map != null && message.hasOwnProperty("int64Map"))
+        if (message.int64Map != null && Object.hasOwnProperty.call(message, "int64Map"))
             for (var keys = Object.keys(message.int64Map), i = 0; i < keys.length; ++i)
                 writer.uint32(/* id 9, wireType 2 =*/74).fork().uint32(/* id 1, wireType 2 =*/10).string(keys[i]).uint32(/* id 2, wireType 0 =*/16).int64(message.int64Map[keys[i]]).ldelim();
         return writer;
@@ -201,7 +201,7 @@ $root.Message = (function() {
     Message.decode = function decode(reader, length) {
         if (!(reader instanceof $Reader))
             reader = $Reader.create(reader);
-        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Message(), key;
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Message(), key, value;
         while (reader.pos < end) {
             var tag = reader.uint32();
             switch (tag >>> 3) {
@@ -248,12 +248,26 @@ $root.Message = (function() {
                     message.enumRepeated.push(reader.int32());
                 break;
             case 9:
-                reader.skip().pos++;
                 if (message.int64Map === $util.emptyObject)
                     message.int64Map = {};
-                key = reader.string();
-                reader.pos++;
-                message.int64Map[key] = reader.int64();
+                var end2 = reader.uint32() + reader.pos;
+                key = "";
+                value = 0;
+                while (reader.pos < end2) {
+                    var tag2 = reader.uint32();
+                    switch (tag2 >>> 3) {
+                    case 1:
+                        key = reader.string();
+                        break;
+                    case 2:
+                        value = reader.int64();
+                        break;
+                    default:
+                        reader.skipType(tag2 & 7);
+                        break;
+                    }
+                }
+                message.int64Map[key] = value;
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -482,7 +496,13 @@ $root.Message = (function() {
                 object.uint64Val = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
             } else
                 object.uint64Val = options.longs === String ? "0" : 0;
-            object.bytesVal = options.bytes === String ? "" : [];
+            if (options.bytes === String)
+                object.bytesVal = "";
+            else {
+                object.bytesVal = [];
+                if (options.bytes !== Array)
+                    object.bytesVal = $util.newBuffer(object.bytesVal);
+            }
             object.enumVal = options.enums === String ? "ONE" : 1;
         }
         if (message.stringVal != null && message.hasOwnProperty("stringVal"))
@@ -545,7 +565,7 @@ $root.Message = (function() {
     /**
      * SomeEnum enum.
      * @name Message.SomeEnum
-     * @enum {string}
+     * @enum {number}
      * @property {number} ONE=1 ONE value
      * @property {number} TWO=2 TWO value
      */

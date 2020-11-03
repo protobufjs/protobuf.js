@@ -70,7 +70,7 @@ function escape(str) {
     return str.replace(/[\\"']/g, "\\$&")
               .replace(/\r/g, "\\r")
               .replace(/\n/g, "\\n")
-              .replace(/\u0000/g, "\\0");
+              .replace(/\u0000/g, "\\0"); // eslint-disable-line no-control-regex
 }
 
 function value(v) {
