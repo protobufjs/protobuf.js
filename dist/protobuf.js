@@ -1,6 +1,6 @@
 /*!
- * protobuf.js v6.10.0 (c) 2016, daniel wirtz
- * compiled wed, 15 jul 2020 23:34:13 utc
+ * protobuf.js v6.10.1 (c) 2016, daniel wirtz
+ * compiled tue, 10 nov 2020 15:53:33 utc
  * licensed under the bsd-3-clause license
  * see: https://github.com/dcodeio/protobuf.js for details
  */
@@ -4636,6 +4636,15 @@ function parse(source, root, options) {
                     skip(":");
                     if (peek() === "{")
                         value = parseOptionValue(parent, name + "." + token);
+                    else if (skip("[", true)) {
+                        var i = 0;
+                        var prefix = name + "." + token;
+                        do {
+                            parseOptionValue(parent, prefix + "[" + i + "]");
+                            skip(',', true);
+                            ++i;
+                        } while (!skip("]", true));
+                    }
                     else {
                         value = readValue(true);
                         setOption(parent, name + "." + token, value);
