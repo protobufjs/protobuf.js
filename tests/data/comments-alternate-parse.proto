@@ -42,6 +42,10 @@ message Test1 {
      * multi-line doc-block comment.
      */
     string field10 = 10;
+
+    // Field with both block comment
+    string field11 = 11; // and trailing comment.
+    string field12 = 12; // Trailing comment in last line should not be recognized as leading comment for this field.
 }
 
 /* Message

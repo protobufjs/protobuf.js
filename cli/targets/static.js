@@ -675,14 +675,17 @@ function buildEnum(ref, enm) {
     var comment = [
         enm.comment || enm.name + " enum.",
         enm.parent instanceof protobuf.Root ? "@exports " + escapeName(enm.name) : "@name " + exportName(enm),
-        config.forceEnumString ? "@enum {number}" : "@enum {string}",
+        config.forceEnumString ? "@enum {string}" : "@enum {number}",
     ];
     Object.keys(enm.values).forEach(function(key) {
         var val = config.forceEnumString ? key : enm.values[key];
         comment.push((config.forceEnumString ? "@property {string} " : "@property {number} ") + key + "=" + val + " " + (enm.comments[key] || key + " value"));
     });
     pushComment(comment);
-    push(escapeName(ref) + "." + escapeName(enm.name) + " = (function() {");
+    if (!ref && config.es6)
+        push("export const " + escapeName(enm.name) + " = " + escapeName(ref) + "." + escapeName(enm.name) + " = (() => {");
+    else
+        push(escapeName(ref) + "." + escapeName(enm.name) + " = (function() {");
     ++indent;
         push((config.es6 ? "const" : "var") + " valuesById = {}, values = Object.create(valuesById);");
         var aliased = [];

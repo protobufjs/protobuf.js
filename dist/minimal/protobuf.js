@@ -1,6 +1,6 @@
 /*!
- * protobuf.js v6.8.8 (c) 2016, daniel wirtz
- * compiled sun, 15 dec 2019 15:59:26 utc
+ * protobuf.js v6.10.0 (c) 2016, daniel wirtz
+ * compiled wed, 15 jul 2020 23:34:13 utc
  * licensed under the bsd-3-clause license
  * see: https://github.com/dcodeio/protobuf.js for details
  */
@@ -1315,7 +1315,7 @@ BufferReader.prototype.string = function read_string_buffer() {
     var len = this.uint32(); // modifies pos
     return this.buf.utf8Slice
         ? this.buf.utf8Slice(this.pos, this.pos = Math.min(this.pos + len, this.len))
-        : this.buf.toString('utf-8', this.pos, this.pos = Math.min(this.pos + len, this.len))
+        : this.buf.toString("utf-8", this.pos, this.pos = Math.min(this.pos + len, this.len));
 };
 
 /**
@@ -1759,9 +1759,24 @@ util.pool = require(6);
 // utility to work with the low and high bits of a 64 bit value
 util.LongBits = require(14);
 
-// global object reference
-util.global = typeof window !== "undefined" && window
-           || typeof global !== "undefined" && global
+/**
+ * Whether running within node or not.
+ * @memberof util
+ * @type {boolean}
+ */
+util.isNode = Boolean(typeof global !== "undefined"
+                   && global
+                   && global.process
+                   && global.process.versions
+                   && global.process.versions.node);
+
+/**
+ * Global object reference.
+ * @memberof util
+ * @type {Object}
+ */
+util.global = util.isNode && global
+           || typeof window !== "undefined" && window
            || typeof self   !== "undefined" && self
            || this; // eslint-disable-line no-invalid-this
 
@@ -1779,14 +1794,6 @@ util.emptyArray = Object.freeze ? Object.freeze([]) : /* istanbul ignore next */
  * @const
  */
 util.emptyObject = Object.freeze ? Object.freeze({}) : /* istanbul ignore next */ {}; // used on prototypes
-
-/**
- * Whether running within node or not.
- * @memberof util
- * @type {boolean}
- * @const
- */
-util.isNode = Boolean(util.global.process && util.global.process.versions && util.global.process.versions.node);
 
 /**
  * Tests if the specified value is an integer.
@@ -2001,7 +2008,7 @@ function newError(name) {
         if (Error.captureStackTrace) // node
             Error.captureStackTrace(this, CustomError);
         else
-            Object.defineProperty(this, "stack", { value: (new Error()).stack || "" });
+            Object.defineProperty(this, "stack", { value: new Error().stack || "" });
 
         if (properties)
             merge(this, properties);
@@ -2637,6 +2644,7 @@ function BufferWriter() {
 BufferWriter._configure = function () {
     /**
      * Allocates a buffer of the specified size.
+     * @function
      * @param {number} size Buffer size
      * @returns {Buffer} Buffer
      */
@@ -2673,8 +2681,10 @@ BufferWriter.prototype.bytes = function write_bytes_buffer(value) {
 function writeStringBuffer(val, buf, pos) {
     if (val.length < 40) // plain js is faster for short strings (probably due to redundant assertions)
         util.utf8.write(val, buf, pos);
+    else if (buf.utf8Write)
+        buf.utf8Write(val, pos);
     else
-        buf.utf8Write ? buf.utf8Write(val, pos) : buf.write(val, pos);
+        buf.write(val, pos);
 }
 
 /**
