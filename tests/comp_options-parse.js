@@ -117,5 +117,44 @@ tape.test("Options", function (test) {
         test.end();
     });
 
+    test.test(test.name + " - rpc options (Nested)", function (test) {
+        var TestOptionsRpc = root.lookup("TestOptionsRpc");
+        test.equal(TestOptionsRpc.options["(method_rep_msg).value"], 1, "should merge repeated options messages");
+        test.equal(TestOptionsRpc.options["(method_rep_msg).rep_value"], 3, "should parse in any order");
+        test.equal(TestOptionsRpc.options["(method_rep_msg).nested.nested.value"], "x", "should correctly parse nested field options");
+        test.equal(TestOptionsRpc.options["(method_rep_msg).rep_nested.value"], "z", "should take second repeated nested options");
+        test.equal(TestOptionsRpc.options["(method_rep_msg).nested.value"], "w", "should merge nested options");
+
+        test.equal(TestOptionsRpc.options["(method_single_msg).nested.value"], "x", "should correctly parse nested property name");
+        test.equal(TestOptionsRpc.options["(method_single_msg).rep_nested.value"], "y", "should take second repeated nested options");
+        test.equal(TestOptionsRpc.options["(method_single_msg).rep_nested.nested.nested.value"], "y", "should correctly parse several nesting levels");
+
+        var expectedParsedOptions = [
+            {
+                "(method_rep_msg)": {
+                    value: 1,
+                    nested: {nested: {value: "x"}},
+                    rep_nested: [{value: "y"}, {value: "z"}],
+                    rep_value: 3
+                }
+            },
+            {"(method_rep_msg)": {nested: {value: "w"}}},
+            {
+                "(method_single_msg)": {
+                    nested: {value: "x"},
+                    rep_nested: [{value: "x", nested: {nested: {value: "y"}}}, {value: "y"}]
+                }
+            }
+        ];
+
+        test.same(TestOptionsRpc.parsedOptions, expectedParsedOptions, "should correctly parse all nested message options");
+        var jsonTestOptionsRpc = TestOptionsRpc.toJSON();
+        test.same(jsonTestOptionsRpc.parsedOptions, expectedParsedOptions, "should correctly store all nested method options in JSON");
+        var rootFromJson = protobuf.Root.fromJSON(root.toJSON());
+        var TestOptionsRpcFromJson = rootFromJson.lookup("TestOptionsRpc");
+        test.same(TestOptionsRpcFromJson.parsedOptions, expectedParsedOptions, "should correctly read all nested method options from JSON");
+        test.end();
+    });
+
     test.end();
 });
