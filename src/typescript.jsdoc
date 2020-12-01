@@ -13,3 +13,10 @@
  * @type {Object.<string,*>}
  * @tstype { [P in keyof T]?: T[P] }
  */
+
+/**
+ * Type that is convertible to array.
+ * @interface ToArray
+ * @template T
+ * @tstype toArray(): T[];
+ */

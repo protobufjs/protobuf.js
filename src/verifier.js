@@ -148,11 +148,19 @@ function verifier(mtype) {
             ("}");
 
         // repeated fields
-        } else if (field.repeated) { gen
-            ("if(!Array.isArray(%s))", ref)
+        } else if (field.repeated) {
+          var arrayRef = ref;
+          if (field.useToArray()) {
+            arrayRef = "array" + field.id;
+            gen("var %s", arrayRef);
+            gen("if (%s!=null&&%s.toArray) { %s = %s.toArray() } else { %s = %s }",
+                ref, ref, arrayRef, ref, arrayRef, ref);
+          }
+          gen
+            ("if(!Array.isArray(%s))", arrayRef)
                 ("return%j", invalid(field, "array"))
-            ("for(var i=0;i<%s.length;++i){", ref);
-                genVerifyValue(gen, field, i, ref + "[i]")
+            ("for(var i=0;i<%s.length;++i){", arrayRef);
+                genVerifyValue(gen, field, i, arrayRef + "[i]")
             ("}");
 
         // required or present fields
