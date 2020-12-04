@@ -6985,100 +6985,254 @@ $root.jspb = (function() {
             TestMapFieldsNoBinary.decode = function decode(reader, length) {
                 if (!(reader instanceof $Reader))
                     reader = $Reader.create(reader);
-                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.TestMapFieldsNoBinary(), key;
+                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.TestMapFieldsNoBinary(), key, value;
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     switch (tag >>> 3) {
                     case 1:
-                        reader.skip().pos++;
                         if (message.mapStringString === $util.emptyObject)
                             message.mapStringString = {};
-                        key = reader.string();
-                        reader.pos++;
-                        message.mapStringString[key] = reader.string();
+                        var end2 = reader.uint32() + reader.pos;
+                        key = "";
+                        value = "";
+                        while (reader.pos < end2) {
+                            var tag2 = reader.uint32();
+                            switch (tag2 >>> 3) {
+                            case 1:
+                                key = reader.string();
+                                break;
+                            case 2:
+                                value = reader.string();
+                                break;
+                            default:
+                                reader.skipType(tag2 & 7);
+                                break;
+                            }
+                        }
+                        message.mapStringString[key] = value;
                         break;
                     case 2:
-                        reader.skip().pos++;
                         if (message.mapStringInt32 === $util.emptyObject)
                             message.mapStringInt32 = {};
-                        key = reader.string();
-                        reader.pos++;
-                        message.mapStringInt32[key] = reader.int32();
+                        var end2 = reader.uint32() + reader.pos;
+                        key = "";
+                        value = 0;
+                        while (reader.pos < end2) {
+                            var tag2 = reader.uint32();
+                            switch (tag2 >>> 3) {
+                            case 1:
+                                key = reader.string();
+                                break;
+                            case 2:
+                                value = reader.int32();
+                                break;
+                            default:
+                                reader.skipType(tag2 & 7);
+                                break;
+                            }
+                        }
+                        message.mapStringInt32[key] = value;
                         break;
                     case 3:
-                        reader.skip().pos++;
                         if (message.mapStringInt64 === $util.emptyObject)
                             message.mapStringInt64 = {};
-                        key = reader.string();
-                        reader.pos++;
-                        message.mapStringInt64[key] = reader.int64();
+                        var end2 = reader.uint32() + reader.pos;
+                        key = "";
+                        value = 0;
+                        while (reader.pos < end2) {
+                            var tag2 = reader.uint32();
+                            switch (tag2 >>> 3) {
+                            case 1:
+                                key = reader.string();
+                                break;
+                            case 2:
+                                value = reader.int64();
+                                break;
+                            default:
+                                reader.skipType(tag2 & 7);
+                                break;
+                            }
+                        }
+                        message.mapStringInt64[key] = value;
                         break;
                     case 4:
-                        reader.skip().pos++;
                         if (message.mapStringBool === $util.emptyObject)
                             message.mapStringBool = {};
-                        key = reader.string();
-                        reader.pos++;
-                        message.mapStringBool[key] = reader.bool();
+                        var end2 = reader.uint32() + reader.pos;
+                        key = "";
+                        value = false;
+                        while (reader.pos < end2) {
+                            var tag2 = reader.uint32();
+                            switch (tag2 >>> 3) {
+                            case 1:
+                                key = reader.string();
+                                break;
+                            case 2:
+                                value = reader.bool();
+                                break;
+                            default:
+                                reader.skipType(tag2 & 7);
+                                break;
+                            }
+                        }
+                        message.mapStringBool[key] = value;
                         break;
                     case 5:
-                        reader.skip().pos++;
                         if (message.mapStringDouble === $util.emptyObject)
                             message.mapStringDouble = {};
-                        key = reader.string();
-                        reader.pos++;
-                        message.mapStringDouble[key] = reader.double();
+                        var end2 = reader.uint32() + reader.pos;
+                        key = "";
+                        value = 0;
+                        while (reader.pos < end2) {
+                            var tag2 = reader.uint32();
+                            switch (tag2 >>> 3) {
+                            case 1:
+                                key = reader.string();
+                                break;
+                            case 2:
+                                value = reader.double();
+                                break;
+                            default:
+                                reader.skipType(tag2 & 7);
+                                break;
+                            }
+                        }
+                        message.mapStringDouble[key] = value;
                         break;
                     case 6:
-                        reader.skip().pos++;
                         if (message.mapStringEnum === $util.emptyObject)
                             message.mapStringEnum = {};
-                        key = reader.string();
-                        reader.pos++;
-                        message.mapStringEnum[key] = reader.int32();
+                        var end2 = reader.uint32() + reader.pos;
+                        key = "";
+                        value = 0;
+                        while (reader.pos < end2) {
+                            var tag2 = reader.uint32();
+                            switch (tag2 >>> 3) {
+                            case 1:
+                                key = reader.string();
+                                break;
+                            case 2:
+                                value = reader.int32();
+                                break;
+                            default:
+                                reader.skipType(tag2 & 7);
+                                break;
+                            }
+                        }
+                        message.mapStringEnum[key] = value;
                         break;
                     case 7:
-                        reader.skip().pos++;
                         if (message.mapStringMsg === $util.emptyObject)
                             message.mapStringMsg = {};
-                        key = reader.string();
-                        reader.pos++;
-                        message.mapStringMsg[key] = $root.jspb.test.MapValueMessageNoBinary.decode(reader, reader.uint32());
+                        var end2 = reader.uint32() + reader.pos;
+                        key = "";
+                        value = null;
+                        while (reader.pos < end2) {
+                            var tag2 = reader.uint32();
+                            switch (tag2 >>> 3) {
+                            case 1:
+                                key = reader.string();
+                                break;
+                            case 2:
+                                value = $root.jspb.test.MapValueMessageNoBinary.decode(reader, reader.uint32());
+                                break;
+                            default:
+                                reader.skipType(tag2 & 7);
+                                break;
+                            }
+                        }
+                        message.mapStringMsg[key] = value;
                         break;
                     case 8:
-                        reader.skip().pos++;
                         if (message.mapInt32String === $util.emptyObject)
                             message.mapInt32String = {};
-                        key = reader.int32();
-                        reader.pos++;
-                        message.mapInt32String[key] = reader.string();
+                        var end2 = reader.uint32() + reader.pos;
+                        key = 0;
+                        value = "";
+                        while (reader.pos < end2) {
+                            var tag2 = reader.uint32();
+                            switch (tag2 >>> 3) {
+                            case 1:
+                                key = reader.int32();
+                                break;
+                            case 2:
+                                value = reader.string();
+                                break;
+                            default:
+                                reader.skipType(tag2 & 7);
+                                break;
+                            }
+                        }
+                        message.mapInt32String[key] = value;
                         break;
                     case 9:
-                        reader.skip().pos++;
                         if (message.mapInt64String === $util.emptyObject)
                             message.mapInt64String = {};
-                        key = reader.int64();
-                        reader.pos++;
-                        message.mapInt64String[typeof key === "object" ? $util.longToHash(key) : key] = reader.string();
+                        var end2 = reader.uint32() + reader.pos;
+                        key = 0;
+                        value = "";
+                        while (reader.pos < end2) {
+                            var tag2 = reader.uint32();
+                            switch (tag2 >>> 3) {
+                            case 1:
+                                key = reader.int64();
+                                break;
+                            case 2:
+                                value = reader.string();
+                                break;
+                            default:
+                                reader.skipType(tag2 & 7);
+                                break;
+                            }
+                        }
+                        message.mapInt64String[typeof key === "object" ? $util.longToHash(key) : key] = value;
                         break;
                     case 10:
-                        reader.skip().pos++;
                         if (message.mapBoolString === $util.emptyObject)
                             message.mapBoolString = {};
-                        key = reader.bool();
-                        reader.pos++;
-                        message.mapBoolString[key] = reader.string();
+                        var end2 = reader.uint32() + reader.pos;
+                        key = false;
+                        value = "";
+                        while (reader.pos < end2) {
+                            var tag2 = reader.uint32();
+                            switch (tag2 >>> 3) {
+                            case 1:
+                                key = reader.bool();
+                                break;
+                            case 2:
+                                value = reader.string();
+                                break;
+                            default:
+                                reader.skipType(tag2 & 7);
+                                break;
+                            }
+                        }
+                        message.mapBoolString[key] = value;
                         break;
                     case 11:
                         message.testMapFields = $root.jspb.test.TestMapFieldsNoBinary.decode(reader, reader.uint32());
                         break;
                     case 12:
-                        reader.skip().pos++;
                         if (message.mapStringTestmapfields === $util.emptyObject)
                             message.mapStringTestmapfields = {};
-                        key = reader.string();
-                        reader.pos++;
-                        message.mapStringTestmapfields[key] = $root.jspb.test.TestMapFieldsNoBinary.decode(reader, reader.uint32());
+                        var end2 = reader.uint32() + reader.pos;
+                        key = "";
+                        value = null;
+                        while (reader.pos < end2) {
+                            var tag2 = reader.uint32();
+                            switch (tag2 >>> 3) {
+                            case 1:
+                                key = reader.string();
+                                break;
+                            case 2:
+                                value = $root.jspb.test.TestMapFieldsNoBinary.decode(reader, reader.uint32());
+                                break;
+                            default:
+                                reader.skipType(tag2 & 7);
+                                break;
+                            }
+                        }
+                        message.mapStringTestmapfields[key] = value;
                         break;
                     default:
                         reader.skipType(tag & 7);

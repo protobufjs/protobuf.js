@@ -859,8 +859,8 @@ export abstract class ReflectionObject {
     /** Options. */
     public options?: { [k: string]: any };
 
-    /** Options. */
-    public parsedOptions?: { [k: string]: any }[];
+    /** Parsed Options. */
+    public parsedOptions?: { [k: string]: any[] };
 
     /** Unique name within its namespace. */
     public name: string;
@@ -927,10 +927,10 @@ export abstract class ReflectionObject {
      * Sets a parsed option.
      * @param name parsed Option name
      * @param value Option value
-     * @param [propName] dot '.' delimited full path of property within the option to set. if undefined\empty, will add a new option with that value
+     * @param propName dot '.' delimited full path of property within the option to set. if undefined\empty, will add a new option with that value
      * @returns `this`
      */
-    public setParsedOption(name: string, value: any, propName?: string): ReflectionObject;
+    public setParsedOption(name: string, value: any, propName: string): ReflectionObject;
 
     /**
      * Sets multiple options.
@@ -1951,14 +1951,17 @@ export namespace util {
         public length(): number;
     }
 
+    /** Whether running within node or not. */
+    let isNode: boolean;
+
+    /** Global object reference. */
+    let global: object;
+
     /** An immuable empty array. */
     const emptyArray: any[];
 
     /** An immutable empty object. */
     const emptyObject: object;
-
-    /** Whether running within node or not. */
-    const isNode: boolean;
 
     /**
      * Tests if the specified value is an integer.
@@ -2181,7 +2184,7 @@ export namespace util {
      * @param value the value to set
      * @returns Destination object
      */
-    function setProperty(dst: { [k: string]: any }, path: string, value: object);
+    function setProperty(dst: { [k: string]: any }, path: string, value: object): { [k: string]: any };
 
     /** Decorator root (TypeScript). */
     let decorateRoot: Root;

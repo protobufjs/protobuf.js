@@ -1,5 +1,41 @@
 # Changelog
 
+### [6.10.2](https://www.github.com/protobufjs/protobuf.js/compare/v6.10.1...v6.10.2) (2020-11-13)
+
+
+### Bug Fixes
+
+* es6 export enum ([#1446](https://www.github.com/protobufjs/protobuf.js/issues/1446)) ([9f33784](https://www.github.com/protobufjs/protobuf.js/commit/9f33784350b1efc2e774bbfc087cbd2c47828748))
+* make parsedOptions appear in method JSON representation ([#1506](https://www.github.com/protobufjs/protobuf.js/issues/1506)) ([3d29969](https://www.github.com/protobufjs/protobuf.js/commit/3d29969865f2119550d9dc88391846469da9fa7f))
+* utf8 -> utf16 decoding bug on surrogate pairs ([#1486](https://www.github.com/protobufjs/protobuf.js/issues/1486)) ([75172cd](https://www.github.com/protobufjs/protobuf.js/commit/75172cd11be137bbabd2fba7a02b15067695ebad))
+
+### [6.10.1](https://www.github.com/protobufjs/protobuf.js/compare/v6.10.0...v6.10.1) (2020-07-16)
+
+
+### Bug Fixes
+
+* make node detection a bit more forgiving ([#1445](https://www.github.com/protobufjs/protobuf.js/issues/1445)) ([4e75f6d](https://www.github.com/protobufjs/protobuf.js/commit/4e75f6de4a2e49f28c24b59107f262d472b68977))
+
+## [6.10.0](https://www.github.com/protobufjs/protobuf.js/compare/v6.9.0...v6.10.0) (2020-07-13)
+
+
+### Features
+
+* add configurable Root.prototype.fetch ([ad3cffd](https://www.github.com/protobufjs/protobuf.js/commit/ad3cffdc5a54a7c94830674270d3386e1a2b58fc))
+* better comment parse ([#1419](https://www.github.com/protobufjs/protobuf.js/issues/1419)) ([7fd2e18](https://www.github.com/protobufjs/protobuf.js/commit/7fd2e182150c9b6be9ba21e6450b6e4668ad9f82))
+* parsed options ([#1256](https://www.github.com/protobufjs/protobuf.js/issues/1256)) ([7a25398](https://www.github.com/protobufjs/protobuf.js/commit/7a2539843055b6daecb9f369c67a6cf588dbb54c))
+
+
+### Bug Fixes
+
+* allow Windows unc paths to be resolved and normalized ([#1351](https://www.github.com/protobufjs/protobuf.js/issues/1351)) ([cd4aeda](https://www.github.com/protobufjs/protobuf.js/commit/cd4aeda8036f80cfa3b9f1db4096d856b2fd05fb))
+* do not fail if no process ([#1440](https://www.github.com/protobufjs/protobuf.js/issues/1440)) ([f2faa8c](https://www.github.com/protobufjs/protobuf.js/commit/f2faa8c32e918b3b843005f0419608b8e158998d))
+* fix util.global ([#1441](https://www.github.com/protobufjs/protobuf.js/issues/1441)) ([742b8dc](https://www.github.com/protobufjs/protobuf.js/commit/742b8dcbc750f9c2659088cbd88ea61fd11b24a7))
+* google.protobuf.Any type_url fixes ([#1068](https://www.github.com/protobufjs/protobuf.js/issues/1068)) ([192f5f1](https://www.github.com/protobufjs/protobuf.js/commit/192f5f12d071fa534ac625290d4666c839a46a9e))
+* handling of map entries with omitted key or value ([#1348](https://www.github.com/protobufjs/protobuf.js/issues/1348)) ([b950877](https://www.github.com/protobufjs/protobuf.js/commit/b950877c86676399674821fca4cf444f046b5acb))
+* properly parse empty messages in options ([#1429](https://www.github.com/protobufjs/protobuf.js/issues/1429)) ([7fbc79f](https://www.github.com/protobufjs/protobuf.js/commit/7fbc79f11d89b263dafc8f332ccba59a8d181fca))
+* updated isNode check ([#1221](https://www.github.com/protobufjs/protobuf.js/issues/1221)) ([#1363](https://www.github.com/protobufjs/protobuf.js/issues/1363)) ([5564e7b](https://www.github.com/protobufjs/protobuf.js/commit/5564e7b5f07d3eab99762528e8ce88507af5a5a3))
+
 ## [6.9.0](https://www.github.com/protobufjs/protobuf.js/compare/6.8.8...v6.9.0) (2020-04-17)
 
 
