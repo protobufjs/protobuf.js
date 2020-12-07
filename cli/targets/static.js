@@ -546,42 +546,48 @@ function buildType(ref, type) {
     }
 
     if (config.convert) {
-        push("");
-        pushComment([
-            "Creates " + aOrAn(type.name) + " message from a plain object. Also converts values to their respective internal types.",
-            "@function fromObject",
-            "@memberof " + exportName(type),
-            "@static",
-            "@param {Object.<string,*>} " + (config.beautify ? "object" : "d") + " Plain object",
-            "@returns {" + exportName(type) + "} " + type.name
-        ]);
-        buildFunction(type, "fromObject", protobuf.converter.fromObject(type));
+        if (config["from-object"]) {
+            push("");
+            pushComment([
+                "Creates " + aOrAn(type.name) + " message from a plain object. Also converts values to their respective internal types.",
+                "@function fromObject",
+                "@memberof " + exportName(type),
+                "@static",
+                "@param {Object.<string,*>} " + (config.beautify ? "object" : "d") + " Plain object",
+                "@returns {" + exportName(type) + "} " + type.name
+            ]);
+            buildFunction(type, "fromObject", protobuf.converter.fromObject(type));
+        }
 
-        push("");
-        pushComment([
-            "Creates a plain object from " + aOrAn(type.name) + " message. Also converts values to other types if specified.",
-            "@function toObject",
-            "@memberof " + exportName(type),
-            "@static",
-            "@param {" + exportName(type) + "} " + (config.beautify ? "message" : "m") + " " + type.name,
-            "@param {$protobuf.IConversionOptions} [" + (config.beautify ? "options" : "o") + "] Conversion options",
-            "@returns {Object.<string,*>} Plain object"
-        ]);
-        buildFunction(type, "toObject", protobuf.converter.toObject(type));
+        if (config["to-object"]) {
+            push("");
+            pushComment([
+                "Creates a plain object from " + aOrAn(type.name) + " message. Also converts values to other types if specified.",
+                "@function toObject",
+                "@memberof " + exportName(type),
+                "@static",
+                "@param {" + exportName(type) + "} " + (config.beautify ? "message" : "m") + " " + type.name,
+                "@param {$protobuf.IConversionOptions} [" + (config.beautify ? "options" : "o") + "] Conversion options",
+                "@returns {Object.<string,*>} Plain object"
+            ]);
+            buildFunction(type, "toObject", protobuf.converter.toObject(type));
+        }
 
-        push("");
-        pushComment([
-            "Converts this " + type.name + " to JSON.",
-            "@function toJSON",
-            "@memberof " + exportName(type),
-            "@instance",
-            "@returns {Object.<string,*>} JSON object"
-        ]);
-        push(escapeName(type.name) + ".prototype.toJSON = function toJSON() {");
-        ++indent;
-            push("return this.constructor.toObject(this, $protobuf.util.toJSONOptions);");
-        --indent;
-        push("};");
+        if (config["to-json"]) {
+            push("");
+            pushComment([
+                "Converts this " + type.name + " to JSON.",
+                "@function toJSON",
+                "@memberof " + exportName(type),
+                "@instance",
+                "@returns {Object.<string,*>} JSON object"
+            ]);
+            push(escapeName(type.name) + ".prototype.toJSON = function toJSON() {");
+            ++indent;
+                push("return this.constructor.toObject(this, $protobuf.util.toJSONOptions);");
+            --indent;
+            push("};");
+        }
     }
 }
 
