@@ -339,7 +339,7 @@ function toJsType(field, isPropertyType) {
         default:
             if (field.resolve().resolvedType) {
                 if (config.soundTypes && isPropertyType && !(field.resolvedType instanceof protobuf.Enum)) {
-                    type = exportName(field.resolvedType, false) + '|' + exportName(field.resolvedType, true);
+                    type = exportName(field.resolvedType, false) + "|" + exportName(field.resolvedType, true);
                 } else {
                     type = exportName(field.resolvedType, !(field.resolvedType instanceof protobuf.Enum || config.forceMessage));
                 }
