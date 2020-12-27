@@ -33,6 +33,15 @@ var def2 = {
     }
 };
 
+var def3 = {
+    fields: {
+        a: {
+            type: "int64",
+            id: 1
+        }
+    }
+};
+
 tape.test("reflected types", function(test) {
 
     var type = protobuf.Type.fromJSON("Test", def);
@@ -97,6 +106,24 @@ tape.test("reflected types", function(test) {
         type.add(new protobuf.Field("b", 2, "uint32"));
     }, Error, "should throw when trying to add reserved names");
 
+
+    test.end();
+});
+
+tape.test("with no forceNumber option, Longs are used", function(test) {
+
+    var type = protobuf.Type.fromJSON("Test", def3);
+    type.fromObject = protobuf.converter.fromObject(type)({util: protobuf.util});
+    test.same(type.fromObject({a: 1}).a, protobuf.util.Long.fromNumber(1));
+
+    test.end();
+});
+
+tape.test("with forceNumber option, numbers are used", function(test) {
+
+    var type = protobuf.Type.fromJSON("Test", def3);
+    type.fromObject = protobuf.converter.fromObject(type, { forceNumber: true })({util: protobuf.util});
+    test.same(type.fromObject({a: 1}).a, 1);
 
     test.end();
 });

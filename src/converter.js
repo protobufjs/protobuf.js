@@ -9,15 +9,22 @@ var Enum = require("./enum"),
     util = require("./util");
 
 /**
+ * Conversion options as used by {@link fromObject}.
+ * @interface IConverterOptions
+ * @property {boolean} [forceNumber] Enforces the use of `number` for s-/u-/int64 and s-/fixed64 fields.
+ */
+
+/**
  * Generates a partial value fromObject conveter.
  * @param {Codegen} gen Codegen instance
  * @param {Field} field Reflected field
  * @param {number} fieldIndex Field index
  * @param {string} prop Property reference
+ * @param {IConverterOptions} [options] Converter options
  * @returns {Codegen} Codegen instance
  * @ignore
  */
-function genValuePartial_fromObject(gen, field, fieldIndex, prop) {
+function genValuePartial_fromObject(gen, field, fieldIndex, prop, options) {
     /* eslint-disable no-unexpected-multiline, block-scoped-var, no-redeclare */
     if (field.resolvedType) {
         if (field.resolvedType instanceof Enum) { gen
@@ -58,10 +65,15 @@ function genValuePartial_fromObject(gen, field, fieldIndex, prop) {
             case "int64":
             case "sint64":
             case "fixed64":
-            case "sfixed64": gen
-                ("if(util.Long)")
+            case "sfixed64":
+                if (!options || !options.forceNumber) {
+                  gen
+                  ("if(util.Long)")
                     ("(m%s=util.Long.fromValue(d%s)).unsigned=%j", prop, prop, isUnsigned)
-                ("else if(typeof d%s===\"string\")", prop)
+                  ("else ");
+                }
+                gen
+                ("if(typeof d%s===\"string\")", prop)
                     ("m%s=parseInt(d%s,10)", prop, prop)
                 ("else if(typeof d%s===\"number\")", prop)
                     ("m%s=d%s", prop, prop)
@@ -92,9 +104,10 @@ function genValuePartial_fromObject(gen, field, fieldIndex, prop) {
 /**
  * Generates a plain object to runtime message converter specific to the specified message type.
  * @param {Type} mtype Message type
+ * @param {IConverterOptions} [options] Converter options
  * @returns {Codegen} Codegen instance
  */
-converter.fromObject = function fromObject(mtype) {
+converter.fromObject = function fromObject(mtype, options) {
     /* eslint-disable no-unexpected-multiline, block-scoped-var, no-redeclare */
     var fields = mtype.fieldsArray;
     var gen = util.codegen(["d"], mtype.name + "$fromObject")
@@ -115,7 +128,7 @@ converter.fromObject = function fromObject(mtype) {
             ("throw TypeError(%j)", field.fullName + ": object expected")
         ("m%s={}", prop)
         ("for(var ks=Object.keys(d%s),i=0;i<ks.length;++i){", prop);
-            genValuePartial_fromObject(gen, field, /* not sorted */ i, prop + "[ks[i]]")
+            genValuePartial_fromObject(gen, field, /* not sorted */ i, prop + "[ks[i]]", options)
         ("}")
     ("}");
 
@@ -126,7 +139,7 @@ converter.fromObject = function fromObject(mtype) {
             ("throw TypeError(%j)", field.fullName + ": array expected")
         ("m%s=[]", prop)
         ("for(var i=0;i<d%s.length;++i){", prop);
-            genValuePartial_fromObject(gen, field, /* not sorted */ i, prop + "[i]")
+            genValuePartial_fromObject(gen, field, /* not sorted */ i, prop + "[i]", options)
         ("}")
     ("}");
 
@@ -134,7 +147,7 @@ converter.fromObject = function fromObject(mtype) {
         } else {
             if (!(field.resolvedType instanceof Enum)) gen // no need to test for null/undefined if an enum (uses switch)
     ("if(d%s!=null){", prop); // !== undefined && !== null
-        genValuePartial_fromObject(gen, field, /* not sorted */ i, prop);
+        genValuePartial_fromObject(gen, field, /* not sorted */ i, prop, options);
             if (!(field.resolvedType instanceof Enum)) gen
     ("}");
         }
