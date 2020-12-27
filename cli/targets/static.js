@@ -307,7 +307,7 @@ function buildFunction(type, functionName, gen, scope) {
         push("};");
 }
 
-function toJsType(field) {
+function toJsType(field, isPropertyType) {
     var type;
 
     switch (field.type) {
@@ -337,9 +337,13 @@ function toJsType(field) {
             type = "Uint8Array";
             break;
         default:
-            if (field.resolve().resolvedType)
-                type = exportName(field.resolvedType, !(field.resolvedType instanceof protobuf.Enum || config.forceMessage));
-            else
+            if (field.resolve().resolvedType) {
+                if (config.soundTypes && isPropertyType && !(field.resolvedType instanceof protobuf.Enum)) {
+                    type = exportName(field.resolvedType, false) + "|" + exportName(field.resolvedType, true);
+                } else {
+                    type = exportName(field.resolvedType, !(field.resolvedType instanceof protobuf.Enum || config.forceMessage));
+                }
+            } else
                 type = "*"; // should not happen
             break;
     }
@@ -361,7 +365,7 @@ function buildType(ref, type) {
         type.fieldsArray.forEach(function(field) {
             var prop = util.safeProp(field.name); // either .name or ["name"]
             prop = prop.substring(1, prop.charAt(0) === "[" ? prop.length - 1 : prop.length);
-            var jsType = toJsType(field);
+            var jsType = toJsType(field, true);
             if (field.optional)
                 jsType = jsType + "|null";
             typeDef.push("@property {" + jsType + "} " + (field.optional ? "[" + prop + "]" : prop) + " " + (field.comment || type.name + " " + field.name));
@@ -376,7 +380,7 @@ function buildType(ref, type) {
         "Constructs a new " + type.name + ".",
         type.parent instanceof protobuf.Root ? "@exports " + escapeName(type.name) : "@memberof " + exportName(type.parent),
         "@classdesc " + (type.comment || "Represents " + aOrAn(type.name) + "."),
-        config.comments ? "@implements " + escapeName("I" + type.name) : null,
+        config.comments && !config.soundTypes ? "@implements " + escapeName("I" + type.name) : null,
         "@constructor",
         "@param {" + exportName(type, true) + "=} [" + (config.beautify ? "properties" : "p") + "] Properties to set"
     ]);
@@ -389,7 +393,7 @@ function buildType(ref, type) {
         var prop = util.safeProp(field.name);
         if (config.comments) {
             push("");
-            var jsType = toJsType(field);
+            var jsType = toJsType(field, false);
             if (field.optional && !field.map && !field.repeated && field.resolvedType instanceof Type)
                 jsType = jsType + "|null|undefined";
             pushComment([
@@ -456,7 +460,10 @@ function buildType(ref, type) {
         ]);
         push(escapeName(type.name) + ".create = function create(properties) {");
             ++indent;
-            push("return new " + escapeName(type.name) + "(properties);");
+            if (config.soundTypes && config.forceMessage)
+                push("return " + escapeName(type.name) + ".fromObject(properties);");
+            else
+                push("return new " + escapeName(type.name) + "(properties);");
             --indent;
         push("};");
     }
