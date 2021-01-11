@@ -1,0 +1,140 @@
+syntax = "proto3";
+
+import "google/protobuf/descriptor.proto";
+
+package test;
+
+//Simple int32 based options (both single and repeated)
+//for fields and messages
+
+extend google.protobuf.FieldOptions {
+    repeated int32 fo_rep_int = 50000;
+    int32 fo_single_int = 50001;
+}
+
+extend google.protobuf.MessageOptions {
+    repeated int32 mo_rep_int = 50000;
+    int32 mo_single_int = 50001;
+}
+
+message TestFieldOptionsInt {
+    string field1 = 2 [(fo_rep_int) = 1, (fo_rep_int) = 2];
+    string field2 = 1 [(fo_single_int) = 3];
+}
+
+message TestMessageOptionsInt {
+    option (mo_rep_int) = 1;
+    option (mo_rep_int) = 2;
+    option (mo_single_int) = 3;
+}
+
+//Message based options including nested sub messages (both single and repeated)
+//for fields and messages
+
+message Msg {
+    int32 value = 1;
+    repeated int32 rep_value = 2;
+    SubMsg nested = 3;
+    repeated SubMsg rep_nested = 4;
+}
+
+message SubMsg {
+    string value = 1;
+    SubMsg nested = 2;
+}
+
+extend google.protobuf.FieldOptions {
+    repeated Msg fo_rep_msg = 50002;
+    Msg fo_single_msg = 50003;
+}
+
+extend google.protobuf.MessageOptions {
+    repeated Msg mo_rep_msg = 50002;
+    Msg mo_single_msg = 50003;
+}
+
+extend google.protobuf.MethodOptions {
+    repeated Msg method_rep_msg = 50002;
+    Msg method_single_msg = 50003;
+}
+
+message TestFieldOptionsMsg {
+    string field1 = 1 [(fo_rep_msg) = {value: 1 rep_value: 2 rep_value: 3}, (fo_rep_msg) = {value: 4 rep_value: 5 rep_value: 6}];
+    string field2 = 2 [(fo_single_msg).value = 7, (fo_single_msg).rep_value = 8, (fo_single_msg).rep_value = 9];
+}
+
+message TestMessageOptionsMsg {
+    option (mo_rep_msg) = {
+        value: 1
+        rep_value: 2
+        rep_value: 3
+    };
+    option (mo_rep_msg) = {
+        value: 4
+        rep_value: 5
+        rep_value: 6
+    };
+    option (mo_single_msg).value = 7;
+    option (mo_single_msg).rep_value = 8;
+    option (mo_single_msg).rep_value = 9;
+}
+
+message TestFieldOptionsNested {
+    string field1 = 1 [(fo_rep_msg) = {value: 1 nested { nested {value: "x"} } rep_nested { value: "y"} rep_nested { value: "z" } rep_value: 3}, (fo_rep_msg) = { nested { value: "w" }}];
+    string field2 = 2 [(fo_single_msg).nested.value = "x", (fo_single_msg).rep_nested = {value : "x"}, (fo_single_msg).rep_nested = {value : "y"}];
+    string field3 = 3 [(fo_single_msg).nested = {value: "x" nested {nested{value: "y"}}}];
+}
+
+message TestMessageOptionsNested {
+    option (mo_rep_msg) = {
+        value: 1
+        nested {
+            nested {
+                value: "x"
+            }
+        }
+        rep_nested {
+            value: "y"
+        }
+        rep_nested {
+            value: "z"
+        }
+        rep_value: 3
+    };
+    option (mo_rep_msg) = {
+        nested {
+            value: "w"
+        }
+    };
+    option (mo_single_msg).nested.value = "x";
+    option (mo_single_msg).rep_nested = {value : "x" nested {nested{value: "y"}}};
+    option (mo_single_msg).rep_nested = {value : "y"};
+}
+
+service TestOptionsService {
+    rpc TestOptionsRpc(Msg) returns (Msg) {
+        option (method_rep_msg) = {
+            value: 1
+            nested {
+                nested {
+                    value: "x"
+                }
+            }
+            rep_nested {
+                value: "y"
+            }
+            rep_nested {
+                value: "z"
+            }
+            rep_value: 3
+        };
+        option (method_rep_msg) = {
+            nested {
+                value: "w"
+            }
+        };
+        option (method_single_msg).nested.value = "x";
+        option (method_single_msg).rep_nested = {value : "x" nested {nested{value: "y"}}};
+        option (method_single_msg).rep_nested = {value : "y"};
+    }
+}

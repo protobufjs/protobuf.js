@@ -53,6 +53,20 @@ var create_array = typeof Uint8Array !== "undefined"
         throw Error("illegal buffer");
     };
 
+var create = function create() {
+    return util.Buffer
+        ? function create_buffer_setup(buffer) {
+            return (Reader.create = function create_buffer(buffer) {
+                return util.Buffer.isBuffer(buffer)
+                    ? new BufferReader(buffer)
+                    /* istanbul ignore next */
+                    : create_array(buffer);
+            })(buffer);
+        }
+        /* istanbul ignore next */
+        : create_array;
+};
+
 /**
  * Creates a new reader using the specified buffer.
  * @function
@@ -60,17 +74,7 @@ var create_array = typeof Uint8Array !== "undefined"
  * @returns {Reader|BufferReader} A {@link BufferReader} if `buffer` is a Buffer, otherwise a {@link Reader}
  * @throws {Error} If `buffer` is not a valid buffer
  */
-Reader.create = util.Buffer
-    ? function create_buffer_setup(buffer) {
-        return (Reader.create = function create_buffer(buffer) {
-            return util.Buffer.isBuffer(buffer)
-                ? new BufferReader(buffer)
-                /* istanbul ignore next */
-                : create_array(buffer);
-        })(buffer);
-    }
-    /* istanbul ignore next */
-    : create_array;
+Reader.create = create();
 
 Reader.prototype._slice = util.Array.prototype.subarray || /* istanbul ignore next */ util.Array.prototype.slice;
 
@@ -377,6 +381,8 @@ Reader.prototype.skipType = function(wireType) {
 
 Reader._configure = function(BufferReader_) {
     BufferReader = BufferReader_;
+    Reader.create = create();
+    BufferReader._configure();
 
     var fn = util.Long ? "toLong" : /* istanbul ignore next */ "toNumber";
     util.merge(Reader.prototype, {

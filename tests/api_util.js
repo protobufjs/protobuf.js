@@ -70,5 +70,34 @@ tape.test("util", function(test) {
          test.end();
     });
 
+    test.test(test.name + " - setProperty", function(test) {
+        var o = {};
+
+        test.throws(function() {
+            util.setProperty(5, 'prop1', 5);
+        }, TypeError, "dst must be an object");
+
+        test.throws(function () {
+            util.setProperty(o, '', 5);
+        }, TypeError, "path must be specified");
+
+        util.setProperty(o, 'prop1', 5);
+        test.same(o, {prop1: 5}, "should set single property value");
+
+        util.setProperty(o, 'prop1', 6);
+        test.same(o, {prop1: [5, 6]}, "should convert to array if same property is set");
+
+        util.setProperty(o, 'prop.subprop', { subsub: 5});
+        test.same(o, {prop1: [5, 6], prop: {subprop: {subsub: 5}}}, "should handle nested properties properly");
+
+        util.setProperty(o, 'prop.subprop.subsub', 6);
+        test.same(o, {prop1: [5, 6], prop: {subprop: {subsub: [5, 6]}}}, "should convert to array nested property");
+
+        util.setProperty(o, 'prop.subprop', { subsub2: 7});
+        test.same(o, {prop1: [5, 6], prop: {subprop: [{subsub: [5,6]}, {subsub2: 7}]}}, "should convert nested properties to array");
+
+        test.end();
+    });
+
     test.end();
 });

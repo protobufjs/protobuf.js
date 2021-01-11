@@ -24,16 +24,21 @@ function BufferReader(buffer) {
      */
 }
 
-/* istanbul ignore else */
-if (util.Buffer)
-    BufferReader.prototype._slice = util.Buffer.prototype.slice;
+BufferReader._configure = function () {
+    /* istanbul ignore else */
+    if (util.Buffer)
+        BufferReader.prototype._slice = util.Buffer.prototype.slice;
+};
+
 
 /**
  * @override
  */
 BufferReader.prototype.string = function read_string_buffer() {
     var len = this.uint32(); // modifies pos
-    return this.buf.utf8Slice(this.pos, this.pos = Math.min(this.pos + len, this.len));
+    return this.buf.utf8Slice
+        ? this.buf.utf8Slice(this.pos, this.pos = Math.min(this.pos + len, this.len))
+        : this.buf.toString("utf-8", this.pos, this.pos = Math.min(this.pos + len, this.len));
 };
 
 /**
@@ -42,3 +47,5 @@ BufferReader.prototype.string = function read_string_buffer() {
  * @function
  * @returns {Buffer} Value read
  */
+
+BufferReader._configure();

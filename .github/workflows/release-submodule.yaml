@@ -1,0 +1,88 @@
+on:
+  push:
+    branches:
+      - master
+name: release-please-monorepo
+jobs:
+  changeFinder:
+    runs-on: ubuntu-latest
+    outputs:
+      nodePaths: ${{ steps.interrogate.outputs.nodePaths }}
+    steps:
+      - uses: actions/checkout@v2
+      - id: interrogate
+        uses: actions/github-script@v3
+        with:
+            github-token: ${{secrets.GITHUB_TOKEN}}
+            script: |
+              const allowlist = ['cli'];
+              const {execSync} = require('child_process');
+              const [owner, repo] = process.env.GITHUB_REPOSITORY.split('/');
+              const latestRelease = await github.repos.getLatestRelease({
+                owner,
+                repo
+              });
+              console.log(`latest release: ${latestRelease.data.tag_name}`);
+              execSync('git pull --tags');
+              execSync(`git reset --hard ${latestRelease.data.tag_name}`);
+              const status = execSync(`git diff --name-only origin/master`, { encoding: 'utf-8'});
+              console.log(status);
+              const changes = status.split('\n');
+              let nodePaths = new Set();
+              for (const change of changes) {
+                const library = change.split('/')[0];
+                if (allowlist.includes(library)) {
+                  nodePaths.add(library);
+                }
+              }
+              nodePaths = Array.from(nodePaths);
+              console.log(`::set-output name=nodePaths::${JSON.stringify(nodePaths)}`);
+  release-pr:
+    runs-on: ubuntu-latest
+    needs: changeFinder
+    strategy:
+      fail-fast: false
+      matrix:
+        package: ${{fromJson(needs.changeFinder.outputs.nodePaths)}}
+    steps:
+      - uses: GoogleCloudPlatform/release-please-action@v2
+        id: release-please
+        with:
+           path: ${{ matrix.package }}
+           token: ${{ secrets.GITHUB_TOKEN }}
+           release-type: node
+           package-name: ${{ matrix.package }}
+           monorepo-tags: true
+           command: release-pr
+  release-please-release:
+    runs-on: ubuntu-latest
+    needs: changeFinder
+    strategy:
+      fail-fast: false
+      matrix:
+        package: ${{fromJson(needs.changeFinder.outputs.nodePaths)}}
+    steps:
+      - uses: GoogleCloudPlatform/release-please-action@v2
+        id: tag-release
+        with:
+          path: ${{ matrix.package }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          release-type: node
+          monorepo-tags: true
+          package-name: ${{ matrix.package }}
+          command: github-release
+      - uses: actions/checkout@v2
+        if: ${{ steps.tag-release.outputs.release_created }}
+      - uses: actions/setup-node@v1
+        if: ${{ steps.tag-release.outputs.release_created }}
+        with:
+          node-version: 14
+          registry-url: 'https://wombat-dressing-room.appspot.com/'
+      - name: publish
+        if: ${{ steps.tag-release.outputs.release_created }}
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_SUBMODULE_TOKEN}}
+        run: |
+          cd ${{ matrix.package }}
+          npm install
+          npm publish --access=public

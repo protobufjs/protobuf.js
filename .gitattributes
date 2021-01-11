@@ -1,0 +1,2 @@
+bin/* text eol=lf
+dist/* binary
