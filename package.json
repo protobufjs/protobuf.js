@@ -7,7 +7,7 @@
   "license": "BSD-3-Clause",
   "repository": "protobufjs/protobuf.js",
   "bugs": "https://github.com/dcodeIO/protobuf.js/issues",
-  "homepage": "http://dcode.io/protobuf.js",
+  "homepage": "https://protobufjs.github.io/protobuf.js/",
   "keywords": [
     "protobuf",
     "protocol-buffers",
@@ -32,8 +32,8 @@
     "prof": "node bench/prof",
     "test": "npm run test:sources && npm run test:types",
     "test:sources": "tape -r ./lib/tape-adapter tests/*.js tests/node/*.js",
-    "test:types": "tsc tests/comp_typescript.ts --lib es2015 --strictNullChecks --experimentalDecorators --emitDecoratorMetadata && tsc tests/data/test.js.ts --lib es2015 --noEmit --strictNullChecks && tsc tests/data/rpc.ts --lib es2015 --noEmit --strictNullChecks",
-    "make": "npm run lint && npm run build && npm test"
+    "test:types": "tsc tests/comp_typescript.ts --lib es2015 --strictNullChecks --experimentalDecorators --emitDecoratorMetadata && tsc tests/data/test.js.ts --lib es2015 --noEmit --strictNullChecks && tsc tests/data/*.ts --lib es2015 --noEmit --strictNullChecks",
+    "make": "npm run lint:sources && npm run build && npm run lint:types && node ./scripts/gentests.js && npm test"
   },
   "dependencies": {
     "@protobufjs/aspromise": "^1.1.2",
@@ -52,7 +52,7 @@
   },
   "devDependencies": {
     "benchmark": "^2.1.4",
-    "browserify": "^16.5.0",
+    "browserify": "^17.0.0",
     "browserify-wrap": "^1.0.2",
     "bundle-collapser": "^1.3.0",
     "chalk": "^4.0.0",
@@ -64,7 +64,7 @@
     "gulp": "^4.0.2",
     "gulp-header": "^2.0.9",
     "gulp-if": "^3.0.0",
-    "gulp-sourcemaps": "^2.6.5",
+    "gulp-sourcemaps": "^3.0.0",
     "gulp-uglify": "^3.0.2",
     "jaguarjs-jsdoc": "github:dcodeIO/jaguarjs-jsdoc",
     "jsdoc": "^3.6.3",
@@ -72,7 +72,7 @@
     "nyc": "^15.0.0",
     "reflect-metadata": "^0.1.13",
     "tape": "^5.0.0",
-    "tslint": "^5.20.1",
+    "tslint": "^6.0.0",
     "typescript": "^3.7.5",
     "vinyl-buffer": "^1.0.1",
     "vinyl-fs": "^3.0.3",

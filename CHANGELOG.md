@@ -1,5 +1,14 @@
 # Changelog
 
+### [6.10.2](https://www.github.com/protobufjs/protobuf.js/compare/v6.10.1...v6.10.2) (2020-11-13)
+
+
+### Bug Fixes
+
+* es6 export enum ([#1446](https://www.github.com/protobufjs/protobuf.js/issues/1446)) ([9f33784](https://www.github.com/protobufjs/protobuf.js/commit/9f33784350b1efc2e774bbfc087cbd2c47828748))
+* make parsedOptions appear in method JSON representation ([#1506](https://www.github.com/protobufjs/protobuf.js/issues/1506)) ([3d29969](https://www.github.com/protobufjs/protobuf.js/commit/3d29969865f2119550d9dc88391846469da9fa7f))
+* utf8 -> utf16 decoding bug on surrogate pairs ([#1486](https://www.github.com/protobufjs/protobuf.js/issues/1486)) ([75172cd](https://www.github.com/protobufjs/protobuf.js/commit/75172cd11be137bbabd2fba7a02b15067695ebad))
+
 ### [6.10.1](https://www.github.com/protobufjs/protobuf.js/compare/v6.10.0...v6.10.1) (2020-07-16)
 
 
