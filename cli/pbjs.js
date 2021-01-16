@@ -1,15 +1,12 @@
 "use strict";
 var path     = require("path"),
     fs       = require("fs"),
-    pkg      = require("./package.json"),
-    util     = require("./util");
-
-util.setup();
-
-var protobuf = require(util.pathToProtobufJs),
     minimist = require("minimist"),
     chalk    = require("chalk"),
-    glob     = require("glob");
+    pkg      = require("./package.json"),
+    util     = require("./util"),
+    glob     = require("glob"),
+    protobuf = require("protobufjs");
 
 var targets  = util.requireAll("./targets");
 
