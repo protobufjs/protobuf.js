@@ -44,7 +44,7 @@ util.isNode = Boolean(typeof global !== "undefined"
 util.global = util.isNode && global
            || typeof window !== "undefined" && window
            || typeof self   !== "undefined" && self
-           || this; // eslint-disable-line no-invalid-this
+           || this || global; // eslint-disable-line no-invalid-this
 
 /**
  * An immuable empty array.
