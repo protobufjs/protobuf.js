@@ -1,6 +1,6 @@
 {
   "name": "@protobufjs/inquire",
-  "description": "Requires a module only if available and hides the require call from bundlers.",
+  "description": "Requires a module only if available.",
   "version": "1.1.0",
   "author": "Daniel Wirtz <dcode+protobufjs@dcode.io>",
   "repository": {

@@ -16,6 +16,14 @@
   ],
   "main": "index.js",
   "types": "index.d.ts",
+  "browser": {
+    "long": false,
+    "buffer": false
+  },
+  "bin": {
+    "pbjs": "bin/pbjs",
+    "pbts": "bin/pbts"
+  },
   "scripts": {
     "bench": "node bench",
     "build": "npm run build:bundle && npm run build:types",
