@@ -4,11 +4,7 @@
     "inner" : {
         "int32" : 20161110,
         "innerInner" : {
-            "long" : {
-                "low": 1051,
-                "high": 151234,
-                "unsigned": false
-            },
+            "long" : "34857897489505",
             "enum" : 1,
             "sint32": -42
         },

@@ -53,7 +53,7 @@ function genVerifyValue(gen, field, fieldIndex, ref) {
             case "fixed64":
             case "sfixed64": gen
                 ("if(!util.isInteger(%s)&&!(%s&&util.isInteger(%s.low)&&util.isInteger(%s.high)))", ref, ref, ref, ref)
-                    ("return%j", invalid(field, "integer|Long"));
+                    ("return%j", invalid(field, "integer|bigint"));
                 break;
             case "float":
             case "double": gen
@@ -103,7 +103,7 @@ function genVerifyKey(gen, field, ref) {
         case "fixed64":
         case "sfixed64": gen
             ("if(!util.key64Re.test(%s))", ref) // see comment above: x is ok, d is not
-                ("return%j", invalid(field, "integer|Long key"));
+                ("return%j", invalid(field, "integer|bigint key"));
             break;
         case "bool": gen
             ("if(!util.key2Re.test(%s))", ref)

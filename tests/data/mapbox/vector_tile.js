@@ -250,9 +250,9 @@ $root.vector_tile = (function() {
              * @property {string|null} [stringValue] Value stringValue
              * @property {number|null} [floatValue] Value floatValue
              * @property {number|null} [doubleValue] Value doubleValue
-             * @property {number|Long|null} [intValue] Value intValue
-             * @property {number|Long|null} [uintValue] Value uintValue
-             * @property {number|Long|null} [sintValue] Value sintValue
+             * @property {bigint|null} [intValue] Value intValue
+             * @property {bigint|null} [uintValue] Value uintValue
+             * @property {bigint|null} [sintValue] Value sintValue
              * @property {boolean|null} [boolValue] Value boolValue
              */
 
@@ -297,27 +297,27 @@ $root.vector_tile = (function() {
 
             /**
              * Value intValue.
-             * @member {number|Long} intValue
+             * @member {bigint} intValue
              * @memberof vector_tile.Tile.Value
              * @instance
              */
-            Value.prototype.intValue = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+            Value.prototype.intValue =  0n;
 
             /**
              * Value uintValue.
-             * @member {number|Long} uintValue
+             * @member {bigint} uintValue
              * @memberof vector_tile.Tile.Value
              * @instance
              */
-            Value.prototype.uintValue = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+            Value.prototype.uintValue =  0n;
 
             /**
              * Value sintValue.
-             * @member {number|Long} sintValue
+             * @member {bigint} sintValue
              * @memberof vector_tile.Tile.Value
              * @instance
              */
-            Value.prototype.sintValue = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+            Value.prototype.sintValue =  0n;
 
             /**
              * Value boolValue.
@@ -466,13 +466,13 @@ $root.vector_tile = (function() {
                         return "doubleValue: number expected";
                 if (message.intValue != null && message.hasOwnProperty("intValue"))
                     if (!$util.isInteger(message.intValue) && !(message.intValue && $util.isInteger(message.intValue.low) && $util.isInteger(message.intValue.high)))
-                        return "intValue: integer|Long expected";
+                        return "intValue: integer|bigint expected";
                 if (message.uintValue != null && message.hasOwnProperty("uintValue"))
                     if (!$util.isInteger(message.uintValue) && !(message.uintValue && $util.isInteger(message.uintValue.low) && $util.isInteger(message.uintValue.high)))
-                        return "uintValue: integer|Long expected";
+                        return "uintValue: integer|bigint expected";
                 if (message.sintValue != null && message.hasOwnProperty("sintValue"))
                     if (!$util.isInteger(message.sintValue) && !(message.sintValue && $util.isInteger(message.sintValue.low) && $util.isInteger(message.sintValue.high)))
-                        return "sintValue: integer|Long expected";
+                        return "sintValue: integer|bigint expected";
                 if (message.boolValue != null && message.hasOwnProperty("boolValue"))
                     if (typeof message.boolValue !== "boolean")
                         return "boolValue: boolean expected";
@@ -498,32 +498,20 @@ $root.vector_tile = (function() {
                 if (object.doubleValue != null)
                     message.doubleValue = Number(object.doubleValue);
                 if (object.intValue != null)
-                    if ($util.Long)
-                        (message.intValue = $util.Long.fromValue(object.intValue)).unsigned = false;
-                    else if (typeof object.intValue === "string")
-                        message.intValue = parseInt(object.intValue, 10);
-                    else if (typeof object.intValue === "number")
-                        message.intValue = object.intValue;
+                    if (typeof object.intValue === "string" || typeof object.intValue === "number" || typeof object.intValue === "bigint")
+                        message.intValue = BigInt(object.intValue);
                     else if (typeof object.intValue === "object")
-                        message.intValue = new $util.LongBits(object.intValue.low >>> 0, object.intValue.high >>> 0).toNumber();
+                        message.intValue = new $util.LongBits(object.intValue.low >>> 0, object.intValue.high >>> 0).toBigInt(false);
                 if (object.uintValue != null)
-                    if ($util.Long)
-                        (message.uintValue = $util.Long.fromValue(object.uintValue)).unsigned = true;
-                    else if (typeof object.uintValue === "string")
-                        message.uintValue = parseInt(object.uintValue, 10);
-                    else if (typeof object.uintValue === "number")
-                        message.uintValue = object.uintValue;
+                    if (typeof object.uintValue === "string" || typeof object.uintValue === "number" || typeof object.uintValue === "bigint")
+                        message.uintValue = BigInt(object.uintValue);
                     else if (typeof object.uintValue === "object")
-                        message.uintValue = new $util.LongBits(object.uintValue.low >>> 0, object.uintValue.high >>> 0).toNumber(true);
+                        message.uintValue = new $util.LongBits(object.uintValue.low >>> 0, object.uintValue.high >>> 0).toBigInt(true);
                 if (object.sintValue != null)
-                    if ($util.Long)
-                        (message.sintValue = $util.Long.fromValue(object.sintValue)).unsigned = false;
-                    else if (typeof object.sintValue === "string")
-                        message.sintValue = parseInt(object.sintValue, 10);
-                    else if (typeof object.sintValue === "number")
-                        message.sintValue = object.sintValue;
+                    if (typeof object.sintValue === "string" || typeof object.sintValue === "number" || typeof object.sintValue === "bigint")
+                        message.sintValue = BigInt(object.sintValue);
                     else if (typeof object.sintValue === "object")
-                        message.sintValue = new $util.LongBits(object.sintValue.low >>> 0, object.sintValue.high >>> 0).toNumber();
+                        message.sintValue = new $util.LongBits(object.sintValue.low >>> 0, object.sintValue.high >>> 0).toBigInt(false);
                 if (object.boolValue != null)
                     message.boolValue = Boolean(object.boolValue);
                 return message;
@@ -546,21 +534,12 @@ $root.vector_tile = (function() {
                     object.stringValue = "";
                     object.floatValue = 0;
                     object.doubleValue = 0;
-                    if ($util.Long) {
-                        var long = new $util.Long(0, 0, false);
-                        object.intValue = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-                    } else
-                        object.intValue = options.longs === String ? "0" : 0;
-                    if ($util.Long) {
-                        var long = new $util.Long(0, 0, true);
-                        object.uintValue = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-                    } else
-                        object.uintValue = options.longs === String ? "0" : 0;
-                    if ($util.Long) {
-                        var long = new $util.Long(0, 0, false);
-                        object.sintValue = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-                    } else
-                        object.sintValue = options.longs === String ? "0" : 0;
+                    var long = new $util.LongBits(NaN, NaN, undefined);
+                    object.intValue = options.longs === String ? long.toBigInt().toString() : options.longs === BigInt ? long.toBigInt().toString() : long;
+                    var long = new $util.LongBits(NaN, NaN, undefined);
+                    object.uintValue = options.longs === String ? long.toBigInt().toString() : options.longs === BigInt ? long.toBigInt().toString() : long;
+                    var long = new $util.LongBits(NaN, NaN, undefined);
+                    object.sintValue = options.longs === String ? long.toBigInt().toString() : options.longs === BigInt ? long.toBigInt().toString() : long;
                     object.boolValue = false;
                 }
                 if (message.stringValue != null && message.hasOwnProperty("stringValue"))
@@ -570,20 +549,11 @@ $root.vector_tile = (function() {
                 if (message.doubleValue != null && message.hasOwnProperty("doubleValue"))
                     object.doubleValue = options.json && !isFinite(message.doubleValue) ? String(message.doubleValue) : message.doubleValue;
                 if (message.intValue != null && message.hasOwnProperty("intValue"))
-                    if (typeof message.intValue === "number")
-                        object.intValue = options.longs === String ? String(message.intValue) : message.intValue;
-                    else
-                        object.intValue = options.longs === String ? $util.Long.prototype.toString.call(message.intValue) : options.longs === Number ? new $util.LongBits(message.intValue.low >>> 0, message.intValue.high >>> 0).toNumber() : message.intValue;
+                    object.intValue = options.longs === String ? $util.LongBits.from(message.intValue).toBigInt(false).toString() : options.longs === BigInt ? $util.LongBits.from(message.intValue).toBigInt() : message.intValue;
                 if (message.uintValue != null && message.hasOwnProperty("uintValue"))
-                    if (typeof message.uintValue === "number")
-                        object.uintValue = options.longs === String ? String(message.uintValue) : message.uintValue;
-                    else
-                        object.uintValue = options.longs === String ? $util.Long.prototype.toString.call(message.uintValue) : options.longs === Number ? new $util.LongBits(message.uintValue.low >>> 0, message.uintValue.high >>> 0).toNumber(true) : message.uintValue;
+                    object.uintValue = options.longs === String ? $util.LongBits.from(message.uintValue).toBigInt(true).toString() : options.longs === BigInt ? $util.LongBits.from(message.uintValue).toBigInt(true) : message.uintValue;
                 if (message.sintValue != null && message.hasOwnProperty("sintValue"))
-                    if (typeof message.sintValue === "number")
-                        object.sintValue = options.longs === String ? String(message.sintValue) : message.sintValue;
-                    else
-                        object.sintValue = options.longs === String ? $util.Long.prototype.toString.call(message.sintValue) : options.longs === Number ? new $util.LongBits(message.sintValue.low >>> 0, message.sintValue.high >>> 0).toNumber() : message.sintValue;
+                    object.sintValue = options.longs === String ? $util.LongBits.from(message.sintValue).toBigInt(false).toString() : options.longs === BigInt ? $util.LongBits.from(message.sintValue).toBigInt() : message.sintValue;
                 if (message.boolValue != null && message.hasOwnProperty("boolValue"))
                     object.boolValue = message.boolValue;
                 return object;
@@ -609,7 +579,7 @@ $root.vector_tile = (function() {
              * Properties of a Feature.
              * @memberof vector_tile.Tile
              * @interface IFeature
-             * @property {number|Long|null} [id] Feature id
+             * @property {bigint|null} [id] Feature id
              * @property {Array.<number>|null} [tags] Feature tags
              * @property {vector_tile.Tile.GeomType|null} [type] Feature type
              * @property {Array.<number>|null} [geometry] Feature geometry
@@ -634,11 +604,11 @@ $root.vector_tile = (function() {
 
             /**
              * Feature id.
-             * @member {number|Long} id
+             * @member {bigint} id
              * @memberof vector_tile.Tile.Feature
              * @instance
              */
-            Feature.prototype.id = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+            Feature.prototype.id =  0n;
 
             /**
              * Feature tags.
@@ -801,7 +771,7 @@ $root.vector_tile = (function() {
                     return "object expected";
                 if (message.id != null && message.hasOwnProperty("id"))
                     if (!$util.isInteger(message.id) && !(message.id && $util.isInteger(message.id.low) && $util.isInteger(message.id.high)))
-                        return "id: integer|Long expected";
+                        return "id: integer|bigint expected";
                 if (message.tags != null && message.hasOwnProperty("tags")) {
                     if (!Array.isArray(message.tags))
                         return "tags: array expected";
@@ -842,14 +812,10 @@ $root.vector_tile = (function() {
                     return object;
                 var message = new $root.vector_tile.Tile.Feature();
                 if (object.id != null)
-                    if ($util.Long)
-                        (message.id = $util.Long.fromValue(object.id)).unsigned = true;
-                    else if (typeof object.id === "string")
-                        message.id = parseInt(object.id, 10);
-                    else if (typeof object.id === "number")
-                        message.id = object.id;
+                    if (typeof object.id === "string" || typeof object.id === "number" || typeof object.id === "bigint")
+                        message.id = BigInt(object.id);
                     else if (typeof object.id === "object")
-                        message.id = new $util.LongBits(object.id.low >>> 0, object.id.high >>> 0).toNumber(true);
+                        message.id = new $util.LongBits(object.id.low >>> 0, object.id.high >>> 0).toBigInt(true);
                 if (object.tags) {
                     if (!Array.isArray(object.tags))
                         throw TypeError(".vector_tile.Tile.Feature.tags: array expected");
@@ -903,18 +869,12 @@ $root.vector_tile = (function() {
                     object.geometry = [];
                 }
                 if (options.defaults) {
-                    if ($util.Long) {
-                        var long = new $util.Long(0, 0, true);
-                        object.id = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-                    } else
-                        object.id = options.longs === String ? "0" : 0;
+                    var long = new $util.LongBits(NaN, NaN, undefined);
+                    object.id = options.longs === String ? long.toBigInt().toString() : options.longs === BigInt ? long.toBigInt().toString() : long;
                     object.type = options.enums === String ? "UNKNOWN" : 0;
                 }
                 if (message.id != null && message.hasOwnProperty("id"))
-                    if (typeof message.id === "number")
-                        object.id = options.longs === String ? String(message.id) : message.id;
-                    else
-                        object.id = options.longs === String ? $util.Long.prototype.toString.call(message.id) : options.longs === Number ? new $util.LongBits(message.id.low >>> 0, message.id.high >>> 0).toNumber(true) : message.id;
+                    object.id = options.longs === String ? $util.LongBits.from(message.id).toBigInt(true).toString() : options.longs === BigInt ? $util.LongBits.from(message.id).toBigInt(true) : message.id;
                 if (message.tags && message.tags.length) {
                     object.tags = [];
                     for (var j = 0; j < message.tags.length; ++j)

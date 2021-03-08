@@ -13,6 +13,8 @@ tape.test("bench.proto and bench.json", function(test) {
 
         var data = require("../bench/data/bench.json");
 
+        data.inner.innerInner.long = BigInt(data.inner.innerInner.long);
+        
         test.equal(Test.verify(data), null, "should verify our test data");
         test.equal(Test.ctor.verify(data), null, "should verify our test data (static)");
 

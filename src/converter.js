@@ -59,14 +59,10 @@ function genValuePartial_fromObject(gen, field, fieldIndex, prop) {
             case "sint64":
             case "fixed64":
             case "sfixed64": gen
-                ("if(util.Long)")
-                    ("(m%s=util.Long.fromValue(d%s)).unsigned=%j", prop, prop, isUnsigned)
-                ("else if(typeof d%s===\"string\")", prop)
-                    ("m%s=parseInt(d%s,10)", prop, prop)
-                ("else if(typeof d%s===\"number\")", prop)
-                    ("m%s=d%s", prop, prop)
+                ("if(typeof d%s===\"string\"||typeof d%s===\"number\"||typeof d%s===\"bigint\")", prop, prop, prop)
+                    ("m%s=BigInt(d%s)", prop, prop)
                 ("else if(typeof d%s===\"object\")", prop)
-                    ("m%s=new util.LongBits(d%s.low>>>0,d%s.high>>>0).toNumber(%s)", prop, prop, prop, isUnsigned ? "true" : "");
+                    ("m%s=new util.LongBits(d%s.low>>>0,d%s.high>>>0).toBigInt(%s)", prop, prop, prop, isUnsigned);
                 break;
             case "bytes": gen
                 ("if(typeof d%s===\"string\")", prop)
@@ -111,8 +107,6 @@ converter.fromObject = function fromObject(mtype) {
         // Map fields
         if (field.map) { gen
     ("if(d%s){", prop)
-        ("if(typeof d%s!==\"object\")", prop)
-            ("throw TypeError(%j)", field.fullName + ": object expected")
         ("m%s={}", prop)
         ("for(var ks=Object.keys(d%s),i=0;i<ks.length;++i){", prop);
             genValuePartial_fromObject(gen, field, /* not sorted */ i, prop + "[ks[i]]")
@@ -138,8 +132,10 @@ converter.fromObject = function fromObject(mtype) {
             if (!(field.resolvedType instanceof Enum)) gen
     ("}");
         }
-    } return gen
-    ("return m");
+    }
+
+    const result = gen("return m");
+    return result;
     /* eslint-enable no-unexpected-multiline, block-scoped-var, no-redeclare */
 };
 
@@ -173,10 +169,7 @@ function genValuePartial_toObject(gen, field, fieldIndex, prop) {
             case "sint64":
             case "fixed64":
             case "sfixed64": gen
-            ("if(typeof m%s===\"number\")", prop)
-                ("d%s=o.longs===String?String(m%s):m%s", prop, prop, prop)
-            ("else") // Long-like
-                ("d%s=o.longs===String?util.Long.prototype.toString.call(m%s):o.longs===Number?new util.LongBits(m%s.low>>>0,m%s.high>>>0).toNumber(%s):m%s", prop, prop, prop, prop, isUnsigned ? "true": "", prop);
+                ("d%s=o.longs===String ? util.LongBits.from(m%s).toBigInt(%s).toString(): o.longs===BigInt ? util.LongBits.from(m%s).toBigInt(%s) : m%s", prop, prop, isUnsigned, prop, isUnsigned ? "true": "", prop);
                 break;
             case "bytes": gen
             ("d%s=o.bytes===String?util.base64.encode(m%s,0,m%s.length):o.bytes===Array?Array.prototype.slice.call(m%s):m%s", prop, prop, prop, prop, prop);
@@ -196,6 +189,7 @@ function genValuePartial_toObject(gen, field, fieldIndex, prop) {
  * @returns {Codegen} Codegen instance
  */
 converter.toObject = function toObject(mtype) {
+
     /* eslint-disable no-unexpected-multiline, block-scoped-var, no-redeclare */
     var fields = mtype.fieldsArray.slice().sort(util.compareFieldsById);
     if (!fields.length)
@@ -239,11 +233,8 @@ converter.toObject = function toObject(mtype) {
             if (field.resolvedType instanceof Enum) gen
         ("d%s=o.enums===String?%j:%j", prop, field.resolvedType.valuesById[field.typeDefault], field.typeDefault);
             else if (field.long) gen
-        ("if(util.Long){")
-            ("var n=new util.Long(%i,%i,%j)", field.typeDefault.low, field.typeDefault.high, field.typeDefault.unsigned)
-            ("d%s=o.longs===String?n.toString():o.longs===Number?n.toNumber():n", prop)
-        ("}else")
-            ("d%s=o.longs===String?%j:%i", prop, field.typeDefault.toString(), field.typeDefault.toNumber());
+            ("var n=new util.LongBits(%i,%i,%j)", field.typeDefault.low, field.typeDefault.high, field.typeDefault.unsigned)
+            ("d%s=o.longs===String?n.toBigInt().toString():o.longs===BigInt?n.toBigInt().toString():n", prop);
             else if (field.bytes) {
                 var arrayDefault = "[" + Array.prototype.slice.call(field.typeDefault).join(",") + "]";
                 gen
@@ -287,7 +278,8 @@ converter.toObject = function toObject(mtype) {
         gen
     ("}");
     }
-    return gen
-    ("return d");
+    const result = gen
+        ("return d");
+    return result;
     /* eslint-enable no-unexpected-multiline, block-scoped-var, no-redeclare */
 };

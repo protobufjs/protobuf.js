@@ -154,7 +154,7 @@ function Field(name, id, type, rule, extend, options, comment) {
      * Whether this field's value should be treated as a long.
      * @type {boolean}
      */
-    this.long = util.Long ? types.long[type] !== undefined : /* istanbul ignore next */ false;
+    this.long = types.long[type] !== undefined;
 
     /**
      * Whether this field's value is a buffer.
@@ -285,14 +285,7 @@ Field.prototype.resolve = function resolve() {
     }
 
     // convert to internal data type if necesssary
-    if (this.long) {
-        this.typeDefault = util.Long.fromNumber(this.typeDefault, this.type.charAt(0) === "u");
-
-        /* istanbul ignore else */
-        if (Object.freeze)
-            Object.freeze(this.typeDefault); // long instances are meant to be immutable anyway (i.e. use small int cache that even requires it)
-
-    } else if (this.bytes && typeof this.typeDefault === "string") {
+    if (this.bytes && typeof this.typeDefault === "string") {
         var buf;
         if (util.base64.test(this.typeDefault))
             util.base64.decode(this.typeDefault, buf = util.newBuffer(util.base64.length(this.typeDefault)), 0);
@@ -334,7 +327,7 @@ Field.prototype.resolve = function resolve() {
  * @param {"optional"|"required"|"repeated"} [fieldRule="optional"] Field rule
  * @param {T} [defaultValue] Default value
  * @returns {FieldDecorator} Decorator function
- * @template T extends number | number[] | Long | Long[] | string | string[] | boolean | boolean[] | Uint8Array | Uint8Array[] | Buffer | Buffer[]
+ * @template T extends number | number[] | bigint | bigint[] | string | string[] | boolean | boolean[] | Uint8Array | Uint8Array[] | Buffer | Buffer[]
  */
 Field.d = function decorateField(fieldId, fieldType, fieldRule, defaultValue) {
 

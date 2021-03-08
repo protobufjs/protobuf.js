@@ -32,9 +32,9 @@ export namespace vector_tile {
             stringValue?: (string|null);
             floatValue?: (number|null);
             doubleValue?: (number|null);
-            intValue?: (number|Long|null);
-            uintValue?: (number|Long|null);
-            sintValue?: (number|Long|null);
+            intValue?: (bigint|null);
+            uintValue?: (bigint|null);
+            sintValue?: (bigint|null);
             boolValue?: (boolean|null);
         }
 
@@ -43,9 +43,9 @@ export namespace vector_tile {
             public stringValue: string;
             public floatValue: number;
             public doubleValue: number;
-            public intValue: (number|Long);
-            public uintValue: (number|Long);
-            public sintValue: (number|Long);
+            public intValue: bigint;
+            public uintValue: bigint;
+            public sintValue: bigint;
             public boolValue: boolean;
             public static create(properties?: vector_tile.Tile.IValue): vector_tile.Tile.Value;
             public static encode(message: vector_tile.Tile.IValue, writer?: $protobuf.Writer): $protobuf.Writer;
@@ -59,7 +59,7 @@ export namespace vector_tile {
         }
 
         interface IFeature {
-            id?: (number|Long|null);
+            id?: (bigint|null);
             tags?: (number[]|null);
             type?: (vector_tile.Tile.GeomType|null);
             geometry?: (number[]|null);
@@ -67,7 +67,7 @@ export namespace vector_tile {
 
         class Feature implements IFeature {
             constructor(properties?: vector_tile.Tile.IFeature);
-            public id: (number|Long);
+            public id: bigint;
             public tags: number[];
             public type: vector_tile.Tile.GeomType;
             public geometry: number[];

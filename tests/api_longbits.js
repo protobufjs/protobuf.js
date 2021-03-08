@@ -2,7 +2,7 @@ var tape = require("tape");
 
 var protobuf = require("..");
 var LongBits = protobuf.util.LongBits;
-var Long = protobuf.util.Long;
+var Long = require('long');
 
 tape.test("longbits", function(test) {
 
@@ -10,21 +10,15 @@ tape.test("longbits", function(test) {
         var zero = LongBits.zero;
         test.equal(zero.lo, 0, "should have low bits of 0");
         test.equal(zero.hi, 0, "should have high bits of 0");
-        test.equal(zero.toNumber(), 0, "should convert to number 0 (signed)");
-        test.equal(zero.toNumber(true), 0, "should convert to number 0 (unsigned)");
+        test.equal(zero.toBigInt(), 0n, "should convert to number 0 (signed)");
+        test.equal(zero.toBigInt(true), 0n, "should convert to number 0 (unsigned)");
         test.equal(zero.zzEncode(), zero, "should return itself when zig-zag encoded");
         test.equal(zero.length(), 1, "should return a byte length of 1");
         test.equal(LongBits.fromNumber(0), zero, "should be returned by fromNumber(0)");
         test.equal(LongBits.from(0), zero, "should be returned by from(0)");
-        test.equal(LongBits.from(Long.ZERO), zero, "should be returned by from(Long.ZERO)");
-        test.same(zero.toLong(), Long.ZERO, "should equal Long.ZERO (signed)");
-        test.same(zero.toLong(true), Long.UZERO, "should equal Long.UZERO (unsigned)");
-        test.equal(zero.toHash(), "\0\0\0\0\0\0\0\0", "should convert to a binary hash of 8x0");
-        test.equal(protobuf.util.longToHash(0), "\0\0\0\0\0\0\0\0", "should convert to a binary hash of 8x0 (number 0 through util.longToHash)");
-        test.equal(LongBits.fromHash("\0\0\0\0\0\0\0\0"), zero, "should be returned for a binary hash of 8x0");
-        protobuf.util.Long = null;
-        test.equal(protobuf.util.longFromHash("\0\0\0\0\0\0\0\0"), 0, "should be returned for a binary hash of 8x0 (number 0 through util.longFromHash)");
-        protobuf.util.Long = Long;
+        test.equal(LongBits.from(0n), zero, "should be returned by from(0n)");
+        test.same(zero.toBigInt(), 0n, "should equal 0n (signed)");
+        test.same(zero.toBigInt(true), 0n, "should equal 0n (unsigned)");
         test.end();
     });
 
@@ -56,27 +50,28 @@ tape.test("longbits", function(test) {
         { low: 0, high: -1, unsigned: false, length: 10 }
     ]
     .forEach(function(value) {
-        var long = Long.fromValue(value);
-        test.equal(long.unsigned, value.unsigned, long + " should be signed/unsigned");
         var bits = LongBits.from(value);
-        test.equal(bits.lo, long.low >>> 0, long + " should have equal low bits");
-        test.equal(bits.hi, long.high >>> 0, long + " should have equal high bits");
-        test.equal(bits.length(), value.length, long + " should return an equal length");
-        test.equal(bits.toNumber(value.unsigned), long.toNumber(), long + " should convert to an equal number");
-        var number = long.toNumber(value.unsigned);
-        if (number <= 9007199254740991 && number >= -9007199254740991)
-            test.same(LongBits.fromNumber(number), bits, long + " should convert hence and forth equally (where safe)");
-        test.same(bits.toLong(value.unsigned), long, long + " should convert to an equal Long");
-        var comp = String.fromCharCode.apply(String, long.toBytesLE());
-        test.equal(bits.toHash(), comp, long + " should convert to an equal hash");
-        test.equal(protobuf.util.longToHash(long), comp, long + " should convert to an equal hash through util.longToHash");
-        test.same(LongBits.fromHash(comp), bits, long + " should convert back to an equal value");
-        test.same(protobuf.util.longFromHash(comp, long.unsigned), long, long + " should convert back to an equal value through util.longFromHash");
+        var bigint = bits.toBigInt();
+        test.equal(bits.lo, value.low, bigint + " should have equal low bits");
+        test.equal(bits.hi, value.high, bigint + " should have equal high bits");
+        test.equal(bits.length(), value.length, bigint + " should return an equal length");
+        
+        console.log(value);
+        var long = BigInt(Long.fromValue(value).toString());
+        test.equal(bits.toBigInt(value.unsigned), long, long + " should convert to an equal number, unsigned="+value.unsigned);
+
+        if (bigint < (1 >> 32) && bigint >= -(1 >> 31)) 
+            test.same(LongBits.fromNumber(Number(bigint)), bits, bigint + " should convert hence and forth equally (where safe)");
+        
+        test.same(bits.toBigInt(), bigint, bigint + " should convert to an equal Long");
     });
 
     var num = -4294967296 * 4294967296;
     var bits = LongBits.fromNumber(num);
-    test.same(bits, { lo: 0, hi: 0 }, "lo and hi should properly overflow when converting " + num);
+    test.equal(bits.lo, 0, "lo and hi should properly overflow when converting " + num);
+    test.equal(bits.hi, 0, "lo and hi should properly overflow when converting " + num);
 
     test.end();
 });
+
+// LongBits { lo: 4294967295, hi: 7 } { low: -1, high: 7, unsigned: false, length: 5 } 34359738367n

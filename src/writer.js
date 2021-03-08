@@ -226,7 +226,7 @@ Writer.prototype.uint32 = function write_uint32(value) {
  */
 Writer.prototype.int32 = function write_int32(value) {
     return value < 0
-        ? this._push(writeVarint64, 10, LongBits.fromNumber(value)) // 10 bytes per spec
+        ? this._push(writeVarint64, 10, LongBits.from(value)) // 10 bytes per spec
         : this.uint32(value);
 };
 
@@ -254,7 +254,7 @@ function writeVarint64(val, buf, pos) {
 
 /**
  * Writes an unsigned 64 bit value as a varint.
- * @param {Long|number|string} value Value to write
+ * @param {bigint|number|string} value Value to write
  * @returns {Writer} `this`
  * @throws {TypeError} If `value` is a string and no long library is present.
  */
@@ -266,7 +266,7 @@ Writer.prototype.uint64 = function write_uint64(value) {
 /**
  * Writes a signed 64 bit value as a varint.
  * @function
- * @param {Long|number|string} value Value to write
+ * @param {bigint|number|string} value Value to write
  * @returns {Writer} `this`
  * @throws {TypeError} If `value` is a string and no long library is present.
  */
@@ -274,7 +274,7 @@ Writer.prototype.int64 = Writer.prototype.uint64;
 
 /**
  * Writes a signed 64 bit value as a varint, zig-zag encoded.
- * @param {Long|number|string} value Value to write
+ * @param {bigint|number|string} value Value to write
  * @returns {Writer} `this`
  * @throws {TypeError} If `value` is a string and no long library is present.
  */
@@ -318,7 +318,7 @@ Writer.prototype.sfixed32 = Writer.prototype.fixed32;
 
 /**
  * Writes an unsigned 64 bit value as fixed 64 bits.
- * @param {Long|number|string} value Value to write
+ * @param {bigint|number|string} value Value to write
  * @returns {Writer} `this`
  * @throws {TypeError} If `value` is a string and no long library is present.
  */
@@ -330,7 +330,7 @@ Writer.prototype.fixed64 = function write_fixed64(value) {
 /**
  * Writes a signed 64 bit value as fixed 64 bits.
  * @function
- * @param {Long|number|string} value Value to write
+ * @param {bigint|number|string} value Value to write
  * @returns {Writer} `this`
  * @throws {TypeError} If `value` is a string and no long library is present.
  */

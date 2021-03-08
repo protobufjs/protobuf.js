@@ -37,8 +37,6 @@ function decoder(mtype) {
 
         // Map fields
         if (field.map) { gen
-                ("if(%s===util.emptyObject)", ref)
-                    ("%s={}", ref)
                 ("var c2 = r.uint32()+r.pos");
 
             if (types.defaults[field.keyType] !== undefined) gen
@@ -70,11 +68,11 @@ function decoder(mtype) {
                             ("break")
                     ("}")
                 ("}");
-
-            if (types.long[field.keyType] !== undefined) gen
-                ("%s[typeof k===\"object\"?util.longToHash(k):k]=value", ref);
-            else gen
-                ("%s[k]=value", ref);
+            gen
+                ("if(! %s )", ref)
+                    ("%s={}", ref);
+            gen
+                ("%s[String(k)] = value", ref);
 
         // Repeated fields
         } else if (field.repeated) { gen
@@ -122,7 +120,9 @@ function decoder(mtype) {
         ("throw util.ProtocolError(%j,{instance:m})", missing(rfield));
     }
 
-    return gen
-    ("return m");
+    const result = gen
+        ("return m");
+
+    return result;
     /* eslint-enable no-unexpected-multiline */
 }

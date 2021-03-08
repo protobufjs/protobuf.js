@@ -20,7 +20,7 @@ tape.test("converters", function(test) {
                 test.equal(obj.stringVal, "", "should set stringVal");
                 test.same(obj.stringRepeated, [], "should set stringRepeated");
 
-                test.same(obj.uint64Val, { low: 0, high: 0, unsigned: true }, "should set uint64Val");
+                test.same(obj.uint64Val, { lo: 0, hi: 0 }, "should set uint64Val");
                 test.same(obj.uint64Repeated, [], "should set uint64Repeated");
 
                 test.same(obj.bytesVal, protobuf.util.newBuffer(0), "should set bytesVal");
@@ -98,27 +98,27 @@ tape.test("converters", function(test) {
                 var buf = protobuf.util.newBuffer(3);
                 buf[0] = buf[1] = buf[2] = 49; // "111"
                 var msg = Message.create({
-                    uint64Val: protobuf.util.Long.fromNumber(1),
+                    uint64Val: '1',
                     uint64Repeated: [2, 3],
                     bytesVal: buf,
                     bytesRepeated: [buf, buf],
                     enumVal: 2,
                     enumRepeated: [1, 2],
                     int64Map: {
-                        a: protobuf.util.Long.fromNumber(2),
-                        b: protobuf.util.Long.fromNumber(3)
+                        a: 2n,
+                        b: 3n
                     }
                 });
 
-                var msgLongsToNumber = Message.toObject(msg, { longs: Number }),
+                var msgLongsToNumber = Message.toObject(msg, { longs: BigInt }),
                     msgLongsToString = Message.toObject(msg, { longs: String });
 
-                test.same(Message.ctor.toObject(msg, { longs: Number}), msgLongsToNumber, "should convert the same using the static and the instance method");
+                test.same(Message.ctor.toObject(msg, { longs: BigInt}), msgLongsToNumber, "should convert the same using the static and the instance method");
                 test.same(Message.ctor.toObject(msg, { longs: String}), msgLongsToString, "should convert the same using the static and the instance method");
 
-                test.equal(msgLongsToNumber.uint64Val, 1, "longs to numbers");
+                test.equal(msgLongsToNumber.uint64Val, 1n, "longs to numbers");
                 test.equal(msgLongsToString.uint64Val, "1", "longs to strings");
-                test.same(msgLongsToNumber.int64Map, { a: 2, b: 3}, "long map values to numbers");
+                test.same(msgLongsToNumber.int64Map, { a: 2n, b: 3n}, "long map values to numbers");
                 test.same(msgLongsToString.int64Map, { a: "2", b: "3"}, "long map values to strings");
 
                 test.equal(Object.prototype.toString.call(Message.toObject(msg, { bytes: Array }).bytesVal), "[object Array]", "bytes to arrays");
@@ -171,13 +171,13 @@ tape.test("converters", function(test) {
             var buf = protobuf.util.newBuffer(3);
             buf[0] = buf[1] = buf[2] = 49; // "111"
 
-            test.same(msg.uint64Val, { low: 1, high: 0, unsigned: true }, "should set uint64Val from a number");
-            test.same(msg.uint64Repeated, [ { low: 1, high: 0, unsigned: true}, { low: 2, high: 0, unsigned: true } ], "should set uint64Repeated from a number and a string");
+            test.same(msg.uint64Val, 1n, "should set uint64Val from a number");
+            test.same(msg.uint64Repeated, [ 1n, 2n ], "should set uint64Repeated from a number and a string");
             test.same(msg.bytesVal, buf, "should set bytesVal from a base64 string");
             test.same(msg.bytesRepeated, [ buf, buf ], "should set bytesRepeated from a base64 string and a plain array");
             test.equal(msg.enumVal, 1, "should set enumVal from a string");
             test.same(msg.enumRepeated, [ 2, 2 ], "should set enumRepeated from a number and a string");
-            test.same(msg.int64Map, { a: { low: 2, high: 0, unsigned: false }, b: { low: 3, high: 0, unsigned: false } }, "should set int64Map from a number and a string");
+            test.same(msg.int64Map, { a: 2n, b: 3n }, "should set int64Map from a number and a string");
 
             test.end();
         });

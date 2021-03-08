@@ -120,7 +120,7 @@ $root.Test = (function() {
                             this[keys[i]] = properties[keys[i]];
             }
 
-            InnerInner.prototype.long = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+            InnerInner.prototype.long =  0n;
             InnerInner.prototype["enum"] = 0;
             InnerInner.prototype.sint32 = 0;
 

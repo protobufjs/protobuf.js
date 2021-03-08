@@ -177,7 +177,7 @@ function beautifyCode(code) {
         output: { beautify: true }
     }).code;
     // Properly beautify
-    var ast = espree.parse(code);
+    var ast = espree.parse(code, { ecmaVersion: 2020 });
     estraverse.replace(ast, {
         enter: function(node, parent) {
             // rename short vars
@@ -223,7 +223,7 @@ function buildFunction(type, functionName, gen, scope) {
     var code = gen.toString(functionName)
         .replace(/((?!\.)types\[\d+])(\.values)/g, "$1"); // enums: use types[N] instead of reflected types[N].values
 
-    var ast = espree.parse(code);
+    var ast = espree.parse(code, { ecmaVersion: 2020 });
     /* eslint-disable no-extra-parens */
     estraverse.replace(ast, {
         enter: function(node, parent) {
@@ -325,7 +325,7 @@ function toJsType(field) {
         case "sint64":
         case "fixed64":
         case "sfixed64":
-            type = config.forceLong ? "Long" : config.forceNumber ? "number" : "number|Long";
+            type = "bigint";
             break;
         case "bool":
             type = "boolean";
@@ -407,11 +407,7 @@ function buildType(ref, type) {
         else if (field.map)
             push(escapeName(type.name) + ".prototype" + prop + " = $util.emptyObject;"); // overwritten in constructor
         else if (field.long)
-            push(escapeName(type.name) + ".prototype" + prop + " = $util.Long ? $util.Long.fromBits("
-                    + JSON.stringify(field.typeDefault.low) + ","
-                    + JSON.stringify(field.typeDefault.high) + ","
-                    + JSON.stringify(field.typeDefault.unsigned)
-                + ") : " + field.typeDefault.toNumber(field.type.charAt(0) === "u") + ";");
+            push(escapeName(type.name) + ".prototype" + prop + " =  " + field.typeDefault + "n;");
         else if (field.bytes) {
             push(escapeName(type.name) + ".prototype" + prop + " = $util.newBuffer(" + JSON.stringify(Array.prototype.slice.call(field.typeDefault)) + ");");
         } else

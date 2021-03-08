@@ -20,13 +20,13 @@ export namespace common {
 
     /** Properties of a google.protobuf.Duration message. */
     interface IDuration {
-        seconds?: (number|Long);
+        seconds?: (number|bigint);
         nanos?: number;
     }
 
     /** Properties of a google.protobuf.Timestamp message. */
     interface ITimestamp {
-        seconds?: (number|Long);
+        seconds?: (number|bigint);
         nanos?: number;
     }
 
@@ -67,12 +67,12 @@ export namespace common {
 
     /** Properties of a google.protobuf.Int64Value message. */
     interface IInt64Value {
-        value?: (number|Long);
+        value?: (number|bigint);
     }
 
     /** Properties of a google.protobuf.UInt64Value message. */
     interface IUInt64Value {
-        value?: (number|Long);
+        value?: (number|bigint);
     }
 
     /** Properties of a google.protobuf.Int32Value message. */
@@ -273,7 +273,7 @@ export class Field extends FieldBase {
      * @param [defaultValue] Default value
      * @returns Decorator function
      */
-    public static d<T extends number | number[] | Long | Long[] | string | string[] | boolean | boolean[] | Uint8Array | Uint8Array[] | Buffer | Buffer[]>(fieldId: number, fieldType: ("double"|"float"|"int32"|"uint32"|"sint32"|"fixed32"|"sfixed32"|"int64"|"uint64"|"sint64"|"fixed64"|"sfixed64"|"string"|"bool"|"bytes"|object), fieldRule?: ("optional"|"required"|"repeated"), defaultValue?: T): FieldDecorator;
+    public static d<T extends number | number[] | bigint | bigint[] | string | string[] | boolean | boolean[] | Uint8Array | Uint8Array[] | Buffer | Buffer[]>(fieldId: number, fieldType: ("double"|"float"|"int32"|"uint32"|"sint32"|"fixed32"|"sfixed32"|"int64"|"uint64"|"sint64"|"fixed64"|"sfixed64"|"string"|"bool"|"bytes"|object), fieldRule?: ("optional"|"required"|"repeated"), defaultValue?: T): FieldDecorator;
 
     /**
      * Field decorator (TypeScript).
@@ -491,7 +491,7 @@ export class MapField extends FieldBase {
      * @param fieldValueType Field value type
      * @returns Decorator function
      */
-    public static d<T extends { [key: string]: number | Long | string | boolean | Uint8Array | Buffer | number[] | Message<{}> }>(fieldId: number, fieldKeyType: ("int32"|"uint32"|"sint32"|"fixed32"|"sfixed32"|"int64"|"uint64"|"sint64"|"fixed64"|"sfixed64"|"bool"|"string"), fieldValueType: ("double"|"float"|"int32"|"uint32"|"sint32"|"fixed32"|"sfixed32"|"int64"|"uint64"|"sint64"|"fixed64"|"sfixed64"|"bool"|"string"|"bytes"|object|Constructor<{}>)): FieldDecorator;
+    public static d<T extends { [key: string]: number | bigint | string | boolean | Uint8Array | Buffer | number[] | Message<{}> }>(fieldId: number, fieldKeyType: ("int32"|"uint32"|"sint32"|"fixed32"|"sfixed32"|"int64"|"uint64"|"sint64"|"fixed64"|"sfixed64"|"bool"|"string"), fieldValueType: ("double"|"float"|"int32"|"uint32"|"sint32"|"fixed32"|"sfixed32"|"int64"|"uint64"|"sint64"|"fixed64"|"sfixed64"|"bool"|"string"|"bytes"|object|Constructor<{}>)): FieldDecorator;
 }
 
 /** Map field descriptor. */
@@ -602,8 +602,9 @@ export class Method extends ReflectionObject {
      * @param [responseStream] Whether the response is streamed
      * @param [options] Declared options
      * @param [comment] The comment for this method
+     * @param [parsedOptions] Declared options, properly parsed into an object
      */
-    constructor(name: string, type: (string|undefined), requestType: string, responseType: string, requestStream?: (boolean|{ [k: string]: any }), responseStream?: (boolean|{ [k: string]: any }), options?: { [k: string]: any }, comment?: string);
+    constructor(name: string, type: (string|undefined), requestType: string, responseType: string, requestStream?: (boolean|{ [k: string]: any }), responseStream?: (boolean|{ [k: string]: any }), options?: { [k: string]: any }, comment?: string, parsedOptions?: { [k: string]: any });
 
     /** Method type. */
     public type: string;
@@ -628,6 +629,9 @@ export class Method extends ReflectionObject {
 
     /** Comment for this method */
     public comment: (string|null);
+
+    /** Options properly parsed into an object */
+    public parsedOptions: any;
 
     /**
      * Constructs a method from a method descriptor.
@@ -666,6 +670,12 @@ export interface IMethod {
 
     /** Method options */
     options?: { [k: string]: any };
+
+    /** Method comments */
+    comment: string;
+
+    /** Method options properly parsed into an object */
+    parsedOptions?: { [k: string]: any };
 }
 
 /** Reflected namespace. */
@@ -1124,24 +1134,6 @@ export class Reader {
     public sint32(): number;
 
     /**
-     * Reads a varint as a signed 64 bit value.
-     * @returns Value read
-     */
-    public int64(): Long;
-
-    /**
-     * Reads a varint as an unsigned 64 bit value.
-     * @returns Value read
-     */
-    public uint64(): Long;
-
-    /**
-     * Reads a zig-zag encoded varint as a signed 64 bit value.
-     * @returns Value read
-     */
-    public sint64(): Long;
-
-    /**
      * Reads a varint as a boolean.
      * @returns Value read
      */
@@ -1160,16 +1152,34 @@ export class Reader {
     public sfixed32(): number;
 
     /**
+     * Reads a varint as a signed 64 bit value.
+     * @returns Value read
+     */
+    public int64(): bigint;
+
+    /**
+     * Reads a varint as an unsigned 64 bit value.
+     * @returns Value read
+     */
+    public uint64(): bigint;
+
+    /**
+     * Reads a zig-zag encoded varint as a signed 64 bit value.
+     * @returns Value read
+     */
+    public sint64(): bigint;
+
+    /**
      * Reads fixed 64 bits.
      * @returns Value read
      */
-    public fixed64(): Long;
+    public fixed64(): bigint;
 
     /**
      * Reads zig-zag encoded fixed 64 bits.
      * @returns Value read
      */
-    public sfixed64(): Long;
+    public sfixed64(): bigint;
 
     /**
      * Reads a float (32 bit) as a number.
@@ -1697,8 +1707,8 @@ export interface IConversionOptions {
 
     /**
      * Long conversion type.
-     * Valid values are `String` and `Number` (the global types).
-     * Defaults to copy the present value, which is a possibly unsafe number without and a {@link Long} with a long library.
+     * Valid values are `String` and `BigInt` (the global types).
+     * Defaults to copy the present value.
      */
     longs?: Function;
 
@@ -1839,22 +1849,6 @@ export interface Buffer extends Uint8Array {
 }
 
 /**
- * Any compatible Long instance.
- * This is a minimal stand-alone definition of a Long instance. The actual type is that exported by long.js.
- */
-export interface Long {
-
-    /** Low bits */
-    low: number;
-
-    /** High bits */
-    high: number;
-
-    /** Whether unsigned or not */
-    unsigned: boolean;
-}
-
-/**
  * A OneOf getter as returned by {@link util.oneOfGetter}.
  * @returns Set field name, if any
  */
@@ -1888,8 +1882,12 @@ export namespace util {
         /** Zero bits. */
         public static zero: util.LongBits;
 
-        /** Zero hash. */
-        public static zeroHash: string;
+        /**
+         * Constructs new long bits from the specified number.
+         * @param value Value
+         * @returns Instance
+         */
+        public static fromBigInt(value: number): util.LongBits;
 
         /**
          * Constructs new long bits from the specified number.
@@ -1903,34 +1901,14 @@ export namespace util {
          * @param value Value
          * @returns Instance
          */
-        public static from(value: (Long|number|string)): util.LongBits;
+        public static from(value: (bigint|number|string|object)): util.LongBits;
 
         /**
          * Converts this long bits to a possibly unsafe JavaScript number.
          * @param [unsigned=false] Whether unsigned or not
          * @returns Possibly unsafe number
          */
-        public toNumber(unsigned?: boolean): number;
-
-        /**
-         * Converts this long bits to a long.
-         * @param [unsigned=false] Whether unsigned or not
-         * @returns Long
-         */
-        public toLong(unsigned?: boolean): Long;
-
-        /**
-         * Constructs new long bits from the specified 8 characters long hash.
-         * @param hash Hash
-         * @returns Bits
-         */
-        public static fromHash(hash: string): util.LongBits;
-
-        /**
-         * Converts this long bits to a 8 characters long hash.
-         * @returns Hash
-         */
-        public toHash(): string;
+        public toBigInt(unsigned?: boolean): number;
 
         /**
          * Zig-zag encodes this long bits.
@@ -2014,9 +1992,6 @@ export namespace util {
     /** Array implementation used in the browser. `Uint8Array` if supported, otherwise `Array`. */
     let Array: Constructor<Uint8Array>;
 
-    /** Long.js's Long class if available. */
-    let Long: Constructor<Long>;
-
     /** Regular expression used to verify 2 bit (`bool`) map keys. */
     const key2Re: RegExp;
 
@@ -2025,21 +2000,6 @@ export namespace util {
 
     /** Regular expression used to verify 64 bit (`int64` etc.) map keys. */
     const key64Re: RegExp;
-
-    /**
-     * Converts a number or long to an 8 characters long hash string.
-     * @param value Value to convert
-     * @returns Hash
-     */
-    function longToHash(value: (Long|number)): string;
-
-    /**
-     * Converts an 8 characters long hash string to a long or number.
-     * @param hash Hash
-     * @param [unsigned=false] Whether unsigned or not
-     * @returns Original value
-     */
-    function longFromHash(hash: string, unsigned?: boolean): (Long|number);
 
     /**
      * Merges the properties of the source object into the destination object.
@@ -2545,7 +2505,7 @@ export class Writer {
      * @returns `this`
      * @throws {TypeError} If `value` is a string and no long library is present.
      */
-    public uint64(value: (Long|number|string)): Writer;
+    public uint64(value: (bigint|number|string)): Writer;
 
     /**
      * Writes a signed 64 bit value as a varint.
@@ -2553,7 +2513,7 @@ export class Writer {
      * @returns `this`
      * @throws {TypeError} If `value` is a string and no long library is present.
      */
-    public int64(value: (Long|number|string)): Writer;
+    public int64(value: (bigint|number|string)): Writer;
 
     /**
      * Writes a signed 64 bit value as a varint, zig-zag encoded.
@@ -2561,7 +2521,7 @@ export class Writer {
      * @returns `this`
      * @throws {TypeError} If `value` is a string and no long library is present.
      */
-    public sint64(value: (Long|number|string)): Writer;
+    public sint64(value: (bigint|number|string)): Writer;
 
     /**
      * Writes a boolish value as a varint.
@@ -2590,7 +2550,7 @@ export class Writer {
      * @returns `this`
      * @throws {TypeError} If `value` is a string and no long library is present.
      */
-    public fixed64(value: (Long|number|string)): Writer;
+    public fixed64(value: (bigint|number|string)): Writer;
 
     /**
      * Writes a signed 64 bit value as fixed 64 bits.
@@ -2598,7 +2558,7 @@ export class Writer {
      * @returns `this`
      * @throws {TypeError} If `value` is a string and no long library is present.
      */
-    public sfixed64(value: (Long|number|string)): Writer;
+    public sfixed64(value: (bigint|number|string)): Writer;
 
     /**
      * Writes a float (32 bit).

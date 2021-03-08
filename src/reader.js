@@ -176,27 +176,6 @@ function readLongVarint() {
 /* eslint-enable no-invalid-this */
 
 /**
- * Reads a varint as a signed 64 bit value.
- * @name Reader#int64
- * @function
- * @returns {Long} Value read
- */
-
-/**
- * Reads a varint as an unsigned 64 bit value.
- * @name Reader#uint64
- * @function
- * @returns {Long} Value read
- */
-
-/**
- * Reads a zig-zag encoded varint as a signed 64 bit value.
- * @name Reader#sint64
- * @function
- * @returns {Long} Value read
- */
-
-/**
  * Reads a varint as a boolean.
  * @returns {boolean} Value read
  */
@@ -250,19 +229,57 @@ function readFixed64(/* this: Reader */) {
 
 /* eslint-enable no-invalid-this */
 
+
+/**
+ * Reads a varint as a signed 64 bit value.
+ * @name Reader#int64
+ * @function
+ * @returns {bigint} Value read
+ */
+Reader.prototype.int64 = function() {
+    return readLongVarint.call(this).toBigInt();
+};
+
+
+/**
+ * Reads a varint as an unsigned 64 bit value.
+ * @name Reader#uint64
+ * @function
+ * @returns {bigint} Value read
+ */
+Reader.prototype.uint64 = function() {
+    return readLongVarint.call(this).toBigInt();
+};
+
+/**
+ * Reads a zig-zag encoded varint as a signed 64 bit value.
+ * @name Reader#sint64
+ * @function
+ * @returns {bigint} Value read
+ */
+Reader.prototype.sint64 = function() {
+    return readLongVarint.call(this).zzDecode().toBigInt();
+};
+
 /**
  * Reads fixed 64 bits.
  * @name Reader#fixed64
  * @function
- * @returns {Long} Value read
+ * @returns {bigint} Value read
  */
+Reader.prototype.fixed64 = function() {
+    return readFixed64.call(this).toBigInt();
+};
 
 /**
  * Reads zig-zag encoded fixed 64 bits.
  * @name Reader#sfixed64
  * @function
- * @returns {Long} Value read
+ * @returns {bigint} Value read
  */
+Reader.prototype.sfixed64 = function() {
+    return readFixed64.call(this).toBigInt();
+};
 
 /**
  * Reads a float (32 bit) as a number.
@@ -383,29 +400,4 @@ Reader._configure = function(BufferReader_) {
     BufferReader = BufferReader_;
     Reader.create = create();
     BufferReader._configure();
-
-    var fn = util.Long ? "toLong" : /* istanbul ignore next */ "toNumber";
-    util.merge(Reader.prototype, {
-
-        int64: function read_int64() {
-            return readLongVarint.call(this)[fn](false);
-        },
-
-        uint64: function read_uint64() {
-            return readLongVarint.call(this)[fn](true);
-        },
-
-        sint64: function read_sint64() {
-            return readLongVarint.call(this).zzDecode()[fn](false);
-        },
-
-        fixed64: function read_fixed64() {
-            return readFixed64.call(this)[fn](true);
-        },
-
-        sfixed64: function read_sfixed64() {
-            return readFixed64.call(this)[fn](false);
-        }
-
-    });
 };

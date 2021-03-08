@@ -94,7 +94,9 @@ function encoder(mtype) {
         }
     }
 
-    return gen
-    ("return w");
+    const result = gen
+        ("return w");
+
+    return result;
     /* eslint-enable no-unexpected-multiline, block-scoped-var, no-redeclare */
 }

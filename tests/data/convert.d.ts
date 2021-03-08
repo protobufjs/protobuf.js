@@ -2,26 +2,26 @@ import * as $protobuf from "../..";
 export interface IMessage {
     stringVal?: (string|null);
     stringRepeated?: (string[]|null);
-    uint64Val?: (number|Long|null);
-    uint64Repeated?: ((number|Long)[]|null);
+    uint64Val?: (bigint|null);
+    uint64Repeated?: (bigint[]|null);
     bytesVal?: (Uint8Array|null);
     bytesRepeated?: (Uint8Array[]|null);
     enumVal?: (Message.SomeEnum|null);
     enumRepeated?: (Message.SomeEnum[]|null);
-    int64Map?: ({ [k: string]: (number|Long) }|null);
+    int64Map?: ({ [k: string]: bigint }|null);
 }
 
 export class Message implements IMessage {
     constructor(properties?: IMessage);
     public stringVal: string;
     public stringRepeated: string[];
-    public uint64Val: (number|Long);
-    public uint64Repeated: (number|Long)[];
+    public uint64Val: bigint;
+    public uint64Repeated: bigint[];
     public bytesVal: Uint8Array;
     public bytesRepeated: Uint8Array[];
     public enumVal: Message.SomeEnum;
     public enumRepeated: Message.SomeEnum[];
-    public int64Map: { [k: string]: (number|Long) };
+    public int64Map: { [k: string]: bigint };
     public static create(properties?: IMessage): Message;
     public static encode(message: IMessage, writer?: $protobuf.Writer): $protobuf.Writer;
     public static encodeDelimited(message: IMessage, writer?: $protobuf.Writer): $protobuf.Writer;

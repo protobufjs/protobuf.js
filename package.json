@@ -46,11 +46,10 @@
     "@protobufjs/path": "^1.1.2",
     "@protobufjs/pool": "^1.1.0",
     "@protobufjs/utf8": "^1.1.0",
-    "@types/long": "^4.0.1",
-    "@types/node": "^13.7.0",
-    "long": "^4.0.0"
+    "@types/node": "^13.7.0"
   },
   "devDependencies": {
+    "@types/long": "^4.0.1",
     "benchmark": "^2.1.4",
     "browserify": "^17.0.0",
     "browserify-wrap": "^1.0.2",
@@ -68,6 +67,7 @@
     "gulp-uglify": "^3.0.2",
     "jaguarjs-jsdoc": "github:dcodeIO/jaguarjs-jsdoc",
     "jsdoc": "^3.6.3",
+    "long": "^4.0.0",
     "minimist": "^1.2.0",
     "nyc": "^15.0.0",
     "reflect-metadata": "^0.1.13",

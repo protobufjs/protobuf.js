@@ -3264,7 +3264,7 @@ $root.jspb = (function() {
              * @interface IDefaultValues
              * @property {string|null} [stringField] DefaultValues stringField
              * @property {boolean|null} [boolField] DefaultValues boolField
-             * @property {number|Long|null} [intField] DefaultValues intField
+             * @property {bigint|null} [intField] DefaultValues intField
              * @property {jspb.test.DefaultValues.Enum|null} [enumField] DefaultValues enumField
              * @property {string|null} [emptyField] DefaultValues emptyField
              * @property {Uint8Array|null} [bytesField] DefaultValues bytesField
@@ -3303,11 +3303,11 @@ $root.jspb = (function() {
 
             /**
              * DefaultValues intField.
-             * @member {number|Long} intField
+             * @member {bigint} intField
              * @memberof jspb.test.DefaultValues
              * @instance
              */
-            DefaultValues.prototype.intField = $util.Long ? $util.Long.fromBits(11,0,false) : 11;
+            DefaultValues.prototype.intField =  11n;
 
             /**
              * DefaultValues enumField.
@@ -3464,7 +3464,7 @@ $root.jspb = (function() {
                         return "boolField: boolean expected";
                 if (message.intField != null && message.hasOwnProperty("intField"))
                     if (!$util.isInteger(message.intField) && !(message.intField && $util.isInteger(message.intField.low) && $util.isInteger(message.intField.high)))
-                        return "intField: integer|Long expected";
+                        return "intField: integer|bigint expected";
                 if (message.enumField != null && message.hasOwnProperty("enumField"))
                     switch (message.enumField) {
                     default:
@@ -3499,14 +3499,10 @@ $root.jspb = (function() {
                 if (object.boolField != null)
                     message.boolField = Boolean(object.boolField);
                 if (object.intField != null)
-                    if ($util.Long)
-                        (message.intField = $util.Long.fromValue(object.intField)).unsigned = false;
-                    else if (typeof object.intField === "string")
-                        message.intField = parseInt(object.intField, 10);
-                    else if (typeof object.intField === "number")
-                        message.intField = object.intField;
+                    if (typeof object.intField === "string" || typeof object.intField === "number" || typeof object.intField === "bigint")
+                        message.intField = BigInt(object.intField);
                     else if (typeof object.intField === "object")
-                        message.intField = new $util.LongBits(object.intField.low >>> 0, object.intField.high >>> 0).toNumber();
+                        message.intField = new $util.LongBits(object.intField.low >>> 0, object.intField.high >>> 0).toBigInt(false);
                 switch (object.enumField) {
                 case "E1":
                 case 13:
@@ -3543,11 +3539,8 @@ $root.jspb = (function() {
                 if (options.defaults) {
                     object.stringField = "default<>abc";
                     object.boolField = true;
-                    if ($util.Long) {
-                        var long = new $util.Long(11, 0, false);
-                        object.intField = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-                    } else
-                        object.intField = options.longs === String ? "11" : 11;
+                    var long = new $util.LongBits(NaN, NaN, undefined);
+                    object.intField = options.longs === String ? long.toBigInt().toString() : options.longs === BigInt ? long.toBigInt().toString() : long;
                     object.enumField = options.enums === String ? "E1" : 13;
                     object.emptyField = "";
                     if (options.bytes === String)
@@ -3567,10 +3560,7 @@ $root.jspb = (function() {
                 if (message.boolField != null && message.hasOwnProperty("boolField"))
                     object.boolField = message.boolField;
                 if (message.intField != null && message.hasOwnProperty("intField"))
-                    if (typeof message.intField === "number")
-                        object.intField = options.longs === String ? String(message.intField) : message.intField;
-                    else
-                        object.intField = options.longs === String ? $util.Long.prototype.toString.call(message.intField) : options.longs === Number ? new $util.LongBits(message.intField.low >>> 0, message.intField.high >>> 0).toNumber() : message.intField;
+                    object.intField = options.longs === String ? $util.LongBits.from(message.intField).toBigInt(false).toString() : options.longs === BigInt ? $util.LongBits.from(message.intField).toBigInt() : message.intField;
                 if (message.enumField != null && message.hasOwnProperty("enumField"))
                     object.enumField = options.enums === String ? $root.jspb.test.DefaultValues.Enum[message.enumField] : message.enumField;
                 if (message.emptyField != null && message.hasOwnProperty("emptyField"))
@@ -6758,7 +6748,7 @@ $root.jspb = (function() {
              * @interface ITestMapFieldsNoBinary
              * @property {Object.<string,string>|null} [mapStringString] TestMapFieldsNoBinary mapStringString
              * @property {Object.<string,number>|null} [mapStringInt32] TestMapFieldsNoBinary mapStringInt32
-             * @property {Object.<string,number|Long>|null} [mapStringInt64] TestMapFieldsNoBinary mapStringInt64
+             * @property {Object.<string,bigint>|null} [mapStringInt64] TestMapFieldsNoBinary mapStringInt64
              * @property {Object.<string,boolean>|null} [mapStringBool] TestMapFieldsNoBinary mapStringBool
              * @property {Object.<string,number>|null} [mapStringDouble] TestMapFieldsNoBinary mapStringDouble
              * @property {Object.<string,jspb.test.MapValueEnumNoBinary>|null} [mapStringEnum] TestMapFieldsNoBinary mapStringEnum
@@ -6814,7 +6804,7 @@ $root.jspb = (function() {
 
             /**
              * TestMapFieldsNoBinary mapStringInt64.
-             * @member {Object.<string,number|Long>} mapStringInt64
+             * @member {Object.<string,bigint>} mapStringInt64
              * @memberof jspb.test.TestMapFieldsNoBinary
              * @instance
              */
@@ -6990,8 +6980,6 @@ $root.jspb = (function() {
                     var tag = reader.uint32();
                     switch (tag >>> 3) {
                     case 1:
-                        if (message.mapStringString === $util.emptyObject)
-                            message.mapStringString = {};
                         var end2 = reader.uint32() + reader.pos;
                         key = "";
                         value = "";
@@ -7009,11 +6997,11 @@ $root.jspb = (function() {
                                 break;
                             }
                         }
-                        message.mapStringString[key] = value;
+                        if (!message.mapStringString)
+                            message.mapStringString = {};
+                        message.mapStringString[String(key)] = value;
                         break;
                     case 2:
-                        if (message.mapStringInt32 === $util.emptyObject)
-                            message.mapStringInt32 = {};
                         var end2 = reader.uint32() + reader.pos;
                         key = "";
                         value = 0;
@@ -7031,11 +7019,11 @@ $root.jspb = (function() {
                                 break;
                             }
                         }
-                        message.mapStringInt32[key] = value;
+                        if (!message.mapStringInt32)
+                            message.mapStringInt32 = {};
+                        message.mapStringInt32[String(key)] = value;
                         break;
                     case 3:
-                        if (message.mapStringInt64 === $util.emptyObject)
-                            message.mapStringInt64 = {};
                         var end2 = reader.uint32() + reader.pos;
                         key = "";
                         value = 0;
@@ -7053,11 +7041,11 @@ $root.jspb = (function() {
                                 break;
                             }
                         }
-                        message.mapStringInt64[key] = value;
+                        if (!message.mapStringInt64)
+                            message.mapStringInt64 = {};
+                        message.mapStringInt64[String(key)] = value;
                         break;
                     case 4:
-                        if (message.mapStringBool === $util.emptyObject)
-                            message.mapStringBool = {};
                         var end2 = reader.uint32() + reader.pos;
                         key = "";
                         value = false;
@@ -7075,11 +7063,11 @@ $root.jspb = (function() {
                                 break;
                             }
                         }
-                        message.mapStringBool[key] = value;
+                        if (!message.mapStringBool)
+                            message.mapStringBool = {};
+                        message.mapStringBool[String(key)] = value;
                         break;
                     case 5:
-                        if (message.mapStringDouble === $util.emptyObject)
-                            message.mapStringDouble = {};
                         var end2 = reader.uint32() + reader.pos;
                         key = "";
                         value = 0;
@@ -7097,11 +7085,11 @@ $root.jspb = (function() {
                                 break;
                             }
                         }
-                        message.mapStringDouble[key] = value;
+                        if (!message.mapStringDouble)
+                            message.mapStringDouble = {};
+                        message.mapStringDouble[String(key)] = value;
                         break;
                     case 6:
-                        if (message.mapStringEnum === $util.emptyObject)
-                            message.mapStringEnum = {};
                         var end2 = reader.uint32() + reader.pos;
                         key = "";
                         value = 0;
@@ -7119,11 +7107,11 @@ $root.jspb = (function() {
                                 break;
                             }
                         }
-                        message.mapStringEnum[key] = value;
+                        if (!message.mapStringEnum)
+                            message.mapStringEnum = {};
+                        message.mapStringEnum[String(key)] = value;
                         break;
                     case 7:
-                        if (message.mapStringMsg === $util.emptyObject)
-                            message.mapStringMsg = {};
                         var end2 = reader.uint32() + reader.pos;
                         key = "";
                         value = null;
@@ -7141,11 +7129,11 @@ $root.jspb = (function() {
                                 break;
                             }
                         }
-                        message.mapStringMsg[key] = value;
+                        if (!message.mapStringMsg)
+                            message.mapStringMsg = {};
+                        message.mapStringMsg[String(key)] = value;
                         break;
                     case 8:
-                        if (message.mapInt32String === $util.emptyObject)
-                            message.mapInt32String = {};
                         var end2 = reader.uint32() + reader.pos;
                         key = 0;
                         value = "";
@@ -7163,11 +7151,11 @@ $root.jspb = (function() {
                                 break;
                             }
                         }
-                        message.mapInt32String[key] = value;
+                        if (!message.mapInt32String)
+                            message.mapInt32String = {};
+                        message.mapInt32String[String(key)] = value;
                         break;
                     case 9:
-                        if (message.mapInt64String === $util.emptyObject)
-                            message.mapInt64String = {};
                         var end2 = reader.uint32() + reader.pos;
                         key = 0;
                         value = "";
@@ -7185,11 +7173,11 @@ $root.jspb = (function() {
                                 break;
                             }
                         }
-                        message.mapInt64String[typeof key === "object" ? $util.longToHash(key) : key] = value;
+                        if (!message.mapInt64String)
+                            message.mapInt64String = {};
+                        message.mapInt64String[String(key)] = value;
                         break;
                     case 10:
-                        if (message.mapBoolString === $util.emptyObject)
-                            message.mapBoolString = {};
                         var end2 = reader.uint32() + reader.pos;
                         key = false;
                         value = "";
@@ -7207,14 +7195,14 @@ $root.jspb = (function() {
                                 break;
                             }
                         }
-                        message.mapBoolString[key] = value;
+                        if (!message.mapBoolString)
+                            message.mapBoolString = {};
+                        message.mapBoolString[String(key)] = value;
                         break;
                     case 11:
                         message.testMapFields = $root.jspb.test.TestMapFieldsNoBinary.decode(reader, reader.uint32());
                         break;
                     case 12:
-                        if (message.mapStringTestmapfields === $util.emptyObject)
-                            message.mapStringTestmapfields = {};
                         var end2 = reader.uint32() + reader.pos;
                         key = "";
                         value = null;
@@ -7232,7 +7220,9 @@ $root.jspb = (function() {
                                 break;
                             }
                         }
-                        message.mapStringTestmapfields[key] = value;
+                        if (!message.mapStringTestmapfields)
+                            message.mapStringTestmapfields = {};
+                        message.mapStringTestmapfields[String(key)] = value;
                         break;
                     default:
                         reader.skipType(tag & 7);
@@ -7291,7 +7281,7 @@ $root.jspb = (function() {
                     var key = Object.keys(message.mapStringInt64);
                     for (var i = 0; i < key.length; ++i)
                         if (!$util.isInteger(message.mapStringInt64[key[i]]) && !(message.mapStringInt64[key[i]] && $util.isInteger(message.mapStringInt64[key[i]].low) && $util.isInteger(message.mapStringInt64[key[i]].high)))
-                            return "mapStringInt64: integer|Long{k:string} expected";
+                            return "mapStringInt64: integer|bigint{k:string} expected";
                 }
                 if (message.mapStringBool != null && message.hasOwnProperty("mapStringBool")) {
                     if (!$util.isObject(message.mapStringBool))
@@ -7350,7 +7340,7 @@ $root.jspb = (function() {
                     var key = Object.keys(message.mapInt64String);
                     for (var i = 0; i < key.length; ++i) {
                         if (!$util.key64Re.test(key[i]))
-                            return "mapInt64String: integer|Long key{k:int64} expected";
+                            return "mapInt64String: integer|bigint key{k:int64} expected";
                         if (!$util.isString(message.mapInt64String[key[i]]))
                             return "mapInt64String: string{k:int64} expected";
                     }
@@ -7397,50 +7387,34 @@ $root.jspb = (function() {
                     return object;
                 var message = new $root.jspb.test.TestMapFieldsNoBinary();
                 if (object.mapStringString) {
-                    if (typeof object.mapStringString !== "object")
-                        throw TypeError(".jspb.test.TestMapFieldsNoBinary.mapStringString: object expected");
                     message.mapStringString = {};
                     for (var keys = Object.keys(object.mapStringString), i = 0; i < keys.length; ++i)
                         message.mapStringString[keys[i]] = String(object.mapStringString[keys[i]]);
                 }
                 if (object.mapStringInt32) {
-                    if (typeof object.mapStringInt32 !== "object")
-                        throw TypeError(".jspb.test.TestMapFieldsNoBinary.mapStringInt32: object expected");
                     message.mapStringInt32 = {};
                     for (var keys = Object.keys(object.mapStringInt32), i = 0; i < keys.length; ++i)
                         message.mapStringInt32[keys[i]] = object.mapStringInt32[keys[i]] | 0;
                 }
                 if (object.mapStringInt64) {
-                    if (typeof object.mapStringInt64 !== "object")
-                        throw TypeError(".jspb.test.TestMapFieldsNoBinary.mapStringInt64: object expected");
                     message.mapStringInt64 = {};
                     for (var keys = Object.keys(object.mapStringInt64), i = 0; i < keys.length; ++i)
-                        if ($util.Long)
-                            (message.mapStringInt64[keys[i]] = $util.Long.fromValue(object.mapStringInt64[keys[i]])).unsigned = false;
-                        else if (typeof object.mapStringInt64[keys[i]] === "string")
-                            message.mapStringInt64[keys[i]] = parseInt(object.mapStringInt64[keys[i]], 10);
-                        else if (typeof object.mapStringInt64[keys[i]] === "number")
-                            message.mapStringInt64[keys[i]] = object.mapStringInt64[keys[i]];
+                        if (typeof object.mapStringInt64[keys[i]] === "string" || typeof object.mapStringInt64[keys[i]] === "number" || typeof object.mapStringInt64[keys[i]] === "bigint")
+                            message.mapStringInt64[keys[i]] = BigInt(object.mapStringInt64[keys[i]]);
                         else if (typeof object.mapStringInt64[keys[i]] === "object")
-                            message.mapStringInt64[keys[i]] = new $util.LongBits(object.mapStringInt64[keys[i]].low >>> 0, object.mapStringInt64[keys[i]].high >>> 0).toNumber();
+                            message.mapStringInt64[keys[i]] = new $util.LongBits(object.mapStringInt64[keys[i]].low >>> 0, object.mapStringInt64[keys[i]].high >>> 0).toBigInt(false);
                 }
                 if (object.mapStringBool) {
-                    if (typeof object.mapStringBool !== "object")
-                        throw TypeError(".jspb.test.TestMapFieldsNoBinary.mapStringBool: object expected");
                     message.mapStringBool = {};
                     for (var keys = Object.keys(object.mapStringBool), i = 0; i < keys.length; ++i)
                         message.mapStringBool[keys[i]] = Boolean(object.mapStringBool[keys[i]]);
                 }
                 if (object.mapStringDouble) {
-                    if (typeof object.mapStringDouble !== "object")
-                        throw TypeError(".jspb.test.TestMapFieldsNoBinary.mapStringDouble: object expected");
                     message.mapStringDouble = {};
                     for (var keys = Object.keys(object.mapStringDouble), i = 0; i < keys.length; ++i)
                         message.mapStringDouble[keys[i]] = Number(object.mapStringDouble[keys[i]]);
                 }
                 if (object.mapStringEnum) {
-                    if (typeof object.mapStringEnum !== "object")
-                        throw TypeError(".jspb.test.TestMapFieldsNoBinary.mapStringEnum: object expected");
                     message.mapStringEnum = {};
                     for (var keys = Object.keys(object.mapStringEnum), i = 0; i < keys.length; ++i)
                         switch (object.mapStringEnum[keys[i]]) {
@@ -7459,8 +7433,6 @@ $root.jspb = (function() {
                         }
                 }
                 if (object.mapStringMsg) {
-                    if (typeof object.mapStringMsg !== "object")
-                        throw TypeError(".jspb.test.TestMapFieldsNoBinary.mapStringMsg: object expected");
                     message.mapStringMsg = {};
                     for (var keys = Object.keys(object.mapStringMsg), i = 0; i < keys.length; ++i) {
                         if (typeof object.mapStringMsg[keys[i]] !== "object")
@@ -7469,22 +7441,16 @@ $root.jspb = (function() {
                     }
                 }
                 if (object.mapInt32String) {
-                    if (typeof object.mapInt32String !== "object")
-                        throw TypeError(".jspb.test.TestMapFieldsNoBinary.mapInt32String: object expected");
                     message.mapInt32String = {};
                     for (var keys = Object.keys(object.mapInt32String), i = 0; i < keys.length; ++i)
                         message.mapInt32String[keys[i]] = String(object.mapInt32String[keys[i]]);
                 }
                 if (object.mapInt64String) {
-                    if (typeof object.mapInt64String !== "object")
-                        throw TypeError(".jspb.test.TestMapFieldsNoBinary.mapInt64String: object expected");
                     message.mapInt64String = {};
                     for (var keys = Object.keys(object.mapInt64String), i = 0; i < keys.length; ++i)
                         message.mapInt64String[keys[i]] = String(object.mapInt64String[keys[i]]);
                 }
                 if (object.mapBoolString) {
-                    if (typeof object.mapBoolString !== "object")
-                        throw TypeError(".jspb.test.TestMapFieldsNoBinary.mapBoolString: object expected");
                     message.mapBoolString = {};
                     for (var keys = Object.keys(object.mapBoolString), i = 0; i < keys.length; ++i)
                         message.mapBoolString[keys[i]] = String(object.mapBoolString[keys[i]]);
@@ -7495,8 +7461,6 @@ $root.jspb = (function() {
                     message.testMapFields = $root.jspb.test.TestMapFieldsNoBinary.fromObject(object.testMapFields);
                 }
                 if (object.mapStringTestmapfields) {
-                    if (typeof object.mapStringTestmapfields !== "object")
-                        throw TypeError(".jspb.test.TestMapFieldsNoBinary.mapStringTestmapfields: object expected");
                     message.mapStringTestmapfields = {};
                     for (var keys = Object.keys(object.mapStringTestmapfields), i = 0; i < keys.length; ++i) {
                         if (typeof object.mapStringTestmapfields[keys[i]] !== "object")
@@ -7549,10 +7513,7 @@ $root.jspb = (function() {
                 if (message.mapStringInt64 && (keys2 = Object.keys(message.mapStringInt64)).length) {
                     object.mapStringInt64 = {};
                     for (var j = 0; j < keys2.length; ++j)
-                        if (typeof message.mapStringInt64[keys2[j]] === "number")
-                            object.mapStringInt64[keys2[j]] = options.longs === String ? String(message.mapStringInt64[keys2[j]]) : message.mapStringInt64[keys2[j]];
-                        else
-                            object.mapStringInt64[keys2[j]] = options.longs === String ? $util.Long.prototype.toString.call(message.mapStringInt64[keys2[j]]) : options.longs === Number ? new $util.LongBits(message.mapStringInt64[keys2[j]].low >>> 0, message.mapStringInt64[keys2[j]].high >>> 0).toNumber() : message.mapStringInt64[keys2[j]];
+                        object.mapStringInt64[keys2[j]] = options.longs === String ? $util.LongBits.from(message.mapStringInt64[keys2[j]]).toBigInt(false).toString() : options.longs === BigInt ? $util.LongBits.from(message.mapStringInt64[keys2[j]]).toBigInt() : message.mapStringInt64[keys2[j]];
                 }
                 if (message.mapStringBool && (keys2 = Object.keys(message.mapStringBool)).length) {
                     object.mapStringBool = {};
@@ -14454,8 +14415,8 @@ $root.google = (function() {
              * @interface IUninterpretedOption
              * @property {Array.<google.protobuf.UninterpretedOption.INamePart>|null} [name] UninterpretedOption name
              * @property {string|null} [identifierValue] UninterpretedOption identifierValue
-             * @property {number|Long|null} [positiveIntValue] UninterpretedOption positiveIntValue
-             * @property {number|Long|null} [negativeIntValue] UninterpretedOption negativeIntValue
+             * @property {bigint|null} [positiveIntValue] UninterpretedOption positiveIntValue
+             * @property {bigint|null} [negativeIntValue] UninterpretedOption negativeIntValue
              * @property {number|null} [doubleValue] UninterpretedOption doubleValue
              * @property {Uint8Array|null} [stringValue] UninterpretedOption stringValue
              * @property {string|null} [aggregateValue] UninterpretedOption aggregateValue
@@ -14495,19 +14456,19 @@ $root.google = (function() {
 
             /**
              * UninterpretedOption positiveIntValue.
-             * @member {number|Long} positiveIntValue
+             * @member {bigint} positiveIntValue
              * @memberof google.protobuf.UninterpretedOption
              * @instance
              */
-            UninterpretedOption.prototype.positiveIntValue = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+            UninterpretedOption.prototype.positiveIntValue =  0n;
 
             /**
              * UninterpretedOption negativeIntValue.
-             * @member {number|Long} negativeIntValue
+             * @member {bigint} negativeIntValue
              * @memberof google.protobuf.UninterpretedOption
              * @instance
              */
-            UninterpretedOption.prototype.negativeIntValue = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+            UninterpretedOption.prototype.negativeIntValue =  0n;
 
             /**
              * UninterpretedOption doubleValue.
@@ -14678,10 +14639,10 @@ $root.google = (function() {
                         return "identifierValue: string expected";
                 if (message.positiveIntValue != null && message.hasOwnProperty("positiveIntValue"))
                     if (!$util.isInteger(message.positiveIntValue) && !(message.positiveIntValue && $util.isInteger(message.positiveIntValue.low) && $util.isInteger(message.positiveIntValue.high)))
-                        return "positiveIntValue: integer|Long expected";
+                        return "positiveIntValue: integer|bigint expected";
                 if (message.negativeIntValue != null && message.hasOwnProperty("negativeIntValue"))
                     if (!$util.isInteger(message.negativeIntValue) && !(message.negativeIntValue && $util.isInteger(message.negativeIntValue.low) && $util.isInteger(message.negativeIntValue.high)))
-                        return "negativeIntValue: integer|Long expected";
+                        return "negativeIntValue: integer|bigint expected";
                 if (message.doubleValue != null && message.hasOwnProperty("doubleValue"))
                     if (typeof message.doubleValue !== "number")
                         return "doubleValue: number expected";
@@ -14719,23 +14680,15 @@ $root.google = (function() {
                 if (object.identifierValue != null)
                     message.identifierValue = String(object.identifierValue);
                 if (object.positiveIntValue != null)
-                    if ($util.Long)
-                        (message.positiveIntValue = $util.Long.fromValue(object.positiveIntValue)).unsigned = true;
-                    else if (typeof object.positiveIntValue === "string")
-                        message.positiveIntValue = parseInt(object.positiveIntValue, 10);
-                    else if (typeof object.positiveIntValue === "number")
-                        message.positiveIntValue = object.positiveIntValue;
+                    if (typeof object.positiveIntValue === "string" || typeof object.positiveIntValue === "number" || typeof object.positiveIntValue === "bigint")
+                        message.positiveIntValue = BigInt(object.positiveIntValue);
                     else if (typeof object.positiveIntValue === "object")
-                        message.positiveIntValue = new $util.LongBits(object.positiveIntValue.low >>> 0, object.positiveIntValue.high >>> 0).toNumber(true);
+                        message.positiveIntValue = new $util.LongBits(object.positiveIntValue.low >>> 0, object.positiveIntValue.high >>> 0).toBigInt(true);
                 if (object.negativeIntValue != null)
-                    if ($util.Long)
-                        (message.negativeIntValue = $util.Long.fromValue(object.negativeIntValue)).unsigned = false;
-                    else if (typeof object.negativeIntValue === "string")
-                        message.negativeIntValue = parseInt(object.negativeIntValue, 10);
-                    else if (typeof object.negativeIntValue === "number")
-                        message.negativeIntValue = object.negativeIntValue;
+                    if (typeof object.negativeIntValue === "string" || typeof object.negativeIntValue === "number" || typeof object.negativeIntValue === "bigint")
+                        message.negativeIntValue = BigInt(object.negativeIntValue);
                     else if (typeof object.negativeIntValue === "object")
-                        message.negativeIntValue = new $util.LongBits(object.negativeIntValue.low >>> 0, object.negativeIntValue.high >>> 0).toNumber();
+                        message.negativeIntValue = new $util.LongBits(object.negativeIntValue.low >>> 0, object.negativeIntValue.high >>> 0).toBigInt(false);
                 if (object.doubleValue != null)
                     message.doubleValue = Number(object.doubleValue);
                 if (object.stringValue != null)
@@ -14765,16 +14718,10 @@ $root.google = (function() {
                     object.name = [];
                 if (options.defaults) {
                     object.identifierValue = "";
-                    if ($util.Long) {
-                        var long = new $util.Long(0, 0, true);
-                        object.positiveIntValue = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-                    } else
-                        object.positiveIntValue = options.longs === String ? "0" : 0;
-                    if ($util.Long) {
-                        var long = new $util.Long(0, 0, false);
-                        object.negativeIntValue = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-                    } else
-                        object.negativeIntValue = options.longs === String ? "0" : 0;
+                    var long = new $util.LongBits(NaN, NaN, undefined);
+                    object.positiveIntValue = options.longs === String ? long.toBigInt().toString() : options.longs === BigInt ? long.toBigInt().toString() : long;
+                    var long = new $util.LongBits(NaN, NaN, undefined);
+                    object.negativeIntValue = options.longs === String ? long.toBigInt().toString() : options.longs === BigInt ? long.toBigInt().toString() : long;
                     object.doubleValue = 0;
                     if (options.bytes === String)
                         object.stringValue = "";
@@ -14793,15 +14740,9 @@ $root.google = (function() {
                 if (message.identifierValue != null && message.hasOwnProperty("identifierValue"))
                     object.identifierValue = message.identifierValue;
                 if (message.positiveIntValue != null && message.hasOwnProperty("positiveIntValue"))
-                    if (typeof message.positiveIntValue === "number")
-                        object.positiveIntValue = options.longs === String ? String(message.positiveIntValue) : message.positiveIntValue;
-                    else
-                        object.positiveIntValue = options.longs === String ? $util.Long.prototype.toString.call(message.positiveIntValue) : options.longs === Number ? new $util.LongBits(message.positiveIntValue.low >>> 0, message.positiveIntValue.high >>> 0).toNumber(true) : message.positiveIntValue;
+                    object.positiveIntValue = options.longs === String ? $util.LongBits.from(message.positiveIntValue).toBigInt(true).toString() : options.longs === BigInt ? $util.LongBits.from(message.positiveIntValue).toBigInt(true) : message.positiveIntValue;
                 if (message.negativeIntValue != null && message.hasOwnProperty("negativeIntValue"))
-                    if (typeof message.negativeIntValue === "number")
-                        object.negativeIntValue = options.longs === String ? String(message.negativeIntValue) : message.negativeIntValue;
-                    else
-                        object.negativeIntValue = options.longs === String ? $util.Long.prototype.toString.call(message.negativeIntValue) : options.longs === Number ? new $util.LongBits(message.negativeIntValue.low >>> 0, message.negativeIntValue.high >>> 0).toNumber() : message.negativeIntValue;
+                    object.negativeIntValue = options.longs === String ? $util.LongBits.from(message.negativeIntValue).toBigInt(false).toString() : options.longs === BigInt ? $util.LongBits.from(message.negativeIntValue).toBigInt() : message.negativeIntValue;
                 if (message.doubleValue != null && message.hasOwnProperty("doubleValue"))
                     object.doubleValue = options.json && !isFinite(message.doubleValue) ? String(message.doubleValue) : message.doubleValue;
                 if (message.stringValue != null && message.hasOwnProperty("stringValue"))
