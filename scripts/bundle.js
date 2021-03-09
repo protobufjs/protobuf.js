@@ -9,7 +9,7 @@ var browserify = require("browserify");
 var header     = require("gulp-header");
 var gulpif     = require("gulp-if");
 var sourcemaps = require("gulp-sourcemaps");
-var uglify     = require("gulp-uglify");
+var terser     = require("gulp-terser");
 
 var buffer     = require("vinyl-buffer");
 var vinylfs    = require("vinyl-fs");
@@ -48,9 +48,8 @@ function bundle(options) {
         detectGlobals: false,
         debug: true,
         prelude: prelude,
-        preludePath: "./lib/prelude.js"
-    })
-    .external("long");
+        preludePath: "./lib/prelude.js",
+    });
     if (options.exclude)
         options.exclude.forEach(bundler.exclude, bundler);
     return bundler
@@ -65,21 +64,7 @@ function bundle(options) {
     .pipe(buffer())
     .pipe(sourcemaps.init({ loadMaps: true }))
             .pipe(
-                gulpif(options.compress, uglify({
-                    mangle: {
-                        eval: true,
-                        properties: {
-                            regex: /^_/
-                        }
-                    },
-                    compress: {
-                        keep_fargs: false,
-                        unsafe: true
-                    },
-                    output: {
-                        max_line_len: 0x7fffffff
-                    }
-                }))
+                gulpif(options.compress, terser())
             )
             .pipe(header(license, {
                 date: (new Date()).toUTCString().replace("GMT", "UTC").toLowerCase(),

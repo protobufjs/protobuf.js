@@ -1,6 +1,6 @@
 /*!
- * protobuf.js v6.10.0 (c) 2016, daniel wirtz
- * compiled wed, 15 jul 2020 23:34:13 utc
+ * protobuf.js v6.10.2 (c) 2016, daniel wirtz
+ * compiled tue, 09 mar 2021 14:56:17 utc
  * licensed under the bsd-3-clause license
  * see: https://github.com/dcodeio/protobuf.js for details
  */
@@ -1040,27 +1040,6 @@ function readLongVarint() {
 /* eslint-enable no-invalid-this */
 
 /**
- * Reads a varint as a signed 64 bit value.
- * @name Reader#int64
- * @function
- * @returns {Long} Value read
- */
-
-/**
- * Reads a varint as an unsigned 64 bit value.
- * @name Reader#uint64
- * @function
- * @returns {Long} Value read
- */
-
-/**
- * Reads a zig-zag encoded varint as a signed 64 bit value.
- * @name Reader#sint64
- * @function
- * @returns {Long} Value read
- */
-
-/**
  * Reads a varint as a boolean.
  * @returns {boolean} Value read
  */
@@ -1114,19 +1093,57 @@ function readFixed64(/* this: Reader */) {
 
 /* eslint-enable no-invalid-this */
 
+
+/**
+ * Reads a varint as a signed 64 bit value.
+ * @name Reader#int64
+ * @function
+ * @returns {bigint} Value read
+ */
+Reader.prototype.int64 = function() {
+    return readLongVarint.call(this).toBigInt();
+};
+
+
+/**
+ * Reads a varint as an unsigned 64 bit value.
+ * @name Reader#uint64
+ * @function
+ * @returns {bigint} Value read
+ */
+Reader.prototype.uint64 = function() {
+    return readLongVarint.call(this).toBigInt();
+};
+
+/**
+ * Reads a zig-zag encoded varint as a signed 64 bit value.
+ * @name Reader#sint64
+ * @function
+ * @returns {bigint} Value read
+ */
+Reader.prototype.sint64 = function() {
+    return readLongVarint.call(this).zzDecode().toBigInt();
+};
+
 /**
  * Reads fixed 64 bits.
  * @name Reader#fixed64
  * @function
- * @returns {Long} Value read
+ * @returns {bigint} Value read
  */
+Reader.prototype.fixed64 = function() {
+    return readFixed64.call(this).toBigInt();
+};
 
 /**
  * Reads zig-zag encoded fixed 64 bits.
  * @name Reader#sfixed64
  * @function
- * @returns {Long} Value read
+ * @returns {bigint} Value read
  */
+Reader.prototype.sfixed64 = function() {
+    return readFixed64.call(this).toBigInt();
+};
 
 /**
  * Reads a float (32 bit) as a number.
@@ -1247,31 +1264,6 @@ Reader._configure = function(BufferReader_) {
     BufferReader = BufferReader_;
     Reader.create = create();
     BufferReader._configure();
-
-    var fn = util.Long ? "toLong" : /* istanbul ignore next */ "toNumber";
-    util.merge(Reader.prototype, {
-
-        int64: function read_int64() {
-            return readLongVarint.call(this)[fn](false);
-        },
-
-        uint64: function read_uint64() {
-            return readLongVarint.call(this)[fn](true);
-        },
-
-        sint64: function read_sint64() {
-            return readLongVarint.call(this).zzDecode()[fn](false);
-        },
-
-        fixed64: function read_fixed64() {
-            return readFixed64.call(this)[fn](true);
-        },
-
-        sfixed64: function read_sfixed64() {
-            return readFixed64.call(this)[fn](false);
-        }
-
-    });
 };
 
 },{"15":15}],10:[function(require,module,exports){
@@ -1552,13 +1544,13 @@ function LongBits(lo, hi) {
      * Low bits.
      * @type {number}
      */
-    this.lo = lo >>> 0;
+    this.lo = lo | 0;
 
     /**
      * High bits.
      * @type {number}
      */
-    this.hi = hi >>> 0;
+    this.hi = hi | 0;
 }
 
 /**
@@ -1568,23 +1560,48 @@ function LongBits(lo, hi) {
  */
 var zero = LongBits.zero = new LongBits(0, 0);
 
-zero.toNumber = function() { return 0; };
+zero.toBigInt = function() { return 0n; };
 zero.zzEncode = zero.zzDecode = function() { return this; };
 zero.length = function() { return 1; };
 
-/**
- * Zero hash.
- * @memberof util.LongBits
- * @type {string}
- */
-var zeroHash = LongBits.zeroHash = "\0\0\0\0\0\0\0\0";
+const TWO_32 = 4294967296n;
 
 /**
  * Constructs new long bits from the specified number.
  * @param {number} value Value
  * @returns {util.LongBits} Instance
  */
-LongBits.fromNumber = function fromNumber(value) {
+LongBits.fromBigInt = function fromNumber(value) {
+    value = BigInt(value);
+    if (value === 0n)
+        return zero;
+
+    var negative = value < 0;
+    if (negative) {
+        value = -value;
+    }
+    var hi = Number(value >> 32n) | 0;
+    var lo = Number(value - ( BigInt(hi) << 32n ) ) | 0;
+
+    if (negative) {
+        hi = ~hi >>> 0;
+        lo = ~lo >>> 0;
+        if (++lo > TWO_32) {
+            lo = 0;
+            if (++hi > TWO_32)
+                hi = 0;
+        }
+    }
+
+    return new LongBits(lo, hi);
+};
+
+/**
+ * Constructs new long bits from the specified number.
+ * @param {number} value Value
+ * @returns {util.LongBits} Instance
+ */
+ LongBits.fromNumber = function fromNumber(value) {
     if (value === 0)
         return zero;
     var sign = value < 0;
@@ -1606,18 +1623,18 @@ LongBits.fromNumber = function fromNumber(value) {
 
 /**
  * Constructs new long bits from a number, long or string.
- * @param {Long|number|string} value Value
+ * @param {bigint|number|string|object} value Value
  * @returns {util.LongBits} Instance
  */
 LongBits.from = function from(value) {
-    if (typeof value === "number")
+    if (typeof value === "number") {
         return LongBits.fromNumber(value);
+    }
+    if (typeof value === "bigint") {
+        return LongBits.fromBigInt(value);
+    }
     if (util.isString(value)) {
-        /* istanbul ignore else */
-        if (util.Long)
-            value = util.Long.fromString(value);
-        else
-            return LongBits.fromNumber(parseInt(value, 10));
+        return LongBits.fromBigInt(BigInt(value));
     }
     return value.low || value.high ? new LongBits(value.low >>> 0, value.high >>> 0) : zero;
 };
@@ -1627,67 +1644,23 @@ LongBits.from = function from(value) {
  * @param {boolean} [unsigned=false] Whether unsigned or not
  * @returns {number} Possibly unsafe number
  */
-LongBits.prototype.toNumber = function toNumber(unsigned) {
-    if (!unsigned && this.hi >>> 31) {
+LongBits.prototype.toBigInt = function toBigInt(unsigned) {
+
+
+    if (unsigned) {
+        const result = BigInt(this.lo >>> 0) + ( BigInt(this.hi >>> 0) << 32n );
+        return result;
+    }
+
+    if (this.hi >>> 31) {
         var lo = ~this.lo + 1 >>> 0,
             hi = ~this.hi     >>> 0;
         if (!lo)
             hi = hi + 1 >>> 0;
-        return -(lo + hi * 4294967296);
+        return -(BigInt(lo) + ( BigInt(hi) << 32n ) );
     }
-    return this.lo + this.hi * 4294967296;
-};
 
-/**
- * Converts this long bits to a long.
- * @param {boolean} [unsigned=false] Whether unsigned or not
- * @returns {Long} Long
- */
-LongBits.prototype.toLong = function toLong(unsigned) {
-    return util.Long
-        ? new util.Long(this.lo | 0, this.hi | 0, Boolean(unsigned))
-        /* istanbul ignore next */
-        : { low: this.lo | 0, high: this.hi | 0, unsigned: Boolean(unsigned) };
-};
-
-var charCodeAt = String.prototype.charCodeAt;
-
-/**
- * Constructs new long bits from the specified 8 characters long hash.
- * @param {string} hash Hash
- * @returns {util.LongBits} Bits
- */
-LongBits.fromHash = function fromHash(hash) {
-    if (hash === zeroHash)
-        return zero;
-    return new LongBits(
-        ( charCodeAt.call(hash, 0)
-        | charCodeAt.call(hash, 1) << 8
-        | charCodeAt.call(hash, 2) << 16
-        | charCodeAt.call(hash, 3) << 24) >>> 0
-    ,
-        ( charCodeAt.call(hash, 4)
-        | charCodeAt.call(hash, 5) << 8
-        | charCodeAt.call(hash, 6) << 16
-        | charCodeAt.call(hash, 7) << 24) >>> 0
-    );
-};
-
-/**
- * Converts this long bits to a 8 characters long hash.
- * @returns {string} Hash
- */
-LongBits.prototype.toHash = function toHash() {
-    return String.fromCharCode(
-        this.lo        & 255,
-        this.lo >>> 8  & 255,
-        this.lo >>> 16 & 255,
-        this.lo >>> 24      ,
-        this.hi        & 255,
-        this.hi >>> 8  & 255,
-        this.hi >>> 16 & 255,
-        this.hi >>> 24
-    );
+    return BigInt(this.lo >>> 0) + (BigInt(this.hi >>> 0) << 32n );
 };
 
 /**
@@ -1801,8 +1774,9 @@ util.emptyObject = Object.freeze ? Object.freeze({}) : /* istanbul ignore next *
  * @param {*} value Value to test
  * @returns {boolean} `true` if the value is an integer
  */
-util.isInteger = Number.isInteger || /* istanbul ignore next */ function isInteger(value) {
-    return typeof value === "number" && isFinite(value) && Math.floor(value) === value;
+util.isInteger = function isInteger(value) {
+    if (typeof value === "bigint") return true;
+    return typeof value === "number" && (Number.isInteger(value) || isFinite(value) && Math.floor(value) === value);
 };
 
 /**
@@ -1899,23 +1873,6 @@ util.newBuffer = function newBuffer(sizeOrArray) {
 util.Array = typeof Uint8Array !== "undefined" ? Uint8Array /* istanbul ignore next */ : Array;
 
 /**
- * Any compatible Long instance.
- * This is a minimal stand-alone definition of a Long instance. The actual type is that exported by long.js.
- * @interface Long
- * @property {number} low Low bits
- * @property {number} high High bits
- * @property {boolean} unsigned Whether unsigned or not
- */
-
-/**
- * Long.js's Long class if available.
- * @type {Constructor<Long>}
- */
-util.Long = /* istanbul ignore next */ util.global.dcodeIO && /* istanbul ignore next */ util.global.dcodeIO.Long
-         || /* istanbul ignore next */ util.global.Long
-         || util.inquire("long");
-
-/**
  * Regular expression used to verify 2 bit (`bool`) map keys.
  * @type {RegExp}
  * @const
@@ -1936,29 +1893,6 @@ util.key32Re = /^-?(?:0|[1-9][0-9]*)$/;
  */
 util.key64Re = /^(?:[\\x00-\\xff]{8}|-?(?:0|[1-9][0-9]*))$/;
 
-/**
- * Converts a number or long to an 8 characters long hash string.
- * @param {Long|number} value Value to convert
- * @returns {string} Hash
- */
-util.longToHash = function longToHash(value) {
-    return value
-        ? util.LongBits.from(value).toHash()
-        : util.LongBits.zeroHash;
-};
-
-/**
- * Converts an 8 characters long hash string to a long or number.
- * @param {string} hash Hash
- * @param {boolean} [unsigned=false] Whether unsigned or not
- * @returns {Long|number} Original value
- */
-util.longFromHash = function longFromHash(hash, unsigned) {
-    var bits = util.LongBits.fromHash(hash);
-    if (util.Long)
-        return util.Long.fromBits(bits.lo, bits.hi, unsigned);
-    return bits.toNumber(Boolean(unsigned));
-};
 
 /**
  * Merges the properties of the source object into the destination object.
@@ -2383,7 +2317,7 @@ Writer.prototype.uint32 = function write_uint32(value) {
  */
 Writer.prototype.int32 = function write_int32(value) {
     return value < 0
-        ? this._push(writeVarint64, 10, LongBits.fromNumber(value)) // 10 bytes per spec
+        ? this._push(writeVarint64, 10, LongBits.from(value)) // 10 bytes per spec
         : this.uint32(value);
 };
 
@@ -2411,7 +2345,7 @@ function writeVarint64(val, buf, pos) {
 
 /**
  * Writes an unsigned 64 bit value as a varint.
- * @param {Long|number|string} value Value to write
+ * @param {bigint|number|string} value Value to write
  * @returns {Writer} `this`
  * @throws {TypeError} If `value` is a string and no long library is present.
  */
@@ -2423,7 +2357,7 @@ Writer.prototype.uint64 = function write_uint64(value) {
 /**
  * Writes a signed 64 bit value as a varint.
  * @function
- * @param {Long|number|string} value Value to write
+ * @param {bigint|number|string} value Value to write
  * @returns {Writer} `this`
  * @throws {TypeError} If `value` is a string and no long library is present.
  */
@@ -2431,7 +2365,7 @@ Writer.prototype.int64 = Writer.prototype.uint64;
 
 /**
  * Writes a signed 64 bit value as a varint, zig-zag encoded.
- * @param {Long|number|string} value Value to write
+ * @param {bigint|number|string} value Value to write
  * @returns {Writer} `this`
  * @throws {TypeError} If `value` is a string and no long library is present.
  */
@@ -2475,7 +2409,7 @@ Writer.prototype.sfixed32 = Writer.prototype.fixed32;
 
 /**
  * Writes an unsigned 64 bit value as fixed 64 bits.
- * @param {Long|number|string} value Value to write
+ * @param {bigint|number|string} value Value to write
  * @returns {Writer} `this`
  * @throws {TypeError} If `value` is a string and no long library is present.
  */
@@ -2487,7 +2421,7 @@ Writer.prototype.fixed64 = function write_fixed64(value) {
 /**
  * Writes a signed 64 bit value as fixed 64 bits.
  * @function
- * @param {Long|number|string} value Value to write
+ * @param {bigint|number|string} value Value to write
  * @returns {Writer} `this`
  * @throws {TypeError} If `value` is a string and no long library is present.
  */

@@ -1,6 +1,6 @@
 /*!
- * protobuf.js v6.10.0 (c) 2016, daniel wirtz
- * compiled wed, 15 jul 2020 23:34:13 utc
+ * protobuf.js v6.10.2 (c) 2016, daniel wirtz
+ * compiled tue, 09 mar 2021 14:56:17 utc
  * licensed under the bsd-3-clause license
  * see: https://github.com/dcodeio/protobuf.js for details
  */
@@ -304,7 +304,7 @@ function codegen(functionParams, functionName) {
             return "%";
         });
         if (formatOffset !== formatParams.length)
-            throw Error("parameter count mismatch");
+            throw Error("parameter count mismatch: "+formatStringOrScope);
         body.push(formatStringOrScope);
         return Codegen;
     }
@@ -1183,7 +1183,7 @@ common("duration", {
      * Properties of a google.protobuf.Duration message.
      * @interface IDuration
      * @type {Object}
-     * @property {number|Long} [seconds]
+     * @property {number|bigint} [seconds]
      * @property {number} [nanos]
      * @memberof common
      */
@@ -1207,7 +1207,7 @@ common("timestamp", {
      * Properties of a google.protobuf.Timestamp message.
      * @interface ITimestamp
      * @type {Object}
-     * @property {number|Long} [seconds]
+     * @property {number|bigint} [seconds]
      * @property {number} [nanos]
      * @memberof common
      */
@@ -1361,7 +1361,7 @@ common("wrappers", {
      * Properties of a google.protobuf.Int64Value message.
      * @interface IInt64Value
      * @type {Object}
-     * @property {number|Long} [value]
+     * @property {number|bigint} [value]
      * @memberof common
      */
     Int64Value: {
@@ -1377,7 +1377,7 @@ common("wrappers", {
      * Properties of a google.protobuf.UInt64Value message.
      * @interface IUInt64Value
      * @type {Object}
-     * @property {number|Long} [value]
+     * @property {number|bigint} [value]
      * @memberof common
      */
     UInt64Value: {
@@ -1571,19 +1571,15 @@ function genValuePartial_fromObject(gen, field, fieldIndex, prop) {
             case "sint64":
             case "fixed64":
             case "sfixed64": gen
-                ("if(util.Long)")
-                    ("(m%s=util.Long.fromValue(d%s)).unsigned=%j", prop, prop, isUnsigned)
-                ("else if(typeof d%s===\"string\")", prop)
-                    ("m%s=parseInt(d%s,10)", prop, prop)
-                ("else if(typeof d%s===\"number\")", prop)
-                    ("m%s=d%s", prop, prop)
+                ("if(typeof d%s===\"string\"||typeof d%s===\"number\"||typeof d%s===\"bigint\")", prop, prop, prop)
+                    ("m%s=BigInt(d%s)", prop, prop)
                 ("else if(typeof d%s===\"object\")", prop)
-                    ("m%s=new util.LongBits(d%s.low>>>0,d%s.high>>>0).toNumber(%s)", prop, prop, prop, isUnsigned ? "true" : "");
+                    ("m%s=new util.LongBits(d%s.low>>>0,d%s.high>>>0).toBigInt(%s)", prop, prop, prop, isUnsigned);
                 break;
             case "bytes": gen
                 ("if(typeof d%s===\"string\")", prop)
                     ("util.base64.decode(d%s,m%s=util.newBuffer(util.base64.length(d%s)),0)", prop, prop, prop)
-                ("else if(d%s.length)", prop)
+                ("else if(d%s.length >= 0)", prop)
                     ("m%s=d%s", prop, prop);
                 break;
             case "string": gen
@@ -1623,8 +1619,6 @@ converter.fromObject = function fromObject(mtype) {
         // Map fields
         if (field.map) { gen
     ("if(d%s){", prop)
-        ("if(typeof d%s!==\"object\")", prop)
-            ("throw TypeError(%j)", field.fullName + ": object expected")
         ("m%s={}", prop)
         ("for(var ks=Object.keys(d%s),i=0;i<ks.length;++i){", prop);
             genValuePartial_fromObject(gen, field, /* not sorted */ i, prop + "[ks[i]]")
@@ -1650,8 +1644,10 @@ converter.fromObject = function fromObject(mtype) {
             if (!(field.resolvedType instanceof Enum)) gen
     ("}");
         }
-    } return gen
-    ("return m");
+    }
+
+    const result = gen("return m");
+    return result;
     /* eslint-enable no-unexpected-multiline, block-scoped-var, no-redeclare */
 };
 
@@ -1685,10 +1681,7 @@ function genValuePartial_toObject(gen, field, fieldIndex, prop) {
             case "sint64":
             case "fixed64":
             case "sfixed64": gen
-            ("if(typeof m%s===\"number\")", prop)
-                ("d%s=o.longs===String?String(m%s):m%s", prop, prop, prop)
-            ("else") // Long-like
-                ("d%s=o.longs===String?util.Long.prototype.toString.call(m%s):o.longs===Number?new util.LongBits(m%s.low>>>0,m%s.high>>>0).toNumber(%s):m%s", prop, prop, prop, prop, isUnsigned ? "true": "", prop);
+                ("d%s=o.longs===String ? util.LongBits.from(m%s).toBigInt(%s).toString(): o.longs===BigInt ? util.LongBits.from(m%s).toBigInt(%s) : m%s", prop, prop, isUnsigned, prop, isUnsigned ? "true": "", prop);
                 break;
             case "bytes": gen
             ("d%s=o.bytes===String?util.base64.encode(m%s,0,m%s.length):o.bytes===Array?Array.prototype.slice.call(m%s):m%s", prop, prop, prop, prop, prop);
@@ -1708,6 +1701,7 @@ function genValuePartial_toObject(gen, field, fieldIndex, prop) {
  * @returns {Codegen} Codegen instance
  */
 converter.toObject = function toObject(mtype) {
+
     /* eslint-disable no-unexpected-multiline, block-scoped-var, no-redeclare */
     var fields = mtype.fieldsArray.slice().sort(util.compareFieldsById);
     if (!fields.length)
@@ -1751,11 +1745,8 @@ converter.toObject = function toObject(mtype) {
             if (field.resolvedType instanceof Enum) gen
         ("d%s=o.enums===String?%j:%j", prop, field.resolvedType.valuesById[field.typeDefault], field.typeDefault);
             else if (field.long) gen
-        ("if(util.Long){")
-            ("var n=new util.Long(%i,%i,%j)", field.typeDefault.low, field.typeDefault.high, field.typeDefault.unsigned)
-            ("d%s=o.longs===String?n.toString():o.longs===Number?n.toNumber():n", prop)
-        ("}else")
-            ("d%s=o.longs===String?%j:%i", prop, field.typeDefault.toString(), field.typeDefault.toNumber());
+            ("var n=new util.LongBits(%i,%i,%j)", field.typeDefault.low, field.typeDefault.high, field.typeDefault.unsigned)
+            ("d%s=o.longs===String?n.toBigInt().toString():o.longs===BigInt?n.toBigInt().toString():n", prop);
             else if (field.bytes) {
                 var arrayDefault = "[" + Array.prototype.slice.call(field.typeDefault).join(",") + "]";
                 gen
@@ -1799,8 +1790,9 @@ converter.toObject = function toObject(mtype) {
         gen
     ("}");
     }
-    return gen
-    ("return d");
+    const result = gen
+        ("return d");
+    return result;
     /* eslint-enable no-unexpected-multiline, block-scoped-var, no-redeclare */
 };
 
@@ -1844,8 +1836,6 @@ function decoder(mtype) {
 
         // Map fields
         if (field.map) { gen
-                ("if(%s===util.emptyObject)", ref)
-                    ("%s={}", ref)
                 ("var c2 = r.uint32()+r.pos");
 
             if (types.defaults[field.keyType] !== undefined) gen
@@ -1877,11 +1867,11 @@ function decoder(mtype) {
                             ("break")
                     ("}")
                 ("}");
-
-            if (types.long[field.keyType] !== undefined) gen
-                ("%s[typeof k===\"object\"?util.longToHash(k):k]=value", ref);
-            else gen
-                ("%s[k]=value", ref);
+            gen
+                ("if(! %s )", ref)
+                    ("%s={}", ref);
+            gen
+                ("%s[String(k)] = value", ref);
 
         // Repeated fields
         } else if (field.repeated) { gen
@@ -1929,8 +1919,10 @@ function decoder(mtype) {
         ("throw util.ProtocolError(%j,{instance:m})", missing(rfield));
     }
 
-    return gen
-    ("return m");
+    const result = gen
+        ("return m");
+
+    return result;
     /* eslint-enable no-unexpected-multiline */
 }
 
@@ -2031,8 +2023,10 @@ function encoder(mtype) {
         }
     }
 
-    return gen
-    ("return w");
+    const result = gen
+        ("return w");
+
+    return result;
     /* eslint-enable no-unexpected-multiline, block-scoped-var, no-redeclare */
 }
 
@@ -2376,7 +2370,7 @@ function Field(name, id, type, rule, extend, options, comment) {
      * Whether this field's value should be treated as a long.
      * @type {boolean}
      */
-    this.long = util.Long ? types.long[type] !== undefined : /* istanbul ignore next */ false;
+    this.long = types.long[type] !== undefined;
 
     /**
      * Whether this field's value is a buffer.
@@ -2507,14 +2501,7 @@ Field.prototype.resolve = function resolve() {
     }
 
     // convert to internal data type if necesssary
-    if (this.long) {
-        this.typeDefault = util.Long.fromNumber(this.typeDefault, this.type.charAt(0) === "u");
-
-        /* istanbul ignore else */
-        if (Object.freeze)
-            Object.freeze(this.typeDefault); // long instances are meant to be immutable anyway (i.e. use small int cache that even requires it)
-
-    } else if (this.bytes && typeof this.typeDefault === "string") {
+    if (this.bytes && typeof this.typeDefault === "string") {
         var buf;
         if (util.base64.test(this.typeDefault))
             util.base64.decode(this.typeDefault, buf = util.newBuffer(util.base64.length(this.typeDefault)), 0);
@@ -2556,7 +2543,7 @@ Field.prototype.resolve = function resolve() {
  * @param {"optional"|"required"|"repeated"} [fieldRule="optional"] Field rule
  * @param {T} [defaultValue] Default value
  * @returns {FieldDecorator} Decorator function
- * @template T extends number | number[] | Long | Long[] | string | string[] | boolean | boolean[] | Uint8Array | Uint8Array[] | Buffer | Buffer[]
+ * @template T extends number | number[] | bigint | bigint[] | string | string[] | boolean | boolean[] | Uint8Array | Uint8Array[] | Buffer | Buffer[]
  */
 Field.d = function decorateField(fieldId, fieldType, fieldRule, defaultValue) {
 
@@ -2860,7 +2847,7 @@ MapField.prototype.resolve = function resolve() {
  * @param {"int32"|"uint32"|"sint32"|"fixed32"|"sfixed32"|"int64"|"uint64"|"sint64"|"fixed64"|"sfixed64"|"bool"|"string"} fieldKeyType Field key type
  * @param {"double"|"float"|"int32"|"uint32"|"sint32"|"fixed32"|"sfixed32"|"int64"|"uint64"|"sint64"|"fixed64"|"sfixed64"|"bool"|"string"|"bytes"|Object|Constructor<{}>} fieldValueType Field value type
  * @returns {FieldDecorator} Decorator function
- * @template T extends { [key: string]: number | Long | string | boolean | Uint8Array | Buffer | number[] | Message<{}> }
+ * @template T extends { [key: string]: number | bigint | string | boolean | Uint8Array | Buffer | number[] | Message<{}> }
  */
 MapField.d = function decorateMapField(fieldId, fieldKeyType, fieldValueType) {
 
@@ -3041,8 +3028,9 @@ var util = require(37);
  * @param {boolean|Object.<string,*>} [responseStream] Whether the response is streamed
  * @param {Object.<string,*>} [options] Declared options
  * @param {string} [comment] The comment for this method
+ * @param {Object.<string,*>} [parsedOptions] Declared options, properly parsed into an object
  */
-function Method(name, type, requestType, responseType, requestStream, responseStream, options, comment) {
+function Method(name, type, requestType, responseType, requestStream, responseStream, options, comment, parsedOptions) {
 
     /* istanbul ignore next */
     if (util.isObject(requestStream)) {
@@ -3114,6 +3102,11 @@ function Method(name, type, requestType, responseType, requestStream, responseSt
      * @type {string|null}
      */
     this.comment = comment;
+
+    /**
+     * Options properly parsed into an object
+     */
+    this.parsedOptions = parsedOptions;
 }
 
 /**
@@ -3125,6 +3118,8 @@ function Method(name, type, requestType, responseType, requestStream, responseSt
  * @property {boolean} [requestStream=false] Whether requests are streamed
  * @property {boolean} [responseStream=false] Whether responses are streamed
  * @property {Object.<string,*>} [options] Method options
+ * @property {string} comment Method comments
+ * @property {Object.<string,*>} [parsedOptions] Method options properly parsed into an object
  */
 
 /**
@@ -3135,7 +3130,7 @@ function Method(name, type, requestType, responseType, requestStream, responseSt
  * @throws {TypeError} If arguments are invalid
  */
 Method.fromJSON = function fromJSON(name, json) {
-    return new Method(name, json.type, json.requestType, json.responseType, json.requestStream, json.responseStream, json.options, json.comment);
+    return new Method(name, json.type, json.requestType, json.responseType, json.requestStream, json.responseStream, json.options, json.comment, json.parsedOptions);
 };
 
 /**
@@ -3152,7 +3147,8 @@ Method.prototype.toJSON = function toJSON(toJSONOptions) {
         "responseType"   , this.responseType,
         "responseStream" , this.responseStream,
         "options"        , this.options,
-        "comment"        , keepComments ? this.comment : undefined
+        "comment"        , keepComments ? this.comment : undefined,
+        "parsedOptions"  , this.parsedOptions,
     ]);
 };
 
@@ -5024,27 +5020,6 @@ function readLongVarint() {
 /* eslint-enable no-invalid-this */
 
 /**
- * Reads a varint as a signed 64 bit value.
- * @name Reader#int64
- * @function
- * @returns {Long} Value read
- */
-
-/**
- * Reads a varint as an unsigned 64 bit value.
- * @name Reader#uint64
- * @function
- * @returns {Long} Value read
- */
-
-/**
- * Reads a zig-zag encoded varint as a signed 64 bit value.
- * @name Reader#sint64
- * @function
- * @returns {Long} Value read
- */
-
-/**
  * Reads a varint as a boolean.
  * @returns {boolean} Value read
  */
@@ -5098,19 +5073,57 @@ function readFixed64(/* this: Reader */) {
 
 /* eslint-enable no-invalid-this */
 
+
+/**
+ * Reads a varint as a signed 64 bit value.
+ * @name Reader#int64
+ * @function
+ * @returns {bigint} Value read
+ */
+Reader.prototype.int64 = function() {
+    return readLongVarint.call(this).toBigInt();
+};
+
+
+/**
+ * Reads a varint as an unsigned 64 bit value.
+ * @name Reader#uint64
+ * @function
+ * @returns {bigint} Value read
+ */
+Reader.prototype.uint64 = function() {
+    return readLongVarint.call(this).toBigInt();
+};
+
+/**
+ * Reads a zig-zag encoded varint as a signed 64 bit value.
+ * @name Reader#sint64
+ * @function
+ * @returns {bigint} Value read
+ */
+Reader.prototype.sint64 = function() {
+    return readLongVarint.call(this).zzDecode().toBigInt();
+};
+
 /**
  * Reads fixed 64 bits.
  * @name Reader#fixed64
  * @function
- * @returns {Long} Value read
+ * @returns {bigint} Value read
  */
+Reader.prototype.fixed64 = function() {
+    return readFixed64.call(this).toBigInt();
+};
 
 /**
  * Reads zig-zag encoded fixed 64 bits.
  * @name Reader#sfixed64
  * @function
- * @returns {Long} Value read
+ * @returns {bigint} Value read
  */
+Reader.prototype.sfixed64 = function() {
+    return readFixed64.call(this).toBigInt();
+};
 
 /**
  * Reads a float (32 bit) as a number.
@@ -5231,31 +5244,6 @@ Reader._configure = function(BufferReader_) {
     BufferReader = BufferReader_;
     Reader.create = create();
     BufferReader._configure();
-
-    var fn = util.Long ? "toLong" : /* istanbul ignore next */ "toNumber";
-    util.merge(Reader.prototype, {
-
-        int64: function read_int64() {
-            return readLongVarint.call(this)[fn](false);
-        },
-
-        uint64: function read_uint64() {
-            return readLongVarint.call(this)[fn](true);
-        },
-
-        sint64: function read_sint64() {
-            return readLongVarint.call(this).zzDecode()[fn](false);
-        },
-
-        fixed64: function read_fixed64() {
-            return readFixed64.call(this)[fn](true);
-        },
-
-        sfixed64: function read_sfixed64() {
-            return readFixed64.call(this)[fn](false);
-        }
-
-    });
 };
 
 },{"39":39}],28:[function(require,module,exports){
@@ -6997,8 +6985,8 @@ Type.prototype.fromObject = function fromObject(object) {
  * Conversion options as used by {@link Type#toObject} and {@link Message.toObject}.
  * @interface IConversionOptions
  * @property {Function} [longs] Long conversion type.
- * Valid values are `String` and `Number` (the global types).
- * Defaults to copy the present value, which is a possibly unsafe number without and a {@link Long} with a long library.
+ * Valid values are `String` and `BigInt` (the global types).
+ * Defaults to copy the present value.
  * @property {Function} [enums] Enum value conversion type.
  * Only valid value is `String` (the global type).
  * Defaults to copy the present value, which is the numeric id.
@@ -7475,13 +7463,13 @@ function LongBits(lo, hi) {
      * Low bits.
      * @type {number}
      */
-    this.lo = lo >>> 0;
+    this.lo = lo | 0;
 
     /**
      * High bits.
      * @type {number}
      */
-    this.hi = hi >>> 0;
+    this.hi = hi | 0;
 }
 
 /**
@@ -7491,23 +7479,48 @@ function LongBits(lo, hi) {
  */
 var zero = LongBits.zero = new LongBits(0, 0);
 
-zero.toNumber = function() { return 0; };
+zero.toBigInt = function() { return 0n; };
 zero.zzEncode = zero.zzDecode = function() { return this; };
 zero.length = function() { return 1; };
 
-/**
- * Zero hash.
- * @memberof util.LongBits
- * @type {string}
- */
-var zeroHash = LongBits.zeroHash = "\0\0\0\0\0\0\0\0";
+const TWO_32 = 4294967296n;
 
 /**
  * Constructs new long bits from the specified number.
  * @param {number} value Value
  * @returns {util.LongBits} Instance
  */
-LongBits.fromNumber = function fromNumber(value) {
+LongBits.fromBigInt = function fromNumber(value) {
+    value = BigInt(value);
+    if (value === 0n)
+        return zero;
+
+    var negative = value < 0;
+    if (negative) {
+        value = -value;
+    }
+    var hi = Number(value >> 32n) | 0;
+    var lo = Number(value - ( BigInt(hi) << 32n ) ) | 0;
+
+    if (negative) {
+        hi = ~hi >>> 0;
+        lo = ~lo >>> 0;
+        if (++lo > TWO_32) {
+            lo = 0;
+            if (++hi > TWO_32)
+                hi = 0;
+        }
+    }
+
+    return new LongBits(lo, hi);
+};
+
+/**
+ * Constructs new long bits from the specified number.
+ * @param {number} value Value
+ * @returns {util.LongBits} Instance
+ */
+ LongBits.fromNumber = function fromNumber(value) {
     if (value === 0)
         return zero;
     var sign = value < 0;
@@ -7529,18 +7542,18 @@ LongBits.fromNumber = function fromNumber(value) {
 
 /**
  * Constructs new long bits from a number, long or string.
- * @param {Long|number|string} value Value
+ * @param {bigint|number|string|object} value Value
  * @returns {util.LongBits} Instance
  */
 LongBits.from = function from(value) {
-    if (typeof value === "number")
+    if (typeof value === "number") {
         return LongBits.fromNumber(value);
+    }
+    if (typeof value === "bigint") {
+        return LongBits.fromBigInt(value);
+    }
     if (util.isString(value)) {
-        /* istanbul ignore else */
-        if (util.Long)
-            value = util.Long.fromString(value);
-        else
-            return LongBits.fromNumber(parseInt(value, 10));
+        return LongBits.fromBigInt(BigInt(value));
     }
     return value.low || value.high ? new LongBits(value.low >>> 0, value.high >>> 0) : zero;
 };
@@ -7550,67 +7563,23 @@ LongBits.from = function from(value) {
  * @param {boolean} [unsigned=false] Whether unsigned or not
  * @returns {number} Possibly unsafe number
  */
-LongBits.prototype.toNumber = function toNumber(unsigned) {
-    if (!unsigned && this.hi >>> 31) {
+LongBits.prototype.toBigInt = function toBigInt(unsigned) {
+
+
+    if (unsigned) {
+        const result = BigInt(this.lo >>> 0) + ( BigInt(this.hi >>> 0) << 32n );
+        return result;
+    }
+
+    if (this.hi >>> 31) {
         var lo = ~this.lo + 1 >>> 0,
             hi = ~this.hi     >>> 0;
         if (!lo)
             hi = hi + 1 >>> 0;
-        return -(lo + hi * 4294967296);
+        return -(BigInt(lo) + ( BigInt(hi) << 32n ) );
     }
-    return this.lo + this.hi * 4294967296;
-};
 
-/**
- * Converts this long bits to a long.
- * @param {boolean} [unsigned=false] Whether unsigned or not
- * @returns {Long} Long
- */
-LongBits.prototype.toLong = function toLong(unsigned) {
-    return util.Long
-        ? new util.Long(this.lo | 0, this.hi | 0, Boolean(unsigned))
-        /* istanbul ignore next */
-        : { low: this.lo | 0, high: this.hi | 0, unsigned: Boolean(unsigned) };
-};
-
-var charCodeAt = String.prototype.charCodeAt;
-
-/**
- * Constructs new long bits from the specified 8 characters long hash.
- * @param {string} hash Hash
- * @returns {util.LongBits} Bits
- */
-LongBits.fromHash = function fromHash(hash) {
-    if (hash === zeroHash)
-        return zero;
-    return new LongBits(
-        ( charCodeAt.call(hash, 0)
-        | charCodeAt.call(hash, 1) << 8
-        | charCodeAt.call(hash, 2) << 16
-        | charCodeAt.call(hash, 3) << 24) >>> 0
-    ,
-        ( charCodeAt.call(hash, 4)
-        | charCodeAt.call(hash, 5) << 8
-        | charCodeAt.call(hash, 6) << 16
-        | charCodeAt.call(hash, 7) << 24) >>> 0
-    );
-};
-
-/**
- * Converts this long bits to a 8 characters long hash.
- * @returns {string} Hash
- */
-LongBits.prototype.toHash = function toHash() {
-    return String.fromCharCode(
-        this.lo        & 255,
-        this.lo >>> 8  & 255,
-        this.lo >>> 16 & 255,
-        this.lo >>> 24      ,
-        this.hi        & 255,
-        this.hi >>> 8  & 255,
-        this.hi >>> 16 & 255,
-        this.hi >>> 24
-    );
+    return BigInt(this.lo >>> 0) + (BigInt(this.hi >>> 0) << 32n );
 };
 
 /**
@@ -7724,8 +7693,9 @@ util.emptyObject = Object.freeze ? Object.freeze({}) : /* istanbul ignore next *
  * @param {*} value Value to test
  * @returns {boolean} `true` if the value is an integer
  */
-util.isInteger = Number.isInteger || /* istanbul ignore next */ function isInteger(value) {
-    return typeof value === "number" && isFinite(value) && Math.floor(value) === value;
+util.isInteger = function isInteger(value) {
+    if (typeof value === "bigint") return true;
+    return typeof value === "number" && (Number.isInteger(value) || isFinite(value) && Math.floor(value) === value);
 };
 
 /**
@@ -7822,23 +7792,6 @@ util.newBuffer = function newBuffer(sizeOrArray) {
 util.Array = typeof Uint8Array !== "undefined" ? Uint8Array /* istanbul ignore next */ : Array;
 
 /**
- * Any compatible Long instance.
- * This is a minimal stand-alone definition of a Long instance. The actual type is that exported by long.js.
- * @interface Long
- * @property {number} low Low bits
- * @property {number} high High bits
- * @property {boolean} unsigned Whether unsigned or not
- */
-
-/**
- * Long.js's Long class if available.
- * @type {Constructor<Long>}
- */
-util.Long = /* istanbul ignore next */ util.global.dcodeIO && /* istanbul ignore next */ util.global.dcodeIO.Long
-         || /* istanbul ignore next */ util.global.Long
-         || util.inquire("long");
-
-/**
  * Regular expression used to verify 2 bit (`bool`) map keys.
  * @type {RegExp}
  * @const
@@ -7859,29 +7812,6 @@ util.key32Re = /^-?(?:0|[1-9][0-9]*)$/;
  */
 util.key64Re = /^(?:[\\x00-\\xff]{8}|-?(?:0|[1-9][0-9]*))$/;
 
-/**
- * Converts a number or long to an 8 characters long hash string.
- * @param {Long|number} value Value to convert
- * @returns {string} Hash
- */
-util.longToHash = function longToHash(value) {
-    return value
-        ? util.LongBits.from(value).toHash()
-        : util.LongBits.zeroHash;
-};
-
-/**
- * Converts an 8 characters long hash string to a long or number.
- * @param {string} hash Hash
- * @param {boolean} [unsigned=false] Whether unsigned or not
- * @returns {Long|number} Original value
- */
-util.longFromHash = function longFromHash(hash, unsigned) {
-    var bits = util.LongBits.fromHash(hash);
-    if (util.Long)
-        return util.Long.fromBits(bits.lo, bits.hi, unsigned);
-    return bits.toNumber(Boolean(unsigned));
-};
 
 /**
  * Merges the properties of the source object into the destination object.
@@ -8133,7 +8063,7 @@ function genVerifyValue(gen, field, fieldIndex, ref) {
             case "fixed64":
             case "sfixed64": gen
                 ("if(!util.isInteger(%s)&&!(%s&&util.isInteger(%s.low)&&util.isInteger(%s.high)))", ref, ref, ref, ref)
-                    ("return%j", invalid(field, "integer|Long"));
+                    ("return%j", invalid(field, "integer|bigint"));
                 break;
             case "float":
             case "double": gen
@@ -8183,7 +8113,7 @@ function genVerifyKey(gen, field, ref) {
         case "fixed64":
         case "sfixed64": gen
             ("if(!util.key64Re.test(%s))", ref) // see comment above: x is ok, d is not
-                ("return%j", invalid(field, "integer|Long key"));
+                ("return%j", invalid(field, "integer|bigint key"));
             break;
         case "bool": gen
             ("if(!util.key2Re.test(%s))", ref)
@@ -8588,7 +8518,7 @@ Writer.prototype.uint32 = function write_uint32(value) {
  */
 Writer.prototype.int32 = function write_int32(value) {
     return value < 0
-        ? this._push(writeVarint64, 10, LongBits.fromNumber(value)) // 10 bytes per spec
+        ? this._push(writeVarint64, 10, LongBits.from(value)) // 10 bytes per spec
         : this.uint32(value);
 };
 
@@ -8616,7 +8546,7 @@ function writeVarint64(val, buf, pos) {
 
 /**
  * Writes an unsigned 64 bit value as a varint.
- * @param {Long|number|string} value Value to write
+ * @param {bigint|number|string} value Value to write
  * @returns {Writer} `this`
  * @throws {TypeError} If `value` is a string and no long library is present.
  */
@@ -8628,7 +8558,7 @@ Writer.prototype.uint64 = function write_uint64(value) {
 /**
  * Writes a signed 64 bit value as a varint.
  * @function
- * @param {Long|number|string} value Value to write
+ * @param {bigint|number|string} value Value to write
  * @returns {Writer} `this`
  * @throws {TypeError} If `value` is a string and no long library is present.
  */
@@ -8636,7 +8566,7 @@ Writer.prototype.int64 = Writer.prototype.uint64;
 
 /**
  * Writes a signed 64 bit value as a varint, zig-zag encoded.
- * @param {Long|number|string} value Value to write
+ * @param {bigint|number|string} value Value to write
  * @returns {Writer} `this`
  * @throws {TypeError} If `value` is a string and no long library is present.
  */
@@ -8680,7 +8610,7 @@ Writer.prototype.sfixed32 = Writer.prototype.fixed32;
 
 /**
  * Writes an unsigned 64 bit value as fixed 64 bits.
- * @param {Long|number|string} value Value to write
+ * @param {bigint|number|string} value Value to write
  * @returns {Writer} `this`
  * @throws {TypeError} If `value` is a string and no long library is present.
  */
@@ -8692,7 +8622,7 @@ Writer.prototype.fixed64 = function write_fixed64(value) {
 /**
  * Writes a signed 64 bit value as fixed 64 bits.
  * @function
- * @param {Long|number|string} value Value to write
+ * @param {bigint|number|string} value Value to write
  * @returns {Writer} `this`
  * @throws {TypeError} If `value` is a string and no long library is present.
  */
