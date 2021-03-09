@@ -35,7 +35,7 @@ jobs:
     needs: build
     strategy:
       matrix:
-        node_version: ["4", "4.3.2", "6", "8", "10", "12"]
+        node_version: ["10", "12"]
     steps:
     - uses: actions/checkout@v1
     - uses: actions/setup-node@v1
