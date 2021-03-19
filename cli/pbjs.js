@@ -1,15 +1,12 @@
 "use strict";
 var path     = require("path"),
     fs       = require("fs"),
-    pkg      = require("./package.json"),
-    util     = require("./util");
-
-util.setup();
-
-var protobuf = require(util.pathToProtobufJs),
     minimist = require("minimist"),
     chalk    = require("chalk"),
-    glob     = require("glob");
+    pkg      = require("./package.json"),
+    util     = require("./util"),
+    glob     = require("glob"),
+    protobuf = require("protobufjs");
 
 var targets  = util.requireAll("./targets");
 
@@ -136,9 +133,9 @@ exports.main = function main(args, callback) {
                 "  --no-beautify    Does not beautify generated code.",
                 "  --no-comments    Does not output any JSDoc comments.",
                 "",
-                "  --force-long     Enfores the use of 'Long' for s-/u-/int64 and s-/fixed64 fields.",
-                "  --force-number   Enfores the use of 'number' for s-/u-/int64 and s-/fixed64 fields.",
-                "  --force-message  Enfores the use of message instances instead of plain objects.",
+                "  --force-long     Enforces the use of 'Long' for s-/u-/int64 and s-/fixed64 fields.",
+                "  --force-number   Enforces the use of 'number' for s-/u-/int64 and s-/fixed64 fields.",
+                "  --force-message  Enforces the use of message instances instead of plain objects.",
                 "",
                 "usage: " + chalk.bold.green("pbjs") + " [options] file1.proto file2.json ..." + chalk.gray("  (or pipe)  ") + "other | " + chalk.bold.green("pbjs") + " [options] -",
                 ""

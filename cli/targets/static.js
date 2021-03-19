@@ -1,11 +1,11 @@
 "use strict";
 module.exports = static_target;
 
-var protobuf   = require("../.."),
-    UglifyJS   = require("uglify-js"),
+var UglifyJS   = require("uglify-js"),
     espree     = require("espree"),
     escodegen  = require("escodegen"),
-    estraverse = require("estraverse");
+    estraverse = require("estraverse"),
+    protobuf   = require("protobufjs");
 
 var Type      = protobuf.Type,
     Service   = protobuf.Service,
