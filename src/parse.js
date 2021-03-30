@@ -577,7 +577,23 @@ function parse(source, root, options) {
                     skip(":");
                     if (peek() === "{")
                         value = parseOptionValue(parent, name + "." + token);
-                    else {
+                    else if (peek() === "[") {
+                        // option (my_option) = {
+                        //     repeated_value: [ "foo", "bar" ]
+                        // };
+                        value = [];
+                        var lastValue;
+                        if (skip("[", true)) {
+                            do {
+                                lastValue = readValue(true);
+                                value.push(lastValue);
+                            } while (skip(",", true));
+                            skip("]");
+                            if (typeof lastValue !== "undefined") {
+                                setOption(parent, name + "." + token, lastValue);
+                            }
+                        }
+                    } else {
                         value = readValue(true);
                         setOption(parent, name + "." + token, value);
                     }

@@ -37,13 +37,14 @@ tape.test("Options", function (test) {
 
     test.test(test.name + " - message options (Message)", function (test) {
         var TestMessageOptionsMsg = root.lookup("TestMessageOptionsMsg");
-        test.equal(TestMessageOptionsMsg.options["(mo_rep_msg).value"], 4, "should take second repeated message option");
-        test.equal(TestMessageOptionsMsg.options["(mo_rep_msg).rep_value"], 6, "should take second repeated int in second repeated option");
+        test.equal(TestMessageOptionsMsg.options["(mo_rep_msg).value"], 5, "should take last repeated message option");
+        test.equal(TestMessageOptionsMsg.options["(mo_rep_msg).rep_value"], 8, "should take last repeated int in last repeated option");
         test.equal(TestMessageOptionsMsg.options["(mo_single_msg).value"], 7, "should correctly parse single msg option");
         test.equal(TestMessageOptionsMsg.options["(mo_single_msg).rep_value"], 9, "should take second repeated int in single msg option");
         test.same(TestMessageOptionsMsg.parsedOptions, [
             {"(mo_rep_msg)": {value: 1, rep_value: [2, 3]}},
             {"(mo_rep_msg)": {value: 4, rep_value: [5, 6]}},
+            {"(mo_rep_msg)": {value: 5, rep_value: [7, 8]}},
             {"(mo_single_msg)": {value: 7, rep_value: [8, 9]}},
         ], "should take all message options");
         test.end();

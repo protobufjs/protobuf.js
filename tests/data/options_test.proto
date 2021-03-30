@@ -74,6 +74,10 @@ message TestMessageOptionsMsg {
         rep_value: 5
         rep_value: 6
     };
+    option (mo_rep_msg) = {
+        value: 5
+        rep_value: [ 7, 8 ]
+    };
     option (mo_single_msg).value = 7;
     option (mo_single_msg).rep_value = 8;
     option (mo_single_msg).rep_value = 9;
