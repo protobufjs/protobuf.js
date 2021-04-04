@@ -674,24 +674,13 @@ function buildEnum(ref, enm) {
         comment.push((config.forceEnumString ? "@property {string} " : "@property {number} ") + key + "=" + val + " " + (enm.comments[key] || key + " value"));
     });
     pushComment(comment);
-    if (!ref)
-        push("export const " + escapeName(enm.name) + " = " + escapeName(ref) + "." + escapeName(enm.name) + " = (() => {");
-    else
-        push(escapeName(ref) + "." + escapeName(enm.name) + " = (function() {");
+    push("export enum " + escapeName(enm.name) + " {");
     ++indent;
-        push("const valuesById = {}, values = Object.create(valuesById);");
-        var aliased = [];
         Object.keys(enm.values).forEach(function(key) {
             var valueId = enm.values[key];
             var val = config.forceEnumString ? JSON.stringify(key) : valueId;
-            if (aliased.indexOf(valueId) > -1)
-                push("values[" + JSON.stringify(key) + "] = " + val + ";");
-            else {
-                push("values[valuesById[" + valueId + "] = " + JSON.stringify(key) + "] = " + val + ";");
-                aliased.push(valueId);
-            }
+            push(key + " = " + val + ",");
         });
-        push("return values;");
     --indent;
-    push("})();");
+    push("}");
 }
