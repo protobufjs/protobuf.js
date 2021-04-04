@@ -29,9 +29,11 @@ function typescript(root, options, callback) {
             aliases.push("Writer");
         aliases.push("util");
         if (aliases.length) {
+            push("/* eslint-disable */");
+            push("import * as $protobuf from \"protobufjs/minimal\"");
             if (config.comments)
                 push("// Common aliases");
-            push((config.es6 ? "const " : "var ") + aliases.map(function(name) { return "$" + name + " = $protobuf." + name; }).join(", ") + ";");
+            push("const " + aliases.map(function(name) { return "$" + name + " = $protobuf." + name; }).join(", ") + ";");
             push("");
         }
         if (config.comments) {
@@ -39,10 +41,7 @@ function typescript(root, options, callback) {
                 pushComment("@fileoverview " + root.comment);
                 push("");
             }
-            push("// Exported root namespace");
         }
-        var rootProp = util.safeProp(config.root || "default");
-        push((config.es6 ? "const" : "var") + " $root = $protobuf.roots" + rootProp + " || ($protobuf.roots" + rootProp + " = {});");
         buildNamespace(null, root);
         return callback(null, out.join("\n"));
     } catch (err) {
@@ -111,7 +110,7 @@ function buildNamespace(ref, ns) {
         return;
     if (ns.name !== "") {
         push("");
-        if (!ref && config.es6)
+        if (!ref)
             push("export const " + escapeName(ns.name) + " = " + escapeName(ref) + "." + escapeName(ns.name) + " = (() => {");
         else
             push(escapeName(ref) + "." + escapeName(ns.name) + " = (function() {");
@@ -129,7 +128,7 @@ function buildNamespace(ref, ns) {
             ns.parent instanceof protobuf.Root ? "@exports " + escapeName(ns.name) : "@memberof " + exportName(ns.parent),
             "@namespace"
         ]);
-        push((config.es6 ? "const" : "var") + " " + escapeName(ns.name) + " = {};");
+        push("const " + escapeName(ns.name) + " = {};");
     }
 
     ns.nestedArray.forEach(function(nested) {
@@ -187,7 +186,7 @@ function beautifyCode(code) {
                     "name": shortVars[node.name]
                 };
             // replace var with let if es6
-            if (config.es6 && node.type === "VariableDeclaration" && node.kind === "var") {
+            if (node.type === "VariableDeclaration" && node.kind === "var") {
                 node.kind = "let";
                 return undefined;
             }
@@ -426,7 +425,7 @@ function buildType(ref, type) {
             push("");
             if (config.comments)
                 push("// OneOf field names bound to virtual getters and setters");
-            push((config.es6 ? "let" : "var") + " $oneOfFields;");
+            push("let $oneOfFields;");
         }
         oneof.resolve();
         push("");
@@ -682,12 +681,12 @@ function buildEnum(ref, enm) {
         comment.push((config.forceEnumString ? "@property {string} " : "@property {number} ") + key + "=" + val + " " + (enm.comments[key] || key + " value"));
     });
     pushComment(comment);
-    if (!ref && config.es6)
+    if (!ref)
         push("export const " + escapeName(enm.name) + " = " + escapeName(ref) + "." + escapeName(enm.name) + " = (() => {");
     else
         push(escapeName(ref) + "." + escapeName(enm.name) + " = (function() {");
     ++indent;
-        push((config.es6 ? "const" : "var") + " valuesById = {}, values = Object.create(valuesById);");
+        push("const valuesById = {}, values = Object.create(valuesById);");
         var aliased = [];
         Object.keys(enm.values).forEach(function(key) {
             var valueId = enm.values[key];
