@@ -156,6 +156,7 @@ var shortVars = {
     "r": "reader",
     "w": "writer",
     "m": "message",
+    "_m": "message",
     "t": "tag",
     "l": "length",
     "c": "end", "c2": "end2",
@@ -164,6 +165,7 @@ var shortVars = {
     "e": "error",
     "f": "impl",
     "o": "options",
+    "_o": "options",
     "d": "object",
     "n": "long",
     "p": "properties"
