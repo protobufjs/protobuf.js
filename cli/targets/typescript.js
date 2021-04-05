@@ -108,27 +108,21 @@ function aOrAn(name) {
 function buildNamespace(ref, ns) {
     if (!ns)
         return;
-    if (ns.name !== "") {
-        push("");
-        if (!ref)
-            push("export const " + escapeName(ns.name) + " = " + escapeName(ref) + "." + escapeName(ns.name) + " = (() => {");
-        else
-            push(escapeName(ref) + "." + escapeName(ns.name) + " = (function() {");
-        ++indent;
-    }
 
-    if (ns instanceof Type) {
-        buildType(undefined, ns);
-    } else if (ns instanceof Service)
+    if (ns instanceof Type)
+        buildType(ref, ns);
+    else if (ns instanceof Service)
         buildService(undefined, ns);
-    else if (ns.name !== "") {
+
+    if (ns.nestedArray.length > 0 && ns.name !== "") {
         push("");
         pushComment([
             ns.comment || "Namespace " + ns.name + ".",
             ns.parent instanceof protobuf.Root ? "@exports " + escapeName(ns.name) : "@memberof " + exportName(ns.parent),
             "@namespace"
         ]);
-        push("const " + escapeName(ns.name) + " = {};");
+        push("export namespace " + escapeName(ns.name) + " {");
+        ++indent;
     }
 
     ns.nestedArray.forEach(function(nested) {
@@ -137,11 +131,10 @@ function buildNamespace(ref, ns) {
         else if (nested instanceof Namespace)
             buildNamespace(ns.name, nested);
     });
-    if (ns.name !== "") {
-        push("");
-        push("return " + escapeName(ns.name) + ";");
+
+    if (ns.nestedArray.length > 0 && ns.name !== "") {
         --indent;
-        push("})();");
+        push("}");
     }
 }
 
