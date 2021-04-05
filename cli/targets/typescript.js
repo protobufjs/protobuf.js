@@ -578,45 +578,9 @@ function buildType(ref, type) {
 }
 
 function buildService(ref, service) {
-
     push("");
-    pushComment([
-        "Constructs a new " + service.name + " service.",
-        service.parent instanceof protobuf.Root ? "@exports " + escapeName(service.name) : "@memberof " + exportName(service.parent),
-        "@classdesc " + (service.comment || "Represents " + aOrAn(service.name)),
-        "@extends $protobuf.rpc.Service",
-        "@constructor",
-        "@param {$protobuf.RPCImpl} rpcImpl RPC implementation",
-        "@param {boolean} [requestDelimited=false] Whether requests are length-delimited",
-        "@param {boolean} [responseDelimited=false] Whether responses are length-delimited"
-    ]);
-    push("function " + escapeName(service.name) + "(rpcImpl, requestDelimited, responseDelimited) {");
+    push("export namespace " + escapeName(service.name) + " {");
     ++indent;
-    push("$protobuf.rpc.Service.call(this, rpcImpl, requestDelimited, responseDelimited);");
-    --indent;
-    push("}");
-    push("");
-    push("(" + escapeName(service.name) + ".prototype = Object.create($protobuf.rpc.Service.prototype)).constructor = " + escapeName(service.name) + ";");
-
-    if (config.create) {
-        push("");
-        pushComment([
-            "Creates new " + service.name + " service using the specified rpc implementation.",
-            "@function create",
-            "@memberof " + exportName(service),
-            "@static",
-            "@param {$protobuf.RPCImpl} rpcImpl RPC implementation",
-            "@param {boolean} [requestDelimited=false] Whether requests are length-delimited",
-            "@param {boolean} [responseDelimited=false] Whether responses are length-delimited",
-            "@returns {" + escapeName(service.name) + "} RPC service. Useful where requests and/or responses are streamed."
-        ]);
-        push(escapeName(service.name) + ".create = function create(rpcImpl, requestDelimited, responseDelimited) {");
-            ++indent;
-            push("return new this(rpcImpl, requestDelimited, responseDelimited);");
-            --indent;
-        push("};");
-    }
-
     service.methodsArray.forEach(function(method) {
         method.resolve();
         var lcName = protobuf.util.lcFirst(method.name),
@@ -631,6 +595,54 @@ function buildService(ref, service) {
             "@param {Error|null} error Error, if any",
             "@param {" + exportName(method.resolvedResponseType) + "} [response] " + method.resolvedResponseType.name
         ]);
+        push("export type " + cbName + " = (error: Error | null, response?: " + exportName(method.resolvedResponseType) + ") => void");
+    });
+    --indent;
+    push("}");
+
+    push("");
+    push("export class " + escapeName(service.name) + " extends $protobuf.rpc.Service {");
+    ++indent;
+    push("");
+    pushComment([
+        "Constructs a new " + service.name + " service.",
+        service.parent instanceof protobuf.Root ? "@exports " + escapeName(service.name) : "@memberof " + exportName(service.parent),
+        "@classdesc " + (service.comment || "Represents " + aOrAn(service.name)),
+        "@extends $protobuf.rpc.Service",
+        "@constructor",
+        "@param {$protobuf.RPCImpl} rpcImpl RPC implementation",
+        "@param {boolean} [requestDelimited=false] Whether requests are length-delimited",
+        "@param {boolean} [responseDelimited=false] Whether responses are length-delimited"
+    ]);
+    push("constructor(rpcImpl: $protobuf.RPCImpl, requestDelimited = false, responseDelimited = false) {");
+    ++indent;
+    push("super(rpcImpl, requestDelimited, responseDelimited);");
+    --indent;
+    push("}");
+
+    if (config.create) {
+        push("");
+        pushComment([
+            "Creates new " + service.name + " service using the specified rpc implementation.",
+            "@function create",
+            "@memberof " + exportName(service),
+            "@static",
+            "@param {$protobuf.RPCImpl} rpcImpl RPC implementation",
+            "@param {boolean} [requestDelimited=false] Whether requests are length-delimited",
+            "@param {boolean} [responseDelimited=false] Whether responses are length-delimited",
+            "@returns {" + escapeName(service.name) + "} RPC service. Useful where requests and/or responses are streamed."
+        ]);
+        push("static create(rpcImpl: $protobuf.RPCImpl, requestDelimited = false, responseDelimited = false) {");
+            ++indent;
+            push("return new " + escapeName(service.name) + "(rpcImpl, requestDelimited, responseDelimited);");
+            --indent;
+        push("}");
+    }
+
+    service.methodsArray.forEach(function(method) {
+        method.resolve();
+        var lcName = protobuf.util.lcFirst(method.name),
+            cbName = escapeName(method.name + "Callback");
         push("");
         pushComment([
             method.comment || "Calls " + method.name + ".",
@@ -642,13 +654,7 @@ function buildService(ref, service) {
             "@returns {undefined}",
             "@variation 1"
         ]);
-        push("Object.defineProperty(" + escapeName(service.name) + ".prototype" + util.safeProp(lcName) + " = function " + escapeName(lcName) + "(request, callback) {");
-            ++indent;
-            push("return this.rpcCall(" + escapeName(lcName) + ", $root." + exportName(method.resolvedRequestType) + ", $root." + exportName(method.resolvedResponseType) + ", request, callback);");
-            --indent;
-        push("}, \"name\", { value: " + JSON.stringify(method.name) + " });");
-        if (config.comments)
-            push("");
+        push("");
         pushComment([
             method.comment || "Calls " + method.name + ".",
             "@function " + lcName,
@@ -658,7 +664,17 @@ function buildService(ref, service) {
             "@returns {Promise<" + exportName(method.resolvedResponseType) + ">} Promise",
             "@variation 2"
         ]);
+        push(escapeName(lcName) + "(request: " + exportName(method.resolvedRequestType, !config.forceMessage) +", callback: " + exportName(service) + "." + cbName + "): void");
+        push(escapeName(lcName) + "(request: " + exportName(method.resolvedRequestType, !config.forceMessage) +"): Promise<" + exportName(method.resolvedResponseType) + ">");
+        push(escapeName(lcName) + "(request: " + exportName(method.resolvedRequestType, !config.forceMessage) +", callback?: " + exportName(service) + "." + cbName + "): Promise<" + exportName(method.resolvedResponseType) + "> | void {");
+            ++indent;
+            push("return this.rpcCall(this." + escapeName(lcName) + " as any, " + exportName(method.resolvedRequestType) + " as any, " + exportName(method.resolvedResponseType) + " as any, request as any, callback as any);");
+            --indent;
+        push("}");
     });
+
+    --indent;
+    push("}");
 }
 
 function buildEnum(ref, enm) {
