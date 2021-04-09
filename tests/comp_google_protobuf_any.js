@@ -42,7 +42,7 @@ tape.test("google.protobuf.Any", function(test) {
     test.same(obj.foo, { type_url: "Bar", value: [10, 1, 97] }, "should keep explicit Any in toObject properly");
 
     obj = Foo.toObject(foo, { json: true });
-    test.same(obj.foo, { "@type": ".Bar", bar: "a" }, "should decode explicitly Any in toObject if requested");
+    test.same(obj.foo, { "@type": "type.googleapis.com/Bar", bar: "a" }, "should decode explicitly Any in toObject if requested");
 
     foo = Foo.fromObject({
         foo: {
@@ -60,7 +60,7 @@ tape.test("google.protobuf.Any", function(test) {
         }
     });
     obj = Foo.toObject(baz, { json: true });
-    test.same(obj.foo, { "@type": ".Bar", bar: "a" }, "should not care about prefix in type url");
+    test.same(obj.foo, { "@type": "type.someurl.com/Bar", bar: "a" }, "should keep prefix in type url");
 
     test.end();
 });

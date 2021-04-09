@@ -12,7 +12,7 @@
   "types": "index.d.ts",
   "devDependencies": {
     "istanbul": "^0.4.5",
-    "tape": "^4.6.3"
+    "tape": "^5.0.0"
   },
   "scripts": {
     "test": "tape tests/*.js",

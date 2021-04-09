@@ -1,20 +1,7 @@
 "use strict";
-var fs            = require("fs"),
-    path          = require("path"),
-    child_process = require("child_process");
-
-var semver;
-
-try {
-    // installed as a peer dependency
-    require.resolve("protobufjs");
-    exports.pathToProtobufJs = "protobufjs";
-} catch (e) {
-    // local development, i.e. forked from github
-    exports.pathToProtobufJs = "..";
-}
-
-var protobuf = require(exports.pathToProtobufJs);
+var fs       = require("fs"),
+    path     = require("path"),
+    protobuf = require("protobufjs");
 
 function basenameCompare(a, b) {
     var aa = String(a).replace(/\.\w+$/, "").split(/(-?\d*\.?\d+)/g),
@@ -111,49 +98,6 @@ exports.inspect = function inspect(object, indent) {
             sb.push(inspect(nested, indent + "  "));
         });
     return sb.join("\n");
-};
-
-function modExists(name, version) {
-    for (var i = 0; i < module.paths.length; ++i) {
-        try {
-            var pkg = JSON.parse(fs.readFileSync(path.join(module.paths[i], name, "package.json")));
-            return semver
-                ? semver.satisfies(pkg.version, version)
-                : parseInt(pkg.version, 10) === parseInt(version.replace(/^[\^~]/, ""), 10); // used for semver only
-        } catch (e) {/**/}
-    }
-    return false;
-}
-
-function modInstall(install) {
-    child_process.execSync("npm --silent install " + (typeof install === "string" ? install : install.join(" ")), {
-        cwd: __dirname,
-        stdio: "ignore"
-    });
-}
-
-exports.setup = function() {
-    var pkg = require(path.join(__dirname, "..", "package.json"));
-    var version = pkg.dependencies["semver"] || pkg.devDependencies["semver"];
-    if (!modExists("semver", version)) {
-        process.stderr.write("installing semver@" + version + "\n");
-        modInstall("semver@" + version);
-    }
-    semver = require("semver"); // used from now on for version comparison
-    var install = [];
-    pkg.cliDependencies.forEach(function(name) {
-        if (name === "semver")
-            return;
-        version = pkg.dependencies[name] || pkg.devDependencies[name];
-        if (!modExists(name, version)) {
-            process.stderr.write("installing " + name + "@" + version + "\n");
-            install.push(name + "@" + version);
-        }
-    });
-    require("../scripts/postinstall"); // emit postinstall warning, if any
-    if (!install.length)
-        return;
-    modInstall(install);
 };
 
 exports.wrap = function(OUTPUT, options) {
