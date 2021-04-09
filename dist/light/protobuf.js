@@ -1,6 +1,6 @@
 /*!
- * protobuf.js v6.10.0 (c) 2016, daniel wirtz
- * compiled wed, 15 jul 2020 23:34:13 utc
+ * protobuf.js v6.11.0-pre (c) 2016, daniel wirtz
+ * compiled fri, 09 apr 2021 03:51:36 utc
  * licensed under the bsd-3-clause license
  * see: https://github.com/dcodeio/protobuf.js for details
  */
@@ -1903,6 +1903,9 @@ function Field(name, id, type, rule, extend, options, comment) {
      * Field rule, if any.
      * @type {string|undefined}
      */
+    if (rule === "proto3_optional") {
+        rule = "optional";
+    }
     this.rule = rule && rule !== "optional" ? rule : undefined; // toJSON
 
     /**
@@ -2626,8 +2629,9 @@ var util = require(33);
  * @param {boolean|Object.<string,*>} [responseStream] Whether the response is streamed
  * @param {Object.<string,*>} [options] Declared options
  * @param {string} [comment] The comment for this method
+ * @param {Object.<string,*>} [parsedOptions] Declared options, properly parsed into an object
  */
-function Method(name, type, requestType, responseType, requestStream, responseStream, options, comment) {
+function Method(name, type, requestType, responseType, requestStream, responseStream, options, comment, parsedOptions) {
 
     /* istanbul ignore next */
     if (util.isObject(requestStream)) {
@@ -2699,6 +2703,11 @@ function Method(name, type, requestType, responseType, requestStream, responseSt
      * @type {string|null}
      */
     this.comment = comment;
+
+    /**
+     * Options properly parsed into an object
+     */
+    this.parsedOptions = parsedOptions;
 }
 
 /**
@@ -2710,6 +2719,8 @@ function Method(name, type, requestType, responseType, requestStream, responseSt
  * @property {boolean} [requestStream=false] Whether requests are streamed
  * @property {boolean} [responseStream=false] Whether responses are streamed
  * @property {Object.<string,*>} [options] Method options
+ * @property {string} comment Method comments
+ * @property {Object.<string,*>} [parsedOptions] Method options properly parsed into an object
  */
 
 /**
@@ -2720,7 +2731,7 @@ function Method(name, type, requestType, responseType, requestStream, responseSt
  * @throws {TypeError} If arguments are invalid
  */
 Method.fromJSON = function fromJSON(name, json) {
-    return new Method(name, json.type, json.requestType, json.responseType, json.requestStream, json.responseStream, json.options, json.comment);
+    return new Method(name, json.type, json.requestType, json.responseType, json.requestStream, json.responseStream, json.options, json.comment, json.parsedOptions);
 };
 
 /**
@@ -2737,7 +2748,8 @@ Method.prototype.toJSON = function toJSON(toJSONOptions) {
         "responseType"   , this.responseType,
         "responseStream" , this.responseStream,
         "options"        , this.options,
-        "comment"        , keepComments ? this.comment : undefined
+        "comment"        , keepComments ? this.comment : undefined,
+        "parsedOptions"  , this.parsedOptions,
     ]);
 };
 

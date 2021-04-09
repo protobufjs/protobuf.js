@@ -300,9 +300,6 @@ export class FieldBase extends ReflectionObject {
      */
     constructor(name: string, id: number, type: string, rule?: (string|{ [k: string]: any }), extend?: (string|{ [k: string]: any }), options?: { [k: string]: any }, comment?: string);
 
-    /** Field rule, if any. */
-    public rule?: string;
-
     /** Field type. */
     public type: string;
 
@@ -602,8 +599,9 @@ export class Method extends ReflectionObject {
      * @param [responseStream] Whether the response is streamed
      * @param [options] Declared options
      * @param [comment] The comment for this method
+     * @param [parsedOptions] Declared options, properly parsed into an object
      */
-    constructor(name: string, type: (string|undefined), requestType: string, responseType: string, requestStream?: (boolean|{ [k: string]: any }), responseStream?: (boolean|{ [k: string]: any }), options?: { [k: string]: any }, comment?: string);
+    constructor(name: string, type: (string|undefined), requestType: string, responseType: string, requestStream?: (boolean|{ [k: string]: any }), responseStream?: (boolean|{ [k: string]: any }), options?: { [k: string]: any }, comment?: string, parsedOptions?: { [k: string]: any });
 
     /** Method type. */
     public type: string;
@@ -628,6 +626,9 @@ export class Method extends ReflectionObject {
 
     /** Comment for this method */
     public comment: (string|null);
+
+    /** Options properly parsed into an object */
+    public parsedOptions: any;
 
     /**
      * Constructs a method from a method descriptor.
@@ -666,6 +667,12 @@ export interface IMethod {
 
     /** Method options */
     options?: { [k: string]: any };
+
+    /** Method comments */
+    comment: string;
+
+    /** Method options properly parsed into an object */
+    parsedOptions?: { [k: string]: any };
 }
 
 /** Reflected namespace. */
