@@ -44,7 +44,7 @@ exports.main = function main(args, callback) {
             "force-message": "strict-message"
         },
         string: [ "target", "out", "path", "wrap", "dependency", "root", "lint" ],
-        boolean: [ "create", "encode", "decode", "verify", "convert", "delimited", "beautify", "comments", "es6", "sparse", "keep-case", "force-long", "force-number", "force-enum-string", "force-message" ],
+        boolean: [ "create", "encode", "decode", "verify", "convert", "delimited", "beautify", "comments", "service", "es6", "sparse", "keep-case", "force-long", "force-number", "force-enum-string", "force-message" ],
         default: {
             target: "json",
             create: true,
@@ -55,6 +55,7 @@ exports.main = function main(args, callback) {
             delimited: true,
             beautify: true,
             comments: true,
+            service: true,
             es6: null,
             lint: lintDefault,
             "keep-case": false,
@@ -135,6 +136,7 @@ exports.main = function main(args, callback) {
                 "  --no-delimited   Does not generate delimited encode/decode functions.",
                 "  --no-beautify    Does not beautify generated code.",
                 "  --no-comments    Does not output any JSDoc comments.",
+                "  --no-service     Does not output service classes.",
                 "",
                 "  --force-long     Enfores the use of 'Long' for s-/u-/int64 and s-/fixed64 fields.",
                 "  --force-number   Enfores the use of 'number' for s-/u-/int64 and s-/fixed64 fields.",

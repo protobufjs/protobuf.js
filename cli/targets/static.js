@@ -109,6 +109,10 @@ function aOrAn(name) {
 function buildNamespace(ref, ns) {
     if (!ns)
         return;
+
+    if (ns instanceof Service && !config.service)
+        return;
+
     if (ns.name !== "") {
         push("");
         if (!ref && config.es6)
