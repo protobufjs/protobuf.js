@@ -394,7 +394,8 @@ function buildType(ref, type) {
         if (config.comments) {
             push("");
             var jsType = toJsType(field);
-            if (field.optional && !field.map && !field.repeated && field.resolvedType instanceof Type)
+            if (field.optional && !field.map && !field.repeated && field.resolvedType instanceof Type ||
+                    field.options && field.options.proto3_optional)
                 jsType = jsType + "|null|undefined";
             pushComment([
                 field.comment || type.name + " " + field.name + ".",
@@ -410,6 +411,9 @@ function buildType(ref, type) {
             push(escapeName(type.name) + ".prototype" + prop + " = $util.emptyArray;"); // overwritten in constructor
         else if (field.map)
             push(escapeName(type.name) + ".prototype" + prop + " = $util.emptyObject;"); // overwritten in constructor
+        else if (field.options && field.options.proto3_optional) {
+            push(escapeName(type.name) + ".prototype" + prop + " = null;"); // do not set default value for proto3 optional fields
+        }
         else if (field.long)
             push(escapeName(type.name) + ".prototype" + prop + " = $util.Long ? $util.Long.fromBits("
                     + JSON.stringify(field.typeDefault.low) + ","
