@@ -52,12 +52,6 @@ $> npm install protobufjs [--save --save-prefix=~]
 var protobuf = require("protobufjs");
 ```
 
-The command line utility lives in the protobufjs-cli package and must be installed separately:
-
-```
-$> npm install protobufjs-cli [--save --save-prefix=~]
-```
-
 **Note** that this library's versioning scheme is not semver-compatible for historical reasons. For guaranteed backward compatibility, always depend on `~6.A.B` instead of `^6.A.B` (hence the `--save-prefix` above).
 
 ### Browsers
