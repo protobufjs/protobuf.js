@@ -204,7 +204,7 @@ util.key64Re = /^(?:[\\x00-\\xff]{8}|-?(?:0|[1-9][0-9]*))$/;
 
 /**
  * Converts a number or long to an 8 characters long hash string.
- * @param {Long|number} value Value to convert
+ * @param {Long|number|bigint} value Value to convert
  * @returns {string} Hash
  */
 util.longToHash = function longToHash(value) {

@@ -1,6 +1,6 @@
 /*!
- * protobuf.js v6.10.0 (c) 2016, daniel wirtz
- * compiled wed, 15 jul 2020 23:34:13 utc
+ * protobuf.js v6.10.2 (c) 2016, daniel wirtz
+ * compiled tue, 20 apr 2021 08:56:16 utc
  * licensed under the bsd-3-clause license
  * see: https://github.com/dcodeio/protobuf.js for details
  */
@@ -1606,12 +1606,14 @@ LongBits.fromNumber = function fromNumber(value) {
 
 /**
  * Constructs new long bits from a number, long or string.
- * @param {Long|number|string} value Value
+ * @param {Long|number|string|bigint} value Value
  * @returns {util.LongBits} Instance
  */
 LongBits.from = function from(value) {
     if (typeof value === "number")
         return LongBits.fromNumber(value);
+    if (typeof value === 'bigint') 
+        value = value.toString();
     if (util.isString(value)) {
         /* istanbul ignore else */
         if (util.Long)
@@ -1938,7 +1940,7 @@ util.key64Re = /^(?:[\\x00-\\xff]{8}|-?(?:0|[1-9][0-9]*))$/;
 
 /**
  * Converts a number or long to an 8 characters long hash string.
- * @param {Long|number} value Value to convert
+ * @param {Long|number|bigint} value Value to convert
  * @returns {string} Hash
  */
 util.longToHash = function longToHash(value) {
@@ -2411,7 +2413,7 @@ function writeVarint64(val, buf, pos) {
 
 /**
  * Writes an unsigned 64 bit value as a varint.
- * @param {Long|number|string} value Value to write
+ * @param {Long|number|string|bigint} value Value to write
  * @returns {Writer} `this`
  * @throws {TypeError} If `value` is a string and no long library is present.
  */
@@ -2423,7 +2425,7 @@ Writer.prototype.uint64 = function write_uint64(value) {
 /**
  * Writes a signed 64 bit value as a varint.
  * @function
- * @param {Long|number|string} value Value to write
+ * @param {Long|number|string|bigint} value Value to write
  * @returns {Writer} `this`
  * @throws {TypeError} If `value` is a string and no long library is present.
  */
@@ -2431,7 +2433,7 @@ Writer.prototype.int64 = Writer.prototype.uint64;
 
 /**
  * Writes a signed 64 bit value as a varint, zig-zag encoded.
- * @param {Long|number|string} value Value to write
+ * @param {Long|number|string|bigint} value Value to write
  * @returns {Writer} `this`
  * @throws {TypeError} If `value` is a string and no long library is present.
  */

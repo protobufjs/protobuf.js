@@ -1,6 +1,6 @@
 /*!
- * protobuf.js v6.10.0 (c) 2016, daniel wirtz
- * compiled wed, 15 jul 2020 23:34:13 utc
+ * protobuf.js v6.10.2 (c) 2016, daniel wirtz
+ * compiled tue, 20 apr 2021 08:56:16 utc
  * licensed under the bsd-3-clause license
  * see: https://github.com/dcodeio/protobuf.js for details
  */
@@ -1182,7 +1182,7 @@ function genValuePartial_fromObject(gen, field, fieldIndex, prop) {
             case "bytes": gen
                 ("if(typeof d%s===\"string\")", prop)
                     ("util.base64.decode(d%s,m%s=util.newBuffer(util.base64.length(d%s)),0)", prop, prop, prop)
-                ("else if(d%s.length)", prop)
+                ("else if(d%s.length >= 0)", prop)
                     ("m%s=d%s", prop, prop);
                 break;
             case "string": gen
@@ -1903,6 +1903,9 @@ function Field(name, id, type, rule, extend, options, comment) {
      * Field rule, if any.
      * @type {string|undefined}
      */
+    if (rule === "proto3_optional") {
+        rule = "optional";
+    }
     this.rule = rule && rule !== "optional" ? rule : undefined; // toJSON
 
     /**
@@ -2626,8 +2629,9 @@ var util = require(33);
  * @param {boolean|Object.<string,*>} [responseStream] Whether the response is streamed
  * @param {Object.<string,*>} [options] Declared options
  * @param {string} [comment] The comment for this method
+ * @param {Object.<string,*>} [parsedOptions] Declared options, properly parsed into an object
  */
-function Method(name, type, requestType, responseType, requestStream, responseStream, options, comment) {
+function Method(name, type, requestType, responseType, requestStream, responseStream, options, comment, parsedOptions) {
 
     /* istanbul ignore next */
     if (util.isObject(requestStream)) {
@@ -2699,6 +2703,11 @@ function Method(name, type, requestType, responseType, requestStream, responseSt
      * @type {string|null}
      */
     this.comment = comment;
+
+    /**
+     * Options properly parsed into an object
+     */
+    this.parsedOptions = parsedOptions;
 }
 
 /**
@@ -2710,6 +2719,8 @@ function Method(name, type, requestType, responseType, requestStream, responseSt
  * @property {boolean} [requestStream=false] Whether requests are streamed
  * @property {boolean} [responseStream=false] Whether responses are streamed
  * @property {Object.<string,*>} [options] Method options
+ * @property {string} comment Method comments
+ * @property {Object.<string,*>} [parsedOptions] Method options properly parsed into an object
  */
 
 /**
@@ -2720,7 +2731,7 @@ function Method(name, type, requestType, responseType, requestStream, responseSt
  * @throws {TypeError} If arguments are invalid
  */
 Method.fromJSON = function fromJSON(name, json) {
-    return new Method(name, json.type, json.requestType, json.responseType, json.requestStream, json.responseStream, json.options, json.comment);
+    return new Method(name, json.type, json.requestType, json.responseType, json.requestStream, json.responseStream, json.options, json.comment, json.parsedOptions);
 };
 
 /**
@@ -2737,7 +2748,8 @@ Method.prototype.toJSON = function toJSON(toJSONOptions) {
         "responseType"   , this.responseType,
         "responseStream" , this.responseStream,
         "options"        , this.options,
-        "comment"        , keepComments ? this.comment : undefined
+        "comment"        , keepComments ? this.comment : undefined,
+        "parsedOptions"  , this.parsedOptions,
     ]);
 };
 
@@ -5920,12 +5932,14 @@ LongBits.fromNumber = function fromNumber(value) {
 
 /**
  * Constructs new long bits from a number, long or string.
- * @param {Long|number|string} value Value
+ * @param {Long|number|string|bigint} value Value
  * @returns {util.LongBits} Instance
  */
 LongBits.from = function from(value) {
     if (typeof value === "number")
         return LongBits.fromNumber(value);
+    if (typeof value === 'bigint') 
+        value = value.toString();
     if (util.isString(value)) {
         /* istanbul ignore else */
         if (util.Long)
@@ -6252,7 +6266,7 @@ util.key64Re = /^(?:[\\x00-\\xff]{8}|-?(?:0|[1-9][0-9]*))$/;
 
 /**
  * Converts a number or long to an 8 characters long hash string.
- * @param {Long|number} value Value to convert
+ * @param {Long|number|bigint} value Value to convert
  * @returns {string} Hash
  */
 util.longToHash = function longToHash(value) {
@@ -7007,7 +7021,7 @@ function writeVarint64(val, buf, pos) {
 
 /**
  * Writes an unsigned 64 bit value as a varint.
- * @param {Long|number|string} value Value to write
+ * @param {Long|number|string|bigint} value Value to write
  * @returns {Writer} `this`
  * @throws {TypeError} If `value` is a string and no long library is present.
  */
@@ -7019,7 +7033,7 @@ Writer.prototype.uint64 = function write_uint64(value) {
 /**
  * Writes a signed 64 bit value as a varint.
  * @function
- * @param {Long|number|string} value Value to write
+ * @param {Long|number|string|bigint} value Value to write
  * @returns {Writer} `this`
  * @throws {TypeError} If `value` is a string and no long library is present.
  */
@@ -7027,7 +7041,7 @@ Writer.prototype.int64 = Writer.prototype.uint64;
 
 /**
  * Writes a signed 64 bit value as a varint, zig-zag encoded.
- * @param {Long|number|string} value Value to write
+ * @param {Long|number|string|bigint} value Value to write
  * @returns {Writer} `this`
  * @throws {TypeError} If `value` is a string and no long library is present.
  */
