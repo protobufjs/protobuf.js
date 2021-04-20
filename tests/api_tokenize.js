@@ -42,6 +42,11 @@ tape.test("tokenize", function(test) {
     tn.next();
     test.equal(tn.cmnt(), null, "trailing comment should not be recognized as leading comment for next line");
     test.equal(tn.cmnt(tn.line), "trailing comment B", "should parse trailing comment");
+    tn = tokenize("/// leading comment A\na /// trailing comment A\n/// leading comment B\nb /// trailing comment B\n");
+    tn.next();
+    test.equal(tn.cmnt(tn.line), "trailing comment A", "trailing comment should not contain leading comment from next line");
+    tn.next();
+    test.equal(tn.cmnt(), 'leading comment B', "leading comment should be present after trailing comment");
 
     test.ok(expectError("something; /"), "should throw for unterminated line comments");
     test.ok(expectError("something; /* comment"), "should throw for unterminated block comments");
