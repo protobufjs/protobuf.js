@@ -71,6 +71,9 @@ LongBits.fromNumber = function fromNumber(value) {
     }
     return new LongBits(lo, hi);
 };
+
+var TWO_32 = BigInt("4294967296");
+
 /**
  * Constructs new long bits from the specified bigint.
  * @param {bigint} value Value
@@ -78,14 +81,14 @@ LongBits.fromNumber = function fromNumber(value) {
  */
 LongBits.fromBigInt = function fromNumber(value) {
   value = BigInt(value);
-  if (value === 0n) return zero;
+  if (value === BigInt("0")) return zero;
 
   var negative = value < 0;
   if (negative) {
     value = -value;
   }
-  var hi = Number(value >> 32n) | 0;
-  var lo = Number(value - (BigInt(hi) << 32n)) | 0;
+  var hi = Number(value >> BigInt("32")) | 0;
+  var lo = Number(value - (BigInt(hi) << BigInt("32"))) | 0;
 
   if (negative) {
     hi = ~hi >>> 0;
@@ -107,13 +110,13 @@ LongBits.fromBigInt = function fromNumber(value) {
 LongBits.from = function from(value) {
     if (typeof value === "number")
         return LongBits.fromNumber(value);
-    if (typeof value === 'bigint') 
+    if (typeof value === "bigint")
         return LongBits.fromBigInt(value);
     if (util.isString(value)) {
         /* istanbul ignore else */
         if (util.Long)
             value = util.Long.fromString(value);
-        else if(typeof BigInt !== 'undefined')
+        else if(typeof BigInt !== "undefined")
             value = LongBits.fromBigInt(BigInt(value));
         else
             return LongBits.fromNumber(parseInt(value, 10));
