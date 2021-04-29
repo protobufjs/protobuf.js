@@ -1,5 +1,12 @@
 # Changelog
 
+### [6.11.1](https://www.github.com/protobufjs/protobuf.js/compare/v6.11.0...v6.11.1) (2021-04-29)
+
+
+### Bug Fixes
+
+* parse.js "parent.add(oneof)“ error (@leon776) ([#1602](https://github.com/protobufjs/protobuf.js/pull/1602))
+
 ## [6.11.0](https://www.github.com/protobufjs/protobuf.js/compare/v6.10.2...v6.11.0) (2021-04-28)
 
 
