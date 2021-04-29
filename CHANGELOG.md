@@ -1,5 +1,21 @@
 # Changelog
 
+## [6.11.0](https://www.github.com/protobufjs/protobuf.js/compare/v6.10.2...v6.11.0) (2021-04-28)
+
+
+### Features
+
+* support for proto3 `optional` fields (@alexander-fenster) ([#1584](https://github.com/protobufjs/protobuf.js/pull/1584))
+* add `--no-service` option for `pbjs` (@mdouglass) ([#1577](https://github.com/protobufjs/protobuf.js/pull/1577))
+
+### Bug Fixes
+
+* do not assign `oneof` members to default values, use `null` instead (@alexander-fenster) ([#1597](https://github.com/protobufjs/protobuf.js/pull/1597))
+
+### Dependencies
+
+* set `@types/node` to `>= 13.7.0` in dependencies (@indutny) ([#1575](https://github.com/protobufjs/protobuf.js/pull/1575))
+
 ### [6.10.2](https://www.github.com/protobufjs/protobuf.js/compare/v6.10.1...v6.10.2) (2020-11-13)
 
 
