@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+message Message {
+  int32 value = 1;
+}
+
+message OneofContainer {
+  oneof some_oneof {
+    string string_in_oneof = 1;
+    Message message_in_oneof = 2;
+  }
+  string regular_field = 3;
+}
