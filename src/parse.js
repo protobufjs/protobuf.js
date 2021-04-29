@@ -611,7 +611,7 @@ function parse(source, root, options) {
                 if (prevValue)
                     value = [].concat(prevValue).concat(value);
                 result[propName] = value;
-                skip(",", true);
+                skip(",", true) || skip(";", true);
             }
             return result;
         }
