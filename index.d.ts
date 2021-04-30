@@ -300,6 +300,9 @@ export class FieldBase extends ReflectionObject {
      */
     constructor(name: string, id: number, type: string, rule?: (string|{ [k: string]: any }), extend?: (string|{ [k: string]: any }), options?: { [k: string]: any }, comment?: string);
 
+    /** Field rule, if any. */
+    public rule?: string;
+
     /** Field type. */
     public type: string;
 

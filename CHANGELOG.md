@@ -1,5 +1,10 @@
 # Changelog
 
+### [6.11.2](https://www.github.com/protobufjs/protobuf.js/compare/v6.11.1...v6.11.2) (2021-04-30)
+
+* regenerated index.d.ts to fix the unintended breaking change in types.
+
+
 ### [6.11.1](https://www.github.com/protobufjs/protobuf.js/compare/v6.11.0...v6.11.1) (2021-04-29)
 
 
