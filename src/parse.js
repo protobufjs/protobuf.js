@@ -602,6 +602,15 @@ function parse(source, root, options) {
                     skip(":");
                     if (peek() === "{")
                         value = parseOptionValue(parent, name + "." + token);
+                    else if (skip("[", true)) {
+                        var i = 0;
+                        var prefix = name + "." + token;
+                        do {
+                            parseOptionValue(parent, prefix + "[" + i + "]");
+                            skip(',', true);
+                            ++i;
+                        } while (!skip("]", true));
+                    }
                     else {
                         value = readValue(true);
                         setOption(parent, name + "." + token, value);
