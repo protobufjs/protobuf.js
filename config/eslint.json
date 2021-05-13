@@ -72,7 +72,7 @@
         "no-self-compare": 1,
         "no-throw-literal": 1,
         "no-unmodified-loop-condition": 1,
-        "no-unused-expressions": 1,
+        "no-unused-expressions": ["error", { "allowShortCircuit": true }],
         "no-useless-call": 1,
         "no-useless-concat": 1,
         "no-useless-escape": 1,
