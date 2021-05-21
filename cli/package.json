@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "chalk": "^4.0.0",
-    "escodegen": "^1.13.0",
+    "escodegen": "^2.0.0",
     "espree": "^7.1.0",
     "estraverse": "^5.1.0",
     "glob": "^7.1.6",
