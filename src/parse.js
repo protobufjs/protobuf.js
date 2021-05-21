@@ -591,8 +591,14 @@ function parse(source, root, options) {
             var result = {};
             while (!skip("}", true)) {
                 /* istanbul ignore if */
-                if (!nameRe.test(token = next()))
+                if (!nameRe.test(token = next())) {
+                    if (token === "}") {
+                        skip("}", true);
+                        break;
+                    }
+
                     throw illegal(token, "name");
+                }
 
                 var value;
                 var propName = token;
