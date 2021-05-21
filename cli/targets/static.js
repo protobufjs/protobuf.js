@@ -413,11 +413,11 @@ function buildType(ref, type) {
         else if (field.partOf || field.optional && config["null-defaults"])
             push(escapeName(type.name) + ".prototype" + prop + " = null;"); // do not set default value for oneof members
         else if (field.long)
-            push(escapeName(type.name) + ".prototype" + prop + " = $util.Long ? $util.Long.fromBits("
+            push(escapeName(type.name) + ".prototype" + prop + " = " + (!config.forceNumber ? "$util.Long ? $util.Long.fromBits("
                     + JSON.stringify(field.typeDefault.low) + ","
                     + JSON.stringify(field.typeDefault.high) + ","
                     + JSON.stringify(field.typeDefault.unsigned)
-                + ") : " + field.typeDefault.toNumber(field.type.charAt(0) === "u") + ";");
+                + ") : " : "") + field.typeDefault.toNumber(field.type.charAt(0) === "u") + ";");
         else if (field.bytes) {
             push(escapeName(type.name) + ".prototype" + prop + " = $util.newBuffer(" + JSON.stringify(Array.prototype.slice.call(field.typeDefault)) + ");");
         } else
@@ -561,7 +561,7 @@ function buildType(ref, type) {
             "@param {Object.<string,*>} " + (config.beautify ? "object" : "d") + " Plain object",
             "@returns {" + exportName(type) + "} " + type.name
         ]);
-        buildFunction(type, "fromObject", protobuf.converter.fromObject(type));
+        buildFunction(type, "fromObject", protobuf.converter.fromObject(type, config));
 
         push("");
         pushComment([
