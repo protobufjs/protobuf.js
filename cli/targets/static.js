@@ -589,6 +589,22 @@ function buildType(ref, type) {
         --indent;
         push("};");
     }
+
+    if (config.typeurl) {
+        push("");
+        pushComment([
+            "Gets the default type url for " + type.name,
+            "@function getTypeUrl",
+            "@memberof " + exportName(type),
+            "@static",
+            "@returns {string} The default type url"
+        ]);
+        push(escapeName(type.name) + ".getTypeUrl = function getTypeUrl() {");
+        ++indent;
+            push("return \"type.googleapis.com/" + exportName(type) + "\";");
+        --indent;
+        push("};");
+    }
 }
 
 function buildService(ref, service) {
