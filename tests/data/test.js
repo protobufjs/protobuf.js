@@ -3676,7 +3676,7 @@ $root.jspb = (function() {
                 if (object.bytesField != null)
                     if (typeof object.bytesField === "string")
                         $util.base64.decode(object.bytesField, message.bytesField = $util.newBuffer($util.base64.length(object.bytesField)), 0);
-                    else if (object.bytesField.length)
+                    else if (object.bytesField.length >= 0)
                         message.bytesField = object.bytesField;
                 return message;
             };
@@ -4437,7 +4437,7 @@ $root.jspb = (function() {
                 if (object.bytesField != null)
                     if (typeof object.bytesField === "string")
                         $util.base64.decode(object.bytesField, message.bytesField = $util.newBuffer($util.base64.length(object.bytesField)), 0);
-                    else if (object.bytesField.length)
+                    else if (object.bytesField.length >= 0)
                         message.bytesField = object.bytesField;
                 if (object.unused != null)
                     message.unused = String(object.unused);
@@ -6987,7 +6987,7 @@ $root.jspb = (function() {
                 if (object.data != null)
                     if (typeof object.data === "string")
                         $util.base64.decode(object.data, message.data = $util.newBuffer($util.base64.length(object.data)), 0);
-                    else if (object.data.length)
+                    else if (object.data.length >= 0)
                         message.data = object.data;
                 return message;
             };
@@ -15302,7 +15302,7 @@ $root.google = (function() {
                 if (object.stringValue != null)
                     if (typeof object.stringValue === "string")
                         $util.base64.decode(object.stringValue, message.stringValue = $util.newBuffer($util.base64.length(object.stringValue)), 0);
-                    else if (object.stringValue.length)
+                    else if (object.stringValue.length >= 0)
                         message.stringValue = object.stringValue;
                 if (object.aggregateValue != null)
                     message.aggregateValue = String(object.aggregateValue);

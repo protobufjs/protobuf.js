@@ -316,9 +316,17 @@ function parse(source, root, options) {
                     break;
 
                 case "required":
-                case "optional":
                 case "repeated":
                     parseField(type, token);
+                    break;
+
+                case "optional":
+                    /* istanbul ignore if */
+                    if (isProto3) {
+                        parseField(type, "proto3_optional");
+                    } else {
+                        parseField(type, "optional");
+                    }
                     break;
 
                 case "oneof":
@@ -379,7 +387,16 @@ function parse(source, root, options) {
         }, function parseField_line() {
             parseInlineOptions(field);
         });
-        parent.add(field);
+
+        if (rule === "proto3_optional") {
+            // for proto3 optional fields, we create a single-member Oneof to mimic "optional" behavior
+            var oneof = new OneOf("_" + name);
+            field.setOption("proto3_optional", true);
+            oneof.add(field);
+            parent.add(oneof);
+        } else {
+            parent.add(field);
+        }
 
         // JSON defaults to packed=true if not set so we have to set packed=false explicity when
         // parsing proto2 descriptors without the option, where applicable. This must be done for
@@ -413,9 +430,17 @@ function parse(source, root, options) {
                     break;
 
                 case "required":
-                case "optional":
                 case "repeated":
                     parseField(type, token);
+                    break;
+
+                case "optional":
+                    /* istanbul ignore if */
+                    if (isProto3) {
+                        parseField(type, "proto3_optional");
+                    } else {
+                        parseField(type, "optional");
+                    }
                     break;
 
                 /* istanbul ignore next */
@@ -577,7 +602,23 @@ function parse(source, root, options) {
                     skip(":");
                     if (peek() === "{")
                         value = parseOptionValue(parent, name + "." + token);
-                    else {
+                    else if (peek() === "[") {
+                        // option (my_option) = {
+                        //     repeated_value: [ "foo", "bar" ]
+                        // };
+                        value = [];
+                        var lastValue;
+                        if (skip("[", true)) {
+                            do {
+                                lastValue = readValue(true);
+                                value.push(lastValue);
+                            } while (skip(",", true));
+                            skip("]");
+                            if (typeof lastValue !== "undefined") {
+                                setOption(parent, name + "." + token, lastValue);
+                            }
+                        }
+                    } else {
                         value = readValue(true);
                         setOption(parent, name + "." + token, value);
                     }
@@ -586,7 +627,7 @@ function parse(source, root, options) {
                 if (prevValue)
                     value = [].concat(prevValue).concat(value);
                 result[propName] = value;
-                skip(",", true);
+                skip(",", true) || skip(";", true);
             }
             return result;
         }
@@ -699,8 +740,16 @@ function parse(source, root, options) {
 
                 case "required":
                 case "repeated":
-                case "optional":
                     parseField(parent, token, reference);
+                    break;
+
+                case "optional":
+                    /* istanbul ignore if */
+                    if (isProto3) {
+                        parseField(parent, "proto3_optional", reference);
+                    } else {
+                        parseField(parent, "optional", reference);
+                    }
                     break;
 
                 default:

@@ -12,7 +12,7 @@ tape.test("converters", function(test) {
 
         test.test(test.name + " - Message#toObject", function(test) {
 
-            test.plan(5);
+            test.plan(6);
 
             test.test(test.name + " - called with defaults = true", function(test) {
                 var obj = Message.toObject(Message.create(), { defaults: true });
@@ -23,7 +23,7 @@ tape.test("converters", function(test) {
                 test.same(obj.uint64Val, { low: 0, high: 0, unsigned: true }, "should set uint64Val");
                 test.same(obj.uint64Repeated, [], "should set uint64Repeated");
 
-                test.same(obj.bytesVal, [], "should set bytesVal");
+                test.same(obj.bytesVal, protobuf.util.newBuffer(0), "should set bytesVal");
                 test.same(obj.bytesRepeated, [], "should set bytesRepeated");
 
                 test.equal(obj.enumVal, 1, "should set enumVal to the first defined value");
@@ -130,6 +130,22 @@ tape.test("converters", function(test) {
 
                 test.end();
             });
+
+            test.test(test.name + " - Message.toObject with empty buffers", function(test) {
+                var msg = Message.create({
+                    bytesVal: protobuf.util.newBuffer(0),
+                });
+
+                test.equal(Message.toObject(msg, { bytes: String }).bytesVal, "", "bytes to base64 strings");
+
+                if (protobuf.util.isNode) {
+                    const bytesVal = Message.toObject(msg, { bytes: Buffer }).bytesVal; 
+                    test.ok(Buffer.isBuffer(bytesVal), "bytes to buffers");
+                    test.equal(bytesVal.length, 0, "empty buffer");
+                }
+
+                test.end();
+            });            
 
         });
 

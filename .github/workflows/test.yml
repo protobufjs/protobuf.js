@@ -27,7 +27,7 @@ jobs:
       with:
         node-version: "12"
     - name: "Install dependencies"
-      run: npm install
+      run: npm install && (cd cli && npm install)
     - name: "Build distribution files"
       run: npm run build
   test:

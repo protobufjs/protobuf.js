@@ -1,0 +1,40 @@
+on:
+  push:
+    branches:
+      - master
+name: release-please
+jobs:
+  release-please-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - id: release-pr
+        uses: GoogleCloudPlatform/release-please-action@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          release-type: node
+          package-name: protobufjs
+          command: release-pr
+  release-please-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: GoogleCloudPlatform/release-please-action@v2
+        id: tag-release
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          release-type: node
+          package-name: protobufjs
+          command: github-release
+      - uses: actions/checkout@v2
+        if: ${{ steps.tag-release.outputs.release_created }}
+      - uses: actions/setup-node@v1
+        if: ${{ steps.tag-release.outputs.release_created }}
+        with:
+          node-version: 14
+          registry-url: 'https://wombat-dressing-room.appspot.com/'
+      - name: publish
+        if: ${{ steps.tag-release.outputs.release_created }}
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+        run: |
+          npm install
+          npm publish

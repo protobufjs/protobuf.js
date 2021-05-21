@@ -1,11 +1,11 @@
 "use strict";
 module.exports = static_target;
 
-var protobuf   = require("../.."),
-    UglifyJS   = require("uglify-js"),
+var UglifyJS   = require("uglify-js"),
     espree     = require("espree"),
     escodegen  = require("escodegen"),
-    estraverse = require("estraverse");
+    estraverse = require("estraverse"),
+    protobuf   = require("protobufjs");
 
 var Type      = protobuf.Type,
     Service   = protobuf.Service,
@@ -109,6 +109,10 @@ function aOrAn(name) {
 function buildNamespace(ref, ns) {
     if (!ns)
         return;
+
+    if (ns instanceof Service && !config.service)
+        return;
+
     if (ns.name !== "") {
         push("");
         if (!ref && config.es6)
@@ -390,7 +394,7 @@ function buildType(ref, type) {
         if (config.comments) {
             push("");
             var jsType = toJsType(field);
-            if (field.optional && !field.map && !field.repeated && field.resolvedType instanceof Type)
+            if (field.optional && !field.map && !field.repeated && (field.resolvedType instanceof Type || config["null-defaults"]) || field.partOf)
                 jsType = jsType + "|null|undefined";
             pushComment([
                 field.comment || type.name + " " + field.name + ".",
@@ -406,6 +410,8 @@ function buildType(ref, type) {
             push(escapeName(type.name) + ".prototype" + prop + " = $util.emptyArray;"); // overwritten in constructor
         else if (field.map)
             push(escapeName(type.name) + ".prototype" + prop + " = $util.emptyObject;"); // overwritten in constructor
+        else if (field.partOf || field.optional && config["null-defaults"])
+            push(escapeName(type.name) + ".prototype" + prop + " = null;"); // do not set default value for oneof members
         else if (field.long)
             push(escapeName(type.name) + ".prototype" + prop + " = $util.Long ? $util.Long.fromBits("
                     + JSON.stringify(field.typeDefault.low) + ","
