@@ -16,6 +16,40 @@
   ],
   "main": "index.js",
   "types": "index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/protobuf.js",
+      "import": "./dist/esm/protobuf.js"
+    },
+    "./index": {
+      "require": "./dist/protobuf.js",
+      "import": "./dist/esm/protobuf.js"
+    },
+    "./index.js": {
+      "require": "./dist/protobuf.js",
+      "import": "./dist/esm/protobuf.js"
+    },
+    "./minimal": {
+      "require": "./dist/minimal/protobuf.js",
+      "import": "./dist/esm/minimal/protobuf.js"
+    },
+    "./minimal.js": {
+      "require": "./dist/minimal/protobuf.js",
+      "import": "./dist/esm/minimal/protobuf.js"
+    },
+    "./light": {
+      "require": "./dist/light/protobuf.js",
+      "import": "./dist/esm/light/protobuf.js"
+    },
+    "./light.js": {
+      "require": "./dist/light/protobuf.js",
+      "import": "./dist/esm/light/protobuf.js"
+    },
+    "./index.d.ts": "./index.d.ts",
+    "./minimal.d.ts": "./minimal.d.ts",
+    "./light.d.ts": "./light.d.ts",
+    "./package.json": "./package.json"
+  },
   "scripts": {
     "bench": "node bench",
     "build": "npm run build:bundle && npm run build:types",
@@ -51,6 +85,9 @@
     "long": "^4.0.0"
   },
   "devDependencies": {
+    "@rollup/plugin-commonjs": "^19.0.0",
+    "@rollup/plugin-node-resolve": "^13.0.0",
+    "@rollup/stream": "^2.0.0",
     "benchmark": "^2.1.4",
     "browserify": "^17.0.0",
     "browserify-wrap": "^1.0.2",
@@ -74,7 +111,10 @@
     "minimist": "^1.2.0",
     "nyc": "^15.0.0",
     "reflect-metadata": "^0.1.13",
+    "rollup": "^2.51.1",
+    "rollup-plugin-terser": "^7.0.2",
     "tape": "^5.0.0",
+    "tmp": "^0.2.1",
     "tslint": "^6.0.0",
     "typescript": "^3.7.5",
     "uglify-js": "^3.7.7",
