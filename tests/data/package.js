@@ -724,6 +724,17 @@ $root.Package = (function() {
         return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
     };
 
+    /**
+     * Gets the default type url for Package
+     * @function getTypeUrl
+     * @memberof Package
+     * @static
+     * @returns {string} The default type url
+     */
+    Package.getTypeUrl = function getTypeUrl() {
+        return "type.googleapis.com/Package";
+    };
+
     Package.Repository = (function() {
 
         /**
@@ -929,6 +940,17 @@ $root.Package = (function() {
          */
         Repository.prototype.toJSON = function toJSON() {
             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for Repository
+         * @function getTypeUrl
+         * @memberof Package.Repository
+         * @static
+         * @returns {string} The default type url
+         */
+        Repository.getTypeUrl = function getTypeUrl() {
+            return "type.googleapis.com/Package.Repository";
         };
 
         return Repository;

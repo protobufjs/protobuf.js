@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+message TypeUrlTest {
+    message Nested {
+        string a = 1;
+    }
+    Nested nested = 1;
+}

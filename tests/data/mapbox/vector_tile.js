@@ -224,6 +224,17 @@ $root.vector_tile = (function() {
         };
 
         /**
+         * Gets the default type url for Tile
+         * @function getTypeUrl
+         * @memberof vector_tile.Tile
+         * @static
+         * @returns {string} The default type url
+         */
+        Tile.getTypeUrl = function getTypeUrl() {
+            return "type.googleapis.com/vector_tile.Tile";
+        };
+
+        /**
          * GeomType enum.
          * @name vector_tile.Tile.GeomType
          * @enum {number}
@@ -600,6 +611,17 @@ $root.vector_tile = (function() {
                 return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
+            /**
+             * Gets the default type url for Value
+             * @function getTypeUrl
+             * @memberof vector_tile.Tile.Value
+             * @static
+             * @returns {string} The default type url
+             */
+            Value.getTypeUrl = function getTypeUrl() {
+                return "type.googleapis.com/vector_tile.Tile.Value";
+            };
+
             return Value;
         })();
 
@@ -939,6 +961,17 @@ $root.vector_tile = (function() {
              */
             Feature.prototype.toJSON = function toJSON() {
                 return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+            };
+
+            /**
+             * Gets the default type url for Feature
+             * @function getTypeUrl
+             * @memberof vector_tile.Tile.Feature
+             * @static
+             * @returns {string} The default type url
+             */
+            Feature.getTypeUrl = function getTypeUrl() {
+                return "type.googleapis.com/vector_tile.Tile.Feature";
             };
 
             return Feature;
@@ -1297,6 +1330,17 @@ $root.vector_tile = (function() {
              */
             Layer.prototype.toJSON = function toJSON() {
                 return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+            };
+
+            /**
+             * Gets the default type url for Layer
+             * @function getTypeUrl
+             * @memberof vector_tile.Tile.Layer
+             * @static
+             * @returns {string} The default type url
+             */
+            Layer.getTypeUrl = function getTypeUrl() {
+                return "type.googleapis.com/vector_tile.Tile.Layer";
             };
 
             return Layer;

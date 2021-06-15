@@ -17,6 +17,7 @@ export namespace jspb {
             public static fromObject(object: { [k: string]: any }): jspb.test.Empty;
             public static toObject(message: jspb.test.Empty, options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
+            public static getTypeUrl(): string;
         }
 
         enum OuterEnum {
@@ -40,6 +41,7 @@ export namespace jspb {
             public static fromObject(object: { [k: string]: any }): jspb.test.EnumContainer;
             public static toObject(message: jspb.test.EnumContainer, options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
+            public static getTypeUrl(): string;
         }
 
         interface ISimple1 {
@@ -62,6 +64,7 @@ export namespace jspb {
             public static fromObject(object: { [k: string]: any }): jspb.test.Simple1;
             public static toObject(message: jspb.test.Simple1, options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
+            public static getTypeUrl(): string;
         }
 
         interface ISimple2 {
@@ -82,6 +85,7 @@ export namespace jspb {
             public static fromObject(object: { [k: string]: any }): jspb.test.Simple2;
             public static toObject(message: jspb.test.Simple2, options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
+            public static getTypeUrl(): string;
         }
 
         interface ISpecialCases {
@@ -106,6 +110,7 @@ export namespace jspb {
             public static fromObject(object: { [k: string]: any }): jspb.test.SpecialCases;
             public static toObject(message: jspb.test.SpecialCases, options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
+            public static getTypeUrl(): string;
         }
 
         interface IOptionalFields {
@@ -132,6 +137,7 @@ export namespace jspb {
             public static fromObject(object: { [k: string]: any }): jspb.test.OptionalFields;
             public static toObject(message: jspb.test.OptionalFields, options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
+            public static getTypeUrl(): string;
         }
 
         namespace OptionalFields {
@@ -152,6 +158,7 @@ export namespace jspb {
                 public static fromObject(object: { [k: string]: any }): jspb.test.OptionalFields.Nested;
                 public static toObject(message: jspb.test.OptionalFields.Nested, options?: $protobuf.IConversionOptions): { [k: string]: any };
                 public toJSON(): { [k: string]: any };
+                public static getTypeUrl(): string;
             }
         }
 
@@ -181,6 +188,7 @@ export namespace jspb {
             public static fromObject(object: { [k: string]: any }): jspb.test.HasExtensions;
             public static toObject(message: jspb.test.HasExtensions, options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
+            public static getTypeUrl(): string;
         }
 
         interface IComplex {
@@ -207,6 +215,7 @@ export namespace jspb {
             public static fromObject(object: { [k: string]: any }): jspb.test.Complex;
             public static toObject(message: jspb.test.Complex, options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
+            public static getTypeUrl(): string;
         }
 
         namespace Complex {
@@ -227,6 +236,7 @@ export namespace jspb {
                 public static fromObject(object: { [k: string]: any }): jspb.test.Complex.Nested;
                 public static toObject(message: jspb.test.Complex.Nested, options?: $protobuf.IConversionOptions): { [k: string]: any };
                 public toJSON(): { [k: string]: any };
+                public static getTypeUrl(): string;
             }
         }
 
@@ -244,6 +254,7 @@ export namespace jspb {
             public static fromObject(object: { [k: string]: any }): jspb.test.OuterMessage;
             public static toObject(message: jspb.test.OuterMessage, options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
+            public static getTypeUrl(): string;
         }
 
         namespace OuterMessage {
@@ -264,6 +275,7 @@ export namespace jspb {
                 public static fromObject(object: { [k: string]: any }): jspb.test.OuterMessage.Complex;
                 public static toObject(message: jspb.test.OuterMessage.Complex, options?: $protobuf.IConversionOptions): { [k: string]: any };
                 public toJSON(): { [k: string]: any };
+                public static getTypeUrl(): string;
             }
         }
 
@@ -283,6 +295,7 @@ export namespace jspb {
             public static fromObject(object: { [k: string]: any }): jspb.test.IsExtension;
             public static toObject(message: jspb.test.IsExtension, options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
+            public static getTypeUrl(): string;
         }
 
         interface IIndirectExtension {
@@ -299,6 +312,7 @@ export namespace jspb {
             public static fromObject(object: { [k: string]: any }): jspb.test.IndirectExtension;
             public static toObject(message: jspb.test.IndirectExtension, options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
+            public static getTypeUrl(): string;
         }
 
         interface IDefaultValues {
@@ -327,6 +341,7 @@ export namespace jspb {
             public static fromObject(object: { [k: string]: any }): jspb.test.DefaultValues;
             public static toObject(message: jspb.test.DefaultValues, options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
+            public static getTypeUrl(): string;
         }
 
         namespace DefaultValues {
@@ -367,6 +382,7 @@ export namespace jspb {
             public static fromObject(object: { [k: string]: any }): jspb.test.FloatingPointFields;
             public static toObject(message: jspb.test.FloatingPointFields, options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
+            public static getTypeUrl(): string;
         }
 
         interface ITestClone {
@@ -394,6 +410,7 @@ export namespace jspb {
             public static fromObject(object: { [k: string]: any }): jspb.test.TestClone;
             public static toObject(message: jspb.test.TestClone, options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
+            public static getTypeUrl(): string;
         }
 
         interface ICloneExtension {
@@ -412,6 +429,7 @@ export namespace jspb {
             public static fromObject(object: { [k: string]: any }): jspb.test.CloneExtension;
             public static toObject(message: jspb.test.CloneExtension, options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
+            public static getTypeUrl(): string;
         }
 
         interface ITestGroup {
@@ -440,6 +458,7 @@ export namespace jspb {
             public static fromObject(object: { [k: string]: any }): jspb.test.TestGroup;
             public static toObject(message: jspb.test.TestGroup, options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
+            public static getTypeUrl(): string;
         }
 
         namespace TestGroup {
@@ -462,6 +481,7 @@ export namespace jspb {
                 public static fromObject(object: { [k: string]: any }): jspb.test.TestGroup.RepeatedGroup;
                 public static toObject(message: jspb.test.TestGroup.RepeatedGroup, options?: $protobuf.IConversionOptions): { [k: string]: any };
                 public toJSON(): { [k: string]: any };
+                public static getTypeUrl(): string;
             }
 
             interface IRequiredGroup {
@@ -480,6 +500,7 @@ export namespace jspb {
                 public static fromObject(object: { [k: string]: any }): jspb.test.TestGroup.RequiredGroup;
                 public static toObject(message: jspb.test.TestGroup.RequiredGroup, options?: $protobuf.IConversionOptions): { [k: string]: any };
                 public toJSON(): { [k: string]: any };
+                public static getTypeUrl(): string;
             }
 
             interface IOptionalGroup {
@@ -498,6 +519,7 @@ export namespace jspb {
                 public static fromObject(object: { [k: string]: any }): jspb.test.TestGroup.OptionalGroup;
                 public static toObject(message: jspb.test.TestGroup.OptionalGroup, options?: $protobuf.IConversionOptions): { [k: string]: any };
                 public toJSON(): { [k: string]: any };
+                public static getTypeUrl(): string;
             }
         }
 
@@ -517,6 +539,7 @@ export namespace jspb {
             public static fromObject(object: { [k: string]: any }): jspb.test.TestGroup1;
             public static toObject(message: jspb.test.TestGroup1, options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
+            public static getTypeUrl(): string;
         }
 
         interface ITestReservedNames {
@@ -536,6 +559,7 @@ export namespace jspb {
             public static fromObject(object: { [k: string]: any }): jspb.test.TestReservedNames;
             public static toObject(message: jspb.test.TestReservedNames, options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
+            public static getTypeUrl(): string;
         }
 
         interface ITestReservedNamesExtension {
@@ -552,6 +576,7 @@ export namespace jspb {
             public static fromObject(object: { [k: string]: any }): jspb.test.TestReservedNamesExtension;
             public static toObject(message: jspb.test.TestReservedNamesExtension, options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
+            public static getTypeUrl(): string;
         }
 
         interface ITestMessageWithOneof {
@@ -592,6 +617,7 @@ export namespace jspb {
             public static fromObject(object: { [k: string]: any }): jspb.test.TestMessageWithOneof;
             public static toObject(message: jspb.test.TestMessageWithOneof, options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
+            public static getTypeUrl(): string;
         }
 
         interface ITestEndsWithBytes {
@@ -612,6 +638,7 @@ export namespace jspb {
             public static fromObject(object: { [k: string]: any }): jspb.test.TestEndsWithBytes;
             public static toObject(message: jspb.test.TestEndsWithBytes, options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
+            public static getTypeUrl(): string;
         }
 
         interface ITestMapFieldsNoBinary {
@@ -652,6 +679,7 @@ export namespace jspb {
             public static fromObject(object: { [k: string]: any }): jspb.test.TestMapFieldsNoBinary;
             public static toObject(message: jspb.test.TestMapFieldsNoBinary, options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
+            public static getTypeUrl(): string;
         }
 
         enum MapValueEnumNoBinary {
@@ -676,6 +704,7 @@ export namespace jspb {
             public static fromObject(object: { [k: string]: any }): jspb.test.MapValueMessageNoBinary;
             public static toObject(message: jspb.test.MapValueMessageNoBinary, options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
+            public static getTypeUrl(): string;
         }
 
         interface IDeeply {
@@ -692,6 +721,7 @@ export namespace jspb {
             public static fromObject(object: { [k: string]: any }): jspb.test.Deeply;
             public static toObject(message: jspb.test.Deeply, options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
+            public static getTypeUrl(): string;
         }
 
         namespace Deeply {
@@ -710,6 +740,7 @@ export namespace jspb {
                 public static fromObject(object: { [k: string]: any }): jspb.test.Deeply.Nested;
                 public static toObject(message: jspb.test.Deeply.Nested, options?: $protobuf.IConversionOptions): { [k: string]: any };
                 public toJSON(): { [k: string]: any };
+                public static getTypeUrl(): string;
             }
 
             namespace Nested {
@@ -730,6 +761,7 @@ export namespace jspb {
                     public static fromObject(object: { [k: string]: any }): jspb.test.Deeply.Nested.Message;
                     public static toObject(message: jspb.test.Deeply.Nested.Message, options?: $protobuf.IConversionOptions): { [k: string]: any };
                     public toJSON(): { [k: string]: any };
+                    public static getTypeUrl(): string;
                 }
             }
         }
@@ -756,6 +788,7 @@ export namespace google {
             public static fromObject(object: { [k: string]: any }): google.protobuf.FileDescriptorSet;
             public static toObject(message: google.protobuf.FileDescriptorSet, options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
+            public static getTypeUrl(): string;
         }
 
         interface IFileDescriptorProto {
@@ -796,6 +829,7 @@ export namespace google {
             public static fromObject(object: { [k: string]: any }): google.protobuf.FileDescriptorProto;
             public static toObject(message: google.protobuf.FileDescriptorProto, options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
+            public static getTypeUrl(): string;
         }
 
         interface IDescriptorProto {
@@ -832,6 +866,7 @@ export namespace google {
             public static fromObject(object: { [k: string]: any }): google.protobuf.DescriptorProto;
             public static toObject(message: google.protobuf.DescriptorProto, options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
+            public static getTypeUrl(): string;
         }
 
         namespace DescriptorProto {
@@ -854,6 +889,7 @@ export namespace google {
                 public static fromObject(object: { [k: string]: any }): google.protobuf.DescriptorProto.ExtensionRange;
                 public static toObject(message: google.protobuf.DescriptorProto.ExtensionRange, options?: $protobuf.IConversionOptions): { [k: string]: any };
                 public toJSON(): { [k: string]: any };
+                public static getTypeUrl(): string;
             }
 
             interface IReservedRange {
@@ -874,6 +910,7 @@ export namespace google {
                 public static fromObject(object: { [k: string]: any }): google.protobuf.DescriptorProto.ReservedRange;
                 public static toObject(message: google.protobuf.DescriptorProto.ReservedRange, options?: $protobuf.IConversionOptions): { [k: string]: any };
                 public toJSON(): { [k: string]: any };
+                public static getTypeUrl(): string;
             }
         }
 
@@ -911,6 +948,7 @@ export namespace google {
             public static fromObject(object: { [k: string]: any }): google.protobuf.FieldDescriptorProto;
             public static toObject(message: google.protobuf.FieldDescriptorProto, options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
+            public static getTypeUrl(): string;
         }
 
         namespace FieldDescriptorProto {
@@ -961,6 +999,7 @@ export namespace google {
             public static fromObject(object: { [k: string]: any }): google.protobuf.OneofDescriptorProto;
             public static toObject(message: google.protobuf.OneofDescriptorProto, options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
+            public static getTypeUrl(): string;
         }
 
         interface IEnumDescriptorProto {
@@ -983,6 +1022,7 @@ export namespace google {
             public static fromObject(object: { [k: string]: any }): google.protobuf.EnumDescriptorProto;
             public static toObject(message: google.protobuf.EnumDescriptorProto, options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
+            public static getTypeUrl(): string;
         }
 
         interface IEnumValueDescriptorProto {
@@ -1005,6 +1045,7 @@ export namespace google {
             public static fromObject(object: { [k: string]: any }): google.protobuf.EnumValueDescriptorProto;
             public static toObject(message: google.protobuf.EnumValueDescriptorProto, options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
+            public static getTypeUrl(): string;
         }
 
         interface IServiceDescriptorProto {
@@ -1027,6 +1068,7 @@ export namespace google {
             public static fromObject(object: { [k: string]: any }): google.protobuf.ServiceDescriptorProto;
             public static toObject(message: google.protobuf.ServiceDescriptorProto, options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
+            public static getTypeUrl(): string;
         }
 
         interface IMethodDescriptorProto {
@@ -1055,6 +1097,7 @@ export namespace google {
             public static fromObject(object: { [k: string]: any }): google.protobuf.MethodDescriptorProto;
             public static toObject(message: google.protobuf.MethodDescriptorProto, options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
+            public static getTypeUrl(): string;
         }
 
         interface IFileOptions {
@@ -1101,6 +1144,7 @@ export namespace google {
             public static fromObject(object: { [k: string]: any }): google.protobuf.FileOptions;
             public static toObject(message: google.protobuf.FileOptions, options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
+            public static getTypeUrl(): string;
         }
 
         namespace FileOptions {
@@ -1136,6 +1180,7 @@ export namespace google {
             public static fromObject(object: { [k: string]: any }): google.protobuf.MessageOptions;
             public static toObject(message: google.protobuf.MessageOptions, options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
+            public static getTypeUrl(): string;
         }
 
         interface IFieldOptions {
@@ -1166,6 +1211,7 @@ export namespace google {
             public static fromObject(object: { [k: string]: any }): google.protobuf.FieldOptions;
             public static toObject(message: google.protobuf.FieldOptions, options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
+            public static getTypeUrl(): string;
         }
 
         namespace FieldOptions {
@@ -1199,6 +1245,7 @@ export namespace google {
             public static fromObject(object: { [k: string]: any }): google.protobuf.OneofOptions;
             public static toObject(message: google.protobuf.OneofOptions, options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
+            public static getTypeUrl(): string;
         }
 
         interface IEnumOptions {
@@ -1222,6 +1269,7 @@ export namespace google {
             public static fromObject(object: { [k: string]: any }): google.protobuf.EnumOptions;
             public static toObject(message: google.protobuf.EnumOptions, options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
+            public static getTypeUrl(): string;
         }
 
         interface IEnumValueOptions {
@@ -1242,6 +1290,7 @@ export namespace google {
             public static fromObject(object: { [k: string]: any }): google.protobuf.EnumValueOptions;
             public static toObject(message: google.protobuf.EnumValueOptions, options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
+            public static getTypeUrl(): string;
         }
 
         interface IServiceOptions {
@@ -1262,6 +1311,7 @@ export namespace google {
             public static fromObject(object: { [k: string]: any }): google.protobuf.ServiceOptions;
             public static toObject(message: google.protobuf.ServiceOptions, options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
+            public static getTypeUrl(): string;
         }
 
         interface IMethodOptions {
@@ -1284,6 +1334,7 @@ export namespace google {
             public static fromObject(object: { [k: string]: any }): google.protobuf.MethodOptions;
             public static toObject(message: google.protobuf.MethodOptions, options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
+            public static getTypeUrl(): string;
         }
 
         namespace MethodOptions {
@@ -1323,6 +1374,7 @@ export namespace google {
             public static fromObject(object: { [k: string]: any }): google.protobuf.UninterpretedOption;
             public static toObject(message: google.protobuf.UninterpretedOption, options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
+            public static getTypeUrl(): string;
         }
 
         namespace UninterpretedOption {
@@ -1345,6 +1397,7 @@ export namespace google {
                 public static fromObject(object: { [k: string]: any }): google.protobuf.UninterpretedOption.NamePart;
                 public static toObject(message: google.protobuf.UninterpretedOption.NamePart, options?: $protobuf.IConversionOptions): { [k: string]: any };
                 public toJSON(): { [k: string]: any };
+                public static getTypeUrl(): string;
             }
         }
 
@@ -1364,6 +1417,7 @@ export namespace google {
             public static fromObject(object: { [k: string]: any }): google.protobuf.SourceCodeInfo;
             public static toObject(message: google.protobuf.SourceCodeInfo, options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
+            public static getTypeUrl(): string;
         }
 
         namespace SourceCodeInfo {
@@ -1392,6 +1446,7 @@ export namespace google {
                 public static fromObject(object: { [k: string]: any }): google.protobuf.SourceCodeInfo.Location;
                 public static toObject(message: google.protobuf.SourceCodeInfo.Location, options?: $protobuf.IConversionOptions): { [k: string]: any };
                 public toJSON(): { [k: string]: any };
+                public static getTypeUrl(): string;
             }
         }
 
@@ -1411,6 +1466,7 @@ export namespace google {
             public static fromObject(object: { [k: string]: any }): google.protobuf.GeneratedCodeInfo;
             public static toObject(message: google.protobuf.GeneratedCodeInfo, options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
+            public static getTypeUrl(): string;
         }
 
         namespace GeneratedCodeInfo {
@@ -1437,6 +1493,7 @@ export namespace google {
                 public static fromObject(object: { [k: string]: any }): google.protobuf.GeneratedCodeInfo.Annotation;
                 public static toObject(message: google.protobuf.GeneratedCodeInfo.Annotation, options?: $protobuf.IConversionOptions): { [k: string]: any };
                 public toJSON(): { [k: string]: any };
+                public static getTypeUrl(): string;
             }
         }
     }

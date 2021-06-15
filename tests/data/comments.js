@@ -241,6 +241,17 @@ $root.Test1 = (function() {
         return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
     };
 
+    /**
+     * Gets the default type url for Test1
+     * @function getTypeUrl
+     * @memberof Test1
+     * @static
+     * @returns {string} The default type url
+     */
+    Test1.getTypeUrl = function getTypeUrl() {
+        return "type.googleapis.com/Test1";
+    };
+
     return Test1;
 })();
 
@@ -399,6 +410,17 @@ $root.Test2 = (function() {
      */
     Test2.prototype.toJSON = function toJSON() {
         return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    /**
+     * Gets the default type url for Test2
+     * @function getTypeUrl
+     * @memberof Test2
+     * @static
+     * @returns {string} The default type url
+     */
+    Test2.getTypeUrl = function getTypeUrl() {
+        return "type.googleapis.com/Test2";
     };
 
     return Test2;
