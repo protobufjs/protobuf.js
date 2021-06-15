@@ -103,11 +103,8 @@ function tokenize(source, alternateCommentMode) {
     var offset = 0,
         length = source.length,
         line = 1,
-        commentType = null,
-        commentText = null,
-        commentLine = 0,
-        commentLineEmpty = false,
-        commentIsLeading = false;
+        lastCommentLine = 0,
+        comments = {};
 
     var stack = [];
 
@@ -160,10 +157,11 @@ function tokenize(source, alternateCommentMode) {
      * @inner
      */
     function setComment(start, end, isLeading) {
-        commentType = source.charAt(start++);
-        commentLine = line;
-        commentLineEmpty = false;
-        commentIsLeading = isLeading;
+        var comment = {
+            type: source.charAt(start++),
+            lineEmpty: false,
+            leading: isLeading,
+        };
         var lookback;
         if (alternateCommentMode) {
             lookback = 2;  // alternate comment parsing: "//" or "/*"
@@ -175,7 +173,7 @@ function tokenize(source, alternateCommentMode) {
         do {
             if (--commentOffset < 0 ||
                     (c = source.charAt(commentOffset)) === "\n") {
-                commentLineEmpty = true;
+                comment.lineEmpty = true;
                 break;
             }
         } while (c === " " || c === "\t");
@@ -186,9 +184,12 @@ function tokenize(source, alternateCommentMode) {
             lines[i] = lines[i]
                 .replace(alternateCommentMode ? setCommentAltRe : setCommentRe, "")
                 .trim();
-        commentText = lines
+        comment.text = lines
             .join("\n")
             .trim();
+
+        comments[line] = comment;
+        lastCommentLine = line;
     }
 
     function isDoubleSlashCommentLine(startOffset) {
@@ -257,6 +258,9 @@ function tokenize(source, alternateCommentMode) {
                         ++offset;
                         if (isDoc) {
                             setComment(start, offset - 1, isLeadingComment);
+                            // Trailing comment cannot not be multi-line,
+                            // so leading comment state should be reset to handle potential next comments
+                            isLeadingComment = true;
                         }
                         ++line;
                         repeat = true;
@@ -272,12 +276,17 @@ function tokenize(source, alternateCommentMode) {
                                     break;
                                 }
                                 offset++;
+                                if (!isLeadingComment) {
+                                    // Trailing comment cannot not be multi-line
+                                    break;
+                                }
                             } while (isDoubleSlashCommentLine(offset));
                         } else {
                             offset = Math.min(length, findEndOfLine(offset) + 1);
                         }
                         if (isDoc) {
                             setComment(start, offset, isLeadingComment);
+                            isLeadingComment = true;
                         }
                         line++;
                         repeat = true;
@@ -299,6 +308,7 @@ function tokenize(source, alternateCommentMode) {
                     ++offset;
                     if (isDoc) {
                         setComment(start, offset - 2, isLeadingComment);
+                        isLeadingComment = true;
                     }
                     repeat = true;
                 } else {
@@ -374,17 +384,22 @@ function tokenize(source, alternateCommentMode) {
      */
     function cmnt(trailingLine) {
         var ret = null;
+        var comment;
         if (trailingLine === undefined) {
-            if (commentLine === line - 1 && (alternateCommentMode || commentType === "*" || commentLineEmpty)) {
-                ret = commentIsLeading ? commentText : null;
+            comment = comments[line - 1];
+            delete comments[line - 1];
+            if (comment && (alternateCommentMode || comment.type === "*" || comment.lineEmpty)) {
+                ret = comment.leading ? comment.text : null;
             }
         } else {
             /* istanbul ignore else */
-            if (commentLine < trailingLine) {
+            if (lastCommentLine < trailingLine) {
                 peek();
             }
-            if (commentLine === trailingLine && !commentLineEmpty && (alternateCommentMode || commentType === "/")) {
-                ret = commentIsLeading ? null : commentText;
+            comment = comments[trailingLine];
+            delete comments[trailingLine];
+            if (comment && !comment.lineEmpty && (alternateCommentMode || comment.type === "/")) {
+                ret = comment.leading ? null : comment.text;
             }
         }
         return ret;
