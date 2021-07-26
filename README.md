@@ -695,8 +695,10 @@ Building
 To build the library or its components yourself, clone it from GitHub and install the development dependencies:
 
 ```
-$> git clone https://github.com/dcodeIO/protobuf.js.git
+$> git clone https://github.com/protobufjs/protobuf.js.git
 $> cd protobuf.js
+$> npm install
+$> cd cli
 $> npm install
 ```
 
@@ -715,7 +717,7 @@ $> npm run docs
 Building the TypeScript definition to `index.d.ts`:
 
 ```
-$> npm run types
+$> npm run build:types
 ```
 
 ### Browserify integration
