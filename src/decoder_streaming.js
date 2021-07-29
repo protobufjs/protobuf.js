@@ -13,15 +13,16 @@ var Enum    = require("./enum"),
  * Wrapper class around the streaming_decode generator
  * 
  * @param {Type} type The message type object which this StreamingDecoder should decode for
- * @param {Function} onmessage Callback for completed messages
- * @param {int} length Hint about the length of the message. You can use -1 to indicate
+ * @param {Function} [onmessage] Callback for completed messages. This can be undefined/null/falsey
+ * 	if you don't want a callback. This matches the behavior of a callback `function(){ return true; }`.
+ * @param {int} [length] Hint about the length of the message. You can use -1 to indicate
  * 	that the message is length delimited, meaning it is preceded on the wire by a uint32
  * 	indicating the length of the message. Can also be undefined, meaning it will keep
  * 	decoding until there is no more input left.
  */
 function StreamingDecoder(type, onmessage, length){
-	if (!(onmessage instanceof Function))
-		throw Error("StreamingDecoder callback is required and must be a function");
+	if (!(onmessage instanceof Function || !onmessage))
+		throw Error("StreamingDecoder callback must be a function if specified");
 	/** The message Type class the decoder is for  */
 	this.type = type;
 	/** The onmessage callback */
@@ -268,7 +269,7 @@ function streaming_decode(mtype) {
 	}
 
 	// Message decoding complete; call streaming cbk to handle it
-	G("var incl = cbk(msg, stack);");
+	G("var incl = !cbk || cbk(msg, stack);");
 	G("stack.pop();");
 	G("return incl ? msg : undefined;");
 

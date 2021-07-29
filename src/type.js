@@ -532,7 +532,7 @@ Type.prototype.decodeDelimited = function decodeDelimited(reader) {
  * the onmessage callback, you can also have more intimate control over the construction of the message
  * tree, or simply process messages on-the-fly without keeping them around.
  * 
- * @param {Function} onmessage A callback function to be called whenever a message is completed;
+ * @param {Function} [onmessage] An optional callback function to be called whenever a message is completed;
  *  the signature for the cbk must be `(message, stack) -> bool`. It should return true if the
  *  message should be added to its parent, or false if it should not be added. The `stack` argument
  *  indicates a stack of ancestor messages in the form:
@@ -546,7 +546,7 @@ Type.prototype.decodeDelimited = function decodeDelimited(reader) {
  *	The first element is the root element, while the last element is the parent which triggered the
  *  current message decoding. This last parent's field is the one which the current message may
  *  be added to if desired (either manually if false is returned, or automatically if true is returned).
- * @param {int} length Optional hint about the length of the message (in bytes) to be decoded. If left
+ * @param {int} [length] Optional hint about the length of the message (in bytes) to be decoded. If left
  *  undefined, decoding will continue as long as there is more input. You may also set this to -1 to
  *  indicate a length delimited message (see `StreamingDecoderDelimited`)
  */
@@ -554,6 +554,7 @@ Type.prototype.StreamingDecoder = function StreamingDecoderFactory(onmessage, le
     // new Type.StreamingDecoder() wouldn't work... don't think we can infer Type from the constructor in that case
     return new StreamingDecoder(this, onmessage, length);
 }
+
 /**
  * Identical to `Type.StreamingDecoder(onmessage, -1)`. This assumes the message is preceded by a uint32
  * indicating the number of bytes in the message. That number will be read at the start of decoding and
@@ -562,6 +563,7 @@ Type.prototype.StreamingDecoder = function StreamingDecoderFactory(onmessage, le
 Type.prototype.StreamingDecoderDelimited = function StreamingDecoderDelimitedFactory(onmessage){
     return new StreamingDecoder(this, onmessage, -1);
 }
+
 /** Private method used internal for the StreamingDecoder class */
 Type.prototype._streaming_decode = function _streaming_decode(reader, length, stack, cbk){
     return this.setup()._streaming_decode(reader, length, stack, cbk); // overrides this method
