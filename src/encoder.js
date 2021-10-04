@@ -48,7 +48,7 @@ function encoder(mtype) {
       We still use this as the default serialisation method, but provide a way to configure serialisation
       order via an option in a proto file.
     */
-    var fieldOrderMethod = util.getOption(mtype, "pbjs_field_order");
+    var fieldOrderMethod = util.getOption(mtype, "pbjs_encoder_field_order");
 
     var fields = /* initializes */ mtype.fieldsArray.slice().sort(util.compareFieldsById);
 
