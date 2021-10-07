@@ -218,5 +218,5 @@ util.getOption = function getOption(obj, name) {
     if (obj == null) return undefined;
     var objectOptions = obj.options || {};
     var parentOptions = obj.parent != null ? obj.parent.options || {} : {};
-    return objectOptions[name] || parentOptions[name];
+    return objectOptions[name] || objectOptions["(" + name + ")"] || parentOptions[name] || parentOptions["(" + name + ")"];
 };

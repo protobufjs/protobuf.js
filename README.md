@@ -284,10 +284,21 @@ By default the `encode` method will ensure that all fields are encoded in the or
 package awesomepackage;
 syntax = "proto3";
 
+import "google/protobuf/descriptor.proto";
+
+enum ProtobufJsFieldOrder {
+  ORDERED = 0;
+  ORIGINAL = 1;
+}
+
+extend google.protobuf.FileOptions {
+  ProtobufJsFieldOrder pbjs_encoder_field_order = 50001;
+}
+
 // make sure the `out_of_order_field` is encoded
 // first, even though its ID is higher than the ID
 // of `awesome_field`.
-option pbjs_encoder_field_order = ORIGINAL;
+option (pbjs_encoder_field_order) = ORIGINAL;
 
 message AwesomeMessage {
     string out_of_order_field = 2;
