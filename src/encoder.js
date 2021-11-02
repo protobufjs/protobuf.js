@@ -48,6 +48,10 @@ function encoder(mtype) {
             let keyGetter;
             switch (field.keyType) {
                 case "int64":
+                case "uint64":
+                case "sint64":
+                case "fixed64":
+                case "sfixed64":
                     keyGetter = "$util.longFromHash(ks[i], false)";
                     break;
                 case "bool":
