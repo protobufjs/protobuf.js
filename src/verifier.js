@@ -4,6 +4,8 @@ module.exports = verifier;
 var Enum      = require("./enum"),
     util      = require("./util");
 
+var UNSIGNED_KEY = ['uint32','uint64','fixed32','fixed64'];
+
 function invalid(field, expected) {
     return field.name + ": " + expected + (field.repeated && expected !== "array" ? "[]" : field.map && expected !== "object" ? "{k:"+field.keyType+"}" : "") + " expected";
 }
@@ -38,6 +40,11 @@ function genVerifyValue(gen, field, fieldIndex, ref) {
             ("}");
         }
     } else {
+        if(UNSIGNED_KEY.includes(field.type)){
+            gen("if(!util.isUnsignedNumber(%s))", ref)
+                ("return%j", invalid(field, "unsigned number"))
+        }
+
         switch (field.type) {
             case "int32":
             case "uint32":
