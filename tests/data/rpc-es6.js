@@ -1,7 +1,5 @@
 /*eslint-disable block-scoped-var, id-length, no-control-regex, no-magic-numbers, no-prototype-builtins, no-redeclare, no-shadow, no-var, sort-vars*/
-"use strict";
-
-var $protobuf = require("../../minimal");
+import * as $protobuf from "../../minimal";
 
 // Common aliases
 const $Reader = $protobuf.Reader, $Writer = $protobuf.Writer, $util = $protobuf.util;
@@ -261,17 +259,6 @@ export const MyRequest = $root.MyRequest = (() => {
         return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
     };
 
-    /**
-     * Gets the default type url for MyRequest
-     * @function getTypeUrl
-     * @memberof MyRequest
-     * @static
-     * @returns {string} The default type url
-     */
-    MyRequest.getTypeUrl = function getTypeUrl() {
-        return "type.googleapis.com/MyRequest";
-    };
-
     return MyRequest;
 })();
 
@@ -459,18 +446,7 @@ export const MyResponse = $root.MyResponse = (() => {
         return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
     };
 
-    /**
-     * Gets the default type url for MyResponse
-     * @function getTypeUrl
-     * @memberof MyResponse
-     * @static
-     * @returns {string} The default type url
-     */
-    MyResponse.getTypeUrl = function getTypeUrl() {
-        return "type.googleapis.com/MyResponse";
-    };
-
     return MyResponse;
 })();
 
-module.exports = $root;
+export { $root as default };

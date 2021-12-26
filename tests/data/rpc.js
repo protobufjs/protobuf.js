@@ -261,17 +261,6 @@ $root.MyRequest = (function() {
         return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
     };
 
-    /**
-     * Gets the default type url for MyRequest
-     * @function getTypeUrl
-     * @memberof MyRequest
-     * @static
-     * @returns {string} The default type url
-     */
-    MyRequest.getTypeUrl = function getTypeUrl() {
-        return "type.googleapis.com/MyRequest";
-    };
-
     return MyRequest;
 })();
 
@@ -457,17 +446,6 @@ $root.MyResponse = (function() {
      */
     MyResponse.prototype.toJSON = function toJSON() {
         return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-    };
-
-    /**
-     * Gets the default type url for MyResponse
-     * @function getTypeUrl
-     * @memberof MyResponse
-     * @static
-     * @returns {string} The default type url
-     */
-    MyResponse.getTypeUrl = function getTypeUrl() {
-        return "type.googleapis.com/MyResponse";
     };
 
     return MyResponse;
