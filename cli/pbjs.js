@@ -41,7 +41,7 @@ exports.main = function main(args, callback) {
             "force-message": "strict-message"
         },
         string: [ "target", "out", "path", "wrap", "dependency", "root", "lint" ],
-        boolean: [ "create", "encode", "decode", "verify", "convert", "delimited", "typeurl", "beautify", "comments", "service", "es6", "sparse", "keep-case", "force-long", "force-number", "force-enum-string", "force-message", "null-defaults" ],
+        boolean: [ "create", "encode", "decode", "verify", "convert", "delimited", "beautify", "comments", "service", "es6", "sparse", "keep-case", "force-long", "force-number", "force-enum-string", "force-message", "null-defaults" ],
         default: {
             target: "json",
             create: true,
@@ -50,7 +50,6 @@ exports.main = function main(args, callback) {
             verify: true,
             convert: true,
             delimited: true,
-            typeurl: true,
             beautify: true,
             comments: true,
             service: true,
@@ -133,7 +132,6 @@ exports.main = function main(args, callback) {
                 "  --no-verify      Does not generate verify functions.",
                 "  --no-convert     Does not generate convert functions like from/toObject",
                 "  --no-delimited   Does not generate delimited encode/decode functions.",
-                "  --no-typeurl     Does not generate getTypeUrl function.",
                 "  --no-beautify    Does not beautify generated code.",
                 "  --no-comments    Does not output any JSDoc comments.",
                 "  --no-service     Does not output service classes.",

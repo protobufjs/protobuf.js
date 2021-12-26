@@ -563,17 +563,6 @@ $root.Message = (function() {
     };
 
     /**
-     * Gets the default type url for Message
-     * @function getTypeUrl
-     * @memberof Message
-     * @static
-     * @returns {string} The default type url
-     */
-    Message.getTypeUrl = function getTypeUrl() {
-        return "type.googleapis.com/Message";
-    };
-
-    /**
      * SomeEnum enum.
      * @name Message.SomeEnum
      * @enum {number}
