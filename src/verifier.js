@@ -4,8 +4,6 @@ module.exports = verifier;
 var Enum      = require("./enum"),
     util      = require("./util");
 
-var UNSIGNED_KEY = ['uint32','uint64','fixed32','fixed64'];
-
 function invalid(field, expected) {
     return field.name + ": " + expected + (field.repeated && expected !== "array" ? "[]" : field.map && expected !== "object" ? "{k:"+field.keyType+"}" : "") + " expected";
 }
@@ -40,28 +38,29 @@ function genVerifyValue(gen, field, fieldIndex, ref) {
             ("}");
         }
     } else {
-        if(UNSIGNED_KEY.includes(field.type)){
-            gen("if(!util.isUnsignedNumber(%s))", ref)
-                ("return%j", invalid(field, "unsigned number"))
-        }
-
         switch (field.type) {
             case "int32":
-            case "uint32":
             case "sint32":
-            case "fixed32":
             case "sfixed32": gen
                 ("if(!util.isInteger(%s))", ref)
                     ("return%j", invalid(field, "integer"));
                 break;
+            case "uint32":
+            case "fixed32": gen
+                ("if(!util.isUnsignedNumber(%s))", ref)
+                    ("return%j", invalid(field, "unsigned integer"))
+                break
             case "int64":
-            case "uint64":
             case "sint64":
-            case "fixed64":
             case "sfixed64": gen
                 ("if(!util.isInteger(%s)&&!(%s&&util.isInteger(%s.low)&&util.isInteger(%s.high)))", ref, ref, ref, ref)
                     ("return%j", invalid(field, "integer|Long"));
                 break;
+            case "uint64":
+            case "fixed64": gen
+                ("if(!util.isUnsignedNumber(%s)&&!(%s&&util.isInteger(%s.low)&&util.isInteger(%s.high)))", ref, ref, ref, ref)
+                    ("return%j", invalid(field, "unsigned integer|Long"));
+                break
             case "float":
             case "double": gen
                 ("if(typeof %s!==\"number\")", ref)
