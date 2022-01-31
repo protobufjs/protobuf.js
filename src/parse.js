@@ -443,6 +443,14 @@ function parse(source, root, options) {
                     }
                     break;
 
+                case "message":
+                    parseType(type, token);
+                    break;
+
+                case "enum":
+                    parseEnum(type, token);
+                    break;
+
                 /* istanbul ignore next */
                 default:
                     throw illegal(token); // there are no groups with proto3 semantics
