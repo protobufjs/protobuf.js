@@ -22,7 +22,7 @@
     "escodegen": "^1.13.0",
     "espree": "^7.1.0",
     "estraverse": "^5.1.0",
-    "glob": "^7.1.6",
+    "glob": "^7.2.1",
     "jsdoc": "^3.6.3",
     "minimist": "^1.2.0",
     "semver": "^7.1.2",
