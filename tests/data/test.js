@@ -6346,19 +6346,19 @@ $root.jspb = (function() {
 
             /**
              * TestMessageWithOneof pone.
-             * @member {string} pone
+             * @member {string|null|undefined} pone
              * @memberof jspb.test.TestMessageWithOneof
              * @instance
              */
-            TestMessageWithOneof.prototype.pone = "";
+            TestMessageWithOneof.prototype.pone = null;
 
             /**
              * TestMessageWithOneof pthree.
-             * @member {string} pthree
+             * @member {string|null|undefined} pthree
              * @memberof jspb.test.TestMessageWithOneof
              * @instance
              */
-            TestMessageWithOneof.prototype.pthree = "";
+            TestMessageWithOneof.prototype.pthree = null;
 
             /**
              * TestMessageWithOneof rone.
@@ -6370,11 +6370,11 @@ $root.jspb = (function() {
 
             /**
              * TestMessageWithOneof rtwo.
-             * @member {string} rtwo
+             * @member {string|null|undefined} rtwo
              * @memberof jspb.test.TestMessageWithOneof
              * @instance
              */
-            TestMessageWithOneof.prototype.rtwo = "";
+            TestMessageWithOneof.prototype.rtwo = null;
 
             /**
              * TestMessageWithOneof normalField.
@@ -6394,35 +6394,35 @@ $root.jspb = (function() {
 
             /**
              * TestMessageWithOneof aone.
-             * @member {number} aone
+             * @member {number|null|undefined} aone
              * @memberof jspb.test.TestMessageWithOneof
              * @instance
              */
-            TestMessageWithOneof.prototype.aone = 1234;
+            TestMessageWithOneof.prototype.aone = null;
 
             /**
              * TestMessageWithOneof atwo.
-             * @member {number} atwo
+             * @member {number|null|undefined} atwo
              * @memberof jspb.test.TestMessageWithOneof
              * @instance
              */
-            TestMessageWithOneof.prototype.atwo = 0;
+            TestMessageWithOneof.prototype.atwo = null;
 
             /**
              * TestMessageWithOneof bone.
-             * @member {number} bone
+             * @member {number|null|undefined} bone
              * @memberof jspb.test.TestMessageWithOneof
              * @instance
              */
-            TestMessageWithOneof.prototype.bone = 0;
+            TestMessageWithOneof.prototype.bone = null;
 
             /**
              * TestMessageWithOneof btwo.
-             * @member {number} btwo
+             * @member {number|null|undefined} btwo
              * @memberof jspb.test.TestMessageWithOneof
              * @instance
              */
-            TestMessageWithOneof.prototype.btwo = 1234;
+            TestMessageWithOneof.prototype.btwo = null;
 
             // OneOf field names bound to virtual getters and setters
             var $oneOfFields;

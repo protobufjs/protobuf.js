@@ -1,7 +1,6 @@
 {
   "name": "protobufjs",
-  "version": "6.10.2",
-  "versionScheme": "~",
+  "version": "0.0.0",
   "description": "Protocol Buffers for JavaScript (& TypeScript).",
   "author": "Daniel Wirtz <dcode+protobufjs@dcode.io>",
   "license": "BSD-3-Clause",
@@ -18,7 +17,7 @@
   "types": "index.d.ts",
   "scripts": {
     "bench": "node bench",
-    "build": "npm run build:bundle && npm run build:types",
+    "build": "npm run build:bundle && npm run build:types && npm run lint:types",
     "build:bundle": "gulp --gulpfile scripts/gulpfile.js",
     "build:types": "node cli/bin/pbts --main --global protobuf --out index.d.ts src/ lib/aspromise/index.js lib/base64/index.js lib/codegen/index.js lib/eventemitter/index.js lib/float/index.js lib/fetch/index.js lib/inquire/index.js lib/path/index.js lib/pool/index.js lib/utf8/index.js",
     "changelog": "node scripts/changelog -w",
@@ -28,12 +27,10 @@
     "lint:sources": "eslint \"**/*.js\" -c config/eslint.json",
     "lint:types": "tslint \"**/*.d.ts\" -e \"**/node_modules/**\" -t stylish -c config/tslint.json",
     "pages": "node scripts/pages",
-    "postinstall": "node scripts/postinstall",
     "prof": "node bench/prof",
-    "test": "npm run test:sources && npm run test:types",
+    "test": "node ./scripts/gentests.js && npm run test:sources && npm run test:types",
     "test:sources": "tape -r ./lib/tape-adapter tests/*.js tests/node/*.js",
-    "test:types": "tsc tests/comp_typescript.ts --lib es2015 --strictNullChecks --experimentalDecorators --emitDecoratorMetadata && tsc tests/data/test.js.ts --lib es2015 --noEmit --strictNullChecks && tsc tests/data/*.ts --lib es2015 --noEmit --strictNullChecks",
-    "make": "npm run lint:sources && npm run build && npm run lint:types && node ./scripts/gentests.js && npm test"
+    "test:types": "tsc tests/comp_typescript.ts --lib es2015 --strictNullChecks --experimentalDecorators --emitDecoratorMetadata && tsc tests/data/test.js.ts --lib es2015 --noEmit --strictNullChecks"
   },
   "dependencies": {
     "@protobufjs/aspromise": "^1.1.2",
@@ -91,8 +88,6 @@
     "minimal.js",
     "package-lock.json",
     "tsconfig.json",
-    "scripts/postinstall.js",
-    "cli/**",
     "dist/**",
     "ext/**",
     "google/**",

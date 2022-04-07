@@ -9,53 +9,59 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
-    - uses: actions/setup-node@v1
+    - uses: actions/setup-node@v3
       with:
-        node-version: "12"
-    - name: "Install dependencies"
-      run: npm install
-    - name: "Lint sources"
+        node-version: "lts/*"
+    - name: Install dependencies
+      run: |
+        npm -v
+        npm install
+        cd cli
+        npm install
+        npm install .. --no-save
+        cd ..
+    - name: Lint sources
       run: npm run lint:sources -- --max-warnings 0
-    - name: "Lint types"
+    - name: Lint types
       run: npm run lint:types
-  build:
+  test:
+    runs-on: ubuntu-latest
+    needs: lint
+    strategy:
+      matrix:
+        node_version: ["12", "14", "lts/*"]
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node_version }}
+    - name: Install dependencies
+      run: |
+        npm -v
+        npm install
+        cd cli
+        npm install
+        npm install .. --no-save
+        cd ..
+    - name: Build the package
+      run: npm run build
+    - name: Run all tests
+      run: npm test
+  bench:
     runs-on: ubuntu-latest
     needs: lint
     steps:
     - uses: actions/checkout@v1
-    - uses: actions/setup-node@v1
+    - uses: actions/setup-node@v3
       with:
-        node-version: "12"
-    - name: "Install dependencies"
-      run: npm install && (cd cli && npm install)
-    - name: "Build distribution files"
-      run: npm run build
-  test:
-    runs-on: ubuntu-latest
-    needs: build
-    strategy:
-      matrix:
-        node_version: ["4", "4.3.2", "6", "8", "10", "12"]
-    steps:
-    - uses: actions/checkout@v1
-    - uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node_version }}
-    - name: "Install dependencies"
-      run: npm install
-    - name: "Test sources"
-      run: npm run test:sources
-    - name: "Test types"
-      run: npm run test:types
-  bench:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-    - uses: actions/checkout@v1
-    - uses: actions/setup-node@v1
-      with:
-        node-version: "12"
-    - name: "Install dependencies"
-      run: npm install
-    - name: "Run benchmark"
+        node-version: "lts/*"
+    - name: Install dependencies
+      run: |
+        npm -v
+        npm install
+        cd cli
+        npm install
+        npm install .. --no-save
+        cd ..
+    - name: Run benchmark
       run: npm run bench

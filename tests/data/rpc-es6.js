@@ -1,7 +1,5 @@
 /*eslint-disable block-scoped-var, id-length, no-control-regex, no-magic-numbers, no-prototype-builtins, no-redeclare, no-shadow, no-var, sort-vars*/
-"use strict";
-
-var $protobuf = require("../../minimal");
+import * as $protobuf from "../../minimal";
 
 // Common aliases
 const $Reader = $protobuf.Reader, $Writer = $protobuf.Writer, $util = $protobuf.util;
@@ -473,4 +471,4 @@ export const MyResponse = $root.MyResponse = (() => {
     return MyResponse;
 })();
 
-module.exports = $root;
+export { $root as default };

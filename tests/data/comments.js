@@ -434,6 +434,7 @@ $root.Test2 = (function() {
  * @property {number} TWO=2 TWO value
  * @property {number} THREE=3 Preferred value with a comment.
  * @property {number} FOUR=4 Other value with a comment.
+ * @property {number} FIVE=5 Leading comment for value with both types of comments after field with trailing comment.
  */
 $root.Test3 = (function() {
     var valuesById = {}, values = Object.create(valuesById);
@@ -441,6 +442,7 @@ $root.Test3 = (function() {
     values[valuesById[2] = "TWO"] = 2;
     values[valuesById[3] = "THREE"] = 3;
     values[valuesById[4] = "FOUR"] = 4;
+    values[valuesById[5] = "FIVE"] = 5;
     return values;
 })();
 
