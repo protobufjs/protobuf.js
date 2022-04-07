@@ -36,9 +36,9 @@ jobs:
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
     run: |
       if [ $(node -pe "require('./package.json').version") != "0.0.0" ]; then
-#        npx aspublish
+        echo "npx aspublish, protobufjs@$VERSION"
       fi
       cd cli
       if [ $(node -pe "require('./package.json').version") != "0.0.0" ]; then
-#        npm publish
+        echo "npm publish, protobufjs-cli@$VERSION"
       fi
