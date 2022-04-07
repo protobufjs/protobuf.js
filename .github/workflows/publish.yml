@@ -2,6 +2,7 @@ name: Publish
 on:
   schedule:
   - cron: '0 0 * * *'
+  pull_request:
 jobs:
   release:
     name: Packages
@@ -25,12 +26,19 @@ jobs:
         npm version "$VERSION" --no-git-tag-version
         npm run make
         npm test
+        cd cli
+        npm version "$VERSION" --no-git-tag-version
+        cd ..
       fi
-  # - name: Publish packages
-  #   env:
-  #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  #     NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-  #   run: |
-  #     if [ $(node -pe "require('./package.json').version") != "0.0.0" ]; then
-  #       npx aspublish
-  #     fi
+  - name: Publish packages
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+    run: |
+      if [ $(node -pe "require('./package.json').version") != "0.0.0" ]; then
+#        npx aspublish
+      fi
+      cd cli
+      if [ $(node -pe "require('./package.json').version") != "0.0.0" ]; then
+#        npm publish
+      fi
