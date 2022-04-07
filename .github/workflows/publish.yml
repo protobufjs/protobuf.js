@@ -12,10 +12,16 @@ jobs:
   - uses: actions/checkout@v1
     with:
       ref: master
+  - uses: actions/setup-node@v3
+    with:
+      node-version: "lts/*"
   - name: Install dependencies
     run: |
       npm -v
-      npm install && (cd cli && npm install)
+      npm install
+      cd cli
+      npm install
+      cd ..
   - name: Build packages
     run: |
       VERSION=$(npx aspublish --version)
@@ -36,9 +42,10 @@ jobs:
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
     run: |
       if [ $(node -pe "require('./package.json').version") != "0.0.0" ]; then
-        echo "npx aspublish, protobufjs@$VERSION"
+        echo "npx aspublish"
       fi
       cd cli
       if [ $(node -pe "require('./package.json').version") != "0.0.0" ]; then
-        echo "npm publish, protobufjs-cli@$VERSION"
+        echo "npm publish"
       fi
+      cd ..
