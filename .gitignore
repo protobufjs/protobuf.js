@@ -9,3 +9,4 @@ docs/
 coverage/
 sandbox/
 .nyc_output
+dist/

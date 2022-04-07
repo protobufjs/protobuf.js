@@ -33,9 +33,15 @@ jobs:
       with:
         node-version: "lts/*"
     - name: Install dependencies
-      run: npm install && (cd cli && npm install)
+      run: |
+        npm -v
+        npm install
+        cd cli
+        npm install
+        npm install .. --no-save
+        cd ..
     - name: Build the package
-      run: npm run make
+      run: npm run build
   test:
     runs-on: ubuntu-latest
     needs: build
@@ -48,7 +54,13 @@ jobs:
       with:
         node-version: ${{ matrix.node_version }}
     - name: Install dependencies
-      run: npm install
+      run: |
+        npm -v
+        npm install
+        cd cli
+        npm install
+        npm install .. --no-save
+        cd ..
     - name: Test sources
       run: npm run test:sources
     - name: Test types
@@ -62,6 +74,12 @@ jobs:
       with:
         node-version: "lts/*"
     - name: Install dependencies
-      run: npm install
+      run: |
+        npm -v
+        npm install
+        cd cli
+        npm install
+        npm install .. --no-save
+        cd ..
     - name: Run benchmark
       run: npm run bench
