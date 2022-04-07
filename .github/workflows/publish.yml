@@ -21,6 +21,7 @@ jobs:
         npm install
         cd cli
         npm install
+        npm install .. --no-save
         cd ..
     - name: Build packages
       run: |
@@ -30,7 +31,7 @@ jobs:
         else
           echo "Building version: $VERSION"
           npm version "$VERSION" --no-git-tag-version
-          npm run make
+          npm run build
           npm test
           cd cli
           npm version "$VERSION" --no-git-tag-version

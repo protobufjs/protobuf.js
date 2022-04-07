@@ -15,7 +15,7 @@
     "pbts": "bin/pbts"
   },
   "peerDependencies": {
-    "protobufjs": "^7.0.0"
+    "protobufjs": "file:.."
   },
   "dependencies": {
     "chalk": "^4.0.0",
@@ -30,6 +30,6 @@
     "uglify-js": "^3.7.7"
   },
   "devDependencies": {
-    "protobufjs": "file://.."
+    "protobufjs": "^7.0.0"
   }
 }
