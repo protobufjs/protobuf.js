@@ -9,9 +9,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
-    - uses: actions/setup-node@v1
+    - uses: actions/setup-node@v3
       with:
-        node-version: "12"
+        node-version: "lts/*"
     - name: "Install dependencies"
       run: npm install
     - name: "Lint sources"
@@ -35,10 +35,10 @@ jobs:
     needs: build
     strategy:
       matrix:
-        node_version: ["4", "4.3.2", "6", "8", "10", "12"]
+        node_version: ["4", "4.3.2", "6", "8", "10", "12", "lts/*"]
     steps:
     - uses: actions/checkout@v1
-    - uses: actions/setup-node@v1
+    - uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node_version }}
     - name: "Install dependencies"
