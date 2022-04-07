@@ -13,7 +13,7 @@ jobs:
       with:
         node-version: "lts/*"
     - name: Install dependencies
-      run: npm ci
+      run: npm install
     - name: Lint sources
       run: npm run lint:sources -- --max-warnings 0
     - name: Lint types
@@ -27,7 +27,7 @@ jobs:
       with:
         node-version: "lts/*"
     - name: Install dependencies
-      run: npm ci && (cd cli && npm ci)
+      run: npm install && (cd cli && npm install)
     - name: Build distribution files
       run: npm run build
   test:
@@ -42,7 +42,7 @@ jobs:
       with:
         node-version: ${{ matrix.node_version }}
     - name: Install dependencies
-      run: npm ci
+      run: npm install
     - name: Test sources
       run: npm run test:sources
     - name: Test types
@@ -56,6 +56,6 @@ jobs:
       with:
         node-version: "lts/*"
     - name: Install dependencies
-      run: npm ci
+      run: npm install
     - name: Run benchmark
       run: npm run bench
