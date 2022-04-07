@@ -26,10 +26,10 @@ jobs:
       run: npm run lint:types
   test:
     runs-on: ubuntu-latest
-    needs: build
+    needs: lint
     strategy:
       matrix:
-        node_version: ["14", "lts/*"]
+        node_version: ["12", "14", "lts/*"]
     steps:
     - uses: actions/checkout@v1
     - uses: actions/setup-node@v3
@@ -49,7 +49,7 @@ jobs:
       run: npm test
   bench:
     runs-on: ubuntu-latest
-    needs: build
+    needs: lint
     steps:
     - uses: actions/checkout@v1
     - uses: actions/setup-node@v3
