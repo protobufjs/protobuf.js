@@ -1,5 +1,10 @@
-<h1><p align="center"><img alt="protobuf.js" src="https://github.com/dcodeIO/protobuf.js/raw/master/pbjs.png" width="120" height="104" /></p></h1>
-<p align="center"><a href="https://npmjs.org/package/protobufjs"><img src="https://img.shields.io/npm/v/protobufjs.svg" alt=""></a> <a href="https://travis-ci.org/dcodeIO/protobuf.js"><img src="https://travis-ci.org/dcodeIO/protobuf.js.svg?branch=master" alt=""></a> <a href="https://npmjs.org/package/protobufjs"><img src="https://img.shields.io/npm/dm/protobufjs.svg" alt=""></a> <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=dcode%40dcode.io&item_name=Open%20Source%20Software%20Donation&item_number=dcodeIO%2Fprotobuf.js"><img alt="donate ❤" src="https://img.shields.io/badge/donate-❤-ff2244.svg"></a></p>
+<h1><p align="center"><img alt="protobuf.js" src="https://github.com/protobufjs/protobuf.js/raw/master/pbjs.png" width="120" height="104" /></p></h1>
+<p align="center">
+  <a href="https://github.com/protobufjs/protobuf.js/actions/workflows/test.yml"><img src="https://github.com/protobufjs/protobuf.js/actions/workflows/test.yml/badge.svg" alt="Test status" /></a>
+  <a href="https://github.com/protobufjs/protobuf.js/actions/workflows/publish.yml"><img src="https://github.com/protobufjs/protobuf.js/actions/workflows/publish.yml/badge.svg" alt="Publish status" /></a>
+  <a href="https://www.npmjs.com/package/protobufjs"><img src="https://img.shields.io/npm/v/protobufjs.svg?logo=npm" alt="npm version" /></a>
+  <a href="https://npmjs.org/package/protobufjs"><img src="https://img.shields.io/npm/dm/protobufjs.svg" alt=""></a>
+</p>
 
 **Protocol Buffers** are a language-neutral, platform-neutral, extensible way of serializing structured data for use in communications protocols, data storage, and more, originally designed at Google ([see](https://developers.google.com/protocol-buffers/)).
 
