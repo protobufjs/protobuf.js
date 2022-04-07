@@ -68,13 +68,13 @@ $> npm install protobufjs-cli [--save]
 Development:
 
 ```
-<script src="//cdn.rawgit.com/protobufjs/protobuf.js/X.Y.Z/dist/protobuf.js"></script>
+<script src="//cdn.jsdelivr.net/npm/protobufjs@X.Y.Z/dist/protobuf.js"></script>
 ```
 
 Production:
 
 ```
-<script src="//cdn.rawgit.com/protobufjs/protobuf.js/X.Y.Z/dist/protobuf.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/protobufjs@X.Y.Z/dist/protobuf.min.js"></script>
 ```
 
 **Remember** to replace the version tag with the exact [release](https://github.com/protobufjs/protobuf.js/tags) your project depends upon.

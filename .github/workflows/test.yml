@@ -24,30 +24,12 @@ jobs:
       run: npm run lint:sources -- --max-warnings 0
     - name: Lint types
       run: npm run lint:types
-  build:
-    runs-on: ubuntu-latest
-    needs: lint
-    steps:
-    - uses: actions/checkout@v1
-    - uses: actions/setup-node@v3
-      with:
-        node-version: "lts/*"
-    - name: Install dependencies
-      run: |
-        npm -v
-        npm install
-        cd cli
-        npm install
-        npm install .. --no-save
-        cd ..
-    - name: Build the package
-      run: npm run build
   test:
     runs-on: ubuntu-latest
     needs: build
     strategy:
       matrix:
-        node_version: ["4", "4.3.2", "6", "8", "10", "12", "14", "lts/*"]
+        node_version: ["14", "lts/*"]
     steps:
     - uses: actions/checkout@v1
     - uses: actions/setup-node@v3
@@ -61,10 +43,10 @@ jobs:
         npm install
         npm install .. --no-save
         cd ..
-    - name: Test sources
-      run: npm run test:sources
-    - name: Test types
-      run: npm run test:types
+    - name: Build the package
+      run: npm run build
+    - name: Run all tests
+      run: npm test
   bench:
     runs-on: ubuntu-latest
     needs: build
