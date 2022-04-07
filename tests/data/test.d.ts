@@ -594,16 +594,16 @@ export namespace jspb {
 
         class TestMessageWithOneof implements ITestMessageWithOneof {
             constructor(properties?: jspb.test.ITestMessageWithOneof);
-            public pone: string;
-            public pthree: string;
+            public pone?: (string|null);
+            public pthree?: (string|null);
             public rone?: (jspb.test.ITestMessageWithOneof|null);
-            public rtwo: string;
+            public rtwo?: (string|null);
             public normalField: boolean;
             public repeatedField: string[];
-            public aone: number;
-            public atwo: number;
-            public bone: number;
-            public btwo: number;
+            public aone?: (number|null);
+            public atwo?: (number|null);
+            public bone?: (number|null);
+            public btwo?: (number|null);
             public partialOneof?: ("pone"|"pthree");
             public recursiveOneof?: ("rone"|"rtwo");
             public defaultOneofA?: ("aone"|"atwo");
