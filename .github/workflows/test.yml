@@ -13,7 +13,13 @@ jobs:
       with:
         node-version: "lts/*"
     - name: Install dependencies
-      run: npm install
+      run: |
+        npm -v
+        npm install
+        cd cli
+        npm install
+        npm install .. --no-save
+        cd ..
     - name: Lint sources
       run: npm run lint:sources -- --max-warnings 0
     - name: Lint types
