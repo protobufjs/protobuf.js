@@ -31,7 +31,7 @@ jobs:
         else
           echo "Building version: $VERSION"
           npm version "$VERSION" --no-git-tag-version
-          npm run build
+          npm run make
           npm test
           cd cli
           npm version "$VERSION" --no-git-tag-version

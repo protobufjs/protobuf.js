@@ -28,8 +28,8 @@ jobs:
         node-version: "lts/*"
     - name: Install dependencies
       run: npm install && (cd cli && npm install)
-    - name: Build distribution files
-      run: npm run build
+    - name: Build the package
+      run: npm run make
   test:
     runs-on: ubuntu-latest
     needs: build
