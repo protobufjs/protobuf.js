@@ -4,6 +4,7 @@ on:
     branches:
     - master
   pull_request:
+    types: [assigned, opened, synchronize, reopened, labeled]
 jobs:
   lint:
     runs-on: ubuntu-latest
