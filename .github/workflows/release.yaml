@@ -39,5 +39,5 @@ jobs:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
         run: |
           npm install
-          npm publish --tag=latest-6
+          npm publish
 
