@@ -1,5 +1,13 @@
 # Changelog
 
+### [6.11.3](https://github.com/protobufjs/protobuf.js/compare/v6.11.2...v6.11.3) (2022-05-20)
+
+
+### Bug Fixes
+
+* **deps:** use eslint 8.x ([#1728](https://github.com/protobufjs/protobuf.js/issues/1728)) ([a8681ce](https://github.com/protobufjs/protobuf.js/commit/a8681ceab4763e706a848121a2dde56791b89eea))
+* do not let setProperty change the prototype ([#1731](https://github.com/protobufjs/protobuf.js/issues/1731)) ([b5f1391](https://github.com/protobufjs/protobuf.js/commit/b5f1391dff5515894830a6570e6d73f5511b2e8f))
+
 ### [6.11.2](https://www.github.com/protobufjs/protobuf.js/compare/v6.11.1...v6.11.2) (2021-04-30)
 
 * regenerated index.d.ts to fix the unintended breaking change in types.
