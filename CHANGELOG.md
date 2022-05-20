@@ -1,5 +1,33 @@
 # Changelog
 
+## [7.0.0](https://www.github.com/protobufjs/protobuf.js/compare/v6.10.2...v7.0.0) (2022-05-20)
+
+
+### ⚠ BREAKING CHANGES
+
+* move command line tool to a new package named protobufjs-cli (#1234)
+* encoding of empty Buffers (#1514)
+
+### Features
+
+* add --no-service option for pbjs static target ([#1577](https://www.github.com/protobufjs/protobuf.js/issues/1577)) ([d01394a](https://www.github.com/protobufjs/protobuf.js/commit/d01394a1463062824c066b653aad53c449752202))
+* add getTypeUrl method to generated code ([#1463](https://www.github.com/protobufjs/protobuf.js/issues/1463)) ([d13d5d5](https://www.github.com/protobufjs/protobuf.js/commit/d13d5d5688052e366aa2e9169f50dfca376b32cf))
+* add null-defaults option ([#1611](https://www.github.com/protobufjs/protobuf.js/issues/1611)) ([6e713ba](https://www.github.com/protobufjs/protobuf.js/commit/6e713baf54bd987ae52cbf92a4f2742c70201dc0))
+* move command line tool to a new package named protobufjs-cli ([#1234](https://www.github.com/protobufjs/protobuf.js/issues/1234)) ([da34f43](https://www.github.com/protobufjs/protobuf.js/commit/da34f43ccd51ad97017e139f137521782f5ef119))
+* proto3 optional support ([#1584](https://www.github.com/protobufjs/protobuf.js/issues/1584)) ([6c4d307](https://www.github.com/protobufjs/protobuf.js/commit/6c4d30716a9a756dcdc21d64f9c9d069315fc5b1))
+
+
+### Bug Fixes
+
+* allow for an optional semicolon where there is an optional comma in parseOptionValue ([#1571](https://www.github.com/protobufjs/protobuf.js/issues/1571)) ([af1b449](https://www.github.com/protobufjs/protobuf.js/commit/af1b449602b360091e191a58abde2f246d8b0f1d))
+* **deps:** patch minimatch vulnerability ([#1704](https://www.github.com/protobufjs/protobuf.js/issues/1704)) ([bac61b8](https://www.github.com/protobufjs/protobuf.js/commit/bac61b8c2757804bbb9c5fa0f8bc6a7bcf0bb374))
+* **deps:** use eslint 8.x ([#1728](https://www.github.com/protobufjs/protobuf.js/issues/1728)) ([fa01883](https://www.github.com/protobufjs/protobuf.js/commit/fa01883a0f756824d69ce92bfb012de05ff223ef))
+* encoding of empty Buffers ([#1514](https://www.github.com/protobufjs/protobuf.js/issues/1514)) ([b4cae07](https://www.github.com/protobufjs/protobuf.js/commit/b4cae07440387399e097058e15e50608a0e764fd)), closes [#1500](https://www.github.com/protobufjs/protobuf.js/issues/1500) [#885](https://www.github.com/protobufjs/protobuf.js/issues/885)
+* fromObject should not initialize oneof members ([#1597](https://www.github.com/protobufjs/protobuf.js/issues/1597)) ([90afe44](https://www.github.com/protobufjs/protobuf.js/commit/90afe4412de8070b0c0681e5905a6e0213072a85))
+* handling properly fields with leading and trailing comments after field with trailing comment ([#1593](https://www.github.com/protobufjs/protobuf.js/issues/1593)) ([9011aac](https://www.github.com/protobufjs/protobuf.js/commit/9011aac161e1bf8eaa3cbf0f17e8f321b6e0d9c4))
+* support for options with `repeated_value: [ "foo", "bar" ]` ([#1574](https://www.github.com/protobufjs/protobuf.js/issues/1574)) ([f5b893c](https://www.github.com/protobufjs/protobuf.js/commit/f5b893c03e9694bbe7da7c4001cc74b06039eb9c))
+* typo in pbjs help text ([#1552](https://www.github.com/protobufjs/protobuf.js/issues/1552)) ([7f46dbe](https://www.github.com/protobufjs/protobuf.js/commit/7f46dbeb538a6277035a896e1ab5e1a070e28681))
+
 ### [6.10.2](https://www.github.com/protobufjs/protobuf.js/compare/v6.10.1...v6.10.2) (2020-11-13)
 
 
