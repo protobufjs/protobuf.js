@@ -14,6 +14,7 @@ jobs:
           release-type: node
           package-name: protobufjs
           command: release-pr
+          default-branch: 6.x
   release-please-release:
     runs-on: ubuntu-latest
     steps:
@@ -24,6 +25,7 @@ jobs:
           release-type: node
           package-name: protobufjs
           command: github-release
+          default-branch: 6.x
       - uses: actions/checkout@v2
         if: ${{ steps.tag-release.outputs.release_created }}
       - uses: actions/setup-node@v1
