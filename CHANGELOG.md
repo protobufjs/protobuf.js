@@ -1,5 +1,40 @@
 # Changelog
 
+## [6.11.0](https://github.com/protobufjs/protobuf.js/compare/v6.10.3...v6.11.0) (2022-05-20)
+
+
+### Features
+
+* add configurable Root.prototype.fetch ([ad3cffd](https://github.com/protobufjs/protobuf.js/commit/ad3cffdc5a54a7c94830674270d3386e1a2b58fc))
+* add support for buffer configuration ([#1372](https://github.com/protobufjs/protobuf.js/issues/1372)) ([101aa1a](https://github.com/protobufjs/protobuf.js/commit/101aa1a4f148516fdc83a74f54a229f06e24a5de))
+* better comment parse ([#1419](https://github.com/protobufjs/protobuf.js/issues/1419)) ([7fd2e18](https://github.com/protobufjs/protobuf.js/commit/7fd2e182150c9b6be9ba21e6450b6e4668ad9f82))
+* parsed options ([#1256](https://github.com/protobufjs/protobuf.js/issues/1256)) ([7a25398](https://github.com/protobufjs/protobuf.js/commit/7a2539843055b6daecb9f369c67a6cf588dbb54c))
+* update dependencies / general cleanup ([#1356](https://github.com/protobufjs/protobuf.js/issues/1356)) ([42f49b4](https://github.com/protobufjs/protobuf.js/commit/42f49b43f692c24c2bc1ae081b4d1ad9fa173cd7))
+
+
+### Bug Fixes
+
+* allow file-level options everywhere in the file ([b70eebd](https://github.com/protobufjs/protobuf.js/commit/b70eebd86e113effaa7d13b24b19ee4a0cb9e1e5))
+* allow Windows unc paths to be resolved and normalized ([#1351](https://github.com/protobufjs/protobuf.js/issues/1351)) ([cd4aeda](https://github.com/protobufjs/protobuf.js/commit/cd4aeda8036f80cfa3b9f1db4096d856b2fd05fb))
+* **deps:** use eslint 8.x ([#1728](https://github.com/protobufjs/protobuf.js/issues/1728)) ([f2c6c8e](https://github.com/protobufjs/protobuf.js/commit/f2c6c8eea2b945ac37e43809bb6ab0cff20564ff))
+* do not fail if no process ([#1440](https://github.com/protobufjs/protobuf.js/issues/1440)) ([f2faa8c](https://github.com/protobufjs/protobuf.js/commit/f2faa8c32e918b3b843005f0419608b8e158998d))
+* do not let setProperty change the prototype ([#1731](https://github.com/protobufjs/protobuf.js/issues/1731)) ([b79f316](https://github.com/protobufjs/protobuf.js/commit/b79f316ee7651369fbcf4d07b0ec8aa6dcc8346d))
+* **docs:** update CHANGELOG to match format of release-please ([#1376](https://github.com/protobufjs/protobuf.js/issues/1376)) ([15ed8a0](https://github.com/protobufjs/protobuf.js/commit/15ed8a0fbe72b2e408b87ba25028f877796cc191))
+* es6 export enum ([#1446](https://github.com/protobufjs/protobuf.js/issues/1446)) ([9f33784](https://github.com/protobufjs/protobuf.js/commit/9f33784350b1efc2e774bbfc087cbd2c47828748))
+* fix util.global ([#1441](https://github.com/protobufjs/protobuf.js/issues/1441)) ([742b8dc](https://github.com/protobufjs/protobuf.js/commit/742b8dcbc750f9c2659088cbd88ea61fd11b24a7))
+* google.protobuf.Any type_url fixes ([#1068](https://github.com/protobufjs/protobuf.js/issues/1068)) ([192f5f1](https://github.com/protobufjs/protobuf.js/commit/192f5f12d071fa534ac625290d4666c839a46a9e))
+* handling of map entries with omitted key or value ([#1348](https://github.com/protobufjs/protobuf.js/issues/1348)) ([b950877](https://github.com/protobufjs/protobuf.js/commit/b950877c86676399674821fca4cf444f046b5acb))
+* Import Long types ([1d98cb8](https://github.com/protobufjs/protobuf.js/commit/1d98cb86fcbc69bd54fb3d3254b348da6ac0a96b))
+* Import Long types ([8a85863](https://github.com/protobufjs/protobuf.js/commit/8a858634f3add3a2d8567f72699b907e9f543eca))
+* make node detection a bit more forgiving ([#1445](https://github.com/protobufjs/protobuf.js/issues/1445)) ([4e75f6d](https://github.com/protobufjs/protobuf.js/commit/4e75f6de4a2e49f28c24b59107f262d472b68977))
+* make parsedOptions appear in method JSON representation ([#1506](https://github.com/protobufjs/protobuf.js/issues/1506)) ([3d29969](https://github.com/protobufjs/protobuf.js/commit/3d29969865f2119550d9dc88391846469da9fa7f))
+* npm audit fixes ([ca52447](https://github.com/protobufjs/protobuf.js/commit/ca524478621bd2e08120eb444c7ad8089dba1929))
+* properly iterate and return method descriptors ([d96bb7a](https://github.com/protobufjs/protobuf.js/commit/d96bb7ae991ca7d5ef8eea3bca75a2089c6f1212))
+* properly parse empty messages in options ([#1429](https://github.com/protobufjs/protobuf.js/issues/1429)) ([7fbc79f](https://github.com/protobufjs/protobuf.js/commit/7fbc79f11d89b263dafc8f332ccba59a8d181fca))
+* run npm audit fix ([#1208](https://github.com/protobufjs/protobuf.js/issues/1208)) ([b5b6632](https://github.com/protobufjs/protobuf.js/commit/b5b66321762a24c5ac2753b68331cbe115969da7))
+* updated isNode check ([#1221](https://github.com/protobufjs/protobuf.js/issues/1221)) ([#1363](https://github.com/protobufjs/protobuf.js/issues/1363)) ([5564e7b](https://github.com/protobufjs/protobuf.js/commit/5564e7b5f07d3eab99762528e8ce88507af5a5a3))
+* utf8 -> utf16 decoding bug on surrogate pairs ([#1486](https://github.com/protobufjs/protobuf.js/issues/1486)) ([75172cd](https://github.com/protobufjs/protobuf.js/commit/75172cd11be137bbabd2fba7a02b15067695ebad))
+
 ### [6.10.3](https://github.com/protobufjs/protobuf.js/compare/v6.10.2...v6.10.3) (2022-05-20)
 
 
