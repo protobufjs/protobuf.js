@@ -329,7 +329,17 @@ function toJsType(field) {
         case "sint64":
         case "fixed64":
         case "sfixed64":
-            type = config.forceLong ? "Long" : config.forceNumber ? "number" : "number|Long";
+			const jsType = field.options ? (field.options.jstype || "JS_NORMAL") : "JS_NORMAL";
+			switch (jsType) {
+				case "JS_STRING":
+					type = "string";
+					break;
+				case "JS_NUMBER":
+					type = "number";
+					break;
+				case "JS_NORMAL":
+					type = config.forceLong ? "Long" : config.forceNumber ? "number" : "number|Long";
+			}
             break;
         case "bool":
             type = "boolean";

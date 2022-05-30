@@ -38,7 +38,8 @@ function genValuePartial_fromObject(gen, field, fieldIndex, prop) {
             ("m%s=types[%i].fromObject(d%s)", prop, fieldIndex, prop);
     } else {
         var isUnsigned = false;
-        switch (field.type) {
+        switch (field.js_specific_type || field.type) {
+            case "number":
             case "double":
             case "float": gen
                 ("m%s=Number(d%s)", prop, prop); // also catches "NaN", "Infinity"
@@ -161,7 +162,7 @@ function genValuePartial_toObject(gen, field, fieldIndex, prop) {
             ("d%s=types[%i].toObject(m%s,o)", prop, fieldIndex, prop);
     } else {
         var isUnsigned = false;
-        switch (field.type) {
+        switch (field.js_specific_type || field.type) {
             case "double":
             case "float": gen
             ("d%s=o.json&&!isFinite(m%s)?String(m%s):m%s", prop, prop, prop, prop);

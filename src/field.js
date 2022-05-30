@@ -286,6 +286,21 @@ Field.prototype.resolve = function resolve() {
         if (!Object.keys(this.options).length)
             this.options = undefined;
     }
+	
+	// reflect js specific type
+	if(types.long[this.type] !== undefined) {
+		const jsType = this.options ? (this.options.jstype || "JS_NORMAL") : "JS_NORMAL";
+		switch (jsType) {
+			case "JS_STRING":
+				this.long = false;
+				this.js_specific_type = "string";
+				break;
+			case "JS_NUMBER":
+                this.long = false;
+                this.js_specific_type = "number";
+				break;
+		}
+	}
 
     // convert to internal data type if necesssary
     if (this.long) {
@@ -295,7 +310,9 @@ Field.prototype.resolve = function resolve() {
         if (Object.freeze)
             Object.freeze(this.typeDefault); // long instances are meant to be immutable anyway (i.e. use small int cache that even requires it)
 
-    } else if (this.bytes && typeof this.typeDefault === "string") {
+    } else if(this.js_specific_type === "string") {
+		this.typeDefault = String(this.typeDefault);
+	} else if (this.bytes && typeof this.typeDefault === "string") {
         var buf;
         if (util.base64.test(this.typeDefault))
             util.base64.decode(this.typeDefault, buf = util.newBuffer(util.base64.length(this.typeDefault)), 0);

@@ -38,7 +38,7 @@ function genVerifyValue(gen, field, fieldIndex, ref) {
             ("}");
         }
     } else {
-        switch (field.type) {
+        switch (field.js_specific_type || field.type) {
             case "int32":
             case "uint32":
             case "sint32":
@@ -55,6 +55,7 @@ function genVerifyValue(gen, field, fieldIndex, ref) {
                 ("if(!util.isInteger(%s)&&!(%s&&util.isInteger(%s.low)&&util.isInteger(%s.high)))", ref, ref, ref, ref)
                     ("return%j", invalid(field, "integer|Long"));
                 break;
+            case "number":
             case "float":
             case "double": gen
                 ("if(typeof %s!==\"number\")", ref)
