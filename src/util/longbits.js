@@ -12,21 +12,20 @@ var util = require("../util/minimal");
  * @param {number} hi High 32 bits, unsigned
  */
 function LongBits(lo, hi) {
+  // note that the casts below are theoretically unnecessary as of today, but older statically
+  // generated converter code might still call the ctor with signed 32bits. kept for compat.
 
-    // note that the casts below are theoretically unnecessary as of today, but older statically
-    // generated converter code might still call the ctor with signed 32bits. kept for compat.
+  /**
+   * Low bits.
+   * @type {number}
+   */
+  this.lo = lo >>> 0;
 
-    /**
-     * Low bits.
-     * @type {number}
-     */
-    this.lo = lo >>> 0;
-
-    /**
-     * High bits.
-     * @type {number}
-     */
-    this.hi = hi >>> 0;
+  /**
+   * High bits.
+   * @type {number}
+   */
+  this.hi = hi >>> 0;
 }
 
 /**
@@ -36,9 +35,15 @@ function LongBits(lo, hi) {
  */
 var zero = LongBits.zero = new LongBits(0, 0);
 
-zero.toNumber = function() { return 0; };
-zero.zzEncode = zero.zzDecode = function() { return this; };
-zero.length = function() { return 1; };
+zero.toNumber = function () {
+  return 0;
+};
+zero.zzEncode = zero.zzDecode = function () {
+  return this;
+};
+zero.length = function () {
+  return 1;
+};
 
 /**
  * Zero hash.
@@ -53,41 +58,69 @@ var zeroHash = LongBits.zeroHash = "\0\0\0\0\0\0\0\0";
  * @returns {util.LongBits} Instance
  */
 LongBits.fromNumber = function fromNumber(value) {
-    if (value === 0)
-        return zero;
-    var sign = value < 0;
-    if (sign)
-        value = -value;
-    var lo = value >>> 0,
-        hi = (value - lo) / 4294967296 >>> 0;
-    if (sign) {
-        hi = ~hi >>> 0;
-        lo = ~lo >>> 0;
-        if (++lo > 4294967295) {
-            lo = 0;
-            if (++hi > 4294967295)
-                hi = 0;
-        }
+  if (value === 0) return zero;
+  var sign = value < 0;
+  if (sign) value = -value;
+  var lo = value >>> 0,
+    hi = (value - lo) / 4294967296 >>> 0;
+  if (sign) {
+    hi = ~hi >>> 0;
+    lo = ~lo >>> 0;
+    if (++lo > 4294967295) {
+      lo = 0;
+      if (++hi > 4294967295) hi = 0;
     }
-    return new LongBits(lo, hi);
+  }
+  return new LongBits(lo, hi);
+};
+
+/**
+ * Constructs new long bits from the specified bigint.
+ * @param {bigint} value Value
+ * @returns {util.LongBits} Instance
+ */
+LongBits.fromBigInt = function fromNumber(value) {
+  var TWO_32 = BigInt("4294967296");
+  value = BigInt(value);
+  if (value === BigInt("0")) return zero;
+
+  var negative = value < 0;
+  if (negative) {
+    value = -value;
+  }
+  var hi = Number(value >> BigInt("32")) | 0;
+  var lo = Number(value - (BigInt(hi) << BigInt("32"))) | 0;
+
+  if (negative) {
+    hi = ~hi >>> 0;
+    lo = ~lo >>> 0;
+    if (++lo > TWO_32) {
+      lo = 0;
+      if (++hi > TWO_32) hi = 0;
+    }
+  }
+
+  return new LongBits(lo, hi);
 };
 
 /**
  * Constructs new long bits from a number, long or string.
- * @param {Long|number|string} value Value
+ * @param {Long|number|string|bigint} value Value
  * @returns {util.LongBits} Instance
  */
 LongBits.from = function from(value) {
-    if (typeof value === "number")
-        return LongBits.fromNumber(value);
-    if (util.isString(value)) {
-        /* istanbul ignore else */
-        if (util.Long)
-            value = util.Long.fromString(value);
-        else
-            return LongBits.fromNumber(parseInt(value, 10));
-    }
-    return value.low || value.high ? new LongBits(value.low >>> 0, value.high >>> 0) : zero;
+  if (typeof value === "number") return LongBits.fromNumber(value);
+  if (typeof value === "bigint") return LongBits.fromBigInt(value);
+  if (util.isString(value)) {
+    /* istanbul ignore else */
+    if (util.Long) value = util.Long.fromString(value);
+    else if (typeof BigInt !== "undefined")
+      value = LongBits.fromBigInt(BigInt(value));
+    else return LongBits.fromNumber(parseInt(value, 10));
+  }
+  return value.low || value.high
+    ? new LongBits(value.low >>> 0, value.high >>> 0)
+    : zero;
 };
 
 /**
@@ -96,14 +129,13 @@ LongBits.from = function from(value) {
  * @returns {number} Possibly unsafe number
  */
 LongBits.prototype.toNumber = function toNumber(unsigned) {
-    if (!unsigned && this.hi >>> 31) {
-        var lo = ~this.lo + 1 >>> 0,
-            hi = ~this.hi     >>> 0;
-        if (!lo)
-            hi = hi + 1 >>> 0;
-        return -(lo + hi * 4294967296);
-    }
-    return this.lo + this.hi * 4294967296;
+  if (!unsigned && this.hi >>> 31) {
+    var lo = ~this.lo + 1 >>> 0,
+      hi = ~this.hi >>> 0;
+    if (!lo) hi = hi + 1 >>> 0;
+    return -(lo + hi * 4294967296);
+  }
+  return this.lo + this.hi * 4294967296;
 };
 
 /**
@@ -112,10 +144,10 @@ LongBits.prototype.toNumber = function toNumber(unsigned) {
  * @returns {Long} Long
  */
 LongBits.prototype.toLong = function toLong(unsigned) {
-    return util.Long
-        ? new util.Long(this.lo | 0, this.hi | 0, Boolean(unsigned))
-        /* istanbul ignore next */
-        : { low: this.lo | 0, high: this.hi | 0, unsigned: Boolean(unsigned) };
+  return util.Long
+    ? new util.Long(this.lo | 0, this.hi | 0, Boolean(unsigned))
+    : /* istanbul ignore next */
+      { low: this.lo | 0, high: this.hi | 0, unsigned: Boolean(unsigned) };
 };
 
 var charCodeAt = String.prototype.charCodeAt;
@@ -126,19 +158,19 @@ var charCodeAt = String.prototype.charCodeAt;
  * @returns {util.LongBits} Bits
  */
 LongBits.fromHash = function fromHash(hash) {
-    if (hash === zeroHash)
-        return zero;
-    return new LongBits(
-        ( charCodeAt.call(hash, 0)
-        | charCodeAt.call(hash, 1) << 8
-        | charCodeAt.call(hash, 2) << 16
-        | charCodeAt.call(hash, 3) << 24) >>> 0
-    ,
-        ( charCodeAt.call(hash, 4)
-        | charCodeAt.call(hash, 5) << 8
-        | charCodeAt.call(hash, 6) << 16
-        | charCodeAt.call(hash, 7) << 24) >>> 0
-    );
+  if (hash === zeroHash) return zero;
+  return new LongBits(
+    (charCodeAt.call(hash, 0) |
+      charCodeAt.call(hash, 1) << 8 |
+      charCodeAt.call(hash, 2) << 16 |
+      charCodeAt.call(hash, 3) << 24) >>>
+      0,
+    (charCodeAt.call(hash, 4) |
+      charCodeAt.call(hash, 5) << 8 |
+      charCodeAt.call(hash, 6) << 16 |
+      charCodeAt.call(hash, 7) << 24) >>>
+      0
+  );
 };
 
 /**
@@ -146,16 +178,16 @@ LongBits.fromHash = function fromHash(hash) {
  * @returns {string} Hash
  */
 LongBits.prototype.toHash = function toHash() {
-    return String.fromCharCode(
-        this.lo        & 255,
-        this.lo >>> 8  & 255,
-        this.lo >>> 16 & 255,
-        this.lo >>> 24      ,
-        this.hi        & 255,
-        this.hi >>> 8  & 255,
-        this.hi >>> 16 & 255,
-        this.hi >>> 24
-    );
+  return String.fromCharCode(
+    this.lo & 255,
+    this.lo >>> 8 & 255,
+    this.lo >>> 16 & 255,
+    this.lo >>> 24,
+    this.hi & 255,
+    this.hi >>> 8 & 255,
+    this.hi >>> 16 & 255,
+    this.hi >>> 24
+  );
 };
 
 /**
@@ -163,10 +195,10 @@ LongBits.prototype.toHash = function toHash() {
  * @returns {util.LongBits} `this`
  */
 LongBits.prototype.zzEncode = function zzEncode() {
-    var mask =   this.hi >> 31;
-    this.hi  = ((this.hi << 1 | this.lo >>> 31) ^ mask) >>> 0;
-    this.lo  = ( this.lo << 1                   ^ mask) >>> 0;
-    return this;
+  var mask = this.hi >> 31;
+  this.hi = ((this.hi << 1 | this.lo >>> 31) ^ mask) >>> 0;
+  this.lo = (this.lo << 1 ^ mask) >>> 0;
+  return this;
 };
 
 /**
@@ -174,10 +206,10 @@ LongBits.prototype.zzEncode = function zzEncode() {
  * @returns {util.LongBits} `this`
  */
 LongBits.prototype.zzDecode = function zzDecode() {
-    var mask = -(this.lo & 1);
-    this.lo  = ((this.lo >>> 1 | this.hi << 31) ^ mask) >>> 0;
-    this.hi  = ( this.hi >>> 1                  ^ mask) >>> 0;
-    return this;
+  var mask = -(this.lo & 1);
+  this.lo = ((this.lo >>> 1 | this.hi << 31) ^ mask) >>> 0;
+  this.hi = (this.hi >>> 1 ^ mask) >>> 0;
+  return this;
 };
 
 /**
@@ -185,16 +217,26 @@ LongBits.prototype.zzDecode = function zzDecode() {
  * @returns {number} Length
  */
 LongBits.prototype.length = function length() {
-    var part0 =  this.lo,
-        part1 = (this.lo >>> 28 | this.hi << 4) >>> 0,
-        part2 =  this.hi >>> 24;
-    return part2 === 0
-         ? part1 === 0
-           ? part0 < 16384
-             ? part0 < 128 ? 1 : 2
-             : part0 < 2097152 ? 3 : 4
-           : part1 < 16384
-             ? part1 < 128 ? 5 : 6
-             : part1 < 2097152 ? 7 : 8
-         : part2 < 128 ? 9 : 10;
+  var part0 = this.lo,
+    part1 = (this.lo >>> 28 | this.hi << 4) >>> 0,
+    part2 = this.hi >>> 24;
+  return part2 === 0
+    ? part1 === 0
+      ? part0 < 16384
+        ? part0 < 128
+          ? 1
+          : 2
+        : part0 < 2097152
+        ? 3
+        : 4
+      : part1 < 16384
+      ? part1 < 128
+        ? 5
+        : 6
+      : part1 < 2097152
+      ? 7
+      : 8
+    : part2 < 128
+    ? 9
+    : 10;
 };

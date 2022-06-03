@@ -1903,7 +1903,7 @@ export namespace util {
          * @param value Value
          * @returns Instance
          */
-        public static from(value: (Long|number|string)): util.LongBits;
+        public static from(value: (Long|number|string|bigint)): util.LongBits;
 
         /**
          * Converts this long bits to a possibly unsafe JavaScript number.

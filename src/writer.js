@@ -254,7 +254,7 @@ function writeVarint64(val, buf, pos) {
 
 /**
  * Writes an unsigned 64 bit value as a varint.
- * @param {Long|number|string} value Value to write
+ * @param {Long|number|string|bigint} value Value to write
  * @returns {Writer} `this`
  * @throws {TypeError} If `value` is a string and no long library is present.
  */
@@ -266,7 +266,7 @@ Writer.prototype.uint64 = function write_uint64(value) {
 /**
  * Writes a signed 64 bit value as a varint.
  * @function
- * @param {Long|number|string} value Value to write
+ * @param {Long|number|string|bigint} value Value to write
  * @returns {Writer} `this`
  * @throws {TypeError} If `value` is a string and no long library is present.
  */
@@ -274,7 +274,7 @@ Writer.prototype.int64 = Writer.prototype.uint64;
 
 /**
  * Writes a signed 64 bit value as a varint, zig-zag encoded.
- * @param {Long|number|string} value Value to write
+ * @param {Long|number|string|bigint} value Value to write
  * @returns {Writer} `this`
  * @throws {TypeError} If `value` is a string and no long library is present.
  */
