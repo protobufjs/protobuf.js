@@ -76,7 +76,7 @@ Production:
 
 **Remember** to replace the version tag with the exact [release](https://github.com/dcodeIO/protobuf.js/tags) your project depends upon.
 
-The library supports CommonJS and AMD loaders and also exports globally as `protobuf`.
+The library supports CommonJS and AMD loaders and also exports globally as `protobuf`, an ES Module build is also provided via Rollup compilation.
 
 ### Distributions
 

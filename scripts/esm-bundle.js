@@ -1,0 +1,80 @@
+"use strict";
+module.exports = bundle;
+
+var fs = require("fs"),
+  path = require("path");
+
+var gulp = require("gulp");
+var rollup = require("@rollup/stream");
+var commonjs = require("@rollup/plugin-commonjs");
+var { nodeResolve } = require("@rollup/plugin-node-resolve");
+var { terser } = require("rollup-plugin-terser");
+var header = require("gulp-header");
+var sourcemaps = require("gulp-sourcemaps");
+
+var buffer = require("vinyl-buffer");
+var source = require("vinyl-source-stream");
+
+var pkg = require(path.join(__dirname, "..", "package.json"));
+
+/*eslint-disable no-template-curly-in-string*/
+var license =
+  [
+    "/*!",
+    " * protobuf.js v${version} (c) 2016, daniel wirtz",
+    " * compiled ${date}",
+    " * licensed under the bsd-3-clause license",
+    " * see: https://github.com/dcodeio/protobuf.js for details",
+    " */",
+  ].join("\n") + "\n";
+/*eslint-enable no-template-curly-in-string*/
+
+var prelude = fs
+  .readFileSync(require.resolve("../lib/prelude.js"))
+  .toString("utf8");
+
+/**
+ * Bundles the library.
+ * @param {Object} options Bundler options
+ * @param {string} options.entry Entry file
+ * @param {string} options.target Target directory
+ * @param {boolean} [options.compress=false] Whether to minify or not
+ * @param {string[]} [options.exclude] Excluded source files
+ * @returns {undefined}
+ */
+function bundle(options) {
+  if (!options || !options.entry || !options.target)
+    throw TypeError("missing options");
+  return rollup({
+    input: options.entry,
+    output: {
+      format: options.format,
+      sourcemap: true,
+      dir: options.target,
+    },
+    plugins: [
+      nodeResolve(),
+      commonjs(),
+      options.compress ? terser() : undefined,
+    ],
+    onwarn: function (message, warn) {
+      if (message.code === "CIRCULAR_DEPENDENCY" || message.code === "EVAL") {
+        return;
+      }
+      warn(message);
+    },
+  })
+    .pipe(source(options.compress ? "protobuf.min.js" : "protobuf.js"))
+    .pipe(buffer())
+    .pipe(sourcemaps.init({ loadMaps: true }))
+    .pipe(
+      header(license, {
+        date: new Date().toUTCString().replace("GMT", "UTC").toLowerCase(),
+        version: pkg.version,
+      })
+    )
+    .pipe(sourcemaps.write(".", { sourceRoot: "" }))
+    .pipe(gulp.dest(options.target))
+    .on("log", console.log)
+    .on("error", console.error);
+}
