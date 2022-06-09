@@ -1,6 +1,6 @@
 /*!
- * protobuf.js v6.10.0 (c) 2016, daniel wirtz
- * compiled wed, 15 jul 2020 23:34:13 utc
+ * protobuf.js v6.10.1 (c) 2016, daniel wirtz
+ * compiled sat, 10 oct 2020 19:27:40 utc
  * licensed under the bsd-3-clause license
  * see: https://github.com/dcodeio/protobuf.js for details
  */
@@ -1439,7 +1439,7 @@ function decoder(mtype) {
         var field = mtype._fieldsArray[i].resolve(),
             type  = field.resolvedType instanceof Enum ? "int32" : field.type,
             ref   = "m" + util.safeProp(field.name); gen
-            ("case %i:", field.id);
+            ("case %i: {", field.id);
 
         // Map fields
         if (field.map) { gen
@@ -1510,7 +1510,7 @@ function decoder(mtype) {
         else gen
                 ("%s=r.%s()", ref, type);
         gen
-                ("break");
+                ("break }");
     // Unknown fields
     } gen
             ("default:")

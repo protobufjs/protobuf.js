@@ -42,18 +42,22 @@ $root.Test = (function() {
         while (reader.pos < end) {
             var tag = reader.uint32();
             switch (tag >>> 3) {
-            case 1:
-                message.string = reader.string();
-                break;
-            case 2:
-                message.uint32 = reader.uint32();
-                break;
-            case 3:
-                message.inner = $root.Test.Inner.decode(reader, reader.uint32());
-                break;
-            case 4:
-                message.float = reader.float();
-                break;
+            case 1: {
+                    message.string = reader.string();
+                    break;
+                }
+            case 2: {
+                    message.uint32 = reader.uint32();
+                    break;
+                }
+            case 3: {
+                    message.inner = $root.Test.Inner.decode(reader, reader.uint32());
+                    break;
+                }
+            case 4: {
+                    message.float = reader.float();
+                    break;
+                }
             default:
                 reader.skipType(tag & 7);
                 break;
@@ -94,15 +98,18 @@ $root.Test = (function() {
             while (reader.pos < end) {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
-                case 1:
-                    message.int32 = reader.int32();
-                    break;
-                case 2:
-                    message.innerInner = $root.Test.Inner.InnerInner.decode(reader, reader.uint32());
-                    break;
-                case 3:
-                    message.outer = $root.Outer.decode(reader, reader.uint32());
-                    break;
+                case 1: {
+                        message.int32 = reader.int32();
+                        break;
+                    }
+                case 2: {
+                        message.innerInner = $root.Test.Inner.InnerInner.decode(reader, reader.uint32());
+                        break;
+                    }
+                case 3: {
+                        message.outer = $root.Outer.decode(reader, reader.uint32());
+                        break;
+                    }
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -143,15 +150,18 @@ $root.Test = (function() {
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     switch (tag >>> 3) {
-                    case 1:
-                        message.long = reader.int64();
-                        break;
-                    case 2:
-                        message["enum"] = reader.int32();
-                        break;
-                    case 3:
-                        message.sint32 = reader.sint32();
-                        break;
+                    case 1: {
+                            message.long = reader.int64();
+                            break;
+                        }
+                    case 2: {
+                            message["enum"] = reader.int32();
+                            break;
+                        }
+                    case 3: {
+                            message.sint32 = reader.sint32();
+                            break;
+                        }
                     default:
                         reader.skipType(tag & 7);
                         break;
@@ -213,19 +223,21 @@ $root.Outer = (function() {
         while (reader.pos < end) {
             var tag = reader.uint32();
             switch (tag >>> 3) {
-            case 1:
-                if (!(message.bool && message.bool.length))
-                    message.bool = [];
-                if ((tag & 7) === 2) {
-                    var end2 = reader.uint32() + reader.pos;
-                    while (reader.pos < end2)
+            case 1: {
+                    if (!(message.bool && message.bool.length))
+                        message.bool = [];
+                    if ((tag & 7) === 2) {
+                        var end2 = reader.uint32() + reader.pos;
+                        while (reader.pos < end2)
+                            message.bool.push(reader.bool());
+                    } else
                         message.bool.push(reader.bool());
-                } else
-                    message.bool.push(reader.bool());
-                break;
-            case 2:
-                message.double = reader.double();
-                break;
+                    break;
+                }
+            case 2: {
+                    message.double = reader.double();
+                    break;
+                }
             default:
                 reader.skipType(tag & 7);
                 break;

@@ -205,70 +205,79 @@ $root.Message = (function() {
         while (reader.pos < end) {
             var tag = reader.uint32();
             switch (tag >>> 3) {
-            case 1:
-                message.stringVal = reader.string();
-                break;
-            case 2:
-                if (!(message.stringRepeated && message.stringRepeated.length))
-                    message.stringRepeated = [];
-                message.stringRepeated.push(reader.string());
-                break;
-            case 3:
-                message.uint64Val = reader.uint64();
-                break;
-            case 4:
-                if (!(message.uint64Repeated && message.uint64Repeated.length))
-                    message.uint64Repeated = [];
-                if ((tag & 7) === 2) {
-                    var end2 = reader.uint32() + reader.pos;
-                    while (reader.pos < end2)
-                        message.uint64Repeated.push(reader.uint64());
-                } else
-                    message.uint64Repeated.push(reader.uint64());
-                break;
-            case 5:
-                message.bytesVal = reader.bytes();
-                break;
-            case 6:
-                if (!(message.bytesRepeated && message.bytesRepeated.length))
-                    message.bytesRepeated = [];
-                message.bytesRepeated.push(reader.bytes());
-                break;
-            case 7:
-                message.enumVal = reader.int32();
-                break;
-            case 8:
-                if (!(message.enumRepeated && message.enumRepeated.length))
-                    message.enumRepeated = [];
-                if ((tag & 7) === 2) {
-                    var end2 = reader.uint32() + reader.pos;
-                    while (reader.pos < end2)
-                        message.enumRepeated.push(reader.int32());
-                } else
-                    message.enumRepeated.push(reader.int32());
-                break;
-            case 9:
-                if (message.int64Map === $util.emptyObject)
-                    message.int64Map = {};
-                var end2 = reader.uint32() + reader.pos;
-                key = "";
-                value = 0;
-                while (reader.pos < end2) {
-                    var tag2 = reader.uint32();
-                    switch (tag2 >>> 3) {
-                    case 1:
-                        key = reader.string();
-                        break;
-                    case 2:
-                        value = reader.int64();
-                        break;
-                    default:
-                        reader.skipType(tag2 & 7);
-                        break;
-                    }
+            case 1: {
+                    message.stringVal = reader.string();
+                    break;
                 }
-                message.int64Map[key] = value;
-                break;
+            case 2: {
+                    if (!(message.stringRepeated && message.stringRepeated.length))
+                        message.stringRepeated = [];
+                    message.stringRepeated.push(reader.string());
+                    break;
+                }
+            case 3: {
+                    message.uint64Val = reader.uint64();
+                    break;
+                }
+            case 4: {
+                    if (!(message.uint64Repeated && message.uint64Repeated.length))
+                        message.uint64Repeated = [];
+                    if ((tag & 7) === 2) {
+                        var end2 = reader.uint32() + reader.pos;
+                        while (reader.pos < end2)
+                            message.uint64Repeated.push(reader.uint64());
+                    } else
+                        message.uint64Repeated.push(reader.uint64());
+                    break;
+                }
+            case 5: {
+                    message.bytesVal = reader.bytes();
+                    break;
+                }
+            case 6: {
+                    if (!(message.bytesRepeated && message.bytesRepeated.length))
+                        message.bytesRepeated = [];
+                    message.bytesRepeated.push(reader.bytes());
+                    break;
+                }
+            case 7: {
+                    message.enumVal = reader.int32();
+                    break;
+                }
+            case 8: {
+                    if (!(message.enumRepeated && message.enumRepeated.length))
+                        message.enumRepeated = [];
+                    if ((tag & 7) === 2) {
+                        var end2 = reader.uint32() + reader.pos;
+                        while (reader.pos < end2)
+                            message.enumRepeated.push(reader.int32());
+                    } else
+                        message.enumRepeated.push(reader.int32());
+                    break;
+                }
+            case 9: {
+                    if (message.int64Map === $util.emptyObject)
+                        message.int64Map = {};
+                    var end2 = reader.uint32() + reader.pos;
+                    key = "";
+                    value = 0;
+                    while (reader.pos < end2) {
+                        var tag2 = reader.uint32();
+                        switch (tag2 >>> 3) {
+                        case 1:
+                            key = reader.string();
+                            break;
+                        case 2:
+                            value = reader.int64();
+                            break;
+                        default:
+                            reader.skipType(tag2 & 7);
+                            break;
+                        }
+                    }
+                    message.int64Map[key] = value;
+                    break;
+                }
             default:
                 reader.skipType(tag & 7);
                 break;

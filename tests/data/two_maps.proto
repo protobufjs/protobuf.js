@@ -1,0 +1,9 @@
+syntax="proto3";
+
+package Example;
+
+message Msg
+{
+	map<string, string> one = 1;
+	map<string, string> two = 2;
+}

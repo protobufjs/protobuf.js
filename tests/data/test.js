@@ -304,9 +304,10 @@ $root.jspb = (function() {
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     switch (tag >>> 3) {
-                    case 1:
-                        message.outerEnum = reader.int32();
-                        break;
+                    case 1: {
+                            message.outerEnum = reader.int32();
+                            break;
+                        }
                     default:
                         reader.skipType(tag & 7);
                         break;
@@ -538,17 +539,20 @@ $root.jspb = (function() {
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     switch (tag >>> 3) {
-                    case 1:
-                        message.aString = reader.string();
-                        break;
-                    case 2:
-                        if (!(message.aRepeatedString && message.aRepeatedString.length))
-                            message.aRepeatedString = [];
-                        message.aRepeatedString.push(reader.string());
-                        break;
-                    case 3:
-                        message.aBoolean = reader.bool();
-                        break;
+                    case 1: {
+                            message.aString = reader.string();
+                            break;
+                        }
+                    case 2: {
+                            if (!(message.aRepeatedString && message.aRepeatedString.length))
+                                message.aRepeatedString = [];
+                            message.aRepeatedString.push(reader.string());
+                            break;
+                        }
+                    case 3: {
+                            message.aBoolean = reader.bool();
+                            break;
+                        }
                     default:
                         reader.skipType(tag & 7);
                         break;
@@ -787,14 +791,16 @@ $root.jspb = (function() {
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     switch (tag >>> 3) {
-                    case 1:
-                        message.aString = reader.string();
-                        break;
-                    case 2:
-                        if (!(message.aRepeatedString && message.aRepeatedString.length))
-                            message.aRepeatedString = [];
-                        message.aRepeatedString.push(reader.string());
-                        break;
+                    case 1: {
+                            message.aString = reader.string();
+                            break;
+                        }
+                    case 2: {
+                            if (!(message.aRepeatedString && message.aRepeatedString.length))
+                                message.aRepeatedString = [];
+                            message.aRepeatedString.push(reader.string());
+                            break;
+                        }
                     default:
                         reader.skipType(tag & 7);
                         break;
@@ -1041,18 +1047,22 @@ $root.jspb = (function() {
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     switch (tag >>> 3) {
-                    case 1:
-                        message.normal = reader.string();
-                        break;
-                    case 2:
-                        message["default"] = reader.string();
-                        break;
-                    case 3:
-                        message["function"] = reader.string();
-                        break;
-                    case 4:
-                        message["var"] = reader.string();
-                        break;
+                    case 1: {
+                            message.normal = reader.string();
+                            break;
+                        }
+                    case 2: {
+                            message["default"] = reader.string();
+                            break;
+                        }
+                    case 3: {
+                            message["function"] = reader.string();
+                            break;
+                        }
+                    case 4: {
+                            message["var"] = reader.string();
+                            break;
+                        }
                     default:
                         reader.skipType(tag & 7);
                         break;
@@ -1324,25 +1334,30 @@ $root.jspb = (function() {
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     switch (tag >>> 3) {
-                    case 1:
-                        message.aString = reader.string();
-                        break;
-                    case 2:
-                        message.aBool = reader.bool();
-                        break;
-                    case 3:
-                        message.aNestedMessage = $root.jspb.test.OptionalFields.Nested.decode(reader, reader.uint32());
-                        break;
-                    case 4:
-                        if (!(message.aRepeatedMessage && message.aRepeatedMessage.length))
-                            message.aRepeatedMessage = [];
-                        message.aRepeatedMessage.push($root.jspb.test.OptionalFields.Nested.decode(reader, reader.uint32()));
-                        break;
-                    case 5:
-                        if (!(message.aRepeatedString && message.aRepeatedString.length))
-                            message.aRepeatedString = [];
-                        message.aRepeatedString.push(reader.string());
-                        break;
+                    case 1: {
+                            message.aString = reader.string();
+                            break;
+                        }
+                    case 2: {
+                            message.aBool = reader.bool();
+                            break;
+                        }
+                    case 3: {
+                            message.aNestedMessage = $root.jspb.test.OptionalFields.Nested.decode(reader, reader.uint32());
+                            break;
+                        }
+                    case 4: {
+                            if (!(message.aRepeatedMessage && message.aRepeatedMessage.length))
+                                message.aRepeatedMessage = [];
+                            message.aRepeatedMessage.push($root.jspb.test.OptionalFields.Nested.decode(reader, reader.uint32()));
+                            break;
+                        }
+                    case 5: {
+                            if (!(message.aRepeatedString && message.aRepeatedString.length))
+                                message.aRepeatedString = [];
+                            message.aRepeatedString.push(reader.string());
+                            break;
+                        }
                     default:
                         reader.skipType(tag & 7);
                         break;
@@ -1605,9 +1620,10 @@ $root.jspb = (function() {
                     while (reader.pos < end) {
                         var tag = reader.uint32();
                         switch (tag >>> 3) {
-                        case 1:
-                            message.anInt = reader.int32();
-                            break;
+                        case 1: {
+                                message.anInt = reader.int32();
+                                break;
+                            }
                         default:
                             reader.skipType(tag & 7);
                             break;
@@ -1898,37 +1914,46 @@ $root.jspb = (function() {
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     switch (tag >>> 3) {
-                    case 1:
-                        message.str1 = reader.string();
-                        break;
-                    case 2:
-                        message.str2 = reader.string();
-                        break;
-                    case 3:
-                        message.str3 = reader.string();
-                        break;
-                    case 100:
-                        message[".jspb.test.IsExtension.extField"] = $root.jspb.test.IsExtension.decode(reader, reader.uint32());
-                        break;
-                    case 101:
-                        message[".jspb.test.IndirectExtension.simple"] = $root.jspb.test.Simple1.decode(reader, reader.uint32());
-                        break;
-                    case 102:
-                        message[".jspb.test.IndirectExtension.str"] = reader.string();
-                        break;
-                    case 103:
-                        if (!(message[".jspb.test.IndirectExtension.repeatedStr"] && message[".jspb.test.IndirectExtension.repeatedStr"].length))
-                            message[".jspb.test.IndirectExtension.repeatedStr"] = [];
-                        message[".jspb.test.IndirectExtension.repeatedStr"].push(reader.string());
-                        break;
-                    case 104:
-                        if (!(message[".jspb.test.IndirectExtension.repeatedSimple"] && message[".jspb.test.IndirectExtension.repeatedSimple"].length))
-                            message[".jspb.test.IndirectExtension.repeatedSimple"] = [];
-                        message[".jspb.test.IndirectExtension.repeatedSimple"].push($root.jspb.test.Simple1.decode(reader, reader.uint32()));
-                        break;
-                    case 105:
-                        message[".jspb.test.simple1"] = $root.jspb.test.Simple1.decode(reader, reader.uint32());
-                        break;
+                    case 1: {
+                            message.str1 = reader.string();
+                            break;
+                        }
+                    case 2: {
+                            message.str2 = reader.string();
+                            break;
+                        }
+                    case 3: {
+                            message.str3 = reader.string();
+                            break;
+                        }
+                    case 100: {
+                            message[".jspb.test.IsExtension.extField"] = $root.jspb.test.IsExtension.decode(reader, reader.uint32());
+                            break;
+                        }
+                    case 101: {
+                            message[".jspb.test.IndirectExtension.simple"] = $root.jspb.test.Simple1.decode(reader, reader.uint32());
+                            break;
+                        }
+                    case 102: {
+                            message[".jspb.test.IndirectExtension.str"] = reader.string();
+                            break;
+                        }
+                    case 103: {
+                            if (!(message[".jspb.test.IndirectExtension.repeatedStr"] && message[".jspb.test.IndirectExtension.repeatedStr"].length))
+                                message[".jspb.test.IndirectExtension.repeatedStr"] = [];
+                            message[".jspb.test.IndirectExtension.repeatedStr"].push(reader.string());
+                            break;
+                        }
+                    case 104: {
+                            if (!(message[".jspb.test.IndirectExtension.repeatedSimple"] && message[".jspb.test.IndirectExtension.repeatedSimple"].length))
+                                message[".jspb.test.IndirectExtension.repeatedSimple"] = [];
+                            message[".jspb.test.IndirectExtension.repeatedSimple"].push($root.jspb.test.Simple1.decode(reader, reader.uint32()));
+                            break;
+                        }
+                    case 105: {
+                            message[".jspb.test.simple1"] = $root.jspb.test.Simple1.decode(reader, reader.uint32());
+                            break;
+                        }
                     default:
                         reader.skipType(tag & 7);
                         break;
@@ -2281,25 +2306,30 @@ $root.jspb = (function() {
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     switch (tag >>> 3) {
-                    case 1:
-                        message.aString = reader.string();
-                        break;
-                    case 9:
-                        message.anOutOfOrderBool = reader.bool();
-                        break;
-                    case 4:
-                        message.aNestedMessage = $root.jspb.test.Complex.Nested.decode(reader, reader.uint32());
-                        break;
-                    case 5:
-                        if (!(message.aRepeatedMessage && message.aRepeatedMessage.length))
-                            message.aRepeatedMessage = [];
-                        message.aRepeatedMessage.push($root.jspb.test.Complex.Nested.decode(reader, reader.uint32()));
-                        break;
-                    case 7:
-                        if (!(message.aRepeatedString && message.aRepeatedString.length))
-                            message.aRepeatedString = [];
-                        message.aRepeatedString.push(reader.string());
-                        break;
+                    case 1: {
+                            message.aString = reader.string();
+                            break;
+                        }
+                    case 9: {
+                            message.anOutOfOrderBool = reader.bool();
+                            break;
+                        }
+                    case 4: {
+                            message.aNestedMessage = $root.jspb.test.Complex.Nested.decode(reader, reader.uint32());
+                            break;
+                        }
+                    case 5: {
+                            if (!(message.aRepeatedMessage && message.aRepeatedMessage.length))
+                                message.aRepeatedMessage = [];
+                            message.aRepeatedMessage.push($root.jspb.test.Complex.Nested.decode(reader, reader.uint32()));
+                            break;
+                        }
+                    case 7: {
+                            if (!(message.aRepeatedString && message.aRepeatedString.length))
+                                message.aRepeatedString = [];
+                            message.aRepeatedString.push(reader.string());
+                            break;
+                        }
                     default:
                         reader.skipType(tag & 7);
                         break;
@@ -2562,9 +2592,10 @@ $root.jspb = (function() {
                     while (reader.pos < end) {
                         var tag = reader.uint32();
                         switch (tag >>> 3) {
-                        case 2:
-                            message.anInt = reader.int32();
-                            break;
+                        case 2: {
+                                message.anInt = reader.int32();
+                                break;
+                            }
                         default:
                             reader.skipType(tag & 7);
                             break;
@@ -2932,9 +2963,10 @@ $root.jspb = (function() {
                     while (reader.pos < end) {
                         var tag = reader.uint32();
                         switch (tag >>> 3) {
-                        case 1:
-                            message.innerComplexField = reader.int32();
-                            break;
+                        case 1: {
+                                message.innerComplexField = reader.int32();
+                                break;
+                            }
                         default:
                             reader.skipType(tag & 7);
                             break;
@@ -3133,9 +3165,10 @@ $root.jspb = (function() {
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     switch (tag >>> 3) {
-                    case 1:
-                        message.ext1 = reader.string();
-                        break;
+                    case 1: {
+                            message.ext1 = reader.string();
+                            break;
+                        }
                     default:
                         reader.skipType(tag & 7);
                         break;
@@ -3557,24 +3590,30 @@ $root.jspb = (function() {
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     switch (tag >>> 3) {
-                    case 1:
-                        message.stringField = reader.string();
-                        break;
-                    case 2:
-                        message.boolField = reader.bool();
-                        break;
-                    case 3:
-                        message.intField = reader.int64();
-                        break;
-                    case 4:
-                        message.enumField = reader.int32();
-                        break;
-                    case 6:
-                        message.emptyField = reader.string();
-                        break;
-                    case 8:
-                        message.bytesField = reader.bytes();
-                        break;
+                    case 1: {
+                            message.stringField = reader.string();
+                            break;
+                        }
+                    case 2: {
+                            message.boolField = reader.bool();
+                            break;
+                        }
+                    case 3: {
+                            message.intField = reader.int64();
+                            break;
+                        }
+                    case 4: {
+                            message.enumField = reader.int32();
+                            break;
+                        }
+                    case 6: {
+                            message.emptyField = reader.string();
+                            break;
+                        }
+                    case 8: {
+                            message.bytesField = reader.bytes();
+                            break;
+                        }
                     default:
                         reader.skipType(tag & 7);
                         break;
@@ -3944,44 +3983,52 @@ $root.jspb = (function() {
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     switch (tag >>> 3) {
-                    case 1:
-                        message.optionalFloatField = reader.float();
-                        break;
-                    case 2:
-                        message.requiredFloatField = reader.float();
-                        break;
-                    case 3:
-                        if (!(message.repeatedFloatField && message.repeatedFloatField.length))
-                            message.repeatedFloatField = [];
-                        if ((tag & 7) === 2) {
-                            var end2 = reader.uint32() + reader.pos;
-                            while (reader.pos < end2)
+                    case 1: {
+                            message.optionalFloatField = reader.float();
+                            break;
+                        }
+                    case 2: {
+                            message.requiredFloatField = reader.float();
+                            break;
+                        }
+                    case 3: {
+                            if (!(message.repeatedFloatField && message.repeatedFloatField.length))
+                                message.repeatedFloatField = [];
+                            if ((tag & 7) === 2) {
+                                var end2 = reader.uint32() + reader.pos;
+                                while (reader.pos < end2)
+                                    message.repeatedFloatField.push(reader.float());
+                            } else
                                 message.repeatedFloatField.push(reader.float());
-                        } else
-                            message.repeatedFloatField.push(reader.float());
-                        break;
-                    case 4:
-                        message.defaultFloatField = reader.float();
-                        break;
-                    case 5:
-                        message.optionalDoubleField = reader.double();
-                        break;
-                    case 6:
-                        message.requiredDoubleField = reader.double();
-                        break;
-                    case 7:
-                        if (!(message.repeatedDoubleField && message.repeatedDoubleField.length))
-                            message.repeatedDoubleField = [];
-                        if ((tag & 7) === 2) {
-                            var end2 = reader.uint32() + reader.pos;
-                            while (reader.pos < end2)
+                            break;
+                        }
+                    case 4: {
+                            message.defaultFloatField = reader.float();
+                            break;
+                        }
+                    case 5: {
+                            message.optionalDoubleField = reader.double();
+                            break;
+                        }
+                    case 6: {
+                            message.requiredDoubleField = reader.double();
+                            break;
+                        }
+                    case 7: {
+                            if (!(message.repeatedDoubleField && message.repeatedDoubleField.length))
+                                message.repeatedDoubleField = [];
+                            if ((tag & 7) === 2) {
+                                var end2 = reader.uint32() + reader.pos;
+                                while (reader.pos < end2)
+                                    message.repeatedDoubleField.push(reader.double());
+                            } else
                                 message.repeatedDoubleField.push(reader.double());
-                        } else
-                            message.repeatedDoubleField.push(reader.double());
-                        break;
-                    case 8:
-                        message.defaultDoubleField = reader.double();
-                        break;
+                            break;
+                        }
+                    case 8: {
+                            message.defaultDoubleField = reader.double();
+                            break;
+                        }
                     default:
                         reader.skipType(tag & 7);
                         break;
@@ -4319,26 +4366,32 @@ $root.jspb = (function() {
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     switch (tag >>> 3) {
-                    case 1:
-                        message.str = reader.string();
-                        break;
-                    case 3:
-                        message.simple1 = $root.jspb.test.Simple1.decode(reader, reader.uint32());
-                        break;
-                    case 5:
-                        if (!(message.simple2 && message.simple2.length))
-                            message.simple2 = [];
-                        message.simple2.push($root.jspb.test.Simple1.decode(reader, reader.uint32()));
-                        break;
-                    case 6:
-                        message.bytesField = reader.bytes();
-                        break;
-                    case 7:
-                        message.unused = reader.string();
-                        break;
-                    case 100:
-                        message[".jspb.test.CloneExtension.extField"] = $root.jspb.test.CloneExtension.decode(reader, reader.uint32());
-                        break;
+                    case 1: {
+                            message.str = reader.string();
+                            break;
+                        }
+                    case 3: {
+                            message.simple1 = $root.jspb.test.Simple1.decode(reader, reader.uint32());
+                            break;
+                        }
+                    case 5: {
+                            if (!(message.simple2 && message.simple2.length))
+                                message.simple2 = [];
+                            message.simple2.push($root.jspb.test.Simple1.decode(reader, reader.uint32()));
+                            break;
+                        }
+                    case 6: {
+                            message.bytesField = reader.bytes();
+                            break;
+                        }
+                    case 7: {
+                            message.unused = reader.string();
+                            break;
+                        }
+                    case 100: {
+                            message[".jspb.test.CloneExtension.extField"] = $root.jspb.test.CloneExtension.decode(reader, reader.uint32());
+                            break;
+                        }
                     default:
                         reader.skipType(tag & 7);
                         break;
@@ -4612,9 +4665,10 @@ $root.jspb = (function() {
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     switch (tag >>> 3) {
-                    case 2:
-                        message.ext = reader.string();
-                        break;
+                    case 2: {
+                            message.ext = reader.string();
+                            break;
+                        }
                     default:
                         reader.skipType(tag & 7);
                         break;
@@ -4865,26 +4919,32 @@ $root.jspb = (function() {
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     switch (tag >>> 3) {
-                    case 1:
-                        if (!(message.repeatedGroup && message.repeatedGroup.length))
-                            message.repeatedGroup = [];
-                        message.repeatedGroup.push($root.jspb.test.TestGroup.RepeatedGroup.decode(reader));
-                        break;
-                    case 2:
-                        message.requiredGroup = $root.jspb.test.TestGroup.RequiredGroup.decode(reader);
-                        break;
-                    case 3:
-                        message.optionalGroup = $root.jspb.test.TestGroup.OptionalGroup.decode(reader);
-                        break;
-                    case 4:
-                        message.id = reader.string();
-                        break;
-                    case 5:
-                        message.requiredSimple = $root.jspb.test.Simple2.decode(reader, reader.uint32());
-                        break;
-                    case 6:
-                        message.optionalSimple = $root.jspb.test.Simple2.decode(reader, reader.uint32());
-                        break;
+                    case 1: {
+                            if (!(message.repeatedGroup && message.repeatedGroup.length))
+                                message.repeatedGroup = [];
+                            message.repeatedGroup.push($root.jspb.test.TestGroup.RepeatedGroup.decode(reader));
+                            break;
+                        }
+                    case 2: {
+                            message.requiredGroup = $root.jspb.test.TestGroup.RequiredGroup.decode(reader);
+                            break;
+                        }
+                    case 3: {
+                            message.optionalGroup = $root.jspb.test.TestGroup.OptionalGroup.decode(reader);
+                            break;
+                        }
+                    case 4: {
+                            message.id = reader.string();
+                            break;
+                        }
+                    case 5: {
+                            message.requiredSimple = $root.jspb.test.Simple2.decode(reader, reader.uint32());
+                            break;
+                        }
+                    case 6: {
+                            message.optionalSimple = $root.jspb.test.Simple2.decode(reader, reader.uint32());
+                            break;
+                        }
                     default:
                         reader.skipType(tag & 7);
                         break;
@@ -5174,19 +5234,21 @@ $root.jspb = (function() {
                         if ((tag & 7) === 4)
                             break;
                         switch (tag >>> 3) {
-                        case 1:
-                            message.id = reader.string();
-                            break;
-                        case 2:
-                            if (!(message.someBool && message.someBool.length))
-                                message.someBool = [];
-                            if ((tag & 7) === 2) {
-                                var end2 = reader.uint32() + reader.pos;
-                                while (reader.pos < end2)
+                        case 1: {
+                                message.id = reader.string();
+                                break;
+                            }
+                        case 2: {
+                                if (!(message.someBool && message.someBool.length))
+                                    message.someBool = [];
+                                if ((tag & 7) === 2) {
+                                    var end2 = reader.uint32() + reader.pos;
+                                    while (reader.pos < end2)
+                                        message.someBool.push(reader.bool());
+                                } else
                                     message.someBool.push(reader.bool());
-                            } else
-                                message.someBool.push(reader.bool());
-                            break;
+                                break;
+                            }
                         default:
                             reader.skipType(tag & 7);
                             break;
@@ -5405,9 +5467,10 @@ $root.jspb = (function() {
                         if ((tag & 7) === 4)
                             break;
                         switch (tag >>> 3) {
-                        case 1:
-                            message.id = reader.string();
-                            break;
+                        case 1: {
+                                message.id = reader.string();
+                                break;
+                            }
                         default:
                             reader.skipType(tag & 7);
                             break;
@@ -5605,9 +5668,10 @@ $root.jspb = (function() {
                         if ((tag & 7) === 4)
                             break;
                         switch (tag >>> 3) {
-                        case 1:
-                            message.id = reader.string();
-                            break;
+                        case 1: {
+                                message.id = reader.string();
+                                break;
+                            }
                         default:
                             reader.skipType(tag & 7);
                             break;
@@ -5807,9 +5871,10 @@ $root.jspb = (function() {
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     switch (tag >>> 3) {
-                    case 1:
-                        message.group = $root.jspb.test.TestGroup.RepeatedGroup.decode(reader);
-                        break;
+                    case 1: {
+                            message.group = $root.jspb.test.TestGroup.RepeatedGroup.decode(reader);
+                            break;
+                        }
                     default:
                         reader.skipType(tag & 7);
                         break;
@@ -6021,12 +6086,14 @@ $root.jspb = (function() {
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     switch (tag >>> 3) {
-                    case 1:
-                        message.extension = reader.int32();
-                        break;
-                    case 10:
-                        message[".jspb.test.TestReservedNamesExtension.foo"] = reader.int32();
-                        break;
+                    case 1: {
+                            message.extension = reader.int32();
+                            break;
+                        }
+                    case 10: {
+                            message[".jspb.test.TestReservedNamesExtension.foo"] = reader.int32();
+                            break;
+                        }
                     default:
                         reader.skipType(tag & 7);
                         break;
@@ -6550,38 +6617,48 @@ $root.jspb = (function() {
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     switch (tag >>> 3) {
-                    case 3:
-                        message.pone = reader.string();
-                        break;
-                    case 5:
-                        message.pthree = reader.string();
-                        break;
-                    case 6:
-                        message.rone = $root.jspb.test.TestMessageWithOneof.decode(reader, reader.uint32());
-                        break;
-                    case 7:
-                        message.rtwo = reader.string();
-                        break;
-                    case 8:
-                        message.normalField = reader.bool();
-                        break;
-                    case 9:
-                        if (!(message.repeatedField && message.repeatedField.length))
-                            message.repeatedField = [];
-                        message.repeatedField.push(reader.string());
-                        break;
-                    case 10:
-                        message.aone = reader.int32();
-                        break;
-                    case 11:
-                        message.atwo = reader.int32();
-                        break;
-                    case 12:
-                        message.bone = reader.int32();
-                        break;
-                    case 13:
-                        message.btwo = reader.int32();
-                        break;
+                    case 3: {
+                            message.pone = reader.string();
+                            break;
+                        }
+                    case 5: {
+                            message.pthree = reader.string();
+                            break;
+                        }
+                    case 6: {
+                            message.rone = $root.jspb.test.TestMessageWithOneof.decode(reader, reader.uint32());
+                            break;
+                        }
+                    case 7: {
+                            message.rtwo = reader.string();
+                            break;
+                        }
+                    case 8: {
+                            message.normalField = reader.bool();
+                            break;
+                        }
+                    case 9: {
+                            if (!(message.repeatedField && message.repeatedField.length))
+                                message.repeatedField = [];
+                            message.repeatedField.push(reader.string());
+                            break;
+                        }
+                    case 10: {
+                            message.aone = reader.int32();
+                            break;
+                        }
+                    case 11: {
+                            message.atwo = reader.int32();
+                            break;
+                        }
+                    case 12: {
+                            message.bone = reader.int32();
+                            break;
+                        }
+                    case 13: {
+                            message.btwo = reader.int32();
+                            break;
+                        }
                     default:
                         reader.skipType(tag & 7);
                         break;
@@ -6920,12 +6997,14 @@ $root.jspb = (function() {
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     switch (tag >>> 3) {
-                    case 1:
-                        message.value = reader.int32();
-                        break;
-                    case 2:
-                        message.data = reader.bytes();
-                        break;
+                    case 1: {
+                            message.value = reader.int32();
+                            break;
+                        }
+                    case 2: {
+                            message.data = reader.bytes();
+                            break;
+                        }
                     default:
                         reader.skipType(tag & 7);
                         break;
@@ -7286,251 +7365,263 @@ $root.jspb = (function() {
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     switch (tag >>> 3) {
-                    case 1:
-                        if (message.mapStringString === $util.emptyObject)
-                            message.mapStringString = {};
-                        var end2 = reader.uint32() + reader.pos;
-                        key = "";
-                        value = "";
-                        while (reader.pos < end2) {
-                            var tag2 = reader.uint32();
-                            switch (tag2 >>> 3) {
-                            case 1:
-                                key = reader.string();
-                                break;
-                            case 2:
-                                value = reader.string();
-                                break;
-                            default:
-                                reader.skipType(tag2 & 7);
-                                break;
+                    case 1: {
+                            if (message.mapStringString === $util.emptyObject)
+                                message.mapStringString = {};
+                            var end2 = reader.uint32() + reader.pos;
+                            key = "";
+                            value = "";
+                            while (reader.pos < end2) {
+                                var tag2 = reader.uint32();
+                                switch (tag2 >>> 3) {
+                                case 1:
+                                    key = reader.string();
+                                    break;
+                                case 2:
+                                    value = reader.string();
+                                    break;
+                                default:
+                                    reader.skipType(tag2 & 7);
+                                    break;
+                                }
                             }
+                            message.mapStringString[key] = value;
+                            break;
                         }
-                        message.mapStringString[key] = value;
-                        break;
-                    case 2:
-                        if (message.mapStringInt32 === $util.emptyObject)
-                            message.mapStringInt32 = {};
-                        var end2 = reader.uint32() + reader.pos;
-                        key = "";
-                        value = 0;
-                        while (reader.pos < end2) {
-                            var tag2 = reader.uint32();
-                            switch (tag2 >>> 3) {
-                            case 1:
-                                key = reader.string();
-                                break;
-                            case 2:
-                                value = reader.int32();
-                                break;
-                            default:
-                                reader.skipType(tag2 & 7);
-                                break;
+                    case 2: {
+                            if (message.mapStringInt32 === $util.emptyObject)
+                                message.mapStringInt32 = {};
+                            var end2 = reader.uint32() + reader.pos;
+                            key = "";
+                            value = 0;
+                            while (reader.pos < end2) {
+                                var tag2 = reader.uint32();
+                                switch (tag2 >>> 3) {
+                                case 1:
+                                    key = reader.string();
+                                    break;
+                                case 2:
+                                    value = reader.int32();
+                                    break;
+                                default:
+                                    reader.skipType(tag2 & 7);
+                                    break;
+                                }
                             }
+                            message.mapStringInt32[key] = value;
+                            break;
                         }
-                        message.mapStringInt32[key] = value;
-                        break;
-                    case 3:
-                        if (message.mapStringInt64 === $util.emptyObject)
-                            message.mapStringInt64 = {};
-                        var end2 = reader.uint32() + reader.pos;
-                        key = "";
-                        value = 0;
-                        while (reader.pos < end2) {
-                            var tag2 = reader.uint32();
-                            switch (tag2 >>> 3) {
-                            case 1:
-                                key = reader.string();
-                                break;
-                            case 2:
-                                value = reader.int64();
-                                break;
-                            default:
-                                reader.skipType(tag2 & 7);
-                                break;
+                    case 3: {
+                            if (message.mapStringInt64 === $util.emptyObject)
+                                message.mapStringInt64 = {};
+                            var end2 = reader.uint32() + reader.pos;
+                            key = "";
+                            value = 0;
+                            while (reader.pos < end2) {
+                                var tag2 = reader.uint32();
+                                switch (tag2 >>> 3) {
+                                case 1:
+                                    key = reader.string();
+                                    break;
+                                case 2:
+                                    value = reader.int64();
+                                    break;
+                                default:
+                                    reader.skipType(tag2 & 7);
+                                    break;
+                                }
                             }
+                            message.mapStringInt64[key] = value;
+                            break;
                         }
-                        message.mapStringInt64[key] = value;
-                        break;
-                    case 4:
-                        if (message.mapStringBool === $util.emptyObject)
-                            message.mapStringBool = {};
-                        var end2 = reader.uint32() + reader.pos;
-                        key = "";
-                        value = false;
-                        while (reader.pos < end2) {
-                            var tag2 = reader.uint32();
-                            switch (tag2 >>> 3) {
-                            case 1:
-                                key = reader.string();
-                                break;
-                            case 2:
-                                value = reader.bool();
-                                break;
-                            default:
-                                reader.skipType(tag2 & 7);
-                                break;
+                    case 4: {
+                            if (message.mapStringBool === $util.emptyObject)
+                                message.mapStringBool = {};
+                            var end2 = reader.uint32() + reader.pos;
+                            key = "";
+                            value = false;
+                            while (reader.pos < end2) {
+                                var tag2 = reader.uint32();
+                                switch (tag2 >>> 3) {
+                                case 1:
+                                    key = reader.string();
+                                    break;
+                                case 2:
+                                    value = reader.bool();
+                                    break;
+                                default:
+                                    reader.skipType(tag2 & 7);
+                                    break;
+                                }
                             }
+                            message.mapStringBool[key] = value;
+                            break;
                         }
-                        message.mapStringBool[key] = value;
-                        break;
-                    case 5:
-                        if (message.mapStringDouble === $util.emptyObject)
-                            message.mapStringDouble = {};
-                        var end2 = reader.uint32() + reader.pos;
-                        key = "";
-                        value = 0;
-                        while (reader.pos < end2) {
-                            var tag2 = reader.uint32();
-                            switch (tag2 >>> 3) {
-                            case 1:
-                                key = reader.string();
-                                break;
-                            case 2:
-                                value = reader.double();
-                                break;
-                            default:
-                                reader.skipType(tag2 & 7);
-                                break;
+                    case 5: {
+                            if (message.mapStringDouble === $util.emptyObject)
+                                message.mapStringDouble = {};
+                            var end2 = reader.uint32() + reader.pos;
+                            key = "";
+                            value = 0;
+                            while (reader.pos < end2) {
+                                var tag2 = reader.uint32();
+                                switch (tag2 >>> 3) {
+                                case 1:
+                                    key = reader.string();
+                                    break;
+                                case 2:
+                                    value = reader.double();
+                                    break;
+                                default:
+                                    reader.skipType(tag2 & 7);
+                                    break;
+                                }
                             }
+                            message.mapStringDouble[key] = value;
+                            break;
                         }
-                        message.mapStringDouble[key] = value;
-                        break;
-                    case 6:
-                        if (message.mapStringEnum === $util.emptyObject)
-                            message.mapStringEnum = {};
-                        var end2 = reader.uint32() + reader.pos;
-                        key = "";
-                        value = 0;
-                        while (reader.pos < end2) {
-                            var tag2 = reader.uint32();
-                            switch (tag2 >>> 3) {
-                            case 1:
-                                key = reader.string();
-                                break;
-                            case 2:
-                                value = reader.int32();
-                                break;
-                            default:
-                                reader.skipType(tag2 & 7);
-                                break;
+                    case 6: {
+                            if (message.mapStringEnum === $util.emptyObject)
+                                message.mapStringEnum = {};
+                            var end2 = reader.uint32() + reader.pos;
+                            key = "";
+                            value = 0;
+                            while (reader.pos < end2) {
+                                var tag2 = reader.uint32();
+                                switch (tag2 >>> 3) {
+                                case 1:
+                                    key = reader.string();
+                                    break;
+                                case 2:
+                                    value = reader.int32();
+                                    break;
+                                default:
+                                    reader.skipType(tag2 & 7);
+                                    break;
+                                }
                             }
+                            message.mapStringEnum[key] = value;
+                            break;
                         }
-                        message.mapStringEnum[key] = value;
-                        break;
-                    case 7:
-                        if (message.mapStringMsg === $util.emptyObject)
-                            message.mapStringMsg = {};
-                        var end2 = reader.uint32() + reader.pos;
-                        key = "";
-                        value = null;
-                        while (reader.pos < end2) {
-                            var tag2 = reader.uint32();
-                            switch (tag2 >>> 3) {
-                            case 1:
-                                key = reader.string();
-                                break;
-                            case 2:
-                                value = $root.jspb.test.MapValueMessageNoBinary.decode(reader, reader.uint32());
-                                break;
-                            default:
-                                reader.skipType(tag2 & 7);
-                                break;
+                    case 7: {
+                            if (message.mapStringMsg === $util.emptyObject)
+                                message.mapStringMsg = {};
+                            var end2 = reader.uint32() + reader.pos;
+                            key = "";
+                            value = null;
+                            while (reader.pos < end2) {
+                                var tag2 = reader.uint32();
+                                switch (tag2 >>> 3) {
+                                case 1:
+                                    key = reader.string();
+                                    break;
+                                case 2:
+                                    value = $root.jspb.test.MapValueMessageNoBinary.decode(reader, reader.uint32());
+                                    break;
+                                default:
+                                    reader.skipType(tag2 & 7);
+                                    break;
+                                }
                             }
+                            message.mapStringMsg[key] = value;
+                            break;
                         }
-                        message.mapStringMsg[key] = value;
-                        break;
-                    case 8:
-                        if (message.mapInt32String === $util.emptyObject)
-                            message.mapInt32String = {};
-                        var end2 = reader.uint32() + reader.pos;
-                        key = 0;
-                        value = "";
-                        while (reader.pos < end2) {
-                            var tag2 = reader.uint32();
-                            switch (tag2 >>> 3) {
-                            case 1:
-                                key = reader.int32();
-                                break;
-                            case 2:
-                                value = reader.string();
-                                break;
-                            default:
-                                reader.skipType(tag2 & 7);
-                                break;
+                    case 8: {
+                            if (message.mapInt32String === $util.emptyObject)
+                                message.mapInt32String = {};
+                            var end2 = reader.uint32() + reader.pos;
+                            key = 0;
+                            value = "";
+                            while (reader.pos < end2) {
+                                var tag2 = reader.uint32();
+                                switch (tag2 >>> 3) {
+                                case 1:
+                                    key = reader.int32();
+                                    break;
+                                case 2:
+                                    value = reader.string();
+                                    break;
+                                default:
+                                    reader.skipType(tag2 & 7);
+                                    break;
+                                }
                             }
+                            message.mapInt32String[key] = value;
+                            break;
                         }
-                        message.mapInt32String[key] = value;
-                        break;
-                    case 9:
-                        if (message.mapInt64String === $util.emptyObject)
-                            message.mapInt64String = {};
-                        var end2 = reader.uint32() + reader.pos;
-                        key = 0;
-                        value = "";
-                        while (reader.pos < end2) {
-                            var tag2 = reader.uint32();
-                            switch (tag2 >>> 3) {
-                            case 1:
-                                key = reader.int64();
-                                break;
-                            case 2:
-                                value = reader.string();
-                                break;
-                            default:
-                                reader.skipType(tag2 & 7);
-                                break;
+                    case 9: {
+                            if (message.mapInt64String === $util.emptyObject)
+                                message.mapInt64String = {};
+                            var end2 = reader.uint32() + reader.pos;
+                            key = 0;
+                            value = "";
+                            while (reader.pos < end2) {
+                                var tag2 = reader.uint32();
+                                switch (tag2 >>> 3) {
+                                case 1:
+                                    key = reader.int64();
+                                    break;
+                                case 2:
+                                    value = reader.string();
+                                    break;
+                                default:
+                                    reader.skipType(tag2 & 7);
+                                    break;
+                                }
                             }
+                            message.mapInt64String[typeof key === "object" ? $util.longToHash(key) : key] = value;
+                            break;
                         }
-                        message.mapInt64String[typeof key === "object" ? $util.longToHash(key) : key] = value;
-                        break;
-                    case 10:
-                        if (message.mapBoolString === $util.emptyObject)
-                            message.mapBoolString = {};
-                        var end2 = reader.uint32() + reader.pos;
-                        key = false;
-                        value = "";
-                        while (reader.pos < end2) {
-                            var tag2 = reader.uint32();
-                            switch (tag2 >>> 3) {
-                            case 1:
-                                key = reader.bool();
-                                break;
-                            case 2:
-                                value = reader.string();
-                                break;
-                            default:
-                                reader.skipType(tag2 & 7);
-                                break;
+                    case 10: {
+                            if (message.mapBoolString === $util.emptyObject)
+                                message.mapBoolString = {};
+                            var end2 = reader.uint32() + reader.pos;
+                            key = false;
+                            value = "";
+                            while (reader.pos < end2) {
+                                var tag2 = reader.uint32();
+                                switch (tag2 >>> 3) {
+                                case 1:
+                                    key = reader.bool();
+                                    break;
+                                case 2:
+                                    value = reader.string();
+                                    break;
+                                default:
+                                    reader.skipType(tag2 & 7);
+                                    break;
+                                }
                             }
+                            message.mapBoolString[key] = value;
+                            break;
                         }
-                        message.mapBoolString[key] = value;
-                        break;
-                    case 11:
-                        message.testMapFields = $root.jspb.test.TestMapFieldsNoBinary.decode(reader, reader.uint32());
-                        break;
-                    case 12:
-                        if (message.mapStringTestmapfields === $util.emptyObject)
-                            message.mapStringTestmapfields = {};
-                        var end2 = reader.uint32() + reader.pos;
-                        key = "";
-                        value = null;
-                        while (reader.pos < end2) {
-                            var tag2 = reader.uint32();
-                            switch (tag2 >>> 3) {
-                            case 1:
-                                key = reader.string();
-                                break;
-                            case 2:
-                                value = $root.jspb.test.TestMapFieldsNoBinary.decode(reader, reader.uint32());
-                                break;
-                            default:
-                                reader.skipType(tag2 & 7);
-                                break;
+                    case 11: {
+                            message.testMapFields = $root.jspb.test.TestMapFieldsNoBinary.decode(reader, reader.uint32());
+                            break;
+                        }
+                    case 12: {
+                            if (message.mapStringTestmapfields === $util.emptyObject)
+                                message.mapStringTestmapfields = {};
+                            var end2 = reader.uint32() + reader.pos;
+                            key = "";
+                            value = null;
+                            while (reader.pos < end2) {
+                                var tag2 = reader.uint32();
+                                switch (tag2 >>> 3) {
+                                case 1:
+                                    key = reader.string();
+                                    break;
+                                case 2:
+                                    value = $root.jspb.test.TestMapFieldsNoBinary.decode(reader, reader.uint32());
+                                    break;
+                                default:
+                                    reader.skipType(tag2 & 7);
+                                    break;
+                                }
                             }
+                            message.mapStringTestmapfields[key] = value;
+                            break;
                         }
-                        message.mapStringTestmapfields[key] = value;
-                        break;
                     default:
                         reader.skipType(tag & 7);
                         break;
@@ -8029,9 +8120,10 @@ $root.jspb = (function() {
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     switch (tag >>> 3) {
-                    case 1:
-                        message.foo = reader.int32();
-                        break;
+                    case 1: {
+                            message.foo = reader.int32();
+                            break;
+                        }
                     default:
                         reader.skipType(tag & 7);
                         break;
@@ -8563,9 +8655,10 @@ $root.jspb = (function() {
                         while (reader.pos < end) {
                             var tag = reader.uint32();
                             switch (tag >>> 3) {
-                            case 1:
-                                message.count = reader.int32();
-                                break;
+                            case 1: {
+                                    message.count = reader.int32();
+                                    break;
+                                }
                             default:
                                 reader.skipType(tag & 7);
                                 break;
@@ -8793,11 +8886,12 @@ $root.google = (function() {
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     switch (tag >>> 3) {
-                    case 1:
-                        if (!(message.file && message.file.length))
-                            message.file = [];
-                        message.file.push($root.google.protobuf.FileDescriptorProto.decode(reader, reader.uint32()));
-                        break;
+                    case 1: {
+                            if (!(message.file && message.file.length))
+                                message.file = [];
+                            message.file.push($root.google.protobuf.FileDescriptorProto.decode(reader, reader.uint32()));
+                            break;
+                        }
                     default:
                         reader.skipType(tag & 7);
                         break;
@@ -9145,66 +9239,78 @@ $root.google = (function() {
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     switch (tag >>> 3) {
-                    case 1:
-                        message.name = reader.string();
-                        break;
-                    case 2:
-                        message["package"] = reader.string();
-                        break;
-                    case 3:
-                        if (!(message.dependency && message.dependency.length))
-                            message.dependency = [];
-                        message.dependency.push(reader.string());
-                        break;
-                    case 10:
-                        if (!(message.publicDependency && message.publicDependency.length))
-                            message.publicDependency = [];
-                        if ((tag & 7) === 2) {
-                            var end2 = reader.uint32() + reader.pos;
-                            while (reader.pos < end2)
+                    case 1: {
+                            message.name = reader.string();
+                            break;
+                        }
+                    case 2: {
+                            message["package"] = reader.string();
+                            break;
+                        }
+                    case 3: {
+                            if (!(message.dependency && message.dependency.length))
+                                message.dependency = [];
+                            message.dependency.push(reader.string());
+                            break;
+                        }
+                    case 10: {
+                            if (!(message.publicDependency && message.publicDependency.length))
+                                message.publicDependency = [];
+                            if ((tag & 7) === 2) {
+                                var end2 = reader.uint32() + reader.pos;
+                                while (reader.pos < end2)
+                                    message.publicDependency.push(reader.int32());
+                            } else
                                 message.publicDependency.push(reader.int32());
-                        } else
-                            message.publicDependency.push(reader.int32());
-                        break;
-                    case 11:
-                        if (!(message.weakDependency && message.weakDependency.length))
-                            message.weakDependency = [];
-                        if ((tag & 7) === 2) {
-                            var end2 = reader.uint32() + reader.pos;
-                            while (reader.pos < end2)
+                            break;
+                        }
+                    case 11: {
+                            if (!(message.weakDependency && message.weakDependency.length))
+                                message.weakDependency = [];
+                            if ((tag & 7) === 2) {
+                                var end2 = reader.uint32() + reader.pos;
+                                while (reader.pos < end2)
+                                    message.weakDependency.push(reader.int32());
+                            } else
                                 message.weakDependency.push(reader.int32());
-                        } else
-                            message.weakDependency.push(reader.int32());
-                        break;
-                    case 4:
-                        if (!(message.messageType && message.messageType.length))
-                            message.messageType = [];
-                        message.messageType.push($root.google.protobuf.DescriptorProto.decode(reader, reader.uint32()));
-                        break;
-                    case 5:
-                        if (!(message.enumType && message.enumType.length))
-                            message.enumType = [];
-                        message.enumType.push($root.google.protobuf.EnumDescriptorProto.decode(reader, reader.uint32()));
-                        break;
-                    case 6:
-                        if (!(message.service && message.service.length))
-                            message.service = [];
-                        message.service.push($root.google.protobuf.ServiceDescriptorProto.decode(reader, reader.uint32()));
-                        break;
-                    case 7:
-                        if (!(message.extension && message.extension.length))
-                            message.extension = [];
-                        message.extension.push($root.google.protobuf.FieldDescriptorProto.decode(reader, reader.uint32()));
-                        break;
-                    case 8:
-                        message.options = $root.google.protobuf.FileOptions.decode(reader, reader.uint32());
-                        break;
-                    case 9:
-                        message.sourceCodeInfo = $root.google.protobuf.SourceCodeInfo.decode(reader, reader.uint32());
-                        break;
-                    case 12:
-                        message.syntax = reader.string();
-                        break;
+                            break;
+                        }
+                    case 4: {
+                            if (!(message.messageType && message.messageType.length))
+                                message.messageType = [];
+                            message.messageType.push($root.google.protobuf.DescriptorProto.decode(reader, reader.uint32()));
+                            break;
+                        }
+                    case 5: {
+                            if (!(message.enumType && message.enumType.length))
+                                message.enumType = [];
+                            message.enumType.push($root.google.protobuf.EnumDescriptorProto.decode(reader, reader.uint32()));
+                            break;
+                        }
+                    case 6: {
+                            if (!(message.service && message.service.length))
+                                message.service = [];
+                            message.service.push($root.google.protobuf.ServiceDescriptorProto.decode(reader, reader.uint32()));
+                            break;
+                        }
+                    case 7: {
+                            if (!(message.extension && message.extension.length))
+                                message.extension = [];
+                            message.extension.push($root.google.protobuf.FieldDescriptorProto.decode(reader, reader.uint32()));
+                            break;
+                        }
+                    case 8: {
+                            message.options = $root.google.protobuf.FileOptions.decode(reader, reader.uint32());
+                            break;
+                        }
+                    case 9: {
+                            message.sourceCodeInfo = $root.google.protobuf.SourceCodeInfo.decode(reader, reader.uint32());
+                            break;
+                        }
+                    case 12: {
+                            message.syntax = reader.string();
+                            break;
+                        }
                     default:
                         reader.skipType(tag & 7);
                         break;
@@ -9720,52 +9826,62 @@ $root.google = (function() {
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     switch (tag >>> 3) {
-                    case 1:
-                        message.name = reader.string();
-                        break;
-                    case 2:
-                        if (!(message.field && message.field.length))
-                            message.field = [];
-                        message.field.push($root.google.protobuf.FieldDescriptorProto.decode(reader, reader.uint32()));
-                        break;
-                    case 6:
-                        if (!(message.extension && message.extension.length))
-                            message.extension = [];
-                        message.extension.push($root.google.protobuf.FieldDescriptorProto.decode(reader, reader.uint32()));
-                        break;
-                    case 3:
-                        if (!(message.nestedType && message.nestedType.length))
-                            message.nestedType = [];
-                        message.nestedType.push($root.google.protobuf.DescriptorProto.decode(reader, reader.uint32()));
-                        break;
-                    case 4:
-                        if (!(message.enumType && message.enumType.length))
-                            message.enumType = [];
-                        message.enumType.push($root.google.protobuf.EnumDescriptorProto.decode(reader, reader.uint32()));
-                        break;
-                    case 5:
-                        if (!(message.extensionRange && message.extensionRange.length))
-                            message.extensionRange = [];
-                        message.extensionRange.push($root.google.protobuf.DescriptorProto.ExtensionRange.decode(reader, reader.uint32()));
-                        break;
-                    case 8:
-                        if (!(message.oneofDecl && message.oneofDecl.length))
-                            message.oneofDecl = [];
-                        message.oneofDecl.push($root.google.protobuf.OneofDescriptorProto.decode(reader, reader.uint32()));
-                        break;
-                    case 7:
-                        message.options = $root.google.protobuf.MessageOptions.decode(reader, reader.uint32());
-                        break;
-                    case 9:
-                        if (!(message.reservedRange && message.reservedRange.length))
-                            message.reservedRange = [];
-                        message.reservedRange.push($root.google.protobuf.DescriptorProto.ReservedRange.decode(reader, reader.uint32()));
-                        break;
-                    case 10:
-                        if (!(message.reservedName && message.reservedName.length))
-                            message.reservedName = [];
-                        message.reservedName.push(reader.string());
-                        break;
+                    case 1: {
+                            message.name = reader.string();
+                            break;
+                        }
+                    case 2: {
+                            if (!(message.field && message.field.length))
+                                message.field = [];
+                            message.field.push($root.google.protobuf.FieldDescriptorProto.decode(reader, reader.uint32()));
+                            break;
+                        }
+                    case 6: {
+                            if (!(message.extension && message.extension.length))
+                                message.extension = [];
+                            message.extension.push($root.google.protobuf.FieldDescriptorProto.decode(reader, reader.uint32()));
+                            break;
+                        }
+                    case 3: {
+                            if (!(message.nestedType && message.nestedType.length))
+                                message.nestedType = [];
+                            message.nestedType.push($root.google.protobuf.DescriptorProto.decode(reader, reader.uint32()));
+                            break;
+                        }
+                    case 4: {
+                            if (!(message.enumType && message.enumType.length))
+                                message.enumType = [];
+                            message.enumType.push($root.google.protobuf.EnumDescriptorProto.decode(reader, reader.uint32()));
+                            break;
+                        }
+                    case 5: {
+                            if (!(message.extensionRange && message.extensionRange.length))
+                                message.extensionRange = [];
+                            message.extensionRange.push($root.google.protobuf.DescriptorProto.ExtensionRange.decode(reader, reader.uint32()));
+                            break;
+                        }
+                    case 8: {
+                            if (!(message.oneofDecl && message.oneofDecl.length))
+                                message.oneofDecl = [];
+                            message.oneofDecl.push($root.google.protobuf.OneofDescriptorProto.decode(reader, reader.uint32()));
+                            break;
+                        }
+                    case 7: {
+                            message.options = $root.google.protobuf.MessageOptions.decode(reader, reader.uint32());
+                            break;
+                        }
+                    case 9: {
+                            if (!(message.reservedRange && message.reservedRange.length))
+                                message.reservedRange = [];
+                            message.reservedRange.push($root.google.protobuf.DescriptorProto.ReservedRange.decode(reader, reader.uint32()));
+                            break;
+                        }
+                    case 10: {
+                            if (!(message.reservedName && message.reservedName.length))
+                                message.reservedName = [];
+                            message.reservedName.push(reader.string());
+                            break;
+                        }
                     default:
                         reader.skipType(tag & 7);
                         break;
@@ -10180,12 +10296,14 @@ $root.google = (function() {
                     while (reader.pos < end) {
                         var tag = reader.uint32();
                         switch (tag >>> 3) {
-                        case 1:
-                            message.start = reader.int32();
-                            break;
-                        case 2:
-                            message.end = reader.int32();
-                            break;
+                        case 1: {
+                                message.start = reader.int32();
+                                break;
+                            }
+                        case 2: {
+                                message.end = reader.int32();
+                                break;
+                            }
                         default:
                             reader.skipType(tag & 7);
                             break;
@@ -10401,12 +10519,14 @@ $root.google = (function() {
                     while (reader.pos < end) {
                         var tag = reader.uint32();
                         switch (tag >>> 3) {
-                        case 1:
-                            message.start = reader.int32();
-                            break;
-                        case 2:
-                            message.end = reader.int32();
-                            break;
+                        case 1: {
+                                message.start = reader.int32();
+                                break;
+                            }
+                        case 2: {
+                                message.end = reader.int32();
+                                break;
+                            }
                         default:
                             reader.skipType(tag & 7);
                             break;
@@ -10713,36 +10833,46 @@ $root.google = (function() {
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     switch (tag >>> 3) {
-                    case 1:
-                        message.name = reader.string();
-                        break;
-                    case 3:
-                        message.number = reader.int32();
-                        break;
-                    case 4:
-                        message.label = reader.int32();
-                        break;
-                    case 5:
-                        message.type = reader.int32();
-                        break;
-                    case 6:
-                        message.typeName = reader.string();
-                        break;
-                    case 2:
-                        message.extendee = reader.string();
-                        break;
-                    case 7:
-                        message.defaultValue = reader.string();
-                        break;
-                    case 9:
-                        message.oneofIndex = reader.int32();
-                        break;
-                    case 10:
-                        message.jsonName = reader.string();
-                        break;
-                    case 8:
-                        message.options = $root.google.protobuf.FieldOptions.decode(reader, reader.uint32());
-                        break;
+                    case 1: {
+                            message.name = reader.string();
+                            break;
+                        }
+                    case 3: {
+                            message.number = reader.int32();
+                            break;
+                        }
+                    case 4: {
+                            message.label = reader.int32();
+                            break;
+                        }
+                    case 5: {
+                            message.type = reader.int32();
+                            break;
+                        }
+                    case 6: {
+                            message.typeName = reader.string();
+                            break;
+                        }
+                    case 2: {
+                            message.extendee = reader.string();
+                            break;
+                        }
+                    case 7: {
+                            message.defaultValue = reader.string();
+                            break;
+                        }
+                    case 9: {
+                            message.oneofIndex = reader.int32();
+                            break;
+                        }
+                    case 10: {
+                            message.jsonName = reader.string();
+                            break;
+                        }
+                    case 8: {
+                            message.options = $root.google.protobuf.FieldOptions.decode(reader, reader.uint32());
+                            break;
+                        }
                     default:
                         reader.skipType(tag & 7);
                         break;
@@ -11200,12 +11330,14 @@ $root.google = (function() {
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     switch (tag >>> 3) {
-                    case 1:
-                        message.name = reader.string();
-                        break;
-                    case 2:
-                        message.options = $root.google.protobuf.OneofOptions.decode(reader, reader.uint32());
-                        break;
+                    case 1: {
+                            message.name = reader.string();
+                            break;
+                        }
+                    case 2: {
+                            message.options = $root.google.protobuf.OneofOptions.decode(reader, reader.uint32());
+                            break;
+                        }
                     default:
                         reader.skipType(tag & 7);
                         break;
@@ -11439,17 +11571,20 @@ $root.google = (function() {
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     switch (tag >>> 3) {
-                    case 1:
-                        message.name = reader.string();
-                        break;
-                    case 2:
-                        if (!(message.value && message.value.length))
-                            message.value = [];
-                        message.value.push($root.google.protobuf.EnumValueDescriptorProto.decode(reader, reader.uint32()));
-                        break;
-                    case 3:
-                        message.options = $root.google.protobuf.EnumOptions.decode(reader, reader.uint32());
-                        break;
+                    case 1: {
+                            message.name = reader.string();
+                            break;
+                        }
+                    case 2: {
+                            if (!(message.value && message.value.length))
+                                message.value = [];
+                            message.value.push($root.google.protobuf.EnumValueDescriptorProto.decode(reader, reader.uint32()));
+                            break;
+                        }
+                    case 3: {
+                            message.options = $root.google.protobuf.EnumOptions.decode(reader, reader.uint32());
+                            break;
+                        }
                     default:
                         reader.skipType(tag & 7);
                         break;
@@ -11707,15 +11842,18 @@ $root.google = (function() {
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     switch (tag >>> 3) {
-                    case 1:
-                        message.name = reader.string();
-                        break;
-                    case 2:
-                        message.number = reader.int32();
-                        break;
-                    case 3:
-                        message.options = $root.google.protobuf.EnumValueOptions.decode(reader, reader.uint32());
-                        break;
+                    case 1: {
+                            message.name = reader.string();
+                            break;
+                        }
+                    case 2: {
+                            message.number = reader.int32();
+                            break;
+                        }
+                    case 3: {
+                            message.options = $root.google.protobuf.EnumValueOptions.decode(reader, reader.uint32());
+                            break;
+                        }
                     default:
                         reader.skipType(tag & 7);
                         break;
@@ -11957,17 +12095,20 @@ $root.google = (function() {
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     switch (tag >>> 3) {
-                    case 1:
-                        message.name = reader.string();
-                        break;
-                    case 2:
-                        if (!(message.method && message.method.length))
-                            message.method = [];
-                        message.method.push($root.google.protobuf.MethodDescriptorProto.decode(reader, reader.uint32()));
-                        break;
-                    case 3:
-                        message.options = $root.google.protobuf.ServiceOptions.decode(reader, reader.uint32());
-                        break;
+                    case 1: {
+                            message.name = reader.string();
+                            break;
+                        }
+                    case 2: {
+                            if (!(message.method && message.method.length))
+                                message.method = [];
+                            message.method.push($root.google.protobuf.MethodDescriptorProto.decode(reader, reader.uint32()));
+                            break;
+                        }
+                    case 3: {
+                            message.options = $root.google.protobuf.ServiceOptions.decode(reader, reader.uint32());
+                            break;
+                        }
                     default:
                         reader.skipType(tag & 7);
                         break;
@@ -12258,24 +12399,30 @@ $root.google = (function() {
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     switch (tag >>> 3) {
-                    case 1:
-                        message.name = reader.string();
-                        break;
-                    case 2:
-                        message.inputType = reader.string();
-                        break;
-                    case 3:
-                        message.outputType = reader.string();
-                        break;
-                    case 4:
-                        message.options = $root.google.protobuf.MethodOptions.decode(reader, reader.uint32());
-                        break;
-                    case 5:
-                        message.clientStreaming = reader.bool();
-                        break;
-                    case 6:
-                        message.serverStreaming = reader.bool();
-                        break;
+                    case 1: {
+                            message.name = reader.string();
+                            break;
+                        }
+                    case 2: {
+                            message.inputType = reader.string();
+                            break;
+                        }
+                    case 3: {
+                            message.outputType = reader.string();
+                            break;
+                        }
+                    case 4: {
+                            message.options = $root.google.protobuf.MethodOptions.decode(reader, reader.uint32());
+                            break;
+                        }
+                    case 5: {
+                            message.clientStreaming = reader.bool();
+                            break;
+                        }
+                    case 6: {
+                            message.serverStreaming = reader.bool();
+                            break;
+                        }
                     default:
                         reader.skipType(tag & 7);
                         break;
@@ -12673,53 +12820,68 @@ $root.google = (function() {
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     switch (tag >>> 3) {
-                    case 1:
-                        message.javaPackage = reader.string();
-                        break;
-                    case 8:
-                        message.javaOuterClassname = reader.string();
-                        break;
-                    case 10:
-                        message.javaMultipleFiles = reader.bool();
-                        break;
-                    case 20:
-                        message.javaGenerateEqualsAndHash = reader.bool();
-                        break;
-                    case 27:
-                        message.javaStringCheckUtf8 = reader.bool();
-                        break;
-                    case 9:
-                        message.optimizeFor = reader.int32();
-                        break;
-                    case 11:
-                        message.goPackage = reader.string();
-                        break;
-                    case 16:
-                        message.ccGenericServices = reader.bool();
-                        break;
-                    case 17:
-                        message.javaGenericServices = reader.bool();
-                        break;
-                    case 18:
-                        message.pyGenericServices = reader.bool();
-                        break;
-                    case 23:
-                        message.deprecated = reader.bool();
-                        break;
-                    case 31:
-                        message.ccEnableArenas = reader.bool();
-                        break;
-                    case 36:
-                        message.objcClassPrefix = reader.string();
-                        break;
-                    case 37:
-                        message.csharpNamespace = reader.string();
-                        break;
-                    case 999:
-                        if (!(message.uninterpretedOption && message.uninterpretedOption.length))
-                            message.uninterpretedOption = [];
-                        message.uninterpretedOption.push($root.google.protobuf.UninterpretedOption.decode(reader, reader.uint32()));
-                        break;
+                    case 1: {
+                            message.javaPackage = reader.string();
+                            break;
+                        }
+                    case 8: {
+                            message.javaOuterClassname = reader.string();
+                            break;
+                        }
+                    case 10: {
+                            message.javaMultipleFiles = reader.bool();
+                            break;
+                        }
+                    case 20: {
+                            message.javaGenerateEqualsAndHash = reader.bool();
+                            break;
+                        }
+                    case 27: {
+                            message.javaStringCheckUtf8 = reader.bool();
+                            break;
+                        }
+                    case 9: {
+                            message.optimizeFor = reader.int32();
+                            break;
+                        }
+                    case 11: {
+                            message.goPackage = reader.string();
+                            break;
+                        }
+                    case 16: {
+                            message.ccGenericServices = reader.bool();
+                            break;
+                        }
+                    case 17: {
+                            message.javaGenericServices = reader.bool();
+                            break;
+                        }
+                    case 18: {
+                            message.pyGenericServices = reader.bool();
+                            break;
+                        }
+                    case 23: {
+                            message.deprecated = reader.bool();
+                            break;
+                        }
+                    case 31: {
+                            message.ccEnableArenas = reader.bool();
+                            break;
+                        }
+                    case 36: {
+                            message.objcClassPrefix = reader.string();
+                            break;
+                        }
+                    case 37: {
+                            message.csharpNamespace = reader.string();
+                            break;
+                        }
+                    case 999: {
+                            if (!(message.uninterpretedOption && message.uninterpretedOption.length))
+                                message.uninterpretedOption = [];
+                            message.uninterpretedOption.push($root.google.protobuf.UninterpretedOption.decode(reader, reader.uint32()));
+                            break;
+                        }
                     default:
                         reader.skipType(tag & 7);
                         break;
@@ -13126,23 +13288,28 @@ $root.google = (function() {
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     switch (tag >>> 3) {
-                    case 1:
-                        message.messageSetWireFormat = reader.bool();
-                        break;
-                    case 2:
-                        message.noStandardDescriptorAccessor = reader.bool();
-                        break;
-                    case 3:
-                        message.deprecated = reader.bool();
-                        break;
-                    case 7:
-                        message.mapEntry = reader.bool();
-                        break;
-                    case 999:
-                        if (!(message.uninterpretedOption && message.uninterpretedOption.length))
-                            message.uninterpretedOption = [];
-                        message.uninterpretedOption.push($root.google.protobuf.UninterpretedOption.decode(reader, reader.uint32()));
-                        break;
+                    case 1: {
+                            message.messageSetWireFormat = reader.bool();
+                            break;
+                        }
+                    case 2: {
+                            message.noStandardDescriptorAccessor = reader.bool();
+                            break;
+                        }
+                    case 3: {
+                            message.deprecated = reader.bool();
+                            break;
+                        }
+                    case 7: {
+                            message.mapEntry = reader.bool();
+                            break;
+                        }
+                    case 999: {
+                            if (!(message.uninterpretedOption && message.uninterpretedOption.length))
+                                message.uninterpretedOption = [];
+                            message.uninterpretedOption.push($root.google.protobuf.UninterpretedOption.decode(reader, reader.uint32()));
+                            break;
+                        }
                     default:
                         reader.skipType(tag & 7);
                         break;
@@ -13457,29 +13624,36 @@ $root.google = (function() {
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     switch (tag >>> 3) {
-                    case 1:
-                        message.ctype = reader.int32();
-                        break;
-                    case 2:
-                        message.packed = reader.bool();
-                        break;
-                    case 6:
-                        message.jstype = reader.int32();
-                        break;
-                    case 5:
-                        message.lazy = reader.bool();
-                        break;
-                    case 3:
-                        message.deprecated = reader.bool();
-                        break;
-                    case 10:
-                        message.weak = reader.bool();
-                        break;
-                    case 999:
-                        if (!(message.uninterpretedOption && message.uninterpretedOption.length))
-                            message.uninterpretedOption = [];
-                        message.uninterpretedOption.push($root.google.protobuf.UninterpretedOption.decode(reader, reader.uint32()));
-                        break;
+                    case 1: {
+                            message.ctype = reader.int32();
+                            break;
+                        }
+                    case 2: {
+                            message.packed = reader.bool();
+                            break;
+                        }
+                    case 6: {
+                            message.jstype = reader.int32();
+                            break;
+                        }
+                    case 5: {
+                            message.lazy = reader.bool();
+                            break;
+                        }
+                    case 3: {
+                            message.deprecated = reader.bool();
+                            break;
+                        }
+                    case 10: {
+                            message.weak = reader.bool();
+                            break;
+                        }
+                    case 999: {
+                            if (!(message.uninterpretedOption && message.uninterpretedOption.length))
+                                message.uninterpretedOption = [];
+                            message.uninterpretedOption.push($root.google.protobuf.UninterpretedOption.decode(reader, reader.uint32()));
+                            break;
+                        }
                     default:
                         reader.skipType(tag & 7);
                         break;
@@ -13812,11 +13986,12 @@ $root.google = (function() {
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     switch (tag >>> 3) {
-                    case 999:
-                        if (!(message.uninterpretedOption && message.uninterpretedOption.length))
-                            message.uninterpretedOption = [];
-                        message.uninterpretedOption.push($root.google.protobuf.UninterpretedOption.decode(reader, reader.uint32()));
-                        break;
+                    case 999: {
+                            if (!(message.uninterpretedOption && message.uninterpretedOption.length))
+                                message.uninterpretedOption = [];
+                            message.uninterpretedOption.push($root.google.protobuf.UninterpretedOption.decode(reader, reader.uint32()));
+                            break;
+                        }
                     default:
                         reader.skipType(tag & 7);
                         break;
@@ -14064,20 +14239,24 @@ $root.google = (function() {
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     switch (tag >>> 3) {
-                    case 2:
-                        message.allowAlias = reader.bool();
-                        break;
-                    case 3:
-                        message.deprecated = reader.bool();
-                        break;
-                    case 999:
-                        if (!(message.uninterpretedOption && message.uninterpretedOption.length))
-                            message.uninterpretedOption = [];
-                        message.uninterpretedOption.push($root.google.protobuf.UninterpretedOption.decode(reader, reader.uint32()));
-                        break;
-                    case 42113038:
-                        message[".jspb.test.IsExtension.simpleOption"] = reader.string();
-                        break;
+                    case 2: {
+                            message.allowAlias = reader.bool();
+                            break;
+                        }
+                    case 3: {
+                            message.deprecated = reader.bool();
+                            break;
+                        }
+                    case 999: {
+                            if (!(message.uninterpretedOption && message.uninterpretedOption.length))
+                                message.uninterpretedOption = [];
+                            message.uninterpretedOption.push($root.google.protobuf.UninterpretedOption.decode(reader, reader.uint32()));
+                            break;
+                        }
+                    case 42113038: {
+                            message[".jspb.test.IsExtension.simpleOption"] = reader.string();
+                            break;
+                        }
                     default:
                         reader.skipType(tag & 7);
                         break;
@@ -14329,14 +14508,16 @@ $root.google = (function() {
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     switch (tag >>> 3) {
-                    case 1:
-                        message.deprecated = reader.bool();
-                        break;
-                    case 999:
-                        if (!(message.uninterpretedOption && message.uninterpretedOption.length))
-                            message.uninterpretedOption = [];
-                        message.uninterpretedOption.push($root.google.protobuf.UninterpretedOption.decode(reader, reader.uint32()));
-                        break;
+                    case 1: {
+                            message.deprecated = reader.bool();
+                            break;
+                        }
+                    case 999: {
+                            if (!(message.uninterpretedOption && message.uninterpretedOption.length))
+                                message.uninterpretedOption = [];
+                            message.uninterpretedOption.push($root.google.protobuf.UninterpretedOption.decode(reader, reader.uint32()));
+                            break;
+                        }
                     default:
                         reader.skipType(tag & 7);
                         break;
@@ -14571,14 +14752,16 @@ $root.google = (function() {
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     switch (tag >>> 3) {
-                    case 33:
-                        message.deprecated = reader.bool();
-                        break;
-                    case 999:
-                        if (!(message.uninterpretedOption && message.uninterpretedOption.length))
-                            message.uninterpretedOption = [];
-                        message.uninterpretedOption.push($root.google.protobuf.UninterpretedOption.decode(reader, reader.uint32()));
-                        break;
+                    case 33: {
+                            message.deprecated = reader.bool();
+                            break;
+                        }
+                    case 999: {
+                            if (!(message.uninterpretedOption && message.uninterpretedOption.length))
+                                message.uninterpretedOption = [];
+                            message.uninterpretedOption.push($root.google.protobuf.UninterpretedOption.decode(reader, reader.uint32()));
+                            break;
+                        }
                     default:
                         reader.skipType(tag & 7);
                         break;
@@ -14824,17 +15007,20 @@ $root.google = (function() {
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     switch (tag >>> 3) {
-                    case 33:
-                        message.deprecated = reader.bool();
-                        break;
-                    case 34:
-                        message.idempotencyLevel = reader.int32();
-                        break;
-                    case 999:
-                        if (!(message.uninterpretedOption && message.uninterpretedOption.length))
-                            message.uninterpretedOption = [];
-                        message.uninterpretedOption.push($root.google.protobuf.UninterpretedOption.decode(reader, reader.uint32()));
-                        break;
+                    case 33: {
+                            message.deprecated = reader.bool();
+                            break;
+                        }
+                    case 34: {
+                            message.idempotencyLevel = reader.int32();
+                            break;
+                        }
+                    case 999: {
+                            if (!(message.uninterpretedOption && message.uninterpretedOption.length))
+                                message.uninterpretedOption = [];
+                            message.uninterpretedOption.push($root.google.protobuf.UninterpretedOption.decode(reader, reader.uint32()));
+                            break;
+                        }
                     default:
                         reader.skipType(tag & 7);
                         break;
@@ -15167,29 +15353,36 @@ $root.google = (function() {
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     switch (tag >>> 3) {
-                    case 2:
-                        if (!(message.name && message.name.length))
-                            message.name = [];
-                        message.name.push($root.google.protobuf.UninterpretedOption.NamePart.decode(reader, reader.uint32()));
-                        break;
-                    case 3:
-                        message.identifierValue = reader.string();
-                        break;
-                    case 4:
-                        message.positiveIntValue = reader.uint64();
-                        break;
-                    case 5:
-                        message.negativeIntValue = reader.int64();
-                        break;
-                    case 6:
-                        message.doubleValue = reader.double();
-                        break;
-                    case 7:
-                        message.stringValue = reader.bytes();
-                        break;
-                    case 8:
-                        message.aggregateValue = reader.string();
-                        break;
+                    case 2: {
+                            if (!(message.name && message.name.length))
+                                message.name = [];
+                            message.name.push($root.google.protobuf.UninterpretedOption.NamePart.decode(reader, reader.uint32()));
+                            break;
+                        }
+                    case 3: {
+                            message.identifierValue = reader.string();
+                            break;
+                        }
+                    case 4: {
+                            message.positiveIntValue = reader.uint64();
+                            break;
+                        }
+                    case 5: {
+                            message.negativeIntValue = reader.int64();
+                            break;
+                        }
+                    case 6: {
+                            message.doubleValue = reader.double();
+                            break;
+                        }
+                    case 7: {
+                            message.stringValue = reader.bytes();
+                            break;
+                        }
+                    case 8: {
+                            message.aggregateValue = reader.string();
+                            break;
+                        }
                     default:
                         reader.skipType(tag & 7);
                         break;
@@ -15495,12 +15688,14 @@ $root.google = (function() {
                     while (reader.pos < end) {
                         var tag = reader.uint32();
                         switch (tag >>> 3) {
-                        case 1:
-                            message.namePart = reader.string();
-                            break;
-                        case 2:
-                            message.isExtension = reader.bool();
-                            break;
+                        case 1: {
+                                message.namePart = reader.string();
+                                break;
+                            }
+                        case 2: {
+                                message.isExtension = reader.bool();
+                                break;
+                            }
                         default:
                             reader.skipType(tag & 7);
                             break;
@@ -15712,11 +15907,12 @@ $root.google = (function() {
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     switch (tag >>> 3) {
-                    case 1:
-                        if (!(message.location && message.location.length))
-                            message.location = [];
-                        message.location.push($root.google.protobuf.SourceCodeInfo.Location.decode(reader, reader.uint32()));
-                        break;
+                    case 1: {
+                            if (!(message.location && message.location.length))
+                                message.location = [];
+                            message.location.push($root.google.protobuf.SourceCodeInfo.Location.decode(reader, reader.uint32()));
+                            break;
+                        }
                     default:
                         reader.skipType(tag & 7);
                         break;
@@ -15982,37 +16178,42 @@ $root.google = (function() {
                     while (reader.pos < end) {
                         var tag = reader.uint32();
                         switch (tag >>> 3) {
-                        case 1:
-                            if (!(message.path && message.path.length))
-                                message.path = [];
-                            if ((tag & 7) === 2) {
-                                var end2 = reader.uint32() + reader.pos;
-                                while (reader.pos < end2)
+                        case 1: {
+                                if (!(message.path && message.path.length))
+                                    message.path = [];
+                                if ((tag & 7) === 2) {
+                                    var end2 = reader.uint32() + reader.pos;
+                                    while (reader.pos < end2)
+                                        message.path.push(reader.int32());
+                                } else
                                     message.path.push(reader.int32());
-                            } else
-                                message.path.push(reader.int32());
-                            break;
-                        case 2:
-                            if (!(message.span && message.span.length))
-                                message.span = [];
-                            if ((tag & 7) === 2) {
-                                var end2 = reader.uint32() + reader.pos;
-                                while (reader.pos < end2)
+                                break;
+                            }
+                        case 2: {
+                                if (!(message.span && message.span.length))
+                                    message.span = [];
+                                if ((tag & 7) === 2) {
+                                    var end2 = reader.uint32() + reader.pos;
+                                    while (reader.pos < end2)
+                                        message.span.push(reader.int32());
+                                } else
                                     message.span.push(reader.int32());
-                            } else
-                                message.span.push(reader.int32());
-                            break;
-                        case 3:
-                            message.leadingComments = reader.string();
-                            break;
-                        case 4:
-                            message.trailingComments = reader.string();
-                            break;
-                        case 6:
-                            if (!(message.leadingDetachedComments && message.leadingDetachedComments.length))
-                                message.leadingDetachedComments = [];
-                            message.leadingDetachedComments.push(reader.string());
-                            break;
+                                break;
+                            }
+                        case 3: {
+                                message.leadingComments = reader.string();
+                                break;
+                            }
+                        case 4: {
+                                message.trailingComments = reader.string();
+                                break;
+                            }
+                        case 6: {
+                                if (!(message.leadingDetachedComments && message.leadingDetachedComments.length))
+                                    message.leadingDetachedComments = [];
+                                message.leadingDetachedComments.push(reader.string());
+                                break;
+                            }
                         default:
                             reader.skipType(tag & 7);
                             break;
@@ -16284,11 +16485,12 @@ $root.google = (function() {
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     switch (tag >>> 3) {
-                    case 1:
-                        if (!(message.annotation && message.annotation.length))
-                            message.annotation = [];
-                        message.annotation.push($root.google.protobuf.GeneratedCodeInfo.Annotation.decode(reader, reader.uint32()));
-                        break;
+                    case 1: {
+                            if (!(message.annotation && message.annotation.length))
+                                message.annotation = [];
+                            message.annotation.push($root.google.protobuf.GeneratedCodeInfo.Annotation.decode(reader, reader.uint32()));
+                            break;
+                        }
                     default:
                         reader.skipType(tag & 7);
                         break;
@@ -16536,25 +16738,29 @@ $root.google = (function() {
                     while (reader.pos < end) {
                         var tag = reader.uint32();
                         switch (tag >>> 3) {
-                        case 1:
-                            if (!(message.path && message.path.length))
-                                message.path = [];
-                            if ((tag & 7) === 2) {
-                                var end2 = reader.uint32() + reader.pos;
-                                while (reader.pos < end2)
+                        case 1: {
+                                if (!(message.path && message.path.length))
+                                    message.path = [];
+                                if ((tag & 7) === 2) {
+                                    var end2 = reader.uint32() + reader.pos;
+                                    while (reader.pos < end2)
+                                        message.path.push(reader.int32());
+                                } else
                                     message.path.push(reader.int32());
-                            } else
-                                message.path.push(reader.int32());
-                            break;
-                        case 2:
-                            message.sourceFile = reader.string();
-                            break;
-                        case 3:
-                            message.begin = reader.int32();
-                            break;
-                        case 4:
-                            message.end = reader.int32();
-                            break;
+                                break;
+                            }
+                        case 2: {
+                                message.sourceFile = reader.string();
+                                break;
+                            }
+                        case 3: {
+                                message.begin = reader.int32();
+                                break;
+                            }
+                        case 4: {
+                                message.end = reader.int32();
+                                break;
+                            }
                         default:
                             reader.skipType(tag & 7);
                             break;
