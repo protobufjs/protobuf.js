@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - id: release-pr
-        uses: GoogleCloudPlatform/release-please-action@v2
+        uses: google-github-actions/release-please-action@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           release-type: node
@@ -17,7 +17,7 @@ jobs:
   release-please-release:
     runs-on: ubuntu-latest
     steps:
-      - uses: GoogleCloudPlatform/release-please-action@v2
+      - uses: google-github-actions/release-please-action@v3
         id: tag-release
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
