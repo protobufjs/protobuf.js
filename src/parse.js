@@ -587,32 +587,56 @@ function parse(source, root, options) {
     }
 
     function parseOptionValue(parent, name) {
-        if (skip("{", true)) { // { a: "foo" b { c: "bar" } }
+        // some_value: [ 0, 1, "2" ]
+        if (skip("[", true)) {
+            var result = [];
+
+            do {
+                result.push(token = next());
+            } while (skip(",", true));
+
+            skip("]");
+
+            return result;
+        }
+
+        // { a: "foo" b { c: "bar" } }
+        if (skip("{", true)) {
             var result = {};
+
             while (!skip("}", true)) {
                 /* istanbul ignore if */
-                if (!nameRe.test(token = next()))
+                if (!nameRe.test(token = next())) {
                     throw illegal(token, "name");
+                }
 
                 var value;
                 var propName = token;
-                if (peek() === "{")
+
+                if (peek() === "{" || peek() === "[")
                     value = parseOptionValue(parent, name + "." + token);
                 else {
                     skip(":");
-                    if (peek() === "{")
+                    if (peek() === "{" || peek() === "[")
                         value = parseOptionValue(parent, name + "." + token);
                     else {
                         value = readValue(true);
                         setOption(parent, name + "." + token, value);
                     }
                 }
+
                 var prevValue = result[propName];
+
                 if (prevValue)
                     value = [].concat(prevValue).concat(value);
+
                 result[propName] = value;
+
+                // Semicolons and commas can be optional
                 skip(",", true);
+                skip(";", true);
             }
+
             return result;
         }
 
