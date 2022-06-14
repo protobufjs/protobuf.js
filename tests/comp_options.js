@@ -7,7 +7,7 @@ syntax = "proto3";
 
 option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
     info: {
-      title: "Some info"; // this fails
+      title: "Some info";
       version: "0";
     };
     host: "some.host";
@@ -21,7 +21,8 @@ message Message {
     }
     actionType action = 4 [ (validate.rules).enum = {
         defined_only: true,
-        not_in: [ 0 ] // this fails
+        not_in: [ 0 ],
+        in: ["google","github","azuread"]
     } ];
 }
 `;
@@ -43,7 +44,8 @@ tape.test("complex options", function (test) {
     "(validate.rules)": {
       enum: {
         defined_only: true,
-        not_in: ["0"],
+        not_in: [0],
+        in: ["google", "github", "azuread"],
       },
     },
   });

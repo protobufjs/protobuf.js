@@ -592,7 +592,7 @@ function parse(source, root, options) {
             var result = [];
 
             do {
-                result.push(token = next());
+                result.push(readValue(true));
             } while (skip(",", true));
 
             skip("]");
