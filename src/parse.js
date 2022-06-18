@@ -589,20 +589,20 @@ function parse(source, root, options) {
     function parseOptionValue(parent, name) {
         // some_value: [ 0, 1, "2" ]
         if (skip("[", true)) {
-            var result = [];
+            var arrayResult = [];
 
             do {
-                result.push(readValue(true));
+                arrayResult.push(readValue(true));
             } while (skip(",", true));
 
             skip("]");
 
-            return result;
+            return arrayResult;
         }
 
         // { a: "foo" b { c: "bar" } }
         if (skip("{", true)) {
-            var result = {};
+            var objectResult = {};
 
             while (!skip("}", true)) {
                 /* istanbul ignore if */
@@ -625,19 +625,19 @@ function parse(source, root, options) {
                     }
                 }
 
-                var prevValue = result[propName];
+                var prevValue = objectResult[propName];
 
                 if (prevValue)
                     value = [].concat(prevValue).concat(value);
 
-                result[propName] = value;
+                objectResult[propName] = value;
 
                 // Semicolons and commas can be optional
                 skip(",", true);
                 skip(";", true);
             }
 
-            return result;
+            return objectResult;
         }
 
         var simpleValue = readValue(true);
