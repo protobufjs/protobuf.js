@@ -42,6 +42,9 @@ jobs:
     - uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node_version }}
+    - name: 'Install newer npm'
+      run: npm i npm@5 -g
+      if: ${{ matrix.node_version == '4' || matrix.node_version == '4.3.2' }}
     - name: "Install dependencies"
       run: npm install
     - name: "Test sources"
