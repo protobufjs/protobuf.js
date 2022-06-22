@@ -6,7 +6,7 @@
   "author": "Daniel Wirtz <dcode+protobufjs@dcode.io>",
   "license": "BSD-3-Clause",
   "repository": "protobufjs/protobuf.js",
-  "bugs": "https://github.com/dcodeIO/protobuf.js/issues",
+  "bugs": "https://github.com/protobufjs/protobuf.js/issues",
   "homepage": "https://protobufjs.github.io/protobuf.js/",
   "keywords": [
     "protobuf",
@@ -92,7 +92,6 @@
     "package-lock.json",
     "tsconfig.json",
     "scripts/postinstall.js",
-    "cli/**",
     "dist/**",
     "ext/**",
     "google/**",
