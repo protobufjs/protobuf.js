@@ -1,0 +1,204 @@
+{
+  "nested": {
+    "google": {
+      "nested": {
+        "rpc": {
+          "nested": {
+            "RetryInfo": {
+              "fields": {
+                "retryDelay": {
+                  "type": "Duration",
+                  "id": 1
+                }
+              },
+              "nested": {
+                "Duration": {
+                  "fields": {
+                    "seconds": {
+                      "type": "int64",
+                      "id": 1
+                    },
+                    "nanos": {
+                      "type": "int32",
+                      "id": 2
+                    }
+                  }
+                }
+              }
+            },
+            "DebugInfo": {
+              "fields": {
+                "stackEntries": {
+                  "rule": "repeated",
+                  "type": "string",
+                  "id": 1
+                },
+                "detail": {
+                  "type": "string",
+                  "id": 2
+                }
+              }
+            },
+            "QuotaFailure": {
+              "fields": {
+                "violations": {
+                  "rule": "repeated",
+                  "type": "Violation",
+                  "id": 1
+                }
+              },
+              "nested": {
+                "Violation": {
+                  "fields": {
+                    "subject": {
+                      "type": "string",
+                      "id": 1
+                    },
+                    "description": {
+                      "type": "string",
+                      "id": 2
+                    }
+                  }
+                }
+              }
+            },
+            "ErrorInfo": {
+              "fields": {
+                "reason": {
+                  "type": "string",
+                  "id": 1
+                },
+                "domain": {
+                  "type": "string",
+                  "id": 2
+                },
+                "metadata": {
+                  "keyType": "string",
+                  "type": "string",
+                  "id": 3
+                }
+              }
+            },
+            "PreconditionFailure": {
+              "fields": {
+                "violations": {
+                  "rule": "repeated",
+                  "type": "Violation",
+                  "id": 1
+                }
+              },
+              "nested": {
+                "Violation": {
+                  "fields": {
+                    "type": {
+                      "type": "string",
+                      "id": 1
+                    },
+                    "subject": {
+                      "type": "string",
+                      "id": 2
+                    },
+                    "description": {
+                      "type": "string",
+                      "id": 3
+                    }
+                  }
+                }
+              }
+            },
+            "BadRequest": {
+              "fields": {
+                "fieldViolations": {
+                  "rule": "repeated",
+                  "type": "FieldViolation",
+                  "id": 1
+                }
+              },
+              "nested": {
+                "FieldViolation": {
+                  "fields": {
+                    "field": {
+                      "type": "string",
+                      "id": 1
+                    },
+                    "description": {
+                      "type": "string",
+                      "id": 2
+                    }
+                  }
+                }
+              }
+            },
+            "RequestInfo": {
+              "fields": {
+                "requestId": {
+                  "type": "string",
+                  "id": 1
+                },
+                "servingData": {
+                  "type": "string",
+                  "id": 2
+                }
+              }
+            },
+            "ResourceInfo": {
+              "fields": {
+                "resourceType": {
+                  "type": "string",
+                  "id": 1
+                },
+                "resourceName": {
+                  "type": "string",
+                  "id": 2
+                },
+                "owner": {
+                  "type": "string",
+                  "id": 3
+                },
+                "description": {
+                  "type": "string",
+                  "id": 4
+                }
+              }
+            },
+            "Help": {
+              "fields": {
+                "links": {
+                  "rule": "repeated",
+                  "type": "Link",
+                  "id": 1
+                }
+              },
+              "nested": {
+                "Link": {
+                  "fields": {
+                    "description": {
+                      "type": "string",
+                      "id": 1
+                    },
+                    "url": {
+                      "type": "string",
+                      "id": 2
+                    }
+                  }
+                }
+              }
+            },
+            "LocalizedMessage": {
+              "fields": {
+                "locale": {
+                  "type": "string",
+                  "id": 1
+                },
+                "message": {
+                  "type": "string",
+                  "id": 2
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
