@@ -47,7 +47,7 @@
     "@protobufjs/pool": "^1.1.0",
     "@protobufjs/utf8": "^1.1.0",
     "@types/long": "^4.0.1",
-    "@types/node": "17.0.41",
+    "@types/node": ">=13.7.0",
     "long": "^4.0.0"
   },
   "devDependencies": {
