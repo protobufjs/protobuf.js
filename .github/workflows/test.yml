@@ -34,15 +34,12 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node_version: ["4", "4.3.2", "6", "8", "10", "12"]
+        node_version: ["12", "14", "16", "18"]
     steps:
     - uses: actions/checkout@v1
     - uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node_version }}
-    - name: 'Install the latest @types/node that works'
-      if: ${{ matrix.node_version == '4' || matrix.node_version == '4.3.2' || matrix.node_version == '6' }}
-      run: npm install --save --save-exact @types/node@17.0.41
     - name: "Install dependencies"
       run: npm install
     - name: "Test sources"
