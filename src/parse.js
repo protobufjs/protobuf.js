@@ -576,7 +576,7 @@ function parse(source, root, options) {
             option = name;
             token = peek();
             if (fqTypeRefRe.test(token)) {
-                propName = token.substr(1); //remove '.' before property name
+                propName = token.slice(1); //remove '.' before property name
                 name += token;
                 next();
             }

@@ -49,7 +49,7 @@ wrappers[".google.protobuf.Any"] = {
             if (type) {
                 // type_url does not accept leading "."
                 var type_url = object["@type"].charAt(0) === "." ?
-                    object["@type"].substr(1) : object["@type"];
+                    object["@type"].slice(1) : object["@type"];
                 // type_url prefix is optional, but path seperator is required
                 if (type_url.indexOf("/") === -1) {
                     type_url = "/" + type_url;
@@ -87,7 +87,7 @@ wrappers[".google.protobuf.Any"] = {
         if (!(message instanceof this.ctor) && message instanceof Message) {
             var object = message.$type.toObject(message, options);
             var messageName = message.$type.fullName[0] === "." ?
-                message.$type.fullName.substr(1) : message.$type.fullName;
+                message.$type.fullName.slice(1) : message.$type.fullName;
             // Default to type.googleapis.com prefix if no prefix is used
             if (prefix === "") {
                 prefix = googleApi;
