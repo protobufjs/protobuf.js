@@ -19,7 +19,7 @@ export class Test1 implements ITest1 {
     public static fromObject(object: { [k: string]: any }): Test1;
     public static toObject(message: Test1, options?: $protobuf.IConversionOptions): { [k: string]: any };
     public toJSON(): { [k: string]: any };
-    public static getTypeUrl(): string;
+    public static getTypeUrl(typeUrlPrefix?: string): string;
 }
 
 export interface ITest2 {
@@ -36,12 +36,13 @@ export class Test2 implements ITest2 {
     public static fromObject(object: { [k: string]: any }): Test2;
     public static toObject(message: Test2, options?: $protobuf.IConversionOptions): { [k: string]: any };
     public toJSON(): { [k: string]: any };
-    public static getTypeUrl(): string;
+    public static getTypeUrl(typeUrlPrefix?: string): string;
 }
 
 export enum Test3 {
     ONE = 1,
     TWO = 2,
     THREE = 3,
-    FOUR = 4
+    FOUR = 4,
+    FIVE = 5
 }

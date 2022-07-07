@@ -228,10 +228,14 @@ $root.vector_tile = (function() {
          * @function getTypeUrl
          * @memberof vector_tile.Tile
          * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
          * @returns {string} The default type url
          */
-        Tile.getTypeUrl = function getTypeUrl() {
-            return "type.googleapis.com/vector_tile.Tile";
+        Tile.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/vector_tile.Tile";
         };
 
         /**
@@ -616,10 +620,14 @@ $root.vector_tile = (function() {
              * @function getTypeUrl
              * @memberof vector_tile.Tile.Value
              * @static
+             * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
              * @returns {string} The default type url
              */
-            Value.getTypeUrl = function getTypeUrl() {
-                return "type.googleapis.com/vector_tile.Tile.Value";
+            Value.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                if (typeUrlPrefix === undefined) {
+                    typeUrlPrefix = "type.googleapis.com";
+                }
+                return typeUrlPrefix + "/vector_tile.Tile.Value";
             };
 
             return Value;
@@ -968,10 +976,14 @@ $root.vector_tile = (function() {
              * @function getTypeUrl
              * @memberof vector_tile.Tile.Feature
              * @static
+             * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
              * @returns {string} The default type url
              */
-            Feature.getTypeUrl = function getTypeUrl() {
-                return "type.googleapis.com/vector_tile.Tile.Feature";
+            Feature.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                if (typeUrlPrefix === undefined) {
+                    typeUrlPrefix = "type.googleapis.com";
+                }
+                return typeUrlPrefix + "/vector_tile.Tile.Feature";
             };
 
             return Feature;
@@ -1337,10 +1349,14 @@ $root.vector_tile = (function() {
              * @function getTypeUrl
              * @memberof vector_tile.Tile.Layer
              * @static
+             * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
              * @returns {string} The default type url
              */
-            Layer.getTypeUrl = function getTypeUrl() {
-                return "type.googleapis.com/vector_tile.Tile.Layer";
+            Layer.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                if (typeUrlPrefix === undefined) {
+                    typeUrlPrefix = "type.googleapis.com";
+                }
+                return typeUrlPrefix + "/vector_tile.Tile.Layer";
             };
 
             return Layer;
