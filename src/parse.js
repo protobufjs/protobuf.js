@@ -587,19 +587,6 @@ function parse(source, root, options) {
     }
 
     function parseOptionValue(parent, name) {
-        // some_value: [ 0, 1, "2" ]
-        if (skip("[", true)) {
-            var arrayResult = [];
-
-            do {
-                arrayResult.push(readValue(true));
-            } while (skip(",", true));
-
-            skip("]");
-
-            return arrayResult;
-        }
-
         // { a: "foo" b { c: "bar" } }
         if (skip("{", true)) {
             var objectResult = {};
@@ -613,32 +600,29 @@ function parse(source, root, options) {
                 var value;
                 var propName = token;
 
-                if (peek() === "{" || peek() === "[")
+                skip(":", true);
+
+                if (peek() === "{")
                     value = parseOptionValue(parent, name + "." + token);
-                else {
-                    skip(":");
-                    if (peek() === "{" || peek() === "[")
-                        value = parseOptionValue(parent, name + "." + token);
-                    else if (peek() === "[") {
-                        // option (my_option) = {
-                        //     repeated_value: [ "foo", "bar" ]
-                        // };
-                        value = [];
-                        var lastValue;
-                        if (skip("[", true)) {
-                            do {
-                                lastValue = readValue(true);
-                                value.push(lastValue);
-                            } while (skip(",", true));
-                            skip("]");
-                            if (typeof lastValue !== "undefined") {
-                                setOption(parent, name + "." + token, lastValue);
-                            }
+                else if (peek() === "[") {
+                    // option (my_option) = {
+                    //     repeated_value: [ "foo", "bar" ]
+                    // };
+                    value = [];
+                    var lastValue;
+                    if (skip("[", true)) {
+                        do {
+                            lastValue = readValue(true);
+                            value.push(lastValue);
+                        } while (skip(",", true));
+                        skip("]");
+                        if (typeof lastValue !== "undefined") {
+                            setOption(parent, name + "." + token, lastValue);
                         }
-                    } else {
-                        value = readValue(true);
-                        setOption(parent, name + "." + token, value);
                     }
+                } else {
+                    value = readValue(true);
+                    setOption(parent, name + "." + token, value);
                 }
 
                 var prevValue = objectResult[propName];
