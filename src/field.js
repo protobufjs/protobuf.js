@@ -78,9 +78,6 @@ function Field(name, id, type, rule, extend, options, comment) {
     if (extend !== undefined && !util.isString(extend))
         throw TypeError("extend must be a string");
 
-    if (rule === "proto3_optional") {
-        rule = "optional";
-    }
     /**
      * Field rule, if any.
      * @type {string|undefined}

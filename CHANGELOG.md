@@ -1,41 +1,5 @@
 # Changelog
 
-### [6.11.3](https://github.com/protobufjs/protobuf.js/compare/v6.11.2...v6.11.3) (2022-05-20)
-
-
-### Bug Fixes
-
-* **deps:** use eslint 8.x ([#1728](https://github.com/protobufjs/protobuf.js/issues/1728)) ([a8681ce](https://github.com/protobufjs/protobuf.js/commit/a8681ceab4763e706a848121a2dde56791b89eea))
-* do not let setProperty change the prototype ([#1731](https://github.com/protobufjs/protobuf.js/issues/1731)) ([b5f1391](https://github.com/protobufjs/protobuf.js/commit/b5f1391dff5515894830a6570e6d73f5511b2e8f))
-
-### [6.11.2](https://www.github.com/protobufjs/protobuf.js/compare/v6.11.1...v6.11.2) (2021-04-30)
-
-* regenerated index.d.ts to fix the unintended breaking change in types.
-
-
-### [6.11.1](https://www.github.com/protobufjs/protobuf.js/compare/v6.11.0...v6.11.1) (2021-04-29)
-
-
-### Bug Fixes
-
-* parse.js "parent.add(oneof)“ error (@leon776) ([#1602](https://github.com/protobufjs/protobuf.js/pull/1602))
-
-## [6.11.0](https://www.github.com/protobufjs/protobuf.js/compare/v6.10.2...v6.11.0) (2021-04-28)
-
-
-### Features
-
-* support for proto3 `optional` fields (@alexander-fenster) ([#1584](https://github.com/protobufjs/protobuf.js/pull/1584))
-* add `--no-service` option for `pbjs` (@mdouglass) ([#1577](https://github.com/protobufjs/protobuf.js/pull/1577))
-
-### Bug Fixes
-
-* do not assign `oneof` members to default values, use `null` instead (@alexander-fenster) ([#1597](https://github.com/protobufjs/protobuf.js/pull/1597))
-
-### Dependencies
-
-* set `@types/node` to `>= 13.7.0` in dependencies (@indutny) ([#1575](https://github.com/protobufjs/protobuf.js/pull/1575))
-
 ### [6.10.2](https://www.github.com/protobufjs/protobuf.js/compare/v6.10.1...v6.10.2) (2020-11-13)
 
 
