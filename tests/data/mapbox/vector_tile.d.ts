@@ -17,7 +17,7 @@ export namespace vector_tile {
         public static fromObject(object: { [k: string]: any }): vector_tile.Tile;
         public static toObject(message: vector_tile.Tile, options?: $protobuf.IConversionOptions): { [k: string]: any };
         public toJSON(): { [k: string]: any };
-        public static getTypeUrl(): string;
+        public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
     namespace Tile {
@@ -57,7 +57,7 @@ export namespace vector_tile {
             public static fromObject(object: { [k: string]: any }): vector_tile.Tile.Value;
             public static toObject(message: vector_tile.Tile.Value, options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
-            public static getTypeUrl(): string;
+            public static getTypeUrl(typeUrlPrefix?: string): string;
         }
 
         interface IFeature {
@@ -82,7 +82,7 @@ export namespace vector_tile {
             public static fromObject(object: { [k: string]: any }): vector_tile.Tile.Feature;
             public static toObject(message: vector_tile.Tile.Feature, options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
-            public static getTypeUrl(): string;
+            public static getTypeUrl(typeUrlPrefix?: string): string;
         }
 
         interface ILayer {
@@ -111,7 +111,7 @@ export namespace vector_tile {
             public static fromObject(object: { [k: string]: any }): vector_tile.Tile.Layer;
             public static toObject(message: vector_tile.Tile.Layer, options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
-            public static getTypeUrl(): string;
+            public static getTypeUrl(typeUrlPrefix?: string): string;
         }
     }
 }

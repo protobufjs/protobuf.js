@@ -44,11 +44,12 @@ tape.test("pbjs generates static code", function(test) {
             decode: true,
             encode: true,
             convert: true,
+            typeurl: true,
         }, function(err, jsCode) {
             test.error(err, 'static code generation worked');
 
             // jsCode is the generated code; we'll eval it
-            // (since this is what we normally does with the code, right?)
+            // (since this is what we normally do with the code, right?)
             // This is a test code. Do not use this in production.
             var $protobuf = protobuf;
             eval(jsCode);
@@ -77,6 +78,12 @@ tape.test("pbjs generates static code", function(test) {
             instance.regularField = "abc";
             var instance1 = OneofContainerDynamic.toObject(OneofContainerDynamic.fromObject(instance));
             test.deepEqual(instance, instance1, "fromObject and toObject work for instance of the static type");
+
+            // Check that getTypeUrl works
+            var defaultTypeUrl = Message.getTypeUrl();
+            var customTypeUrl = Message.getTypeUrl("example.com");
+            test.equal(defaultTypeUrl, "type.googleapis.com/Message", "getTypeUrl returns expected url");
+            test.equal(customTypeUrl, "example.com/Message", "getTypeUrl returns custom url");
 
             test.end();
         });
