@@ -3,7 +3,7 @@ var tape = require("tape");
 var protobuf = require("..");
 
 tape.test("proto comments in alternate-parse mode", function(test) {
-    test.plan(23);
+    test.plan(24);
     var options = {alternateCommentMode: true};
     var root = new protobuf.Root();
     root.load("tests/data/comments-alternate-parse.proto", options, function(err, root) {
@@ -31,6 +31,7 @@ tape.test("proto comments in alternate-parse mode", function(test) {
         test.equal(root.lookup("Test3").comments.TWO, "Value with a single-line comment.", "should parse double-slash comments for enum values");
         test.equal(root.lookup("Test3").comments.THREE, "Value with a triple-slash comment.", "should parse lines for enum values and prefer on top over trailing");
         test.equal(root.lookup("Test3").comments.FOUR, "Other value with a comment.", "should not confuse previous trailing comments with comments for the next field");
+        test.equal(root.lookup("Test3").comments.FIVE, "Leading comment for value with both types of comments after field with trailing comment.", "should not confuse previous field with trailing comment when leading comment is present");
 
         test.equal(root.lookup("ServiceTest.SingleLineMethod").comment, 'My method does things');
         test.equal(root.lookup("ServiceTest.TwoLineMethodWithComment").comment, 'TwoLineMethodWithComment documentation');
@@ -42,7 +43,7 @@ tape.test("proto comments in alternate-parse mode", function(test) {
 });
 
 tape.test("proto comments in alternate-parse mode with trailing comment preferred", function(test) {
-    test.plan(23);
+    test.plan(24);
     var options = {alternateCommentMode: true, preferTrailingComment: true};
     var root = new protobuf.Root();
     root.load("tests/data/comments-alternate-parse.proto", options, function(err, root) {
@@ -70,6 +71,7 @@ tape.test("proto comments in alternate-parse mode with trailing comment preferre
         test.equal(root.lookup("Test3").comments.TWO, "Value with a single-line comment.", "should parse double-slash comments for enum values");
         test.equal(root.lookup("Test3").comments.THREE, "ignored", "should prefer trailing comment when preferTrailingComment option enabled");
         test.equal(root.lookup("Test3").comments.FOUR, "Other value with a comment.", "should not confuse previous trailing comments with comments for the next field");
+        test.equal(root.lookup("Test3").comments.FIVE, "Trailing comment for value with both types of comments after field with trailing comment.", "should not confuse previous field with trailing comment when leading comment is present");
 
         test.equal(root.lookup("ServiceTest.SingleLineMethod").comment, 'My method does things');
         test.equal(root.lookup("ServiceTest.TwoLineMethodWithComment").comment, 'TwoLineMethodWithComment documentation');

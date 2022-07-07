@@ -412,7 +412,7 @@ $root.Message = (function() {
         if (object.bytesVal != null)
             if (typeof object.bytesVal === "string")
                 $util.base64.decode(object.bytesVal, message.bytesVal = $util.newBuffer($util.base64.length(object.bytesVal)), 0);
-            else if (object.bytesVal.length)
+            else if (object.bytesVal.length >= 0)
                 message.bytesVal = object.bytesVal;
         if (object.bytesRepeated) {
             if (!Array.isArray(object.bytesRepeated))
@@ -421,7 +421,7 @@ $root.Message = (function() {
             for (var i = 0; i < object.bytesRepeated.length; ++i)
                 if (typeof object.bytesRepeated[i] === "string")
                     $util.base64.decode(object.bytesRepeated[i], message.bytesRepeated[i] = $util.newBuffer($util.base64.length(object.bytesRepeated[i])), 0);
-                else if (object.bytesRepeated[i].length)
+                else if (object.bytesRepeated[i].length >= 0)
                     message.bytesRepeated[i] = object.bytesRepeated[i];
         }
         switch (object.enumVal) {
@@ -560,6 +560,17 @@ $root.Message = (function() {
      */
     Message.prototype.toJSON = function toJSON() {
         return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    /**
+     * Gets the default type url for Message
+     * @function getTypeUrl
+     * @memberof Message
+     * @static
+     * @returns {string} The default type url
+     */
+    Message.getTypeUrl = function getTypeUrl() {
+        return "type.googleapis.com/Message";
     };
 
     /**

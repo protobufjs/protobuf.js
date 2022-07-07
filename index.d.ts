@@ -300,9 +300,6 @@ export class FieldBase extends ReflectionObject {
      */
     constructor(name: string, id: number, type: string, rule?: (string|{ [k: string]: any }), extend?: (string|{ [k: string]: any }), options?: { [k: string]: any }, comment?: string);
 
-    /** Field rule, if any. */
-    public rule?: string;
-
     /** Field type. */
     public type: string;
 
@@ -1312,7 +1309,7 @@ export class Root extends NamespaceBase {
 /**
  * Named roots.
  * This is where pbjs stores generated structures (the option `-r, --root` specifies a name).
- * Can also be used manually to make roots available accross modules.
+ * Can also be used manually to make roots available across modules.
  */
 export let roots: { [k: string]: Root };
 

@@ -184,6 +184,17 @@ $root.jspb = (function() {
                 return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
+            /**
+             * Gets the default type url for Empty
+             * @function getTypeUrl
+             * @memberof jspb.test.Empty
+             * @static
+             * @returns {string} The default type url
+             */
+            Empty.getTypeUrl = function getTypeUrl() {
+                return "type.googleapis.com/jspb.test.Empty";
+            };
+
             return Empty;
         })();
 
@@ -396,6 +407,17 @@ $root.jspb = (function() {
              */
             EnumContainer.prototype.toJSON = function toJSON() {
                 return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+            };
+
+            /**
+             * Gets the default type url for EnumContainer
+             * @function getTypeUrl
+             * @memberof jspb.test.EnumContainer
+             * @static
+             * @returns {string} The default type url
+             */
+            EnumContainer.getTypeUrl = function getTypeUrl() {
+                return "type.googleapis.com/jspb.test.EnumContainer";
             };
 
             return EnumContainer;
@@ -647,6 +669,17 @@ $root.jspb = (function() {
                 return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
+            /**
+             * Gets the default type url for Simple1
+             * @function getTypeUrl
+             * @memberof jspb.test.Simple1
+             * @static
+             * @returns {string} The default type url
+             */
+            Simple1.getTypeUrl = function getTypeUrl() {
+                return "type.googleapis.com/jspb.test.Simple1";
+            };
+
             return Simple1;
         })();
 
@@ -871,6 +904,17 @@ $root.jspb = (function() {
              */
             Simple2.prototype.toJSON = function toJSON() {
                 return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+            };
+
+            /**
+             * Gets the default type url for Simple2
+             * @function getTypeUrl
+             * @memberof jspb.test.Simple2
+             * @static
+             * @returns {string} The default type url
+             */
+            Simple2.getTypeUrl = function getTypeUrl() {
+                return "type.googleapis.com/jspb.test.Simple2";
             };
 
             return Simple2;
@@ -1125,6 +1169,17 @@ $root.jspb = (function() {
              */
             SpecialCases.prototype.toJSON = function toJSON() {
                 return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+            };
+
+            /**
+             * Gets the default type url for SpecialCases
+             * @function getTypeUrl
+             * @memberof jspb.test.SpecialCases
+             * @static
+             * @returns {string} The default type url
+             */
+            SpecialCases.getTypeUrl = function getTypeUrl() {
+                return "type.googleapis.com/jspb.test.SpecialCases";
             };
 
             return SpecialCases;
@@ -1447,6 +1502,17 @@ $root.jspb = (function() {
                 return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
+            /**
+             * Gets the default type url for OptionalFields
+             * @function getTypeUrl
+             * @memberof jspb.test.OptionalFields
+             * @static
+             * @returns {string} The default type url
+             */
+            OptionalFields.getTypeUrl = function getTypeUrl() {
+                return "type.googleapis.com/jspb.test.OptionalFields";
+            };
+
             OptionalFields.Nested = (function() {
 
                 /**
@@ -1629,6 +1695,17 @@ $root.jspb = (function() {
                  */
                 Nested.prototype.toJSON = function toJSON() {
                     return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                };
+
+                /**
+                 * Gets the default type url for Nested
+                 * @function getTypeUrl
+                 * @memberof jspb.test.OptionalFields.Nested
+                 * @static
+                 * @returns {string} The default type url
+                 */
+                Nested.getTypeUrl = function getTypeUrl() {
+                    return "type.googleapis.com/jspb.test.OptionalFields.Nested";
                 };
 
                 return Nested;
@@ -2052,6 +2129,17 @@ $root.jspb = (function() {
                 return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
+            /**
+             * Gets the default type url for HasExtensions
+             * @function getTypeUrl
+             * @memberof jspb.test.HasExtensions
+             * @static
+             * @returns {string} The default type url
+             */
+            HasExtensions.getTypeUrl = function getTypeUrl() {
+                return "type.googleapis.com/jspb.test.HasExtensions";
+            };
+
             return HasExtensions;
         })();
 
@@ -2372,6 +2460,17 @@ $root.jspb = (function() {
                 return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
+            /**
+             * Gets the default type url for Complex
+             * @function getTypeUrl
+             * @memberof jspb.test.Complex
+             * @static
+             * @returns {string} The default type url
+             */
+            Complex.getTypeUrl = function getTypeUrl() {
+                return "type.googleapis.com/jspb.test.Complex";
+            };
+
             Complex.Nested = (function() {
 
                 /**
@@ -2556,6 +2655,17 @@ $root.jspb = (function() {
                     return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
                 };
 
+                /**
+                 * Gets the default type url for Nested
+                 * @function getTypeUrl
+                 * @memberof jspb.test.Complex.Nested
+                 * @static
+                 * @returns {string} The default type url
+                 */
+                Nested.getTypeUrl = function getTypeUrl() {
+                    return "type.googleapis.com/jspb.test.Complex.Nested";
+                };
+
                 return Nested;
             })();
 
@@ -2717,6 +2827,17 @@ $root.jspb = (function() {
              */
             OuterMessage.prototype.toJSON = function toJSON() {
                 return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+            };
+
+            /**
+             * Gets the default type url for OuterMessage
+             * @function getTypeUrl
+             * @memberof jspb.test.OuterMessage
+             * @static
+             * @returns {string} The default type url
+             */
+            OuterMessage.getTypeUrl = function getTypeUrl() {
+                return "type.googleapis.com/jspb.test.OuterMessage";
             };
 
             OuterMessage.Complex = (function() {
@@ -2901,6 +3022,17 @@ $root.jspb = (function() {
                  */
                 Complex.prototype.toJSON = function toJSON() {
                     return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                };
+
+                /**
+                 * Gets the default type url for Complex
+                 * @function getTypeUrl
+                 * @memberof jspb.test.OuterMessage.Complex
+                 * @static
+                 * @returns {string} The default type url
+                 */
+                Complex.getTypeUrl = function getTypeUrl() {
+                    return "type.googleapis.com/jspb.test.OuterMessage.Complex";
                 };
 
                 return Complex;
@@ -3093,6 +3225,17 @@ $root.jspb = (function() {
                 return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
+            /**
+             * Gets the default type url for IsExtension
+             * @function getTypeUrl
+             * @memberof jspb.test.IsExtension
+             * @static
+             * @returns {string} The default type url
+             */
+            IsExtension.getTypeUrl = function getTypeUrl() {
+                return "type.googleapis.com/jspb.test.IsExtension";
+            };
+
             return IsExtension;
         })();
 
@@ -3251,6 +3394,17 @@ $root.jspb = (function() {
              */
             IndirectExtension.prototype.toJSON = function toJSON() {
                 return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+            };
+
+            /**
+             * Gets the default type url for IndirectExtension
+             * @function getTypeUrl
+             * @memberof jspb.test.IndirectExtension
+             * @static
+             * @returns {string} The default type url
+             */
+            IndirectExtension.getTypeUrl = function getTypeUrl() {
+                return "type.googleapis.com/jspb.test.IndirectExtension";
             };
 
             return IndirectExtension;
@@ -3522,7 +3676,7 @@ $root.jspb = (function() {
                 if (object.bytesField != null)
                     if (typeof object.bytesField === "string")
                         $util.base64.decode(object.bytesField, message.bytesField = $util.newBuffer($util.base64.length(object.bytesField)), 0);
-                    else if (object.bytesField.length)
+                    else if (object.bytesField.length >= 0)
                         message.bytesField = object.bytesField;
                 return message;
             };
@@ -3589,6 +3743,17 @@ $root.jspb = (function() {
              */
             DefaultValues.prototype.toJSON = function toJSON() {
                 return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+            };
+
+            /**
+             * Gets the default type url for DefaultValues
+             * @function getTypeUrl
+             * @memberof jspb.test.DefaultValues
+             * @static
+             * @returns {string} The default type url
+             */
+            DefaultValues.getTypeUrl = function getTypeUrl() {
+                return "type.googleapis.com/jspb.test.DefaultValues";
             };
 
             /**
@@ -3991,6 +4156,17 @@ $root.jspb = (function() {
                 return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
+            /**
+             * Gets the default type url for FloatingPointFields
+             * @function getTypeUrl
+             * @memberof jspb.test.FloatingPointFields
+             * @static
+             * @returns {string} The default type url
+             */
+            FloatingPointFields.getTypeUrl = function getTypeUrl() {
+                return "type.googleapis.com/jspb.test.FloatingPointFields";
+            };
+
             return FloatingPointFields;
         })();
 
@@ -4261,7 +4437,7 @@ $root.jspb = (function() {
                 if (object.bytesField != null)
                     if (typeof object.bytesField === "string")
                         $util.base64.decode(object.bytesField, message.bytesField = $util.newBuffer($util.base64.length(object.bytesField)), 0);
-                    else if (object.bytesField.length)
+                    else if (object.bytesField.length >= 0)
                         message.bytesField = object.bytesField;
                 if (object.unused != null)
                     message.unused = String(object.unused);
@@ -4328,6 +4504,17 @@ $root.jspb = (function() {
              */
             TestClone.prototype.toJSON = function toJSON() {
                 return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+            };
+
+            /**
+             * Gets the default type url for TestClone
+             * @function getTypeUrl
+             * @memberof jspb.test.TestClone
+             * @static
+             * @returns {string} The default type url
+             */
+            TestClone.getTypeUrl = function getTypeUrl() {
+                return "type.googleapis.com/jspb.test.TestClone";
             };
 
             return TestClone;
@@ -4515,6 +4702,17 @@ $root.jspb = (function() {
              */
             CloneExtension.prototype.toJSON = function toJSON() {
                 return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+            };
+
+            /**
+             * Gets the default type url for CloneExtension
+             * @function getTypeUrl
+             * @memberof jspb.test.CloneExtension
+             * @static
+             * @returns {string} The default type url
+             */
+            CloneExtension.getTypeUrl = function getTypeUrl() {
+                return "type.googleapis.com/jspb.test.CloneExtension";
             };
 
             return CloneExtension;
@@ -4859,6 +5057,17 @@ $root.jspb = (function() {
                 return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
+            /**
+             * Gets the default type url for TestGroup
+             * @function getTypeUrl
+             * @memberof jspb.test.TestGroup
+             * @static
+             * @returns {string} The default type url
+             */
+            TestGroup.getTypeUrl = function getTypeUrl() {
+                return "type.googleapis.com/jspb.test.TestGroup";
+            };
+
             TestGroup.RepeatedGroup = (function() {
 
                 /**
@@ -5089,6 +5298,17 @@ $root.jspb = (function() {
                     return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
                 };
 
+                /**
+                 * Gets the default type url for RepeatedGroup
+                 * @function getTypeUrl
+                 * @memberof jspb.test.TestGroup.RepeatedGroup
+                 * @static
+                 * @returns {string} The default type url
+                 */
+                RepeatedGroup.getTypeUrl = function getTypeUrl() {
+                    return "type.googleapis.com/jspb.test.TestGroup.RepeatedGroup";
+                };
+
                 return RepeatedGroup;
             })();
 
@@ -5278,6 +5498,17 @@ $root.jspb = (function() {
                     return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
                 };
 
+                /**
+                 * Gets the default type url for RequiredGroup
+                 * @function getTypeUrl
+                 * @memberof jspb.test.TestGroup.RequiredGroup
+                 * @static
+                 * @returns {string} The default type url
+                 */
+                RequiredGroup.getTypeUrl = function getTypeUrl() {
+                    return "type.googleapis.com/jspb.test.TestGroup.RequiredGroup";
+                };
+
                 return RequiredGroup;
             })();
 
@@ -5465,6 +5696,17 @@ $root.jspb = (function() {
                  */
                 OptionalGroup.prototype.toJSON = function toJSON() {
                     return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                };
+
+                /**
+                 * Gets the default type url for OptionalGroup
+                 * @function getTypeUrl
+                 * @memberof jspb.test.TestGroup.OptionalGroup
+                 * @static
+                 * @returns {string} The default type url
+                 */
+                OptionalGroup.getTypeUrl = function getTypeUrl() {
+                    return "type.googleapis.com/jspb.test.TestGroup.OptionalGroup";
                 };
 
                 return OptionalGroup;
@@ -5660,6 +5902,17 @@ $root.jspb = (function() {
              */
             TestGroup1.prototype.toJSON = function toJSON() {
                 return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+            };
+
+            /**
+             * Gets the default type url for TestGroup1
+             * @function getTypeUrl
+             * @memberof jspb.test.TestGroup1
+             * @static
+             * @returns {string} The default type url
+             */
+            TestGroup1.getTypeUrl = function getTypeUrl() {
+                return "type.googleapis.com/jspb.test.TestGroup1";
             };
 
             return TestGroup1;
@@ -5872,6 +6125,17 @@ $root.jspb = (function() {
                 return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
+            /**
+             * Gets the default type url for TestReservedNames
+             * @function getTypeUrl
+             * @memberof jspb.test.TestReservedNames
+             * @static
+             * @returns {string} The default type url
+             */
+            TestReservedNames.getTypeUrl = function getTypeUrl() {
+                return "type.googleapis.com/jspb.test.TestReservedNames";
+            };
+
             return TestReservedNames;
         })();
 
@@ -6030,6 +6294,17 @@ $root.jspb = (function() {
              */
             TestReservedNamesExtension.prototype.toJSON = function toJSON() {
                 return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+            };
+
+            /**
+             * Gets the default type url for TestReservedNamesExtension
+             * @function getTypeUrl
+             * @memberof jspb.test.TestReservedNamesExtension
+             * @static
+             * @returns {string} The default type url
+             */
+            TestReservedNamesExtension.getTypeUrl = function getTypeUrl() {
+                return "type.googleapis.com/jspb.test.TestReservedNamesExtension";
             };
 
             return TestReservedNamesExtension;
@@ -6528,6 +6803,17 @@ $root.jspb = (function() {
                 return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
+            /**
+             * Gets the default type url for TestMessageWithOneof
+             * @function getTypeUrl
+             * @memberof jspb.test.TestMessageWithOneof
+             * @static
+             * @returns {string} The default type url
+             */
+            TestMessageWithOneof.getTypeUrl = function getTypeUrl() {
+                return "type.googleapis.com/jspb.test.TestMessageWithOneof";
+            };
+
             return TestMessageWithOneof;
         })();
 
@@ -6701,7 +6987,7 @@ $root.jspb = (function() {
                 if (object.data != null)
                     if (typeof object.data === "string")
                         $util.base64.decode(object.data, message.data = $util.newBuffer($util.base64.length(object.data)), 0);
-                    else if (object.data.length)
+                    else if (object.data.length >= 0)
                         message.data = object.data;
                 return message;
             };
@@ -6745,6 +7031,17 @@ $root.jspb = (function() {
              */
             TestEndsWithBytes.prototype.toJSON = function toJSON() {
                 return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+            };
+
+            /**
+             * Gets the default type url for TestEndsWithBytes
+             * @function getTypeUrl
+             * @memberof jspb.test.TestEndsWithBytes
+             * @static
+             * @returns {string} The default type url
+             */
+            TestEndsWithBytes.getTypeUrl = function getTypeUrl() {
+                return "type.googleapis.com/jspb.test.TestEndsWithBytes";
             };
 
             return TestEndsWithBytes;
@@ -7610,6 +7907,17 @@ $root.jspb = (function() {
                 return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
+            /**
+             * Gets the default type url for TestMapFieldsNoBinary
+             * @function getTypeUrl
+             * @memberof jspb.test.TestMapFieldsNoBinary
+             * @static
+             * @returns {string} The default type url
+             */
+            TestMapFieldsNoBinary.getTypeUrl = function getTypeUrl() {
+                return "type.googleapis.com/jspb.test.TestMapFieldsNoBinary";
+            };
+
             return TestMapFieldsNoBinary;
         })();
 
@@ -7813,6 +8121,17 @@ $root.jspb = (function() {
                 return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
+            /**
+             * Gets the default type url for MapValueMessageNoBinary
+             * @function getTypeUrl
+             * @memberof jspb.test.MapValueMessageNoBinary
+             * @static
+             * @returns {string} The default type url
+             */
+            MapValueMessageNoBinary.getTypeUrl = function getTypeUrl() {
+                return "type.googleapis.com/jspb.test.MapValueMessageNoBinary";
+            };
+
             return MapValueMessageNoBinary;
         })();
 
@@ -7973,6 +8292,17 @@ $root.jspb = (function() {
                 return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
+            /**
+             * Gets the default type url for Deeply
+             * @function getTypeUrl
+             * @memberof jspb.test.Deeply
+             * @static
+             * @returns {string} The default type url
+             */
+            Deeply.getTypeUrl = function getTypeUrl() {
+                return "type.googleapis.com/jspb.test.Deeply";
+            };
+
             Deeply.Nested = (function() {
 
                 /**
@@ -8128,6 +8458,17 @@ $root.jspb = (function() {
                  */
                 Nested.prototype.toJSON = function toJSON() {
                     return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                };
+
+                /**
+                 * Gets the default type url for Nested
+                 * @function getTypeUrl
+                 * @memberof jspb.test.Deeply.Nested
+                 * @static
+                 * @returns {string} The default type url
+                 */
+                Nested.getTypeUrl = function getTypeUrl() {
+                    return "type.googleapis.com/jspb.test.Deeply.Nested";
                 };
 
                 Nested.Message = (function() {
@@ -8312,6 +8653,17 @@ $root.jspb = (function() {
                      */
                     Message.prototype.toJSON = function toJSON() {
                         return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for Message
+                     * @function getTypeUrl
+                     * @memberof jspb.test.Deeply.Nested.Message
+                     * @static
+                     * @returns {string} The default type url
+                     */
+                    Message.getTypeUrl = function getTypeUrl() {
+                        return "type.googleapis.com/jspb.test.Deeply.Nested.Message";
                     };
 
                     return Message;
@@ -8550,6 +8902,17 @@ $root.google = (function() {
              */
             FileDescriptorSet.prototype.toJSON = function toJSON() {
                 return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+            };
+
+            /**
+             * Gets the default type url for FileDescriptorSet
+             * @function getTypeUrl
+             * @memberof google.protobuf.FileDescriptorSet
+             * @static
+             * @returns {string} The default type url
+             */
+            FileDescriptorSet.getTypeUrl = function getTypeUrl() {
+                return "type.googleapis.com/google.protobuf.FileDescriptorSet";
             };
 
             return FileDescriptorSet;
@@ -9136,6 +9499,17 @@ $root.google = (function() {
                 return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
+            /**
+             * Gets the default type url for FileDescriptorProto
+             * @function getTypeUrl
+             * @memberof google.protobuf.FileDescriptorProto
+             * @static
+             * @returns {string} The default type url
+             */
+            FileDescriptorProto.getTypeUrl = function getTypeUrl() {
+                return "type.googleapis.com/google.protobuf.FileDescriptorProto";
+            };
+
             return FileDescriptorProto;
         })();
 
@@ -9692,6 +10066,17 @@ $root.google = (function() {
                 return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
+            /**
+             * Gets the default type url for DescriptorProto
+             * @function getTypeUrl
+             * @memberof google.protobuf.DescriptorProto
+             * @static
+             * @returns {string} The default type url
+             */
+            DescriptorProto.getTypeUrl = function getTypeUrl() {
+                return "type.googleapis.com/google.protobuf.DescriptorProto";
+            };
+
             DescriptorProto.ExtensionRange = (function() {
 
                 /**
@@ -9897,6 +10282,17 @@ $root.google = (function() {
                  */
                 ExtensionRange.prototype.toJSON = function toJSON() {
                     return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                };
+
+                /**
+                 * Gets the default type url for ExtensionRange
+                 * @function getTypeUrl
+                 * @memberof google.protobuf.DescriptorProto.ExtensionRange
+                 * @static
+                 * @returns {string} The default type url
+                 */
+                ExtensionRange.getTypeUrl = function getTypeUrl() {
+                    return "type.googleapis.com/google.protobuf.DescriptorProto.ExtensionRange";
                 };
 
                 return ExtensionRange;
@@ -10107,6 +10503,17 @@ $root.google = (function() {
                  */
                 ReservedRange.prototype.toJSON = function toJSON() {
                     return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                };
+
+                /**
+                 * Gets the default type url for ReservedRange
+                 * @function getTypeUrl
+                 * @memberof google.protobuf.DescriptorProto.ReservedRange
+                 * @static
+                 * @returns {string} The default type url
+                 */
+                ReservedRange.getTypeUrl = function getTypeUrl() {
+                    return "type.googleapis.com/google.protobuf.DescriptorProto.ReservedRange";
                 };
 
                 return ReservedRange;
@@ -10615,6 +11022,17 @@ $root.google = (function() {
             };
 
             /**
+             * Gets the default type url for FieldDescriptorProto
+             * @function getTypeUrl
+             * @memberof google.protobuf.FieldDescriptorProto
+             * @static
+             * @returns {string} The default type url
+             */
+            FieldDescriptorProto.getTypeUrl = function getTypeUrl() {
+                return "type.googleapis.com/google.protobuf.FieldDescriptorProto";
+            };
+
+            /**
              * Type enum.
              * @name google.protobuf.FieldDescriptorProto.Type
              * @enum {number}
@@ -10891,6 +11309,17 @@ $root.google = (function() {
                 return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
+            /**
+             * Gets the default type url for OneofDescriptorProto
+             * @function getTypeUrl
+             * @memberof google.protobuf.OneofDescriptorProto
+             * @static
+             * @returns {string} The default type url
+             */
+            OneofDescriptorProto.getTypeUrl = function getTypeUrl() {
+                return "type.googleapis.com/google.protobuf.OneofDescriptorProto";
+            };
+
             return OneofDescriptorProto;
         })();
 
@@ -11150,6 +11579,17 @@ $root.google = (function() {
                 return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
+            /**
+             * Gets the default type url for EnumDescriptorProto
+             * @function getTypeUrl
+             * @memberof google.protobuf.EnumDescriptorProto
+             * @static
+             * @returns {string} The default type url
+             */
+            EnumDescriptorProto.getTypeUrl = function getTypeUrl() {
+                return "type.googleapis.com/google.protobuf.EnumDescriptorProto";
+            };
+
             return EnumDescriptorProto;
         })();
 
@@ -11385,6 +11825,17 @@ $root.google = (function() {
              */
             EnumValueDescriptorProto.prototype.toJSON = function toJSON() {
                 return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+            };
+
+            /**
+             * Gets the default type url for EnumValueDescriptorProto
+             * @function getTypeUrl
+             * @memberof google.protobuf.EnumValueDescriptorProto
+             * @static
+             * @returns {string} The default type url
+             */
+            EnumValueDescriptorProto.getTypeUrl = function getTypeUrl() {
+                return "type.googleapis.com/google.protobuf.EnumValueDescriptorProto";
             };
 
             return EnumValueDescriptorProto;
@@ -11644,6 +12095,17 @@ $root.google = (function() {
              */
             ServiceDescriptorProto.prototype.toJSON = function toJSON() {
                 return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+            };
+
+            /**
+             * Gets the default type url for ServiceDescriptorProto
+             * @function getTypeUrl
+             * @memberof google.protobuf.ServiceDescriptorProto
+             * @static
+             * @returns {string} The default type url
+             */
+            ServiceDescriptorProto.getTypeUrl = function getTypeUrl() {
+                return "type.googleapis.com/google.protobuf.ServiceDescriptorProto";
             };
 
             return ServiceDescriptorProto;
@@ -11947,6 +12409,17 @@ $root.google = (function() {
              */
             MethodDescriptorProto.prototype.toJSON = function toJSON() {
                 return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+            };
+
+            /**
+             * Gets the default type url for MethodDescriptorProto
+             * @function getTypeUrl
+             * @memberof google.protobuf.MethodDescriptorProto
+             * @static
+             * @returns {string} The default type url
+             */
+            MethodDescriptorProto.getTypeUrl = function getTypeUrl() {
+                return "type.googleapis.com/google.protobuf.MethodDescriptorProto";
             };
 
             return MethodDescriptorProto;
@@ -12486,6 +12959,17 @@ $root.google = (function() {
             };
 
             /**
+             * Gets the default type url for FileOptions
+             * @function getTypeUrl
+             * @memberof google.protobuf.FileOptions
+             * @static
+             * @returns {string} The default type url
+             */
+            FileOptions.getTypeUrl = function getTypeUrl() {
+                return "type.googleapis.com/google.protobuf.FileOptions";
+            };
+
+            /**
              * OptimizeMode enum.
              * @name google.protobuf.FileOptions.OptimizeMode
              * @enum {number}
@@ -12797,6 +13281,17 @@ $root.google = (function() {
              */
             MessageOptions.prototype.toJSON = function toJSON() {
                 return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+            };
+
+            /**
+             * Gets the default type url for MessageOptions
+             * @function getTypeUrl
+             * @memberof google.protobuf.MessageOptions
+             * @static
+             * @returns {string} The default type url
+             */
+            MessageOptions.getTypeUrl = function getTypeUrl() {
+                return "type.googleapis.com/google.protobuf.MessageOptions";
             };
 
             return MessageOptions;
@@ -13178,6 +13673,17 @@ $root.google = (function() {
             };
 
             /**
+             * Gets the default type url for FieldOptions
+             * @function getTypeUrl
+             * @memberof google.protobuf.FieldOptions
+             * @static
+             * @returns {string} The default type url
+             */
+            FieldOptions.getTypeUrl = function getTypeUrl() {
+                return "type.googleapis.com/google.protobuf.FieldOptions";
+            };
+
+            /**
              * CType enum.
              * @name google.protobuf.FieldOptions.CType
              * @enum {number}
@@ -13415,6 +13921,17 @@ $root.google = (function() {
              */
             OneofOptions.prototype.toJSON = function toJSON() {
                 return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+            };
+
+            /**
+             * Gets the default type url for OneofOptions
+             * @function getTypeUrl
+             * @memberof google.protobuf.OneofOptions
+             * @static
+             * @returns {string} The default type url
+             */
+            OneofOptions.getTypeUrl = function getTypeUrl() {
+                return "type.googleapis.com/google.protobuf.OneofOptions";
             };
 
             return OneofOptions;
@@ -13693,6 +14210,17 @@ $root.google = (function() {
                 return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
+            /**
+             * Gets the default type url for EnumOptions
+             * @function getTypeUrl
+             * @memberof google.protobuf.EnumOptions
+             * @static
+             * @returns {string} The default type url
+             */
+            EnumOptions.getTypeUrl = function getTypeUrl() {
+                return "type.googleapis.com/google.protobuf.EnumOptions";
+            };
+
             return EnumOptions;
         })();
 
@@ -13924,6 +14452,17 @@ $root.google = (function() {
                 return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
+            /**
+             * Gets the default type url for EnumValueOptions
+             * @function getTypeUrl
+             * @memberof google.protobuf.EnumValueOptions
+             * @static
+             * @returns {string} The default type url
+             */
+            EnumValueOptions.getTypeUrl = function getTypeUrl() {
+                return "type.googleapis.com/google.protobuf.EnumValueOptions";
+            };
+
             return EnumValueOptions;
         })();
 
@@ -14153,6 +14692,17 @@ $root.google = (function() {
              */
             ServiceOptions.prototype.toJSON = function toJSON() {
                 return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+            };
+
+            /**
+             * Gets the default type url for ServiceOptions
+             * @function getTypeUrl
+             * @memberof google.protobuf.ServiceOptions
+             * @static
+             * @returns {string} The default type url
+             */
+            ServiceOptions.getTypeUrl = function getTypeUrl() {
+                return "type.googleapis.com/google.protobuf.ServiceOptions";
             };
 
             return ServiceOptions;
@@ -14425,6 +14975,17 @@ $root.google = (function() {
              */
             MethodOptions.prototype.toJSON = function toJSON() {
                 return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+            };
+
+            /**
+             * Gets the default type url for MethodOptions
+             * @function getTypeUrl
+             * @memberof google.protobuf.MethodOptions
+             * @static
+             * @returns {string} The default type url
+             */
+            MethodOptions.getTypeUrl = function getTypeUrl() {
+                return "type.googleapis.com/google.protobuf.MethodOptions";
             };
 
             /**
@@ -14741,7 +15302,7 @@ $root.google = (function() {
                 if (object.stringValue != null)
                     if (typeof object.stringValue === "string")
                         $util.base64.decode(object.stringValue, message.stringValue = $util.newBuffer($util.base64.length(object.stringValue)), 0);
-                    else if (object.stringValue.length)
+                    else if (object.stringValue.length >= 0)
                         message.stringValue = object.stringValue;
                 if (object.aggregateValue != null)
                     message.aggregateValue = String(object.aggregateValue);
@@ -14820,6 +15381,17 @@ $root.google = (function() {
              */
             UninterpretedOption.prototype.toJSON = function toJSON() {
                 return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+            };
+
+            /**
+             * Gets the default type url for UninterpretedOption
+             * @function getTypeUrl
+             * @memberof google.protobuf.UninterpretedOption
+             * @static
+             * @returns {string} The default type url
+             */
+            UninterpretedOption.getTypeUrl = function getTypeUrl() {
+                return "type.googleapis.com/google.protobuf.UninterpretedOption";
             };
 
             UninterpretedOption.NamePart = (function() {
@@ -15027,6 +15599,17 @@ $root.google = (function() {
                  */
                 NamePart.prototype.toJSON = function toJSON() {
                     return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                };
+
+                /**
+                 * Gets the default type url for NamePart
+                 * @function getTypeUrl
+                 * @memberof google.protobuf.UninterpretedOption.NamePart
+                 * @static
+                 * @returns {string} The default type url
+                 */
+                NamePart.getTypeUrl = function getTypeUrl() {
+                    return "type.googleapis.com/google.protobuf.UninterpretedOption.NamePart";
                 };
 
                 return NamePart;
@@ -15238,6 +15821,17 @@ $root.google = (function() {
              */
             SourceCodeInfo.prototype.toJSON = function toJSON() {
                 return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+            };
+
+            /**
+             * Gets the default type url for SourceCodeInfo
+             * @function getTypeUrl
+             * @memberof google.protobuf.SourceCodeInfo
+             * @static
+             * @returns {string} The default type url
+             */
+            SourceCodeInfo.getTypeUrl = function getTypeUrl() {
+                return "type.googleapis.com/google.protobuf.SourceCodeInfo";
             };
 
             SourceCodeInfo.Location = (function() {
@@ -15579,6 +16173,17 @@ $root.google = (function() {
                     return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
                 };
 
+                /**
+                 * Gets the default type url for Location
+                 * @function getTypeUrl
+                 * @memberof google.protobuf.SourceCodeInfo.Location
+                 * @static
+                 * @returns {string} The default type url
+                 */
+                Location.getTypeUrl = function getTypeUrl() {
+                    return "type.googleapis.com/google.protobuf.SourceCodeInfo.Location";
+                };
+
                 return Location;
             })();
 
@@ -15788,6 +16393,17 @@ $root.google = (function() {
              */
             GeneratedCodeInfo.prototype.toJSON = function toJSON() {
                 return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+            };
+
+            /**
+             * Gets the default type url for GeneratedCodeInfo
+             * @function getTypeUrl
+             * @memberof google.protobuf.GeneratedCodeInfo
+             * @static
+             * @returns {string} The default type url
+             */
+            GeneratedCodeInfo.getTypeUrl = function getTypeUrl() {
+                return "type.googleapis.com/google.protobuf.GeneratedCodeInfo";
             };
 
             GeneratedCodeInfo.Annotation = (function() {
@@ -16064,6 +16680,17 @@ $root.google = (function() {
                  */
                 Annotation.prototype.toJSON = function toJSON() {
                     return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                };
+
+                /**
+                 * Gets the default type url for Annotation
+                 * @function getTypeUrl
+                 * @memberof google.protobuf.GeneratedCodeInfo.Annotation
+                 * @static
+                 * @returns {string} The default type url
+                 */
+                Annotation.getTypeUrl = function getTypeUrl() {
+                    return "type.googleapis.com/google.protobuf.GeneratedCodeInfo.Annotation";
                 };
 
                 return Annotation;

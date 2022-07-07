@@ -12,8 +12,9 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           release-type: node
-          package-name: protobufjs
+          package-name: protobufjs-cli
           command: release-pr
+          path: cli
   release-please-release:
     runs-on: ubuntu-latest
     steps:
@@ -22,8 +23,9 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           release-type: node
-          package-name: protobufjs
+          package-name: protobufjs-cli
           command: github-release
+          path: cli
       - uses: actions/checkout@v2
         if: ${{ steps.tag-release.outputs.release_created }}
       - uses: actions/setup-node@v1
@@ -34,7 +36,7 @@ jobs:
       - name: publish
         if: ${{ steps.tag-release.outputs.release_created }}
         env:
-          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+          NODE_AUTH_TOKEN: ${{secrets.NPM_CLI_TOKEN}}
         run: |
           npm install
           npm publish

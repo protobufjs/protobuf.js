@@ -1,12 +1,11 @@
 protobufjs-cli
 ==============
-[![npm](https://img.shields.io/npm/v/protobufjscli.svg)](https://www.npmjs.com/package/protobufjs-cli)
+[![npm](https://img.shields.io/npm/v/protobufjs-cli.svg)](https://www.npmjs.com/package/protobufjs-cli)
 
-Command line interface (CLI) for [protobuf.js](https://github.com/dcodeIO/protobuf.js). Translates between file formats and generates static code as well as TypeScript definitions.
+Command line interface (CLI) for [protobuf.js](https://github.com/dcodeIO/protobuf.js).
 
-* [CLI Documentation](https://github.com/dcodeIO/protobuf.js#command-line)
+This can be used to translate between file formats and to generate static code as well as TypeScript definitions.
 
-**Note** that moving the CLI to its own package is a work in progress. At the moment, it's still part of the main package.
 * [pbjs for JavaScript](#pbjs-for-javascript)
 * [pbts for TypeScript](#pbts-for-typescript)
 * [Reflection vs. static code](#reflection-vs-static-code)

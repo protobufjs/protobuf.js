@@ -21,19 +21,17 @@ jobs:
       run: npm run lint:types
   build:
     runs-on: ubuntu-latest
-    needs: lint
     steps:
     - uses: actions/checkout@v1
     - uses: actions/setup-node@v1
       with:
         node-version: "12"
     - name: "Install dependencies"
-      run: npm install
+      run: npm install && (cd cli && npm install)
     - name: "Build distribution files"
       run: npm run build
   test:
     runs-on: ubuntu-latest
-    needs: build
     strategy:
       matrix:
         node_version: ["4", "4.3.2", "6", "8", "10", "12"]
@@ -42,6 +40,9 @@ jobs:
     - uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node_version }}
+    - name: 'Install the latest @types/node that works'
+      if: ${{ matrix.node_version == '4' || matrix.node_version == '4.3.2' || matrix.node_version == '6' }}
+      run: npm install --save --save-exact @types/node@17.0.41
     - name: "Install dependencies"
       run: npm install
     - name: "Test sources"
@@ -50,7 +51,6 @@ jobs:
       run: npm run test:types
   bench:
     runs-on: ubuntu-latest
-    needs: build
     steps:
     - uses: actions/checkout@v1
     - uses: actions/setup-node@v1

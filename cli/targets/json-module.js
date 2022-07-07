@@ -3,7 +3,7 @@ module.exports = json_module;
 
 var util = require("../util");
 
-var protobuf = require("../..");
+var protobuf = require("protobufjs");
 
 json_module.description = "JSON representation as a module";
 
