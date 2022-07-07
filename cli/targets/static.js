@@ -597,7 +597,7 @@ function buildType(ref, type) {
             "@function getTypeUrl",
             "@memberof " + exportName(type),
             "@static",
-            "@param {string|undefined} [typeUrlPrefix] your custom typeUrlPrefix(default \"type.googleapis.com\")",
+            "@param {string} [typeUrlPrefix] your custom typeUrlPrefix(default \"type.googleapis.com\")",
             "@returns {string} The default type url"
         ]);
         push(escapeName(type.name) + ".getTypeUrl = function getTypeUrl(typeUrlPrefix) {");
