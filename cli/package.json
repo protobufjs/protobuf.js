@@ -30,6 +30,6 @@
     "uglify-js": "^3.7.7"
   },
   "devDependencies": {
-    "protobufjs": "file://.."
+    "protobufjs": "file:.."
   }
 }
