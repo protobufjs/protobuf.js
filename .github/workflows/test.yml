@@ -31,8 +31,6 @@ jobs:
         node-version: ${{ matrix.node_version }}
     - name: "Install dependencies"
       run: npm install
-    - name: "Install CLI package"
-      run: cd cli && npm install
     - name: "Test sources"
       run: npm run test:sources
     - name: "Test types"
