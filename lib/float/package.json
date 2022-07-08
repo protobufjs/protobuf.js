@@ -13,7 +13,7 @@
   "types": "index.d.ts",
   "devDependencies": {
     "benchmark": "^2.1.4",
-    "chalk": "^4.0.0",
+    "chalk": "^5.0.0",
     "ieee754": "^1.1.8",
     "istanbul": "^0.4.5",
     "tape": "^5.0.0"
