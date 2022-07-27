@@ -354,6 +354,14 @@ function toJsType(field) {
     return type;
 }
 
+function handleOptionalFields(jsType, field) {
+
+    if (field.optional && !field.map && !field.repeated && (field.resolvedType instanceof Type || config["null-defaults"]) || field.partOf)
+        return jsType + "|null|undefined";
+    else
+        return jsType
+}
+
 function buildType(ref, type) {
 
     if (config.comments) {
@@ -366,8 +374,7 @@ function buildType(ref, type) {
             var prop = util.safeProp(field.name); // either .name or ["name"]
             prop = prop.substring(1, prop.charAt(0) === "[" ? prop.length - 1 : prop.length);
             var jsType = toJsType(field);
-            if (field.optional)
-                jsType = jsType + "|null";
+            jsType = handleOptionalFields(jsType, field);
             typeDef.push("@property {" + jsType + "} " + (field.optional ? "[" + prop + "]" : prop) + " " + (field.comment || type.name + " " + field.name));
         });
         push("");
@@ -394,8 +401,7 @@ function buildType(ref, type) {
         if (config.comments) {
             push("");
             var jsType = toJsType(field);
-            if (field.optional && !field.map && !field.repeated && (field.resolvedType instanceof Type || config["null-defaults"]) || field.partOf)
-                jsType = jsType + "|null|undefined";
+            jsType = handleOptionalFields(jsType, field);
             pushComment([
                 field.comment || type.name + " " + field.name + ".",
                 "@member {" + jsType + "} " + field.name,
