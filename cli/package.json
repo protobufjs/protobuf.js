@@ -5,7 +5,10 @@
   "author": "Daniel Wirtz <dcode+protobufjs@dcode.io>",
   "repository": {
     "type": "git",
-    "url": "https://github.com/dcodeIO/protobuf.js.git"
+    "url": "https://github.com/protobufjs/protobuf.js.git"
+  },
+  "engines": {
+    "node": ">=12.0.0"
   },
   "license": "BSD-3-Clause",
   "main": "index.js",
@@ -20,9 +23,9 @@
   "dependencies": {
     "chalk": "^4.0.0",
     "escodegen": "^1.13.0",
-    "espree": "^7.1.0",
+    "espree": "^9.0.0",
     "estraverse": "^5.1.0",
-    "glob": "^7.2.1",
+    "glob": "^8.0.0",
     "jsdoc": "^3.6.3",
     "minimist": "^1.2.0",
     "semver": "^7.1.2",
@@ -30,6 +33,6 @@
     "uglify-js": "^3.7.7"
   },
   "devDependencies": {
-    "protobufjs": "file://.."
+    "protobufjs": "file:.."
   }
 }

@@ -246,10 +246,14 @@ $root.Test1 = (function() {
      * @function getTypeUrl
      * @memberof Test1
      * @static
+     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
      * @returns {string} The default type url
      */
-    Test1.getTypeUrl = function getTypeUrl() {
-        return "type.googleapis.com/Test1";
+    Test1.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+        if (typeUrlPrefix === undefined) {
+            typeUrlPrefix = "type.googleapis.com";
+        }
+        return typeUrlPrefix + "/Test1";
     };
 
     return Test1;
@@ -417,10 +421,14 @@ $root.Test2 = (function() {
      * @function getTypeUrl
      * @memberof Test2
      * @static
+     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
      * @returns {string} The default type url
      */
-    Test2.getTypeUrl = function getTypeUrl() {
-        return "type.googleapis.com/Test2";
+    Test2.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+        if (typeUrlPrefix === undefined) {
+            typeUrlPrefix = "type.googleapis.com";
+        }
+        return typeUrlPrefix + "/Test2";
     };
 
     return Test2;
@@ -434,6 +442,7 @@ $root.Test2 = (function() {
  * @property {number} TWO=2 TWO value
  * @property {number} THREE=3 Preferred value with a comment.
  * @property {number} FOUR=4 Other value with a comment.
+ * @property {number} FIVE=5 Leading comment for value with both types of comments after field with trailing comment.
  */
 $root.Test3 = (function() {
     var valuesById = {}, values = Object.create(valuesById);
@@ -441,6 +450,7 @@ $root.Test3 = (function() {
     values[valuesById[2] = "TWO"] = 2;
     values[valuesById[3] = "THREE"] = 3;
     values[valuesById[4] = "FOUR"] = 4;
+    values[valuesById[5] = "FIVE"] = 5;
     return values;
 })();
 

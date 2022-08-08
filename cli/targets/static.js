@@ -597,11 +597,17 @@ function buildType(ref, type) {
             "@function getTypeUrl",
             "@memberof " + exportName(type),
             "@static",
+            "@param {string} [typeUrlPrefix] your custom typeUrlPrefix(default \"type.googleapis.com\")",
             "@returns {string} The default type url"
         ]);
-        push(escapeName(type.name) + ".getTypeUrl = function getTypeUrl() {");
+        push(escapeName(type.name) + ".getTypeUrl = function getTypeUrl(typeUrlPrefix) {");
         ++indent;
-            push("return \"type.googleapis.com/" + exportName(type) + "\";");
+            push("if (typeUrlPrefix === undefined) {");
+            ++indent;
+                push("typeUrlPrefix = \"type.googleapis.com\";");
+            --indent;
+            push("}");
+            push("return typeUrlPrefix + \"/" + exportName(type) + "\";");
         --indent;
         push("};");
     }
