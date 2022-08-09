@@ -312,9 +312,9 @@ Type.prototype.resolveAll = function resolveAll() {
  * @override
  */
 Type.prototype.get = function get(name) {
-    return this.fields[name]
-        || this.oneofs && this.oneofs[name]
-        || this.nested && this.nested[name]
+    return util.getProp(this.fields, name)
+        || util.getProp(this.oneofs, name)
+        || util.getProp(this.nested, name)
         || null;
 };
 

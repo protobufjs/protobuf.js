@@ -79,6 +79,16 @@ util.safeProp = function safeProp(prop) {
 };
 
 /**
+ * Returns the value of a property found directly in a given object.
+ * @param {Object} object Source object
+ * @param {string} prop Property name
+ * @returns {*} Value or `undefined` if not set
+ */
+util.getProp = function get(object, prop) {
+    return object && Object.prototype.hasOwnProperty.call(object, prop) ? object[prop] : undefined;
+};
+
+/**
  * Converts the first character of a string to upper case.
  * @param {string} str String to convert
  * @returns {string} Converted string

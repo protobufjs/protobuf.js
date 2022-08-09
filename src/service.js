@@ -98,7 +98,7 @@ function clearCache(service) {
  * @override
  */
 Service.prototype.get = function get(name) {
-    return this.methods[name]
+    return util.getProp(this.methods, name)
         || Namespace.prototype.get.call(this, name);
 };
 
