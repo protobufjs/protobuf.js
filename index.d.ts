@@ -2148,6 +2148,14 @@ export namespace util {
     function safeProp(prop: string): string;
 
     /**
+     * Returns the value of a property found directly in a given object.
+     * @param object Source object
+     * @param prop Property name
+     * @returns Value or `undefined` if not set
+     */
+    function getProp(object: object, prop: string): any;
+
+    /**
      * Converts the first character of a string to upper case.
      * @param str String to convert
      * @returns Converted string
