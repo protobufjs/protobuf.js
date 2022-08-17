@@ -18,6 +18,7 @@ message Test {\
   string value = 1 [(my_options) = { a: \"foo\" b: \"bar\" }];\
   string value2 = 2 [(my_options) = { a: \"foo\" b { c: \"bar\" } }];\
   string value3 = 3 [(my_options) = { a: \"foo\", b: \"bar\" }];\
+  string value4 = 4 [(my_options) = { a: \"foo\"; b: \"bar\" }];\
 }\
 enum TestEnum {\
   TEST_ITEM = 0 [(my_value_option) = { a: \"foo\", b: \"bar\" }];\
