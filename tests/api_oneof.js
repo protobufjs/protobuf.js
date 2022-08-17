@@ -8,6 +8,9 @@ var def = {
 };
 
 var proto = "syntax = \"proto3\";\
+import \"google/protobuf/descriptor.proto\";\
+extend google.protobuf.FileOptions { optional int32 ecs_component_id = 50000;}\
+option (ecs_component_id) = 1020;\
 message Test {\
     oneof kind {\
         uint32 a = 1;\

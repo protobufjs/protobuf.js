@@ -6,7 +6,8 @@ var ReflectionObject = require("./object");
 ((Namespace.prototype = Object.create(ReflectionObject.prototype)).constructor = Namespace).className = "Namespace";
 
 var Field    = require("./field"),
-    util     = require("./util");
+    util     = require("./util"),
+    OneOf    = require("./oneof");
 
 var Type,    // cyclic
     Service,
@@ -217,7 +218,7 @@ Namespace.prototype.getEnum = function getEnum(name) {
  */
 Namespace.prototype.add = function add(object) {
 
-    if (!(object instanceof Field && object.extend !== undefined || object instanceof Type || object instanceof Enum || object instanceof Service || object instanceof Namespace))
+    if (!(object instanceof Field && object.extend !== undefined || object instanceof Type  || object instanceof OneOf || object instanceof Enum || object instanceof Service || object instanceof Namespace))
         throw TypeError("object must be a valid nested object");
 
     if (!this.nested)
