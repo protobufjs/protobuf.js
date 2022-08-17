@@ -48,4 +48,7 @@ enum Test3 {
     THREE = 3; /// Value with a comment.
 
     FOUR = 4; /// Other value with a comment.
+
+    /// Leading comment for value with both types of comments after field with trailing comment.
+    FIVE = 5; /// Trailing comment for value with both types of comments after field with trailing comment.
 }
