@@ -182,9 +182,22 @@ message TestGroup {
   optional group OptionalGroup = 3 {
     required string id = 1;
   }
-  optional string id = 4;
-  required Simple2 required_simple = 5;
-  optional Simple2 optional_simple = 6;
+  optional group MessageInGroup = 4 {
+    message NestedMessage {
+      optional string id = 1;
+    }
+    required NestedMessage id = 1;
+  }
+  optional group EnumInGroup = 5 {
+    enum NestedEnum {
+      first = 0;
+      second = 1;
+    }
+    required NestedEnum id = 1;
+  }
+  optional string id = 6;
+  required Simple2 required_simple = 7;
+  optional Simple2 optional_simple = 8;
 }
 
 message TestGroup1 {
