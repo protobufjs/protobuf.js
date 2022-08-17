@@ -80,5 +80,12 @@ tape.test("reflected enums", function(test) {
       b: 0
     });
 
+    enm.add('e', 4, undefined, {'(test_option)': 'test_value'});
+    test.same( enm.valuesOptions, {
+        'e': {
+            '(test_option)': 'test_value'
+        }
+    });
+
     test.end();
 });
