@@ -1,5 +1,5 @@
 "use strict";
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 var path = require("path");
 var tape = require("tape");
 var protobuf = require("../index");
@@ -7,7 +7,7 @@ var protobuf = require("../index");
 require("../ext/descriptor");
 tape.test("extensions", function (test) {
     // load document with extended field imported multiple times
-    var root = protobuf.loadSync(path.resolve(__dirname, "data/test-import-extend/main.proto"));
+    var root = protobuf.loadSync(path.resolve(__dirname, "data/test.proto"));
     root.resolveAll();
     // convert to Descriptor Set
     var decodedDescriptorSet = root.toDescriptor("proto3");

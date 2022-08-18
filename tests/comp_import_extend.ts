@@ -17,9 +17,7 @@ interface Descriptor {
 
 tape.test("extensions", function (test) {
   // load document with extended field imported multiple times
-  const root = protobuf.loadSync(
-    path.resolve(__dirname, "data/test-import-extend/main.proto")
-  );
+  const root = protobuf.loadSync(path.resolve(__dirname, "data/test.proto"));
   root.resolveAll();
 
   // convert to Descriptor Set

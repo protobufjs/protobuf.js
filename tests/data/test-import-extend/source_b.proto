@@ -1,5 +1,0 @@
-syntax = "proto3";
-
-package source.b;
-
-import "validation.proto";
