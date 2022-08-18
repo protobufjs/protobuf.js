@@ -1,0 +1,6 @@
+syntax = "proto3";
+
+package test.import.extend;
+
+import "source_a.proto";
+import "source_b.proto";
