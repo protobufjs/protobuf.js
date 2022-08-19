@@ -8,6 +8,20 @@ var converter = exports;
 var Enum = require("./enum"),
     util = require("./util");
 
+var WRAPPER_TYPES = [
+  'BytesValue',
+  'BoolValue',
+  'UInt32Value',
+  'Int32Value',
+  'UInt64Value',
+  'Int64Value',
+  'FloatValue',
+  'DoubleValue',
+  'StringValue'
+]
+
+var TIMESTAMP_TYPE = 'Timestamp'
+
 /**
  * Generates a partial value fromObject conveter.
  * @param {Codegen} gen Codegen instance
@@ -32,6 +46,50 @@ function genValuePartial_fromObject(gen, field, fieldIndex, prop) {
                     ("break");
             } gen
             ("}");
+        } else if (WRAPPER_TYPES.indexOf(field.resolvedType.name) !== -1) {
+            switch (field.resolvedType.name) {
+                case "BoolValue": gen
+                    ("m%s={value: Boolean(d%s)}", prop, prop);
+                    break;
+                case "StringValue": gen
+                    ("m%s={value: String(d%s)}", prop, prop);
+                    break;
+                case "Int32Value": gen
+                    ("m%s={value: d%s|0}", prop, prop);
+                    break;
+                case "UInt32Value": gen
+                    ("m%s={value: d%s|>>>0}", prop, prop);
+                    break;
+                case "UInt64Value":
+                    isUnsigned = true;
+                case "Int64Value": gen
+                    ("if(util.Long)")
+                    ("(m%s={value: util.Long.fromValue(d%s)).unsigned=%j}", prop, prop, isUnsigned)
+                    ("else if(typeof d%s===\"string\")", prop)
+                    ("m%s={value: parseInt(d%s,10)}", prop, prop)
+                    ("else if(typeof d%s===\"number\")", prop)
+                    ("m%s={value: d%s}", prop, prop)
+                    ("else if(typeof d%s===\"object\")", prop)
+                    ("m%s={value: new util.LongBits(d%s.low>>>0,d%s.high>>>0).toNumber(%s)}", prop, prop, prop, isUnsigned ? "true" : "");
+                    break;
+                case "DoubleValue":
+                case "FloatValue": gen
+                    ("m%s={value: Number(d%s)}", prop, prop);
+                    break;
+                case "BytesValue": gen
+                    ("if(typeof d%s===\"string\")", prop)
+                    ("util.base64.decode(d%s,m%s={value: util.newBuffer(util.base64.length(d%s))},0)", prop, prop, prop)
+                    ("else if(d%s.length)", prop)
+                    ("m%s={value: d%s}", prop, prop);
+                    break;
+            }
+        } else if (field.resolvedType.name === TIMESTAMP_TYPE) {
+            gen
+                ("if(d%s===null)", prop)
+                ("m%s={}", prop)
+                ("else")
+                ("m%s={seconds: Math.floor(d%s.getTime() / 1000),", prop, prop)
+                ("nanos: d%s.getMilliseconds() * 1000000}", prop);
         } else gen
             ("if(typeof d%s!==\"object\")", prop)
                 ("throw TypeError(%j)", field.fullName + ": object expected")
@@ -157,6 +215,13 @@ function genValuePartial_toObject(gen, field, fieldIndex, prop) {
     if (field.resolvedType) {
         if (field.resolvedType instanceof Enum) gen
             ("d%s=o.enums===String?types[%i].values[m%s]:m%s", prop, fieldIndex, prop, prop);
+        else if (WRAPPER_TYPES.indexOf(field.resolvedType.name) !== -1) {
+          gen
+            ("d%s=m%s.value", prop, prop);
+        } else if (field.resolvedType.name === TIMESTAMP_TYPE) {
+          gen
+            ("d%s=new Date((m%s.seconds * 1000) + (m%s.nanos / 1000000))", prop, prop, prop);
+        }
         else gen
             ("d%s=types[%i].toObject(m%s,o)", prop, fieldIndex, prop);
     } else {
