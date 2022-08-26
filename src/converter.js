@@ -23,8 +23,14 @@ function genValuePartial_fromObject(gen, field, fieldIndex, prop) {
         if (field.resolvedType instanceof Enum) { gen
             ("switch(d%s){", prop);
             for (var values = field.resolvedType.values, keys = Object.keys(values), i = 0; i < keys.length; ++i) {
-                if (field.repeated && values[keys[i]] === field.typeDefault) gen
-                ("default:");
+                // enum unknown values passthrough
+                if (values[keys[i]] === field.typeDefault) { gen
+                    ("default:")
+                        ("if(typeof(d%s)===\"number\"){m%s=d%s;break}", prop, prop, prop);
+                    if (!field.repeated) gen // fallback to default value only for
+                                             // arrays, to avoid leaving holes.
+                        ("break");           // for non-repeated fields, just ignore
+                }
                 gen
                 ("case%j:", keys[i])
                 ("case %i:", values[keys[i]])
@@ -156,7 +162,7 @@ function genValuePartial_toObject(gen, field, fieldIndex, prop) {
     /* eslint-disable no-unexpected-multiline, block-scoped-var, no-redeclare */
     if (field.resolvedType) {
         if (field.resolvedType instanceof Enum) gen
-            ("d%s=o.enums===String?types[%i].values[m%s]:m%s", prop, fieldIndex, prop, prop);
+            ("d%s=o.enums===String?(types[%i].values[m%s]===undefined?m%s:types[%i].values[m%s]):m%s", prop, fieldIndex, prop, prop, fieldIndex, prop, prop);
         else gen
             ("d%s=types[%i].toObject(m%s,o)", prop, fieldIndex, prop);
     } else {
