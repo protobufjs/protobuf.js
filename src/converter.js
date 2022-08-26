@@ -29,7 +29,7 @@ function genValuePartial_fromObject(gen, field, fieldIndex, prop) {
                         ("if(typeof(d%s)===\"number\"){m%s=d%s;break}", prop, prop, prop);
                     if (!field.repeated) gen // fallback to default value only for
                                              // arrays, to avoid leaving holes.
-                        ("break")            // for non-repeated fields, just ignore
+                        ("break");           // for non-repeated fields, just ignore
                 }
                 gen
                 ("case%j:", keys[i])
