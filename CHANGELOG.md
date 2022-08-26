@@ -1,5 +1,22 @@
 # Changelog
 
+## [7.1.0](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v7.0.0...protobufjs-v7.1.0) (2022-08-26)
+
+
+### Features
+
+* accept unknown enum values in fromObject ([#1793](https://github.com/protobufjs/protobuf.js/issues/1793)) ([ef24ae4](https://github.com/protobufjs/protobuf.js/commit/ef24ae4e93cf8635ff38398b37f3597e5d478330))
+* valuesOptions for enums ([#1358](https://github.com/protobufjs/protobuf.js/issues/1358)) ([bb6b1d4](https://github.com/protobufjs/protobuf.js/commit/bb6b1d4942d924bcb4ee3ad15f4823f2d9c1ab22))
+
+
+### Bug Fixes
+
+* **deps:** update dependency glob to v8 ([#1750](https://github.com/protobufjs/protobuf.js/issues/1750)) ([8303a64](https://github.com/protobufjs/protobuf.js/commit/8303a648bc12dcea5aa8e7efa042de39011857f9))
+* extensions broke oneof ([#1789](https://github.com/protobufjs/protobuf.js/issues/1789)) ([d7f501c](https://github.com/protobufjs/protobuf.js/commit/d7f501c49d523cda423a3ab8bcaeb59a0216b350))
+* remove unused `@types/long` ([#1785](https://github.com/protobufjs/protobuf.js/issues/1785)) ([0f4af83](https://github.com/protobufjs/protobuf.js/commit/0f4af83e4ed3cef1ec035c2833e0b06cab0bd87f))
+* support for nested messages and enums within group blocks ([#1790](https://github.com/protobufjs/protobuf.js/issues/1790)) ([f36d4e4](https://github.com/protobufjs/protobuf.js/commit/f36d4e4a2df809b47ff85f87aba319b86be90878))
+* **types:** update type deps ([#1776](https://github.com/protobufjs/protobuf.js/issues/1776)) ([d87978b](https://github.com/protobufjs/protobuf.js/commit/d87978b8eb2a176676c58379a89206b94a6d926a))
+
 ## [7.0.0](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v6.0.0...protobufjs-v7.0.0) (2022-07-08)
 
 
