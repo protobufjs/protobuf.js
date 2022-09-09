@@ -171,6 +171,7 @@ exports.main = function(args, callback) {
                 });
             }
 
+            output.push("import Long = require(\"long\");");
             output = output.join("\n") + "\n" + out.join("");
 
             try {
