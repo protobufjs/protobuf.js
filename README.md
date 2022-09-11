@@ -65,16 +65,16 @@ $> npm install protobufjs-cli [--save --save-prefix=~]
 Development:
 
 ```
-<script src="//cdn.rawgit.com/dcodeIO/protobuf.js/6.X.X/dist/protobuf.js"></script>
+<script src="//cdn.jsdelivr.net/npm/protobufjs@7.X.X/dist/protobuf.js"></script>
 ```
 
 Production:
 
 ```
-<script src="//cdn.rawgit.com/dcodeIO/protobuf.js/6.X.X/dist/protobuf.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/protobufjs@7.X.X/dist/protobuf.min.js"></script>
 ```
 
-**Remember** to replace the version tag with the exact [release](https://github.com/dcodeIO/protobuf.js/tags) your project depends upon.
+**Remember** to replace the version tag with the exact [release](https://github.com/protobufjs/protobuf.js/tags) your project depends upon.
 
 The library supports CommonJS and AMD loaders and also exports globally as `protobuf`.
 
@@ -94,9 +94,11 @@ Where bundle size is a factor, there are additional stripped-down versions of th
   var protobuf = require("protobufjs/minimal");
   ```
 
-[dist-full]: https://github.com/dcodeIO/protobuf.js/tree/master/dist
-[dist-light]: https://github.com/dcodeIO/protobuf.js/tree/master/dist/light
-[dist-minimal]: https://github.com/dcodeIO/protobuf.js/tree/master/dist/minimal
+| Distribution | Location
+|------------|-----------------------------------
+| Full | <https://cdn.jsdelivr.net/npm/protobufjs/dist/>
+| Light | <https://cdn.jsdelivr.net/npm/protobufjs/dist/light/>
+| Minimal | <https://cdn.jsdelivr.net/npm/protobufjs/dist/minimal/>
 
 Usage
 -----
