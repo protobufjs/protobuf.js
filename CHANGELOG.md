@@ -1,5 +1,12 @@
 # Changelog
 
+## [7.1.2](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v7.1.1...protobufjs-v7.1.2) (2022-09-22)
+
+
+### Bug Fixes
+
+* **types:** nested object can be a oneof ([#1812](https://github.com/protobufjs/protobuf.js/issues/1812)) ([119d90a](https://github.com/protobufjs/protobuf.js/commit/119d90aa1ce14d7bff20bb1dcc1ddc4544a80c23))
+
 ## [7.1.1](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v7.1.0...protobufjs-v7.1.1) (2022-09-09)
 
 
