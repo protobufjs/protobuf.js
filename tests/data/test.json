@@ -412,18 +412,26 @@
                   "type": "OptionalGroup",
                   "id": 3
                 },
+                "messageInGroup": {
+                  "type": "MessageInGroup",
+                  "id": 4
+                },
+                "enumInGroup": {
+                  "type": "EnumInGroup",
+                  "id": 5
+                },
                 "id": {
                   "type": "string",
-                  "id": 4
+                  "id": 6
                 },
                 "requiredSimple": {
                   "rule": "required",
                   "type": "Simple2",
-                  "id": 5
+                  "id": 7
                 },
                 "optionalSimple": {
                   "type": "Simple2",
-                  "id": 6
+                  "id": 8
                 }
               },
               "nested": {
@@ -461,6 +469,45 @@
                       "rule": "required",
                       "type": "string",
                       "id": 1
+                    }
+                  },
+                  "group": true
+                },
+                "MessageInGroup": {
+                  "fields": {
+                    "id": {
+                      "rule": "required",
+                      "type": "NetedMessage",
+                      "id": 1
+                    }
+                  },
+                  "nested": {
+                    "NetedMessage": {
+                      "fields": {
+                        "id": {
+                          "rule": "optional",
+                          "type": "string",
+                          "id": 1
+                        }
+                      }
+                    }
+                  },
+                  "group": true
+                },
+                "EnumInGroup": {
+                  "fields": {
+                    "id": {
+                      "rule": "required",
+                      "type": "NestedEnum",
+                      "id": 1
+                    }
+                  },
+                  "nested": {
+                    "NestedEnum": {
+                      "values": {
+                        "first": 0,
+                        "second": 1
+                      }
                     }
                   },
                   "group": true

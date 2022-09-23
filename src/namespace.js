@@ -6,7 +6,8 @@ var ReflectionObject = require("./object");
 ((Namespace.prototype = Object.create(ReflectionObject.prototype)).constructor = Namespace).className = "Namespace";
 
 var Field    = require("./field"),
-    util     = require("./util");
+    util     = require("./util"),
+    OneOf    = require("./oneof");
 
 var Type,    // cyclic
     Service,
@@ -142,9 +143,8 @@ Object.defineProperty(Namespace.prototype, "nestedArray", {
 /**
  * Any nested object descriptor.
  * @typedef AnyNestedObject
- * @type {IEnum|IType|IService|AnyExtensionField|INamespace}
+ * @type {IEnum|IType|IService|AnyExtensionField|INamespace|IOneOf}
  */
-// ^ BEWARE: VSCode hangs forever when using more than 5 types (that's why AnyExtensionField exists in the first place)
 
 /**
  * Converts this namespace to a namespace descriptor.
@@ -217,7 +217,7 @@ Namespace.prototype.getEnum = function getEnum(name) {
  */
 Namespace.prototype.add = function add(object) {
 
-    if (!(object instanceof Field && object.extend !== undefined || object instanceof Type || object instanceof Enum || object instanceof Service || object instanceof Namespace))
+    if (!(object instanceof Field && object.extend !== undefined || object instanceof Type  || object instanceof OneOf || object instanceof Enum || object instanceof Service || object instanceof Namespace))
         throw TypeError("object must be a valid nested object");
 
     if (!this.nested)

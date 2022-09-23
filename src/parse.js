@@ -443,6 +443,14 @@ function parse(source, root, options) {
                     }
                     break;
 
+                case "message":
+                    parseType(type, token);
+                    break;
+
+                case "enum":
+                    parseEnum(type, token);
+                    break;
+
                 /* istanbul ignore next */
                 default:
                     throw illegal(token); // there are no groups with proto3 semantics
@@ -543,7 +551,14 @@ function parse(source, root, options) {
 
         skip("=");
         var value = parseId(next(), true),
-            dummy = {};
+            dummy = {
+                options: undefined
+            };
+        dummy.setOption = function(name, value) {
+            if (this.options === undefined)
+                this.options = {};
+            this.options[name] = value;
+        };
         ifBlock(dummy, function parseEnumValue_block(token) {
 
             /* istanbul ignore else */
@@ -556,7 +571,7 @@ function parse(source, root, options) {
         }, function parseEnumValue_line() {
             parseInlineOptions(dummy); // skip
         });
-        parent.add(token, value, dummy.comment);
+        parent.add(token, value, dummy.comment, dummy.options);
     }
 
     function parseOption(parent, token) {
