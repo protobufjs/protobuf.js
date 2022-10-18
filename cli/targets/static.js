@@ -356,7 +356,7 @@ function toJsType(field) {
 
 function handleOptionalFields(jsType, field) {
 
-    if (field.optional && !field.map && !field.repeated && (field.resolvedType instanceof Type || config["null-defaults"]) || field.partOf)
+    if (field.optional && !field.map && !field.repeated && field.resolvedType instanceof Type || field.partOf)
         return jsType + "|null|undefined";
     else
         return jsType
@@ -410,8 +410,16 @@ function buildType(ref, type) {
         if (config.comments) {
             push("");
             var jsType = toJsType(field);
-            // No need to check config.tsOptional for member types, this logic has not changed
-            jsType = handleOptionalFields(jsType, field);
+
+            // Hide the fix for PB3 optional fields behind a config flag, it is an API change in generated output
+            if (config.pb3Optional) {
+                jsType = handleOptionalFields(jsType, field);
+            }
+            else {
+                if (field.optional && !field.map && !field.repeated && (field.resolvedType instanceof Type || config["null-defaults"]) || field.partOf)
+                    jsType = jsType + "|null|undefined";
+            }
+
             pushComment([
                 field.comment || type.name + " " + field.name + ".",
                 "@member {" + jsType + "} " + field.name,
