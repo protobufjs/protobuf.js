@@ -374,7 +374,16 @@ function buildType(ref, type) {
             var prop = util.safeProp(field.name); // either .name or ["name"]
             prop = prop.substring(1, prop.charAt(0) === "[" ? prop.length - 1 : prop.length);
             var jsType = toJsType(field);
-            jsType = handleOptionalFields(jsType, field);
+
+            // Hide the fix for PB3 optional fields behind a config flag, it is an API change in generated output
+            if (config.pb3Optional) {
+                jsType = handleOptionalFields(jsType, field);
+            }
+            else {
+                if (field.optional)
+                    jsType = jsType + "|null";
+            }
+
             typeDef.push("@property {" + jsType + "} " + (field.optional ? "[" + prop + "]" : prop) + " " + (field.comment || type.name + " " + field.name));
         });
         push("");
@@ -401,6 +410,7 @@ function buildType(ref, type) {
         if (config.comments) {
             push("");
             var jsType = toJsType(field);
+            // No need to check config.tsOptional for member types, this logic has not changed
             jsType = handleOptionalFields(jsType, field);
             pushComment([
                 field.comment || type.name + " " + field.name + ".",
