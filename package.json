@@ -73,7 +73,7 @@
     "gulp-sourcemaps": "^3.0.0",
     "gulp-uglify": "^3.0.2",
     "jaguarjs-jsdoc": "github:dcodeIO/jaguarjs-jsdoc",
-    "jsdoc": "^3.6.3",
+    "jsdoc": "^4.0.0",
     "minimist": "^1.2.0",
     "nyc": "^15.0.0",
     "reflect-metadata": "^0.1.13",
