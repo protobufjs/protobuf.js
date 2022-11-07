@@ -1,7 +1,5 @@
 /*eslint-disable block-scoped-var, id-length, no-control-regex, no-magic-numbers, no-prototype-builtins, no-redeclare, no-shadow, no-var, sort-vars*/
-"use strict";
-
-var $protobuf = require("../../minimal");
+import * as $protobuf from "../../minimal";
 
 // Common aliases
 const $Reader = $protobuf.Reader, $Writer = $protobuf.Writer, $util = $protobuf.util;
@@ -266,10 +264,14 @@ export const MyRequest = $root.MyRequest = (() => {
      * @function getTypeUrl
      * @memberof MyRequest
      * @static
+     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
      * @returns {string} The default type url
      */
-    MyRequest.getTypeUrl = function getTypeUrl() {
-        return "type.googleapis.com/MyRequest";
+    MyRequest.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+        if (typeUrlPrefix === undefined) {
+            typeUrlPrefix = "type.googleapis.com";
+        }
+        return typeUrlPrefix + "/MyRequest";
     };
 
     return MyRequest;
@@ -464,13 +466,17 @@ export const MyResponse = $root.MyResponse = (() => {
      * @function getTypeUrl
      * @memberof MyResponse
      * @static
+     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
      * @returns {string} The default type url
      */
-    MyResponse.getTypeUrl = function getTypeUrl() {
-        return "type.googleapis.com/MyResponse";
+    MyResponse.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+        if (typeUrlPrefix === undefined) {
+            typeUrlPrefix = "type.googleapis.com";
+        }
+        return typeUrlPrefix + "/MyResponse";
     };
 
     return MyResponse;
 })();
 
-module.exports = $root;
+export { $root as default };

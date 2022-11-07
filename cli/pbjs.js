@@ -41,7 +41,7 @@ exports.main = function main(args, callback) {
             "force-message": "strict-message"
         },
         string: [ "target", "out", "path", "wrap", "dependency", "root", "lint" ],
-        boolean: [ "create", "encode", "decode", "verify", "convert", "delimited", "typeurl", "beautify", "comments", "service", "es6", "sparse", "keep-case", "force-long", "force-number", "force-enum-string", "force-message", "null-defaults" ],
+        boolean: [ "create", "encode", "decode", "verify", "convert", "delimited", "typeurl", "beautify", "comments", "service", "es6", "sparse", "keep-case", "alt-comment", "force-long", "force-number", "force-enum-string", "force-message", "null-defaults" ],
         default: {
             target: "json",
             create: true,
@@ -57,6 +57,7 @@ exports.main = function main(args, callback) {
             es6: null,
             lint: lintDefault,
             "keep-case": false,
+            "alt-comment": false,
             "force-long": false,
             "force-number": false,
             "force-enum-string": false,
@@ -124,6 +125,7 @@ exports.main = function main(args, callback) {
                 chalk.bold.gray("  Proto sources only:"),
                 "",
                 "  --keep-case      Keeps field casing instead of converting to camel case.",
+                "  --alt-comment    Turns on an alternate comment parsing mode that preserves more comments.",
                 "",
                 chalk.bold.gray("  Static targets only:"),
                 "",
@@ -204,7 +206,8 @@ exports.main = function main(args, callback) {
     }
 
     var parseOptions = {
-        "keepCase": argv["keep-case"] || false
+        "keepCase": argv["keep-case"] || false,
+        "alternateCommentMode": argv["alt-comment"] || false,
     };
 
     // Read from stdin

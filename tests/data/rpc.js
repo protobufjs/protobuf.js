@@ -266,10 +266,14 @@ $root.MyRequest = (function() {
      * @function getTypeUrl
      * @memberof MyRequest
      * @static
+     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
      * @returns {string} The default type url
      */
-    MyRequest.getTypeUrl = function getTypeUrl() {
-        return "type.googleapis.com/MyRequest";
+    MyRequest.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+        if (typeUrlPrefix === undefined) {
+            typeUrlPrefix = "type.googleapis.com";
+        }
+        return typeUrlPrefix + "/MyRequest";
     };
 
     return MyRequest;
@@ -464,10 +468,14 @@ $root.MyResponse = (function() {
      * @function getTypeUrl
      * @memberof MyResponse
      * @static
+     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
      * @returns {string} The default type url
      */
-    MyResponse.getTypeUrl = function getTypeUrl() {
-        return "type.googleapis.com/MyResponse";
+    MyResponse.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+        if (typeUrlPrefix === undefined) {
+            typeUrlPrefix = "type.googleapis.com";
+        }
+        return typeUrlPrefix + "/MyResponse";
     };
 
     return MyResponse;

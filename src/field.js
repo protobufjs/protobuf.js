@@ -270,6 +270,9 @@ Field.prototype.resolve = function resolve() {
             this.typeDefault = null;
         else // instanceof Enum
             this.typeDefault = this.resolvedType.values[Object.keys(this.resolvedType.values)[0]]; // first defined
+    } else if (this.options && this.options.proto3_optional) {
+        // proto3 scalar value marked optional; should default to null
+        this.typeDefault = null;
     }
 
     // use explicitly set default value if present

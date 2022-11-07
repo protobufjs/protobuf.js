@@ -22,5 +22,9 @@ tape.test("proto3 optional", function(test) {
     test.equal(Message.oneofs._optionalInt32.name, '_optionalInt32');
     test.deepEqual(Message.oneofs._optionalInt32.oneof, ['optionalInt32']);
 
+    var m = Message.create({});
+    test.strictEqual(m.regularInt32, 0);
+    test.strictEqual(m.optionalInt32, null);
+
     test.end();
 });

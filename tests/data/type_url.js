@@ -203,10 +203,14 @@ $root.TypeUrlTest = (function() {
      * @function getTypeUrl
      * @memberof TypeUrlTest
      * @static
+     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
      * @returns {string} The default type url
      */
-    TypeUrlTest.getTypeUrl = function getTypeUrl() {
-        return "type.googleapis.com/TypeUrlTest";
+    TypeUrlTest.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+        if (typeUrlPrefix === undefined) {
+            typeUrlPrefix = "type.googleapis.com";
+        }
+        return typeUrlPrefix + "/TypeUrlTest";
     };
 
     TypeUrlTest.Nested = (function() {
@@ -398,10 +402,14 @@ $root.TypeUrlTest = (function() {
          * @function getTypeUrl
          * @memberof TypeUrlTest.Nested
          * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
          * @returns {string} The default type url
          */
-        Nested.getTypeUrl = function getTypeUrl() {
-            return "type.googleapis.com/TypeUrlTest.Nested";
+        Nested.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/TypeUrlTest.Nested";
         };
 
         return Nested;

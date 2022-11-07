@@ -189,10 +189,14 @@ $root.jspb = (function() {
              * @function getTypeUrl
              * @memberof jspb.test.Empty
              * @static
+             * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
              * @returns {string} The default type url
              */
-            Empty.getTypeUrl = function getTypeUrl() {
-                return "type.googleapis.com/jspb.test.Empty";
+            Empty.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                if (typeUrlPrefix === undefined) {
+                    typeUrlPrefix = "type.googleapis.com";
+                }
+                return typeUrlPrefix + "/jspb.test.Empty";
             };
 
             return Empty;
@@ -414,10 +418,14 @@ $root.jspb = (function() {
              * @function getTypeUrl
              * @memberof jspb.test.EnumContainer
              * @static
+             * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
              * @returns {string} The default type url
              */
-            EnumContainer.getTypeUrl = function getTypeUrl() {
-                return "type.googleapis.com/jspb.test.EnumContainer";
+            EnumContainer.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                if (typeUrlPrefix === undefined) {
+                    typeUrlPrefix = "type.googleapis.com";
+                }
+                return typeUrlPrefix + "/jspb.test.EnumContainer";
             };
 
             return EnumContainer;
@@ -674,10 +682,14 @@ $root.jspb = (function() {
              * @function getTypeUrl
              * @memberof jspb.test.Simple1
              * @static
+             * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
              * @returns {string} The default type url
              */
-            Simple1.getTypeUrl = function getTypeUrl() {
-                return "type.googleapis.com/jspb.test.Simple1";
+            Simple1.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                if (typeUrlPrefix === undefined) {
+                    typeUrlPrefix = "type.googleapis.com";
+                }
+                return typeUrlPrefix + "/jspb.test.Simple1";
             };
 
             return Simple1;
@@ -911,10 +923,14 @@ $root.jspb = (function() {
              * @function getTypeUrl
              * @memberof jspb.test.Simple2
              * @static
+             * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
              * @returns {string} The default type url
              */
-            Simple2.getTypeUrl = function getTypeUrl() {
-                return "type.googleapis.com/jspb.test.Simple2";
+            Simple2.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                if (typeUrlPrefix === undefined) {
+                    typeUrlPrefix = "type.googleapis.com";
+                }
+                return typeUrlPrefix + "/jspb.test.Simple2";
             };
 
             return Simple2;
@@ -1176,10 +1192,14 @@ $root.jspb = (function() {
              * @function getTypeUrl
              * @memberof jspb.test.SpecialCases
              * @static
+             * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
              * @returns {string} The default type url
              */
-            SpecialCases.getTypeUrl = function getTypeUrl() {
-                return "type.googleapis.com/jspb.test.SpecialCases";
+            SpecialCases.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                if (typeUrlPrefix === undefined) {
+                    typeUrlPrefix = "type.googleapis.com";
+                }
+                return typeUrlPrefix + "/jspb.test.SpecialCases";
             };
 
             return SpecialCases;
@@ -1507,10 +1527,14 @@ $root.jspb = (function() {
              * @function getTypeUrl
              * @memberof jspb.test.OptionalFields
              * @static
+             * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
              * @returns {string} The default type url
              */
-            OptionalFields.getTypeUrl = function getTypeUrl() {
-                return "type.googleapis.com/jspb.test.OptionalFields";
+            OptionalFields.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                if (typeUrlPrefix === undefined) {
+                    typeUrlPrefix = "type.googleapis.com";
+                }
+                return typeUrlPrefix + "/jspb.test.OptionalFields";
             };
 
             OptionalFields.Nested = (function() {
@@ -1702,10 +1726,14 @@ $root.jspb = (function() {
                  * @function getTypeUrl
                  * @memberof jspb.test.OptionalFields.Nested
                  * @static
+                 * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
                  * @returns {string} The default type url
                  */
-                Nested.getTypeUrl = function getTypeUrl() {
-                    return "type.googleapis.com/jspb.test.OptionalFields.Nested";
+                Nested.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                    if (typeUrlPrefix === undefined) {
+                        typeUrlPrefix = "type.googleapis.com";
+                    }
+                    return typeUrlPrefix + "/jspb.test.OptionalFields.Nested";
                 };
 
                 return Nested;
@@ -2134,10 +2162,14 @@ $root.jspb = (function() {
              * @function getTypeUrl
              * @memberof jspb.test.HasExtensions
              * @static
+             * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
              * @returns {string} The default type url
              */
-            HasExtensions.getTypeUrl = function getTypeUrl() {
-                return "type.googleapis.com/jspb.test.HasExtensions";
+            HasExtensions.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                if (typeUrlPrefix === undefined) {
+                    typeUrlPrefix = "type.googleapis.com";
+                }
+                return typeUrlPrefix + "/jspb.test.HasExtensions";
             };
 
             return HasExtensions;
@@ -2465,10 +2497,14 @@ $root.jspb = (function() {
              * @function getTypeUrl
              * @memberof jspb.test.Complex
              * @static
+             * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
              * @returns {string} The default type url
              */
-            Complex.getTypeUrl = function getTypeUrl() {
-                return "type.googleapis.com/jspb.test.Complex";
+            Complex.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                if (typeUrlPrefix === undefined) {
+                    typeUrlPrefix = "type.googleapis.com";
+                }
+                return typeUrlPrefix + "/jspb.test.Complex";
             };
 
             Complex.Nested = (function() {
@@ -2660,10 +2696,14 @@ $root.jspb = (function() {
                  * @function getTypeUrl
                  * @memberof jspb.test.Complex.Nested
                  * @static
+                 * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
                  * @returns {string} The default type url
                  */
-                Nested.getTypeUrl = function getTypeUrl() {
-                    return "type.googleapis.com/jspb.test.Complex.Nested";
+                Nested.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                    if (typeUrlPrefix === undefined) {
+                        typeUrlPrefix = "type.googleapis.com";
+                    }
+                    return typeUrlPrefix + "/jspb.test.Complex.Nested";
                 };
 
                 return Nested;
@@ -2834,10 +2874,14 @@ $root.jspb = (function() {
              * @function getTypeUrl
              * @memberof jspb.test.OuterMessage
              * @static
+             * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
              * @returns {string} The default type url
              */
-            OuterMessage.getTypeUrl = function getTypeUrl() {
-                return "type.googleapis.com/jspb.test.OuterMessage";
+            OuterMessage.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                if (typeUrlPrefix === undefined) {
+                    typeUrlPrefix = "type.googleapis.com";
+                }
+                return typeUrlPrefix + "/jspb.test.OuterMessage";
             };
 
             OuterMessage.Complex = (function() {
@@ -3029,10 +3073,14 @@ $root.jspb = (function() {
                  * @function getTypeUrl
                  * @memberof jspb.test.OuterMessage.Complex
                  * @static
+                 * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
                  * @returns {string} The default type url
                  */
-                Complex.getTypeUrl = function getTypeUrl() {
-                    return "type.googleapis.com/jspb.test.OuterMessage.Complex";
+                Complex.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                    if (typeUrlPrefix === undefined) {
+                        typeUrlPrefix = "type.googleapis.com";
+                    }
+                    return typeUrlPrefix + "/jspb.test.OuterMessage.Complex";
                 };
 
                 return Complex;
@@ -3230,10 +3278,14 @@ $root.jspb = (function() {
              * @function getTypeUrl
              * @memberof jspb.test.IsExtension
              * @static
+             * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
              * @returns {string} The default type url
              */
-            IsExtension.getTypeUrl = function getTypeUrl() {
-                return "type.googleapis.com/jspb.test.IsExtension";
+            IsExtension.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                if (typeUrlPrefix === undefined) {
+                    typeUrlPrefix = "type.googleapis.com";
+                }
+                return typeUrlPrefix + "/jspb.test.IsExtension";
             };
 
             return IsExtension;
@@ -3401,10 +3453,14 @@ $root.jspb = (function() {
              * @function getTypeUrl
              * @memberof jspb.test.IndirectExtension
              * @static
+             * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
              * @returns {string} The default type url
              */
-            IndirectExtension.getTypeUrl = function getTypeUrl() {
-                return "type.googleapis.com/jspb.test.IndirectExtension";
+            IndirectExtension.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                if (typeUrlPrefix === undefined) {
+                    typeUrlPrefix = "type.googleapis.com";
+                }
+                return typeUrlPrefix + "/jspb.test.IndirectExtension";
             };
 
             return IndirectExtension;
@@ -3750,10 +3806,14 @@ $root.jspb = (function() {
              * @function getTypeUrl
              * @memberof jspb.test.DefaultValues
              * @static
+             * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
              * @returns {string} The default type url
              */
-            DefaultValues.getTypeUrl = function getTypeUrl() {
-                return "type.googleapis.com/jspb.test.DefaultValues";
+            DefaultValues.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                if (typeUrlPrefix === undefined) {
+                    typeUrlPrefix = "type.googleapis.com";
+                }
+                return typeUrlPrefix + "/jspb.test.DefaultValues";
             };
 
             /**
@@ -4161,10 +4221,14 @@ $root.jspb = (function() {
              * @function getTypeUrl
              * @memberof jspb.test.FloatingPointFields
              * @static
+             * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
              * @returns {string} The default type url
              */
-            FloatingPointFields.getTypeUrl = function getTypeUrl() {
-                return "type.googleapis.com/jspb.test.FloatingPointFields";
+            FloatingPointFields.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                if (typeUrlPrefix === undefined) {
+                    typeUrlPrefix = "type.googleapis.com";
+                }
+                return typeUrlPrefix + "/jspb.test.FloatingPointFields";
             };
 
             return FloatingPointFields;
@@ -4511,10 +4575,14 @@ $root.jspb = (function() {
              * @function getTypeUrl
              * @memberof jspb.test.TestClone
              * @static
+             * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
              * @returns {string} The default type url
              */
-            TestClone.getTypeUrl = function getTypeUrl() {
-                return "type.googleapis.com/jspb.test.TestClone";
+            TestClone.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                if (typeUrlPrefix === undefined) {
+                    typeUrlPrefix = "type.googleapis.com";
+                }
+                return typeUrlPrefix + "/jspb.test.TestClone";
             };
 
             return TestClone;
@@ -4709,10 +4777,14 @@ $root.jspb = (function() {
              * @function getTypeUrl
              * @memberof jspb.test.CloneExtension
              * @static
+             * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
              * @returns {string} The default type url
              */
-            CloneExtension.getTypeUrl = function getTypeUrl() {
-                return "type.googleapis.com/jspb.test.CloneExtension";
+            CloneExtension.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                if (typeUrlPrefix === undefined) {
+                    typeUrlPrefix = "type.googleapis.com";
+                }
+                return typeUrlPrefix + "/jspb.test.CloneExtension";
             };
 
             return CloneExtension;
@@ -5062,10 +5134,14 @@ $root.jspb = (function() {
              * @function getTypeUrl
              * @memberof jspb.test.TestGroup
              * @static
+             * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
              * @returns {string} The default type url
              */
-            TestGroup.getTypeUrl = function getTypeUrl() {
-                return "type.googleapis.com/jspb.test.TestGroup";
+            TestGroup.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                if (typeUrlPrefix === undefined) {
+                    typeUrlPrefix = "type.googleapis.com";
+                }
+                return typeUrlPrefix + "/jspb.test.TestGroup";
             };
 
             TestGroup.RepeatedGroup = (function() {
@@ -5303,10 +5379,14 @@ $root.jspb = (function() {
                  * @function getTypeUrl
                  * @memberof jspb.test.TestGroup.RepeatedGroup
                  * @static
+                 * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
                  * @returns {string} The default type url
                  */
-                RepeatedGroup.getTypeUrl = function getTypeUrl() {
-                    return "type.googleapis.com/jspb.test.TestGroup.RepeatedGroup";
+                RepeatedGroup.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                    if (typeUrlPrefix === undefined) {
+                        typeUrlPrefix = "type.googleapis.com";
+                    }
+                    return typeUrlPrefix + "/jspb.test.TestGroup.RepeatedGroup";
                 };
 
                 return RepeatedGroup;
@@ -5503,10 +5583,14 @@ $root.jspb = (function() {
                  * @function getTypeUrl
                  * @memberof jspb.test.TestGroup.RequiredGroup
                  * @static
+                 * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
                  * @returns {string} The default type url
                  */
-                RequiredGroup.getTypeUrl = function getTypeUrl() {
-                    return "type.googleapis.com/jspb.test.TestGroup.RequiredGroup";
+                RequiredGroup.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                    if (typeUrlPrefix === undefined) {
+                        typeUrlPrefix = "type.googleapis.com";
+                    }
+                    return typeUrlPrefix + "/jspb.test.TestGroup.RequiredGroup";
                 };
 
                 return RequiredGroup;
@@ -5703,10 +5787,14 @@ $root.jspb = (function() {
                  * @function getTypeUrl
                  * @memberof jspb.test.TestGroup.OptionalGroup
                  * @static
+                 * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
                  * @returns {string} The default type url
                  */
-                OptionalGroup.getTypeUrl = function getTypeUrl() {
-                    return "type.googleapis.com/jspb.test.TestGroup.OptionalGroup";
+                OptionalGroup.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                    if (typeUrlPrefix === undefined) {
+                        typeUrlPrefix = "type.googleapis.com";
+                    }
+                    return typeUrlPrefix + "/jspb.test.TestGroup.OptionalGroup";
                 };
 
                 return OptionalGroup;
@@ -5909,10 +5997,14 @@ $root.jspb = (function() {
              * @function getTypeUrl
              * @memberof jspb.test.TestGroup1
              * @static
+             * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
              * @returns {string} The default type url
              */
-            TestGroup1.getTypeUrl = function getTypeUrl() {
-                return "type.googleapis.com/jspb.test.TestGroup1";
+            TestGroup1.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                if (typeUrlPrefix === undefined) {
+                    typeUrlPrefix = "type.googleapis.com";
+                }
+                return typeUrlPrefix + "/jspb.test.TestGroup1";
             };
 
             return TestGroup1;
@@ -6130,10 +6222,14 @@ $root.jspb = (function() {
              * @function getTypeUrl
              * @memberof jspb.test.TestReservedNames
              * @static
+             * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
              * @returns {string} The default type url
              */
-            TestReservedNames.getTypeUrl = function getTypeUrl() {
-                return "type.googleapis.com/jspb.test.TestReservedNames";
+            TestReservedNames.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                if (typeUrlPrefix === undefined) {
+                    typeUrlPrefix = "type.googleapis.com";
+                }
+                return typeUrlPrefix + "/jspb.test.TestReservedNames";
             };
 
             return TestReservedNames;
@@ -6301,10 +6397,14 @@ $root.jspb = (function() {
              * @function getTypeUrl
              * @memberof jspb.test.TestReservedNamesExtension
              * @static
+             * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
              * @returns {string} The default type url
              */
-            TestReservedNamesExtension.getTypeUrl = function getTypeUrl() {
-                return "type.googleapis.com/jspb.test.TestReservedNamesExtension";
+            TestReservedNamesExtension.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                if (typeUrlPrefix === undefined) {
+                    typeUrlPrefix = "type.googleapis.com";
+                }
+                return typeUrlPrefix + "/jspb.test.TestReservedNamesExtension";
             };
 
             return TestReservedNamesExtension;
@@ -6346,19 +6446,19 @@ $root.jspb = (function() {
 
             /**
              * TestMessageWithOneof pone.
-             * @member {string} pone
+             * @member {string|null|undefined} pone
              * @memberof jspb.test.TestMessageWithOneof
              * @instance
              */
-            TestMessageWithOneof.prototype.pone = "";
+            TestMessageWithOneof.prototype.pone = null;
 
             /**
              * TestMessageWithOneof pthree.
-             * @member {string} pthree
+             * @member {string|null|undefined} pthree
              * @memberof jspb.test.TestMessageWithOneof
              * @instance
              */
-            TestMessageWithOneof.prototype.pthree = "";
+            TestMessageWithOneof.prototype.pthree = null;
 
             /**
              * TestMessageWithOneof rone.
@@ -6370,11 +6470,11 @@ $root.jspb = (function() {
 
             /**
              * TestMessageWithOneof rtwo.
-             * @member {string} rtwo
+             * @member {string|null|undefined} rtwo
              * @memberof jspb.test.TestMessageWithOneof
              * @instance
              */
-            TestMessageWithOneof.prototype.rtwo = "";
+            TestMessageWithOneof.prototype.rtwo = null;
 
             /**
              * TestMessageWithOneof normalField.
@@ -6394,35 +6494,35 @@ $root.jspb = (function() {
 
             /**
              * TestMessageWithOneof aone.
-             * @member {number} aone
+             * @member {number|null|undefined} aone
              * @memberof jspb.test.TestMessageWithOneof
              * @instance
              */
-            TestMessageWithOneof.prototype.aone = 1234;
+            TestMessageWithOneof.prototype.aone = null;
 
             /**
              * TestMessageWithOneof atwo.
-             * @member {number} atwo
+             * @member {number|null|undefined} atwo
              * @memberof jspb.test.TestMessageWithOneof
              * @instance
              */
-            TestMessageWithOneof.prototype.atwo = 0;
+            TestMessageWithOneof.prototype.atwo = null;
 
             /**
              * TestMessageWithOneof bone.
-             * @member {number} bone
+             * @member {number|null|undefined} bone
              * @memberof jspb.test.TestMessageWithOneof
              * @instance
              */
-            TestMessageWithOneof.prototype.bone = 0;
+            TestMessageWithOneof.prototype.bone = null;
 
             /**
              * TestMessageWithOneof btwo.
-             * @member {number} btwo
+             * @member {number|null|undefined} btwo
              * @memberof jspb.test.TestMessageWithOneof
              * @instance
              */
-            TestMessageWithOneof.prototype.btwo = 1234;
+            TestMessageWithOneof.prototype.btwo = null;
 
             // OneOf field names bound to virtual getters and setters
             var $oneOfFields;
@@ -6808,10 +6908,14 @@ $root.jspb = (function() {
              * @function getTypeUrl
              * @memberof jspb.test.TestMessageWithOneof
              * @static
+             * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
              * @returns {string} The default type url
              */
-            TestMessageWithOneof.getTypeUrl = function getTypeUrl() {
-                return "type.googleapis.com/jspb.test.TestMessageWithOneof";
+            TestMessageWithOneof.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                if (typeUrlPrefix === undefined) {
+                    typeUrlPrefix = "type.googleapis.com";
+                }
+                return typeUrlPrefix + "/jspb.test.TestMessageWithOneof";
             };
 
             return TestMessageWithOneof;
@@ -7038,10 +7142,14 @@ $root.jspb = (function() {
              * @function getTypeUrl
              * @memberof jspb.test.TestEndsWithBytes
              * @static
+             * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
              * @returns {string} The default type url
              */
-            TestEndsWithBytes.getTypeUrl = function getTypeUrl() {
-                return "type.googleapis.com/jspb.test.TestEndsWithBytes";
+            TestEndsWithBytes.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                if (typeUrlPrefix === undefined) {
+                    typeUrlPrefix = "type.googleapis.com";
+                }
+                return typeUrlPrefix + "/jspb.test.TestEndsWithBytes";
             };
 
             return TestEndsWithBytes;
@@ -7912,10 +8020,14 @@ $root.jspb = (function() {
              * @function getTypeUrl
              * @memberof jspb.test.TestMapFieldsNoBinary
              * @static
+             * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
              * @returns {string} The default type url
              */
-            TestMapFieldsNoBinary.getTypeUrl = function getTypeUrl() {
-                return "type.googleapis.com/jspb.test.TestMapFieldsNoBinary";
+            TestMapFieldsNoBinary.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                if (typeUrlPrefix === undefined) {
+                    typeUrlPrefix = "type.googleapis.com";
+                }
+                return typeUrlPrefix + "/jspb.test.TestMapFieldsNoBinary";
             };
 
             return TestMapFieldsNoBinary;
@@ -8126,10 +8238,14 @@ $root.jspb = (function() {
              * @function getTypeUrl
              * @memberof jspb.test.MapValueMessageNoBinary
              * @static
+             * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
              * @returns {string} The default type url
              */
-            MapValueMessageNoBinary.getTypeUrl = function getTypeUrl() {
-                return "type.googleapis.com/jspb.test.MapValueMessageNoBinary";
+            MapValueMessageNoBinary.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                if (typeUrlPrefix === undefined) {
+                    typeUrlPrefix = "type.googleapis.com";
+                }
+                return typeUrlPrefix + "/jspb.test.MapValueMessageNoBinary";
             };
 
             return MapValueMessageNoBinary;
@@ -8297,10 +8413,14 @@ $root.jspb = (function() {
              * @function getTypeUrl
              * @memberof jspb.test.Deeply
              * @static
+             * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
              * @returns {string} The default type url
              */
-            Deeply.getTypeUrl = function getTypeUrl() {
-                return "type.googleapis.com/jspb.test.Deeply";
+            Deeply.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                if (typeUrlPrefix === undefined) {
+                    typeUrlPrefix = "type.googleapis.com";
+                }
+                return typeUrlPrefix + "/jspb.test.Deeply";
             };
 
             Deeply.Nested = (function() {
@@ -8465,10 +8585,14 @@ $root.jspb = (function() {
                  * @function getTypeUrl
                  * @memberof jspb.test.Deeply.Nested
                  * @static
+                 * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
                  * @returns {string} The default type url
                  */
-                Nested.getTypeUrl = function getTypeUrl() {
-                    return "type.googleapis.com/jspb.test.Deeply.Nested";
+                Nested.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                    if (typeUrlPrefix === undefined) {
+                        typeUrlPrefix = "type.googleapis.com";
+                    }
+                    return typeUrlPrefix + "/jspb.test.Deeply.Nested";
                 };
 
                 Nested.Message = (function() {
@@ -8660,10 +8784,14 @@ $root.jspb = (function() {
                      * @function getTypeUrl
                      * @memberof jspb.test.Deeply.Nested.Message
                      * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
                      * @returns {string} The default type url
                      */
-                    Message.getTypeUrl = function getTypeUrl() {
-                        return "type.googleapis.com/jspb.test.Deeply.Nested.Message";
+                    Message.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/jspb.test.Deeply.Nested.Message";
                     };
 
                     return Message;
@@ -8909,10 +9037,14 @@ $root.google = (function() {
              * @function getTypeUrl
              * @memberof google.protobuf.FileDescriptorSet
              * @static
+             * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
              * @returns {string} The default type url
              */
-            FileDescriptorSet.getTypeUrl = function getTypeUrl() {
-                return "type.googleapis.com/google.protobuf.FileDescriptorSet";
+            FileDescriptorSet.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                if (typeUrlPrefix === undefined) {
+                    typeUrlPrefix = "type.googleapis.com";
+                }
+                return typeUrlPrefix + "/google.protobuf.FileDescriptorSet";
             };
 
             return FileDescriptorSet;
@@ -9504,10 +9636,14 @@ $root.google = (function() {
              * @function getTypeUrl
              * @memberof google.protobuf.FileDescriptorProto
              * @static
+             * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
              * @returns {string} The default type url
              */
-            FileDescriptorProto.getTypeUrl = function getTypeUrl() {
-                return "type.googleapis.com/google.protobuf.FileDescriptorProto";
+            FileDescriptorProto.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                if (typeUrlPrefix === undefined) {
+                    typeUrlPrefix = "type.googleapis.com";
+                }
+                return typeUrlPrefix + "/google.protobuf.FileDescriptorProto";
             };
 
             return FileDescriptorProto;
@@ -10071,10 +10207,14 @@ $root.google = (function() {
              * @function getTypeUrl
              * @memberof google.protobuf.DescriptorProto
              * @static
+             * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
              * @returns {string} The default type url
              */
-            DescriptorProto.getTypeUrl = function getTypeUrl() {
-                return "type.googleapis.com/google.protobuf.DescriptorProto";
+            DescriptorProto.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                if (typeUrlPrefix === undefined) {
+                    typeUrlPrefix = "type.googleapis.com";
+                }
+                return typeUrlPrefix + "/google.protobuf.DescriptorProto";
             };
 
             DescriptorProto.ExtensionRange = (function() {
@@ -10289,10 +10429,14 @@ $root.google = (function() {
                  * @function getTypeUrl
                  * @memberof google.protobuf.DescriptorProto.ExtensionRange
                  * @static
+                 * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
                  * @returns {string} The default type url
                  */
-                ExtensionRange.getTypeUrl = function getTypeUrl() {
-                    return "type.googleapis.com/google.protobuf.DescriptorProto.ExtensionRange";
+                ExtensionRange.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                    if (typeUrlPrefix === undefined) {
+                        typeUrlPrefix = "type.googleapis.com";
+                    }
+                    return typeUrlPrefix + "/google.protobuf.DescriptorProto.ExtensionRange";
                 };
 
                 return ExtensionRange;
@@ -10510,10 +10654,14 @@ $root.google = (function() {
                  * @function getTypeUrl
                  * @memberof google.protobuf.DescriptorProto.ReservedRange
                  * @static
+                 * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
                  * @returns {string} The default type url
                  */
-                ReservedRange.getTypeUrl = function getTypeUrl() {
-                    return "type.googleapis.com/google.protobuf.DescriptorProto.ReservedRange";
+                ReservedRange.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                    if (typeUrlPrefix === undefined) {
+                        typeUrlPrefix = "type.googleapis.com";
+                    }
+                    return typeUrlPrefix + "/google.protobuf.DescriptorProto.ReservedRange";
                 };
 
                 return ReservedRange;
@@ -11026,10 +11174,14 @@ $root.google = (function() {
              * @function getTypeUrl
              * @memberof google.protobuf.FieldDescriptorProto
              * @static
+             * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
              * @returns {string} The default type url
              */
-            FieldDescriptorProto.getTypeUrl = function getTypeUrl() {
-                return "type.googleapis.com/google.protobuf.FieldDescriptorProto";
+            FieldDescriptorProto.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                if (typeUrlPrefix === undefined) {
+                    typeUrlPrefix = "type.googleapis.com";
+                }
+                return typeUrlPrefix + "/google.protobuf.FieldDescriptorProto";
             };
 
             /**
@@ -11314,10 +11466,14 @@ $root.google = (function() {
              * @function getTypeUrl
              * @memberof google.protobuf.OneofDescriptorProto
              * @static
+             * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
              * @returns {string} The default type url
              */
-            OneofDescriptorProto.getTypeUrl = function getTypeUrl() {
-                return "type.googleapis.com/google.protobuf.OneofDescriptorProto";
+            OneofDescriptorProto.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                if (typeUrlPrefix === undefined) {
+                    typeUrlPrefix = "type.googleapis.com";
+                }
+                return typeUrlPrefix + "/google.protobuf.OneofDescriptorProto";
             };
 
             return OneofDescriptorProto;
@@ -11584,10 +11740,14 @@ $root.google = (function() {
              * @function getTypeUrl
              * @memberof google.protobuf.EnumDescriptorProto
              * @static
+             * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
              * @returns {string} The default type url
              */
-            EnumDescriptorProto.getTypeUrl = function getTypeUrl() {
-                return "type.googleapis.com/google.protobuf.EnumDescriptorProto";
+            EnumDescriptorProto.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                if (typeUrlPrefix === undefined) {
+                    typeUrlPrefix = "type.googleapis.com";
+                }
+                return typeUrlPrefix + "/google.protobuf.EnumDescriptorProto";
             };
 
             return EnumDescriptorProto;
@@ -11832,10 +11992,14 @@ $root.google = (function() {
              * @function getTypeUrl
              * @memberof google.protobuf.EnumValueDescriptorProto
              * @static
+             * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
              * @returns {string} The default type url
              */
-            EnumValueDescriptorProto.getTypeUrl = function getTypeUrl() {
-                return "type.googleapis.com/google.protobuf.EnumValueDescriptorProto";
+            EnumValueDescriptorProto.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                if (typeUrlPrefix === undefined) {
+                    typeUrlPrefix = "type.googleapis.com";
+                }
+                return typeUrlPrefix + "/google.protobuf.EnumValueDescriptorProto";
             };
 
             return EnumValueDescriptorProto;
@@ -12102,10 +12266,14 @@ $root.google = (function() {
              * @function getTypeUrl
              * @memberof google.protobuf.ServiceDescriptorProto
              * @static
+             * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
              * @returns {string} The default type url
              */
-            ServiceDescriptorProto.getTypeUrl = function getTypeUrl() {
-                return "type.googleapis.com/google.protobuf.ServiceDescriptorProto";
+            ServiceDescriptorProto.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                if (typeUrlPrefix === undefined) {
+                    typeUrlPrefix = "type.googleapis.com";
+                }
+                return typeUrlPrefix + "/google.protobuf.ServiceDescriptorProto";
             };
 
             return ServiceDescriptorProto;
@@ -12416,10 +12584,14 @@ $root.google = (function() {
              * @function getTypeUrl
              * @memberof google.protobuf.MethodDescriptorProto
              * @static
+             * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
              * @returns {string} The default type url
              */
-            MethodDescriptorProto.getTypeUrl = function getTypeUrl() {
-                return "type.googleapis.com/google.protobuf.MethodDescriptorProto";
+            MethodDescriptorProto.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                if (typeUrlPrefix === undefined) {
+                    typeUrlPrefix = "type.googleapis.com";
+                }
+                return typeUrlPrefix + "/google.protobuf.MethodDescriptorProto";
             };
 
             return MethodDescriptorProto;
@@ -12963,10 +13135,14 @@ $root.google = (function() {
              * @function getTypeUrl
              * @memberof google.protobuf.FileOptions
              * @static
+             * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
              * @returns {string} The default type url
              */
-            FileOptions.getTypeUrl = function getTypeUrl() {
-                return "type.googleapis.com/google.protobuf.FileOptions";
+            FileOptions.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                if (typeUrlPrefix === undefined) {
+                    typeUrlPrefix = "type.googleapis.com";
+                }
+                return typeUrlPrefix + "/google.protobuf.FileOptions";
             };
 
             /**
@@ -13288,10 +13464,14 @@ $root.google = (function() {
              * @function getTypeUrl
              * @memberof google.protobuf.MessageOptions
              * @static
+             * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
              * @returns {string} The default type url
              */
-            MessageOptions.getTypeUrl = function getTypeUrl() {
-                return "type.googleapis.com/google.protobuf.MessageOptions";
+            MessageOptions.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                if (typeUrlPrefix === undefined) {
+                    typeUrlPrefix = "type.googleapis.com";
+                }
+                return typeUrlPrefix + "/google.protobuf.MessageOptions";
             };
 
             return MessageOptions;
@@ -13677,10 +13857,14 @@ $root.google = (function() {
              * @function getTypeUrl
              * @memberof google.protobuf.FieldOptions
              * @static
+             * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
              * @returns {string} The default type url
              */
-            FieldOptions.getTypeUrl = function getTypeUrl() {
-                return "type.googleapis.com/google.protobuf.FieldOptions";
+            FieldOptions.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                if (typeUrlPrefix === undefined) {
+                    typeUrlPrefix = "type.googleapis.com";
+                }
+                return typeUrlPrefix + "/google.protobuf.FieldOptions";
             };
 
             /**
@@ -13928,10 +14112,14 @@ $root.google = (function() {
              * @function getTypeUrl
              * @memberof google.protobuf.OneofOptions
              * @static
+             * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
              * @returns {string} The default type url
              */
-            OneofOptions.getTypeUrl = function getTypeUrl() {
-                return "type.googleapis.com/google.protobuf.OneofOptions";
+            OneofOptions.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                if (typeUrlPrefix === undefined) {
+                    typeUrlPrefix = "type.googleapis.com";
+                }
+                return typeUrlPrefix + "/google.protobuf.OneofOptions";
             };
 
             return OneofOptions;
@@ -14215,10 +14403,14 @@ $root.google = (function() {
              * @function getTypeUrl
              * @memberof google.protobuf.EnumOptions
              * @static
+             * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
              * @returns {string} The default type url
              */
-            EnumOptions.getTypeUrl = function getTypeUrl() {
-                return "type.googleapis.com/google.protobuf.EnumOptions";
+            EnumOptions.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                if (typeUrlPrefix === undefined) {
+                    typeUrlPrefix = "type.googleapis.com";
+                }
+                return typeUrlPrefix + "/google.protobuf.EnumOptions";
             };
 
             return EnumOptions;
@@ -14457,10 +14649,14 @@ $root.google = (function() {
              * @function getTypeUrl
              * @memberof google.protobuf.EnumValueOptions
              * @static
+             * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
              * @returns {string} The default type url
              */
-            EnumValueOptions.getTypeUrl = function getTypeUrl() {
-                return "type.googleapis.com/google.protobuf.EnumValueOptions";
+            EnumValueOptions.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                if (typeUrlPrefix === undefined) {
+                    typeUrlPrefix = "type.googleapis.com";
+                }
+                return typeUrlPrefix + "/google.protobuf.EnumValueOptions";
             };
 
             return EnumValueOptions;
@@ -14699,10 +14895,14 @@ $root.google = (function() {
              * @function getTypeUrl
              * @memberof google.protobuf.ServiceOptions
              * @static
+             * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
              * @returns {string} The default type url
              */
-            ServiceOptions.getTypeUrl = function getTypeUrl() {
-                return "type.googleapis.com/google.protobuf.ServiceOptions";
+            ServiceOptions.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                if (typeUrlPrefix === undefined) {
+                    typeUrlPrefix = "type.googleapis.com";
+                }
+                return typeUrlPrefix + "/google.protobuf.ServiceOptions";
             };
 
             return ServiceOptions;
@@ -14982,10 +15182,14 @@ $root.google = (function() {
              * @function getTypeUrl
              * @memberof google.protobuf.MethodOptions
              * @static
+             * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
              * @returns {string} The default type url
              */
-            MethodOptions.getTypeUrl = function getTypeUrl() {
-                return "type.googleapis.com/google.protobuf.MethodOptions";
+            MethodOptions.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                if (typeUrlPrefix === undefined) {
+                    typeUrlPrefix = "type.googleapis.com";
+                }
+                return typeUrlPrefix + "/google.protobuf.MethodOptions";
             };
 
             /**
@@ -15388,10 +15592,14 @@ $root.google = (function() {
              * @function getTypeUrl
              * @memberof google.protobuf.UninterpretedOption
              * @static
+             * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
              * @returns {string} The default type url
              */
-            UninterpretedOption.getTypeUrl = function getTypeUrl() {
-                return "type.googleapis.com/google.protobuf.UninterpretedOption";
+            UninterpretedOption.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                if (typeUrlPrefix === undefined) {
+                    typeUrlPrefix = "type.googleapis.com";
+                }
+                return typeUrlPrefix + "/google.protobuf.UninterpretedOption";
             };
 
             UninterpretedOption.NamePart = (function() {
@@ -15606,10 +15814,14 @@ $root.google = (function() {
                  * @function getTypeUrl
                  * @memberof google.protobuf.UninterpretedOption.NamePart
                  * @static
+                 * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
                  * @returns {string} The default type url
                  */
-                NamePart.getTypeUrl = function getTypeUrl() {
-                    return "type.googleapis.com/google.protobuf.UninterpretedOption.NamePart";
+                NamePart.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                    if (typeUrlPrefix === undefined) {
+                        typeUrlPrefix = "type.googleapis.com";
+                    }
+                    return typeUrlPrefix + "/google.protobuf.UninterpretedOption.NamePart";
                 };
 
                 return NamePart;
@@ -15828,10 +16040,14 @@ $root.google = (function() {
              * @function getTypeUrl
              * @memberof google.protobuf.SourceCodeInfo
              * @static
+             * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
              * @returns {string} The default type url
              */
-            SourceCodeInfo.getTypeUrl = function getTypeUrl() {
-                return "type.googleapis.com/google.protobuf.SourceCodeInfo";
+            SourceCodeInfo.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                if (typeUrlPrefix === undefined) {
+                    typeUrlPrefix = "type.googleapis.com";
+                }
+                return typeUrlPrefix + "/google.protobuf.SourceCodeInfo";
             };
 
             SourceCodeInfo.Location = (function() {
@@ -16178,10 +16394,14 @@ $root.google = (function() {
                  * @function getTypeUrl
                  * @memberof google.protobuf.SourceCodeInfo.Location
                  * @static
+                 * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
                  * @returns {string} The default type url
                  */
-                Location.getTypeUrl = function getTypeUrl() {
-                    return "type.googleapis.com/google.protobuf.SourceCodeInfo.Location";
+                Location.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                    if (typeUrlPrefix === undefined) {
+                        typeUrlPrefix = "type.googleapis.com";
+                    }
+                    return typeUrlPrefix + "/google.protobuf.SourceCodeInfo.Location";
                 };
 
                 return Location;
@@ -16400,10 +16620,14 @@ $root.google = (function() {
              * @function getTypeUrl
              * @memberof google.protobuf.GeneratedCodeInfo
              * @static
+             * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
              * @returns {string} The default type url
              */
-            GeneratedCodeInfo.getTypeUrl = function getTypeUrl() {
-                return "type.googleapis.com/google.protobuf.GeneratedCodeInfo";
+            GeneratedCodeInfo.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                if (typeUrlPrefix === undefined) {
+                    typeUrlPrefix = "type.googleapis.com";
+                }
+                return typeUrlPrefix + "/google.protobuf.GeneratedCodeInfo";
             };
 
             GeneratedCodeInfo.Annotation = (function() {
@@ -16687,10 +16911,14 @@ $root.google = (function() {
                  * @function getTypeUrl
                  * @memberof google.protobuf.GeneratedCodeInfo.Annotation
                  * @static
+                 * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
                  * @returns {string} The default type url
                  */
-                Annotation.getTypeUrl = function getTypeUrl() {
-                    return "type.googleapis.com/google.protobuf.GeneratedCodeInfo.Annotation";
+                Annotation.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                    if (typeUrlPrefix === undefined) {
+                        typeUrlPrefix = "type.googleapis.com";
+                    }
+                    return typeUrlPrefix + "/google.protobuf.GeneratedCodeInfo.Annotation";
                 };
 
                 return Annotation;

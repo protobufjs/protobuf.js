@@ -103,7 +103,7 @@ tape.test("converters", function(test) {
                     bytesVal: buf,
                     bytesRepeated: [buf, buf],
                     enumVal: 2,
-                    enumRepeated: [1, 2],
+                    enumRepeated: [1, 100, 2],
                     int64Map: {
                         a: protobuf.util.Long.fromNumber(2),
                         b: protobuf.util.Long.fromNumber(3)
@@ -127,6 +127,7 @@ tape.test("converters", function(test) {
                     test.ok(Buffer.isBuffer(Message.toObject(msg, { bytes: Buffer }).bytesVal), "bytes to buffers");
 
                 test.equal(Message.toObject(msg, { enums: String }).enumVal, "TWO", "enums to strings");
+                test.equal(Message.toObject(msg, { enums: String }).enumRepeated[1], 100, "enums to strings does not change unknown values");
 
                 test.end();
             });
@@ -157,7 +158,7 @@ tape.test("converters", function(test) {
                 bytesVal: "MTEx",
                 bytesRepeated: ["MTEx", [49, 49, 49]],
                 enumVal: "ONE",
-                enumRepeated: [2, "TWO"],
+                enumRepeated: [2, "TWO", 100],
                 int64Map: {
                     a: 2,
                     b: "3"
@@ -176,7 +177,7 @@ tape.test("converters", function(test) {
             test.same(msg.bytesVal, buf, "should set bytesVal from a base64 string");
             test.same(msg.bytesRepeated, [ buf, buf ], "should set bytesRepeated from a base64 string and a plain array");
             test.equal(msg.enumVal, 1, "should set enumVal from a string");
-            test.same(msg.enumRepeated, [ 2, 2 ], "should set enumRepeated from a number and a string");
+            test.same(msg.enumRepeated, [ 2, 2, 100 ], "should set enumRepeated from a number and a string and preserve unknown value");
             test.same(msg.int64Map, { a: { low: 2, high: 0, unsigned: false }, b: { low: 3, high: 0, unsigned: false } }, "should set int64Map from a number and a string");
 
             test.end();

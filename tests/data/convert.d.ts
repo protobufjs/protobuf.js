@@ -1,4 +1,6 @@
 import * as $protobuf from "../..";
+import Long from "long";
+
 export interface IMessage {
     stringVal?: (string|null);
     stringRepeated?: (string[]|null);
@@ -31,7 +33,7 @@ export class Message implements IMessage {
     public static fromObject(object: { [k: string]: any }): Message;
     public static toObject(message: Message, options?: $protobuf.IConversionOptions): { [k: string]: any };
     public toJSON(): { [k: string]: any };
-    public static getTypeUrl(): string;
+    public static getTypeUrl(typeUrlPrefix?: string): string;
 }
 
 export namespace Message {

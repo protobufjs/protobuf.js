@@ -443,6 +443,14 @@ function parse(source, root, options) {
                     }
                     break;
 
+                case "message":
+                    parseType(type, token);
+                    break;
+
+                case "enum":
+                    parseEnum(type, token);
+                    break;
+
                 /* istanbul ignore next */
                 default:
                     throw illegal(token); // there are no groups with proto3 semantics
@@ -543,7 +551,14 @@ function parse(source, root, options) {
 
         skip("=");
         var value = parseId(next(), true),
-            dummy = {};
+            dummy = {
+                options: undefined
+            };
+        dummy.setOption = function(name, value) {
+            if (this.options === undefined)
+                this.options = {};
+            this.options[name] = value;
+        };
         ifBlock(dummy, function parseEnumValue_block(token) {
 
             /* istanbul ignore else */
@@ -556,7 +571,7 @@ function parse(source, root, options) {
         }, function parseEnumValue_line() {
             parseInlineOptions(dummy); // skip
         });
-        parent.add(token, value, dummy.comment);
+        parent.add(token, value, dummy.comment, dummy.options);
     }
 
     function parseOption(parent, token) {
@@ -576,7 +591,7 @@ function parse(source, root, options) {
             option = name;
             token = peek();
             if (fqTypeRefRe.test(token)) {
-                propName = token.substr(1); //remove '.' before property name
+                propName = token.slice(1); //remove '.' before property name
                 name += token;
                 next();
             }
@@ -587,49 +602,57 @@ function parse(source, root, options) {
     }
 
     function parseOptionValue(parent, name) {
-        if (skip("{", true)) { // { a: "foo" b { c: "bar" } }
-            var result = {};
+        // { a: "foo" b { c: "bar" } }
+        if (skip("{", true)) {
+            var objectResult = {};
+
             while (!skip("}", true)) {
                 /* istanbul ignore if */
-                if (!nameRe.test(token = next()))
+                if (!nameRe.test(token = next())) {
                     throw illegal(token, "name");
+                }
 
                 var value;
                 var propName = token;
+
+                skip(":", true);
+
                 if (peek() === "{")
                     value = parseOptionValue(parent, name + "." + token);
-                else {
-                    skip(":");
-                    if (peek() === "{")
-                        value = parseOptionValue(parent, name + "." + token);
-                    else if (peek() === "[") {
-                        // option (my_option) = {
-                        //     repeated_value: [ "foo", "bar" ]
-                        // };
-                        value = [];
-                        var lastValue;
-                        if (skip("[", true)) {
-                            do {
-                                lastValue = readValue(true);
-                                value.push(lastValue);
-                            } while (skip(",", true));
-                            skip("]");
-                            if (typeof lastValue !== "undefined") {
-                                setOption(parent, name + "." + token, lastValue);
-                            }
+                else if (peek() === "[") {
+                    // option (my_option) = {
+                    //     repeated_value: [ "foo", "bar" ]
+                    // };
+                    value = [];
+                    var lastValue;
+                    if (skip("[", true)) {
+                        do {
+                            lastValue = readValue(true);
+                            value.push(lastValue);
+                        } while (skip(",", true));
+                        skip("]");
+                        if (typeof lastValue !== "undefined") {
+                            setOption(parent, name + "." + token, lastValue);
                         }
-                    } else {
-                        value = readValue(true);
-                        setOption(parent, name + "." + token, value);
                     }
+                } else {
+                    value = readValue(true);
+                    setOption(parent, name + "." + token, value);
                 }
-                var prevValue = result[propName];
+
+                var prevValue = objectResult[propName];
+
                 if (prevValue)
                     value = [].concat(prevValue).concat(value);
-                result[propName] = value;
-                skip(",", true) || skip(";", true);
+
+                objectResult[propName] = value;
+
+                // Semicolons and commas can be optional
+                skip(",", true);
+                skip(";", true);
             }
-            return result;
+
+            return objectResult;
         }
 
         var simpleValue = readValue(true);

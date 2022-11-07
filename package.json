@@ -1,13 +1,16 @@
 {
   "name": "protobufjs",
-  "version": "6.10.2",
+  "version": "7.1.2",
   "versionScheme": "~",
   "description": "Protocol Buffers for JavaScript (& TypeScript).",
   "author": "Daniel Wirtz <dcode+protobufjs@dcode.io>",
   "license": "BSD-3-Clause",
   "repository": "protobufjs/protobuf.js",
-  "bugs": "https://github.com/dcodeIO/protobuf.js/issues",
+  "bugs": "https://github.com/protobufjs/protobuf.js/issues",
   "homepage": "https://protobufjs.github.io/protobuf.js/",
+  "engines": {
+    "node": ">=12.0.0"
+  },
   "keywords": [
     "protobuf",
     "protocol-buffers",
@@ -28,11 +31,12 @@
     "lint:sources": "eslint \"**/*.js\" -c config/eslint.json",
     "lint:types": "tslint \"**/*.d.ts\" -e \"**/node_modules/**\" -t stylish -c config/tslint.json",
     "pages": "node scripts/pages",
+    "prepublish": "cd cli && npm install && cd .. && npm run build",
     "postinstall": "node scripts/postinstall",
     "prof": "node bench/prof",
     "test": "npm run test:sources && npm run test:types",
     "test:sources": "tape -r ./lib/tape-adapter tests/*.js tests/node/*.js",
-    "test:types": "tsc tests/comp_typescript.ts --lib es2015 --strictNullChecks --experimentalDecorators --emitDecoratorMetadata && tsc tests/data/test.js.ts --lib es2015 --noEmit --strictNullChecks && tsc tests/data/*.ts --lib es2015 --noEmit --strictNullChecks",
+    "test:types": "tsc tests/comp_typescript.ts --lib es2015 --esModuleInterop --strictNullChecks --experimentalDecorators --emitDecoratorMetadata && tsc tests/data/test.js.ts --lib es2015 --esModuleInterop --noEmit --strictNullChecks && tsc tests/data/*.ts --lib es2015 --esModuleInterop --noEmit --strictNullChecks",
     "make": "npm run lint:sources && npm run build && npm run lint:types && node ./scripts/gentests.js && npm test"
   },
   "dependencies": {
@@ -46,9 +50,8 @@
     "@protobufjs/path": "^1.1.2",
     "@protobufjs/pool": "^1.1.0",
     "@protobufjs/utf8": "^1.1.0",
-    "@types/long": "^4.0.1",
     "@types/node": ">=13.7.0",
-    "long": "^4.0.0"
+    "long": "^5.0.0"
   },
   "devDependencies": {
     "benchmark": "^2.1.4",
@@ -57,10 +60,10 @@
     "bundle-collapser": "^1.3.0",
     "chalk": "^4.0.0",
     "escodegen": "^1.13.0",
-    "eslint": "^7.0.0",
-    "espree": "^7.1.0",
+    "eslint": "^8.15.0",
+    "espree": "^9.0.0",
     "estraverse": "^5.1.0",
-    "gh-pages": "^3.0.0",
+    "gh-pages": "^4.0.0",
     "git-raw-commits": "^2.0.3",
     "git-semver-tags": "^4.0.0",
     "google-protobuf": "^3.11.3",
@@ -92,7 +95,6 @@
     "package-lock.json",
     "tsconfig.json",
     "scripts/postinstall.js",
-    "cli/**",
     "dist/**",
     "ext/**",
     "google/**",
