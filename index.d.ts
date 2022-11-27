@@ -1,4 +1,4 @@
-// DO NOT EDIT! This is a generated file. Edit the JSDoc in src/*.js instead and run 'npm run types'.
+// DO NOT EDIT! This is a generated file. Edit the JSDoc in src/*.js instead and run 'npm run build:types'.
 
 export as namespace protobuf;
 
@@ -160,8 +160,9 @@ export class Enum extends ReflectionObject {
      * @param [options] Declared options
      * @param [comment] The comment for this enum
      * @param [comments] The value comments for this enum
+     * @param [valuesOptions] The value options for this enum
      */
-    constructor(name: string, values?: { [k: string]: number }, options?: { [k: string]: any }, comment?: string, comments?: { [k: string]: string });
+    constructor(name: string, values?: { [k: string]: number }, options?: { [k: string]: any }, comment?: string, comments?: { [k: string]: string }, valuesOptions?: ({ [k: string]: { [k: string]: any } }|undefined));
 
     /** Enum values by id. */
     public valuesById: { [k: number]: string };
@@ -174,6 +175,9 @@ export class Enum extends ReflectionObject {
 
     /** Value comment texts, if any. */
     public comments: { [k: string]: string };
+
+    /** Values options, if any */
+    public valuesOptions?: { [k: string]: { [k: string]: any } };
 
     /** Reserved ranges, if any. */
     public reserved: (number[]|string)[];
@@ -199,11 +203,12 @@ export class Enum extends ReflectionObject {
      * @param name Value name
      * @param id Value id
      * @param [comment] Comment, if any
+     * @param {Object.<string, *>|undefined} [options] Options, if any
      * @returns `this`
      * @throws {TypeError} If arguments are invalid
      * @throws {Error} If there is already a value with this name or id
      */
-    public add(name: string, id: number, comment?: string): Enum;
+    public add(name: string, id: number, comment?: string, options?: ({ [k: string]: any }|undefined)): Enum;
 
     /**
      * Removes a value from this enum
@@ -858,7 +863,7 @@ export interface INamespace {
 type AnyExtensionField = (IExtensionField|IExtensionMapField);
 
 /** Any nested object descriptor. */
-type AnyNestedObject = (IEnum|IType|IService|AnyExtensionField|INamespace);
+type AnyNestedObject = (IEnum|IType|IService|AnyExtensionField|INamespace|IOneOf);
 
 /** Base class of all reflection objects. */
 export abstract class ReflectionObject {

@@ -144,7 +144,7 @@ exports.main = function(args, callback) {
             var output = [];
             if (argv.main)
                 output.push(
-                    "// DO NOT EDIT! This is a generated file. Edit the JSDoc in src/*.js instead and run 'npm run types'.",
+                    "// DO NOT EDIT! This is a generated file. Edit the JSDoc in src/*.js instead and run 'npm run build:types'.",
                     ""
                 );
             if (argv.global)
@@ -169,6 +169,8 @@ exports.main = function(args, callback) {
                 Object.keys(imports).forEach(function(key) {
                     output.push("import * as " + key + " from \"" + imports[key] + "\";");
                 });
+
+                output.push("import Long = require(\"long\");");
             }
 
             output = output.join("\n") + "\n" + out.join("");
