@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.0.2](https://github.com/protobufjs/protobuf.js/compare/protobufjs-cli-v1.0.1...protobufjs-cli-v1.0.2) (2022-09-09)
+
+
+### Bug Fixes
+
+* add import long to the generated .d.ts ([#1802](https://github.com/protobufjs/protobuf.js/issues/1802)) ([7c27b5a](https://github.com/protobufjs/protobuf.js/commit/7c27b5ad5d161c9f3711aa053ca704f8e1224e90))
+
+## [1.0.1](https://github.com/protobufjs/protobuf.js/compare/protobufjs-cli-v1.0.0...protobufjs-cli-v1.0.1) (2022-08-26)
+
+
+### Bug Fixes
+
+* **deps:** update dependency glob to v8 ([#1750](https://github.com/protobufjs/protobuf.js/issues/1750)) ([8303a64](https://github.com/protobufjs/protobuf.js/commit/8303a648bc12dcea5aa8e7efa042de39011857f9))
+* remove unused `@types/long` ([#1785](https://github.com/protobufjs/protobuf.js/issues/1785)) ([0f4af83](https://github.com/protobufjs/protobuf.js/commit/0f4af83e4ed3cef1ec035c2833e0b06cab0bd87f))
+* **types:** update type deps ([#1776](https://github.com/protobufjs/protobuf.js/issues/1776)) ([d87978b](https://github.com/protobufjs/protobuf.js/commit/d87978b8eb2a176676c58379a89206b94a6d926a))
+
 ## [1.0.0](https://github.com/protobufjs/protobuf.js/compare/protobufjs-cli-v0.1.0...protobufjs-cli-v1.0.0) (2022-07-08)
 
 

@@ -5,7 +5,7 @@ It is essential that tests only use the cross-platform API that is also availabl
 * Use `load`, not `loadSync`
 * Use `Reader.create`, not `BufferReader`
 * Use `Writer.create`, not `BufferWriter`
-* It is safe to use `Long`
+* It is safe to use `Long`, but TypeScript tests must import the type from `"long"`
 
 If it's absolutely inevitable for your test case to use node-specific features, you can still use this pattern:
 

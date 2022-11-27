@@ -1,4 +1,6 @@
 import * as $protobuf from "../..";
+import Long from "long";
+
 export interface IMessage {
     stringVal?: (string|null);
     stringRepeated?: (string[]|null);
