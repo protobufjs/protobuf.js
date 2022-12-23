@@ -36,12 +36,13 @@ exports.main = function main(args, callback) {
             wrap: "w",
             root: "r",
             lint: "l",
+            "unify-names": "u",
             // backward compatibility:
             "force-long": "strict-long",
             "force-message": "strict-message"
         },
         string: [ "target", "out", "path", "wrap", "dependency", "root", "lint" ],
-        boolean: [ "create", "encode", "decode", "verify", "convert", "delimited", "typeurl", "beautify", "comments", "service", "es6", "sparse", "keep-case", "alt-comment", "force-long", "force-number", "force-enum-string", "force-message", "null-defaults" ],
+        boolean: [ "create", "encode", "decode", "verify", "convert", "delimited", "typeurl", "beautify", "comments", "service", "es6", "sparse", "keep-case", "alt-comment", "force-long", "force-number", "force-enum-string", "force-message", "null-defaults", "unify-names", "use-imports" ],
         default: {
             target: "json",
             create: true,
@@ -63,6 +64,8 @@ exports.main = function main(args, callback) {
             "force-enum-string": false,
             "force-message": false,
             "null-defaults": false,
+            "unify-names": false,
+            imports: false,
         }
     });
 
@@ -101,6 +104,10 @@ exports.main = function main(args, callback) {
                 "  -o, --out        Saves to a file instead of writing to stdout.",
                 "",
                 "  --sparse         Exports only those types referenced from a main file (experimental).",
+                "",
+                "  -u, --unify-names   Unify names of nested Namespaces in case then they are the same",
+                "",
+                "  --use-imports    Use imports. If this flag is used all code from imports will be put into one generated file. If this flag is not used, generated file will contain definitions for all imported code. Works for static targets only.",
                 "",
                 chalk.bold.gray("  Module targets only:"),
                 "",
@@ -240,8 +247,16 @@ exports.main = function main(args, callback) {
     } else {
         try {
             root.loadSync(files, parseOptions).resolveAll(); // sync is deterministic while async is not
-            if (argv.sparse)
+            if (argv.sparse) {
                 sparsify(root);
+            }
+            if (argv["use-imports"]) {
+                markUndefinedInMainFile(root);
+                addImports(root, files, paths);
+            }
+            if (argv["unify-names"]) {
+                unifyNames(root);
+            }
             callTarget();
         } catch (err) {
             if (callback) {
@@ -250,6 +265,52 @@ exports.main = function main(args, callback) {
             }
             throw err;
         }
+    }
+
+    function addImports(root, files, paths) {
+        const imports = new Set();
+        if (!files) {
+            return;
+        }
+        files.forEach(function(file) {
+
+            const importsInFile = findAllImportsInFile(findProtobufFile(file, paths));
+            importsInFile.forEach(function(item) {
+                if (item.endsWith('.proto')) {
+                    item = item.substring(0, item.length - '.proto'.length);
+                }
+                item.replaceAll("/", "-");
+                imports.add(item);
+            });
+        });
+        root.imports = imports;
+    }
+
+    function findProtobufFile(file, paths) {
+        for (let i = 0; i < paths.length; ++i) {
+            var iresolved = paths[i] + "/" + file;
+            if (fs.existsSync(iresolved)) {
+                return iresolved;
+            }
+        }
+        return undefined;
+    }
+
+    function findAllImportsInFile(file) {
+        const fileContent = fs.readFileSync(file, 'utf-8');
+
+        const result = [];
+        var re = /\nimport "(.*?)";/g;
+        var m;
+        while (m = re.exec(fileContent)) {
+            const importedLib = m[1];
+            if (importedLib.startsWith("google")) {
+                continue;
+            }
+            console.log("found import:" + importedLib);
+            result.push(importedLib);
+        }
+        return result;
     }
 
     function markReferenced(tobj) {
@@ -266,6 +327,73 @@ exports.main = function main(args, callback) {
         // also mark an extension field's extended type, but not its (other) fields
         if (tobj.extensionField)
             tobj.extensionField.parent.referenced = true;
+    }
+
+    function contains(mainFiles, filename) {
+        for (let mainFile of mainFiles) {
+            if (filename.endsWith(mainFile)) {
+                return true;
+            }
+          }
+        return false;
+    }
+
+    function fixFilename(obj) {
+        if (obj.fullName.startsWith(".google") && !obj.filename) {
+            obj.filename = "DtkProtoTypes/DtkProtoTypes.proto";
+        }
+    }
+
+    function unifyNames(obj) {
+        if (obj.name) {
+            const parentNames = findAllParentsNames(obj);
+            while (parentNames.has(obj.name)) {
+                let postfix = "Ns";
+                if (obj instanceof protobuf.Service) {
+                    postfix = "Service";
+                }
+                obj.name = obj.name + postfix;
+            }
+        }
+
+        if (obj.nestedArray) {
+            obj.nestedArray.forEach(function(nested) {
+                unifyNames(nested)
+            })
+        }
+    }
+
+    function findAllParentsNames(obj) {
+        const parentNames = new Set();
+        let parent = obj;
+        while (parent.parent) {
+            parent = parent.parent;
+            parentNames.add(parent.name);
+        }
+        return parentNames;
+    }
+
+    function markUndefinedInMainFile(root) {
+        util.traverse(root, function(obj) { // loop over all items
+            fixFilename(obj);
+
+            obj.undefinedInMainProto = false;
+            if (!obj.filename)
+                return;
+            if (contains(mainFiles, obj.filename))
+                return;
+            obj.undefinedInMainProto = true;
+            let protoFrom = obj.filename;
+            if (protoFrom.endsWith('.proto')) {
+                protoFrom = protoFrom.substring(0, protoFrom.length - '.proto'.length);
+            }
+            const lastSlashIndex = protoFrom.lastIndexOf('/');
+            if (lastSlashIndex != -1) {
+                protoFrom = protoFrom.substring(lastSlashIndex + 1);
+            }
+            obj.protoFrom = protoFrom + "_pb";
+        });
+        unifyNames(root);
     }
 
     function sparsify(root) {

@@ -24,10 +24,11 @@ exports.main = function(args, callback) {
             import: "i"
         },
         string: [ "name", "out", "global", "import" ],
-        boolean: [ "comments", "main" ],
+        boolean: [ "comments", "main", "use-imports" ],
         default: {
             comments: true,
-            main: false
+            main: false,
+            "use-imports": false,
         }
     });
 
@@ -49,6 +50,8 @@ exports.main = function(args, callback) {
                 "  -i, --import    Comma delimited list of imports. Local names will equal camelCase of the basename.",
                 "",
                 "  --no-comments   Does not output any JSDoc comments.",
+                "",
+                " --use-imports",
                 "",
                 chalk.bold.gray("  Internal flags:"),
                 "",
@@ -164,10 +167,19 @@ exports.main = function(args, callback) {
                 importArray.forEach(function(importItem) {
                     imports[getImportName(importItem)] = importItem;
                 });
+                if (argv["use-imports"]) {
+                    const jsFile = fs.readFileSync(argv._[0], { encoding: "utf8" }); //todo: make a loop
+                    var re = /\nconst (.*?) = require\((.*?)\);/g;
+                    var m;
+                    while (m = re.exec(jsFile)) {
+                        imports[m[1]] = m[2];
+                    }
+
+                }
 
                 // Write out the imports
                 Object.keys(imports).forEach(function(key) {
-                    output.push("import * as " + key + " from \"" + imports[key] + "\";");
+                    output.push("import * as " + key + " from " + imports[key] + ";");
                 });
 
                 output.push("import Long = require(\"long\");");
