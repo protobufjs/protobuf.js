@@ -312,13 +312,13 @@ exports.main = function main(args, callback) {
     }
 
     function filterMessage() {
-        if (argv.filter && fs.existsSync(argv.filter)) {
+        if (argv.filter) {
             // This is a piece of degradable logic
             try {
                 const needMessage = JSON.parse(fs.readFileSync(argv.filter));
                 util.filterMessage(root, needMessage);
             } catch (error) {
-                process.stderr.write('The filter file parsing failed, please check whether the file format is correct.')
+                process.stderr.write(`The filter not work, please check whether the file is correct: ${error.message}\n`);
             }
         }
     }

@@ -198,7 +198,7 @@ function doFilterMessage(root, needMessageConfig, filterMap, flatMap, currentPac
             }
             
             if (!message) {
-                throw new Error(`message not foud ${nsName}.${messageName}`);
+                throw new Error(`message not foud ${currentPackageName}.${messageName}`);
             }
 
             var set = filterMap.get(currentPackageName);
