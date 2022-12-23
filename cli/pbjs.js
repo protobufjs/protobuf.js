@@ -99,7 +99,7 @@ exports.main = function main(args, callback) {
                 "  -p, --path       Adds a directory to the include path.",
                 "",
                 "  --filter         Set up a filter to configure only those messages you need and their dependencies to compile, this will effectively reduce the final file size",
-                "                   A json file, Example of file content: { rootName: mypackagename, messageNames:[messageName1, messageName2]} ",
+                "                   Set A json file path, Example of file content: {\"messageNames\":[\"mypackage.messageName1\", \"messageName2\"] } ",
                 "",
                 "  -o, --out        Saves to a file instead of writing to stdout.",
                 "",
