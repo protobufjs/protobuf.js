@@ -125,47 +125,92 @@ exports.pad = function(str, len, l) {
     return str;
 };
 
+
 /**
- * DFS to get all message you need and their dependencies, cache in filterMap.
+ * DFS to get all message dependencies, cache in filterMap.
  * @param {*} root  The protobuf root instance
- * @param {*} needMessage {
- *     rootName: the entry proto pakcage name
- *     messageNames: the message in the root namespace you need to gen.
+ * @param {*} message the message need to process.
+ * @param {*} needMessageConfig {
+ *     messageNames: the message names array in the root namespace you need to gen. example: [msg1, msg2]
  * }
  * @param {*} filterMap The result of message you need and their dependencies.
  * @param {*} flatMap A flag to record whether the message was searched.
  * @returns 
  */
-function doFilterMessage(root, needMessage, filterMap, flatMap) {
-    let rootName = needMessage.rootName;
-    let messageNames = needMessage.messageNames;
-
-    const rootNs = root.nested[rootName]
-    if (!rootNs) {
-        return;
-    }
-
-
-    let set = filterMap.get(rootName);
-    if (!filterMap.has(rootName)) {
-        set = new Set();
-        filterMap.set(rootName, set);
-    }
-
-    for (let messageName of messageNames) {
-        const message = rootNs.nested[messageName];
-        if (!message) throw new Error(`message not foud ${rootName}.${message}`);
-        set.add(messageName);
-        if (message instanceof protobuf.Type) {
-            if (flatMap.get(`${rootName}.${message.name}`)) continue;
-            flatMap.set(`${rootName}.${message.name}`, true);
-            for (let field of message.fieldsArray) {
-                if (field.resolvedType) {
-                    const rootName = field.resolvedType.parent.name;
-                    const typeName = field.resolvedType.name;
-                    doFilterMessage(root, { rootName, messageNames: [typeName] }, filterMap, flatMap);
+function dfsFilterMessageDependencies(root, message, filterMap, flatMap) {
+    if (message instanceof protobuf.Type) {
+        if (flatMap.get(`${message.fullName}`)) return;
+        flatMap.set(`${message.fullName}`, true);
+        for (var field of message.fieldsArray) {
+            if (field.resolvedType) {
+                // a nested message 
+                if (field.resolvedType.parent.name === message.name) {
+                    var nestedMessage = message.nested[field.resolvedType.name];
+                    dfsFilterMessageDependencies(root, nestedMessage, filterMap, flatMap);
+                    continue;
                 }
+                var packageName = field.resolvedType.parent.name;
+                var typeName = field.resolvedType.name;
+                var fullName = packageName ? `${packageName}.${typeName}` : typeName;
+                doFilterMessage(root, { messageNames: [fullName] }, filterMap, flatMap, packageName);
             }
+        }
+    }
+}
+
+/**
+ * DFS to get all message you need and their dependencies, cache in filterMap.
+ * @param {*} root  The protobuf root instance
+ * @param {*} needMessageConfig {
+ *     messageNames: the message names array in the root namespace you need to gen. example: [msg1, msg2]
+ * }
+ * @param {*} filterMap The result of message you need and their dependencies.
+ * @param {*} flatMap A flag to record whether the message was searched.
+ * @returns 
+ */
+function doFilterMessage(root, needMessageConfig, filterMap, flatMap, currentPackageName) {
+    var needMessageNames = needMessageConfig.messageNames;
+
+    for (var messageFullName of needMessageNames) {
+        var nameSplit = messageFullName.split('.');
+        var packageName = '';
+        var messageName = '';
+        if (nameSplit.length > 1) {
+            packageName = nameSplit[0];
+            messageName = nameSplit[1];
+        } else {
+            messageName = nameSplit[0];
+        }
+
+        // in Namespace
+        if (packageName) {
+            var ns = root.nested[packageName];
+            if (!ns || !(ns instanceof protobuf.Namespace)) {
+                throw new Error(`package not foud ${currentPackageName}.${messageName}`);
+            }
+
+            doFilterMessage(root, { messageNames: [messageName] }, filterMap, flatMap, packageName);
+        } else { 
+            var message = root.nested[messageName];
+
+            if (currentPackageName) {
+                message = root.nested[currentPackageName].nested[messageName];
+            }
+            
+            if (!message) {
+                throw new Error(`message not foud ${nsName}.${messageName}`);
+            }
+
+            var set = filterMap.get(currentPackageName);
+            if (!filterMap.has(currentPackageName)) {
+                set = new Set();
+                filterMap.set(currentPackageName, set);
+            }
+
+            set.add(messageName);
+
+            // dfs to find all dependencies
+            dfsFilterMessageDependencies(root, message, filterMap, flatMap, currentPackageName);
         }
     }
 }
@@ -173,21 +218,29 @@ function doFilterMessage(root, needMessage, filterMap, flatMap) {
 /**
  * filter the message you need and their dependencies, all others will be delete from root.
  * @param {*} root the protobuf root instance
- * @param {*} needMessage {
- *     rootName: the entry proto pakcage name
- *     messageNames: the message in the root namespace you need to gen.
+ * @param {*} needMessageConfig {
+ *     messageNames: the message names array in the root namespace you need to gen. example: [msg1, msg2]
  * }
  */
-exports.filterMessage = function (root, needMessage) {
-    const filterMap = new Map();
-    const flatMap = new Map();
-    doFilterMessage(root, needMessage, filterMap, flatMap);
-    root._nestedArray = root._nestedArray.filter(ns => filterMap.has(ns.name));
-    for (let ns of root.nestedArray) {
-        ns._nestedArray = ns._nestedArray.filter(nns => {
-            const nnsSet = filterMap.get(ns.name);
-            return nnsSet.has(nns.name);
-        });
-    }
+exports.filterMessage = function (root, needMessageConfig) {
+    var filterMap = new Map();
+    var flatMap = new Map();
+    doFilterMessage(root, needMessageConfig, filterMap, flatMap, '');
+    root._nestedArray = root._nestedArray.filter(ns => {
+        if (ns instanceof protobuf.Type || ns instanceof protobuf.Enum) {
+            return filterMap.get("").has(ns.name);
+        } else if (ns instanceof protobuf.Namespace) {
+            if (!filterMap.has(ns.name)) {
+                return false;
+            } else {
+                ns._nestedArray = ns._nestedArray.filter(nns => {
+                    const nnsSet = filterMap.get(ns.name);
+                    return nnsSet.has(nns.name);
+                });
+
+                return true;
+            }
+        }
+    });
 };
 

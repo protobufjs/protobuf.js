@@ -1,0 +1,8 @@
+
+message DependentMessageFromImport {
+  optional int32 test1 = 1;
+}
+
+message NotNeedMessageInImportFile {
+  optional int32 test1 = 1;
+}
