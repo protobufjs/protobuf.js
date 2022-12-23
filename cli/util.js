@@ -125,3 +125,69 @@ exports.pad = function(str, len, l) {
     return str;
 };
 
+/**
+ * DFS to get all message you need and their dependencies, cache in filterMap.
+ * @param {*} root  The protobuf root instance
+ * @param {*} needMessage {
+ *     rootName: the entry proto pakcage name
+ *     messageNames: the message in the root namespace you need to gen.
+ * }
+ * @param {*} filterMap The result of message you need and their dependencies.
+ * @param {*} flatMap A flag to record whether the message was searched.
+ * @returns 
+ */
+function doFilterMessage(root, needMessage, filterMap, flatMap) {
+    let rootName = needMessage.rootName;
+    let messageNames = needMessage.messageNames;
+
+    const rootNs = root.nested[rootName]
+    if (!rootNs) {
+        return;
+    }
+
+
+    let set = filterMap.get(rootName);
+    if (!filterMap.has(rootName)) {
+        set = new Set();
+        filterMap.set(rootName, set);
+    }
+
+    for (let messageName of messageNames) {
+        const message = rootNs.nested[messageName];
+        if (!message) throw new Error(`message not foud ${rootName}.${message}`);
+        set.add(messageName);
+        if (message instanceof protobuf.Type) {
+            if (flatMap.get(`${rootName}.${message.name}`)) continue;
+            flatMap.set(`${rootName}.${message.name}`, true);
+            for (let field of message.fieldsArray) {
+                if (field.resolvedType) {
+                    const rootName = field.resolvedType.parent.name;
+                    const typeName = field.resolvedType.name;
+                    doFilterMessage(root, { rootName, messageNames: [typeName] }, filterMap, flatMap);
+                }
+            }
+        }
+    }
+}
+
+/**
+ * filter the message you need and their dependencies, all others will be delete from root.
+ * @param {*} root the protobuf root instance
+ * @param {*} needMessage {
+ *     rootName: the entry proto pakcage name
+ *     messageNames: the message in the root namespace you need to gen.
+ * }
+ */
+exports.filterMessage = function (root, needMessage) {
+    const filterMap = new Map();
+    const flatMap = new Map();
+    doFilterMessage(root, needMessage, filterMap, flatMap);
+    root._nestedArray = root._nestedArray.filter(ns => filterMap.has(ns.name));
+    for (let ns of root.nestedArray) {
+        ns._nestedArray = ns._nestedArray.filter(nns => {
+            const nnsSet = filterMap.get(ns.name);
+            return nnsSet.has(nns.name);
+        });
+    }
+};
+

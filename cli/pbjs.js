@@ -40,7 +40,7 @@ exports.main = function main(args, callback) {
             "force-long": "strict-long",
             "force-message": "strict-message"
         },
-        string: [ "target", "out", "path", "wrap", "dependency", "root", "lint" ],
+        string: [ "target", "out", "path", "wrap", "dependency", "root", "lint", 'filter' ],
         boolean: [ "create", "encode", "decode", "verify", "convert", "delimited", "typeurl", "beautify", "comments", "service", "es6", "sparse", "keep-case", "alt-comment", "force-long", "force-number", "force-enum-string", "force-message", "null-defaults" ],
         default: {
             target: "json",
@@ -97,6 +97,9 @@ exports.main = function main(args, callback) {
                 descs.join("\n"),
                 "",
                 "  -p, --path       Adds a directory to the include path.",
+                "",
+                "  --filter         Set up a filter to configure only those messages you need and their dependencies to compile, this will effectively reduce the final file size",
+                "                   A json file, Example of file content: { rootName: mypackagename, messageNames:[messageName1, messageName2]} ",
                 "",
                 "  -o, --out        Saves to a file instead of writing to stdout.",
                 "",
@@ -308,7 +311,20 @@ exports.main = function main(args, callback) {
         root.resolveAll();
     }
 
+    function filterMessage() {
+        if (argv.filter && fs.existsSync(argv.filter)) {
+            // This is a piece of degradable logic
+            try {
+                const needMessage = JSON.parse(fs.readFileSync(argv.filter));
+                util.filterMessage(root, needMessage);
+            } catch (error) {
+                process.stderr.write('The filter file parsing failed, please check whether the file format is correct.')
+            }
+        }
+    }
+
     function callTarget() {
+        filterMessage();
         target(root, argv, function targetCallback(err, output) {
             if (err) {
                 if (callback)
