@@ -40,7 +40,7 @@ exports.main = function main(args, callback) {
             "force-long": "strict-long",
             "force-message": "strict-message"
         },
-        string: [ "target", "out", "path", "wrap", "dependency", "root", "lint", 'filter' ],
+        string: [ "target", "out", "path", "wrap", "dependency", "root", "lint", "filter" ],
         boolean: [ "create", "encode", "decode", "verify", "convert", "delimited", "typeurl", "beautify", "comments", "service", "es6", "sparse", "keep-case", "alt-comment", "force-long", "force-number", "force-enum-string", "force-message", "null-defaults" ],
         default: {
             target: "json",
