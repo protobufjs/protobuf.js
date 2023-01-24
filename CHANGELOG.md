@@ -1,5 +1,17 @@
 # Changelog
 
+## [7.2.0](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v7.1.2...protobufjs-v7.2.0) (2023-01-24)
+
+
+### Features
+
+* **cli:** generate static files at the granularity of proto messages ([#1840](https://github.com/protobufjs/protobuf.js/issues/1840)) ([32f2d6a](https://github.com/protobufjs/protobuf.js/commit/32f2d6a68b27997bd0f7619998695a9fa7a4fd70))
+
+
+### Bug Fixes
+
+* error should be thrown ([#1817](https://github.com/protobufjs/protobuf.js/issues/1817)) ([e7a3489](https://github.com/protobufjs/protobuf.js/commit/e7a34897a122342485468999a507626f1ea91507))
+
 ## [7.1.2](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v7.1.1...protobufjs-v7.1.2) (2022-09-22)
 
 
