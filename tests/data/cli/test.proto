@@ -4,10 +4,19 @@ message Message {
   int32 value = 1;
 }
 
+enum Enum {
+  option allow_alias = true;
+
+  UNSPECIFIED = 0;
+  DEFAULT = 0; // checking that an alias does not break things
+  SOMETHING = 1;
+}
+
 message OneofContainer {
   oneof some_oneof {
     string string_in_oneof = 1;
     Message message_in_oneof = 2;
   }
   string regular_field = 3;
+  Enum enum_field = 4;
 }

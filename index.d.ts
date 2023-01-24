@@ -863,7 +863,7 @@ export interface INamespace {
 type AnyExtensionField = (IExtensionField|IExtensionMapField);
 
 /** Any nested object descriptor. */
-type AnyNestedObject = (IEnum|IType|IService|AnyExtensionField|INamespace);
+type AnyNestedObject = (IEnum|IType|IService|AnyExtensionField|INamespace|IOneOf);
 
 /** Base class of all reflection objects. */
 export abstract class ReflectionObject {
