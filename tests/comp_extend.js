@@ -14,14 +14,28 @@ message A {\
         message Two {\
             extend B.One {\
                 C.Two two = 1000;\
+                string extended = 1001;\
             }\
         }\
     }\
 }";
 
 tape.test("extensions", function(test) {
-    var root = protobuf.parse(proto).root;
-    root.resolveAll();
-    test.pass("should parse and resolve without errors");
-    test.end();
+
+    test.test(" - parsing", function(test) {
+        var root = protobuf.parse(proto).root;
+        root.resolveAll();
+        test.pass("should parse and resolve without errors");
+        test.end();
+    });
+
+    test.test(" - encoding", function(test) {
+        var root = protobuf.parse(proto).root;
+        root.resolveAll();
+        var one = root.lookupType("A.B.One");
+        var original = {extended: "test"};
+        var cycled = one.decode(one.encode(original).finish());
+        test.deepEqual(cycled, original, "should write and read back");
+        test.end();
+    });
 });
