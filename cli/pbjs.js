@@ -78,7 +78,7 @@ exports.main = function main(args, callback) {
     });
 
     // protobuf.js package directory contains additional, otherwise non-bundled google types
-    paths.push(path.relative(process.cwd(), path.join(__dirname, "../protobufjs")) || ".");
+    paths.push(path.relative(process.cwd(), path.join(__dirname, "..")) || ".");
 
     if (!files.length) {
         var descs = Object.keys(targets).filter(function(key) { return !targets[key].private; }).map(function(key) {
