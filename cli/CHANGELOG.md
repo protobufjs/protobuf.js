@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.1](https://github.com/protobufjs/protobuf.js/compare/protobufjs-cli-v1.1.0...protobufjs-cli-v1.1.1) (2023-02-02)
+
+
+### Bug Fixes
+
+* **cli:** fix relative path to Google pb files ([#1859](https://github.com/protobufjs/protobuf.js/issues/1859)) ([e42eea4](https://github.com/protobufjs/protobuf.js/commit/e42eea4868b11f4a07934804a56683321ed191e2))
+
 ## [1.1.0](https://github.com/protobufjs/protobuf.js/compare/protobufjs-cli-v1.0.2...protobufjs-cli-v1.1.0) (2023-01-24)
 
 
