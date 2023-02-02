@@ -288,7 +288,7 @@ function newError(name) {
             configurable: true,
         },
         name: {
-            get() { return name; },
+            get: function get() { return name; },
             set: undefined,
             enumerable: false,
             // configurable: false would accurately preserve the behavior of
@@ -298,7 +298,7 @@ function newError(name) {
             configurable: true,
         },
         toString: {
-            value() { return this.name + ": " + this.message; },
+            value: function value() { return this.name + ": " + this.message; },
             writable: true,
             enumerable: false,
             configurable: true,
