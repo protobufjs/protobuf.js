@@ -1,5 +1,12 @@
 # Changelog
 
+## [7.2.2](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v7.2.1...protobufjs-v7.2.2) (2023-02-07)
+
+
+### Bug Fixes
+
+* do not allow to extend same field twice to prevent the error ([#1784](https://github.com/protobufjs/protobuf.js/issues/1784)) ([14f0536](https://github.com/protobufjs/protobuf.js/commit/14f05364a04fe1ca0bfb278b3407e058c6b5a1ab))
+
 ## [7.2.1](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v7.2.0...protobufjs-v7.2.1) (2023-02-02)
 
 
