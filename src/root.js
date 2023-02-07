@@ -274,6 +274,10 @@ function tryHandleExtension(root, field) {
     var extendedType = field.parent.lookup(field.extend);
     if (extendedType) {
         var sisterField = new Field(field.fullName, field.id, field.type, field.rule, undefined, field.options);
+        //do not allow to extend same field twice to prevent the error
+        if (extendedType.get(sisterField.name)) {
+            return true;
+        }
         sisterField.declaringField = field;
         field.extensionField = sisterField;
         extendedType.add(sisterField);
