@@ -23,13 +23,9 @@ function addImports(root) {
     if (!root.imports) {
         return;
     }
-    root.imports.forEach(function(oneImport) {
-        let name = oneImport;
-        const lastSlashIndex = name.lastIndexOf('/');
-        if (lastSlashIndex != -1) {
-            name = name.substring(lastSlashIndex + 1);
-        }
-        push("const " + name + "_pb = require(\"" + oneImport + "\");\n");
+    root.imports.forEach((oneImport) => {
+        const name = oneImport.replace(/\/$/, '');
+        push(`const ${name}_pb = require("${oneImport}");\n`);
     });
 }
 
@@ -705,7 +701,7 @@ function buildService(ref, service) {
             "@typedef " + cbName,
             "@type {function}",
             "@param {Error|null} error Error, if any",
-            "@param {" + exportTypeWithProtoFromIfNeeded(method.resolvedResponseType) + "} [response] " + method.resolvedResponseType.name
+            "@param {" + exportTypeWithProtoFrom(method.resolvedResponseType) + "} [response] " + method.resolvedResponseType.name
         ]);
         push("");
         pushComment([
@@ -713,7 +709,7 @@ function buildService(ref, service) {
             "@function " + lcName,
             "@memberof " + exportName(service),
             "@instance",
-            "@param {" + exportTypeWithProtoFromIfNeeded(method.resolvedRequestType, !config.forceMessage) + "} request " + method.resolvedRequestType.name + " message or plain object",
+            "@param {" + exportTypeWithProtoFrom(method.resolvedRequestType, !config.forceMessage) + "} request " + method.resolvedRequestType.name + " message or plain object",
             "@param {" + exportName(service) + "." + cbName + "} callback Node-style callback called with the error, if any, and " + method.resolvedResponseType.name,
             "@returns {undefined}",
             "@variation 1"
@@ -730,30 +726,21 @@ function buildService(ref, service) {
             "@function " + lcName,
             "@memberof " + exportName(service),
             "@instance",
-            "@param {" +  exportTypeWithProtoFromIfNeeded(method.resolvedRequestType, !config.forceMessage) + "} request " + method.resolvedRequestType.name + " message or plain object",
-            "@returns {Promise<" + exportTypeWithProtoFromIfNeeded(method.resolvedResponseType) + ">} Promise",
+            "@param {" +  exportTypeWithProtoFrom(method.resolvedRequestType, !config.forceMessage) + "} request " + method.resolvedRequestType.name + " message or plain object",
+            "@returns {Promise<" + exportTypeWithProtoFrom(method.resolvedResponseType) + ">} Promise",
             "@variation 2"
         ]);
     });
 }
 
-function exportTypeWithProtoFromIfNeeded(type, asInterface) {
+function exportTypeWithProtoFrom(type, asInterface) {
     let exportedType = exportName(type, asInterface);
-    if (type.undefinedInMainProto) {
-        exportedType = type.protoFrom + "." + exportedType;
-    }
-    return exportedType;
+    return type.undefinedInMainProto ? `${type.protoFrom}.` : '' + exportedType
 }
 
 
 function exportResolvedType(type, asInterface) {
-    let exportedType = exportName(type, asInterface);
-    if (type.undefinedInMainProto) {
-        exportedType = type.protoFrom + "." + exportedType;
-    } else {
-        exportedType = "$root." + exportedType;
-    }
-    return exportedType;
+    return `${ type.undefinedInMainProto ? type.protoFrom : '$root'}.${exportedType}`;
 }
 
 function buildEnum(ref, enm) {

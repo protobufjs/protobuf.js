@@ -6,7 +6,9 @@ var path     = require("path"),
     pkg      = require("./package.json"),
     util     = require("./util"),
     glob     = require("glob"),
-    protobuf = require("protobufjs");
+    protobuf = require("protobufjs"),
+    inputArgs = require("./inputArgs");
+
 
 var targets  = util.requireAll("./targets");
 
@@ -30,48 +32,53 @@ exports.main = function main(args, callback) {
     ].join(", ");
     var argv = minimist(args, {
         alias: {
-            target: "t",
-            out: "o",
-            path: "p",
-            wrap: "w",
-            root: "r",
-            lint: "l",
-            "unify-names": "u",
+            [inputArgs.TARGET]: "t",
+            [inputArgs.OUT]: "o",
+            [inputArgs.PATH]: "p",
+            [inputArgs.WRAP]: "w",
+            [inputArgs.ROOT]: "r",
+            [inputArgs.LINT]: "l",
+            [inputArgs.UNIFY_NAMES]: "u",
             // backward compatibility:
-            "force-long": "strict-long",
-            "force-message": "strict-message"
+            [inputArgs.FORCE_LONG]: "strict-long",
+            [inputArgs.FORCE_MESSAGE]: "strict-message"
         },
-        string: [ "target", "out", "path", "wrap", "dependency", "root", "lint" ],
-        boolean: [ "create", "encode", "decode", "verify", "convert", "delimited", "typeurl", "beautify", "comments", "service", "es6", "sparse", "keep-case", "alt-comment", "force-long", "force-number", "force-enum-string", "force-message", "null-defaults", "unify-names", "use-imports" ],
+        string: [ inputArgs.TARGET, inputArgs.OUT, inputArgs.PATH, inputArgs.WRAP, inputArgs.DEPENDENCY, inputArgs.ROOT, inputArgs.LINT ],
+        boolean: [ inputArgs.CREATE, inputArgs.ENCODE, inputArgs.DECODE, inputArgs.VERIFY, inputArgs.CONVERT,
+            inputArgs.DELIMITED, inputArgs.TYPEURL, inputArgs.BEAUTIFY, 
+            inputArgs.COMMENTS, inputArgs.SERVICE, inputArgs.ES6, inputArgs.SPARSE, inputArgs.KEEP_CASE,
+            inputArgs.ALT_COMMENT, inputArgs.FORCE_LONG, inputArgs.FORCE_NUMBER, 
+            inputArgs.FORCE_ENUM_STRING, inputArgs.FORCE_MESSAGE, inputArgs.NULL_DEFAULTS, inputArgs.UNIFY_NAMES,
+             inputArgs.USE_IMPORTS],
         default: {
-            target: "json",
-            create: true,
-            encode: true,
-            decode: true,
-            verify: true,
-            convert: true,
-            delimited: true,
-            typeurl: true,
-            beautify: true,
-            comments: true,
-            service: true,
-            es6: null,
-            lint: lintDefault,
-            "keep-case": false,
-            "alt-comment": false,
-            "force-long": false,
-            "force-number": false,
-            "force-enum-string": false,
-            "force-message": false,
-            "null-defaults": false,
-            "unify-names": false,
-            imports: false,
+            [inputArgs.TARGET]: "json",
+            [inputArgs.CREATE]: true,
+            [inputArgs.ENCODE]: true,
+            [inputArgs.DECODE]: true,
+            [inputArgs.VERIFY]: true,
+            [inputArgs.CONVERT]: true,
+            [inputArgs.DELIMITED]: true,
+            [inputArgs.TYPEURL]: true,
+            [inputArgs.BEAUTIFY]: true,
+            [inputArgs.COMMENTS]: true,
+            [inputArgs.SERVICE]: true,
+            [inputArgs.ES6]: null,
+            [inputArgs.LINT]: lintDefault,
+            [inputArgs.KEEP_CASE]: false,
+            [inputArgs.ALT_COMMENT]: false,
+            [inputArgs.FORCE_LONG]: false,
+            [inputArgs.FORCE_NUMBER]: false,
+            [inputArgs.FORCE_ENUM_STRING]: false,
+            [inputArgs.FORCE_MESSAGE]: false,
+            [inputArgs.NULL_DEFAULTS]: false,
+            [inputArgs.UNIFY_NAMES]: false,
+            [inputArgs.IMPORTS]: false,
         }
     });
 
-    var target = targets[argv.target],
+    var target = targets[argv[inputArgs.TARGET]],
         files  = argv._,
-        paths  = typeof argv.path === "string" ? [ argv.path ] : argv.path || [];
+        paths  = typeof argv[inputArgs.PATH] === "string" ? [ argv[inputArgs.PATH] ] : argv[inputArgs.PATH] || [];
 
     // alias hyphen args in camel case
     Object.keys(argv).forEach(function(key) {
@@ -95,23 +102,23 @@ exports.main = function main(args, callback) {
                 "",
                 chalk.bold.white("Translates between file formats and generates static code."),
                 "",
-                "  -t, --target     Specifies the target format. Also accepts a path to require a custom target.",
+                "  -t, --" + inputArgs.TARGET + "     Specifies the target format. Also accepts a path to require a custom target.",
                 "",
                 descs.join("\n"),
                 "",
-                "  -p, --path       Adds a directory to the include path.",
+                "  -p, --" + inputArgs.PATH + "       Adds a directory to the include path.",
                 "",
-                "  -o, --out        Saves to a file instead of writing to stdout.",
+                "  -o, --" + inputArgs.OUT + "        Saves to a file instead of writing to stdout.",
                 "",
-                "  --sparse         Exports only those types referenced from a main file (experimental).",
+                "  --" + inputArgs.SPARSE + "         Exports only those types referenced from a main file (experimental).",
                 "",
-                "  -u, --unify-names   Unify names of nested Namespaces in case then they are the same",
+                "  -u, --" + inputArgs.UNIFY_NAMES + "   Unify names of nested Namespaces in case then they are the same",
                 "",
-                "  --use-imports    Use imports. If this flag is used all code from imports will be put into one generated file. If this flag is not used, generated file will contain definitions for all imported code. Works for static targets only.",
+                "  --" + inputArgs.USE_IMPORTS + "    Use imports. If this flag is used all code from imports will be put into one generated file. If this flag is not used, generated file will contain definitions for all imported code. Works for static targets only.",
                 "",
                 chalk.bold.gray("  Module targets only:"),
                 "",
-                "  -w, --wrap       Specifies the wrapper to use. Also accepts a path to require a custom wrapper.",
+                "  -w, --" + inputArgs.WRAP + "       Specifies the wrapper to use. Also accepts a path to require a custom wrapper.",
                 "",
                 "                   default   Default wrapper supporting both CommonJS and AMD",
                 "                   commonjs  CommonJS wrapper",
@@ -119,20 +126,20 @@ exports.main = function main(args, callback) {
                 "                   es6       ES6 wrapper (implies --es6)",
                 "                   closure   A closure adding to protobuf.roots where protobuf is a global",
                 "",
-                "  --dependency     Specifies which version of protobuf to require. Accepts any valid module id",
+                "  --" + inputArgs.DEPENDENCY + "     Specifies which version of protobuf to require. Accepts any valid module id",
                 "",
-                "  -r, --root       Specifies an alternative protobuf.roots name.",
+                "  -r, --" + inputArgs.ROOT + "       Specifies an alternative protobuf.roots name.",
                 "",
-                "  -l, --lint       Linter configuration. Defaults to protobuf.js-compatible rules:",
+                "  -l, --" + inputArgs.LINT + "       Linter configuration. Defaults to protobuf.js-compatible rules:",
                 "",
                 "                   " + lintDefault,
                 "",
-                "  --es6            Enables ES6 syntax (const/let instead of var)",
+                "  --" + inputArgs.ES6 + "            Enables ES6 syntax (const/let instead of var)",
                 "",
                 chalk.bold.gray("  Proto sources only:"),
                 "",
-                "  --keep-case      Keeps field casing instead of converting to camel case.",
-                "  --alt-comment    Turns on an alternate comment parsing mode that preserves more comments.",
+                "  --" + inputArgs.KEEP_CASE + "      Keeps field casing instead of converting to camel case.",
+                "  --" + inputArgs.ALT_COMMENT + "    Turns on an alternate comment parsing mode that preserves more comments.",
                 "",
                 chalk.bold.gray("  Static targets only:"),
                 "",
@@ -147,11 +154,11 @@ exports.main = function main(args, callback) {
                 "  --no-comments    Does not output any JSDoc comments.",
                 "  --no-service     Does not output service classes.",
                 "",
-                "  --force-long     Enforces the use of 'Long' for s-/u-/int64 and s-/fixed64 fields.",
-                "  --force-number   Enforces the use of 'number' for s-/u-/int64 and s-/fixed64 fields.",
-                "  --force-message  Enforces the use of message instances instead of plain objects.",
+                "  --" + inputArgs.FORCE_LONG + "     Enforces the use of 'Long' for s-/u-/int64 and s-/fixed64 fields.",
+                "  --" + inputArgs.FORCE_NUMBER + "   Enforces the use of 'number' for s-/u-/int64 and s-/fixed64 fields.",
+                "  --" + inputArgs.FORCE_MESSAGE + "  Enforces the use of message instances instead of plain objects.",
                 "",
-                "  --null-defaults  Default value for optional fields is null instead of zero value.",
+                "  --" + inputArgs.NULL_DEFAULTS + "  Default value for optional fields is null instead of zero value.",
                 "",
                 "usage: " + chalk.bold.green("pbjs") + " [options] file1.proto file2.json ..." + chalk.gray("  (or pipe)  ") + "other | " + chalk.bold.green("pbjs") + " [options] -",
                 ""
@@ -159,8 +166,8 @@ exports.main = function main(args, callback) {
         return 1;
     }
 
-    if (typeof argv["strict-long"] === "boolean")
-        argv["force-long"] = argv["strict-long"];
+    if (typeof argv[inputArgs.STRICT_LONG] === "boolean")
+        argv[inputArgs.FORCE_LONG] = argv[inputArgs.STRICT_LONG];
 
     // Resolve glob expressions
     for (var i = 0; i < files.length;) {
@@ -174,7 +181,7 @@ exports.main = function main(args, callback) {
 
     // Require custom target
     if (!target)
-        target = require(path.resolve(process.cwd(), argv.target));
+        target = require(path.resolve(process.cwd(), argv[inputArgs.TARGET]));
 
     var root = new protobuf.Root();
 
@@ -208,13 +215,13 @@ exports.main = function main(args, callback) {
     };
 
     // `--wrap es6` implies `--es6` but not the other way around. You can still use e.g. `--es6 --wrap commonjs`
-    if (argv.wrap === "es6") {
-        argv.es6 = true;
+    if (argv[inputArgs.WRAP] === "es6") {
+        argv[inputArgs.ES6] = true;
     }
 
     var parseOptions = {
-        "keepCase": argv["keep-case"] || false,
-        "alternateCommentMode": argv["alt-comment"] || false,
+        "keepCase": argv[inputArgs.KEEP_CASE] || false,
+        "alternateCommentMode": argv[inputArgs.ALT_COMMENT] || false,
     };
 
     // Read from stdin
@@ -247,14 +254,14 @@ exports.main = function main(args, callback) {
     } else {
         try {
             root.loadSync(files, parseOptions).resolveAll(); // sync is deterministic while async is not
-            if (argv.sparse) {
+            if (argv[inputArgs.SPARSE]) {
                 sparsify(root);
             }
-            if (argv["use-imports"]) {
+            if (argv[inputArgs.USE_IMPORTS]) {
                 markUndefinedInMainFile(root);
-                addImports(root, files, paths);
+                printImports(root, files, paths);
             }
-            if (argv["unify-names"]) {
+            if (argv[inputArgs.UNIFY_NAMES]) {
                 unifyNames(root);
             }
             callTarget();
@@ -267,14 +274,14 @@ exports.main = function main(args, callback) {
         }
     }
 
-    function addImports(root, files, paths) {
+    function printImports(root, files, paths) {
         const imports = new Set();
         if (!files) {
             return;
         }
         files.forEach(function(file) {
 
-            const importsInFile = findAllImportsInFile(findProtobufFile(file, paths));
+            const importsInFile = findAllImports(findProtobufFile(file, paths));
             importsInFile.forEach(function(item) {
                 if (item.endsWith('.proto')) {
                     item = item.substring(0, item.length - '.proto'.length);
@@ -296,11 +303,11 @@ exports.main = function main(args, callback) {
         return undefined;
     }
 
-    function findAllImportsInFile(file) {
+    function findAllImports(file) {
         const fileContent = fs.readFileSync(file, 'utf-8');
 
         const result = [];
-        var re = /\nimport "(.*?)";/g;
+        const re = /\nimport "(.*?)";/g;
         var m;
         while (m = re.exec(fileContent)) {
             const importedLib = m[1];
@@ -330,12 +337,9 @@ exports.main = function main(args, callback) {
     }
 
     function contains(mainFiles, filename) {
-        for (let mainFile of mainFiles) {
-            if (filename.endsWith(mainFile)) {
-                return true;
-            }
-          }
-        return false;
+        return mainFiles.reduce( 
+            (acc, file) => acc = filename.endsWith(file), 
+        false)
     }
 
     function fixFilename(obj) {
@@ -356,11 +360,7 @@ exports.main = function main(args, callback) {
             }
         }
 
-        if (obj.nestedArray) {
-            obj.nestedArray.forEach(function(nested) {
-                unifyNames(nested)
-            })
-        }
+        obj.nestedArray?.forEach(unifyNames)
     }
 
     function findAllParentsNames(obj) {
@@ -444,8 +444,8 @@ exports.main = function main(args, callback) {
                 throw err;
             }
             try {
-                if (argv.out)
-                    fs.writeFileSync(argv.out, output, { encoding: "utf8" });
+                if (argv[inputArgs.OUT])
+                    fs.writeFileSync(argv[inputArgs.OUT], output, { encoding: "utf8" });
                 else if (!callback)
                     process.stdout.write(output, "utf8");
                 return callback
