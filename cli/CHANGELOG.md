@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.1.1](https://github.com/protobufjs/protobuf.js/compare/protobufjs-cli-v1.1.0...protobufjs-cli-v1.1.1) (2023-02-02)
+
+
+### Bug Fixes
+
+* **cli:** fix relative path to Google pb files ([#1859](https://github.com/protobufjs/protobuf.js/issues/1859)) ([e42eea4](https://github.com/protobufjs/protobuf.js/commit/e42eea4868b11f4a07934804a56683321ed191e2))
+
+## [1.1.0](https://github.com/protobufjs/protobuf.js/compare/protobufjs-cli-v1.0.2...protobufjs-cli-v1.1.0) (2023-01-24)
+
+
+### Features
+
+* **cli:** generate static files at the granularity of proto messages ([#1840](https://github.com/protobufjs/protobuf.js/issues/1840)) ([32f2d6a](https://github.com/protobufjs/protobuf.js/commit/32f2d6a68b27997bd0f7619998695a9fa7a4fd70))
+
 ## [1.0.2](https://github.com/protobufjs/protobuf.js/compare/protobufjs-cli-v1.0.1...protobufjs-cli-v1.0.2) (2022-09-09)
 
 

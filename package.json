@@ -1,6 +1,6 @@
 {
   "name": "protobufjs",
-  "version": "7.1.2",
+  "version": "7.2.2",
   "versionScheme": "~",
   "description": "Protocol Buffers for JavaScript (& TypeScript).",
   "author": "Daniel Wirtz <dcode+protobufjs@dcode.io>",
@@ -10,6 +10,14 @@
   "homepage": "https://protobufjs.github.io/protobuf.js/",
   "engines": {
     "node": ">=12.0.0"
+  },
+  "eslintConfig": {
+    "env": {
+      "es6": true
+    },
+    "parserOptions": {
+      "ecmaVersion": 6
+    }
   },
   "keywords": [
     "protobuf",
@@ -73,7 +81,7 @@
     "gulp-sourcemaps": "^3.0.0",
     "gulp-uglify": "^3.0.2",
     "jaguarjs-jsdoc": "github:dcodeIO/jaguarjs-jsdoc",
-    "jsdoc": "^3.6.3",
+    "jsdoc": "^4.0.0",
     "minimist": "^1.2.0",
     "nyc": "^15.0.0",
     "reflect-metadata": "^0.1.13",

@@ -4,6 +4,7 @@ var tape = require("tape");
 var path = require("path");
 var Module = require("module");
 var protobuf = require("..");
+var fs = require("fs");
 
 function cliTest(test, testFunc) {
     // pbjs does not seem to work with Node v4, so skip this test if we're running on it
@@ -157,6 +158,57 @@ tape.test("with null-defaults, absent optional fields have null values", functio
             test.equal(msg.a, null, "default submessage is null");
             test.equal(msg.b, null, "default string is null");
             test.equal(msg.c, null, "default integer is null");
+
+            test.end();
+        });
+    });
+});
+
+
+tape.test("pbjs generates static code with message filter", function (test) {
+    cliTest(test, function () {
+        var root = protobuf.loadSync("tests/data/cli/test-filter.proto");
+        root.resolveAll();
+
+        var staticTarget = require("../cli/targets/static");
+        var util = require("../cli/util");
+
+        const needMessageConfig = JSON.parse(fs.readFileSync("tests/data/cli/filter.json"));
+
+        util.filterMessage(root, needMessageConfig);
+
+        staticTarget(root, {
+            create: true,
+            decode: true,
+            encode: true,
+            convert: true,
+            "null-defaults": true,
+        }, function (err, jsCode) {
+            test.error(err, 'static code generation worked');
+
+            // jsCode is the generated code; we'll eval it
+            // (since this is what we normally does with the code, right?)
+            // This is a test code. Do not use this in production.
+            var $protobuf = protobuf;
+            eval(jsCode);
+
+            console.log(protobuf.roots);
+
+            var NeedMessage1 = protobuf.roots.default.filtertest.NeedMessage1;
+            var NeedMessage2 = protobuf.roots.default.filtertest.NeedMessage2;
+            var DependentMessage1 = protobuf.roots.default.filtertest.DependentMessage1;
+            var DependentMessageFromImport = protobuf.roots.default.DependentMessageFromImport;
+
+            var NotNeedMessageInRootFile = protobuf.roots.default.filtertest.NotNeedMessageInRootFile;
+            var NotNeedMessageInImportFile = protobuf.roots.default.NotNeedMessageInImportFile;
+            
+            test.ok(NeedMessage1, "NeedMessage1 is loaded");
+            test.ok(NeedMessage2, "NeedMessage2 is loaded");
+            test.ok(DependentMessage1, "DependentMessage1 is loaded");
+            test.ok(DependentMessageFromImport, "DependentMessageFromImport is loaded");
+
+            test.notOk(NotNeedMessageInImportFile, "NotNeedMessageInImportFile is not loaded");
+            test.notOk(NotNeedMessageInRootFile, "NotNeedMessageInRootFile is not loaded");
 
             test.end();
         });

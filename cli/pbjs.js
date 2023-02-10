@@ -43,7 +43,7 @@ exports.main = function main(args, callback) {
             [inputArgs.FORCE_LONG]: "strict-long",
             [inputArgs.FORCE_MESSAGE]: "strict-message"
         },
-        string: [ inputArgs.TARGET, inputArgs.OUT, inputArgs.PATH, inputArgs.WRAP, inputArgs.DEPENDENCY, inputArgs.ROOT, inputArgs.LINT ],
+        string: [ inputArgs.TARGET, inputArgs.OUT, inputArgs.PATH, inputArgs.WRAP, inputArgs.DEPENDENCY, inputArgs.ROOT, inputArgs.LINT, inputArgs.FILTER ],
         boolean: [ inputArgs.CREATE, inputArgs.ENCODE, inputArgs.DECODE, inputArgs.VERIFY, inputArgs.CONVERT,
             inputArgs.DELIMITED, inputArgs.TYPEURL, inputArgs.BEAUTIFY, 
             inputArgs.COMMENTS, inputArgs.SERVICE, inputArgs.ES6, inputArgs.SPARSE, inputArgs.KEEP_CASE,
@@ -88,7 +88,7 @@ exports.main = function main(args, callback) {
     });
 
     // protobuf.js package directory contains additional, otherwise non-bundled google types
-    paths.push(path.relative(process.cwd(), path.join(__dirname, "..")) || ".");
+    paths.push(path.relative(process.cwd(), path.join(__dirname, "../protobufjs")) || ".");
 
     if (!files.length) {
         var descs = Object.keys(targets).filter(function(key) { return !targets[key].private; }).map(function(key) {
@@ -113,6 +113,10 @@ exports.main = function main(args, callback) {
                 "  --" + inputArgs.SPARSE + "         Exports only those types referenced from a main file (experimental).",
                 "",
                 "  -u, --" + inputArgs.UNIFY_NAMES + "   Unify names of nested Namespaces in case then they are the same",
+                "  --" + inputArgs.FILTER + "         Set up a filter to configure only those messages you need and their dependencies to compile, this will effectively reduce the final file size",
+                "                   Set A json file path, Example of file content: {\"messageNames\":[\"mypackage.messageName1\", \"messageName2\"] } ",
+                "",
+                "  -o, --" + inputArgs.OUT + "        Saves to a file instead of writing to stdout.",
                 "",
                 "  --" + inputArgs.USE_IMPORTS + "    Use imports. If this flag is used all code from imports will be put into one generated file. If this flag is not used, generated file will contain definitions for all imported code. Works for static targets only.",
                 "",
@@ -436,7 +440,20 @@ exports.main = function main(args, callback) {
         root.resolveAll();
     }
 
+    function filterMessage() {
+        if (argv.filter) {
+            // This is a piece of degradable logic
+            try {
+                const needMessage = JSON.parse(fs.readFileSync(argv.filter));
+                util.filterMessage(root, needMessage);
+            } catch (error) {
+                process.stderr.write(`The filter not work, please check whether the file is correct: ${error.message}\n`);
+            }
+        }
+    }
+
     function callTarget() {
+        filterMessage();
         target(root, argv, function targetCallback(err, output) {
             if (err) {
                 if (callback)
