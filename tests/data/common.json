@@ -47,37 +47,37 @@
               "oneofs": {
                 "kind": {
                   "oneof": [
-                    "nullValue",
-                    "numberValue",
-                    "stringValue",
-                    "boolValue",
-                    "structValue",
-                    "listValue"
+                    "null_value",
+                    "number_value",
+                    "string_value",
+                    "bool_value",
+                    "struct_value",
+                    "list_value"
                   ]
                 }
               },
               "fields": {
-                "nullValue": {
+                "null_value": {
                   "type": "NullValue",
                   "id": 1
                 },
-                "numberValue": {
+                "number_value": {
                   "type": "double",
                   "id": 2
                 },
-                "stringValue": {
+                "string_value": {
                   "type": "string",
                   "id": 3
                 },
-                "boolValue": {
+                "bool_value": {
                   "type": "bool",
                   "id": 4
                 },
-                "structValue": {
+                "struct_value": {
                   "type": "Struct",
                   "id": 5
                 },
-                "listValue": {
+                "list_value": {
                   "type": "ListValue",
                   "id": 6
                 }

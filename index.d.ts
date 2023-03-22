@@ -42,12 +42,12 @@ export namespace common {
     /** Properties of a google.protobuf.Value message. */
     interface IValue {
         kind?: string;
-        nullValue?: 0;
-        numberValue?: number;
-        stringValue?: string;
-        boolValue?: boolean;
-        structValue?: IStruct;
-        listValue?: IListValue;
+        null_value?: 0;
+        number_value?: number;
+        string_value?: string;
+        bool_value?: boolean;
+        struct_value?: IStruct;
+        list_value?: IListValue;
     }
 
     /** Properties of a google.protobuf.ListValue message. */
