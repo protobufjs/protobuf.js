@@ -1,5 +1,12 @@
 # Changelog
 
+## [7.2.3](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v7.2.2...protobufjs-v7.2.3) (2023-03-27)
+
+
+### Bug Fixes
+
+* type names can be split into multiple tokens ([#1877](https://github.com/protobufjs/protobuf.js/issues/1877)) ([8817ee6](https://github.com/protobufjs/protobuf.js/commit/8817ee613dfcf55f7f6fa8704f3fdd3e68c0e1d8))
+
 ## [7.2.2](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v7.2.1...protobufjs-v7.2.2) (2023-02-07)
 
 
