@@ -2664,6 +2664,12 @@ export class Writer {
      * @returns Finished buffer
      */
     public finish(): Uint8Array;
+
+    /**
+     * Finishes the write operation into a passed-in buffer.
+     * @param {Uint8Array} buf Uint8Array that's 'this.len' bytes long
+     */
+    public finishInto(buf: Uint8Array): void;
 }
 
 /** Wire format writer using node buffers. */
@@ -2684,6 +2690,12 @@ export class BufferWriter extends Writer {
      * @returns Finished buffer
      */
     public finish(): Buffer;
+
+    /**
+     * Finishes the write operation into a passed-in buffer.
+     * @param {Buffer} buf Buffer that's 'this.len' bytes long
+     */
+    public finishInto(buf: Buffer): void;
 }
 
 /**
