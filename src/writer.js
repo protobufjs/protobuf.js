@@ -443,19 +443,13 @@ Writer.prototype.ldelim = function ldelim() {
 
 /**
  * Finishes the write operation.
+ * @param {Uint8Array} [buf] Optional buffer that's 'this.len' bytes long
  * @returns {Uint8Array} Finished buffer
  */
-Writer.prototype.finish = function finish() {
-    var buf = this.constructor.alloc(this.len),
-    this.finishInto(buf);
-    return buf;
-};
-
-/**
- * Finishes the write operation into a passed-in buffer.
- * @param {Uint8Array} buf Uint8Array that's 'this.len' bytes long
- */
-Writer.prototype.finishInto = function finishInto() {
+Writer.prototype.finish = function finish(buf) {
+    if (buf == null) {
+      buf = this.constructor.alloc(this.len);
+    }
     var head = this.head.next, // skip noop
         pos  = 0;
     while (head) {
@@ -463,7 +457,7 @@ Writer.prototype.finishInto = function finishInto() {
         pos += head.len;
         head = head.next;
     }
-    // this.head = this.tail = null;
+    return buf;
 };
 
 Writer._configure = function(BufferWriter_) {
