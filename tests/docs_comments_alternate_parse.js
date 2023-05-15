@@ -3,7 +3,7 @@ var tape = require("tape");
 var protobuf = require("..");
 
 tape.test("proto comments in alternate-parse mode", function(test) {
-    test.plan(24);
+    test.plan(27);
     var options = {alternateCommentMode: true};
     var root = new protobuf.Root();
     root.load("tests/data/comments-alternate-parse.proto", options, function(err, root) {
@@ -13,6 +13,9 @@ tape.test("proto comments in alternate-parse mode", function(test) {
         test.equal(root.lookup("Test1").comment, "Message with\na\nmulti-line comment.", "should parse double-slash multiline comment");
         test.equal(root.lookup("Test2").comment, "Message\nwith\na multiline plain slash-star\ncomment.", "should parse slash-star multiline comment");
         test.equal(root.lookup("Test3").comment, "Message\nwith\na\ncomment and stars.", "should parse doc-block multiline comment");
+        test.equal(root.lookup("Test4").comment, "followed by a block comment, followed by a newline. (issue #1616)", "should parse double slash comment followed by block comment");
+        test.equal(root.lookup("Test5").comment, "line comment with\nwhitespace in front", "should ignore leading whitespace when parsing line comments");
+        test.equal(root.lookup("Test6").comment, "with strange whitespace", "should parse block comment preceeded by double slash comments with leading whitespace");
 
         test.equal(root.lookup("Test1.field1").comment, "Field with a doc-block comment.", "should parse doc-block field comment");
         test.equal(root.lookup("Test1.field2").comment, "Field with a single-line comment starting with two slashes.", "should parse double-slash field comment");
