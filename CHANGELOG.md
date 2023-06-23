@@ -1,5 +1,12 @@
 # Changelog
 
+## [7.2.4](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v7.2.3...protobufjs-v7.2.4) (2023-06-23)
+
+
+### Bug Fixes
+
+* do not let setProperty change the prototype ([#1899](https://github.com/protobufjs/protobuf.js/issues/1899)) ([e66379f](https://github.com/protobufjs/protobuf.js/commit/e66379f451b0393c27d87b37fa7d271619e16b0d))
+
 ## [7.2.3](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v7.2.2...protobufjs-v7.2.3) (2023-03-27)
 
 
