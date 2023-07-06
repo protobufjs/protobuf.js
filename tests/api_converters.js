@@ -106,6 +106,7 @@ tape.test("converters", function(test) {
                 var buf = protobuf.util.newBuffer(3);
                 buf[0] = buf[1] = buf[2] = 49; // "111"
                 var msg = Message.create({
+                    // This number was chosen to be > 2^63 and < 2^64
                     uint64Val: protobuf.util.Long.fromString("11000000000000000001", true),
                     uint64Repeated: [2, 3],
                     bytesVal: buf,
@@ -113,6 +114,7 @@ tape.test("converters", function(test) {
                     enumVal: 2,
                     enumRepeated: [1, 100, 2],
                     int64Map: {
+                        // These numbers were chosen to be < Number.MIN_SAFE_INTEGER
                         a: protobuf.util.Long.fromString("-200000000000000001"),
                         b: protobuf.util.Long.fromString("-300000000000000001")
                     }

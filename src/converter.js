@@ -250,7 +250,7 @@ converter.toObject = function toObject(mtype) {
         ("d%s=o.enums===String?%j:%j", prop, field.resolvedType.valuesById[field.typeDefault], field.typeDefault);
             else if (field.long) gen
         ("if(typeof BigInt!==\"undefined\"&&o.longs===BigInt){")
-            ("d%s=BigInt(%s)", prop, field.typeDefault.toString())
+            ("d%s=BigInt(%j)", prop, field.typeDefault.toString())
         ("}else if(util.Long){")
             ("var n=new util.Long(%i,%i,%j)", field.typeDefault.low, field.typeDefault.high, field.typeDefault.unsigned)
             ("d%s=o.longs===String?n.toString():o.longs===Number?n.toNumber():n", prop)
