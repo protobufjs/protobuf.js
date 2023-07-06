@@ -181,7 +181,9 @@ function genValuePartial_toObject(gen, field, fieldIndex, prop) {
             case "sint64":
             case "fixed64":
             case "sfixed64": gen
-            ("if(typeof m%s===\"number\")", prop)
+            ("if(typeof BigInt!==\"undefined\"&&o.longs===BigInt){")
+                ("d%s=typeof m%s===\"number\"?BigInt(m%s):util._toBigInt(m%s.low,m%s.high,%j)", prop, prop, prop, prop, prop, isUnsigned)
+            ("}else if(typeof m%s===\"number\")", prop)
                 ("d%s=o.longs===String?String(m%s):m%s", prop, prop, prop)
             ("else") // Long-like
                 ("d%s=o.longs===String?util.Long.prototype.toString.call(m%s):o.longs===Number?new util.LongBits(m%s.low>>>0,m%s.high>>>0).toNumber(%s):m%s", prop, prop, prop, prop, isUnsigned ? "true": "", prop);
@@ -247,7 +249,9 @@ converter.toObject = function toObject(mtype) {
             if (field.resolvedType instanceof Enum) gen
         ("d%s=o.enums===String?%j:%j", prop, field.resolvedType.valuesById[field.typeDefault], field.typeDefault);
             else if (field.long) gen
-        ("if(util.Long){")
+        ("if(typeof BigInt!==\"undefined\"&&o.longs===BigInt){")
+            ("d%s=BigInt(%s)", prop, field.typeDefault.toString())
+        ("}else if(util.Long){")
             ("var n=new util.Long(%i,%i,%j)", field.typeDefault.low, field.typeDefault.high, field.typeDefault.unsigned)
             ("d%s=o.longs===String?n.toString():o.longs===Number?n.toNumber():n", prop)
         ("}else")

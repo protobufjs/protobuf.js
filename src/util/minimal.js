@@ -436,3 +436,23 @@ util._configure = function() {
             return new Buffer(size);
         };
 };
+
+// Used in converter for `longs: BigInt`
+try {
+    let view = new DataView(new ArrayBuffer(8));
+    view.getBigInt64(0, true);
+    view.getBigUint64(0, true);
+    util._toBigInt = function(low, high, isUnsigned) {
+        view.setUint32(0, low, true);
+        view.setUint32(4, high, true);
+        return isUnsigned ? view.getBigUint64(0, true) : view.getBigInt64(0, true);
+    };
+} catch (err) {
+    util._toBigInt = function(low, high, isUnsigned) {
+        const unsigned = (BigInt(high >>> 0) << BigInt(32)) | BigInt(low >>> 0);
+        if (!isUnsigned && (unsigned & BigInt(1) << BigInt(63))) {
+            return unsigned - (BigInt(1) << BigInt(64));
+        }
+        return unsigned;
+    };
+}
