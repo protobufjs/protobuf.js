@@ -103,12 +103,12 @@ Root.prototype.load = function load(filename, options, callback) {
         /* istanbul ignore if */
         if (!callback)
             return;
+        var cb = callback;
+        callback = null;
         if (sync) {
             throwing = err;
             throw err;
         }
-        var cb = callback;
-        callback = null;
         cb(err, root);
     }
 
@@ -152,6 +152,7 @@ Root.prototype.load = function load(filename, options, callback) {
 
     // Fetches a single file
     function fetch(filename, weak) {
+        filename = getBundledFileName(filename) || filename;
 
         // Skip if already loaded / attempted
         if (self.files.indexOf(filename) > -1)
@@ -280,6 +281,10 @@ function tryHandleExtension(root, field) {
     var extendedType = field.parent.lookup(field.extend);
     if (extendedType) {
         var sisterField = new Field(field.fullName, field.id, field.type, field.rule, undefined, field.options);
+        //do not allow to extend same field twice to prevent the error
+        if (extendedType.get(sisterField.name)) {
+            return true;
+        }
         sisterField.declaringField = field;
         field.extensionField = sisterField;
         extendedType.add(sisterField);

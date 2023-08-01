@@ -40,7 +40,7 @@ exports.main = function main(args, callback) {
             "force-long": "strict-long",
             "force-message": "strict-message"
         },
-        string: [ "target", "out", "path", "wrap", "dependency", "root", "lint" ],
+        string: [ "target", "out", "path", "wrap", "dependency", "root", "lint", "filter" ],
         boolean: [ "create", "encode", "decode", "verify", "convert", "delimited", "typeurl", "beautify", "comments", "service", "es6", "sparse", "keep-case", "alt-comment", "force-long", "force-number", "force-enum-string", "force-message", "null-defaults" ],
         default: {
             target: "json",
@@ -78,7 +78,7 @@ exports.main = function main(args, callback) {
     });
 
     // protobuf.js package directory contains additional, otherwise non-bundled google types
-    paths.push(path.relative(process.cwd(), path.join(__dirname, "..")) || ".");
+    paths.push(path.relative(process.cwd(), path.join(__dirname, "../protobufjs")) || ".");
 
     if (!files.length) {
         var descs = Object.keys(targets).filter(function(key) { return !targets[key].private; }).map(function(key) {
@@ -97,6 +97,9 @@ exports.main = function main(args, callback) {
                 descs.join("\n"),
                 "",
                 "  -p, --path       Adds a directory to the include path.",
+                "",
+                "  --filter         Set up a filter to configure only those messages you need and their dependencies to compile, this will effectively reduce the final file size",
+                "                   Set A json file path, Example of file content: {\"messageNames\":[\"mypackage.messageName1\", \"messageName2\"] } ",
                 "",
                 "  -o, --out        Saves to a file instead of writing to stdout.",
                 "",
@@ -308,7 +311,20 @@ exports.main = function main(args, callback) {
         root.resolveAll();
     }
 
+    function filterMessage() {
+        if (argv.filter) {
+            // This is a piece of degradable logic
+            try {
+                const needMessage = JSON.parse(fs.readFileSync(argv.filter));
+                util.filterMessage(root, needMessage);
+            } catch (error) {
+                process.stderr.write(`The filter not work, please check whether the file is correct: ${error.message}\n`);
+            }
+        }
+    }
+
     function callTarget() {
+        filterMessage();
         target(root, argv, function targetCallback(err, output) {
             if (err) {
                 if (callback)
