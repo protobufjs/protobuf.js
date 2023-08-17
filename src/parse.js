@@ -227,7 +227,7 @@ function parse(source, root, options) {
                 break;
             case "public":
                 next();
-                // eslint-disable-line no-fallthrough
+                // eslint-disable-next-line no-fallthrough
             default:
                 whichImports = imports || (imports = []);
                 break;
@@ -620,6 +620,9 @@ function parse(source, root, options) {
                 /* istanbul ignore if */
                 if (!nameRe.test(token = next())) {
                     throw illegal(token, "name");
+                }
+                if (token === null) {
+                  throw illegal(token, "end of input");
                 }
 
                 var value;

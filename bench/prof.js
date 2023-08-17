@@ -86,14 +86,14 @@ function setupBrowser() {
 switch (process.argv[2]) {
     case "encode-browser":
         setupBrowser();
-        // eslint-disable-line no-fallthrough
+        // eslint-disable-next-line no-fallthrough
     case "encode":
         for (var i = 0; i < count; ++i)
             Test.encode(data).finish();
         break;
     case "decode-browser":
         setupBrowser();
-        // eslint-disable-line no-fallthrough
+        // eslint-disable-next-line no-fallthrough
     case "decode":
         var buf = Test.encode(data).finish();
         for (var j = 0; j < count; ++j)

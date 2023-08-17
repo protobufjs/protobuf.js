@@ -192,8 +192,6 @@ tape.test("pbjs generates static code with message filter", function (test) {
             var $protobuf = protobuf;
             eval(jsCode);
 
-            console.log(protobuf.roots);
-
             var NeedMessage1 = protobuf.roots.default.filtertest.NeedMessage1;
             var NeedMessage2 = protobuf.roots.default.filtertest.NeedMessage2;
             var DependentMessage1 = protobuf.roots.default.filtertest.DependentMessage1;
@@ -201,7 +199,7 @@ tape.test("pbjs generates static code with message filter", function (test) {
 
             var NotNeedMessageInRootFile = protobuf.roots.default.filtertest.NotNeedMessageInRootFile;
             var NotNeedMessageInImportFile = protobuf.roots.default.NotNeedMessageInImportFile;
-            
+
             test.ok(NeedMessage1, "NeedMessage1 is loaded");
             test.ok(NeedMessage2, "NeedMessage2 is loaded");
             test.ok(DependentMessage1, "DependentMessage1 is loaded");
