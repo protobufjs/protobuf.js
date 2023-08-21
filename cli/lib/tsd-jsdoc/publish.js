@@ -438,7 +438,7 @@ function handleElement(element, parent) {
                 handleEnum(element, parent);
                 break;
             }
-            // eslint-disable-line no-fallthrough
+            // eslint-disable-next-line no-fallthrough
         case "namespace":
             handleNamespace(element, parent);
             break;

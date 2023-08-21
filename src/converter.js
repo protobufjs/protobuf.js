@@ -62,7 +62,7 @@ function genValuePartial_fromObject(gen, field, fieldIndex, prop) {
                 break;
             case "uint64":
                 isUnsigned = true;
-                // eslint-disable-line no-fallthrough
+                // eslint-disable-next-line no-fallthrough
             case "int64":
             case "sint64":
             case "fixed64":
@@ -176,7 +176,7 @@ function genValuePartial_toObject(gen, field, fieldIndex, prop) {
                 break;
             case "uint64":
                 isUnsigned = true;
-                // eslint-disable-line no-fallthrough
+                // eslint-disable-next-line no-fallthrough
             case "int64":
             case "sint64":
             case "fixed64":

@@ -157,5 +157,10 @@ tape.test("Options", function (test) {
         test.end();
     });
 
+    test.test(test.name + " - invalid option", function (test) {
+        test.throws(() => { protobuf.parse("option (foo).whatever = {")});
+        test.end();
+    });
+
     test.end();
 });
