@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.2](https://github.com/protobufjs/protobuf.js/compare/protobufjs-cli-v1.1.1...protobufjs-cli-v1.1.2) (2023-08-21)
+
+
+### Bug Fixes
+
+* possible infinite loop when parsing option ([#1923](https://github.com/protobufjs/protobuf.js/issues/1923)) ([f2a8620](https://github.com/protobufjs/protobuf.js/commit/f2a86201799af5842e1339c22950abbb3db00f51))
+
 ## [1.1.1](https://github.com/protobufjs/protobuf.js/compare/protobufjs-cli-v1.1.0...protobufjs-cli-v1.1.1) (2023-02-02)
 
 
