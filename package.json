@@ -15,6 +15,11 @@
     "typescript"
   ],
   "main": "index.js",
+  "exports": {
+    ".": "index.js",
+    "./light": "./light.js",
+    "./minimal": "./minimal.js"
+  },
   "types": "index.d.ts",
   "bin": {
     "pbjs": "bin/pbjs",
