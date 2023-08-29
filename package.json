@@ -16,7 +16,7 @@
   ],
   "main": "index.js",
   "exports": {
-    ".": "index.js",
+    ".": "./index.js",
     "./light": "./light.js",
     "./minimal": "./minimal.js"
   },
