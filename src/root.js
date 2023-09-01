@@ -94,14 +94,21 @@ Root.prototype.load = function load(filename, options, callback) {
     var sync = callback === SYNC; // undocumented
 
     // Finishes loading by calling the callback (exactly once)
+    var throwing = null;
     function finish(err, root) {
+        // If we get here, and we are throwing then something must have
+        // incorrectly caught the error, so we need to rethrow it.
+        if (throwing)
+            throw throwing;
         /* istanbul ignore if */
         if (!callback)
             return;
         var cb = callback;
         callback = null;
-        if (sync)
+        if (sync) {
+            throwing = err;
             throw err;
+        }
         cb(err, root);
     }
 

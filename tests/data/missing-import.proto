@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+import "no/such/file.proto";
+
+message Something {
+  ImportedType field = 1;
+}

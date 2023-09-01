@@ -46,3 +46,17 @@ tape.test("should load bundled definitions even if resolvePath method was overri
     test.ok(root.lookup("Something"), "should parse message Something");
     test.end();
 });
+
+tape.test("should raise error if import is missing", function(test) {
+    var protoFilePath = "tests/data/missing-import.proto";
+    var root = new protobuf.Root();
+
+    test.throws(
+        () => {
+            root.loadSync(protoFilePath);
+        },
+        /ENOENT: no such file or directory, open 'tests\/data\/no\/such\/file.proto'/,
+        "should throw an error with the path to the missing file"
+    );
+    test.end();
+});
