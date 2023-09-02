@@ -117,7 +117,10 @@ tape.test("converters", function(test) {
                         // These numbers were chosen to be < Number.MIN_SAFE_INTEGER
                         a: protobuf.util.Long.fromString("-200000000000000001"),
                         b: protobuf.util.Long.fromString("-300000000000000001")
-                    }
+                    },
+                    fixed64Val: protobuf.util.Long.fromString("11000000000000000001", true),
+                    // This number was chosen to be between -2^63 and -2^62
+                    sfixed64Val: protobuf.util.Long.fromString("-9000000000000000001", true),
                 });
 
                 var msgLongsToNumber = Message.toObject(msg, { longs: Number }),
@@ -134,6 +137,12 @@ tape.test("converters", function(test) {
                 test.same(msgLongsToNumber.int64Map, { a: -200000000000000000, b: -300000000000000000}, "long map values to numbers");
                 test.same(msgLongsToString.int64Map, { a: "-200000000000000001", b: "-300000000000000001"}, "long map values to strings");
                 test.same(msgLongsToBigInt.int64Map, { a: -200000000000000001n, b: -300000000000000001n}, "long map values to bigints");
+                test.equal(msgLongsToNumber.fixed64Val, 11000000000000000000, "longs to numbers");
+                test.equal(msgLongsToString.fixed64Val, "11000000000000000001", "longs to strings");
+                test.equal(msgLongsToBigInt.fixed64Val, 11000000000000000001n, "longs to bigints");
+                test.equal(msgLongsToNumber.sfixed64Val, -9000000000000000000, "longs to numbers");
+                test.equal(msgLongsToString.sfixed64Val, "9446744073709551615", "longs to strings"); // this is wrong
+                test.equal(msgLongsToBigInt.sfixed64Val, -9000000000000000001n, "longs to bigints");
 
                 test.equal(Object.prototype.toString.call(Message.toObject(msg, { bytes: Array }).bytesVal), "[object Array]", "bytes to arrays");
                 test.equal(Message.toObject(msg, { bytes: String }).bytesVal, "MTEx", "bytes to base64 strings");

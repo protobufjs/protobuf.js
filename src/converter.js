@@ -175,11 +175,11 @@ function genValuePartial_toObject(gen, field, fieldIndex, prop) {
             ("d%s=o.json&&!isFinite(m%s)?String(m%s):m%s", prop, prop, prop, prop);
                 break;
             case "uint64":
+            case "fixed64":
                 isUnsigned = true;
                 // eslint-disable-next-line no-fallthrough
             case "int64":
             case "sint64":
-            case "fixed64":
             case "sfixed64": gen
             ("if(typeof BigInt!==\"undefined\"&&o.longs===BigInt){")
                 ("d%s=typeof m%s===\"number\"?BigInt(m%s):util._toBigInt(m%s.low,m%s.high,%j)", prop, prop, prop, prop, prop, isUnsigned)
