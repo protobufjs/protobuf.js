@@ -79,6 +79,27 @@ enum Test3 {
     FIVE = 5; // Trailing comment for value with both types of comments after field with trailing comment.
 }
 
+// Single line comment,
+/*
+followed by a block comment, followed by a newline. (issue #1616)
+*/
+message Test4 {
+}
+
+                      // line comment with
+                      // whitespace in front
+message Test5 {
+}
+              
+// Multiple
+          // different
+    // comments
+    /*
+with strange whitespace
+*/
+message Test6 {
+}
+
 service ServiceTest {
     // My method does things
     rpc SingleLineMethod (MyRequest) returns (MyResponse);

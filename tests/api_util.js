@@ -95,6 +95,15 @@ tape.test("util", function(test) {
 
         util.setProperty(o, 'prop.subprop', { subsub2: 7});
         test.same(o, {prop1: [5, 6], prop: {subprop: [{subsub: [5,6]}, {subsub2: 7}]}}, "should convert nested properties to array");
+        
+        util.setProperty({}, "__proto__.test", "value");
+        test.is({}.test, undefined);
+
+        util.setProperty({}, "prototype.test", "value");
+        test.is({}.test, undefined);
+
+        util.setProperty({}, "constructor.prototype.test", "value");
+        test.is({}.test, undefined);
 
         test.end();
     });
