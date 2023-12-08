@@ -221,13 +221,14 @@ Field.prototype.setOption = function setOption(name, value, ifNotSet) {
     return ReflectionObject.prototype.setOption.call(this, name, value, ifNotSet);
 };
 
-Field.prototype.applyParsedOptions = function applyParsedOptions() {
-    if(this.parsedOptions !== null) {
+Field.prototype.applyJsonName = function applyJsonName() {
+    if (this.parsedOptions !== null) {
         var opt = this.parsedOptions.find(function (opt) {
             return Object.prototype.hasOwnProperty.call(opt, "json_name");
         });
-        if(opt)
+        if (opt) {
             this.name = opt["json_name"];
+        }
     }
 };
 
