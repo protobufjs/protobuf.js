@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+import "nonexistent.proto";
+
+message Message {
+  NonExistent field = 1;
+}
