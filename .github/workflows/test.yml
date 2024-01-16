@@ -12,7 +12,7 @@ jobs:
     - uses: actions/checkout@v1
     - uses: actions/setup-node@v1
       with:
-        node-version: "12"
+        node-version: "16"
     - name: "Install dependencies"
       run: npm install
     - name: "Lint sources"
@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node_version: ["12", "14", "16", "18"]
+        node_version: ["16", "18", "20"]
     steps:
     - uses: actions/checkout@v1
     - uses: actions/setup-node@v1
@@ -41,7 +41,7 @@ jobs:
     - uses: actions/checkout@v1
     - uses: actions/setup-node@v1
       with:
-        node-version: "12"
+        node-version: "16"
     - name: "Install dependencies"
       run: npm install
     - name: "Run benchmark"
