@@ -1709,7 +1709,7 @@ export interface IConversionOptions {
 
     /**
      * Long conversion type.
-     * Valid values are `String` and `Number` (the global types).
+     * Valid values are `BigInt`, `String`, and `Number` (the global types).
      * Defaults to copy the present value, which is a possibly unsafe number without and a {@link Long} with a long library.
      */
     longs?: Function;
