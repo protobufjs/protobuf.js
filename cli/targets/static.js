@@ -311,8 +311,12 @@ function buildFunction(type, functionName, gen, scope) {
         push("};");
 }
 
-function toJsType(field) {
+function toJsType(field, asInterface) {
     var type;
+
+    if (asInterface === undefined) {
+        asInterface = true;
+    }
 
     switch (field.type) {
         case "double":
@@ -342,7 +346,7 @@ function toJsType(field) {
             break;
         default:
             if (field.resolve().resolvedType)
-                type = exportName(field.resolvedType, !(field.resolvedType instanceof protobuf.Enum || config.forceMessage));
+                type = exportName(field.resolvedType, asInterface && !(field.resolvedType instanceof protobuf.Enum || config.forceMessage));
             else
                 type = "*"; // should not happen
             break;
@@ -393,7 +397,7 @@ function buildType(ref, type) {
         var prop = util.safeProp(field.name);
         if (config.comments) {
             push("");
-            var jsType = toJsType(field);
+            var jsType = toJsType(field, false);
             if (field.optional && !field.map && !field.repeated && (field.resolvedType instanceof Type || config["null-defaults"]) || field.partOf)
                 jsType = jsType + "|null|undefined";
             pushComment([
