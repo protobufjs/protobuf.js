@@ -98,10 +98,10 @@ Root.prototype.load = function load(filename, options, callback) {
         /* istanbul ignore if */
         if (!callback)
             return;
-        var cb = callback;
-        callback = null;
         if (sync)
             throw err;
+        var cb = callback;
+        callback = null;
         cb(err, root);
     }
 
