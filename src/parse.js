@@ -153,7 +153,7 @@ function parse(source, root, options) {
             dummy,
             function parseRange_block(token) {
               /* istanbul ignore else */
-              if (token === 'option') {
+              if (token === "option") {
                 parseOption(dummy, token);  // skip
                 skip(';');
               } else
