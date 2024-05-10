@@ -1,5 +1,12 @@
 # Changelog
 
+## [7.3.0](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v7.2.6...protobufjs-v7.3.0) (2024-05-10)
+
+
+### Features
+
+* add handling for extension range options ([#1990](https://github.com/protobufjs/protobuf.js/issues/1990)) ([2d58011](https://github.com/protobufjs/protobuf.js/commit/2d58011cc0bc495c68ed70f5aad297deb1722378))
+
 ## [7.2.6](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v7.2.5...protobufjs-v7.2.6) (2024-01-16)
 
 
