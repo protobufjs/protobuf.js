@@ -155,7 +155,7 @@ function parse(source, root, options) {
               /* istanbul ignore else */
               if (token === "option") {
                 parseOption(dummy, token);  // skip
-                skip(';');
+                skip(";");
               } else
                 throw illegal(token);
             },

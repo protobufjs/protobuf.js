@@ -53,7 +53,7 @@ message Test2 {
         number: 1000
         full_name: 'uncommon.Test.inner_ext'
         type: 'uncommon.Test'
-    }]
+    }];
 };
 
 enum Test3;
