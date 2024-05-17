@@ -203,7 +203,8 @@ Type.fromDescriptor = function fromDescriptor(descriptor, syntax) {
     // Decode the descriptor message if specified as a buffer:
     if (typeof descriptor.length === "number")
         descriptor = exports.DescriptorProto.decode(descriptor);
-
+    // record mapTypes for map fields
+    var mapTypes = {};
     // Create the message type
     var type = new Type(descriptor.name.length ? descriptor.name : "Type" + unnamedMessageIndex++, fromDescriptorOptions(descriptor.options, exports.MessageOptions)),
         i;
@@ -211,9 +212,27 @@ Type.fromDescriptor = function fromDescriptor(descriptor, syntax) {
     /* Oneofs */ if (descriptor.oneofDecl)
         for (i = 0; i < descriptor.oneofDecl.length; ++i)
             type.add(OneOf.fromDescriptor(descriptor.oneofDecl[i]));
+    /* Nested types */ if (descriptor.nestedType)
+        for (i = 0; i < descriptor.nestedType.length; ++i) {
+            if (descriptor.nestedType[i].options && descriptor.nestedType[i].options.mapEntry && descriptor.nestedType[i].field.length === 2){
+                mapTypes[descriptor.nestedType[i].name] = [fromDescriptorType(descriptor.nestedType[i].field[0].type), descriptor.nestedType[i].field[1].typeName ? descriptor.nestedType[i].field[1].typeName : fromDescriptorType(descriptor.nestedType[i].field[1].type)];
+            }else{
+                type.add(Type.fromDescriptor(descriptor.nestedType[i], syntax));
+            }
+        }
     /* Fields */ if (descriptor.field)
         for (i = 0; i < descriptor.field.length; ++i) {
-            var field = Field.fromDescriptor(descriptor.field[i], syntax);
+            var field = null;
+            while(!field) {
+                if(descriptor.field[i].typeName) {
+                    var nameParts = descriptor.field[i].typeName.split("."+type.name+".");
+                    if(nameParts.length===2 && mapTypes[nameParts[1]]) {
+                        field = Field.fromDescriptor(descriptor.field[i], syntax, mapTypes[nameParts[1]]);
+                        break;
+                    }
+                }
+                field = Field.fromDescriptor(descriptor.field[i], syntax);
+            }
             type.add(field);
             if (descriptor.field[i].hasOwnProperty("oneofIndex")) // eslint-disable-line no-prototype-builtins
                 type.oneofsArray[descriptor.field[i].oneofIndex].add(field);
@@ -221,12 +240,6 @@ Type.fromDescriptor = function fromDescriptor(descriptor, syntax) {
     /* Extension fields */ if (descriptor.extension)
         for (i = 0; i < descriptor.extension.length; ++i)
             type.add(Field.fromDescriptor(descriptor.extension[i], syntax));
-    /* Nested types */ if (descriptor.nestedType)
-        for (i = 0; i < descriptor.nestedType.length; ++i) {
-            type.add(Type.fromDescriptor(descriptor.nestedType[i], syntax));
-            if (descriptor.nestedType[i].options && descriptor.nestedType[i].options.mapEntry)
-                type.setOption("map_entry", true);
-        }
     /* Nested enums */ if (descriptor.enumType)
         for (i = 0; i < descriptor.enumType.length; ++i)
             type.add(Enum.fromDescriptor(descriptor.enumType[i]));
@@ -375,9 +388,10 @@ var numberRe = /^(?![eE])[0-9]*(?:\.[0-9]*)?(?:[eE][+-]?[0-9]+)?$/;
  * Creates a field from a descriptor.
  * @param {IFieldDescriptorProto|Reader|Uint8Array} descriptor Descriptor
  * @param {string} [syntax="proto2"] Syntax
- * @returns {Field} Field instance
+ * @param {string[]} mapKv Key & value types for map field
+ * @returns {Field|MapField} Field instance
  */
-Field.fromDescriptor = function fromDescriptor(descriptor, syntax) {
+Field.fromDescriptor = function fromDescriptor(descriptor, syntax, mapKv) {
 
     // Decode the descriptor message if specified as a buffer:
     if (typeof descriptor.length === "number")
@@ -407,7 +421,12 @@ Field.fromDescriptor = function fromDescriptor(descriptor, syntax) {
 	if (descriptor.extendee !== undefined) {
 		extendee = extendee.length ? extendee : undefined;
 	}
-    var field = new Field(
+    var field = mapKv ? new MapField(
+        descriptor.name.length ? descriptor.name : "field" + descriptor.number,
+        descriptor.number,
+        mapKv[0],
+        mapKv[1]
+    ) : new Field(
         descriptor.name.length ? descriptor.name : "field" + descriptor.number,
         descriptor.number,
         fieldType,
