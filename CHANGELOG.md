@@ -1,5 +1,19 @@
 # Changelog
 
+## [7.3.0](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v7.2.6...protobufjs-v7.3.0) (2024-05-10)
+
+
+### Features
+
+* add handling for extension range options ([#1990](https://github.com/protobufjs/protobuf.js/issues/1990)) ([2d58011](https://github.com/protobufjs/protobuf.js/commit/2d58011cc0bc495c68ed70f5aad297deb1722378))
+
+## [7.2.6](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v7.2.5...protobufjs-v7.2.6) (2024-01-16)
+
+
+### Bug Fixes
+
+* report missing import properly in loadSync ([#1960](https://github.com/protobufjs/protobuf.js/issues/1960)) ([af3ff83](https://github.com/protobufjs/protobuf.js/commit/af3ff83dc41c7736b7e57f2a02fd94ac03b76a4c))
+
 ## [7.2.5](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v7.2.4...protobufjs-v7.2.5) (2023-08-21)
 
 

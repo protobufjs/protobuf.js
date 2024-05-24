@@ -67,6 +67,29 @@ tape.test("reflected roots", function(test) {
         });
     });
 
+    test.test(test.name + " - missing import", function(test) {
+        var root = new Root();
+        test.plan(2);
+        root.load("tests/data/badimport.proto", function(err) {
+            test.ok(err, "should return an error when an imported file does not exist");
+            test.match(err.toString(), /nonexistent\.proto/, "should mention the file name which was not found");
+            test.end();
+        });
+    });
+
+    test.test(test.name + " - missing import, sync load", function(test) {
+        var root = new Root();
+        test.plan(2);
+        try {
+            root.loadSync("tests/data/badimport.proto");
+            root.resolveAll();
+        } catch (err) {
+            test.ok(err, "should return an error when an imported file does not exist");
+            test.match(err.toString(), /nonexistent\.proto/, "should mention the file name which was not found");
+        }
+        test.end();
+    });
+
     test.test(test.name + " - skipped", function(test) {
         var root = new Root();
         root.resolvePath = function() {
