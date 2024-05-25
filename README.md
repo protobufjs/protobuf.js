@@ -113,11 +113,11 @@ In a nutshell, the wire format writer understands the following types:
 | bytes | `Uint8Array` (optimal)<br />`Buffer` (optimal under node)<br />`Array.<number>` (8 bit integers) | `base64.decode(value)` if a `string`<br />`Object` with non-zero `.length` is assumed to be buffer-like
 | enum | `number` (32 bit integer) | Looks up the numeric id if a `string`
 | message | Valid message | `Message.fromObject(value)`
+| repeated T | `Array<T>` | Copy
+| map<K, V> | `Object<K,V>` | Copy
 
 * Explicit `undefined` and `null` are considered as not set if the field is optional.
-* Repeated fields are represented as plain arrays.
-* Map fields are objects with the key being the string representation of the respective value or an 8 characters long binary hash string for `Long`-likes.
-* Types marked as *optimal* provide the best performance because no conversion step (i.e. number to low and high bits or base64 string to buffer) is required.
+* Maps are objects where the key is the string representation of the respective value or an 8 characters long hash string for `Long`-likes.
 
 ### Toolset
 
@@ -673,7 +673,7 @@ Compatibility
 * Works in all modern and not-so-modern browsers except IE8.
 * Because the internals of this package do not rely on `google/protobuf/descriptor.proto`, options are parsed and presented literally.
 * If typed arrays are not supported by the environment, plain arrays will be used instead.
-* Support for pre-ES5 environments (except IE8) can be achieved by [using a polyfill](https://github.com/protobufjs/protobuf.js/blob/master/scripts/polyfill.js).
+* Support for pre-ES5 environments (except IE8) can be achieved by [using a polyfill](https://github.com/protobufjs/protobuf.js/blob/master/lib/polyfill.js).
 * Support for [Content Security Policy](https://w3c.github.io/webappsec-csp/)-restricted environments (like Chrome extensions without unsafe-eval) can be achieved by generating and using static code instead.
 * If a proper way to work with 64 bit values (uint64, int64 etc.) is required, just install [long.js](https://github.com/dcodeIO/long.js) alongside this library. All 64 bit numbers will then be returned as a `Long` instance instead of a possibly unsafe JavaScript number ([see](https://github.com/dcodeIO/long.js)).
 * For descriptor.proto interoperability, see [ext/descriptor](https://github.com/protobufjs/protobuf.js/tree/master/ext/descriptor)
