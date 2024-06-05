@@ -1,5 +1,12 @@
 # Changelog
 
+## [7.3.1](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v7.3.0...protobufjs-v7.3.1) (2024-06-05)
+
+
+### Bug Fixes
+
+* **types:** reserved field in IType can contain reserved names ([#2001](https://github.com/protobufjs/protobuf.js/issues/2001)) ([d1d2c0c](https://github.com/protobufjs/protobuf.js/commit/d1d2c0c7890e07ca1302c83a136051ee0624cba8))
+
 ## [7.3.0](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v7.2.6...protobufjs-v7.3.0) (2024-05-10)
 
 
