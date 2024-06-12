@@ -1,5 +1,12 @@
 # Changelog
 
+## [7.3.2](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v7.3.1...protobufjs-v7.3.2) (2024-06-12)
+
+
+### Bug Fixes
+
+* **docs:** Update readme to correct command for creating types ([#1939](https://github.com/protobufjs/protobuf.js/issues/1939)) ([0f9d477](https://github.com/protobufjs/protobuf.js/commit/0f9d4770e0fb360c767241a13696d73edc6536b7))
+
 ## [7.3.1](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v7.3.0...protobufjs-v7.3.1) (2024-06-05)
 
 
