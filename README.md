@@ -704,7 +704,7 @@ $> npm run docs
 Building the TypeScript definition to `index.d.ts`:
 
 ```
-$> npm run types
+$> npm run build:types
 ```
 
 ### Browserify integration
