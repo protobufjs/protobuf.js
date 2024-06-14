@@ -19,9 +19,20 @@ var config = {};
 
 static_target.description = "Static code without reflection (non-functional on its own)";
 
+function addImports(root) {
+    if (!root.imports) {
+        return;
+    }
+    root.imports.forEach((oneImport) => {
+        const name = oneImport.replace(/\/$/, '');
+        push(`const ${name}_pb = require("${oneImport}");\n`);
+    });
+}
+
 function static_target(root, options, callback) {
     config = options;
     try {
+        addImports(root);
         var aliases = [];
         if (config.decode)
             aliases.push("Reader");
@@ -111,6 +122,10 @@ function buildNamespace(ref, ns) {
         return;
 
     if (ns instanceof Service && !config.service)
+        return;
+
+
+    if(ns.undefinedInMainProto)
         return;
 
     if (ns.name !== "") {
@@ -248,21 +263,37 @@ function buildFunction(type, functionName, gen, scope) {
                 node.type === "MemberExpression"
              && node.object.type === "ThisExpression"
              && node.property.type === "Identifier" && node.property.name === "ctor"
-            )
+            ){
+                let name = type.fullName;
+
+                if (type.undefinedInMainProto) {
+                    name = type.protoFrom + name;
+                } else {
+                    name = "$root" + name;
+                }
                 return {
                     "type": "Identifier",
-                    "name": "$root" + type.fullName
+                    "name": name
                 };
+            }
             // replace types[N] with the field's actual type
             if (
                 node.type === "MemberExpression"
              && node.object.type === "Identifier" && node.object.name === "types"
              && node.property.type === "Literal"
-            )
+            ) {
+            let name = type.fieldsArray[node.property.value].resolvedType.fullName;
+            const resolvedType = type.fieldsArray[node.property.value].resolvedType;
+            if (resolvedType.undefinedInMainProto) {
+                name = resolvedType.protoFrom + name;
+            } else {
+                name = "$root" + name;
+            }
                 return {
                     "type": "Identifier",
-                    "name": "$root" + type.fieldsArray[node.property.value].resolvedType.fullName
+                    "name": name
                 };
+            }
             return undefined;
         }
     });
@@ -341,10 +372,15 @@ function toJsType(field) {
             type = "Uint8Array";
             break;
         default:
-            if (field.resolve().resolvedType)
-                type = exportName(field.resolvedType, !(field.resolvedType instanceof protobuf.Enum || config.forceMessage));
-            else
+            if (field.resolve().resolvedType) {
+                const resolvedType = field.resolvedType;
+                type = exportName(resolvedType, !(resolvedType instanceof protobuf.Enum || config.forceMessage));
+                if (resolvedType.undefinedInMainProto) {
+                    type = resolvedType.protoFrom + "." + type;
+                }
+            } else {
                 type = "*"; // should not happen
+            }
             break;
     }
     if (field.map)
@@ -665,7 +701,7 @@ function buildService(ref, service) {
             "@typedef " + cbName,
             "@type {function}",
             "@param {Error|null} error Error, if any",
-            "@param {" + exportName(method.resolvedResponseType) + "} [response] " + method.resolvedResponseType.name
+            "@param {" + exportTypeWithProtoFrom(method.resolvedResponseType) + "} [response] " + method.resolvedResponseType.name
         ]);
         push("");
         pushComment([
@@ -673,14 +709,14 @@ function buildService(ref, service) {
             "@function " + lcName,
             "@memberof " + exportName(service),
             "@instance",
-            "@param {" + exportName(method.resolvedRequestType, !config.forceMessage) + "} request " + method.resolvedRequestType.name + " message or plain object",
+            "@param {" + exportTypeWithProtoFrom(method.resolvedRequestType, !config.forceMessage) + "} request " + method.resolvedRequestType.name + " message or plain object",
             "@param {" + exportName(service) + "." + cbName + "} callback Node-style callback called with the error, if any, and " + method.resolvedResponseType.name,
             "@returns {undefined}",
             "@variation 1"
         ]);
         push("Object.defineProperty(" + escapeName(service.name) + ".prototype" + util.safeProp(lcName) + " = function " + escapeName(lcName) + "(request, callback) {");
             ++indent;
-            push("return this.rpcCall(" + escapeName(lcName) + ", $root." + exportName(method.resolvedRequestType) + ", $root." + exportName(method.resolvedResponseType) + ", request, callback);");
+            push("return this.rpcCall(" + escapeName(lcName) + ", " + exportResolvedType(method.resolvedRequestType) + ", " + exportResolvedType(method.resolvedResponseType) + ", request, callback);");
             --indent;
         push("}, \"name\", { value: " + JSON.stringify(method.name) + " });");
         if (config.comments)
@@ -690,11 +726,21 @@ function buildService(ref, service) {
             "@function " + lcName,
             "@memberof " + exportName(service),
             "@instance",
-            "@param {" + exportName(method.resolvedRequestType, !config.forceMessage) + "} request " + method.resolvedRequestType.name + " message or plain object",
-            "@returns {Promise<" + exportName(method.resolvedResponseType) + ">} Promise",
+            "@param {" +  exportTypeWithProtoFrom(method.resolvedRequestType, !config.forceMessage) + "} request " + method.resolvedRequestType.name + " message or plain object",
+            "@returns {Promise<" + exportTypeWithProtoFrom(method.resolvedResponseType) + ">} Promise",
             "@variation 2"
         ]);
     });
+}
+
+function exportTypeWithProtoFrom(type, asInterface) {
+    let exportedType = exportName(type, asInterface);
+    return type.undefinedInMainProto ? `${type.protoFrom}.` : '' + exportedType
+}
+
+
+function exportResolvedType(type, asInterface) {
+    return `${ type.undefinedInMainProto ? type.protoFrom : '$root'}.${exportedType}`;
 }
 
 function buildEnum(ref, enm) {

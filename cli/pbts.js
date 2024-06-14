@@ -6,7 +6,8 @@ var child_process = require("child_process"),
     minimist = require("minimist"),
     chalk    = require("chalk"),
     glob     = require("glob"),
-    tmp      = require("tmp");
+    tmp      = require("tmp"),
+    inputArgs = require("./inputArgs");
 
 /**
  * Runs pbts programmatically.
@@ -17,17 +18,18 @@ var child_process = require("child_process"),
 exports.main = function(args, callback) {
     var argv = minimist(args, {
         alias: {
-            name: "n",
-            out : "o",
-            main: "m",
-            global: "g",
-            import: "i"
+            [inputArgs.NAME]: "n",
+            [inputArgs.OUT] : "o",
+            [inputArgs.MAIN]: "m",
+            [inputArgs.GLOBAL]: "g",
+            [inputArgs.IMPORT]: "i"
         },
-        string: [ "name", "out", "global", "import" ],
-        boolean: [ "comments", "main" ],
+        string: [ inputArgs.NAME, inputArgs.OUT, inputArgs.GLOBAL, inputArgs.IMPORT ],
+        boolean: [ inputArgs.COMMENTS, inputArgs.MAIN, inputArgs.USE_IMPORTS ],
         default: {
-            comments: true,
-            main: false
+            [inputArgs.COMMENTS]: true,
+            [inputArgs.MAIN]: false,
+            [inputArgs.USE_IMPORTS]: false,
         }
     });
 
@@ -42,19 +44,21 @@ exports.main = function(args, callback) {
                 "",
                 chalk.bold.white("Generates TypeScript definitions from annotated JavaScript files."),
                 "",
-                "  -o, --out       Saves to a file instead of writing to stdout.",
+                "  -o, --" + inputArgs.OUT + "       Saves to a file instead of writing to stdout.",
                 "",
-                "  -g, --global    Name of the global object in browser environments, if any.",
+                "  -g, --" + inputArgs.GLOBAL + "    Name of the global object in browser environments, if any.",
                 "",
-                "  -i, --import    Comma delimited list of imports. Local names will equal camelCase of the basename.",
+                "  -i, --" + inputArgs.IMPORT + "    Comma delimited list of imports. Local names will equal camelCase of the basename.",
                 "",
-                "  --no-comments   Does not output any JSDoc comments.",
+                "  --" + inputArgs.NO_COMMENTS + "no-comments   Does not output any JSDoc comments.",
+                "",
+                " --" + inputArgs.USE_IMPORTS + "",
                 "",
                 chalk.bold.gray("  Internal flags:"),
                 "",
-                "  -n, --name      Wraps everything in a module of the specified name.",
+                "  -n, --" + inputArgs.NAME + "      Wraps everything in a module of the specified name.",
                 "",
-                "  -m, --main      Whether building the main library without any imports.",
+                "  -m, --" + inputArgs.MAIN + "      Whether building the main library without any imports.",
                 "",
                 "usage: " + chalk.bold.green("pbts") + " [options] file1.js file2.js ..." + chalk.bold.gray("  (or)  ") + "other | " + chalk.bold.green("pbts") + " [options] -",
                 ""
@@ -96,7 +100,7 @@ exports.main = function(args, callback) {
 
         // There is no proper API for jsdoc, so this executes the CLI and pipes the output
         var basedir = path.join(__dirname, ".");
-        var moduleName = argv.name || "null";
+        var moduleName = argv[inputArgs.NAME] || "null";
         var nodePath = process.execPath;
         var cmd = "\"" + nodePath + "\" \"" + require.resolve("jsdoc/jsdoc.js") + "\" -c \"" + path.join(basedir, "lib", "tsd-jsdoc.json") + "\" -q \"module=" + encodeURIComponent(moduleName) + "&comments=" + Boolean(argv.comments) + "\" " + files.map(function(file) { return "\"" + file + "\""; }).join(" ");
         var child = child_process.exec(cmd, {
@@ -142,20 +146,20 @@ exports.main = function(args, callback) {
 
         function finish() {
             var output = [];
-            if (argv.main)
+            if (argv[inputArgs.MAIN])
                 output.push(
                     "// DO NOT EDIT! This is a generated file. Edit the JSDoc in src/*.js instead and run 'npm run build:types'.",
                     ""
                 );
-            if (argv.global)
+            if (argv[inputArgs.GLOBAL])
                 output.push(
-                    "export as namespace " + argv.global + ";",
+                    "export as namespace " + argv[inputArgs.GLOBAL] + ";",
                     ""
                 );
 
-            if (!argv.main) {
+            if (!argv[inputArgs.MAIN]) {
                 // Ensure we have a usable array of imports
-                var importArray = typeof argv.import === "string" ? argv.import.split(",") : argv.import || [];
+                var importArray = typeof argv[inputArgs.IMPORT] === "string" ? argv[inputArgs.IMPORT].split(",") : argv[inputArgs.IMPORT] || [];
 
                 // Build an object of imports and paths
                 var imports = {
@@ -164,10 +168,19 @@ exports.main = function(args, callback) {
                 importArray.forEach(function(importItem) {
                     imports[getImportName(importItem)] = importItem;
                 });
+                if (argv[inputArgs.USE_IMPORTS]) {
+                    const jsFile = fs.readFileSync(argv._[0], { encoding: "utf8" }); //todo: make a loop
+                    var re = /\nconst (.*?) = require\((.*?)\);/g;
+                    var m;
+                    while (m = re.exec(jsFile)) {
+                        imports[m[1]] = m[2];
+                    }
+
+                }
 
                 // Write out the imports
                 Object.keys(imports).forEach(function(key) {
-                    output.push("import * as " + key + " from \"" + imports[key] + "\";");
+                    output.push("import * as " + key + " from " + imports[key] + ";");
                 });
 
                 output.push("import Long = require(\"long\");");
@@ -176,8 +189,8 @@ exports.main = function(args, callback) {
             output = output.join("\n") + "\n" + out.join("");
 
             try {
-                if (argv.out)
-                    fs.writeFileSync(argv.out, output, { encoding: "utf8" });
+                if (argv[inputArgs.OUT])
+                    fs.writeFileSync(argv[inputArgs.OUT], output, { encoding: "utf8" });
                 else if (!callback)
                     process.stdout.write(output, "utf8");
                 return callback
