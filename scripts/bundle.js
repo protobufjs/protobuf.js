@@ -16,6 +16,7 @@ var vinylfs    = require("vinyl-fs");
 var source     = require("vinyl-source-stream");
 
 var pkg = require(path.join(__dirname, "..", "package.json"));
+var { externals } = require("./browserify.json");
 
 /*eslint-disable no-template-curly-in-string*/
 var license = [
@@ -50,7 +51,7 @@ function bundle(options) {
         prelude: prelude,
         preludePath: "./lib/prelude.js"
     })
-    .external("long");
+    .external(externals);
     if (options.exclude)
         options.exclude.forEach(bundler.exclude, bundler);
     return bundler

@@ -1,0 +1,6 @@
+{
+  "externals": [
+    "long",
+    "buffer"
+  ]
+}
