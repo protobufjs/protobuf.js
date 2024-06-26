@@ -1,5 +1,85 @@
 # Changelog
 
+## [7.3.2](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v7.3.1...protobufjs-v7.3.2) (2024-06-12)
+
+
+### Bug Fixes
+
+* **docs:** Update readme to correct command for creating types ([#1939](https://github.com/protobufjs/protobuf.js/issues/1939)) ([0f9d477](https://github.com/protobufjs/protobuf.js/commit/0f9d4770e0fb360c767241a13696d73edc6536b7))
+
+## [7.3.1](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v7.3.0...protobufjs-v7.3.1) (2024-06-05)
+
+
+### Bug Fixes
+
+* **types:** reserved field in IType can contain reserved names ([#2001](https://github.com/protobufjs/protobuf.js/issues/2001)) ([d1d2c0c](https://github.com/protobufjs/protobuf.js/commit/d1d2c0c7890e07ca1302c83a136051ee0624cba8))
+
+## [7.3.0](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v7.2.6...protobufjs-v7.3.0) (2024-05-10)
+
+
+### Features
+
+* add handling for extension range options ([#1990](https://github.com/protobufjs/protobuf.js/issues/1990)) ([2d58011](https://github.com/protobufjs/protobuf.js/commit/2d58011cc0bc495c68ed70f5aad297deb1722378))
+
+## [7.2.6](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v7.2.5...protobufjs-v7.2.6) (2024-01-16)
+
+
+### Bug Fixes
+
+* report missing import properly in loadSync ([#1960](https://github.com/protobufjs/protobuf.js/issues/1960)) ([af3ff83](https://github.com/protobufjs/protobuf.js/commit/af3ff83dc41c7736b7e57f2a02fd94ac03b76a4c))
+
+## [7.2.5](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v7.2.4...protobufjs-v7.2.5) (2023-08-21)
+
+
+### Bug Fixes
+
+* crash in comment parsing ([#1890](https://github.com/protobufjs/protobuf.js/issues/1890)) ([eaf9f0a](https://github.com/protobufjs/protobuf.js/commit/eaf9f0a5a4009a8981c69af78365dfc988ed925b))
+* deprecation warning for new Buffer ([#1905](https://github.com/protobufjs/protobuf.js/issues/1905)) ([e93286e](https://github.com/protobufjs/protobuf.js/commit/e93286ef70d2e673c341ac08a192cc2abe6fd2eb))
+* possible infinite loop when parsing option ([#1923](https://github.com/protobufjs/protobuf.js/issues/1923)) ([f2a8620](https://github.com/protobufjs/protobuf.js/commit/f2a86201799af5842e1339c22950abbb3db00f51))
+
+## [7.2.4](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v7.2.3...protobufjs-v7.2.4) (2023-06-23)
+
+
+### Bug Fixes
+
+* do not let setProperty change the prototype ([#1899](https://github.com/protobufjs/protobuf.js/issues/1899)) ([e66379f](https://github.com/protobufjs/protobuf.js/commit/e66379f451b0393c27d87b37fa7d271619e16b0d))
+
+## [7.2.3](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v7.2.2...protobufjs-v7.2.3) (2023-03-27)
+
+
+### Bug Fixes
+
+* type names can be split into multiple tokens ([#1877](https://github.com/protobufjs/protobuf.js/issues/1877)) ([8817ee6](https://github.com/protobufjs/protobuf.js/commit/8817ee613dfcf55f7f6fa8704f3fdd3e68c0e1d8))
+
+## [7.2.2](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v7.2.1...protobufjs-v7.2.2) (2023-02-07)
+
+
+### Bug Fixes
+
+* do not allow to extend same field twice to prevent the error ([#1784](https://github.com/protobufjs/protobuf.js/issues/1784)) ([14f0536](https://github.com/protobufjs/protobuf.js/commit/14f05364a04fe1ca0bfb278b3407e058c6b5a1ab))
+
+## [7.2.1](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v7.2.0...protobufjs-v7.2.1) (2023-02-02)
+
+
+### Bug Fixes
+
+* **cli:** fix relative path to Google pb files ([#1859](https://github.com/protobufjs/protobuf.js/issues/1859)) ([e42eea4](https://github.com/protobufjs/protobuf.js/commit/e42eea4868b11f4a07934804a56683321ed191e2))
+* Revert "fix: error should be thrown" ([4489fa7](https://github.com/protobufjs/protobuf.js/commit/4489fa771464bcb49b57149760e9cc4131e8077e))
+* use bundled filename to fix common pb includes ([#1860](https://github.com/protobufjs/protobuf.js/issues/1860)) ([dce9a2e](https://github.com/protobufjs/protobuf.js/commit/dce9a2ef92d363752e40b295b0da9bd178f82e83))
+* use ES5 style function syntax ([#1830](https://github.com/protobufjs/protobuf.js/issues/1830)) ([64e8936](https://github.com/protobufjs/protobuf.js/commit/64e8936ad9f73c68b3fa1e57857dd38323b5a745))
+
+## [7.2.0](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v7.1.2...protobufjs-v7.2.0) (2023-01-24)
+
+
+### Features
+
+* **cli:** generate static files at the granularity of proto messages ([#1840](https://github.com/protobufjs/protobuf.js/issues/1840)) ([32f2d6a](https://github.com/protobufjs/protobuf.js/commit/32f2d6a68b27997bd0f7619998695a9fa7a4fd70))
+
+
+### Bug Fixes
+
+* error should be thrown ([#1817](https://github.com/protobufjs/protobuf.js/issues/1817)) ([e7a3489](https://github.com/protobufjs/protobuf.js/commit/e7a34897a122342485468999a507626f1ea91507))
+
 ## [7.1.2](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v7.1.1...protobufjs-v7.1.2) (2022-09-22)
 
 

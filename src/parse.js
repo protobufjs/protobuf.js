@@ -144,7 +144,24 @@ function parse(source, root, options) {
             else
                 target.push([ start = parseId(next()), skip("to", true) ? parseId(next()) : start ]);
         } while (skip(",", true));
-        skip(";");
+        var dummy = {options: undefined};
+        dummy.setOption = function(name, value) {
+          if (this.options === undefined) this.options = {};
+          this.options[name] = value;
+        };
+        ifBlock(
+            dummy,
+            function parseRange_block(token) {
+              /* istanbul ignore else */
+              if (token === "option") {
+                parseOption(dummy, token);  // skip
+                skip(";");
+              } else
+                throw illegal(token);
+            },
+            function parseRange_line() {
+              parseInlineOptions(dummy);  // skip
+            });
     }
 
     function parseNumber(token, insideTryCatch) {
@@ -227,7 +244,7 @@ function parse(source, root, options) {
                 break;
             case "public":
                 next();
-                // eslint-disable-line no-fallthrough
+                // eslint-disable-next-line no-fallthrough
             default:
                 whichImports = imports || (imports = []);
                 break;
@@ -359,6 +376,16 @@ function parse(source, root, options) {
         if (type === "group") {
             parseGroup(parent, rule);
             return;
+        }
+        // Type names can consume multiple tokens, in multiple variants:
+        //    package.subpackage   field       tokens: "package.subpackage" [TYPE NAME ENDS HERE] "field"
+        //    package . subpackage field       tokens: "package" "." "subpackage" [TYPE NAME ENDS HERE] "field"
+        //    package.  subpackage field       tokens: "package." "subpackage" [TYPE NAME ENDS HERE] "field"
+        //    package  .subpackage field       tokens: "package" ".subpackage" [TYPE NAME ENDS HERE] "field"
+        // Keep reading tokens until we get a type name with no period at the end,
+        // and the next token does not start with a period.
+        while (type.endsWith(".") || peek().startsWith(".")) {
+            type += next();
         }
 
         /* istanbul ignore if */
@@ -610,6 +637,9 @@ function parse(source, root, options) {
                 /* istanbul ignore if */
                 if (!nameRe.test(token = next())) {
                     throw illegal(token, "name");
+                }
+                if (token === null) {
+                  throw illegal(token, "end of input");
                 }
 
                 var value;

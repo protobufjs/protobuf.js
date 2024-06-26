@@ -47,6 +47,13 @@ message Test2 {
     extend Test;
     extend Test{};
     extend Test{required int32 a=1;} // not validated by the parser
+    extend Test{Test inner_ext=1000;} // not validated by the parser
+
+    extensions 1000 to 1999 [declaration = {
+        number: 1000
+        full_name: 'uncommon.Test.inner_ext'
+        type: 'uncommon.Test'
+    }];
 };
 
 enum Test3;

@@ -224,7 +224,7 @@ function clearCache(type) {
  * @property {Object.<string,IOneOf>} [oneofs] Oneof descriptors
  * @property {Object.<string,IField>} fields Field descriptors
  * @property {number[][]} [extensions] Extension ranges
- * @property {number[][]} [reserved] Reserved ranges
+ * @property {Array.<number[]|string>} [reserved] Reserved ranges
  * @property {boolean} [group=false] Whether a legacy group or not
  */
 

@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package some.really.long.name.which.does.not.really.make.any.sense.but.sometimes.we.still.see.stuff.like.this;
+
+message WouldYouParseThisForMePlease {
+  optional some.really.long. name . which . does .not
+    .really.make.any. sense.but.
+    sometimes.we.still
+    .
+    see.stuff .like.this
+    .Test field = 1;
+}
+
+message Test {
+  string field = 1;
+}

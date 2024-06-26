@@ -1,9 +1,15 @@
-<h1><p align="center"><img alt="protobuf.js" src="https://github.com/dcodeIO/protobuf.js/raw/master/pbjs.png" width="120" height="104" /></p></h1>
-<p align="center"><a href="https://npmjs.org/package/protobufjs"><img src="https://img.shields.io/npm/v/protobufjs.svg" alt=""></a> <a href="https://travis-ci.org/dcodeIO/protobuf.js"><img src="https://travis-ci.org/dcodeIO/protobuf.js.svg?branch=master" alt=""></a> <a href="https://npmjs.org/package/protobufjs"><img src="https://img.shields.io/npm/dm/protobufjs.svg" alt=""></a> <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=dcode%40dcode.io&item_name=Open%20Source%20Software%20Donation&item_number=dcodeIO%2Fprotobuf.js"><img alt="donate ❤" src="https://img.shields.io/badge/donate-❤-ff2244.svg"></a></p>
+<h1><p align="center"><img alt="protobuf.js" src="https://github.com/protobufjs/protobuf.js/raw/master/pbjs.svg" height="100" /><br/>protobuf.js</p></h1>
+<p align="center">
+  <a href="https://github.com/protobufjs/protobuf.js/actions/workflows/test.yml"><img src="https://img.shields.io/github/actions/workflow/status/protobufjs/protobuf.js/test.yml?branch=master&label=build&logo=github" alt=""></a>
+  <a href="https://github.com/protobufjs/protobuf.js/actions/workflows/release.yaml"><img src="https://img.shields.io/github/actions/workflow/status/protobufjs/protobuf.js/release.yaml?branch=master&label=release&logo=github" alt=""></a>
+  <a href="https://npmjs.org/package/protobufjs"><img src="https://img.shields.io/npm/v/protobufjs.svg?logo=npm" alt=""></a>
+  <a href="https://npmjs.org/package/protobufjs"><img src="https://img.shields.io/npm/dm/protobufjs.svg?label=downloads&logo=npm" alt=""></a>
+  <a href="https://www.jsdelivr.com/package/npm/protobufjs"><img src="https://img.shields.io/jsdelivr/npm/hm/protobufjs?label=requests&logo=jsdelivr" alt=""></a>
+</p>
 
-**Protocol Buffers** are a language-neutral, platform-neutral, extensible way of serializing structured data for use in communications protocols, data storage, and more, originally designed at Google ([see](https://developers.google.com/protocol-buffers/)).
+**Protocol Buffers** are a language-neutral, platform-neutral, extensible way of serializing structured data for use in communications protocols, data storage, and more, originally designed at Google ([see](https://protobuf.dev/)).
 
-**protobuf.js** is a pure JavaScript implementation with [TypeScript](https://www.typescriptlang.org) support for [node.js](https://nodejs.org) and the browser. It's easy to use, blazingly fast and works out of the box with [.proto](https://developers.google.com/protocol-buffers/docs/proto) files!
+**protobuf.js** is a pure JavaScript implementation with [TypeScript](https://www.typescriptlang.org) support for [Node.js](https://nodejs.org) and the browser. It's easy to use, does not sacrifice on performance, has good conformance and works out of the box with [.proto](https://protobuf.dev/programming-guides/proto3/) files!
 
 Contents
 --------
@@ -42,68 +48,49 @@ Contents
 Installation
 ---------------
 
-### node.js
+### Node.js
 
-```
-$> npm install protobufjs [--save --save-prefix=~]
+```sh
+npm install protobufjs --save
 ```
 
 ```js
+// Static code + Reflection + .proto parser
 var protobuf = require("protobufjs");
+
+// Static code + Reflection
+var protobuf = require("protobufjs/light");
+
+// Static code only
+var protobuf = require("protobufjs/minimal");
 ```
 
-The command line utility lives in the protobufjs-cli package and must be installed separately:
+The optional [command line utility](./cli/) to generate static code and reflection bundles lives in the `protobufjs-cli` package and can be installed separately:
 
+```sh
+npm install protobufjs-cli --save-dev
 ```
-$> npm install protobufjs-cli [--save --save-prefix=~]
-```
-
-**Note** that this library's versioning scheme is not semver-compatible for historical reasons. For guaranteed backward compatibility, always depend on `~6.A.B` instead of `^6.A.B` (hence the `--save-prefix` above).
 
 ### Browsers
 
-Development:
+Pick the variant matching your needs and replace the version tag with the exact [release](https://github.com/protobufjs/protobuf.js/tags) your project depends upon. For example, to use the minified full variant:
 
-```
-<script src="//cdn.jsdelivr.net/npm/protobufjs@7.X.X/dist/protobuf.js"></script>
-```
-
-Production:
-
-```
+```html
 <script src="//cdn.jsdelivr.net/npm/protobufjs@7.X.X/dist/protobuf.min.js"></script>
 ```
 
-**Remember** to replace the version tag with the exact [release](https://github.com/protobufjs/protobuf.js/tags) your project depends upon.
-
-The library supports CommonJS and AMD loaders and also exports globally as `protobuf`.
-
-### Distributions
-
-Where bundle size is a factor, there are additional stripped-down versions of the [full library][dist-full] (~19kb gzipped) available that exclude certain functionality:
-
-* When working with JSON descriptors (i.e. generated by [pbjs](cli/README.md#pbjs-for-javascript)) and/or reflection only, see the [light library][dist-light] (~16kb gzipped) that excludes the parser. CommonJS entry point is:
-
-  ```js
-  var protobuf = require("protobufjs/light");
-  ```
-
-* When working with statically generated code only, see the [minimal library][dist-minimal] (~6.5kb gzipped) that also excludes reflection. CommonJS entry point is:
-
-  ```js
-  var protobuf = require("protobufjs/minimal");
-  ```
-
 | Distribution | Location
-|------------|-----------------------------------
-| Full | <https://cdn.jsdelivr.net/npm/protobufjs/dist/>
-| Light | <https://cdn.jsdelivr.net/npm/protobufjs/dist/light/>
-| Minimal | <https://cdn.jsdelivr.net/npm/protobufjs/dist/minimal/>
+|--------------|--------------------------------------------------------
+| Full         | <https://cdn.jsdelivr.net/npm/protobufjs/dist/>
+| Light        | <https://cdn.jsdelivr.net/npm/protobufjs/dist/light/>
+| Minimal      | <https://cdn.jsdelivr.net/npm/protobufjs/dist/minimal/>
+
+All variants support CommonJS and AMD loaders and export globally as `window.protobuf`.
 
 Usage
 -----
 
-Because JavaScript is a dynamically typed language, protobuf.js introduces the concept of a **valid message** in order to provide the best possible [performance](#performance) (and, as a side product, proper typings):
+Because JavaScript is a dynamically typed language, protobuf.js utilizes the concept of a **valid message** in order to provide the best possible [performance](#performance) (and, as a side product, proper typings):
 
 ### Valid message
 
@@ -111,7 +98,7 @@ Because JavaScript is a dynamically typed language, protobuf.js introduces the c
 
 There are two possible types of valid messages and the encoder is able to work with both of these for convenience:
 
-* **Message instances** (explicit instances of message classes with default values on their prototype) always (have to) satisfy the requirements of a valid message by design and
+* **Message instances** (explicit instances of message classes with default values on their prototype) naturally satisfy the requirements of a valid message and
 * **Plain JavaScript objects** that just so happen to be composed in a way satisfying the requirements of a valid message as well.
 
 In a nutshell, the wire format writer understands the following types:
@@ -126,11 +113,11 @@ In a nutshell, the wire format writer understands the following types:
 | bytes | `Uint8Array` (optimal)<br />`Buffer` (optimal under node)<br />`Array.<number>` (8 bit integers) | `base64.decode(value)` if a `string`<br />`Object` with non-zero `.length` is assumed to be buffer-like
 | enum | `number` (32 bit integer) | Looks up the numeric id if a `string`
 | message | Valid message | `Message.fromObject(value)`
+| repeated T | `Array<T>` | Copy
+| map<K, V> | `Object<K,V>` | Copy
 
 * Explicit `undefined` and `null` are considered as not set if the field is optional.
-* Repeated fields are `Array.<T>`.
-* Map fields are `Object.<string,T>` with the key being the string representation of the respective value or an 8 characters long binary hash string for `Long`-likes.
-* Types marked as *optimal* provide the best performance because no conversion step (i.e. number to low and high bits or base64 string to buffer) is required.
+* Maps are objects where the key is the string representation of the respective value or an 8 characters long hash string for `Long`-likes.
 
 ### Toolset
 
@@ -210,7 +197,7 @@ For reference, the following diagram aims to display relationships between the d
 
 <p align="center"><img alt="Toolset Diagram" src="https://protobufjs.github.io/protobuf.js/toolset.svg" /></p>
 
-> In other words: `verify` indicates that calling `create` or `encode` directly on the plain object will [result in a valid message respectively] succeed. `fromObject`, on the other hand, does conversion from a broader range of plain objects to create valid messages. ([ref](https://github.com/dcodeIO/protobuf.js/issues/748#issuecomment-291925749))
+> In other words: `verify` indicates that calling `create` or `encode` directly on the plain object will [result in a valid message respectively] succeed. `fromObject`, on the other hand, does conversion from a broader range of plain objects to create valid messages. ([ref](https://github.com/protobufjs/protobuf.js/issues/748#issuecomment-291925749))
 
 Examples
 --------
@@ -482,13 +469,13 @@ greeter.sayHello({ name: 'you' })
     });
 ```
 
-There is also an [example for streaming RPC](https://github.com/dcodeIO/protobuf.js/blob/master/examples/streaming-rpc.js).
+There is also an [example for streaming RPC](https://github.com/protobufjs/protobuf.js/blob/master/examples/streaming-rpc.js).
 
 Note that the service API is meant for clients. Implementing a server-side endpoint pretty much always requires transport channel (i.e. http, websocket, etc.) specific code with the only common denominator being that it decodes and encodes messages.
 
 ### Usage with TypeScript
 
-The library ships with its own [type definitions](https://github.com/dcodeIO/protobuf.js/blob/master/index.d.ts) and modern editors like [Visual Studio Code](https://code.visualstudio.com/) will automatically detect and use them for code completion.
+The library ships with its own [type definitions](https://github.com/protobufjs/protobuf.js/blob/master/index.d.ts) and modern editors like [Visual Studio Code](https://code.visualstudio.com/) will automatically detect and use them for code completion.
 
 The npm package depends on [@types/node](https://www.npmjs.com/package/@types/node) because of `Buffer` and [@types/long](https://www.npmjs.com/package/@types/long) because of `Long`. If you are not building for node and/or not using long.js, it should be safe to exclude them manually.
 
@@ -595,18 +582,18 @@ Other notes:
 * Default values must be specified as arguments to the decorator instead of using a property initializer for proper prototype behavior.
 * Property names on decorated classes must not be renamed on compile time (i.e. by a minifier) because decorators just receive the original field name as a string.
 
-**ProTip!** Not as pretty, but you can [use decorators in plain JavaScript](https://github.com/dcodeIO/protobuf.js/blob/master/examples/js-decorators.js) as well.
+**ProTip!** Not as pretty, but you can [use decorators in plain JavaScript](https://github.com/protobufjs/protobuf.js/blob/master/examples/js-decorators.js) as well.
 
 Additional documentation
 ------------------------
 
 #### Protocol Buffers
-* [Google's Developer Guide](https://developers.google.com/protocol-buffers/docs/overview)
+* [Google's Developer Guide](https://protobuf.dev/overview/)
 
 #### protobuf.js
 * [API Documentation](https://protobufjs.github.io/protobuf.js)
-* [CHANGELOG](https://github.com/dcodeIO/protobuf.js/blob/master/CHANGELOG.md)
-* [Frequently asked questions](https://github.com/dcodeIO/protobuf.js/wiki) on our wiki
+* [CHANGELOG](https://github.com/protobufjs/protobuf.js/blob/master/CHANGELOG.md)
+* [Frequently asked questions](https://github.com/protobufjs/protobuf.js/wiki) on our wiki
 
 #### Community
 * [Questions and answers](http://stackoverflow.com/search?tab=newest&q=protobuf.js) on StackOverflow
@@ -666,13 +653,13 @@ These results are achieved by
 * using node-specific functionality where beneficial and, of course
 * avoiding unnecessary operations through splitting up [the toolset](#toolset).
 
-You can also run [the benchmark](https://github.com/dcodeIO/protobuf.js/blob/master/bench/index.js) ...
+You can also run [the benchmark](https://github.com/protobufjs/protobuf.js/blob/master/bench/index.js) ...
 
 ```
 $> npm run bench
 ```
 
-and [the profiler](https://github.com/dcodeIO/protobuf.js/blob/master/bench/prof.js) yourself (the latter requires a recent version of node):
+and [the profiler](https://github.com/protobufjs/protobuf.js/blob/master/bench/prof.js) yourself (the latter requires a recent version of node):
 
 ```
 $> npm run prof <encode|decode|encode-browser|decode-browser> [iterations=10000000]
@@ -686,10 +673,10 @@ Compatibility
 * Works in all modern and not-so-modern browsers except IE8.
 * Because the internals of this package do not rely on `google/protobuf/descriptor.proto`, options are parsed and presented literally.
 * If typed arrays are not supported by the environment, plain arrays will be used instead.
-* Support for pre-ES5 environments (except IE8) can be achieved by [using a polyfill](https://github.com/dcodeIO/protobuf.js/blob/master/scripts/polyfill.js).
-* Support for [Content Security Policy](https://w3c.github.io/webappsec-csp/)-restricted environments (like Chrome extensions without [unsafe-eval](https://developer.chrome.com/extensions/contentSecurityPolicy#relaxing-eval)) can be achieved by generating and using static code instead.
+* Support for pre-ES5 environments (except IE8) can be achieved by [using a polyfill](https://github.com/protobufjs/protobuf.js/blob/master/lib/polyfill.js).
+* Support for [Content Security Policy](https://w3c.github.io/webappsec-csp/)-restricted environments (like Chrome extensions without unsafe-eval) can be achieved by generating and using static code instead.
 * If a proper way to work with 64 bit values (uint64, int64 etc.) is required, just install [long.js](https://github.com/dcodeIO/long.js) alongside this library. All 64 bit numbers will then be returned as a `Long` instance instead of a possibly unsafe JavaScript number ([see](https://github.com/dcodeIO/long.js)).
-* For descriptor.proto interoperability, see [ext/descriptor](https://github.com/dcodeIO/protobuf.js/tree/master/ext/descriptor)
+* For descriptor.proto interoperability, see [ext/descriptor](https://github.com/protobufjs/protobuf.js/tree/master/ext/descriptor)
 
 Building
 --------
@@ -697,7 +684,7 @@ Building
 To build the library or its components yourself, clone it from GitHub and install the development dependencies:
 
 ```
-$> git clone https://github.com/dcodeIO/protobuf.js.git
+$> git clone https://github.com/protobufjs/protobuf.js.git
 $> cd protobuf.js
 $> npm install
 ```
@@ -717,7 +704,7 @@ $> npm run docs
 Building the TypeScript definition to `index.d.ts`:
 
 ```
-$> npm run types
+$> npm run build:types
 ```
 
 ### Browserify integration
@@ -735,6 +722,6 @@ By default, protobuf.js integrates into any browserify build-process without req
   protobuf.configure();
   ```
 
-* If you have any special requirements, there is [the bundler](https://github.com/dcodeIO/protobuf.js/blob/master/scripts/bundle.js) for reference.
+* If you have any special requirements, there is [the bundler](https://github.com/protobufjs/protobuf.js/blob/master/scripts/bundle.js) for reference.
 
 **License:** [BSD 3-Clause License](https://opensource.org/licenses/BSD-3-Clause)

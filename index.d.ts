@@ -1698,7 +1698,7 @@ export interface IType extends INamespace {
     extensions?: number[][];
 
     /** Reserved ranges */
-    reserved?: number[][];
+    reserved?: (number[]|string)[];
 
     /** Whether a legacy group or not */
     group?: boolean;
