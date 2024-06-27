@@ -70,7 +70,7 @@ var Namespace = $protobuf.Namespace,
  * @param {IFileDescriptorSet|Reader|Uint8Array} descriptor Descriptor
  * @returns {Root} Root instance
  */
-Root.fromDescriptor = function fromDescriptor(descriptor) {
+Root.fromDescriptor = function fromDescriptor(descriptor, options) {
 
     // Decode the descriptor message if specified as a buffer:
     if (typeof descriptor.length === "number")
@@ -89,7 +89,7 @@ Root.fromDescriptor = function fromDescriptor(descriptor) {
                 root.files.push(filePackage.filename = fileDescriptor.name);
             if (fileDescriptor.messageType)
                 for (i = 0; i < fileDescriptor.messageType.length; ++i)
-                    filePackage.add(Type.fromDescriptor(fileDescriptor.messageType[i], fileDescriptor.syntax));
+                    filePackage.add(Type.fromDescriptor(fileDescriptor.messageType[i], fileDescriptor.syntax, options));
             if (fileDescriptor.enumType)
                 for (i = 0; i < fileDescriptor.enumType.length; ++i)
                     filePackage.add(Enum.fromDescriptor(fileDescriptor.enumType[i]));
@@ -198,7 +198,7 @@ var unnamedMessageIndex = 0;
  * @param {string} [syntax="proto2"] Syntax
  * @returns {Type} Type instance
  */
-Type.fromDescriptor = function fromDescriptor(descriptor, syntax) {
+Type.fromDescriptor = function fromDescriptor(descriptor, syntax, options) {
 
     // Decode the descriptor message if specified as a buffer:
     if (typeof descriptor.length === "number")
@@ -206,6 +206,7 @@ Type.fromDescriptor = function fromDescriptor(descriptor, syntax) {
 
     // Create the message type
     var type = new Type(descriptor.name.length ? descriptor.name : "Type" + unnamedMessageIndex++, fromDescriptorOptions(descriptor.options, exports.MessageOptions)),
+        useMapField = options && options.useMapField,
         i;
 
     /* Oneofs */ if (descriptor.oneofDecl)
@@ -213,7 +214,15 @@ Type.fromDescriptor = function fromDescriptor(descriptor, syntax) {
             type.add(OneOf.fromDescriptor(descriptor.oneofDecl[i]));
     /* Fields */ if (descriptor.field)
         for (i = 0; i < descriptor.field.length; ++i) {
-            var field = Field.fromDescriptor(descriptor.field[i], syntax);
+            var mapType = useMapField && descriptor.nestedType 
+                ? descriptor.nestedType.find(function (t) { 
+                    return t.options && t.options.mapEntry && t.name === descriptor.field[i].typeName 
+                }) 
+                : null;
+            var field = mapType
+                ? MapField.fromDescriptor(descriptor.field[i], mapType, syntax)
+                : Field.fromDescriptor(descriptor.field[i], syntax);
+
             type.add(field);
             if (descriptor.field[i].hasOwnProperty("oneofIndex")) // eslint-disable-line no-prototype-builtins
                 type.oneofsArray[descriptor.field[i].oneofIndex].add(field);
@@ -223,9 +232,15 @@ Type.fromDescriptor = function fromDescriptor(descriptor, syntax) {
             type.add(Field.fromDescriptor(descriptor.extension[i], syntax));
     /* Nested types */ if (descriptor.nestedType)
         for (i = 0; i < descriptor.nestedType.length; ++i) {
-            type.add(Type.fromDescriptor(descriptor.nestedType[i], syntax));
-            if (descriptor.nestedType[i].options && descriptor.nestedType[i].options.mapEntry)
-                type.setOption("map_entry", true);
+            if (useMapField) {
+                // Nested types representing map entry are added as MapField and should not be added as Type
+                if (!descriptor.nestedType[i].options || !descriptor.nestedType[i].options.mapEntry)
+                    type.add(Type.fromDescriptor(descriptor.nestedType[i], syntax, options));
+            } else {
+                type.add(Type.fromDescriptor(descriptor.nestedType[i], syntax, options));
+                if (descriptor.nestedType[i].options && descriptor.nestedType[i].options.mapEntry)
+                    type.setOption("map_entry", true);
+            }
         }
     /* Nested enums */ if (descriptor.enumType)
         for (i = 0; i < descriptor.enumType.length; ++i)
@@ -502,6 +517,65 @@ Field.prototype.toDescriptor = function toDescriptor(syntax) {
 
     return descriptor;
 };
+
+// --- MapField ---
+
+/**
+ * Creates a map field from a descriptor.
+ * @param {IFieldDescriptorProto|Reader|Uint8Array} descriptor Descriptor
+ * @param {IDescriptorProto} nestedType Nested type descriptor
+ * @returns {MapField} MapField instance
+ */
+MapField.fromDescriptor = function fromDescriptor(descriptor, nestedType) {
+    // Decode the descriptor message if specified as a buffer:
+    if (typeof descriptor.length === "number")
+        descriptor = exports.DescriptorProto.decode(descriptor);
+
+    // Decode the nested type if specified as a buffer:
+    if (typeof nestedType.length === "number")
+        nestedType = exports.DescriptorProto.decode(nestedType);
+
+    if (typeof descriptor.number !== "number")
+        throw Error("missing field id");
+
+    var typeName = nestedType.field[1].typeName;
+    var type = typeName && typeName.length 
+        ? typeName 
+        : fromDescriptorType(nestedType.field[1].type);
+
+    var field = new MapField(
+        descriptor.name.length ? descriptor.name : "field" + descriptor.number,
+        descriptor.number,
+        fromDescriptorType(nestedType.field[0].type),
+        type,
+        fromDescriptorOptions(descriptor.options, exports.FieldOptions)
+    );
+
+    var extendee = descriptor.extendee;
+    if (extendee !== undefined) {
+        field.extend = extendee.length ? extendee : undefined;
+    }
+
+    if (descriptor.defaultValue && descriptor.defaultValue.length) {
+        var defaultValue = descriptor.defaultValue;
+        switch (defaultValue) {
+            case "true": case "TRUE":
+                defaultValue = true;
+                break;
+            case "false": case "FALSE":
+                defaultValue = false;
+                break;
+            default:
+                var match = numberRe.exec(defaultValue);
+                if (match)
+                    defaultValue = parseInt(defaultValue); // eslint-disable-line radix
+                break;
+        }
+        field.setOption("default", defaultValue);
+    }
+
+    return field;
+}
 
 // --- Enum ---
 
