@@ -215,8 +215,10 @@ Type.fromDescriptor = function fromDescriptor(descriptor, syntax, options) {
     /* Fields */ if (descriptor.field)
         for (i = 0; i < descriptor.field.length; ++i) {
             var mapType = useMapField && descriptor.nestedType 
-                ? descriptor.nestedType.find(function (t) { 
-                    return t.options && t.options.mapEntry && t.name === descriptor.field[i].typeName 
+                ? descriptor.nestedType.find(function (t) {
+                    var currField = descriptor.field[i];
+                    var nestedTypeName = currField.typeName && currField.typeName.split('.').pop();
+                    return t.options && t.options.mapEntry && t.name === nestedTypeName
                 }) 
                 : null;
             var field = mapType
