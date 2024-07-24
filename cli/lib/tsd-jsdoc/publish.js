@@ -392,7 +392,7 @@ function writeInterfaceBody(element) {
     if (element.tsType)
         writeln(element.tsType.replace(/\r?\n|\r/g, "\n"));
     else if (element.properties && element.properties.length)
-        element.properties.forEach(writeProperty);
+        element.properties.forEach((property) => writeProperty(property));
     --indent;
     write("}");
 }
