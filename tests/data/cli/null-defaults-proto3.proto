@@ -1,12 +1,12 @@
-syntax = "proto2";
+syntax = "proto3";
 
 message OptionalFields {
   message SubMessage {
-    required string a = 1;
+    string a = 1;
   }
 
   optional SubMessage a = 1;
   optional string b = 2;
   optional uint32 c = 3;
-  required uint32 d = 4;
+  uint32 d = 4;
 }
