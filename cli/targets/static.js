@@ -354,6 +354,27 @@ function toJsType(field) {
     return type;
 }
 
+function isOptional(type, field) {
+
+    // Figure out if a field is explicitly marked optional, depending on the proto syntax (proto2 vs proto3)
+    // If the syntax has not been recorded in the AST, proto2 semantics will be the default
+
+    var syntax = null;
+    var namespace = type;
+
+    while (syntax === null && namespace !== null) {
+        if (namespace.options != null && "syntax" in namespace.options)
+            syntax = namespace.options["syntax"]
+        else
+            namespace = namespace.parent
+    }
+
+    if (syntax === "proto3")
+        return field.proto3Optional
+    else
+        return field.optional
+}
+
 function buildType(ref, type) {
 
     if (config.comments) {
@@ -366,20 +387,25 @@ function buildType(ref, type) {
             var prop = util.safeProp(field.name); // either .name or ["name"]
             prop = prop.substring(1, prop.charAt(0) === "[" ? prop.length - 1 : prop.length);
             var jsType = toJsType(field);
+            var nullable = false;
 
             // New behaviour - fields explicitly marked as optional and members of a one-of are nullable
             // Maps and repeated fields are not explicitly optional, they default to empty instances
             if (config["force-optional"]) {
-                if (field.explicitOptional || field.partOf)
+                if (isOptional(type, field) || field.partOf) {
                     jsType = jsType + "|null|undefined";
+                    nullable = true;
+                }
             }
             // Old behaviour - field.optional is true for all fields in proto3
             else {
-                if (field.optional)
+                if (field.optional) {
                     jsType = jsType + "|null";
+                    nullable = true;
+                }
             }
 
-            typeDef.push("@property {" + jsType + "} " + (field.optional ? "[" + prop + "]" : prop) + " " + (field.comment || type.name + " " + field.name));
+            typeDef.push("@property {" + jsType + "} " + (nullable ? "[" + prop + "]" : prop) + " " + (field.comment || type.name + " " + field.name));
         });
         push("");
         pushComment(typeDef);
@@ -409,7 +435,7 @@ function buildType(ref, type) {
             // New behaviour - fields explicitly marked as optional and members of a one-of are nullable
             // Maps and repeated fields are not explicitly optional, they default to empty instances
             if (config["force-optional"]) {
-                if (field.explicitOptional || field.partOf)
+                if (isOptional(type, field) || field.partOf)
                     jsType = jsType + "|null|undefined";
             }
             // Old behaviour - field.optional is true for all fields in proto3
@@ -431,7 +457,7 @@ function buildType(ref, type) {
         // New behaviour sets a null default when the optional keyword is used explicitly
         // Old behaviour considers all proto3 fields optional and uses the null-defaults config flag
         var nullDefault = config["force-optional"]
-            ? field.explicitOptional
+            ? isOptional(type, field)
             : field.optional && config["null-defaults"];
         if (field.repeated)
             push(escapeName(type.name) + ".prototype" + prop + " = $util.emptyArray;"); // overwritten in constructor

@@ -79,6 +79,13 @@ function Field(name, id, type, rule, extend, options, comment) {
         throw TypeError("extend must be a string");
 
     /**
+     * Explicit record of the proto3 optional rule
+     * Needed to stop the proto3 optional semantics from getting lost
+     * @type {boolean}
+     */
+    this.proto3Optional = rule === "proto3_optional";
+
+    /**
      * Field rule, if any.
      * @type {string|undefined}
      */
@@ -116,14 +123,6 @@ function Field(name, id, type, rule, extend, options, comment) {
      * @type {boolean}
      */
     this.optional = !this.required;
-
-    /**
-     * Whether this field is explicitly marked as optional
-     * Proto3 fields must use the optional keyword
-     * Maps and repeated fields are not explicitly optional
-     * @type {boolean}
-     */
-    this.explicitOptional = rule === "optional";
 
     /**
      * Whether this field is repeated.
