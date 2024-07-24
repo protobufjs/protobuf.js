@@ -68,8 +68,7 @@ Translates between file formats and generates static code.
   --force-long     Enforces the use of 'Long' for s-/u-/int64 and s-/fixed64 fields.
   --force-number   Enforces the use of 'number' for s-/u-/int64 and s-/fixed64 fields.
   --force-message  Enforces the use of message instances instead of plain objects.
-  --null-defaults  Default value for optional fields is null instead of zero value.
-  --pb3-optional   Make type declarations respect optional fields for PB3.
+  --force-optional Enforces nullable types for fields marked as optional (proto2 and proto3)
 
 usage: pbjs [options] file1.proto file2.json ...  (or pipe)  other | pbjs [options] -
 ```

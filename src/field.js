@@ -118,6 +118,14 @@ function Field(name, id, type, rule, extend, options, comment) {
     this.optional = !this.required;
 
     /**
+     * Whether this field is explicitly marked as optional
+     * Proto3 fields must use the optional keyword
+     * Maps and repeated fields are not explicitly optional
+     * @type {boolean}
+     */
+    this.explicitOptional = rule === "optional";
+
+    /**
      * Whether this field is repeated.
      * @type {boolean}
      */

@@ -354,14 +354,6 @@ function toJsType(field) {
     return type;
 }
 
-function handleOptionalFields(jsType, field) {
-
-    if (field.optional && !field.map && !field.repeated && field.resolvedType instanceof Type || field.partOf)
-        return jsType + "|null|undefined";
-    else
-        return jsType
-}
-
 function buildType(ref, type) {
 
     if (config.comments) {
@@ -375,10 +367,13 @@ function buildType(ref, type) {
             prop = prop.substring(1, prop.charAt(0) === "[" ? prop.length - 1 : prop.length);
             var jsType = toJsType(field);
 
-            // Hide the fix for PB3 optional fields behind a config flag, it is an API change in generated output
-            if (config.pb3Optional) {
-                jsType = handleOptionalFields(jsType, field);
+            // New behaviour - fields explicitly marked as optional and members of a one-of are nullable
+            // Maps and repeated fields are not explicitly optional, they default to empty instances
+            if (config["force-optional"]) {
+                if (field.explicitOptional || field.partOf)
+                    jsType = jsType + "|null|undefined";
             }
+            // Old behaviour - field.optional is true for all fields in proto3
             else {
                 if (field.optional)
                     jsType = jsType + "|null";
@@ -411,10 +406,13 @@ function buildType(ref, type) {
             push("");
             var jsType = toJsType(field);
 
-            // Hide the fix for PB3 optional fields behind a config flag, it is an API change in generated output
-            if (config.pb3Optional) {
-                jsType = handleOptionalFields(jsType, field);
+            // New behaviour - fields explicitly marked as optional and members of a one-of are nullable
+            // Maps and repeated fields are not explicitly optional, they default to empty instances
+            if (config["force-optional"]) {
+                if (field.explicitOptional || field.partOf)
+                    jsType = jsType + "|null|undefined";
             }
+            // Old behaviour - field.optional is true for all fields in proto3
             else {
                 if (field.optional && !field.map && !field.repeated && (field.resolvedType instanceof Type || config["null-defaults"]) || field.partOf)
                     jsType = jsType + "|null|undefined";
@@ -430,11 +428,16 @@ function buildType(ref, type) {
             push("");
             firstField = false;
         }
+        // New behaviour sets a null default when the optional keyword is used explicitly
+        // Old behaviour considers all proto3 fields optional and uses the null-defaults config flag
+        var nullDefault = config["force-optional"]
+            ? field.explicitOptional
+            : field.optional && config["null-defaults"];
         if (field.repeated)
             push(escapeName(type.name) + ".prototype" + prop + " = $util.emptyArray;"); // overwritten in constructor
         else if (field.map)
             push(escapeName(type.name) + ".prototype" + prop + " = $util.emptyObject;"); // overwritten in constructor
-        else if (field.partOf || field.optional && config["null-defaults"])
+        else if (field.partOf || nullDefault)
             push(escapeName(type.name) + ".prototype" + prop + " = null;"); // do not set default value for oneof members
         else if (field.long)
             push(escapeName(type.name) + ".prototype" + prop + " = $util.Long ? $util.Long.fromBits("
