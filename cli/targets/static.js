@@ -313,7 +313,10 @@ function buildFunction(type, functionName, gen, scope) {
 
 function toJsType(field, asInterface) {
     var type;
-    var exportAsInterface = asInterface && !field.resolvedType instanceof protobuf.Enum;
+
+    // Never declare enums as interfaces
+    if (field.resolvedType != null && field.resolvedType instanceof protobuf.Enum)
+        asInterface = false
 
     switch (field.type) {
         case "double":
@@ -343,7 +346,7 @@ function toJsType(field, asInterface) {
             break;
         default:
             if (field.resolve().resolvedType)
-                type = exportName(field.resolvedType, exportAsInterface);
+                type = exportName(field.resolvedType, asInterface);
             else
                 type = "*"; // should not happen
             break;
