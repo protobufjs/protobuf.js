@@ -368,7 +368,7 @@ function buildType(ref, type) {
             prop = prop.substring(1, prop.charAt(0) === "[" ? prop.length - 1 : prop.length);
             var jsType = toJsType(field, /*asInterface = */ true);
             if (field.optional)
-                jsType = jsType + "|null";
+                jsType = jsType + "|null|undefined";  // Incoming properties can include undefined members
             typeDef.push("@property {" + jsType + "} " + (field.optional ? "[" + prop + "]" : prop) + " " + (field.comment || type.name + " " + field.name));
         });
         push("");
@@ -396,7 +396,7 @@ function buildType(ref, type) {
             push("");
             var jsType = toJsType(field, /*asInterface = */ false);
             if (field.optional && !field.map && !field.repeated && (field.resolvedType instanceof Type || config["null-defaults"]) || field.partOf)
-                jsType = jsType + "|null|undefined";
+                jsType = jsType + "|null";  // Members are never undefined, they are initialized in the prototype
             pushComment([
                 field.comment || type.name + " " + field.name + ".",
                 "@member {" + jsType + "} " + field.name,
