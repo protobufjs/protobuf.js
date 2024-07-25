@@ -79,13 +79,6 @@ function Field(name, id, type, rule, extend, options, comment) {
         throw TypeError("extend must be a string");
 
     /**
-     * Explicit record of the proto3 optional rule
-     * Needed to stop the proto3 optional semantics from getting lost
-     * @type {boolean}
-     */
-    this.proto3Optional = rule === "proto3_optional";
-
-    /**
      * Field rule, if any.
      * @type {string|undefined}
      */

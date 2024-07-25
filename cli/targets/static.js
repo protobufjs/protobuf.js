@@ -371,7 +371,12 @@ function syntaxForType(type) {
 
 function isOptional(field, syntax) {
 
-    return (syntax === "proto3") ? field.proto3Optional : field.optional;
+    // In proto3, optional fields are explicit
+    if (syntax === "proto3")
+        return field.options != null && field.options["proto3_optional"] === true;
+
+    // In proto2, fields are explicitly optional if they are not part of a map, array or oneOf group
+    return field.optional && !(field.partOf || field.repeated || field.map);
 }
 
 function buildType(ref, type) {
