@@ -366,18 +366,12 @@ function syntaxForType(type) {
             namespace = namespace.parent;
     }
 
-    if (syntax === "proto3")
-        return "proto3";
-    else
-        return "proto2";
+    return (syntax === "proto3") ? "proto3" : "proto2";
 }
 
 function isOptional(field, syntax) {
 
-    if (syntax === "proto3")
-        return field.proto3Optional
-    else
-        return field.optional
+    return (syntax === "proto3") ? field.proto3Optional : field.optional;
 }
 
 function buildType(ref, type) {

@@ -265,7 +265,7 @@ function parse(source, root, options) {
 
         // Syntax is needed to understand the meaning of the optional field rule
         // Otherwise the meaning is ambiguous between proto2 and proto3
-        root.setOption("syntax", syntax)
+        root.setOption("syntax", syntax);
 
         skip(";");
     }
