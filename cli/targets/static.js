@@ -379,6 +379,19 @@ function isOptional(field, syntax) {
     return field.optional && !(field.partOf || field.repeated || field.map);
 }
 
+function isOptionalOneOf(oneof, syntax) {
+
+    if (syntax !== "proto3")
+        return false;
+
+    if (oneof.fieldsArray == null || oneof.fieldsArray.length !== 1)
+        return false;
+
+    var field = oneof.fieldsArray[0];
+
+    return field.options != null && field.options["proto3_optional"] === true;
+}
+
 function buildType(ref, type) {
 
     var syntax = syntaxForType(type);
@@ -494,12 +507,17 @@ function buildType(ref, type) {
         }
         oneof.resolve();
         push("");
-        pushComment([
-            oneof.comment || type.name + " " + oneof.name + ".",
-            "@member {" + oneof.oneof.map(JSON.stringify).join("|") + "|undefined} " + escapeName(oneof.name),
-            "@memberof " + exportName(type),
-            "@instance"
-        ]);
+        if (isOptionalOneOf(oneof, syntax)) {
+            push("// Virtual OneOf for proto3 optional field");
+        }
+        else {
+            pushComment([
+                oneof.comment || type.name + " " + oneof.name + ".",
+                "@member {" + oneof.oneof.map(JSON.stringify).join("|") + "|undefined} " + escapeName(oneof.name),
+                "@memberof " + exportName(type),
+                "@instance"
+            ]);
+        }
         push("Object.defineProperty(" + escapeName(type.name) + ".prototype, " + JSON.stringify(oneof.name) +", {");
         ++indent;
             push("get: $util.oneOfGetter($oneOfFields = [" + oneof.oneof.map(JSON.stringify).join(", ") + "]),");
