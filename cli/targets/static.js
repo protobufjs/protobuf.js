@@ -395,11 +395,10 @@ function buildType(ref, type) {
             var jsType = toJsType(field);
             var nullable = false;
 
-            // New behaviour - fields explicitly marked as optional and members of a one-of are nullable
-            // Maps and repeated fields are not explicitly optional, they default to empty instances
+            // New behaviour - respect explicit optional semantics in both proto2 and proto3
             if (config["force-optional"]) {
-                if (isOptional(field, syntax) || field.partOf) {
-                    jsType = jsType + "|null|undefined";
+                if (isOptional(field, syntax) || field.partOf || field.repeated || field.map) {
+                    jsType = jsType + "|null";
                     nullable = true;
                 }
             }
@@ -439,7 +438,7 @@ function buildType(ref, type) {
             var jsType = toJsType(field);
 
             // New behaviour - fields explicitly marked as optional and members of a one-of are nullable
-            // Maps and repeated fields are not explicitly optional, they default to empty instances
+            // Maps and repeated fields are not nullable, they default to empty instances
             if (config["force-optional"]) {
                 if (isOptional(field, syntax) || field.partOf)
                     jsType = jsType + "|null|undefined";
