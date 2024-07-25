@@ -311,8 +311,9 @@ function buildFunction(type, functionName, gen, scope) {
         push("};");
 }
 
-function toJsType(field) {
+function toJsType(field, asInterface) {
     var type;
+    var exportAsInterface = asInterface && !field.resolvedType instanceof protobuf.Enum;
 
     switch (field.type) {
         case "double":
@@ -342,7 +343,7 @@ function toJsType(field) {
             break;
         default:
             if (field.resolve().resolvedType)
-                type = exportName(field.resolvedType, !(field.resolvedType instanceof protobuf.Enum || config.forceMessage));
+                type = exportName(field.resolvedType, exportAsInterface);
             else
                 type = "*"; // should not happen
             break;
@@ -365,7 +366,7 @@ function buildType(ref, type) {
         type.fieldsArray.forEach(function(field) {
             var prop = util.safeProp(field.name); // either .name or ["name"]
             prop = prop.substring(1, prop.charAt(0) === "[" ? prop.length - 1 : prop.length);
-            var jsType = toJsType(field);
+            var jsType = toJsType(field, /*asInterface = */ true);
             if (field.optional)
                 jsType = jsType + "|null";
             typeDef.push("@property {" + jsType + "} " + (field.optional ? "[" + prop + "]" : prop) + " " + (field.comment || type.name + " " + field.name));
@@ -393,7 +394,7 @@ function buildType(ref, type) {
         var prop = util.safeProp(field.name);
         if (config.comments) {
             push("");
-            var jsType = toJsType(field);
+            var jsType = toJsType(field, /*asInterface = */ false);
             if (field.optional && !field.map && !field.repeated && (field.resolvedType instanceof Type || config["null-defaults"]) || field.partOf)
                 jsType = jsType + "|null|undefined";
             pushComment([
