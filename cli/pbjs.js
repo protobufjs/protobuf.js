@@ -41,7 +41,7 @@ exports.main = function main(args, callback) {
             "force-message": "strict-message"
         },
         string: [ "target", "out", "path", "wrap", "dependency", "root", "lint", "filter" ],
-        boolean: [ "create", "encode", "decode", "verify", "convert", "delimited", "typeurl", "beautify", "comments", "service", "es6", "sparse", "keep-case", "alt-comment", "force-long", "force-number", "force-enum-string", "force-message", "force-optional", "null-defaults"],
+        boolean: [ "create", "encode", "decode", "verify", "convert", "delimited", "typeurl", "beautify", "comments", "service", "es6", "sparse", "keep-case", "alt-comment", "force-long", "force-number", "force-enum-string", "force-message", "null-semantics", "null-defaults"],
         default: {
             target: "json",
             create: true,
@@ -62,7 +62,7 @@ exports.main = function main(args, callback) {
             "force-number": false,
             "force-enum-string": false,
             "force-message": false,
-            "force-optional": false,
+            "null-semantics": false,
             "null-defaults": false
         }
     });
@@ -147,9 +147,9 @@ exports.main = function main(args, callback) {
                 "  --force-long     Enforces the use of 'Long' for s-/u-/int64 and s-/fixed64 fields.",
                 "  --force-number   Enforces the use of 'number' for s-/u-/int64 and s-/fixed64 fields.",
                 "  --force-message  Enforces the use of message instances instead of plain objects.",
-                "  --force-optional Enforces nullable types for fields marked as optional (proto2 and proto3)",
                 "",
-                "  --null-defaults  Default value for optional fields is null instead of zero value (deprecated, use --force-optional instead)",
+                "  --null-semantics Make nullable fields match protobuf semantics (including the optional keyword)",
+                "  --null-defaults  Default value for optional fields is null instead of zero value (no effect if --null-semantics is specified)",
                 "",
                 "usage: " + chalk.bold.green("pbjs") + " [options] file1.proto file2.json ..." + chalk.gray("  (or pipe)  ") + "other | " + chalk.bold.green("pbjs") + " [options] -",
                 ""

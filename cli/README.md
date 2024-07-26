@@ -68,7 +68,9 @@ Translates between file formats and generates static code.
   --force-long     Enforces the use of 'Long' for s-/u-/int64 and s-/fixed64 fields.
   --force-number   Enforces the use of 'number' for s-/u-/int64 and s-/fixed64 fields.
   --force-message  Enforces the use of message instances instead of plain objects.
-  --force-optional Enforces nullable types for fields marked as optional (proto2 and proto3)
+  
+  --null-semantics Make nullable fields match protobuf semantics (including the optional keyword)
+  --null-defaults  Default value for optional fields is null instead of zero value (no effect if --null-semantics is specified)
 
 usage: pbjs [options] file1.proto file2.json ...  (or pipe)  other | pbjs [options] -
 ```
