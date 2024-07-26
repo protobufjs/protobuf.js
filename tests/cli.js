@@ -183,6 +183,10 @@ tape.test("with --null-semantics, optional fields are handled correctly in proto
 
             test.error(err, 'static code generation worked');
 
+            test.ok(jsCode.includes("@property {OptionalFields.ISubMessage|null|undefined} [a] OptionalFields a"), "Property for a should use an interface")
+            test.ok(jsCode.includes("@member {OptionalFields.SubMessage|null} a"), "Member for a should use a message type")
+            test.ok(jsCode.includes("OptionalFields.prototype.a = null;"), "Initializer for a should be null")
+
             test.ok(jsCode.includes("@property {number|null|undefined} [c] OptionalFields c"), "Property for c should be nullable")
             test.ok(jsCode.includes("@member {number|null} c"), "Member for c should be nullable")
             test.ok(jsCode.includes("OptionalFields.prototype.c = null;"), "Initializer for c should be null")
@@ -214,6 +218,10 @@ tape.test("with --null-semantics, optional fields are handled correctly in proto
         }, function(err, jsCode) {
 
             test.error(err, 'static code generation worked');
+
+            test.ok(jsCode.includes("@property {OptionalFields.ISubMessage|null|undefined} [a] OptionalFields a"), "Property for a should use an interface")
+            test.ok(jsCode.includes("@member {OptionalFields.SubMessage|null} a"), "Member for a should use a message type")
+            test.ok(jsCode.includes("OptionalFields.prototype.a = null;"), "Initializer for a should be null")
 
             test.ok(jsCode.includes("@property {number|null|undefined} [c] OptionalFields c"), "Property for c should be nullable")
             test.ok(jsCode.includes("@member {number|null} c"), "Member for c should be nullable")
