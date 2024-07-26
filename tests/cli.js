@@ -227,7 +227,7 @@ tape.test("with --null-semantics, optional fields are handled correctly in proto
             test.ok(jsCode.includes("@member {number|null} c"), "Member for c should be nullable")
             test.ok(jsCode.includes("OptionalFields.prototype.c = null;"), "Initializer for c should be null")
 
-            test.ok(jsCode.includes("@property {number} d OptionalFields d"), "Property for d should not be nullable")
+            test.ok(jsCode.includes("@property {number|undefined} [d] OptionalFields d"), "Property for d should be optional but not nullable")
             test.ok(jsCode.includes("@member {number} d"), "Member for d should not be nullable")
             test.ok(jsCode.includes("OptionalFields.prototype.d = 0;"), "Initializer for d should be zero")
 
