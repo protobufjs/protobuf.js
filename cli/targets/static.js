@@ -384,12 +384,15 @@ function isOptional(field, syntax) {
         return field.options != null && field.options["proto3_optional"] === true;
 
     // In proto2, fields are explicitly optional if they are not part of a map, array or oneOf group
-    return field.optional && !(field.partOf || field.repeated || field.map);
+    if (syntax === "proto2")
+        return field.optional && !(field.partOf || field.repeated || field.map);
+
+    throw new Error("Unknown proto syntax: [" + syntax + "]");
 }
 
 function isOptionalOneOf(oneof, syntax) {
 
-    if (syntax !== "proto3")
+    if (syntax === "proto2")
         return false;
 
     if (oneof.fieldsArray == null || oneof.fieldsArray.length !== 1)
