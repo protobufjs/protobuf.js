@@ -145,7 +145,7 @@ exports.main = function main(args, callback) {
                 "",
                 "  --force-long     Enforces the use of 'Long' for s-/u-/int64 and s-/fixed64 fields.",
                 "  --force-number   Enforces the use of 'number' for s-/u-/int64 and s-/fixed64 fields.",
-                "  --force-message  Enforces the use of message instances instead of plain objects.",
+                "  --force-message  Enforces the use of message instances instead of plain objects for method calls.",
                 "",
                 "  --null-defaults  Default value for optional fields is null instead of zero value.",
                 "",
