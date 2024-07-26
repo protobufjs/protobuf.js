@@ -360,10 +360,12 @@ function syntaxForType(type) {
     var namespace = type;
 
     while (syntax === null && namespace !== null) {
-        if (namespace.options != null && "syntax" in namespace.options)
+        if (namespace.options != null && "syntax" in namespace.options) {
             syntax = namespace.options["syntax"];
-        else
+        }
+        else {
             namespace = namespace.parent;
+        }
     }
 
     return (syntax === "proto3") ? "proto3" : "proto2";
