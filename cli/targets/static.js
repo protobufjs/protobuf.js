@@ -377,7 +377,7 @@ function syntaxForType(type) {
     return syntax !== null ? syntax : "proto2";
 }
 
-function isOptional(field, syntax) {
+function isExplicitPresence(field, syntax) {
 
     // In proto3, optional fields are explicit
     if (syntax === "proto3")
@@ -386,6 +386,19 @@ function isOptional(field, syntax) {
     // In proto2, fields are explicitly optional if they are not part of a map, array or oneOf group
     if (syntax === "proto2")
         return field.optional && !(field.partOf || field.repeated || field.map);
+
+    throw new Error("Unknown proto syntax: [" + syntax + "]");
+}
+
+function isImplicitPresence(field, syntax) {
+
+    // In proto3, everything not marked optional has implicit presence (including maps and repeated fields)
+    if (syntax === "proto3")
+        return field.options == null || field.options["proto3_optional"] !== true;
+
+    // In proto2, nothing has implicit presence
+    if (syntax === "proto2")
+        return false;
 
     throw new Error("Unknown proto syntax: [" + syntax + "]");
 }
@@ -419,11 +432,15 @@ function buildType(ref, type) {
             var jsType = toJsType(field, /* parentIsInterface = */ true);
             var nullable = false;
             if (config["null-semantics"]) {
-                // With semantic nulls, decide which fields are required for the current protobuf version
-                // Fields with implicit defaults in proto3 are required for the purpose of constructing objects
-                // Optional fields can be undefined, i.e. they can be omitted for the source object altogether
-                if (isOptional(field, syntax) || field.partOf || field.repeated || field.map) {
+                // With semantic nulls, only explicit optional fields and one-of members can be set to null
+                // Implicit fields (proto3), maps and lists can be omitted, but if specified must be non-null
+                // Implicit fields will take their default value when the message is constructed
+                if (isExplicitPresence(field, syntax) || field.partOf) {
                     jsType = jsType + "|null|undefined";
+                    nullable = true;
+                }
+                else if (isImplicitPresence(field, syntax) || field.repeated || field.map) {
+                    jsType = jsType + "|undefined";
                     nullable = true;
                 }
             }
@@ -465,7 +482,7 @@ function buildType(ref, type) {
                 // With semantic nulls, fields are nullable if they are explicitly optional or part of a one-of
                 // Maps, repeated values and fields with implicit defaults are never null after construction
                 // Members are never undefined, at a minimum they are initialized to null
-                if (isOptional(field, syntax) || field.partOf)
+                if (isExplicitPresence(field, syntax) || field.partOf)
                     jsType = jsType + "|null";
             }
             else {
@@ -484,10 +501,10 @@ function buildType(ref, type) {
             push("");
             firstField = false;
         }
-        // Semantic nulls respect the optional semantics for the current protobuf version
+        // With semantic nulls, only explict optional fields and one-of members are null by default
         // Otherwise use field.optional, which doesn't consider proto3, maps, repeated fields etc.
         var nullDefault = config["null-semantics"]
-            ? isOptional(field, syntax)
+            ? isExplicitPresence(field, syntax)
             : field.optional && config["null-defaults"];
         if (field.repeated)
             push(escapeName(type.name) + ".prototype" + prop + " = $util.emptyArray;"); // overwritten in constructor
