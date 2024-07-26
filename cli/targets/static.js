@@ -316,7 +316,7 @@ function toJsType(field, asInterface) {
 
     // Never declare enums as interfaces
     if (field.resolvedType != null && field.resolvedType instanceof protobuf.Enum)
-        asInterface = false
+        asInterface = false;
 
     switch (field.type) {
         case "double":
