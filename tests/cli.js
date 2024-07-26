@@ -165,7 +165,7 @@ tape.test("with null-defaults, absent optional fields have null values", functio
 });
 
 
-tape.test("with force-optional, optional fields are handled correctly in proto2", function(test) {
+tape.test("with --null-semantics, optional fields are handled correctly in proto2", function(test) {
     cliTest(test, function() {
         var root = protobuf.loadSync("tests/data/cli/null-defaults.proto");
         root.resolveAll();
@@ -178,13 +178,13 @@ tape.test("with force-optional, optional fields are handled correctly in proto2"
             encode: true,
             convert: true,
             comments: true,
-            "force-optional": true,
+            "null-semantics": true,
         }, function(err, jsCode) {
 
             test.error(err, 'static code generation worked');
 
             test.ok(jsCode.includes("@property {number|null|undefined} [c] OptionalFields c"), "Property for c should be nullable")
-            test.ok(jsCode.includes("@member {number|null|undefined} c"), "Member for c should be nullable")
+            test.ok(jsCode.includes("@member {number|null} c"), "Member for c should be nullable")
             test.ok(jsCode.includes("OptionalFields.prototype.c = null;"), "Initializer for c should be null")
 
             test.ok(jsCode.includes("@property {number} d OptionalFields d"), "Property for d should not be nullable")
@@ -197,7 +197,7 @@ tape.test("with force-optional, optional fields are handled correctly in proto2"
 });
 
 
-tape.test("with force-optional, optional fields are handled correctly in proto3", function(test) {
+tape.test("with --null-semantics, optional fields are handled correctly in proto3", function(test) {
     cliTest(test, function() {
         var root = protobuf.loadSync("tests/data/cli/null-defaults-proto3.proto");
         root.resolveAll();
@@ -210,15 +210,13 @@ tape.test("with force-optional, optional fields are handled correctly in proto3"
             encode: true,
             convert: true,
             comments: true,
-            "force-optional": true,
+            "null-semantics": true,
         }, function(err, jsCode) {
-
-            console.log(jsCode);
 
             test.error(err, 'static code generation worked');
 
             test.ok(jsCode.includes("@property {number|null|undefined} [c] OptionalFields c"), "Property for c should be nullable")
-            test.ok(jsCode.includes("@member {number|null|undefined} c"), "Member for c should be nullable")
+            test.ok(jsCode.includes("@member {number|null} c"), "Member for c should be nullable")
             test.ok(jsCode.includes("OptionalFields.prototype.c = null;"), "Initializer for c should be null")
 
             test.ok(jsCode.includes("@property {number} d OptionalFields d"), "Property for d should not be nullable")
