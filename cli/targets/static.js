@@ -409,22 +409,23 @@ function buildType(ref, type) {
             prop = prop.substring(1, prop.charAt(0) === "[" ? prop.length - 1 : prop.length);
             var jsType = toJsType(field);
             var nullable = false;
-
-            // New behaviour - respect explicit optional semantics in both proto2 and proto3
-            if (config["force-optional"]) {
+            if (config["null-semantics"]) {
+                // With semantic nulls, decide which fields are required for the current protobuf version
+                // Fields with implicit defaults in proto3 are required for the purpose of constructing objects
+                // Optional fields can be undefined, i.e. they can be omitted for the source object altogether
                 if (isOptional(field, syntax) || field.partOf || field.repeated || field.map) {
-                    jsType = jsType + "|null";
+                    jsType = jsType + "|null|undefined";
                     nullable = true;
                 }
             }
-            // Old behaviour - field.optional is true for all fields in proto3
             else {
+                // Without semantic nulls, everything is optional in proto3
+                // Do not allow |undefined to keep backwards compatibility
                 if (field.optional) {
                     jsType = jsType + "|null";
                     nullable = true;
                 }
             }
-
             typeDef.push("@property {" + jsType + "} " + (nullable ? "[" + prop + "]" : prop) + " " + (field.comment || type.name + " " + field.name));
         });
         push("");
@@ -451,19 +452,19 @@ function buildType(ref, type) {
         if (config.comments) {
             push("");
             var jsType = toJsType(field);
-
-            // New behaviour - fields explicitly marked as optional and members of a one-of are nullable
-            // Maps and repeated fields are not nullable, they default to empty instances
-            if (config["force-optional"]) {
+            if (config["null-semantics"]) {
+                // With semantic nulls, fields are nullable if they are explicitly optional or part of a one-of
+                // Maps, repeated values and fields with implicit defaults are never null after construction
+                // Members are never undefined, at a minimum they are initialized to null
                 if (isOptional(field, syntax) || field.partOf)
-                    jsType = jsType + "|null|undefined";
+                    jsType = jsType + "|null";
             }
-            // Old behaviour - field.optional is true for all fields in proto3
             else {
+                // Without semantic nulls, everything is optional in proto3
+                // Keep |undefined for backwards compatibility
                 if (field.optional && !field.map && !field.repeated && (field.resolvedType instanceof Type || config["null-defaults"]) || field.partOf)
                     jsType = jsType + "|null|undefined";
             }
-
             pushComment([
                 field.comment || type.name + " " + field.name + ".",
                 "@member {" + jsType + "} " + field.name,
@@ -474,9 +475,9 @@ function buildType(ref, type) {
             push("");
             firstField = false;
         }
-        // New behaviour sets a null default when the optional keyword is used explicitly
-        // Old behaviour considers all proto3 fields optional and uses the null-defaults config flag
-        var nullDefault = config["force-optional"]
+        // Semantic nulls respect the optional semantics for the current protobuf version
+        // Otherwise use field.optional, which doesn't consider proto3, maps, repeated fields etc.
+        var nullDefault = config["null-semantics"]
             ? isOptional(field, syntax)
             : field.optional && config["null-defaults"];
         if (field.repeated)
