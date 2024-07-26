@@ -311,8 +311,14 @@ function buildFunction(type, functionName, gen, scope) {
         push("};");
 }
 
-function toJsType(field) {
+function toJsType(field, parentIsInterface) {
     var type;
+
+    // With null semantics, interfaces are composed from interfaces and messages from messages
+    // Without null semantics, child types depend on the --force-message flag
+    var asInterface = config["null-semantics"]
+        ? parentIsInterface && !(field.resolvedType instanceof protobuf.Enum)
+        : !(field.resolvedType instanceof protobuf.Enum || config.forceMessage);
 
     switch (field.type) {
         case "double":
@@ -342,7 +348,7 @@ function toJsType(field) {
             break;
         default:
             if (field.resolve().resolvedType)
-                type = exportName(field.resolvedType, !(field.resolvedType instanceof protobuf.Enum || config.forceMessage));
+                type = exportName(field.resolvedType, asInterface);
             else
                 type = "*"; // should not happen
             break;
@@ -407,7 +413,7 @@ function buildType(ref, type) {
         type.fieldsArray.forEach(function(field) {
             var prop = util.safeProp(field.name); // either .name or ["name"]
             prop = prop.substring(1, prop.charAt(0) === "[" ? prop.length - 1 : prop.length);
-            var jsType = toJsType(field);
+            var jsType = toJsType(field, /* parentIsInterface = */ true);
             var nullable = false;
             if (config["null-semantics"]) {
                 // With semantic nulls, decide which fields are required for the current protobuf version
@@ -451,7 +457,7 @@ function buildType(ref, type) {
         var prop = util.safeProp(field.name);
         if (config.comments) {
             push("");
-            var jsType = toJsType(field);
+            var jsType = toJsType(field, /* parentIsInterface = */ false);
             if (config["null-semantics"]) {
                 // With semantic nulls, fields are nullable if they are explicitly optional or part of a one-of
                 // Maps, repeated values and fields with implicit defaults are never null after construction
