@@ -368,7 +368,7 @@ function syntaxForType(type) {
         }
     }
 
-    return (syntax === "proto3") ? "proto3" : "proto2";
+    return (syntax !== null) ? syntax : "proto2";
 }
 
 function isOptional(field, syntax) {
