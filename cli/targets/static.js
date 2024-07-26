@@ -311,7 +311,7 @@ function buildFunction(type, functionName, gen, scope) {
         push("};");
 }
 
-function toJsType(field, parentIsInterface) {
+function toJsType(field, parentIsInterface = false) {
     var type;
 
     // With null semantics, interfaces are composed from interfaces and messages from messages
