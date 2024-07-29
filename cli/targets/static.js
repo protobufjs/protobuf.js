@@ -347,10 +347,12 @@ function toJsType(field, parentIsInterface = false) {
             type = "Uint8Array";
             break;
         default:
-            if (field.resolve().resolvedType)
+            if (field.resolve().resolvedType) {
                 type = exportName(field.resolvedType, asInterface);
-            else
+            }
+            else {
                 type = "*"; // should not happen
+            }
             break;
     }
     if (field.map)
@@ -380,12 +382,14 @@ function syntaxForType(type) {
 function isExplicitPresence(field, syntax) {
 
     // In proto3, optional fields are explicit
-    if (syntax === "proto3")
+    if (syntax === "proto3") {
         return field.options != null && field.options["proto3_optional"] === true;
+    }
 
     // In proto2, fields are explicitly optional if they are not part of a map, array or oneOf group
-    if (syntax === "proto2")
+    if (syntax === "proto2") {
         return field.optional && !(field.partOf || field.repeated || field.map);
+    }
 
     throw new Error("Unknown proto syntax: [" + syntax + "]");
 }
@@ -393,23 +397,27 @@ function isExplicitPresence(field, syntax) {
 function isImplicitPresence(field, syntax) {
 
     // In proto3, everything not marked optional has implicit presence (including maps and repeated fields)
-    if (syntax === "proto3")
+    if (syntax === "proto3") {
         return field.options == null || field.options["proto3_optional"] !== true;
+    }
 
     // In proto2, nothing has implicit presence
-    if (syntax === "proto2")
+    if (syntax === "proto2") {
         return false;
+    }
 
     throw new Error("Unknown proto syntax: [" + syntax + "]");
 }
 
 function isOptionalOneOf(oneof, syntax) {
 
-    if (syntax === "proto2")
+    if (syntax === "proto2") {
         return false;
+    }
 
-    if (oneof.fieldsArray == null || oneof.fieldsArray.length !== 1)
+    if (oneof.fieldsArray == null || oneof.fieldsArray.length !== 1) {
         return false;
+    }
 
     var field = oneof.fieldsArray[0];
 
@@ -482,14 +490,16 @@ function buildType(ref, type) {
                 // With semantic nulls, fields are nullable if they are explicitly optional or part of a one-of
                 // Maps, repeated values and fields with implicit defaults are never null after construction
                 // Members are never undefined, at a minimum they are initialized to null
-                if (isExplicitPresence(field, syntax) || field.partOf)
+                if (isExplicitPresence(field, syntax) || field.partOf) {
                     jsType = jsType + "|null";
+                }
             }
             else {
                 // Without semantic nulls, everything is optional in proto3
                 // Keep |undefined for backwards compatibility
-                if (field.optional && !field.map && !field.repeated && (field.resolvedType instanceof Type || config["null-defaults"]) || field.partOf)
+                if (field.optional && !field.map && !field.repeated && (field.resolvedType instanceof Type || config["null-defaults"]) || field.partOf) {
                     jsType = jsType + "|null|undefined";
+                }
             }
             pushComment([
                 field.comment || type.name + " " + field.name + ".",
