@@ -263,6 +263,10 @@ function parse(source, root, options) {
         if (!isProto3 && syntax !== "proto2")
             throw illegal(syntax, "syntax");
 
+        // Syntax is needed to understand the meaning of the optional field rule
+        // Otherwise the meaning is ambiguous between proto2 and proto3
+        root.setOption("syntax", syntax);
+
         skip(";");
     }
 
