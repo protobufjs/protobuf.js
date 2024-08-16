@@ -1,5 +1,12 @@
 # Changelog
 
+## [7.3.3](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v7.3.2...protobufjs-v7.3.3) (2024-08-16)
+
+
+### Bug Fixes
+
+* handle nullability for optional fields ([59569c1](https://github.com/protobufjs/protobuf.js/commit/59569c12c85c1c7b783ace9a71775b1d05a08e9c))
+
 ## [7.3.2](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v7.3.1...protobufjs-v7.3.2) (2024-06-12)
 
 
