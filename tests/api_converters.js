@@ -12,7 +12,7 @@ tape.test("converters", function(test) {
 
         test.test(test.name + " - Message#toObject", function(test) {
 
-            test.plan(6);
+            test.plan(7);
 
             test.test(test.name + " - called with defaults = true", function(test) {
                 var obj = Message.toObject(Message.create(), { defaults: true });
@@ -30,6 +30,14 @@ tape.test("converters", function(test) {
                 test.same(obj.enumRepeated, [], "should set enumRepeated");
 
                 test.same(obj.int64Map, {}, "should set int64Map");
+
+                test.end();
+            });
+
+            test.test(test.name + " - called with defaults = true and longs = bigint", function(test) {
+                var obj = Message.toObject(Message.create(), { defaults: true, longs: BigInt });
+
+                test.same(obj.uint64Val, 0n, "should set uint64Val");
 
                 test.end();
             });
@@ -98,28 +106,43 @@ tape.test("converters", function(test) {
                 var buf = protobuf.util.newBuffer(3);
                 buf[0] = buf[1] = buf[2] = 49; // "111"
                 var msg = Message.create({
-                    uint64Val: protobuf.util.Long.fromNumber(1),
+                    // This number was chosen to be > 2^63 and < 2^64
+                    uint64Val: protobuf.util.Long.fromString("11000000000000000001", true),
                     uint64Repeated: [2, 3],
                     bytesVal: buf,
                     bytesRepeated: [buf, buf],
                     enumVal: 2,
                     enumRepeated: [1, 100, 2],
                     int64Map: {
-                        a: protobuf.util.Long.fromNumber(2),
-                        b: protobuf.util.Long.fromNumber(3)
-                    }
+                        // These numbers were chosen to be < Number.MIN_SAFE_INTEGER
+                        a: protobuf.util.Long.fromString("-200000000000000001"),
+                        b: protobuf.util.Long.fromString("-300000000000000001")
+                    },
+                    fixed64Val: protobuf.util.Long.fromString("11000000000000000001", true),
+                    // This number was chosen to be between -2^63 and -2^62
+                    sfixed64Val: protobuf.util.Long.fromString("-9000000000000000001", true),
                 });
 
                 var msgLongsToNumber = Message.toObject(msg, { longs: Number }),
-                    msgLongsToString = Message.toObject(msg, { longs: String });
+                    msgLongsToString = Message.toObject(msg, { longs: String }),
+                    msgLongsToBigInt = Message.toObject(msg, { longs: BigInt });
 
                 test.same(Message.ctor.toObject(msg, { longs: Number}), msgLongsToNumber, "should convert the same using the static and the instance method");
                 test.same(Message.ctor.toObject(msg, { longs: String}), msgLongsToString, "should convert the same using the static and the instance method");
+                test.same(Message.ctor.toObject(msg, { longs: BigInt}), msgLongsToBigInt, "should convert the same using the static and the instance method");
 
-                test.equal(msgLongsToNumber.uint64Val, 1, "longs to numbers");
-                test.equal(msgLongsToString.uint64Val, "1", "longs to strings");
-                test.same(msgLongsToNumber.int64Map, { a: 2, b: 3}, "long map values to numbers");
-                test.same(msgLongsToString.int64Map, { a: "2", b: "3"}, "long map values to strings");
+                test.equal(msgLongsToNumber.uint64Val, 11000000000000000000, "longs to numbers");
+                test.equal(msgLongsToString.uint64Val, "11000000000000000001", "longs to strings");
+                test.equal(msgLongsToBigInt.uint64Val, 11000000000000000001n, "longs to bigints");
+                test.same(msgLongsToNumber.int64Map, { a: -200000000000000000, b: -300000000000000000}, "long map values to numbers");
+                test.same(msgLongsToString.int64Map, { a: "-200000000000000001", b: "-300000000000000001"}, "long map values to strings");
+                test.same(msgLongsToBigInt.int64Map, { a: -200000000000000001n, b: -300000000000000001n}, "long map values to bigints");
+                test.equal(msgLongsToNumber.fixed64Val, 11000000000000000000, "longs to numbers");
+                test.equal(msgLongsToString.fixed64Val, "11000000000000000001", "longs to strings");
+                test.equal(msgLongsToBigInt.fixed64Val, 11000000000000000001n, "longs to bigints");
+                test.equal(msgLongsToNumber.sfixed64Val, -9000000000000000000, "longs to numbers");
+                test.equal(msgLongsToString.sfixed64Val, "9446744073709551615", "longs to strings"); // this is wrong
+                test.equal(msgLongsToBigInt.sfixed64Val, -9000000000000000001n, "longs to bigints");
 
                 test.equal(Object.prototype.toString.call(Message.toObject(msg, { bytes: Array }).bytesVal), "[object Array]", "bytes to arrays");
                 test.equal(Message.toObject(msg, { bytes: String }).bytesVal, "MTEx", "bytes to base64 strings");
