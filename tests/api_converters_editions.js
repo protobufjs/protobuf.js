@@ -2,7 +2,7 @@ var tape = require("tape");
 
 var protobuf  = require("..");
 
-tape.test.only("converters editions", function(test) {
+tape.test("converters editions", function(test) {
 
     protobuf.load("tests/data/convert-editions.proto", function(err, root) {
         if (err)

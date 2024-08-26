@@ -286,7 +286,6 @@ Field.prototype.resolve = function resolve() {
     if (this.options) {
         if (this.options.packed === true || this.options.packed !== undefined && this.resolvedType && !(this.resolvedType instanceof Enum))
             delete this.options.packed;
-        console.log('in Field function')
         if (!Object.keys(this.options).length)
             this.options = undefined;
     }
@@ -300,7 +299,6 @@ Field.prototype.resolve = function resolve() {
             Object.freeze(this.typeDefault); // long instances are meant to be immutable anyway (i.e. use small int cache that even requires it)
 
     } else if (this.bytes && typeof this.typeDefault === "string") {
-        console.log('in Field function and this.bytes && typeof this.typeDefault')
         var buf;
         if (util.base64.test(this.typeDefault))
             util.base64.decode(this.typeDefault, buf = util.newBuffer(util.base64.length(this.typeDefault)), 0);

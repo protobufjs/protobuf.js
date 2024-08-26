@@ -119,26 +119,21 @@ Root.prototype.load = function load(filename, options, callback) {
     function process(filename, source) {
         try {
             if (util.isString(source) && source.charAt(0) === "{") {
-                console.log('a')
                 source = JSON.parse(source);
             }
             if (!util.isString(source)) {
-                console.log('b')
                 self.setOptions(source.options).addJSON(source.nested);
             } else {
-                console.log('c')
                 parse.filename = filename;
                 var parsed = parse(source, self, options),
                     resolved,
                     i = 0;
                 if (parsed.imports) {
-                    console.log('d')
                     for (; i < parsed.imports.length; ++i)
                         if (resolved = getBundledFileName(parsed.imports[i]) || self.resolvePath(filename, parsed.imports[i]))
                             fetch(resolved);
                 }
                 if (parsed.weakImports) {
-                    console.log('e')
                     for (i = 0; i < parsed.weakImports.length; ++i)
                         if (resolved = getBundledFileName(parsed.weakImports[i]) || self.resolvePath(filename, parsed.weakImports[i]))
                             fetch(resolved, true);
@@ -163,13 +158,11 @@ Root.prototype.load = function load(filename, options, callback) {
         // Shortcut bundled definitions
         if (filename in common) {
             if (sync) {
-                console.log('in process fetch if');
                 process(filename, common[filename]);
             } else {
                 ++queued;
                 setTimeout(function() {
                     --queued;
-                    console.log('in process fetch else');
                     process(filename, common[filename]);
                 });
             }
@@ -186,7 +179,6 @@ Root.prototype.load = function load(filename, options, callback) {
                     finish(err);
                 return;
             }
-            console.log('in process fetch if sync');
             process(filename, source);
         } else {
             ++queued;
@@ -203,9 +195,7 @@ Root.prototype.load = function load(filename, options, callback) {
                         finish(null, self);
                     return;
                 }
-                console.log('in process fetch else sync');
                 process(filename, source);
-                console.log('finished process fetch else sync')
             });
         }
     }
