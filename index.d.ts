@@ -732,6 +732,7 @@ export abstract class NamespaceBase extends ReflectionObject {
 
     /** Nested objects of this namespace as an array for iteration. */
     public readonly nestedArray: ReflectionObject[];
+    public readonly orderedNestedMessages: ReflectionObject[];
 
     /**
      * Converts this namespace to a namespace descriptor.
