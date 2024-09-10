@@ -4,6 +4,7 @@ module.exports = parse;
 parse.filename = null;
 parse.defaults = { keepCase: false };
 
+const { hasOwnProperty } = require("tslint/lib/utils");
 var tokenize  = require("./tokenize"),
     Root      = require("./root"),
     Type      = require("./type"),
@@ -25,7 +26,8 @@ var base10Re    = /^[1-9][0-9]*$/,
     numberRe    = /^(?![eE])[0-9]*(?:\.[0-9]*)?(?:[eE][+-]?[0-9]+)?$/,
     nameRe      = /^[a-zA-Z_][a-zA-Z_0-9]*$/,
     typeRefRe   = /^(?:\.?[a-zA-Z_][a-zA-Z_0-9]*)(?:\.[a-zA-Z_][a-zA-Z_0-9]*)*$/,
-    fqTypeRefRe = /^(?:\.[a-zA-Z_][a-zA-Z_0-9]*)+$/;
+    fqTypeRefRe = /^(?:\.[a-zA-Z_][a-zA-Z_0-9]*)+$/,
+    featuresRefRe = /features\.([a-zA-Z_]*)/;
 
 /**
  * Result object returned from {@link parse}.
@@ -312,6 +314,7 @@ function parse(source, root, options) {
             case "extend":
                 parseExtension(parent, token);
                 return true;
+        
         }
         return false;
     }
@@ -480,7 +483,7 @@ function parse(source, root, options) {
                     parseOption(type, token);
                     skip(";");
                     break;
-
+                
                 case "required":
                 case "repeated":
                     parseField(type, token);
@@ -611,6 +614,11 @@ function parse(source, root, options) {
                 this.options = {};
             this.options[name] = value;
         };
+        dummy.setFeature = function(name, value) {
+            if (this.features === undefined)
+                this.features = {};
+            this.features[name] = value;
+        };
         ifBlock(dummy, function parseEnumValue_block(token) {
 
             /* istanbul ignore else */
@@ -623,33 +631,40 @@ function parse(source, root, options) {
         }, function parseEnumValue_line() {
             parseInlineOptions(dummy); // skip
         });
-        parent.add(token, value, dummy.comment, dummy.options);
+        parent.add(token, value, dummy.comment, dummy.options, dummy.features);
     }
 
     function parseOption(parent, token) {
+        if (featuresRefRe.test(token = next())) {
+            var name = token.match(featuresRefRe)[1]
+            skip("=");
+            setFeature(parent, name, token = next())
+        } else {
         var isCustom = skip("(", true);
         if (!typeRefRe.test(token = next())) 
             throw illegal(token, "name");
+        
 
-        var name = token;
-        var option = name;
-        var propName;
+            var name = token;
+            var option = name;
+            var propName;
 
-        if (isCustom) {
-            skip(")");
-            name = "(" + name + ")";
-            option = name;
-            token = peek();
-            if (fqTypeRefRe.test(token)) {
-                propName = token.slice(1); //remove '.' before property name
-                name += token;
-                next();
+            if (isCustom) {
+                skip(")");
+                name = "(" + name + ")";
+                option = name;
+                token = peek();
+                if (fqTypeRefRe.test(token)) {
+                    propName = token.slice(1); //remove '.' before property name
+                    name += token;
+                    next();
+                }
             }
-        }
 
-        skip("=");
-        var optionValue = parseOptionValue(parent, name);
-        setParsedOption(parent, option, optionValue, propName);
+            skip("=");
+            var optionValue = parseOptionValue(parent, name);
+            setParsedOption(parent, option, optionValue, propName);
+        }
     }
 
     function parseOptionValue(parent, name) {
@@ -718,6 +733,12 @@ function parse(source, root, options) {
     function setOption(parent, name, value) {
         if (parent.setOption)
             parent.setOption(name, value);
+    }
+
+    function setFeature(parent, name, value) {
+        if (parent.setFeature) {
+            parent.setFeature(name, value);
+        }
     }
 
     function setParsedOption(parent, name, value, propName) {

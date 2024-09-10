@@ -20,7 +20,7 @@ var Namespace = require("./namespace"),
  * @param {Object.<string,string>} [comments] The value comments for this enum
  * @param {Object.<string,Object<string,*>>|undefined} [valuesOptions] The value options for this enum
  */
-function Enum(name, values, options, comment, comments, valuesOptions) {
+function Enum(name, values, options, comment, comments, valuesOptions, valuesFeatures) {
     ReflectionObject.call(this, name, options);
 
     if (values && typeof values !== "object")
@@ -55,6 +55,12 @@ function Enum(name, values, options, comment, comments, valuesOptions) {
      * @type {Object<string, Object<string, *>>|undefined}
      */
     this.valuesOptions = valuesOptions;
+
+    /**
+     * Values features, if any
+     * @type {Object<string, Object<string, *>>|undefined}
+     */
+    this.valuesFeatures = valuesFeatures;
 
     /**
      * Reserved ranges, if any.
@@ -119,7 +125,7 @@ Enum.prototype.toJSON = function toJSON(toJSONOptions) {
  * @throws {TypeError} If arguments are invalid
  * @throws {Error} If there is already a value with this name or id
  */
-Enum.prototype.add = function add(name, id, comment, options) {
+Enum.prototype.add = function add(name, id, comment, options, features) {
     // utilized by the parser but not by .fromJSON
 
     if (!util.isString(name))
@@ -150,6 +156,12 @@ Enum.prototype.add = function add(name, id, comment, options) {
         this.valuesOptions[name] = options || null;
     }
 
+    if (features) {
+        if (this.valuesFeatures === undefined)
+            this.valuesFeatures = {};
+        this.valuesFeatures[name] = features || null;
+    }
+
     this.comments[name] = comment || null;
     return this;
 };
@@ -176,6 +188,8 @@ Enum.prototype.remove = function remove(name) {
     if (this.valuesOptions)
         delete this.valuesOptions[name];
 
+    if (this.valuesFeatures)
+        delete this.valuesFeatures[name];
     return this;
 };
 

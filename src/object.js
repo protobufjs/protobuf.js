@@ -42,6 +42,11 @@ function ReflectionObject(name, options) {
     this.name = name;
 
     /**
+     * Resolved Features.
+     */
+    this.features = null;
+
+    /**
      * Parent namespace.
      * @type {Namespace|null}
      */
@@ -172,6 +177,17 @@ ReflectionObject.prototype.getOption = function getOption(name) {
 ReflectionObject.prototype.setOption = function setOption(name, value, ifNotSet) {
     if (!ifNotSet || !this.options || this.options[name] === undefined)
         (this.options || (this.options = {}))[name] = value;
+    return this;
+};
+
+/**
+ * Sets a feature.
+ * @param {string} name Feature name
+ * @param {*} value Feature value
+ * @returns {ReflectionObject} `this`
+ */
+ReflectionObject.prototype.setFeature = function setFeature(name, value) {
+    (this.features || (this.features = {}))[name] = value;
     return this;
 };
 
