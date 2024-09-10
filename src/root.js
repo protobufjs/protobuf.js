@@ -154,9 +154,9 @@ Root.prototype.load = function load(filename, options, callback) {
 
         // Shortcut bundled definitions
         if (filename in common) {
-            if (sync) {
+            if (sync)
                 process(filename, common[filename]);
-            } else {
+            else {
                 ++queued;
                 setTimeout(function() {
                     --queued;

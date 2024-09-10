@@ -381,7 +381,7 @@ function parse(source, root, options) {
 
                 default:
                     /* istanbul ignore if */
-                    if (!isProto3 || !edition || !typeRefRe.test(token))
+                    if ((!isProto3 && !edition) || !typeRefRe.test(token))
                         throw illegal(token);
 
                     push(token);
@@ -476,8 +476,7 @@ function parse(source, root, options) {
                 case "option":
                     parseOption(type, token);
                     skip(";");
-                    break;
-                
+                    break;       
                 case "required":
                 case "repeated":
                     parseField(type, token);

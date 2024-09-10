@@ -43,31 +43,31 @@ message Message {
 
     extensions 10 to 100;
     extend Message {
-        int32 bar = 10 [features.amazing_feature = I];
+        required int32 bar = 10 [features.amazing_feature = I];
     }
 
     message Nested {
-      option features.amazing_feature = H;
-      optional int32 count = 1;
+        option features.amazing_feature = H;
+        optional int64 count = 9;
     }
 
-    enum SomeEnum {
+    enum SomeEnumInMessage {
         option features.amazing_feature = G;
-        ONE = 1;
-        TWO = 2;
+        ONE = 11;
+        TWO = 12;
     }
     
-    oneof bar {
+    oneof SomeOneOf {
         option features.amazing_feature = J;
-        int32 a = 1;
-        string b = 2;
+        int32 a = 13;
+        string b = 14;
     }
 
-    map<string,int64> int64_map = 9;
+    map<string,int64> int64_map = 15;
 }
 
 extend Message {
-  int32 bar = 11 [features.amazing_feature = D];
+    required int32 bar = 16 [features.amazing_feature = D];
 }
 
 enum SomeEnum {
@@ -83,33 +83,22 @@ var tape = require("tape");
 var protobuf = require("..");
 
 
-tape.test.only("feature resolution editions", function(test) {
+tape.test("feature resolution editions", function(test) {
 
     protobuf.load("tests/data/feature-resolution.proto", function(err, root) {
         if (err)
             return test.fail(err.message);
-    
-        // test.same(root.fea, {
-        //     1: "a",
-        //     2: "b"
-        // }, "should also expose their values by id");
-
-    // console.log(root.features.amazing_feature)
-
-    test.same(root.features.amazing_feature, 'A');
-    test.same(root.lookup("Message").features.amazing_feature, 'B')
-    test.same(root.lookupService("MyService").features.amazing_feature, 'E');
-    test.same(root.lookupEnum("SomeEnum").features.amazing_feature, 'C')
-    test.same(root.lookup("Message").lookupEnum("SomeEnumInMessage").features.amazing_feature, 'G')
-    test.same(root.lookup("Message").lookup("Nested").features.amazing_feature, 'H')
-    test.same(root.lookupService("MyService").lookup("MyMethod").features.amazing_feature, 'L')
-    test.same(root.lookup("Message").fields.stringRepeated.features.amazing_feature, 'F')
-    test.same(root.lookup("Message").lookup(".Message.bar").features.amazing_feature, 'I')
-    test.same(root.lookupEnum("SomeEnum").valuesFeatures.ONE.amazing_feature, 'K')
-    
-    test.end();    
-})
-
-    
-    
+        test.same(root.features.amazing_feature, 'A');
+        test.same(root.lookup("Message").features.amazing_feature, 'B')
+        test.same(root.lookupService("MyService").features.amazing_feature, 'E');
+        test.same(root.lookupEnum("SomeEnum").features.amazing_feature, 'C')
+        test.same(root.lookup("Message").lookupEnum("SomeEnumInMessage").features.amazing_feature, 'G')
+        test.same(root.lookup("Message").lookup("Nested").features.amazing_feature, 'H')
+        test.same(root.lookupService("MyService").lookup("MyMethod").features.amazing_feature, 'L')
+        test.same(root.lookup("Message").fields.stringRepeated.features.amazing_feature, 'F')
+        test.same(root.lookup("Message").lookup(".Message.bar").features.amazing_feature, 'I')
+        test.same(root.lookupEnum("SomeEnum").valuesFeatures.ONE.amazing_feature, 'K')
+        
+        test.end();    
+    })
 })
