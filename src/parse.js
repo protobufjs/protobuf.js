@@ -4,7 +4,6 @@ module.exports = parse;
 parse.filename = null;
 parse.defaults = { keepCase: false };
 
-const { hasOwnProperty } = require("tslint/lib/utils");
 var tokenize  = require("./tokenize"),
     Root      = require("./root"),
     Type      = require("./type"),
@@ -105,7 +104,7 @@ function parse(source, root, options) {
         do {
             /* istanbul ignore if */
             if ((token = next()) !== "\"" && token !== "'")
-                throw illegal(`A${token}`);
+                throw illegal(token);
 
             values.push(next());
             skip(token);
@@ -118,7 +117,6 @@ function parse(source, root, options) {
         var token = next();
         switch (token) {
             case "'":
-            // case typeof token === "string":
             case "\"":
                 push(token);
                 return readString();
@@ -161,7 +159,7 @@ function parse(source, root, options) {
                 parseOption(dummy, token);  // skip
                 skip(";");
               } else
-                throw illegal(`token`);
+                throw illegal(token);
             },
             function parseRange_line() {
               parseInlineOptions(dummy);  // skip
@@ -194,7 +192,7 @@ function parse(source, root, options) {
             return sign * parseFloat(token);
 
         /* istanbul ignore next */
-        throw illegal(`${token}`, "number", insideTryCatch);
+        throw illegal(token, "number", insideTryCatch);
     }
 
     function parseId(token, acceptNegative) {
@@ -283,8 +281,6 @@ function parse(source, root, options) {
         if (!supportedEditions.includes(edition))
             throw illegal(edition, "edition");
 
-        // Syntax is needed to understand the meaning of the optional field rule
-        // Otherwise the meaning is ambiguous between proto2 and proto3
         root.setOption("edition", edition);
 
         skip(";");
@@ -313,8 +309,7 @@ function parse(source, root, options) {
 
             case "extend":
                 parseExtension(parent, token);
-                return true;
-        
+                return true;   
         }
         return false;
     }
@@ -349,9 +344,8 @@ function parse(source, root, options) {
 
         var type = new Type(token);
         ifBlock(type, function parseType_block(token) {
-            if (parseCommon(type, token)) {
+            if (parseCommon(type, token))
                 return;
-            }
 
             switch (token) {
 
@@ -387,7 +381,7 @@ function parse(source, root, options) {
 
                 default:
                     /* istanbul ignore if */
-                    if ((!isProto3 && !edition) || !typeRefRe.test(token))
+                    if (!isProto3 || !edition || !typeRefRe.test(token))
                         throw illegal(token);
 
                     push(token);
@@ -764,9 +758,9 @@ function parse(source, root, options) {
 
         var service = new Service(token);
         ifBlock(service, function parseService_block(token) {
-            if (parseCommon(service, token)) {
+            if (parseCommon(service, token))
                 return;
-            }
+
             /* istanbul ignore else */
             if (token === "rpc")
                 parseMethod(service, token);

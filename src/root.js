@@ -118,26 +118,23 @@ Root.prototype.load = function load(filename, options, callback) {
     // Processes a single file
     function process(filename, source) {
         try {
-            if (util.isString(source) && source.charAt(0) === "{") {
+            if (util.isString(source) && source.charAt(0) === "{")
                 source = JSON.parse(source);
-            }
-            if (!util.isString(source)) {
+            if (!util.isString(source))
                 self.setOptions(source.options).addJSON(source.nested);
-            } else {
+            else {
                 parse.filename = filename;
                 var parsed = parse(source, self, options),
                     resolved,
                     i = 0;
-                if (parsed.imports) {
+                if (parsed.imports)
                     for (; i < parsed.imports.length; ++i)
                         if (resolved = getBundledFileName(parsed.imports[i]) || self.resolvePath(filename, parsed.imports[i]))
                             fetch(resolved);
-                }
-                if (parsed.weakImports) {
+                if (parsed.weakImports)
                     for (i = 0; i < parsed.weakImports.length; ++i)
                         if (resolved = getBundledFileName(parsed.weakImports[i]) || self.resolvePath(filename, parsed.weakImports[i]))
                             fetch(resolved, true);
-                }
             }
         } catch (err) {
             finish(err);
