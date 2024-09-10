@@ -49,7 +49,7 @@ message Message {
     map<string,int64> int64_map = 15;
 }
 
-extend Message {
+extend ExtendedMessage {
     required int32 bar = 16 [features.amazing_feature = D];
 }
 

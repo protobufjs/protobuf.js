@@ -90,14 +90,16 @@ tape.test("feature resolution editions", function(test) {
             return test.fail(err.message);
         test.same(root.features.amazing_feature, 'A');
         test.same(root.lookup("Message").features.amazing_feature, 'B')
-        test.same(root.lookupService("MyService").features.amazing_feature, 'E');
         test.same(root.lookupEnum("SomeEnum").features.amazing_feature, 'C')
+        test.same(root.deferred[0].features.amazing_feature, 'D')
+        test.same(root.lookupService("MyService").features.amazing_feature, 'E');
+        test.same(root.lookup("Message").fields.stringRepeated.features.amazing_feature, 'F')
         test.same(root.lookup("Message").lookupEnum("SomeEnumInMessage").features.amazing_feature, 'G')
         test.same(root.lookup("Message").lookup("Nested").features.amazing_feature, 'H')
-        test.same(root.lookupService("MyService").lookup("MyMethod").features.amazing_feature, 'L')
-        test.same(root.lookup("Message").fields.stringRepeated.features.amazing_feature, 'F')
         test.same(root.lookup("Message").lookup(".Message.bar").features.amazing_feature, 'I')
+        test.same(root.lookup("Message").lookup("SomeOneOf").features.amazing_feature, 'J')
         test.same(root.lookupEnum("SomeEnum").valuesFeatures.ONE.amazing_feature, 'K')
+        test.same(root.lookupService("MyService").lookup("MyMethod").features.amazing_feature, 'L')
         
         test.end();    
     })
