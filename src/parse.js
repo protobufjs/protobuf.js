@@ -628,14 +628,16 @@ function parse(source, root, options) {
     }
 
     function parseOption(parent, token) {
-        if (featuresRefRe.test(token = next())) {
+        // console.log(featuresRefRe.test(token = next()))
+        if (featuresRefRe.test(peek())) {
+            var token = next();
             var name = token.match(featuresRefRe)[1]
             skip("=");
             setFeature(parent, name, token = next())
         } else {
-        var isCustom = skip("(", true);
-        if (!typeRefRe.test(token = next())) 
-            throw illegal(token, "name");
+            var isCustom = skip("(", true);
+            if (!typeRefRe.test(token = next())) 
+                throw illegal(token, "name");
         
 
             var name = token;
@@ -647,6 +649,7 @@ function parse(source, root, options) {
                 name = "(" + name + ")";
                 option = name;
                 token = peek();
+                console.log('in custom?'+token)
                 if (fqTypeRefRe.test(token)) {
                     propName = token.slice(1); //remove '.' before property name
                     name += token;
@@ -654,6 +657,7 @@ function parse(source, root, options) {
                 }
             }
 
+            console.log(token)
             skip("=");
             var optionValue = parseOptionValue(parent, name);
             setParsedOption(parent, option, optionValue, propName);
@@ -893,7 +897,7 @@ function parse(source, root, options) {
                 break;
 
             case "option":
-                parseCommon(ptr, token);
+                parseOption(ptr, token);
                 skip(";", true);
                 break;
 
