@@ -152,7 +152,6 @@ ReflectionObject.prototype.resolve = function resolve() {
     if (this.resolved)
         return this;
     this._resolveFeatures();
-    // if (this.root instanceof Root)
     this.resolved = true; 
     return this;
 };
@@ -185,17 +184,6 @@ ReflectionObject.prototype.getOption = function getOption(name) {
 ReflectionObject.prototype.setOption = function setOption(name, value, ifNotSet) {
     if (!ifNotSet || !this.options || this.options[name] === undefined)
         (this.options || (this.options = {}))[name] = value;
-    return this;
-};
-
-/**
- * Sets a feature.
- * @param {string} name Feature name
- * @param {*} value Feature value
- * @returns {ReflectionObject} `this`
- */
-ReflectionObject.prototype.setFeature = function setFeature(name, value) {
-    (this.features || (this.features = {}))[name] = value;
     return this;
 };
 
@@ -238,7 +226,7 @@ ReflectionObject.prototype.setParsedOption = function setParsedOption(name, valu
 
     if (isFeature) {
         var features = parsedOptions.find(x => {return x.hasOwnProperty("features")});
-        this._features = features.features ?? {};
+        this._features = features.features || {};
     }
     return this;
 };

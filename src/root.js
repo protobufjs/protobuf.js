@@ -75,17 +75,6 @@ Root.prototype.fetch = util.fetch;
 /* istanbul ignore next */
 function SYNC() {} // eslint-disable-line no-empty-function
 
- /**
-            Root --> Messages, Extensions, services, enums
-            Messages --> Messages, Extensions, Fields, Enums, Oneofs
-            Enums --> EnumValues
-            Oneofs --> Fields
-            Services --> Methods
-
-            Fields inherit features from oneof, not message
-            Extensions inherit from the scope (file-level will inherit from the file, message-level will inherit from the message)
-            */
-
 /**
  * Loads one or multiple .proto or preprocessed .json files into this root namespace and calls the callback.
  * @param {string|string[]} filename Names of one or multiple files to load

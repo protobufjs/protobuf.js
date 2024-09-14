@@ -635,6 +635,7 @@ function parse(source, root, options) {
             if (!this.parsedOptions) {
                 this.parsedOptions = [];
             }
+            var isFeature = /features/.test(name);
             var parsedOptions = this.parsedOptions;
             if (propName) {
                 // If setting a sub property of an option then try to merge it
@@ -646,11 +647,11 @@ function parse(source, root, options) {
                     // If we found an existing option - just merge the property value
                     // (If it's a feature, will just write over)
                     var newValue = opt[name];
-                    util.setProperty(newValue, propName, value);
+                    util.setProperty(newValue, propName, value, isFeature);
                 } else {
                     // otherwise, create a new option, set its property and add it to the list
                     opt = {};
-                    opt[name] = util.setProperty({}, propName, value);
+                    opt[name] = util.setProperty({}, propName, value, isFeature);
                     parsedOptions.push(opt);
                 }
             } else {
@@ -660,10 +661,11 @@ function parse(source, root, options) {
                 parsedOptions.push(newOpt);
             }
         
-            if (/features/.test(name)) {
+            if (isFeature) {
                 var features = parsedOptions.find(x => {return x.hasOwnProperty("features")});
                 this._features = features.features || {};
             }
+            return this;
         }
         ifBlock(dummy, function parseEnumValue_block(token) {
 
@@ -723,6 +725,7 @@ function parse(source, root, options) {
     }
 
     function parseOptionValue(parent, name) {
+        // { a: "foo" b { c: "bar" } }
         if (skip("{", true)) {
             var objectResult = {};
 
@@ -741,6 +744,9 @@ function parse(source, root, options) {
                 skip(":", true);
 
                 if (peek() === "{") {
+                    // option (my_option) = {
+                    //     repeated_value: [ "foo", "bar" ]
+                    // };
                     value = parseOptionValue(parent, name + "." + token);
                 } else if (peek() === "[") {
                     value = [];
