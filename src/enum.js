@@ -20,7 +20,7 @@ var Namespace = require("./namespace"),
  * @param {Object.<string,string>} [comments] The value comments for this enum
  * @param {Object.<string,Object<string,*>>|undefined} [valuesOptions] The value options for this enum
  */
-function Enum(name, values, options, comment, comments, valuesOptions, valuesFeatures) {
+function Enum(name, values, options, comment, comments, valuesOptions) {
     ReflectionObject.call(this, name, options);
 
     if (values && typeof values !== "object")
@@ -56,11 +56,7 @@ function Enum(name, values, options, comment, comments, valuesOptions, valuesFea
      */
     this.valuesOptions = valuesOptions;
 
-    /**
-     * Values features, if any
-     * @type {Object<string, Object<string, *>>|undefined}
-     */
-    this.valuesFeatures = valuesFeatures;
+    this._valuesFeatures = {};
 
     /**
      * Reserved ranges, if any.
@@ -125,7 +121,7 @@ Enum.prototype.toJSON = function toJSON(toJSONOptions) {
  * @throws {TypeError} If arguments are invalid
  * @throws {Error} If there is already a value with this name or id
  */
-Enum.prototype.add = function add(name, id, comment, options, features) {
+Enum.prototype.add = function add(name, id, comment, options) {
     // utilized by the parser but not by .fromJSON
 
     if (!util.isString(name))
@@ -154,13 +150,29 @@ Enum.prototype.add = function add(name, id, comment, options, features) {
         if (this.valuesOptions === undefined)
             this.valuesOptions = {};
         this.valuesOptions[name] = options || null;
+
+        // console.log(options)
+        // if (/features/.test(options)) {
+            // var features = Object.keys(this.valuesOptions).find(x => {return x.hasOwnProperty("features")});
+            // this._valuesFeatures[name] = features ?? {};
+            // console.log(this._valuesFeatures[name])
+        // }
+
+        console.log(this.valuesOptions)
+        for (var key in this.valuesOptions) {
+            console.log(this.valuesOptions[key])
+            var features = Array.isArray(this.valuesOptions) ? this.valuesOptions[key].find(x => {return x.hasOwnProperty("features")}) : this.valuesOptions[key] === "features";
+            if (features) {    
+                if (!this._valuesFeatures) {
+                    this._valuesFeatures = {};
+                }        
+                this._valuesFeatures[key] = features.features || {};
+            }
+        }
     }
 
-    if (features) {
-        if (this.valuesFeatures === undefined)
-            this.valuesFeatures = {};
-        this.valuesFeatures[name] = features || null;
-    }
+
+        // console.log(this.valuesOptions)
 
     this.comments[name] = comment || null;
     return this;
@@ -188,8 +200,6 @@ Enum.prototype.remove = function remove(name) {
     if (this.valuesOptions)
         delete this.valuesOptions[name];
 
-    if (this.valuesFeatures)
-        delete this.valuesFeatures[name];
     return this;
 };
 

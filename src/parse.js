@@ -13,6 +13,7 @@ var tokenize  = require("./tokenize"),
     Enum      = require("./enum"),
     Service   = require("./service"),
     Method    = require("./method"),
+    ReflectionObject = require("./object"),
     types     = require("./types"),
     util      = require("./util");
 
@@ -26,7 +27,11 @@ var base10Re    = /^[1-9][0-9]*$/,
     nameRe      = /^[a-zA-Z_][a-zA-Z_0-9]*$/,
     typeRefRe   = /^(?:\.?[a-zA-Z_][a-zA-Z_0-9]*)(?:\.[a-zA-Z_][a-zA-Z_0-9]*)*$/,
     fqTypeRefRe = /^(?:\.[a-zA-Z_][a-zA-Z_0-9]*)+$/,
-    featuresRefRe = /features\.([a-zA-Z_]*)/;
+    featuresTypeRefRe = /^(features)(.*)/;
+
+var editions2023Defaults = {features: {enum_type: 'OPEN', field_presence: 'EXPLICIT', json_format: 'ALLOW', message_encoding: 'LENGTH_PREFIXED', repeated_field_encoding: 'PACKED', utf8_validation: 'VERIFY'}}
+var proto2Defaults = {features: {enum_type: 'CLOSED', field_presence: 'EXPLICIT', json_format: 'LEGACY_BEST_EFFORT', message_encoding: 'LENGTH_PREFIXED', repeated_field_encoding: 'EXPANDED', utf8_validation: 'NONE'}}
+var proto3Defaults = {features: {enum_type: 'OPEN', field_presence: 'IMPLICIT', json_format: 'ALLOW', message_encoding: 'LENGTH_PREFIXED', repeated_field_encoding: 'PACKED', utf8_validation: 'VERIFY'}}
 
 /**
  * Result object returned from {@link parse}.
@@ -269,6 +274,16 @@ function parse(source, root, options) {
         // Otherwise the meaning is ambiguous between proto2 and proto3
         root.setOption("syntax", syntax);
 
+        if (isProto3) {
+            for (var key of Object.keys(proto3Defaults)) {
+                setParsedOption(root, key, proto3Defaults[key])
+            }
+        } else {
+            for (var key of Object.keys(proto2Defaults)) {
+                setParsedOption(root, key, proto2Defaults[key])
+            }
+        }
+
         skip(";");
     }
 
@@ -283,6 +298,9 @@ function parse(source, root, options) {
 
         root.setOption("edition", edition);
 
+        for (var key of Object.keys(editions2023Defaults)) {
+            setParsedOption(root, key, editions2023Defaults[key])
+        }
         skip(";");
     }
 
@@ -355,6 +373,8 @@ function parse(source, root, options) {
 
                 case "required":
                 case "repeated":
+                    if (edition)
+                        throw illegal(token)
                     parseField(type, token);
                     break;
 
@@ -362,6 +382,8 @@ function parse(source, root, options) {
                     /* istanbul ignore if */
                     if (isProto3) {
                         parseField(type, "proto3_optional");
+                    } else if (edition) {
+                        throw illegal(token);
                     } else {
                         parseField(type, "optional");
                     }
@@ -416,6 +438,7 @@ function parse(source, root, options) {
         var name = next();
 
         /* istanbul ignore if */
+
         if (!nameRe.test(name))
             throw illegal(name, "name");
 
@@ -605,13 +628,43 @@ function parse(source, root, options) {
         dummy.setOption = function(name, value) {
             if (this.options === undefined)
                 this.options = {};
+            
             this.options[name] = value;
         };
-        dummy.setFeature = function(name, value) {
-            if (this.features === undefined)
-                this.features = {};
-            this.features[name] = value;
-        };
+        dummy.setParsedOption = function(name, value, propName) {
+            if (!this.parsedOptions) {
+                this.parsedOptions = [];
+            }
+            var parsedOptions = this.parsedOptions;
+            if (propName) {
+                // If setting a sub property of an option then try to merge it
+                // with an existing option
+                var opt = parsedOptions.find(function (opt) {
+                    return Object.prototype.hasOwnProperty.call(opt, name);
+                });
+                if (opt) {
+                    // If we found an existing option - just merge the property value
+                    // (If it's a feature, will just write over)
+                    var newValue = opt[name];
+                    util.setProperty(newValue, propName, value);
+                } else {
+                    // otherwise, create a new option, set its property and add it to the list
+                    opt = {};
+                    opt[name] = util.setProperty({}, propName, value);
+                    parsedOptions.push(opt);
+                }
+            } else {
+                // Always create a new option when setting the value of the option itself
+                var newOpt = {};
+                newOpt[name] = value;
+                parsedOptions.push(newOpt);
+            }
+        
+            if (/features/.test(name)) {
+                var features = parsedOptions.find(x => {return x.hasOwnProperty("features")});
+                this._features = features.features || {};
+            }
+        }
         ifBlock(dummy, function parseEnumValue_block(token) {
 
             /* istanbul ignore else */
@@ -624,48 +677,52 @@ function parse(source, root, options) {
         }, function parseEnumValue_line() {
             parseInlineOptions(dummy); // skip
         });
-        parent.add(token, value, dummy.comment, dummy.options, dummy.features);
+        parent.add(token, value, dummy.comment, dummy.parsedOptions);
     }
 
     function parseOption(parent, token) {
-        // console.log(featuresRefRe.test(token = next()))
-        if (featuresRefRe.test(peek())) {
+        var name;
+        var option;
+        var optionValue;
+        var propName;
+        // The two logic branches below are parallel tracks, but with different regexes for the following use cases:
+        // features expects: option features.abc.amazing_feature = A;
+        // custom options expects: option (mo_single_msg).nested.value = "x";
+        if (featuresTypeRefRe.test(peek())) {
             var token = next();
-            var name = token.match(featuresRefRe)[1]
-            skip("=");
-            setFeature(parent, name, token = next())
+            name = token;
+            option = token.match(featuresTypeRefRe)[1];
+            var propNameWithPeriod = token.match(featuresTypeRefRe)[2];
+            if (fqTypeRefRe.test(propNameWithPeriod)) {
+                propName = propNameWithPeriod.slice(1); //remove '.' before property name
+            }
         } else {
             var isCustom = skip("(", true);
             if (!typeRefRe.test(token = next())) 
                 throw illegal(token, "name");
         
 
-            var name = token;
-            var option = name;
-            var propName;
+            name = token;
+            option = name;
 
             if (isCustom) {
                 skip(")");
                 name = "(" + name + ")";
                 option = name;
                 token = peek();
-                console.log('in custom?'+token)
                 if (fqTypeRefRe.test(token)) {
                     propName = token.slice(1); //remove '.' before property name
                     name += token;
                     next();
                 }
             }
-
-            console.log(token)
+        }
             skip("=");
             var optionValue = parseOptionValue(parent, name);
             setParsedOption(parent, option, optionValue, propName);
-        }
     }
 
     function parseOptionValue(parent, name) {
-        // { a: "foo" b { c: "bar" } }
         if (skip("{", true)) {
             var objectResult = {};
 
@@ -683,12 +740,9 @@ function parse(source, root, options) {
 
                 skip(":", true);
 
-                if (peek() === "{")
+                if (peek() === "{") {
                     value = parseOptionValue(parent, name + "." + token);
-                else if (peek() === "[") {
-                    // option (my_option) = {
-                    //     repeated_value: [ "foo", "bar" ]
-                    // };
+                } else if (peek() === "[") {
                     value = [];
                     var lastValue;
                     if (skip("[", true)) {
@@ -732,12 +786,6 @@ function parse(source, root, options) {
             parent.setOption(name, value);
     }
 
-    function setFeature(parent, name, value) {
-        if (parent.setFeature) {
-            parent.setFeature(name, value);
-        }
-    }
-
     function setParsedOption(parent, name, value, propName) {
         if (parent.setParsedOption)
             parent.setParsedOption(name, value, propName);
@@ -761,8 +809,9 @@ function parse(source, root, options) {
 
         var service = new Service(token);
         ifBlock(service, function parseService_block(token) {
-            if (parseCommon(service, token))
+            if (parseCommon(service, token)) {
                 return;
+            }
 
             /* istanbul ignore else */
             if (token === "rpc")
@@ -849,7 +898,7 @@ function parse(source, root, options) {
 
                 default:
                     /* istanbul ignore if */
-                    if (!isProto3 || !typeRefRe.test(token))
+                    if ((!isProto3 && !edition) || !typeRefRe.test(token))
                         throw illegal(token);
                     push(token);
                     parseField(parent, "optional", reference);

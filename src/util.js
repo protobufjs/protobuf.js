@@ -173,7 +173,7 @@ util.decorateEnum = function decorateEnum(object) {
  * @param {Object} value the value to set
  * @returns {Object.<string,*>} Destination object
  */
-util.setProperty = function setProperty(dst, path, value) {
+util.setProperty = function setProperty(dst, path, value, isFeature) {
     function setProp(dst, path, value) {
         var part = path.shift();
         if (part === "__proto__" || part === "prototype") {
@@ -183,7 +183,7 @@ util.setProperty = function setProperty(dst, path, value) {
             dst[part] = setProp(dst[part] || {}, path, value);
         } else {
             var prevValue = dst[part];
-            if (prevValue)
+            if (prevValue && !isFeature)
                 value = [].concat(prevValue).concat(value);
             dst[part] = value;
         }

@@ -39,7 +39,7 @@ function Root(options) {
 
 /**
  * Loads a namespace descriptor into a root namespace.
- * @param {INamespace} json Nameespace descriptor
+ * @param {INamespace} json Namespace descriptor
  * @param {Root} [root] Root namespace, defaults to create a new one if omitted
  * @returns {Root} Root namespace
  */
@@ -74,6 +74,17 @@ Root.prototype.fetch = util.fetch;
 // A symbol-like function to safely signal synchronous loading
 /* istanbul ignore next */
 function SYNC() {} // eslint-disable-line no-empty-function
+
+ /**
+            Root --> Messages, Extensions, services, enums
+            Messages --> Messages, Extensions, Fields, Enums, Oneofs
+            Enums --> EnumValues
+            Oneofs --> Fields
+            Services --> Methods
+
+            Fields inherit features from oneof, not message
+            Extensions inherit from the scope (file-level will inherit from the file, message-level will inherit from the message)
+            */
 
 /**
  * Loads one or multiple .proto or preprocessed .json files into this root namespace and calls the callback.
@@ -135,6 +146,7 @@ Root.prototype.load = function load(filename, options, callback) {
                     for (i = 0; i < parsed.weakImports.length; ++i)
                         if (resolved = getBundledFileName(parsed.weakImports[i]) || self.resolvePath(filename, parsed.weakImports[i]))
                             fetch(resolved, true);
+                parsed.root.resolveAll();
             }
         } catch (err) {
             finish(err);

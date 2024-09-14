@@ -44,7 +44,7 @@ function ReflectionObject(name, options) {
     /**
      * Resolved Features.
      */
-    this.features = null;
+    this._features = null;
 
     /**
      * Parent namespace.
@@ -151,10 +151,18 @@ ReflectionObject.prototype.onRemove = function onRemove(parent) {
 ReflectionObject.prototype.resolve = function resolve() {
     if (this.resolved)
         return this;
-    if (this.root instanceof Root)
-        this.resolved = true; // only if part of a root
+    this._resolveFeatures();
+    // if (this.root instanceof Root)
+    this.resolved = true; 
     return this;
 };
+
+ReflectionObject.prototype._resolveFeatures = function _resolveFeatures() {
+    this._features = {...this.parent?._features ?? {}, ...this._features};
+    if (this.parent) {
+        this.parent._resolveFeatures();
+    }
+}
 
 /**
  * Gets an option value.
@@ -202,6 +210,7 @@ ReflectionObject.prototype.setParsedOption = function setParsedOption(name, valu
     if (!this.parsedOptions) {
         this.parsedOptions = [];
     }
+    var isFeature = /features/.test(name);
     var parsedOptions = this.parsedOptions;
     if (propName) {
         // If setting a sub property of an option then try to merge it
@@ -211,12 +220,13 @@ ReflectionObject.prototype.setParsedOption = function setParsedOption(name, valu
         });
         if (opt) {
             // If we found an existing option - just merge the property value
+            // (If it's a feature, will just write over)
             var newValue = opt[name];
-            util.setProperty(newValue, propName, value);
+            util.setProperty(newValue, propName, value, isFeature);
         } else {
-            // otherwise, create a new option, set it's property and add it to the list
+            // otherwise, create a new option, set its property and add it to the list
             opt = {};
-            opt[name] = util.setProperty({}, propName, value);
+            opt[name] = util.setProperty({}, propName, value, isFeature);
             parsedOptions.push(opt);
         }
     } else {
@@ -224,6 +234,11 @@ ReflectionObject.prototype.setParsedOption = function setParsedOption(name, valu
         var newOpt = {};
         newOpt[name] = value;
         parsedOptions.push(newOpt);
+    }
+
+    if (isFeature) {
+        var features = parsedOptions.find(x => {return x.hasOwnProperty("features")});
+        this._features = features.features ?? {};
     }
     return this;
 };

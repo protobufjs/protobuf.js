@@ -82,25 +82,95 @@ var tape = require("tape");
 
 var protobuf = require("..");
 
+var protoEditions2023 = `edition = "2023";`;
 
-tape.test("feature resolution editions", function(test) {
+var proto2 = `syntax = "proto2";`;
+
+var proto3 = `syntax = "proto3";`;
+
+var editions2023Defaults = {enumType: 'OPEN', fieldPresence: 'EXPLICIT', jsonFormat: 'ALLOW', messageEncoding: 'LENGTH_PREFIXED', repeatedFieldEncoding: 'PACKED', utf8Validation: 'VERIFY'}
+var proto2Defaults = {enumType: 'CLOSED', fieldPresence: 'EXPLICIT', jsonFormat: 'LEGACY_BEST_EFFORT', messageEncoding: 'LENGTH_PREFIXED', repeatedFieldEncoding: 'EXPANDED', utf8Validation: 'NONE'}
+var proto3Defaults = {enumType: 'OPEN', fieldPresence: 'IMPLICIT', jsonFormat: 'ALLOW', messageEncoding: 'LENGTH_PREFIXED', repeatedFieldEncoding: 'PACKED', utf8Validation: 'VERIFY'}
+
+
+var protoEditions2023Overridden = `edition = "2023";
+option features.json_format = LEGACY_BEST_EFFORT
+
+message Message {
+    string string_val = 1;
+    string string_repeated = 2 [features.enum_type = CLOSED];
+
+    message Nested {
+        option features.field_presence = IMPLICIT;
+        int64 count = 9;
+    }
+}
+`
+// Tests precedence for different levels of feature resolution
+tape.test("feature resolution editions precedence", function(test) {
 
     protobuf.load("tests/data/feature-resolution.proto", function(err, root) {
         if (err)
             return test.fail(err.message);
-        test.same(root.features.amazing_feature, 'A');
-        test.same(root.lookup("Message").features.amazing_feature, 'B')
-        test.same(root.lookupEnum("SomeEnum").features.amazing_feature, 'C')
-        test.same(root.deferred[0].features.amazing_feature, 'D')
-        test.same(root.lookupService("MyService").features.amazing_feature, 'E');
-        test.same(root.lookup("Message").fields.stringRepeated.features.amazing_feature, 'F')
-        test.same(root.lookup("Message").lookupEnum("SomeEnumInMessage").features.amazing_feature, 'G')
-        test.same(root.lookup("Message").lookup("Nested").features.amazing_feature, 'H')
-        test.same(root.lookup("Message").lookup(".Message.bar").features.amazing_feature, 'I')
-        test.same(root.lookup("Message").lookup("SomeOneOf").features.amazing_feature, 'J')
-        test.same(root.lookupEnum("SomeEnum").valuesFeatures.ONE.amazing_feature, 'K')
-        test.same(root.lookupService("MyService").lookup("MyMethod").features.amazing_feature, 'L')
+        test.same(root._features.amazing_feature, 'A');
+        test.same(root.lookup("Message")._features.amazing_feature, 'B')
+        test.same(root.lookupEnum("SomeEnum")._features.amazing_feature, 'C')
+        test.same(root.lookup("Message").fields[".bar"].declaringField._features.amazing_feature, 'D')
+        test.same(root.lookupService("MyService")._features.amazing_feature, 'E');
+        test.same(root.lookup("Message").fields.stringRepeated._features.amazing_feature, 'F')
+        test.same(root.lookup("Message").lookupEnum("SomeEnumInMessage")._features.amazing_feature, 'G')
+        test.same(root.lookup("Message").lookup("Nested")._features.amazing_feature, 'H')
+        test.same(root.lookup("Message").lookup(".Message.bar")._features.amazing_feature, 'I')
+        test.same(root.lookup("Message").lookup("SomeOneOf")._features.amazing_feature, 'J')
+        test.same(root.lookupEnum("SomeEnum")._valuesFeatures["ONE"].amazing_feature, 'K')
+        test.same(root.lookupService("MyService").lookup("MyMethod")._features.amazing_feature, 'L')
+
         
         test.end();    
     })
+
+    
+})
+
+tape.test("feautre resolution defaults", function(test) {
+    var rootEditions = protobuf.parse(protoEditions2023).root;
+    test.same(rootEditions._features, editions2023Defaults);
+
+    var rootProto2 = protobuf.parse(proto2).root;
+    test.same(rootProto2._features, proto2Defaults);
+
+    var rootProto3 = protobuf.parse(proto3).root;
+    test.same(rootProto3._features, proto3Defaults);
+
+    test.end();
+})
+
+tape.test("feature resolution inheritance", function(test) {
+    var rootEditions = protobuf.parse(protoEditions2023Overridden).root
+
+    rootEditions.resolveAll();
+
+    // Should flip enum_type from default setting, inherit from Message,
+    // and keep everything else
+    test.same(rootEditions.lookup("Message").fields.stringRepeated._features, {
+        enum_type: 'CLOSED',
+        field_presence: 'EXPLICIT',
+        json_format: 'LEGACY_BEST_EFFORT',
+        message_encoding: 'LENGTH_PREFIXED',
+        repeated_field_encoding: 'PACKED',
+        utf8_validation: 'VERIFY'
+      })
+
+    // Should inherit from default, and Message, only change field_presence
+    test.same(rootEditions.lookup("Message").lookup("Nested")._features, 
+    {
+        enum_type: 'OPEN',
+        field_presence: 'IMPLICIT',
+        json_format: 'LEGACY_BEST_EFFORT',
+        message_encoding: 'LENGTH_PREFIXED',
+        repeated_field_encoding: 'PACKED',
+        utf8_validation: 'VERIFY'
+      })
+
+    test.end();
 })
