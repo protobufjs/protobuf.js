@@ -56,6 +56,10 @@ function Enum(name, values, options, comment, comments, valuesOptions) {
      */
     this.valuesOptions = valuesOptions;
 
+    /**
+     * Values features, if any
+     * @type {Object<string, Object<string, *>>|undefined}
+     */
     this._valuesFeatures = {};
 
     /**
@@ -151,16 +155,7 @@ Enum.prototype.add = function add(name, id, comment, options) {
             this.valuesOptions = {};
         this.valuesOptions[name] = options || null;
 
-        // console.log(options)
-        // if (/features/.test(options)) {
-            // var features = Object.keys(this.valuesOptions).find(x => {return x.hasOwnProperty("features")});
-            // this._valuesFeatures[name] = features ?? {};
-            // console.log(this._valuesFeatures[name])
-        // }
-
-        console.log(this.valuesOptions)
         for (var key in this.valuesOptions) {
-            console.log(this.valuesOptions[key])
             var features = Array.isArray(this.valuesOptions) ? this.valuesOptions[key].find(x => {return x.hasOwnProperty("features")}) : this.valuesOptions[key] === "features";
             if (features) {    
                 if (!this._valuesFeatures) {
@@ -170,9 +165,6 @@ Enum.prototype.add = function add(name, id, comment, options) {
             }
         }
     }
-
-
-        // console.log(this.valuesOptions)
 
     this.comments[name] = comment || null;
     return this;
