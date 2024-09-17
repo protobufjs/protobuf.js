@@ -109,29 +109,6 @@ message Message {
     }
 }
 `
-// Tests precedence for different levels of feature resolution
-tape.test("feature resolution editions precedence", function(test) {
-
-    protobuf.load("tests/data/feature-resolution.proto", function(err, root) {
-        if (err)
-            return test.fail(err.message);
-        test.same(root._features.amazing_feature, 'A');
-        test.same(root.lookup("Message")._features.amazing_feature, 'B')
-        test.same(root.lookupEnum("SomeEnum")._features.amazing_feature, 'C')
-        test.same(root.lookup("Message").fields[".bar"].declaringField._features.amazing_feature, 'D')
-        test.same(root.lookupService("MyService")._features.amazing_feature, 'E');
-        test.same(root.lookup("Message").fields.stringRepeated._features.amazing_feature, 'F')
-        test.same(root.lookup("Message").lookupEnum("SomeEnumInMessage")._features.amazing_feature, 'G')
-        test.same(root.lookup("Message").lookup("Nested")._features.amazing_feature, 'H')
-        test.same(root.lookup("Message").lookup(".Message.bar")._features.amazing_feature, 'I')
-        test.same(root.lookup("Message").lookup("SomeOneOf")._features.amazing_feature, 'J')
-        test.same(root.lookupEnum("SomeEnum")._valuesFeatures["ONE"].amazing_feature, 'K')
-        test.same(root.lookupService("MyService").lookup("MyMethod")._features.amazing_feature, 'L')
-
-        test.end();    
-    }) 
-})
-
 tape.test("feautre resolution defaults", function(test) {
     var rootEditions = protobuf.parse(protoEditions2023).root;
     test.same(rootEditions._features, editions2023Defaults);
@@ -146,13 +123,13 @@ tape.test("feautre resolution defaults", function(test) {
 })
 
 tape.test("feature resolution inheritance", function(test) {
-    var rootEditions = protobuf.parse(protoEditions2023Overridden).root
+    var rootEditionsOverriden = protobuf.parse(protoEditions2023Overridden).root
 
-    rootEditions.resolveAll();
+    rootEditionsOverriden.resolveAll();
 
     // Should flip enum_type from default setting, inherit from Message,
     // and keep everything else
-    test.same(rootEditions.lookup("Message").fields.stringRepeated._features, {
+    test.same(rootEditionsOverriden.lookup("Message").fields.stringRepeated._features, {
         enum_type: 'CLOSED',
         field_presence: 'EXPLICIT',
         json_format: 'LEGACY_BEST_EFFORT',
@@ -163,16 +140,39 @@ tape.test("feature resolution inheritance", function(test) {
       })
 
     // Should inherit from default, and Message, only change field_presence
-    test.same(rootEditions.lookup("Message").lookup("Nested")._features, 
+    test.same(rootEditionsOverriden.lookup("Message").lookup("Nested")._features, 
     { enum_type: 'OPEN', field_presence: 'IMPLICIT', json_format: 'LEGACY_BEST_EFFORT', message_encoding: 'LENGTH_PREFIXED', repeated_field_encoding: 'PACKED', utf8_validation: 'VERIFY', a: { b: { c: { d_e: 'deeply_nested_true' } } } })
 
     // Supports extensions
-    test.same(rootEditions._features, 
+    test.same(rootEditionsOverriden._features, 
         { enum_type: 'OPEN', field_presence: 'EXPLICIT', json_format: 'LEGACY_BEST_EFFORT', message_encoding: 'LENGTH_PREFIXED', repeated_field_encoding: 'PACKED', utf8_validation: 'VERIFY', a: { b: { c: { d_e: 'deeply_nested_false' } } } })
 
     // Supports overriding extensions
-    test.same(rootEditions.lookup("Message").lookup("Nested")._features, 
+    test.same(rootEditionsOverriden.lookup("Message").lookup("Nested")._features, 
     { enum_type: 'OPEN', field_presence: 'IMPLICIT', json_format: 'LEGACY_BEST_EFFORT', message_encoding: 'LENGTH_PREFIXED', repeated_field_encoding: 'PACKED', utf8_validation: 'VERIFY', a: { b: { c: { d_e: 'deeply_nested_true' } } } })
 
     test.end();
+})
+// Tests precedence for different levels of feature resolution
+tape.test("feature resolution editions precedence", function(test) {
+
+    protobuf.load("tests/data/feature-resolution.proto", function(err, root) {
+        if (err)
+            return test.fail(err.message);
+        test.same(root._features.amazing_feature, 'A', "should");
+        test.same(root.lookup("Message")._features.amazing_feature, 'B', "should")
+        test.same(root.lookupEnum("SomeEnum")._features.amazing_feature, 'C', "should")
+        test.same(root.lookup("Message").fields[".bar"].declaringField._features.amazing_feature, 'D', "should")
+        test.same(root.lookupService("MyService")._features.amazing_feature, 'E', "should");
+        test.same(root.lookup("Message").fields.stringRepeated._features.amazing_feature, 'F', "should")
+        test.same(root.lookup("Message").lookupEnum("SomeEnumInMessage")._features.amazing_feature, 'G', "should")
+        test.same(root.lookup("Message").lookup("Nested")._features.amazing_feature, 'H', "should")
+        test.same(root.lookup("Message").lookup(".Message.bar")._features.amazing_feature, 'I', "should")
+        test.same(root.lookup("Message").lookup("SomeOneOf")._features.amazing_feature, 'J', "should")
+        test.same(root.lookupEnum("SomeEnum")._valuesFeatures["ONE"].amazing_feature, 'K', "should")
+        test.same(root.lookupService("MyService").lookup("MyMethod")._features.amazing_feature, 'L', "should")
+
+        test.end();    
+    })
+    // test.end();
 })

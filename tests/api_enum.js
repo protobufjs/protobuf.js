@@ -9,14 +9,6 @@ tape.test("reflected enums", function(test) {
         b: 2
     });
 
-    // TODO: add tests for enum options
-//     var enm2 = new protobuf.Enum("EditionsTest", {
-//   a: 2,
-//   b: 4,
-//   c: 6,
-// },
-// {features: { enumType: "CLOSED"}})
-
     var enm_allow_alias = new protobuf.Enum( 'AliasTest',
     { a: 0 }, { allow_alias: true } );
 
