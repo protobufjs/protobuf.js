@@ -59,7 +59,6 @@ function bundle(options) {
         prefix: "(function(undefined){\"use strict\";",
         suffix: "})();"
     })
-    .plugin(require("bundle-collapser/plugin"))
     .bundle()
     .pipe(source(options.compress ? "protobuf.min.js" : "protobuf.js"))
     .pipe(buffer())

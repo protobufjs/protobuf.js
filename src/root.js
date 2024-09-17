@@ -135,7 +135,6 @@ Root.prototype.load = function load(filename, options, callback) {
                     for (i = 0; i < parsed.weakImports.length; ++i)
                         if (resolved = getBundledFileName(parsed.weakImports[i]) || self.resolvePath(filename, parsed.weakImports[i]))
                             fetch(resolved, true);
-                parsed.root.resolveAll();
             }
         } catch (err) {
             finish(err);
@@ -206,7 +205,7 @@ Root.prototype.load = function load(filename, options, callback) {
     for (var i = 0, resolved; i < filename.length; ++i)
         if (resolved = self.resolvePath("", filename[i]))
             fetch(resolved);
-
+    self.resolveAll();
     if (sync)
         return self;
     if (!queued)

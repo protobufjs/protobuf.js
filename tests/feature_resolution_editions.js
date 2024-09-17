@@ -88,19 +88,22 @@ var proto2 = `syntax = "proto2";`;
 
 var proto3 = `syntax = "proto3";`;
 
-var editions2023Defaults = {enumType: 'OPEN', fieldPresence: 'EXPLICIT', jsonFormat: 'ALLOW', messageEncoding: 'LENGTH_PREFIXED', repeatedFieldEncoding: 'PACKED', utf8Validation: 'VERIFY'}
-var proto2Defaults = {enumType: 'CLOSED', fieldPresence: 'EXPLICIT', jsonFormat: 'LEGACY_BEST_EFFORT', messageEncoding: 'LENGTH_PREFIXED', repeatedFieldEncoding: 'EXPANDED', utf8Validation: 'NONE'}
-var proto3Defaults = {enumType: 'OPEN', fieldPresence: 'IMPLICIT', jsonFormat: 'ALLOW', messageEncoding: 'LENGTH_PREFIXED', repeatedFieldEncoding: 'PACKED', utf8Validation: 'VERIFY'}
+var editions2023Defaults = {enum_type: 'OPEN', field_presence: 'EXPLICIT', json_format: 'ALLOW', message_encoding: 'LENGTH_PREFIXED', repeated_field_encoding: 'PACKED', utf8_validation: 'VERIFY'}
+var proto2Defaults = {enum_type: 'CLOSED', field_presence: 'EXPLICIT', json_format: 'LEGACY_BEST_EFFORT', message_encoding: 'LENGTH_PREFIXED', repeated_field_encoding: 'EXPANDED', utf8_validation: 'NONE'}
+var proto3Defaults = {enum_type: 'OPEN', field_presence: 'IMPLICIT', json_format: 'ALLOW', message_encoding: 'LENGTH_PREFIXED', repeated_field_encoding: 'PACKED', utf8_validation: 'VERIFY'}
 
 
 var protoEditions2023Overridden = `edition = "2023";
-option features.json_format = LEGACY_BEST_EFFORT
+option features.json_format = LEGACY_BEST_EFFORT;
+
+option features.a.b.c.d_e = deeply_nested_false;
 
 message Message {
     string string_val = 1;
     string string_repeated = 2 [features.enum_type = CLOSED];
 
     message Nested {
+        option features.a.b.c.d_e = deeply_nested_true;
         option features.field_presence = IMPLICIT;
         int64 count = 9;
     }
@@ -125,11 +128,8 @@ tape.test("feature resolution editions precedence", function(test) {
         test.same(root.lookupEnum("SomeEnum")._valuesFeatures["ONE"].amazing_feature, 'K')
         test.same(root.lookupService("MyService").lookup("MyMethod")._features.amazing_feature, 'L')
 
-        
         test.end();    
-    })
-
-    
+    }) 
 })
 
 tape.test("feautre resolution defaults", function(test) {
@@ -158,19 +158,21 @@ tape.test("feature resolution inheritance", function(test) {
         json_format: 'LEGACY_BEST_EFFORT',
         message_encoding: 'LENGTH_PREFIXED',
         repeated_field_encoding: 'PACKED',
-        utf8_validation: 'VERIFY'
+        utf8_validation: 'VERIFY',
+        a: { b: { c: { d_e: 'deeply_nested_false' } } }
       })
 
     // Should inherit from default, and Message, only change field_presence
     test.same(rootEditions.lookup("Message").lookup("Nested")._features, 
-    {
-        enum_type: 'OPEN',
-        field_presence: 'IMPLICIT',
-        json_format: 'LEGACY_BEST_EFFORT',
-        message_encoding: 'LENGTH_PREFIXED',
-        repeated_field_encoding: 'PACKED',
-        utf8_validation: 'VERIFY'
-      })
+    { enum_type: 'OPEN', field_presence: 'IMPLICIT', json_format: 'LEGACY_BEST_EFFORT', message_encoding: 'LENGTH_PREFIXED', repeated_field_encoding: 'PACKED', utf8_validation: 'VERIFY', a: { b: { c: { d_e: 'deeply_nested_true' } } } })
+
+    // Supports extensions
+    test.same(rootEditions._features, 
+        { enum_type: 'OPEN', field_presence: 'EXPLICIT', json_format: 'LEGACY_BEST_EFFORT', message_encoding: 'LENGTH_PREFIXED', repeated_field_encoding: 'PACKED', utf8_validation: 'VERIFY', a: { b: { c: { d_e: 'deeply_nested_false' } } } })
+
+    // Supports overriding extensions
+    test.same(rootEditions.lookup("Message").lookup("Nested")._features, 
+    { enum_type: 'OPEN', field_presence: 'IMPLICIT', json_format: 'LEGACY_BEST_EFFORT', message_encoding: 'LENGTH_PREFIXED', repeated_field_encoding: 'PACKED', utf8_validation: 'VERIFY', a: { b: { c: { d_e: 'deeply_nested_true' } } } })
 
     test.end();
 })

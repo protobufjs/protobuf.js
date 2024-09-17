@@ -179,6 +179,9 @@ export class Enum extends ReflectionObject {
     /** Values options, if any */
     public valuesOptions?: { [k: string]: { [k: string]: any } };
 
+    /** Values features, if any */
+    public _valuesFeatures?: { [k: string]: { [k: string]: any } };
+
     /** Reserved ranges, if any. */
     public reserved: (number[]|string)[];
 
@@ -877,6 +880,9 @@ export abstract class ReflectionObject {
     /** Unique name within its namespace. */
     public name: string;
 
+    /** Resolved Features. */
+    public _features: any;
+
     /** Parent namespace. */
     public parent: (Namespace|null);
 
@@ -1255,7 +1261,7 @@ export class Root extends NamespaceBase {
 
     /**
      * Loads a namespace descriptor into a root namespace.
-     * @param json Nameespace descriptor
+     * @param json Namespace descriptor
      * @param [root] Root namespace, defaults to create a new one if omitted
      * @returns Root namespace
      */
