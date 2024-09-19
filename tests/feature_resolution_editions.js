@@ -46,7 +46,6 @@ tape.test("feature resolution inheritance", function(test) {
     var rootEditionsOverriden = protobuf.parse(protoEditions2023Overridden).root
 
     rootEditionsOverriden.resolveAll();
-    console.log(rootEditionsOverriden._features)
 
     // Should flip enum_type from default setting, inherit from Message,
     // and keep everything else
