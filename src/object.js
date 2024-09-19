@@ -157,8 +157,13 @@ ReflectionObject.prototype.resolve = function resolve() {
 };
 
 ReflectionObject.prototype._resolveFeatures = function _resolveFeatures() {
-    this._features = {...this.parent?._features ?? {}, ...this._features};
     if (this.parent) {
+        // This is an annoying workaround since we can't use the spread operator
+        // (Breaks the bundler and eslint)
+        // If we don't create a shallow copy, we end up also altering the parent's
+        // features
+        var parentFeatures = Object.assign({}, this.parent._features);
+        this._features = Object.assign(parentFeatures, this._features || {});
         this.parent._resolveFeatures();
     }
 }
@@ -223,6 +228,7 @@ ReflectionObject.prototype.setParsedOption = function setParsedOption(name, valu
         newOpt[name] = value;
         parsedOptions.push(newOpt);
     }
+
 
     if (isFeature) {
         var features = parsedOptions.find(x => {return x.hasOwnProperty("features")});

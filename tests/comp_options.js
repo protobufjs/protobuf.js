@@ -30,7 +30,7 @@ message Message {
 tape.test("complex options", function (test) {
   var root = protobuf.parse(proto).root;
 
-  test.deepEqual(root.parsedOptions[0], {
+  test.deepEqual(root.parsedOptions[1], {
     "(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger)": {
       info: {
         title: "Some info",

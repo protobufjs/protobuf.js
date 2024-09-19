@@ -275,12 +275,12 @@ function parse(source, root, options) {
         root.setOption("syntax", syntax);
 
         if (isProto3) {
-            for (var key of Object.keys(proto3Defaults)) {
-                setParsedOption(root, key, proto3Defaults[key])
+            for (var proto3Key of Object.keys(proto3Defaults)) {
+                setParsedOption(root, proto3Key, proto3Defaults[proto3Key])
             }
         } else {
-            for (var key of Object.keys(proto2Defaults)) {
-                setParsedOption(root, key, proto2Defaults[key])
+            for (var proto2Key of Object.keys(proto2Defaults)) {
+                setParsedOption(root, proto2Key, proto2Defaults[proto2Key])
             }
         }
 
@@ -632,40 +632,9 @@ function parse(source, root, options) {
             this.options[name] = value;
         };
         dummy.setParsedOption = function(name, value, propName) {
-            if (!this.parsedOptions) {
-                this.parsedOptions = [];
+            if (/features/.test(name)) {
+                return ReflectionObject.prototype.setParsedOption.call(dummy, name, value, propName);
             }
-            var isFeature = /features/.test(name);
-            var parsedOptions = this.parsedOptions;
-            if (propName) {
-                // If setting a sub property of an option then try to merge it
-                // with an existing option
-                var opt = parsedOptions.find(function (opt) {
-                    return Object.prototype.hasOwnProperty.call(opt, name);
-                });
-                if (opt) {
-                    // If we found an existing option - just merge the property value
-                    // (If it's a feature, will just write over)
-                    var newValue = opt[name];
-                    util.setProperty(newValue, propName, value, isFeature);
-                } else {
-                    // otherwise, create a new option, set its property and add it to the list
-                    opt = {};
-                    opt[name] = util.setProperty({}, propName, value, isFeature);
-                    parsedOptions.push(opt);
-                }
-            } else {
-                // Always create a new option when setting the value of the option itself
-                var newOpt = {};
-                newOpt[name] = value;
-                parsedOptions.push(newOpt);
-            }
-        
-            if (isFeature) {
-                var features = parsedOptions.find(x => {return x.hasOwnProperty("features")});
-                this._features = features.features || {};
-            }
-            return this;
         }
         ifBlock(dummy, function parseEnumValue_block(token) {
 
@@ -679,48 +648,41 @@ function parse(source, root, options) {
         }, function parseEnumValue_line() {
             parseInlineOptions(dummy); // skip
         });
-        parent.add(token, value, dummy.comment, dummy.parsedOptions);
+        parent.add(token, value, dummy.comment, dummy.parsedOptions || dummy.options);
     }
 
     function parseOption(parent, token) {
-        var name;
-        var option;
-        var optionValue;
-        var propName;
-        // The two logic branches below are parallel tracks, but with different regexes for the following use cases:
-        // features expects: option features.abc.amazing_feature = A;
-        // custom options expects: option (mo_single_msg).nested.value = "x";
-        if (featuresTypeRefRe.test(peek())) {
-            var token = next();
-            name = token;
-            option = token.match(featuresTypeRefRe)[1];
-            var propNameWithPeriod = token.match(featuresTypeRefRe)[2];
-            if (fqTypeRefRe.test(propNameWithPeriod)) {
-                propName = propNameWithPeriod.slice(1); //remove '.' before property name
+            var option;
+            var propName;
+            var isOption = true;
+            if (token === "option") {
+                token = next();
             }
-        } else {
-            var isCustom = skip("(", true);
-            if (!typeRefRe.test(token = next())) 
-                throw illegal(token, "name");
-        
 
-            name = token;
-            option = name;
-
-            if (isCustom) {
-                skip(")");
-                name = "(" + name + ")";
-                option = name;
-                token = peek();
-                if (fqTypeRefRe.test(token)) {
-                    propName = token.slice(1); //remove '.' before property name
-                    name += token;
-                    next();
+            while (token !== "=") {
+                if (token === "(") {
+                    var parensValue = next();
+                    skip(")");
+                    token = "(" + parensValue + ")";
                 }
+                if (isOption) {
+                    isOption = false;
+                    if (token.includes(".") && !token.includes("(")) {
+                        var tokens = token.split(".");
+                        option = tokens[0];
+                        token = tokens[1];
+                        continue;
+                    }
+                    option = token;            
+                } else {
+                    propName = propName ? propName += token : token;
+                }
+                token = next();
             }
-        }
-            skip("=");
+            var name = propName ? option.concat(propName) : option;
             var optionValue = parseOptionValue(parent, name);
+            propName = (propName && propName[0] === ".") ? propName.slice(1) : propName;
+            option = (option && option[option.length - 1] === ".") ? option.slice(0, -1) : option;
             setParsedOption(parent, option, optionValue, propName);
     }
 
