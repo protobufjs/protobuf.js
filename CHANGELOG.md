@@ -1,5 +1,17 @@
 # Changelog
 
+## [7.4.0](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v7.3.3...protobufjs-v7.4.0) (2024-08-22)
+
+
+### Features
+
+* Add `prepublishOnly` script ([0e4da8b](https://github.com/protobufjs/protobuf.js/commit/0e4da8b158a85af5160e2f4ba5eb097a8dc65cb1))
+
+
+### Bug Fixes
+
+* include ([28e3334](https://github.com/protobufjs/protobuf.js/commit/28e333415d3c85687810e164125997d17baba0bd))
+
 ## [7.3.3](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v7.3.2...protobufjs-v7.3.3) (2024-08-16)
 
 
