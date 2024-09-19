@@ -632,6 +632,8 @@ function parse(source, root, options) {
             this.options[name] = value;
         };
         dummy.setParsedOption = function(name, value, propName) {
+            // In order to not change existing behavior, only calling
+            // this for features
             if (/features/.test(name)) {
                 return ReflectionObject.prototype.setParsedOption.call(dummy, name, value, propName);
             }
