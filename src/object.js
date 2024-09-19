@@ -235,7 +235,7 @@ ReflectionObject.prototype.setParsedOption = function setParsedOption(name, valu
 
 
     if (isFeature) {
-        var features = parsedOptions.find(x => {return Object.prototype.hasOwnProperty(x, "features");});
+        var features = parsedOptions.find(x => {return Object.prototype.hasOwnProperty.call(x, "features");});
         this._features = features.features || {};
     }
     return this;
