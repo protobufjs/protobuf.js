@@ -155,12 +155,12 @@ Enum.prototype.add = function add(name, id, comment, options) {
             this.valuesOptions = {};
         this.valuesOptions[name] = options || null;
 
-        for (var key in this.valuesOptions) {
-            var features = Array.isArray(this.valuesOptions[key]) ? this.valuesOptions[key].find(x => {return x.hasOwnProperty("features")}) : this.valuesOptions[key] === "features";
-            if (features) {    
+        for (var key of Object.keys(this.valuesOptions)) {
+            var features = Array.isArray(this.valuesOptions[key]) ? this.valuesOptions[key].find(x => {return Object.prototype.hasOwnProperty.call(x, "features");}) : this.valuesOptions[key] === "features";
+            if (features) {
                 if (!this._valuesFeatures) {
                     this._valuesFeatures = {};
-                }        
+                }
                 this._valuesFeatures[key] = features.features || {};
             }
         }

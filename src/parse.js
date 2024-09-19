@@ -25,13 +25,11 @@ var base10Re    = /^[1-9][0-9]*$/,
     base8NegRe  = /^-?0[0-7]+$/,
     numberRe    = /^(?![eE])[0-9]*(?:\.[0-9]*)?(?:[eE][+-]?[0-9]+)?$/,
     nameRe      = /^[a-zA-Z_][a-zA-Z_0-9]*$/,
-    typeRefRe   = /^(?:\.?[a-zA-Z_][a-zA-Z_0-9]*)(?:\.[a-zA-Z_][a-zA-Z_0-9]*)*$/,
-    fqTypeRefRe = /^(?:\.[a-zA-Z_][a-zA-Z_0-9]*)+$/,
-    featuresTypeRefRe = /^(features)(.*)/;
+    typeRefRe   = /^(?:\.?[a-zA-Z_][a-zA-Z_0-9]*)(?:\.[a-zA-Z_][a-zA-Z_0-9]*)*$/;
 
-var editions2023Defaults = {features: {enum_type: 'OPEN', field_presence: 'EXPLICIT', json_format: 'ALLOW', message_encoding: 'LENGTH_PREFIXED', repeated_field_encoding: 'PACKED', utf8_validation: 'VERIFY'}}
-var proto2Defaults = {features: {enum_type: 'CLOSED', field_presence: 'EXPLICIT', json_format: 'LEGACY_BEST_EFFORT', message_encoding: 'LENGTH_PREFIXED', repeated_field_encoding: 'EXPANDED', utf8_validation: 'NONE'}}
-var proto3Defaults = {features: {enum_type: 'OPEN', field_presence: 'IMPLICIT', json_format: 'ALLOW', message_encoding: 'LENGTH_PREFIXED', repeated_field_encoding: 'PACKED', utf8_validation: 'VERIFY'}}
+var editions2023Defaults = {features: {enum_type: "OPEN", field_presence: "EXPLICIT", json_format: "ALLOW", message_encoding: "LENGTH_PREFIXED", repeated_field_encoding: "PACKED", utf8_validation: "VERIFY"}};
+var proto2Defaults = {features: {enum_type: "CLOSED", field_presence: "EXPLICIT", json_format: "LEGACY_BEST_EFFORT", message_encoding: "LENGTH_PREFIXED", repeated_field_encoding: "EXPANDED", utf8_validation: "NONE"}};
+var proto3Defaults = {features: {enum_type: "OPEN", field_presence: "IMPLICIT", json_format: "ALLOW", message_encoding: "LENGTH_PREFIXED", repeated_field_encoding: "PACKED", utf8_validation: "VERIFY"}};
 
 /**
  * Result object returned from {@link parse}.
@@ -276,11 +274,11 @@ function parse(source, root, options) {
 
         if (isProto3) {
             for (var proto3Key of Object.keys(proto3Defaults)) {
-                setParsedOption(root, proto3Key, proto3Defaults[proto3Key])
+                setParsedOption(root, proto3Key, proto3Defaults[proto3Key]);
             }
         } else {
             for (var proto2Key of Object.keys(proto2Defaults)) {
-                setParsedOption(root, proto2Key, proto2Defaults[proto2Key])
+                setParsedOption(root, proto2Key, proto2Defaults[proto2Key]);
             }
         }
 
@@ -290,7 +288,7 @@ function parse(source, root, options) {
     function parseEdition() {
         skip("=");
         edition = readString();
-        const supportedEditions = ["2023"]
+        const supportedEditions = ["2023"];
 
         /* istanbul ignore if */
         if (!supportedEditions.includes(edition))
@@ -299,7 +297,7 @@ function parse(source, root, options) {
         root.setOption("edition", edition);
 
         for (var key of Object.keys(editions2023Defaults)) {
-            setParsedOption(root, key, editions2023Defaults[key])
+            setParsedOption(root, key, editions2023Defaults[key]);
         }
         skip(";");
     }
@@ -327,7 +325,7 @@ function parse(source, root, options) {
 
             case "extend":
                 parseExtension(parent, token);
-                return true;   
+                return true;
         }
         return false;
     }
@@ -374,7 +372,7 @@ function parse(source, root, options) {
                 case "required":
                 case "repeated":
                     if (edition)
-                        throw illegal(token)
+                        throw illegal(token);
                     parseField(type, token);
                     break;
 
@@ -403,7 +401,7 @@ function parse(source, root, options) {
 
                 default:
                     /* istanbul ignore if */
-                    if ((!isProto3 && !edition) || !typeRefRe.test(token))
+                    if (!isProto3 && !edition || !typeRefRe.test(token))
                         throw illegal(token);
 
                     push(token);
@@ -499,7 +497,7 @@ function parse(source, root, options) {
                 case "option":
                     parseOption(type, token);
                     skip(";");
-                    break;       
+                    break;
                 case "required":
                 case "repeated":
                     parseField(type, token);
@@ -628,7 +626,7 @@ function parse(source, root, options) {
         dummy.setOption = function(name, value) {
             if (this.options === undefined)
                 this.options = {};
-            
+
             this.options[name] = value;
         };
         dummy.setParsedOption = function(name, value, propName) {
@@ -637,7 +635,8 @@ function parse(source, root, options) {
             if (/features/.test(name)) {
                 return ReflectionObject.prototype.setParsedOption.call(dummy, name, value, propName);
             }
-        }
+            return undefined;
+        };
         ifBlock(dummy, function parseEnumValue_block(token) {
 
             /* istanbul ignore else */
@@ -675,7 +674,7 @@ function parse(source, root, options) {
                         token = tokens[1];
                         continue;
                     }
-                    option = token;            
+                    option = token;
                 } else {
                     propName = propName ? propName += token : token;
                 }
@@ -683,8 +682,8 @@ function parse(source, root, options) {
             }
             var name = propName ? option.concat(propName) : option;
             var optionValue = parseOptionValue(parent, name);
-            propName = (propName && propName[0] === ".") ? propName.slice(1) : propName;
-            option = (option && option[option.length - 1] === ".") ? option.slice(0, -1) : option;
+            propName = propName && propName[0] === "." ? propName.slice(1) : propName;
+            option = option && option[option.length - 1] === "." ? option.slice(0, -1) : option;
             setParsedOption(parent, option, optionValue, propName);
     }
 
@@ -868,7 +867,7 @@ function parse(source, root, options) {
 
                 default:
                     /* istanbul ignore if */
-                    if ((!isProto3 && !edition) || !typeRefRe.test(token))
+                    if (!isProto3 && !edition || !typeRefRe.test(token))
                         throw illegal(token);
                     push(token);
                     parseField(parent, "optional", reference);

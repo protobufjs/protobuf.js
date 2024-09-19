@@ -152,10 +152,14 @@ ReflectionObject.prototype.resolve = function resolve() {
     if (this.resolved)
         return this;
     this._resolveFeatures();
-    this.resolved = true; 
+    this.resolved = true;
     return this;
 };
 
+/**
+ * Resolves child features from parent features
+ * @returns {undefined}
+ */
 ReflectionObject.prototype._resolveFeatures = function _resolveFeatures() {
     if (this.parent) {
         // This is an annoying workaround since we can't use the spread operator
@@ -166,7 +170,7 @@ ReflectionObject.prototype._resolveFeatures = function _resolveFeatures() {
         this._features = Object.assign(parentFeatures, this._features || {});
         this.parent._resolveFeatures();
     }
-}
+};
 
 /**
  * Gets an option value.
@@ -231,7 +235,7 @@ ReflectionObject.prototype.setParsedOption = function setParsedOption(name, valu
 
 
     if (isFeature) {
-        var features = parsedOptions.find(x => {return x.hasOwnProperty("features")});
+        var features = parsedOptions.find(x => {return Object.prototypehasOwnProperty(x, "features");});
         this._features = features.features || {};
     }
     return this;

@@ -171,6 +171,7 @@ util.decorateEnum = function decorateEnum(object) {
  * @param {Object.<string,*>} dst Destination object
  * @param {string} path dot '.' delimited path of the property to set
  * @param {Object} value the value to set
+ * @param {boolean} isFeature whether the option being set is a feature (matches feature regex)
  * @returns {Object.<string,*>} Destination object
  */
 util.setProperty = function setProperty(dst, path, value, isFeature) {
