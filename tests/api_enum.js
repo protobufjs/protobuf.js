@@ -21,7 +21,6 @@ tape.test("reflected enums", function(test) {
         2: "b"
     }, "should also expose their values by id");
 
-
     test.throws(function() {
         enm.add(2, 2);
     }, TypeError, "should throw if name is not a string");
