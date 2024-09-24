@@ -248,7 +248,7 @@ ReflectionObject.prototype.setParsedOption = function setParsedOption(name, valu
         var features = parsedOptions.find(x => {return Object.prototype.hasOwnProperty.call(x, "features");});
         this._proto_features = features.features || {};
     }
-    
+
     return this;
 };
 

@@ -372,6 +372,7 @@ function parse(source, root, options) {
                 case "required":
                     if (edition)
                         throw illegal(token);
+                    break;
                 case "repeated":
                     parseField(type, token);
                     break;
