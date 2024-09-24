@@ -378,6 +378,8 @@ function parse(source, root, options) {
 
                 case "optional":
                     /* istanbul ignore if */
+                    // console.log('in optional?')
+                    // console.log('')
                     if (isProto3) {
                         parseField(type, "proto3_optional");
                     } else if (edition) {
