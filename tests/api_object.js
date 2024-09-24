@@ -10,6 +10,7 @@ tape.test("reflection objects", function(test) {
     var obj = new protobuf.ReflectionObject("Test");
 
     obj.resolve();
+    test.equal(obj.resolved, false, "should not resolve when not part of a root");
 
     obj.resolved = 2;
     obj.resolve();

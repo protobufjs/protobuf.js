@@ -31,12 +31,15 @@ message Message {
 `
 tape.test("feautre resolution defaults", function(test) {
     var rootEditions = protobuf.parse(protoEditions2023).root;
+    rootEditions.resolveAll();
     test.same(rootEditions._features, editions2023Defaults);
 
     var rootProto2 = protobuf.parse(proto2).root;
+    rootProto2.resolveAll();
     test.same(rootProto2._features, proto2Defaults);
 
     var rootProto3 = protobuf.parse(proto3).root;
+    rootProto3.resolveAll();
     test.same(rootProto3._features, proto3Defaults);
 
     test.end();
@@ -71,6 +74,7 @@ tape.test("feature resolution editions precedence", function(test) {
     protobuf.load("tests/data/feature-resolution.proto", function(err, root) {
         if (err)
             return test.fail(err.message);
+        root.resolveAll();
         test.same(root._features.amazing_feature, 'A');
         test.same(root.lookup("Message")._features.amazing_feature, 'B')
         test.same(root.lookupEnum("SomeEnum")._features.amazing_feature, 'C')

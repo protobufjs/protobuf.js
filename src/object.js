@@ -44,7 +44,12 @@ function ReflectionObject(name, options) {
     /**
      * Resolved Features.
      */
-    this._features = null;
+    this._features = {};
+
+    /**
+     * Resolved Features.
+     */
+    this._proto_features = null;
 
     /**
      * Parent namespace.
@@ -152,7 +157,8 @@ ReflectionObject.prototype.resolve = function resolve() {
     if (this.resolved)
         return this;
     this._resolveFeatures();
-    this.resolved = true;
+    if (this.root instanceof Root || this.parent)
+        this.resolved = true;
     return this;
 };
 
@@ -166,10 +172,14 @@ ReflectionObject.prototype._resolveFeatures = function _resolveFeatures() {
         // (Breaks the bundler and eslint)
         // If we don't create a shallow copy, we end up also altering the parent's
         // features
-        var parentFeatures = Object.assign({}, this.parent._features);
-        this._features = Object.assign(parentFeatures, this._features || {});
+        var parentFeatures = Object.assign({}, this.parent._proto_features);
+        this._features = Object.assign(parentFeatures, this._proto_features || {});
+        // this._proto_features = this._features;
         this.parent._resolveFeatures();
+    } else {
+        this._features = Object.assign({}, this._proto_features);
     }
+    this._proto_features = this._features;
 };
 
 /**
@@ -207,7 +217,7 @@ ReflectionObject.prototype.setParsedOption = function setParsedOption(name, valu
     if (!this.parsedOptions) {
         this.parsedOptions = [];
     }
-    var isFeature = /features/.test(name);
+    var isFeature = /^features/.test(name);
     var parsedOptions = this.parsedOptions;
     if (propName) {
         // If setting a sub property of an option then try to merge it
@@ -236,8 +246,9 @@ ReflectionObject.prototype.setParsedOption = function setParsedOption(name, valu
 
     if (isFeature) {
         var features = parsedOptions.find(x => {return Object.prototype.hasOwnProperty.call(x, "features");});
-        this._features = features.features || {};
+        this._proto_features = features.features || {};
     }
+    
     return this;
 };
 
