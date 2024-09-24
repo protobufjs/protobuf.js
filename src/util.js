@@ -171,10 +171,10 @@ util.decorateEnum = function decorateEnum(object) {
  * @param {Object.<string,*>} dst Destination object
  * @param {string} path dot '.' delimited path of the property to set
  * @param {Object} value the value to set
- * @param {boolean} overWrite whether or not to concatenate the values into an array or overwrite
+ * @param {boolean} overWrite whether or not to concatenate the values into an array or overwrite; defaults to false.
  * @returns {Object.<string,*>} Destination object
  */
-util.setProperty = function setProperty(dst, path, value, overWrite) {
+util.setProperty = function setProperty(dst, path, value, overWrite = false) {
     function setProp(dst, path, value) {
         var part = path.shift();
         if (part === "__proto__" || part === "prototype") {

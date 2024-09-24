@@ -372,15 +372,13 @@ function parse(source, root, options) {
                 case "required":
                     if (edition)
                         throw illegal(token);
-                    break;
+                /* eslint-disable no-fallthrough */
                 case "repeated":
                     parseField(type, token);
                     break;
 
                 case "optional":
                     /* istanbul ignore if */
-                    // console.log('in optional?')
-                    // console.log('')
                     if (isProto3) {
                         parseField(type, "proto3_optional");
                     } else if (edition) {
@@ -404,8 +402,9 @@ function parse(source, root, options) {
 
                 default:
                     /* istanbul ignore if */
-                    if (!isProto3 && !edition || !typeRefRe.test(token))
+                    if (!isProto3 && !edition || !typeRefRe.test(token)) {
                         throw illegal(token);
+                    }
 
                     push(token);
                     parseField(type, "optional");
