@@ -174,7 +174,6 @@ ReflectionObject.prototype._resolveFeatures = function _resolveFeatures() {
         // features
         var parentFeatures = Object.assign({}, this.parent._proto_features);
         this._features = Object.assign(parentFeatures, this._proto_features || {});
-        // this._proto_features = this._features;
         this.parent._resolveFeatures();
     } else {
         this._features = Object.assign({}, this._proto_features);
