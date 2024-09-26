@@ -131,7 +131,6 @@ function parse(source, root, options) {
         try {
             return parseNumber(token, /* insideTryCatch */ true);
         } catch (e) {
-
             /* istanbul ignore else */
             if (acceptTypeRef && typeRefRe.test(token))
                 return token;
@@ -146,8 +145,15 @@ function parse(source, root, options) {
         do {
             if (acceptStrings && ((token = peek()) === "\"" || token === "'"))
                 target.push(readString());
-            else
-                target.push([ start = parseId(next()), skip("to", true) ? parseId(next()) : start ]);
+            else {
+                try {
+                    target.push([ start = parseId(next()), skip("to", true) ? parseId(next()) : start ]);
+                } catch (err) {
+                    if (typeRefRe.test(token) && edition) {
+                        target.push(token);
+                    }
+                }
+            }
         } while (skip(",", true));
         var dummy = {options: undefined};
         dummy.setOption = function(name, value) {
@@ -634,7 +640,7 @@ function parse(source, root, options) {
         dummy.setParsedOption = function(name, value, propName) {
             // In order to not change existing behavior, only calling
             // this for features
-            if (/^features/.test(name)) {
+            if (/^features\./.test(name)) {
                 return ReflectionObject.prototype.setParsedOption.call(dummy, name, value, propName);
             }
             return undefined;

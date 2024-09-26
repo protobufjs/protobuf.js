@@ -16,6 +16,11 @@ var protoEditionsGroup = `edition = "2023";
         group uint32 a = 1;\
     }`;
 
+var noQuote = `edition = "2023";
+   message Foo {
+        reserved bar, baz;
+   }`;
+
 tape.test("editions grammar", function(test) {
     test.throws(function() {
         protobuf.parse(protoEditionsRequired);
@@ -29,5 +34,7 @@ tape.test("editions grammar", function(test) {
         protobuf.parse(protoEditionsGroup);
     }, Error, "Error: illegal token 'group'");
 
+    test.ok(protobuf.parse(noQuote));
+    
     test.end();
 });

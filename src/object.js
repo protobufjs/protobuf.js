@@ -156,9 +156,10 @@ ReflectionObject.prototype.onRemove = function onRemove(parent) {
 ReflectionObject.prototype.resolve = function resolve() {
     if (this.resolved)
         return this;
-    this._resolveFeatures();
-    if (this.root instanceof Root || this.parent)
+    if (this.root instanceof Root || this.parent) {
+        this._resolveFeatures();
         this.resolved = true;
+    }
     return this;
 };
 
@@ -216,7 +217,7 @@ ReflectionObject.prototype.setParsedOption = function setParsedOption(name, valu
     if (!this.parsedOptions) {
         this.parsedOptions = [];
     }
-    var isFeature = /^features/.test(name);
+    var isFeature = /^features\./.test(name);
     var parsedOptions = this.parsedOptions;
     if (propName) {
         // If setting a sub property of an option then try to merge it
