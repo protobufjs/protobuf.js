@@ -217,7 +217,7 @@ ReflectionObject.prototype.setParsedOption = function setParsedOption(name, valu
     if (!this.parsedOptions) {
         this.parsedOptions = [];
     }
-    var isFeature = /^features\./.test(name);
+    var isFeature = /^features$/.test(name);
     var parsedOptions = this.parsedOptions;
     if (propName) {
         // If setting a sub property of an option then try to merge it
