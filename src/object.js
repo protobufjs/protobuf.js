@@ -189,7 +189,6 @@ ReflectionObject.prototype._resolveFeatures = function _resolveFeatures() {
         // features
         var parentFeaturesMerged = Object.assign(defaults, this.parent._proto_features);
         this._features = Object.assign(parentFeaturesMerged, this._proto_features || {});
-        this._proto_features = this._features;
         this.parent._resolveFeatures();
     } else {
         this._features = Object.assign(defaults, this._proto_features || {});
