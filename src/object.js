@@ -7,6 +7,10 @@ var util = require("./util");
 
 var Root; // cyclic
 
+var editions2023Defaults = {enum_type: "OPEN", field_presence: "EXPLICIT", json_format: "ALLOW", message_encoding: "LENGTH_PREFIXED", repeated_field_encoding: "PACKED", utf8_validation: "VERIFY"};
+var proto2Defaults = {enum_type: "CLOSED", field_presence: "EXPLICIT", json_format: "LEGACY_BEST_EFFORT", message_encoding: "LENGTH_PREFIXED", repeated_field_encoding: "EXPANDED", utf8_validation: "NONE"};
+var proto3Defaults = {enum_type: "OPEN", field_presence: "IMPLICIT", json_format: "ALLOW", message_encoding: "LENGTH_PREFIXED", repeated_field_encoding: "PACKED", utf8_validation: "VERIFY"};
+
 /**
  * Constructs a new reflection object instance.
  * @classdesc Base class of all reflection objects.
@@ -168,18 +172,30 @@ ReflectionObject.prototype.resolve = function resolve() {
  * @returns {undefined}
  */
 ReflectionObject.prototype._resolveFeatures = function _resolveFeatures() {
+    var defaults = {};
+
+    if (this.root.getOption('syntax') === 'proto2') {
+        defaults = Object.assign({}, proto2Defaults);
+    } else if (this.root.getOption('syntax') === 'proto3') {
+        defaults = Object.assign({}, proto3Defaults)
+    } else if (this.root.getOption('edition') === '2023') {
+        defaults = Object.assign({}, editions2023Defaults);
+    }
+
     if (this.parent) {
         // This is an annoying workaround since we can't use the spread operator
         // (Breaks the bundler and eslint)
         // If we don't create a shallow copy, we end up also altering the parent's
         // features
-        var parentFeatures = Object.assign({}, this.parent._proto_features);
-        this._features = Object.assign(parentFeatures, this._proto_features || {});
+        var parentFeaturesMerged = Object.assign(defaults, this.parent._proto_features);
+        this._features = Object.assign(parentFeaturesMerged, this._proto_features || {});
+        this._proto_features = this._features;
         this.parent._resolveFeatures();
     } else {
-        this._features = Object.assign({}, this._proto_features);
+        this._features = Object.assign(defaults, this._proto_features || {});
     }
     this._proto_features = this._features;
+
 };
 
 /**

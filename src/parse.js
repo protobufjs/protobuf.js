@@ -27,10 +27,6 @@ var base10Re    = /^[1-9][0-9]*$/,
     nameRe      = /^[a-zA-Z_][a-zA-Z_0-9]*$/,
     typeRefRe   = /^(?:\.?[a-zA-Z_][a-zA-Z_0-9]*)(?:\.[a-zA-Z_][a-zA-Z_0-9]*)*$/;
 
-var editions2023Defaults = {features: {enum_type: "OPEN", field_presence: "EXPLICIT", json_format: "ALLOW", message_encoding: "LENGTH_PREFIXED", repeated_field_encoding: "PACKED", utf8_validation: "VERIFY"}};
-var proto2Defaults = {features: {enum_type: "CLOSED", field_presence: "EXPLICIT", json_format: "LEGACY_BEST_EFFORT", message_encoding: "LENGTH_PREFIXED", repeated_field_encoding: "EXPANDED", utf8_validation: "NONE"}};
-var proto3Defaults = {features: {enum_type: "OPEN", field_presence: "IMPLICIT", json_format: "ALLOW", message_encoding: "LENGTH_PREFIXED", repeated_field_encoding: "PACKED", utf8_validation: "VERIFY"}};
-
 /**
  * Result object returned from {@link parse}.
  * @interface IParserResult
@@ -278,16 +274,6 @@ function parse(source, root, options) {
         // Otherwise the meaning is ambiguous between proto2 and proto3
         root.setOption("syntax", syntax);
 
-        if (isProto3) {
-            for (var proto3Key of Object.keys(proto3Defaults)) {
-                setParsedOption(root, proto3Key, proto3Defaults[proto3Key]);
-            }
-        } else {
-            for (var proto2Key of Object.keys(proto2Defaults)) {
-                setParsedOption(root, proto2Key, proto2Defaults[proto2Key]);
-            }
-        }
-
         skip(";");
     }
 
@@ -302,9 +288,6 @@ function parse(source, root, options) {
 
         root.setOption("edition", edition);
 
-        for (var key of Object.keys(editions2023Defaults)) {
-            setParsedOption(root, key, editions2023Defaults[key]);
-        }
         skip(";");
     }
 

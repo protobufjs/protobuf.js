@@ -193,7 +193,7 @@ service MyService {
     };
 }
 `
-tape.test("feautre resolution defaults", function(test) {
+tape.test("feature resolution defaults", function(test) {
     var rootEditions = protobuf.parse(protoEditions2023).root;
     rootEditions.resolveAll();
     test.same(rootEditions._features, editions2023Defaults);
