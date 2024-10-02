@@ -174,11 +174,11 @@ ReflectionObject.prototype.resolve = function resolve() {
 ReflectionObject.prototype._resolveFeatures = function _resolveFeatures() {
     var defaults = {};
 
-    if (this.root.getOption('syntax') === 'proto2') {
+    if (this.root.getOption("syntax") === "proto2") {
         defaults = Object.assign({}, proto2Defaults);
-    } else if (this.root.getOption('syntax') === 'proto3') {
-        defaults = Object.assign({}, proto3Defaults)
-    } else if (this.root.getOption('edition') === '2023') {
+    } else if (this.root.getOption("syntax") === "proto3") {
+        defaults = Object.assign({}, proto3Defaults);
+    } else if (this.root.getOption("edition") === "2023") {
         defaults = Object.assign({}, editions2023Defaults);
     }
 
