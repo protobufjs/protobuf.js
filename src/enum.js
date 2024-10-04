@@ -193,9 +193,9 @@ Enum.prototype.add = function add(name, id, comment, options) {
         }
     }
 
-    for (var key of Object.keys(this.values)) {
-        if (!this._proto_valuesFeatures[key]) {
-            this._proto_valuesFeatures[key] = {}
+    for (var name of Object.keys(this.values)) {
+        if (!this._proto_valuesFeatures[name]) {
+            this._proto_valuesFeatures[name] = {};
         }
     }
 
