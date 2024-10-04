@@ -76,16 +76,6 @@ var editions2023Defaults = {enum_type: 'OPEN', field_presence: 'EXPLICIT', json_
 var proto2Defaults = {enum_type: 'CLOSED', field_presence: 'EXPLICIT', json_format: 'LEGACY_BEST_EFFORT', message_encoding: 'LENGTH_PREFIXED', repeated_field_encoding: 'EXPANDED', utf8_validation: 'NONE'}
 var proto3Defaults = {enum_type: 'OPEN', field_presence: 'IMPLICIT', json_format: 'ALLOW', message_encoding: 'LENGTH_PREFIXED', repeated_field_encoding: 'PACKED', utf8_validation: 'VERIFY'}
 
-
-
-// var test1 =
-// var test3 = 
-
-
-
-
-
-
 tape.test("feature resolution defaults", function(test) {
     var rootEditions = protobuf.parse(protoEditions2023).root;
     rootEditions.resolveAll();
