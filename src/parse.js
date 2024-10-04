@@ -147,6 +147,8 @@ function parse(source, root, options) {
                 } catch (err) {
                     if (typeRefRe.test(token) && edition) {
                         target.push(token);
+                    } else {
+                        throw err;
                     }
                 }
             }

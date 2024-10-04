@@ -57,10 +57,16 @@ function Enum(name, values, options, comment, comments, valuesOptions) {
     this.valuesOptions = valuesOptions;
 
     /**
-     * Values features, if any
+     * Resolved values features, if any
      * @type {Object<string, Object<string, *>>|undefined}
      */
     this._valuesFeatures = {};
+
+    /**
+     * Unresolved values features, if any
+     * @type {Object<string, Object<string, *>>|undefined}
+     */
+    this._proto_valuesFeatures = {};
 
     /**
      * Reserved ranges, if any.
@@ -77,6 +83,28 @@ function Enum(name, values, options, comment, comments, valuesOptions) {
             if (typeof values[keys[i]] === "number") // use forward entries only
                 this.valuesById[ this.values[keys[i]] = values[keys[i]] ] = keys[i];
 }
+
+/**
+ * Resolves value features
+ * @returns {Enum} `this`
+ */
+Enum.prototype.resolve = function resolve() {
+
+    if (this.resolved)
+        return this;
+
+    for (var key of Object.keys(this._proto_valuesFeatures)) {
+
+        if (this.parent) {
+            var parentFeaturesCopy = Object.assign({}, this.parent._features);
+            this._valuesFeatures[key] = Object.assign(parentFeaturesCopy, this._proto_valuesFeatures[key] || {});
+        } else {
+            this._valuesFeatures[key] = Object.assign({}, this._proto_valuesFeatures[key]);
+        }
+    }
+    return ReflectionObject.prototype.resolve.call(this);
+};
+
 
 /**
  * Enum descriptor.
@@ -158,11 +186,16 @@ Enum.prototype.add = function add(name, id, comment, options) {
         for (var key of Object.keys(this.valuesOptions)) {
             var features = Array.isArray(this.valuesOptions[key]) ? this.valuesOptions[key].find(x => {return Object.prototype.hasOwnProperty.call(x, "features");}) : this.valuesOptions[key] === "features";
             if (features) {
-                if (!this._valuesFeatures) {
-                    this._valuesFeatures = {};
-                }
-                this._valuesFeatures[key] = features.features || {};
+                this._proto_valuesFeatures[key] = features.features;
+            } else {
+                this._proto_valuesFeatures[key] = {};
             }
+        }
+    }
+
+    for (var key of Object.keys(this.values)) {
+        if (!this._proto_valuesFeatures[key]) {
+            this._proto_valuesFeatures[key] = {}
         }
     }
 

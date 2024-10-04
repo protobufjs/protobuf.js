@@ -77,122 +77,15 @@ var proto2Defaults = {enum_type: 'CLOSED', field_presence: 'EXPLICIT', json_form
 var proto3Defaults = {enum_type: 'OPEN', field_presence: 'IMPLICIT', json_format: 'ALLOW', message_encoding: 'LENGTH_PREFIXED', repeated_field_encoding: 'PACKED', utf8_validation: 'VERIFY'}
 
 
-var protoEditions2023Overridden = `edition = "2023";
-option features.json_format = LEGACY_BEST_EFFORT;
 
-option features.(abc).d_e = deeply_nested_false;
+// var test1 =
+// var test3 = 
 
-message Message {
-    string string_val = 1;
-    string string_repeated = 2 [features.enum_type = CLOSED];
 
-    message Nested {
-        option features.(abc).d_e = deeply_nested_true;
-        option features.field_presence = IMPLICIT;
-        int64 count = 9;
-    }
-}
-`
 
-var test1 =`edition = "2023";
 
-option features.amazing_feature = A;`
-var test2 = `edition = "2023";
-option features.amazing_feature = A;
 
-message Message {
-    option features.amazing_feature = B;
-}`
-var test3 = `edition = "2023";
-option features.amazing_feature = A;
-enum SomeEnum {
-    option features.amazing_feature = C;
-    ONE = 1;
-    TWO = 2;
-}`
 
-var test4 = `edition = "2023";
-option features.amazing_feature = A;
-
-message Message {
-    option features.amazing_feature = B;
-}
-
-extend Message {
-    int32 bar = 16 [features.amazing_feature = D];
-}
-`
-var test5 = `edition = "2023";
-option features.amazing_feature = A;
-service MyService {
-    option features.amazing_feature = E;
-    message MyRequest {};
-    message MyResponse {};
-}
-`
-var test6 = `edition = "2023";
-option features.amazing_feature = A;
-message Message {
-    string string_val = 1;
-    string string_repeated = 2 [features.amazing_feature = F];
-}`
-
-var test7 = `edition = "2023";
-option features.amazing_feature = A;
-message Message {
-    enum SomeEnumInMessage {
-        option features.amazing_feature = G;
-        ONE = 11;
-        TWO = 12;
-    }
-}`
-
-var test8 = `edition = "2023";
-option features.amazing_feature = A;
-message Message {
-    message Nested {
-        option features.amazing_feature = H;
-        int64 count = 9;
-    }
-}`
-
-var test9 = `edition = "2023";
-option features.amazing_feature = A;
-message Message {
-    extend Message {
-        int32 bar = 10 [features.amazing_feature = I];
-    }
-}`
-
-var test10 = `edition = "2023";
-option features.amazing_feature = A;
-message Message {
-    oneof SomeOneOf {
-        option features.amazing_feature = J;
-        int32 a = 13;
-        string b = 14;
-    }
-}`
-
-var test11 = `edition = "2023";
-option features.amazing_feature = A;
-enum SomeEnum {
-    option features.amazing_feature = C;
-    ONE = 1 [features.amazing_feature = K];
-    TWO = 2;
-}`
-
-var test12 = `edition = "2023";
-option features.amazing_feature = A;
-service MyService {
-    option features.amazing_feature = E;
-    message MyRequest {};
-    message MyResponse {};
-    rpc MyMethod (MyRequest) returns (MyResponse) {
-        option features.amazing_feature = L;
-    };
-}
-`
 tape.test("feature resolution defaults", function(test) {
     var rootEditions = protobuf.parse(protoEditions2023).root;
     rootEditions.resolveAll();
@@ -210,8 +103,26 @@ tape.test("feature resolution defaults", function(test) {
 })
 
 tape.test("feature resolution inheritance", function(test) {
-    var rootEditionsOverriden = protobuf.parse(protoEditions2023Overridden).root
+    var rootEditionsOverriden = protobuf.parse(`edition = "2023";
+    option features.json_format = LEGACY_BEST_EFFORT;
 
+    option features.(abc).d_e = deeply_nested_false;
+
+    message Message {
+        string string_val = 1;
+        string string_repeated = 2 [features.enum_type = CLOSED];
+
+        message Nested {
+            option features.(abc).d_e = deeply_nested_true;
+            option features.field_presence = IMPLICIT;
+            int64 count = 9;
+        }
+        
+        enum SomeEnum {
+            ONE = 1 [features.repeated_field_encoding = EXPANDED];
+            TWO = 2;
+        }
+    }`).root
     rootEditionsOverriden.resolveAll();
 
     // Should flip enum_type from default setting, inherit from Message,
@@ -227,36 +138,172 @@ tape.test("feature resolution inheritance", function(test) {
       })
 
     // Should inherit from default, and Message, only change field_presence and the custom extension
-    test.same(rootEditionsOverriden.lookup("Message").lookup("Nested")._features, 
-    { enum_type: 'OPEN', field_presence: 'IMPLICIT', json_format: 'LEGACY_BEST_EFFORT', message_encoding: 'LENGTH_PREFIXED', repeated_field_encoding: 'PACKED', utf8_validation: 'VERIFY', '(abc)': { d_e: 'deeply_nested_true' } })
+    test.same(rootEditionsOverriden.lookup("Message").lookup("Nested")._features, {
+        enum_type: 'OPEN',
+        field_presence: 'IMPLICIT',
+        json_format: 'LEGACY_BEST_EFFORT',
+        message_encoding: 'LENGTH_PREFIXED',
+        repeated_field_encoding: 'PACKED',
+        utf8_validation: 'VERIFY',
+        '(abc)': { d_e: 'deeply_nested_true' } 
+      })
+
+    test.same(rootEditionsOverriden.lookup("Message").lookup("Nested")._features, {
+        enum_type: 'OPEN',
+        field_presence: 'IMPLICIT',
+        json_format: 'LEGACY_BEST_EFFORT',
+        message_encoding: 'LENGTH_PREFIXED',
+        repeated_field_encoding: 'PACKED',
+        utf8_validation: 'VERIFY',
+        '(abc)': { d_e: 'deeply_nested_true' } 
+      })
+
+    test.same(rootEditionsOverriden.lookupEnum("SomeEnum")._valuesFeatures["ONE"], {
+        enum_type: 'OPEN',
+        field_presence: 'EXPLICIT',
+        json_format: 'LEGACY_BEST_EFFORT',
+        message_encoding: 'LENGTH_PREFIXED',
+        repeated_field_encoding: 'EXPANDED',
+        utf8_validation: 'VERIFY',
+        '(abc)': { d_e: 'deeply_nested_false' } 
+    })
+
+    test.same(rootEditionsOverriden.lookupEnum("SomeEnum")._valuesFeatures["TWO"], {
+        enum_type: 'OPEN',
+        field_presence: 'EXPLICIT',
+        json_format: 'LEGACY_BEST_EFFORT',
+        message_encoding: 'LENGTH_PREFIXED',
+        repeated_field_encoding: 'PACKED',
+        utf8_validation: 'VERIFY',
+        '(abc)': { d_e: 'deeply_nested_false' } 
+    })
 
     test.end();
 })
 // Tests precedence for different levels of feature resolution
 tape.test("feature resolution editions precedence", function(test) {
-    var root1 = protobuf.parse(test1).root.resolveAll()
-    var root2 = protobuf.parse(test2).root.resolveAll();
-    var root3 = protobuf.parse(test3).root.resolveAll();
-    var root4 = protobuf.parse(test4).root.resolveAll();
-    var root5 = protobuf.parse(test5).root.resolveAll();
-    var root6 = protobuf.parse(test6).root.resolveAll();
-    var root7 = protobuf.parse(test7).root.resolveAll();
-    var root8 = protobuf.parse(test8).root.resolveAll();
-    var root9 = protobuf.parse(test9).root.resolveAll();
-    var root10 = protobuf.parse(test10).root.resolveAll();
-    var root11 = protobuf.parse(test11).root.resolveAll();
-    var root12 = protobuf.parse(test12).root.resolveAll();
+    var root1 = protobuf.parse(`edition = "2023";
+    option features.amazing_feature = A;`).root.resolveAll()
+    
     test.same(root1._features.amazing_feature, 'A');
+    
+    var root2 = protobuf.parse(`edition = "2023";
+    option features.amazing_feature = A;
+
+    message Message {
+        option features.amazing_feature = B;
+    }`).root.resolveAll();
+    
     test.same(root2.lookup("Message")._features.amazing_feature, 'B')
+    
+    var root3 = protobuf.parse(`edition = "2023";
+    option features.amazing_feature = A;
+    enum SomeEnum {
+        option features.amazing_feature = C;
+        ONE = 1;
+        TWO = 2;
+    }`).root.resolveAll();
+    
     test.same(root3.lookupEnum("SomeEnum")._features.amazing_feature, 'C')
+    
+    var root4 = protobuf.parse(`edition = "2023";
+    option features.amazing_feature = A;
+
+    message Message {
+        option features.amazing_feature = B;
+    }
+
+    extend Message {
+        int32 bar = 16 [features.amazing_feature = D];
+    }
+    `).root.resolveAll();
+    
     test.same(root4.lookup("Message").fields[".bar"].declaringField._features.amazing_feature, 'D')
+    
+    var root5 = protobuf.parse(`edition = "2023";
+    option features.amazing_feature = A;
+    service MyService {
+        option features.amazing_feature = E;
+        message MyRequest {};
+        message MyResponse {};
+    }
+    `).root.resolveAll();
+    
     test.same(root5.lookupService("MyService")._features.amazing_feature, 'E');
+    
+    var root6 = protobuf.parse(`edition = "2023";
+    option features.amazing_feature = A;
+    message Message {
+        string string_val = 1;
+        string string_repeated = 2 [features.amazing_feature = F];
+    }`).root.resolveAll();
+    
     test.same(root6.lookup("Message").fields.stringRepeated._features.amazing_feature, 'F')
+    
+    var root7 = protobuf.parse(`edition = "2023";
+    option features.amazing_feature = A;
+    message Message {
+        enum SomeEnumInMessage {
+            option features.amazing_feature = G;
+            ONE = 11;
+            TWO = 12;
+        }
+    }`).root.resolveAll();
+    
     test.same(root7.lookup("Message").lookupEnum("SomeEnumInMessage")._features.amazing_feature, 'G')
+    
+    var root8 = protobuf.parse(`edition = "2023";
+    option features.amazing_feature = A;
+    message Message {
+        message Nested {
+            option features.amazing_feature = H;
+            int64 count = 9;
+        }
+    }`).root.resolveAll();
+    
     test.same(root8.lookup("Message").lookup("Nested")._features.amazing_feature, 'H')
+    
+    var root9 = protobuf.parse(`edition = "2023";
+    option features.amazing_feature = A;
+    message Message {
+        extend Message {
+            int32 bar = 10 [features.amazing_feature = I];
+        }
+    }`).root.resolveAll();
+    
     test.same(root9.lookup("Message").lookup(".Message.bar")._features.amazing_feature, 'I')
+
+    var root10 = protobuf.parse(`edition = "2023";
+    option features.amazing_feature = A;
+    message Message {
+        oneof SomeOneOf {
+            option features.amazing_feature = J;
+            int32 a = 13;
+            string b = 14;
+        }
+    }`).root.resolveAll();
     test.same(root10.lookup("Message").lookup("SomeOneOf")._features.amazing_feature, 'J')
+
+    var root11 = protobuf.parse(`edition = "2023";
+    option features.amazing_feature = A;
+    enum SomeEnum {
+        option features.amazing_feature = C;
+        ONE = 1 [features.amazing_feature = K];
+        TWO = 2;
+    }`).root.resolveAll();
     test.same(root11.lookupEnum("SomeEnum")._valuesFeatures["ONE"].amazing_feature, 'K')
+
+    var root12 = protobuf.parse(`edition = "2023";
+    option features.amazing_feature = A;
+    service MyService {
+        option features.amazing_feature = E;
+        message MyRequest {};
+        message MyResponse {};
+        rpc MyMethod (MyRequest) returns (MyResponse) {
+            option features.amazing_feature = L;
+        };
+    }`).root.resolveAll();
+    
     test.same(root12.lookupService("MyService").lookup("MyMethod")._features.amazing_feature, 'L')
 
     test.end();    

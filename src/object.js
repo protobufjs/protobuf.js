@@ -7,6 +7,7 @@ var util = require("./util");
 
 var Root; // cyclic
 
+// TODO: Replace with embedded proto.
 var editions2023Defaults = {enum_type: "OPEN", field_presence: "EXPLICIT", json_format: "ALLOW", message_encoding: "LENGTH_PREFIXED", repeated_field_encoding: "PACKED", utf8_validation: "VERIFY"};
 var proto2Defaults = {enum_type: "CLOSED", field_presence: "EXPLICIT", json_format: "LEGACY_BEST_EFFORT", message_encoding: "LENGTH_PREFIXED", repeated_field_encoding: "EXPANDED", utf8_validation: "NONE"};
 var proto3Defaults = {enum_type: "OPEN", field_presence: "IMPLICIT", json_format: "ALLOW", message_encoding: "LENGTH_PREFIXED", repeated_field_encoding: "PACKED", utf8_validation: "VERIFY"};
@@ -51,7 +52,7 @@ function ReflectionObject(name, options) {
     this._features = {};
 
     /**
-     * Resolved Features.
+     * Unresolved Features.
      */
     this._proto_features = null;
 
@@ -160,10 +161,10 @@ ReflectionObject.prototype.onRemove = function onRemove(parent) {
 ReflectionObject.prototype.resolve = function resolve() {
     if (this.resolved)
         return this;
-    if (this.root instanceof Root || this.parent) {
+    if (this instanceof Root || this.parent && this.parent.resolved)
         this._resolveFeatures();
+    if (this.root instanceof Root)
         this.resolved = true;
-    }
     return this;
 };
 
@@ -174,28 +175,24 @@ ReflectionObject.prototype.resolve = function resolve() {
 ReflectionObject.prototype._resolveFeatures = function _resolveFeatures() {
     var defaults = {};
 
-    if (this.root.getOption("syntax") === "proto2") {
-        defaults = Object.assign({}, proto2Defaults);
-    } else if (this.root.getOption("syntax") === "proto3") {
-        defaults = Object.assign({}, proto3Defaults);
-    } else if (this.root.getOption("edition") === "2023") {
-        defaults = Object.assign({}, editions2023Defaults);
+    if (this instanceof Root) {
+        if (this.root.getOption("syntax") === "proto2") {
+            defaults = Object.assign({}, proto2Defaults);
+        } else if (this.root.getOption("syntax") === "proto3") {
+            defaults = Object.assign({}, proto3Defaults);
+        } else if (this.root.getOption("edition") === "2023") {
+            defaults = Object.assign({}, editions2023Defaults);
+        }
     }
 
-    if (this.parent) {
-        // This is an annoying workaround since we can't use the spread operator
-        // (Breaks the bundler and eslint)
-        // If we don't create a shallow copy, we end up also altering the parent's
-        // features
-        var parentFeaturesMerged = Object.assign(defaults, this.parent._proto_features);
-        this._features = Object.assign(parentFeaturesMerged, this._proto_features || {});
-        this._proto_features = this._features;
-        this.parent._resolveFeatures();
-    } else {
+    if (this instanceof Root) {
         this._features = Object.assign(defaults, this._proto_features || {});
+    } else if (this.parent) {
+        var parentFeaturesCopy = Object.assign({}, this.parent._features);
+        this._features = Object.assign(parentFeaturesCopy, this._proto_features || {});
+    } else {
+        this._features = Object.assign({}, this._proto_features);
     }
-    this._proto_features = this._features;
-
 };
 
 /**
