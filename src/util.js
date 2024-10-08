@@ -174,7 +174,7 @@ util.decorateEnum = function decorateEnum(object) {
  * @param {boolean} overWrite whether or not to concatenate the values into an array or overwrite; defaults to false.
  * @returns {Object.<string,*>} Destination object
  */
-util.setProperty = function setProperty(dst, path, value, overWrite = false) {
+util.setProperty = function setProperty(dst, path, value) {
     function setProp(dst, path, value) {
         var part = path.shift();
         if (part === "__proto__" || part === "prototype") {
@@ -184,7 +184,7 @@ util.setProperty = function setProperty(dst, path, value, overWrite = false) {
             dst[part] = setProp(dst[part] || {}, path, value);
         } else {
             var prevValue = dst[part];
-            if (prevValue && !overWrite)
+            if (prevValue)
                 value = [].concat(prevValue).concat(value);
             dst[part] = value;
         }

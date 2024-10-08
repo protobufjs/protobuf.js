@@ -243,11 +243,11 @@ ReflectionObject.prototype.setParsedOption = function setParsedOption(name, valu
             // If we found an existing option - just merge the property value
             // (If it's a feature, will just write over)
             var newValue = opt[name];
-            util.setProperty(newValue, propName, value, isFeature);
+            util.setProperty(newValue, propName, value);
         } else {
             // otherwise, create a new option, set its property and add it to the list
             opt = {};
-            opt[name] = util.setProperty({}, propName, value, isFeature);
+            opt[name] = util.setProperty({}, propName, value);
             parsedOptions.push(opt);
         }
     } else {
