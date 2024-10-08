@@ -66,7 +66,7 @@ function Enum(name, values, options, comment, comments, valuesOptions) {
      * Unresolved values features, if any
      * @type {Object<string, Object<string, *>>|undefined}
      */
-    this._proto_valuesFeatures = {};
+    this._valuesProtoFeatures = {};
 
     /**
      * Reserved ranges, if any.
@@ -93,13 +93,13 @@ Enum.prototype.resolve = function resolve() {
     if (this.resolved)
         return this;
 
-    for (var key of Object.keys(this._proto_valuesFeatures)) {
+    for (var key of Object.keys(this._valuesProtoFeatures)) {
 
         if (this.parent) {
             var parentFeaturesCopy = Object.assign({}, this.parent._features);
-            this._valuesFeatures[key] = Object.assign(parentFeaturesCopy, this._proto_valuesFeatures[key] || {});
+            this._valuesFeatures[key] = Object.assign(parentFeaturesCopy, this._valuesProtoFeatures[key] || {});
         } else {
-            this._valuesFeatures[key] = Object.assign({}, this._proto_valuesFeatures[key]);
+            this._valuesFeatures[key] = Object.assign({}, this._valuesProtoFeatures[key]);
         }
     }
     return ReflectionObject.prototype.resolve.call(this);
@@ -186,16 +186,16 @@ Enum.prototype.add = function add(name, id, comment, options) {
         for (var key of Object.keys(this.valuesOptions)) {
             var features = Array.isArray(this.valuesOptions[key]) ? this.valuesOptions[key].find(x => {return Object.prototype.hasOwnProperty.call(x, "features");}) : this.valuesOptions[key] === "features";
             if (features) {
-                this._proto_valuesFeatures[key] = features.features;
+                this._valuesProtoFeatures[key] = features.features;
             } else {
-                this._proto_valuesFeatures[key] = {};
+                this._valuesProtoFeatures[key] = {};
             }
         }
     }
 
-    for (var name of Object.keys(this.values)) {
-        if (!this._proto_valuesFeatures[name]) {
-            this._proto_valuesFeatures[name] = {};
+    for (var enumValue of Object.keys(this.values)) {
+        if (!this._valuesProtoFeatures[enumValue]) {
+            this._valuesProtoFeatures[enumValue] = {};
         }
     }
 

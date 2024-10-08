@@ -92,28 +92,15 @@ tape.test("feature resolution defaults", function(test) {
     test.end();
 })
 
-tape.test("feature resolution inheritance", function(test) {
+tape.test("feature resolution inheritance file to message", function(test) {
     var rootEditionsOverriden = protobuf.parse(`edition = "2023";
     option features.json_format = LEGACY_BEST_EFFORT;
-
     option features.(abc).d_e = deeply_nested_false;
 
     message Message {
         string string_val = 1;
         string string_repeated = 2 [features.enum_type = CLOSED];
-
-        message Nested {
-            option features.(abc).d_e = deeply_nested_true;
-            option features.field_presence = IMPLICIT;
-            int64 count = 9;
-        }
-        
-        enum SomeEnum {
-            ONE = 1 [features.repeated_field_encoding = EXPANDED];
-            TWO = 2;
-        }
-    }`).root
-    rootEditionsOverriden.resolveAll();
+    }`).root.resolveAll();
 
     // Should flip enum_type from default setting, inherit from Message,
     // and keep everything else
@@ -125,9 +112,27 @@ tape.test("feature resolution inheritance", function(test) {
         repeated_field_encoding: 'PACKED',
         utf8_validation: 'VERIFY',
         '(abc)': { d_e: 'deeply_nested_false' }
-      })
+    })
+    
+    test.end();
+});
 
-    // Should inherit from default, and Message, only change field_presence and the custom extension
+tape.test("feature resolution inheritance file to nested message", function(test) {
+    var rootEditionsOverriden = protobuf.parse(`edition = "2023";
+    option features.json_format = LEGACY_BEST_EFFORT;
+    option features.(abc).d_e = deeply_nested_false;
+    
+    message Message {
+        string string_val = 1;
+        string string_repeated = 2 [features.enum_type = CLOSED];
+
+    message Nested {
+        option features.(abc).d_e = deeply_nested_true;
+        option features.field_presence = IMPLICIT;
+        int64 count = 9;
+    }
+    }`).root.resolveAll();
+
     test.same(rootEditionsOverriden.lookup("Message").lookup("Nested")._features, {
         enum_type: 'OPEN',
         field_presence: 'IMPLICIT',
@@ -136,17 +141,21 @@ tape.test("feature resolution inheritance", function(test) {
         repeated_field_encoding: 'PACKED',
         utf8_validation: 'VERIFY',
         '(abc)': { d_e: 'deeply_nested_true' } 
-      })
+    });
+    test.end();
+});
 
-    test.same(rootEditionsOverriden.lookup("Message").lookup("Nested")._features, {
-        enum_type: 'OPEN',
-        field_presence: 'IMPLICIT',
-        json_format: 'LEGACY_BEST_EFFORT',
-        message_encoding: 'LENGTH_PREFIXED',
-        repeated_field_encoding: 'PACKED',
-        utf8_validation: 'VERIFY',
-        '(abc)': { d_e: 'deeply_nested_true' } 
-      })
+tape.test("feature resolution inheritance file to enums and enum values", function(test) {
+    var rootEditionsOverriden = protobuf.parse(`edition = "2023";
+    option features.json_format = LEGACY_BEST_EFFORT;
+
+    option features.(abc).d_e = deeply_nested_false;
+    message Message {
+        enum SomeEnum {
+            ONE = 1 [features.repeated_field_encoding = EXPANDED];
+            TWO = 2;
+        }
+    }`).root.resolveAll();
 
     test.same(rootEditionsOverriden.lookupEnum("SomeEnum")._valuesFeatures["ONE"], {
         enum_type: 'OPEN',
@@ -166,10 +175,126 @@ tape.test("feature resolution inheritance", function(test) {
         repeated_field_encoding: 'PACKED',
         utf8_validation: 'VERIFY',
         '(abc)': { d_e: 'deeply_nested_false' } 
+    });
+
+    test.end();
+});
+
+tape.test("feature resolution inheritance file to oneofs", function(test) {
+
+    var rootEditionsOverriden = protobuf.parse(`
+    edition = "2023";
+    option features.json_format = LEGACY_BEST_EFFORT;
+    option features.(abc).d_e = deeply_nested_false;
+    message Message {
+        oneof SomeOneOf {
+            option features.json_format = ALLOW;
+            int32 a = 13;
+            string b = 14;
+        }
+    }`).root.resolveAll();
+
+    // console.log(rootEditionsOverriden.lookup("SomeOneOf")._features)
+    test.same(rootEditionsOverriden.lookup("SomeOneOf")._features, {
+        enum_type: 'OPEN',
+        field_presence: 'EXPLICIT',
+        json_format: 'ALLOW',
+        message_encoding: 'LENGTH_PREFIXED',
+        repeated_field_encoding: 'PACKED',
+        utf8_validation: 'VERIFY',
+        '(abc)': { d_e: 'deeply_nested_false' } 
     })
 
     test.end();
-})
+});
+
+tape.test("feature resolution inheritance file to extensions", function(test) {
+
+    var rootEditionsOverriden = protobuf.parse(`
+    edition = "2023";
+    option features.json_format = LEGACY_BEST_EFFORT;
+    option features.(abc).d_e = deeply_nested_false;
+    message Message {
+        extensions 10 to 100;
+        extend Message {
+            int32 bar = 10 [features.utf8_validation = NONE];
+        }
+    }`).root.resolveAll();
+
+    test.same(rootEditionsOverriden.lookup("Message").lookup(".Message.bar")._features, {
+        enum_type: 'OPEN',
+        field_presence: 'EXPLICIT',
+        json_format: 'LEGACY_BEST_EFFORT',
+        message_encoding: 'LENGTH_PREFIXED',
+        repeated_field_encoding: 'PACKED',
+        utf8_validation: 'NONE',
+        '(abc)': { d_e: 'deeply_nested_false' } 
+    })
+
+    test.end();
+});
+
+tape.test("feature resolution inheritance file to top-level enum", function(test) {
+
+    var rootEditionsOverriden = protobuf.parse(`edition = "2023";
+    option features.json_format = LEGACY_BEST_EFFORT;
+    option features.(abc).d_e = deeply_nested_false;
+    enum SomeEnum {
+        option features.utf8_validation = NONE;
+        ONE = 1;
+        TWO = 2;
+    }`).root.resolveAll();
+
+    console.log(rootEditionsOverriden.lookup("SomeEnum")._features)
+    test.same(rootEditionsOverriden.lookup("SomeEnum")._features, {
+        enum_type: 'OPEN',
+        field_presence: 'EXPLICIT',
+        json_format: 'LEGACY_BEST_EFFORT',
+        message_encoding: 'LENGTH_PREFIXED',
+        repeated_field_encoding: 'PACKED',
+        utf8_validation: 'NONE',
+        '(abc)': { d_e: 'deeply_nested_false' } 
+    })
+
+    test.end();
+});
+
+tape.test("feature resolution inheritance file to service and method", function(test) {
+    var rootEditionsOverriden = protobuf.parse(`edition = "2023";
+    option features.json_format = LEGACY_BEST_EFFORT;
+    option features.(abc).d_e = deeply_nested_false;
+    service MyService {
+        option features.json_format = ALLOW;
+        message MyRequest {};
+        message MyResponse {};
+        rpc MyMethod (MyRequest) returns (MyResponse) {
+            option features.utf8_validation = NONE;
+        };
+    }`).root.resolveAll();
+
+    test.same(rootEditionsOverriden.lookup("MyService")._features, {
+        enum_type: 'OPEN',
+        field_presence: 'EXPLICIT',
+        json_format: 'ALLOW',
+        message_encoding: 'LENGTH_PREFIXED',
+        repeated_field_encoding: 'PACKED',
+        utf8_validation: 'VERIFY',
+        '(abc)': { d_e: 'deeply_nested_false' } 
+    })
+
+    test.same(rootEditionsOverriden.lookup("MyService").lookup("MyMethod")._features, {
+        enum_type: 'OPEN',
+        field_presence: 'EXPLICIT',
+        json_format: 'ALLOW',
+        message_encoding: 'LENGTH_PREFIXED',
+        repeated_field_encoding: 'PACKED',
+        utf8_validation: 'NONE',
+        '(abc)': { d_e: 'deeply_nested_false' } 
+    })
+
+    test.end();
+});
+
 // Tests precedence for different levels of feature resolution
 tape.test("feature resolution editions precedence", function(test) {
     var root1 = protobuf.parse(`edition = "2023";

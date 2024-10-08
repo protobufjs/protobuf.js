@@ -7,6 +7,7 @@ var util = require("./util");
 
 var Root; // cyclic
 
+/* eslint-disable no-warning-comments */
 // TODO: Replace with embedded proto.
 var editions2023Defaults = {enum_type: "OPEN", field_presence: "EXPLICIT", json_format: "ALLOW", message_encoding: "LENGTH_PREFIXED", repeated_field_encoding: "PACKED", utf8_validation: "VERIFY"};
 var proto2Defaults = {enum_type: "CLOSED", field_presence: "EXPLICIT", json_format: "LEGACY_BEST_EFFORT", message_encoding: "LENGTH_PREFIXED", repeated_field_encoding: "EXPANDED", utf8_validation: "NONE"};
@@ -54,7 +55,7 @@ function ReflectionObject(name, options) {
     /**
      * Unresolved Features.
      */
-    this._proto_features = null;
+    this._protoFeatures = null;
 
     /**
      * Parent namespace.
@@ -176,22 +177,22 @@ ReflectionObject.prototype._resolveFeatures = function _resolveFeatures() {
     var defaults = {};
 
     if (this instanceof Root) {
-        if (this.root.getOption("syntax") === "proto2") {
-            defaults = Object.assign({}, proto2Defaults);
-        } else if (this.root.getOption("syntax") === "proto3") {
+        if (this.root.getOption("syntax") === "proto3") {
             defaults = Object.assign({}, proto3Defaults);
         } else if (this.root.getOption("edition") === "2023") {
             defaults = Object.assign({}, editions2023Defaults);
+        } else {
+            defaults = Object.assign({}, proto2Defaults);
         }
     }
 
     if (this instanceof Root) {
-        this._features = Object.assign(defaults, this._proto_features || {});
+        this._features = Object.assign(defaults, this._protoFeatures || {});
     } else if (this.parent) {
         var parentFeaturesCopy = Object.assign({}, this.parent._features);
-        this._features = Object.assign(parentFeaturesCopy, this._proto_features || {});
+        this._features = Object.assign(parentFeaturesCopy, this._protoFeatures || {});
     } else {
-        this._features = Object.assign({}, this._proto_features);
+        this._features = Object.assign({}, this._protoFeatures);
     }
 };
 
@@ -259,7 +260,7 @@ ReflectionObject.prototype.setParsedOption = function setParsedOption(name, valu
 
     if (isFeature) {
         var features = parsedOptions.find(x => {return Object.prototype.hasOwnProperty.call(x, "features");});
-        this._proto_features = features.features || {};
+        this._protoFeatures = features.features || {};
     }
 
     return this;

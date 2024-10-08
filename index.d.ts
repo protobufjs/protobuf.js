@@ -179,11 +179,20 @@ export class Enum extends ReflectionObject {
     /** Values options, if any */
     public valuesOptions?: { [k: string]: { [k: string]: any } };
 
-    /** Values features, if any */
+    /** Resolved values features, if any */
     public _valuesFeatures?: { [k: string]: { [k: string]: any } };
+
+    /** Unresolved values features, if any */
+    public _valuesProtoFeatures?: { [k: string]: { [k: string]: any } };
 
     /** Reserved ranges, if any. */
     public reserved: (number[]|string)[];
+
+    /**
+     * Resolves value features
+     * @returns `this`
+     */
+    public resolve(): Enum;
 
     /**
      * Constructs an enum from an enum descriptor.
@@ -883,6 +892,9 @@ export abstract class ReflectionObject {
     /** Resolved Features. */
     public _features: any;
 
+    /** Unresolved Features. */
+    public _protoFeatures: any;
+
     /** Parent namespace. */
     public parent: (Namespace|null);
 
@@ -924,6 +936,9 @@ export abstract class ReflectionObject {
      * @returns `this`
      */
     public resolve(): ReflectionObject;
+
+    /** Resolves child features from parent features */
+    public _resolveFeatures(): void;
 
     /**
      * Gets an option value.
@@ -2200,9 +2215,10 @@ export namespace util {
      * @param dst Destination object
      * @param path dot '.' delimited path of the property to set
      * @param value the value to set
+     * @param overWrite whether or not to concatenate the values into an array or overwrite; defaults to false.
      * @returns Destination object
      */
-    function setProperty(dst: { [k: string]: any }, path: string, value: object): { [k: string]: any };
+    function setProperty(dst: { [k: string]: any }, path: string, value: object, overWrite: boolean): { [k: string]: any };
 
     /** Decorator root (TypeScript). */
     let decorateRoot: Root;
