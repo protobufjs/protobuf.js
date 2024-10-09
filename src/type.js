@@ -299,13 +299,14 @@ Type.prototype.toJSON = function toJSON(toJSONOptions) {
  * @override
  */
 Type.prototype.resolveAll = function resolveAll() {
+    Namespace.prototype.resolveAll.call(this);
     var fields = this.fieldsArray, i = 0;
     while (i < fields.length)
         fields[i++].resolve();
     var oneofs = this.oneofsArray; i = 0;
     while (i < oneofs.length)
         oneofs[i++].resolve();
-    return Namespace.prototype.resolveAll.call(this);
+    return this;
 };
 
 /**

@@ -13,6 +13,7 @@ var tokenize  = require("./tokenize"),
     Enum      = require("./enum"),
     Service   = require("./service"),
     Method    = require("./method"),
+    ReflectionObject = require("./object"),
     types     = require("./types"),
     util      = require("./util");
 
@@ -24,8 +25,7 @@ var base10Re    = /^[1-9][0-9]*$/,
     base8NegRe  = /^-?0[0-7]+$/,
     numberRe    = /^(?![eE])[0-9]*(?:\.[0-9]*)?(?:[eE][+-]?[0-9]+)?$/,
     nameRe      = /^[a-zA-Z_][a-zA-Z_0-9]*$/,
-    typeRefRe   = /^(?:\.?[a-zA-Z_][a-zA-Z_0-9]*)(?:\.[a-zA-Z_][a-zA-Z_0-9]*)*$/,
-    fqTypeRefRe = /^(?:\.[a-zA-Z_][a-zA-Z_0-9]*)+$/;
+    typeRefRe   = /^(?:\.?[a-zA-Z_][a-zA-Z_0-9]*)(?:\.[a-zA-Z_][a-zA-Z_0-9]*)*$/;
 
 /**
  * Result object returned from {@link parse}.
@@ -82,6 +82,7 @@ function parse(source, root, options) {
         imports,
         weakImports,
         syntax,
+        edition = false,
         isProto3 = false;
 
     var ptr = root;
@@ -126,7 +127,6 @@ function parse(source, root, options) {
         try {
             return parseNumber(token, /* insideTryCatch */ true);
         } catch (e) {
-
             /* istanbul ignore else */
             if (acceptTypeRef && typeRefRe.test(token))
                 return token;
@@ -141,8 +141,17 @@ function parse(source, root, options) {
         do {
             if (acceptStrings && ((token = peek()) === "\"" || token === "'"))
                 target.push(readString());
-            else
-                target.push([ start = parseId(next()), skip("to", true) ? parseId(next()) : start ]);
+            else {
+                try {
+                    target.push([ start = parseId(next()), skip("to", true) ? parseId(next()) : start ]);
+                } catch (err) {
+                    if (typeRefRe.test(token) && edition) {
+                        target.push(token);
+                    } else {
+                        throw err;
+                    }
+                }
+            }
         } while (skip(",", true));
         var dummy = {options: undefined};
         dummy.setOption = function(name, value) {
@@ -270,6 +279,21 @@ function parse(source, root, options) {
         skip(";");
     }
 
+    function parseEdition() {
+        skip("=");
+        edition = readString();
+        const supportedEditions = ["2023"];
+
+        /* istanbul ignore if */
+        if (!supportedEditions.includes(edition))
+            throw illegal(edition, "edition");
+
+        root.setOption("edition", edition);
+
+        skip(";");
+    }
+
+
     function parseCommon(parent, token) {
         switch (token) {
 
@@ -337,6 +361,9 @@ function parse(source, root, options) {
                     break;
 
                 case "required":
+                    if (edition)
+                        throw illegal(token);
+                /* eslint-disable no-fallthrough */
                 case "repeated":
                     parseField(type, token);
                     break;
@@ -345,6 +372,8 @@ function parse(source, root, options) {
                     /* istanbul ignore if */
                     if (isProto3) {
                         parseField(type, "proto3_optional");
+                    } else if (edition) {
+                        throw illegal(token);
                     } else {
                         parseField(type, "optional");
                     }
@@ -364,8 +393,9 @@ function parse(source, root, options) {
 
                 default:
                     /* istanbul ignore if */
-                    if (!isProto3 || !typeRefRe.test(token))
+                    if (!isProto3 && !edition || !typeRefRe.test(token)) {
                         throw illegal(token);
+                    }
 
                     push(token);
                     parseField(type, "optional");
@@ -399,6 +429,7 @@ function parse(source, root, options) {
         var name = next();
 
         /* istanbul ignore if */
+
         if (!nameRe.test(name))
             throw illegal(name, "name");
 
@@ -406,6 +437,7 @@ function parse(source, root, options) {
         skip("=");
 
         var field = new Field(name, parseId(next()), type, rule, extend);
+
         ifBlock(field, function parseField_block(token) {
 
             /* istanbul ignore else */
@@ -459,7 +491,6 @@ function parse(source, root, options) {
                     parseOption(type, token);
                     skip(";");
                     break;
-
                 case "required":
                 case "repeated":
                     parseField(type, token);
@@ -588,7 +619,16 @@ function parse(source, root, options) {
         dummy.setOption = function(name, value) {
             if (this.options === undefined)
                 this.options = {};
+
             this.options[name] = value;
+        };
+        dummy.setParsedOption = function(name, value, propName) {
+            // In order to not change existing behavior, only calling
+            // this for features
+            if (/^features$/.test(name)) {
+                return ReflectionObject.prototype.setParsedOption.call(dummy, name, value, propName);
+            }
+            return undefined;
         };
         ifBlock(dummy, function parseEnumValue_block(token) {
 
@@ -602,34 +642,42 @@ function parse(source, root, options) {
         }, function parseEnumValue_line() {
             parseInlineOptions(dummy); // skip
         });
-        parent.add(token, value, dummy.comment, dummy.options);
+        parent.add(token, value, dummy.comment, dummy.parsedOptions || dummy.options);
     }
 
     function parseOption(parent, token) {
-        var isCustom = skip("(", true);
-
-        /* istanbul ignore if */
-        if (!typeRefRe.test(token = next()))
-            throw illegal(token, "name");
-
-        var name = token;
-        var option = name;
-        var propName;
-
-        if (isCustom) {
-            skip(")");
-            name = "(" + name + ")";
-            option = name;
-            token = peek();
-            if (fqTypeRefRe.test(token)) {
-                propName = token.slice(1); //remove '.' before property name
-                name += token;
-                next();
+            var option;
+            var propName;
+            var isOption = true;
+            if (token === "option") {
+                token = next();
             }
-        }
-        skip("=");
-        var optionValue = parseOptionValue(parent, name);
-        setParsedOption(parent, option, optionValue, propName);
+
+            while (token !== "=") {
+                if (token === "(") {
+                    var parensValue = next();
+                    skip(")");
+                    token = "(" + parensValue + ")";
+                }
+                if (isOption) {
+                    isOption = false;
+                    if (token.includes(".") && !token.includes("(")) {
+                        var tokens = token.split(".");
+                        option = tokens[0];
+                        token = tokens[1];
+                        continue;
+                    }
+                    option = token;
+                } else {
+                    propName = propName ? propName += token : token;
+                }
+                token = next();
+            }
+            var name = propName ? option.concat(propName) : option;
+            var optionValue = parseOptionValue(parent, name);
+            propName = propName && propName[0] === "." ? propName.slice(1) : propName;
+            option = option && option[option.length - 1] === "." ? option.slice(0, -1) : option;
+            setParsedOption(parent, option, optionValue, propName);
     }
 
     function parseOptionValue(parent, name) {
@@ -651,12 +699,12 @@ function parse(source, root, options) {
 
                 skip(":", true);
 
-                if (peek() === "{")
-                    value = parseOptionValue(parent, name + "." + token);
-                else if (peek() === "[") {
+                if (peek() === "{") {
                     // option (my_option) = {
                     //     repeated_value: [ "foo", "bar" ]
                     // };
+                    value = parseOptionValue(parent, name + "." + token);
+                } else if (peek() === "[") {
                     value = [];
                     var lastValue;
                     if (skip("[", true)) {
@@ -723,8 +771,9 @@ function parse(source, root, options) {
 
         var service = new Service(token);
         ifBlock(service, function parseService_block(token) {
-            if (parseCommon(service, token))
+            if (parseCommon(service, token)) {
                 return;
+            }
 
             /* istanbul ignore else */
             if (token === "rpc")
@@ -811,7 +860,7 @@ function parse(source, root, options) {
 
                 default:
                     /* istanbul ignore if */
-                    if (!isProto3 || !typeRefRe.test(token))
+                    if (!isProto3 && !edition || !typeRefRe.test(token))
                         throw illegal(token);
                     push(token);
                     parseField(parent, "optional", reference);
@@ -851,10 +900,16 @@ function parse(source, root, options) {
                 parseSyntax();
                 break;
 
-            case "option":
+            case "edition":
+                /* istanbul ignore if */
+                if (!head)
+                    throw illegal(token);
+                parseEdition();
+                break;
 
+            case "option":
                 parseOption(ptr, token);
-                skip(";");
+                skip(";", true);
                 break;
 
             default:

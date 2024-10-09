@@ -106,10 +106,11 @@ Service.prototype.get = function get(name) {
  * @override
  */
 Service.prototype.resolveAll = function resolveAll() {
+    Namespace.prototype.resolve.call(this);
     var methods = this.methodsArray;
     for (var i = 0; i < methods.length; ++i)
         methods[i].resolve();
-    return Namespace.prototype.resolve.call(this);
+    return this;
 };
 
 /**

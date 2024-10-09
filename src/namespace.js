@@ -302,12 +302,13 @@ Namespace.prototype.define = function define(path, json) {
  */
 Namespace.prototype.resolveAll = function resolveAll() {
     var nested = this.nestedArray, i = 0;
+    this.resolve();
     while (i < nested.length)
         if (nested[i] instanceof Namespace)
             nested[i++].resolveAll();
         else
             nested[i++].resolve();
-    return this.resolve();
+    return this;
 };
 
 /**
