@@ -212,7 +212,6 @@ tape.test("feature resolution inheritance message to oneofs", function(test) {
     message Message {
         option features.json_format = LEGACY_BEST_EFFORT;
         oneof SomeOneOf {
-            option features.json_format = ALLOW;
             int32 a = 13;
             string b = 14;
         }
@@ -221,7 +220,7 @@ tape.test("feature resolution inheritance message to oneofs", function(test) {
     test.same(rootEditionsOverriden.lookup("SomeOneOf")._features, {
         enum_type: 'OPEN',
         field_presence: 'EXPLICIT',
-        json_format: 'ALLOW',
+        json_format: 'LEGACY_BEST_EFFORT',
         message_encoding: 'LENGTH_PREFIXED',
         repeated_field_encoding: 'PACKED',
         utf8_validation: 'VERIFY',
@@ -289,10 +288,12 @@ tape.test("feature resolution inheritance message to extensions", function(test)
     option features.json_format = LEGACY_BEST_EFFORT;
     option features.(abc).d_e = deeply_nested_false;
 
-    extend Message {
-        int32 bar = 10 [features.utf8_validation = NONE];
-    }
-    message Message {}`).root.resolveAll();
+    message Message {
+        option features.utf8_validation = NONE;
+        extend Message {
+            int32 bar = 10 [features.utf8_validation = VERIFY];
+        }
+    }`).root.resolveAll();
 
     test.same(rootEditionsOverriden.lookup(".bar")._features, {
         enum_type: 'OPEN',
@@ -300,7 +301,7 @@ tape.test("feature resolution inheritance message to extensions", function(test)
         json_format: 'LEGACY_BEST_EFFORT',
         message_encoding: 'LENGTH_PREFIXED',
         repeated_field_encoding: 'PACKED',
-        utf8_validation: 'NONE',
+        utf8_validation: 'VERIFY',
         '(abc)': { d_e: 'deeply_nested_false' } 
     })
 
@@ -333,7 +334,7 @@ tape.test("feature resolution inheritance message to enum", function(test) {
     test.end();
 });
 
-tape.test("feature resolution inheritance message to enum", function(test) {
+tape.test("feature resolution inheritance file to enum", function(test) {
 
     var rootEditionsOverriden = protobuf.parse(`edition = "2023";
     option features.json_format = LEGACY_BEST_EFFORT;
