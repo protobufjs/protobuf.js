@@ -3,6 +3,7 @@ module.exports = ReflectionObject;
 
 ReflectionObject.className = "ReflectionObject";
 
+const OneOf = require("./oneof");
 var util = require("./util");
 
 var Root; // cyclic
@@ -162,10 +163,10 @@ ReflectionObject.prototype.onRemove = function onRemove(parent) {
 ReflectionObject.prototype.resolve = function resolve() {
     if (this.resolved)
         return this;
-    if (this instanceof Root || this.parent && this.parent.resolved)
+    if (this instanceof Root || this.parent && this.parent.resolved) {
         this._resolveFeatures();
-    if (this.root instanceof Root)
         this.resolved = true;
+    }
     return this;
 };
 
@@ -188,6 +189,11 @@ ReflectionObject.prototype._resolveFeatures = function _resolveFeatures() {
 
     if (this instanceof Root) {
         this._features = Object.assign(defaults, this._protoFeatures || {});
+    // fields in Oneofs aren't actually children of them, so we have to
+    // special-case it
+    } else if (this.partOf instanceof OneOf) {
+        var lexicalParentFeaturesCopy = Object.assign({}, this.partOf._features);
+        this._features = Object.assign(lexicalParentFeaturesCopy, this._protoFeatures || {});
     } else if (this.parent) {
         var parentFeaturesCopy = Object.assign({}, this.parent._features);
         this._features = Object.assign(parentFeaturesCopy, this._protoFeatures || {});

@@ -1,0 +1,62 @@
+edition = "2023";
+
+option features.amazing_feature = A;
+option (mo_single_msg).nested.value = "x";
+service MyService {
+    option features.amazing_feature = E;
+    message MyRequest {};
+    message MyResponse {};
+    rpc MyMethod (MyRequest) returns (MyResponse) {
+        option features.amazing_feature = L;
+    };
+}
+
+message Message {
+    option features.amazing_feature = B;
+
+    string string_val = 1;
+    string string_repeated = 2 [features.amazing_feature = F];
+
+    uint64 uint64_val = 3;
+    uint64 uint64_repeated = 4;
+
+    bytes bytes_val = 5;
+    bytes bytes_repeated = 6;
+
+    SomeEnum enum_val = 7;
+    SomeEnum enum_repeated = 8;
+
+    extensions 10 to 100;
+    extend Message {
+        int32 bar = 10 [features.amazing_feature = I];
+    }
+
+    message Nested {
+        option features.amazing_feature = H;
+        int64 count = 9;
+    }
+
+    enum SomeEnumInMessage {
+        option features.amazing_feature = G;
+        ONE = 11;
+        TWO = 12;
+    }
+    
+    oneof SomeOneOf {
+        option features.amazing_feature = J;
+        int32 a = 13;
+        string b = 14;
+    }
+
+    map<string,int64> int64_map = 15;
+}
+
+extend Message {
+    int32 bar = 16 [features.amazing_feature = D];
+}
+
+enum SomeEnum {
+    option features.amazing_feature = C;
+    ONE = 1 [features.amazing_feature = K];
+    TWO = 2;
+}

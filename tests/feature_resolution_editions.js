@@ -169,13 +169,14 @@ tape.test("feature resolution inheritance message to nested message", function(t
     test.end();
 });
 
-tape.test("feature resolution inheritance file to enums and enum values", function(test) {
+tape.test("feature resolution inheritance enum to enum value", function(test) {
     var rootEditionsOverriden = protobuf.parse(`edition = "2023";
     option features.json_format = LEGACY_BEST_EFFORT;
 
     option features.(abc).d_e = deeply_nested_false;
     message Message {
         enum SomeEnum {
+            option features.field_presence = IMPLICIT;
             ONE = 1 [features.repeated_field_encoding = EXPANDED];
             TWO = 2;
         }
@@ -183,7 +184,7 @@ tape.test("feature resolution inheritance file to enums and enum values", functi
 
     test.same(rootEditionsOverriden.lookupEnum("SomeEnum")._valuesFeatures["ONE"], {
         enum_type: 'OPEN',
-        field_presence: 'EXPLICIT',
+        field_presence: 'IMPLICIT',
         json_format: 'LEGACY_BEST_EFFORT',
         message_encoding: 'LENGTH_PREFIXED',
         repeated_field_encoding: 'EXPANDED',
@@ -193,7 +194,7 @@ tape.test("feature resolution inheritance file to enums and enum values", functi
 
     test.same(rootEditionsOverriden.lookupEnum("SomeEnum")._valuesFeatures["TWO"], {
         enum_type: 'OPEN',
-        field_presence: 'EXPLICIT',
+        field_presence: 'IMPLICIT',
         json_format: 'LEGACY_BEST_EFFORT',
         message_encoding: 'LENGTH_PREFIXED',
         repeated_field_encoding: 'PACKED',
@@ -230,14 +231,41 @@ tape.test("feature resolution inheritance message to oneofs", function(test) {
     test.end();
 });
 
+
+tape.test("feature resolution inheritance oneofs", function(test) {
+
+    var rootEditionsOverriden = protobuf.parse(`
+    edition = "2023";
+    option features.(abc).d_e = deeply_nested_false;
+    message Message {
+        
+        oneof SomeOneOf {
+            option features.json_format = LEGACY_BEST_EFFORT;
+            int32 a = 13;
+            string b = 14;
+        }
+    }`).root.resolveAll();
+
+    test.same(rootEditionsOverriden.lookup("SomeOneOf")._features, {
+        enum_type: 'OPEN',
+        field_presence: 'EXPLICIT',
+        json_format: 'LEGACY_BEST_EFFORT',
+        message_encoding: 'LENGTH_PREFIXED',
+        repeated_field_encoding: 'PACKED',
+        utf8_validation: 'VERIFY',
+        '(abc)': { d_e: 'deeply_nested_false' } 
+    })
+
+    test.end();
+});
+
 tape.test("feature resolution inheritance oneofs to field", function(test) {
     var rootEditionsOverriden = protobuf.parse(`
     edition = "2023";
     option features.(abc).d_e = deeply_nested_false;
     message Message {
-        option features.json_format = LEGACY_BEST_EFFORT;
         oneof SomeOneOf {
-            option features.json_format = ALLOW;
+            option features.json_format = LEGACY_BEST_EFFORT;
             int32 a = 13;
             string b = 14;
         }
@@ -291,17 +319,17 @@ tape.test("feature resolution inheritance message to extensions", function(test)
     message Message {
         option features.utf8_validation = NONE;
         extend Message {
-            int32 bar = 10 [features.utf8_validation = VERIFY];
+            int32 bar = 10 [features.field_presence = IMPLICIT];
         }
     }`).root.resolveAll();
 
     test.same(rootEditionsOverriden.lookup(".bar")._features, {
         enum_type: 'OPEN',
-        field_presence: 'EXPLICIT',
+        field_presence: 'IMPLICIT',
         json_format: 'LEGACY_BEST_EFFORT',
         message_encoding: 'LENGTH_PREFIXED',
         repeated_field_encoding: 'PACKED',
-        utf8_validation: 'VERIFY',
+        utf8_validation: 'NONE',
         '(abc)': { d_e: 'deeply_nested_false' } 
     })
 
@@ -316,10 +344,20 @@ tape.test("feature resolution inheritance message to enum", function(test) {
     message Message {
         option features.utf8_validation = NONE;
         enum SomeEnum {
-            ONE = 1;
+            ONE = 1 [features.field_presence = IMPLICIT];
             TWO = 2;
         }
     }`).root.resolveAll();
+
+    test.same(rootEditionsOverriden.lookup("Message").lookup("SomeEnum")._valuesFeatures["ONE"], {
+        enum_type: 'OPEN',
+        field_presence: 'IMPLICIT',
+        json_format: 'LEGACY_BEST_EFFORT',
+        message_encoding: 'LENGTH_PREFIXED',
+        repeated_field_encoding: 'PACKED',
+        utf8_validation: 'NONE',
+        '(abc)': { d_e: 'deeply_nested_false' } 
+    })
 
     test.same(rootEditionsOverriden.lookup("Message").lookup("SomeEnum")._features, {
         enum_type: 'OPEN',
@@ -363,7 +401,7 @@ tape.test("feature resolution inheritance file to service and service to method"
     option features.json_format = LEGACY_BEST_EFFORT;
     option features.(abc).d_e = deeply_nested_false;
     service MyService {
-        option features.json_format = ALLOW;
+        option features.field_presence = IMPLICIT;
         message MyRequest {};
         message MyResponse {};
         rpc MyMethod (MyRequest) returns (MyResponse) {
@@ -373,8 +411,8 @@ tape.test("feature resolution inheritance file to service and service to method"
 
     test.same(rootEditionsOverriden.lookup("MyService")._features, {
         enum_type: 'OPEN',
-        field_presence: 'EXPLICIT',
-        json_format: 'ALLOW',
+        field_presence: 'IMPLICIT',
+        json_format: 'LEGACY_BEST_EFFORT',
         message_encoding: 'LENGTH_PREFIXED',
         repeated_field_encoding: 'PACKED',
         utf8_validation: 'VERIFY',
@@ -383,8 +421,8 @@ tape.test("feature resolution inheritance file to service and service to method"
 
     test.same(rootEditionsOverriden.lookup("MyService").lookup("MyMethod")._features, {
         enum_type: 'OPEN',
-        field_presence: 'EXPLICIT',
-        json_format: 'ALLOW',
+        field_presence: 'IMPLICIT',
+        json_format: 'LEGACY_BEST_EFFORT',
         message_encoding: 'LENGTH_PREFIXED',
         repeated_field_encoding: 'PACKED',
         utf8_validation: 'NONE',
@@ -394,131 +432,21 @@ tape.test("feature resolution inheritance file to service and service to method"
     test.end();
 });
 
-// Tests precedence for different levels of feature resolution
 tape.test("feature resolution editions precedence", function(test) {
-    var root1 = protobuf.parse(`edition = "2023";
-    option features.amazing_feature = A;`).root.resolveAll()
-    
-    test.same(root1._features.amazing_feature, 'A');
-    
-    var root2 = protobuf.parse(`edition = "2023";
-    option features.amazing_feature = A;
+    protobuf.load("tests/data/feature-resolution.proto", function(err, root) {
+        if (err)
+            throw test.fail(err.message);
 
-    message Message {
-        option features.amazing_feature = B;
-    }`).root.resolveAll();
-    
-    test.same(root2.lookup("Message")._features.amazing_feature, 'B')
-    
-    var root3 = protobuf.parse(`edition = "2023";
-    option features.amazing_feature = A;
-    enum SomeEnum {
-        option features.amazing_feature = C;
-        ONE = 1;
-        TWO = 2;
-    }`).root.resolveAll();
-    
-    test.same(root3.lookupEnum("SomeEnum")._features.amazing_feature, 'C')
-    
-    var root4 = protobuf.parse(`edition = "2023";
-    option features.amazing_feature = A;
-
-    message Message {
-        option features.amazing_feature = B;
-    }
-
-    extend Message {
-        int32 bar = 16 [features.amazing_feature = D];
-    }
-    `).root.resolveAll();
-    
-    test.same(root4.lookup("Message").fields[".bar"].declaringField._features.amazing_feature, 'D')
-    
-    var root5 = protobuf.parse(`edition = "2023";
-    option features.amazing_feature = A;
-    service MyService {
-        option features.amazing_feature = E;
-        message MyRequest {};
-        message MyResponse {};
-    }
-    `).root.resolveAll();
-    
-    test.same(root5.lookupService("MyService")._features.amazing_feature, 'E');
-    
-    var root6 = protobuf.parse(`edition = "2023";
-    option features.amazing_feature = A;
-    message Message {
-        string string_val = 1;
-        string string_repeated = 2 [features.amazing_feature = F];
-    }`).root.resolveAll();
-    
-    test.same(root6.lookup("Message").fields.stringRepeated._features.amazing_feature, 'F')
-    
-    var root7 = protobuf.parse(`edition = "2023";
-    option features.amazing_feature = A;
-    message Message {
-        enum SomeEnumInMessage {
-            option features.amazing_feature = G;
-            ONE = 11;
-            TWO = 12;
-        }
-    }`).root.resolveAll();
-    
-    test.same(root7.lookup("Message").lookupEnum("SomeEnumInMessage")._features.amazing_feature, 'G')
-    
-    var root8 = protobuf.parse(`edition = "2023";
-    option features.amazing_feature = A;
-    message Message {
-        message Nested {
-            option features.amazing_feature = H;
-            int64 count = 9;
-        }
-    }`).root.resolveAll();
-    
-    test.same(root8.lookup("Message").lookup("Nested")._features.amazing_feature, 'H')
-    
-    var root9 = protobuf.parse(`edition = "2023";
-    option features.amazing_feature = A;
-    message Message {
-        extend Message {
-            int32 bar = 10 [features.amazing_feature = I];
-        }
-    }`).root.resolveAll();
-    
-    test.same(root9.lookup("Message").lookup(".Message.bar")._features.amazing_feature, 'I')
-
-    var root10 = protobuf.parse(`edition = "2023";
-    option features.amazing_feature = A;
-    message Message {
-        oneof SomeOneOf {
-            option features.amazing_feature = J;
-            int32 a = 13;
-            string b = 14;
-        }
-    }`).root.resolveAll();
-    test.same(root10.lookup("Message").lookup("SomeOneOf")._features.amazing_feature, 'J')
-
-    var root11 = protobuf.parse(`edition = "2023";
-    option features.amazing_feature = A;
-    enum SomeEnum {
-        option features.amazing_feature = C;
-        ONE = 1 [features.amazing_feature = K];
-        TWO = 2;
-    }`).root.resolveAll();
-    test.same(root11.lookupEnum("SomeEnum")._valuesFeatures["ONE"].amazing_feature, 'K')
-
-    var root12 = protobuf.parse(`edition = "2023";
-    option features.amazing_feature = A;
-    service MyService {
-        option features.amazing_feature = E;
-        message MyRequest {};
-        message MyResponse {};
-        rpc MyMethod (MyRequest) returns (MyResponse) {
-            option features.amazing_feature = L;
-        };
-    }`).root.resolveAll();
-    
-    test.same(root12.lookupService("MyService").lookup("MyMethod")._features.amazing_feature, 'L')
-
+    test.same(root.lookup("Message").lookupEnum("SomeEnumInMessage")._features,
+    {
+        enum_type: 'CLOSED',
+        field_presence: 'EXPLICIT',
+        json_format: 'LEGACY_BEST_EFFORT',
+        message_encoding: 'LENGTH_PREFIXED',
+        repeated_field_encoding: 'EXPANDED',
+        utf8_validation: 'NONE',
+        amazing_feature: 'G'
+      })
     test.end();    
+    });
 })

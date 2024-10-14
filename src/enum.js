@@ -89,20 +89,14 @@ function Enum(name, values, options, comment, comments, valuesOptions) {
  * @returns {Enum} `this`
  */
 Enum.prototype.resolve = function resolve() {
-
-    if (this.resolved)
-        return this;
+    ReflectionObject.prototype.resolve.call(this);
 
     for (var key of Object.keys(this._valuesProtoFeatures)) {
-
-        if (this.parent) {
-            var parentFeaturesCopy = Object.assign({}, this.parent._features);
-            this._valuesFeatures[key] = Object.assign(parentFeaturesCopy, this._valuesProtoFeatures[key] || {});
-        } else {
-            this._valuesFeatures[key] = Object.assign({}, this._valuesProtoFeatures[key]);
-        }
+        var parentFeaturesCopy = Object.assign({}, this._features);
+        this._valuesFeatures[key] = Object.assign(parentFeaturesCopy, this._valuesProtoFeatures[key] || {});
     }
-    return ReflectionObject.prototype.resolve.call(this);
+
+    return this;
 };
 
 
