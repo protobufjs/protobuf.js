@@ -237,8 +237,7 @@ tape.test("feature resolution inheritance oneofs", function(test) {
     var rootEditionsOverriden = protobuf.parse(`
     edition = "2023";
     option features.(abc).d_e = deeply_nested_false;
-    message Message {
-        
+    message Message {∂
         oneof SomeOneOf {
             option features.json_format = LEGACY_BEST_EFFORT;
             int32 a = 13;
@@ -267,14 +266,14 @@ tape.test("feature resolution inheritance oneofs to field", function(test) {
         oneof SomeOneOf {
             option features.json_format = LEGACY_BEST_EFFORT;
             int32 a = 13;
-            string b = 14;
+            string b = 14 [features.json_format = ALLOW];
         }
     }`).root.resolveAll();
 
     test.same(rootEditionsOverriden.lookup("SomeOneOf").fieldsArray.find(x => x.name === 'b')._features, {
         enum_type: 'OPEN',
         field_presence: 'EXPLICIT',
-        json_format: 'LEGACY_BEST_EFFORT',
+        json_format: 'ALLOW',
         message_encoding: 'LENGTH_PREFIXED',
         repeated_field_encoding: 'PACKED',
         utf8_validation: 'VERIFY',
@@ -294,7 +293,9 @@ tape.test("feature resolution inheritance file to extensions", function(test) {
     extend Message {
         int32 bar = 10 [features.utf8_validation = NONE];
     }
-    message Message {}`).root.resolveAll();
+    message Message {
+        option features.field_presence = IMPLICIT;
+    }`).root.resolveAll();
 
     test.same(rootEditionsOverriden.lookup(".bar")._features, {
         enum_type: 'OPEN',
