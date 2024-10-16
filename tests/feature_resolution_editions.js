@@ -237,11 +237,11 @@ tape.test("feature resolution inheritance oneofs", function(test) {
     var rootEditionsOverriden = protobuf.parse(`
     edition = "2023";
     option features.(abc).d_e = deeply_nested_false;
-    message Message {∂
+    message Message {
         oneof SomeOneOf {
             option features.json_format = LEGACY_BEST_EFFORT;
             int32 a = 13;
-            string b = 14;
+            string b = 14 [features.json_format = ALLOW];
         }
     }`).root.resolveAll();
 
@@ -254,21 +254,6 @@ tape.test("feature resolution inheritance oneofs", function(test) {
         utf8_validation: 'VERIFY',
         '(abc)': { d_e: 'deeply_nested_false' } 
     })
-
-    test.end();
-});
-
-tape.test("feature resolution inheritance oneofs to field", function(test) {
-    var rootEditionsOverriden = protobuf.parse(`
-    edition = "2023";
-    option features.(abc).d_e = deeply_nested_false;
-    message Message {
-        oneof SomeOneOf {
-            option features.json_format = LEGACY_BEST_EFFORT;
-            int32 a = 13;
-            string b = 14 [features.json_format = ALLOW];
-        }
-    }`).root.resolveAll();
 
     test.same(rootEditionsOverriden.lookup("SomeOneOf").fieldsArray.find(x => x.name === 'b')._features, {
         enum_type: 'OPEN',
