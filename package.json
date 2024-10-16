@@ -27,6 +27,10 @@
   ],
   "main": "index.js",
   "types": "index.d.ts",
+  "browser": {
+    "long": false,
+    "buffer": false
+  },
   "scripts": {
     "bench": "node bench",
     "build": "npm run build:bundle && npm run build:types",
