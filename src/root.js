@@ -39,7 +39,7 @@ function Root(options) {
 
 /**
  * Loads a namespace descriptor into a root namespace.
- * @param {INamespace} json Nameespace descriptor
+ * @param {INamespace} json Namespace descriptor
  * @param {Root} [root] Root namespace, defaults to create a new one if omitted
  * @returns {Root} Root namespace
  */
@@ -88,20 +88,26 @@ Root.prototype.load = function load(filename, options, callback) {
         options = undefined;
     }
     var self = this;
-    if (!callback)
+    if (!callback) {
         return util.asPromise(load, self, filename, options);
+    }
 
     var sync = callback === SYNC; // undocumented
 
     // Finishes loading by calling the callback (exactly once)
     function finish(err, root) {
         /* istanbul ignore if */
-        if (!callback)
+        if (!callback) {
             return;
-        if (sync)
+        }
+        if (sync) {
             throw err;
+        }
         var cb = callback;
         callback = null;
+        if (root) {
+            root.resolveAll();
+        }
         cb(err, root);
     }
 
@@ -139,8 +145,9 @@ Root.prototype.load = function load(filename, options, callback) {
         } catch (err) {
             finish(err);
         }
-        if (!sync && !queued)
+        if (!sync && !queued) {
             finish(null, self); // only once anyway
+        }
     }
 
     // Fetches a single file
@@ -148,15 +155,16 @@ Root.prototype.load = function load(filename, options, callback) {
         filename = getBundledFileName(filename) || filename;
 
         // Skip if already loaded / attempted
-        if (self.files.indexOf(filename) > -1)
+        if (self.files.indexOf(filename) > -1) {
             return;
+        }
         self.files.push(filename);
 
         // Shortcut bundled definitions
         if (filename in common) {
-            if (sync)
+            if (sync) {
                 process(filename, common[filename]);
-            else {
+            } else {
                 ++queued;
                 setTimeout(function() {
                     --queued;
@@ -182,8 +190,9 @@ Root.prototype.load = function load(filename, options, callback) {
             self.fetch(filename, function(err, source) {
                 --queued;
                 /* istanbul ignore if */
-                if (!callback)
+                if (!callback) {
                     return; // terminated meanwhile
+                }
                 if (err) {
                     /* istanbul ignore else */
                     if (!weak)
@@ -200,17 +209,21 @@ Root.prototype.load = function load(filename, options, callback) {
 
     // Assembling the root namespace doesn't require working type
     // references anymore, so we can load everything in parallel
-    if (util.isString(filename))
+    if (util.isString(filename)) {
         filename = [ filename ];
+    }
     for (var i = 0, resolved; i < filename.length; ++i)
         if (resolved = self.resolvePath("", filename[i]))
             fetch(resolved);
-
-    if (sync)
+    self.resolveAll();
+    if (sync) {
         return self;
-    if (!queued)
+    }
+    if (!queued) {
         finish(null, self);
-    return undefined;
+    }
+
+    return self;
 };
 // function load(filename:string, options:IParseOptions, callback:LoadCallback):undefined
 

@@ -3,9 +3,16 @@ module.exports = ReflectionObject;
 
 ReflectionObject.className = "ReflectionObject";
 
+const OneOf = require("./oneof");
 var util = require("./util");
 
 var Root; // cyclic
+
+/* eslint-disable no-warning-comments */
+// TODO: Replace with embedded proto.
+var editions2023Defaults = {enum_type: "OPEN", field_presence: "EXPLICIT", json_format: "ALLOW", message_encoding: "LENGTH_PREFIXED", repeated_field_encoding: "PACKED", utf8_validation: "VERIFY"};
+var proto2Defaults = {enum_type: "CLOSED", field_presence: "EXPLICIT", json_format: "LEGACY_BEST_EFFORT", message_encoding: "LENGTH_PREFIXED", repeated_field_encoding: "EXPANDED", utf8_validation: "NONE"};
+var proto3Defaults = {enum_type: "OPEN", field_presence: "IMPLICIT", json_format: "ALLOW", message_encoding: "LENGTH_PREFIXED", repeated_field_encoding: "PACKED", utf8_validation: "VERIFY"};
 
 /**
  * Constructs a new reflection object instance.
@@ -40,6 +47,16 @@ function ReflectionObject(name, options) {
      * @type {string}
      */
     this.name = name;
+
+    /**
+     * Resolved Features.
+     */
+    this._features = {};
+
+    /**
+     * Unresolved Features.
+     */
+    this._protoFeatures = null;
 
     /**
      * Parent namespace.
@@ -146,9 +163,43 @@ ReflectionObject.prototype.onRemove = function onRemove(parent) {
 ReflectionObject.prototype.resolve = function resolve() {
     if (this.resolved)
         return this;
-    if (this.root instanceof Root)
-        this.resolved = true; // only if part of a root
+    if (this instanceof Root || this.parent && this.parent.resolved) {
+        this._resolveFeatures();
+        this.resolved = true;
+    }
     return this;
+};
+
+/**
+ * Resolves child features from parent features
+ * @returns {undefined}
+ */
+ReflectionObject.prototype._resolveFeatures = function _resolveFeatures() {
+    var defaults = {};
+
+    if (this instanceof Root) {
+        if (this.root.getOption("syntax") === "proto3") {
+            defaults = Object.assign({}, proto3Defaults);
+        } else if (this.root.getOption("edition") === "2023") {
+            defaults = Object.assign({}, editions2023Defaults);
+        } else {
+            defaults = Object.assign({}, proto2Defaults);
+        }
+    }
+
+    if (this instanceof Root) {
+        this._features = Object.assign(defaults, this._protoFeatures || {});
+    // fields in Oneofs aren't actually children of them, so we have to
+    // special-case it
+    } else if (this.partOf instanceof OneOf) {
+        var lexicalParentFeaturesCopy = Object.assign({}, this.partOf._features);
+        this._features = Object.assign(lexicalParentFeaturesCopy, this._protoFeatures || {});
+    } else if (this.parent) {
+        var parentFeaturesCopy = Object.assign({}, this.parent._features);
+        this._features = Object.assign(parentFeaturesCopy, this._protoFeatures || {});
+    } else {
+        this._features = Object.assign({}, this._protoFeatures);
+    }
 };
 
 /**
@@ -186,6 +237,7 @@ ReflectionObject.prototype.setParsedOption = function setParsedOption(name, valu
     if (!this.parsedOptions) {
         this.parsedOptions = [];
     }
+    var isFeature = /^features$/.test(name);
     var parsedOptions = this.parsedOptions;
     if (propName) {
         // If setting a sub property of an option then try to merge it
@@ -195,10 +247,11 @@ ReflectionObject.prototype.setParsedOption = function setParsedOption(name, valu
         });
         if (opt) {
             // If we found an existing option - just merge the property value
+            // (If it's a feature, will just write over)
             var newValue = opt[name];
             util.setProperty(newValue, propName, value);
         } else {
-            // otherwise, create a new option, set it's property and add it to the list
+            // otherwise, create a new option, set its property and add it to the list
             opt = {};
             opt[name] = util.setProperty({}, propName, value);
             parsedOptions.push(opt);
@@ -209,6 +262,13 @@ ReflectionObject.prototype.setParsedOption = function setParsedOption(name, valu
         newOpt[name] = value;
         parsedOptions.push(newOpt);
     }
+
+
+    if (isFeature) {
+        var features = parsedOptions.find(x => {return Object.prototype.hasOwnProperty.call(x, "features");});
+        this._protoFeatures = features.features || {};
+    }
+
     return this;
 };
 

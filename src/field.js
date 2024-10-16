@@ -319,6 +319,13 @@ Field.prototype.resolve = function resolve() {
     if (this.parent instanceof Type)
         this.parent.ctor.prototype[this.name] = this.defaultValue;
 
+
+    if (this.parent) {
+        var parentFeaturesCopy = Object.assign({}, this.parent._features);
+        this._features = Object.assign(parentFeaturesCopy, this._protoFeatures || {});
+    } else {
+        this._features = Object.assign({}, this._protoFeatures);
+    }
     return ReflectionObject.prototype.resolve.call(this);
 };
 
