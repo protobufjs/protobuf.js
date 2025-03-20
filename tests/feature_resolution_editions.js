@@ -437,6 +437,37 @@ tape.test("feature resolution editions precedence", function(test) {
     });
 });
 
+tape.test("feature resolution extension sister", function(test) {
+    var root = protobuf.parse(`edition = "2023";
+        message A {
+            message B {
+                message One {
+                    extensions 1000 to max;
+                    reserved 900 to 999, 899, "a", 'b';
+                }
+            }
+            message C {
+                option features.repeated_field_encoding = EXPANDED;
+                message Two {
+                    extend B.One {
+                        repeated int32 ext = 1000 [features.fake = 2];
+                    }
+                }
+            }
+    }`).root.resolveAll();
+    var extension = root.lookup("A.C.Two").nested.ext;
+    var sister = root.lookup("A.B.One").fields[".A.C.Two.ext"];
+
+    test.notOk(extension.packed);
+    test.notOk(sister.packed);
+    test.equal(extension._features.repeated_field_encoding, "EXPANDED");
+    test.equal(extension._features.fake, 2);
+    test.equal(sister._features.repeated_field_encoding, "EXPANDED");
+    test.equal(sister._features.fake, 2);
+
+    test.end();
+});
+
 tape.test("feature resolution inferred proto2 repeated encoding", function(test) {
     var root = protobuf.parse(`syntax = "proto2";
     message Message {

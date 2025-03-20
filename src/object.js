@@ -197,11 +197,17 @@ ReflectionObject.prototype._resolveFeatures = function _resolveFeatures() {
     } else if (this.partOf instanceof OneOf) {
         var lexicalParentFeaturesCopy = Object.assign({}, this.partOf._features);
         this._features = Object.assign(lexicalParentFeaturesCopy, protoFeatures || {});
+    } else if (this.declaringField) {
+        // Skip feature resolution of sister fields.
     } else if (this.parent) {
         var parentFeaturesCopy = Object.assign({}, this.parent._features);
         this._features = Object.assign(parentFeaturesCopy, protoFeatures || {});
     } else {
         this._features = Object.assign({}, protoFeatures);
+    }
+    if (this.extensionField) {
+        // Sister fields should have the same features as their extensions.
+        this.extensionField._features = this._features;
     }
 };
 
