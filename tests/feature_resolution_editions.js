@@ -423,16 +423,53 @@ tape.test("feature resolution editions precedence", function(test) {
         if (err)
             throw test.fail(err.message);
 
-    test.same(root.lookup("Message").lookupEnum("SomeEnumInMessage")._features,
-    {
-        enum_type: 'CLOSED',
-        field_presence: 'EXPLICIT',
-        json_format: 'LEGACY_BEST_EFFORT',
-        message_encoding: 'LENGTH_PREFIXED',
-        repeated_field_encoding: 'EXPANDED',
-        utf8_validation: 'NONE',
-        amazing_feature: 'G'
-      })
-    test.end();    
+        test.same(root.lookup("Message").lookupEnum("SomeEnumInMessage")._features,
+        {
+            enum_type: 'CLOSED',
+            field_presence: 'EXPLICIT',
+            json_format: 'LEGACY_BEST_EFFORT',
+            message_encoding: 'LENGTH_PREFIXED',
+            repeated_field_encoding: 'EXPANDED',
+            utf8_validation: 'NONE',
+            amazing_feature: 'G'
+        })
+        test.end();
     });
-})
+});
+
+tape.test("feature resolution inferred proto2 repeated encoding", function(test) {
+    var root = protobuf.parse(`syntax = "proto2";
+    message Message {
+        repeated int32 default = 1;
+        repeated int32 packed = 2 [packed = true];
+        repeated int32 unpacked = 3 [packed = false];
+    }`).root.resolveAll();
+
+    test.notOk(root.lookup("Message").fields.default.packed)
+    test.equal(root.lookup("Message").fields.default._features.repeated_field_encoding, "EXPANDED")
+    test.ok(root.lookup("Message").fields.packed.packed)
+    test.equal(root.lookup("Message").fields.packed._features.repeated_field_encoding, "PACKED")
+    test.notOk(root.lookup("Message").fields.unpacked.packed)
+    test.equal(root.lookup("Message").fields.unpacked._features.repeated_field_encoding, "EXPANDED")
+
+    test.end();
+});
+
+tape.test("feature resolution inferred proto3 repeated encoding", function(test) {
+    var root = protobuf.parse(`syntax = "proto3";
+    message Message {
+        repeated int32 default = 1;
+        repeated int32 packed = 2 [packed = true];
+        repeated int32 unpacked = 3 [packed = false];
+    }`).root.resolveAll();
+
+    test.ok(root.lookup("Message").fields.default.packed)
+    test.equal(root.lookup("Message").fields.default._features.repeated_field_encoding, "PACKED")
+    test.ok(root.lookup("Message").fields.packed.packed)
+    test.equal(root.lookup("Message").fields.packed._features.repeated_field_encoding, "PACKED")
+    test.notOk(root.lookup("Message").fields.unpacked.packed)
+    test.equal(root.lookup("Message").fields.unpacked._features.repeated_field_encoding, "EXPANDED")
+
+    test.end();
+});
+

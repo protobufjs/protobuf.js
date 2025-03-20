@@ -177,30 +177,43 @@ ReflectionObject.prototype.resolve = function resolve() {
 ReflectionObject.prototype._resolveFeatures = function _resolveFeatures() {
     var defaults = {};
 
+    var edition = this.root.getOption("edition");
     if (this instanceof Root) {
         if (this.root.getOption("syntax") === "proto3") {
             defaults = Object.assign({}, proto3Defaults);
-        } else if (this.root.getOption("edition") === "2023") {
+        } else if (edition === "2023") {
             defaults = Object.assign({}, editions2023Defaults);
         } else {
             defaults = Object.assign({}, proto2Defaults);
         }
     }
 
+    var protoFeatures = Object.assign(Object.assign({}, this._protoFeatures), this._inferLegacyProtoFeatures(edition));
+
     if (this instanceof Root) {
-        this._features = Object.assign(defaults, this._protoFeatures || {});
+        this._features = Object.assign(defaults, protoFeatures || {});
     // fields in Oneofs aren't actually children of them, so we have to
     // special-case it
     } else if (this.partOf instanceof OneOf) {
         var lexicalParentFeaturesCopy = Object.assign({}, this.partOf._features);
-        this._features = Object.assign(lexicalParentFeaturesCopy, this._protoFeatures || {});
+        this._features = Object.assign(lexicalParentFeaturesCopy, protoFeatures || {});
     } else if (this.parent) {
         var parentFeaturesCopy = Object.assign({}, this.parent._features);
-        this._features = Object.assign(parentFeaturesCopy, this._protoFeatures || {});
+        this._features = Object.assign(parentFeaturesCopy, protoFeatures || {});
     } else {
-        this._features = Object.assign({}, this._protoFeatures);
+        this._features = Object.assign({}, protoFeatures);
     }
 };
+
+/**
+ * Infers features from legacy syntax that may have been specified differently.
+ * in older editions.
+ * @param {string|undefined} edition The edition this proto is on, or undefined if pre-editions
+ * @returns {object} The feature values to override
+ */
+ReflectionObject.prototype._inferLegacyProtoFeatures = function _inferLegacyProtoFeatures(edition) {
+    return {};
+}
 
 /**
  * Gets an option value.
