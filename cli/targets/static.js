@@ -362,58 +362,16 @@ function toJsType(field, parentIsInterface = false) {
     return type;
 }
 
-function syntaxForType(type) {
-
-    var syntax = null;
-    var namespace = type;
-
-    while (syntax === null && namespace !== null) {
-        if (namespace.options != null && "syntax" in namespace.options) {
-            syntax = namespace.options["syntax"];
-        }
-        else {
-            namespace = namespace.parent;
-        }
-    }
-
-    return syntax !== null ? syntax : "proto2";
-}
-
-function isExplicitPresence(field, syntax) {
-
-    // In proto3, optional fields are explicit
-    if (syntax === "proto3") {
-        return field.options != null && field.options["proto3_optional"] === true;
-    }
-
-    // In proto2, fields are explicitly optional if they are not part of a map, array or oneOf group
-    if (syntax === "proto2") {
-        return field.optional && !(field.partOf || field.repeated || field.map);
-    }
-
-    throw new Error("Unknown proto syntax: [" + syntax + "]");
-}
-
-function isImplicitPresence(field, syntax) {
-
-    // In proto3, everything not marked optional has implicit presence (including maps and repeated fields)
-    if (syntax === "proto3") {
-        return field.options == null || field.options["proto3_optional"] !== true;
-    }
-
-    // In proto2, nothing has implicit presence
-    if (syntax === "proto2") {
+function hasPresence(field) {
+    if (field.repeated || field.map) {
         return false;
     }
-
-    throw new Error("Unknown proto syntax: [" + syntax + "]");
+    return field.partOf || // oneofs
+        field.declaringField || field.extensionField || // extensions
+        field._features.field_presence === "EXPLICIT";
 }
 
-function isOptionalOneOf(oneof, syntax) {
-
-    if (syntax === "proto2") {
-        return false;
-    }
+function isProto3Optional(oneof) {
 
     if (oneof.fieldsArray == null || oneof.fieldsArray.length !== 1) {
         return false;
@@ -425,8 +383,6 @@ function isOptionalOneOf(oneof, syntax) {
 }
 
 function buildType(ref, type) {
-
-    var syntax = syntaxForType(type);
 
     if (config.comments) {
         var typeDef = [
@@ -443,13 +399,15 @@ function buildType(ref, type) {
                 // With semantic nulls, only explicit optional fields and one-of members can be set to null
                 // Implicit fields (proto3), maps and lists can be omitted, but if specified must be non-null
                 // Implicit fields will take their default value when the message is constructed
-                if (isExplicitPresence(field, syntax) || field.partOf) {
-                    jsType = jsType + "|null|undefined";
-                    nullable = true;
-                }
-                else if (isImplicitPresence(field, syntax) || field.repeated || field.map) {
-                    jsType = jsType + "|undefined";
-                    nullable = true;
+                if (field.optional) {
+                    if (hasPresence(field)) {
+                        jsType = jsType + "|null|undefined";
+                        nullable = true;
+                    }
+                    else {
+                        jsType = jsType + "|undefined";
+                        nullable = true;
+                    }
                 }
             }
             else {
@@ -490,7 +448,7 @@ function buildType(ref, type) {
                 // With semantic nulls, fields are nullable if they are explicitly optional or part of a one-of
                 // Maps, repeated values and fields with implicit defaults are never null after construction
                 // Members are never undefined, at a minimum they are initialized to null
-                if (isExplicitPresence(field, syntax) || field.partOf) {
+                if (hasPresence(field) && field.optional) {
                     jsType = jsType + "|null";
                 }
             }
@@ -514,7 +472,7 @@ function buildType(ref, type) {
         // With semantic nulls, only explict optional fields and one-of members are null by default
         // Otherwise use field.optional, which doesn't consider proto3, maps, repeated fields etc.
         var nullDefault = config["null-semantics"]
-            ? isExplicitPresence(field, syntax)
+            ? hasPresence(field) && field.optional
             : field.optional && config["null-defaults"];
         if (field.repeated)
             push(escapeName(type.name) + ".prototype" + prop + " = $util.emptyArray;"); // overwritten in constructor
@@ -546,7 +504,7 @@ function buildType(ref, type) {
         }
         oneof.resolve();
         push("");
-        if (isOptionalOneOf(oneof, syntax)) {
+        if (isProto3Optional(oneof)) {
             push("// Virtual OneOf for proto3 optional field");
         }
         else {

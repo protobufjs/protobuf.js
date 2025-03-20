@@ -15,7 +15,7 @@ tape.test("a protocol error", function(test) {
         ).add(
             new protobuf.Field("bar", 2, "string", "required")
         )
-    );
+    ).resolveAll();
     
     var Test = root.lookup("Test");
     var buf  = protobuf.util.newBuffer(2);

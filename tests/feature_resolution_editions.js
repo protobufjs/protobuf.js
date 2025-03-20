@@ -445,12 +445,13 @@ tape.test("feature resolution inferred proto2 repeated encoding", function(test)
         repeated int32 unpacked = 3 [packed = false];
     }`).root.resolveAll();
 
-    test.notOk(root.lookup("Message").fields.default.packed)
-    test.equal(root.lookup("Message").fields.default._features.repeated_field_encoding, "EXPANDED")
-    test.ok(root.lookup("Message").fields.packed.packed)
-    test.equal(root.lookup("Message").fields.packed._features.repeated_field_encoding, "PACKED")
-    test.notOk(root.lookup("Message").fields.unpacked.packed)
-    test.equal(root.lookup("Message").fields.unpacked._features.repeated_field_encoding, "EXPANDED")
+    var msg = root.lookup("Message");
+    test.notOk(msg.fields.default.packed)
+    test.equal(msg.fields.default._features.repeated_field_encoding, "EXPANDED")
+    test.ok(msg.fields.packed.packed)
+    test.equal(msg.fields.packed._features.repeated_field_encoding, "PACKED")
+    test.notOk(msg.fields.unpacked.packed)
+    test.equal(msg.fields.unpacked._features.repeated_field_encoding, "EXPANDED")
 
     test.end();
 });
@@ -463,13 +464,32 @@ tape.test("feature resolution inferred proto3 repeated encoding", function(test)
         repeated int32 unpacked = 3 [packed = false];
     }`).root.resolveAll();
 
-    test.ok(root.lookup("Message").fields.default.packed)
-    test.equal(root.lookup("Message").fields.default._features.repeated_field_encoding, "PACKED")
-    test.ok(root.lookup("Message").fields.packed.packed)
-    test.equal(root.lookup("Message").fields.packed._features.repeated_field_encoding, "PACKED")
-    test.notOk(root.lookup("Message").fields.unpacked.packed)
-    test.equal(root.lookup("Message").fields.unpacked._features.repeated_field_encoding, "EXPANDED")
+    var msg = root.lookup("Message");
+    test.ok(msg.fields.default.packed)
+    test.equal(msg.fields.default._features.repeated_field_encoding, "PACKED")
+    test.ok(msg.fields.packed.packed)
+    test.equal(msg.fields.packed._features.repeated_field_encoding, "PACKED")
+    test.notOk(msg.fields.unpacked.packed)
+    test.equal(msg.fields.unpacked._features.repeated_field_encoding, "EXPANDED")
 
     test.end();
 });
 
+
+tape.test("feature resolution inferred proto2 presence", function(test) {
+    var root = protobuf.parse(`syntax = "proto2";
+    message Message {
+        optional int32 default = 1;
+        required int32 required = 2;
+    }`).root.resolveAll();
+
+    var msg = root.lookup("Message");
+    test.ok(msg.fields.default.optional)
+    test.notOk(msg.fields.default.required)
+    test.equal(msg.fields.default._features.field_presence, "EXPLICIT")
+    test.notOk(msg.fields.required.optional)
+    test.ok(msg.fields.required.required)
+    test.equal(msg.fields.required._features.field_presence, "LEGACY_REQUIRED")
+
+    test.end();
+});

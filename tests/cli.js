@@ -236,6 +236,45 @@ tape.test("with --null-semantics, optional fields are handled correctly in proto
     });
 });
 
+tape.test("with --null-semantics, optional fields are handled correctly in editions", function(test) {
+    cliTest(test, function() {
+        var root = protobuf.loadSync("tests/data/cli/null-defaults-edition2023.proto");
+        root.resolveAll();
+
+        var staticTarget = require("../cli/targets/static");
+
+        staticTarget(root, {
+            create: true,
+            decode: true,
+            encode: true,
+            convert: true,
+            comments: true,
+            "null-semantics": true,
+        }, function(err, jsCode) {
+
+            test.error(err, 'static code generation worked');
+
+            test.ok(jsCode.includes("@property {OptionalFields.ISubMessage|null|undefined} [a] OptionalFields a"), "Property for a should use an interface")
+            test.ok(jsCode.includes("@member {OptionalFields.SubMessage|null} a"), "Member for a should use a message type")
+            test.ok(jsCode.includes("OptionalFields.prototype.a = null;"), "Initializer for a should be null")
+
+            test.ok(jsCode.includes("@property {string|null|undefined} [e] OptionalFields e"), "Property for e should be nullable")
+            test.ok(jsCode.includes("@member {string|null} e"), "Member for e should be nullable")
+            test.ok(jsCode.includes("OptionalFields.prototype.e = null;"), "Initializer for e should be null")
+
+            test.ok(jsCode.includes("@property {number} r OptionalFields r"), "Property for r should not be nullable")
+            test.ok(jsCode.includes("@member {number} r"), "Member for r should not be nullable")
+            test.ok(jsCode.includes("OptionalFields.prototype.r = 0;"), "Initializer for r should be zero")
+
+            test.ok(jsCode.includes("@property {number|undefined} [i] OptionalFields i"), "Property for i should be optional but not nullable")
+            test.ok(jsCode.includes("@member {number} i"), "Member for i should not be nullable")
+            test.ok(jsCode.includes("OptionalFields.prototype.i = 0;"), "Initializer for i should be zero")
+
+            test.end();
+        });
+    });
+});
+
 
 tape.test("pbjs generates static code with message filter", function (test) {
     cliTest(test, function () {

@@ -106,18 +106,6 @@ function Field(name, id, type, rule, extend, options, comment) {
     this.extend = extend || undefined; // toJSON
 
     /**
-     * Whether this field is required.
-     * @type {boolean}
-     */
-    this.required = rule === "required";
-
-    /**
-     * Whether this field is optional.
-     * @type {boolean}
-     */
-    this.optional = !this.required;
-
-    /**
      * Whether this field is repeated.
      * @type {boolean}
      */
@@ -189,6 +177,30 @@ function Field(name, id, type, rule, extend, options, comment) {
      */
     this.comment = comment;
 }
+
+/**
+ * Determines whether this field is required.
+ * @name Field#required
+ * @type {boolean}
+ * @readonly
+ */
+Object.defineProperty(Field.prototype, "required", {
+    get: function() {
+        return this._features.field_presence === "LEGACY_REQUIRED";
+    }
+});
+
+/**
+ * Determines whether this field is not required.
+ * @name Field#optional
+ * @type {boolean}
+ * @readonly
+ */
+Object.defineProperty(Field.prototype, "optional", {
+    get: function() {
+        return !this.required;
+    }
+});
 
 /**
  * Determines whether this field is packed. Only relevant when repeated.
@@ -320,6 +332,9 @@ Field.prototype._inferLegacyProtoFeatures = function _inferLegacyProtoFeatures(e
     if (edition) return {};
 
     var features = {};
+    if (this.rule === "required") {
+        features.field_presence = "LEGACY_REQUIRED";
+    }
     if (this.getOption("packed") === true) {
         features.repeated_field_encoding = "PACKED";
     } else if (this.getOption("packed") === false) {
