@@ -203,6 +203,20 @@ Object.defineProperty(Field.prototype, "optional", {
 });
 
 /**
+ * Determines whether this field uses tag-delimited encoding.  In proto2 this
+ * corresponded to group syntax.
+ * @name Field#delimited
+ * @type {boolean}
+ * @readonly
+ */
+Object.defineProperty(Field.prototype, "delimited", {
+    get: function() {
+        return this.resolvedType instanceof Type &&
+            this._features.message_encoding === "DELIMITED";
+    }
+});
+
+/**
  * Determines whether this field is packed. Only relevant when repeated.
  * @name Field#packed
  * @type {boolean}
@@ -334,6 +348,9 @@ Field.prototype._inferLegacyProtoFeatures = function _inferLegacyProtoFeatures(e
     var features = {};
     if (this.rule === "required") {
         features.field_presence = "LEGACY_REQUIRED";
+    }
+    if (this.resolvedType instanceof Type && this.resolvedType.group) {
+        features.message_encoding = "DELIMITED";
     }
     if (this.getOption("packed") === true) {
         features.repeated_field_encoding = "PACKED";
