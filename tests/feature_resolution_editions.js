@@ -92,6 +92,29 @@ tape.test("feature resolution defaults", function(test) {
     test.end();
 })
 
+tape.test("unresolved feature options", function(test) {
+    var root = protobuf.parse(`edition = "2023";
+    option features.json_format = LEGACY_BEST_EFFORT;
+    option features.(abc).d_e = deeply_nested_false;
+
+    message Message {
+        option features.enum_type = CLOSED;
+        string string_val = 1;
+        string string_repeated = 2;
+    }`).root.resolveAll();
+
+    test.same(root.lookup("Message").options, {
+        "features.enum_type": "CLOSED",
+    });
+    test.same(root.options, {
+        "edition": "2023",
+        "features.json_format": "LEGACY_BEST_EFFORT",
+        "features.(abc).d_e": "deeply_nested_false",
+    });
+
+    test.end();
+});
+
 tape.test("feature resolution inheritance file to message", function(test) {
     var rootEditionsOverriden = protobuf.parse(`edition = "2023";
     option features.json_format = LEGACY_BEST_EFFORT;

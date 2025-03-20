@@ -657,7 +657,7 @@ function parse(source, root, options) {
                     isOption = false;
                     if (token.includes(".") && !token.includes("(")) {
                         var tokens = token.split(".");
-                        option = tokens[0];
+                        option = tokens[0] + ".";
                         token = tokens[1];
                         continue;
                     }
