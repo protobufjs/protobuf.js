@@ -375,7 +375,7 @@ Field.prototype._inferLegacyProtoFeatures = function _inferLegacyProtoFeatures(e
         features.repeated_field_encoding = "EXPANDED";
     }
     return features;
-}
+};
 
 /**
  * Decorator function as returned by {@link Field.d} and {@link MapField.d} (TypeScript).

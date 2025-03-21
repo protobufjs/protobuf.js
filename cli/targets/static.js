@@ -363,7 +363,7 @@ function toJsType(field, parentIsInterface = false) {
 }
 
 function isNullable(field) {
-    return field.hasPresence && !field.required
+    return field.hasPresence && !field.required;
 }
 
 function buildType(ref, type) {

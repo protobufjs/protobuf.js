@@ -216,10 +216,11 @@ ReflectionObject.prototype._resolveFeatures = function _resolveFeatures() {
  * in older editions.
  * @param {string|undefined} edition The edition this proto is on, or undefined if pre-editions
  * @returns {object} The feature values to override
+ * @abstract
  */
-ReflectionObject.prototype._inferLegacyProtoFeatures = function _inferLegacyProtoFeatures(edition) {
+ReflectionObject.prototype._inferLegacyProtoFeatures = function _inferLegacyProtoFeatures(/*edition*/) {
     return {};
-}
+};
 
 /**
  * Gets an option value.

@@ -257,9 +257,9 @@ function buildFieldOptions(field) {
     });
     var packable = types.packed[field.resolvedType instanceof Enum ? "int32" : field.type];
     if (packable !== undefined) {
-        if (field.packed && syntax == 2) {
+        if (field.packed && syntax === 2) {
             sb.push("packed=true");
-        } else if(!field.packed && syntax == 3) {
+        } else if(!field.packed && syntax === 3) {
             sb.push("packed=false");
         }
     }
