@@ -229,6 +229,23 @@ Object.defineProperty(Field.prototype, "packed", {
 });
 
 /**
+ * Determines whether this field tracks presence.
+ * @name Field#hasPresence
+ * @type {boolean}
+ * @readonly
+ */
+Object.defineProperty(Field.prototype, "hasPresence", {
+    get: function() {
+        if (this.repeated || this.map) {
+            return false;
+        }
+        return this.partOf || // oneofs
+            this.declaringField || this.extensionField || // extensions
+            this._features.field_presence !== "IMPLICIT";
+    }
+});
+
+/**
  * @override
  */
 Field.prototype.setOption = function setOption(name, value, ifNotSet) {

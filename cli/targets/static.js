@@ -362,24 +362,8 @@ function toJsType(field, parentIsInterface = false) {
     return type;
 }
 
-function hasPresence(field) {
-    if (field.repeated || field.map) {
-        return false;
-    }
-    return field.partOf || // oneofs
-        field.declaringField || field.extensionField || // extensions
-        field._features.field_presence === "EXPLICIT";
-}
-
-function isProto3Optional(oneof) {
-
-    if (oneof.fieldsArray == null || oneof.fieldsArray.length !== 1) {
-        return false;
-    }
-
-    var field = oneof.fieldsArray[0];
-
-    return field.options != null && field.options["proto3_optional"] === true;
+function isNullable(field) {
+    return field.hasPresence && !field.required
 }
 
 function buildType(ref, type) {
@@ -400,7 +384,7 @@ function buildType(ref, type) {
                 // Implicit fields (proto3), maps and lists can be omitted, but if specified must be non-null
                 // Implicit fields will take their default value when the message is constructed
                 if (field.optional) {
-                    if (hasPresence(field)) {
+                    if (isNullable(field)) {
                         jsType = jsType + "|null|undefined";
                         nullable = true;
                     }
@@ -448,7 +432,7 @@ function buildType(ref, type) {
                 // With semantic nulls, fields are nullable if they are explicitly optional or part of a one-of
                 // Maps, repeated values and fields with implicit defaults are never null after construction
                 // Members are never undefined, at a minimum they are initialized to null
-                if (hasPresence(field) && field.optional) {
+                if (isNullable(field)) {
                     jsType = jsType + "|null";
                 }
             }
@@ -472,7 +456,7 @@ function buildType(ref, type) {
         // With semantic nulls, only explict optional fields and one-of members are null by default
         // Otherwise use field.optional, which doesn't consider proto3, maps, repeated fields etc.
         var nullDefault = config["null-semantics"]
-            ? hasPresence(field) && field.optional
+            ? isNullable(field)
             : field.optional && config["null-defaults"];
         if (field.repeated)
             push(escapeName(type.name) + ".prototype" + prop + " = $util.emptyArray;"); // overwritten in constructor
@@ -504,7 +488,7 @@ function buildType(ref, type) {
         }
         oneof.resolve();
         push("");
-        if (isProto3Optional(oneof)) {
+        if (oneof.isProto3Optional) {
             push("// Virtual OneOf for proto3 optional field");
         }
         else {
