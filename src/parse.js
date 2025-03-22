@@ -33,7 +33,6 @@ var base10Re    = /^[1-9][0-9]*$/,
  * @property {string|undefined} package Package name, if declared
  * @property {string[]|undefined} imports Imports, if any
  * @property {string[]|undefined} weakImports Weak imports, if any
- * @property {string|undefined} syntax Syntax, if specified (either `"proto2"` or `"proto3"`)
  * @property {Root} root Populated root instance
  */
 
@@ -81,9 +80,9 @@ function parse(source, root, options) {
         pkg,
         imports,
         weakImports,
-        syntax,
-        edition = false,
-        isProto3 = false;
+        edition = "proto2",
+        isProto3 = false,
+        isProto2 = true;
 
     var ptr = root;
 
@@ -145,7 +144,7 @@ function parse(source, root, options) {
                 try {
                     target.push([ start = parseId(next()), skip("to", true) ? parseId(next()) : start ]);
                 } catch (err) {
-                    if (typeRefRe.test(token) && edition) {
+                    if (typeRefRe.test(token) && (!isProto2 && !isProto3)) {
                         target.push(token);
                     } else {
                         throw err;
@@ -228,7 +227,6 @@ function parse(source, root, options) {
     }
 
     function parsePackage() {
-
         /* istanbul ignore if */
         if (pkg !== undefined)
             throw illegal("package");
@@ -240,6 +238,12 @@ function parse(source, root, options) {
             throw illegal(pkg, "name");
 
         ptr = ptr.define(pkg);
+
+        var oldEdition = ptr.getOption("edition");
+        if (oldEdition && oldEdition !== edition) {
+            throw new Error("incompatible editions detected in package " + pkg + ": " + edition + " vs " + oldEdition);
+        }
+        ptr.setOption("edition", edition);
         skip(";");
     }
 
@@ -265,16 +269,17 @@ function parse(source, root, options) {
 
     function parseSyntax() {
         skip("=");
-        syntax = readString();
-        isProto3 = syntax === "proto3";
+        edition = readString();
+        isProto3 = edition === "proto3";
+        isProto2 = edition === "proto2";
 
         /* istanbul ignore if */
-        if (!isProto3 && syntax !== "proto2")
-            throw illegal(syntax, "syntax");
+        if (!isProto3 && !isProto2)
+            throw illegal(edition, "syntax");
 
         // Syntax is needed to understand the meaning of the optional field rule
         // Otherwise the meaning is ambiguous between proto2 and proto3
-        root.setOption("syntax", syntax);
+        root.setOption("edition", edition);
 
         skip(";");
     }
@@ -282,6 +287,8 @@ function parse(source, root, options) {
     function parseEdition() {
         skip("=");
         edition = readString();
+        isProto3 = false;
+        isProto2 = false;
         const supportedEditions = ["2023"];
 
         /* istanbul ignore if */
@@ -361,7 +368,7 @@ function parse(source, root, options) {
                     break;
 
                 case "required":
-                    if (edition)
+                    if (!isProto2)
                         throw illegal(token);
                 /* eslint-disable no-fallthrough */
                 case "repeated":
@@ -372,7 +379,7 @@ function parse(source, root, options) {
                     /* istanbul ignore if */
                     if (isProto3) {
                         parseField(type, "proto3_optional");
-                    } else if (edition) {
+                    } else if (!isProto2) {
                         throw illegal(token);
                     } else {
                         parseField(type, "optional");
@@ -393,7 +400,7 @@ function parse(source, root, options) {
 
                 default:
                     /* istanbul ignore if */
-                    if (!isProto3 && !edition || !typeRefRe.test(token)) {
+                    if (isProto2 || !typeRefRe.test(token)) {
                         throw illegal(token);
                     }
 
@@ -854,7 +861,7 @@ function parse(source, root, options) {
 
                 default:
                     /* istanbul ignore if */
-                    if (!isProto3 && !edition || !typeRefRe.test(token))
+                    if (isProto2 || !typeRefRe.test(token))
                         throw illegal(token);
                     push(token);
                     parseField(parent, "optional", reference);
@@ -924,7 +931,6 @@ function parse(source, root, options) {
         "package"     : pkg,
         "imports"     : imports,
          weakImports  : weakImports,
-         syntax       : syntax,
          root         : root
     };
 }

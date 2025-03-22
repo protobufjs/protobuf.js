@@ -98,7 +98,7 @@ protobuf.types            = require("./types");
 protobuf.util             = require("./util");
 
 // Set up possibly cyclic reflection dependencies
-protobuf.ReflectionObject._configure(protobuf.Root);
+protobuf.ReflectionObject._configure(protobuf.Root, protobuf.Namespace);
 protobuf.Namespace._configure(protobuf.Type, protobuf.Service, protobuf.Enum);
 protobuf.Root._configure(protobuf.Type);
 protobuf.Field._configure(protobuf.Type);

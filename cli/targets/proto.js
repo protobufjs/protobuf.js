@@ -102,7 +102,7 @@ function buildRoot(root) {
     if (pkg.length)
         out.push("", "package " + pkg.join(".") + ";");
 
-    buildOptions(ptr, ["edition", "syntax"]);
+    buildOptions(ptr, ["edition"]);
     ptr.nestedArray.forEach(build);
 }
 

@@ -448,12 +448,12 @@ tape.test("feature resolution editions precedence", function(test) {
 
         test.same(root.lookup("Message").lookupEnum("SomeEnumInMessage")._features,
         {
-            enum_type: 'CLOSED',
+            enum_type: 'OPEN',
             field_presence: 'EXPLICIT',
-            json_format: 'LEGACY_BEST_EFFORT',
+            json_format: 'ALLOW',
             message_encoding: 'LENGTH_PREFIXED',
-            repeated_field_encoding: 'EXPANDED',
-            utf8_validation: 'NONE',
+            repeated_field_encoding: 'PACKED',
+            utf8_validation: 'VERIFY',
             amazing_feature: 'G'
         })
         test.end();
@@ -547,3 +547,163 @@ tape.test("feature resolution inferred proto2 presence", function(test) {
 
     test.end();
 });
+
+tape.test("feature resolution mixed syntax different package", function(test) {
+    var root = protobuf.parse(`syntax = "proto2";
+    package proto2;
+    message Message {
+        optional int32 default = 1;
+        required int32 required = 2;
+        repeated int32 unpacked = 3;
+    }`).root;
+    protobuf.parse(`syntax = "proto3";
+    package proto3;
+    message Message {
+        optional int32 explicit = 1;
+        int32 implicit = 2;
+        repeated int32 packed = 3;
+    }`, root);
+    root.resolveAll();
+
+    var proto2 = root.lookup("proto2.Message");
+    test.ok(proto2.fields.default.hasPresence, "proto2 uses explicit presence");
+    test.ok(proto2.fields.required.required, "proto2 has required fields");
+    test.notOk(proto2.fields.unpacked.packed, "proto2 is expanded by default");
+
+    var proto3 = root.lookup("proto3.Message");
+    test.ok(proto3.fields.explicit.hasPresence, "proto3 optional has explicit presence");
+    test.notOk(proto3.fields.implicit.hasPresence, "proto3 is implicit presence by default");
+    test.ok(proto3.fields.packed.packed, "proto3 is packed by default");
+
+    test.end();
+});
+
+tape.test("feature resolution mixed file features different package", function(test) {
+    var root = protobuf.parse(`edition = "2023";
+    package expanded;
+    option features.repeated_field_encoding = EXPANDED;
+    message Message {
+        repeated int32 expanded = 1;
+        repeated int32 packed = 2 [features.repeated_field_encoding = PACKED];
+    }`).root;
+    protobuf.parse(`edition = "2023";
+    package packed;
+    option features.repeated_field_encoding = PACKED;
+    message Message {
+        repeated int32 packed = 1;
+        repeated int32 expanded = 2 [features.repeated_field_encoding = EXPANDED];
+    }`, root);
+    root.resolveAll();
+
+    var expanded = root.lookup("expanded.Message");
+    test.notOk(expanded.fields.expanded.packed, "expanded by default");
+    test.ok(expanded.fields.packed.packed, "packed override");
+
+    var packed = root.lookup("packed.Message");
+    test.ok(packed.fields.packed.packed, "packed by default");
+    test.notOk(packed.fields.expanded.packed, "expanded override");
+
+    test.end();
+});
+
+tape.test("feature resolution mixed syntax same package", function(test) {
+    var root = protobuf.parse(`syntax = "proto2";
+    package foo;
+    message Message2 {
+        optional int32 default = 1;
+        required int32 required = 2;
+        repeated int32 unpacked = 3;
+    }`).root;
+    test.throws(
+        () => {
+            protobuf.parse(`syntax = "proto3";
+            package foo;`, root);
+        }, /incompatible editions/);
+
+    test.end();
+});
+
+/*
+// TODO: fix this!
+// These cases are bugged, because they dump file features into the same namespace!
+
+tape.test("feature resolution mixed file features same package", function(test) {
+    var root = protobuf.parse(`edition = "2023";
+    option features.repeated_field_encoding = EXPANDED;
+    message Message1 {
+        repeated int32 expanded = 1;
+        int32 explicit = 2;
+    }`).root;
+    protobuf.parse(`edition = "2023";
+    option features.field_presence = IMPLICIT;
+    message Message2 {
+        repeated int32 packed = 1;
+        int32 implicit = 3;
+    }`, root);
+    root.resolveAll();
+
+    var msg1 = root.lookup("Message1");
+    test.notOk(msg1.fields.expanded.packed, "expanded by default");
+    test.ok(msg1.fields.explicit.hasPresence, "explicit by default");
+
+    var msg2 = root.lookup("Message2");
+    test.ok(msg2.fields.packed.packed, "packed by default");
+    test.notOk(msg2.fields.implicit.hasPresence, "implicit by default");
+
+    test.end();
+});
+
+tape.test("feature resolution mixed file features same package", function(test) {
+    var root = protobuf.parse(`edition = "2023";
+    option features.repeated_field_encoding = EXPANDED;
+    message Message1 {
+        repeated int32 expanded = 1;
+        repeated int32 packed = 2 [features.repeated_field_encoding = PACKED];
+    }`).root;
+    protobuf.parse(`edition = "2023";
+    option features.repeated_field_encoding = PACKED;
+    message Message2 {
+        repeated int32 packed = 1;
+        repeated int32 expanded = 2 [features.repeated_field_encoding = EXPANDED];
+    }`, root);
+    root.resolveAll();
+
+    var expanded = root.lookup("Message1");
+    test.notOk(expanded.fields.expanded.packed, "expanded by default");
+    test.ok(expanded.fields.packed.packed, "packed override");
+
+    var packed = root.lookup("Message2");
+    test.ok(packed.fields.packed.packed, "packed by default");
+    test.notOk(packed.fields.expanded.packed, "expanded override");
+
+    test.end();
+});
+
+tape.test("feature resolution mixed syntax same package", function(test) {
+    var root = protobuf.parse(`syntax = "proto2";
+    message Message2 {
+        optional int32 default = 1;
+        required int32 required = 2;
+        repeated int32 unpacked = 3;
+    }`).root;
+    protobuf.parse(`syntax = "proto3";
+    message Message3 {
+        optional int32 explicit = 1;
+        int32 implicit = 2;
+        repeated int32 packed = 3;
+    }`, root);
+    root.resolveAll();
+
+    var proto2 = root.lookup("Message2");
+    test.ok(proto2.fields.default.hasPresence, "proto2 uses explicit presence");
+    test.ok(proto2.fields.required.required, "proto2 has required fields");
+    test.notOk(proto2.fields.unpacked.packed, "proto2 is expanded by default");
+
+    var proto3 = root.lookup("Message3");
+    test.ok(proto3.fields.explicit.hasPresence, "proto3 optional has explicit presence");
+    test.notOk(proto3.fields.implicit.hasPresence, "proto3 is implicit presence by default");
+    test.ok(proto3.fields.packed.packed, "proto3 is packed by default");
+
+    test.end();
+});
+*/

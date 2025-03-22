@@ -6,7 +6,7 @@ ReflectionObject.className = "ReflectionObject";
 const OneOf = require("./oneof");
 var util = require("./util");
 
-var Root; // cyclic
+var Root, Namespace; // cyclic
 
 /* eslint-disable no-warning-comments */
 // TODO: Replace with embedded proto.
@@ -163,7 +163,8 @@ ReflectionObject.prototype.onRemove = function onRemove(parent) {
 ReflectionObject.prototype.resolve = function resolve() {
     if (this.resolved)
         return this;
-    if (this instanceof Root || this.parent && this.parent.resolved) {
+    var edition = this.getOption("edition");
+    if ((this instanceof Namespace && edition) || (this.parent && this.parent.resolved)) {
         this._resolveFeatures();
         this.resolved = true;
     }
@@ -177,24 +178,27 @@ ReflectionObject.prototype.resolve = function resolve() {
 ReflectionObject.prototype._resolveFeatures = function _resolveFeatures() {
     var defaults = {};
 
-    var edition = this.root.getOption("edition");
-    if (this instanceof Root) {
-        if (this.root.getOption("syntax") === "proto3") {
+    var protoFeatures = Object.assign(Object.assign({}, this._protoFeatures), this._inferLegacyProtoFeatures(edition));
+
+    var edition = this.getOption("edition");
+    if (this instanceof Namespace && edition) {
+        // For a namespace marked with a specific edition, reset defaults.
+        if (edition === "proto2") {
+            defaults = Object.assign({}, proto2Defaults);
+        } else if (edition === "proto3") {
             defaults = Object.assign({}, proto3Defaults);
         } else if (edition === "2023") {
             defaults = Object.assign({}, editions2023Defaults);
         } else {
-            defaults = Object.assign({}, proto2Defaults);
+            throw new Error("Unknown edition: " + edition);
         }
+        this._features = Object.assign(defaults, protoFeatures || {});
+        return;
     }
 
-    var protoFeatures = Object.assign(Object.assign({}, this._protoFeatures), this._inferLegacyProtoFeatures(edition));
-
-    if (this instanceof Root) {
-        this._features = Object.assign(defaults, protoFeatures || {});
     // fields in Oneofs aren't actually children of them, so we have to
     // special-case it
-    } else if (this.partOf instanceof OneOf) {
+    if (this.partOf instanceof OneOf) {
         var lexicalParentFeaturesCopy = Object.assign({}, this.partOf._features);
         this._features = Object.assign(lexicalParentFeaturesCopy, protoFeatures || {});
     } else if (this.declaringField) {
@@ -241,8 +245,10 @@ ReflectionObject.prototype.getOption = function getOption(name) {
  * @returns {ReflectionObject} `this`
  */
 ReflectionObject.prototype.setOption = function setOption(name, value, ifNotSet) {
-    if (!ifNotSet || !this.options || this.options[name] === undefined)
+    if (!ifNotSet || !this.options || this.options[name] === undefined) {
+        if (this.getOption(name) !== value) this.resolved = false;
         (this.options || (this.options = {}))[name] = value;
+    }
     return this;
 };
 
@@ -318,6 +324,7 @@ ReflectionObject.prototype.toString = function toString() {
 };
 
 // Sets up cyclic dependencies (called in index-light)
-ReflectionObject._configure = function(Root_) {
+ReflectionObject._configure = function(Root_, Namespace_) {
     Root = Root_;
+    Namespace = Namespace_;
 };

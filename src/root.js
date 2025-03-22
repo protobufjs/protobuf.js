@@ -35,6 +35,9 @@ function Root(options) {
      * @type {string[]}
      */
     this.files = [];
+
+    // Default to proto2 if not specified.
+    this.setOption("edition", "proto2", true);
 }
 
 /**
