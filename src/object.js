@@ -68,17 +68,6 @@ function ReflectionObject(name, options) {
     this._features = {};
 
     /**
-     * Whether or not features have been resolved.
-     * @type {boolean}
-     */
-    this._featuresResolved = false;
-
-    /**
-     * Unresolved Features.
-     */
-    this._protoFeatures = null;
-
-    /**
      * Parent namespace.
      * @type {Namespace|null}
      */
@@ -205,17 +194,14 @@ ReflectionObject.prototype._resolveFeaturesRecursive = function _resolveFeatures
  * @returns {undefined}
  */
 ReflectionObject.prototype._resolveFeatures = function _resolveFeatures(edition) {
-    if (this._featuresResolved) {
-        return;
-    }
-
     var defaults = {};
 
     if (!edition) {
         throw new Error("Unknown edition for " + this.fullName);
     }
 
-    var protoFeatures = Object.assign(Object.assign({}, this._protoFeatures), this._inferLegacyProtoFeatures(edition));
+    var protoFeatures = Object.assign(this.options ? Object.assign({},  this.options.features) : {},
+        this._inferLegacyProtoFeatures(edition));
 
     if (this._edition) {
         // For a namespace marked with a specific edition, reset defaults.
@@ -248,9 +234,7 @@ ReflectionObject.prototype._resolveFeatures = function _resolveFeatures(edition)
     if (this.extensionField) {
         // Sister fields should have the same features as their extensions.
         this.extensionField._features = this._features;
-        this.extensionField._featuresResolved = true;
     }
-    this._featuresResolved = true;
 };
 
 /**
@@ -278,14 +262,25 @@ ReflectionObject.prototype.getOption = function getOption(name) {
  * Sets an option.
  * @param {string} name Option name
  * @param {*} value Option value
- * @param {boolean} [ifNotSet] Sets the option only if it isn't currently set
+ * @param {boolean|undefined} [ifNotSet] Sets the option only if it isn't currently set
  * @returns {ReflectionObject} `this`
  */
 ReflectionObject.prototype.setOption = function setOption(name, value, ifNotSet) {
-    if (!ifNotSet || !this.options || this.options[name] === undefined) {
+    if (!this.options)
+        this.options = {};
+    if (name === "features") {
+        if (ifNotSet) {
+            this.options.features = Object.assign(Object.assign({}, value), this.options.features || {});
+        } else {
+            this.options.features = Object.assign(this.options.features || {}, value);
+        }
+    } else if (/^features\./.test(name)) {
+        util.setProperty(this.options, name, value, ifNotSet);
+    } else if (!ifNotSet || this.options[name] === undefined) {
         if (this.getOption(name) !== value) this.resolved = false;
-        (this.options || (this.options = {}))[name] = value;
+        this.options[name] = value;
     }
+
     return this;
 };
 
@@ -324,12 +319,6 @@ ReflectionObject.prototype.setParsedOption = function setParsedOption(name, valu
         var newOpt = {};
         newOpt[name] = value;
         parsedOptions.push(newOpt);
-    }
-
-
-    if (isFeature) {
-        var features = parsedOptions.find(x => {return Object.prototype.hasOwnProperty.call(x, "features");});
-        this._protoFeatures = features.features || {};
     }
 
     return this;

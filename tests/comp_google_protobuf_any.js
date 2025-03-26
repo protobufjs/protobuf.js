@@ -2,26 +2,24 @@ var tape = require("tape");
 
 var protobuf = require("..");
 
-var root = protobuf.Root.fromJSON({
-    nested: {
-        Foo: {
-            fields: {
-                foo: {
-                    id: 1,
-                    type: "google.protobuf.Any"
-                }
+var root = new protobuf.Root().addJSON(protobuf.common["google/protobuf/any.proto"].nested).addJSON({
+    Foo: {
+        fields: {
+            foo: {
+                id: 1,
+                type: "google.protobuf.Any"
             }
-        },
-        Bar: {
-            fields: {
-                bar: {
-                    id: 1,
-                    type: "string"
-                }
+        }
+    },
+    Bar: {
+        fields: {
+            bar: {
+                id: 1,
+                type: "string"
             }
         }
     }
-}).addJSON(protobuf.common["google/protobuf/any.proto"].nested).resolveAll();
+}).resolveAll();
 
 var Any = root.lookupType("protobuf.Any"),
     Foo = root.lookupType(".Foo"),

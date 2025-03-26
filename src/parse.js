@@ -88,7 +88,6 @@ function parse(source, root, options) {
 
     var topLevelObjects = [];
     var topLevelOptions = {};
-    var topLevelParsedOptions = {};
 
     var applyCase = options.keepCase ? function(name) { return name; } : util.camelCase;
 
@@ -98,9 +97,6 @@ function parse(source, root, options) {
             Object.keys(topLevelOptions).forEach(opt => {
                 if (obj.getOption(opt) !== undefined) return;
                 obj.setOption(opt, topLevelOptions[opt]);
-                if (topLevelParsedOptions[opt.substring("features.".length)]) {
-                    obj.setParsedOption("features", topLevelParsedOptions[opt.substring("features.".length)], opt.substring("features.".length));
-                }
             });
         });
     }
@@ -769,10 +765,6 @@ function parse(source, root, options) {
     }
 
     function setParsedOption(parent, name, value, propName) {
-        if (ptr === parent && /^features$/.test(name)) {
-            topLevelParsedOptions[propName] = value;
-            return;
-        }
         if (parent.setParsedOption)
             parent.setParsedOption(name, value, propName);
     }

@@ -103,12 +103,37 @@ tape.test("unresolved feature options", function(test) {
         string string_repeated = 2;
     }`).root.resolveAll();
 
-    test.same(root.lookup("Message").options, {
-        "features.enum_type": "CLOSED",
-        "features.json_format": "LEGACY_BEST_EFFORT",
-        "features.(abc).d_e": "deeply_nested_false",
+    test.same(root.lookup("Message").options.features, {
+        "enum_type": "CLOSED",
+        "json_format": "LEGACY_BEST_EFFORT",
+        "(abc)": { "d_e": "deeply_nested_false" },
     });
 
+    test.end();
+});
+
+tape.test("aggregate feature parsing", function(test) {
+    var rootEditionsOverriden = protobuf.parse(`edition = "2023";
+    option features = {
+        json_format: LEGACY_BEST_EFFORT
+        field_presence: IMPLICIT
+    };
+
+    message Message {
+        option features = { utf8_validation: NONE };
+        string string_val = 1;
+        string string_repeated = 2 [features = { enum_type: CLOSED field_presence: LEGACY_REQUIRED }];
+    }`).root.resolveAll();
+
+    test.same(rootEditionsOverriden.lookup("Message").fields.stringRepeated._features, {
+        enum_type: 'CLOSED',
+        field_presence: 'LEGACY_REQUIRED',
+        json_format: 'LEGACY_BEST_EFFORT',
+        message_encoding: 'LENGTH_PREFIXED',
+        repeated_field_encoding: 'PACKED',
+        utf8_validation: 'NONE',
+    })
+    
     test.end();
 });
 

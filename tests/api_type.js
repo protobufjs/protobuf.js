@@ -123,12 +123,12 @@ tape.test("feature resolution legacy proto3", function(test) {
     test.same(Type.toJSON(), json, "JSON should roundtrip");
     test.same(Nested.toJSON(), json.nested.Nested, "nested JSON should roundtrip");
 
-    test.same(Type._edition, "proto3", "should infer proto3 syntax");
+    test.equal(Type._edition, "proto3", "should infer proto3 syntax");
     test.notOk(Type.fields.regular.hasPresence, "should have implicit presence by default");
     test.ok(Type.fields.packed.packed, "should have packed encoding by default");
     test.notOk(Type.fields.unpacked.packed, "should override expanded encoding");
 
-    test.same(Type._edition, "proto3", "should not infer proto3 syntax");
+    test.equal(Nested._edition, null, "should not infer proto3 syntax");
     test.notOk(Nested.fields.regular.hasPresence, "nested should have implicit presence by default");
     test.ok(Nested.fields.packed.packed, "nested should have packed encoding by default");
     test.notOk(Nested.fields.unpacked.packed, "nested should override expanded encoding");
@@ -160,13 +160,13 @@ tape.test("feature resolution proto2", function(test) {
     test.same(Type.toJSON(), json, "JSON should roundtrip");
     test.same(Nested.toJSON(), json.nested.Nested, "nested JSON should roundtrip");
 
-    test.same(Type._edition, "proto2", "should infer proto2 syntax");
+    test.equal(Type._edition, "proto2", "should set edition");
     test.ok(Type.fields.regular.hasPresence, "should have explicit presence by default");
     test.ok(Type.fields.required.required, "should have required fields");
     test.ok(Type.fields.packed.packed, "should override packed encoding");
     test.notOk(Type.fields.unpacked.packed, "should have expanded encoding by default");
 
-    test.same(Type._edition, "proto2", "should not infer proto2 syntax");
+    test.equal(Nested._edition, null, "should not set edition");
     test.ok(Nested.fields.regular.hasPresence, "nested should have explicit presence by default");
     test.notOk(Nested.fields.unpacked.packed, "nested should have expanded encoding by default");
     test.ok(Nested.fields.packed.packed, "nested should override packed encoding");
@@ -180,16 +180,16 @@ tape.test("feature resolution edition 2023", function(test) {
         edition: "2023",
         fields: {
             explicit: { type: "string", id: 1 },
-            implicit: { type: "string", id: 2, options: { "features.field_presence": "IMPLICIT" } },
-            required: { type: "string", id: 3, rule: "required", options: { "features.field_presence": "LEGACY_REQUIRED" } },
+            implicit: { type: "string", id: 2, options: { "features": { "field_presence": "IMPLICIT" } } },
+            required: { type: "string", id: 3, rule: "required", options: { "features": { "field_presence": "LEGACY_REQUIRED" } } },
             packed: { type: "int32", id: 4, rule: "repeated" },
-            unpacked: { type: "int32", id: 5, rule: "repeated", options: { "features.repeated_field_encoding": "EXPANDED" } }
+            unpacked: { type: "int32", id: 5, rule: "repeated", options: { "features": { "repeated_field_encoding": "EXPANDED" } } }
         },
         nested: { Nested: { fields: {
             explicit: { type: "string", id: 1 },
-            implicit: { type: "string", id: 2, options: { "features.field_presence": "IMPLICIT" } },
+            implicit: { type: "string", id: 2, options: { "features": { "field_presence": "IMPLICIT" } } },
             packed: { type: "int32", id: 3, rule: "repeated" },
-            unpacked: { type: "int32", id: 4, rule: "repeated", options: { "features.repeated_field_encoding": "EXPANDED" } }
+            unpacked: { type: "int32", id: 4, rule: "repeated", options: { "features": { "repeated_field_encoding": "EXPANDED" } } }
         } } }
     };
     var root = new protobuf.Root();
@@ -201,16 +201,14 @@ tape.test("feature resolution edition 2023", function(test) {
     test.same(Type.toJSON(), json, "JSON should roundtrip");
     test.same(Nested.toJSON(), json.nested.Nested, "nested JSON should roundtrip");
 
-    console.log(Type.fields.implicit._features);
-    console.log(Type.fields.implicit._protoFeatures);
-    test.same(Type._edition, "2023", "should infer proto2 syntax");
+    test.equal(Type._edition, "2023", "should set edition");
     test.ok(Type.fields.explicit.hasPresence, "should have explicit presence");
     test.notOk(Type.fields.implicit.hasPresence, "should have implicit presence");
     test.ok(Type.fields.required.required, "should have required presence");
     test.ok(Type.fields.packed.packed, "should have packed encoding");
     test.notOk(Type.fields.unpacked.packed, "should have expanded encoding");
 
-    test.same(Type._edition, "2023", "should not infer proto2 syntax");
+    test.equal(Nested._edition, null, "should not set edition");
     test.ok(Nested.fields.explicit.hasPresence, "nested should have explicit presence");
     test.notOk(Nested.fields.implicit.hasPresence, "nested should have implicit presence");
     test.ok(Nested.fields.packed.packed, "nested should have packed encoding");

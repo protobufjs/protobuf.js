@@ -189,12 +189,6 @@ export class Enum extends ReflectionObject {
     public reserved: (number[]|string)[];
 
     /**
-     * Resolves value features
-     * @returns `this`
-     */
-    public resolve(): Enum;
-
-    /**
      * Constructs an enum from an enum descriptor.
      * @param name Enum name
      * @param json Enum descriptor
@@ -906,11 +900,17 @@ export abstract class ReflectionObject {
     /** Unique name within its namespace. */
     public name: string;
 
-    /** Resolved Features. */
-    public _features: any;
+    /** The edition specified for this object.  Only relevant for top-level objects. */
+    public _edition: string;
 
-    /** Unresolved Features. */
-    public _protoFeatures: any;
+    /**
+     * The default edition to use for this object if none is specified.  For legacy reasons,
+     * this is proto2 except in the JSON parsing case where it was proto3.
+     */
+    public _defaultEdition: string;
+
+    /** Resolved Features. */
+    public _features: object;
 
     /** Parent namespace. */
     public parent: (Namespace|null);
@@ -954,8 +954,18 @@ export abstract class ReflectionObject {
      */
     public resolve(): ReflectionObject;
 
-    /** Resolves child features from parent features */
-    public _resolveFeatures(): void;
+    /**
+     * Resolves this objects editions features.
+     * @param edition The edition we're currently resolving for.
+     * @returns `this`
+     */
+    public _resolveFeaturesRecursive(edition: string): ReflectionObject;
+
+    /**
+     * Resolves child features from parent features
+     * @param edition The edition we're currently resolving for.
+     */
+    public _resolveFeatures(edition: string): void;
 
     /**
      * Infers features from legacy syntax that may have been specified differently.
@@ -979,7 +989,7 @@ export abstract class ReflectionObject {
      * @param [ifNotSet] Sets the option only if it isn't currently set
      * @returns `this`
      */
-    public setOption(name: string, value: any, ifNotSet?: boolean): ReflectionObject;
+    public setOption(name: string, value: any, ifNotSet?: (boolean|undefined)): ReflectionObject;
 
     /**
      * Sets a parsed option.
@@ -1003,6 +1013,12 @@ export abstract class ReflectionObject {
      * @returns Class name[, space, full name]
      */
     public toString(): string;
+
+    /**
+     * Converts the edition this object is pinned to for JSON format.
+     * @returns The edition string for JSON representation
+     */
+    public _editionToJSON(): (string|undefined);
 }
 
 /** Reflected oneof. */
@@ -2244,10 +2260,10 @@ export namespace util {
      * @param dst Destination object
      * @param path dot '.' delimited path of the property to set
      * @param value the value to set
-     * @param overWrite whether or not to concatenate the values into an array or overwrite; defaults to false.
+     * @param [ifNotSet] Sets the option only if it isn't currently set
      * @returns Destination object
      */
-    function setProperty(dst: { [k: string]: any }, path: string, value: object, overWrite: boolean): { [k: string]: any };
+    function setProperty(dst: { [k: string]: any }, path: string, value: object, ifNotSet?: (boolean|undefined)): { [k: string]: any };
 
     /** Decorator root (TypeScript). */
     let decorateRoot: Root;

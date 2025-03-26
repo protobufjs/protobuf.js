@@ -102,7 +102,7 @@ function buildRoot(root) {
     if (pkg.length)
         out.push("", "package " + pkg.join(".") + ";");
 
-    buildOptions(ptr, ["edition"]);
+    buildOptions(ptr);
     ptr.nestedArray.forEach(build);
 }
 
@@ -235,7 +235,7 @@ function buildFieldOptions(field) {
     }
     var sb = [];
     keys.forEach(function(key) {
-        if (key === "proto3_optional" || key === "packed" || key.startsWith("features.")) return;
+        if (key === "proto3_optional" || key === "packed" || key === "features") return;
 
         var val = field.options[key];
         switch (key) {
@@ -330,7 +330,7 @@ function buildOptions(object, ignore = []) {
         return;
     first = true;
     Object.keys(object.options).forEach(function(key) {
-        if (ignore.includes(key) || key.startsWith("features.") || key === "edition") return;
+        if (ignore.includes(key) || key === "features") return;
         if (first) {
             first = false;
             push("");
