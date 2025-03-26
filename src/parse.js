@@ -86,7 +86,24 @@ function parse(source, root, options) {
 
     var ptr = root;
 
+    var topLevelObjects = [];
+    var topLevelOptions = {};
+    var topLevelParsedOptions = {};
+
     var applyCase = options.keepCase ? function(name) { return name; } : util.camelCase;
+
+    function resolveFileFeatures() {
+        topLevelObjects.forEach(obj => {
+            obj._edition = edition;
+            Object.keys(topLevelOptions).forEach(opt => {
+                if (obj.getOption(opt) !== undefined) return;
+                obj.setOption(opt, topLevelOptions[opt]);
+                if (topLevelParsedOptions[opt.substring("features.".length)]) {
+                    obj.setParsedOption("features", topLevelParsedOptions[opt.substring("features.".length)], opt.substring("features.".length));
+                }
+            });
+        });
+    }
 
     /* istanbul ignore next */
     function illegal(token, name, insideTryCatch) {
@@ -239,11 +256,6 @@ function parse(source, root, options) {
 
         ptr = ptr.define(pkg);
 
-        var oldEdition = ptr.getOption("edition");
-        if (oldEdition && oldEdition !== edition) {
-            throw new Error("incompatible editions detected in package " + pkg + ": " + edition + " vs " + oldEdition);
-        }
-        ptr.setOption("edition", edition);
         skip(";");
     }
 
@@ -277,10 +289,6 @@ function parse(source, root, options) {
         if (!isProto3 && !isProto2)
             throw illegal(edition, "syntax");
 
-        // Syntax is needed to understand the meaning of the optional field rule
-        // Otherwise the meaning is ambiguous between proto2 and proto3
-        root.setOption("edition", edition);
-
         skip(";");
     }
 
@@ -294,8 +302,6 @@ function parse(source, root, options) {
         /* istanbul ignore if */
         if (!supportedEditions.includes(edition))
             throw illegal(edition, "edition");
-
-        root.setOption("edition", edition);
 
         skip(";");
     }
@@ -410,6 +416,9 @@ function parse(source, root, options) {
             }
         });
         parent.add(type);
+        if (parent === ptr) {
+            topLevelObjects.push(type);
+        }
     }
 
     function parseField(parent, rule, extend) {
@@ -466,6 +475,9 @@ function parse(source, root, options) {
             parent.add(oneof);
         } else {
             parent.add(field);
+        }
+        if (parent === ptr) {
+            topLevelObjects.push(field);
         }
     }
 
@@ -604,6 +616,9 @@ function parse(source, root, options) {
           }
         });
         parent.add(enm);
+        if (parent === ptr) {
+            topLevelObjects.push(enm);
+        }
     }
 
     function parseEnumValue(parent, token) {
@@ -745,11 +760,19 @@ function parse(source, root, options) {
     }
 
     function setOption(parent, name, value) {
+        if (ptr === parent && /^features\./.test(name)) {
+            topLevelOptions[name] = value;
+            return;
+        }
         if (parent.setOption)
             parent.setOption(name, value);
     }
 
     function setParsedOption(parent, name, value, propName) {
+        if (ptr === parent && /^features$/.test(name)) {
+            topLevelParsedOptions[propName] = value;
+            return;
+        }
         if (parent.setParsedOption)
             parent.setParsedOption(name, value, propName);
     }
@@ -783,6 +806,9 @@ function parse(source, root, options) {
                 throw illegal(token);
         });
         parent.add(service);
+        if (parent === ptr) {
+            topLevelObjects.push(service);
+        }
     }
 
     function parseMethod(parent, token) {
@@ -925,6 +951,8 @@ function parse(source, root, options) {
                 throw illegal(token);
         }
     }
+
+    resolveFileFeatures();
 
     parse.filename = null;
     return {

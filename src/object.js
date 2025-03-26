@@ -49,9 +49,29 @@ function ReflectionObject(name, options) {
     this.name = name;
 
     /**
+     * The edition specified for this object.  Only relevant for top-level objects.
+     * @type {string}
+     */
+    this._edition = null;
+
+    /**
+     * The default edition to use for this object if none is specified.  For legacy reasons,
+     * this is proto2 except in the JSON parsing case where it was proto3.
+     * @type {string}
+     */
+    this._defaultEdition = "proto2";
+
+    /**
      * Resolved Features.
+     * @type {object}
      */
     this._features = {};
+
+    /**
+     * Whether or not features have been resolved.
+     * @type {boolean}
+     */
+    this._featuresResolved = false;
 
     /**
      * Unresolved Features.
@@ -163,25 +183,41 @@ ReflectionObject.prototype.onRemove = function onRemove(parent) {
 ReflectionObject.prototype.resolve = function resolve() {
     if (this.resolved)
         return this;
-    var edition = this.getOption("edition");
-    if ((this instanceof Namespace && edition) || (this.parent && this.parent.resolved)) {
-        this._resolveFeatures();
+    if (this instanceof Root) {
+        this._resolveFeaturesRecursive(this._edition);
         this.resolved = true;
     }
     return this;
 };
 
 /**
+ * Resolves this objects editions features.
+ * @param {string} edition The edition we're currently resolving for.
+ * @returns {ReflectionObject} `this`
+ */
+ReflectionObject.prototype._resolveFeaturesRecursive = function _resolveFeaturesRecursive(edition) {
+    return this._resolveFeatures(this._edition || edition);
+};
+
+/**
  * Resolves child features from parent features
+ * @param {string} edition The edition we're currently resolving for.
  * @returns {undefined}
  */
-ReflectionObject.prototype._resolveFeatures = function _resolveFeatures() {
+ReflectionObject.prototype._resolveFeatures = function _resolveFeatures(edition) {
+    if (this._featuresResolved) {
+        return;
+    }
+
     var defaults = {};
+
+    if (!edition) {
+        throw new Error("Unknown edition for " + this.fullName);
+    }
 
     var protoFeatures = Object.assign(Object.assign({}, this._protoFeatures), this._inferLegacyProtoFeatures(edition));
 
-    var edition = this.getOption("edition");
-    if (this instanceof Namespace && edition) {
+    if (this._edition) {
         // For a namespace marked with a specific edition, reset defaults.
         if (edition === "proto2") {
             defaults = Object.assign({}, proto2Defaults);
@@ -212,7 +248,9 @@ ReflectionObject.prototype._resolveFeatures = function _resolveFeatures() {
     if (this.extensionField) {
         // Sister fields should have the same features as their extensions.
         this.extensionField._features = this._features;
+        this.extensionField._featuresResolved = true;
     }
+    this._featuresResolved = true;
 };
 
 /**
@@ -220,7 +258,6 @@ ReflectionObject.prototype._resolveFeatures = function _resolveFeatures() {
  * in older editions.
  * @param {string|undefined} edition The edition this proto is on, or undefined if pre-editions
  * @returns {object} The feature values to override
- * @abstract
  */
 ReflectionObject.prototype._inferLegacyProtoFeatures = function _inferLegacyProtoFeatures(/*edition*/) {
     return {};
@@ -322,6 +359,19 @@ ReflectionObject.prototype.toString = function toString() {
         return className + " " + fullName;
     return className;
 };
+
+/**
+ * Converts the edition this object is pinned to for JSON format.
+ * @returns {string|undefined} The edition string for JSON representation
+ */
+ReflectionObject.prototype._editionToJSON = function _editionToJSON() {
+    if (!this._edition || this._edition === "proto3") {
+        // Avoid emitting proto3 since we need to default to it for backwards
+        // compatibility anyway.
+        return undefined;
+    }
+    return this._edition;
+}
 
 // Sets up cyclic dependencies (called in index-light)
 ReflectionObject._configure = function(Root_, Namespace_) {

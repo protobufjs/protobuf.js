@@ -66,11 +66,11 @@ var tape = require("tape");
 
 var protobuf = require("..");
 
-var protoEditions2023 = `edition = "2023";`;
+var protoEditions2023 = `edition = "2023";  message Foo {}`;
 
-var proto2 = `syntax = "proto2";`;
+var proto2 = `syntax = "proto2";  message Foo {}`;
 
-var proto3 = `syntax = "proto3";`;
+var proto3 = `syntax = "proto3";  message Foo {}`;
 
 var editions2023Defaults = {enum_type: 'OPEN', field_presence: 'EXPLICIT', json_format: 'ALLOW', message_encoding: 'LENGTH_PREFIXED', repeated_field_encoding: 'PACKED', utf8_validation: 'VERIFY'}
 var proto2Defaults = {enum_type: 'CLOSED', field_presence: 'EXPLICIT', json_format: 'LEGACY_BEST_EFFORT', message_encoding: 'LENGTH_PREFIXED', repeated_field_encoding: 'EXPANDED', utf8_validation: 'NONE'}
@@ -79,15 +79,15 @@ var proto3Defaults = {enum_type: 'OPEN', field_presence: 'IMPLICIT', json_format
 tape.test("feature resolution defaults", function(test) {
     var rootEditions = protobuf.parse(protoEditions2023).root;
     rootEditions.resolveAll();
-    test.same(rootEditions._features, editions2023Defaults);
+    test.same(rootEditions.Foo._features, editions2023Defaults);
 
     var rootProto2 = protobuf.parse(proto2).root;
     rootProto2.resolveAll();
-    test.same(rootProto2._features, proto2Defaults);
+    test.same(rootProto2.Foo._features, proto2Defaults);
 
     var rootProto3 = protobuf.parse(proto3).root;
     rootProto3.resolveAll();
-    test.same(rootProto3._features, proto3Defaults);
+    test.same(rootProto3.Foo._features, proto3Defaults);
 
     test.end();
 })
@@ -105,9 +105,6 @@ tape.test("unresolved feature options", function(test) {
 
     test.same(root.lookup("Message").options, {
         "features.enum_type": "CLOSED",
-    });
-    test.same(root.options, {
-        "edition": "2023",
         "features.json_format": "LEGACY_BEST_EFFORT",
         "features.(abc).d_e": "deeply_nested_false",
     });
@@ -606,27 +603,6 @@ tape.test("feature resolution mixed file features different package", function(t
     test.end();
 });
 
-tape.test("feature resolution mixed syntax same package", function(test) {
-    var root = protobuf.parse(`syntax = "proto2";
-    package foo;
-    message Message2 {
-        optional int32 default = 1;
-        required int32 required = 2;
-        repeated int32 unpacked = 3;
-    }`).root;
-    test.throws(
-        () => {
-            protobuf.parse(`syntax = "proto3";
-            package foo;`, root);
-        }, /incompatible editions/);
-
-    test.end();
-});
-
-/*
-// TODO: fix this!
-// These cases are bugged, because they dump file features into the same namespace!
-
 tape.test("feature resolution mixed file features same package", function(test) {
     var root = protobuf.parse(`edition = "2023";
     option features.repeated_field_encoding = EXPANDED;
@@ -706,4 +682,4 @@ tape.test("feature resolution mixed syntax same package", function(test) {
 
     test.end();
 });
-*/
+

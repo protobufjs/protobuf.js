@@ -35,7 +35,11 @@ var ruleRe = /^required|optional|repeated$/;
  * @throws {TypeError} If arguments are invalid
  */
 Field.fromJSON = function fromJSON(name, json) {
-    return new Field(name, json.id, json.type, json.rule, json.extend, json.options, json.comment);
+    var field = new Field(name, json.id, json.type, json.rule, json.extend, json.options, json.comment);
+    if (json.edition)
+        field._edition = json.edition;
+    field._defaultEdition = "proto3";  // For backwards-compatibility.
+    return field;
 };
 
 /**
@@ -276,6 +280,7 @@ Field.prototype.setOption = function setOption(name, value, ifNotSet) {
 Field.prototype.toJSON = function toJSON(toJSONOptions) {
     var keepComments = toJSONOptions ? Boolean(toJSONOptions.keepComments) : false;
     return util.toObject([
+        "edition" , this._editionToJSON(),
         "rule"    , this.rule !== "optional" && this.rule || undefined,
         "type"    , this.type,
         "id"      , this.id,
@@ -360,9 +365,12 @@ Field.prototype.resolve = function resolve() {
  * @returns {object} The feature values to override
  */
 Field.prototype._inferLegacyProtoFeatures = function _inferLegacyProtoFeatures(edition) {
-    if (edition) return {};
+    if (edition !== "proto2" && edition !== "proto3") {
+        return;
+    }
 
     var features = {};
+    this.resolve();
     if (this.rule === "required") {
         features.field_presence = "LEGACY_REQUIRED";
     }
@@ -375,6 +383,13 @@ Field.prototype._inferLegacyProtoFeatures = function _inferLegacyProtoFeatures(e
         features.repeated_field_encoding = "EXPANDED";
     }
     return features;
+};
+
+/**
+ * @override
+ */
+Field.prototype._resolveFeatures = function _resolveFeatures(edition) {
+    return ReflectionObject.prototype._resolveFeatures.call(this, this._edition || edition);
 };
 
 /**

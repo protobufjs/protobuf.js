@@ -330,7 +330,7 @@ function buildOptions(object, ignore = []) {
         return;
     first = true;
     Object.keys(object.options).forEach(function(key) {
-        if (ignore.includes(key) || key.startsWith("features.")) return;
+        if (ignore.includes(key) || key.startsWith("features.") || key === "edition") return;
         if (first) {
             first = false;
             push("");

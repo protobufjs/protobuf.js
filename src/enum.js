@@ -85,20 +85,19 @@ function Enum(name, values, options, comment, comments, valuesOptions) {
 }
 
 /**
- * Resolves value features
- * @returns {Enum} `this`
+ * @override
  */
-Enum.prototype.resolve = function resolve() {
-    ReflectionObject.prototype.resolve.call(this);
+Enum.prototype._resolveFeatures = function _resolveFeatures(edition) {
+    var edition = this._edition || edition;
+    ReflectionObject.prototype._resolveFeatures.call(this, edition);
 
-    for (var key of Object.keys(this._valuesProtoFeatures)) {
+    Object.keys(this._valuesProtoFeatures).forEach(key => {
         var parentFeaturesCopy = Object.assign({}, this._features);
         this._valuesFeatures[key] = Object.assign(parentFeaturesCopy, this._valuesProtoFeatures[key] || {});
-    }
+    });
 
     return this;
 };
-
 
 /**
  * Enum descriptor.
@@ -117,6 +116,9 @@ Enum.prototype.resolve = function resolve() {
 Enum.fromJSON = function fromJSON(name, json) {
     var enm = new Enum(name, json.values, json.options, json.comment, json.comments);
     enm.reserved = json.reserved;
+    if (json.edition)
+        enm._edition = json.edition;
+    enm._defaultEdition = "proto3";  // For backwards-compatibility.
     return enm;
 };
 
@@ -128,6 +130,7 @@ Enum.fromJSON = function fromJSON(name, json) {
 Enum.prototype.toJSON = function toJSON(toJSONOptions) {
     var keepComments = toJSONOptions ? Boolean(toJSONOptions.keepComments) : false;
     return util.toObject([
+        "edition"       , this._editionToJSON(),
         "options"       , this.options,
         "valuesOptions" , this.valuesOptions,
         "values"        , this.values,

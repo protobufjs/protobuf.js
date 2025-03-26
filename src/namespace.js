@@ -240,6 +240,15 @@ Namespace.prototype.add = function add(object) {
         }
     }
     this.nested[object.name] = object;
+
+    if (!(this instanceof Type || this instanceof Service || this instanceof Enum || this instanceof Field)) {
+        // This is a package or a root namespace.
+        if (!object._edition) {
+            // Make sure that some edition is set if it hasn't already been specified.
+            object._edition = object._defaultEdition;
+        }
+    }
+
     object.onAdd(this);
     return clearCache(this);
 };
@@ -308,6 +317,19 @@ Namespace.prototype.resolveAll = function resolveAll() {
             nested[i++].resolveAll();
         else
             nested[i++].resolve();
+    return this;
+};
+
+/**
+ * @override
+ */
+Namespace.prototype._resolveFeaturesRecursive = function _resolveFeaturesRecursive(edition) {
+    var edition = this._edition || edition;
+
+    ReflectionObject.prototype._resolveFeaturesRecursive.call(this, edition);
+    this.nestedArray.forEach(nested => {
+        nested._resolveFeaturesRecursive(edition);
+    });
     return this;
 };
 

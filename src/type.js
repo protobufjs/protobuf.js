@@ -234,7 +234,7 @@ function clearCache(type) {
  * @param {IType} json Message type descriptor
  * @returns {Type} Created message type
  */
-Type.fromJSON = function fromJSON(name, json) {
+Type.fromJSON = function fromJSON(name, json, nested) {
     var type = new Type(name, json.options);
     type.extensions = json.extensions;
     type.reserved = json.reserved;
@@ -272,6 +272,9 @@ Type.fromJSON = function fromJSON(name, json) {
         type.group = true;
     if (json.comment)
         type.comment = json.comment;
+    if (json.edition)
+        type._edition = json.edition;
+    type._defaultEdition = "proto3";  // For backwards-compatibility.
     return type;
 };
 
@@ -284,6 +287,7 @@ Type.prototype.toJSON = function toJSON(toJSONOptions) {
     var inherited = Namespace.prototype.toJSON.call(this, toJSONOptions);
     var keepComments = toJSONOptions ? Boolean(toJSONOptions.keepComments) : false;
     return util.toObject([
+        "edition"    , this._editionToJSON(),
         "options"    , inherited && inherited.options || undefined,
         "oneofs"     , Namespace.arrayToJSON(this.oneofsArray, toJSONOptions),
         "fields"     , Namespace.arrayToJSON(this.fieldsArray.filter(function(obj) { return !obj.declaringField; }), toJSONOptions) || {},
@@ -306,6 +310,22 @@ Type.prototype.resolveAll = function resolveAll() {
     var fields = this.fieldsArray, i = 0;
     while (i < fields.length)
         fields[i++].resolve();
+    return this;
+};
+
+/**
+ * @override
+ */
+Type.prototype._resolveFeaturesRecursive = function _resolveFeaturesRecursive(edition) {
+    var edition = this._edition || edition;
+
+    Namespace.prototype._resolveFeaturesRecursive.call(this, edition);
+    this.oneofsArray.forEach(oneof => {
+        oneof._resolveFeatures(edition);        
+    });
+    this.fieldsArray.forEach(field => {
+        field._resolveFeatures(edition);        
+    });
     return this;
 };
 

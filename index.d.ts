@@ -279,8 +279,23 @@ export class Field extends FieldBase {
      */
     public static fromJSON(name: string, json: IField): Field;
 
-    /** Determines whether this field is packed. Only relevant when repeated and working with proto2. */
+    /** Determines whether this field is required. */
+    public readonly required: boolean;
+
+    /** Determines whether this field is not required. */
+    public readonly optional: boolean;
+
+    /**
+     * Determines whether this field uses tag-delimited encoding.  In proto2 this
+     * corresponded to group syntax.
+     */
+    public readonly delimited: boolean;
+
+    /** Determines whether this field is packed. Only relevant when repeated. */
     public readonly packed: boolean;
+
+    /** Determines whether this field tracks presence. */
+    public readonly hasPresence: boolean;
 
     /**
      * Field decorator (TypeScript).
@@ -325,12 +340,6 @@ export class FieldBase extends ReflectionObject {
 
     /** Extended type if different from parent. */
     public extend?: string;
-
-    /** Whether this field is required. */
-    public required: boolean;
-
-    /** Whether this field is optional. */
-    public optional: boolean;
 
     /** Whether this field is repeated. */
     public repeated: boolean;
@@ -381,6 +390,14 @@ export class FieldBase extends ReflectionObject {
      * @throws {Error} If any reference cannot be resolved
      */
     public resolve(): Field;
+
+    /**
+     * Infers field features from legacy syntax that may have been specified differently.
+     * in older editions.
+     * @param edition The edition this proto is on, or undefined if pre-editions
+     * @returns The feature values to override
+     */
+    public _inferLegacyProtoFeatures(edition: (string|undefined)): object;
 }
 
 /** Field descriptor. */
@@ -941,6 +958,14 @@ export abstract class ReflectionObject {
     public _resolveFeatures(): void;
 
     /**
+     * Infers features from legacy syntax that may have been specified differently.
+     * in older editions.
+     * @param edition The edition this proto is on, or undefined if pre-editions
+     * @returns The feature values to override
+     */
+    public _inferLegacyProtoFeatures(edition: (string|undefined)): object;
+
+    /**
      * Gets an option value.
      * @param name Option name
      * @returns Option value or `undefined` if not set
@@ -1032,6 +1057,13 @@ export class OneOf extends ReflectionObject {
     public remove(field: Field): OneOf;
 
     /**
+     * Determines whether this field corresponds to a synthetic oneof created for
+     * a proto3 optional field.  No behavioral logic should depend on this, but it
+     * can be relevant for reflection.
+     */
+    public readonly isProto3Optional: boolean;
+
+    /**
      * OneOf decorator (TypeScript).
      * @param fieldNames Field names
      * @returns Decorator function
@@ -1075,9 +1107,6 @@ export interface IParserResult {
 
     /** Weak imports, if any */
     weakImports: (string[]|undefined);
-
-    /** Syntax, if specified (either `"proto2"` or `"proto3"`) */
-    syntax: (string|undefined);
 
     /** Populated root instance */
     root: Root;
