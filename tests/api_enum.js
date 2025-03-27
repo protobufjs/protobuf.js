@@ -6,7 +6,7 @@ tape.test("reflected enums", function(test) {
 
     var enm = new protobuf.Enum("Test", {
         a: 1,
-        b: 2
+        b: 2,
     });
 
     var enm_allow_alias = new protobuf.Enum( 'AliasTest',
@@ -86,6 +86,17 @@ tape.test("reflected enums", function(test) {
             '(test_option)': 'test_value'
         }
     });
+    enm.remove("e");
+    test.same( enm.valuesOptions, {}, "should clean up value options");
+
+    enm.reserved = [[100,200], "BAD_NAME"];
+    test.throws(function() {
+        enm.add("d", 101);
+    }, Error, "should throw if id is a reserved number");
+
+    test.throws(function() {
+        enm.add("BAD_NAME", 5);
+    }, Error, "should throw if id is a reserved name");
 
     test.end();
 });

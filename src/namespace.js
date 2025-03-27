@@ -324,7 +324,7 @@ Namespace.prototype.resolveAll = function resolveAll() {
  * @override
  */
 Namespace.prototype._resolveFeaturesRecursive = function _resolveFeaturesRecursive(edition) {
-    var edition = this._edition || edition;
+    edition = this._edition || edition;
 
     ReflectionObject.prototype._resolveFeaturesRecursive.call(this, edition);
     this.nestedArray.forEach(nested => {

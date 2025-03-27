@@ -6,7 +6,7 @@ ReflectionObject.className = "ReflectionObject";
 const OneOf = require("./oneof");
 var util = require("./util");
 
-var Root, Namespace; // cyclic
+var Root; // cyclic
 
 /* eslint-disable no-warning-comments */
 // TODO: Replace with embedded proto.
@@ -196,6 +196,7 @@ ReflectionObject.prototype._resolveFeaturesRecursive = function _resolveFeatures
 ReflectionObject.prototype._resolveFeatures = function _resolveFeatures(edition) {
     var defaults = {};
 
+    /* istanbul ignore if */
     if (!edition) {
         throw new Error("Unknown edition for " + this.fullName);
     }
@@ -205,6 +206,7 @@ ReflectionObject.prototype._resolveFeatures = function _resolveFeatures(edition)
 
     if (this._edition) {
         // For a namespace marked with a specific edition, reset defaults.
+        /* istanbul ignore else */
         if (edition === "proto2") {
             defaults = Object.assign({}, proto2Defaults);
         } else if (edition === "proto3") {
@@ -220,6 +222,7 @@ ReflectionObject.prototype._resolveFeatures = function _resolveFeatures(edition)
 
     // fields in Oneofs aren't actually children of them, so we have to
     // special-case it
+    /* istanbul ignore else */
     if (this.partOf instanceof OneOf) {
         var lexicalParentFeaturesCopy = Object.assign({}, this.partOf._features);
         this._features = Object.assign(lexicalParentFeaturesCopy, protoFeatures || {});
@@ -229,7 +232,7 @@ ReflectionObject.prototype._resolveFeatures = function _resolveFeatures(edition)
         var parentFeaturesCopy = Object.assign({}, this.parent._features);
         this._features = Object.assign(parentFeaturesCopy, protoFeatures || {});
     } else {
-        this._features = Object.assign({}, protoFeatures);
+        throw new Error("Unable to find a parent for " + this.fullName);
     }
     if (this.extensionField) {
         // Sister fields should have the same features as their extensions.
@@ -268,13 +271,7 @@ ReflectionObject.prototype.getOption = function getOption(name) {
 ReflectionObject.prototype.setOption = function setOption(name, value, ifNotSet) {
     if (!this.options)
         this.options = {};
-    if (name === "features") {
-        if (ifNotSet) {
-            this.options.features = Object.assign(Object.assign({}, value), this.options.features || {});
-        } else {
-            this.options.features = Object.assign(this.options.features || {}, value);
-        }
-    } else if (/^features\./.test(name)) {
+    if (/^features\./.test(name)) {
         util.setProperty(this.options, name, value, ifNotSet);
     } else if (!ifNotSet || this.options[name] === undefined) {
         if (this.getOption(name) !== value) this.resolved = false;
@@ -295,7 +292,6 @@ ReflectionObject.prototype.setParsedOption = function setParsedOption(name, valu
     if (!this.parsedOptions) {
         this.parsedOptions = [];
     }
-    var isFeature = /^features$/.test(name);
     var parsedOptions = this.parsedOptions;
     if (propName) {
         // If setting a sub property of an option then try to merge it
@@ -360,10 +356,9 @@ ReflectionObject.prototype._editionToJSON = function _editionToJSON() {
         return undefined;
     }
     return this._edition;
-}
+};
 
 // Sets up cyclic dependencies (called in index-light)
-ReflectionObject._configure = function(Root_, Namespace_) {
+ReflectionObject._configure = function(Root_) {
     Root = Root_;
-    Namespace = Namespace_;
 };

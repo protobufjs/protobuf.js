@@ -95,3 +95,17 @@ tape.test("packed repeated values encode", function(top) {
 
     top.end()
 });
+
+tape.test("packed unpackable fields", function(test) {
+    var root = protobuf.parse(`message Test {
+      repeated Test a = 1 [packed = true];
+      repeated Test b = 2 [packed = true, foo = true];
+    }`).root.resolveAll();
+    var Test = root.lookup("Test");
+
+    test.equal(Test.fields.a.options, undefined, "should have no options")
+    test.equal(Test.fields.b.options.packed, undefined, "should have no packed option")
+    test.equal(Test.fields.b.options.foo, true, "should retain other option")
+
+    test.end();
+});

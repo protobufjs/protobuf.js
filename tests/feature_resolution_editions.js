@@ -115,12 +115,16 @@ tape.test("unresolved feature options", function(test) {
 tape.test("aggregate feature parsing", function(test) {
     var rootEditionsOverriden = protobuf.parse(`edition = "2023";
     option features = {
+        utf8_validation: VERIFY
         json_format: LEGACY_BEST_EFFORT
         field_presence: IMPLICIT
     };
 
     message Message {
-        option features = { utf8_validation: NONE };
+        option features = {
+            utf8_validation: NONE
+            enum_type: OPEN
+        };
         string string_val = 1;
         string string_repeated = 2 [features = { enum_type: CLOSED field_presence: LEGACY_REQUIRED }];
     }`).root.resolveAll();
@@ -557,15 +561,17 @@ tape.test("feature resolution inferred proto2 presence", function(test) {
     message Message {
         optional int32 default = 1;
         required int32 required = 2;
+        repeated int32 repeated = 3;
     }`).root.resolveAll();
 
     var msg = root.lookup("Message");
-    test.ok(msg.fields.default.optional)
-    test.notOk(msg.fields.default.required)
-    test.equal(msg.fields.default._features.field_presence, "EXPLICIT")
-    test.notOk(msg.fields.required.optional)
-    test.ok(msg.fields.required.required)
-    test.equal(msg.fields.required._features.field_presence, "LEGACY_REQUIRED")
+    test.ok(msg.fields.default.optional);
+    test.notOk(msg.fields.default.required);
+    test.ok(msg.fields.default.hasPresence);
+    test.notOk(msg.fields.required.optional);
+    test.ok(msg.fields.required.required);
+    test.equal(msg.fields.required._features.field_presence, "LEGACY_REQUIRED");
+    test.notOk(msg.fields.repeated.hasPresence, "repeated fields never have presence");
 
     test.end();
 });

@@ -366,7 +366,7 @@ Field.prototype.resolve = function resolve() {
  */
 Field.prototype._inferLegacyProtoFeatures = function _inferLegacyProtoFeatures(edition) {
     if (edition !== "proto2" && edition !== "proto3") {
-        return;
+        return {};
     }
 
     var features = {};

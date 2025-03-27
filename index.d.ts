@@ -182,9 +182,6 @@ export class Enum extends ReflectionObject {
     /** Resolved values features, if any */
     public _valuesFeatures?: { [k: string]: { [k: string]: any } };
 
-    /** Unresolved values features, if any */
-    public _valuesProtoFeatures?: { [k: string]: { [k: string]: any } };
-
     /** Reserved ranges, if any. */
     public reserved: (number[]|string)[];
 

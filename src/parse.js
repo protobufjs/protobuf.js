@@ -96,7 +96,7 @@ function parse(source, root, options) {
             obj._edition = edition;
             Object.keys(topLevelOptions).forEach(opt => {
                 if (obj.getOption(opt) !== undefined) return;
-                obj.setOption(opt, topLevelOptions[opt]);
+                obj.setOption(opt, topLevelOptions[opt], true);
             });
         });
     }
@@ -628,18 +628,13 @@ function parse(source, root, options) {
             dummy = {
                 options: undefined
             };
-        dummy.setOption = function(name, value) {
-            if (this.options === undefined)
-                this.options = {};
-
-            this.options[name] = value;
+        dummy.getOption = function(name) {
+            return this.options[name];
         };
-        dummy.setParsedOption = function(name, value, propName) {
-            // In order to not change existing behavior, only calling
-            // this for features
-            if (/^features$/.test(name)) {
-                return ReflectionObject.prototype.setParsedOption.call(dummy, name, value, propName);
-            }
+        dummy.setOption = function(name, value) {
+            ReflectionObject.prototype.setOption.call(dummy, name, value);
+        };
+        dummy.setParsedOption = function() {
             return undefined;
         };
         ifBlock(dummy, function parseEnumValue_block(token) {

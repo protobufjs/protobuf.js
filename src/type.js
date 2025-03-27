@@ -234,7 +234,7 @@ function clearCache(type) {
  * @param {IType} json Message type descriptor
  * @returns {Type} Created message type
  */
-Type.fromJSON = function fromJSON(name, json, nested) {
+Type.fromJSON = function fromJSON(name, json) {
     var type = new Type(name, json.options);
     type.extensions = json.extensions;
     type.reserved = json.reserved;
@@ -317,14 +317,14 @@ Type.prototype.resolveAll = function resolveAll() {
  * @override
  */
 Type.prototype._resolveFeaturesRecursive = function _resolveFeaturesRecursive(edition) {
-    var edition = this._edition || edition;
+    edition = this._edition || edition;
 
     Namespace.prototype._resolveFeaturesRecursive.call(this, edition);
     this.oneofsArray.forEach(oneof => {
-        oneof._resolveFeatures(edition);        
+        oneof._resolveFeatures(edition);
     });
     this.fieldsArray.forEach(field => {
-        field._resolveFeatures(edition);        
+        field._resolveFeatures(edition);
     });
     return this;
 };

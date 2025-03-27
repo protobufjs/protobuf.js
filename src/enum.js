@@ -63,12 +63,6 @@ function Enum(name, values, options, comment, comments, valuesOptions) {
     this._valuesFeatures = {};
 
     /**
-     * Unresolved values features, if any
-     * @type {Object<string, Object<string, *>>|undefined}
-     */
-    this._valuesProtoFeatures = {};
-
-    /**
      * Reserved ranges, if any.
      * @type {Array.<number[]|string>}
      */
@@ -88,12 +82,12 @@ function Enum(name, values, options, comment, comments, valuesOptions) {
  * @override
  */
 Enum.prototype._resolveFeatures = function _resolveFeatures(edition) {
-    var edition = this._edition || edition;
+    edition = this._edition || edition;
     ReflectionObject.prototype._resolveFeatures.call(this, edition);
 
-    Object.keys(this._valuesProtoFeatures).forEach(key => {
+    Object.keys(this.values).forEach(key => {
         var parentFeaturesCopy = Object.assign({}, this._features);
-        this._valuesFeatures[key] = Object.assign(parentFeaturesCopy, this._valuesProtoFeatures[key] || {});
+        this._valuesFeatures[key] = Object.assign(parentFeaturesCopy, this.valuesOptions && this.valuesOptions[key] && this.valuesOptions[key].features);
     });
 
     return this;
@@ -179,21 +173,6 @@ Enum.prototype.add = function add(name, id, comment, options) {
         if (this.valuesOptions === undefined)
             this.valuesOptions = {};
         this.valuesOptions[name] = options || null;
-
-        for (var key of Object.keys(this.valuesOptions)) {
-            var features = Array.isArray(this.valuesOptions[key]) ? this.valuesOptions[key].find(x => {return Object.prototype.hasOwnProperty.call(x, "features");}) : this.valuesOptions[key] === "features";
-            if (features) {
-                this._valuesProtoFeatures[key] = features.features;
-            } else {
-                this._valuesProtoFeatures[key] = {};
-            }
-        }
-    }
-
-    for (var enumValue of Object.keys(this.values)) {
-        if (!this._valuesProtoFeatures[enumValue]) {
-            this._valuesProtoFeatures[enumValue] = {};
-        }
     }
 
     this.comments[name] = comment || null;

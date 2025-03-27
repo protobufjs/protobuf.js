@@ -121,11 +121,11 @@ Service.prototype.resolveAll = function resolveAll() {
  * @override
  */
 Service.prototype._resolveFeaturesRecursive = function _resolveFeaturesRecursive(edition) {
-    var edition = this._edition || edition;
+    edition = this._edition || edition;
 
     Namespace.prototype._resolveFeaturesRecursive.call(this, edition);
     this.methodsArray.forEach(method => {
-        method._resolveFeaturesRecursive(edition);        
+        method._resolveFeaturesRecursive(edition);
     });
     return this;
 };
