@@ -80,9 +80,7 @@ function parse(source, root, options) {
         pkg,
         imports,
         weakImports,
-        edition = "proto2",
-        isProto3 = false,
-        isProto2 = true;
+        edition = "proto2";
 
     var ptr = root;
 
@@ -151,13 +149,17 @@ function parse(source, root, options) {
     function readRanges(target, acceptStrings) {
         var token, start;
         do {
-            if (acceptStrings && ((token = peek()) === "\"" || token === "'"))
-                target.push(readString());
-            else {
+            if (acceptStrings && ((token = peek()) === "\"" || token === "'")) {
+                var str = readString();
+                target.push(str);
+                if (edition >= 2023) {
+                    throw illegal(str, "id");
+                }
+            } else {
                 try {
                     target.push([ start = parseId(next()), skip("to", true) ? parseId(next()) : start ]);
                 } catch (err) {
-                    if (typeRefRe.test(token) && (!isProto2 && !isProto3)) {
+                    if (acceptStrings && typeRefRe.test(token) && edition >= 2023) {
                         target.push(token);
                     } else {
                         throw err;
@@ -278,11 +280,9 @@ function parse(source, root, options) {
     function parseSyntax() {
         skip("=");
         edition = readString();
-        isProto3 = edition === "proto3";
-        isProto2 = edition === "proto2";
 
         /* istanbul ignore if */
-        if (!isProto3 && !isProto2)
+        if (edition < 2023)
             throw illegal(edition, "syntax");
 
         skip(";");
@@ -291,8 +291,6 @@ function parse(source, root, options) {
     function parseEdition() {
         skip("=");
         edition = readString();
-        isProto3 = false;
-        isProto2 = false;
         const supportedEditions = ["2023"];
 
         /* istanbul ignore if */
@@ -370,7 +368,7 @@ function parse(source, root, options) {
                     break;
 
                 case "required":
-                    if (!isProto2)
+                    if (edition !== "proto2")
                         throw illegal(token);
                 /* eslint-disable no-fallthrough */
                 case "repeated":
@@ -379,9 +377,9 @@ function parse(source, root, options) {
 
                 case "optional":
                     /* istanbul ignore if */
-                    if (isProto3) {
+                    if (edition === "proto3") {
                         parseField(type, "proto3_optional");
-                    } else if (!isProto2) {
+                    } else if (edition !== "proto2") {
                         throw illegal(token);
                     } else {
                         parseField(type, "optional");
@@ -402,7 +400,7 @@ function parse(source, root, options) {
 
                 default:
                     /* istanbul ignore if */
-                    if (isProto2 || !typeRefRe.test(token)) {
+                    if (edition === "proto2" || !typeRefRe.test(token)) {
                         throw illegal(token);
                     }
 
@@ -478,6 +476,9 @@ function parse(source, root, options) {
     }
 
     function parseGroup(parent, rule) {
+        if (edition >= 2023) {
+            throw illegal("group");
+        }
         var name = next();
 
         /* istanbul ignore if */
@@ -507,7 +508,7 @@ function parse(source, root, options) {
 
                 case "optional":
                     /* istanbul ignore if */
-                    if (isProto3) {
+                    if (edition === "proto3") {
                         parseField(type, "proto3_optional");
                     } else {
                         parseField(type, "optional");
@@ -605,6 +606,7 @@ function parse(source, root, options) {
 
             case "reserved":
               readRanges(enm.reserved || (enm.reserved = []), true);
+              if(enm.reserved === undefined) enm.reserved = [];
               break;
 
             default:
@@ -865,7 +867,7 @@ function parse(source, root, options) {
 
                 case "optional":
                     /* istanbul ignore if */
-                    if (isProto3) {
+                    if (edition === "proto3") {
                         parseField(parent, "proto3_optional", reference);
                     } else {
                         parseField(parent, "optional", reference);
@@ -874,7 +876,7 @@ function parse(source, root, options) {
 
                 default:
                     /* istanbul ignore if */
-                    if (isProto2 || !typeRefRe.test(token))
+                    if (edition === "proto2" || !typeRefRe.test(token))
                         throw illegal(token);
                     push(token);
                     parseField(parent, "optional", reference);
