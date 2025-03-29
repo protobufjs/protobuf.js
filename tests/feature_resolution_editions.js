@@ -66,20 +66,22 @@ var tape = require("tape");
 
 var protobuf = require("..");
 
+var protoEditions2024 = `edition = "2024";  message Foo {}`;
 var protoEditions2023 = `edition = "2023";  message Foo {}`;
 
 var proto2 = `syntax = "proto2";  message Foo {}`;
 
 var proto3 = `syntax = "proto3";  message Foo {}`;
 
-var editions2023Defaults = {enum_type: 'OPEN', field_presence: 'EXPLICIT', json_format: 'ALLOW', message_encoding: 'LENGTH_PREFIXED', repeated_field_encoding: 'PACKED', utf8_validation: 'VERIFY'}
-var proto2Defaults = {enum_type: 'CLOSED', field_presence: 'EXPLICIT', json_format: 'LEGACY_BEST_EFFORT', message_encoding: 'LENGTH_PREFIXED', repeated_field_encoding: 'EXPANDED', utf8_validation: 'NONE'}
-var proto3Defaults = {enum_type: 'OPEN', field_presence: 'IMPLICIT', json_format: 'ALLOW', message_encoding: 'LENGTH_PREFIXED', repeated_field_encoding: 'PACKED', utf8_validation: 'VERIFY'}
+var editions2024Defaults = {enum_type: "OPEN", field_presence: "EXPLICIT", json_format: "ALLOW", message_encoding: "LENGTH_PREFIXED", repeated_field_encoding: "PACKED", utf8_validation: "VERIFY", enforce_naming_style: "STYLE2024", default_symbol_visibility: "EXPORT_TOP_LEVEL" };
+var editions2023Defaults = {enum_type: "OPEN", field_presence: "EXPLICIT", json_format: "ALLOW", message_encoding: "LENGTH_PREFIXED", repeated_field_encoding: "PACKED", utf8_validation: "VERIFY", enforce_naming_style: "STYLE_LEGACY", default_symbol_visibility: "EXPORT_ALL" };
+var proto2Defaults = {enum_type: "CLOSED", field_presence: "EXPLICIT", json_format: "LEGACY_BEST_EFFORT", message_encoding: "LENGTH_PREFIXED", repeated_field_encoding: "EXPANDED", utf8_validation: "NONE", enforce_naming_style: "STYLE_LEGACY", default_symbol_visibility: "EXPORT_ALL" };
+var proto3Defaults = {enum_type: "OPEN", field_presence: "IMPLICIT", json_format: "ALLOW", message_encoding: "LENGTH_PREFIXED", repeated_field_encoding: "PACKED", utf8_validation: "VERIFY", enforce_naming_style: "STYLE_LEGACY", default_symbol_visibility: "EXPORT_ALL" };
 
 tape.test("feature resolution defaults", function(test) {
-    var rootEditions = protobuf.parse(protoEditions2023).root;
+    var rootEditions = protobuf.parse(protoEditions2024).root;
     rootEditions.resolveAll();
-    test.same(rootEditions.Foo._features, editions2023Defaults);
+    test.same(rootEditions.Foo._features, editions2024Defaults);
 
     var rootProto2 = protobuf.parse(proto2).root;
     rootProto2.resolveAll();
@@ -136,6 +138,8 @@ tape.test("aggregate feature parsing", function(test) {
         message_encoding: 'LENGTH_PREFIXED',
         repeated_field_encoding: 'PACKED',
         utf8_validation: 'NONE',
+        enforce_naming_style: "STYLE_LEGACY",
+        default_symbol_visibility: "EXPORT_ALL"
     })
     
     test.end();
@@ -160,6 +164,8 @@ tape.test("feature resolution inheritance file to message", function(test) {
         message_encoding: 'LENGTH_PREFIXED',
         repeated_field_encoding: 'PACKED',
         utf8_validation: 'VERIFY',
+        enforce_naming_style: "STYLE_LEGACY",
+        default_symbol_visibility: "EXPORT_ALL",
         '(abc)': { d_e: 'deeply_nested_false' }
     })
     
@@ -185,6 +191,8 @@ tape.test("feature resolution inheritance message to field", function(test) {
         message_encoding: 'LENGTH_PREFIXED',
         repeated_field_encoding: 'PACKED',
         utf8_validation: 'VERIFY',
+        enforce_naming_style: "STYLE_LEGACY",
+        default_symbol_visibility: "EXPORT_ALL",
         '(abc)': { d_e: 'deeply_nested_false' }
     })
     
@@ -213,6 +221,8 @@ tape.test("feature resolution inheritance message to nested message", function(t
         message_encoding: 'LENGTH_PREFIXED',
         repeated_field_encoding: 'PACKED',
         utf8_validation: 'VERIFY',
+        enforce_naming_style: "STYLE_LEGACY",
+        default_symbol_visibility: "EXPORT_ALL",
         '(abc)': { d_e: 'deeply_nested_true' } 
     });
     test.end();
@@ -238,6 +248,8 @@ tape.test("feature resolution inheritance enum to enum value", function(test) {
         message_encoding: 'LENGTH_PREFIXED',
         repeated_field_encoding: 'EXPANDED',
         utf8_validation: 'VERIFY',
+        enforce_naming_style: "STYLE_LEGACY",
+        default_symbol_visibility: "EXPORT_ALL",
         '(abc)': { d_e: 'deeply_nested_false' } 
     })
 
@@ -248,7 +260,9 @@ tape.test("feature resolution inheritance enum to enum value", function(test) {
         message_encoding: 'LENGTH_PREFIXED',
         repeated_field_encoding: 'PACKED',
         utf8_validation: 'VERIFY',
-        '(abc)': { d_e: 'deeply_nested_false' } 
+        enforce_naming_style: "STYLE_LEGACY",
+        default_symbol_visibility: "EXPORT_ALL",
+        '(abc)': { d_e: 'deeply_nested_false' }
     });
 
     test.end();
@@ -274,6 +288,8 @@ tape.test("feature resolution inheritance message to oneofs", function(test) {
         message_encoding: 'LENGTH_PREFIXED',
         repeated_field_encoding: 'PACKED',
         utf8_validation: 'VERIFY',
+        enforce_naming_style: "STYLE_LEGACY",
+        default_symbol_visibility: "EXPORT_ALL",
         '(abc)': { d_e: 'deeply_nested_false' } 
     })
 
@@ -301,7 +317,9 @@ tape.test("feature resolution inheritance oneofs", function(test) {
         message_encoding: 'LENGTH_PREFIXED',
         repeated_field_encoding: 'PACKED',
         utf8_validation: 'VERIFY',
-        '(abc)': { d_e: 'deeply_nested_false' } 
+        enforce_naming_style: "STYLE_LEGACY",
+        default_symbol_visibility: "EXPORT_ALL",
+        '(abc)': { d_e: 'deeply_nested_false' }
     })
 
     test.same(rootEditionsOverriden.lookup("SomeOneOf").fieldsArray.find(x => x.name === 'b')._features, {
@@ -311,6 +329,8 @@ tape.test("feature resolution inheritance oneofs", function(test) {
         message_encoding: 'LENGTH_PREFIXED',
         repeated_field_encoding: 'PACKED',
         utf8_validation: 'VERIFY',
+        enforce_naming_style: "STYLE_LEGACY",
+        default_symbol_visibility: "EXPORT_ALL",
         '(abc)': { d_e: 'deeply_nested_false' } 
     })
 
@@ -338,6 +358,8 @@ tape.test("feature resolution inheritance file to extensions", function(test) {
         message_encoding: 'LENGTH_PREFIXED',
         repeated_field_encoding: 'PACKED',
         utf8_validation: 'NONE',
+        enforce_naming_style: "STYLE_LEGACY",
+        default_symbol_visibility: "EXPORT_ALL",
         '(abc)': { d_e: 'deeply_nested_false' } 
     })
 
@@ -365,6 +387,8 @@ tape.test("feature resolution inheritance message to extensions", function(test)
         message_encoding: 'LENGTH_PREFIXED',
         repeated_field_encoding: 'PACKED',
         utf8_validation: 'NONE',
+        enforce_naming_style: "STYLE_LEGACY",
+        default_symbol_visibility: "EXPORT_ALL",
         '(abc)': { d_e: 'deeply_nested_false' } 
     })
 
@@ -391,6 +415,8 @@ tape.test("feature resolution inheritance message to enum", function(test) {
         message_encoding: 'LENGTH_PREFIXED',
         repeated_field_encoding: 'PACKED',
         utf8_validation: 'NONE',
+        enforce_naming_style: "STYLE_LEGACY",
+        default_symbol_visibility: "EXPORT_ALL",
         '(abc)': { d_e: 'deeply_nested_false' } 
     })
 
@@ -401,6 +427,8 @@ tape.test("feature resolution inheritance message to enum", function(test) {
         message_encoding: 'LENGTH_PREFIXED',
         repeated_field_encoding: 'PACKED',
         utf8_validation: 'NONE',
+        enforce_naming_style: "STYLE_LEGACY",
+        default_symbol_visibility: "EXPORT_ALL",
         '(abc)': { d_e: 'deeply_nested_false' } 
     })
 
@@ -425,6 +453,8 @@ tape.test("feature resolution inheritance file to enum", function(test) {
         message_encoding: 'LENGTH_PREFIXED',
         repeated_field_encoding: 'PACKED',
         utf8_validation: 'NONE',
+        enforce_naming_style: "STYLE_LEGACY",
+        default_symbol_visibility: "EXPORT_ALL",
         '(abc)': { d_e: 'deeply_nested_false' } 
     })
 
@@ -451,6 +481,8 @@ tape.test("feature resolution inheritance file to service and service to method"
         message_encoding: 'LENGTH_PREFIXED',
         repeated_field_encoding: 'PACKED',
         utf8_validation: 'VERIFY',
+        enforce_naming_style: "STYLE_LEGACY",
+        default_symbol_visibility: "EXPORT_ALL",
         '(abc)': { d_e: 'deeply_nested_false' } 
     })
 
@@ -461,6 +493,8 @@ tape.test("feature resolution inheritance file to service and service to method"
         message_encoding: 'LENGTH_PREFIXED',
         repeated_field_encoding: 'PACKED',
         utf8_validation: 'NONE',
+        enforce_naming_style: "STYLE_LEGACY",
+        default_symbol_visibility: "EXPORT_ALL",
         '(abc)': { d_e: 'deeply_nested_false' } 
     })
 
@@ -480,6 +514,8 @@ tape.test("feature resolution editions precedence", function(test) {
             message_encoding: 'LENGTH_PREFIXED',
             repeated_field_encoding: 'PACKED',
             utf8_validation: 'VERIFY',
+            enforce_naming_style: "STYLE_LEGACY",
+            default_symbol_visibility: "EXPORT_ALL",
             amazing_feature: 'G'
         })
         test.end();
