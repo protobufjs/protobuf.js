@@ -103,7 +103,7 @@ exports.main = function(args, callback) {
             cwd: process.cwd(),
             argv0: "node",
             stdio: "pipe",
-            maxBuffer: 1 << 24 // 16mb
+            maxBuffer: 1 << 26 // 67mb
         });
         var out = [];
         var ended = false;
