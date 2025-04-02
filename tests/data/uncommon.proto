@@ -71,6 +71,17 @@ enum Test4_1{
     OPTION = 1;
 }
 
+enum ReservedEnum{
+    RESERVED_UNKNOWN = 0;
+
+    reserved 1 to 5;
+    reserved "abc", "INVALID";
+    reserved 10;
+    reserved 11 to 20 {
+        option foo = true;
+    }
+}
+
 service Test5;
 
 service Test6 { option (custom).bar = "";

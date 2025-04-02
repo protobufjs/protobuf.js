@@ -16,16 +16,14 @@ function missing(field) {
  */
 function decoder(mtype) {
     /* eslint-disable no-unexpected-multiline */
-    var gen = util.codegen(["r", "l"], mtype.name + "$decode")
+    var gen = util.codegen(["r", "l", "e"], mtype.name + "$decode")
     ("if(!(r instanceof Reader))")
         ("r=Reader.create(r)")
     ("var c=l===undefined?r.len:r.pos+l,m=new this.ctor" + (mtype.fieldsArray.filter(function(field) { return field.map; }).length ? ",k,value" : ""))
     ("while(r.pos<c){")
-        ("var t=r.uint32()");
-    if (mtype.group) gen
-        ("if((t&7)===4)")
-            ("break");
-    gen
+        ("var t=r.uint32()")
+        ("if(t===e)")
+            ("break")
         ("switch(t>>>3){");
 
     var i = 0;
@@ -91,15 +89,15 @@ function decoder(mtype) {
                 ("}else");
 
             // Non-packed
-            if (types.basic[type] === undefined) gen(field.resolvedType.group
-                    ? "%s.push(types[%i].decode(r))"
+            if (types.basic[type] === undefined) gen(field.delimited
+                    ? "%s.push(types[%i].decode(r,undefined,((t&~7)|4)))"
                     : "%s.push(types[%i].decode(r,r.uint32()))", ref, i);
             else gen
                     ("%s.push(r.%s())", ref, type);
 
         // Non-repeated
-        } else if (types.basic[type] === undefined) gen(field.resolvedType.group
-                ? "%s=types[%i].decode(r)"
+        } else if (types.basic[type] === undefined) gen(field.delimited
+                ? "%s=types[%i].decode(r,undefined,((t&~7)|4))"
                 : "%s=types[%i].decode(r,r.uint32())", ref, i);
         else gen
                 ("%s=r.%s()", ref, type);

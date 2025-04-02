@@ -1,0 +1,12 @@
+edition = "2023";
+
+message OptionalFields {
+  message SubMessage {
+    string a = 1 [features.field_presence = IMPLICIT];
+  }
+
+  SubMessage a = 1;
+  string e = 2;
+  uint32 r = 3 [features.field_presence = LEGACY_REQUIRED];
+  uint32 i = 4  [features.field_presence = IMPLICIT];
+}

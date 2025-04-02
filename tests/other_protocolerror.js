@@ -15,12 +15,13 @@ tape.test("a protocol error", function(test) {
         ).add(
             new protobuf.Field("bar", 2, "string", "required")
         )
-    );
+    ).resolveAll();
     
     var Test = root.lookup("Test");
     var buf  = protobuf.util.newBuffer(2);
     buf[0] = 1 << 3 | 0;
     buf[1] = 0x02;
+    test.ok(root.Test.fields.foo.hasPresence);
 
     try {
         Test.decode(buf);

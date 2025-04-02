@@ -184,8 +184,12 @@ function buildType(type) {
 }
 
 function buildField(field, passExtend) {
-    if (field.partOf || field.declaringField || field.extend !== undefined && !passExtend)
+    if (field.partOf && !field.partOf.isProto3Optional) {
         return;
+    }
+    if (field.declaringField || field.extend !== undefined && !passExtend) {
+        return;
+    }
     if (first) {
         first = false;
         push("");
@@ -199,8 +203,10 @@ function buildField(field, passExtend) {
         sb.push("map<" + field.keyType + ", " + field.type + ">");
     else if (field.repeated)
         sb.push("repeated", field.type);
-    else if (syntax === 2 || field.parent.group)
+    else if (syntax === 2)
         sb.push(field.required ? "required" : "optional", field.type);
+    else if (syntax === 3 && field.hasPresence)
+        sb.push("optional", field.type);
     else
         sb.push(field.type);
     sb.push(underScore(field.name), "=", field.id);
@@ -211,7 +217,7 @@ function buildField(field, passExtend) {
 }
 
 function buildGroup(field) {
-    push(field.rule + " group " + field.resolvedType.name + " = " + field.id + " {");
+    push((field.rule || "optional") + " group " + field.resolvedType.name + " = " + field.id + " {");
     ++indent;
     buildOptions(field.resolvedType);
     first = true;
@@ -223,20 +229,16 @@ function buildGroup(field) {
 }
 
 function buildFieldOptions(field) {
-    var keys;
-    if (!field.options || !(keys = Object.keys(field.options)).length)
-        return null;
+    var keys = [];
+    if (field.options) {
+        keys = Object.keys(field.options);
+    }
     var sb = [];
     keys.forEach(function(key) {
+        if (key === "proto3_optional" || key === "packed" || key === "features") return;
+
         var val = field.options[key];
-        var wireType = types.packed[field.resolvedType instanceof Enum ? "int32" : field.type];
         switch (key) {
-            case "packed":
-                val = Boolean(val);
-                // skip when not packable or syntax default
-                if (wireType === undefined || syntax === 3 === val)
-                    return;
-                break;
             case "default":
                 if (syntax === 3)
                     return;
@@ -253,6 +255,14 @@ function buildFieldOptions(field) {
         }
         sb.push(key + "=" + val);
     });
+    var packable = types.packed[field.resolvedType instanceof Enum ? "int32" : field.type];
+    if (packable !== undefined) {
+        if (field.packed && syntax === 2) {
+            sb.push("packed=true");
+        } else if(!field.packed && syntax === 3) {
+            sb.push("packed=false");
+        }
+    }
     return sb.length
         ? "[" + sb.join(", ") + "]"
         : null;
@@ -282,6 +292,10 @@ function consolidateExtends(nested) {
 }
 
 function buildOneOf(oneof) {
+    if (oneof.isProto3Optional) {
+        return;
+    }
+
     push("");
     push("oneof " + underScore(oneof.name) + " {");
     ++indent; first = true;
@@ -311,11 +325,12 @@ function buildMethod(method) {
     push(method.type + " " + method.name + " (" + (method.requestStream ? "stream " : "") + method.requestType + ") returns (" + (method.responseStream ? "stream " : "") + method.responseType + ");");
 }
 
-function buildOptions(object) {
+function buildOptions(object, ignore = []) {
     if (!object.options)
         return;
     first = true;
     Object.keys(object.options).forEach(function(key) {
+        if (ignore.includes(key) || key === "features") return;
         if (first) {
             first = false;
             push("");
