@@ -410,9 +410,9 @@ function rpcImpl(method, requestData, callback) {
 }
 ```
 
-Below is a working example with a typescript implementation using grpc npm package.
+Below is a working example with a typescript implementation using the `@grpc/grpc-js` npm package.
 ```ts
-const grpc = require('grpc')
+const grpc = require('@grpc/grpc-js')
 
 const Client = grpc.makeGenericClientConstructor({})
 const client = new Client(
@@ -421,8 +421,10 @@ const client = new Client(
 )
 
 const rpcImpl = function(method, requestData, callback) {
+  const methodPath = `/${method.parent.fullName.slice(1)}/${method.name}`;
+
   client.makeUnaryRequest(
-    method.name,
+    methodPath,
     arg => arg,
     arg => arg,
     requestData,
