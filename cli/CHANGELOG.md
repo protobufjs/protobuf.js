@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.2.0](https://github.com/protobufjs/protobuf.js/compare/protobufjs-cli-v1.1.4...protobufjs-cli-v1.2.0) (2025-04-02)
+
+
+### Features
+
+* add feature resolution ([a9ffc8a](https://github.com/protobufjs/protobuf.js/commit/a9ffc8a7b593209642fc9d89e884ac6c4e746494))
+* api_converters_editions tests added and run successfully" ([b4b5ca4](https://github.com/protobufjs/protobuf.js/commit/b4b5ca468fcde2082d65a72b508f18d07d75245c))
+* increase size of file that protobufjs CLI can process ([d36ef0f](https://github.com/protobufjs/protobuf.js/commit/d36ef0faeae9a9ec655747cb650571bdd9b1243b))
+
 ## [1.1.4](https://github.com/protobufjs/protobuf.js/compare/protobufjs-cli-v1.1.3...protobufjs-cli-v1.1.4) (2024-08-22)
 
 
