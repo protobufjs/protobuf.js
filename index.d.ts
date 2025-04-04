@@ -2424,6 +2424,13 @@ export namespace util {
     namespace path {
 
         /**
+         * Gets the prefix of an absolute UNC path, Unix path, or URL that makes it absolute, if present.
+         * @param path Path to test
+         * @returns the prefix, or null if path is relative
+         */
+        function absolutePrefix(path: string): (string|null);
+
+        /**
          * Tests if the specified path is absolute.
          * @param path Path to test
          * @returns `true` if path is absolute
