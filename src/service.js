@@ -57,7 +57,10 @@ Service.fromJSON = function fromJSON(name, json) {
             service.add(Method.fromJSON(names[i], json.methods[names[i]]));
     if (json.nested)
         service.addJSON(json.nested);
+    if (json.edition)
+        service._edition = json.edition;
     service.comment = json.comment;
+    service._defaultEdition = "proto3";  // For backwards-compatibility.
     return service;
 };
 
@@ -70,6 +73,7 @@ Service.prototype.toJSON = function toJSON(toJSONOptions) {
     var inherited = Namespace.prototype.toJSON.call(this, toJSONOptions);
     var keepComments = toJSONOptions ? Boolean(toJSONOptions.keepComments) : false;
     return util.toObject([
+        "edition" , this._editionToJSON(),
         "options" , inherited && inherited.options || undefined,
         "methods" , Namespace.arrayToJSON(this.methodsArray, toJSONOptions) || /* istanbul ignore next */ {},
         "nested"  , inherited && inherited.nested || undefined,
@@ -110,6 +114,19 @@ Service.prototype.resolveAll = function resolveAll() {
     var methods = this.methodsArray;
     for (var i = 0; i < methods.length; ++i)
         methods[i].resolve();
+    return this;
+};
+
+/**
+ * @override
+ */
+Service.prototype._resolveFeaturesRecursive = function _resolveFeaturesRecursive(edition) {
+    edition = this._edition || edition;
+
+    Namespace.prototype._resolveFeaturesRecursive.call(this, edition);
+    this.methodsArray.forEach(method => {
+        method._resolveFeaturesRecursive(edition);
+    });
     return this;
 };
 
