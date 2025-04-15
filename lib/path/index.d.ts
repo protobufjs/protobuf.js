@@ -1,4 +1,11 @@
 /**
+ * Gets the prefix of an absolute Windows, UNC, or Unix path or a URL that indicates it's absolute.
+ * @param {string} path Path to test
+ * @returns {string|null} the prefix, or null if path is relative
+ */
+export function absolutePrefix(path: string): (string|null);
+
+/**
  * Tests if the specified path is absolute.
  * @param {string} path Path to test
  * @returns {boolean} `true` if path is absolute
