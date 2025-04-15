@@ -35,6 +35,7 @@ function decoder(mtype) {
 
         // Map fields
         if (field.map) { gen
+                ("{")
                 ("if(%s===util.emptyObject)", ref)
                     ("%s={}", ref)
                 ("var c2 = r.uint32()+r.pos");
@@ -73,7 +74,7 @@ function decoder(mtype) {
                 ("%s[typeof k===\"object\"?util.longToHash(k):k]=value", ref);
             else gen
                 ("%s[k]=value", ref);
-
+            gen ("}");
         // Repeated fields
         } else if (field.repeated) { gen
 
