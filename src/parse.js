@@ -523,6 +523,10 @@ function parse(source, root, options) {
                     parseEnum(type, token);
                     break;
 
+                case "reserved":
+                    readRanges(type.reserved || (type.reserved = []), true);
+                    break;
+
                 /* istanbul ignore next */
                 default:
                     throw illegal(token); // there are no groups with proto3 semantics
