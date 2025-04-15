@@ -1,0 +1,9 @@
+edition = "2024";
+
+import option "nonexistent.proto";
+
+option features.(pb.nonexistent).foo = BAR;
+
+message Foo {
+  string legacy = 1;
+}
