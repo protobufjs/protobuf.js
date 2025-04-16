@@ -1,0 +1,11 @@
+[
+    {
+        "Name": "protobuf",
+        "License": "BSD 3-Clause License",
+        "License File": " LICENSE ",
+        "Version Number": "7.2.4",
+        "Owner" : "xiafeng@huawei.com",
+        "Upstream URL": "https://github.com/protobufjs/protobuf.js",
+        "Description": "protoubuf.js is a pure JavaScript implementation with TypeScript for node.js and the browser.Its easy to use,blazingly fast and works out of the box with .proto files "
+    }
+]
