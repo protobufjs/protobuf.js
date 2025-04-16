@@ -1,0 +1,64 @@
+{
+  "string": [
+    {
+      "name": "module_desc",
+      "value": "模块描述"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "description"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "protobuf"
+    },
+    {
+      "name": "proto_serialization_deserialization",
+      "value": "proto序列化反序列化"
+    },
+    {
+      "name": "proto_serialization_deserialization_bigInt",
+      "value": "proto序列化反序列化(包含BigInt)"
+    },
+    {
+      "name": "serialized_data",
+      "value": "序列化数据"
+    },
+    {
+      "name": "Deserialize_data",
+      "value": "反序列化数据"
+    },
+    {
+      "name": "test",
+      "value": "测试"
+    },
+    {
+      "name": "Encode_to_decode",
+      "value": "编码为分隔符分隔的字节序列/从分隔符分隔的字节序列中解码消息"
+    },
+    {
+      "name": "Create_normal_message",
+      "value": "使用message创建一个普通对象"
+    },
+    {
+      "name": "Verify_protobuf_validity",
+      "value": "验证protobuf有效性"
+    },
+    {
+      "name": "null_means_valid",
+      "value": "null代表有效,否则返回无效原因"
+    },
+    {
+      "name": "Pure_object",
+      "value": "纯对象创建消息"
+    },
+    {
+      "name": "result",
+      "value": "结果"
+    },
+    {
+      "name": "reset_display",
+      "value": "重置显示"
+    }
+  ]
+}

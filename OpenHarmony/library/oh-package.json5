@@ -1,0 +1,38 @@
+{
+  "types": "src/main/ets/index.d.ts",
+  "keywords": [
+    "dd-plist",
+    "OpenHarmony",
+    "HarmonyOS"
+  ],
+  "author": "hihope",
+  "description": "一种语言无关、平台无关、可扩展的序列化结构数据的方法，它可用于（数据）通信协议、数据存储等。,是一种灵活，高效，自动化机制的结构数据序列化方法比XML更小,更快,更为简单",
+  "repository": "https://gitcode.com/openharmony-tpc/protobuf",
+  "ohos": {
+    "org": "opensource"
+  },
+  "main": "src/main/ets/dist/protobuf.js",
+  "type": "module",
+  "version": "3.0.0",
+  "tags": [
+    "protobufjs",
+    "OpenHarmony",
+    "HarmonyOS"
+  ],
+  "dependencies": {
+    "@protobufjs/utf8": "^1.1.0",
+    "@protobufjs/eventemitter": "^1.1.0",
+    "@types/node": ">=13.7.0",
+    "@protobufjs/path": "^1.1.2",
+    "@protobufjs/float": "^1.0.2",
+    "@protobufjs/pool": "^1.1.0",
+    "@protobufjs/base64": "^1.1.2",
+    "long": "^5.2.1",
+    "@protobufjs/aspromise": "^1.1.2",
+    "buffer": "^6.0.3"
+  },
+  "license": "BSD License",
+  "devDependencies": {},
+  "name": "@ohos/protobufjs",
+  "dynamicDependencies": {}
+}

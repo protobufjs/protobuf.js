@@ -1,0 +1,64 @@
+{
+  "string": [
+    {
+      "name": "module_desc",
+      "value": "module description"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "description"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "protobuf"
+    },
+    {
+      "name": "proto_serialization_deserialization",
+      "value": "proto serialization deserialization"
+    },
+    {
+      "name": "proto_serialization_deserialization_bigInt",
+      "value": "proto serialization deserialization (BigInt)"
+    },
+    {
+      "name": "serialized_data",
+      "value": "serialized data"
+    },
+    {
+      "name": "Deserialize_data",
+      "value": "Deserialize data"
+    },
+    {
+      "name": "test",
+      "value": "Test"
+    },
+    {
+      "name": "Encode_to_decode",
+      "value": "Encode to/decode message from delimiter-delimited byte sequence"
+    },
+    {
+      "name": "Create_normal_message",
+      "value": "Create a normal object using message"
+    },
+    {
+      "name": "Verify_protobuf_validity",
+      "value": "Verify protobuf validity"
+    },
+    {
+      "name": "null_means_valid",
+      "value": "null means valid, otherwise the invalid reason will be returned"
+    },
+    {
+      "name": "Pure_object",
+      "value": "Pure object creation message"
+    },
+    {
+      "name": "result",
+      "value": "Result"
+    },
+    {
+      "name": "reset_display",
+      "value": "reset display"
+    }
+  ]
+}

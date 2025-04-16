@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright (c) 2021 Huawei Device Co., Ltd.
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+
+    This is the configuration file template for OpenHarmony OSS Audit Tool, please copy it to your project root dir and modify it refer to OpenHarmony/tools_oat/README.
+
+-->
+<configuration>
+    <oatconfig>
+        <filefilterlist>
+            <filefilter
+                desc="Filters for compatibility，license header policies"
+                name="copyrightPolicyFilter">
+                <filteritem
+                    desc="hvigor配置文件，DevEco Studio自动生成，不手动修改"
+                    name="hvigorfile.ts"
+                    type="filename"/>
+                <filteritem
+                    desc="hvigor配置文件，DevEco Studio自动生成，不手动修改"
+                    name="hvigor-wrapper.js"
+                    type="filename"/>
+                <filteritem
+                    desc="资源文件，不需要添加版权头"
+                    name="*.proto"
+                    type="filename"/>
+                <filteritem
+                    desc="hvigor配置文件，DevEco Studio自动生成，不手动修改"
+                    name="hvigorw"
+                    type="filename"/>
+                <filteritem
+                    desc="hvigor配置文件，DevEco Studio自动生成，不手动修改"
+                    name="hvigorw.bat"
+                    type="filepath"/>
+                <filteritem
+                    desc="hvigor工程配置文件，DevEco Studio自动生成，不需要添加版权头"
+                    name="*.json5"
+                    type="filename"/>
+                <filteritem
+                    desc="版权免责声明文件，无需修改"
+                    name="NOTICE"
+                    type="filename"/>
+
+                <filteritem
+                    desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"
+                    name="library/src/main/ets/.*"
+                    type="filepath"/>
+
+                <filteritem
+                    desc="版权免责声明文件，无需修改"
+                    name="LICENSE"
+                    type="filename"/>
+            </filefilter>
+            <filefilter
+                desc="Filters for compatibility，license header policies"
+                name="defaultPolicyFilter">
+                <filteritem
+                    desc="hvigor配置文件，DevEco Studio自动生成，不手动修改"
+                    name="hvigorfile.ts"
+                    type="filename"/>
+                <filteritem
+                    desc="hvigor配置文件，DevEco Studio自动生成，不手动修改"
+                    name="hvigor-wrapper.js"
+                    type="filename"/>
+                <filteritem
+                    desc="hvigor配置文件，DevEco Studio自动生成，不手动修改"
+                    name="hvigorw"
+                    type="filename"/>
+                <filteritem
+                    desc="资源文件，不需要添加版权头"
+                    name="*.proto"
+                    type="filename"/>
+
+                <filteritem
+                    desc="hvigor配置文件，DevEco Studio自动生成，不手动修改"
+                    name="hvigorw.bat"
+                    type="filename"/>
+                <filteritem
+                    desc="hvigor工程配置文件，DevEco Studio自动生成，不需要添加许可证头"
+                    name="*.json5"
+                    type="filename"/>
+                <filteritem
+                    desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"
+                    name="library/src/main/ets/.*"
+                    type="filepath"/>
+                <filteritem
+                    desc="版权免责声明文件，无需修改"
+                    name="NOTICE"
+                    type="filename"/>
+
+                <filteritem
+                    desc="版权免责声明文件，无需修改"
+                    name="LICENSE"
+                    type="filename"/>
+            </filefilter>
+
+            <filefilter
+                desc="Filters for resources files policies"
+                name="binaryFileTypePolicyFilter">
+                <filteritem
+                    desc="hvigor配置文件，DevEco Studio自动生成，不手动修改"
+                    name="*.json5"
+                    type="filename"/>
+                <filteritem
+                    desc="直接使用的资源文件"
+                    name="*.png"
+                    type="filename"/>
+                <filteritem
+                    desc="资源文件，不需要添加版权头"
+                    name="*.proto"
+                    type="filename"/>
+            </filefilter>
+        </filefilterlist>
+    </oatconfig>
+</configuration>
