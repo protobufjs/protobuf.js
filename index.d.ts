@@ -2498,7 +2498,16 @@ export namespace util {
      */
     function pool(alloc: PoolAllocator, slice: PoolSlicer, size?: number): PoolAllocator;
 
-    /** A minimal UTF8 implementation for number arrays. */
+    /**
+     * A minimal UTF8 implementation for Uint8Arrays.
+     *
+     * This implementation uses a combination of techniques for optimal performance:
+     * - TextDecoder for longer strings and non-ASCII content
+     * - 8-byte unrolling for ASCII-only content
+     * - Inspired by the approach taken in avsc:
+     * https://github.com/mtth/avsc/blob/91d653f72906102448a059cb81692177bb678f52/lib/utils.js#L796
+     *
+     */
     namespace utf8 {
 
         /**
@@ -2509,7 +2518,16 @@ export namespace util {
         function length(string: string): number;
 
         /**
-         * Reads UTF8 bytes as a string.
+         * Reads UTF8 bytes as a string. This attempts to take the most optimal
+         * approach of the above implementations:
+         *
+         * - Special case the empty string
+         * - If the string is long and TextDecoder is available, use TextDecoder
+         * - If the string is ASCII only, use ascii_decode_unrolled
+         * - Otherwise, use utf8_decode_fallback
+         *
+         * See the code in `bench/utf8_bench.js` if attempting to tune this code.
+         *
          * @param buffer Source buffer
          * @param start Source start
          * @param end Source end
