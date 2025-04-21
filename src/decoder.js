@@ -72,7 +72,8 @@ function decoder(mtype) {
             if (types.long[field.keyType] !== undefined) gen
                 ("%s[typeof k===\"object\"?util.longToHash(k):k]=value", ref);
             else gen
-                ("%s[k]=value", ref);
+                ("if (value != null)")
+                    ("%s[k]=value", ref);
 
         // Repeated fields
         } else if (field.repeated) { gen
@@ -118,7 +119,7 @@ function decoder(mtype) {
         var rfield = mtype._fieldsArray[i];
         if (rfield.required) gen
     ("if(!m.hasOwnProperty(%j))", rfield.name)
-        ("throw util.ProtocolError(%j,{instance:m})", missing(rfield));
+        ("throw new util.ProtocolError(%j,{instance:m})", missing(rfield));
     }
 
     return gen
