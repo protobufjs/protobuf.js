@@ -10,7 +10,8 @@
 // in between.
 
 var newSuite  = require("./suite"),
-    payload   = require("./data/bench.json");
+    payload   = require("./data/bench.json"),
+    protobuf = require("..");
 
 var Buffer_from = Buffer.from !== Uint8Array.from && Buffer.from || function(value, encoding) { return new Buffer(value, encoding); };
 
@@ -88,3 +89,41 @@ newSuite("combined")
     jspbCls.deserializeBinary(jspbMsg.serializeBinary());
 })
 .run();
+
+var json = require("../tests/data/test.json");
+var fromJsonRoot = protobuf.Root.fromJSON(json);
+var fromJsonIndex = 1;
+
+newSuite("fromJSON")
+.add("isolated", function() {
+    protobuf.Root.fromJSON(json);
+})
+.add("isolated (resolveAll)", function() {
+    protobuf.Root.fromJSON(json).resolveAll();
+})
+.add("shared (unique)", function() {
+    var jsonCopy = { 
+        options: json.options,
+        nested: {}
+    };
+    Object.keys(json).forEach(key => {
+        jsonCopy.nested[key + fromJsonIndex] = json[key]
+    });
+    fromJsonIndex++;
+
+    protobuf.Root.fromJSON(jsonCopy, fromJsonRoot);
+}).run();
+
+var resolveAllRoot = protobuf.Root.fromJSON(json);
+
+newSuite("resolveAll")
+.add("isolated", function() {
+    resolveAllRoot.resolveAll();
+}).run();
+
+newSuite("load")
+.add("sync", function() {
+    protobuf.loadSync("bench/data/bench.proto");
+})
+.run()
+
