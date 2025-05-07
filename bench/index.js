@@ -105,6 +105,7 @@ newSuite("fromJSON")
             options: json.options,
             nested: {}
         };
+        // eslint-disable-next-line no-loop-func
         Object.keys(json).forEach(key => {
             jsonCopy.nested[key + i] = json[key];
         });
