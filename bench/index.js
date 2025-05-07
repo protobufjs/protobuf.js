@@ -91,9 +91,6 @@ newSuite("combined")
 .run();
 
 var json = require("../tests/data/test.json");
-var fromJsonRoot = protobuf.Root.fromJSON(json);
-var fromJsonIndex = 1;
-
 newSuite("fromJSON")
 .add("isolated", function() {
     protobuf.Root.fromJSON(json);
@@ -102,20 +99,21 @@ newSuite("fromJSON")
     protobuf.Root.fromJSON(json).resolveAll();
 })
 .add("shared (unique)", function() {
-    var jsonCopy = { 
-        options: json.options,
-        nested: {}
-    };
-    Object.keys(json).forEach(key => {
-        jsonCopy.nested[key + fromJsonIndex] = json[key]
-    });
-    fromJsonIndex++;
+    var root = protobuf.Root.fromJSON(json);
+    for (var i = 0; i < 1000; ++i) {
+        var jsonCopy = {
+            options: json.options,
+            nested: {}
+        };
+        Object.keys(json).forEach(key => {
+            jsonCopy.nested[key + i] = json[key];
+        });
 
-    protobuf.Root.fromJSON(jsonCopy, fromJsonRoot);
+        protobuf.Root.fromJSON(jsonCopy, root);
+    }
 }).run();
 
 var resolveAllRoot = protobuf.Root.fromJSON(json);
-
 newSuite("resolveAll")
 .add("isolated", function() {
     resolveAllRoot.resolveAll();
