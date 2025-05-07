@@ -123,5 +123,5 @@ newSuite("load")
 .add("sync", function() {
     protobuf.loadSync("bench/data/bench.proto");
 })
-.run()
+.run();
 
