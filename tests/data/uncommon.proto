@@ -82,3 +82,11 @@ service Test6 { option (custom).bar = "";
     rpc DoSomethingElse(   stream DoSomethingRequest  ) returns (DoSomethingResponse); /// post
     rpc DoSomethingEntirelyDifferent(DoSomethingRequest  ) returns (   stream DoSomethingResponse ); /// post
 };
+
+message Test7 {
+  repeated group RepeatedGroup = 1 {
+    optional string id = 2;
+    reserved 3;
+    optional string info = 4;
+  }
+}
