@@ -172,6 +172,25 @@ OneOf.prototype.onRemove = function onRemove(parent) {
 };
 
 /**
+ * Determines whether this field corresponds to a synthetic oneof created for
+ * a proto3 optional field.  No behavioral logic should depend on this, but it
+ * can be relevant for reflection.
+ * @name OneOf#isProto3Optional
+ * @type {boolean}
+ * @readonly
+ */
+Object.defineProperty(OneOf.prototype, "isProto3Optional", {
+    get: function() {
+        if (this.fieldsArray == null || this.fieldsArray.length !== 1) {
+            return false;
+        }
+
+        var field = this.fieldsArray[0];
+        return field.options != null && field.options["proto3_optional"] === true;
+    }
+});
+
+/**
  * Decorator function as returned by {@link OneOf.d} (TypeScript).
  * @typedef OneOfDecorator
  * @type {function}

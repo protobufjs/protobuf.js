@@ -35,6 +35,9 @@ function Root(options) {
      * @type {string[]}
      */
     this.files = [];
+
+    // Default to proto2 if unspecified.
+    this._edition = "proto2";
 }
 
 /**
@@ -48,7 +51,7 @@ Root.fromJSON = function fromJSON(json, root) {
         root = new Root();
     if (json.options)
         root.setOptions(json.options);
-    return root.addJSON(json.nested);
+    return root.addJSON(json.nested).resolveAll();
 };
 
 /**
