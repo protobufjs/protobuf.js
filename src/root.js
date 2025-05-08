@@ -51,7 +51,7 @@ Root.fromJSON = function fromJSON(json, root) {
         root = new Root();
     if (json.options)
         root.setOptions(json.options);
-    return root.addJSON(json.nested)._resolveFeaturesRecursive();
+    return root.addJSON(json.nested).resolveAll();
 };
 
 /**
@@ -100,7 +100,7 @@ Root.prototype.load = function load(filename, options, callback) {
     // Finishes loading by calling the callback (exactly once)
     function finish(err, root) {
         if (root) {
-            root._resolveFeaturesRecursive();
+            root.resolveAll();
         }
         /* istanbul ignore if */
         if (!callback) {
@@ -219,7 +219,7 @@ Root.prototype.load = function load(filename, options, callback) {
         if (resolved = self.resolvePath("", filename[i]))
             fetch(resolved);
     if (sync) {
-        self._resolveFeaturesRecursive();
+        self.resolveAll();
         return self;
     }
     if (!queued) {
