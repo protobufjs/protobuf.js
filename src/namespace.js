@@ -385,7 +385,7 @@ Namespace.prototype.lookup = function lookup(path, filterTypes, parentAlreadyChe
     if (this.parent === null || parentAlreadyChecked)
         return null;
     return this.parent.lookup(path, filterTypes);
-}
+};
 
 /**
  * Internal helper for lookup that handles searching just at this namespace and below along with caching.
@@ -395,29 +395,29 @@ Namespace.prototype.lookup = function lookup(path, filterTypes, parentAlreadyChe
  */
 Namespace.prototype._lookupImpl = function lookup(path) {
     var flatPath = path.join(".");
-    if(this._lookupCache.hasOwnProperty(flatPath)) {
+    if(Object.prototype.hasOwnProperty.call(this._lookupCache, flatPath)) {
         return this._lookupCache[flatPath];
-    } else {
-        // Test if the first part matches any nested object, and if so, traverse if path contains more
-        var found = this.get(path[0]);
-        var exact = null;
-        if (found) {
-            if (path.length === 1) {
-                exact = found;
-            } else if (found instanceof Namespace && (found = found._lookupImpl(path.slice(1))))
-                exact = found;
-
-        // Otherwise try each nested namespace
-        } else {
-            for (var i = 0; i < this.nestedArray.length; ++i)
-                if (this._nestedArray[i] instanceof Namespace && (found = this._nestedArray[i]._lookupImpl(path)))
-                    exact = found;
-        }
-
-        // Set this even when null, so that when we walk up the tree we can quickly bail on repeated checks back down.
-        this._lookupCache[flatPath] = exact;
-        return exact;
     }
+
+    // Test if the first part matches any nested object, and if so, traverse if path contains more
+    var found = this.get(path[0]);
+    var exact = null;
+    if (found) {
+        if (path.length === 1) {
+            exact = found;
+        } else if (found instanceof Namespace && (found = found._lookupImpl(path.slice(1))))
+            exact = found;
+
+    // Otherwise try each nested namespace
+    } else {
+        for (var i = 0; i < this.nestedArray.length; ++i)
+            if (this._nestedArray[i] instanceof Namespace && (found = this._nestedArray[i]._lookupImpl(path)))
+                exact = found;
+    }
+
+    // Set this even when null, so that when we walk up the tree we can quickly bail on repeated checks back down.
+    this._lookupCache[flatPath] = exact;
+    return exact;
 };
 
 /**

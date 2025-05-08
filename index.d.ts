@@ -909,6 +909,9 @@ export abstract class ReflectionObject {
     /** Resolved Features. */
     public _features: object;
 
+    /** Whether or not features have been resolved. */
+    public _featuresResolved: boolean;
+
     /** Parent namespace. */
     public parent: (Namespace|null);
 

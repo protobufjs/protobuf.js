@@ -70,7 +70,7 @@ function ReflectionObject(name, options) {
     /**
      * Whether or not features have been resolved.
      * @type {boolean}
-     * /
+     */
     this._featuresResolved = false;
 
     /**
