@@ -108,10 +108,33 @@ function Namespace(name, options) {
      * @private
      */
     this._nestedArray = null;
+
+    /**
+     * Cache lookup calls for any objects contains anywhere under this namespace.
+     * This drastically speeds up resolve for large cross-linked protos where the same
+     * types are looked up repeatedly.
+     * @type {Object.<string,ReflectionObject|null>}
+     * @private
+     */
+    this._lookupCache = {};
+
+    /**
+     * Whether or not objects contained in this namespace need feature resolution.
+     * @type {boolean}
+     * @protected
+     */
+    this._needsRecursiveFeatureResolution = true;
 }
 
 function clearCache(namespace) {
     namespace._nestedArray = null;
+    namespace._lookupCache = {};
+
+    // Also clear parent caches, since they include nested lookups.
+    var parent = namespace;
+    while(parent = parent.parent) {
+        parent._lookupCache = {};
+    }
     return namespace;
 }
 
@@ -249,6 +272,14 @@ Namespace.prototype.add = function add(object) {
         }
     }
 
+    this._needsRecursiveFeatureResolution = true;
+
+    // Also clear parent caches, since they need to recurse down.
+    var parent = this;
+    while(parent = parent.parent) {
+        parent._needsRecursiveFeatureResolution = true;
+    }
+
     object.onAdd(this);
     return clearCache(this);
 };
@@ -324,6 +355,9 @@ Namespace.prototype.resolveAll = function resolveAll() {
  * @override
  */
 Namespace.prototype._resolveFeaturesRecursive = function _resolveFeaturesRecursive(edition) {
+    if (!this._needsRecursiveFeatureResolution) return this;
+    this._needsRecursiveFeatureResolution = false;
+
     edition = this._edition || edition;
 
     ReflectionObject.prototype._resolveFeaturesRecursive.call(this, edition);
@@ -341,7 +375,6 @@ Namespace.prototype._resolveFeaturesRecursive = function _resolveFeaturesRecursi
  * @returns {ReflectionObject|null} Looked up object or `null` if none could be found
  */
 Namespace.prototype.lookup = function lookup(path, filterTypes, parentAlreadyChecked) {
-
     /* istanbul ignore next */
     if (typeof filterTypes === "boolean") {
         parentAlreadyChecked = filterTypes;
@@ -360,25 +393,48 @@ Namespace.prototype.lookup = function lookup(path, filterTypes, parentAlreadyChe
     if (path[0] === "")
         return this.root.lookup(path.slice(1), filterTypes);
 
-    // Test if the first part matches any nested object, and if so, traverse if path contains more
-    var found = this.get(path[0]);
-    if (found) {
-        if (path.length === 1) {
-            if (!filterTypes || filterTypes.indexOf(found.constructor) > -1)
-                return found;
-        } else if (found instanceof Namespace && (found = found.lookup(path.slice(1), filterTypes, true)))
-            return found;
-
-    // Otherwise try each nested namespace
-    } else
-        for (var i = 0; i < this.nestedArray.length; ++i)
-            if (this._nestedArray[i] instanceof Namespace && (found = this._nestedArray[i].lookup(path, filterTypes, true)))
-                return found;
+    var found = this._lookupImpl(path);
+    if (found && (!filterTypes || filterTypes.indexOf(found.constructor) > -1)) {
+        return found;
+    }
 
     // If there hasn't been a match, try again at the parent
     if (this.parent === null || parentAlreadyChecked)
         return null;
     return this.parent.lookup(path, filterTypes);
+};
+
+/**
+ * Internal helper for lookup that handles searching just at this namespace and below along with caching.
+ * @param {string[]} path Path to look up
+ * @returns {ReflectionObject|null} Looked up object or `null` if none could be found
+ * @private
+ */
+Namespace.prototype._lookupImpl = function lookup(path) {
+    var flatPath = path.join(".");
+    if(Object.prototype.hasOwnProperty.call(this._lookupCache, flatPath)) {
+        return this._lookupCache[flatPath];
+    }
+
+    // Test if the first part matches any nested object, and if so, traverse if path contains more
+    var found = this.get(path[0]);
+    var exact = null;
+    if (found) {
+        if (path.length === 1) {
+            exact = found;
+        } else if (found instanceof Namespace && (found = found._lookupImpl(path.slice(1))))
+            exact = found;
+
+    // Otherwise try each nested namespace
+    } else {
+        for (var i = 0; i < this.nestedArray.length; ++i)
+            if (this._nestedArray[i] instanceof Namespace && (found = this._nestedArray[i]._lookupImpl(path)))
+                exact = found;
+    }
+
+    // Set this even when null, so that when we walk up the tree we can quickly bail on repeated checks back down.
+    this._lookupCache[flatPath] = exact;
+    return exact;
 };
 
 /**

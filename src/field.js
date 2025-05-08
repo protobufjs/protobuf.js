@@ -370,12 +370,18 @@ Field.prototype._inferLegacyProtoFeatures = function _inferLegacyProtoFeatures(e
     }
 
     var features = {};
-    this.resolve();
+
     if (this.rule === "required") {
         features.field_presence = "LEGACY_REQUIRED";
     }
-    if (this.resolvedType instanceof Type && this.resolvedType.group) {
-        features.message_encoding = "DELIMITED";
+    if (this.parent && types.defaults[this.type] === undefined) {
+        // We can't use resolvedType because types may not have been resolved yet.  However,
+        // legacy groups are always in the same scope as the field so we don't have to do a
+        // full scan of the tree.
+        var type = this.parent.get(this.type.split(".").pop());
+        if (type && type instanceof Type && type.group) {
+            features.message_encoding = "DELIMITED";
+        }
     }
     if (this.getOption("packed") === true) {
         features.repeated_field_encoding = "PACKED";

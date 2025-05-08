@@ -68,6 +68,12 @@ function ReflectionObject(name, options) {
     this._features = {};
 
     /**
+     * Whether or not features have been resolved.
+     * @type {boolean}
+     */
+    this._featuresResolved = false;
+
+    /**
      * Parent namespace.
      * @type {Namespace|null}
      */
@@ -172,10 +178,8 @@ ReflectionObject.prototype.onRemove = function onRemove(parent) {
 ReflectionObject.prototype.resolve = function resolve() {
     if (this.resolved)
         return this;
-    if (this instanceof Root) {
-        this._resolveFeaturesRecursive(this._edition);
-        this.resolved = true;
-    }
+    if (this.root instanceof Root)
+        this.resolved = true; // only if part of a root
     return this;
 };
 
@@ -194,6 +198,10 @@ ReflectionObject.prototype._resolveFeaturesRecursive = function _resolveFeatures
  * @returns {undefined}
  */
 ReflectionObject.prototype._resolveFeatures = function _resolveFeatures(edition) {
+    if (this._featuresResolved) {
+        return;
+    }
+
     var defaults = {};
 
     /* istanbul ignore if */
@@ -217,6 +225,7 @@ ReflectionObject.prototype._resolveFeatures = function _resolveFeatures(edition)
             throw new Error("Unknown edition: " + edition);
         }
         this._features = Object.assign(defaults, protoFeatures || {});
+        this._featuresResolved = true;
         return;
     }
 
@@ -238,6 +247,7 @@ ReflectionObject.prototype._resolveFeatures = function _resolveFeatures(edition)
         // Sister fields should have the same features as their extensions.
         this.extensionField._features = this._features;
     }
+    this._featuresResolved = true;
 };
 
 /**

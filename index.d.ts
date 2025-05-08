@@ -750,6 +750,9 @@ export abstract class NamespaceBase extends ReflectionObject {
     /** Nested objects by name. */
     public nested?: { [k: string]: ReflectionObject };
 
+    /** Whether or not objects contained in this namespace need feature resolution. */
+    protected _needsRecursiveFeatureResolution: boolean;
+
     /** Nested objects of this namespace as an array for iteration. */
     public readonly nestedArray: ReflectionObject[];
 
@@ -908,6 +911,9 @@ export abstract class ReflectionObject {
 
     /** Resolved Features. */
     public _features: object;
+
+    /** Whether or not features have been resolved. */
+    public _featuresResolved: boolean;
 
     /** Parent namespace. */
     public parent: (Namespace|null);

@@ -51,7 +51,7 @@ Root.fromJSON = function fromJSON(json, root) {
         root = new Root();
     if (json.options)
         root.setOptions(json.options);
-    return root.addJSON(json.nested).resolveAll();
+    return root.addJSON(json.nested)._resolveFeaturesRecursive();
 };
 
 /**
@@ -99,6 +99,9 @@ Root.prototype.load = function load(filename, options, callback) {
 
     // Finishes loading by calling the callback (exactly once)
     function finish(err, root) {
+        if (root) {
+            root._resolveFeaturesRecursive();
+        }
         /* istanbul ignore if */
         if (!callback) {
             return;
@@ -108,9 +111,6 @@ Root.prototype.load = function load(filename, options, callback) {
         }
         var cb = callback;
         callback = null;
-        if (root) {
-            root.resolveAll();
-        }
         cb(err, root);
     }
 
@@ -218,8 +218,8 @@ Root.prototype.load = function load(filename, options, callback) {
     for (var i = 0, resolved; i < filename.length; ++i)
         if (resolved = self.resolvePath("", filename[i]))
             fetch(resolved);
-    self.resolveAll();
     if (sync) {
+        self._resolveFeaturesRecursive();
         return self;
     }
     if (!queued) {
@@ -272,6 +272,7 @@ Root.prototype.resolveAll = function resolveAll() {
         throw Error("unresolvable extensions: " + this.deferred.map(function(field) {
             return "'extend " + field.extend + "' in " + field.parent.fullName;
         }).join(", "));
+    this._resolveFeaturesRecursive(this._edition);
     return Namespace.prototype.resolveAll.call(this);
 };
 
