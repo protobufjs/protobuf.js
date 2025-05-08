@@ -178,9 +178,8 @@ ReflectionObject.prototype.onRemove = function onRemove(parent) {
 ReflectionObject.prototype.resolve = function resolve() {
     if (this.resolved)
         return this;
-    if (this instanceof Root) {
-        this.resolved = true;
-    }
+    if (this.root instanceof Root)
+        this.resolved = true; // only if part of a root
     return this;
 };
 
