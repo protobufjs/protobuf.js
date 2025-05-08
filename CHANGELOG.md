@@ -1,5 +1,13 @@
 # Changelog
 
+## [7.5.1](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v7.5.0...protobufjs-v7.5.1) (2025-05-08)
+
+
+### Bug Fixes
+
+* optimize regressions from editions implementations ([#2066](https://github.com/protobufjs/protobuf.js/issues/2066)) ([6406d4c](https://github.com/protobufjs/protobuf.js/commit/6406d4c18afae309fc7b5f4a24d9674d85da180b))
+* reserved field inside group blocks fail parsing ([#2058](https://github.com/protobufjs/protobuf.js/issues/2058)) ([56782bf](https://github.com/protobufjs/protobuf.js/commit/56782bff0c4b5132806eb1a6bc4d08f930c4aaad))
+
 ## [7.5.0](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v7.4.0...protobufjs-v7.5.0) (2025-04-15)
 
 
