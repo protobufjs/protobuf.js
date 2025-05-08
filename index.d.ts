@@ -753,6 +753,9 @@ export abstract class NamespaceBase extends ReflectionObject {
     /** Whether or not objects contained in this namespace need feature resolution. */
     protected _needsRecursiveFeatureResolution: boolean;
 
+    /** Whether or not objects contained in this namespace need a resolve. */
+    protected _needsRecursiveResolve: boolean;
+
     /** Nested objects of this namespace as an array for iteration. */
     public readonly nestedArray: ReflectionObject[];
 
