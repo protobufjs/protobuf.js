@@ -121,6 +121,8 @@ Service.prototype.resolveAll = function resolveAll() {
  * @override
  */
 Service.prototype._resolveFeaturesRecursive = function _resolveFeaturesRecursive(edition) {
+    if (!this._needsRecursiveFeatureResolution) return this;
+
     edition = this._edition || edition;
 
     Namespace.prototype._resolveFeaturesRecursive.call(this, edition);

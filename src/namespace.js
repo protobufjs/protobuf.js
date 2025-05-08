@@ -117,6 +117,13 @@ function Namespace(name, options) {
      * @private
      */
     this._lookupCache = {};
+
+    /**
+     * Whether or not objects contained in this namespace need feature resolution.
+     * @type {boolean}
+     * @protected
+     */
+    this._needsRecursiveFeatureResolution = true;
 }
 
 function clearCache(namespace) {
@@ -124,10 +131,9 @@ function clearCache(namespace) {
     namespace._lookupCache = {};
 
     // Also clear parent caches, since they include nested lookups.
-    var parent = namespace.parent;
-    while(parent) {
+    var parent = namespace;
+    while(parent = parent.parent) {
         parent._lookupCache = {};
-        parent = parent.parent;
     }
     return namespace;
 }
@@ -266,6 +272,14 @@ Namespace.prototype.add = function add(object) {
         }
     }
 
+    this._needsRecursiveFeatureResolution = true;
+
+    // Also clear parent caches, since they need to recurse down.
+    var parent = this;
+    while(parent = parent.parent) {
+        parent._needsRecursiveFeatureResolution = true;
+    }
+
     object.onAdd(this);
     return clearCache(this);
 };
@@ -341,6 +355,9 @@ Namespace.prototype.resolveAll = function resolveAll() {
  * @override
  */
 Namespace.prototype._resolveFeaturesRecursive = function _resolveFeaturesRecursive(edition) {
+    if (!this._needsRecursiveFeatureResolution) return this;
+    this._needsRecursiveFeatureResolution = false;
+
     edition = this._edition || edition;
 
     ReflectionObject.prototype._resolveFeaturesRecursive.call(this, edition);
