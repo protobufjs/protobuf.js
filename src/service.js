@@ -110,6 +110,8 @@ Service.prototype.get = function get(name) {
  * @override
  */
 Service.prototype.resolveAll = function resolveAll() {
+    if (!this._needsRecursiveResolve) return this;
+
     Namespace.prototype.resolve.call(this);
     var methods = this.methodsArray;
     for (var i = 0; i < methods.length; ++i)

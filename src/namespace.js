@@ -124,6 +124,13 @@ function Namespace(name, options) {
      * @protected
      */
     this._needsRecursiveFeatureResolution = true;
+
+    /**
+     * Whether or not objects contained in this namespace need a resolve.
+     * @type {boolean}
+     * @protected
+     */
+    this._needsRecursiveResolve = true;
 }
 
 function clearCache(namespace) {
@@ -273,11 +280,13 @@ Namespace.prototype.add = function add(object) {
     }
 
     this._needsRecursiveFeatureResolution = true;
+    this._needsRecursiveResolve = true;
 
     // Also clear parent caches, since they need to recurse down.
     var parent = this;
     while(parent = parent.parent) {
         parent._needsRecursiveFeatureResolution = true;
+        parent._needsRecursiveResolve = true;
     }
 
     object.onAdd(this);
@@ -341,6 +350,8 @@ Namespace.prototype.define = function define(path, json) {
  * @returns {Namespace} `this`
  */
 Namespace.prototype.resolveAll = function resolveAll() {
+    if (!this._needsRecursiveResolve) return this;
+
     var nested = this.nestedArray, i = 0;
     this.resolve();
     while (i < nested.length)
@@ -348,6 +359,7 @@ Namespace.prototype.resolveAll = function resolveAll() {
             nested[i++].resolveAll();
         else
             nested[i++].resolve();
+    this._needsRecursiveResolve = false;
     return this;
 };
 

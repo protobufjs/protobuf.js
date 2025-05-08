@@ -303,6 +303,8 @@ Type.prototype.toJSON = function toJSON(toJSONOptions) {
  * @override
  */
 Type.prototype.resolveAll = function resolveAll() {
+    if (!this._needsRecursiveResolve) return this;
+
     Namespace.prototype.resolveAll.call(this);
     var oneofs = this.oneofsArray; i = 0;
     while (i < oneofs.length)
