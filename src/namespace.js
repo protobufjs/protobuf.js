@@ -401,20 +401,28 @@ Namespace.prototype.lookup = function lookup(path, filterTypes, parentAlreadyChe
     } else if (!path.length)
         return this;
 
+    var flatPath = path.join(".");
+
     // Start at root if path is absolute
     if (path[0] === "")
         return this.root.lookup(path.slice(1), filterTypes);
-    var flatPath = path.join(".");
-
-    var found = this._lookupImpl(path, flatPath);
+    
+    // Early bailout for objects with matching absolute paths
+    var found = this.root._fullyQualifiedObjects["." + flatPath];
     if (found && (!filterTypes || filterTypes.indexOf(found.constructor) > -1)) {
         return found;
     }
 
-    // If there hasn't been a match, walk up the tree
+    // Do a regular lookup at this namespace and below
+    found = this._lookupImpl(path, flatPath);
+    if (found && (!filterTypes || filterTypes.indexOf(found.constructor) > -1)) {
+        return found;
+    }
+
     if (parentAlreadyChecked)
         return null;
 
+    // If there hasn't been a match, walk up the tree and look more broadly
     var current = this;
     while (current.parent) {
         found = current.parent._lookupImpl(path, flatPath);

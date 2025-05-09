@@ -42,6 +42,13 @@ function Root(options) {
      * @private
      */
     this._edition = "proto2";
+
+    /**
+     * Global lookup cache of fully qualified names.
+     * @type {Object.<string,ReflectionObject>}
+     * @private
+     */
+    this._fullyQualifiedObjects = {};
 }
 
 /**
@@ -341,6 +348,11 @@ Root.prototype._handleAdd = function _handleAdd(object) {
             object.parent[object.name] = object; // expose namespace as property of its parent
     }
 
+    if (object instanceof Type || object instanceof Enum) {
+        // Only store types and enums for quick lookup during resolve.
+        this._fullyQualifiedObjects[object.fullName] = object;
+    }
+
     // The above also adds uppercased (and thus conflict-free) nested types, services and enums as
     // properties of namespaces just like static code does. This allows using a .d.ts generated for
     // a static module with reflection-based solutions where the condition is met.
@@ -381,6 +393,8 @@ Root.prototype._handleRemove = function _handleRemove(object) {
             delete object.parent[object.name]; // unexpose namespaces
 
     }
+
+    delete this._fullyQualifiedObjects[object.fullName];
 };
 
 // Sets up cyclic dependencies (called in index-light)
