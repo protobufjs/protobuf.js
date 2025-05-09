@@ -753,6 +753,9 @@ export abstract class NamespaceBase extends ReflectionObject {
     /** Whether or not objects contained in this namespace need feature resolution. */
     protected _needsRecursiveFeatureResolution: boolean;
 
+    /** Whether or not objects contained in this namespace need a resolve. */
+    protected _needsRecursiveResolve: boolean;
+
     /** Nested objects of this namespace as an array for iteration. */
     public readonly nestedArray: ReflectionObject[];
 
@@ -899,21 +902,6 @@ export abstract class ReflectionObject {
 
     /** Unique name within its namespace. */
     public name: string;
-
-    /** The edition specified for this object.  Only relevant for top-level objects. */
-    public _edition: string;
-
-    /**
-     * The default edition to use for this object if none is specified.  For legacy reasons,
-     * this is proto2 except in the JSON parsing case where it was proto3.
-     */
-    public _defaultEdition: string;
-
-    /** Resolved Features. */
-    public _features: object;
-
-    /** Whether or not features have been resolved. */
-    public _featuresResolved: boolean;
 
     /** Parent namespace. */
     public parent: (Namespace|null);
