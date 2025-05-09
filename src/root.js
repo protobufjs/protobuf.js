@@ -36,7 +36,11 @@ function Root(options) {
      */
     this.files = [];
 
-    // Default to proto2 if unspecified.
+    /**
+     * Edition, defaults to proto2 if unspecified.
+     * @type {string}
+     * @private
+     */
     this._edition = "proto2";
 }
 
