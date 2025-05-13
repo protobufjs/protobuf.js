@@ -348,7 +348,7 @@ Root.prototype._handleAdd = function _handleAdd(object) {
             object.parent[object.name] = object; // expose namespace as property of its parent
     }
 
-    if (object instanceof Type || object instanceof Enum) {
+    if (object instanceof Type || object instanceof Enum || object instanceof Field) {
         // Only store types and enums for quick lookup during resolve.
         this._fullyQualifiedObjects[object.fullName] = object;
     }
