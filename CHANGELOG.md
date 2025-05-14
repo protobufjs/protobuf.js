@@ -1,5 +1,12 @@
 # Changelog
 
+## [7.5.2](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v7.5.1...protobufjs-v7.5.2) (2025-05-14)
+
+
+### Bug Fixes
+
+* ensure that types are always resolved ([#2068](https://github.com/protobufjs/protobuf.js/issues/2068)) ([4b51cb2](https://github.com/protobufjs/protobuf.js/commit/4b51cb2b8450b77f9f5de1c562e7fae93b19d040))
+
 ## [7.5.1](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v7.5.0...protobufjs-v7.5.1) (2025-05-08)
 
 
