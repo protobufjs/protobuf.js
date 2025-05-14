@@ -36,19 +36,8 @@ function Root(options) {
      */
     this.files = [];
 
-    /**
-     * Edition, defaults to proto2 if unspecified.
-     * @type {string}
-     * @private
-     */
+    // Default to proto2 if unspecified.
     this._edition = "proto2";
-
-    /**
-     * Global lookup cache of fully qualified names.
-     * @type {Object.<string,ReflectionObject>}
-     * @private
-     */
-    this._fullyQualifiedObjects = {};
 }
 
 /**
@@ -62,7 +51,7 @@ Root.fromJSON = function fromJSON(json, root) {
         root = new Root();
     if (json.options)
         root.setOptions(json.options);
-    return root.addJSON(json.nested).resolveAll();
+    return root.addJSON(json.nested)._resolveFeaturesRecursive();
 };
 
 /**
@@ -111,7 +100,7 @@ Root.prototype.load = function load(filename, options, callback) {
     // Finishes loading by calling the callback (exactly once)
     function finish(err, root) {
         if (root) {
-            root.resolveAll();
+            root._resolveFeaturesRecursive();
         }
         /* istanbul ignore if */
         if (!callback) {
@@ -230,7 +219,7 @@ Root.prototype.load = function load(filename, options, callback) {
         if (resolved = self.resolvePath("", filename[i]))
             fetch(resolved);
     if (sync) {
-        self.resolveAll();
+        self._resolveFeaturesRecursive();
         return self;
     }
     if (!queued) {
@@ -279,8 +268,6 @@ Root.prototype.loadSync = function loadSync(filename, options) {
  * @override
  */
 Root.prototype.resolveAll = function resolveAll() {
-    if (!this._needsRecursiveResolve) return this;
-
     if (this.deferred.length)
         throw Error("unresolvable extensions: " + this.deferred.map(function(field) {
             return "'extend " + field.extend + "' in " + field.parent.fullName;
@@ -348,11 +335,6 @@ Root.prototype._handleAdd = function _handleAdd(object) {
             object.parent[object.name] = object; // expose namespace as property of its parent
     }
 
-    if (object instanceof Type || object instanceof Enum || object instanceof Field) {
-        // Only store types and enums for quick lookup during resolve.
-        this._fullyQualifiedObjects[object.fullName] = object;
-    }
-
     // The above also adds uppercased (and thus conflict-free) nested types, services and enums as
     // properties of namespaces just like static code does. This allows using a .d.ts generated for
     // a static module with reflection-based solutions where the condition is met.
@@ -393,8 +375,6 @@ Root.prototype._handleRemove = function _handleRemove(object) {
             delete object.parent[object.name]; // unexpose namespaces
 
     }
-
-    delete this._fullyQualifiedObjects[object.fullName];
 };
 
 // Sets up cyclic dependencies (called in index-light)
