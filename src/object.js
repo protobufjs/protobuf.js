@@ -51,6 +51,7 @@ function ReflectionObject(name, options) {
     /**
      * The edition specified for this object.  Only relevant for top-level objects.
      * @type {string}
+     * @private
      */
     this._edition = null;
 
@@ -58,18 +59,21 @@ function ReflectionObject(name, options) {
      * The default edition to use for this object if none is specified.  For legacy reasons,
      * this is proto2 except in the JSON parsing case where it was proto3.
      * @type {string}
+     * @private
      */
     this._defaultEdition = "proto2";
 
     /**
      * Resolved Features.
      * @type {object}
+     * @private
      */
     this._features = {};
 
     /**
      * Whether or not features have been resolved.
      * @type {boolean}
+     * @private
      */
     this._featuresResolved = false;
 
