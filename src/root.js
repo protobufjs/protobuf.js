@@ -110,15 +110,15 @@ Root.prototype.load = function load(filename, options, callback) {
 
     // Finishes loading by calling the callback (exactly once)
     function finish(err, root) {
-        if (root) {
-            root.resolveAll();
-        }
         /* istanbul ignore if */
         if (!callback) {
             return;
         }
         if (sync) {
             throw err;
+        }
+        if (root) {
+            root.resolveAll();
         }
         var cb = callback;
         callback = null;

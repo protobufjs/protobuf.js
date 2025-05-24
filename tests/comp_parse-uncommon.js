@@ -34,3 +34,13 @@ function traverseTypes(current, fn) {
             traverseTypes(nested, fn);
         });
 }
+
+tape.test("invalid lookup", async function(test) {
+    try {
+        await protobuf.load("tests/data/invalid-lookup.proto");
+        test.fail("should have thrown");
+    } catch(err) {
+        test.match(err.message, /illegal token 'required'/, "failed to parse");
+    }
+});
+
