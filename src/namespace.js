@@ -408,7 +408,7 @@ Namespace.prototype.lookup = function lookup(path, filterTypes, parentAlreadyChe
         return this.root.lookup(path.slice(1), filterTypes);
 
     // Early bailout for objects with matching absolute paths
-    var found = this.root._fullyQualifiedObjects["." + flatPath];
+    var found = this.root._fullyQualifiedObjects && this.root._fullyQualifiedObjects["." + flatPath];
     if (found && (!filterTypes || filterTypes.indexOf(found.constructor) > -1)) {
         return found;
     }
