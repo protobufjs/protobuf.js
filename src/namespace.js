@@ -352,6 +352,8 @@ Namespace.prototype.define = function define(path, json) {
 Namespace.prototype.resolveAll = function resolveAll() {
     if (!this._needsRecursiveResolve) return this;
 
+    this._resolveFeaturesRecursive(this._edition);
+
     var nested = this.nestedArray, i = 0;
     this.resolve();
     while (i < nested.length)

@@ -285,7 +285,6 @@ Root.prototype.resolveAll = function resolveAll() {
         throw Error("unresolvable extensions: " + this.deferred.map(function(field) {
             return "'extend " + field.extend + "' in " + field.parent.fullName;
         }).join(", "));
-    this._resolveFeaturesRecursive(this._edition);
     return Namespace.prototype.resolveAll.call(this);
 };
 
