@@ -213,9 +213,9 @@ var unnamedMessageIndex = 0;
 
 /**
  * Creates a type from a descriptor.
- * 
+ *
  * Warning: this is not safe to use with editions protos, since it discards relevant file context.
- * 
+ *
  * @param {IDescriptorProto|Reader|Uint8Array} descriptor Descriptor
  * @param {string} [edition="proto2"] The syntax or edition to use
  * @param {boolean} [nested=false] Whether or not this is a nested object
@@ -400,7 +400,7 @@ var numberRe = /^(?![eE])[0-9]*(?:\.[0-9]*)?(?:[eE][+-]?[0-9]+)?$/;
  * Creates a field from a descriptor.
  *
  * Warning: this is not safe to use with editions protos, since it discards relevant file context.
- * 
+ *
  * @param {IFieldDescriptorProto|Reader|Uint8Array} descriptor Descriptor
  * @param {string} [edition="proto2"] The syntax or edition to use
  * @param {boolean} [nested=false] Whether or not this is a top-level object
@@ -571,7 +571,7 @@ var unnamedEnumIndex = 0;
  * Creates an enum from a descriptor.
  *
  * Warning: this is not safe to use with editions protos, since it discards relevant file context.
- * 
+ *
  * @param {IEnumDescriptorProto|Reader|Uint8Array} descriptor Descriptor
  * @param {string} [edition="proto2"] The syntax or edition to use
  * @param {boolean} [nested=false] Whether or not this is a top-level object
@@ -637,7 +637,7 @@ var unnamedOneofIndex = 0;
  * Creates a oneof from a descriptor.
  *
  * Warning: this is not safe to use with editions protos, since it discards relevant file context.
- * 
+ *
  * @param {IOneofDescriptorProto|Reader|Uint8Array} descriptor Descriptor
  * @returns {OneOf} OneOf instance
  */
@@ -687,7 +687,7 @@ var unnamedServiceIndex = 0;
  * Creates a service from a descriptor.
  *
  * Warning: this is not safe to use with editions protos, since it discards relevant file context.
- * 
+ *
  * @param {IServiceDescriptorProto|Reader|Uint8Array} descriptor Descriptor
  * @param {string} [edition="proto2"] The syntax or edition to use
  * @param {boolean} [nested=false] Whether or not this is a top-level object
@@ -744,7 +744,7 @@ Service.prototype.toDescriptor = function toDescriptor() {
  * Properties of a MethodOptions message.
  *
  * Warning: this is not safe to use with editions protos, since it discards relevant file context.
- * 
+ *
  * @interface IMethodOptions
  * @property {boolean} [deprecated]
  */
