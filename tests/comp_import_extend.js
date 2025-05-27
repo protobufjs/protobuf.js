@@ -34,6 +34,7 @@ tape.test("extensions - proto2 roundtrip", function (test) {
             required string required = 2;
             repeated int32 packed = 3 [packed = true];
             repeated int32 unpacked = 4;
+            optional int32 repeated_options = 5 [targets = TARGET_TYPE_SERVICE, targets = TARGET_TYPE_FILE];
         }
     `).root.resolveAll();
 

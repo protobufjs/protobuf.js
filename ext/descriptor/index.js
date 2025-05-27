@@ -863,7 +863,7 @@ function toDescriptorType(type, resolvedType, delimited) {
     throw Error("illegal type: " + type);
 }
 
-function fixDescriptorOptionsRecursive(obj, type) {
+function fromDescriptorOptionsRecursive(obj, type) {
     var val = {};
     for (var i = 0, field, key; i < type.fieldsArray.length; ++i) {
         if ((key = (field = type._fieldsArray[i]).name) === "uninterpretedOption") continue;
@@ -871,7 +871,7 @@ function fixDescriptorOptionsRecursive(obj, type) {
 
         var newKey = underScore(key);
         if (field.resolvedType instanceof Type) {
-            val[newKey] = fixDescriptorOptionsRecursive(obj[key], field.resolvedType);
+            val[newKey] = fromDescriptorOptionsRecursive(obj[key], field.resolvedType);
         } else if(field.resolvedType instanceof Enum) {
             val[newKey] = field.resolvedType.valuesById[obj[key]];
         } else {
@@ -885,19 +885,24 @@ function fixDescriptorOptionsRecursive(obj, type) {
 function fromDescriptorOptions(options, type) {
     if (!options)
         return undefined;
-    return fixDescriptorOptionsRecursive(type.toObject(options), type);
+    return fromDescriptorOptionsRecursive(type.toObject(options), type);
 }
 
-function camelCaseRecursive(obj) {
+function toDescriptorOptionsRecursive(obj, type) {
     var val = {};
     var keys = Object.keys(obj);
     for (var i = 0; i < keys.length; ++i) {
         var key = keys[i];
         var newKey = $protobuf.util.camelCase(key);
-        if (typeof obj[key] !== "object") {
-            val[newKey] = obj[key];
+        if (!Object.prototype.hasOwnProperty.call(type.fields, newKey)) continue;
+        var field = type.fields[newKey];
+        if (field.resolvedType instanceof Type) {
+            val[newKey] = toDescriptorOptionsRecursive(obj[key], field.resolvedType);
         } else {
-            val[newKey] = camelCaseRecursive(obj[key]);
+            val[newKey] = obj[key];
+        }
+        if (field.repeated && !Array.isArray(val[newKey])) {
+            val[newKey] = [val[newKey]];
         }
     }
     return val;
@@ -907,7 +912,7 @@ function camelCaseRecursive(obj) {
 function toDescriptorOptions(options, type) {
     if (!options)
         return undefined;
-    return type.fromObject(camelCaseRecursive(options));
+    return type.fromObject(toDescriptorOptionsRecursive(options, type));
 }
 
 // Calculates the shortest relative path from `from` to `to`.
