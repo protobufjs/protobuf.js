@@ -113,6 +113,10 @@ message FileDescriptorProto {
   // For Google-internal migration only. Do not use.
   repeated int32 weak_dependency = 11;
 
+  // Names of files imported by this file purely for the purpose of providing
+  // option extensions. These are excluded from the dependency list above.
+  repeated string option_dependency = 15;
+
   // All top-level definitions in this file.
   repeated DescriptorProto message_type = 4;
   repeated EnumDescriptorProto enum_type = 5;
@@ -176,6 +180,9 @@ message DescriptorProto {
   // Reserved field names, which may not be used by fields in the same message.
   // A given name may only be reserved once.
   repeated string reserved_name = 10;
+
+  // Support for `export` and `local` keywords on enums.
+  optional SymbolVisibility visibility = 11;
 }
 
 message ExtensionRangeOptions {
@@ -372,6 +379,9 @@ message EnumDescriptorProto {
   // Reserved enum value names, which may not be reused. A given name may only
   // be reserved once.
   repeated string reserved_name = 5;
+
+  // Support for `export` and `local` keywords on enums.
+  optional SymbolVisibility visibility = 6;
 }
 
 // Describes a value within an enum.
@@ -743,8 +753,9 @@ message FieldOptions {
   // is a formalization for deprecating fields.
   optional bool deprecated = 3 [default = false];
 
+  // DEPRECATED. DO NOT USE!
   // For Google-internal migration only. Do not use.
-  optional bool weak = 10 [default = false];
+  optional bool weak = 10 [default = false, deprecated = true];
 
   // Indicate that the field value should not be printed out when using debug
   // formats, e.g. when the field contains sensitive credentials.
@@ -1005,21 +1016,49 @@ message FeatureSet {
     IMPLICIT = 2;
     LEGACY_REQUIRED = 3;
   }
-  optional FieldPresence field_presence = 1;
+  optional FieldPresence field_presence = 1 [
+    retention = RETENTION_RUNTIME,
+    targets = TARGET_TYPE_FIELD,
+    targets = TARGET_TYPE_FILE,
+    feature_support = {
+      edition_introduced: EDITION_2023,
+    },
+    edition_defaults = { edition: EDITION_LEGACY, value: "EXPLICIT" },
+    edition_defaults = { edition: EDITION_PROTO3, value: "IMPLICIT" },
+    edition_defaults = { edition: EDITION_2023, value: "EXPLICIT" }
+  ];
 
   enum EnumType {
     ENUM_TYPE_UNKNOWN = 0;
     OPEN = 1;
     CLOSED = 2;
   }
-  optional EnumType enum_type = 2;
+  optional EnumType enum_type = 2 [
+    retention = RETENTION_RUNTIME,
+    targets = TARGET_TYPE_ENUM,
+    targets = TARGET_TYPE_FILE,
+    feature_support = {
+      edition_introduced: EDITION_2023,
+    },
+    edition_defaults = { edition: EDITION_LEGACY, value: "CLOSED" },
+    edition_defaults = { edition: EDITION_PROTO3, value: "OPEN" }
+  ];
 
   enum RepeatedFieldEncoding {
     REPEATED_FIELD_ENCODING_UNKNOWN = 0;
     PACKED = 1;
     EXPANDED = 2;
   }
-  optional RepeatedFieldEncoding repeated_field_encoding = 3;
+  optional RepeatedFieldEncoding repeated_field_encoding = 3 [
+    retention = RETENTION_RUNTIME,
+    targets = TARGET_TYPE_FIELD,
+    targets = TARGET_TYPE_FILE,
+    feature_support = {
+      edition_introduced: EDITION_2023,
+    },
+    edition_defaults = { edition: EDITION_LEGACY, value: "EXPANDED" },
+    edition_defaults = { edition: EDITION_PROTO3, value: "PACKED" }
+  ];
 
   enum Utf8Validation {
     UTF8_VALIDATION_UNKNOWN = 0;
@@ -1027,28 +1066,102 @@ message FeatureSet {
     NONE = 3;
     reserved 1;
   }
-  optional Utf8Validation utf8_validation = 4;
+  optional Utf8Validation utf8_validation = 4 [
+    retention = RETENTION_RUNTIME,
+    targets = TARGET_TYPE_FIELD,
+    targets = TARGET_TYPE_FILE,
+    feature_support = {
+      edition_introduced: EDITION_2023,
+    },
+    edition_defaults = { edition: EDITION_LEGACY, value: "NONE" },
+    edition_defaults = { edition: EDITION_PROTO3, value: "VERIFY" }
+  ];
 
   enum MessageEncoding {
     MESSAGE_ENCODING_UNKNOWN = 0;
     LENGTH_PREFIXED = 1;
     DELIMITED = 2;
   }
-  optional MessageEncoding message_encoding = 5;
+  optional MessageEncoding message_encoding = 5 [
+    retention = RETENTION_RUNTIME,
+    targets = TARGET_TYPE_FIELD,
+    targets = TARGET_TYPE_FILE,
+    feature_support = {
+      edition_introduced: EDITION_2023,
+    },
+    edition_defaults = { edition: EDITION_LEGACY, value: "LENGTH_PREFIXED" }
+  ];
 
   enum JsonFormat {
     JSON_FORMAT_UNKNOWN = 0;
     ALLOW = 1;
     LEGACY_BEST_EFFORT = 2;
   }
-  optional JsonFormat json_format = 6;
+  optional JsonFormat json_format = 6 [
+    retention = RETENTION_RUNTIME,
+    targets = TARGET_TYPE_MESSAGE,
+    targets = TARGET_TYPE_ENUM,
+    targets = TARGET_TYPE_FILE,
+    feature_support = {
+      edition_introduced: EDITION_2023,
+    },
+    edition_defaults = { edition: EDITION_LEGACY, value: "LEGACY_BEST_EFFORT" },
+    edition_defaults = { edition: EDITION_PROTO3, value: "ALLOW" }
+  ];
 
   enum EnforceNamingStyle {
     ENFORCE_NAMING_STYLE_UNKNOWN = 0;
     STYLE2024 = 1;
     STYLE_LEGACY = 2;
   }
-  optional EnforceNamingStyle enforce_naming_style = 7;
+  optional EnforceNamingStyle enforce_naming_style = 7 [
+    retention = RETENTION_SOURCE,
+    targets = TARGET_TYPE_FILE,
+    targets = TARGET_TYPE_EXTENSION_RANGE,
+    targets = TARGET_TYPE_MESSAGE,
+    targets = TARGET_TYPE_FIELD,
+    targets = TARGET_TYPE_ONEOF,
+    targets = TARGET_TYPE_ENUM,
+    targets = TARGET_TYPE_ENUM_ENTRY,
+    targets = TARGET_TYPE_SERVICE,
+    targets = TARGET_TYPE_METHOD,
+    feature_support = {
+      edition_introduced: EDITION_2024,
+    },
+    edition_defaults = { edition: EDITION_LEGACY, value: "STYLE_LEGACY" },
+    edition_defaults = { edition: EDITION_2024, value: "STYLE2024" }
+  ];
+
+  message VisibilityFeature {
+    enum DefaultSymbolVisibility {
+      DEFAULT_SYMBOL_VISIBILITY_UNKNOWN = 0;
+
+      // Default pre-EDITION_2024, all UNSET visibility are export.
+      EXPORT_ALL = 1;
+
+      // All top-level symbols default to export, nested default to local.
+      EXPORT_TOP_LEVEL = 2;
+
+      // All symbols default to local.
+      LOCAL_ALL = 3;
+
+      // All symbols local by default. Nested types cannot be exported.
+      // With special case caveat for message { enum {} reserved 1 to max; }
+      // This is the recommended setting for new protos.
+      STRICT = 4;
+    }
+    reserved 1 to max;
+  }
+  optional VisibilityFeature.DefaultSymbolVisibility default_symbol_visibility =
+      8 [
+        retention = RETENTION_SOURCE,
+        targets = TARGET_TYPE_FILE,
+        feature_support = {
+          edition_introduced: EDITION_2024,
+        },
+        edition_defaults = { edition: EDITION_LEGACY, value: "EXPORT_ALL" },
+        edition_defaults = { edition: EDITION_2024, value: "EXPORT_TOP_LEVEL" }
+      ];
 
   reserved 999;
 
@@ -1068,6 +1181,11 @@ message FeatureSet {
       number: 1003,
       full_name: ".pb.python",
       type: ".pb.PythonFeatures"
+    },
+    declaration = {
+      number: 9989,
+      full_name: ".pb.java_mutable",
+      type: ".pb.JavaMutableFeatures"
     },
     declaration = {
       number: 9990,
@@ -1291,4 +1409,15 @@ message GeneratedCodeInfo {
     }
     optional Semantic semantic = 5;
   }
+}
+
+// Describes the 'visibility' of a symbol with respect to the proto import
+// system. Symbols can only be imported when the visibility rules do not prevent
+// it (ex: local symbols cannot be imported).  Visibility modifiers can only set
+// on `message` and `enum` as they are the only types available to be referenced
+// from other files.
+enum SymbolVisibility {
+  VISIBILITY_UNSET = 0;
+  VISIBILITY_LOCAL = 1;
+  VISIBILITY_EXPORT = 2;
 }
