@@ -1,5 +1,12 @@
 # Changelog
 
+## [7.5.3](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v7.5.2...protobufjs-v7.5.3) (2025-05-28)
+
+
+### Bug Fixes
+
+* descriptor extensions handling post-editions ([#2075](https://github.com/protobufjs/protobuf.js/issues/2075)) ([6e255d4](https://github.com/protobufjs/protobuf.js/commit/6e255d4ad6982cc857f26e1731c2cedcf5796f68))
+
 ## [7.5.2](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v7.5.1...protobufjs-v7.5.2) (2025-05-14)
 
 
