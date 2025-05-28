@@ -35,6 +35,25 @@ var Namespace = $protobuf.Namespace,
  * @property {IFileOptions} [options] Options
  * @property {*} [sourceCodeInfo] Not supported
  * @property {string} [syntax="proto2"] Syntax
+ * @property {IEdition} [edition] Edition
+ */
+
+/**
+ * Values of the Edition enum.
+ * @typedef IEdition
+ * @type {number}
+ * @property {number} EDITION_UNKNOWN=0
+ * @property {number} EDITION_LEGACY=900
+ * @property {number} EDITION_PROTO2=998
+ * @property {number} EDITION_PROTO3=999
+ * @property {number} EDITION_2023=1000
+ * @property {number} EDITION_2024=1001
+ * @property {number} EDITION_1_TEST_ONLY=1
+ * @property {number} EDITION_2_TEST_ONLY=2
+ * @property {number} EDITION_99997_TEST_ONLY=99997
+ * @property {number} EDITION_99998_TEST_ONLY=99998
+ * @property {number} EDITION_99998_TEST_ONLY=99999
+ * @property {number} EDITION_MAX=2147483647
  */
 
 /**
@@ -85,20 +104,21 @@ Root.fromDescriptor = function fromDescriptor(descriptor) {
             filePackage = root;
             if ((fileDescriptor = descriptor.file[j])["package"] && fileDescriptor["package"].length)
                 filePackage = root.define(fileDescriptor["package"]);
+            var edition = editionFromDescriptor(fileDescriptor);
             if (fileDescriptor.name && fileDescriptor.name.length)
                 root.files.push(filePackage.filename = fileDescriptor.name);
             if (fileDescriptor.messageType)
                 for (i = 0; i < fileDescriptor.messageType.length; ++i)
-                    filePackage.add(Type.fromDescriptor(fileDescriptor.messageType[i], fileDescriptor.syntax));
+                    filePackage.add(Type.fromDescriptor(fileDescriptor.messageType[i], edition));
             if (fileDescriptor.enumType)
                 for (i = 0; i < fileDescriptor.enumType.length; ++i)
-                    filePackage.add(Enum.fromDescriptor(fileDescriptor.enumType[i]));
+                    filePackage.add(Enum.fromDescriptor(fileDescriptor.enumType[i], edition));
             if (fileDescriptor.extension)
                 for (i = 0; i < fileDescriptor.extension.length; ++i)
-                    filePackage.add(Field.fromDescriptor(fileDescriptor.extension[i]));
+                    filePackage.add(Field.fromDescriptor(fileDescriptor.extension[i], edition));
             if (fileDescriptor.service)
                 for (i = 0; i < fileDescriptor.service.length; ++i)
-                    filePackage.add(Service.fromDescriptor(fileDescriptor.service[i]));
+                    filePackage.add(Service.fromDescriptor(fileDescriptor.service[i], edition));
             var opts = fromDescriptorOptions(fileDescriptor.options, exports.FileOptions);
             if (opts) {
                 var ks = Object.keys(opts);
@@ -108,42 +128,41 @@ Root.fromDescriptor = function fromDescriptor(descriptor) {
         }
     }
 
-    return root;
+    return root.resolveAll();
 };
 
 /**
  * Converts a root to a descriptor set.
  * @returns {Message<IFileDescriptorSet>} Descriptor
- * @param {string} [syntax="proto2"] Syntax
+ * @param {string} [edition="proto2"] The syntax or edition to use
  */
-Root.prototype.toDescriptor = function toDescriptor(syntax) {
+Root.prototype.toDescriptor = function toDescriptor(edition) {
     var set = exports.FileDescriptorSet.create();
-    Root_toDescriptorRecursive(this, set.file, syntax);
+    Root_toDescriptorRecursive(this, set.file, edition);
     return set;
 };
 
 // Traverses a namespace and assembles the descriptor set
-function Root_toDescriptorRecursive(ns, files, syntax) {
+function Root_toDescriptorRecursive(ns, files, edition) {
 
     // Create a new file
     var file = exports.FileDescriptorProto.create({ name: ns.filename || (ns.fullName.substring(1).replace(/\./g, "_") || "root") + ".proto" });
-    if (syntax)
-        file.syntax = syntax;
+    editionToDescriptor(edition, file);
     if (!(ns instanceof Root))
         file["package"] = ns.fullName.substring(1);
 
     // Add nested types
     for (var i = 0, nested; i < ns.nestedArray.length; ++i)
         if ((nested = ns._nestedArray[i]) instanceof Type)
-            file.messageType.push(nested.toDescriptor(syntax));
+            file.messageType.push(nested.toDescriptor(edition));
         else if (nested instanceof Enum)
             file.enumType.push(nested.toDescriptor());
         else if (nested instanceof Field)
-            file.extension.push(nested.toDescriptor(syntax));
+            file.extension.push(nested.toDescriptor(edition));
         else if (nested instanceof Service)
             file.service.push(nested.toDescriptor());
         else if (nested instanceof /* plain */ Namespace)
-            Root_toDescriptorRecursive(nested, files, syntax); // requires new file
+            Root_toDescriptorRecursive(nested, files, edition); // requires new file
 
     // Keep package-level options
     file.options = toDescriptorOptions(ns.options, exports.FileOptions);
@@ -194,12 +213,15 @@ var unnamedMessageIndex = 0;
 
 /**
  * Creates a type from a descriptor.
+ *
+ * Warning: this is not safe to use with editions protos, since it discards relevant file context.
+ *
  * @param {IDescriptorProto|Reader|Uint8Array} descriptor Descriptor
- * @param {string} [syntax="proto2"] Syntax
+ * @param {string} [edition="proto2"] The syntax or edition to use
+ * @param {boolean} [nested=false] Whether or not this is a nested object
  * @returns {Type} Type instance
  */
-Type.fromDescriptor = function fromDescriptor(descriptor, syntax) {
-
+Type.fromDescriptor = function fromDescriptor(descriptor, edition, nested) {
     // Decode the descriptor message if specified as a buffer:
     if (typeof descriptor.length === "number")
         descriptor = exports.DescriptorProto.decode(descriptor);
@@ -208,28 +230,31 @@ Type.fromDescriptor = function fromDescriptor(descriptor, syntax) {
     var type = new Type(descriptor.name.length ? descriptor.name : "Type" + unnamedMessageIndex++, fromDescriptorOptions(descriptor.options, exports.MessageOptions)),
         i;
 
+    if (!nested)
+        type._edition = edition;
+
     /* Oneofs */ if (descriptor.oneofDecl)
         for (i = 0; i < descriptor.oneofDecl.length; ++i)
             type.add(OneOf.fromDescriptor(descriptor.oneofDecl[i]));
     /* Fields */ if (descriptor.field)
         for (i = 0; i < descriptor.field.length; ++i) {
-            var field = Field.fromDescriptor(descriptor.field[i], syntax);
+            var field = Field.fromDescriptor(descriptor.field[i], edition, true);
             type.add(field);
             if (descriptor.field[i].hasOwnProperty("oneofIndex")) // eslint-disable-line no-prototype-builtins
                 type.oneofsArray[descriptor.field[i].oneofIndex].add(field);
         }
     /* Extension fields */ if (descriptor.extension)
         for (i = 0; i < descriptor.extension.length; ++i)
-            type.add(Field.fromDescriptor(descriptor.extension[i], syntax));
+            type.add(Field.fromDescriptor(descriptor.extension[i], edition, true));
     /* Nested types */ if (descriptor.nestedType)
         for (i = 0; i < descriptor.nestedType.length; ++i) {
-            type.add(Type.fromDescriptor(descriptor.nestedType[i], syntax));
+            type.add(Type.fromDescriptor(descriptor.nestedType[i], edition, true));
             if (descriptor.nestedType[i].options && descriptor.nestedType[i].options.mapEntry)
                 type.setOption("map_entry", true);
         }
     /* Nested enums */ if (descriptor.enumType)
         for (i = 0; i < descriptor.enumType.length; ++i)
-            type.add(Enum.fromDescriptor(descriptor.enumType[i]));
+            type.add(Enum.fromDescriptor(descriptor.enumType[i], edition, true));
     /* Extension ranges */ if (descriptor.extensionRange && descriptor.extensionRange.length) {
         type.extensions = [];
         for (i = 0; i < descriptor.extensionRange.length; ++i)
@@ -251,18 +276,18 @@ Type.fromDescriptor = function fromDescriptor(descriptor, syntax) {
 /**
  * Converts a type to a descriptor.
  * @returns {Message<IDescriptorProto>} Descriptor
- * @param {string} [syntax="proto2"] Syntax
+ * @param {string} [edition="proto2"] The syntax or edition to use
  */
-Type.prototype.toDescriptor = function toDescriptor(syntax) {
+Type.prototype.toDescriptor = function toDescriptor(edition) {
     var descriptor = exports.DescriptorProto.create({ name: this.name }),
         i;
 
     /* Fields */ for (i = 0; i < this.fieldsArray.length; ++i) {
         var fieldDescriptor;
-        descriptor.field.push(fieldDescriptor = this._fieldsArray[i].toDescriptor(syntax));
+        descriptor.field.push(fieldDescriptor = this._fieldsArray[i].toDescriptor(edition));
         if (this._fieldsArray[i] instanceof MapField) { // map fields are repeated FieldNameEntry
-            var keyType = toDescriptorType(this._fieldsArray[i].keyType, this._fieldsArray[i].resolvedKeyType),
-                valueType = toDescriptorType(this._fieldsArray[i].type, this._fieldsArray[i].resolvedType),
+            var keyType = toDescriptorType(this._fieldsArray[i].keyType, this._fieldsArray[i].resolvedKeyType, false),
+                valueType = toDescriptorType(this._fieldsArray[i].type, this._fieldsArray[i].resolvedType, false),
                 valueTypeName = valueType === /* type */ 11 || valueType === /* enum */ 14
                     ? this._fieldsArray[i].resolvedType && shortname(this.parent, this._fieldsArray[i].resolvedType) || this._fieldsArray[i].type
                     : undefined;
@@ -280,9 +305,9 @@ Type.prototype.toDescriptor = function toDescriptor(syntax) {
         descriptor.oneofDecl.push(this._oneofsArray[i].toDescriptor());
     /* Nested... */ for (i = 0; i < this.nestedArray.length; ++i) {
         /* Extension fields */ if (this._nestedArray[i] instanceof Field)
-            descriptor.field.push(this._nestedArray[i].toDescriptor(syntax));
+            descriptor.field.push(this._nestedArray[i].toDescriptor(edition));
         /* Types */ else if (this._nestedArray[i] instanceof Type)
-            descriptor.nestedType.push(this._nestedArray[i].toDescriptor(syntax));
+            descriptor.nestedType.push(this._nestedArray[i].toDescriptor(edition));
         /* Enums */ else if (this._nestedArray[i] instanceof Enum)
             descriptor.enumType.push(this._nestedArray[i].toDescriptor());
         // plain nested namespaces become packages instead in Root#toDescriptor
@@ -373,11 +398,15 @@ var numberRe = /^(?![eE])[0-9]*(?:\.[0-9]*)?(?:[eE][+-]?[0-9]+)?$/;
 
 /**
  * Creates a field from a descriptor.
+ *
+ * Warning: this is not safe to use with editions protos, since it discards relevant file context.
+ *
  * @param {IFieldDescriptorProto|Reader|Uint8Array} descriptor Descriptor
- * @param {string} [syntax="proto2"] Syntax
+ * @param {string} [edition="proto2"] The syntax or edition to use
+ * @param {boolean} [nested=false] Whether or not this is a top-level object
  * @returns {Field} Field instance
  */
-Field.fromDescriptor = function fromDescriptor(descriptor, syntax) {
+Field.fromDescriptor = function fromDescriptor(descriptor, edition, nested) {
 
     // Decode the descriptor message if specified as a buffer:
     if (typeof descriptor.length === "number")
@@ -415,7 +444,12 @@ Field.fromDescriptor = function fromDescriptor(descriptor, syntax) {
         extendee
     );
 
+    if (!nested)
+        field._edition = edition;
+
     field.options = fromDescriptorOptions(descriptor.options, exports.FieldOptions);
+    if (descriptor.proto3_optional)
+        field.options.proto3_optional = true;
 
     if (descriptor.defaultValue && descriptor.defaultValue.length) {
         var defaultValue = descriptor.defaultValue;
@@ -436,11 +470,11 @@ Field.fromDescriptor = function fromDescriptor(descriptor, syntax) {
     }
 
     if (packableDescriptorType(descriptor.type)) {
-        if (syntax === "proto3") { // defaults to packed=true (internal preset is packed=true)
+        if (edition === "proto3") { // defaults to packed=true (internal preset is packed=true)
             if (descriptor.options && !descriptor.options.packed)
                 field.setOption("packed", false);
-        } else if (!(descriptor.options && descriptor.options.packed)) // defaults to packed=false
-            field.setOption("packed", false);
+        } else if ((!edition || edition === "proto2") && descriptor.options && descriptor.options.packed) // defaults to packed=false
+            field.setOption("packed", true);
     }
 
     return field;
@@ -449,9 +483,9 @@ Field.fromDescriptor = function fromDescriptor(descriptor, syntax) {
 /**
  * Converts a field to a descriptor.
  * @returns {Message<IFieldDescriptorProto>} Descriptor
- * @param {string} [syntax="proto2"] Syntax
+ * @param {string} [edition="proto2"] The syntax or edition to use
  */
-Field.prototype.toDescriptor = function toDescriptor(syntax) {
+Field.prototype.toDescriptor = function toDescriptor(edition) {
     var descriptor = exports.FieldDescriptorProto.create({ name: this.name, number: this.id });
 
     if (this.map) {
@@ -463,7 +497,7 @@ Field.prototype.toDescriptor = function toDescriptor(syntax) {
     } else {
 
         // Rewire field type
-        switch (descriptor.type = toDescriptorType(this.type, this.resolve().resolvedType)) {
+        switch (descriptor.type = toDescriptorType(this.type, this.resolve().resolvedType, this.delimited)) {
             case 10: // group
             case 11: // type
             case 14: // enum
@@ -472,12 +506,13 @@ Field.prototype.toDescriptor = function toDescriptor(syntax) {
         }
 
         // Rewire field rule
-        switch (this.rule) {
-            case "repeated": descriptor.label = 3; break;
-            case "required": descriptor.label = 2; break;
-            default: descriptor.label = 1; break;
+        if (this.rule === "repeated") {
+            descriptor.label = 3;
+        } else if (this.required && edition === "proto2") {
+            descriptor.label = 2;
+        } else {
+            descriptor.label = 1;
         }
-
     }
 
     // Handle extension field
@@ -492,12 +527,14 @@ Field.prototype.toDescriptor = function toDescriptor(syntax) {
         descriptor.options = toDescriptorOptions(this.options, exports.FieldOptions);
         if (this.options["default"] != null)
             descriptor.defaultValue = String(this.options["default"]);
+        if (this.options.proto3_optional)
+            descriptor.proto3_optional = true;
     }
 
-    if (syntax === "proto3") { // defaults to packed=true
+    if (edition === "proto3") { // defaults to packed=true
         if (!this.packed)
             (descriptor.options || (descriptor.options = exports.FieldOptions.create())).packed = false;
-    } else if (this.packed) // defaults to packed=false
+    } else if ((!edition || edition === "proto2") && this.packed) // defaults to packed=false
         (descriptor.options || (descriptor.options = exports.FieldOptions.create())).packed = true;
 
     return descriptor;
@@ -532,10 +569,15 @@ var unnamedEnumIndex = 0;
 
 /**
  * Creates an enum from a descriptor.
+ *
+ * Warning: this is not safe to use with editions protos, since it discards relevant file context.
+ *
  * @param {IEnumDescriptorProto|Reader|Uint8Array} descriptor Descriptor
+ * @param {string} [edition="proto2"] The syntax or edition to use
+ * @param {boolean} [nested=false] Whether or not this is a top-level object
  * @returns {Enum} Enum instance
  */
-Enum.fromDescriptor = function fromDescriptor(descriptor) {
+Enum.fromDescriptor = function fromDescriptor(descriptor, edition, nested) {
 
     // Decode the descriptor message if specified as a buffer:
     if (typeof descriptor.length === "number")
@@ -550,11 +592,16 @@ Enum.fromDescriptor = function fromDescriptor(descriptor) {
             values[name && name.length ? name : "NAME" + value] = value;
         }
 
-    return new Enum(
+    var enm = new Enum(
         descriptor.name && descriptor.name.length ? descriptor.name : "Enum" + unnamedEnumIndex++,
         values,
         fromDescriptorOptions(descriptor.options, exports.EnumOptions)
     );
+
+    if (!nested)
+        enm._edition = edition;
+
+    return enm;
 };
 
 /**
@@ -588,6 +635,9 @@ var unnamedOneofIndex = 0;
 
 /**
  * Creates a oneof from a descriptor.
+ *
+ * Warning: this is not safe to use with editions protos, since it discards relevant file context.
+ *
  * @param {IOneofDescriptorProto|Reader|Uint8Array} descriptor Descriptor
  * @returns {OneOf} OneOf instance
  */
@@ -635,16 +685,23 @@ var unnamedServiceIndex = 0;
 
 /**
  * Creates a service from a descriptor.
+ *
+ * Warning: this is not safe to use with editions protos, since it discards relevant file context.
+ *
  * @param {IServiceDescriptorProto|Reader|Uint8Array} descriptor Descriptor
+ * @param {string} [edition="proto2"] The syntax or edition to use
+ * @param {boolean} [nested=false] Whether or not this is a top-level object
  * @returns {Service} Service instance
  */
-Service.fromDescriptor = function fromDescriptor(descriptor) {
+Service.fromDescriptor = function fromDescriptor(descriptor, edition, nested) {
 
     // Decode the descriptor message if specified as a buffer:
     if (typeof descriptor.length === "number")
         descriptor = exports.ServiceDescriptorProto.decode(descriptor);
 
     var service = new Service(descriptor.name && descriptor.name.length ? descriptor.name : "Service" + unnamedServiceIndex++, fromDescriptorOptions(descriptor.options, exports.ServiceOptions));
+    if (!nested)
+        service._edition = edition;
     if (descriptor.method)
         for (var i = 0; i < descriptor.method.length; ++i)
             service.add(Method.fromDescriptor(descriptor.method[i]));
@@ -685,6 +742,9 @@ Service.prototype.toDescriptor = function toDescriptor() {
 
 /**
  * Properties of a MethodOptions message.
+ *
+ * Warning: this is not safe to use with editions protos, since it discards relevant file context.
+ *
  * @interface IMethodOptions
  * @property {boolean} [deprecated]
  */
@@ -777,7 +837,7 @@ function packableDescriptorType(type) {
 }
 
 // Converts a protobuf.js basic type to a descriptor type
-function toDescriptorType(type, resolvedType) {
+function toDescriptorType(type, resolvedType, delimited) {
     switch (type) {
         // 0 is reserved for errors
         case "double": return 1;
@@ -799,41 +859,60 @@ function toDescriptorType(type, resolvedType) {
     if (resolvedType instanceof Enum)
         return 14;
     if (resolvedType instanceof Type)
-        return resolvedType.group ? 10 : 11;
+        return delimited ? 10 : 11;
     throw Error("illegal type: " + type);
+}
+
+function fromDescriptorOptionsRecursive(obj, type) {
+    var val = {};
+    for (var i = 0, field, key; i < type.fieldsArray.length; ++i) {
+        if ((key = (field = type._fieldsArray[i]).name) === "uninterpretedOption") continue;
+        if (!Object.prototype.hasOwnProperty.call(obj, key)) continue;
+
+        var newKey = underScore(key);
+        if (field.resolvedType instanceof Type) {
+            val[newKey] = fromDescriptorOptionsRecursive(obj[key], field.resolvedType);
+        } else if(field.resolvedType instanceof Enum) {
+            val[newKey] = field.resolvedType.valuesById[obj[key]];
+        } else {
+            val[newKey] = obj[key];
+        }
+    }
+    return val;
 }
 
 // Converts descriptor options to an options object
 function fromDescriptorOptions(options, type) {
     if (!options)
         return undefined;
-    var out = [];
-    for (var i = 0, field, key, val; i < type.fieldsArray.length; ++i)
-        if ((key = (field = type._fieldsArray[i]).name) !== "uninterpretedOption")
-            if (options.hasOwnProperty(key)) { // eslint-disable-line no-prototype-builtins
-                val = options[key];
-                if (field.resolvedType instanceof Enum && typeof val === "number" && field.resolvedType.valuesById[val] !== undefined)
-                    val = field.resolvedType.valuesById[val];
-                out.push(underScore(key), val);
-            }
-    return out.length ? $protobuf.util.toObject(out) : undefined;
+    return fromDescriptorOptionsRecursive(type.toObject(options), type);
+}
+
+function toDescriptorOptionsRecursive(obj, type) {
+    var val = {};
+    var keys = Object.keys(obj);
+    for (var i = 0; i < keys.length; ++i) {
+        var key = keys[i];
+        var newKey = $protobuf.util.camelCase(key);
+        if (!Object.prototype.hasOwnProperty.call(type.fields, newKey)) continue;
+        var field = type.fields[newKey];
+        if (field.resolvedType instanceof Type) {
+            val[newKey] = toDescriptorOptionsRecursive(obj[key], field.resolvedType);
+        } else {
+            val[newKey] = obj[key];
+        }
+        if (field.repeated && !Array.isArray(val[newKey])) {
+            val[newKey] = [val[newKey]];
+        }
+    }
+    return val;
 }
 
 // Converts an options object to descriptor options
 function toDescriptorOptions(options, type) {
     if (!options)
         return undefined;
-    var out = [];
-    for (var i = 0, ks = Object.keys(options), key, val; i < ks.length; ++i) {
-        val = options[key = ks[i]];
-        if (key === "default")
-            continue;
-        var field = type.fields[key];
-        if (!field && !(field = type.fields[key = $protobuf.util.camelCase(key)]))
-            continue;
-        out.push(key, val);
-    }
-    return out.length ? type.fromObject($protobuf.util.toObject(out)) : undefined;
+    return type.fromObject(toDescriptorOptionsRecursive(options, type));
 }
 
 // Calculates the shortest relative path from `from` to `to`.
@@ -860,6 +939,37 @@ function underScore(str) {
     return str.substring(0,1)
          + str.substring(1)
                .replace(/([A-Z])(?=[a-z]|$)/g, function($0, $1) { return "_" + $1.toLowerCase(); });
+}
+
+function editionFromDescriptor(fileDescriptor) {
+    if (fileDescriptor.syntax === "editions") {
+        switch(fileDescriptor.edition) {
+            case exports.Edition.EDITION_2023:
+                return "2023";
+            default:
+                throw new Error("Unsupported edition " + fileDescriptor.edition);
+        }
+    }
+    if (fileDescriptor.syntax === "proto3") {
+        return "proto3";
+    }
+    return "proto2";
+}
+
+function editionToDescriptor(edition, fileDescriptor) {
+    if (!edition) return;
+    if (edition === "proto2" || edition === "proto3") {
+        fileDescriptor.syntax = edition;
+    } else {
+        fileDescriptor.syntax = "editions";
+        switch(edition) {
+            case "2023":
+                fileDescriptor.edition = exports.Edition.EDITION_2023;
+                break;
+            default:
+                throw new Error("Unsupported edition " + edition);
+        }
+    }
 }
 
 // --- exports ---

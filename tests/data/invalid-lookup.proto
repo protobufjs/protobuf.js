@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package test;
+
+service MyService {
+  rpc MyMethod (InvalidMessage) returns (stream InvalidMessage) {};
+}
+
+message InvalidMessage {
+  required bad_field = 1;
+}

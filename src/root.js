@@ -110,15 +110,15 @@ Root.prototype.load = function load(filename, options, callback) {
 
     // Finishes loading by calling the callback (exactly once)
     function finish(err, root) {
-        if (root) {
-            root.resolveAll();
-        }
         /* istanbul ignore if */
         if (!callback) {
             return;
         }
         if (sync) {
             throw err;
+        }
+        if (root) {
+            root.resolveAll();
         }
         var cb = callback;
         callback = null;
@@ -285,7 +285,6 @@ Root.prototype.resolveAll = function resolveAll() {
         throw Error("unresolvable extensions: " + this.deferred.map(function(field) {
             return "'extend " + field.extend + "' in " + field.parent.fullName;
         }).join(", "));
-    this._resolveFeaturesRecursive(this._edition);
     return Namespace.prototype.resolveAll.call(this);
 };
 
