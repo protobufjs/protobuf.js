@@ -104,7 +104,6 @@ wrappers[".google.protobuf.Any"] = {
 // Custom wrapper for Struct
 wrappers[".google.protobuf.Struct"] = {
     fromObject: function(object) {
-        console.log('[DEBUG] Struct.fromObject called with:', object);
         // If already a Struct instance, return as is
         if (object instanceof this.ctor) return object;
         // Convert plain JS object to Struct
@@ -115,8 +114,11 @@ wrappers[".google.protobuf.Struct"] = {
                     fields[k] = this.lookup("Value").fromObject(object[k]);
                 }
             }
+
+            return this.create({ fields });
         }
-        return this.create({ fields });
+
+        return this.fromObject(object);
     },
     toObject: function(message, options) {
         // Convert Struct message to plain JS object
@@ -126,8 +128,10 @@ wrappers[".google.protobuf.Struct"] = {
             for (var k in message.fields) {
                 obj[k] = Value.toObject(message.fields[k], options);
             }
+            return obj;
         }
-        return obj;
+
+        return this.toObject(message, options);
     }
 };
 
@@ -166,8 +170,7 @@ wrappers[".google.protobuf.Value"] = {
             return this.create({ struct_value: Struct.fromObject(object) });
         }
         
-        // Fallback to null value for unknown types
-        return this.create({ null_value: 0 });
+        return this.fromObject(object);
     },
     toObject: function(message, options) {
         // Convert Value message to plain JS object
@@ -194,7 +197,8 @@ wrappers[".google.protobuf.Value"] = {
             var Struct = this.lookup("Struct");
             return Struct.toObject(message.struct_value, options);
         }
-        return null;
+
+        return this.toObject(message, options);
     }
 };
 
@@ -205,26 +209,30 @@ wrappers[".google.protobuf.ListValue"] = {
         if (object instanceof this.ctor) return object;
         
         // Convert array to ListValue
-        var values = [];
         if (Array.isArray(object)) {
+            var values = [];
             var Value = this.lookup("Value");
             for (var i = 0; i < object.length; i++) {
                 values.push(Value.fromObject(object[i]));
             }
+            var msg = this.create();
+            msg.values = values;
+            return msg;
         }
-        var msg = this.create();
-        msg.values = values;
-        return msg;
+
+        return this.fromObject(object);
     },
     toObject: function(message, options) {
         // Convert ListValue message to plain JS array
-        var values = [];
         if (message && message.values) {
+            var values = [];
             var Value = this.lookup("Value");
             for (var i = 0; i < message.values.length; i++) {
                 values.push(Value.toObject(message.values[i], options));
             }
+            return values;
         }
-        return values;
+
+        return this.toObject(message, options);
     }
 };
