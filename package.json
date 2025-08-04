@@ -1,13 +1,15 @@
 {
-  "name": "protobufjs",
-  "version": "7.5.3",
+  "name": "@square/protobufjs",
+  "version": "7.6.0-square.alpha.0",
   "versionScheme": "~",
   "description": "Protocol Buffers for JavaScript (& TypeScript).",
   "author": "Daniel Wirtz <dcode+protobufjs@dcode.io>",
+  "contributors": [
+    "Ray Cohen <rcohen@squareup.com>"
+  ],
   "license": "BSD-3-Clause",
-  "repository": "protobufjs/protobuf.js",
-  "bugs": "https://github.com/protobufjs/protobuf.js/issues",
-  "homepage": "https://protobufjs.github.io/protobuf.js/",
+  "repository": "block/protobuf.js",
+  "bugs": "https://github.com/block/protobuf.js/issues",
   "engines": {
     "node": ">=12.0.0"
   },
@@ -20,6 +22,7 @@
     }
   },
   "keywords": [
+    "fork",
     "protobuf",
     "protocol-buffers",
     "serialization",
