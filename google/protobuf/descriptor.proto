@@ -229,7 +229,8 @@ message FileOptions {
 
     extensions 1000 to max;
 
-    reserved 42, "php_generic_services", 38;
+    reserved 42, 38;
+    reserved "php_generic_services";
 }
 
 message MessageOptions {
