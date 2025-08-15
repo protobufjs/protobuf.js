@@ -1,5 +1,12 @@
 # Changelog
 
+## [7.5.4](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v7.5.3...protobufjs-v7.5.4) (2025-08-15)
+
+
+### Bug Fixes
+
+* invalid syntax in descriptor.proto ([#2092](https://github.com/protobufjs/protobuf.js/issues/2092)) ([5a3769a](https://github.com/protobufjs/protobuf.js/commit/5a3769a465fead089a533ad55c21d069299df760))
+
 ## [7.5.3](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v7.5.2...protobufjs-v7.5.3) (2025-05-28)
 
 
