@@ -588,11 +588,11 @@
                   42,
                   42
                 ],
-                "php_generic_services",
                 [
                   38,
                   38
-                ]
+                ],
+                "php_generic_services"
               ],
               "nested": {
                 "OptimizeMode": {
