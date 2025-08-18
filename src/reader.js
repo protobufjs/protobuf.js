@@ -327,8 +327,21 @@ Reader.prototype.bytes = function read_bytes() {
  * @returns {string} Value read
  */
 Reader.prototype.string = function read_string() {
-    var bytes = this.bytes();
-    return utf8.read(bytes, 0, bytes.length);
+    // Note that we could simply use the `.bytes()` function. However, creating
+    // slices of a Uint8Array tends to be pretty expensive. If we instead just
+    // call utf8.read with appropriate start and end indicies, we can often
+    // avoid creating one of these slices and save some time.
+    var length = this.uint32(),
+        start  = this.pos,
+        end    = this.pos + length;
+
+    /* istanbul ignore if */
+    if (end > this.len)
+        throw indexOutOfRange(this, length);
+
+    this.pos += length;
+
+    return utf8.read(this.buf, start, end);
 };
 
 /**
