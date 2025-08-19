@@ -362,6 +362,8 @@ function parse(source, root, options) {
                 return;
 
             switch (token) {
+                case ";":
+                    break;
 
                 case "map":
                     parseMapField(type, token);
@@ -603,6 +605,9 @@ function parse(source, root, options) {
         var enm = new Enum(token);
         ifBlock(enm, function parseEnum_block(token) {
           switch(token) {
+            case ";":
+              break;
+
             case "option":
               parseOption(enm, token);
               skip(";");
@@ -795,7 +800,7 @@ function parse(source, root, options) {
             /* istanbul ignore else */
             if (token === "rpc")
                 parseMethod(service, token);
-            else
+            else if (token !== ";")
                 throw illegal(token);
         });
         parent.add(service);
@@ -847,7 +852,7 @@ function parse(source, root, options) {
             if (token === "option") {
                 parseOption(method, token);
                 skip(";");
-            } else
+            } else if (token !== ";")
                 throw illegal(token);
 
         });
@@ -892,6 +897,8 @@ function parse(source, root, options) {
     var token;
     while ((token = next()) !== null) {
         switch (token) {
+            case ";":
+                break;
 
             case "package":
 
