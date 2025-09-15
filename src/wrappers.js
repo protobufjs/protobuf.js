@@ -236,3 +236,214 @@ wrappers[".google.protobuf.ListValue"] = {
         return this.toObject(message, options);
     }
 };
+
+// Custom wrapper for Duration
+wrappers[".google.protobuf.Duration"] = {
+    fromObject: function(object) {
+        // If already a Duration instance, return as is
+        if (object instanceof this.ctor) return object;
+        
+        // Handle string input (e.g., "1.5s", "2m", "1h", "1h30m", "2d5h30m15s")
+        if (typeof object === "string") {
+            // Parse compound duration string like "1h30m15s" or "2d5h30m15s"
+            // Note: Multiple segments of the same unit are allowed and will be added together
+            // e.g., "2s32.232s" becomes "34.232s"
+            var totalSeconds = 0;
+            var totalNanos = 0;
+            var sign = 1;
+            
+            // Check for negative duration
+            if (object.startsWith('-')) {
+                sign = -1;
+                object = object.substring(1);
+            }
+            
+            // Match all duration parts (e.g., "1h", "30m", "15s")
+            var parts = object.match(/(\d+(?:\.\d+)?)([smhd])/g);
+            if (!parts || parts.length === 0) {
+                throw new Error("Invalid duration format. Expected format: '1.5s', '2m', '1h', '1h30m', '2d5h30m15s', etc.");
+            }
+                        
+            // Track units used for validation/warning
+            var unitsUsed = { s: 0, m: 0, h: 0, d: 0 };
+            
+            for (var i = 0; i < parts.length; i++) {
+                var part = parts[i];
+                var match = part.match(/(\d+(?:\.\d+)?)([smhd])/);
+                if (!match) continue;
+                
+                var value = parseFloat(match[1]);
+                var unit = match[2];
+                
+                // Count usage of each unit
+                unitsUsed[unit]++;
+                
+                switch (unit) {
+                    case 's':
+                        totalSeconds += Math.floor(value);
+                        totalNanos += Math.round((value - Math.floor(value)) * 1000000000);
+                        break;
+                    case 'm':
+                        totalSeconds += value * 60;
+                        break;
+                    case 'h':
+                        totalSeconds += value * 3600;
+                        break;
+                    case 'd':
+                        totalSeconds += value * 86400;
+                        break;
+                }
+            }
+            
+            // Warn about unusual formats (multiple segments of same unit)
+            var duplicateUnits = Object.keys(unitsUsed).filter(unit => unitsUsed[unit] > 1);
+            if (duplicateUnits.length > 0) {
+                console.warn('Warning: Duplicate units found in duration:', duplicateUnits.join(', '), 
+                           'in input:', object, '- segments will be added together');
+            }
+            
+            // Handle nanos overflow
+            if (totalNanos >= 1000000000) {
+                totalSeconds += Math.floor(totalNanos / 1000000000);
+                totalNanos = totalNanos % 1000000000;
+            }
+            
+            return this.create({
+                seconds: sign * totalSeconds,
+                nanos: sign * totalNanos
+            });
+        }
+        
+        // Handle number input (seconds)
+        if (typeof object === "number") {
+            var seconds = Math.floor(object);
+            var nanos = Math.round((object - seconds) * 1000000000);
+            return this.create({ seconds: seconds, nanos: nanos });
+        }
+        
+        // Handle object input
+        if (object && typeof object === "object") {
+            return this.create(object);
+        }
+        
+        return this.fromObject(object);
+    },
+    toObject: function(message, options) {
+        // Convert Duration message to string representation
+        if (options && options.json) {
+            // Handle Long objects for seconds field
+            var seconds = message.seconds;
+            if (seconds && typeof seconds === 'object' && seconds.low !== undefined) {
+                // Convert Long to number
+                seconds = seconds.low + (seconds.high * 0x100000000);
+            }
+            
+            var totalSeconds = seconds + (message.nanos / 1000000000);
+            if (totalSeconds === 0) return "0s";
+            
+            var sign = totalSeconds < 0 ? "-" : "";
+            totalSeconds = Math.abs(totalSeconds);
+            
+            // Convert to compound duration format
+            var parts = [];
+            var remaining = totalSeconds;
+            
+            // Days
+            if (remaining >= 86400) {
+                var days = Math.floor(remaining / 86400);
+                parts.push(days + "d");
+                remaining = remaining % 86400;
+            }
+            
+            // Hours
+            if (remaining >= 3600) {
+                var hours = Math.floor(remaining / 3600);
+                parts.push(hours + "h");
+                remaining = remaining % 3600;
+            }
+            
+            // Minutes
+            if (remaining >= 60) {
+                var minutes = Math.floor(remaining / 60);
+                parts.push(minutes + "m");
+                remaining = remaining % 60;
+            }
+            
+            // Seconds (including fractional part)
+            if (remaining > 0 || parts.length === 0) {
+                var secs = remaining;
+                if (secs === Math.floor(secs)) {
+                    parts.push(secs + "s");
+                } else {
+                    parts.push(secs.toFixed(3) + "s");
+                }
+            }
+            
+            return sign + parts.join("");
+        }
+        
+        return this.toObject(message, options);
+    }
+};
+
+// Custom wrapper for Timestamp
+wrappers[".google.protobuf.Timestamp"] = {
+    fromObject: function(object) {
+        // If already a Timestamp instance, return as is
+        if (object instanceof this.ctor) {
+            return object;
+        }
+        
+        // Handle Date object
+        if (object instanceof Date) {
+            var seconds = Math.floor(object.getTime() / 1000);
+            var nanos = (object.getTime() % 1000) * 1000000;
+            return this.create({ seconds: seconds, nanos: nanos });
+        }
+        
+        // Handle number input (milliseconds since epoch)
+        if (typeof object === "number") {
+            var seconds = Math.floor(object / 1000);
+            var nanos = (object % 1000) * 1000000;
+            return this.create({ seconds: seconds, nanos: nanos });
+        }
+        
+        // Handle string input (ISO 8601 format)
+        if (typeof object === "string") {
+            var date = new Date(object);
+            if (isNaN(date.getTime())) {
+                throw new Error("Invalid timestamp format. Expected ISO 8601 format.");
+            }
+            var seconds = Math.floor(date.getTime() / 1000);
+            var nanos = (date.getTime() % 1000) * 1000000;
+            return this.create({ seconds: seconds, nanos: nanos });
+        }
+        
+        // Handle object input (but not Timestamp instances)
+        if (object && typeof object === "object" && !(object instanceof this.ctor)) {
+            return this.create(object);
+        }
+        
+        // Fallback to default behavior - call the original fromObject method
+        // Use the original fromObject method that was stored in originalThis.fromObject
+        return this.ctor.prototype.fromObject.call(this, object);
+    },
+    toObject: function(message, options) {
+
+        // Convert Timestamp message to Date object or ISO string
+        if (options && options.json) {
+            // Handle Long objects for seconds field
+            var seconds = message.seconds;
+            if (seconds && typeof seconds === 'object' && seconds.low !== undefined) {
+                // Convert Long to number
+                seconds = seconds.low + (seconds.high * 0x100000000);
+            }
+            
+            var milliseconds = seconds * 1000 + Math.floor(message.nanos / 1000000);
+            var date = new Date(milliseconds);
+            return date.toISOString();
+        }
+        
+        return this.ctor.prototype.toObject.call(this, message, options);
+    }
+};
