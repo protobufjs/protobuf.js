@@ -426,7 +426,7 @@ wrappers[".google.protobuf.Timestamp"] = {
         
         // Fallback to default behavior - call the original fromObject method
         // Use the original fromObject method that was stored in originalThis.fromObject
-        return this.ctor.prototype.fromObject.call(this, object);
+        return this.fromObject(object);
     },
     toObject: function(message, options) {
 
@@ -444,6 +444,6 @@ wrappers[".google.protobuf.Timestamp"] = {
             return date.toISOString();
         }
         
-        return this.ctor.prototype.toObject.call(this, message, options);
+        return this.toObject(message, options);
     }
 };
