@@ -259,21 +259,24 @@ wrappers[".google.protobuf.Duration"] = {
             }
             
             // Match all duration parts (e.g., "1h", "30m", "15s", "500ms", "250us", "100ns")
-            var parts = object.match(/(\d+(?:\.\d+)?)(ms|us|ns|[smh])/g);
-            if (!parts || parts.length === 0) {
+            var durationRegex = /(\d+(?:\.\d+)?)(ms|us|μs|ns|[smh])/g;
+            var matches = [];
+            var match;
+            while ((match = durationRegex.exec(object)) !== null) {
+                matches.push(match);
+            }
+            
+            if (matches.length === 0) {
                 throw new Error("Invalid duration format. Expected format: '1.5s', '2m', '1h', '1h30m', '500ms', '250us', '100ns', etc.");
             }
                         
             // Track units used for validation/warning
             var unitsUsed = { s: 0, m: 0, h: 0, ms: 0, us: 0, ns: 0 };
             
-            for (var i = 0; i < parts.length; i++) {
-                var part = parts[i];
-                var match = part.match(/(\d+(?:\.\d+)?)(ms|us|ns|[smh])/);
-                if (!match) continue;
-                
-                var value = parseFloat(match[1]);
-                var unit = match[2];
+            // Process all matches
+            for (var i = 0; i < matches.length; i++) {
+                var value = parseFloat(matches[i][1]);
+                var unit = matches[i][2];
                 
                 // Count usage of each unit
                 unitsUsed[unit]++;
@@ -300,6 +303,7 @@ wrappers[".google.protobuf.Duration"] = {
                         totalSeconds += msSeconds;
                         totalNanos += msNanos;
                         break;
+                    case 'μs':
                     case 'us':
                         // Convert microseconds to seconds and nanos
                         var usSeconds = Math.floor(value / 1000000);
@@ -371,8 +375,11 @@ wrappers[".google.protobuf.Duration"] = {
                 // Integer seconds
                 return sign + totalSeconds + "s";
             } else {
-                // Fractional seconds - use up to 9 decimal places
-                return sign + totalSeconds.toFixed(9) + "s";
+                // Fractional seconds - use up to 9 decimal places, then clip trailing zeros
+                var formatted = totalSeconds.toFixed(9);
+                // Remove trailing zeros and decimal point if all zeros
+                formatted = formatted.replace(/\.?0+$/, '');
+                return sign + formatted + "s";
             }
         }
         
