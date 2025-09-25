@@ -243,9 +243,9 @@ wrappers[".google.protobuf.Duration"] = {
         // If already a Duration instance, return as is
         if (object instanceof this.ctor) return object;
         
-        // Handle string input (e.g., "1.5s", "2m", "1h", "1h30m", "2d5h30m15s")
+        // Handle string input (e.g., "1.5s", "2m", "1h", "1h30m", "500ms", "250us", "100ns")
         if (typeof object === "string") {
-            // Parse compound duration string like "1h30m15s" or "2d5h30m15s"
+            // Parse compound duration string like "1h30m15s" or "1.5s500ms250us100ns"
             // Note: Multiple segments of the same unit are allowed and will be added together
             // e.g., "2s32.232s" becomes "34.232s"
             var totalSeconds = 0;
@@ -258,18 +258,18 @@ wrappers[".google.protobuf.Duration"] = {
                 object = object.substring(1);
             }
             
-            // Match all duration parts (e.g., "1h", "30m", "15s")
-            var parts = object.match(/(\d+(?:\.\d+)?)([smhd])/g);
+            // Match all duration parts (e.g., "1h", "30m", "15s", "500ms", "250us", "100ns")
+            var parts = object.match(/(\d+(?:\.\d+)?)(ms|us|ns|[smh])/g);
             if (!parts || parts.length === 0) {
-                throw new Error("Invalid duration format. Expected format: '1.5s', '2m', '1h', '1h30m', '2d5h30m15s', etc.");
+                throw new Error("Invalid duration format. Expected format: '1.5s', '2m', '1h', '1h30m', '500ms', '250us', '100ns', etc.");
             }
                         
             // Track units used for validation/warning
-            var unitsUsed = { s: 0, m: 0, h: 0, d: 0 };
+            var unitsUsed = { s: 0, m: 0, h: 0, ms: 0, us: 0, ns: 0 };
             
             for (var i = 0; i < parts.length; i++) {
                 var part = parts[i];
-                var match = part.match(/(\d+(?:\.\d+)?)([smhd])/);
+                var match = part.match(/(\d+(?:\.\d+)?)(ms|us|ns|[smh])/);
                 if (!match) continue;
                 
                 var value = parseFloat(match[1]);
@@ -284,13 +284,35 @@ wrappers[".google.protobuf.Duration"] = {
                         totalNanos += Math.round((value - Math.floor(value)) * 1000000000);
                         break;
                     case 'm':
-                        totalSeconds += value * 60;
+                        var minutesTotalSeconds = value * 60;
+                        totalSeconds += Math.floor(minutesTotalSeconds);
+                        totalNanos += Math.round((minutesTotalSeconds - Math.floor(minutesTotalSeconds)) * 1000000000);
                         break;
                     case 'h':
-                        totalSeconds += value * 3600;
+                        var hoursTotalSeconds = value * 3600;
+                        totalSeconds += Math.floor(hoursTotalSeconds);
+                        totalNanos += Math.round((hoursTotalSeconds - Math.floor(hoursTotalSeconds)) * 1000000000);
                         break;
-                    case 'd':
-                        totalSeconds += value * 86400;
+                    case 'ms':
+                        // Convert milliseconds to seconds and nanos
+                        var msSeconds = Math.floor(value / 1000);
+                        var msNanos = Math.round((value % 1000) * 1000000);
+                        totalSeconds += msSeconds;
+                        totalNanos += msNanos;
+                        break;
+                    case 'us':
+                        // Convert microseconds to seconds and nanos
+                        var usSeconds = Math.floor(value / 1000000);
+                        var usNanos = Math.round((value % 1000000) * 1000);
+                        totalSeconds += usSeconds;
+                        totalNanos += usNanos;
+                        break;
+                    case 'ns':
+                        // Convert nanoseconds to seconds and nanos
+                        var nsSeconds = Math.floor(value / 1000000000);
+                        var nsNanos = Math.round(value % 1000000000);
+                        totalSeconds += nsSeconds;
+                        totalNanos += nsNanos;
                         break;
                 }
             }
@@ -344,42 +366,14 @@ wrappers[".google.protobuf.Duration"] = {
             var sign = totalSeconds < 0 ? "-" : "";
             totalSeconds = Math.abs(totalSeconds);
             
-            // Convert to compound duration format
-            var parts = [];
-            var remaining = totalSeconds;
-            
-            // Days
-            if (remaining >= 86400) {
-                var days = Math.floor(remaining / 86400);
-                parts.push(days + "d");
-                remaining = remaining % 86400;
+            // Always return duration in seconds format
+            if (totalSeconds === Math.floor(totalSeconds)) {
+                // Integer seconds
+                return sign + totalSeconds + "s";
+            } else {
+                // Fractional seconds - use up to 9 decimal places
+                return sign + totalSeconds.toFixed(9) + "s";
             }
-            
-            // Hours
-            if (remaining >= 3600) {
-                var hours = Math.floor(remaining / 3600);
-                parts.push(hours + "h");
-                remaining = remaining % 3600;
-            }
-            
-            // Minutes
-            if (remaining >= 60) {
-                var minutes = Math.floor(remaining / 60);
-                parts.push(minutes + "m");
-                remaining = remaining % 60;
-            }
-            
-            // Seconds (including fractional part)
-            if (remaining > 0 || parts.length === 0) {
-                var secs = remaining;
-                if (secs === Math.floor(secs)) {
-                    parts.push(secs + "s");
-                } else {
-                    parts.push(secs.toFixed(3) + "s");
-                }
-            }
-            
-            return sign + parts.join("");
         }
         
         return this.toObject(message, options);
