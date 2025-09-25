@@ -352,7 +352,7 @@ wrappers[".google.protobuf.Duration"] = {
     },
     toObject: function(message, options) {
         // Convert Duration message to string representation
-        if (options && options.json) {
+        if (message && typeof message === "object" && !Array.isArray(message)) {
             // Handle Long objects for seconds field
             var seconds = message.seconds;
             if (seconds && typeof seconds === 'object' && seconds.low !== undefined) {
@@ -425,7 +425,7 @@ wrappers[".google.protobuf.Timestamp"] = {
     toObject: function(message, options) {
 
         // Convert Timestamp message to Date object or ISO string
-        if (options && options.json) {
+        if (message && typeof message === "object" && !Array.isArray(message)) {
             // Handle Long objects for seconds field
             var seconds = message.seconds;
             if (seconds && typeof seconds === 'object' && seconds.low !== undefined) {
