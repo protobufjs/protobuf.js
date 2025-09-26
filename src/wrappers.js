@@ -8,6 +8,7 @@
 var wrappers = exports;
 
 var Message = require("./message");
+var isLegacyStruct = require("./util/is-legacy-struct");
 
 /**
  * From object converter part of an {@link IWrapper}.
@@ -109,6 +110,13 @@ wrappers[".google.protobuf.Struct"] = {
         // Convert plain JS object to Struct
         var fields = {};
         if (object && typeof object === "object" && !Array.isArray(object)) {
+
+            // If the struct is in the form of a legacy struct, we don't need to convert it. 
+            // Return the fields object as is
+            if (isLegacyStruct(object)) {
+                return this.create({ fields: object.fields });
+            } 
+
             for (var k in object) {
                 if (object[k] !== undefined) {
                     fields[k] = this.lookup("Value").fromObject(object[k]);
