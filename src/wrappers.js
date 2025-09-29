@@ -115,7 +115,12 @@ wrappers[".google.protobuf.Struct"] = {
             // If the struct is in the form of a legacy struct, we don't need to convert it. 
             // Return the fields object as is
             if (isLegacyStruct(object)) {
-                return this.create({ fields: object.fields });
+                var newFields = Array.isArray(object.fields) ? object.fields.reduce(function(acc, field) {
+                    acc[field.key] = field.value;
+                    return acc;
+                }, {}) : object.fields;
+                
+                return this.create({ fields: newFields });
             } 
 
             for (var k in object) {
