@@ -275,7 +275,7 @@ wrappers[".google.protobuf.Duration"] = {
             }
             
             if (matches.length === 0) {
-                throw new Error("Invalid duration format. Expected format in seconds: '1.5s', '20s', '-1s'");
+                throw new Error("Invalid duration format. Expected units: h, m, s, ms, us or ns (e.g. 1h30m, 2m, 5s, -1s)");
             }
                         
             // Track units used for validation/warning

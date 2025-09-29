@@ -34,8 +34,8 @@ function isLegacyStruct(payload) {
         // }
         if (Array.isArray(payload.fields)) {
             return payload.fields.every(field => Object.keys(field).length === 2 && 
-                field.key && field.value && Object.keys(value).length === 1 
-                    && valueKeysSet.has(Object.keys(value)[0]));
+                field.key && field.value && Object.keys(field.value).length === 1 
+                    && valueKeysSet.has(Object.keys(field.value)[0]));
         }
 
         // Get all the values of the fields object
