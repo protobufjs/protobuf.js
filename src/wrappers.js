@@ -9,6 +9,7 @@ var wrappers = exports;
 
 var Message = require("./message");
 var isLegacyStruct = require("./util/is-legacy-struct");
+var util = require("./util");
 
 /**
  * From object converter part of an {@link IWrapper}.
@@ -343,7 +344,6 @@ wrappers[".google.protobuf.Duration"] = {
             }
             
             // Use util.Long.fromValue to properly create Long objects for int64 fields
-            var util = require("./util");
             return this.create({
                 seconds: util.Long.fromValue(sign * totalSeconds),
                 nanos: sign * totalNanos
@@ -426,14 +426,16 @@ wrappers[".google.protobuf.Timestamp"] = {
         if (object instanceof Date) {
             var seconds = Math.floor(object.getTime() / 1000);
             var nanos = (object.getTime() % 1000) * 1000000;
-            return this.create({ seconds: seconds, nanos: nanos });
+            // Use util.Long.fromValue to properly create Long objects for int64 fields
+            return this.create({ seconds: util.Long.fromValue(seconds), nanos: nanos });
         }
         
         // Handle number input (milliseconds since epoch)
         if (typeof object === "number") {
             var seconds = Math.floor(object / 1000);
             var nanos = (object % 1000) * 1000000;
-            return this.create({ seconds: seconds, nanos: nanos });
+            // Use util.Long.fromValue to properly create Long objects for int64 fields
+            return this.create({ seconds: util.Long.fromValue(seconds), nanos: nanos });
         }
         
         // Handle string input (ISO 8601 format)
@@ -444,7 +446,8 @@ wrappers[".google.protobuf.Timestamp"] = {
             }
             var seconds = Math.floor(date.getTime() / 1000);
             var nanos = (date.getTime() % 1000) * 1000000;
-            return this.create({ seconds: seconds, nanos: nanos });
+            // Use util.Long.fromValue to properly create Long objects for int64 fields
+            return this.create({ seconds: util.Long.fromValue(seconds), nanos: nanos });
         }
         
         // Handle object input (but not Timestamp instances)
