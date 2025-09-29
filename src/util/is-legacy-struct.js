@@ -45,7 +45,7 @@ function isLegacyStruct(payload) {
 
         // Check if all the fieldValues have only one key and that key is a valid value type
         if (fieldValues.every(fieldValue => {
-            const fieldValueKeys = Object.keys(fieldValue);
+            const fieldValueKeys = fieldValue ? Object.keys(fieldValue) : [];
             return fieldValueKeys.length === 1 && valueKeysSet.has(fieldValueKeys[0]);
         })) {
             return true;
