@@ -24,8 +24,19 @@ function isLegacyStruct(payload) {
     const valueKeysSet = new Set(['string_value', 'number_value', 'bool_value', 'struct_value', 'list_value', 'null_value']);
     
     // If object has only one key and that key is "fields" which is an object
-    if (Object.keys(payload).length === 1 && typeof payload.fields === "object" 
-            && typeof payload.fields === "object") {
+    if (payload && Object.keys(payload).length === 1 && payload.fields && typeof payload.fields === "object") {
+        // Case when the fields key is an array. This can be of the form - 
+        // {
+        //   fields: [
+        //     {key: "key1", value: {string_value: "test"}},
+        //     {key: "key2", value: {number_value: 123}}
+        //   ]
+        // }
+        if (Array.isArray(payload.fields)) {
+            return payload.fields.every(field => Object.keys(field).length === 2 && 
+                field.key && field.value && Object.keys(value).length === 1 
+                    && valueKeysSet.has(Object.keys(value)[0]));
+        }
 
         // Get all the values of the fields object
         // For the given example - 
@@ -37,7 +48,6 @@ function isLegacyStruct(payload) {
             const fieldValueKeys = Object.keys(fieldValue);
             return fieldValueKeys.length === 1 && valueKeysSet.has(fieldValueKeys[0]);
         })) {
-            
             return true;
         }
     }
