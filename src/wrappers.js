@@ -463,8 +463,8 @@ wrappers[".google.protobuf.Timestamp"] = {
             // Handle Long objects for seconds field
             var seconds = message.seconds;
             if (seconds && typeof seconds === 'object' && seconds.low !== undefined) {
-                // Convert Long to number
-                seconds = seconds.low + (seconds.high * 0x100000000);
+                // Convert Long to number using utility
+                seconds = seconds.toNumber();
             }
             
             var milliseconds = seconds * 1000 + Math.floor(message.nanos / 1000000);
