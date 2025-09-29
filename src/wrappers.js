@@ -342,8 +342,10 @@ wrappers[".google.protobuf.Duration"] = {
                 totalNanos = totalNanos % 1000000000;
             }
             
+            // Use util.Long.fromValue to properly create Long objects for int64 fields
+            var util = require("./util");
             return this.create({
-                seconds: sign * totalSeconds,
+                seconds: util.Long.fromValue(sign * totalSeconds),
                 nanos: sign * totalNanos
             });
         }
@@ -368,11 +370,28 @@ wrappers[".google.protobuf.Duration"] = {
             // Handle Long objects for seconds field
             var seconds = message.seconds;
             if (seconds && typeof seconds === 'object' && seconds.low !== undefined) {
-                // Convert Long to number
-                seconds = seconds.low + (seconds.high * 0x100000000);
+                // Convert Long to number using utility
+                seconds = seconds.toNumber();
             }
             
-            var totalSeconds = seconds + (message.nanos / 1000000000);
+            // Handle durations correctly for all sign combinations
+            var totalSeconds;
+            var nanosSeconds = message.nanos / 1000000000;
+            
+            if (seconds < 0 && message.nanos < 0) {
+                // Both negative: add them together (both contribute to negative duration)
+                totalSeconds = seconds + nanosSeconds;
+            } else if (seconds < 0 && message.nanos >= 0) {
+                // Negative seconds, positive nanos: subtract nanos from negative seconds
+                totalSeconds = seconds - nanosSeconds;
+            } else if (seconds >= 0 && message.nanos < 0) {
+                // Positive seconds, negative nanos: subtract nanos from positive seconds
+                totalSeconds = seconds + nanosSeconds; // nanosSeconds is already negative
+            } else {
+                // Both positive: add them together
+                totalSeconds = seconds + nanosSeconds;
+            }
+            
             if (totalSeconds === 0) return "0s";
             
             var sign = totalSeconds < 0 ? "-" : "";
