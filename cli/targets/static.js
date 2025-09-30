@@ -311,8 +311,14 @@ function buildFunction(type, functionName, gen, scope) {
         push("};");
 }
 
-function toJsType(field) {
+function toJsType(field, parentIsInterface = false) {
     var type;
+
+    // With null semantics, interfaces are composed from interfaces and messages from messages
+    // Without null semantics, child types depend on the --force-message flag
+    var asInterface = config["null-semantics"]
+        ? parentIsInterface && !(field.resolvedType instanceof protobuf.Enum)
+        : !(field.resolvedType instanceof protobuf.Enum || config.forceMessage);
 
     switch (field.type) {
         case "double":
@@ -341,10 +347,12 @@ function toJsType(field) {
             type = "Uint8Array";
             break;
         default:
-            if (field.resolve().resolvedType)
-                type = exportName(field.resolvedType, !(field.resolvedType instanceof protobuf.Enum || config.forceMessage));
-            else
+            if (field.resolve().resolvedType) {
+                type = exportName(field.resolvedType, asInterface);
+            }
+            else {
                 type = "*"; // should not happen
+            }
             break;
     }
     if (field.map)
@@ -352,6 +360,10 @@ function toJsType(field) {
     if (field.repeated)
         return "Array.<" + type + ">";
     return type;
+}
+
+function isNullable(field) {
+    return field.hasPresence && !field.required;
 }
 
 function buildType(ref, type) {
@@ -365,10 +377,32 @@ function buildType(ref, type) {
         type.fieldsArray.forEach(function(field) {
             var prop = util.safeProp(field.name); // either .name or ["name"]
             prop = prop.substring(1, prop.charAt(0) === "[" ? prop.length - 1 : prop.length);
-            var jsType = toJsType(field);
-            if (field.optional)
-                jsType = jsType + "|null";
-            typeDef.push("@property {" + jsType + "} " + (field.optional ? "[" + prop + "]" : prop) + " " + (field.comment || type.name + " " + field.name));
+            var jsType = toJsType(field, /* parentIsInterface = */ true);
+            var nullable = false;
+            if (config["null-semantics"]) {
+                // With semantic nulls, only explicit optional fields and one-of members can be set to null
+                // Implicit fields (proto3), maps and lists can be omitted, but if specified must be non-null
+                // Implicit fields will take their default value when the message is constructed
+                if (field.optional) {
+                    if (isNullable(field)) {
+                        jsType = jsType + "|null|undefined";
+                        nullable = true;
+                    }
+                    else {
+                        jsType = jsType + "|undefined";
+                        nullable = true;
+                    }
+                }
+            }
+            else {
+                // Without semantic nulls, everything is optional in proto3
+                // Do not allow |undefined to keep backwards compatibility
+                if (field.optional) {
+                    jsType = jsType + "|null";
+                    nullable = true;
+                }
+            }
+            typeDef.push("@property {" + jsType + "} " + (nullable ? "[" + prop + "]" : prop) + " " + (field.comment || type.name + " " + field.name));
         });
         push("");
         pushComment(typeDef);
@@ -393,9 +427,22 @@ function buildType(ref, type) {
         var prop = util.safeProp(field.name);
         if (config.comments) {
             push("");
-            var jsType = toJsType(field);
-            if (field.optional && !field.map && !field.repeated && (field.resolvedType instanceof Type || config["null-defaults"]) || field.partOf)
-                jsType = jsType + "|null|undefined";
+            var jsType = toJsType(field, /* parentIsInterface = */ false);
+            if (config["null-semantics"]) {
+                // With semantic nulls, fields are nullable if they are explicitly optional or part of a one-of
+                // Maps, repeated values and fields with implicit defaults are never null after construction
+                // Members are never undefined, at a minimum they are initialized to null
+                if (isNullable(field)) {
+                    jsType = jsType + "|null";
+                }
+            }
+            else {
+                // Without semantic nulls, everything is optional in proto3
+                // Keep |undefined for backwards compatibility
+                if (field.optional && !field.map && !field.repeated && (field.resolvedType instanceof Type || config["null-defaults"]) || field.partOf) {
+                    jsType = jsType + "|null|undefined";
+                }
+            }
             pushComment([
                 field.comment || type.name + " " + field.name + ".",
                 "@member {" + jsType + "} " + field.name,
@@ -406,11 +453,16 @@ function buildType(ref, type) {
             push("");
             firstField = false;
         }
+        // With semantic nulls, only explict optional fields and one-of members are null by default
+        // Otherwise use field.optional, which doesn't consider proto3, maps, repeated fields etc.
+        var nullDefault = config["null-semantics"]
+            ? isNullable(field)
+            : field.optional && config["null-defaults"];
         if (field.repeated)
             push(escapeName(type.name) + ".prototype" + prop + " = $util.emptyArray;"); // overwritten in constructor
         else if (field.map)
             push(escapeName(type.name) + ".prototype" + prop + " = $util.emptyObject;"); // overwritten in constructor
-        else if (field.partOf || field.optional && config["null-defaults"])
+        else if (field.partOf || nullDefault)
             push(escapeName(type.name) + ".prototype" + prop + " = null;"); // do not set default value for oneof members
         else if (field.long)
             push(escapeName(type.name) + ".prototype" + prop + " = $util.Long ? $util.Long.fromBits("
@@ -436,12 +488,17 @@ function buildType(ref, type) {
         }
         oneof.resolve();
         push("");
-        pushComment([
-            oneof.comment || type.name + " " + oneof.name + ".",
-            "@member {" + oneof.oneof.map(JSON.stringify).join("|") + "|undefined} " + escapeName(oneof.name),
-            "@memberof " + exportName(type),
-            "@instance"
-        ]);
+        if (oneof.isProto3Optional) {
+            push("// Virtual OneOf for proto3 optional field");
+        }
+        else {
+            pushComment([
+                oneof.comment || type.name + " " + oneof.name + ".",
+                "@member {" + oneof.oneof.map(JSON.stringify).join("|") + "|undefined} " + escapeName(oneof.name),
+                "@memberof " + exportName(type),
+                "@instance"
+            ]);
+        }
         push("Object.defineProperty(" + escapeName(type.name) + ".prototype, " + JSON.stringify(oneof.name) +", {");
         ++indent;
             push("get: $util.oneOfGetter($oneOfFields = [" + oneof.oneof.map(JSON.stringify).join(", ") + "]),");

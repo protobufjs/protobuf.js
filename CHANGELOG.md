@@ -1,5 +1,85 @@
 # Changelog
 
+## [7.5.4](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v7.5.3...protobufjs-v7.5.4) (2025-08-15)
+
+
+### Bug Fixes
+
+* invalid syntax in descriptor.proto ([#2092](https://github.com/protobufjs/protobuf.js/issues/2092)) ([5a3769a](https://github.com/protobufjs/protobuf.js/commit/5a3769a465fead089a533ad55c21d069299df760))
+
+## [7.5.3](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v7.5.2...protobufjs-v7.5.3) (2025-05-28)
+
+
+### Bug Fixes
+
+* descriptor extensions handling post-editions ([#2075](https://github.com/protobufjs/protobuf.js/issues/2075)) ([6e255d4](https://github.com/protobufjs/protobuf.js/commit/6e255d4ad6982cc857f26e1731c2cedcf5796f68))
+
+## [7.5.2](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v7.5.1...protobufjs-v7.5.2) (2025-05-14)
+
+
+### Bug Fixes
+
+* ensure that types are always resolved ([#2068](https://github.com/protobufjs/protobuf.js/issues/2068)) ([4b51cb2](https://github.com/protobufjs/protobuf.js/commit/4b51cb2b8450b77f9f5de1c562e7fae93b19d040))
+
+## [7.5.1](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v7.5.0...protobufjs-v7.5.1) (2025-05-08)
+
+
+### Bug Fixes
+
+* optimize regressions from editions implementations ([#2066](https://github.com/protobufjs/protobuf.js/issues/2066)) ([6406d4c](https://github.com/protobufjs/protobuf.js/commit/6406d4c18afae309fc7b5f4a24d9674d85da180b))
+* reserved field inside group blocks fail parsing ([#2058](https://github.com/protobufjs/protobuf.js/issues/2058)) ([56782bf](https://github.com/protobufjs/protobuf.js/commit/56782bff0c4b5132806eb1a6bc4d08f930c4aaad))
+
+## [7.5.0](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v7.4.0...protobufjs-v7.5.0) (2025-04-15)
+
+
+### Features
+
+* add Edition 2023 Support ([f04ded3](https://github.com/protobufjs/protobuf.js/commit/f04ded3a03a3ddd383f0228e2fe2627a51f31aa3))
+* add Edition 2023 Support ([ac9a3b9](https://github.com/protobufjs/protobuf.js/commit/ac9a3b9fe3134d48187e41b08d54ffaceddc6c1b))
+* add Edition 2023 Support ([e5ca5c8](https://github.com/protobufjs/protobuf.js/commit/e5ca5c84e326699e10258367883a54934e0bfe14))
+* add Edition 2023 Support ([a84409b](https://github.com/protobufjs/protobuf.js/commit/a84409b47f9ba0dba56da1af8054fb54f85d85a1))
+* add Edition 2023 Support ([9c5a178](https://github.com/protobufjs/protobuf.js/commit/9c5a178c4b59e0aa65ecac0bd7420171213b2ff9))
+* add Edition 2023 Support ([b2c6867](https://github.com/protobufjs/protobuf.js/commit/b2c686721e3b63d092419fa1cbe58e1deb89534e))
+* add Edition 2023 Support ([60f3e51](https://github.com/protobufjs/protobuf.js/commit/60f3e51087ca2c247473410f39331e1c766aefef))
+* add Edition 2023 Support ([a656361](https://github.com/protobufjs/protobuf.js/commit/a6563617de04d510d6e8865eb6c5067f10247f64))
+* add Edition 2023 Support ([869a95b](https://github.com/protobufjs/protobuf.js/commit/869a95b1e5f553c76243aac45619061407a41084))
+* add Edition 2023 Support ([b936af4](https://github.com/protobufjs/protobuf.js/commit/b936af4219181811e98f72d4902a40e1c3f1f3be))
+* add Edition 2023 Support ([a938467](https://github.com/protobufjs/protobuf.js/commit/a938467e476b3e168b8df1b89452864731e6a373))
+* add Edition 2023 Support ([1af8454](https://github.com/protobufjs/protobuf.js/commit/1af8454538b63d58b822ea9d20b935f2ac9f158c))
+* add Edition 2023 Support ([785416f](https://github.com/protobufjs/protobuf.js/commit/785416fd2b9827e4cb9bfccd823c3b6836baffb0))
+* add feature resolution ([a9ffc8a](https://github.com/protobufjs/protobuf.js/commit/a9ffc8a7b593209642fc9d89e884ac6c4e746494))
+* add feature resolution and tests ([68b5339](https://github.com/protobufjs/protobuf.js/commit/68b5339ea1936c90f526983da29b4267d20f9a51))
+* add feature resolution for protobuf editions ([547afa2](https://github.com/protobufjs/protobuf.js/commit/547afa26f76e22e5463a17aec082b0b60cd951d8))
+* add feature resolution for protobuf editions ([65d3ed1](https://github.com/protobufjs/protobuf.js/commit/65d3ed15e3c3ffd41b488aaa2eb8aa53026419b9))
+* api_converters_editions tests added and run successfully" ([b4b5ca4](https://github.com/protobufjs/protobuf.js/commit/b4b5ca468fcde2082d65a72b508f18d07d75245c))
+* increase size of file that protobufjs CLI can process ([00d5f1a](https://github.com/protobufjs/protobuf.js/commit/00d5f1aca4d7959068f52fd11767c21b483e75bb))
+* increase size of file that protobufjs CLI can process ([d36ef0f](https://github.com/protobufjs/protobuf.js/commit/d36ef0faeae9a9ec655747cb650571bdd9b1243b))
+
+
+### Bug Fixes
+
+* change tree traversal order and feature resolution algorithm ([d2d47d9](https://github.com/protobufjs/protobuf.js/commit/d2d47d9e4fbe754d3f83fd2608d93ef0daa43658))
+* remove eval usage so that chrome extension MV3 can run properly ([#1941](https://github.com/protobufjs/protobuf.js/issues/1941)) ([f2ccb99](https://github.com/protobufjs/protobuf.js/commit/f2ccb999220ee596d68c80b36265e5ee4ec877b3))
+
+## [7.4.0](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v7.3.3...protobufjs-v7.4.0) (2024-08-22)
+
+
+### Features
+
+* Add `prepublishOnly` script ([0e4da8b](https://github.com/protobufjs/protobuf.js/commit/0e4da8b158a85af5160e2f4ba5eb097a8dc65cb1))
+
+
+### Bug Fixes
+
+* include ([28e3334](https://github.com/protobufjs/protobuf.js/commit/28e333415d3c85687810e164125997d17baba0bd))
+
+## [7.3.3](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v7.3.2...protobufjs-v7.3.3) (2024-08-16)
+
+
+### Bug Fixes
+
+* handle nullability for optional fields ([59569c1](https://github.com/protobufjs/protobuf.js/commit/59569c12c85c1c7b783ace9a71775b1d05a08e9c))
+
 ## [7.3.2](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v7.3.1...protobufjs-v7.3.2) (2024-06-12)
 
 

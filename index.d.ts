@@ -179,6 +179,9 @@ export class Enum extends ReflectionObject {
     /** Values options, if any */
     public valuesOptions?: { [k: string]: { [k: string]: any } };
 
+    /** Resolved values features, if any */
+    public _valuesFeatures?: { [k: string]: { [k: string]: any } };
+
     /** Reserved ranges, if any. */
     public reserved: (number[]|string)[];
 
@@ -267,8 +270,23 @@ export class Field extends FieldBase {
      */
     public static fromJSON(name: string, json: IField): Field;
 
-    /** Determines whether this field is packed. Only relevant when repeated and working with proto2. */
+    /** Determines whether this field is required. */
+    public readonly required: boolean;
+
+    /** Determines whether this field is not required. */
+    public readonly optional: boolean;
+
+    /**
+     * Determines whether this field uses tag-delimited encoding.  In proto2 this
+     * corresponded to group syntax.
+     */
+    public readonly delimited: boolean;
+
+    /** Determines whether this field is packed. Only relevant when repeated. */
     public readonly packed: boolean;
+
+    /** Determines whether this field tracks presence. */
+    public readonly hasPresence: boolean;
 
     /**
      * Field decorator (TypeScript).
@@ -313,12 +331,6 @@ export class FieldBase extends ReflectionObject {
 
     /** Extended type if different from parent. */
     public extend?: string;
-
-    /** Whether this field is required. */
-    public required: boolean;
-
-    /** Whether this field is optional. */
-    public optional: boolean;
 
     /** Whether this field is repeated. */
     public repeated: boolean;
@@ -369,6 +381,14 @@ export class FieldBase extends ReflectionObject {
      * @throws {Error} If any reference cannot be resolved
      */
     public resolve(): Field;
+
+    /**
+     * Infers field features from legacy syntax that may have been specified differently.
+     * in older editions.
+     * @param edition The edition this proto is on, or undefined if pre-editions
+     * @returns The feature values to override
+     */
+    public _inferLegacyProtoFeatures(edition: (string|undefined)): object;
 }
 
 /** Field descriptor. */
@@ -730,6 +750,12 @@ export abstract class NamespaceBase extends ReflectionObject {
     /** Nested objects by name. */
     public nested?: { [k: string]: ReflectionObject };
 
+    /** Whether or not objects contained in this namespace need feature resolution. */
+    protected _needsRecursiveFeatureResolution: boolean;
+
+    /** Whether or not objects contained in this namespace need a resolve. */
+    protected _needsRecursiveResolve: boolean;
+
     /** Nested objects of this namespace as an array for iteration. */
     public readonly nestedArray: ReflectionObject[];
 
@@ -920,6 +946,27 @@ export abstract class ReflectionObject {
     public resolve(): ReflectionObject;
 
     /**
+     * Resolves this objects editions features.
+     * @param edition The edition we're currently resolving for.
+     * @returns `this`
+     */
+    public _resolveFeaturesRecursive(edition: string): ReflectionObject;
+
+    /**
+     * Resolves child features from parent features
+     * @param edition The edition we're currently resolving for.
+     */
+    public _resolveFeatures(edition: string): void;
+
+    /**
+     * Infers features from legacy syntax that may have been specified differently.
+     * in older editions.
+     * @param edition The edition this proto is on, or undefined if pre-editions
+     * @returns The feature values to override
+     */
+    public _inferLegacyProtoFeatures(edition: (string|undefined)): object;
+
+    /**
      * Gets an option value.
      * @param name Option name
      * @returns Option value or `undefined` if not set
@@ -933,7 +980,7 @@ export abstract class ReflectionObject {
      * @param [ifNotSet] Sets the option only if it isn't currently set
      * @returns `this`
      */
-    public setOption(name: string, value: any, ifNotSet?: boolean): ReflectionObject;
+    public setOption(name: string, value: any, ifNotSet?: (boolean|undefined)): ReflectionObject;
 
     /**
      * Sets a parsed option.
@@ -957,6 +1004,12 @@ export abstract class ReflectionObject {
      * @returns Class name[, space, full name]
      */
     public toString(): string;
+
+    /**
+     * Converts the edition this object is pinned to for JSON format.
+     * @returns The edition string for JSON representation
+     */
+    public _editionToJSON(): (string|undefined);
 }
 
 /** Reflected oneof. */
@@ -1011,6 +1064,13 @@ export class OneOf extends ReflectionObject {
     public remove(field: Field): OneOf;
 
     /**
+     * Determines whether this field corresponds to a synthetic oneof created for
+     * a proto3 optional field.  No behavioral logic should depend on this, but it
+     * can be relevant for reflection.
+     */
+    public readonly isProto3Optional: boolean;
+
+    /**
      * OneOf decorator (TypeScript).
      * @param fieldNames Field names
      * @returns Decorator function
@@ -1054,9 +1114,6 @@ export interface IParserResult {
 
     /** Weak imports, if any */
     weakImports: (string[]|undefined);
-
-    /** Syntax, if specified (either `"proto2"` or `"proto3"`) */
-    syntax: (string|undefined);
 
     /** Populated root instance */
     root: Root;
@@ -1255,7 +1312,7 @@ export class Root extends NamespaceBase {
 
     /**
      * Loads a namespace descriptor into a root namespace.
-     * @param json Nameespace descriptor
+     * @param json Namespace descriptor
      * @param [root] Root namespace, defaults to create a new one if omitted
      * @returns Root namespace
      */
@@ -1844,6 +1901,25 @@ export interface Constructor<T> extends Function {
 type Properties<T> = { [P in keyof T]?: T[P] };
 
 /**
+ * Identifies where the payload for a struct is in the form of a legacy struct.
+ * The legacy format is - 
+ *
+ * {
+ * fields: {
+ * "key1": {
+ * "string_value": "test",
+ * },
+ * "key2": {
+ * "number_value": 123,  
+ * }
+ * }
+ * }
+ *
+ * @param payload
+ */
+export function isLegacyStruct(payload: object): boolean;
+
+/**
  * Any compatible Buffer instance.
  * This is a minimal stand-alone definition of a Buffer instance. The actual type is that exported by node's typings.
  */
@@ -2202,9 +2278,10 @@ export namespace util {
      * @param dst Destination object
      * @param path dot '.' delimited path of the property to set
      * @param value the value to set
+     * @param [ifNotSet] Sets the option only if it isn't currently set
      * @returns Destination object
      */
-    function setProperty(dst: { [k: string]: any }, path: string, value: object): { [k: string]: any };
+    function setProperty(dst: { [k: string]: any }, path: string, value: object, ifNotSet?: (boolean|undefined)): { [k: string]: any };
 
     /** Decorator root (TypeScript). */
     let decorateRoot: Root;

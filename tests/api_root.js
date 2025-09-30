@@ -116,3 +116,92 @@ tape.test("reflected roots", function(test) {
         });
     });
 });
+
+
+tape.test("feature resolution legacy proto3", function(test) {
+    var json = {
+        nested: { Message: {
+            fields: {
+                packed: { type: "int32", id: 2, rule: "repeated" },
+                unpacked: { type: "int32", id: 3, rule: "repeated", options: { packed: false } }
+            },
+            nested: { Nested: { fields: {
+                packed: { type: "int32", id: 2, rule: "repeated" },
+                unpacked: { type: "int32", id: 3, rule: "repeated", options: { packed: false } }
+            } } }
+        } }
+    };
+    var root = protobuf.Root.fromJSON(json);
+    var Type = root.lookup("Message");
+    var Nested = Type.nested.Nested;
+
+    test.same(root.toJSON(), json, "JSON should roundtrip");
+
+    test.ok(Type.fields.packed.packed, "should have packed encoding by default");
+    test.notOk(Type.fields.unpacked.packed, "should override expanded encoding");
+
+    test.ok(Nested.fields.packed.packed, "nested should have packed encoding by default");
+    test.notOk(Nested.fields.unpacked.packed, "nested should override expanded encoding");
+
+    test.end();
+});
+
+tape.test("feature resolution proto2", function(test) {
+    var json = {
+        nested: { Message: {
+            edition: "proto2",
+            fields: {
+                packed: { type: "int32", id: 3, rule: "repeated", options: { packed: true } },
+                unpacked: { type: "int32", id: 4, rule: "repeated"}
+            },
+            nested: { Nested: { fields: {
+                packed: { type: "int32", id: 2, rule: "repeated", options: { packed: true } },
+                unpacked: { type: "int32", id: 3, rule: "repeated" }
+            } } }
+        } }
+    };
+    var root = protobuf.Root.fromJSON(json);
+    var Type = root.lookup("Message");
+    var Nested = Type.nested.Nested;
+
+    test.same(root.toJSON(), json, "JSON should roundtrip");
+
+    test.ok(Type.fields.packed.packed, "should override packed encoding");
+    test.notOk(Type.fields.unpacked.packed, "should have expanded encoding by default");
+
+    test.notOk(Nested.fields.unpacked.packed, "nested should have expanded encoding by default");
+    test.ok(Nested.fields.packed.packed, "nested should override packed encoding");
+
+    test.end();
+});
+
+
+tape.test("feature resolution edition 2023", function(test) {
+    var json = {
+        nested: { Message: {
+            edition: "2023",
+            options: { "features": { "field_presence": "IMPLICIT" } },
+            fields: {
+                explicit: { type: "string", id: 1, options: { "features": { "field_presence": "EXPLICIT" } } },
+                implicit: { type: "string", id: 2 },
+            },
+            nested: { Nested: { fields: {
+                explicit: { type: "string", id: 1, options: { "features": { "field_presence": "EXPLICIT" } } },
+                implicit: { type: "string", id: 2 },
+            } } }
+        } }
+    };
+    var root = protobuf.Root.fromJSON(json);
+    var Type = root.lookup("Message");
+    var Nested = Type.nested.Nested;
+
+    test.same(root.toJSON(), json, "JSON should roundtrip");
+
+    test.ok(Type.fields.explicit.hasPresence, "should have explicit presence");
+    test.notOk(Type.fields.implicit.hasPresence, "should have implicit presence");
+
+    test.ok(Nested.fields.explicit.hasPresence, "nested should have explicit presence");
+    test.notOk(Nested.fields.implicit.hasPresence, "nested should have implicit presence");
+
+    test.end();
+});
