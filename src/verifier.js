@@ -30,12 +30,23 @@ function genVerifyValue(gen, field, fieldIndex, ref) {
                     ("break")
             ("}");
         } else {
-            gen
-            ("{")
-                ("var e=types[%i].verify(%s);", fieldIndex, ref)
-                ("if(e)")
-                    ("return%j+e", field.name + ".")
-            ("}");
+            // Special handling for Duration type to allow string input
+            if (field.resolvedType.fullName === ".google.protobuf.Duration" || field.resolvedType.fullName === ".google.protobuf.Timestamp") { gen
+                ("if(typeof %s===\"string\")", ref)
+                    (";") // Allow string input for Duration
+                ("else {")
+                    ("var e=types[%i].verify(%s);", fieldIndex, ref)
+                    ("if(e)")
+                        ("return%j+e", field.name + ".")
+                ("}")
+            } else {
+                gen
+                ("{")
+                    ("var e=types[%i].verify(%s);", fieldIndex, ref)
+                    ("if(e)")
+                        ("return%j+e", field.name + ".")
+                ("}");
+            }
         }
     } else {
         switch (field.type) {

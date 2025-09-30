@@ -40,10 +40,13 @@ function genValuePartial_fromObject(gen, field, fieldIndex, prop) {
                     ("break");
             } gen
             ("}");
-        } else gen
-            ("if(typeof d%s!==\"object\")", prop)
-                ("throw TypeError(%j)", field.fullName + ": object expected")
-            ("m%s=types[%i].fromObject(d%s)", prop, fieldIndex, prop);
+        } else 
+            if (field.resolvedType.fullName === ".google.protobuf.Duration" || field.resolvedType.fullName === ".google.protobuf.Timestamp") { gen
+                ("m%s=types[%i].fromObject(d%s)", prop, fieldIndex, prop);
+            } else gen
+                ("if(typeof d%s!==\"object\")", prop)
+                    ("throw TypeError(%j)", field.fullName + ": object expected")
+                ("m%s=types[%i].fromObject(d%s)", prop, fieldIndex, prop);
     } else {
         var isUnsigned = false;
         switch (field.type) {
