@@ -1,6 +1,6 @@
 {
   "name": "@postman/protobufjs",
-  "version": "7.3.2-postman.3",
+  "version": "7.5.4-postman.1",
   "versionScheme": "~",
   "description": "Protocol Buffers for JavaScript (& TypeScript).",
   "license": "Apache-2.0",
