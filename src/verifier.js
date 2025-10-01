@@ -38,7 +38,7 @@ function genVerifyValue(gen, field, fieldIndex, ref) {
                     ("var e=types[%i].verify(%s);", fieldIndex, ref)
                     ("if(e)")
                         ("return%j+e", field.name + ".")
-                ("}")
+                ("}");
             } else {
                 gen
                 ("{")

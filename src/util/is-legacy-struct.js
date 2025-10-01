@@ -3,43 +3,41 @@ module.exports = isLegacyStruct;
 
 /**
  * Identifies where the payload for a struct is in the form of a legacy struct.
- * The legacy format is - 
- *    
+ * The legacy format is -
+ *
  * {
  *   fields: {
  *       "key1": {
  *           "string_value": "test",
  *       },
  *       "key2": {
- *           "number_value": 123,  
+ *           "number_value": 123,
  *       }
  *   }
+ *   or
+ *   fields: [
+ *     {key: "key1", value: {string_value: "test"}},
+ *     {key: "key2", value: {number_value: 123}}
+ *   ]
  * }
- *   
- * @param {object} payload 
- * @returns {boolean}
+ *
+ * @param {object} payload The payload to check for legacy struct format
+ * @returns {boolean} True if the payload is in legacy struct format, false otherwise
  */
 function isLegacyStruct(payload) {
     // Value types in a struct
-    const valueKeysSet = new Set(['string_value', 'number_value', 'bool_value', 'struct_value', 'list_value', 'null_value']);
-    
+    const valueKeysSet = new Set(["string_value", "number_value", "bool_value", "struct_value", "list_value", "null_value"]);
+
     // If object has only one key and that key is "fields" which is an object
     if (payload && Object.keys(payload).length === 1 && payload.fields && typeof payload.fields === "object") {
-        // Case when the fields key is an array. This can be of the form - 
-        // {
-        //   fields: [
-        //     {key: "key1", value: {string_value: "test"}},
-        //     {key: "key2", value: {number_value: 123}}
-        //   ]
-        // }
         if (Array.isArray(payload.fields)) {
-            return payload.fields.every(field => Object.keys(field).length === 2 && 
-                field.key && field.value && Object.keys(field.value).length === 1 
+            return payload.fields.every(field => Object.keys(field).length === 2 &&
+                field.key && field.value && Object.keys(field.value).length === 1
                     && valueKeysSet.has(Object.keys(field.value)[0]));
         }
 
         // Get all the values of the fields object
-        // For the given example - 
+        // For the given example -
         // fieldValues = [{string_value: "test"}, {number_value: 123}]
         const fieldValues = Object.values(payload.fields);
 

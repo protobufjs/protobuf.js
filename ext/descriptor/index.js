@@ -238,12 +238,14 @@ Type.fromDescriptor = function fromDescriptor(descriptor, edition, nested) {
             type.add(OneOf.fromDescriptor(descriptor.oneofDecl[i]));
     /* Fields */ if (descriptor.field)
         for (i = 0; i < descriptor.field.length; ++i) {
-            var mapType = descriptor.nestedType 
-                ? descriptor.nestedType.find(function (t) {
-                    var currField = descriptor.field[i];
-                    var nestedTypeName = currField.typeName && currField.typeName.split('.').pop();
-                    return t.options && t.options.mapEntry && t.name === nestedTypeName
-                }) 
+            var mapType = descriptor.nestedType
+                ? descriptor.nestedType.find((function (fieldIndex) {
+                    return function (t) {
+                        var currField = descriptor.field[fieldIndex];
+                        var nestedTypeName = currField.typeName && currField.typeName.split(".").pop();
+                        return t.options && t.options.mapEntry && t.name === nestedTypeName;
+                    };
+                })(i))
                 : null;
             var field = mapType
                 ? MapField.fromDescriptor(descriptor.field[i], mapType)
@@ -571,8 +573,8 @@ MapField.fromDescriptor = function fromDescriptor(descriptor, nestedType) {
         throw Error("missing field id");
 
     var typeName = nestedType.field[1].typeName;
-    var type = typeName && typeName.length 
-        ? typeName 
+    var type = typeName && typeName.length
+        ? typeName
         : fromDescriptorType(nestedType.field[1].type);
 
     var field = new MapField(
@@ -607,7 +609,7 @@ MapField.fromDescriptor = function fromDescriptor(descriptor, nestedType) {
     }
 
     return field;
-}
+};
 
 // --- Enum ---
 

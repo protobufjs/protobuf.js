@@ -1902,7 +1902,7 @@ type Properties<T> = { [P in keyof T]?: T[P] };
 
 /**
  * Identifies where the payload for a struct is in the form of a legacy struct.
- * The legacy format is - 
+ * The legacy format is -
  *
  * {
  * fields: {
@@ -1910,12 +1910,18 @@ type Properties<T> = { [P in keyof T]?: T[P] };
  * "string_value": "test",
  * },
  * "key2": {
- * "number_value": 123,  
+ * "number_value": 123,
  * }
  * }
+ * or
+ * fields: [
+ * {key: "key1", value: {string_value: "test"}},
+ * {key: "key2", value: {number_value: 123}}
+ * ]
  * }
  *
- * @param payload
+ * @param payload The payload to check for legacy struct format
+ * @returns True if the payload is in legacy struct format, false otherwise
  */
 export function isLegacyStruct(payload: object): boolean;
 
