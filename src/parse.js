@@ -398,6 +398,10 @@ function parse(source, root, options) {
                     readRanges(type.reserved || (type.reserved = []), true);
                     break;
 
+                case ";":
+                    // Skip extra semicolons
+                    break;
+
                 default:
                     /* istanbul ignore if */
                     if (edition === "proto2" || !typeRefRe.test(token)) {
@@ -527,6 +531,10 @@ function parse(source, root, options) {
                     readRanges(type.reserved || (type.reserved = []), true);
                     break;
 
+                case ";":
+                    // Skip extra semicolons
+                    break;
+
                 /* istanbul ignore next */
                 default:
                     throw illegal(token); // there are no groups with proto3 semantics
@@ -586,6 +594,8 @@ function parse(source, root, options) {
             if (token === "option") {
                 parseOption(oneof, token);
                 skip(";");
+            } else if (token === ";") {
+                // Skip extra semicolons
             } else {
                 push(token);
                 parseField(oneof, "optional");
@@ -611,6 +621,10 @@ function parse(source, root, options) {
             case "reserved":
               readRanges(enm.reserved || (enm.reserved = []), true);
               if(enm.reserved === undefined) enm.reserved = [];
+              break;
+
+            case ";":
+              // Skip extra semicolons
               break;
 
             default:
@@ -795,6 +809,8 @@ function parse(source, root, options) {
             /* istanbul ignore else */
             if (token === "rpc")
                 parseMethod(service, token);
+            else if (token === ";")
+                ; // Skip extra semicolons
             else
                 throw illegal(token);
         });
