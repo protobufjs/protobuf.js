@@ -169,21 +169,21 @@ function parse(source, root, options) {
         } while (skip(",", true));
         var dummy = {options: undefined};
         dummy.setOption = function(name, value) {
-          if (this.options === undefined) this.options = {};
-          this.options[name] = value;
+            if (this.options === undefined) this.options = {};
+            this.options[name] = value;
         };
         ifBlock(
             dummy,
             function parseRange_block(token) {
-              /* istanbul ignore else */
-              if (token === "option") {
-                parseOption(dummy, token);  // skip
-                skip(";");
-              } else
-                throw illegal(token);
+                /* istanbul ignore else */
+                if (token === "option") {
+                    parseOption(dummy, token);  // skip
+                    skip(";");
+                } else
+                    throw illegal(token);
             },
             function parseRange_line() {
-              parseInlineOptions(dummy);  // skip
+                parseInlineOptions(dummy);  // skip
             });
     }
 
@@ -267,7 +267,7 @@ function parse(source, root, options) {
                 break;
             case "public":
                 next();
-                // eslint-disable-next-line no-fallthrough
+            // eslint-disable-next-line no-fallthrough
             default:
                 whichImports = imports || (imports = []);
                 break;
@@ -332,7 +332,7 @@ function parse(source, root, options) {
         var trailingLine = tn.line;
         if (obj) {
             if(typeof obj.comment !== "string") {
-              obj.comment = cmnt(); // try block-type comment
+                obj.comment = cmnt(); // try block-type comment
             }
             obj.filename = parse.filename;
         }
@@ -396,6 +396,10 @@ function parse(source, root, options) {
 
                 case "reserved":
                     readRanges(type.reserved || (type.reserved = []), true);
+                    break;
+
+                case ";":
+                    // Skip extra semicolons
                     break;
 
                 default:
@@ -527,13 +531,17 @@ function parse(source, root, options) {
                     readRanges(type.reserved || (type.reserved = []), true);
                     break;
 
+                case ";":
+                    // Skip extra semicolons
+                    break;
+
                 /* istanbul ignore next */
                 default:
                     throw illegal(token); // there are no groups with proto3 semantics
             }
         });
         parent.add(type)
-              .add(field);
+            .add(field);
     }
 
     function parseMapField(parent) {
@@ -586,6 +594,8 @@ function parse(source, root, options) {
             if (token === "option") {
                 parseOption(oneof, token);
                 skip(";");
+            } else if (token === ";") {
+                // Skip extra semicolons
             } else {
                 push(token);
                 parseField(oneof, "optional");
@@ -603,19 +613,23 @@ function parse(source, root, options) {
         var enm = new Enum(token);
         ifBlock(enm, function parseEnum_block(token) {
           switch(token) {
-            case "option":
-              parseOption(enm, token);
-              skip(";");
-              break;
+                case "option":
+                    parseOption(enm, token);
+                    skip(";");
+                    break;
 
-            case "reserved":
-              readRanges(enm.reserved || (enm.reserved = []), true);
+                case "reserved":
+                    readRanges(enm.reserved || (enm.reserved = []), true);
               if(enm.reserved === undefined) enm.reserved = [];
-              break;
+                    break;
 
-            default:
-              parseEnumValue(enm, token);
-          }
+                case ";":
+                    // Skip extra semicolons
+                    break;
+
+                default:
+                    parseEnumValue(enm, token);
+            }
         });
         parent.add(enm);
         if (parent === ptr) {
@@ -659,38 +673,38 @@ function parse(source, root, options) {
     }
 
     function parseOption(parent, token) {
-            var option;
-            var propName;
-            var isOption = true;
-            if (token === "option") {
-                token = next();
-            }
+        var option;
+        var propName;
+        var isOption = true;
+        if (token === "option") {
+            token = next();
+        }
 
-            while (token !== "=") {
-                if (token === "(") {
-                    var parensValue = next();
-                    skip(")");
-                    token = "(" + parensValue + ")";
-                }
-                if (isOption) {
-                    isOption = false;
-                    if (token.includes(".") && !token.includes("(")) {
-                        var tokens = token.split(".");
-                        option = tokens[0] + ".";
-                        token = tokens[1];
-                        continue;
-                    }
-                    option = token;
-                } else {
-                    propName = propName ? propName += token : token;
-                }
-                token = next();
+        while (token !== "=") {
+            if (token === "(") {
+                var parensValue = next();
+                skip(")");
+                token = "(" + parensValue + ")";
             }
-            var name = propName ? option.concat(propName) : option;
-            var optionValue = parseOptionValue(parent, name);
-            propName = propName && propName[0] === "." ? propName.slice(1) : propName;
-            option = option && option[option.length - 1] === "." ? option.slice(0, -1) : option;
-            setParsedOption(parent, option, optionValue, propName);
+            if (isOption) {
+                isOption = false;
+                if (token.includes(".") && !token.includes("(")) {
+                    var tokens = token.split(".");
+                    option = tokens[0] + ".";
+                    token = tokens[1];
+                    continue;
+                }
+                option = token;
+            } else {
+                propName = propName ? propName += token : token;
+            }
+            token = next();
+        }
+        var name = propName ? option.concat(propName) : option;
+        var optionValue = parseOptionValue(parent, name);
+        propName = propName && propName[0] === "." ? propName.slice(1) : propName;
+        option = option && option[option.length - 1] === "." ? option.slice(0, -1) : option;
+        setParsedOption(parent, option, optionValue, propName);
     }
 
     function parseOptionValue(parent, name) {
@@ -704,7 +718,7 @@ function parse(source, root, options) {
                     throw illegal(token, "name");
                 }
                 if (token === null) {
-                  throw illegal(token, "end of input");
+                    throw illegal(token, "end of input");
                 }
 
                 var value;
@@ -795,6 +809,8 @@ function parse(source, root, options) {
             /* istanbul ignore else */
             if (token === "rpc")
                 parseMethod(service, token);
+            else if (token === ";")
+                ; // Skip extra semicolons
             else
                 throw illegal(token);
         });
