@@ -41,7 +41,9 @@ function genValuePartial_fromObject(gen, field, fieldIndex, prop) {
             } gen
             ("}");
         } else
-            if (field.resolvedType.fullName === ".google.protobuf.Duration" || field.resolvedType.fullName === ".google.protobuf.Timestamp") { gen
+            if (field.resolvedType.fullName === ".google.protobuf.Duration" || field.resolvedType.fullName === ".google.protobuf.Timestamp" 
+                || field.resolvedType.fullName === ".google.protobuf.Value"
+            ) { gen
                 ("m%s=types[%i].fromObject(d%s)", prop, fieldIndex, prop);
             } else gen
                 ("if(typeof d%s!==\"object\")", prop)

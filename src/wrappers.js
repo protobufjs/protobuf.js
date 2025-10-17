@@ -8,7 +8,7 @@
 var wrappers = exports;
 
 var Message = require("./message");
-var isLegacyStruct = require("./util/is-legacy-struct");
+var { isLegacyValue, isLegacyStruct } = require("./util/is-legacy");
 var util = require("./util");
 
 /**
@@ -156,6 +156,10 @@ wrappers[".google.protobuf.Value"] = {
     fromObject: function(object) {
         // If already a Value instance, return as is
         if (object instanceof this.ctor) return object;
+
+        if (isLegacyValue(object)) {
+            return this.create(object);
+        }
 
         // Handle different types and convert to appropriate Value field
         if (object === null || object === undefined) {

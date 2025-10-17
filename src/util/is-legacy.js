@@ -1,5 +1,21 @@
 "use strict";
-module.exports = isLegacyStruct;
+module.exports = {
+    isLegacyStruct,
+    isLegacyValue
+};
+
+
+/**
+ * Checks if the given payload is in the legacy value format.
+ * 
+ * @param {object} payload The payload to check for legacy value format
+ * @returns {boolean} True if the value is in legacy format, false otherwise
+ */
+function isLegacyValue(payload) {
+    const valueKeysSet = new Set(["string_value", "number_value", "bool_value", "struct_value", "list_value", "null_value"]);
+
+    return payload && typeof payload === "object" && Object.keys(payload).length === 1 && valueKeysSet.has(Object.keys(payload)[0]);
+}
 
 /**
  * Identifies where the payload for a struct is in the form of a legacy struct.
@@ -32,8 +48,7 @@ function isLegacyStruct(payload) {
     if (payload && Object.keys(payload).length === 1 && payload.fields && typeof payload.fields === "object") {
         if (Array.isArray(payload.fields)) {
             return payload.fields.every(field => Object.keys(field).length === 2 &&
-                field.key && field.value && Object.keys(field.value).length === 1
-                    && valueKeysSet.has(Object.keys(field.value)[0]));
+                field.key && isLegacyValue(field.value));
         }
 
         // Get all the values of the fields object
@@ -42,10 +57,7 @@ function isLegacyStruct(payload) {
         const fieldValues = Object.values(payload.fields);
 
         // Check if all the fieldValues have only one key and that key is a valid value type
-        if (fieldValues.every(fieldValue => {
-            const fieldValueKeys = fieldValue ? Object.keys(fieldValue) : [];
-            return fieldValueKeys.length === 1 && valueKeysSet.has(fieldValueKeys[0]);
-        })) {
+        if (fieldValues.every(fieldValue => isLegacyValue(fieldValue))) {
             return true;
         }
     }
