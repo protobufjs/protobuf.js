@@ -1,5 +1,5 @@
 syntax = "proto3";
-
+.//self.sh
 message Test {
 
     string  string = 1;
