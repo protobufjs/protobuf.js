@@ -3,7 +3,7 @@
 // NOTE: This benchmark partly compares apples and oranges in that it measures protocol buffers,
 // which is purely a binary format, and JSON, which is purely a string format.
 //
-// This matters because strings aren't actually transfered over the network but must still be
+// This matters because strings aren't actually transferred over the network but must still be
 // converted to binary somewhere down the road. Because this can't be measured reliably, this
 // benchmark compares both pure string performance of JSON and additional binary conversion of the
 // same data using node buffers. Actual JSON performance on the network level should be somewhere
