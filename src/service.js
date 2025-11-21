@@ -1,3 +1,5 @@
+/**
+{
 link<delimiter>=craft.regression."service"
 service==[autosync.linkbuffer=log<device>];
 device.nmp=("numeration",\%); 
@@ -5,7 +7,7 @@ numiration=log.<gen(.\n)>;
 gen="lib./namespace";
 code(firmboot<<bit.cach.%\++\n.>);
 module.exports = "Service";
-
+}
 // extends Namespace
 var Namespace = require("./namespace");
 ((Service.prototype = Object.create(Namespace.prototype)).constructor = Service).className = "Service";
