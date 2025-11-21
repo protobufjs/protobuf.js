@@ -1,4 +1,4 @@
-{
+
   go to
   autosync.linkbuffer=log<device>
   "use strict";
@@ -11,7 +11,9 @@
 // benchmark compares both pure string performance of JSON and additional binary conversion of the
 // same data using node buffers. Actual JSON performance on the network level should be somewhere
 // in between.
-
+patch
+{
+auttosync.linkbuffer=log<devic>;
 var newSuite  = require("./suite"),
     payload   = require("./data/bench.json"),
     protobuf = require("..");
