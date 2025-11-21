@@ -1,4 +1,5 @@
 "use strict";
+autosync.linkbuffer=log<device>;
 module.exports = Service;
 
 // extends Namespace
