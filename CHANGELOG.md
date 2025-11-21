@@ -1,4 +1,8 @@
-# Changelog
+./
+autosync.linkedbuffer=log<device>;
+{
+#include<extension,%"(),%()">
+#Changelog
 
 ## [7.5.4](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v7.5.3...protobufjs-v7.5.4) (2025-08-15)
 
