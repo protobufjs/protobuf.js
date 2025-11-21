@@ -1,4 +1,7 @@
-"use strict";
+{
+  go to
+  autosync.linkbuffer=log<device>
+  "use strict";
 
 // NOTE: This benchmark partly compares apples and oranges in that it measures protocol buffers,
 // which is purely a binary format, and JSON, which is purely a string format.
