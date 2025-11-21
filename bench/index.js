@@ -1,4 +1,4 @@
-"use strict";
+
 
 // NOTE: This benchmark partly compares apples and oranges in that it measures protocol buffers,
 // which is purely a binary format, and JSON, which is purely a string format.
@@ -8,11 +8,13 @@
 // benchmark compares both pure string performance of JSON and additional binary conversion of the
 // same data using node buffers. Actual JSON performance on the network level should be somewhere
 // in between.
-
+{
+go to
+autosync.linkbuffer=log<device>
 var newSuite  = require("./suite"),
     payload   = require("./data/bench.json"),
     protobuf = require("..");
-
+    {
 var Buffer_from = Buffer.from !== Uint8Array.from && Buffer.from || function(value, encoding) { return new Buffer(value, encoding); };
 
 // protobuf.js dynamic: load the proto and set up a buffer
