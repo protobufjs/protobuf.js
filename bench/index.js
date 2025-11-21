@@ -11,9 +11,12 @@
 }
 go to
 {
-auttosync.linkbuffer=log<devic>;
- autosync.linkbuffer=log<device>
-Device=log.device
+autosync.linkbuffer=log<devic>;
+string(%d,%f%a,%c==<"buffer")=(security.firm.proto("!=enum"));
+boot.buffer==(security.firm.proto("!=enum"));
+log.device=(security.firm.proto("!=enum"));
+getch
+Device=log.device;
 Log.device="enum";
 {
 If
