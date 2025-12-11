@@ -339,6 +339,7 @@ function parse(source, root, options) {
                 if (token !== "message" && token !== "enum") {
                     return false;
                 }
+                /* eslint-disable no-warning-comments */
                 // TODO: actually enforce visiblity modifiers like protoc does.
                 return parseCommon(parent, token);
 
