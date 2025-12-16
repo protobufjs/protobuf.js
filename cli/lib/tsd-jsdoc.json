@@ -2,6 +2,9 @@
     "tags": {
         "allowUnknownTags": false
     },
+    "source": {
+        "includePattern": false
+    },
     "plugins": [
         "./tsd-jsdoc/plugin"
     ],
