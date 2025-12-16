@@ -261,6 +261,16 @@ function parse(source, root, options) {
         var token = peek();
         var whichImports;
         switch (token) {
+            case "option":
+                if (edition < "2024") {
+                    throw illegal("option");
+                }
+                // Import options are only used for resolving options, which we don't
+                // do.  We can just throw them out.
+                next();
+                readString();
+                skip(";");
+                return;
             case "weak":
                 whichImports = weakImports || (weakImports = []);
                 next();
@@ -291,7 +301,7 @@ function parse(source, root, options) {
     function parseEdition() {
         skip("=");
         edition = readString();
-        const supportedEditions = ["2023"];
+        const supportedEditions = ["2023", "2024"];
 
         /* istanbul ignore if */
         if (!supportedEditions.includes(edition))
@@ -316,6 +326,22 @@ function parse(source, root, options) {
             case "enum":
                 parseEnum(parent, token);
                 return true;
+
+            case "export":
+            case "local":
+                if (edition < "2024") {
+                    return false;
+                }
+                token = next();
+                if (token === "export" || token === "local") {
+                    return false;
+                }
+                if (token !== "message" && token !== "enum") {
+                    return false;
+                }
+                /* eslint-disable no-warning-comments */
+                // TODO: actually enforce visiblity modifiers like protoc does.
+                return parseCommon(parent, token);
 
             case "service":
                 parseService(parent, token);
@@ -525,6 +551,24 @@ function parse(source, root, options) {
 
                 case "reserved":
                     readRanges(type.reserved || (type.reserved = []), true);
+                    break;
+
+                case "export":
+                case "local":
+                    if (edition < "2024") {
+                        throw illegal(token);
+                    }
+                    token = next();
+                    switch (token) {
+                        case "message":
+                            parseType(type, token);
+                            break;
+                        case "enum":
+                            parseType(type, token);
+                            break;
+                        default:
+                            throw illegal(token);
+                    }
                     break;
 
                 /* istanbul ignore next */
