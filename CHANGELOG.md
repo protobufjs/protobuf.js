@@ -1,5 +1,16 @@
 # Changelog
 
+## [8.0.0](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v7.5.4...protobufjs-v8.0.0) (2025-12-16)
+
+
+### ⚠ BREAKING CHANGES
+
+* add Edition 2024 Support ([#2060](https://github.com/protobufjs/protobuf.js/issues/2060))
+
+### Features
+
+* add Edition 2024 Support ([#2060](https://github.com/protobufjs/protobuf.js/issues/2060)) ([53e8492](https://github.com/protobufjs/protobuf.js/commit/53e8492cbaae2c741801fa50b5f908ff5129c3d7))
+
 ## [7.5.4](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v7.5.3...protobufjs-v7.5.4) (2025-08-15)
 
 

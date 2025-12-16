@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.0.0](https://github.com/protobufjs/protobuf.js/compare/protobufjs-cli-v1.2.0...protobufjs-cli-v2.0.0) (2025-12-16)
+
+
+### ⚠ BREAKING CHANGES
+
+* add Edition 2024 Support ([#2060](https://github.com/protobufjs/protobuf.js/issues/2060))
+
+### Features
+
+* add Edition 2024 Support ([#2060](https://github.com/protobufjs/protobuf.js/issues/2060)) ([53e8492](https://github.com/protobufjs/protobuf.js/commit/53e8492cbaae2c741801fa50b5f908ff5129c3d7))
+
 ## [1.2.0](https://github.com/protobufjs/protobuf.js/compare/protobufjs-cli-v1.1.4...protobufjs-cli-v1.2.0) (2025-04-15)
 
 
