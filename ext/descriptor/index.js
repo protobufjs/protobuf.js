@@ -520,7 +520,7 @@ Field.prototype.toDescriptor = function toDescriptor(edition) {
 
     // Handle part of oneof
     if (this.partOf)
-        if ((descriptor.oneofIndex = this.parent.oneofsArray.indexOf(this.partOf)) < 0)
+        if (this.parent.oneofsArray && (descriptor.oneofIndex = this.parent.oneofsArray.indexOf(this.partOf)) < 0)
             throw Error("missing oneof");
 
     if (this.options) {
