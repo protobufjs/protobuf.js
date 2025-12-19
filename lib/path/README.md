@@ -16,4 +16,7 @@ API
 * **path.resolve(originPath: `string`, includePath: `string`, [alreadyNormalized=false: `boolean`]): `string`**<br />
   Resolves the specified include path against the specified origin path.
 
+* **path.absolutePrefix(path: `string`): `string|null`**<br />
+  Gets the prefix of an absolute Windows, UNC, or Unix path or a URL that indicates it's absolute.
+
 **License:** [BSD 3-Clause License](https://opensource.org/licenses/BSD-3-Clause)
