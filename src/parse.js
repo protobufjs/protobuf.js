@@ -764,7 +764,7 @@ function parse(source, root, options) {
                 } else if (peek() === "[") {
                     value = [];
                     var lastValue;
-                    if (skip("[", true)) {
+                        if (skip("[", true) && !skip("]", true)) {
                         do {
                             lastValue = readValue(true);
                             value.push(lastValue);
