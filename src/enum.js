@@ -108,7 +108,7 @@ Enum.prototype._resolveFeatures = function _resolveFeatures(edition) {
  * @throws {TypeError} If arguments are invalid
  */
 Enum.fromJSON = function fromJSON(name, json) {
-    var enm = new Enum(name, json.values, json.options, json.comment, json.comments);
+    var enm = new Enum(name, json.values, json.options, json.comment, json.comments, json.valuesOptions);
     enm.reserved = json.reserved;
     if (json.edition)
         enm._edition = json.edition;
