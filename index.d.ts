@@ -898,7 +898,7 @@ export abstract class ReflectionObject {
     public options?: { [k: string]: any };
 
     /** Parsed Options. */
-    public parsedOptions?: { [k: string]: any[] };
+    public parsedOptions?: ({ [k: string]: any})[];
 
     /** Unique name within its namespace. */
     public name: string;
