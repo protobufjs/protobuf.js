@@ -3,6 +3,6 @@
         "target": "ES5",
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
-        "esModuleInterop": true,
+        "esModuleInterop": true
     }
 }
