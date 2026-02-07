@@ -84,6 +84,38 @@ tape.test("extensions - proto3 roundtrip", function (test) {
     test.end();
 });
 
+tape.test("extensions - proto3 optional in extend toDescriptor", function (test) {
+  var root = protobuf.parse(`syntax = "proto3";
+
+    message SomeMessage {
+      string foo = 1;
+    }
+
+    extend SomeMessage {
+      optional string bar = 2;
+    }
+  `).root.resolveAll();
+
+  var decodedDescriptorSet;
+  try {
+    decodedDescriptorSet = root.toDescriptor("proto3");
+    test.pass("toDescriptor should not throw");
+  } catch (err) {
+    test.fail(err);
+    test.end();
+    return;
+  }
+
+  test.ok(decodedDescriptorSet.file[0].extension && decodedDescriptorSet.file[0].extension.length === 1,
+    "should include extension field");
+
+  var ext = decodedDescriptorSet.file[0].extension[0];
+  test.equal(ext.name, "bar", "extension field name is preserved");
+  test.equal(ext.proto3_optional, true, "proto3_optional flag is preserved");
+
+  test.end();
+});
+
 tape.test("extensions - edition 2023 file roundtrip", function (test) {
     var json = {
       nested: { Message: {

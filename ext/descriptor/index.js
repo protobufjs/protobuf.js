@@ -518,10 +518,11 @@ Field.prototype.toDescriptor = function toDescriptor(edition) {
     // Handle extension field
     descriptor.extendee = this.extensionField ? this.extensionField.parent.fullName : this.extend;
 
-    // Handle part of oneof
-    if (this.partOf)
+    // Handle part of oneof (only meaningful for message types)
+    if (this.partOf && this.parent instanceof Type) {
         if ((descriptor.oneofIndex = this.parent.oneofsArray.indexOf(this.partOf)) < 0)
             throw Error("missing oneof");
+    }
 
     if (this.options) {
         descriptor.options = toDescriptorOptions(this.options, exports.FieldOptions);
