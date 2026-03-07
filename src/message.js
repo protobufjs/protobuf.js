@@ -13,8 +13,12 @@ var util = require("./util/minimal");
 function Message(properties) {
     // not used internally
     if (properties)
-        for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-            this[keys[i]] = properties[keys[i]];
+        for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i) {
+            var key = keys[i];
+            if (key === "__proto__")
+                continue;
+            this[key] = properties[key];
+        }
 }
 
 /**
