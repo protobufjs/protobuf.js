@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.1](https://github.com/protobufjs/protobuf.js/compare/protobufjs-cli-v2.0.0...protobufjs-cli-v2.0.1) (2026-03-11)
+
+
+### Bug Fixes
+
+* bump protobufjs dependency version for cli package ([#2128](https://github.com/protobufjs/protobuf.js/issues/2128)) ([549b05e](https://github.com/protobufjs/protobuf.js/commit/549b05ecd95e23da40fa1a36a9336c57946b8377))
+
 ## [2.0.0](https://github.com/protobufjs/protobuf.js/compare/protobufjs-cli-v1.2.0...protobufjs-cli-v2.0.0) (2025-12-16)
 
 

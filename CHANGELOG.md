@@ -1,5 +1,16 @@
 # Changelog
 
+## [8.0.1](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v8.0.0...protobufjs-v8.0.1) (2026-03-11)
+
+
+### Bug Fixes
+
+* bump protobufjs dependency version for cli package ([#2128](https://github.com/protobufjs/protobuf.js/issues/2128)) ([549b05e](https://github.com/protobufjs/protobuf.js/commit/549b05ecd95e23da40fa1a36a9336c57946b8377))
+* correct json syntax in tsconfig.json ([#2120](https://github.com/protobufjs/protobuf.js/issues/2120)) ([8065625](https://github.com/protobufjs/protobuf.js/commit/80656255c75000f3e954e036cdfcb5bfd0a8c687))
+* **descriptor:** guard oneof index for non-Type parents ([#2122](https://github.com/protobufjs/protobuf.js/issues/2122)) ([1cac5cf](https://github.com/protobufjs/protobuf.js/commit/1cac5cf811d0855b27dcde73a3a04d15efde3728))
+* do not allow setting __proto__ in Message constructor ([#2126](https://github.com/protobufjs/protobuf.js/issues/2126)) ([f05e3c3](https://github.com/protobufjs/protobuf.js/commit/f05e3c3bdd0b3c2cddbf8540bb5bd4d394a693ad))
+* filter invalid characters from the type name ([#2127](https://github.com/protobufjs/protobuf.js/issues/2127)) ([535df44](https://github.com/protobufjs/protobuf.js/commit/535df444ac060243722ac5d672db205e5c531d75))
+
 ## [8.0.0](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v7.5.4...protobufjs-v8.0.0) (2025-12-16)
 
 
