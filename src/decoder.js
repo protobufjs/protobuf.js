@@ -70,7 +70,7 @@ function decoder(mtype) {
                 ("}");
 
             if (types.long[field.keyType] !== undefined) gen
-                ("%s[typeof k===\"object\"?util.longToHash(k):k]=value", ref);
+                ("%s[util.Long.isLong(k)?k.toString():typeof k===\"object\"?util.longToHash(k):k]=value", ref);
             else gen
                 ("%s[k]=value", ref);
 
