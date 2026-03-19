@@ -2,6 +2,16 @@
   "bootstrap-sha": "6fc37d9ea3502cdc08ef988494c041aacd0f7e7f",
   "packages": {
     "cli": {},
-    ".": {}
+    ".": {},
+    "lib/aspromise": {},
+    "lib/base64": {},
+    "lib/codegen": {},
+    "lib/eventemitter": {},
+    "lib/fetch": {},
+    "lib/float": {},
+    "lib/inquire": {},
+    "lib/path": {},
+    "lib/pool": {},
+    "lib/utf8": {}
   }
 }
