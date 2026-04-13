@@ -24,10 +24,11 @@ tape.test("runtime services", function(test) {
 
         test.test(test.name + " - closed server-side", function(test) {
 
-            function rpc(method, requestData, callback) {
+            function rpc(serviceName, methodName, methodIndex, requestData, callback) {
                 if (++timesCalled < 3) {
                     test.test(test.name + " - should call the rpc impl with", function(test) {
-                        test.equal(method, MyMethod, "the reflected method");
+                        let MyService = root.lookup(serviceName).resolveAll();
+                        let method = MyService._methodsArray[methodIndex];
                         test.ok(requestData.length, "a buffer");
                         test.ok(typeof callback === "function", "a callback function");
                         test.end();
@@ -69,9 +70,11 @@ tape.test("runtime services", function(test) {
 
         test.test(test.name + " - closed client-side", function(test) {
 
-            function rpc(method, requestData, callback) {
+            function rpc(serviceName, methodName, methodIndex, requestData, callback) {
                 if (++timesCalled < 3) {
                     test.test(test.name + " - should call the rpc impl with", function(test) {
+                        let MyService = root.lookup(serviceName).resolveAll();
+                        let method = MyService._methodsArray[methodIndex];
                         test.equal(method, MyMethod, "the reflected method");
                         test.ok(requestData.length, "a buffer");
                         test.ok(typeof callback === "function", "a callback function");
@@ -134,9 +137,11 @@ tape.test("runtime services", function(test) {
 });
 
 function fakeRPC(test) {
-    function rpc(method, requestData, callback) {
+    function rpc(serviceName, methodName, methodIndex, requestData, callback) {
         if (++timesCalled < 3) {
             test.test(test.name + " - should call the rpc impl with", function(test) {
+                let MyService = root.lookup(serviceName).resolveAll();
+                let method = MyService._methodsArray[methodIndex];
                 test.equal(method, MyMethod, "the reflected method");
                 test.ok(requestData.length, "a buffer");
                 test.ok(typeof callback === "function", "a callback function");

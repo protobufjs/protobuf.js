@@ -1436,11 +1436,13 @@ export namespace rpc {
 
 /**
  * RPC implementation passed to {@link Service#create} performing a service request on network level, i.e. by utilizing http requests or websockets.
- * @param method Reflected or static method being called
+ * @param serviceName serviceName
+ * @param methodName methodName
+ * @param methodIndex methodIndex
  * @param requestData Request data
  * @param callback Callback function
  */
-type RPCImpl = (method: (Method|rpc.ServiceMethod<Message<{}>, Message<{}>>), requestData: Uint8Array, callback: RPCImplCallback) => void;
+type RPCImpl = (serviceName: string, methodName: string, methodIndex: number, requestData: Uint8Array, callback: RPCImplCallback) => void;
 
 /**
  * Node-style callback as used by {@link RPCImpl}.

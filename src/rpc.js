@@ -10,7 +10,9 @@ var rpc = exports;
  * RPC implementation passed to {@link Service#create} performing a service request on network level, i.e. by utilizing http requests or websockets.
  * @typedef RPCImpl
  * @type {function}
- * @param {Method|rpc.ServiceMethod<Message<{}>,Message<{}>>} method Reflected or static method being called
+ * @param {string} serviceName serviceName
+ * @param {string} methodName methodName
+ * @param {number} methodIndex methodIndex
  * @param {Uint8Array} requestData Request data
  * @param {RPCImplCallback} callback Callback function
  * @returns {undefined}

@@ -710,7 +710,7 @@ function buildService(ref, service) {
         push("};");
     }
 
-    service.methodsArray.forEach(function(method) {
+    service.methodsArray.forEach(function(method, methodIndex) {
         method.resolve();
         var lcName = protobuf.util.lcFirst(method.name),
             cbName = escapeName(method.name + "Callback");
@@ -737,7 +737,7 @@ function buildService(ref, service) {
         ]);
         push("Object.defineProperty(" + escapeName(service.name) + ".prototype" + util.safeProp(lcName) + " = function " + escapeName(lcName) + "(request, callback) {");
             ++indent;
-            push("return this.rpcCall(" + escapeName(lcName) + ", $root." + exportName(method.resolvedRequestType) + ", $root." + exportName(method.resolvedResponseType) + ", request, callback);");
+            push(`return this.rpcCall(\"${service.name}\", \"${method.name}\", ${methodIndex},  $root.` + exportName(method.resolvedRequestType) + ", $root." + exportName(method.resolvedResponseType) + ", request, callback);");
             --indent;
         push("}, \"name\", { value: " + JSON.stringify(method.name) + " });");
         if (config.comments)

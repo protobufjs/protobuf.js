@@ -29,7 +29,16 @@ tape.test("reflected services", function(test) {
         MyService.create();
     }, TypeError, "should throw if rpcImpl is not specified");
 
-    function rpcImpl(method, requestData, callback) {
+    function rpcImpl(serviceName, methodName, methodIndex, requestData, callback) {
+        let myservice = null;
+        if(serviceName){
+            myservice = root.lookup(serviceName).resolveAll();
+        }
+        let method = null;
+        if(myservice && Number.isInteger(methodIndex)){
+            method = myservice._methodsArray[methodIndex];
+        }
+   
         if (requestData) {
             test.equal(method, DoSomething, "rpcImpl should reference the correct method");
             test.ok(callback, "rpcImpl should provide a callback");
@@ -50,7 +59,7 @@ tape.test("reflected services", function(test) {
 
     test.test(test.name + " - should propagate errors from rpcImpl", function(test) {
         var err = Error();
-        var service2 = MyService.create(function(method, requestData, callback) { callback(err); });
+        var service2 = MyService.create(function(serviceName, methodName, methodIndex, requestData, callback) { callback(err); });
         var count = 0;
         service2.on("error", function(err2) {
             test.equal(err2, err, "should emit the exact error");
@@ -66,7 +75,7 @@ tape.test("reflected services", function(test) {
 
     test.test(test.name + " - should catch errors within rpcImpl", function(test) {
         var err = Error();
-        var service2 = MyService.create(function(method, requestData, callback) { throw err; });
+        var service2 = MyService.create(function(serviceName, methodName, methodIndex, requestData, callback) { throw err; });
         var count = 0;
         service2.on("error", function(err2) {
             test.equal(err2, err, "should emit the exact error");
@@ -81,7 +90,7 @@ tape.test("reflected services", function(test) {
     });
 
     test.test(test.name + " - should return errors from decoding", function(test) {
-        var service2 = MyService.create(function(method, requestData, callback) { callback(null, protobuf.util.newBuffer(0) ); }, true, true);
+        var service2 = MyService.create(function(serviceName, methodName, methodIndex, requestData, callback) { callback(null, protobuf.util.newBuffer(0) ); }, true, true);
         var count = 0;
         service2.on("error", function(err2) {
             test.ok(err2, "should emit the error");
