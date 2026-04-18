@@ -2,25 +2,25 @@
 var util = exports;
 
 // used to return a Promise where callback is omitted
-util.asPromise = require("@protobufjs/aspromise");
+util.asPromise = require("../../lib/aspromise");
 
 // converts to / from base64 encoded strings
-util.base64 = require("@protobufjs/base64");
+util.base64 = require("../../lib/base64");
 
 // base class of rpc.Service
-util.EventEmitter = require("@protobufjs/eventemitter");
+util.EventEmitter = require("../../lib/eventemitter");
 
 // float handling accross browsers
-util.float = require("@protobufjs/float");
+util.float = require("../../lib/float");
 
 // requires modules optionally and hides the call from bundlers
-util.inquire = require("@protobufjs/inquire");
+util.inquire = require("../../lib/inquire");
 
 // converts to / from utf8 encoded strings
-util.utf8 = require("@protobufjs/utf8");
+util.utf8 = require("../../lib/utf8");
 
 // provides a node-like buffer pool in the browser
-util.pool = require("@protobufjs/pool");
+util.pool = require("../../lib/pool");
 
 // utility to work with the low and high bits of a 64 bit value
 util.LongBits = require("./longbits");

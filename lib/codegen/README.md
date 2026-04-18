@@ -1,6 +1,5 @@
-@protobufjs/codegen
-===================
-[![npm](https://img.shields.io/npm/v/@protobufjs/codegen.svg)](https://www.npmjs.com/package/@protobufjs/codegen)
+codegen
+=======
 
 A minimalistic code generation utility.
 
@@ -35,7 +34,7 @@ Example
 -------
 
 ```js
-var codegen = require("@protobufjs/codegen");
+var codegen = require("protobufjs/lib/codegen");
 
 var add = codegen(["a", "b"], "add") // A function with parameters "a" and "b" named "add"
   ("// awesome comment")             // adds the line to the function's body

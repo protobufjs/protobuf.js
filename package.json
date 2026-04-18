@@ -51,16 +51,6 @@
     "make": "npm run lint:sources && npm run build && npm run lint:types && node ./scripts/gentests.js && npm test"
   },
   "dependencies": {
-    "@protobufjs/aspromise": "^1.1.2",
-    "@protobufjs/base64": "^1.1.2",
-    "@protobufjs/codegen": "^2.0.4",
-    "@protobufjs/eventemitter": "^1.1.0",
-    "@protobufjs/fetch": "^1.1.0",
-    "@protobufjs/float": "^1.0.2",
-    "@protobufjs/inquire": "^1.1.0",
-    "@protobufjs/path": "^1.1.2",
-    "@protobufjs/pool": "^1.1.0",
-    "@protobufjs/utf8": "^1.1.0",
     "@types/node": ">=13.7.0",
     "long": "^5.0.0"
   },
@@ -109,6 +99,26 @@
     "dist/**",
     "ext/**",
     "google/**",
+    "lib/aspromise/index.js",
+    "lib/aspromise/index.d.ts",
+    "lib/base64/index.js",
+    "lib/base64/index.d.ts",
+    "lib/codegen/index.js",
+    "lib/codegen/index.d.ts",
+    "lib/eventemitter/index.js",
+    "lib/eventemitter/index.d.ts",
+    "lib/fetch/index.js",
+    "lib/fetch/index.d.ts",
+    "lib/float/index.js",
+    "lib/float/index.d.ts",
+    "lib/inquire/index.js",
+    "lib/inquire/index.d.ts",
+    "lib/path/index.js",
+    "lib/path/index.d.ts",
+    "lib/pool/index.js",
+    "lib/pool/index.d.ts",
+    "lib/utf8/index.js",
+    "lib/utf8/index.d.ts",
     "src/**"
   ]
 }

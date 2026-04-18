@@ -1,6 +1,5 @@
-@protobufjs/aspromise
-=====================
-[![npm](https://img.shields.io/npm/v/@protobufjs/aspromise.svg)](https://www.npmjs.com/package/@protobufjs/aspromise)
+aspromise
+=========
 
 Returns a promise from a node-style callback function.
 

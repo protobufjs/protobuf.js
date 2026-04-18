@@ -1,6 +1,5 @@
-@protobufjs/fetch
-=================
-[![npm](https://img.shields.io/npm/v/@protobufjs/fetch.svg)](https://www.npmjs.com/package/@protobufjs/fetch)
+fetch
+=====
 
 Fetches the contents of a file accross node and browsers.
 

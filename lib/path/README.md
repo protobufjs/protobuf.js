@@ -1,6 +1,5 @@
-@protobufjs/path
-================
-[![npm](https://img.shields.io/npm/v/@protobufjs/path.svg)](https://www.npmjs.com/package/@protobufjs/path)
+path
+====
 
 A minimal path module to resolve Unix, Windows and URL paths alike.
 

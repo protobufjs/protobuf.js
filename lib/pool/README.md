@@ -1,6 +1,5 @@
-@protobufjs/pool
-================
-[![npm](https://img.shields.io/npm/v/@protobufjs/pool.svg)](https://www.npmjs.com/package/@protobufjs/pool)
+pool
+====
 
 A general purpose buffer pool.
 

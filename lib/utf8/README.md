@@ -1,6 +1,5 @@
-@protobufjs/utf8
-================
-[![npm](https://img.shields.io/npm/v/@protobufjs/utf8.svg)](https://www.npmjs.com/package/@protobufjs/utf8)
+utf8
+====
 
 A minimal UTF8 implementation for number arrays.
 

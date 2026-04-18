@@ -1,6 +1,5 @@
-@protobufjs/inquire
-===================
-[![npm](https://img.shields.io/npm/v/@protobufjs/inquire.svg)](https://www.npmjs.com/package/@protobufjs/inquire)
+inquire
+=======
 
 Requires a module only if available and hides the require call from bundlers.
 

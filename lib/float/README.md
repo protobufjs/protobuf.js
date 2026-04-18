@@ -1,6 +1,5 @@
-@protobufjs/float
-=================
-[![npm](https://img.shields.io/npm/v/@protobufjs/float.svg)](https://www.npmjs.com/package/@protobufjs/float)
+float
+=====
 
 Reads / writes floats / doubles from / to buffers in both modern and ancient browsers. Fast.
 

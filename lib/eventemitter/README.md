@@ -1,6 +1,5 @@
-@protobufjs/eventemitter
-========================
-[![npm](https://img.shields.io/npm/v/@protobufjs/eventemitter.svg)](https://www.npmjs.com/package/@protobufjs/eventemitter)
+eventemitter
+============
 
 A minimal event emitter.
 

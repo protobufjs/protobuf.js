@@ -1,6 +1,5 @@
-@protobufjs/base64
-==================
-[![npm](https://img.shields.io/npm/v/@protobufjs/base64.svg)](https://www.npmjs.com/package/@protobufjs/base64)
+base64
+======
 
 A minimal base64 implementation for number arrays.
 
