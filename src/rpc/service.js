@@ -68,6 +68,9 @@ function Service(rpcImpl, requestDelimited, responseDelimited) {
 /**
  * Calls a service method through {@link rpc.Service#rpcImpl|rpcImpl}.
  * @param {Method|rpc.ServiceMethod<TReq,TRes>} method Reflected or static method
+ * @param {string} serviceName Service name
+ * @param {string} methodName Method name
+ * @param {number} methodIndex Method index
  * @param {Constructor<TReq>} requestCtor Request constructor
  * @param {Constructor<TRes>} responseCtor Response constructor
  * @param {TReq|Properties<TReq>} request Request message or plain object
@@ -76,14 +79,14 @@ function Service(rpcImpl, requestDelimited, responseDelimited) {
  * @template TReq extends Message<TReq>
  * @template TRes extends Message<TRes>
  */
-Service.prototype.rpcCall = function rpcCall(method, requestCtor, responseCtor, request, callback) {
+Service.prototype.rpcCall = function rpcCall(method, serviceName, methodName, methodIndex, requestCtor, responseCtor, request, callback) {
 
     if (!request)
         throw TypeError("request must be specified");
 
     var self = this;
     if (!callback)
-        return util.asPromise(rpcCall, self, method, requestCtor, responseCtor, request);
+        return util.asPromise(rpcCall, self, serviceName, methodName, methodIndex, requestCtor, responseCtor, request);
 
     if (!self.rpcImpl) {
         setTimeout(function() { callback(Error("already ended")); }, 0);
@@ -97,7 +100,7 @@ Service.prototype.rpcCall = function rpcCall(method, requestCtor, responseCtor, 
             function rpcCallback(err, response) {
 
                 if (err) {
-                    self.emit("error", err, method);
+                    self.emit("error", err, method, serviceName, methodName, methodIndex);
                     return callback(err);
                 }
 
@@ -110,17 +113,18 @@ Service.prototype.rpcCall = function rpcCall(method, requestCtor, responseCtor, 
                     try {
                         response = responseCtor[self.responseDelimited ? "decodeDelimited" : "decode"](response);
                     } catch (err) {
-                        self.emit("error", err, method);
+                        self.emit("error", err, method, serviceName, methodName, methodIndex);
                         return callback(err);
                     }
                 }
 
-                self.emit("data", response, method);
+                self.emit("data", response, method, serviceName, methodName, methodIndex);
                 return callback(null, response);
-            }
+            },
+            serviceName, methodName, methodIndex
         );
     } catch (err) {
-        self.emit("error", err, method);
+        self.emit("error", err, method, serviceName, methodName, methodIndex);
         setTimeout(function() { callback(err); }, 0);
         return undefined;
     }
@@ -134,7 +138,7 @@ Service.prototype.rpcCall = function rpcCall(method, requestCtor, responseCtor, 
 Service.prototype.end = function end(endedByRPC) {
     if (this.rpcImpl) {
         if (!endedByRPC) // signal end to rpcImpl
-            this.rpcImpl(null, null, null);
+            this.rpcImpl(null, null, null, null, null, null);
         this.rpcImpl = null;
         this.emit("end").off();
     }

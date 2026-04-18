@@ -13,9 +13,12 @@ var rpc = exports;
  * @param {Method|rpc.ServiceMethod<Message<{}>,Message<{}>>} method Reflected or static method being called
  * @param {Uint8Array} requestData Request data
  * @param {RPCImplCallback} callback Callback function
+ * @param {string} serviceName serviceName
+ * @param {string} methodName methodName
+ * @param {number} methodIndex methodIndex
  * @returns {undefined}
  * @example
- * function rpcImpl(method, requestData, callback) {
+ * function rpcImpl(method, requestData, callback, serviceName, methodName, methodIndex) {
  *     if (protobuf.util.lcFirst(method.name) !== "myMethod") // compatible with static code
  *         throw Error("no such method");
  *     asynchronouslyObtainAResponse(requestData, function(err, responseData) {
