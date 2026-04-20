@@ -91,7 +91,7 @@ tape.test("writer & reader", function(test) {
     test.ok(expect("bool", true, [1]), "should write true as a varint of length 1 and read it back equally");
     test.ok(expect("bool", false, [0]), "should write false as a varint of length 1 and read it back equally");
 
-    // string, see also lib_utf8
+    // string, see also util_utf8
 
     test.ok(expect("string", "123", [3,49,50,51]), "should write \"123\" as a string prefixed with its length as a varint and read it back equally");
     test.ok(expect("string", "", [0]), "should write \"\" as a string prefixed with its length as a varint and read it back equally");

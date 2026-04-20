@@ -1,6 +1,6 @@
 var tape = require("tape");
 
-var pool = require("..");
+var pool = require("../src/util/pool");
 
 tape.test("pool", function(test) {
 

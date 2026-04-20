@@ -1,6 +1,6 @@
 var tape = require("tape");
 
-var base64 = require("..");
+var base64 = require("../src/util/base64");
 
 var strings = {
     "": "",

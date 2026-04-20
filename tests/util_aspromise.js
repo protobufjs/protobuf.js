@@ -1,6 +1,6 @@
 var tape = require("tape");
 
-var asPromise = require("..");
+var asPromise = require("../src/util/aspromise");
 
 tape.test("aspromise", function(test) {
 

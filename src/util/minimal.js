@@ -2,25 +2,25 @@
 var util = exports;
 
 // used to return a Promise where callback is omitted
-util.asPromise = require("../../lib/aspromise");
+util.asPromise = require("./aspromise");
 
 // converts to / from base64 encoded strings
-util.base64 = require("../../lib/base64");
+util.base64 = require("./base64");
 
 // base class of rpc.Service
-util.EventEmitter = require("../../lib/eventemitter");
+util.EventEmitter = require("./eventemitter");
 
 // float handling accross browsers
-util.float = require("../../lib/float");
+util.float = require("./float");
 
 // requires modules optionally and hides the call from bundlers
-util.inquire = require("../../lib/inquire");
+util.inquire = require("./inquire");
 
 // converts to / from utf8 encoded strings
-util.utf8 = require("../../lib/utf8");
+util.utf8 = require("./utf8");
 
 // provides a node-like buffer pool in the browser
-util.pool = require("../../lib/pool");
+util.pool = require("./pool");
 
 // utility to work with the low and high bits of a 64 bit value
 util.LongBits = require("./longbits");
