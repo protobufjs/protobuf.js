@@ -1,6 +1,6 @@
 var tape = require("tape");
 
-var float = require("..");
+var float = require("../src/util/float");
 
 tape.test("float", function(test) {
 

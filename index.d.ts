@@ -1274,9 +1274,10 @@ export class Reader {
     /**
      * Skips the next element of the specified wire type.
      * @param wireType Wire type received
+     * @param [depth] Depth of recursion to control nested calls; 0 if omitted
      * @returns `this`
      */
-    public skipType(wireType: number): Reader;
+    public skipType(wireType: number, depth?: number): Reader;
 }
 
 /** Wire format reader using node buffers. */
@@ -1901,6 +1902,45 @@ export interface Constructor<T> extends Function {
 type Properties<T> = { [P in keyof T]?: T[P] };
 
 /**
+ * Callback as used by {@link util.asPromise}.
+ * @param error Error, if any
+ * @param params Additional arguments
+ */
+type asPromiseCallback = (error: (Error|null), ...params: any[]) => void;
+
+/**
+ * Appends code to the function's body or finishes generation.
+ * @param [formatStringOrScope] Format string or, to finish the function, an object of additional scope variables, if any
+ * @param [formatParams] Format parameters
+ * @returns Itself or the generated function if finished
+ * @throws {Error} If format parameter counts do not match
+ */
+type Codegen = (formatStringOrScope?: (string|{ [k: string]: any }), ...formatParams: any[]) => (Codegen|Function);
+
+/**
+ * Event listener as used by {@link util.EventEmitter}.
+ * @param args Arguments
+ */
+type EventEmitterListener = (...args: any[]) => void;
+
+/**
+ * Node-style callback as used by {@link util.fetch}.
+ * @param error Error, if any, otherwise `null`
+ * @param [contents] File contents, if there hasn't been an error
+ */
+type FetchCallback = (error: Error, contents?: string) => void;
+
+/** Options as used by {@link util.fetch}. */
+export interface IFetchOptions {
+
+    /** Whether expecting a binary response */
+    binary?: boolean;
+
+    /** If `true`, forces the use of XMLHttpRequest */
+    xhr?: boolean;
+}
+
+/**
  * Any compatible Buffer instance.
  * This is a minimal stand-alone definition of a Buffer instance. The actual type is that exported by node's typings.
  */
@@ -1935,8 +1975,220 @@ type OneOfGetter = () => (string|undefined);
  */
 type OneOfSetter = (value: (string|undefined)) => void;
 
+/**
+ * An allocator as used by {@link util.pool}.
+ * @param size Buffer size
+ * @returns Buffer
+ */
+type PoolAllocator = (size: number) => Uint8Array;
+
+/**
+ * A slicer as used by {@link util.pool}.
+ * @param start Start offset
+ * @param end End offset
+ * @returns Buffer slice
+ */
+type PoolSlicer = (this: Uint8Array, start: number, end: number) => Uint8Array;
+
 /** Various utility functions. */
 export namespace util {
+
+    /**
+     * Returns a promise from a node-style callback function.
+     * @param fn Function to call
+     * @param ctx Function context
+     * @param params Function arguments
+     * @returns Promisified function
+     */
+    function asPromise(fn: asPromiseCallback, ctx: any, ...params: any[]): Promise<any>;
+
+    /** A minimal base64 implementation for number arrays. */
+    namespace base64 {
+
+        /**
+         * Calculates the byte length of a base64 encoded string.
+         * @param string Base64 encoded string
+         * @returns Byte length
+         */
+        function length(string: string): number;
+
+        /**
+         * Encodes a buffer to a base64 encoded string.
+         * @param buffer Source buffer
+         * @param start Source start
+         * @param end Source end
+         * @returns Base64 encoded string
+         */
+        function encode(buffer: Uint8Array, start: number, end: number): string;
+
+        /**
+         * Decodes a base64 encoded string to a buffer.
+         * @param string Source string
+         * @param buffer Destination buffer
+         * @param offset Destination offset
+         * @returns Number of bytes written
+         * @throws {Error} If encoding is invalid
+         */
+        function decode(string: string, buffer: Uint8Array, offset: number): number;
+
+        /**
+         * Tests if the specified string appears to be base64 encoded.
+         * @param string String to test
+         * @returns `true` if probably base64 encoded, otherwise false
+         */
+        function test(string: string): boolean;
+    }
+
+    /**
+     * Begins generating a function.
+     * @param functionParams Function parameter names
+     * @param [functionName] Function name if not anonymous
+     * @returns Appender that appends code to the function's body
+     */
+    function codegen(functionParams: string[], functionName?: string): Codegen;
+
+    namespace codegen {
+
+        /** When set to `true`, codegen will log generated code to console. Useful for debugging. */
+        let verbose: boolean;
+    }
+
+    /**
+     * Begins generating a function.
+     * @param [functionName] Function name if not anonymous
+     * @returns Appender that appends code to the function's body
+     */
+    function codegen(functionName?: string): Codegen;
+
+    /** A minimal event emitter. */
+    class EventEmitter {
+
+        /** Constructs a new event emitter instance. */
+        constructor();
+
+        /**
+         * Registers an event listener.
+         * @param evt Event name
+         * @param fn Listener
+         * @param [ctx] Listener context
+         * @returns `this`
+         */
+        public on(evt: string, fn: EventEmitterListener, ctx?: any): this;
+
+        /**
+         * Removes an event listener or any matching listeners if arguments are omitted.
+         * @param [evt] Event name. Removes all listeners if omitted.
+         * @param [fn] Listener to remove. Removes all listeners of `evt` if omitted.
+         * @returns `this`
+         */
+        public off(evt?: string, fn?: EventEmitterListener): this;
+
+        /**
+         * Emits an event by calling its listeners with the specified arguments.
+         * @param evt Event name
+         * @param args Arguments
+         * @returns `this`
+         */
+        public emit(evt: string, ...args: any[]): this;
+    }
+
+    /**
+     * Fetches the contents of a file.
+     * @param filename File path or url
+     * @param options Fetch options
+     * @param callback Callback function
+     */
+    function fetch(filename: string, options: IFetchOptions, callback: FetchCallback): void;
+
+    /**
+     * Fetches the contents of a file.
+     * @param path File path or url
+     * @param callback Callback function
+     */
+    function fetch(path: string, callback: FetchCallback): void;
+
+    /**
+     * Fetches the contents of a file.
+     * @param path File path or url
+     * @param [options] Fetch options
+     * @returns Promise
+     */
+    function fetch(path: string, options?: IFetchOptions): Promise<(string|Uint8Array)>;
+
+    /** Reads / writes floats / doubles from / to buffers. */
+    namespace float {
+
+        /**
+         * Writes a 32 bit float to a buffer using little endian byte order.
+         * @param val Value to write
+         * @param buf Target buffer
+         * @param pos Target buffer offset
+         */
+        function writeFloatLE(val: number, buf: Uint8Array, pos: number): void;
+
+        /**
+         * Writes a 32 bit float to a buffer using big endian byte order.
+         * @param val Value to write
+         * @param buf Target buffer
+         * @param pos Target buffer offset
+         */
+        function writeFloatBE(val: number, buf: Uint8Array, pos: number): void;
+
+        /**
+         * Reads a 32 bit float from a buffer using little endian byte order.
+         * @param buf Source buffer
+         * @param pos Source buffer offset
+         * @returns Value read
+         */
+        function readFloatLE(buf: Uint8Array, pos: number): number;
+
+        /**
+         * Reads a 32 bit float from a buffer using big endian byte order.
+         * @param buf Source buffer
+         * @param pos Source buffer offset
+         * @returns Value read
+         */
+        function readFloatBE(buf: Uint8Array, pos: number): number;
+
+        /**
+         * Writes a 64 bit double to a buffer using little endian byte order.
+         * @param val Value to write
+         * @param buf Target buffer
+         * @param pos Target buffer offset
+         */
+        function writeDoubleLE(val: number, buf: Uint8Array, pos: number): void;
+
+        /**
+         * Writes a 64 bit double to a buffer using big endian byte order.
+         * @param val Value to write
+         * @param buf Target buffer
+         * @param pos Target buffer offset
+         */
+        function writeDoubleBE(val: number, buf: Uint8Array, pos: number): void;
+
+        /**
+         * Reads a 64 bit double from a buffer using little endian byte order.
+         * @param buf Source buffer
+         * @param pos Source buffer offset
+         * @returns Value read
+         */
+        function readDoubleLE(buf: Uint8Array, pos: number): number;
+
+        /**
+         * Reads a 64 bit double from a buffer using big endian byte order.
+         * @param buf Source buffer
+         * @param pos Source buffer offset
+         * @returns Value read
+         */
+        function readDoubleBE(buf: Uint8Array, pos: number): number;
+    }
+
+    /**
+     * Requires a module only if available.
+     * @param moduleName Module to require
+     * @returns Required module if available and not empty, otherwise `null`
+     */
+    function inquire(moduleName: string): object;
 
     /** Helper class for working with the low and high bits of a 64 bit value. */
     class LongBits {
@@ -2178,6 +2430,71 @@ export namespace util {
      */
     let toJSONOptions: IConversionOptions;
 
+    /** A minimal path module to resolve Unix, Windows and URL paths alike. */
+    namespace path {
+
+        /**
+         * Tests if the specified path is absolute.
+         * @param path Path to test
+         * @returns `true` if path is absolute
+         */
+        function isAbsolute(path: string): boolean;
+
+        /**
+         * Normalizes the specified path.
+         * @param path Path to normalize
+         * @returns Normalized path
+         */
+        function normalize(path: string): string;
+
+        /**
+         * Resolves the specified include path against the specified origin path.
+         * @param originPath Path to the origin file
+         * @param includePath Include path relative to origin path
+         * @param [alreadyNormalized=false] `true` if both paths are already known to be normalized
+         * @returns Path to the include file
+         */
+        function resolve(originPath: string, includePath: string, alreadyNormalized?: boolean): string;
+    }
+
+    /**
+     * A general purpose buffer pool.
+     * @param alloc Allocator
+     * @param slice Slicer
+     * @param [size=8192] Slab size
+     * @returns Pooled allocator
+     */
+    function pool(alloc: PoolAllocator, slice: PoolSlicer, size?: number): PoolAllocator;
+
+    /** A minimal UTF8 implementation for number arrays. */
+    namespace utf8 {
+
+        /**
+         * Calculates the UTF8 byte length of a string.
+         * @param string String
+         * @returns Byte length
+         */
+        function length(string: string): number;
+
+        /**
+         * Reads UTF8 bytes as a string.
+         * @param buffer Source buffer
+         * @param start Source start
+         * @param end Source end
+         * @returns String read
+         */
+        function read(buffer: Uint8Array, start: number, end: number): string;
+
+        /**
+         * Writes a string as UTF8 bytes.
+         * @param string Source string
+         * @param buffer Destination buffer
+         * @param offset Destination offset
+         * @returns Bytes written
+         */
+        function write(string: string, buffer: Uint8Array, offset: number): number;
+    }
+
     /** Node's fs module if available. */
     let fs: { [k: string]: any };
 
@@ -2258,268 +2575,6 @@ export namespace util {
 
     /** Decorator root (TypeScript). */
     let decorateRoot: Root;
-
-    /**
-     * Returns a promise from a node-style callback function.
-     * @param fn Function to call
-     * @param ctx Function context
-     * @param params Function arguments
-     * @returns Promisified function
-     */
-    function asPromise(fn: asPromiseCallback, ctx: any, ...params: any[]): Promise<any>;
-
-    /** A minimal base64 implementation for number arrays. */
-    namespace base64 {
-
-        /**
-         * Calculates the byte length of a base64 encoded string.
-         * @param string Base64 encoded string
-         * @returns Byte length
-         */
-        function length(string: string): number;
-
-        /**
-         * Encodes a buffer to a base64 encoded string.
-         * @param buffer Source buffer
-         * @param start Source start
-         * @param end Source end
-         * @returns Base64 encoded string
-         */
-        function encode(buffer: Uint8Array, start: number, end: number): string;
-
-        /**
-         * Decodes a base64 encoded string to a buffer.
-         * @param string Source string
-         * @param buffer Destination buffer
-         * @param offset Destination offset
-         * @returns Number of bytes written
-         * @throws {Error} If encoding is invalid
-         */
-        function decode(string: string, buffer: Uint8Array, offset: number): number;
-
-        /**
-         * Tests if the specified string appears to be base64 encoded.
-         * @param string String to test
-         * @returns `true` if probably base64 encoded, otherwise false
-         */
-        function test(string: string): boolean;
-    }
-
-    /**
-     * Begins generating a function.
-     * @param functionParams Function parameter names
-     * @param [functionName] Function name if not anonymous
-     * @returns Appender that appends code to the function's body
-     */
-    function codegen(functionParams: string[], functionName?: string): Codegen;
-
-    namespace codegen {
-
-        /** When set to `true`, codegen will log generated code to console. Useful for debugging. */
-        let verbose: boolean;
-    }
-
-    /**
-     * Begins generating a function.
-     * @param [functionName] Function name if not anonymous
-     * @returns Appender that appends code to the function's body
-     */
-    function codegen(functionName?: string): Codegen;
-
-    /** A minimal event emitter. */
-    class EventEmitter {
-
-        /** Constructs a new event emitter instance. */
-        constructor();
-
-        /**
-         * Registers an event listener.
-         * @param evt Event name
-         * @param fn Listener
-         * @param [ctx] Listener context
-         * @returns `this`
-         */
-        public on(evt: string, fn: EventEmitterListener, ctx?: any): this;
-
-        /**
-         * Removes an event listener or any matching listeners if arguments are omitted.
-         * @param [evt] Event name. Removes all listeners if omitted.
-         * @param [fn] Listener to remove. Removes all listeners of `evt` if omitted.
-         * @returns `this`
-         */
-        public off(evt?: string, fn?: EventEmitterListener): this;
-
-        /**
-         * Emits an event by calling its listeners with the specified arguments.
-         * @param evt Event name
-         * @param args Arguments
-         * @returns `this`
-         */
-        public emit(evt: string, ...args: any[]): this;
-    }
-
-    /** Reads / writes floats / doubles from / to buffers. */
-    namespace float {
-
-        /**
-         * Writes a 32 bit float to a buffer using little endian byte order.
-         * @param val Value to write
-         * @param buf Target buffer
-         * @param pos Target buffer offset
-         */
-        function writeFloatLE(val: number, buf: Uint8Array, pos: number): void;
-
-        /**
-         * Writes a 32 bit float to a buffer using big endian byte order.
-         * @param val Value to write
-         * @param buf Target buffer
-         * @param pos Target buffer offset
-         */
-        function writeFloatBE(val: number, buf: Uint8Array, pos: number): void;
-
-        /**
-         * Reads a 32 bit float from a buffer using little endian byte order.
-         * @param buf Source buffer
-         * @param pos Source buffer offset
-         * @returns Value read
-         */
-        function readFloatLE(buf: Uint8Array, pos: number): number;
-
-        /**
-         * Reads a 32 bit float from a buffer using big endian byte order.
-         * @param buf Source buffer
-         * @param pos Source buffer offset
-         * @returns Value read
-         */
-        function readFloatBE(buf: Uint8Array, pos: number): number;
-
-        /**
-         * Writes a 64 bit double to a buffer using little endian byte order.
-         * @param val Value to write
-         * @param buf Target buffer
-         * @param pos Target buffer offset
-         */
-        function writeDoubleLE(val: number, buf: Uint8Array, pos: number): void;
-
-        /**
-         * Writes a 64 bit double to a buffer using big endian byte order.
-         * @param val Value to write
-         * @param buf Target buffer
-         * @param pos Target buffer offset
-         */
-        function writeDoubleBE(val: number, buf: Uint8Array, pos: number): void;
-
-        /**
-         * Reads a 64 bit double from a buffer using little endian byte order.
-         * @param buf Source buffer
-         * @param pos Source buffer offset
-         * @returns Value read
-         */
-        function readDoubleLE(buf: Uint8Array, pos: number): number;
-
-        /**
-         * Reads a 64 bit double from a buffer using big endian byte order.
-         * @param buf Source buffer
-         * @param pos Source buffer offset
-         * @returns Value read
-         */
-        function readDoubleBE(buf: Uint8Array, pos: number): number;
-    }
-
-    /**
-     * Fetches the contents of a file.
-     * @param filename File path or url
-     * @param options Fetch options
-     * @param callback Callback function
-     */
-    function fetch(filename: string, options: IFetchOptions, callback: FetchCallback): void;
-
-    /**
-     * Fetches the contents of a file.
-     * @param path File path or url
-     * @param callback Callback function
-     */
-    function fetch(path: string, callback: FetchCallback): void;
-
-    /**
-     * Fetches the contents of a file.
-     * @param path File path or url
-     * @param [options] Fetch options
-     * @returns Promise
-     */
-    function fetch(path: string, options?: IFetchOptions): Promise<(string|Uint8Array)>;
-
-    /**
-     * Requires a module only if available.
-     * @param moduleName Module to require
-     * @returns Required module if available and not empty, otherwise `null`
-     */
-    function inquire(moduleName: string): object;
-
-    /** A minimal path module to resolve Unix, Windows and URL paths alike. */
-    namespace path {
-
-        /**
-         * Tests if the specified path is absolute.
-         * @param path Path to test
-         * @returns `true` if path is absolute
-         */
-        function isAbsolute(path: string): boolean;
-
-        /**
-         * Normalizes the specified path.
-         * @param path Path to normalize
-         * @returns Normalized path
-         */
-        function normalize(path: string): string;
-
-        /**
-         * Resolves the specified include path against the specified origin path.
-         * @param originPath Path to the origin file
-         * @param includePath Include path relative to origin path
-         * @param [alreadyNormalized=false] `true` if both paths are already known to be normalized
-         * @returns Path to the include file
-         */
-        function resolve(originPath: string, includePath: string, alreadyNormalized?: boolean): string;
-    }
-
-    /**
-     * A general purpose buffer pool.
-     * @param alloc Allocator
-     * @param slice Slicer
-     * @param [size=8192] Slab size
-     * @returns Pooled allocator
-     */
-    function pool(alloc: PoolAllocator, slice: PoolSlicer, size?: number): PoolAllocator;
-
-    /** A minimal UTF8 implementation for number arrays. */
-    namespace utf8 {
-
-        /**
-         * Calculates the UTF8 byte length of a string.
-         * @param string String
-         * @returns Byte length
-         */
-        function length(string: string): number;
-
-        /**
-         * Reads UTF8 bytes as a string.
-         * @param buffer Source buffer
-         * @param start Source start
-         * @param end Source end
-         * @returns String read
-         */
-        function read(buffer: Uint8Array, start: number, end: number): string;
-
-        /**
-         * Writes a string as UTF8 bytes.
-         * @param string Source string
-         * @param buffer Destination buffer
-         * @param offset Destination offset
-         * @returns Bytes written
-         */
-        function write(string: string, buffer: Uint8Array, offset: number): number;
-    }
 }
 
 /**
@@ -2743,57 +2798,3 @@ export class BufferWriter extends Writer {
      */
     public finish(): Buffer;
 }
-
-/**
- * Callback as used by {@link util.asPromise}.
- * @param error Error, if any
- * @param params Additional arguments
- */
-type asPromiseCallback = (error: (Error|null), ...params: any[]) => void;
-
-/**
- * Appends code to the function's body or finishes generation.
- * @param [formatStringOrScope] Format string or, to finish the function, an object of additional scope variables, if any
- * @param [formatParams] Format parameters
- * @returns Itself or the generated function if finished
- * @throws {Error} If format parameter counts do not match
- */
-type Codegen = (formatStringOrScope?: (string|{ [k: string]: any }), ...formatParams: any[]) => (Codegen|Function);
-
-/**
- * Event listener as used by {@link util.EventEmitter}.
- * @param args Arguments
- */
-type EventEmitterListener = (...args: any[]) => void;
-
-/**
- * Node-style callback as used by {@link util.fetch}.
- * @param error Error, if any, otherwise `null`
- * @param [contents] File contents, if there hasn't been an error
- */
-type FetchCallback = (error: Error, contents?: string) => void;
-
-/** Options as used by {@link util.fetch}. */
-export interface IFetchOptions {
-
-    /** Whether expecting a binary response */
-    binary?: boolean;
-
-    /** If `true`, forces the use of XMLHttpRequest */
-    xhr?: boolean;
-}
-
-/**
- * An allocator as used by {@link util.pool}.
- * @param size Buffer size
- * @returns Buffer
- */
-type PoolAllocator = (size: number) => Uint8Array;
-
-/**
- * A slicer as used by {@link util.pool}.
- * @param start Start offset
- * @param end End offset
- * @returns Buffer slice
- */
-type PoolSlicer = (this: Uint8Array, start: number, end: number) => Uint8Array;

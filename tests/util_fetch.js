@@ -1,6 +1,6 @@
 var tape = require("tape");
 
-var fetch = require("..");
+var fetch = require("../src/util/fetch");
 
 tape.test("fetch", function(test) {
 
@@ -22,7 +22,7 @@ tape.test("fetch", function(test) {
 
         test.test(test.name + " - string", function(test) {
             test.plan(2);
-            fetch(require.resolve("./data/file.txt"), function(err, contents) {
+            fetch(require.resolve("./data/util_fetch/file.txt"), function(err, contents) {
                 test.notOk(err, "should not return an error");
                 test.equal(contents, "file.txt", "should return contents as a string");
             });
@@ -30,7 +30,7 @@ tape.test("fetch", function(test) {
 
         test.test(test.name + " - binary", function(test) {
             test.plan(2);
-            fetch(require.resolve("./data/file.txt"), { binary: true }, function(err, contents) {
+            fetch(require.resolve("./data/util_fetch/file.txt"), { binary: true }, function(err, contents) {
                 test.notOk(err, "should not return an error");
                 test.same(contents, new Buffer("file.txt", "utf8"), "should return contents as a Buffer");
             });

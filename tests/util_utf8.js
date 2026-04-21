@@ -1,11 +1,11 @@
 var tape = require("tape");
 
-var utf8 = require("..");
+var utf8 = require("../src/util/utf8");
 
-var data = require("fs").readFileSync(require.resolve("./data/utf8.txt")),
+var data = require("fs").readFileSync(require.resolve("./data/util_utf8/utf8.txt")),
     dataStr = data.toString("utf8");
 
-var surrogatePairErr = require("fs").readFileSync(require.resolve("./data/surrogate_pair_bug.txt")),
+var surrogatePairErr = require("fs").readFileSync(require.resolve("./data/util_utf8/surrogate_pair_bug.txt")),
     surrogatePairErrStr = data.toString("utf8");
 
 tape.test("utf8", function(test) {

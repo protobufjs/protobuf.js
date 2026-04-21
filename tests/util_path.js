@@ -1,6 +1,6 @@
 var tape = require("tape");
 
-var path = require("..");
+var path = require("../src/util/path");
 
 tape.test("path", function(test) {
 

@@ -1,8 +1,8 @@
 "use strict";
 module.exports = fetch;
 
-var asPromise = require("@protobufjs/aspromise"),
-    inquire   = require("@protobufjs/inquire");
+var asPromise = require("./aspromise"),
+    inquire   = require("./inquire");
 
 var fs = inquire("fs");
 

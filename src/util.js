@@ -11,9 +11,9 @@ var roots = require("./roots");
 var Type, // cyclic
     Enum;
 
-util.codegen = require("@protobufjs/codegen");
-util.fetch   = require("@protobufjs/fetch");
-util.path    = require("@protobufjs/path");
+util.codegen = require("./util/codegen");
+util.fetch   = require("./util/fetch");
+util.path    = require("./util/path");
 
 /**
  * Node's fs module if available.
