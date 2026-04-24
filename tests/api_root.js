@@ -49,6 +49,33 @@ tape.test("reflected roots", function(test) {
         });
     });
 
+    test.test(test.name + " - fromJSON resolves features", function(test) {
+        var root = Root.fromJSON({
+            nested: {
+                Message: {
+                    edition: "proto2",
+                    fields: {
+                        child: { type: "Child", id: 1 },
+                        required: { rule: "required", type: "string", id: 2 }
+                    },
+                    nested: {
+                        Child: {
+                            fields: {}
+                        }
+                    }
+                }
+            }
+        });
+        var Message = root.lookupType("Message");
+
+        test.notOk(Message.fields.child.resolved, "should not resolve field types eagerly");
+        test.ok(Message.fields.required.required, "should resolve field features");
+
+        root.resolveAll();
+        test.ok(Message.fields.child.resolved, "should resolve field types explicitly");
+        test.end();
+    });
+
     test.test(test.name + " - weak", function(test) {
         var root = new Root();
         test.plan(1);        

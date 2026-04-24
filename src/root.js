@@ -62,7 +62,7 @@ Root.fromJSON = function fromJSON(json, root) {
         root = new Root();
     if (json.options)
         root.setOptions(json.options);
-    return root.addJSON(json.nested).resolveAll();
+    return root.addJSON(json.nested)._resolveFeaturesRecursive(root._edition);
 };
 
 /**
@@ -118,7 +118,7 @@ Root.prototype.load = function load(filename, options, callback) {
             throw err;
         }
         if (root) {
-            root.resolveAll();
+            root._resolveFeaturesRecursive(root._edition);
         }
         var cb = callback;
         callback = null;
@@ -230,7 +230,7 @@ Root.prototype.load = function load(filename, options, callback) {
         if (resolved = self.resolvePath("", filename[i]))
             fetch(resolved);
     if (sync) {
-        self.resolveAll();
+        self._resolveFeaturesRecursive(self._edition);
         return self;
     }
     if (!queued) {
