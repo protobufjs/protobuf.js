@@ -93,6 +93,23 @@ tape.test("pbjs generates static code", function(test) {
     });
 });
 
+tape.test("pbjs generates correct ES6 static-module imports", function(test) {
+    cliTest(test, function() {
+        var root = protobuf.loadSync("tests/data/cli/test.proto");
+        root.resolveAll();
+
+        var staticModuleTarget = require("../cli/targets/static-module");
+
+        staticModuleTarget(root, {
+            wrap: "es6",
+        }, function(err, jsCode) {
+            test.error(err, "static-module code generation worked");
+            test.ok(jsCode.includes("import $protobuf from \"protobufjs/minimal.js\";"), "es6 wrapper uses a default import and explicit .js extension");
+            test.end();
+        });
+    });
+});
+
 tape.test("without null-defaults, absent optional fields have zero values", function(test) {
     cliTest(test, function() {
         var root = protobuf.loadSync("tests/data/cli/null-defaults.proto");
