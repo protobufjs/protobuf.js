@@ -626,7 +626,7 @@ export class Method extends ReflectionObject {
      * @param [comment] The comment for this method
      * @param [parsedOptions] Declared options, properly parsed into an object
      */
-    constructor(name: string, type: (string|undefined), requestType: string, responseType: string, requestStream?: (boolean|{ [k: string]: any }), responseStream?: (boolean|{ [k: string]: any }), options?: { [k: string]: any }, comment?: string, parsedOptions?: { [k: string]: any });
+    constructor(name: string, type: (string|undefined), requestType: string, responseType: string, requestStream?: (boolean|{ [k: string]: any }), responseStream?: (boolean|{ [k: string]: any }), options?: { [k: string]: any }, comment?: string, parsedOptions?: { [k: string]: any }[]);
 
     /** Method type. */
     public type: string;
@@ -697,7 +697,7 @@ export interface IMethod {
     comment: string;
 
     /** Method options properly parsed into an object */
-    parsedOptions?: { [k: string]: any };
+    parsedOptions?: { [k: string]: any }[];
 }
 
 /** Reflected namespace. */
@@ -898,7 +898,7 @@ export abstract class ReflectionObject {
     public options?: { [k: string]: any };
 
     /** Parsed Options. */
-    public parsedOptions?: { [k: string]: any[] };
+    public parsedOptions?: { [k: string]: any[] }[];
 
     /** Unique name within its namespace. */
     public name: string;
