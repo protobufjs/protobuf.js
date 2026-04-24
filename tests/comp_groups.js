@@ -39,6 +39,13 @@ tape.test("legacy groups", function(test) {
     // NOTE: fromJSON alone does not add the sister-field.
     // The parser does this explicitly and the field is part of the exported JSON itself.
 
+    test.test(test.name + " - should decode without prior setup", (function(Test, msg) { return function(test) {
+        // Use a fixed buffer so encode() does not set up the nested group decoder first
+        var buf = protobuf.util.newBuffer([1 << 3 | 3, 2 << 3 | 0, 111, 1 << 3 | 4]);
+        test.same(Test.decode(buf), msg, "and decode back the original message");
+        test.end();
+    };})(Test, msg));
+
     test.test(test.name + " - should encode required", (function(Test, msg) { return function(test) {
         var buf = Test.encode(msg).finish();
         test.equal(buf.length, 4, "a total of 4 bytes");

@@ -529,8 +529,8 @@ Type.prototype.encodeDelimited = function encodeDelimited(message, writer) {
  * @throws {Error} If the payload is not a reader or valid buffer
  * @throws {util.ProtocolError<{}>} If required fields are missing
  */
-Type.prototype.decode = function decode_setup(reader, length) {
-    return this.setup().decode(reader, length); // overrides this method
+Type.prototype.decode = function decode_setup(reader, length, end) {
+    return this.setup().decode(reader, length, end); // overrides this method
 };
 
 /**
