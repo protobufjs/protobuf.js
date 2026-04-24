@@ -525,6 +525,7 @@ Type.prototype.encodeDelimited = function encodeDelimited(message, writer) {
  * Decodes a message of this type.
  * @param {Reader|Uint8Array} reader Reader or buffer to decode from
  * @param {number} [length] Length of the message, if known beforehand
+ * @param {number} [end] Expected group end tag, if decoding a group
  * @returns {Message<{}>} Decoded message
  * @throws {Error} If the payload is not a reader or valid buffer
  * @throws {util.ProtocolError<{}>} If required fields are missing
