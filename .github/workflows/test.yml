@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v6
-    - uses: actions/setup-node@v1
+    - uses: actions/setup-node@v6
       with:
         node-version: "12"
     - name: "Install dependencies"
@@ -26,7 +26,7 @@ jobs:
         node_version: ["12", "14", "16", "18"]
     steps:
     - uses: actions/checkout@v6
-    - uses: actions/setup-node@v1
+    - uses: actions/setup-node@v6
       with:
         node-version: ${{ matrix.node_version }}
     - name: "Install dependencies"
@@ -39,7 +39,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v6
-    - uses: actions/setup-node@v1
+    - uses: actions/setup-node@v6
       with:
         node-version: "12"
     - name: "Install dependencies"
