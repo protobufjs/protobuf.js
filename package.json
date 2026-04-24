@@ -68,7 +68,7 @@
     "git-raw-commits": "^2.0.3",
     "git-semver-tags": "^4.0.0",
     "google-protobuf": "^3.11.3",
-    "gulp": "^4.0.2",
+    "gulp": "^5.0.0",
     "gulp-header": "^2.0.9",
     "gulp-if": "^3.0.0",
     "gulp-sourcemaps": "^3.0.0",
