@@ -27,7 +27,7 @@ var s = [
 ];
 
 function bake(values, offset) {
-    var i = 0, o = {};
+    var i = 0, o = Object.create(null);
     offset |= 0;
     while (i < values.length) o[s[i + offset]] = values[i++];
     return o;

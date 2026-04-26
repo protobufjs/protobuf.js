@@ -5,7 +5,8 @@
  * @memberof util
  * @namespace
  */
-var utf8 = exports;
+var utf8 = exports,
+    replacementChar = "\ufffd";
 
 /**
  * Calculates the UTF8 byte length of a string.
@@ -48,13 +49,20 @@ utf8.read = function utf8_read(buffer, start, end) {
         if (t <= 0x7F) {
             str += String.fromCharCode(t);
         } else if (t >= 0xC0 && t < 0xE0) {
-            str += String.fromCharCode((t & 0x1F) << 6 | buffer[i++] & 0x3F);
+            var c2 = (t & 0x1F) << 6 | buffer[i++] & 0x3F;
+            str += c2 >= 0x80 ? String.fromCharCode(c2) : replacementChar;
         } else if (t >= 0xE0 && t < 0xF0) {
-            str += String.fromCharCode((t & 0xF) << 12 | (buffer[i++] & 0x3F) << 6 | buffer[i++] & 0x3F);
+            var c3 = (t & 0xF) << 12 | (buffer[i++] & 0x3F) << 6 | buffer[i++] & 0x3F;
+            str += c3 >= 0x800 ? String.fromCharCode(c3) : replacementChar;
         } else if (t >= 0xF0) {
-            var t2 = ((t & 7) << 18 | (buffer[i++] & 0x3F) << 12 | (buffer[i++] & 0x3F) << 6 | buffer[i++] & 0x3F) - 0x10000;
-            str += String.fromCharCode(0xD800 + (t2 >> 10));
-            str += String.fromCharCode(0xDC00 + (t2 & 0x3FF));
+            var t2 = (t & 7) << 18 | (buffer[i++] & 0x3F) << 12 | (buffer[i++] & 0x3F) << 6 | buffer[i++] & 0x3F;
+            if (t2 < 0x10000)
+                str += replacementChar;
+            else {
+                t2 -= 0x10000;
+                str += String.fromCharCode(0xD800 + (t2 >> 10));
+                str += String.fromCharCode(0xDC00 + (t2 & 0x3FF));
+            }
         }
     }
 
