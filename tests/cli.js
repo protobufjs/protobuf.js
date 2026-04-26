@@ -115,7 +115,7 @@ tape.test("pbjs generates correct ES6 static-module imports", function(test) {
 tape.test("pbts passes jsdoc arguments without a shell", function(test) {
     var pbts = require("../cli/pbts");
     var originalSpawn = child_process.spawn;
-    var file = "j\"oker `something` 'cool  streamlit;.js";
+    var file = "file with \"quotes\" `backticks` 'apostrophes' and ;.js";
 
     test.plan(5);
 
