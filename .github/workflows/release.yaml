@@ -35,11 +35,11 @@ jobs:
 
       - name: Install dependencies
         if: ${{ steps.release.outputs.releases_created == 'true' }}
-        run: npm ci --ignore-scripts
+        run: npm install --ignore-scripts
 
       - name: Install CLI dependencies
         if: ${{ steps.release.outputs.releases_created == 'true' }}
-        run: npm --prefix cli ci --ignore-scripts
+        run: npm --prefix cli install --ignore-scripts
 
       - name: Build
         if: ${{ steps.release.outputs.releases_created == 'true' }}
