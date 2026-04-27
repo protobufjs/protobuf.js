@@ -5,6 +5,8 @@ on:
     - master
   pull_request:
     types: [assigned, opened, synchronize, reopened, labeled]
+env:
+  MIN_NODE_VERSION: &min_node_version "12"
 jobs:
   lint:
     runs-on: ubuntu-latest
@@ -12,7 +14,7 @@ jobs:
     - uses: actions/checkout@v6
     - uses: actions/setup-node@v6
       with:
-        node-version: "12"
+        node-version: "lts/*"
     - name: "Install dependencies"
       run: npm install
     - name: "Lint sources"
@@ -23,7 +25,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node_version: ["12", "14", "16", "18"]
+        node_version: [*min_node_version, "lts/*"]
     steps:
     - uses: actions/checkout@v6
     - uses: actions/setup-node@v6
@@ -41,7 +43,7 @@ jobs:
     - uses: actions/checkout@v6
     - uses: actions/setup-node@v6
       with:
-        node-version: "12"
+        node-version: "lts/*"
     - name: "Install dependencies"
       run: npm install
     - name: "Run benchmark"
