@@ -352,8 +352,11 @@ Reader.prototype.skip = function skip(length) {
     return this;
 };
 
-// Recursion depth limit in skipType
-Reader.skipTypeMaxDepth = 100;
+/**
+ * Recursion limit.
+ * @type {number}
+ */
+Reader.recursionLimit = util.recursionLimit;
 
 /**
  * Skips the next element of the specified wire type.
@@ -363,7 +366,7 @@ Reader.skipTypeMaxDepth = 100;
  */
 Reader.prototype.skipType = function(wireType, depth) {
     if (depth === undefined) depth = 0;
-    if (depth > Reader.skipTypeMaxDepth)
+    if (depth > Reader.recursionLimit)
         throw Error("maximum nesting depth exceeded");
     switch (wireType) {
         case 0:

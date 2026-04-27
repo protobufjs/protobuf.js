@@ -112,6 +112,27 @@ tape.test("pbjs generates correct ES6 static-module imports", function(test) {
     });
 });
 
+tape.test("pbjs escapes static target names", function(test) {
+    cliTest(test, function() {
+        var root = protobuf.Root.fromJSON({
+            nested: {
+                "1-ns": {
+                    nested: {}
+                }
+            }
+        });
+        var staticTarget = require("../cli/targets/static");
+
+        staticTarget(root, {}, function(err, jsCode) {
+            test.error(err, "static code generation worked");
+            test.doesNotThrow(function() {
+                new Function("$protobuf", jsCode); // eslint-disable-line no-new-func
+            }, "should generate parseable output");
+            test.end();
+        });
+    });
+});
+
 tape.test("pbts passes jsdoc arguments without a shell", function(test) {
     var pbts = require("../cli/pbts");
     var originalSpawn = child_process.spawn;

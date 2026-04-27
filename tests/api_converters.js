@@ -12,7 +12,7 @@ tape.test("converters", function(test) {
 
         test.test(test.name + " - Message#toObject", function(test) {
 
-            test.plan(6);
+            test.plan(7);
 
             test.test(test.name + " - called with defaults = true", function(test) {
                 var obj = Message.toObject(Message.create(), { defaults: true });
@@ -147,6 +147,30 @@ tape.test("converters", function(test) {
 
                 test.end();
             });            
+
+            test.test(test.name + " - Message.toObject with bytes array defaults", function(test) {
+                var root = protobuf.Root.fromJSON({
+                    nested: {
+                        Defaults: {
+                            fields: {
+                                bytes: {
+                                    type: "bytes",
+                                    id: 1,
+                                    options: {
+                                        "default": [ "not_a_number" ]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+                var Defaults = root.lookupType("Defaults");
+                var obj = Defaults.toObject({}, { defaults: true, bytes: Array });
+
+                test.same(obj.bytes, [ "not_a_number" ], "should preserve bytes array defaults");
+
+                test.end();
+            });
 
         });
 

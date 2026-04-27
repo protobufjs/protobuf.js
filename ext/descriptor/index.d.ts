@@ -1,4 +1,5 @@
 import * as $protobuf from "../..";
+import Long = require("long");
 export const FileDescriptorSet: $protobuf.Type;
 
 export const FileDescriptorProto: $protobuf.Type;
@@ -73,7 +74,10 @@ export interface IFileDescriptorProto {
     options?: IFileOptions;
     sourceCodeInfo?: any;
     syntax?: string;
+    edition?: IEdition;
 }
+
+type IEdition = number;
 
 export interface IFileOptions {
     javaPackage?: string;
