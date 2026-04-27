@@ -84,3 +84,24 @@ tape.test("proto comments in alternate-parse mode with trailing comment preferre
         test.end();
     });
 });
+
+tape.test("proto comments in alternate-parse mode maintain line numbers", function(test) {
+    var source = [
+        "syntax = \"proto3\";",
+        "",
+        "// Multiple lines of",
+        "// end-of-line comments",
+        "// should keep the tokenizer",
+        "// line count correct.",
+        "",
+        "message Foo {};a"
+    ].join("\n");
+
+    try {
+        protobuf.parse(source, { alternateCommentMode: true });
+        test.fail("should throw on invalid token");
+    } catch (err) {
+        test.equal(err.message, "illegal token 'a' (line 8)");
+    }
+    test.end();
+});
