@@ -7,6 +7,7 @@ on:
     types: [assigned, opened, synchronize, reopened, labeled]
 env:
   MIN_NODE_VERSION: &min_node_version "12"
+  NPM_CONFIG_AUDIT: "false"
 jobs:
   lint:
     runs-on: ubuntu-latest
