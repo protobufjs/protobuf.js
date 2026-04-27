@@ -11,4 +11,4 @@ jobs:
         with:
           command: manifest
           package-name: release-please-action
-          target-branch: ${{ github.ref_name }}
+          default-branch: ${{ github.ref_name }}
