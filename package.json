@@ -76,7 +76,7 @@
     "jaguarjs-jsdoc": "github:dcodeIO/jaguarjs-jsdoc",
     "jsdoc": "^4.0.0",
     "minimist": "^1.2.0",
-    "nyc": "^15.0.0",
+    "nyc": "^18.0.0",
     "reflect-metadata": "^0.2.0",
     "tape": "^5.0.0",
     "tslint": "^6.0.0",
