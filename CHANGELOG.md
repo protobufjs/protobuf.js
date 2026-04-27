@@ -1,5 +1,12 @@
 # Changelog
 
+## [8.0.3](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v8.0.2...protobufjs-v8.0.3) (2026-04-27)
+
+
+### Bug Fixes
+
+* Accept imports after declarations ([#2178](https://github.com/protobufjs/protobuf.js/issues/2178)) ([24651c9](https://github.com/protobufjs/protobuf.js/commit/24651c9ce5b83585688c8cddc8aa368fb8acd3aa))
+
 ## [8.0.2](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v8.0.1...protobufjs-v8.0.2) (2026-04-27)
 
 
