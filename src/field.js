@@ -434,6 +434,11 @@ Field.d = function decorateField(fieldId, fieldType, fieldRule, defaultValue) {
     };
 };
 
+// Sets up cyclic dependencies (called in index-light)
+Field._configure = function configure(Type_) {
+    Type = Type_;
+};
+
 /**
  * Field decorator (TypeScript).
  * @name Field.d
@@ -446,8 +451,3 @@ Field.d = function decorateField(fieldId, fieldType, fieldRule, defaultValue) {
  * @variation 2
  */
 // like Field.d but without a default value
-
-// Sets up cyclic dependencies (called in index-light)
-Field._configure = function configure(Type_) {
-    Type = Type_;
-};

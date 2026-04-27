@@ -35,8 +35,6 @@ function Message(properties) {
  * @readonly
  */
 
-/*eslint-disable valid-jsdoc*/
-
 /**
  * Creates a new message of this type using the specified properties.
  * @param {Object.<string,*>} [properties] Properties to set
@@ -139,5 +137,3 @@ Message.toObject = function toObject(message, options) {
 Message.prototype.toJSON = function toJSON() {
     return this.$type.toObject(this, util.toJSONOptions);
 };
-
-/*eslint-enable valid-jsdoc*/
