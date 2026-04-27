@@ -4,23 +4,6 @@ var js = require("@eslint/js"),
     globals = require("globals"),
     jsdoc = require("eslint-plugin-jsdoc");
 
-function normalizeGlobals(source) {
-    var normalized = {};
-    Object.keys(source).forEach(function(name) {
-        var value = source[name];
-        normalized[name] = value === false || value === "readonly" ? "readonly" : "writable";
-    });
-    return normalized;
-}
-
-function writableGlobals(names) {
-    var writable = {};
-    names.forEach(function(name) {
-        writable[name] = "writable";
-    });
-    return writable;
-}
-
 module.exports = [
     {
         ignores: [
@@ -55,18 +38,18 @@ module.exports = [
             sourceType: "commonjs",
             globals: Object.assign(
                 {},
-                normalizeGlobals(globals.node),
-                normalizeGlobals(globals.browser),
-                writableGlobals([
-                    "ArrayBuffer",
-                    "Uint8Array",
-                    "Float32Array",
-                    "Float64Array",
-                    "define",
-                    "global",
-                    "XMLHttpRequest",
-                    "Promise"
-                ])
+                globals.node,
+                globals.browser,
+                {
+                    ArrayBuffer: "writable",
+                    Uint8Array: "writable",
+                    Float32Array: "writable",
+                    Float64Array: "writable",
+                    define: "writable",
+                    global: "writable",
+                    XMLHttpRequest: "writable",
+                    Promise: "writable"
+                }
             )
         },
         rules: {
