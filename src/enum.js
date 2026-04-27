@@ -74,7 +74,7 @@ function Enum(name, values, options, comment, comments, valuesOptions) {
 
     if (values)
         for (var keys = Object.keys(values), i = 0; i < keys.length; ++i)
-            if (typeof values[keys[i]] === "number") // use forward entries only
+            if (keys[i] !== "__proto__" && typeof values[keys[i]] === "number") // use forward entries only
                 this.valuesById[ this.values[keys[i]] = values[keys[i]] ] = keys[i];
 }
 
@@ -152,6 +152,9 @@ Enum.prototype.add = function add(name, id, comment, options) {
 
     if (!util.isInteger(id))
         throw TypeError("id must be an integer");
+
+    if (name === "__proto__")
+        return this;
 
     if (this.values[name] !== undefined)
         throw Error("duplicate name '" + name + "' in " + this);

@@ -38,7 +38,7 @@ var Message = require("./message");
 // Custom wrapper for Any
 wrappers[".google.protobuf.Any"] = {
 
-    fromObject: function(object) {
+    fromObject: function(object, depth) {
 
         // unwrap value type if mapped
         if (object && object["@type"]) {
@@ -54,14 +54,15 @@ wrappers[".google.protobuf.Any"] = {
                 if (type_url.indexOf("/") === -1) {
                     type_url = "/" + type_url;
                 }
+                var nextDepth = depth === undefined ? 1 : depth + 1;
                 return this.create({
                     type_url: type_url,
-                    value: type.encode(type.fromObject(object)).finish()
+                    value: type.encode(type.fromObject(object, nextDepth)).finish()
                 });
             }
         }
 
-        return this.fromObject(object);
+        return this.fromObject(object, depth);
     },
 
     toObject: function(message, options) {

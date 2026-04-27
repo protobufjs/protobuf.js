@@ -1,6 +1,5 @@
 import * as $protobuf from "../..";
-import Long from "long";
-
+import Long = require("long");
 export namespace jspb {
 
     namespace test {
@@ -438,6 +437,8 @@ export namespace jspb {
             repeatedGroup?: (jspb.test.TestGroup.IRepeatedGroup[]|null);
             requiredGroup: jspb.test.TestGroup.IRequiredGroup;
             optionalGroup?: (jspb.test.TestGroup.IOptionalGroup|null);
+            messageInGroup?: (jspb.test.TestGroup.IMessageInGroup|null);
+            enumInGroup?: (jspb.test.TestGroup.IEnumInGroup|null);
             id?: (string|null);
             requiredSimple: jspb.test.ISimple2;
             optionalSimple?: (jspb.test.ISimple2|null);
@@ -448,6 +449,8 @@ export namespace jspb {
             public repeatedGroup: jspb.test.TestGroup.IRepeatedGroup[];
             public requiredGroup: jspb.test.TestGroup.IRequiredGroup;
             public optionalGroup?: (jspb.test.TestGroup.IOptionalGroup|null);
+            public messageInGroup?: (jspb.test.TestGroup.IMessageInGroup|null);
+            public enumInGroup?: (jspb.test.TestGroup.IEnumInGroup|null);
             public id: string;
             public requiredSimple: jspb.test.ISimple2;
             public optionalSimple?: (jspb.test.ISimple2|null);
@@ -522,6 +525,74 @@ export namespace jspb {
                 public static toObject(message: jspb.test.TestGroup.OptionalGroup, options?: $protobuf.IConversionOptions): { [k: string]: any };
                 public toJSON(): { [k: string]: any };
                 public static getTypeUrl(typeUrlPrefix?: string): string;
+            }
+
+            interface IMessageInGroup {
+                id: jspb.test.TestGroup.MessageInGroup.INestedMessage;
+            }
+
+            class MessageInGroup implements IMessageInGroup {
+                constructor(properties?: jspb.test.TestGroup.IMessageInGroup);
+                public id: jspb.test.TestGroup.MessageInGroup.INestedMessage;
+                public static create(properties?: jspb.test.TestGroup.IMessageInGroup): jspb.test.TestGroup.MessageInGroup;
+                public static encode(message: jspb.test.TestGroup.IMessageInGroup, writer?: $protobuf.Writer): $protobuf.Writer;
+                public static encodeDelimited(message: jspb.test.TestGroup.IMessageInGroup, writer?: $protobuf.Writer): $protobuf.Writer;
+                public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.TestGroup.MessageInGroup;
+                public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): jspb.test.TestGroup.MessageInGroup;
+                public static verify(message: { [k: string]: any }): (string|null);
+                public static fromObject(object: { [k: string]: any }): jspb.test.TestGroup.MessageInGroup;
+                public static toObject(message: jspb.test.TestGroup.MessageInGroup, options?: $protobuf.IConversionOptions): { [k: string]: any };
+                public toJSON(): { [k: string]: any };
+                public static getTypeUrl(typeUrlPrefix?: string): string;
+            }
+
+            namespace MessageInGroup {
+
+                interface INestedMessage {
+                    id?: (string|null);
+                }
+
+                class NestedMessage implements INestedMessage {
+                    constructor(properties?: jspb.test.TestGroup.MessageInGroup.INestedMessage);
+                    public id: string;
+                    public static create(properties?: jspb.test.TestGroup.MessageInGroup.INestedMessage): jspb.test.TestGroup.MessageInGroup.NestedMessage;
+                    public static encode(message: jspb.test.TestGroup.MessageInGroup.INestedMessage, writer?: $protobuf.Writer): $protobuf.Writer;
+                    public static encodeDelimited(message: jspb.test.TestGroup.MessageInGroup.INestedMessage, writer?: $protobuf.Writer): $protobuf.Writer;
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.TestGroup.MessageInGroup.NestedMessage;
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): jspb.test.TestGroup.MessageInGroup.NestedMessage;
+                    public static verify(message: { [k: string]: any }): (string|null);
+                    public static fromObject(object: { [k: string]: any }): jspb.test.TestGroup.MessageInGroup.NestedMessage;
+                    public static toObject(message: jspb.test.TestGroup.MessageInGroup.NestedMessage, options?: $protobuf.IConversionOptions): { [k: string]: any };
+                    public toJSON(): { [k: string]: any };
+                    public static getTypeUrl(typeUrlPrefix?: string): string;
+                }
+            }
+
+            interface IEnumInGroup {
+                id: jspb.test.TestGroup.EnumInGroup.NestedEnum;
+            }
+
+            class EnumInGroup implements IEnumInGroup {
+                constructor(properties?: jspb.test.TestGroup.IEnumInGroup);
+                public id: jspb.test.TestGroup.EnumInGroup.NestedEnum;
+                public static create(properties?: jspb.test.TestGroup.IEnumInGroup): jspb.test.TestGroup.EnumInGroup;
+                public static encode(message: jspb.test.TestGroup.IEnumInGroup, writer?: $protobuf.Writer): $protobuf.Writer;
+                public static encodeDelimited(message: jspb.test.TestGroup.IEnumInGroup, writer?: $protobuf.Writer): $protobuf.Writer;
+                public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.TestGroup.EnumInGroup;
+                public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): jspb.test.TestGroup.EnumInGroup;
+                public static verify(message: { [k: string]: any }): (string|null);
+                public static fromObject(object: { [k: string]: any }): jspb.test.TestGroup.EnumInGroup;
+                public static toObject(message: jspb.test.TestGroup.EnumInGroup, options?: $protobuf.IConversionOptions): { [k: string]: any };
+                public toJSON(): { [k: string]: any };
+                public static getTypeUrl(typeUrlPrefix?: string): string;
+            }
+
+            namespace EnumInGroup {
+
+                enum NestedEnum {
+                    first = 0,
+                    second = 1
+                }
             }
         }
 
@@ -793,12 +864,28 @@ export namespace google {
             public static getTypeUrl(typeUrlPrefix?: string): string;
         }
 
+        enum Edition {
+            EDITION_UNKNOWN = 0,
+            EDITION_LEGACY = 900,
+            EDITION_PROTO2 = 998,
+            EDITION_PROTO3 = 999,
+            EDITION_2023 = 1000,
+            EDITION_2024 = 1001,
+            EDITION_1_TEST_ONLY = 1,
+            EDITION_2_TEST_ONLY = 2,
+            EDITION_99997_TEST_ONLY = 99997,
+            EDITION_99998_TEST_ONLY = 99998,
+            EDITION_99999_TEST_ONLY = 99999,
+            EDITION_MAX = 2147483647
+        }
+
         interface IFileDescriptorProto {
             name?: (string|null);
             "package"?: (string|null);
             dependency?: (string[]|null);
             publicDependency?: (number[]|null);
             weakDependency?: (number[]|null);
+            optionDependency?: (string[]|null);
             messageType?: (google.protobuf.IDescriptorProto[]|null);
             enumType?: (google.protobuf.IEnumDescriptorProto[]|null);
             service?: (google.protobuf.IServiceDescriptorProto[]|null);
@@ -806,6 +893,7 @@ export namespace google {
             options?: (google.protobuf.IFileOptions|null);
             sourceCodeInfo?: (google.protobuf.ISourceCodeInfo|null);
             syntax?: (string|null);
+            edition?: (google.protobuf.Edition|null);
         }
 
         class FileDescriptorProto implements IFileDescriptorProto {
@@ -815,6 +903,7 @@ export namespace google {
             public dependency: string[];
             public publicDependency: number[];
             public weakDependency: number[];
+            public optionDependency: string[];
             public messageType: google.protobuf.IDescriptorProto[];
             public enumType: google.protobuf.IEnumDescriptorProto[];
             public service: google.protobuf.IServiceDescriptorProto[];
@@ -822,6 +911,7 @@ export namespace google {
             public options?: (google.protobuf.IFileOptions|null);
             public sourceCodeInfo?: (google.protobuf.ISourceCodeInfo|null);
             public syntax: string;
+            public edition: google.protobuf.Edition;
             public static create(properties?: google.protobuf.IFileDescriptorProto): google.protobuf.FileDescriptorProto;
             public static encode(message: google.protobuf.IFileDescriptorProto, writer?: $protobuf.Writer): $protobuf.Writer;
             public static encodeDelimited(message: google.protobuf.IFileDescriptorProto, writer?: $protobuf.Writer): $protobuf.Writer;
@@ -845,6 +935,7 @@ export namespace google {
             options?: (google.protobuf.IMessageOptions|null);
             reservedRange?: (google.protobuf.DescriptorProto.IReservedRange[]|null);
             reservedName?: (string[]|null);
+            visibility?: (google.protobuf.SymbolVisibility|null);
         }
 
         class DescriptorProto implements IDescriptorProto {
@@ -859,6 +950,7 @@ export namespace google {
             public options?: (google.protobuf.IMessageOptions|null);
             public reservedRange: google.protobuf.DescriptorProto.IReservedRange[];
             public reservedName: string[];
+            public visibility: google.protobuf.SymbolVisibility;
             public static create(properties?: google.protobuf.IDescriptorProto): google.protobuf.DescriptorProto;
             public static encode(message: google.protobuf.IDescriptorProto, writer?: $protobuf.Writer): $protobuf.Writer;
             public static encodeDelimited(message: google.protobuf.IDescriptorProto, writer?: $protobuf.Writer): $protobuf.Writer;
@@ -876,12 +968,14 @@ export namespace google {
             interface IExtensionRange {
                 start?: (number|null);
                 end?: (number|null);
+                options?: (google.protobuf.IExtensionRangeOptions|null);
             }
 
             class ExtensionRange implements IExtensionRange {
                 constructor(properties?: google.protobuf.DescriptorProto.IExtensionRange);
                 public start: number;
                 public end: number;
+                public options?: (google.protobuf.IExtensionRangeOptions|null);
                 public static create(properties?: google.protobuf.DescriptorProto.IExtensionRange): google.protobuf.DescriptorProto.ExtensionRange;
                 public static encode(message: google.protobuf.DescriptorProto.IExtensionRange, writer?: $protobuf.Writer): $protobuf.Writer;
                 public static encodeDelimited(message: google.protobuf.DescriptorProto.IExtensionRange, writer?: $protobuf.Writer): $protobuf.Writer;
@@ -916,6 +1010,66 @@ export namespace google {
             }
         }
 
+        interface IExtensionRangeOptions {
+            uninterpretedOption?: (google.protobuf.IUninterpretedOption[]|null);
+            declaration?: (google.protobuf.ExtensionRangeOptions.IDeclaration[]|null);
+            features?: (google.protobuf.IFeatureSet|null);
+            verification?: (google.protobuf.ExtensionRangeOptions.VerificationState|null);
+        }
+
+        class ExtensionRangeOptions implements IExtensionRangeOptions {
+            constructor(properties?: google.protobuf.IExtensionRangeOptions);
+            public uninterpretedOption: google.protobuf.IUninterpretedOption[];
+            public declaration: google.protobuf.ExtensionRangeOptions.IDeclaration[];
+            public features?: (google.protobuf.IFeatureSet|null);
+            public verification: google.protobuf.ExtensionRangeOptions.VerificationState;
+            public static create(properties?: google.protobuf.IExtensionRangeOptions): google.protobuf.ExtensionRangeOptions;
+            public static encode(message: google.protobuf.IExtensionRangeOptions, writer?: $protobuf.Writer): $protobuf.Writer;
+            public static encodeDelimited(message: google.protobuf.IExtensionRangeOptions, writer?: $protobuf.Writer): $protobuf.Writer;
+            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.ExtensionRangeOptions;
+            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.protobuf.ExtensionRangeOptions;
+            public static verify(message: { [k: string]: any }): (string|null);
+            public static fromObject(object: { [k: string]: any }): google.protobuf.ExtensionRangeOptions;
+            public static toObject(message: google.protobuf.ExtensionRangeOptions, options?: $protobuf.IConversionOptions): { [k: string]: any };
+            public toJSON(): { [k: string]: any };
+            public static getTypeUrl(typeUrlPrefix?: string): string;
+        }
+
+        namespace ExtensionRangeOptions {
+
+            interface IDeclaration {
+                number?: (number|null);
+                fullName?: (string|null);
+                type?: (string|null);
+                reserved?: (boolean|null);
+                repeated?: (boolean|null);
+            }
+
+            class Declaration implements IDeclaration {
+                constructor(properties?: google.protobuf.ExtensionRangeOptions.IDeclaration);
+                public number: number;
+                public fullName: string;
+                public type: string;
+                public reserved: boolean;
+                public repeated: boolean;
+                public static create(properties?: google.protobuf.ExtensionRangeOptions.IDeclaration): google.protobuf.ExtensionRangeOptions.Declaration;
+                public static encode(message: google.protobuf.ExtensionRangeOptions.IDeclaration, writer?: $protobuf.Writer): $protobuf.Writer;
+                public static encodeDelimited(message: google.protobuf.ExtensionRangeOptions.IDeclaration, writer?: $protobuf.Writer): $protobuf.Writer;
+                public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.ExtensionRangeOptions.Declaration;
+                public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.protobuf.ExtensionRangeOptions.Declaration;
+                public static verify(message: { [k: string]: any }): (string|null);
+                public static fromObject(object: { [k: string]: any }): google.protobuf.ExtensionRangeOptions.Declaration;
+                public static toObject(message: google.protobuf.ExtensionRangeOptions.Declaration, options?: $protobuf.IConversionOptions): { [k: string]: any };
+                public toJSON(): { [k: string]: any };
+                public static getTypeUrl(typeUrlPrefix?: string): string;
+            }
+
+            enum VerificationState {
+                DECLARATION = 0,
+                UNVERIFIED = 1
+            }
+        }
+
         interface IFieldDescriptorProto {
             name?: (string|null);
             number?: (number|null);
@@ -927,6 +1081,7 @@ export namespace google {
             oneofIndex?: (number|null);
             jsonName?: (string|null);
             options?: (google.protobuf.IFieldOptions|null);
+            proto3Optional?: (boolean|null);
         }
 
         class FieldDescriptorProto implements IFieldDescriptorProto {
@@ -941,6 +1096,7 @@ export namespace google {
             public oneofIndex: number;
             public jsonName: string;
             public options?: (google.protobuf.IFieldOptions|null);
+            public proto3Optional: boolean;
             public static create(properties?: google.protobuf.IFieldDescriptorProto): google.protobuf.FieldDescriptorProto;
             public static encode(message: google.protobuf.IFieldDescriptorProto, writer?: $protobuf.Writer): $protobuf.Writer;
             public static encodeDelimited(message: google.protobuf.IFieldDescriptorProto, writer?: $protobuf.Writer): $protobuf.Writer;
@@ -978,8 +1134,8 @@ export namespace google {
 
             enum Label {
                 LABEL_OPTIONAL = 1,
-                LABEL_REQUIRED = 2,
-                LABEL_REPEATED = 3
+                LABEL_REPEATED = 3,
+                LABEL_REQUIRED = 2
             }
         }
 
@@ -1008,6 +1164,9 @@ export namespace google {
             name?: (string|null);
             value?: (google.protobuf.IEnumValueDescriptorProto[]|null);
             options?: (google.protobuf.IEnumOptions|null);
+            reservedRange?: (google.protobuf.EnumDescriptorProto.IEnumReservedRange[]|null);
+            reservedName?: (string[]|null);
+            visibility?: (google.protobuf.SymbolVisibility|null);
         }
 
         class EnumDescriptorProto implements IEnumDescriptorProto {
@@ -1015,6 +1174,9 @@ export namespace google {
             public name: string;
             public value: google.protobuf.IEnumValueDescriptorProto[];
             public options?: (google.protobuf.IEnumOptions|null);
+            public reservedRange: google.protobuf.EnumDescriptorProto.IEnumReservedRange[];
+            public reservedName: string[];
+            public visibility: google.protobuf.SymbolVisibility;
             public static create(properties?: google.protobuf.IEnumDescriptorProto): google.protobuf.EnumDescriptorProto;
             public static encode(message: google.protobuf.IEnumDescriptorProto, writer?: $protobuf.Writer): $protobuf.Writer;
             public static encodeDelimited(message: google.protobuf.IEnumDescriptorProto, writer?: $protobuf.Writer): $protobuf.Writer;
@@ -1025,6 +1187,30 @@ export namespace google {
             public static toObject(message: google.protobuf.EnumDescriptorProto, options?: $protobuf.IConversionOptions): { [k: string]: any };
             public toJSON(): { [k: string]: any };
             public static getTypeUrl(typeUrlPrefix?: string): string;
+        }
+
+        namespace EnumDescriptorProto {
+
+            interface IEnumReservedRange {
+                start?: (number|null);
+                end?: (number|null);
+            }
+
+            class EnumReservedRange implements IEnumReservedRange {
+                constructor(properties?: google.protobuf.EnumDescriptorProto.IEnumReservedRange);
+                public start: number;
+                public end: number;
+                public static create(properties?: google.protobuf.EnumDescriptorProto.IEnumReservedRange): google.protobuf.EnumDescriptorProto.EnumReservedRange;
+                public static encode(message: google.protobuf.EnumDescriptorProto.IEnumReservedRange, writer?: $protobuf.Writer): $protobuf.Writer;
+                public static encodeDelimited(message: google.protobuf.EnumDescriptorProto.IEnumReservedRange, writer?: $protobuf.Writer): $protobuf.Writer;
+                public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.EnumDescriptorProto.EnumReservedRange;
+                public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.protobuf.EnumDescriptorProto.EnumReservedRange;
+                public static verify(message: { [k: string]: any }): (string|null);
+                public static fromObject(object: { [k: string]: any }): google.protobuf.EnumDescriptorProto.EnumReservedRange;
+                public static toObject(message: google.protobuf.EnumDescriptorProto.EnumReservedRange, options?: $protobuf.IConversionOptions): { [k: string]: any };
+                public toJSON(): { [k: string]: any };
+                public static getTypeUrl(typeUrlPrefix?: string): string;
+            }
         }
 
         interface IEnumValueDescriptorProto {
@@ -1117,6 +1303,12 @@ export namespace google {
             ccEnableArenas?: (boolean|null);
             objcClassPrefix?: (string|null);
             csharpNamespace?: (string|null);
+            swiftPrefix?: (string|null);
+            phpClassPrefix?: (string|null);
+            phpNamespace?: (string|null);
+            phpMetadataNamespace?: (string|null);
+            rubyPackage?: (string|null);
+            features?: (google.protobuf.IFeatureSet|null);
             uninterpretedOption?: (google.protobuf.IUninterpretedOption[]|null);
         }
 
@@ -1136,6 +1328,12 @@ export namespace google {
             public ccEnableArenas: boolean;
             public objcClassPrefix: string;
             public csharpNamespace: string;
+            public swiftPrefix: string;
+            public phpClassPrefix: string;
+            public phpNamespace: string;
+            public phpMetadataNamespace: string;
+            public rubyPackage: string;
+            public features?: (google.protobuf.IFeatureSet|null);
             public uninterpretedOption: google.protobuf.IUninterpretedOption[];
             public static create(properties?: google.protobuf.IFileOptions): google.protobuf.FileOptions;
             public static encode(message: google.protobuf.IFileOptions, writer?: $protobuf.Writer): $protobuf.Writer;
@@ -1163,6 +1361,8 @@ export namespace google {
             noStandardDescriptorAccessor?: (boolean|null);
             deprecated?: (boolean|null);
             mapEntry?: (boolean|null);
+            deprecatedLegacyJsonFieldConflicts?: (boolean|null);
+            features?: (google.protobuf.IFeatureSet|null);
             uninterpretedOption?: (google.protobuf.IUninterpretedOption[]|null);
         }
 
@@ -1172,6 +1372,8 @@ export namespace google {
             public noStandardDescriptorAccessor: boolean;
             public deprecated: boolean;
             public mapEntry: boolean;
+            public deprecatedLegacyJsonFieldConflicts: boolean;
+            public features?: (google.protobuf.IFeatureSet|null);
             public uninterpretedOption: google.protobuf.IUninterpretedOption[];
             public static create(properties?: google.protobuf.IMessageOptions): google.protobuf.MessageOptions;
             public static encode(message: google.protobuf.IMessageOptions, writer?: $protobuf.Writer): $protobuf.Writer;
@@ -1190,8 +1392,15 @@ export namespace google {
             packed?: (boolean|null);
             jstype?: (google.protobuf.FieldOptions.JSType|null);
             lazy?: (boolean|null);
+            unverifiedLazy?: (boolean|null);
             deprecated?: (boolean|null);
             weak?: (boolean|null);
+            debugRedact?: (boolean|null);
+            retention?: (google.protobuf.FieldOptions.OptionRetention|null);
+            targets?: (google.protobuf.FieldOptions.OptionTargetType[]|null);
+            editionDefaults?: (google.protobuf.FieldOptions.IEditionDefault[]|null);
+            features?: (google.protobuf.IFeatureSet|null);
+            featureSupport?: (google.protobuf.FieldOptions.IFeatureSupport|null);
             uninterpretedOption?: (google.protobuf.IUninterpretedOption[]|null);
         }
 
@@ -1201,8 +1410,15 @@ export namespace google {
             public packed: boolean;
             public jstype: google.protobuf.FieldOptions.JSType;
             public lazy: boolean;
+            public unverifiedLazy: boolean;
             public deprecated: boolean;
             public weak: boolean;
+            public debugRedact: boolean;
+            public retention: google.protobuf.FieldOptions.OptionRetention;
+            public targets: google.protobuf.FieldOptions.OptionTargetType[];
+            public editionDefaults: google.protobuf.FieldOptions.IEditionDefault[];
+            public features?: (google.protobuf.IFeatureSet|null);
+            public featureSupport?: (google.protobuf.FieldOptions.IFeatureSupport|null);
             public uninterpretedOption: google.protobuf.IUninterpretedOption[];
             public static create(properties?: google.protobuf.IFieldOptions): google.protobuf.FieldOptions;
             public static encode(message: google.protobuf.IFieldOptions, writer?: $protobuf.Writer): $protobuf.Writer;
@@ -1229,14 +1445,81 @@ export namespace google {
                 JS_STRING = 1,
                 JS_NUMBER = 2
             }
+
+            enum OptionRetention {
+                RETENTION_UNKNOWN = 0,
+                RETENTION_RUNTIME = 1,
+                RETENTION_SOURCE = 2
+            }
+
+            enum OptionTargetType {
+                TARGET_TYPE_UNKNOWN = 0,
+                TARGET_TYPE_FILE = 1,
+                TARGET_TYPE_EXTENSION_RANGE = 2,
+                TARGET_TYPE_MESSAGE = 3,
+                TARGET_TYPE_FIELD = 4,
+                TARGET_TYPE_ONEOF = 5,
+                TARGET_TYPE_ENUM = 6,
+                TARGET_TYPE_ENUM_ENTRY = 7,
+                TARGET_TYPE_SERVICE = 8,
+                TARGET_TYPE_METHOD = 9
+            }
+
+            interface IEditionDefault {
+                edition?: (google.protobuf.Edition|null);
+                value?: (string|null);
+            }
+
+            class EditionDefault implements IEditionDefault {
+                constructor(properties?: google.protobuf.FieldOptions.IEditionDefault);
+                public edition: google.protobuf.Edition;
+                public value: string;
+                public static create(properties?: google.protobuf.FieldOptions.IEditionDefault): google.protobuf.FieldOptions.EditionDefault;
+                public static encode(message: google.protobuf.FieldOptions.IEditionDefault, writer?: $protobuf.Writer): $protobuf.Writer;
+                public static encodeDelimited(message: google.protobuf.FieldOptions.IEditionDefault, writer?: $protobuf.Writer): $protobuf.Writer;
+                public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.FieldOptions.EditionDefault;
+                public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.protobuf.FieldOptions.EditionDefault;
+                public static verify(message: { [k: string]: any }): (string|null);
+                public static fromObject(object: { [k: string]: any }): google.protobuf.FieldOptions.EditionDefault;
+                public static toObject(message: google.protobuf.FieldOptions.EditionDefault, options?: $protobuf.IConversionOptions): { [k: string]: any };
+                public toJSON(): { [k: string]: any };
+                public static getTypeUrl(typeUrlPrefix?: string): string;
+            }
+
+            interface IFeatureSupport {
+                editionIntroduced?: (google.protobuf.Edition|null);
+                editionDeprecated?: (google.protobuf.Edition|null);
+                deprecationWarning?: (string|null);
+                editionRemoved?: (google.protobuf.Edition|null);
+            }
+
+            class FeatureSupport implements IFeatureSupport {
+                constructor(properties?: google.protobuf.FieldOptions.IFeatureSupport);
+                public editionIntroduced: google.protobuf.Edition;
+                public editionDeprecated: google.protobuf.Edition;
+                public deprecationWarning: string;
+                public editionRemoved: google.protobuf.Edition;
+                public static create(properties?: google.protobuf.FieldOptions.IFeatureSupport): google.protobuf.FieldOptions.FeatureSupport;
+                public static encode(message: google.protobuf.FieldOptions.IFeatureSupport, writer?: $protobuf.Writer): $protobuf.Writer;
+                public static encodeDelimited(message: google.protobuf.FieldOptions.IFeatureSupport, writer?: $protobuf.Writer): $protobuf.Writer;
+                public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.FieldOptions.FeatureSupport;
+                public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.protobuf.FieldOptions.FeatureSupport;
+                public static verify(message: { [k: string]: any }): (string|null);
+                public static fromObject(object: { [k: string]: any }): google.protobuf.FieldOptions.FeatureSupport;
+                public static toObject(message: google.protobuf.FieldOptions.FeatureSupport, options?: $protobuf.IConversionOptions): { [k: string]: any };
+                public toJSON(): { [k: string]: any };
+                public static getTypeUrl(typeUrlPrefix?: string): string;
+            }
         }
 
         interface IOneofOptions {
+            features?: (google.protobuf.IFeatureSet|null);
             uninterpretedOption?: (google.protobuf.IUninterpretedOption[]|null);
         }
 
         class OneofOptions implements IOneofOptions {
             constructor(properties?: google.protobuf.IOneofOptions);
+            public features?: (google.protobuf.IFeatureSet|null);
             public uninterpretedOption: google.protobuf.IUninterpretedOption[];
             public static create(properties?: google.protobuf.IOneofOptions): google.protobuf.OneofOptions;
             public static encode(message: google.protobuf.IOneofOptions, writer?: $protobuf.Writer): $protobuf.Writer;
@@ -1253,6 +1536,8 @@ export namespace google {
         interface IEnumOptions {
             allowAlias?: (boolean|null);
             deprecated?: (boolean|null);
+            deprecatedLegacyJsonFieldConflicts?: (boolean|null);
+            features?: (google.protobuf.IFeatureSet|null);
             uninterpretedOption?: (google.protobuf.IUninterpretedOption[]|null);
             ".jspb.test.IsExtension.simpleOption"?: (string|null);
         }
@@ -1261,6 +1546,8 @@ export namespace google {
             constructor(properties?: google.protobuf.IEnumOptions);
             public allowAlias: boolean;
             public deprecated: boolean;
+            public deprecatedLegacyJsonFieldConflicts: boolean;
+            public features?: (google.protobuf.IFeatureSet|null);
             public uninterpretedOption: google.protobuf.IUninterpretedOption[];
             public static create(properties?: google.protobuf.IEnumOptions): google.protobuf.EnumOptions;
             public static encode(message: google.protobuf.IEnumOptions, writer?: $protobuf.Writer): $protobuf.Writer;
@@ -1276,12 +1563,18 @@ export namespace google {
 
         interface IEnumValueOptions {
             deprecated?: (boolean|null);
+            features?: (google.protobuf.IFeatureSet|null);
+            debugRedact?: (boolean|null);
+            featureSupport?: (google.protobuf.FieldOptions.IFeatureSupport|null);
             uninterpretedOption?: (google.protobuf.IUninterpretedOption[]|null);
         }
 
         class EnumValueOptions implements IEnumValueOptions {
             constructor(properties?: google.protobuf.IEnumValueOptions);
             public deprecated: boolean;
+            public features?: (google.protobuf.IFeatureSet|null);
+            public debugRedact: boolean;
+            public featureSupport?: (google.protobuf.FieldOptions.IFeatureSupport|null);
             public uninterpretedOption: google.protobuf.IUninterpretedOption[];
             public static create(properties?: google.protobuf.IEnumValueOptions): google.protobuf.EnumValueOptions;
             public static encode(message: google.protobuf.IEnumValueOptions, writer?: $protobuf.Writer): $protobuf.Writer;
@@ -1296,12 +1589,14 @@ export namespace google {
         }
 
         interface IServiceOptions {
+            features?: (google.protobuf.IFeatureSet|null);
             deprecated?: (boolean|null);
             uninterpretedOption?: (google.protobuf.IUninterpretedOption[]|null);
         }
 
         class ServiceOptions implements IServiceOptions {
             constructor(properties?: google.protobuf.IServiceOptions);
+            public features?: (google.protobuf.IFeatureSet|null);
             public deprecated: boolean;
             public uninterpretedOption: google.protobuf.IUninterpretedOption[];
             public static create(properties?: google.protobuf.IServiceOptions): google.protobuf.ServiceOptions;
@@ -1319,6 +1614,7 @@ export namespace google {
         interface IMethodOptions {
             deprecated?: (boolean|null);
             idempotencyLevel?: (google.protobuf.MethodOptions.IdempotencyLevel|null);
+            features?: (google.protobuf.IFeatureSet|null);
             uninterpretedOption?: (google.protobuf.IUninterpretedOption[]|null);
         }
 
@@ -1326,6 +1622,7 @@ export namespace google {
             constructor(properties?: google.protobuf.IMethodOptions);
             public deprecated: boolean;
             public idempotencyLevel: google.protobuf.MethodOptions.IdempotencyLevel;
+            public features?: (google.protobuf.IFeatureSet|null);
             public uninterpretedOption: google.protobuf.IUninterpretedOption[];
             public static create(properties?: google.protobuf.IMethodOptions): google.protobuf.MethodOptions;
             public static encode(message: google.protobuf.IMethodOptions, writer?: $protobuf.Writer): $protobuf.Writer;
@@ -1398,6 +1695,162 @@ export namespace google {
                 public static verify(message: { [k: string]: any }): (string|null);
                 public static fromObject(object: { [k: string]: any }): google.protobuf.UninterpretedOption.NamePart;
                 public static toObject(message: google.protobuf.UninterpretedOption.NamePart, options?: $protobuf.IConversionOptions): { [k: string]: any };
+                public toJSON(): { [k: string]: any };
+                public static getTypeUrl(typeUrlPrefix?: string): string;
+            }
+        }
+
+        interface IFeatureSet {
+            fieldPresence?: (google.protobuf.FeatureSet.FieldPresence|null);
+            enumType?: (google.protobuf.FeatureSet.EnumType|null);
+            repeatedFieldEncoding?: (google.protobuf.FeatureSet.RepeatedFieldEncoding|null);
+            utf8Validation?: (google.protobuf.FeatureSet.Utf8Validation|null);
+            messageEncoding?: (google.protobuf.FeatureSet.MessageEncoding|null);
+            jsonFormat?: (google.protobuf.FeatureSet.JsonFormat|null);
+            enforceNamingStyle?: (google.protobuf.FeatureSet.EnforceNamingStyle|null);
+            defaultSymbolVisibility?: (google.protobuf.FeatureSet.VisibilityFeature.DefaultSymbolVisibility|null);
+        }
+
+        class FeatureSet implements IFeatureSet {
+            constructor(properties?: google.protobuf.IFeatureSet);
+            public fieldPresence: google.protobuf.FeatureSet.FieldPresence;
+            public enumType: google.protobuf.FeatureSet.EnumType;
+            public repeatedFieldEncoding: google.protobuf.FeatureSet.RepeatedFieldEncoding;
+            public utf8Validation: google.protobuf.FeatureSet.Utf8Validation;
+            public messageEncoding: google.protobuf.FeatureSet.MessageEncoding;
+            public jsonFormat: google.protobuf.FeatureSet.JsonFormat;
+            public enforceNamingStyle: google.protobuf.FeatureSet.EnforceNamingStyle;
+            public defaultSymbolVisibility: google.protobuf.FeatureSet.VisibilityFeature.DefaultSymbolVisibility;
+            public static create(properties?: google.protobuf.IFeatureSet): google.protobuf.FeatureSet;
+            public static encode(message: google.protobuf.IFeatureSet, writer?: $protobuf.Writer): $protobuf.Writer;
+            public static encodeDelimited(message: google.protobuf.IFeatureSet, writer?: $protobuf.Writer): $protobuf.Writer;
+            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.FeatureSet;
+            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.protobuf.FeatureSet;
+            public static verify(message: { [k: string]: any }): (string|null);
+            public static fromObject(object: { [k: string]: any }): google.protobuf.FeatureSet;
+            public static toObject(message: google.protobuf.FeatureSet, options?: $protobuf.IConversionOptions): { [k: string]: any };
+            public toJSON(): { [k: string]: any };
+            public static getTypeUrl(typeUrlPrefix?: string): string;
+        }
+
+        namespace FeatureSet {
+
+            enum FieldPresence {
+                FIELD_PRESENCE_UNKNOWN = 0,
+                EXPLICIT = 1,
+                IMPLICIT = 2,
+                LEGACY_REQUIRED = 3
+            }
+
+            enum EnumType {
+                ENUM_TYPE_UNKNOWN = 0,
+                OPEN = 1,
+                CLOSED = 2
+            }
+
+            enum RepeatedFieldEncoding {
+                REPEATED_FIELD_ENCODING_UNKNOWN = 0,
+                PACKED = 1,
+                EXPANDED = 2
+            }
+
+            enum Utf8Validation {
+                UTF8_VALIDATION_UNKNOWN = 0,
+                VERIFY = 2,
+                NONE = 3
+            }
+
+            enum MessageEncoding {
+                MESSAGE_ENCODING_UNKNOWN = 0,
+                LENGTH_PREFIXED = 1,
+                DELIMITED = 2
+            }
+
+            enum JsonFormat {
+                JSON_FORMAT_UNKNOWN = 0,
+                ALLOW = 1,
+                LEGACY_BEST_EFFORT = 2
+            }
+
+            enum EnforceNamingStyle {
+                ENFORCE_NAMING_STYLE_UNKNOWN = 0,
+                STYLE2024 = 1,
+                STYLE_LEGACY = 2
+            }
+
+            interface IVisibilityFeature {
+            }
+
+            class VisibilityFeature implements IVisibilityFeature {
+                constructor(properties?: google.protobuf.FeatureSet.IVisibilityFeature);
+                public static create(properties?: google.protobuf.FeatureSet.IVisibilityFeature): google.protobuf.FeatureSet.VisibilityFeature;
+                public static encode(message: google.protobuf.FeatureSet.IVisibilityFeature, writer?: $protobuf.Writer): $protobuf.Writer;
+                public static encodeDelimited(message: google.protobuf.FeatureSet.IVisibilityFeature, writer?: $protobuf.Writer): $protobuf.Writer;
+                public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.FeatureSet.VisibilityFeature;
+                public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.protobuf.FeatureSet.VisibilityFeature;
+                public static verify(message: { [k: string]: any }): (string|null);
+                public static fromObject(object: { [k: string]: any }): google.protobuf.FeatureSet.VisibilityFeature;
+                public static toObject(message: google.protobuf.FeatureSet.VisibilityFeature, options?: $protobuf.IConversionOptions): { [k: string]: any };
+                public toJSON(): { [k: string]: any };
+                public static getTypeUrl(typeUrlPrefix?: string): string;
+            }
+
+            namespace VisibilityFeature {
+
+                enum DefaultSymbolVisibility {
+                    DEFAULT_SYMBOL_VISIBILITY_UNKNOWN = 0,
+                    EXPORT_ALL = 1,
+                    EXPORT_TOP_LEVEL = 2,
+                    LOCAL_ALL = 3,
+                    STRICT = 4
+                }
+            }
+        }
+
+        interface IFeatureSetDefaults {
+            defaults?: (google.protobuf.FeatureSetDefaults.IFeatureSetEditionDefault[]|null);
+            minimumEdition?: (google.protobuf.Edition|null);
+            maximumEdition?: (google.protobuf.Edition|null);
+        }
+
+        class FeatureSetDefaults implements IFeatureSetDefaults {
+            constructor(properties?: google.protobuf.IFeatureSetDefaults);
+            public defaults: google.protobuf.FeatureSetDefaults.IFeatureSetEditionDefault[];
+            public minimumEdition: google.protobuf.Edition;
+            public maximumEdition: google.protobuf.Edition;
+            public static create(properties?: google.protobuf.IFeatureSetDefaults): google.protobuf.FeatureSetDefaults;
+            public static encode(message: google.protobuf.IFeatureSetDefaults, writer?: $protobuf.Writer): $protobuf.Writer;
+            public static encodeDelimited(message: google.protobuf.IFeatureSetDefaults, writer?: $protobuf.Writer): $protobuf.Writer;
+            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.FeatureSetDefaults;
+            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.protobuf.FeatureSetDefaults;
+            public static verify(message: { [k: string]: any }): (string|null);
+            public static fromObject(object: { [k: string]: any }): google.protobuf.FeatureSetDefaults;
+            public static toObject(message: google.protobuf.FeatureSetDefaults, options?: $protobuf.IConversionOptions): { [k: string]: any };
+            public toJSON(): { [k: string]: any };
+            public static getTypeUrl(typeUrlPrefix?: string): string;
+        }
+
+        namespace FeatureSetDefaults {
+
+            interface IFeatureSetEditionDefault {
+                edition?: (google.protobuf.Edition|null);
+                overridableFeatures?: (google.protobuf.IFeatureSet|null);
+                fixedFeatures?: (google.protobuf.IFeatureSet|null);
+            }
+
+            class FeatureSetEditionDefault implements IFeatureSetEditionDefault {
+                constructor(properties?: google.protobuf.FeatureSetDefaults.IFeatureSetEditionDefault);
+                public edition: google.protobuf.Edition;
+                public overridableFeatures?: (google.protobuf.IFeatureSet|null);
+                public fixedFeatures?: (google.protobuf.IFeatureSet|null);
+                public static create(properties?: google.protobuf.FeatureSetDefaults.IFeatureSetEditionDefault): google.protobuf.FeatureSetDefaults.FeatureSetEditionDefault;
+                public static encode(message: google.protobuf.FeatureSetDefaults.IFeatureSetEditionDefault, writer?: $protobuf.Writer): $protobuf.Writer;
+                public static encodeDelimited(message: google.protobuf.FeatureSetDefaults.IFeatureSetEditionDefault, writer?: $protobuf.Writer): $protobuf.Writer;
+                public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.FeatureSetDefaults.FeatureSetEditionDefault;
+                public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.protobuf.FeatureSetDefaults.FeatureSetEditionDefault;
+                public static verify(message: { [k: string]: any }): (string|null);
+                public static fromObject(object: { [k: string]: any }): google.protobuf.FeatureSetDefaults.FeatureSetEditionDefault;
+                public static toObject(message: google.protobuf.FeatureSetDefaults.FeatureSetEditionDefault, options?: $protobuf.IConversionOptions): { [k: string]: any };
                 public toJSON(): { [k: string]: any };
                 public static getTypeUrl(typeUrlPrefix?: string): string;
             }
@@ -1478,6 +1931,7 @@ export namespace google {
                 sourceFile?: (string|null);
                 begin?: (number|null);
                 end?: (number|null);
+                semantic?: (google.protobuf.GeneratedCodeInfo.Annotation.Semantic|null);
             }
 
             class Annotation implements IAnnotation {
@@ -1486,6 +1940,7 @@ export namespace google {
                 public sourceFile: string;
                 public begin: number;
                 public end: number;
+                public semantic: google.protobuf.GeneratedCodeInfo.Annotation.Semantic;
                 public static create(properties?: google.protobuf.GeneratedCodeInfo.IAnnotation): google.protobuf.GeneratedCodeInfo.Annotation;
                 public static encode(message: google.protobuf.GeneratedCodeInfo.IAnnotation, writer?: $protobuf.Writer): $protobuf.Writer;
                 public static encodeDelimited(message: google.protobuf.GeneratedCodeInfo.IAnnotation, writer?: $protobuf.Writer): $protobuf.Writer;
@@ -1497,6 +1952,21 @@ export namespace google {
                 public toJSON(): { [k: string]: any };
                 public static getTypeUrl(typeUrlPrefix?: string): string;
             }
+
+            namespace Annotation {
+
+                enum Semantic {
+                    NONE = 0,
+                    SET = 1,
+                    ALIAS = 2
+                }
+            }
+        }
+
+        enum SymbolVisibility {
+            VISIBILITY_UNSET = 0,
+            VISIBILITY_LOCAL = 1,
+            VISIBILITY_EXPORT = 2
         }
     }
 }

@@ -97,7 +97,12 @@ function exportName(object, asInterface) {
 function escapeName(name) {
     if (!name)
         return "$root";
-    return util.isReserved(name) ? name + "_" : name;
+    name = name.replace(/\W/g, "");
+    if (!name)
+        return "_";
+    if (/^\d/.test(name))
+        name = "_" + name;
+    return util.patterns.reservedRe.test(name) ? name + "_" : name;
 }
 
 function aOrAn(name) {

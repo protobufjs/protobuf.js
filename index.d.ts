@@ -1271,12 +1271,16 @@ export class Reader {
      */
     public skip(length?: number): Reader;
 
+    /** Recursion limit. */
+    public static recursionLimit: number;
+
     /**
      * Skips the next element of the specified wire type.
      * @param wireType Wire type received
+     * @param [depth] Depth of recursion to control nested calls; 0 if omitted
      * @returns `this`
      */
-    public skipType(wireType: number): Reader;
+    public skipType(wireType: number, depth?: number): Reader;
 }
 
 /** Wire format reader using node buffers. */
@@ -1697,11 +1701,13 @@ export class Type extends NamespaceBase {
      * Decodes a message of this type.
      * @param reader Reader or buffer to decode from
      * @param [length] Length of the message, if known beforehand
+     * @param [end] Expected group end tag, if decoding a group
+     * @param [depth] Current nesting depth
      * @returns Decoded message
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {util.ProtocolError<{}>} If required fields are missing
      */
-    public decode(reader: (Reader|Uint8Array), length?: number): Message<{}>;
+    public decode(reader: (Reader|Uint8Array), length?: number, end?: number, depth?: number): Message<{}>;
 
     /**
      * Decodes a message of this type preceeded by its byte length as a varint.
@@ -1715,16 +1721,18 @@ export class Type extends NamespaceBase {
     /**
      * Verifies that field values are valid and that required fields are present.
      * @param message Plain object to verify
+     * @param [depth] Current nesting depth
      * @returns `null` if valid, otherwise the reason why it is not
      */
-    public verify(message: { [k: string]: any }): (null|string);
+    public verify(message: { [k: string]: any }, depth?: number): (null|string);
 
     /**
      * Creates a new message of this type from a plain object. Also converts values to their respective internal types.
      * @param object Plain object to convert
+     * @param [depth] Current nesting depth
      * @returns Message instance
      */
-    public fromObject(object: { [k: string]: any }): Message<{}>;
+    public fromObject(object: { [k: string]: any }, depth?: number): Message<{}>;
 
     /**
      * Creates a plain object from a message of this type. Also converts values to other types if specified.
@@ -2118,6 +2126,16 @@ export namespace util {
      * @returns Destination object
      */
     function merge(dst: { [k: string]: any }, src: { [k: string]: any }, ifNotSet?: boolean): { [k: string]: any };
+
+    /** Recursion limit. */
+    let recursionLimit: number;
+
+    /**
+     * Makes a property safe for assignment as an own property.
+     * @param obj Object
+     * @param key Property key
+     */
+    function makeProp(obj: { [k: string]: any }, key: string): void;
 
     /**
      * Converts the first character of a string to lower case.

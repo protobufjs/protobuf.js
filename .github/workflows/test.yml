@@ -1,4 +1,6 @@
 name: "Test"
+env:
+  NPM_CONFIG_AUDIT: "false"
 on:
   push:
     branches:

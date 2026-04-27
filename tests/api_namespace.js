@@ -110,6 +110,10 @@ tape.test("reflected namespaces", function(test) {
         ns.define("MyEnum");
     }, Error, "should throw when trying to define a path conflicting with non-namespace objects");
 
+    var specialRoot = protobuf.Root.fromJSON(JSON.parse("{\"nested\":{\"__proto__\":{\"fields\":{}},\"constructor\":{\"fields\":{}}}}"));
+    test.equal(specialRoot.lookup("__proto__"), null, "should ignore reserved nested object names");
+    test.equal(Object.getPrototypeOf(specialRoot._lookupCache), null, "should isolate lookup cache keys");
+
     ns = protobuf.Namespace.fromJSON("My", {
         nested: {
             Message: { fields: {} },

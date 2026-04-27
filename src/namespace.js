@@ -116,7 +116,7 @@ function Namespace(name, options) {
      * @type {Object.<string,ReflectionObject|null>}
      * @private
      */
-    this._lookupCache = {};
+    this._lookupCache = Object.create(null);
 
     /**
      * Whether or not objects contained in this namespace need feature resolution.
@@ -135,12 +135,12 @@ function Namespace(name, options) {
 
 function clearCache(namespace) {
     namespace._nestedArray = null;
-    namespace._lookupCache = {};
+    namespace._lookupCache = Object.create(null);
 
     // Also clear parent caches, since they include nested lookups.
     var parent = namespace;
     while(parent = parent.parent) {
-        parent._lookupCache = {};
+        parent._lookupCache = Object.create(null);
     }
     return namespace;
 }
@@ -221,8 +221,9 @@ Namespace.prototype.addJSON = function addJSON(nestedJson) {
  * @returns {ReflectionObject|null} The reflection object or `null` if it doesn't exist
  */
 Namespace.prototype.get = function get(name) {
-    return this.nested && this.nested[name]
-        || null;
+    return this.nested && Object.prototype.hasOwnProperty.call(this.nested, name)
+        ? this.nested[name]
+        : null;
 };
 
 /**
@@ -233,7 +234,7 @@ Namespace.prototype.get = function get(name) {
  * @throws {Error} If there is no such enum
  */
 Namespace.prototype.getEnum = function getEnum(name) {
-    if (this.nested && this.nested[name] instanceof Enum)
+    if (this.nested && Object.prototype.hasOwnProperty.call(this.nested, name) && this.nested[name] instanceof Enum)
         return this.nested[name].values;
     throw Error("no such enum: " + name);
 };
@@ -249,6 +250,9 @@ Namespace.prototype.add = function add(object) {
 
     if (!(object instanceof Field && object.extend !== undefined || object instanceof Type  || object instanceof OneOf || object instanceof Enum || object instanceof Service || object instanceof Namespace))
         throw TypeError("object must be a valid nested object");
+
+    if (object.name === "__proto__")
+        return this;
 
     if (!this.nested)
         this.nested = {};

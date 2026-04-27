@@ -129,6 +129,22 @@ tape.test("writer & reader", function(test) {
         test.end();
     });
 
+    test.throws(function() {
+      const root = protobuf.Root.fromJSON({
+        nested: {
+          MyMessage: {
+            fields: {
+              name: { type: "string", id: 1 }
+            }
+          }
+        }
+      });
+      const MyMessage = root.lookupType("MyMessage");
+      // 0x7B (field 15, wire type 3 = start group)
+      const payload = Buffer.alloc(50000, 0x7B);
+      MyMessage.decode(payload);
+    }, /maximum nesting depth exceeded/, "limits recursion in reader");
+
     test.end();
 });
 

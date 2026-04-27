@@ -84,6 +84,38 @@ tape.test("extensions - proto3 roundtrip", function (test) {
     test.end();
 });
 
+tape.test("extensions - proto3 optional in extend toDescriptor", function (test) {
+  var root = protobuf.parse(`syntax = "proto3";
+
+    message SomeMessage {
+      string foo = 1;
+    }
+
+    extend SomeMessage {
+      optional string bar = 2;
+    }
+  `).root.resolveAll();
+
+  var decodedDescriptorSet;
+  try {
+    decodedDescriptorSet = root.toDescriptor("proto3");
+    test.pass("toDescriptor should not throw");
+  } catch (err) {
+    test.fail(err);
+    test.end();
+    return;
+  }
+
+  test.ok(decodedDescriptorSet.file[0].extension && decodedDescriptorSet.file[0].extension.length === 1,
+    "should include extension field");
+
+  var ext = decodedDescriptorSet.file[0].extension[0];
+  test.equal(ext.name, "bar", "extension field name is preserved");
+  test.equal(ext.proto3_optional, true, "proto3_optional flag is preserved");
+
+  test.end();
+});
+
 tape.test("extensions - edition 2023 file roundtrip", function (test) {
     var json = {
       nested: { Message: {
@@ -212,6 +244,43 @@ tape.test("extensions - unsupported edition", function (test) {
     test.throws(function() {
         protobuf.Root.fromDescriptor(decodedDescriptorSet)
     }, /Unsupported edition 99997/, "unsupported edition input throws");
+
+    test.end();
+});
+
+tape.test("extensions - descriptor type names", function(test) {
+    var field = descriptor.FieldDescriptorProto.create({
+        name: "field",
+        number: 1,
+        label: 1,
+        type: 11,
+        typeName: ".pkg.Message"
+    });
+
+    test.equal(protobuf.Field.fromDescriptor(field).type, ".pkg.Message", "should accept qualified type names");
+
+    field.typeName = ".pkg.Message;bad";
+    test.throws(function() {
+        protobuf.Field.fromDescriptor(field);
+    }, /illegal type name/, "should reject invalid type names");
+
+    field.typeName = ".pkg.Message";
+    field.extendee = ".pkg.Message;bad";
+    test.throws(function() {
+        protobuf.Field.fromDescriptor(field);
+    }, /illegal type name/, "should reject invalid extendee names");
+
+    var method = descriptor.MethodDescriptorProto.create({
+        name: "Call",
+        inputType: ".pkg.Request",
+        outputType: ".pkg.Response"
+    });
+    test.equal(protobuf.Method.fromDescriptor(method).requestType, ".pkg.Request", "should accept method type names");
+
+    method.inputType = ".pkg.Request;bad";
+    test.throws(function() {
+        protobuf.Method.fromDescriptor(method);
+    }, /illegal type name/, "should reject invalid method type names");
 
     test.end();
 });

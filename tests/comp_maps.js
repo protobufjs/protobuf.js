@@ -92,6 +92,42 @@ tape.test("maps", function(test) {
         test.end();
     });
 
+    test.test(test.name + " - special string key", function(test) {
+
+        var map = {};
+        Object.defineProperty(map, "__proto__", {
+            value: {
+                key: "3",
+                values: ["x"]
+            },
+            enumerable: true,
+            configurable: true,
+            writable: true
+        });
+
+        var outer = {
+            value: map
+        };
+
+        var dec = Outer.decode(Outer.encode(outer).finish());
+        test.equal(Object.getPrototypeOf(dec.value), Object.prototype, "should keep the decoded map prototype");
+        test.ok(Object.prototype.hasOwnProperty.call(dec.value, "__proto__"), "should decode the key as an own property");
+        test.equal(dec.value.__proto__.key, "3", "should decode the key's value");
+        test.deepEqual(dec.value.__proto__.values, ["x"], "should decode the key's repeated value");
+
+        var msg = Outer.fromObject(outer);
+        test.equal(Object.getPrototypeOf(msg.value), Object.prototype, "should keep the converted map prototype");
+        test.ok(Object.prototype.hasOwnProperty.call(msg.value, "__proto__"), "should convert the key as an own property");
+
+        var obj = Outer.toObject(msg);
+        test.equal(Object.getPrototypeOf(obj.value), Object.prototype, "should keep the output map prototype");
+        test.ok(Object.prototype.hasOwnProperty.call(obj.value, "__proto__"), "should output the key as an own property");
+        test.equal(obj.value.__proto__.key, "3", "should output the key's value");
+        test.deepEqual(obj.value.__proto__.values, ["x"], "should output the key's repeated value");
+
+        test.end();
+    });
+
     test.test(test.name + " - omitted fields", function(test) {
 
         var mapRoot = protobuf.Root.fromJSON({
