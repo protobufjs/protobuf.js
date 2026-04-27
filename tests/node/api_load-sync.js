@@ -36,6 +36,19 @@ tape.test("load sync", function(test) {
     test.end();
 });
 
+tape.test("load sync resolves features", function(test) {
+    var root = protobuf.loadSync("tests/data/test.proto");
+    var Complex = root.lookupType("jspb.test.Complex");
+    var Simple1 = root.lookupType("jspb.test.Simple1");
+
+    test.notOk(Complex.fields.aNestedMessage.resolved, "should not resolve field types eagerly");
+    test.ok(Simple1.fields.aString.required, "should resolve field features");
+
+    root.resolveAll();
+    test.ok(Complex.fields.aNestedMessage.resolved, "should resolve field types explicitly");
+    test.end();
+});
+
 tape.test("should load bundled definitions even if resolvePath method was overrided", function(test) {
     var protoFilePath = "tests/data/common.proto";
     var root = new protobuf.Root();
