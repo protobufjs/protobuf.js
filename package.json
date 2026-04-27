@@ -11,14 +11,6 @@
   "engines": {
     "node": ">=12.0.0"
   },
-  "eslintConfig": {
-    "env": {
-      "es6": true
-    },
-    "parserOptions": {
-      "ecmaVersion": 6
-    }
-  },
   "keywords": [
     "protobuf",
     "protocol-buffers",
@@ -32,13 +24,12 @@
     "build": "npm run build:bundle && npm run build:types",
     "build:bundle": "gulp --gulpfile scripts/gulpfile.js",
     "build:types": "node cli/bin/pbts --main --global protobuf --out index.d.ts src/",
-    "changelog": "node scripts/changelog -w",
     "coverage": "npm run coverage:test && npm run coverage:report",
     "coverage:test": "nyc --silent tape -r ./lib/tape-adapter tests/*.js tests/node/*.js",
     "coverage:report": "nyc report --reporter=lcov --reporter=text",
     "docs": "jsdoc -c config/jsdoc.json -R README.md --verbose --pedantic",
     "lint": "npm run lint:sources && npm run lint:types",
-    "lint:sources": "eslint \"**/*.js\" -c config/eslint.json",
+    "lint:sources": "eslint \"**/*.js\"",
     "lint:types": "tslint \"**/*.d.ts\" -e \"**/node_modules/**\" -t stylish -c config/tslint.json",
     "pages": "node scripts/pages",
     "prepublish": "cd cli && npm install && cd .. && npm run build",
@@ -47,7 +38,7 @@
     "prof": "node bench/prof",
     "test": "npm run test:sources && npm run test:types",
     "test:sources": "tape -r ./lib/tape-adapter tests/*.js tests/node/*.js",
-    "test:types": "tsc tests/comp_typescript.ts --lib es2015 --esModuleInterop --strictNullChecks --experimentalDecorators --emitDecoratorMetadata && tsc tests/data/test.js.ts --lib es2015 --esModuleInterop --noEmit --strictNullChecks && tsc tests/data/*.ts --lib es2015 --esModuleInterop --noEmit --strictNullChecks",
+    "test:types": "tsc tests/comp_typescript.ts --types node --lib es2015 --esModuleInterop --strictNullChecks --experimentalDecorators --emitDecoratorMetadata && tsc tests/data/test.js.ts --types node --lib es2015 --esModuleInterop --noEmit --strictNullChecks && tsc tests/data/*.ts --types node --lib es2015 --esModuleInterop --noEmit --strictNullChecks",
     "make": "npm run lint:sources && npm run build && npm run lint:types && node ./scripts/gentests.js && npm test"
   },
   "dependencies": {
@@ -55,19 +46,20 @@
     "long": "^5.0.0"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.0",
     "benchmark": "^2.1.4",
     "browserify": "^17.0.0",
     "browserify-wrap": "^1.0.2",
     "bundle-collapser": "^1.3.0",
     "chalk": "^4.0.0",
     "escodegen": "^1.13.0",
-    "eslint": "^8.15.0",
+    "eslint": "^10.0.0",
+    "eslint-plugin-jsdoc": "^62.9.0",
     "espree": "^9.0.0",
     "estraverse": "^5.1.0",
-    "gh-pages": "^5.0.0",
-    "git-raw-commits": "^2.0.3",
-    "git-semver-tags": "^4.0.0",
-    "google-protobuf": "^3.11.3",
+    "gh-pages": "^6.0.0",
+    "globals": "^16.0.0",
+    "google-protobuf": "^4.0.0",
     "gulp": "^5.0.0",
     "gulp-header": "^2.0.9",
     "gulp-if": "^3.0.0",
@@ -76,14 +68,14 @@
     "jaguarjs-jsdoc": "github:dcodeIO/jaguarjs-jsdoc",
     "jsdoc": "^4.0.0",
     "minimist": "^1.2.0",
-    "nyc": "^15.0.0",
-    "reflect-metadata": "^0.1.13",
+    "nyc": "^18.0.0",
+    "reflect-metadata": "^0.2.0",
     "tape": "^5.0.0",
     "tslint": "^6.0.0",
     "typescript": "^3.7.5",
     "uglify-js": "^3.7.7",
     "vinyl-buffer": "^1.0.1",
-    "vinyl-fs": "^3.0.3",
+    "vinyl-fs": "^4.0.0",
     "vinyl-source-stream": "^2.0.0"
   },
   "files": [
