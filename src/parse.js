@@ -967,10 +967,6 @@ function parse(source, root, options) {
 
             case "import":
 
-                /* istanbul ignore if */
-                if (!head)
-                    throw illegal(token);
-
                 parseImport();
                 break;
 
