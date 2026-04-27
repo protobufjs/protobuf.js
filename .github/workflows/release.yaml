@@ -1,13 +1,14 @@
 on:
   push:
     branches:
-      - master
+      - protobufjs-v7.x
 name: release-please
 jobs:
   release-please:
     runs-on: ubuntu-latest
     steps:
-      - uses: google-github-actions/release-please-action@v3
+      - uses: googleapis/release-please-action@v3
         with:
           command: manifest
           package-name: release-please-action
+          target-branch: ${{ github.ref_name }}
