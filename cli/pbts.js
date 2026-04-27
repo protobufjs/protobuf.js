@@ -98,12 +98,17 @@ exports.main = function(args, callback) {
         var basedir = path.join(__dirname, ".");
         var moduleName = argv.name || "null";
         var nodePath = process.execPath;
-        var cmd = "\"" + nodePath + "\" \"" + require.resolve("jsdoc/jsdoc.js") + "\" -c \"" + path.join(basedir, "lib", "tsd-jsdoc.json") + "\" -q \"module=" + encodeURIComponent(moduleName) + "&comments=" + Boolean(argv.comments) + "\" " + files.map(function(file) { return "\"" + file + "\""; }).join(" ");
-        var child = child_process.exec(cmd, {
+        var jsdocArgs = [
+            require.resolve("jsdoc/jsdoc.js"),
+            "-c",
+            path.join(basedir, "lib", "tsd-jsdoc.json"),
+            "-q",
+            "module=" + encodeURIComponent(moduleName) + "&comments=" + Boolean(argv.comments)
+        ].concat(files);
+        var child = child_process.spawn(nodePath, jsdocArgs, {
             cwd: process.cwd(),
             argv0: "node",
-            stdio: "pipe",
-            maxBuffer: 1 << 26 // 67mb
+            stdio: "pipe"
         });
         var out = [];
         var ended = false;

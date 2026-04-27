@@ -5,6 +5,8 @@ var path = require("path");
 var Module = require("module");
 var protobuf = require("..");
 var fs = require("fs");
+var EventEmitter = require("events").EventEmitter;
+var child_process = require("child_process");
 
 function cliTest(test, testFunc) {
     // pbjs does not seem to work with Node v4, so skip this test if we're running on it
@@ -107,6 +109,38 @@ tape.test("pbjs generates correct ES6 static-module imports", function(test) {
             test.ok(jsCode.includes("import $protobuf from \"protobufjs/minimal.js\";"), "es6 wrapper uses a default import and explicit .js extension");
             test.end();
         });
+    });
+});
+
+tape.test("pbts passes jsdoc arguments without a shell", function(test) {
+    var pbts = require("../cli/pbts");
+    var originalSpawn = child_process.spawn;
+    var file = "file with \"quotes\" `backticks` 'apostrophes' and ;.js";
+
+    test.plan(5);
+
+    child_process.spawn = function(cmd, args, options) {
+        var child = new EventEmitter();
+        child.stdout = new EventEmitter();
+        child.stderr = { pipe: function() {} };
+
+        test.equal(cmd, process.execPath, "should execute node directly");
+        test.ok(/jsdoc[\\/]jsdoc\.js$/.test(args[0]), "should execute jsdoc directly");
+        test.equal(args[args.length - 1], file, "should pass file path as a single argument");
+        test.equal(options.stdio, "pipe", "should pipe jsdoc output");
+
+        process.nextTick(function() {
+            child.stdout.emit("data", "declare namespace test {}\n");
+            child.stdout.emit("end");
+            child.emit("close", 0);
+        });
+
+        return child;
+    };
+
+    pbts.main([file], function(err) {
+        child_process.spawn = originalSpawn;
+        test.error(err, "should generate definitions");
     });
 });
 
