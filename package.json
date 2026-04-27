@@ -66,7 +66,7 @@
     "estraverse": "^5.1.0",
     "gh-pages": "^6.0.0",
     "git-raw-commits": "^2.0.3",
-    "git-semver-tags": "^4.0.0",
+    "git-semver-tags": "^8.0.0",
     "google-protobuf": "^4.0.0",
     "gulp": "^5.0.0",
     "gulp-header": "^2.0.9",
