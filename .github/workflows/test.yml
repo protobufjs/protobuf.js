@@ -7,6 +7,7 @@ on:
     types: [assigned, opened, synchronize, reopened, labeled]
 env:
   MIN_NODE_VERSION: &min_node_version "12"
+  NPM_CONFIG_AUDIT: "false"
 jobs:
   lint:
     runs-on: ubuntu-latest
@@ -31,6 +32,9 @@ jobs:
     - uses: actions/setup-node@v6
       with:
         node-version: ${{ matrix.node_version }}
+    - name: "Use npm 8 on Node 12"
+      if: ${{ matrix.node_version == '12' }}
+      run: npm install -g npm@8
     - name: "Install dependencies"
       run: npm install
     - name: "Test sources"
