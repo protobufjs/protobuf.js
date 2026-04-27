@@ -134,6 +134,7 @@ tape.test("Options", function (test) {
             {
                 "(method_rep_msg)": {
                     value: 1,
+                    empty_repeated: [],
                     nested: {nested: {value: "x"}},
                     rep_nested: [{value: "y"}, {value: "z"}],
                     rep_value: 3
@@ -149,6 +150,7 @@ tape.test("Options", function (test) {
         ];
 
         test.same(TestOptionsRpc.parsedOptions, expectedParsedOptions, "should correctly parse all nested message options");
+        test.equal(TestOptionsRpc.options["(method_rep_msg).empty_repeated"], undefined, "should not set a last value for empty repeated options");
         var jsonTestOptionsRpc = TestOptionsRpc.toJSON();
         test.same(jsonTestOptionsRpc.parsedOptions, expectedParsedOptions, "should correctly store all nested method options in JSON");
         var rootFromJson = protobuf.Root.fromJSON(root.toJSON());
