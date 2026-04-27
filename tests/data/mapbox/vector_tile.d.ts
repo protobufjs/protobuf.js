@@ -1,6 +1,5 @@
 import * as $protobuf from "../../..";
-import Long from "long";
-
+import Long = require("long");
 export namespace vector_tile {
 
     interface ITile {

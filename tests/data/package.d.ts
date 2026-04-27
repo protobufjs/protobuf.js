@@ -1,4 +1,5 @@
 import * as $protobuf from "../..";
+import Long = require("long");
 export interface IPackage {
     name?: (string|null);
     version?: (string|null);

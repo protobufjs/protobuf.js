@@ -34,6 +34,8 @@ tape.test("reflected services", function(test) {
     test.ok(MyService.get("Other"), "should allow adding other nested objects");
     MyService.remove(other);
     test.notOk(MyService.get("Other"), "should allow removing other nested objects");
+    MyService.add(new protobuf.Method("__proto__", undefined, "MyRequest", "MyResponse"));
+    test.equal(MyService.get("__proto__"), null, "should ignore reserved method names");
     MyService.remove(MyMethod);
     test.notOk(MyService.get("Other"), "should allow removing methods");
     test.same(MyService.toJSON(), def, "should convert to initial JSON afterwards");

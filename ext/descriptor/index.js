@@ -10,7 +10,11 @@ var Namespace = $protobuf.Namespace,
     MapField  = $protobuf.MapField,
     OneOf     = $protobuf.OneOf,
     Service   = $protobuf.Service,
-    Method    = $protobuf.Method;
+    Method    = $protobuf.Method,
+    patterns  = $protobuf.util.patterns;
+
+var numberRe  = patterns.numberRe,
+    typeRefRe = patterns.typeRefRe;
 
 // --- Root ---
 
@@ -393,9 +397,6 @@ Type.prototype.toDescriptor = function toDescriptor(edition) {
  * @property {number} JS_NUMBER=2
  */
 
-// copied here from parse.js
-var numberRe = /^(?![eE])[0-9]*(?:\.[0-9]*)?(?:[eE][+-]?[0-9]+)?$/;
-
 /**
  * Creates a field from a descriptor.
  *
@@ -416,10 +417,13 @@ Field.fromDescriptor = function fromDescriptor(descriptor, edition, nested) {
         throw Error("missing field id");
 
     // Rewire field type
-    var fieldType;
-    if (descriptor.typeName && descriptor.typeName.length)
-        fieldType = descriptor.typeName;
-    else
+    var typeName = descriptor.typeName,
+        fieldType;
+    if (typeName != null && typeName !== "") {
+        if (typeof typeName !== "string" || !typeRefRe.test(typeName))
+            throw Error("illegal type name: " + typeName);
+        fieldType = typeName;
+    } else
         fieldType = fromDescriptorType(descriptor.type);
 
     // Rewire field rule
@@ -432,10 +436,12 @@ Field.fromDescriptor = function fromDescriptor(descriptor, edition, nested) {
         default: throw Error("illegal label: " + descriptor.label);
     }
 
-	var extendee = descriptor.extendee;
-	if (descriptor.extendee !== undefined) {
-		extendee = extendee.length ? extendee : undefined;
-	}
+    var extendee = descriptor.extendee;
+    if (extendee != null && extendee !== "") {
+        if (typeof extendee !== "string" || !typeRefRe.test(extendee))
+            throw Error("illegal type name: " + extendee);
+    } else
+        extendee = undefined;
     var field = new Field(
         descriptor.name.length ? descriptor.name : "field" + descriptor.number,
         descriptor.number,
@@ -518,10 +524,11 @@ Field.prototype.toDescriptor = function toDescriptor(edition) {
     // Handle extension field
     descriptor.extendee = this.extensionField ? this.extensionField.parent.fullName : this.extend;
 
-    // Handle part of oneof
-    if (this.partOf)
+    // Handle part of oneof (only meaningful for message types)
+    if (this.partOf && this.parent instanceof Type) {
         if ((descriptor.oneofIndex = this.parent.oneofsArray.indexOf(this.partOf)) < 0)
             throw Error("missing oneof");
+    }
 
     if (this.options) {
         descriptor.options = toDescriptorOptions(this.options, exports.FieldOptions);
@@ -762,12 +769,24 @@ Method.fromDescriptor = function fromDescriptor(descriptor) {
     if (typeof descriptor.length === "number")
         descriptor = exports.MethodDescriptorProto.decode(descriptor);
 
+    var inputType = descriptor.inputType,
+        outputType = descriptor.outputType;
+
+    if (inputType != null && inputType !== "") {
+        if (typeof inputType !== "string" || !typeRefRe.test(inputType))
+            throw Error("illegal type name: " + inputType);
+    }
+    if (outputType != null && outputType !== "") {
+        if (typeof outputType !== "string" || !typeRefRe.test(outputType))
+            throw Error("illegal type name: " + outputType);
+    }
+
     return new Method(
         // unnamedMethodIndex is global, not per service, because we have no ref to a service here
         descriptor.name && descriptor.name.length ? descriptor.name : "Method" + unnamedMethodIndex++,
         "rpc",
-        descriptor.inputType,
-        descriptor.outputType,
+        inputType,
+        outputType,
         Boolean(descriptor.clientStreaming),
         Boolean(descriptor.serverStreaming),
         fromDescriptorOptions(descriptor.options, exports.MethodOptions)
