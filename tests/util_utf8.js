@@ -39,7 +39,8 @@ tape.test("utf8", function(test) {
         [
             [0xC0, 0x80],             // U+0000 encoded as two bytes
             [0xE0, 0x81, 0xBF],       // U+007F encoded as three bytes
-            [0xF0, 0x80, 0x9F, 0xBF]  // U+07FF encoded as four bytes
+            [0xF0, 0x80, 0x9F, 0xBF], // U+07FF encoded as four bytes
+            [0xF4, 0x90, 0x80, 0x80]  // >U+10FFFF encoded as four bytes
         ].forEach(function(bytes) {
             var overlong = new Buffer(bytes);
             comp = utf8.read(overlong, 0, overlong.length);

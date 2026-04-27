@@ -56,7 +56,7 @@ utf8.read = function utf8_read(buffer, start, end) {
             str += c3 >= 0x800 ? String.fromCharCode(c3) : replacementChar;
         } else if (t >= 0xF0) {
             var t2 = (t & 7) << 18 | (buffer[i++] & 0x3F) << 12 | (buffer[i++] & 0x3F) << 6 | buffer[i++] & 0x3F;
-            if (t2 < 0x10000)
+            if (t2 < 0x10000 || t2 > 0x10FFFF)
                 str += replacementChar;
             else {
                 t2 -= 0x10000;
