@@ -1,6 +1,9 @@
 "use strict";
 module.exports = codegen;
 
+var patterns = require("./patterns");
+var reservedRe = patterns.reservedRe;
+
 /**
  * Begins generating a function.
  * @memberof util
@@ -75,7 +78,7 @@ function codegen(functionParams, functionName) {
     }
 
     function toString(functionNameOverride) {
-        return "function " + (functionNameOverride || functionName || "") + "(" + (functionParams && functionParams.join(",") || "") + "){\n  " + body.join("\n  ") + "\n}";
+        return "function " + safeFunctionName(functionNameOverride || functionName) + "(" + (functionParams && functionParams.join(",") || "") + "){\n  " + body.join("\n  ") + "\n}";
     }
 
     Codegen.toString = toString;
@@ -97,3 +100,14 @@ function codegen(functionParams, functionName) {
  * @type {boolean}
  */
 codegen.verbose = false;
+
+function safeFunctionName(name) {
+    if (!name)
+        return "";
+    name = String(name).replace(/[^\w$]/g, "");
+    if (!name)
+        return "";
+    if (/^\d/.test(name))
+        name = "_" + name;
+    return reservedRe.test(name) ? name + "_" : name;
+}

@@ -101,6 +101,127 @@ tape.test("reflected types", function(test) {
     test.end();
 });
 
+tape.test("generated message constructors", function(test) {
+    var root = protobuf.Root.fromJSON({
+        nested: {
+            Message: {
+                fields: {
+                    value: { type: "uint32", id: 1 }
+                }
+            }
+        }
+    });
+    var Message = root.lookupType("Message");
+    var msg = new Message.ctor(JSON.parse("{\"__proto__\":{\"marker\":true},\"value\":1}"));
+
+    test.equal(msg.value, 1, "should copy regular properties");
+    test.equal(msg.marker, undefined, "should ignore reserved properties");
+
+    var type = new protobuf.Type("Type");
+    type.add(new protobuf.Field("__proto__", 2, "uint32"));
+    test.equal(type.get("__proto__"), null, "should ignore reserved field names");
+    type.add(new protobuf.OneOf("__proto__"));
+    test.equal(type.get("__proto__"), null, "should ignore reserved oneof names");
+
+    ["1Message", "default"].forEach(function(name) {
+        var root = protobuf.Root.fromJSON({
+            nested: {
+                [name]: {
+                    fields: {
+                        value: { type: "uint32", id: 1 }
+                    }
+                }
+            }
+        });
+        var Type = root.lookupType(name);
+        test.equal(Type.create({ value: 1 }).value, 1, "should create messages with generated-safe type names");
+    });
+
+    test.end();
+});
+
+tape.test("decode nesting", function(test) {
+    function varint(value) {
+        var bytes = [];
+        do {
+            var b = value & 0x7F;
+            value >>>= 7;
+            if (value)
+                b |= 0x80;
+            bytes.push(b);
+        } while (value);
+        return bytes;
+    }
+
+    function nestedPayload(depth) {
+        var payload = [ 0x10, 0x2A ];
+        for (var i = 0; i < depth; ++i)
+            payload = [ 0x0A ].concat(varint(payload.length), payload);
+        return protobuf.util.newBuffer(payload);
+    }
+
+    var root = protobuf.Root.fromJSON({
+        nested: {
+            Node: {
+                fields: {
+                    child: { type: "Node", id: 1 },
+                    value: { type: "int32", id: 2 }
+                }
+            }
+        }
+    });
+    var Node = root.lookupType("Node");
+    var recursionLimit = protobuf.Reader.recursionLimit;
+
+    protobuf.Reader.recursionLimit = 3;
+    try {
+        test.equal(Node.decode(nestedPayload(2)).child.child.value, 42, "should decode below the limit");
+        test.throws(function() {
+            Node.decode(nestedPayload(4));
+        }, /maximum nesting depth exceeded/, "should reject excessive nesting");
+    } finally {
+        protobuf.Reader.recursionLimit = recursionLimit;
+    }
+
+    test.end();
+});
+
+tape.test("object conversion nesting", function(test) {
+    function nestedObject(depth) {
+        var object = { value: 42 };
+        for (var i = 0; i < depth; ++i)
+            object = { child: object };
+        return object;
+    }
+
+    var root = protobuf.Root.fromJSON({
+        nested: {
+            Node: {
+                fields: {
+                    child: { type: "Node", id: 1 },
+                    value: { type: "int32", id: 2 }
+                }
+            }
+        }
+    });
+    var Node = root.lookupType("Node");
+    var recursionLimit = protobuf.util.recursionLimit;
+
+    protobuf.util.recursionLimit = 3;
+    try {
+        test.equal(Node.verify(nestedObject(2)), null, "should verify below the limit");
+        test.match(Node.verify(nestedObject(4)), /maximum nesting depth exceeded/, "should reject excessive nesting while verifying");
+        test.equal(Node.fromObject(nestedObject(2)).child.child.value, 42, "should convert below the limit");
+        test.throws(function() {
+            Node.fromObject(nestedObject(4));
+        }, /maximum nesting depth exceeded/, "should reject excessive nesting while converting");
+    } finally {
+        protobuf.util.recursionLimit = recursionLimit;
+    }
+
+    test.end();
+});
+
 tape.test("feature resolution legacy proto3", function(test) {
     var json = {
         fields: {

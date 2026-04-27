@@ -1,4 +1,5 @@
 import * as $protobuf from "../..";
+import Long = require("long");
 export interface ITest1 {
     field1?: (string|null);
     field2?: (number|null);

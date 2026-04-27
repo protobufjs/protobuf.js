@@ -225,6 +225,7 @@ function tokenize(source, alternateCommentMode) {
             curr,
             start,
             isDoc,
+            nextLineIsComment,
             isLeadingComment = offset === 0;
         do {
             if (offset === length)
@@ -278,7 +279,11 @@ function tokenize(source, alternateCommentMode) {
                                     // Trailing comment cannot not be multi-line
                                     break;
                                 }
-                            } while (isDoubleSlashCommentLine(offset));
+                                nextLineIsComment = isDoubleSlashCommentLine(offset);
+                                if (nextLineIsComment) {
+                                    line++;
+                                }
+                            } while (nextLineIsComment);
                         } else {
                             offset = Math.min(length, findEndOfLine(offset) + 1);
                         }
