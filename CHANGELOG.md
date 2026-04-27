@@ -1,5 +1,12 @@
 # Changelog
 
+## [7.5.6](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v7.5.5...protobufjs-v7.5.6) (2026-04-27)
+
+
+### Bug Fixes
+
+* Backport input hardening and CLI fixes to 7.x ([#2173](https://github.com/protobufjs/protobuf.js/issues/2173)) ([75392ea](https://github.com/protobufjs/protobuf.js/commit/75392ea1b78bdc4faba027b5db44ad7c50e9c454))
+
 ## [7.5.4](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v7.5.3...protobufjs-v7.5.4) (2025-08-15)
 
 
