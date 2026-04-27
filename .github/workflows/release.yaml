@@ -51,9 +51,9 @@ jobs:
 
       - name: Publish protobufjs
         if: ${{ steps.release.outputs.release_created == 'true' }}
-        run: npm publish --ignore-scripts --dry-run
+        run: npm publish --ignore-scripts
 
       - name: Publish protobufjs-cli
         if: ${{ steps.release.outputs['cli--release_created'] == 'true' }}
         working-directory: cli
-        run: npm publish --ignore-scripts --dry-run
+        run: npm publish --ignore-scripts
