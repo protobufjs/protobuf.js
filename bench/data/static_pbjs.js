@@ -1,4 +1,4 @@
-/*eslint-disable block-scoped-var, id-length, no-control-regex, no-magic-numbers, no-prototype-builtins, no-redeclare, no-shadow, no-var, sort-vars*/
+/*eslint-disable block-scoped-var, id-length, no-control-regex, no-magic-numbers, no-prototype-builtins, no-redeclare, no-shadow, no-var, sort-vars, jsdoc/require-param*/
 "use strict";
 
 var $protobuf = require("../../minimal");
@@ -35,17 +35,17 @@ $root.Test = (function() {
         return writer;
     };
 
-    Test.decode = function decode(reader, length, error, long) {
+    Test.decode = function decode(reader, length, _end, _depth, _target) {
         if (!(reader instanceof $Reader))
             reader = $Reader.create(reader);
-        if (long === undefined)
-            long = 0;
-        if (long > $Reader.recursionLimit)
+        if (_depth === undefined)
+            _depth = 0;
+        if (_depth > $Reader.recursionLimit)
             throw Error("maximum nesting depth exceeded");
-        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Test();
+        var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.Test();
         while (reader.pos < end) {
             var tag = reader.uint32();
-            if (tag === error)
+            if (tag === _end)
                 break;
             switch (tag >>> 3) {
             case 1: {
@@ -57,7 +57,7 @@ $root.Test = (function() {
                     break;
                 }
             case 3: {
-                    message.inner = $root.Test.Inner.decode(reader, reader.uint32(), undefined, long + 1);
+                    message.inner = $root.Test.Inner.decode(reader, reader.uint32(), undefined, _depth + 1, message.inner);
                     break;
                 }
             case 4: {
@@ -65,7 +65,7 @@ $root.Test = (function() {
                     break;
                 }
             default:
-                reader.skipType(tag & 7, long);
+                reader.skipType(tag & 7, _depth);
                 break;
             }
         }
@@ -97,17 +97,17 @@ $root.Test = (function() {
             return writer;
         };
 
-        Inner.decode = function decode(reader, length, error, long) {
+        Inner.decode = function decode(reader, length, _end, _depth, _target) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            if (long === undefined)
-                long = 0;
-            if (long > $Reader.recursionLimit)
+            if (_depth === undefined)
+                _depth = 0;
+            if (_depth > $Reader.recursionLimit)
                 throw Error("maximum nesting depth exceeded");
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Test.Inner();
+            var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.Test.Inner();
             while (reader.pos < end) {
                 var tag = reader.uint32();
-                if (tag === error)
+                if (tag === _end)
                     break;
                 switch (tag >>> 3) {
                 case 1: {
@@ -115,15 +115,15 @@ $root.Test = (function() {
                         break;
                     }
                 case 2: {
-                        message.innerInner = $root.Test.Inner.InnerInner.decode(reader, reader.uint32(), undefined, long + 1);
+                        message.innerInner = $root.Test.Inner.InnerInner.decode(reader, reader.uint32(), undefined, _depth + 1, message.innerInner);
                         break;
                     }
                 case 3: {
-                        message.outer = $root.Outer.decode(reader, reader.uint32(), undefined, long + 1);
+                        message.outer = $root.Outer.decode(reader, reader.uint32(), undefined, _depth + 1, message.outer);
                         break;
                     }
                 default:
-                    reader.skipType(tag & 7, long);
+                    reader.skipType(tag & 7, _depth);
                     break;
                 }
             }
@@ -155,17 +155,17 @@ $root.Test = (function() {
                 return writer;
             };
 
-            InnerInner.decode = function decode(reader, length, error, long) {
+            InnerInner.decode = function decode(reader, length, _end, _depth, _target) {
                 if (!(reader instanceof $Reader))
                     reader = $Reader.create(reader);
-                if (long === undefined)
-                    long = 0;
-                if (long > $Reader.recursionLimit)
+                if (_depth === undefined)
+                    _depth = 0;
+                if (_depth > $Reader.recursionLimit)
                     throw Error("maximum nesting depth exceeded");
-                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Test.Inner.InnerInner();
+                var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.Test.Inner.InnerInner();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
-                    if (tag === error)
+                    if (tag === _end)
                         break;
                     switch (tag >>> 3) {
                     case 1: {
@@ -181,7 +181,7 @@ $root.Test = (function() {
                             break;
                         }
                     default:
-                        reader.skipType(tag & 7, long);
+                        reader.skipType(tag & 7, _depth);
                         break;
                     }
                 }
@@ -234,17 +234,17 @@ $root.Outer = (function() {
         return writer;
     };
 
-    Outer.decode = function decode(reader, length, error, long) {
+    Outer.decode = function decode(reader, length, _end, _depth, _target) {
         if (!(reader instanceof $Reader))
             reader = $Reader.create(reader);
-        if (long === undefined)
-            long = 0;
-        if (long > $Reader.recursionLimit)
+        if (_depth === undefined)
+            _depth = 0;
+        if (_depth > $Reader.recursionLimit)
             throw Error("maximum nesting depth exceeded");
-        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Outer();
+        var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.Outer();
         while (reader.pos < end) {
             var tag = reader.uint32();
-            if (tag === error)
+            if (tag === _end)
                 break;
             switch (tag >>> 3) {
             case 1: {
@@ -263,7 +263,7 @@ $root.Outer = (function() {
                     break;
                 }
             default:
-                reader.skipType(tag & 7, long);
+                reader.skipType(tag & 7, _depth);
                 break;
             }
         }
