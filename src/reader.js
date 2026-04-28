@@ -92,12 +92,15 @@ Reader.prototype.uint32 = (function read_uint32_setup() {
         value = (value | (this.buf[this.pos] & 127) << 21) >>> 0; if (this.buf[this.pos++] < 128) return value;
         value = (value | (this.buf[this.pos] &  15) << 28) >>> 0; if (this.buf[this.pos++] < 128) return value;
 
-        /* istanbul ignore if */
-        if ((this.pos += 5) > this.len) {
-            this.pos = this.len;
-            throw indexOutOfRange(this, 10);
+        for (var i = 0; i < 5; ++i) {
+            /* istanbul ignore if */
+            if (this.pos >= this.len)
+                throw indexOutOfRange(this);
+            if (this.buf[this.pos++] < 128)
+                return value;
         }
-        return value;
+        /* istanbul ignore next */
+        throw Error("invalid varint encoding");
     };
 })();
 
