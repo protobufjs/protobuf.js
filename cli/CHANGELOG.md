@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.2](https://github.com/protobufjs/protobuf.js/compare/protobufjs-cli-v1.2.1...protobufjs-cli-v1.2.2) (2026-04-28)
+
+
+### Bug Fixes
+
+* Update CLI peer dependency (7.x) ([#2189](https://github.com/protobufjs/protobuf.js/issues/2189)) ([a0bf2df](https://github.com/protobufjs/protobuf.js/commit/a0bf2dfdd8a75aa62ce5a1ff47a52b9b8f1ea793))
+
 ## [1.2.1](https://github.com/protobufjs/protobuf.js/compare/protobufjs-cli-v1.2.0...protobufjs-cli-v1.2.1) (2026-04-27)
 
 
