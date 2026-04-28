@@ -131,16 +131,16 @@ $root.Test1 = (function() {
             var tag = reader.uint32();
             if (tag === error)
                 break;
-            switch (tag >>> 3) {
-            case 1: {
+            switch (tag) {
+            case 10: {
                     message.field1 = reader.string();
                     break;
                 }
-            case 2: {
+            case 16: {
                     message.field2 = reader.uint32();
                     break;
                 }
-            case 3: {
+            case 24: {
                     message.field3 = reader.bool();
                     break;
                 }
@@ -362,7 +362,7 @@ $root.Test2 = (function() {
             var tag = reader.uint32();
             if (tag === error)
                 break;
-            switch (tag >>> 3) {
+            switch (tag) {
             default:
                 reader.skipType(tag & 7, long);
                 break;

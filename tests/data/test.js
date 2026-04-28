@@ -113,7 +113,7 @@ $root.jspb = (function() {
                     var tag = reader.uint32();
                     if (tag === error)
                         break;
-                    switch (tag >>> 3) {
+                    switch (tag) {
                     default:
                         reader.skipType(tag & 7, long);
                         break;
@@ -327,8 +327,8 @@ $root.jspb = (function() {
                     var tag = reader.uint32();
                     if (tag === error)
                         break;
-                    switch (tag >>> 3) {
-                    case 1: {
+                    switch (tag) {
+                    case 8: {
                             message.outerEnum = reader.int32();
                             break;
                         }
@@ -586,18 +586,18 @@ $root.jspb = (function() {
                     var tag = reader.uint32();
                     if (tag === error)
                         break;
-                    switch (tag >>> 3) {
-                    case 1: {
+                    switch (tag) {
+                    case 10: {
                             message.aString = reader.string();
                             break;
                         }
-                    case 2: {
+                    case 18: {
                             if (!(message.aRepeatedString && message.aRepeatedString.length))
                                 message.aRepeatedString = [];
                             message.aRepeatedString.push(reader.string());
                             break;
                         }
-                    case 3: {
+                    case 24: {
                             message.aBoolean = reader.bool();
                             break;
                         }
@@ -856,12 +856,12 @@ $root.jspb = (function() {
                     var tag = reader.uint32();
                     if (tag === error)
                         break;
-                    switch (tag >>> 3) {
-                    case 1: {
+                    switch (tag) {
+                    case 10: {
                             message.aString = reader.string();
                             break;
                         }
-                    case 2: {
+                    case 18: {
                             if (!(message.aRepeatedString && message.aRepeatedString.length))
                                 message.aRepeatedString = [];
                             message.aRepeatedString.push(reader.string());
@@ -1130,20 +1130,20 @@ $root.jspb = (function() {
                     var tag = reader.uint32();
                     if (tag === error)
                         break;
-                    switch (tag >>> 3) {
-                    case 1: {
+                    switch (tag) {
+                    case 10: {
                             message.normal = reader.string();
                             break;
                         }
-                    case 2: {
+                    case 18: {
                             message["default"] = reader.string();
                             break;
                         }
-                    case 3: {
+                    case 26: {
                             message["function"] = reader.string();
                             break;
                         }
-                    case 4: {
+                    case 34: {
                             message["var"] = reader.string();
                             break;
                         }
@@ -1435,26 +1435,26 @@ $root.jspb = (function() {
                     var tag = reader.uint32();
                     if (tag === error)
                         break;
-                    switch (tag >>> 3) {
-                    case 1: {
+                    switch (tag) {
+                    case 10: {
                             message.aString = reader.string();
                             break;
                         }
-                    case 2: {
+                    case 16: {
                             message.aBool = reader.bool();
                             break;
                         }
-                    case 3: {
+                    case 26: {
                             message.aNestedMessage = $root.jspb.test.OptionalFields.Nested.decode(reader, reader.uint32(), undefined, long + 1);
                             break;
                         }
-                    case 4: {
+                    case 34: {
                             if (!(message.aRepeatedMessage && message.aRepeatedMessage.length))
                                 message.aRepeatedMessage = [];
                             message.aRepeatedMessage.push($root.jspb.test.OptionalFields.Nested.decode(reader, reader.uint32(), undefined, long + 1));
                             break;
                         }
-                    case 5: {
+                    case 42: {
                             if (!(message.aRepeatedString && message.aRepeatedString.length))
                                 message.aRepeatedString = [];
                             message.aRepeatedString.push(reader.string());
@@ -1739,8 +1739,8 @@ $root.jspb = (function() {
                         var tag = reader.uint32();
                         if (tag === error)
                             break;
-                        switch (tag >>> 3) {
-                        case 1: {
+                        switch (tag) {
+                        case 8: {
                                 message.anInt = reader.int32();
                                 break;
                             }
@@ -2051,44 +2051,44 @@ $root.jspb = (function() {
                     var tag = reader.uint32();
                     if (tag === error)
                         break;
-                    switch (tag >>> 3) {
-                    case 1: {
+                    switch (tag) {
+                    case 10: {
                             message.str1 = reader.string();
                             break;
                         }
-                    case 2: {
+                    case 18: {
                             message.str2 = reader.string();
                             break;
                         }
-                    case 3: {
+                    case 26: {
                             message.str3 = reader.string();
                             break;
                         }
-                    case 100: {
+                    case 802: {
                             message[".jspb.test.IsExtension.extField"] = $root.jspb.test.IsExtension.decode(reader, reader.uint32(), undefined, long + 1);
                             break;
                         }
-                    case 101: {
+                    case 810: {
                             message[".jspb.test.IndirectExtension.simple"] = $root.jspb.test.Simple1.decode(reader, reader.uint32(), undefined, long + 1);
                             break;
                         }
-                    case 102: {
+                    case 818: {
                             message[".jspb.test.IndirectExtension.str"] = reader.string();
                             break;
                         }
-                    case 103: {
+                    case 826: {
                             if (!(message[".jspb.test.IndirectExtension.repeatedStr"] && message[".jspb.test.IndirectExtension.repeatedStr"].length))
                                 message[".jspb.test.IndirectExtension.repeatedStr"] = [];
                             message[".jspb.test.IndirectExtension.repeatedStr"].push(reader.string());
                             break;
                         }
-                    case 104: {
+                    case 834: {
                             if (!(message[".jspb.test.IndirectExtension.repeatedSimple"] && message[".jspb.test.IndirectExtension.repeatedSimple"].length))
                                 message[".jspb.test.IndirectExtension.repeatedSimple"] = [];
                             message[".jspb.test.IndirectExtension.repeatedSimple"].push($root.jspb.test.Simple1.decode(reader, reader.uint32(), undefined, long + 1));
                             break;
                         }
-                    case 105: {
+                    case 842: {
                             message[".jspb.test.simple1"] = $root.jspb.test.Simple1.decode(reader, reader.uint32(), undefined, long + 1);
                             break;
                         }
@@ -2461,26 +2461,26 @@ $root.jspb = (function() {
                     var tag = reader.uint32();
                     if (tag === error)
                         break;
-                    switch (tag >>> 3) {
-                    case 1: {
+                    switch (tag) {
+                    case 10: {
                             message.aString = reader.string();
                             break;
                         }
-                    case 9: {
+                    case 72: {
                             message.anOutOfOrderBool = reader.bool();
                             break;
                         }
-                    case 4: {
+                    case 34: {
                             message.aNestedMessage = $root.jspb.test.Complex.Nested.decode(reader, reader.uint32(), undefined, long + 1);
                             break;
                         }
-                    case 5: {
+                    case 42: {
                             if (!(message.aRepeatedMessage && message.aRepeatedMessage.length))
                                 message.aRepeatedMessage = [];
                             message.aRepeatedMessage.push($root.jspb.test.Complex.Nested.decode(reader, reader.uint32(), undefined, long + 1));
                             break;
                         }
-                    case 7: {
+                    case 58: {
                             if (!(message.aRepeatedString && message.aRepeatedString.length))
                                 message.aRepeatedString = [];
                             message.aRepeatedString.push(reader.string());
@@ -2765,8 +2765,8 @@ $root.jspb = (function() {
                         var tag = reader.uint32();
                         if (tag === error)
                             break;
-                        switch (tag >>> 3) {
-                        case 2: {
+                        switch (tag) {
+                        case 16: {
                                 message.anInt = reader.int32();
                                 break;
                             }
@@ -2975,7 +2975,7 @@ $root.jspb = (function() {
                     var tag = reader.uint32();
                     if (tag === error)
                         break;
-                    switch (tag >>> 3) {
+                    switch (tag) {
                     default:
                         reader.skipType(tag & 7, long);
                         break;
@@ -3172,8 +3172,8 @@ $root.jspb = (function() {
                         var tag = reader.uint32();
                         if (tag === error)
                             break;
-                        switch (tag >>> 3) {
-                        case 1: {
+                        switch (tag) {
+                        case 8: {
                                 message.innerComplexField = reader.int32();
                                 break;
                             }
@@ -3392,8 +3392,8 @@ $root.jspb = (function() {
                     var tag = reader.uint32();
                     if (tag === error)
                         break;
-                    switch (tag >>> 3) {
-                    case 1: {
+                    switch (tag) {
+                    case 10: {
                             message.ext1 = reader.string();
                             break;
                         }
@@ -3598,7 +3598,7 @@ $root.jspb = (function() {
                     var tag = reader.uint32();
                     if (tag === error)
                         break;
-                    switch (tag >>> 3) {
+                    switch (tag) {
                     default:
                         reader.skipType(tag & 7, long);
                         break;
@@ -3853,28 +3853,28 @@ $root.jspb = (function() {
                     var tag = reader.uint32();
                     if (tag === error)
                         break;
-                    switch (tag >>> 3) {
-                    case 1: {
+                    switch (tag) {
+                    case 10: {
                             message.stringField = reader.string();
                             break;
                         }
-                    case 2: {
+                    case 16: {
                             message.boolField = reader.bool();
                             break;
                         }
-                    case 3: {
+                    case 24: {
                             message.intField = reader.int64();
                             break;
                         }
-                    case 4: {
+                    case 32: {
                             message.enumField = reader.int32();
                             break;
                         }
-                    case 6: {
+                    case 50: {
                             message.emptyField = reader.string();
                             break;
                         }
-                    case 8: {
+                    case 66: {
                             message.bytesField = reader.bytes();
                             break;
                         }
@@ -4270,16 +4270,17 @@ $root.jspb = (function() {
                     var tag = reader.uint32();
                     if (tag === error)
                         break;
-                    switch (tag >>> 3) {
-                    case 1: {
+                    switch (tag) {
+                    case 13: {
                             message.optionalFloatField = reader.float();
                             break;
                         }
-                    case 2: {
+                    case 21: {
                             message.requiredFloatField = reader.float();
                             break;
                         }
-                    case 3: {
+                    case 29:
+                    case 26: {
                             if (!(message.repeatedFloatField && message.repeatedFloatField.length))
                                 message.repeatedFloatField = [];
                             if ((tag & 7) === 2) {
@@ -4290,19 +4291,20 @@ $root.jspb = (function() {
                                 message.repeatedFloatField.push(reader.float());
                             break;
                         }
-                    case 4: {
+                    case 37: {
                             message.defaultFloatField = reader.float();
                             break;
                         }
-                    case 5: {
+                    case 41: {
                             message.optionalDoubleField = reader.double();
                             break;
                         }
-                    case 6: {
+                    case 49: {
                             message.requiredDoubleField = reader.double();
                             break;
                         }
-                    case 7: {
+                    case 57:
+                    case 58: {
                             if (!(message.repeatedDoubleField && message.repeatedDoubleField.length))
                                 message.repeatedDoubleField = [];
                             if ((tag & 7) === 2) {
@@ -4313,7 +4315,7 @@ $root.jspb = (function() {
                                 message.repeatedDoubleField.push(reader.double());
                             break;
                         }
-                    case 8: {
+                    case 65: {
                             message.defaultDoubleField = reader.double();
                             break;
                         }
@@ -4671,30 +4673,30 @@ $root.jspb = (function() {
                     var tag = reader.uint32();
                     if (tag === error)
                         break;
-                    switch (tag >>> 3) {
-                    case 1: {
+                    switch (tag) {
+                    case 10: {
                             message.str = reader.string();
                             break;
                         }
-                    case 3: {
+                    case 26: {
                             message.simple1 = $root.jspb.test.Simple1.decode(reader, reader.uint32(), undefined, long + 1);
                             break;
                         }
-                    case 5: {
+                    case 42: {
                             if (!(message.simple2 && message.simple2.length))
                                 message.simple2 = [];
                             message.simple2.push($root.jspb.test.Simple1.decode(reader, reader.uint32(), undefined, long + 1));
                             break;
                         }
-                    case 6: {
+                    case 50: {
                             message.bytesField = reader.bytes();
                             break;
                         }
-                    case 7: {
+                    case 58: {
                             message.unused = reader.string();
                             break;
                         }
-                    case 100: {
+                    case 802: {
                             message[".jspb.test.CloneExtension.extField"] = $root.jspb.test.CloneExtension.decode(reader, reader.uint32(), undefined, long + 1);
                             break;
                         }
@@ -4988,8 +4990,8 @@ $root.jspb = (function() {
                     var tag = reader.uint32();
                     if (tag === error)
                         break;
-                    switch (tag >>> 3) {
-                    case 2: {
+                    switch (tag) {
+                    case 18: {
                             message.ext = reader.string();
                             break;
                         }
@@ -5282,38 +5284,38 @@ $root.jspb = (function() {
                     var tag = reader.uint32();
                     if (tag === error)
                         break;
-                    switch (tag >>> 3) {
-                    case 1: {
+                    switch (tag) {
+                    case 11: {
                             if (!(message.repeatedGroup && message.repeatedGroup.length))
                                 message.repeatedGroup = [];
-                            message.repeatedGroup.push($root.jspb.test.TestGroup.RepeatedGroup.decode(reader, undefined, tag & ~7 | 4, long + 1));
+                            message.repeatedGroup.push($root.jspb.test.TestGroup.RepeatedGroup.decode(reader, undefined, 12, long + 1));
                             break;
                         }
-                    case 2: {
-                            message.requiredGroup = $root.jspb.test.TestGroup.RequiredGroup.decode(reader, undefined, tag & ~7 | 4, long + 1);
+                    case 19: {
+                            message.requiredGroup = $root.jspb.test.TestGroup.RequiredGroup.decode(reader, undefined, 20, long + 1);
                             break;
                         }
-                    case 3: {
-                            message.optionalGroup = $root.jspb.test.TestGroup.OptionalGroup.decode(reader, undefined, tag & ~7 | 4, long + 1);
+                    case 27: {
+                            message.optionalGroup = $root.jspb.test.TestGroup.OptionalGroup.decode(reader, undefined, 28, long + 1);
                             break;
                         }
-                    case 4: {
-                            message.messageInGroup = $root.jspb.test.TestGroup.MessageInGroup.decode(reader, undefined, tag & ~7 | 4, long + 1);
+                    case 35: {
+                            message.messageInGroup = $root.jspb.test.TestGroup.MessageInGroup.decode(reader, undefined, 36, long + 1);
                             break;
                         }
-                    case 5: {
-                            message.enumInGroup = $root.jspb.test.TestGroup.EnumInGroup.decode(reader, undefined, tag & ~7 | 4, long + 1);
+                    case 43: {
+                            message.enumInGroup = $root.jspb.test.TestGroup.EnumInGroup.decode(reader, undefined, 44, long + 1);
                             break;
                         }
-                    case 6: {
+                    case 50: {
                             message.id = reader.string();
                             break;
                         }
-                    case 7: {
+                    case 58: {
                             message.requiredSimple = $root.jspb.test.Simple2.decode(reader, reader.uint32(), undefined, long + 1);
                             break;
                         }
-                    case 8: {
+                    case 66: {
                             message.optionalSimple = $root.jspb.test.Simple2.decode(reader, reader.uint32(), undefined, long + 1);
                             break;
                         }
@@ -5647,12 +5649,13 @@ $root.jspb = (function() {
                         var tag = reader.uint32();
                         if (tag === error)
                             break;
-                        switch (tag >>> 3) {
-                        case 1: {
+                        switch (tag) {
+                        case 10: {
                                 message.id = reader.string();
                                 break;
                             }
-                        case 2: {
+                        case 16:
+                        case 18: {
                                 if (!(message.someBool && message.someBool.length))
                                     message.someBool = [];
                                 if ((tag & 7) === 2) {
@@ -5896,8 +5899,8 @@ $root.jspb = (function() {
                         var tag = reader.uint32();
                         if (tag === error)
                             break;
-                        switch (tag >>> 3) {
-                        case 1: {
+                        switch (tag) {
+                        case 10: {
                                 message.id = reader.string();
                                 break;
                             }
@@ -6113,8 +6116,8 @@ $root.jspb = (function() {
                         var tag = reader.uint32();
                         if (tag === error)
                             break;
-                        switch (tag >>> 3) {
-                        case 1: {
+                        switch (tag) {
+                        case 10: {
                                 message.id = reader.string();
                                 break;
                             }
@@ -6330,8 +6333,8 @@ $root.jspb = (function() {
                         var tag = reader.uint32();
                         if (tag === error)
                             break;
-                        switch (tag >>> 3) {
-                        case 1: {
+                        switch (tag) {
+                        case 10: {
                                 message.id = $root.jspb.test.TestGroup.MessageInGroup.NestedMessage.decode(reader, reader.uint32(), undefined, long + 1);
                                 break;
                             }
@@ -6551,8 +6554,8 @@ $root.jspb = (function() {
                             var tag = reader.uint32();
                             if (tag === error)
                                 break;
-                            switch (tag >>> 3) {
-                            case 1: {
+                            switch (tag) {
+                            case 10: {
                                     message.id = reader.string();
                                     break;
                                 }
@@ -6770,8 +6773,8 @@ $root.jspb = (function() {
                         var tag = reader.uint32();
                         if (tag === error)
                             break;
-                        switch (tag >>> 3) {
-                        case 1: {
+                        switch (tag) {
+                        case 8: {
                                 message.id = reader.int32();
                                 break;
                             }
@@ -7024,8 +7027,8 @@ $root.jspb = (function() {
                     var tag = reader.uint32();
                     if (tag === error)
                         break;
-                    switch (tag >>> 3) {
-                    case 1: {
+                    switch (tag) {
+                    case 10: {
                             message.group = $root.jspb.test.TestGroup.RepeatedGroup.decode(reader, reader.uint32(), undefined, long + 1);
                             break;
                         }
@@ -7257,12 +7260,12 @@ $root.jspb = (function() {
                     var tag = reader.uint32();
                     if (tag === error)
                         break;
-                    switch (tag >>> 3) {
-                    case 1: {
+                    switch (tag) {
+                    case 8: {
                             message.extension = reader.int32();
                             break;
                         }
-                    case 10: {
+                    case 80: {
                             message[".jspb.test.TestReservedNamesExtension.foo"] = reader.int32();
                             break;
                         }
@@ -7476,7 +7479,7 @@ $root.jspb = (function() {
                     var tag = reader.uint32();
                     if (tag === error)
                         break;
-                    switch (tag >>> 3) {
+                    switch (tag) {
                     default:
                         reader.skipType(tag & 7, long);
                         break;
@@ -7824,53 +7827,53 @@ $root.jspb = (function() {
                     var tag = reader.uint32();
                     if (tag === error)
                         break;
-                    switch (tag >>> 3) {
-                    case 3: {
+                    switch (tag) {
+                    case 26: {
                             message.pone = reader.string();
                             message.partialOneof = "pone";
                             break;
                         }
-                    case 5: {
+                    case 42: {
                             message.pthree = reader.string();
                             message.partialOneof = "pthree";
                             break;
                         }
-                    case 6: {
+                    case 50: {
                             message.rone = $root.jspb.test.TestMessageWithOneof.decode(reader, reader.uint32(), undefined, long + 1);
                             message.recursiveOneof = "rone";
                             break;
                         }
-                    case 7: {
+                    case 58: {
                             message.rtwo = reader.string();
                             message.recursiveOneof = "rtwo";
                             break;
                         }
-                    case 8: {
+                    case 64: {
                             message.normalField = reader.bool();
                             break;
                         }
-                    case 9: {
+                    case 74: {
                             if (!(message.repeatedField && message.repeatedField.length))
                                 message.repeatedField = [];
                             message.repeatedField.push(reader.string());
                             break;
                         }
-                    case 10: {
+                    case 80: {
                             message.aone = reader.int32();
                             message.defaultOneofA = "aone";
                             break;
                         }
-                    case 11: {
+                    case 88: {
                             message.atwo = reader.int32();
                             message.defaultOneofA = "atwo";
                             break;
                         }
-                    case 12: {
+                    case 96: {
                             message.bone = reader.int32();
                             message.defaultOneofB = "bone";
                             break;
                         }
-                    case 13: {
+                    case 104: {
                             message.btwo = reader.int32();
                             message.defaultOneofB = "btwo";
                             break;
@@ -8230,12 +8233,12 @@ $root.jspb = (function() {
                     var tag = reader.uint32();
                     if (tag === error)
                         break;
-                    switch (tag >>> 3) {
-                    case 1: {
+                    switch (tag) {
+                    case 8: {
                             message.value = reader.int32();
                             break;
                         }
-                    case 2: {
+                    case 18: {
                             message.data = reader.bytes();
                             break;
                         }
@@ -8616,8 +8619,8 @@ $root.jspb = (function() {
                     var tag = reader.uint32();
                     if (tag === error)
                         break;
-                    switch (tag >>> 3) {
-                    case 1: {
+                    switch (tag) {
+                    case 10: {
                             if (message.mapStringString === $util.emptyObject)
                                 message.mapStringString = {};
                             var end2 = reader.uint32() + reader.pos;
@@ -8625,11 +8628,11 @@ $root.jspb = (function() {
                             value = "";
                             while (reader.pos < end2) {
                                 var tag2 = reader.uint32();
-                                switch (tag2 >>> 3) {
-                                case 1:
+                                switch (tag2) {
+                                case 10:
                                     key = reader.string();
                                     break;
-                                case 2:
+                                case 18:
                                     value = reader.string();
                                     break;
                                 default:
@@ -8642,7 +8645,7 @@ $root.jspb = (function() {
                             message.mapStringString[key] = value;
                             break;
                         }
-                    case 2: {
+                    case 18: {
                             if (message.mapStringInt32 === $util.emptyObject)
                                 message.mapStringInt32 = {};
                             var end2 = reader.uint32() + reader.pos;
@@ -8650,11 +8653,11 @@ $root.jspb = (function() {
                             value = 0;
                             while (reader.pos < end2) {
                                 var tag2 = reader.uint32();
-                                switch (tag2 >>> 3) {
-                                case 1:
+                                switch (tag2) {
+                                case 10:
                                     key = reader.string();
                                     break;
-                                case 2:
+                                case 16:
                                     value = reader.int32();
                                     break;
                                 default:
@@ -8667,7 +8670,7 @@ $root.jspb = (function() {
                             message.mapStringInt32[key] = value;
                             break;
                         }
-                    case 3: {
+                    case 26: {
                             if (message.mapStringInt64 === $util.emptyObject)
                                 message.mapStringInt64 = {};
                             var end2 = reader.uint32() + reader.pos;
@@ -8675,11 +8678,11 @@ $root.jspb = (function() {
                             value = 0;
                             while (reader.pos < end2) {
                                 var tag2 = reader.uint32();
-                                switch (tag2 >>> 3) {
-                                case 1:
+                                switch (tag2) {
+                                case 10:
                                     key = reader.string();
                                     break;
-                                case 2:
+                                case 16:
                                     value = reader.int64();
                                     break;
                                 default:
@@ -8692,7 +8695,7 @@ $root.jspb = (function() {
                             message.mapStringInt64[key] = value;
                             break;
                         }
-                    case 4: {
+                    case 34: {
                             if (message.mapStringBool === $util.emptyObject)
                                 message.mapStringBool = {};
                             var end2 = reader.uint32() + reader.pos;
@@ -8700,11 +8703,11 @@ $root.jspb = (function() {
                             value = false;
                             while (reader.pos < end2) {
                                 var tag2 = reader.uint32();
-                                switch (tag2 >>> 3) {
-                                case 1:
+                                switch (tag2) {
+                                case 10:
                                     key = reader.string();
                                     break;
-                                case 2:
+                                case 16:
                                     value = reader.bool();
                                     break;
                                 default:
@@ -8717,7 +8720,7 @@ $root.jspb = (function() {
                             message.mapStringBool[key] = value;
                             break;
                         }
-                    case 5: {
+                    case 42: {
                             if (message.mapStringDouble === $util.emptyObject)
                                 message.mapStringDouble = {};
                             var end2 = reader.uint32() + reader.pos;
@@ -8725,11 +8728,11 @@ $root.jspb = (function() {
                             value = 0;
                             while (reader.pos < end2) {
                                 var tag2 = reader.uint32();
-                                switch (tag2 >>> 3) {
-                                case 1:
+                                switch (tag2) {
+                                case 10:
                                     key = reader.string();
                                     break;
-                                case 2:
+                                case 17:
                                     value = reader.double();
                                     break;
                                 default:
@@ -8742,7 +8745,7 @@ $root.jspb = (function() {
                             message.mapStringDouble[key] = value;
                             break;
                         }
-                    case 6: {
+                    case 50: {
                             if (message.mapStringEnum === $util.emptyObject)
                                 message.mapStringEnum = {};
                             var end2 = reader.uint32() + reader.pos;
@@ -8750,11 +8753,11 @@ $root.jspb = (function() {
                             value = 0;
                             while (reader.pos < end2) {
                                 var tag2 = reader.uint32();
-                                switch (tag2 >>> 3) {
-                                case 1:
+                                switch (tag2) {
+                                case 10:
                                     key = reader.string();
                                     break;
-                                case 2:
+                                case 16:
                                     value = reader.int32();
                                     break;
                                 default:
@@ -8767,7 +8770,7 @@ $root.jspb = (function() {
                             message.mapStringEnum[key] = value;
                             break;
                         }
-                    case 7: {
+                    case 58: {
                             if (message.mapStringMsg === $util.emptyObject)
                                 message.mapStringMsg = {};
                             var end2 = reader.uint32() + reader.pos;
@@ -8775,11 +8778,11 @@ $root.jspb = (function() {
                             value = null;
                             while (reader.pos < end2) {
                                 var tag2 = reader.uint32();
-                                switch (tag2 >>> 3) {
-                                case 1:
+                                switch (tag2) {
+                                case 10:
                                     key = reader.string();
                                     break;
-                                case 2:
+                                case 18:
                                     value = $root.jspb.test.MapValueMessageNoBinary.decode(reader, reader.uint32(), undefined, long + 1);
                                     break;
                                 default:
@@ -8792,7 +8795,7 @@ $root.jspb = (function() {
                             message.mapStringMsg[key] = value;
                             break;
                         }
-                    case 8: {
+                    case 66: {
                             if (message.mapInt32String === $util.emptyObject)
                                 message.mapInt32String = {};
                             var end2 = reader.uint32() + reader.pos;
@@ -8800,11 +8803,11 @@ $root.jspb = (function() {
                             value = "";
                             while (reader.pos < end2) {
                                 var tag2 = reader.uint32();
-                                switch (tag2 >>> 3) {
-                                case 1:
+                                switch (tag2) {
+                                case 8:
                                     key = reader.int32();
                                     break;
-                                case 2:
+                                case 18:
                                     value = reader.string();
                                     break;
                                 default:
@@ -8815,7 +8818,7 @@ $root.jspb = (function() {
                             message.mapInt32String[key] = value;
                             break;
                         }
-                    case 9: {
+                    case 74: {
                             if (message.mapInt64String === $util.emptyObject)
                                 message.mapInt64String = {};
                             var end2 = reader.uint32() + reader.pos;
@@ -8823,11 +8826,11 @@ $root.jspb = (function() {
                             value = "";
                             while (reader.pos < end2) {
                                 var tag2 = reader.uint32();
-                                switch (tag2 >>> 3) {
-                                case 1:
+                                switch (tag2) {
+                                case 8:
                                     key = reader.int64();
                                     break;
-                                case 2:
+                                case 18:
                                     value = reader.string();
                                     break;
                                 default:
@@ -8838,7 +8841,7 @@ $root.jspb = (function() {
                             message.mapInt64String[typeof key === "object" ? $util.longToHash(key) : key] = value;
                             break;
                         }
-                    case 10: {
+                    case 82: {
                             if (message.mapBoolString === $util.emptyObject)
                                 message.mapBoolString = {};
                             var end2 = reader.uint32() + reader.pos;
@@ -8846,11 +8849,11 @@ $root.jspb = (function() {
                             value = "";
                             while (reader.pos < end2) {
                                 var tag2 = reader.uint32();
-                                switch (tag2 >>> 3) {
-                                case 1:
+                                switch (tag2) {
+                                case 8:
                                     key = reader.bool();
                                     break;
-                                case 2:
+                                case 18:
                                     value = reader.string();
                                     break;
                                 default:
@@ -8861,11 +8864,11 @@ $root.jspb = (function() {
                             message.mapBoolString[key] = value;
                             break;
                         }
-                    case 11: {
+                    case 90: {
                             message.testMapFields = $root.jspb.test.TestMapFieldsNoBinary.decode(reader, reader.uint32(), undefined, long + 1);
                             break;
                         }
-                    case 12: {
+                    case 98: {
                             if (message.mapStringTestmapfields === $util.emptyObject)
                                 message.mapStringTestmapfields = {};
                             var end2 = reader.uint32() + reader.pos;
@@ -8873,11 +8876,11 @@ $root.jspb = (function() {
                             value = null;
                             while (reader.pos < end2) {
                                 var tag2 = reader.uint32();
-                                switch (tag2 >>> 3) {
-                                case 1:
+                                switch (tag2) {
+                                case 10:
                                     key = reader.string();
                                     break;
-                                case 2:
+                                case 18:
                                     value = $root.jspb.test.TestMapFieldsNoBinary.decode(reader, reader.uint32(), undefined, long + 1);
                                     break;
                                 default:
@@ -9476,8 +9479,8 @@ $root.jspb = (function() {
                     var tag = reader.uint32();
                     if (tag === error)
                         break;
-                    switch (tag >>> 3) {
-                    case 1: {
+                    switch (tag) {
+                    case 8: {
                             message.foo = reader.int32();
                             break;
                         }
@@ -9682,7 +9685,7 @@ $root.jspb = (function() {
                     var tag = reader.uint32();
                     if (tag === error)
                         break;
-                    switch (tag >>> 3) {
+                    switch (tag) {
                     default:
                         reader.skipType(tag & 7, long);
                         break;
@@ -9868,7 +9871,7 @@ $root.jspb = (function() {
                         var tag = reader.uint32();
                         if (tag === error)
                             break;
-                        switch (tag >>> 3) {
+                        switch (tag) {
                         default:
                             reader.skipType(tag & 7, long);
                             break;
@@ -10065,8 +10068,8 @@ $root.jspb = (function() {
                             var tag = reader.uint32();
                             if (tag === error)
                                 break;
-                            switch (tag >>> 3) {
-                            case 1: {
+                            switch (tag) {
+                            case 8: {
                                     message.count = reader.int32();
                                     break;
                                 }
@@ -10314,8 +10317,8 @@ $root.google = (function() {
                     var tag = reader.uint32();
                     if (tag === error)
                         break;
-                    switch (tag >>> 3) {
-                    case 1: {
+                    switch (tag) {
+                    case 10: {
                             if (!(message.file && message.file.length))
                                 message.file = [];
                             message.file.push($root.google.protobuf.FileDescriptorProto.decode(reader, reader.uint32(), undefined, long + 1));
@@ -10743,22 +10746,23 @@ $root.google = (function() {
                     var tag = reader.uint32();
                     if (tag === error)
                         break;
-                    switch (tag >>> 3) {
-                    case 1: {
+                    switch (tag) {
+                    case 10: {
                             message.name = reader.string();
                             break;
                         }
-                    case 2: {
+                    case 18: {
                             message["package"] = reader.string();
                             break;
                         }
-                    case 3: {
+                    case 26: {
                             if (!(message.dependency && message.dependency.length))
                                 message.dependency = [];
                             message.dependency.push(reader.string());
                             break;
                         }
-                    case 10: {
+                    case 80:
+                    case 82: {
                             if (!(message.publicDependency && message.publicDependency.length))
                                 message.publicDependency = [];
                             if ((tag & 7) === 2) {
@@ -10769,7 +10773,8 @@ $root.google = (function() {
                                 message.publicDependency.push(reader.int32());
                             break;
                         }
-                    case 11: {
+                    case 88:
+                    case 90: {
                             if (!(message.weakDependency && message.weakDependency.length))
                                 message.weakDependency = [];
                             if ((tag & 7) === 2) {
@@ -10780,49 +10785,49 @@ $root.google = (function() {
                                 message.weakDependency.push(reader.int32());
                             break;
                         }
-                    case 15: {
+                    case 122: {
                             if (!(message.optionDependency && message.optionDependency.length))
                                 message.optionDependency = [];
                             message.optionDependency.push(reader.string());
                             break;
                         }
-                    case 4: {
+                    case 34: {
                             if (!(message.messageType && message.messageType.length))
                                 message.messageType = [];
                             message.messageType.push($root.google.protobuf.DescriptorProto.decode(reader, reader.uint32(), undefined, long + 1));
                             break;
                         }
-                    case 5: {
+                    case 42: {
                             if (!(message.enumType && message.enumType.length))
                                 message.enumType = [];
                             message.enumType.push($root.google.protobuf.EnumDescriptorProto.decode(reader, reader.uint32(), undefined, long + 1));
                             break;
                         }
-                    case 6: {
+                    case 50: {
                             if (!(message.service && message.service.length))
                                 message.service = [];
                             message.service.push($root.google.protobuf.ServiceDescriptorProto.decode(reader, reader.uint32(), undefined, long + 1));
                             break;
                         }
-                    case 7: {
+                    case 58: {
                             if (!(message.extension && message.extension.length))
                                 message.extension = [];
                             message.extension.push($root.google.protobuf.FieldDescriptorProto.decode(reader, reader.uint32(), undefined, long + 1));
                             break;
                         }
-                    case 8: {
+                    case 66: {
                             message.options = $root.google.protobuf.FileOptions.decode(reader, reader.uint32(), undefined, long + 1);
                             break;
                         }
-                    case 9: {
+                    case 74: {
                             message.sourceCodeInfo = $root.google.protobuf.SourceCodeInfo.decode(reader, reader.uint32(), undefined, long + 1);
                             break;
                         }
-                    case 12: {
+                    case 98: {
                             message.syntax = reader.string();
                             break;
                         }
-                    case 14: {
+                    case 112: {
                             message.edition = reader.int32();
                             break;
                         }
@@ -11466,64 +11471,64 @@ $root.google = (function() {
                     var tag = reader.uint32();
                     if (tag === error)
                         break;
-                    switch (tag >>> 3) {
-                    case 1: {
+                    switch (tag) {
+                    case 10: {
                             message.name = reader.string();
                             break;
                         }
-                    case 2: {
+                    case 18: {
                             if (!(message.field && message.field.length))
                                 message.field = [];
                             message.field.push($root.google.protobuf.FieldDescriptorProto.decode(reader, reader.uint32(), undefined, long + 1));
                             break;
                         }
-                    case 6: {
+                    case 50: {
                             if (!(message.extension && message.extension.length))
                                 message.extension = [];
                             message.extension.push($root.google.protobuf.FieldDescriptorProto.decode(reader, reader.uint32(), undefined, long + 1));
                             break;
                         }
-                    case 3: {
+                    case 26: {
                             if (!(message.nestedType && message.nestedType.length))
                                 message.nestedType = [];
                             message.nestedType.push($root.google.protobuf.DescriptorProto.decode(reader, reader.uint32(), undefined, long + 1));
                             break;
                         }
-                    case 4: {
+                    case 34: {
                             if (!(message.enumType && message.enumType.length))
                                 message.enumType = [];
                             message.enumType.push($root.google.protobuf.EnumDescriptorProto.decode(reader, reader.uint32(), undefined, long + 1));
                             break;
                         }
-                    case 5: {
+                    case 42: {
                             if (!(message.extensionRange && message.extensionRange.length))
                                 message.extensionRange = [];
                             message.extensionRange.push($root.google.protobuf.DescriptorProto.ExtensionRange.decode(reader, reader.uint32(), undefined, long + 1));
                             break;
                         }
-                    case 8: {
+                    case 66: {
                             if (!(message.oneofDecl && message.oneofDecl.length))
                                 message.oneofDecl = [];
                             message.oneofDecl.push($root.google.protobuf.OneofDescriptorProto.decode(reader, reader.uint32(), undefined, long + 1));
                             break;
                         }
-                    case 7: {
+                    case 58: {
                             message.options = $root.google.protobuf.MessageOptions.decode(reader, reader.uint32(), undefined, long + 1);
                             break;
                         }
-                    case 9: {
+                    case 74: {
                             if (!(message.reservedRange && message.reservedRange.length))
                                 message.reservedRange = [];
                             message.reservedRange.push($root.google.protobuf.DescriptorProto.ReservedRange.decode(reader, reader.uint32(), undefined, long + 1));
                             break;
                         }
-                    case 10: {
+                    case 82: {
                             if (!(message.reservedName && message.reservedName.length))
                                 message.reservedName = [];
                             message.reservedName.push(reader.string());
                             break;
                         }
-                    case 11: {
+                    case 88: {
                             message.visibility = reader.int32();
                             break;
                         }
@@ -12001,16 +12006,16 @@ $root.google = (function() {
                         var tag = reader.uint32();
                         if (tag === error)
                             break;
-                        switch (tag >>> 3) {
-                        case 1: {
+                        switch (tag) {
+                        case 8: {
                                 message.start = reader.int32();
                                 break;
                             }
-                        case 2: {
+                        case 16: {
                                 message.end = reader.int32();
                                 break;
                             }
-                        case 3: {
+                        case 26: {
                                 message.options = $root.google.protobuf.ExtensionRangeOptions.decode(reader, reader.uint32(), undefined, long + 1);
                                 break;
                             }
@@ -12259,12 +12264,12 @@ $root.google = (function() {
                         var tag = reader.uint32();
                         if (tag === error)
                             break;
-                        switch (tag >>> 3) {
-                        case 1: {
+                        switch (tag) {
+                        case 8: {
                                 message.start = reader.int32();
                                 break;
                             }
-                        case 2: {
+                        case 16: {
                                 message.end = reader.int32();
                                 break;
                             }
@@ -12529,24 +12534,24 @@ $root.google = (function() {
                     var tag = reader.uint32();
                     if (tag === error)
                         break;
-                    switch (tag >>> 3) {
-                    case 999: {
+                    switch (tag) {
+                    case 7994: {
                             if (!(message.uninterpretedOption && message.uninterpretedOption.length))
                                 message.uninterpretedOption = [];
                             message.uninterpretedOption.push($root.google.protobuf.UninterpretedOption.decode(reader, reader.uint32(), undefined, long + 1));
                             break;
                         }
-                    case 2: {
+                    case 18: {
                             if (!(message.declaration && message.declaration.length))
                                 message.declaration = [];
                             message.declaration.push($root.google.protobuf.ExtensionRangeOptions.Declaration.decode(reader, reader.uint32(), undefined, long + 1));
                             break;
                         }
-                    case 50: {
+                    case 402: {
                             message.features = $root.google.protobuf.FeatureSet.decode(reader, reader.uint32(), undefined, long + 1);
                             break;
                         }
-                    case 3: {
+                    case 24: {
                             message.verification = reader.int32();
                             break;
                         }
@@ -12888,24 +12893,24 @@ $root.google = (function() {
                         var tag = reader.uint32();
                         if (tag === error)
                             break;
-                        switch (tag >>> 3) {
-                        case 1: {
+                        switch (tag) {
+                        case 8: {
                                 message.number = reader.int32();
                                 break;
                             }
-                        case 2: {
+                        case 18: {
                                 message.fullName = reader.string();
                                 break;
                             }
-                        case 3: {
+                        case 26: {
                                 message.type = reader.string();
                                 break;
                             }
-                        case 5: {
+                        case 40: {
                                 message.reserved = reader.bool();
                                 break;
                             }
-                        case 6: {
+                        case 48: {
                                 message.repeated = reader.bool();
                                 break;
                             }
@@ -13281,48 +13286,48 @@ $root.google = (function() {
                     var tag = reader.uint32();
                     if (tag === error)
                         break;
-                    switch (tag >>> 3) {
-                    case 1: {
+                    switch (tag) {
+                    case 10: {
                             message.name = reader.string();
                             break;
                         }
-                    case 3: {
+                    case 24: {
                             message.number = reader.int32();
                             break;
                         }
-                    case 4: {
+                    case 32: {
                             message.label = reader.int32();
                             break;
                         }
-                    case 5: {
+                    case 40: {
                             message.type = reader.int32();
                             break;
                         }
-                    case 6: {
+                    case 50: {
                             message.typeName = reader.string();
                             break;
                         }
-                    case 2: {
+                    case 18: {
                             message.extendee = reader.string();
                             break;
                         }
-                    case 7: {
+                    case 58: {
                             message.defaultValue = reader.string();
                             break;
                         }
-                    case 9: {
+                    case 72: {
                             message.oneofIndex = reader.int32();
                             break;
                         }
-                    case 10: {
+                    case 82: {
                             message.jsonName = reader.string();
                             break;
                         }
-                    case 8: {
+                    case 66: {
                             message.options = $root.google.protobuf.FieldOptions.decode(reader, reader.uint32(), undefined, long + 1);
                             break;
                         }
-                    case 17: {
+                    case 136: {
                             message.proto3Optional = reader.bool();
                             break;
                         }
@@ -13820,12 +13825,12 @@ $root.google = (function() {
                     var tag = reader.uint32();
                     if (tag === error)
                         break;
-                    switch (tag >>> 3) {
-                    case 1: {
+                    switch (tag) {
+                    case 10: {
                             message.name = reader.string();
                             break;
                         }
-                    case 2: {
+                    case 18: {
                             message.options = $root.google.protobuf.OneofOptions.decode(reader, reader.uint32(), undefined, long + 1);
                             break;
                         }
@@ -14116,34 +14121,34 @@ $root.google = (function() {
                     var tag = reader.uint32();
                     if (tag === error)
                         break;
-                    switch (tag >>> 3) {
-                    case 1: {
+                    switch (tag) {
+                    case 10: {
                             message.name = reader.string();
                             break;
                         }
-                    case 2: {
+                    case 18: {
                             if (!(message.value && message.value.length))
                                 message.value = [];
                             message.value.push($root.google.protobuf.EnumValueDescriptorProto.decode(reader, reader.uint32(), undefined, long + 1));
                             break;
                         }
-                    case 3: {
+                    case 26: {
                             message.options = $root.google.protobuf.EnumOptions.decode(reader, reader.uint32(), undefined, long + 1);
                             break;
                         }
-                    case 4: {
+                    case 34: {
                             if (!(message.reservedRange && message.reservedRange.length))
                                 message.reservedRange = [];
                             message.reservedRange.push($root.google.protobuf.EnumDescriptorProto.EnumReservedRange.decode(reader, reader.uint32(), undefined, long + 1));
                             break;
                         }
-                    case 5: {
+                    case 42: {
                             if (!(message.reservedName && message.reservedName.length))
                                 message.reservedName = [];
                             message.reservedName.push(reader.string());
                             break;
                         }
-                    case 6: {
+                    case 48: {
                             message.visibility = reader.int32();
                             break;
                         }
@@ -14485,12 +14490,12 @@ $root.google = (function() {
                         var tag = reader.uint32();
                         if (tag === error)
                             break;
-                        switch (tag >>> 3) {
-                        case 1: {
+                        switch (tag) {
+                        case 8: {
                                 message.start = reader.int32();
                                 break;
                             }
-                        case 2: {
+                        case 16: {
                                 message.end = reader.int32();
                                 break;
                             }
@@ -14740,16 +14745,16 @@ $root.google = (function() {
                     var tag = reader.uint32();
                     if (tag === error)
                         break;
-                    switch (tag >>> 3) {
-                    case 1: {
+                    switch (tag) {
+                    case 10: {
                             message.name = reader.string();
                             break;
                         }
-                    case 2: {
+                    case 16: {
                             message.number = reader.int32();
                             break;
                         }
-                    case 3: {
+                    case 26: {
                             message.options = $root.google.protobuf.EnumValueOptions.decode(reader, reader.uint32(), undefined, long + 1);
                             break;
                         }
@@ -15011,18 +15016,18 @@ $root.google = (function() {
                     var tag = reader.uint32();
                     if (tag === error)
                         break;
-                    switch (tag >>> 3) {
-                    case 1: {
+                    switch (tag) {
+                    case 10: {
                             message.name = reader.string();
                             break;
                         }
-                    case 2: {
+                    case 18: {
                             if (!(message.method && message.method.length))
                                 message.method = [];
                             message.method.push($root.google.protobuf.MethodDescriptorProto.decode(reader, reader.uint32(), undefined, long + 1));
                             break;
                         }
-                    case 3: {
+                    case 26: {
                             message.options = $root.google.protobuf.ServiceOptions.decode(reader, reader.uint32(), undefined, long + 1);
                             break;
                         }
@@ -15333,28 +15338,28 @@ $root.google = (function() {
                     var tag = reader.uint32();
                     if (tag === error)
                         break;
-                    switch (tag >>> 3) {
-                    case 1: {
+                    switch (tag) {
+                    case 10: {
                             message.name = reader.string();
                             break;
                         }
-                    case 2: {
+                    case 18: {
                             message.inputType = reader.string();
                             break;
                         }
-                    case 3: {
+                    case 26: {
                             message.outputType = reader.string();
                             break;
                         }
-                    case 4: {
+                    case 34: {
                             message.options = $root.google.protobuf.MethodOptions.decode(reader, reader.uint32(), undefined, long + 1);
                             break;
                         }
-                    case 5: {
+                    case 40: {
                             message.clientStreaming = reader.bool();
                             break;
                         }
-                    case 6: {
+                    case 48: {
                             message.serverStreaming = reader.bool();
                             break;
                         }
@@ -15838,88 +15843,88 @@ $root.google = (function() {
                     var tag = reader.uint32();
                     if (tag === error)
                         break;
-                    switch (tag >>> 3) {
-                    case 1: {
+                    switch (tag) {
+                    case 10: {
                             message.javaPackage = reader.string();
                             break;
                         }
-                    case 8: {
+                    case 66: {
                             message.javaOuterClassname = reader.string();
                             break;
                         }
-                    case 10: {
+                    case 80: {
                             message.javaMultipleFiles = reader.bool();
                             break;
                         }
-                    case 20: {
+                    case 160: {
                             message.javaGenerateEqualsAndHash = reader.bool();
                             break;
                         }
-                    case 27: {
+                    case 216: {
                             message.javaStringCheckUtf8 = reader.bool();
                             break;
                         }
-                    case 9: {
+                    case 72: {
                             message.optimizeFor = reader.int32();
                             break;
                         }
-                    case 11: {
+                    case 90: {
                             message.goPackage = reader.string();
                             break;
                         }
-                    case 16: {
+                    case 128: {
                             message.ccGenericServices = reader.bool();
                             break;
                         }
-                    case 17: {
+                    case 136: {
                             message.javaGenericServices = reader.bool();
                             break;
                         }
-                    case 18: {
+                    case 144: {
                             message.pyGenericServices = reader.bool();
                             break;
                         }
-                    case 23: {
+                    case 184: {
                             message.deprecated = reader.bool();
                             break;
                         }
-                    case 31: {
+                    case 248: {
                             message.ccEnableArenas = reader.bool();
                             break;
                         }
-                    case 36: {
+                    case 290: {
                             message.objcClassPrefix = reader.string();
                             break;
                         }
-                    case 37: {
+                    case 298: {
                             message.csharpNamespace = reader.string();
                             break;
                         }
-                    case 39: {
+                    case 314: {
                             message.swiftPrefix = reader.string();
                             break;
                         }
-                    case 40: {
+                    case 322: {
                             message.phpClassPrefix = reader.string();
                             break;
                         }
-                    case 41: {
+                    case 330: {
                             message.phpNamespace = reader.string();
                             break;
                         }
-                    case 44: {
+                    case 354: {
                             message.phpMetadataNamespace = reader.string();
                             break;
                         }
-                    case 45: {
+                    case 362: {
                             message.rubyPackage = reader.string();
                             break;
                         }
-                    case 50: {
+                    case 402: {
                             message.features = $root.google.protobuf.FeatureSet.decode(reader, reader.uint32(), undefined, long + 1);
                             break;
                         }
-                    case 999: {
+                    case 7994: {
                             if (!(message.uninterpretedOption && message.uninterpretedOption.length))
                                 message.uninterpretedOption = [];
                             message.uninterpretedOption.push($root.google.protobuf.UninterpretedOption.decode(reader, reader.uint32(), undefined, long + 1));
@@ -16429,32 +16434,32 @@ $root.google = (function() {
                     var tag = reader.uint32();
                     if (tag === error)
                         break;
-                    switch (tag >>> 3) {
-                    case 1: {
+                    switch (tag) {
+                    case 8: {
                             message.messageSetWireFormat = reader.bool();
                             break;
                         }
-                    case 2: {
+                    case 16: {
                             message.noStandardDescriptorAccessor = reader.bool();
                             break;
                         }
-                    case 3: {
+                    case 24: {
                             message.deprecated = reader.bool();
                             break;
                         }
-                    case 7: {
+                    case 56: {
                             message.mapEntry = reader.bool();
                             break;
                         }
-                    case 11: {
+                    case 88: {
                             message.deprecatedLegacyJsonFieldConflicts = reader.bool();
                             break;
                         }
-                    case 12: {
+                    case 98: {
                             message.features = $root.google.protobuf.FeatureSet.decode(reader, reader.uint32(), undefined, long + 1);
                             break;
                         }
-                    case 999: {
+                    case 7994: {
                             if (!(message.uninterpretedOption && message.uninterpretedOption.length))
                                 message.uninterpretedOption = [];
                             message.uninterpretedOption.push($root.google.protobuf.UninterpretedOption.decode(reader, reader.uint32(), undefined, long + 1));
@@ -16893,44 +16898,45 @@ $root.google = (function() {
                     var tag = reader.uint32();
                     if (tag === error)
                         break;
-                    switch (tag >>> 3) {
-                    case 1: {
+                    switch (tag) {
+                    case 8: {
                             message.ctype = reader.int32();
                             break;
                         }
-                    case 2: {
+                    case 16: {
                             message.packed = reader.bool();
                             break;
                         }
-                    case 6: {
+                    case 48: {
                             message.jstype = reader.int32();
                             break;
                         }
-                    case 5: {
+                    case 40: {
                             message.lazy = reader.bool();
                             break;
                         }
-                    case 15: {
+                    case 120: {
                             message.unverifiedLazy = reader.bool();
                             break;
                         }
-                    case 3: {
+                    case 24: {
                             message.deprecated = reader.bool();
                             break;
                         }
-                    case 10: {
+                    case 80: {
                             message.weak = reader.bool();
                             break;
                         }
-                    case 16: {
+                    case 128: {
                             message.debugRedact = reader.bool();
                             break;
                         }
-                    case 17: {
+                    case 136: {
                             message.retention = reader.int32();
                             break;
                         }
-                    case 19: {
+                    case 152:
+                    case 154: {
                             if (!(message.targets && message.targets.length))
                                 message.targets = [];
                             if ((tag & 7) === 2) {
@@ -16941,21 +16947,21 @@ $root.google = (function() {
                                 message.targets.push(reader.int32());
                             break;
                         }
-                    case 20: {
+                    case 162: {
                             if (!(message.editionDefaults && message.editionDefaults.length))
                                 message.editionDefaults = [];
                             message.editionDefaults.push($root.google.protobuf.FieldOptions.EditionDefault.decode(reader, reader.uint32(), undefined, long + 1));
                             break;
                         }
-                    case 21: {
+                    case 170: {
                             message.features = $root.google.protobuf.FeatureSet.decode(reader, reader.uint32(), undefined, long + 1);
                             break;
                         }
-                    case 22: {
+                    case 178: {
                             message.featureSupport = $root.google.protobuf.FieldOptions.FeatureSupport.decode(reader, reader.uint32(), undefined, long + 1);
                             break;
                         }
-                    case 999: {
+                    case 7994: {
                             if (!(message.uninterpretedOption && message.uninterpretedOption.length))
                                 message.uninterpretedOption = [];
                             message.uninterpretedOption.push($root.google.protobuf.UninterpretedOption.decode(reader, reader.uint32(), undefined, long + 1));
@@ -17553,12 +17559,12 @@ $root.google = (function() {
                         var tag = reader.uint32();
                         if (tag === error)
                             break;
-                        switch (tag >>> 3) {
-                        case 3: {
+                        switch (tag) {
+                        case 24: {
                                 message.edition = reader.int32();
                                 break;
                             }
-                        case 2: {
+                        case 18: {
                                 message.value = reader.string();
                                 break;
                             }
@@ -17885,20 +17891,20 @@ $root.google = (function() {
                         var tag = reader.uint32();
                         if (tag === error)
                             break;
-                        switch (tag >>> 3) {
-                        case 1: {
+                        switch (tag) {
+                        case 8: {
                                 message.editionIntroduced = reader.int32();
                                 break;
                             }
-                        case 2: {
+                        case 16: {
                                 message.editionDeprecated = reader.int32();
                                 break;
                             }
-                        case 3: {
+                        case 26: {
                                 message.deprecationWarning = reader.string();
                                 break;
                             }
-                        case 4: {
+                        case 32: {
                                 message.editionRemoved = reader.int32();
                                 break;
                             }
@@ -18362,12 +18368,12 @@ $root.google = (function() {
                     var tag = reader.uint32();
                     if (tag === error)
                         break;
-                    switch (tag >>> 3) {
-                    case 1: {
+                    switch (tag) {
+                    case 10: {
                             message.features = $root.google.protobuf.FeatureSet.decode(reader, reader.uint32(), undefined, long + 1);
                             break;
                         }
-                    case 999: {
+                    case 7994: {
                             if (!(message.uninterpretedOption && message.uninterpretedOption.length))
                                 message.uninterpretedOption = [];
                             message.uninterpretedOption.push($root.google.protobuf.UninterpretedOption.decode(reader, reader.uint32(), undefined, long + 1));
@@ -18673,30 +18679,30 @@ $root.google = (function() {
                     var tag = reader.uint32();
                     if (tag === error)
                         break;
-                    switch (tag >>> 3) {
-                    case 2: {
+                    switch (tag) {
+                    case 16: {
                             message.allowAlias = reader.bool();
                             break;
                         }
-                    case 3: {
+                    case 24: {
                             message.deprecated = reader.bool();
                             break;
                         }
-                    case 6: {
+                    case 48: {
                             message.deprecatedLegacyJsonFieldConflicts = reader.bool();
                             break;
                         }
-                    case 7: {
+                    case 58: {
                             message.features = $root.google.protobuf.FeatureSet.decode(reader, reader.uint32(), undefined, long + 1);
                             break;
                         }
-                    case 999: {
+                    case 7994: {
                             if (!(message.uninterpretedOption && message.uninterpretedOption.length))
                                 message.uninterpretedOption = [];
                             message.uninterpretedOption.push($root.google.protobuf.UninterpretedOption.decode(reader, reader.uint32(), undefined, long + 1));
                             break;
                         }
-                    case 42113038: {
+                    case 336904306: {
                             message[".jspb.test.IsExtension.simpleOption"] = reader.string();
                             break;
                         }
@@ -19022,24 +19028,24 @@ $root.google = (function() {
                     var tag = reader.uint32();
                     if (tag === error)
                         break;
-                    switch (tag >>> 3) {
-                    case 1: {
+                    switch (tag) {
+                    case 8: {
                             message.deprecated = reader.bool();
                             break;
                         }
-                    case 2: {
+                    case 18: {
                             message.features = $root.google.protobuf.FeatureSet.decode(reader, reader.uint32(), undefined, long + 1);
                             break;
                         }
-                    case 3: {
+                    case 24: {
                             message.debugRedact = reader.bool();
                             break;
                         }
-                    case 4: {
+                    case 34: {
                             message.featureSupport = $root.google.protobuf.FieldOptions.FeatureSupport.decode(reader, reader.uint32(), undefined, long + 1);
                             break;
                         }
-                    case 999: {
+                    case 7994: {
                             if (!(message.uninterpretedOption && message.uninterpretedOption.length))
                                 message.uninterpretedOption = [];
                             message.uninterpretedOption.push($root.google.protobuf.UninterpretedOption.decode(reader, reader.uint32(), undefined, long + 1));
@@ -19342,16 +19348,16 @@ $root.google = (function() {
                     var tag = reader.uint32();
                     if (tag === error)
                         break;
-                    switch (tag >>> 3) {
-                    case 34: {
+                    switch (tag) {
+                    case 274: {
                             message.features = $root.google.protobuf.FeatureSet.decode(reader, reader.uint32(), undefined, long + 1);
                             break;
                         }
-                    case 33: {
+                    case 264: {
                             message.deprecated = reader.bool();
                             break;
                         }
-                    case 999: {
+                    case 7994: {
                             if (!(message.uninterpretedOption && message.uninterpretedOption.length))
                                 message.uninterpretedOption = [];
                             message.uninterpretedOption.push($root.google.protobuf.UninterpretedOption.decode(reader, reader.uint32(), undefined, long + 1));
@@ -19644,20 +19650,20 @@ $root.google = (function() {
                     var tag = reader.uint32();
                     if (tag === error)
                         break;
-                    switch (tag >>> 3) {
-                    case 33: {
+                    switch (tag) {
+                    case 264: {
                             message.deprecated = reader.bool();
                             break;
                         }
-                    case 34: {
+                    case 272: {
                             message.idempotencyLevel = reader.int32();
                             break;
                         }
-                    case 35: {
+                    case 282: {
                             message.features = $root.google.protobuf.FeatureSet.decode(reader, reader.uint32(), undefined, long + 1);
                             break;
                         }
-                    case 999: {
+                    case 7994: {
                             if (!(message.uninterpretedOption && message.uninterpretedOption.length))
                                 message.uninterpretedOption = [];
                             message.uninterpretedOption.push($root.google.protobuf.UninterpretedOption.decode(reader, reader.uint32(), undefined, long + 1));
@@ -20031,34 +20037,34 @@ $root.google = (function() {
                     var tag = reader.uint32();
                     if (tag === error)
                         break;
-                    switch (tag >>> 3) {
-                    case 2: {
+                    switch (tag) {
+                    case 18: {
                             if (!(message.name && message.name.length))
                                 message.name = [];
                             message.name.push($root.google.protobuf.UninterpretedOption.NamePart.decode(reader, reader.uint32(), undefined, long + 1));
                             break;
                         }
-                    case 3: {
+                    case 26: {
                             message.identifierValue = reader.string();
                             break;
                         }
-                    case 4: {
+                    case 32: {
                             message.positiveIntValue = reader.uint64();
                             break;
                         }
-                    case 5: {
+                    case 40: {
                             message.negativeIntValue = reader.int64();
                             break;
                         }
-                    case 6: {
+                    case 49: {
                             message.doubleValue = reader.double();
                             break;
                         }
-                    case 7: {
+                    case 58: {
                             message.stringValue = reader.bytes();
                             break;
                         }
-                    case 8: {
+                    case 66: {
                             message.aggregateValue = reader.string();
                             break;
                         }
@@ -20384,12 +20390,12 @@ $root.google = (function() {
                         var tag = reader.uint32();
                         if (tag === error)
                             break;
-                        switch (tag >>> 3) {
-                        case 1: {
+                        switch (tag) {
+                        case 10: {
                                 message.namePart = reader.string();
                                 break;
                             }
-                        case 2: {
+                        case 16: {
                                 message.isExtension = reader.bool();
                                 break;
                             }
@@ -20696,36 +20702,36 @@ $root.google = (function() {
                     var tag = reader.uint32();
                     if (tag === error)
                         break;
-                    switch (tag >>> 3) {
-                    case 1: {
+                    switch (tag) {
+                    case 8: {
                             message.fieldPresence = reader.int32();
                             break;
                         }
-                    case 2: {
+                    case 16: {
                             message.enumType = reader.int32();
                             break;
                         }
-                    case 3: {
+                    case 24: {
                             message.repeatedFieldEncoding = reader.int32();
                             break;
                         }
-                    case 4: {
+                    case 32: {
                             message.utf8Validation = reader.int32();
                             break;
                         }
-                    case 5: {
+                    case 40: {
                             message.messageEncoding = reader.int32();
                             break;
                         }
-                    case 6: {
+                    case 48: {
                             message.jsonFormat = reader.int32();
                             break;
                         }
-                    case 7: {
+                    case 56: {
                             message.enforceNamingStyle = reader.int32();
                             break;
                         }
-                    case 8: {
+                    case 64: {
                             message.defaultSymbolVisibility = reader.int32();
                             break;
                         }
@@ -21305,7 +21311,7 @@ $root.google = (function() {
                         var tag = reader.uint32();
                         if (tag === error)
                             break;
-                        switch (tag >>> 3) {
+                        switch (tag) {
                         default:
                             reader.skipType(tag & 7, long);
                             break;
@@ -21552,18 +21558,18 @@ $root.google = (function() {
                     var tag = reader.uint32();
                     if (tag === error)
                         break;
-                    switch (tag >>> 3) {
-                    case 1: {
+                    switch (tag) {
+                    case 10: {
                             if (!(message.defaults && message.defaults.length))
                                 message.defaults = [];
                             message.defaults.push($root.google.protobuf.FeatureSetDefaults.FeatureSetEditionDefault.decode(reader, reader.uint32(), undefined, long + 1));
                             break;
                         }
-                    case 4: {
+                    case 32: {
                             message.minimumEdition = reader.int32();
                             break;
                         }
-                    case 5: {
+                    case 40: {
                             message.maximumEdition = reader.int32();
                             break;
                         }
@@ -21971,16 +21977,16 @@ $root.google = (function() {
                         var tag = reader.uint32();
                         if (tag === error)
                             break;
-                        switch (tag >>> 3) {
-                        case 3: {
+                        switch (tag) {
+                        case 24: {
                                 message.edition = reader.int32();
                                 break;
                             }
-                        case 4: {
+                        case 34: {
                                 message.overridableFeatures = $root.google.protobuf.FeatureSet.decode(reader, reader.uint32(), undefined, long + 1);
                                 break;
                             }
-                        case 5: {
+                        case 42: {
                                 message.fixedFeatures = $root.google.protobuf.FeatureSet.decode(reader, reader.uint32(), undefined, long + 1);
                                 break;
                             }
@@ -22297,8 +22303,8 @@ $root.google = (function() {
                     var tag = reader.uint32();
                     if (tag === error)
                         break;
-                    switch (tag >>> 3) {
-                    case 1: {
+                    switch (tag) {
+                    case 10: {
                             if (!(message.location && message.location.length))
                                 message.location = [];
                             message.location.push($root.google.protobuf.SourceCodeInfo.Location.decode(reader, reader.uint32(), undefined, long + 1));
@@ -22586,8 +22592,9 @@ $root.google = (function() {
                         var tag = reader.uint32();
                         if (tag === error)
                             break;
-                        switch (tag >>> 3) {
-                        case 1: {
+                        switch (tag) {
+                        case 8:
+                        case 10: {
                                 if (!(message.path && message.path.length))
                                     message.path = [];
                                 if ((tag & 7) === 2) {
@@ -22598,7 +22605,8 @@ $root.google = (function() {
                                     message.path.push(reader.int32());
                                 break;
                             }
-                        case 2: {
+                        case 16:
+                        case 18: {
                                 if (!(message.span && message.span.length))
                                     message.span = [];
                                 if ((tag & 7) === 2) {
@@ -22609,15 +22617,15 @@ $root.google = (function() {
                                     message.span.push(reader.int32());
                                 break;
                             }
-                        case 3: {
+                        case 26: {
                                 message.leadingComments = reader.string();
                                 break;
                             }
-                        case 4: {
+                        case 34: {
                                 message.trailingComments = reader.string();
                                 break;
                             }
-                        case 6: {
+                        case 50: {
                                 if (!(message.leadingDetachedComments && message.leadingDetachedComments.length))
                                     message.leadingDetachedComments = [];
                                 message.leadingDetachedComments.push(reader.string());
@@ -22911,8 +22919,8 @@ $root.google = (function() {
                     var tag = reader.uint32();
                     if (tag === error)
                         break;
-                    switch (tag >>> 3) {
-                    case 1: {
+                    switch (tag) {
+                    case 10: {
                             if (!(message.annotation && message.annotation.length))
                                 message.annotation = [];
                             message.annotation.push($root.google.protobuf.GeneratedCodeInfo.Annotation.decode(reader, reader.uint32(), undefined, long + 1));
@@ -23193,8 +23201,9 @@ $root.google = (function() {
                         var tag = reader.uint32();
                         if (tag === error)
                             break;
-                        switch (tag >>> 3) {
-                        case 1: {
+                        switch (tag) {
+                        case 8:
+                        case 10: {
                                 if (!(message.path && message.path.length))
                                     message.path = [];
                                 if ((tag & 7) === 2) {
@@ -23205,19 +23214,19 @@ $root.google = (function() {
                                     message.path.push(reader.int32());
                                 break;
                             }
-                        case 2: {
+                        case 18: {
                                 message.sourceFile = reader.string();
                                 break;
                             }
-                        case 3: {
+                        case 24: {
                                 message.begin = reader.int32();
                                 break;
                             }
-                        case 4: {
+                        case 32: {
                                 message.end = reader.int32();
                                 break;
                             }
-                        case 5: {
+                        case 40: {
                                 message.semantic = reader.int32();
                                 break;
                             }

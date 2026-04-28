@@ -27,17 +27,17 @@ function decoder(mtype) {
         ("var t=r.uint32()")
         ("if(t===e)")
             ("break")
-        ("switch(t>>>3){");
+        ("switch(t){");
 
     var i = 0;
     for (; i < /* initializes */ mtype.fieldsArray.length; ++i) {
         var field = mtype._fieldsArray[i].resolve(),
             type  = field.resolvedType instanceof Enum ? "int32" : field.type,
-            ref   = "m" + util.safeProp(field.name); gen
-            ("case %i: {", field.id);
+            ref   = "m" + util.safeProp(field.name);
 
         // Map fields
         if (field.map) { gen
+            ("case %i:{", field.id * 8 + 2)
                 ("if(%s===util.emptyObject)", ref)
                     ("%s={}", ref)
                 ("var c2 = r.uint32()+r.pos");
@@ -55,9 +55,9 @@ function decoder(mtype) {
             gen
                 ("while(r.pos<c2){")
                     ("var tag2=r.uint32()")
-                    ("switch(tag2>>>3){")
-                        ("case 1: k=r.%s(); break", field.keyType)
-                        ("case 2:");
+                    ("switch(tag2){")
+                        ("case %i: k=r.%s(); break", 8 + types.mapKey[field.keyType], field.keyType)
+                        ("case %i:", 16 + (types.basic[type] === undefined ? 2 : types.basic[type]));
 
             if (types.basic[type] === undefined) gen
                             ("value=types[%i].decode(r,r.uint32(),undefined,n+1)", i); // can't be groups
@@ -84,7 +84,13 @@ function decoder(mtype) {
 
         // Repeated fields
         } else if (field.repeated) { gen
+            ("case %i:", field.id * 8 + (types.basic[type] === undefined ? field.delimited ? 3 : 2 : types.basic[type]));
 
+            if (types.packed[type] !== undefined) gen
+            ("case %i:", field.id * 8 + 2);
+
+            gen
+            ("{")
                 ("if(!(%s&&%s.length))", ref, ref)
                     ("%s=[]", ref);
 
@@ -97,17 +103,26 @@ function decoder(mtype) {
                 ("}else");
 
             // Non-packed
-            if (types.basic[type] === undefined) gen(field.delimited
-                    ? "%s.push(types[%i].decode(r,undefined,((t&~7)|4),n+1))"
-                    : "%s.push(types[%i].decode(r,r.uint32(),undefined,n+1))", ref, i);
+            if (types.basic[type] === undefined) {
+                if (field.delimited) gen
+                    ("%s.push(types[%i].decode(r,undefined,%i,n+1))", ref, i, field.id * 8 + 4);
+                else gen
+                    ("%s.push(types[%i].decode(r,r.uint32(),undefined,n+1))", ref, i);
+            }
             else gen
                     ("%s.push(r.%s())", ref, type);
 
         // Non-repeated
-        } else if (types.basic[type] === undefined) gen(field.delimited
-                ? "%s=types[%i].decode(r,undefined,((t&~7)|4),n+1)"
-                : "%s=types[%i].decode(r,r.uint32(),undefined,n+1)", ref, i);
+        } else if (types.basic[type] === undefined) {
+            gen
+            ("case %i:{", field.id * 8 + (field.delimited ? 3 : 2));
+            if (field.delimited) gen
+                ("%s=types[%i].decode(r,undefined,%i,n+1)", ref, i, field.id * 8 + 4);
+            else gen
+                ("%s=types[%i].decode(r,r.uint32(),undefined,n+1)", ref, i);
+        }
         else gen
+            ("case %i:{", field.id * 8 + types.basic[type])
                 ("%s=r.%s()", ref, type);
         if (field.partOf) gen
                 ("m%s=%j", util.safeProp(field.partOf.name), field.name);

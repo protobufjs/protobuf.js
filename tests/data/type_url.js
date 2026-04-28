@@ -106,8 +106,8 @@ $root.TypeUrlTest = (function() {
             var tag = reader.uint32();
             if (tag === error)
                 break;
-            switch (tag >>> 3) {
-            case 1: {
+            switch (tag) {
+            case 10: {
                     message.nested = $root.TypeUrlTest.Nested.decode(reader, reader.uint32(), undefined, long + 1);
                     break;
                 }
@@ -325,8 +325,8 @@ $root.TypeUrlTest = (function() {
                 var tag = reader.uint32();
                 if (tag === error)
                     break;
-                switch (tag >>> 3) {
-                case 1: {
+                switch (tag) {
+                case 10: {
                         message.a = reader.string();
                         break;
                     }
