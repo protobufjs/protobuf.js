@@ -1,5 +1,12 @@
 # Changelog
 
+## [8.0.4](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v8.0.3...protobufjs-v8.0.4) (2026-04-28)
+
+
+### Bug Fixes
+
+* Update CLI peer dependency ([#2188](https://github.com/protobufjs/protobuf.js/issues/2188)) ([cb3e1eb](https://github.com/protobufjs/protobuf.js/commit/cb3e1eb40a477a699ac7d4598742ab8b0c42c7fd))
+
 ## [8.0.3](https://github.com/protobufjs/protobuf.js/compare/protobufjs-v8.0.2...protobufjs-v8.0.3) (2026-04-27)
 
 
