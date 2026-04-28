@@ -40,7 +40,7 @@ function decoder(mtype) {
             ("case %i:{", field.id * 8 + 2)
                 ("if(%s===util.emptyObject)", ref)
                     ("%s={}", ref)
-                ("var c2 = r.uint32()+r.pos");
+                ("var c2=r.uint32()+r.pos");
 
             if (types.defaults[field.keyType] !== undefined) gen
                 ("k=%j", types.defaults[field.keyType]);
@@ -56,7 +56,7 @@ function decoder(mtype) {
                 ("while(r.pos<c2){")
                     ("var tag2=r.uint32()")
                     ("switch(tag2){")
-                        ("case %i: k=r.%s(); break", 8 + types.mapKey[field.keyType], field.keyType)
+                        ("case %i:k=r.%s();break", 8 + types.mapKey[field.keyType], field.keyType)
                         ("case %i:", 16 + (types.basic[type] === undefined ? 2 : types.basic[type]));
 
             if (types.basic[type] === undefined) gen
