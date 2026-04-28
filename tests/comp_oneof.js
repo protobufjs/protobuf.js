@@ -53,6 +53,11 @@ tape.test("oneofs", function(test) {
     test.equal(buf[0], 16, "should write id 1, wireType 0");
     test.equal(buf[1], 0, "should write a value of 0");
 
+    message = Message.decode([ 10, 1, 97, 16, 1 ]);
+    test.equal(message.kind, "num", "should decode the last value");
+    test.notOk(message.hasOwnProperty("str"), "should delete previous values while decoding");
+    test.same(Array.prototype.slice.call(Message.encode(message).finish()), [ 16, 1 ], "should re-encode only the last value");
+
     test.end();
 
 });
