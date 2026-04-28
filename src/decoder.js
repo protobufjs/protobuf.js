@@ -109,6 +109,8 @@ function decoder(mtype) {
                 : "%s=types[%i].decode(r,r.uint32(),undefined,q+1,%s)", ref, i, ref);
         else gen
                 ("%s=r.%s()", ref, type);
+        if (field.partOf) gen
+                ("m%s=%j", util.safeProp(field.partOf.name), field.name);
         gen
                 ("break")
             ("}");

@@ -232,23 +232,21 @@ ReflectionObject.prototype._resolveFeatures = function _resolveFeatures(edition)
             throw new Error("Unknown edition: " + edition);
         }
         this._features = Object.assign(defaults, protoFeatures || {});
-        this._featuresResolved = true;
-        return;
-    }
-
-    // fields in Oneofs aren't actually children of them, so we have to
-    // special-case it
-    /* istanbul ignore else */
-    if (this.partOf instanceof OneOf) {
-        var lexicalParentFeaturesCopy = Object.assign({}, this.partOf._features);
-        this._features = Object.assign(lexicalParentFeaturesCopy, protoFeatures || {});
-    } else if (this.declaringField) {
-        // Skip feature resolution of sister fields.
-    } else if (this.parent) {
-        var parentFeaturesCopy = Object.assign({}, this.parent._features);
-        this._features = Object.assign(parentFeaturesCopy, protoFeatures || {});
     } else {
-        throw new Error("Unable to find a parent for " + this.fullName);
+        // fields in Oneofs aren't actually children of them, so we have to
+        // special-case it
+        /* istanbul ignore else */
+        if (this.partOf instanceof OneOf) {
+            var lexicalParentFeaturesCopy = Object.assign({}, this.partOf._features);
+            this._features = Object.assign(lexicalParentFeaturesCopy, protoFeatures || {});
+        } else if (this.declaringField) {
+            // Skip feature resolution of sister fields.
+        } else if (this.parent) {
+            var parentFeaturesCopy = Object.assign({}, this.parent._features);
+            this._features = Object.assign(parentFeaturesCopy, protoFeatures || {});
+        } else {
+            throw new Error("Unable to find a parent for " + this.fullName);
+        }
     }
     if (this.extensionField) {
         // Sister fields should have the same features as their extensions.
