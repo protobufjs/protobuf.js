@@ -3,12 +3,108 @@ on:
     branches:
       - protobufjs-v7.x
 name: release-please
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+  id-token: write
+
 jobs:
   release-please:
     runs-on: ubuntu-latest
     steps:
       - uses: googleapis/release-please-action@v3
+        id: release
         with:
           command: manifest
           package-name: release-please-action
           default-branch: ${{ github.ref_name }}
+
+      - uses: actions/checkout@v6
+        if: ${{ steps.release.outputs.releases_created == 'true' }}
+
+      - uses: actions/setup-node@v6
+        if: ${{ steps.release.outputs.releases_created == 'true' }}
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org/
+
+      - name: Use npm with trusted publishing support
+        if: ${{ steps.release.outputs.releases_created == 'true' }}
+        run: npm install -g npm@^11.5.1
+
+      - name: Install dependencies
+        if: ${{ steps.release.outputs.releases_created == 'true' }}
+        run: npm install --ignore-scripts
+
+      - name: Install CLI dependencies
+        if: ${{ steps.release.outputs.releases_created == 'true' }}
+        run: npm --prefix cli install --ignore-scripts
+
+      - name: Build
+        if: ${{ steps.release.outputs.releases_created == 'true' }}
+        run: npm run build
+
+      - name: Test
+        if: ${{ steps.release.outputs.releases_created == 'true' }}
+        run: npm test
+
+      - name: Publish @protobufjs/aspromise
+        if: ${{ steps.release.outputs['lib/aspromise--release_created'] == 'true' }}
+        working-directory: lib/aspromise
+        run: npm publish --ignore-scripts --access public
+
+      - name: Publish @protobufjs/base64
+        if: ${{ steps.release.outputs['lib/base64--release_created'] == 'true' }}
+        working-directory: lib/base64
+        run: npm publish --ignore-scripts --access public
+
+      - name: Publish @protobufjs/codegen
+        if: ${{ steps.release.outputs['lib/codegen--release_created'] == 'true' }}
+        working-directory: lib/codegen
+        run: npm publish --ignore-scripts --access public
+
+      - name: Publish @protobufjs/eventemitter
+        if: ${{ steps.release.outputs['lib/eventemitter--release_created'] == 'true' }}
+        working-directory: lib/eventemitter
+        run: npm publish --ignore-scripts --access public
+
+      - name: Publish @protobufjs/fetch
+        if: ${{ steps.release.outputs['lib/fetch--release_created'] == 'true' }}
+        working-directory: lib/fetch
+        run: npm publish --ignore-scripts --access public
+
+      - name: Publish @protobufjs/float
+        if: ${{ steps.release.outputs['lib/float--release_created'] == 'true' }}
+        working-directory: lib/float
+        run: npm publish --ignore-scripts --access public
+
+      - name: Publish @protobufjs/inquire
+        if: ${{ steps.release.outputs['lib/inquire--release_created'] == 'true' }}
+        working-directory: lib/inquire
+        run: npm publish --ignore-scripts --access public
+
+      - name: Publish @protobufjs/path
+        if: ${{ steps.release.outputs['lib/path--release_created'] == 'true' }}
+        working-directory: lib/path
+        run: npm publish --ignore-scripts --access public
+
+      - name: Publish @protobufjs/pool
+        if: ${{ steps.release.outputs['lib/pool--release_created'] == 'true' }}
+        working-directory: lib/pool
+        run: npm publish --ignore-scripts --access public
+
+      - name: Publish @protobufjs/utf8
+        if: ${{ steps.release.outputs['lib/utf8--release_created'] == 'true' }}
+        working-directory: lib/utf8
+        run: npm publish --ignore-scripts --access public
+
+      - name: Publish protobufjs
+        if: ${{ steps.release.outputs.release_created == 'true' }}
+        run: npm publish --ignore-scripts --tag latest-7
+
+      - name: Publish protobufjs-cli
+        if: ${{ steps.release.outputs['cli--release_created'] == 'true' }}
+        working-directory: cli
+        run: npm publish --ignore-scripts --tag latest-1
