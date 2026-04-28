@@ -8558,10 +8558,10 @@ $root.jspb = (function() {
                         writer.uint32(/* id 8, wireType 2 =*/66).fork().uint32(/* id 1, wireType 0 =*/8).int32(keys[i]).uint32(/* id 2, wireType 2 =*/18).string(message.mapInt32String[keys[i]]).ldelim();
                 if (message.mapInt64String != null && Object.hasOwnProperty.call(message, "mapInt64String"))
                     for (var keys = Object.keys(message.mapInt64String), i = 0; i < keys.length; ++i)
-                        writer.uint32(/* id 9, wireType 2 =*/74).fork().uint32(/* id 1, wireType 0 =*/8).int64(keys[i]).uint32(/* id 2, wireType 2 =*/18).string(message.mapInt64String[keys[i]]).ldelim();
+                        writer.uint32(/* id 9, wireType 2 =*/74).fork().uint32(/* id 1, wireType 0 =*/8).int64($util.longFromKey(keys[i], false)).uint32(/* id 2, wireType 2 =*/18).string(message.mapInt64String[keys[i]]).ldelim();
                 if (message.mapBoolString != null && Object.hasOwnProperty.call(message, "mapBoolString"))
                     for (var keys = Object.keys(message.mapBoolString), i = 0; i < keys.length; ++i)
-                        writer.uint32(/* id 10, wireType 2 =*/82).fork().uint32(/* id 1, wireType 0 =*/8).bool(keys[i]).uint32(/* id 2, wireType 2 =*/18).string(message.mapBoolString[keys[i]]).ldelim();
+                        writer.uint32(/* id 10, wireType 2 =*/82).fork().uint32(/* id 1, wireType 0 =*/8).bool($util.boolFromKey(keys[i])).uint32(/* id 2, wireType 2 =*/18).string(message.mapBoolString[keys[i]]).ldelim();
                 if (message.testMapFields != null && Object.hasOwnProperty.call(message, "testMapFields"))
                     $root.jspb.test.TestMapFieldsNoBinary.encode(message.testMapFields, writer.uint32(/* id 11, wireType 2 =*/90).fork()).ldelim();
                 if (message.mapStringTestmapfields != null && Object.hasOwnProperty.call(message, "mapStringTestmapfields"))
@@ -9299,9 +9299,10 @@ $root.jspb = (function() {
                 if (message.mapInt64String && (keys2 = Object.keys(message.mapInt64String)).length) {
                     object.mapInt64String = {};
                     for (var j = 0; j < keys2.length; ++j) {
+                        var k2 = $util.longFromKey(keys2[j], false).toString();
                         if (keys2[j] === "__proto__")
                             $util.makeProp(object.mapInt64String, keys2[j]);
-                        object.mapInt64String[keys2[j]] = message.mapInt64String[keys2[j]];
+                        object.mapInt64String[k2] = message.mapInt64String[keys2[j]];
                     }
                 }
                 if (message.mapBoolString && (keys2 = Object.keys(message.mapBoolString)).length) {
