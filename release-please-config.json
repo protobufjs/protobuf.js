@@ -2,7 +2,21 @@
   "bootstrap-sha": "75392ea1b78bdc4faba027b5db44ad7c50e9c454",
   "packages": {
     "cli": {},
-    ".": {},
+    ".": {
+      "exclude-paths": [
+        "cli",
+        "lib/aspromise",
+        "lib/base64",
+        "lib/codegen",
+        "lib/eventemitter",
+        "lib/fetch",
+        "lib/float",
+        "lib/inquire",
+        "lib/path",
+        "lib/pool",
+        "lib/utf8"
+      ]
+    },
     "lib/aspromise": {},
     "lib/base64": {},
     "lib/codegen": {},
