@@ -58,7 +58,7 @@
     "espree": "^9.0.0",
     "estraverse": "^5.1.0",
     "gh-pages": "^6.0.0",
-    "globals": "^16.0.0",
+    "globals": "^17.0.0",
     "google-protobuf": "^4.0.0",
     "gulp": "^5.0.0",
     "gulp-header": "^2.0.9",
