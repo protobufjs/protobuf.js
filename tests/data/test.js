@@ -7827,18 +7827,22 @@ $root.jspb = (function() {
                     switch (tag >>> 3) {
                     case 3: {
                             message.pone = reader.string();
+                            message.partialOneof = "pone";
                             break;
                         }
                     case 5: {
                             message.pthree = reader.string();
+                            message.partialOneof = "pthree";
                             break;
                         }
                     case 6: {
                             message.rone = $root.jspb.test.TestMessageWithOneof.decode(reader, reader.uint32(), undefined, long + 1);
+                            message.recursiveOneof = "rone";
                             break;
                         }
                     case 7: {
                             message.rtwo = reader.string();
+                            message.recursiveOneof = "rtwo";
                             break;
                         }
                     case 8: {
@@ -7853,18 +7857,22 @@ $root.jspb = (function() {
                         }
                     case 10: {
                             message.aone = reader.int32();
+                            message.defaultOneofA = "aone";
                             break;
                         }
                     case 11: {
                             message.atwo = reader.int32();
+                            message.defaultOneofA = "atwo";
                             break;
                         }
                     case 12: {
                             message.bone = reader.int32();
+                            message.defaultOneofB = "bone";
                             break;
                         }
                     case 13: {
                             message.btwo = reader.int32();
+                            message.defaultOneofB = "btwo";
                             break;
                         }
                     default:
