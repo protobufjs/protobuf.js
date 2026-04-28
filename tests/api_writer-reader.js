@@ -90,6 +90,7 @@ tape.test("writer & reader", function(test) {
 
     test.ok(expect("bool", true, [1]), "should write true as a varint of length 1 and read it back equally");
     test.ok(expect("bool", false, [0]), "should write false as a varint of length 1 and read it back equally");
+    test.equal(Reader.create([ 128, 128, 128, 128, 16 ]).bool(), true, "should read 64 bit non-zero bool varints as true");
 
     // string, see also util_utf8
 
