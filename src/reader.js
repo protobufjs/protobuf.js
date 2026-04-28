@@ -201,7 +201,20 @@ function readLongVarint() {
  * @returns {boolean} Value read
  */
 Reader.prototype.bool = function read_bool() {
-    return this.uint32() !== 0;
+    var value = false,
+        b;
+    for (var i = 0; i < 10; ++i) {
+        /* istanbul ignore if */
+        if (this.pos >= this.len)
+            throw indexOutOfRange(this);
+        b = this.buf[this.pos++];
+        if (b & 127)
+            value = true;
+        if (b < 128)
+            return value;
+    }
+    /* istanbul ignore next */
+    throw Error("invalid varint encoding");
 };
 
 function readFixed32_end(buf, end) { // note that this uses `end`, not `pos`
