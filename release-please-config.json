@@ -2,6 +2,8 @@
   "bootstrap-sha": "6fc37d9ea3502cdc08ef988494c041aacd0f7e7f",
   "packages": {
     "cli": {},
-    ".": {}
+    ".": {
+      "exclude-paths": ["cli"]
+    }
   }
 }
