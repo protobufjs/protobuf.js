@@ -446,15 +446,27 @@ Writer.prototype.ldelim = function ldelim() {
  * @returns {Uint8Array} Finished buffer
  */
 Writer.prototype.finish = function finish() {
-    var head = this.head.next, // skip noop
-        buf  = this.constructor.alloc(this.len),
-        pos  = 0;
+    return this.finishTo(this.constructor.alloc(this.len), 0);
+};
+
+/**
+ * Finishes the write operation, writing into the provided buffer.
+ * The caller must ensure that `buf` has enough space starting at `offset`
+ * to hold {@link Writer#len} bytes.
+ * @param {T} buf Target buffer
+ * @param {number} [offset=0] Offset to start writing at
+ * @returns {T} The provided buffer
+ * @template T extends Uint8Array
+ */
+Writer.prototype.finishTo = function finishTo(buf, offset) {
+    offset >>>= 0;
+    var head = this.head.next,
+        pos  = offset;
     while (head) {
         head.fn(head.val, buf, pos);
         pos += head.len;
         head = head.next;
     }
-    // this.head = this.tail = null;
     return buf;
 };
 
