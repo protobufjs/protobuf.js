@@ -112,6 +112,60 @@ tape.test("pbjs generates correct ES6 static-module imports", function(test) {
     });
 });
 
+tape.test("pbjs generates static wrapper conversions", function(test) {
+    cliTest(test, function() {
+        var root = new protobuf.Root().addJSON(protobuf.common["google/protobuf/wrappers.proto"].nested).addJSON({
+            WrapperContainer: {
+                fields: {
+                    name: {
+                        id: 1,
+                        type: "google.protobuf.StringValue"
+                    },
+                    count: {
+                        id: 2,
+                        type: "google.protobuf.Int64Value"
+                    },
+                    flag: {
+                        id: 3,
+                        type: "google.protobuf.BoolValue"
+                    },
+                    data: {
+                        id: 4,
+                        type: "google.protobuf.BytesValue"
+                    }
+                }
+            }
+        }).resolveAll();
+
+        var staticTarget = require("../cli/targets/static");
+
+        staticTarget(root, {
+            create: true,
+            encode: true,
+            decode: true,
+            convert: true
+        }, function(err, jsCode) {
+            test.error(err, "static code generation worked");
+
+            var $protobuf = protobuf;
+            eval(jsCode);
+
+            var WrapperContainer = protobuf.roots.default.WrapperContainer;
+            var object = {
+                name: "abc",
+                count: "123",
+                flag: false,
+                data: "AQI="
+            };
+            var message = WrapperContainer.fromObject(object);
+
+            test.same(WrapperContainer.toObject(message, { json: true, bytes: String, longs: String }), object, "should use wrapper scalar representation for json conversion");
+            test.same(WrapperContainer.toObject(message, { bytes: String, longs: String }).name, { value: "abc" }, "should preserve wrapper object representation without json conversion");
+            test.end();
+        });
+    });
+});
+
 tape.test("pbjs escapes static target names", function(test) {
     cliTest(test, function() {
         var root = protobuf.Root.fromJSON({
