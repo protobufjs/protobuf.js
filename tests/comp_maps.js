@@ -172,6 +172,98 @@ tape.test("maps", function(test) {
         test.end();
     });
 
+    test.test(test.name + " - scalar key roundtrip", function(test) {
+        var mapRoot = protobuf.Root.fromJSON({
+            nested: {
+                MapMessage: {
+                    fields: {
+                        bools: {
+                            keyType: "bool",
+                            type: "bool",
+                            id: 1
+                        },
+                        ints: {
+                            keyType: "int64",
+                            type: "int64",
+                            id: 2
+                        },
+                        uints: {
+                            keyType: "uint64",
+                            type: "uint64",
+                            id: 3
+                        },
+                        sints: {
+                            keyType: "sint64",
+                            type: "string",
+                            id: 4
+                        },
+                        fixeds: {
+                            keyType: "fixed64",
+                            type: "string",
+                            id: 5
+                        },
+                        sfixeds: {
+                            keyType: "sfixed64",
+                            type: "string",
+                            id: 6
+                        }
+                    }
+                }
+            }
+        });
+
+        var MapMessage = mapRoot.lookup("MapMessage");
+        var uint64Max = "18446744073709551615";
+        var uintMap = {};
+        var fixedMap = {};
+        uintMap[uint64Max] = "1";
+        fixedMap[uint64Max] = "a";
+        var boolBuf = Uint8Array.of(0x0a, 0x04, 0x08, 0x00, 0x10, 0x00);
+        var intBuf = MapMessage.encode({ ints: { "-1": "-1" } }).finish();
+        var uintBuf = MapMessage.encode({ uints: uintMap }).finish();
+        var sintBuf = MapMessage.encode({ sints: { "-1": "a" } }).finish();
+        var fixedBuf = MapMessage.encode({ fixeds: fixedMap }).finish();
+        var sfixedBuf = MapMessage.encode({ sfixeds: { "-1": "a" } }).finish();
+        var longCases = [
+            [ "int64", intBuf, { ints: { "-1": "-1" } } ],
+            [ "uint64", uintBuf, { uints: uintMap } ],
+            [ "sint64", sintBuf, { sints: { "-1": "a" } } ],
+            [ "fixed64", fixedBuf, { fixeds: fixedMap } ],
+            [ "sfixed64", sfixedBuf, { sfixeds: { "-1": "a" } } ]
+        ];
+
+        function toArray(buf) {
+            return Array.prototype.slice.call(buf);
+        }
+
+        function assertReencode(buf, message) {
+            test.deepEqual(toArray(MapMessage.encode(MapMessage.decode(buf)).finish()), toArray(buf), message);
+        }
+
+        test.deepEqual(
+            toArray(MapMessage.encode({ bools: { "false": false } }).finish()),
+            toArray(boolBuf),
+            "should encode false boolean keys"
+        );
+        assertReencode(boolBuf, "should re-encode false boolean keys");
+
+        longCases.forEach(function(testCase) {
+            assertReencode(testCase[1], "should re-encode " + testCase[0] + " keys");
+            test.equal(
+                MapMessage.verify(MapMessage.decode(testCase[1])),
+                null,
+                "should verify decoded " + testCase[0] + " keys"
+            );
+            test.deepEqual(
+                MapMessage.toObject(MapMessage.decode(testCase[1]), { longs: String }),
+                testCase[2],
+                "should output " + testCase[0] + " keys as decimal strings"
+            );
+        });
+
+        test.end();
+    });
+
     test.end();
 });
 

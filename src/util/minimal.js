@@ -200,7 +200,7 @@ util.key32Re = /^-?(?:0|[1-9][0-9]*)$/;
  * @type {RegExp}
  * @const
  */
-util.key64Re = /^(?:[\\x00-\\xff]{8}|-?(?:0|[1-9][0-9]*))$/;
+util.key64Re = /^(?:[\x00-\xff]{8}|-?(?:0|[1-9][0-9]*))$/; // eslint-disable-line no-control-regex
 
 /**
  * Converts a number or long to an 8 characters long hash string.
@@ -224,6 +224,27 @@ util.longFromHash = function longFromHash(hash, unsigned) {
     if (util.Long)
         return util.Long.fromBits(bits.lo, bits.hi, unsigned);
     return bits.toNumber(Boolean(unsigned));
+};
+
+/**
+ * Converts a 64 bit key to a long or number if it is an 8 characters long hash string.
+ * @param {string} key Map key
+ * @param {boolean} [unsigned=false] Whether unsigned or not
+ * @returns {Long|number|string} Original value
+ */
+util.longFromKey = function longFromKey(key, unsigned) {
+    return util.key64Re.test(key) && !util.key32Re.test(key)
+        ? util.longFromHash(key, unsigned)
+        : key;
+};
+
+/**
+ * Converts a boolean key to a boolean value.
+ * @param {string} key Map key
+ * @returns {boolean} Boolean value
+ */
+util.boolFromKey = function boolFromKey(key) {
+    return key === "true" || key === "1";
 };
 
 /**
