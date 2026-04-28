@@ -447,7 +447,7 @@ function parse(source, root, options) {
     function parseField(parent, rule, extend) {
         var type = next();
         if (type === "group") {
-            parseGroup(parent, rule);
+            parseGroup(parent, rule, extend);
             return;
         }
         // Type names can consume multiple tokens, in multiple variants:
@@ -504,7 +504,7 @@ function parse(source, root, options) {
         }
     }
 
-    function parseGroup(parent, rule) {
+    function parseGroup(parent, rule, extend) {
         if (edition >= 2023) {
             throw illegal("group");
         }
@@ -521,7 +521,7 @@ function parse(source, root, options) {
         var id = parseId(next());
         var type = new Type(name);
         type.group = true;
-        var field = new Field(fieldName, id, name, rule);
+        var field = new Field(fieldName, id, name, rule, extend);
         field.filename = parse.filename;
         ifBlock(type, function parseGroup_block(token) {
             switch (token) {
@@ -584,6 +584,10 @@ function parse(source, root, options) {
         });
         parent.add(type)
               .add(field);
+        if (parent === ptr) {
+            topLevelObjects.push(type);
+            topLevelObjects.push(field);
+        }
     }
 
     function parseMapField(parent) {
