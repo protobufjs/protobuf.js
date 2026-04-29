@@ -177,6 +177,12 @@ export namespace jspb {
 
         class HasExtensions implements IHasExtensions {
             constructor(properties?: jspb.test.IHasExtensions);
+            public ".jspb.test.IsExtension.extField"?: (jspb.test.IIsExtension|null);
+            public ".jspb.test.IndirectExtension.simple"?: (jspb.test.ISimple1|null);
+            public ".jspb.test.IndirectExtension.str": string;
+            public ".jspb.test.IndirectExtension.repeatedStr": string[];
+            public ".jspb.test.IndirectExtension.repeatedSimple": jspb.test.ISimple1[];
+            public ".jspb.test.simple1"?: (jspb.test.ISimple1|null);
             public str1: string;
             public str2: string;
             public str3: string;
@@ -397,6 +403,7 @@ export namespace jspb {
 
         class TestClone implements ITestClone {
             constructor(properties?: jspb.test.ITestClone);
+            public ".jspb.test.CloneExtension.extField"?: (jspb.test.ICloneExtension|null);
             public str: string;
             public simple1?: (jspb.test.ISimple1|null);
             public simple2: jspb.test.ISimple1[];
@@ -622,6 +629,7 @@ export namespace jspb {
 
         class TestReservedNames implements ITestReservedNames {
             constructor(properties?: jspb.test.ITestReservedNames);
+            public ".jspb.test.TestReservedNamesExtension.foo": number;
             public extension: number;
             public static create(properties?: jspb.test.ITestReservedNames): jspb.test.TestReservedNames;
             public static encode(message: jspb.test.ITestReservedNames, writer?: $protobuf.Writer): $protobuf.Writer;
@@ -1544,6 +1552,7 @@ export namespace google {
 
         class EnumOptions implements IEnumOptions {
             constructor(properties?: google.protobuf.IEnumOptions);
+            public ".jspb.test.IsExtension.simpleOption": string;
             public allowAlias: boolean;
             public deprecated: boolean;
             public deprecatedLegacyJsonFieldConflicts: boolean;

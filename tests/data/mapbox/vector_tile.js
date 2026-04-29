@@ -1,4 +1,4 @@
-/*eslint-disable block-scoped-var, id-length, no-control-regex, no-magic-numbers, no-prototype-builtins, no-redeclare, no-shadow, no-var, sort-vars*/
+/*eslint-disable block-scoped-var, id-length, no-control-regex, no-magic-numbers, no-prototype-builtins, no-redeclare, no-shadow, no-var, sort-vars, jsdoc/require-param*/
 "use strict";
 
 var $protobuf = require("../../../minimal");
@@ -105,27 +105,27 @@ $root.vector_tile = (function() {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        Tile.decode = function decode(reader, length, error, long) {
+        Tile.decode = function decode(reader, length, _end, _depth, _target) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            if (long === undefined)
-                long = 0;
-            if (long > $Reader.recursionLimit)
+            if (_depth === undefined)
+                _depth = 0;
+            if (_depth > $Reader.recursionLimit)
                 throw Error("maximum nesting depth exceeded");
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.vector_tile.Tile();
+            var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.vector_tile.Tile();
             while (reader.pos < end) {
                 var tag = reader.uint32();
-                if (tag === error)
+                if (tag === _end)
                     break;
-                switch (tag >>> 3) {
-                case 3: {
+                switch (tag) {
+                case 26: {
                         if (!(message.layers && message.layers.length))
                             message.layers = [];
-                        message.layers.push($root.vector_tile.Tile.Layer.decode(reader, reader.uint32(), undefined, long + 1));
+                        message.layers.push($root.vector_tile.Tile.Layer.decode(reader, reader.uint32(), undefined, _depth + 1));
                         break;
                     }
                 default:
-                    reader.skipType(tag & 7, long);
+                    reader.skipType(tag & 7, _depth);
                     break;
                 }
             }
@@ -156,18 +156,18 @@ $root.vector_tile = (function() {
          * @param {Object.<string,*>} message Plain object to verify
          * @returns {string|null} `null` if valid, otherwise the reason why it is not
          */
-        Tile.verify = function verify(message, long) {
+        Tile.verify = function verify(message, _depth) {
             if (typeof message !== "object" || message === null)
                 return "object expected";
-            if (long === undefined)
-                long = 0;
-            if (long > $util.recursionLimit)
+            if (_depth === undefined)
+                _depth = 0;
+            if (_depth > $util.recursionLimit)
                 return "maximum nesting depth exceeded";
             if (message.layers != null && message.hasOwnProperty("layers")) {
                 if (!Array.isArray(message.layers))
                     return "layers: array expected";
                 for (var i = 0; i < message.layers.length; ++i) {
-                    var error = $root.vector_tile.Tile.Layer.verify(message.layers[i], long + 1);
+                    var error = $root.vector_tile.Tile.Layer.verify(message.layers[i], _depth + 1);
                     if (error)
                         return "layers." + error;
                 }
@@ -183,12 +183,12 @@ $root.vector_tile = (function() {
          * @param {Object.<string,*>} object Plain object
          * @returns {vector_tile.Tile} Tile
          */
-        Tile.fromObject = function fromObject(object, long) {
+        Tile.fromObject = function fromObject(object, _depth) {
             if (object instanceof $root.vector_tile.Tile)
                 return object;
-            if (long === undefined)
-                long = 0;
-            if (long > $util.recursionLimit)
+            if (_depth === undefined)
+                _depth = 0;
+            if (_depth > $util.recursionLimit)
                 throw Error("maximum nesting depth exceeded");
             var message = new $root.vector_tile.Tile();
             if (object.layers) {
@@ -198,7 +198,7 @@ $root.vector_tile = (function() {
                 for (var i = 0; i < object.layers.length; ++i) {
                     if (typeof object.layers[i] !== "object")
                         throw TypeError(".vector_tile.Tile.layers: object expected");
-                    message.layers[i] = $root.vector_tile.Tile.Layer.fromObject(object.layers[i], long + 1);
+                    message.layers[i] = $root.vector_tile.Tile.Layer.fromObject(object.layers[i], _depth + 1);
                 }
             }
             return message;
@@ -422,49 +422,49 @@ $root.vector_tile = (function() {
              * @throws {Error} If the payload is not a reader or valid buffer
              * @throws {$protobuf.util.ProtocolError} If required fields are missing
              */
-            Value.decode = function decode(reader, length, error, long) {
+            Value.decode = function decode(reader, length, _end, _depth, _target) {
                 if (!(reader instanceof $Reader))
                     reader = $Reader.create(reader);
-                if (long === undefined)
-                    long = 0;
-                if (long > $Reader.recursionLimit)
+                if (_depth === undefined)
+                    _depth = 0;
+                if (_depth > $Reader.recursionLimit)
                     throw Error("maximum nesting depth exceeded");
-                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.vector_tile.Tile.Value();
+                var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.vector_tile.Tile.Value();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
-                    if (tag === error)
+                    if (tag === _end)
                         break;
-                    switch (tag >>> 3) {
-                    case 1: {
+                    switch (tag) {
+                    case 10: {
                             message.stringValue = reader.string();
                             break;
                         }
-                    case 2: {
+                    case 21: {
                             message.floatValue = reader.float();
                             break;
                         }
-                    case 3: {
+                    case 25: {
                             message.doubleValue = reader.double();
                             break;
                         }
-                    case 4: {
+                    case 32: {
                             message.intValue = reader.int64();
                             break;
                         }
-                    case 5: {
+                    case 40: {
                             message.uintValue = reader.uint64();
                             break;
                         }
-                    case 6: {
+                    case 48: {
                             message.sintValue = reader.sint64();
                             break;
                         }
-                    case 7: {
+                    case 56: {
                             message.boolValue = reader.bool();
                             break;
                         }
                     default:
-                        reader.skipType(tag & 7, long);
+                        reader.skipType(tag & 7, _depth);
                         break;
                     }
                 }
@@ -495,12 +495,12 @@ $root.vector_tile = (function() {
              * @param {Object.<string,*>} message Plain object to verify
              * @returns {string|null} `null` if valid, otherwise the reason why it is not
              */
-            Value.verify = function verify(message, long) {
+            Value.verify = function verify(message, _depth) {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
-                if (long === undefined)
-                    long = 0;
-                if (long > $util.recursionLimit)
+                if (_depth === undefined)
+                    _depth = 0;
+                if (_depth > $util.recursionLimit)
                     return "maximum nesting depth exceeded";
                 if (message.stringValue != null && message.hasOwnProperty("stringValue"))
                     if (!$util.isString(message.stringValue))
@@ -534,12 +534,12 @@ $root.vector_tile = (function() {
              * @param {Object.<string,*>} object Plain object
              * @returns {vector_tile.Tile.Value} Value
              */
-            Value.fromObject = function fromObject(object, long) {
+            Value.fromObject = function fromObject(object, _depth) {
                 if (object instanceof $root.vector_tile.Tile.Value)
                     return object;
-                if (long === undefined)
-                    long = 0;
-                if (long > $util.recursionLimit)
+                if (_depth === undefined)
+                    _depth = 0;
+                if (_depth > $util.recursionLimit)
                     throw Error("maximum nesting depth exceeded");
                 var message = new $root.vector_tile.Tile.Value();
                 if (object.stringValue != null)
@@ -797,24 +797,25 @@ $root.vector_tile = (function() {
              * @throws {Error} If the payload is not a reader or valid buffer
              * @throws {$protobuf.util.ProtocolError} If required fields are missing
              */
-            Feature.decode = function decode(reader, length, error, long) {
+            Feature.decode = function decode(reader, length, _end, _depth, _target) {
                 if (!(reader instanceof $Reader))
                     reader = $Reader.create(reader);
-                if (long === undefined)
-                    long = 0;
-                if (long > $Reader.recursionLimit)
+                if (_depth === undefined)
+                    _depth = 0;
+                if (_depth > $Reader.recursionLimit)
                     throw Error("maximum nesting depth exceeded");
-                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.vector_tile.Tile.Feature();
+                var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.vector_tile.Tile.Feature();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
-                    if (tag === error)
+                    if (tag === _end)
                         break;
-                    switch (tag >>> 3) {
-                    case 1: {
+                    switch (tag) {
+                    case 8: {
                             message.id = reader.uint64();
                             break;
                         }
-                    case 2: {
+                    case 16:
+                    case 18: {
                             if (!(message.tags && message.tags.length))
                                 message.tags = [];
                             if ((tag & 7) === 2) {
@@ -825,11 +826,12 @@ $root.vector_tile = (function() {
                                 message.tags.push(reader.uint32());
                             break;
                         }
-                    case 3: {
+                    case 24: {
                             message.type = reader.int32();
                             break;
                         }
-                    case 4: {
+                    case 32:
+                    case 34: {
                             if (!(message.geometry && message.geometry.length))
                                 message.geometry = [];
                             if ((tag & 7) === 2) {
@@ -841,7 +843,7 @@ $root.vector_tile = (function() {
                             break;
                         }
                     default:
-                        reader.skipType(tag & 7, long);
+                        reader.skipType(tag & 7, _depth);
                         break;
                     }
                 }
@@ -872,12 +874,12 @@ $root.vector_tile = (function() {
              * @param {Object.<string,*>} message Plain object to verify
              * @returns {string|null} `null` if valid, otherwise the reason why it is not
              */
-            Feature.verify = function verify(message, long) {
+            Feature.verify = function verify(message, _depth) {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
-                if (long === undefined)
-                    long = 0;
-                if (long > $util.recursionLimit)
+                if (_depth === undefined)
+                    _depth = 0;
+                if (_depth > $util.recursionLimit)
                     return "maximum nesting depth exceeded";
                 if (message.id != null && message.hasOwnProperty("id"))
                     if (!$util.isInteger(message.id) && !(message.id && $util.isInteger(message.id.low) && $util.isInteger(message.id.high)))
@@ -917,12 +919,12 @@ $root.vector_tile = (function() {
              * @param {Object.<string,*>} object Plain object
              * @returns {vector_tile.Tile.Feature} Feature
              */
-            Feature.fromObject = function fromObject(object, long) {
+            Feature.fromObject = function fromObject(object, _depth) {
                 if (object instanceof $root.vector_tile.Tile.Feature)
                     return object;
-                if (long === undefined)
-                    long = 0;
-                if (long > $util.recursionLimit)
+                if (_depth === undefined)
+                    _depth = 0;
+                if (_depth > $util.recursionLimit)
                     throw Error("maximum nesting depth exceeded");
                 var message = new $root.vector_tile.Tile.Feature();
                 if (object.id != null)
@@ -1193,51 +1195,51 @@ $root.vector_tile = (function() {
              * @throws {Error} If the payload is not a reader or valid buffer
              * @throws {$protobuf.util.ProtocolError} If required fields are missing
              */
-            Layer.decode = function decode(reader, length, error, long) {
+            Layer.decode = function decode(reader, length, _end, _depth, _target) {
                 if (!(reader instanceof $Reader))
                     reader = $Reader.create(reader);
-                if (long === undefined)
-                    long = 0;
-                if (long > $Reader.recursionLimit)
+                if (_depth === undefined)
+                    _depth = 0;
+                if (_depth > $Reader.recursionLimit)
                     throw Error("maximum nesting depth exceeded");
-                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.vector_tile.Tile.Layer();
+                var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.vector_tile.Tile.Layer();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
-                    if (tag === error)
+                    if (tag === _end)
                         break;
-                    switch (tag >>> 3) {
-                    case 15: {
+                    switch (tag) {
+                    case 120: {
                             message.version = reader.uint32();
                             break;
                         }
-                    case 1: {
+                    case 10: {
                             message.name = reader.string();
                             break;
                         }
-                    case 2: {
+                    case 18: {
                             if (!(message.features && message.features.length))
                                 message.features = [];
-                            message.features.push($root.vector_tile.Tile.Feature.decode(reader, reader.uint32(), undefined, long + 1));
+                            message.features.push($root.vector_tile.Tile.Feature.decode(reader, reader.uint32(), undefined, _depth + 1));
                             break;
                         }
-                    case 3: {
+                    case 26: {
                             if (!(message.keys && message.keys.length))
                                 message.keys = [];
                             message.keys.push(reader.string());
                             break;
                         }
-                    case 4: {
+                    case 34: {
                             if (!(message.values && message.values.length))
                                 message.values = [];
-                            message.values.push($root.vector_tile.Tile.Value.decode(reader, reader.uint32(), undefined, long + 1));
+                            message.values.push($root.vector_tile.Tile.Value.decode(reader, reader.uint32(), undefined, _depth + 1));
                             break;
                         }
-                    case 5: {
+                    case 40: {
                             message.extent = reader.uint32();
                             break;
                         }
                     default:
-                        reader.skipType(tag & 7, long);
+                        reader.skipType(tag & 7, _depth);
                         break;
                     }
                 }
@@ -1272,12 +1274,12 @@ $root.vector_tile = (function() {
              * @param {Object.<string,*>} message Plain object to verify
              * @returns {string|null} `null` if valid, otherwise the reason why it is not
              */
-            Layer.verify = function verify(message, long) {
+            Layer.verify = function verify(message, _depth) {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
-                if (long === undefined)
-                    long = 0;
-                if (long > $util.recursionLimit)
+                if (_depth === undefined)
+                    _depth = 0;
+                if (_depth > $util.recursionLimit)
                     return "maximum nesting depth exceeded";
                 if (!$util.isInteger(message.version))
                     return "version: integer expected";
@@ -1287,7 +1289,7 @@ $root.vector_tile = (function() {
                     if (!Array.isArray(message.features))
                         return "features: array expected";
                     for (var i = 0; i < message.features.length; ++i) {
-                        var error = $root.vector_tile.Tile.Feature.verify(message.features[i], long + 1);
+                        var error = $root.vector_tile.Tile.Feature.verify(message.features[i], _depth + 1);
                         if (error)
                             return "features." + error;
                     }
@@ -1303,7 +1305,7 @@ $root.vector_tile = (function() {
                     if (!Array.isArray(message.values))
                         return "values: array expected";
                     for (var i = 0; i < message.values.length; ++i) {
-                        var error = $root.vector_tile.Tile.Value.verify(message.values[i], long + 1);
+                        var error = $root.vector_tile.Tile.Value.verify(message.values[i], _depth + 1);
                         if (error)
                             return "values." + error;
                     }
@@ -1322,12 +1324,12 @@ $root.vector_tile = (function() {
              * @param {Object.<string,*>} object Plain object
              * @returns {vector_tile.Tile.Layer} Layer
              */
-            Layer.fromObject = function fromObject(object, long) {
+            Layer.fromObject = function fromObject(object, _depth) {
                 if (object instanceof $root.vector_tile.Tile.Layer)
                     return object;
-                if (long === undefined)
-                    long = 0;
-                if (long > $util.recursionLimit)
+                if (_depth === undefined)
+                    _depth = 0;
+                if (_depth > $util.recursionLimit)
                     throw Error("maximum nesting depth exceeded");
                 var message = new $root.vector_tile.Tile.Layer();
                 if (object.version != null)
@@ -1341,7 +1343,7 @@ $root.vector_tile = (function() {
                     for (var i = 0; i < object.features.length; ++i) {
                         if (typeof object.features[i] !== "object")
                             throw TypeError(".vector_tile.Tile.Layer.features: object expected");
-                        message.features[i] = $root.vector_tile.Tile.Feature.fromObject(object.features[i], long + 1);
+                        message.features[i] = $root.vector_tile.Tile.Feature.fromObject(object.features[i], _depth + 1);
                     }
                 }
                 if (object.keys) {
@@ -1358,7 +1360,7 @@ $root.vector_tile = (function() {
                     for (var i = 0; i < object.values.length; ++i) {
                         if (typeof object.values[i] !== "object")
                             throw TypeError(".vector_tile.Tile.Layer.values: object expected");
-                        message.values[i] = $root.vector_tile.Tile.Value.fromObject(object.values[i], long + 1);
+                        message.values[i] = $root.vector_tile.Tile.Value.fromObject(object.values[i], _depth + 1);
                     }
                 }
                 if (object.extent != null)
