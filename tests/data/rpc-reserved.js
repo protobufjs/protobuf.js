@@ -174,8 +174,8 @@ $root.MyRequest = (function() {
             var tag = reader.uint32();
             if (tag === _end)
                 break;
-            switch (tag >>> 3) {
-            case 1: {
+            switch (tag) {
+            case 10: {
                     message.path = reader.string();
                     break;
                 }
@@ -391,8 +391,8 @@ $root.MyResponse = (function() {
             var tag = reader.uint32();
             if (tag === _end)
                 break;
-            switch (tag >>> 3) {
-            case 2: {
+            switch (tag) {
+            case 16: {
                     message.status = reader.int32();
                     break;
                 }

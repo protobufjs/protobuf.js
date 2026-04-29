@@ -186,6 +186,34 @@ tape.test("decode nesting", function(test) {
     test.end();
 });
 
+tape.test("decode known fields by wire type", function(test) {
+    var root = protobuf.Root.fromJSON({
+        nested: {
+            Message: {
+                fields: {
+                    value: { type: "int32", id: 1 }
+                }
+            }
+        }
+    });
+    var Message = root.lookupType("Message");
+    var field1WireType6 = [ 1 << 3 | 6, 0 ];
+    var field1WireType7 = [ 1 << 3 | 7, 0 ];
+    var field1Fixed64 = [ 1 << 3 | 1, 1, 2, 3, 4, 5, 6, 7, 8 ];
+
+    test.throws(function() {
+        Message.decode(protobuf.util.newBuffer(field1WireType6));
+    }, /invalid wire type 6/, "should reject invalid wire types for known fields");
+
+    test.throws(function() {
+        Message.decode(protobuf.util.newBuffer(field1WireType7));
+    }, /invalid wire type 7/, "should reject invalid wire types for known fields");
+
+    var message = Message.decode(protobuf.util.newBuffer(field1Fixed64));
+    test.notOk(Object.prototype.hasOwnProperty.call(message, "value"), "should skip valid but unexpected wire types");
+    test.end();
+});
+
 tape.test("object conversion nesting", function(test) {
     function nestedObject(depth) {
         var object = { value: 42 };

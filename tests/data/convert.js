@@ -210,22 +210,23 @@ $root.Message = (function() {
             var tag = reader.uint32();
             if (tag === _end)
                 break;
-            switch (tag >>> 3) {
-            case 1: {
+            switch (tag) {
+            case 10: {
                     message.stringVal = reader.string();
                     break;
                 }
-            case 2: {
+            case 18: {
                     if (!(message.stringRepeated && message.stringRepeated.length))
                         message.stringRepeated = [];
                     message.stringRepeated.push(reader.string());
                     break;
                 }
-            case 3: {
+            case 24: {
                     message.uint64Val = reader.uint64();
                     break;
                 }
-            case 4: {
+            case 32:
+            case 34: {
                     if (!(message.uint64Repeated && message.uint64Repeated.length))
                         message.uint64Repeated = [];
                     if ((tag & 7) === 2) {
@@ -236,21 +237,22 @@ $root.Message = (function() {
                         message.uint64Repeated.push(reader.uint64());
                     break;
                 }
-            case 5: {
+            case 42: {
                     message.bytesVal = reader.bytes();
                     break;
                 }
-            case 6: {
+            case 50: {
                     if (!(message.bytesRepeated && message.bytesRepeated.length))
                         message.bytesRepeated = [];
                     message.bytesRepeated.push(reader.bytes());
                     break;
                 }
-            case 7: {
+            case 56: {
                     message.enumVal = reader.int32();
                     break;
                 }
-            case 8: {
+            case 64:
+            case 66: {
                     if (!(message.enumRepeated && message.enumRepeated.length))
                         message.enumRepeated = [];
                     if ((tag & 7) === 2) {
@@ -261,7 +263,7 @@ $root.Message = (function() {
                         message.enumRepeated.push(reader.int32());
                     break;
                 }
-            case 9: {
+            case 74: {
                     if (message.int64Map === $util.emptyObject)
                         message.int64Map = {};
                     var end2 = reader.uint32() + reader.pos;
@@ -269,11 +271,11 @@ $root.Message = (function() {
                     value = 0;
                     while (reader.pos < end2) {
                         var tag2 = reader.uint32();
-                        switch (tag2 >>> 3) {
-                        case 1:
+                        switch (tag2) {
+                        case 10:
                             key = reader.string();
                             break;
-                        case 2:
+                        case 16:
                             value = reader.int64();
                             break;
                         default:

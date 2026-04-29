@@ -47,20 +47,20 @@ $root.Test = (function() {
             var tag = reader.uint32();
             if (tag === _end)
                 break;
-            switch (tag >>> 3) {
-            case 1: {
+            switch (tag) {
+            case 10: {
                     message.string = reader.string();
                     break;
                 }
-            case 2: {
+            case 16: {
                     message.uint32 = reader.uint32();
                     break;
                 }
-            case 3: {
+            case 26: {
                     message.inner = $root.Test.Inner.decode(reader, reader.uint32(), undefined, _depth + 1, message.inner);
                     break;
                 }
-            case 4: {
+            case 37: {
                     message.float = reader.float();
                     break;
                 }
@@ -109,16 +109,16 @@ $root.Test = (function() {
                 var tag = reader.uint32();
                 if (tag === _end)
                     break;
-                switch (tag >>> 3) {
-                case 1: {
+                switch (tag) {
+                case 8: {
                         message.int32 = reader.int32();
                         break;
                     }
-                case 2: {
+                case 18: {
                         message.innerInner = $root.Test.Inner.InnerInner.decode(reader, reader.uint32(), undefined, _depth + 1, message.innerInner);
                         break;
                     }
-                case 3: {
+                case 26: {
                         message.outer = $root.Outer.decode(reader, reader.uint32(), undefined, _depth + 1, message.outer);
                         break;
                     }
@@ -167,16 +167,16 @@ $root.Test = (function() {
                     var tag = reader.uint32();
                     if (tag === _end)
                         break;
-                    switch (tag >>> 3) {
-                    case 1: {
+                    switch (tag) {
+                    case 8: {
                             message.long = reader.int64();
                             break;
                         }
-                    case 2: {
+                    case 16: {
                             message["enum"] = reader.int32();
                             break;
                         }
-                    case 3: {
+                    case 24: {
                             message.sint32 = reader.sint32();
                             break;
                         }
@@ -246,8 +246,9 @@ $root.Outer = (function() {
             var tag = reader.uint32();
             if (tag === _end)
                 break;
-            switch (tag >>> 3) {
-            case 1: {
+            switch (tag) {
+            case 8:
+            case 10: {
                     if (!(message.bool && message.bool.length))
                         message.bool = [];
                     if ((tag & 7) === 2) {
@@ -258,7 +259,7 @@ $root.Outer = (function() {
                         message.bool.push(reader.bool());
                     break;
                 }
-            case 2: {
+            case 17: {
                     message.double = reader.double();
                     break;
                 }

@@ -28,7 +28,7 @@ function genValuePartial_fromObject(gen, field, fieldIndex, prop) {
                 // enum unknown values passthrough
                 if (values[keys[i]] === field.typeDefault && !defaultAlreadyEmitted) { gen
                     ("default:")
-                        ("if(typeof(d%s)===\"number\"){m%s=d%s;break}", prop, prop, prop);
+                        ("if(typeof d%s===\"number\"){m%s=d%s;break}", prop, prop, prop);
                     if (!field.repeated) gen // fallback to default value only for
                                              // arrays, to avoid leaving holes.
                         ("break");           // for non-repeated fields, just ignore
@@ -80,7 +80,7 @@ function genValuePartial_fromObject(gen, field, fieldIndex, prop) {
             case "bytes": gen
                 ("if(typeof d%s===\"string\")", prop)
                     ("util.base64.decode(d%s,m%s=util.newBuffer(util.base64.length(d%s)),0)", prop, prop, prop)
-                ("else if(d%s.length >= 0)", prop)
+                ("else if(d%s.length>=0)", prop)
                     ("m%s=d%s", prop, prop);
                 break;
             case "string": gen

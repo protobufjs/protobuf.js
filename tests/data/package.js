@@ -294,54 +294,54 @@ $root.Package = (function() {
             var tag = reader.uint32();
             if (tag === _end)
                 break;
-            switch (tag >>> 3) {
-            case 1: {
+            switch (tag) {
+            case 10: {
                     message.name = reader.string();
                     break;
                 }
-            case 2: {
+            case 18: {
                     message.version = reader.string();
                     break;
                 }
-            case 19: {
+            case 154: {
                     message.versionScheme = reader.string();
                     break;
                 }
-            case 3: {
+            case 26: {
                     message.description = reader.string();
                     break;
                 }
-            case 4: {
+            case 34: {
                     message.author = reader.string();
                     break;
                 }
-            case 5: {
+            case 42: {
                     message.license = reader.string();
                     break;
                 }
-            case 6: {
+            case 50: {
                     message.repository = $root.Package.Repository.decode(reader, reader.uint32(), undefined, _depth + 1, message.repository);
                     break;
                 }
-            case 7: {
+            case 58: {
                     message.bugs = reader.string();
                     break;
                 }
-            case 8: {
+            case 66: {
                     message.homepage = reader.string();
                     break;
                 }
-            case 9: {
+            case 74: {
                     if (!(message.keywords && message.keywords.length))
                         message.keywords = [];
                     message.keywords.push(reader.string());
                     break;
                 }
-            case 10: {
+            case 82: {
                     message.main = reader.string();
                     break;
                 }
-            case 11: {
+            case 90: {
                     if (message.bin === $util.emptyObject)
                         message.bin = {};
                     var end2 = reader.uint32() + reader.pos;
@@ -349,11 +349,11 @@ $root.Package = (function() {
                     value = "";
                     while (reader.pos < end2) {
                         var tag2 = reader.uint32();
-                        switch (tag2 >>> 3) {
-                        case 1:
+                        switch (tag2) {
+                        case 10:
                             key = reader.string();
                             break;
-                        case 2:
+                        case 18:
                             value = reader.string();
                             break;
                         default:
@@ -366,7 +366,7 @@ $root.Package = (function() {
                     message.bin[key] = value;
                     break;
                 }
-            case 12: {
+            case 98: {
                     if (message.scripts === $util.emptyObject)
                         message.scripts = {};
                     var end2 = reader.uint32() + reader.pos;
@@ -374,11 +374,11 @@ $root.Package = (function() {
                     value = "";
                     while (reader.pos < end2) {
                         var tag2 = reader.uint32();
-                        switch (tag2 >>> 3) {
-                        case 1:
+                        switch (tag2) {
+                        case 10:
                             key = reader.string();
                             break;
-                        case 2:
+                        case 18:
                             value = reader.string();
                             break;
                         default:
@@ -391,7 +391,7 @@ $root.Package = (function() {
                     message.scripts[key] = value;
                     break;
                 }
-            case 13: {
+            case 106: {
                     if (message.dependencies === $util.emptyObject)
                         message.dependencies = {};
                     var end2 = reader.uint32() + reader.pos;
@@ -399,11 +399,11 @@ $root.Package = (function() {
                     value = "";
                     while (reader.pos < end2) {
                         var tag2 = reader.uint32();
-                        switch (tag2 >>> 3) {
-                        case 1:
+                        switch (tag2) {
+                        case 10:
                             key = reader.string();
                             break;
-                        case 2:
+                        case 18:
                             value = reader.string();
                             break;
                         default:
@@ -416,7 +416,7 @@ $root.Package = (function() {
                     message.dependencies[key] = value;
                     break;
                 }
-            case 15: {
+            case 122: {
                     if (message.devDependencies === $util.emptyObject)
                         message.devDependencies = {};
                     var end2 = reader.uint32() + reader.pos;
@@ -424,11 +424,11 @@ $root.Package = (function() {
                     value = "";
                     while (reader.pos < end2) {
                         var tag2 = reader.uint32();
-                        switch (tag2 >>> 3) {
-                        case 1:
+                        switch (tag2) {
+                        case 10:
                             key = reader.string();
                             break;
-                        case 2:
+                        case 18:
                             value = reader.string();
                             break;
                         default:
@@ -441,11 +441,11 @@ $root.Package = (function() {
                     message.devDependencies[key] = value;
                     break;
                 }
-            case 17: {
+            case 138: {
                     message.types = reader.string();
                     break;
                 }
-            case 18: {
+            case 146: {
                     if (!(message.cliDependencies && message.cliDependencies.length))
                         message.cliDependencies = [];
                     message.cliDependencies.push(reader.string());
@@ -910,12 +910,12 @@ $root.Package = (function() {
                 var tag = reader.uint32();
                 if (tag === _end)
                     break;
-                switch (tag >>> 3) {
-                case 1: {
+                switch (tag) {
+                case 10: {
                         message.type = reader.string();
                         break;
                     }
-                case 2: {
+                case 18: {
                         message.url = reader.string();
                         break;
                     }

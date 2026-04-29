@@ -117,8 +117,8 @@ $root.vector_tile = (function() {
                 var tag = reader.uint32();
                 if (tag === _end)
                     break;
-                switch (tag >>> 3) {
-                case 3: {
+                switch (tag) {
+                case 26: {
                         if (!(message.layers && message.layers.length))
                             message.layers = [];
                         message.layers.push($root.vector_tile.Tile.Layer.decode(reader, reader.uint32(), undefined, _depth + 1));
@@ -434,32 +434,32 @@ $root.vector_tile = (function() {
                     var tag = reader.uint32();
                     if (tag === _end)
                         break;
-                    switch (tag >>> 3) {
-                    case 1: {
+                    switch (tag) {
+                    case 10: {
                             message.stringValue = reader.string();
                             break;
                         }
-                    case 2: {
+                    case 21: {
                             message.floatValue = reader.float();
                             break;
                         }
-                    case 3: {
+                    case 25: {
                             message.doubleValue = reader.double();
                             break;
                         }
-                    case 4: {
+                    case 32: {
                             message.intValue = reader.int64();
                             break;
                         }
-                    case 5: {
+                    case 40: {
                             message.uintValue = reader.uint64();
                             break;
                         }
-                    case 6: {
+                    case 48: {
                             message.sintValue = reader.sint64();
                             break;
                         }
-                    case 7: {
+                    case 56: {
                             message.boolValue = reader.bool();
                             break;
                         }
@@ -809,12 +809,13 @@ $root.vector_tile = (function() {
                     var tag = reader.uint32();
                     if (tag === _end)
                         break;
-                    switch (tag >>> 3) {
-                    case 1: {
+                    switch (tag) {
+                    case 8: {
                             message.id = reader.uint64();
                             break;
                         }
-                    case 2: {
+                    case 16:
+                    case 18: {
                             if (!(message.tags && message.tags.length))
                                 message.tags = [];
                             if ((tag & 7) === 2) {
@@ -825,11 +826,12 @@ $root.vector_tile = (function() {
                                 message.tags.push(reader.uint32());
                             break;
                         }
-                    case 3: {
+                    case 24: {
                             message.type = reader.int32();
                             break;
                         }
-                    case 4: {
+                    case 32:
+                    case 34: {
                             if (!(message.geometry && message.geometry.length))
                                 message.geometry = [];
                             if ((tag & 7) === 2) {
@@ -1205,34 +1207,34 @@ $root.vector_tile = (function() {
                     var tag = reader.uint32();
                     if (tag === _end)
                         break;
-                    switch (tag >>> 3) {
-                    case 15: {
+                    switch (tag) {
+                    case 120: {
                             message.version = reader.uint32();
                             break;
                         }
-                    case 1: {
+                    case 10: {
                             message.name = reader.string();
                             break;
                         }
-                    case 2: {
+                    case 18: {
                             if (!(message.features && message.features.length))
                                 message.features = [];
                             message.features.push($root.vector_tile.Tile.Feature.decode(reader, reader.uint32(), undefined, _depth + 1));
                             break;
                         }
-                    case 3: {
+                    case 26: {
                             if (!(message.keys && message.keys.length))
                                 message.keys = [];
                             message.keys.push(reader.string());
                             break;
                         }
-                    case 4: {
+                    case 34: {
                             if (!(message.values && message.values.length))
                                 message.values = [];
                             message.values.push($root.vector_tile.Tile.Value.decode(reader, reader.uint32(), undefined, _depth + 1));
                             break;
                         }
-                    case 5: {
+                    case 40: {
                             message.extent = reader.uint32();
                             break;
                         }
