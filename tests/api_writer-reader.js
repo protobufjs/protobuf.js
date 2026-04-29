@@ -99,6 +99,9 @@ tape.test("writer & reader", function(test) {
 
     test.ok(expect("string", "123", [3,49,50,51]), "should write \"123\" as a string prefixed with its length as a varint and read it back equally");
     test.ok(expect("string", "", [0]), "should write \"\" as a string prefixed with its length as a varint and read it back equally");
+    test.throws(function() {
+        Reader.create(protobuf.util.newBuffer([ 3, 49, 50 ])).string();
+    }, /index out of range/, "should throw on truncated strings");
 
     // bytes
 
