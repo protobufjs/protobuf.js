@@ -288,12 +288,14 @@ $root.Package = (function() {
         if (_depth === undefined)
             _depth = 0;
         if (_depth > $Reader.recursionLimit)
-            throw Error("maximum nesting depth exceeded");
+            throw Error("max depth exceeded");
         var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.Package(), key, value;
         while (reader.pos < end) {
             var tag = reader.uint32();
-            if (tag === _end)
+            if (tag === _end) {
+                _end = undefined;
                 break;
+            }
             switch (tag) {
             case 10: {
                     message.name = reader.string();
@@ -357,7 +359,7 @@ $root.Package = (function() {
                             value = reader.string();
                             break;
                         default:
-                            reader.skipType(tag2 & 7, _depth);
+                            reader.skipType(tag2 & 7, _depth, tag2 >>> 3);
                             break;
                         }
                     }
@@ -382,7 +384,7 @@ $root.Package = (function() {
                             value = reader.string();
                             break;
                         default:
-                            reader.skipType(tag2 & 7, _depth);
+                            reader.skipType(tag2 & 7, _depth, tag2 >>> 3);
                             break;
                         }
                     }
@@ -407,7 +409,7 @@ $root.Package = (function() {
                             value = reader.string();
                             break;
                         default:
-                            reader.skipType(tag2 & 7, _depth);
+                            reader.skipType(tag2 & 7, _depth, tag2 >>> 3);
                             break;
                         }
                     }
@@ -432,7 +434,7 @@ $root.Package = (function() {
                             value = reader.string();
                             break;
                         default:
-                            reader.skipType(tag2 & 7, _depth);
+                            reader.skipType(tag2 & 7, _depth, tag2 >>> 3);
                             break;
                         }
                     }
@@ -452,10 +454,12 @@ $root.Package = (function() {
                     break;
                 }
             default:
-                reader.skipType(tag & 7, _depth);
+                reader.skipType(tag & 7, _depth, tag >>> 3);
                 break;
             }
         }
+        if (_end !== undefined)
+            throw Error("missing end group");
         return message;
     };
 
@@ -489,7 +493,7 @@ $root.Package = (function() {
         if (_depth === undefined)
             _depth = 0;
         if (_depth > $util.recursionLimit)
-            return "maximum nesting depth exceeded";
+            return "max depth exceeded";
         if (message.name != null && message.hasOwnProperty("name"))
             if (!$util.isString(message.name))
                 return "name: string expected";
@@ -588,7 +592,7 @@ $root.Package = (function() {
         if (_depth === undefined)
             _depth = 0;
         if (_depth > $util.recursionLimit)
-            throw Error("maximum nesting depth exceeded");
+            throw Error("max depth exceeded");
         var message = new $root.Package();
         if (object.name != null)
             message.name = String(object.name);
@@ -904,12 +908,14 @@ $root.Package = (function() {
             if (_depth === undefined)
                 _depth = 0;
             if (_depth > $Reader.recursionLimit)
-                throw Error("maximum nesting depth exceeded");
+                throw Error("max depth exceeded");
             var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.Package.Repository();
             while (reader.pos < end) {
                 var tag = reader.uint32();
-                if (tag === _end)
+                if (tag === _end) {
+                    _end = undefined;
                     break;
+                }
                 switch (tag) {
                 case 10: {
                         message.type = reader.string();
@@ -920,10 +926,12 @@ $root.Package = (function() {
                         break;
                     }
                 default:
-                    reader.skipType(tag & 7, _depth);
+                    reader.skipType(tag & 7, _depth, tag >>> 3);
                     break;
                 }
             }
+            if (_end !== undefined)
+                throw Error("missing end group");
             return message;
         };
 
@@ -957,7 +965,7 @@ $root.Package = (function() {
             if (_depth === undefined)
                 _depth = 0;
             if (_depth > $util.recursionLimit)
-                return "maximum nesting depth exceeded";
+                return "max depth exceeded";
             if (message.type != null && message.hasOwnProperty("type"))
                 if (!$util.isString(message.type))
                     return "type: string expected";
@@ -981,7 +989,7 @@ $root.Package = (function() {
             if (_depth === undefined)
                 _depth = 0;
             if (_depth > $util.recursionLimit)
-                throw Error("maximum nesting depth exceeded");
+                throw Error("max depth exceeded");
             var message = new $root.Package.Repository();
             if (object.type != null)
                 message.type = String(object.type);

@@ -111,7 +111,7 @@ converter.fromObject = function fromObject(mtype) {
         ("return d")
     ("if(q===undefined)q=0")
     ("if(q>util.recursionLimit)")
-        ("throw Error(\"maximum nesting depth exceeded\")");
+        ("throw Error(\"max depth exceeded\")");
     if (!fields.length) return gen
     ("return new this.ctor");
     gen

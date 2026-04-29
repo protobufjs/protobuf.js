@@ -111,12 +111,14 @@ $root.vector_tile = (function() {
             if (_depth === undefined)
                 _depth = 0;
             if (_depth > $Reader.recursionLimit)
-                throw Error("maximum nesting depth exceeded");
+                throw Error("max depth exceeded");
             var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.vector_tile.Tile();
             while (reader.pos < end) {
                 var tag = reader.uint32();
-                if (tag === _end)
+                if (tag === _end) {
+                    _end = undefined;
                     break;
+                }
                 switch (tag) {
                 case 26: {
                         if (!(message.layers && message.layers.length))
@@ -125,10 +127,12 @@ $root.vector_tile = (function() {
                         break;
                     }
                 default:
-                    reader.skipType(tag & 7, _depth);
+                    reader.skipType(tag & 7, _depth, tag >>> 3);
                     break;
                 }
             }
+            if (_end !== undefined)
+                throw Error("missing end group");
             return message;
         };
 
@@ -162,7 +166,7 @@ $root.vector_tile = (function() {
             if (_depth === undefined)
                 _depth = 0;
             if (_depth > $util.recursionLimit)
-                return "maximum nesting depth exceeded";
+                return "max depth exceeded";
             if (message.layers != null && message.hasOwnProperty("layers")) {
                 if (!Array.isArray(message.layers))
                     return "layers: array expected";
@@ -189,7 +193,7 @@ $root.vector_tile = (function() {
             if (_depth === undefined)
                 _depth = 0;
             if (_depth > $util.recursionLimit)
-                throw Error("maximum nesting depth exceeded");
+                throw Error("max depth exceeded");
             var message = new $root.vector_tile.Tile();
             if (object.layers) {
                 if (!Array.isArray(object.layers))
@@ -428,12 +432,14 @@ $root.vector_tile = (function() {
                 if (_depth === undefined)
                     _depth = 0;
                 if (_depth > $Reader.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.vector_tile.Tile.Value();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
-                    if (tag === _end)
+                    if (tag === _end) {
+                        _end = undefined;
                         break;
+                    }
                     switch (tag) {
                     case 10: {
                             message.stringValue = reader.string();
@@ -464,10 +470,12 @@ $root.vector_tile = (function() {
                             break;
                         }
                     default:
-                        reader.skipType(tag & 7, _depth);
+                        reader.skipType(tag & 7, _depth, tag >>> 3);
                         break;
                     }
                 }
+                if (_end !== undefined)
+                    throw Error("missing end group");
                 return message;
             };
 
@@ -501,7 +509,7 @@ $root.vector_tile = (function() {
                 if (_depth === undefined)
                     _depth = 0;
                 if (_depth > $util.recursionLimit)
-                    return "maximum nesting depth exceeded";
+                    return "max depth exceeded";
                 if (message.stringValue != null && message.hasOwnProperty("stringValue"))
                     if (!$util.isString(message.stringValue))
                         return "stringValue: string expected";
@@ -540,7 +548,7 @@ $root.vector_tile = (function() {
                 if (_depth === undefined)
                     _depth = 0;
                 if (_depth > $util.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var message = new $root.vector_tile.Tile.Value();
                 if (object.stringValue != null)
                     message.stringValue = String(object.stringValue);
@@ -803,12 +811,14 @@ $root.vector_tile = (function() {
                 if (_depth === undefined)
                     _depth = 0;
                 if (_depth > $Reader.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.vector_tile.Tile.Feature();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
-                    if (tag === _end)
+                    if (tag === _end) {
+                        _end = undefined;
                         break;
+                    }
                     switch (tag) {
                     case 8: {
                             message.id = reader.uint64();
@@ -843,10 +853,12 @@ $root.vector_tile = (function() {
                             break;
                         }
                     default:
-                        reader.skipType(tag & 7, _depth);
+                        reader.skipType(tag & 7, _depth, tag >>> 3);
                         break;
                     }
                 }
+                if (_end !== undefined)
+                    throw Error("missing end group");
                 return message;
             };
 
@@ -880,7 +892,7 @@ $root.vector_tile = (function() {
                 if (_depth === undefined)
                     _depth = 0;
                 if (_depth > $util.recursionLimit)
-                    return "maximum nesting depth exceeded";
+                    return "max depth exceeded";
                 if (message.id != null && message.hasOwnProperty("id"))
                     if (!$util.isInteger(message.id) && !(message.id && $util.isInteger(message.id.low) && $util.isInteger(message.id.high)))
                         return "id: integer|Long expected";
@@ -925,7 +937,7 @@ $root.vector_tile = (function() {
                 if (_depth === undefined)
                     _depth = 0;
                 if (_depth > $util.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var message = new $root.vector_tile.Tile.Feature();
                 if (object.id != null)
                     if ($util.Long)
@@ -1201,12 +1213,14 @@ $root.vector_tile = (function() {
                 if (_depth === undefined)
                     _depth = 0;
                 if (_depth > $Reader.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.vector_tile.Tile.Layer();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
-                    if (tag === _end)
+                    if (tag === _end) {
+                        _end = undefined;
                         break;
+                    }
                     switch (tag) {
                     case 120: {
                             message.version = reader.uint32();
@@ -1239,10 +1253,12 @@ $root.vector_tile = (function() {
                             break;
                         }
                     default:
-                        reader.skipType(tag & 7, _depth);
+                        reader.skipType(tag & 7, _depth, tag >>> 3);
                         break;
                     }
                 }
+                if (_end !== undefined)
+                    throw Error("missing end group");
                 if (!message.hasOwnProperty("version"))
                     throw $util.ProtocolError("missing required 'version'", { instance: message });
                 if (!message.hasOwnProperty("name"))
@@ -1280,7 +1296,7 @@ $root.vector_tile = (function() {
                 if (_depth === undefined)
                     _depth = 0;
                 if (_depth > $util.recursionLimit)
-                    return "maximum nesting depth exceeded";
+                    return "max depth exceeded";
                 if (!$util.isInteger(message.version))
                     return "version: integer expected";
                 if (!$util.isString(message.name))
@@ -1330,7 +1346,7 @@ $root.vector_tile = (function() {
                 if (_depth === undefined)
                     _depth = 0;
                 if (_depth > $util.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var message = new $root.vector_tile.Tile.Layer();
                 if (object.version != null)
                     message.version = object.version >>> 0;

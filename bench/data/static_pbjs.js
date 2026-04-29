@@ -41,12 +41,14 @@ $root.Test = (function() {
         if (_depth === undefined)
             _depth = 0;
         if (_depth > $Reader.recursionLimit)
-            throw Error("maximum nesting depth exceeded");
+            throw Error("max depth exceeded");
         var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.Test();
         while (reader.pos < end) {
             var tag = reader.uint32();
-            if (tag === _end)
+            if (tag === _end) {
+                _end = undefined;
                 break;
+            }
             switch (tag) {
             case 10: {
                     message.string = reader.string();
@@ -65,10 +67,12 @@ $root.Test = (function() {
                     break;
                 }
             default:
-                reader.skipType(tag & 7, _depth);
+                reader.skipType(tag & 7, _depth, tag >>> 3);
                 break;
             }
         }
+        if (_end !== undefined)
+            throw Error("missing end group");
         return message;
     };
 
@@ -103,12 +107,14 @@ $root.Test = (function() {
             if (_depth === undefined)
                 _depth = 0;
             if (_depth > $Reader.recursionLimit)
-                throw Error("maximum nesting depth exceeded");
+                throw Error("max depth exceeded");
             var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.Test.Inner();
             while (reader.pos < end) {
                 var tag = reader.uint32();
-                if (tag === _end)
+                if (tag === _end) {
+                    _end = undefined;
                     break;
+                }
                 switch (tag) {
                 case 8: {
                         message.int32 = reader.int32();
@@ -123,10 +129,12 @@ $root.Test = (function() {
                         break;
                     }
                 default:
-                    reader.skipType(tag & 7, _depth);
+                    reader.skipType(tag & 7, _depth, tag >>> 3);
                     break;
                 }
             }
+            if (_end !== undefined)
+                throw Error("missing end group");
             return message;
         };
 
@@ -161,12 +169,14 @@ $root.Test = (function() {
                 if (_depth === undefined)
                     _depth = 0;
                 if (_depth > $Reader.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.Test.Inner.InnerInner();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
-                    if (tag === _end)
+                    if (tag === _end) {
+                        _end = undefined;
                         break;
+                    }
                     switch (tag) {
                     case 8: {
                             message.long = reader.int64();
@@ -181,10 +191,12 @@ $root.Test = (function() {
                             break;
                         }
                     default:
-                        reader.skipType(tag & 7, _depth);
+                        reader.skipType(tag & 7, _depth, tag >>> 3);
                         break;
                     }
                 }
+                if (_end !== undefined)
+                    throw Error("missing end group");
                 return message;
             };
 
@@ -240,12 +252,14 @@ $root.Outer = (function() {
         if (_depth === undefined)
             _depth = 0;
         if (_depth > $Reader.recursionLimit)
-            throw Error("maximum nesting depth exceeded");
+            throw Error("max depth exceeded");
         var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.Outer();
         while (reader.pos < end) {
             var tag = reader.uint32();
-            if (tag === _end)
+            if (tag === _end) {
+                _end = undefined;
                 break;
+            }
             switch (tag) {
             case 8:
             case 10: {
@@ -264,10 +278,12 @@ $root.Outer = (function() {
                     break;
                 }
             default:
-                reader.skipType(tag & 7, _depth);
+                reader.skipType(tag & 7, _depth, tag >>> 3);
                 break;
             }
         }
+        if (_end !== undefined)
+            throw Error("missing end group");
         return message;
     };
 
