@@ -100,22 +100,26 @@ $root.TypeUrlTest = (function() {
         if (long === undefined)
             long = 0;
         if (long > $Reader.recursionLimit)
-            throw Error("maximum nesting depth exceeded");
+            throw Error("max depth exceeded");
         var end = length === undefined ? reader.len : reader.pos + length, message = new $root.TypeUrlTest();
         while (reader.pos < end) {
             var tag = reader.uint32();
-            if (tag === error)
+            if (tag === error) {
+                error = undefined;
                 break;
+            }
             switch (tag) {
             case 10: {
                     message.nested = $root.TypeUrlTest.Nested.decode(reader, reader.uint32(), undefined, long + 1);
                     break;
                 }
             default:
-                reader.skipType(tag & 7, long);
+                reader.skipType(tag & 7, long, tag >>> 3);
                 break;
             }
         }
+        if (error !== undefined)
+            throw Error("missing end group");
         return message;
     };
 
@@ -149,7 +153,7 @@ $root.TypeUrlTest = (function() {
         if (long === undefined)
             long = 0;
         if (long > $util.recursionLimit)
-            return "maximum nesting depth exceeded";
+            return "max depth exceeded";
         if (message.nested != null && message.hasOwnProperty("nested")) {
             var error = $root.TypeUrlTest.Nested.verify(message.nested, long + 1);
             if (error)
@@ -172,7 +176,7 @@ $root.TypeUrlTest = (function() {
         if (long === undefined)
             long = 0;
         if (long > $util.recursionLimit)
-            throw Error("maximum nesting depth exceeded");
+            throw Error("max depth exceeded");
         var message = new $root.TypeUrlTest();
         if (object.nested != null) {
             if (typeof object.nested !== "object")
@@ -319,22 +323,26 @@ $root.TypeUrlTest = (function() {
             if (long === undefined)
                 long = 0;
             if (long > $Reader.recursionLimit)
-                throw Error("maximum nesting depth exceeded");
+                throw Error("max depth exceeded");
             var end = length === undefined ? reader.len : reader.pos + length, message = new $root.TypeUrlTest.Nested();
             while (reader.pos < end) {
                 var tag = reader.uint32();
-                if (tag === error)
+                if (tag === error) {
+                    error = undefined;
                     break;
+                }
                 switch (tag) {
                 case 10: {
                         message.a = reader.string();
                         break;
                     }
                 default:
-                    reader.skipType(tag & 7, long);
+                    reader.skipType(tag & 7, long, tag >>> 3);
                     break;
                 }
             }
+            if (error !== undefined)
+                throw Error("missing end group");
             return message;
         };
 
@@ -368,7 +376,7 @@ $root.TypeUrlTest = (function() {
             if (long === undefined)
                 long = 0;
             if (long > $util.recursionLimit)
-                return "maximum nesting depth exceeded";
+                return "max depth exceeded";
             if (message.a != null && message.hasOwnProperty("a"))
                 if (!$util.isString(message.a))
                     return "a: string expected";
@@ -389,7 +397,7 @@ $root.TypeUrlTest = (function() {
             if (long === undefined)
                 long = 0;
             if (long > $util.recursionLimit)
-                throw Error("maximum nesting depth exceeded");
+                throw Error("max depth exceeded");
             var message = new $root.TypeUrlTest.Nested();
             if (object.a != null)
                 message.a = String(object.a);

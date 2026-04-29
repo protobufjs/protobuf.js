@@ -21,12 +21,14 @@ function decoder(mtype) {
         ("r=Reader.create(r)")
     ("if(n===undefined)n=0")
     ("if(n>Reader.recursionLimit)")
-        ("throw Error(\"maximum nesting depth exceeded\")")
+        ("throw Error(\"max depth exceeded\")")
     ("var c=l===undefined?r.len:r.pos+l,m=new this.ctor" + (mtype.fieldsArray.filter(function(field) { return field.map; }).length ? ",k,value" : ""))
     ("while(r.pos<c){")
         ("var t=r.uint32()")
-        ("if(t===e)")
+        ("if(t===e){")
+            ("e=undefined")
             ("break")
+        ("}")
         ("switch(t){");
 
     var i = 0;
@@ -67,7 +69,7 @@ function decoder(mtype) {
             gen
                             ("break")
                         ("default:")
-                            ("r.skipType(tag2&7,n)")
+                            ("r.skipType(tag2&7,n,tag2>>>3)")
                             ("break")
                     ("}")
                 ("}");
@@ -132,11 +134,15 @@ function decoder(mtype) {
         // Unknown fields
     } gen
             ("default:")
-                ("r.skipType(t&7,n)")
+                ("r.skipType(t&7,n,t>>>3)")
                 ("break")
 
         ("}")
     ("}");
+
+    gen
+    ("if(e!==undefined)")
+        ("throw Error(\"missing end group\")");
 
     // Field presence
     for (i = 0; i < mtype._fieldsArray.length; ++i) {

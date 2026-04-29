@@ -1278,9 +1278,10 @@ export class Reader {
      * Skips the next element of the specified wire type.
      * @param wireType Wire type received
      * @param [depth] Depth of recursion to control nested calls; 0 if omitted
+     * @param [fieldNumber] Field number for validating group end tags
      * @returns `this`
      */
-    public skipType(wireType: number, depth?: number): Reader;
+    public skipType(wireType: number, depth?: number, fieldNumber?: number): Reader;
 }
 
 /** Wire format reader using node buffers. */

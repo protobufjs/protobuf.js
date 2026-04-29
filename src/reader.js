@@ -375,12 +375,15 @@ Reader.recursionLimit = util.recursionLimit;
  * Skips the next element of the specified wire type.
  * @param {number} wireType Wire type received
  * @param {number} [depth] Depth of recursion to control nested calls; 0 if omitted
+ * @param {number} [fieldNumber] Field number for validating group end tags
  * @returns {Reader} `this`
  */
-Reader.prototype.skipType = function(wireType, depth) {
+Reader.prototype.skipType = function(wireType, depth, fieldNumber) {
     if (depth === undefined) depth = 0;
     if (depth > Reader.recursionLimit)
-        throw Error("maximum nesting depth exceeded");
+        throw Error("max depth exceeded");
+    if (fieldNumber === 0)
+        throw Error("illegal tag: field number 0");
     switch (wireType) {
         case 0:
             this.skip();
@@ -392,8 +395,18 @@ Reader.prototype.skipType = function(wireType, depth) {
             this.skip(this.uint32());
             break;
         case 3:
-            while ((wireType = this.uint32() & 7) !== 4) {
-                this.skipType(wireType, depth + 1);
+            while (true) {
+                var tag = this.uint32();
+                var nestedField = tag >>> 3;
+                wireType = tag & 7;
+                if (!nestedField)
+                    throw Error("illegal tag: field number 0");
+                if (wireType === 4) {
+                    if (fieldNumber !== undefined && nestedField !== fieldNumber)
+                        throw Error("invalid end group tag");
+                    break;
+                }
+                this.skipType(wireType, depth + 1, nestedField);
             }
             break;
         case 5:

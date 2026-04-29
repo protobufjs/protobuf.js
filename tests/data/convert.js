@@ -204,12 +204,14 @@ $root.Message = (function() {
         if (long === undefined)
             long = 0;
         if (long > $Reader.recursionLimit)
-            throw Error("maximum nesting depth exceeded");
+            throw Error("max depth exceeded");
         var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Message(), key, value;
         while (reader.pos < end) {
             var tag = reader.uint32();
-            if (tag === error)
+            if (tag === error) {
+                error = undefined;
                 break;
+            }
             switch (tag) {
             case 10: {
                     message.stringVal = reader.string();
@@ -279,7 +281,7 @@ $root.Message = (function() {
                             value = reader.int64();
                             break;
                         default:
-                            reader.skipType(tag2 & 7, long);
+                            reader.skipType(tag2 & 7, long, tag2 >>> 3);
                             break;
                         }
                     }
@@ -289,10 +291,12 @@ $root.Message = (function() {
                     break;
                 }
             default:
-                reader.skipType(tag & 7, long);
+                reader.skipType(tag & 7, long, tag >>> 3);
                 break;
             }
         }
+        if (error !== undefined)
+            throw Error("missing end group");
         return message;
     };
 
@@ -326,7 +330,7 @@ $root.Message = (function() {
         if (long === undefined)
             long = 0;
         if (long > $util.recursionLimit)
-            return "maximum nesting depth exceeded";
+            return "max depth exceeded";
         if (message.stringVal != null && message.hasOwnProperty("stringVal"))
             if (!$util.isString(message.stringVal))
                 return "stringVal: string expected";
@@ -402,7 +406,7 @@ $root.Message = (function() {
         if (long === undefined)
             long = 0;
         if (long > $util.recursionLimit)
-            throw Error("maximum nesting depth exceeded");
+            throw Error("max depth exceeded");
         var message = new $root.Message();
         if (object.stringVal != null)
             message.stringVal = String(object.stringVal);

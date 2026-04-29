@@ -168,22 +168,26 @@ $root.MyRequest = (function() {
         if (long === undefined)
             long = 0;
         if (long > $Reader.recursionLimit)
-            throw Error("maximum nesting depth exceeded");
+            throw Error("max depth exceeded");
         var end = length === undefined ? reader.len : reader.pos + length, message = new $root.MyRequest();
         while (reader.pos < end) {
             var tag = reader.uint32();
-            if (tag === error)
+            if (tag === error) {
+                error = undefined;
                 break;
+            }
             switch (tag) {
             case 10: {
                     message.path = reader.string();
                     break;
                 }
             default:
-                reader.skipType(tag & 7, long);
+                reader.skipType(tag & 7, long, tag >>> 3);
                 break;
             }
         }
+        if (error !== undefined)
+            throw Error("missing end group");
         return message;
     };
 
@@ -217,7 +221,7 @@ $root.MyRequest = (function() {
         if (long === undefined)
             long = 0;
         if (long > $util.recursionLimit)
-            return "maximum nesting depth exceeded";
+            return "max depth exceeded";
         if (message.path != null && message.hasOwnProperty("path"))
             if (!$util.isString(message.path))
                 return "path: string expected";
@@ -238,7 +242,7 @@ $root.MyRequest = (function() {
         if (long === undefined)
             long = 0;
         if (long > $util.recursionLimit)
-            throw Error("maximum nesting depth exceeded");
+            throw Error("max depth exceeded");
         var message = new $root.MyRequest();
         if (object.path != null)
             message.path = String(object.path);
@@ -385,22 +389,26 @@ $root.MyResponse = (function() {
         if (long === undefined)
             long = 0;
         if (long > $Reader.recursionLimit)
-            throw Error("maximum nesting depth exceeded");
+            throw Error("max depth exceeded");
         var end = length === undefined ? reader.len : reader.pos + length, message = new $root.MyResponse();
         while (reader.pos < end) {
             var tag = reader.uint32();
-            if (tag === error)
+            if (tag === error) {
+                error = undefined;
                 break;
+            }
             switch (tag) {
             case 16: {
                     message.status = reader.int32();
                     break;
                 }
             default:
-                reader.skipType(tag & 7, long);
+                reader.skipType(tag & 7, long, tag >>> 3);
                 break;
             }
         }
+        if (error !== undefined)
+            throw Error("missing end group");
         return message;
     };
 
@@ -434,7 +442,7 @@ $root.MyResponse = (function() {
         if (long === undefined)
             long = 0;
         if (long > $util.recursionLimit)
-            return "maximum nesting depth exceeded";
+            return "max depth exceeded";
         if (message.status != null && message.hasOwnProperty("status"))
             if (!$util.isInteger(message.status))
                 return "status: integer expected";
@@ -455,7 +463,7 @@ $root.MyResponse = (function() {
         if (long === undefined)
             long = 0;
         if (long > $util.recursionLimit)
-            throw Error("maximum nesting depth exceeded");
+            throw Error("max depth exceeded");
         var message = new $root.MyResponse();
         if (object.status != null)
             message.status = object.status | 0;

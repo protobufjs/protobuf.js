@@ -110,8 +110,8 @@ tape.test("writer & reader", function(test) {
             .uint32(1)
             .double(0.1)
             .string("123")
-            .uint32(1 << 3 | 1).double(0.1).uint32(4)
-            .uint32(4)
+            .uint32(1 << 3 | 1).double(0.1).uint32(1 << 3 | 4)
+            .uint32(1 << 3 | 4)
             .float(0.125)
             .finish()
         );
@@ -144,7 +144,7 @@ tape.test("writer & reader", function(test) {
       // 0x7B (field 15, wire type 3 = start group)
       const payload = Buffer.alloc(50000, 0x7B);
       MyMessage.decode(payload);
-    }, /maximum nesting depth exceeded/, "limits recursion in reader");
+    }, /max depth exceeded/, "limits recursion in reader");
 
     test.end();
 });

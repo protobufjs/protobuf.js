@@ -127,7 +127,7 @@ function verifier(mtype) {
         ("return%j", "object expected")
     ("if(n===undefined)n=0")
     ("if(n>util.recursionLimit)")
-        ("return%j", "maximum nesting depth exceeded");
+        ("return%j", "max depth exceeded");
     var oneofs = mtype.oneofsArray,
         seenFirstField = {};
     if (oneofs.length) gen

@@ -107,18 +107,22 @@ $root.jspb = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $Reader.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.Empty();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
-                    if (tag === error)
+                    if (tag === error) {
+                        error = undefined;
                         break;
+                    }
                     switch (tag) {
                     default:
-                        reader.skipType(tag & 7, long);
+                        reader.skipType(tag & 7, long, tag >>> 3);
                         break;
                     }
                 }
+                if (error !== undefined)
+                    throw Error("missing end group");
                 return message;
             };
 
@@ -152,7 +156,7 @@ $root.jspb = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    return "maximum nesting depth exceeded";
+                    return "max depth exceeded";
                 return null;
             };
 
@@ -170,7 +174,7 @@ $root.jspb = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 return new $root.jspb.test.Empty();
             };
 
@@ -321,22 +325,26 @@ $root.jspb = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $Reader.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.EnumContainer();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
-                    if (tag === error)
+                    if (tag === error) {
+                        error = undefined;
                         break;
+                    }
                     switch (tag) {
                     case 8: {
                             message.outerEnum = reader.int32();
                             break;
                         }
                     default:
-                        reader.skipType(tag & 7, long);
+                        reader.skipType(tag & 7, long, tag >>> 3);
                         break;
                     }
                 }
+                if (error !== undefined)
+                    throw Error("missing end group");
                 return message;
             };
 
@@ -370,7 +378,7 @@ $root.jspb = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    return "maximum nesting depth exceeded";
+                    return "max depth exceeded";
                 if (message.outerEnum != null && message.hasOwnProperty("outerEnum"))
                     switch (message.outerEnum) {
                     default:
@@ -396,7 +404,7 @@ $root.jspb = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var message = new $root.jspb.test.EnumContainer();
                 switch (object.outerEnum) {
                 default:
@@ -580,12 +588,14 @@ $root.jspb = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $Reader.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.Simple1();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
-                    if (tag === error)
+                    if (tag === error) {
+                        error = undefined;
                         break;
+                    }
                     switch (tag) {
                     case 10: {
                             message.aString = reader.string();
@@ -602,10 +612,12 @@ $root.jspb = (function() {
                             break;
                         }
                     default:
-                        reader.skipType(tag & 7, long);
+                        reader.skipType(tag & 7, long, tag >>> 3);
                         break;
                     }
                 }
+                if (error !== undefined)
+                    throw Error("missing end group");
                 if (!message.hasOwnProperty("aString"))
                     throw $util.ProtocolError("missing required 'aString'", { instance: message });
                 return message;
@@ -641,7 +653,7 @@ $root.jspb = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    return "maximum nesting depth exceeded";
+                    return "max depth exceeded";
                 if (!$util.isString(message.aString))
                     return "aString: string expected";
                 if (message.aRepeatedString != null && message.hasOwnProperty("aRepeatedString")) {
@@ -671,7 +683,7 @@ $root.jspb = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var message = new $root.jspb.test.Simple1();
                 if (object.aString != null)
                     message.aString = String(object.aString);
@@ -850,12 +862,14 @@ $root.jspb = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $Reader.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.Simple2();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
-                    if (tag === error)
+                    if (tag === error) {
+                        error = undefined;
                         break;
+                    }
                     switch (tag) {
                     case 10: {
                             message.aString = reader.string();
@@ -868,10 +882,12 @@ $root.jspb = (function() {
                             break;
                         }
                     default:
-                        reader.skipType(tag & 7, long);
+                        reader.skipType(tag & 7, long, tag >>> 3);
                         break;
                     }
                 }
+                if (error !== undefined)
+                    throw Error("missing end group");
                 if (!message.hasOwnProperty("aString"))
                     throw $util.ProtocolError("missing required 'aString'", { instance: message });
                 return message;
@@ -907,7 +923,7 @@ $root.jspb = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    return "maximum nesting depth exceeded";
+                    return "max depth exceeded";
                 if (!$util.isString(message.aString))
                     return "aString: string expected";
                 if (message.aRepeatedString != null && message.hasOwnProperty("aRepeatedString")) {
@@ -934,7 +950,7 @@ $root.jspb = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var message = new $root.jspb.test.Simple2();
                 if (object.aString != null)
                     message.aString = String(object.aString);
@@ -1124,12 +1140,14 @@ $root.jspb = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $Reader.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.SpecialCases();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
-                    if (tag === error)
+                    if (tag === error) {
+                        error = undefined;
                         break;
+                    }
                     switch (tag) {
                     case 10: {
                             message.normal = reader.string();
@@ -1148,10 +1166,12 @@ $root.jspb = (function() {
                             break;
                         }
                     default:
-                        reader.skipType(tag & 7, long);
+                        reader.skipType(tag & 7, long, tag >>> 3);
                         break;
                     }
                 }
+                if (error !== undefined)
+                    throw Error("missing end group");
                 if (!message.hasOwnProperty("normal"))
                     throw $util.ProtocolError("missing required 'normal'", { instance: message });
                 if (!message.hasOwnProperty("default"))
@@ -1193,7 +1213,7 @@ $root.jspb = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    return "maximum nesting depth exceeded";
+                    return "max depth exceeded";
                 if (!$util.isString(message.normal))
                     return "normal: string expected";
                 if (!$util.isString(message["default"]))
@@ -1219,7 +1239,7 @@ $root.jspb = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var message = new $root.jspb.test.SpecialCases();
                 if (object.normal != null)
                     message.normal = String(object.normal);
@@ -1429,12 +1449,14 @@ $root.jspb = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $Reader.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.OptionalFields();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
-                    if (tag === error)
+                    if (tag === error) {
+                        error = undefined;
                         break;
+                    }
                     switch (tag) {
                     case 10: {
                             message.aString = reader.string();
@@ -1461,10 +1483,12 @@ $root.jspb = (function() {
                             break;
                         }
                     default:
-                        reader.skipType(tag & 7, long);
+                        reader.skipType(tag & 7, long, tag >>> 3);
                         break;
                     }
                 }
+                if (error !== undefined)
+                    throw Error("missing end group");
                 if (!message.hasOwnProperty("aBool"))
                     throw $util.ProtocolError("missing required 'aBool'", { instance: message });
                 return message;
@@ -1500,7 +1524,7 @@ $root.jspb = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    return "maximum nesting depth exceeded";
+                    return "max depth exceeded";
                 if (message.aString != null && message.hasOwnProperty("aString"))
                     if (!$util.isString(message.aString))
                         return "aString: string expected";
@@ -1544,7 +1568,7 @@ $root.jspb = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var message = new $root.jspb.test.OptionalFields();
                 if (object.aString != null)
                     message.aString = String(object.aString);
@@ -1733,22 +1757,26 @@ $root.jspb = (function() {
                     if (long === undefined)
                         long = 0;
                     if (long > $Reader.recursionLimit)
-                        throw Error("maximum nesting depth exceeded");
+                        throw Error("max depth exceeded");
                     var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.OptionalFields.Nested();
                     while (reader.pos < end) {
                         var tag = reader.uint32();
-                        if (tag === error)
+                        if (tag === error) {
+                            error = undefined;
                             break;
+                        }
                         switch (tag) {
                         case 8: {
                                 message.anInt = reader.int32();
                                 break;
                             }
                         default:
-                            reader.skipType(tag & 7, long);
+                            reader.skipType(tag & 7, long, tag >>> 3);
                             break;
                         }
                     }
+                    if (error !== undefined)
+                        throw Error("missing end group");
                     return message;
                 };
 
@@ -1782,7 +1810,7 @@ $root.jspb = (function() {
                     if (long === undefined)
                         long = 0;
                     if (long > $util.recursionLimit)
-                        return "maximum nesting depth exceeded";
+                        return "max depth exceeded";
                     if (message.anInt != null && message.hasOwnProperty("anInt"))
                         if (!$util.isInteger(message.anInt))
                             return "anInt: integer expected";
@@ -1803,7 +1831,7 @@ $root.jspb = (function() {
                     if (long === undefined)
                         long = 0;
                     if (long > $util.recursionLimit)
-                        throw Error("maximum nesting depth exceeded");
+                        throw Error("max depth exceeded");
                     var message = new $root.jspb.test.OptionalFields.Nested();
                     if (object.anInt != null)
                         message.anInt = object.anInt | 0;
@@ -2045,12 +2073,14 @@ $root.jspb = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $Reader.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.HasExtensions();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
-                    if (tag === error)
+                    if (tag === error) {
+                        error = undefined;
                         break;
+                    }
                     switch (tag) {
                     case 10: {
                             message.str1 = reader.string();
@@ -2093,10 +2123,12 @@ $root.jspb = (function() {
                             break;
                         }
                     default:
-                        reader.skipType(tag & 7, long);
+                        reader.skipType(tag & 7, long, tag >>> 3);
                         break;
                     }
                 }
+                if (error !== undefined)
+                    throw Error("missing end group");
                 return message;
             };
 
@@ -2130,7 +2162,7 @@ $root.jspb = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    return "maximum nesting depth exceeded";
+                    return "max depth exceeded";
                 if (message.str1 != null && message.hasOwnProperty("str1"))
                     if (!$util.isString(message.str1))
                         return "str1: string expected";
@@ -2191,7 +2223,7 @@ $root.jspb = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var message = new $root.jspb.test.HasExtensions();
                 if (object.str1 != null)
                     message.str1 = String(object.str1);
@@ -2455,12 +2487,14 @@ $root.jspb = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $Reader.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.Complex();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
-                    if (tag === error)
+                    if (tag === error) {
+                        error = undefined;
                         break;
+                    }
                     switch (tag) {
                     case 10: {
                             message.aString = reader.string();
@@ -2487,10 +2521,12 @@ $root.jspb = (function() {
                             break;
                         }
                     default:
-                        reader.skipType(tag & 7, long);
+                        reader.skipType(tag & 7, long, tag >>> 3);
                         break;
                     }
                 }
+                if (error !== undefined)
+                    throw Error("missing end group");
                 if (!message.hasOwnProperty("aString"))
                     throw $util.ProtocolError("missing required 'aString'", { instance: message });
                 if (!message.hasOwnProperty("anOutOfOrderBool"))
@@ -2528,7 +2564,7 @@ $root.jspb = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    return "maximum nesting depth exceeded";
+                    return "max depth exceeded";
                 if (!$util.isString(message.aString))
                     return "aString: string expected";
                 if (typeof message.anOutOfOrderBool !== "boolean")
@@ -2571,7 +2607,7 @@ $root.jspb = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var message = new $root.jspb.test.Complex();
                 if (object.aString != null)
                     message.aString = String(object.aString);
@@ -2759,22 +2795,26 @@ $root.jspb = (function() {
                     if (long === undefined)
                         long = 0;
                     if (long > $Reader.recursionLimit)
-                        throw Error("maximum nesting depth exceeded");
+                        throw Error("max depth exceeded");
                     var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.Complex.Nested();
                     while (reader.pos < end) {
                         var tag = reader.uint32();
-                        if (tag === error)
+                        if (tag === error) {
+                            error = undefined;
                             break;
+                        }
                         switch (tag) {
                         case 16: {
                                 message.anInt = reader.int32();
                                 break;
                             }
                         default:
-                            reader.skipType(tag & 7, long);
+                            reader.skipType(tag & 7, long, tag >>> 3);
                             break;
                         }
                     }
+                    if (error !== undefined)
+                        throw Error("missing end group");
                     if (!message.hasOwnProperty("anInt"))
                         throw $util.ProtocolError("missing required 'anInt'", { instance: message });
                     return message;
@@ -2810,7 +2850,7 @@ $root.jspb = (function() {
                     if (long === undefined)
                         long = 0;
                     if (long > $util.recursionLimit)
-                        return "maximum nesting depth exceeded";
+                        return "max depth exceeded";
                     if (!$util.isInteger(message.anInt))
                         return "anInt: integer expected";
                     return null;
@@ -2830,7 +2870,7 @@ $root.jspb = (function() {
                     if (long === undefined)
                         long = 0;
                     if (long > $util.recursionLimit)
-                        throw Error("maximum nesting depth exceeded");
+                        throw Error("max depth exceeded");
                     var message = new $root.jspb.test.Complex.Nested();
                     if (object.anInt != null)
                         message.anInt = object.anInt | 0;
@@ -2969,18 +3009,22 @@ $root.jspb = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $Reader.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.OuterMessage();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
-                    if (tag === error)
+                    if (tag === error) {
+                        error = undefined;
                         break;
+                    }
                     switch (tag) {
                     default:
-                        reader.skipType(tag & 7, long);
+                        reader.skipType(tag & 7, long, tag >>> 3);
                         break;
                     }
                 }
+                if (error !== undefined)
+                    throw Error("missing end group");
                 return message;
             };
 
@@ -3014,7 +3058,7 @@ $root.jspb = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    return "maximum nesting depth exceeded";
+                    return "max depth exceeded";
                 return null;
             };
 
@@ -3032,7 +3076,7 @@ $root.jspb = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 return new $root.jspb.test.OuterMessage();
             };
 
@@ -3166,22 +3210,26 @@ $root.jspb = (function() {
                     if (long === undefined)
                         long = 0;
                     if (long > $Reader.recursionLimit)
-                        throw Error("maximum nesting depth exceeded");
+                        throw Error("max depth exceeded");
                     var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.OuterMessage.Complex();
                     while (reader.pos < end) {
                         var tag = reader.uint32();
-                        if (tag === error)
+                        if (tag === error) {
+                            error = undefined;
                             break;
+                        }
                         switch (tag) {
                         case 8: {
                                 message.innerComplexField = reader.int32();
                                 break;
                             }
                         default:
-                            reader.skipType(tag & 7, long);
+                            reader.skipType(tag & 7, long, tag >>> 3);
                             break;
                         }
                     }
+                    if (error !== undefined)
+                        throw Error("missing end group");
                     return message;
                 };
 
@@ -3215,7 +3263,7 @@ $root.jspb = (function() {
                     if (long === undefined)
                         long = 0;
                     if (long > $util.recursionLimit)
-                        return "maximum nesting depth exceeded";
+                        return "max depth exceeded";
                     if (message.innerComplexField != null && message.hasOwnProperty("innerComplexField"))
                         if (!$util.isInteger(message.innerComplexField))
                             return "innerComplexField: integer expected";
@@ -3236,7 +3284,7 @@ $root.jspb = (function() {
                     if (long === undefined)
                         long = 0;
                     if (long > $util.recursionLimit)
-                        throw Error("maximum nesting depth exceeded");
+                        throw Error("max depth exceeded");
                     var message = new $root.jspb.test.OuterMessage.Complex();
                     if (object.innerComplexField != null)
                         message.innerComplexField = object.innerComplexField | 0;
@@ -3386,22 +3434,26 @@ $root.jspb = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $Reader.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.IsExtension();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
-                    if (tag === error)
+                    if (tag === error) {
+                        error = undefined;
                         break;
+                    }
                     switch (tag) {
                     case 10: {
                             message.ext1 = reader.string();
                             break;
                         }
                     default:
-                        reader.skipType(tag & 7, long);
+                        reader.skipType(tag & 7, long, tag >>> 3);
                         break;
                     }
                 }
+                if (error !== undefined)
+                    throw Error("missing end group");
                 return message;
             };
 
@@ -3435,7 +3487,7 @@ $root.jspb = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    return "maximum nesting depth exceeded";
+                    return "max depth exceeded";
                 if (message.ext1 != null && message.hasOwnProperty("ext1"))
                     if (!$util.isString(message.ext1))
                         return "ext1: string expected";
@@ -3456,7 +3508,7 @@ $root.jspb = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var message = new $root.jspb.test.IsExtension();
                 if (object.ext1 != null)
                     message.ext1 = String(object.ext1);
@@ -3592,18 +3644,22 @@ $root.jspb = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $Reader.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.IndirectExtension();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
-                    if (tag === error)
+                    if (tag === error) {
+                        error = undefined;
                         break;
+                    }
                     switch (tag) {
                     default:
-                        reader.skipType(tag & 7, long);
+                        reader.skipType(tag & 7, long, tag >>> 3);
                         break;
                     }
                 }
+                if (error !== undefined)
+                    throw Error("missing end group");
                 return message;
             };
 
@@ -3637,7 +3693,7 @@ $root.jspb = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    return "maximum nesting depth exceeded";
+                    return "max depth exceeded";
                 return null;
             };
 
@@ -3655,7 +3711,7 @@ $root.jspb = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 return new $root.jspb.test.IndirectExtension();
             };
 
@@ -3847,12 +3903,14 @@ $root.jspb = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $Reader.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.DefaultValues();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
-                    if (tag === error)
+                    if (tag === error) {
+                        error = undefined;
                         break;
+                    }
                     switch (tag) {
                     case 10: {
                             message.stringField = reader.string();
@@ -3879,10 +3937,12 @@ $root.jspb = (function() {
                             break;
                         }
                     default:
-                        reader.skipType(tag & 7, long);
+                        reader.skipType(tag & 7, long, tag >>> 3);
                         break;
                     }
                 }
+                if (error !== undefined)
+                    throw Error("missing end group");
                 return message;
             };
 
@@ -3916,7 +3976,7 @@ $root.jspb = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    return "maximum nesting depth exceeded";
+                    return "max depth exceeded";
                 if (message.stringField != null && message.hasOwnProperty("stringField"))
                     if (!$util.isString(message.stringField))
                         return "stringField: string expected";
@@ -3957,7 +4017,7 @@ $root.jspb = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var message = new $root.jspb.test.DefaultValues();
                 if (object.stringField != null)
                     message.stringField = String(object.stringField);
@@ -4264,12 +4324,14 @@ $root.jspb = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $Reader.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.FloatingPointFields();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
-                    if (tag === error)
+                    if (tag === error) {
+                        error = undefined;
                         break;
+                    }
                     switch (tag) {
                     case 13: {
                             message.optionalFloatField = reader.float();
@@ -4320,10 +4382,12 @@ $root.jspb = (function() {
                             break;
                         }
                     default:
-                        reader.skipType(tag & 7, long);
+                        reader.skipType(tag & 7, long, tag >>> 3);
                         break;
                     }
                 }
+                if (error !== undefined)
+                    throw Error("missing end group");
                 if (!message.hasOwnProperty("requiredFloatField"))
                     throw $util.ProtocolError("missing required 'requiredFloatField'", { instance: message });
                 if (!message.hasOwnProperty("requiredDoubleField"))
@@ -4361,7 +4425,7 @@ $root.jspb = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    return "maximum nesting depth exceeded";
+                    return "max depth exceeded";
                 if (message.optionalFloatField != null && message.hasOwnProperty("optionalFloatField"))
                     if (typeof message.optionalFloatField !== "number")
                         return "optionalFloatField: number expected";
@@ -4409,7 +4473,7 @@ $root.jspb = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var message = new $root.jspb.test.FloatingPointFields();
                 if (object.optionalFloatField != null)
                     message.optionalFloatField = Number(object.optionalFloatField);
@@ -4667,12 +4731,14 @@ $root.jspb = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $Reader.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.TestClone();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
-                    if (tag === error)
+                    if (tag === error) {
+                        error = undefined;
                         break;
+                    }
                     switch (tag) {
                     case 10: {
                             message.str = reader.string();
@@ -4701,10 +4767,12 @@ $root.jspb = (function() {
                             break;
                         }
                     default:
-                        reader.skipType(tag & 7, long);
+                        reader.skipType(tag & 7, long, tag >>> 3);
                         break;
                     }
                 }
+                if (error !== undefined)
+                    throw Error("missing end group");
                 return message;
             };
 
@@ -4738,7 +4806,7 @@ $root.jspb = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    return "maximum nesting depth exceeded";
+                    return "max depth exceeded";
                 if (message.str != null && message.hasOwnProperty("str"))
                     if (!$util.isString(message.str))
                         return "str: string expected";
@@ -4784,7 +4852,7 @@ $root.jspb = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var message = new $root.jspb.test.TestClone();
                 if (object.str != null)
                     message.str = String(object.str);
@@ -4984,22 +5052,26 @@ $root.jspb = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $Reader.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.CloneExtension();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
-                    if (tag === error)
+                    if (tag === error) {
+                        error = undefined;
                         break;
+                    }
                     switch (tag) {
                     case 18: {
                             message.ext = reader.string();
                             break;
                         }
                     default:
-                        reader.skipType(tag & 7, long);
+                        reader.skipType(tag & 7, long, tag >>> 3);
                         break;
                     }
                 }
+                if (error !== undefined)
+                    throw Error("missing end group");
                 return message;
             };
 
@@ -5033,7 +5105,7 @@ $root.jspb = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    return "maximum nesting depth exceeded";
+                    return "max depth exceeded";
                 if (message.ext != null && message.hasOwnProperty("ext"))
                     if (!$util.isString(message.ext))
                         return "ext: string expected";
@@ -5054,7 +5126,7 @@ $root.jspb = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var message = new $root.jspb.test.CloneExtension();
                 if (object.ext != null)
                     message.ext = String(object.ext);
@@ -5278,12 +5350,14 @@ $root.jspb = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $Reader.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.TestGroup();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
-                    if (tag === error)
+                    if (tag === error) {
+                        error = undefined;
                         break;
+                    }
                     switch (tag) {
                     case 11: {
                             if (!(message.repeatedGroup && message.repeatedGroup.length))
@@ -5320,10 +5394,12 @@ $root.jspb = (function() {
                             break;
                         }
                     default:
-                        reader.skipType(tag & 7, long);
+                        reader.skipType(tag & 7, long, tag >>> 3);
                         break;
                     }
                 }
+                if (error !== undefined)
+                    throw Error("missing end group");
                 if (!message.hasOwnProperty("requiredGroup"))
                     throw $util.ProtocolError("missing required 'requiredGroup'", { instance: message });
                 if (!message.hasOwnProperty("requiredSimple"))
@@ -5361,7 +5437,7 @@ $root.jspb = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    return "maximum nesting depth exceeded";
+                    return "max depth exceeded";
                 if (message.repeatedGroup != null && message.hasOwnProperty("repeatedGroup")) {
                     if (!Array.isArray(message.repeatedGroup))
                         return "repeatedGroup: array expected";
@@ -5421,7 +5497,7 @@ $root.jspb = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var message = new $root.jspb.test.TestGroup();
                 if (object.repeatedGroup) {
                     if (!Array.isArray(object.repeatedGroup))
@@ -5643,12 +5719,14 @@ $root.jspb = (function() {
                     if (long === undefined)
                         long = 0;
                     if (long > $Reader.recursionLimit)
-                        throw Error("maximum nesting depth exceeded");
+                        throw Error("max depth exceeded");
                     var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.TestGroup.RepeatedGroup();
                     while (reader.pos < end) {
                         var tag = reader.uint32();
-                        if (tag === error)
+                        if (tag === error) {
+                            error = undefined;
                             break;
+                        }
                         switch (tag) {
                         case 10: {
                                 message.id = reader.string();
@@ -5667,10 +5745,12 @@ $root.jspb = (function() {
                                 break;
                             }
                         default:
-                            reader.skipType(tag & 7, long);
+                            reader.skipType(tag & 7, long, tag >>> 3);
                             break;
                         }
                     }
+                    if (error !== undefined)
+                        throw Error("missing end group");
                     if (!message.hasOwnProperty("id"))
                         throw $util.ProtocolError("missing required 'id'", { instance: message });
                     return message;
@@ -5706,7 +5786,7 @@ $root.jspb = (function() {
                     if (long === undefined)
                         long = 0;
                     if (long > $util.recursionLimit)
-                        return "maximum nesting depth exceeded";
+                        return "max depth exceeded";
                     if (!$util.isString(message.id))
                         return "id: string expected";
                     if (message.someBool != null && message.hasOwnProperty("someBool")) {
@@ -5733,7 +5813,7 @@ $root.jspb = (function() {
                     if (long === undefined)
                         long = 0;
                     if (long > $util.recursionLimit)
-                        throw Error("maximum nesting depth exceeded");
+                        throw Error("max depth exceeded");
                     var message = new $root.jspb.test.TestGroup.RepeatedGroup();
                     if (object.id != null)
                         message.id = String(object.id);
@@ -5893,22 +5973,26 @@ $root.jspb = (function() {
                     if (long === undefined)
                         long = 0;
                     if (long > $Reader.recursionLimit)
-                        throw Error("maximum nesting depth exceeded");
+                        throw Error("max depth exceeded");
                     var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.TestGroup.RequiredGroup();
                     while (reader.pos < end) {
                         var tag = reader.uint32();
-                        if (tag === error)
+                        if (tag === error) {
+                            error = undefined;
                             break;
+                        }
                         switch (tag) {
                         case 10: {
                                 message.id = reader.string();
                                 break;
                             }
                         default:
-                            reader.skipType(tag & 7, long);
+                            reader.skipType(tag & 7, long, tag >>> 3);
                             break;
                         }
                     }
+                    if (error !== undefined)
+                        throw Error("missing end group");
                     if (!message.hasOwnProperty("id"))
                         throw $util.ProtocolError("missing required 'id'", { instance: message });
                     return message;
@@ -5944,7 +6028,7 @@ $root.jspb = (function() {
                     if (long === undefined)
                         long = 0;
                     if (long > $util.recursionLimit)
-                        return "maximum nesting depth exceeded";
+                        return "max depth exceeded";
                     if (!$util.isString(message.id))
                         return "id: string expected";
                     return null;
@@ -5964,7 +6048,7 @@ $root.jspb = (function() {
                     if (long === undefined)
                         long = 0;
                     if (long > $util.recursionLimit)
-                        throw Error("maximum nesting depth exceeded");
+                        throw Error("max depth exceeded");
                     var message = new $root.jspb.test.TestGroup.RequiredGroup();
                     if (object.id != null)
                         message.id = String(object.id);
@@ -6110,22 +6194,26 @@ $root.jspb = (function() {
                     if (long === undefined)
                         long = 0;
                     if (long > $Reader.recursionLimit)
-                        throw Error("maximum nesting depth exceeded");
+                        throw Error("max depth exceeded");
                     var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.TestGroup.OptionalGroup();
                     while (reader.pos < end) {
                         var tag = reader.uint32();
-                        if (tag === error)
+                        if (tag === error) {
+                            error = undefined;
                             break;
+                        }
                         switch (tag) {
                         case 10: {
                                 message.id = reader.string();
                                 break;
                             }
                         default:
-                            reader.skipType(tag & 7, long);
+                            reader.skipType(tag & 7, long, tag >>> 3);
                             break;
                         }
                     }
+                    if (error !== undefined)
+                        throw Error("missing end group");
                     if (!message.hasOwnProperty("id"))
                         throw $util.ProtocolError("missing required 'id'", { instance: message });
                     return message;
@@ -6161,7 +6249,7 @@ $root.jspb = (function() {
                     if (long === undefined)
                         long = 0;
                     if (long > $util.recursionLimit)
-                        return "maximum nesting depth exceeded";
+                        return "max depth exceeded";
                     if (!$util.isString(message.id))
                         return "id: string expected";
                     return null;
@@ -6181,7 +6269,7 @@ $root.jspb = (function() {
                     if (long === undefined)
                         long = 0;
                     if (long > $util.recursionLimit)
-                        throw Error("maximum nesting depth exceeded");
+                        throw Error("max depth exceeded");
                     var message = new $root.jspb.test.TestGroup.OptionalGroup();
                     if (object.id != null)
                         message.id = String(object.id);
@@ -6327,22 +6415,26 @@ $root.jspb = (function() {
                     if (long === undefined)
                         long = 0;
                     if (long > $Reader.recursionLimit)
-                        throw Error("maximum nesting depth exceeded");
+                        throw Error("max depth exceeded");
                     var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.TestGroup.MessageInGroup();
                     while (reader.pos < end) {
                         var tag = reader.uint32();
-                        if (tag === error)
+                        if (tag === error) {
+                            error = undefined;
                             break;
+                        }
                         switch (tag) {
                         case 10: {
                                 message.id = $root.jspb.test.TestGroup.MessageInGroup.NestedMessage.decode(reader, reader.uint32(), undefined, long + 1);
                                 break;
                             }
                         default:
-                            reader.skipType(tag & 7, long);
+                            reader.skipType(tag & 7, long, tag >>> 3);
                             break;
                         }
                     }
+                    if (error !== undefined)
+                        throw Error("missing end group");
                     if (!message.hasOwnProperty("id"))
                         throw $util.ProtocolError("missing required 'id'", { instance: message });
                     return message;
@@ -6378,7 +6470,7 @@ $root.jspb = (function() {
                     if (long === undefined)
                         long = 0;
                     if (long > $util.recursionLimit)
-                        return "maximum nesting depth exceeded";
+                        return "max depth exceeded";
                     {
                         var error = $root.jspb.test.TestGroup.MessageInGroup.NestedMessage.verify(message.id, long + 1);
                         if (error)
@@ -6401,7 +6493,7 @@ $root.jspb = (function() {
                     if (long === undefined)
                         long = 0;
                     if (long > $util.recursionLimit)
-                        throw Error("maximum nesting depth exceeded");
+                        throw Error("max depth exceeded");
                     var message = new $root.jspb.test.TestGroup.MessageInGroup();
                     if (object.id != null) {
                         if (typeof object.id !== "object")
@@ -6548,22 +6640,26 @@ $root.jspb = (function() {
                         if (long === undefined)
                             long = 0;
                         if (long > $Reader.recursionLimit)
-                            throw Error("maximum nesting depth exceeded");
+                            throw Error("max depth exceeded");
                         var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.TestGroup.MessageInGroup.NestedMessage();
                         while (reader.pos < end) {
                             var tag = reader.uint32();
-                            if (tag === error)
+                            if (tag === error) {
+                                error = undefined;
                                 break;
+                            }
                             switch (tag) {
                             case 10: {
                                     message.id = reader.string();
                                     break;
                                 }
                             default:
-                                reader.skipType(tag & 7, long);
+                                reader.skipType(tag & 7, long, tag >>> 3);
                                 break;
                             }
                         }
+                        if (error !== undefined)
+                            throw Error("missing end group");
                         return message;
                     };
 
@@ -6597,7 +6693,7 @@ $root.jspb = (function() {
                         if (long === undefined)
                             long = 0;
                         if (long > $util.recursionLimit)
-                            return "maximum nesting depth exceeded";
+                            return "max depth exceeded";
                         if (message.id != null && message.hasOwnProperty("id"))
                             if (!$util.isString(message.id))
                                 return "id: string expected";
@@ -6618,7 +6714,7 @@ $root.jspb = (function() {
                         if (long === undefined)
                             long = 0;
                         if (long > $util.recursionLimit)
-                            throw Error("maximum nesting depth exceeded");
+                            throw Error("max depth exceeded");
                         var message = new $root.jspb.test.TestGroup.MessageInGroup.NestedMessage();
                         if (object.id != null)
                             message.id = String(object.id);
@@ -6767,22 +6863,26 @@ $root.jspb = (function() {
                     if (long === undefined)
                         long = 0;
                     if (long > $Reader.recursionLimit)
-                        throw Error("maximum nesting depth exceeded");
+                        throw Error("max depth exceeded");
                     var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.TestGroup.EnumInGroup();
                     while (reader.pos < end) {
                         var tag = reader.uint32();
-                        if (tag === error)
+                        if (tag === error) {
+                            error = undefined;
                             break;
+                        }
                         switch (tag) {
                         case 8: {
                                 message.id = reader.int32();
                                 break;
                             }
                         default:
-                            reader.skipType(tag & 7, long);
+                            reader.skipType(tag & 7, long, tag >>> 3);
                             break;
                         }
                     }
+                    if (error !== undefined)
+                        throw Error("missing end group");
                     if (!message.hasOwnProperty("id"))
                         throw $util.ProtocolError("missing required 'id'", { instance: message });
                     return message;
@@ -6818,7 +6918,7 @@ $root.jspb = (function() {
                     if (long === undefined)
                         long = 0;
                     if (long > $util.recursionLimit)
-                        return "maximum nesting depth exceeded";
+                        return "max depth exceeded";
                     switch (message.id) {
                     default:
                         return "id: enum value expected";
@@ -6843,7 +6943,7 @@ $root.jspb = (function() {
                     if (long === undefined)
                         long = 0;
                     if (long > $util.recursionLimit)
-                        throw Error("maximum nesting depth exceeded");
+                        throw Error("max depth exceeded");
                     var message = new $root.jspb.test.TestGroup.EnumInGroup();
                     switch (object.id) {
                     default:
@@ -7021,22 +7121,26 @@ $root.jspb = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $Reader.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.TestGroup1();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
-                    if (tag === error)
+                    if (tag === error) {
+                        error = undefined;
                         break;
+                    }
                     switch (tag) {
                     case 10: {
                             message.group = $root.jspb.test.TestGroup.RepeatedGroup.decode(reader, reader.uint32(), undefined, long + 1);
                             break;
                         }
                     default:
-                        reader.skipType(tag & 7, long);
+                        reader.skipType(tag & 7, long, tag >>> 3);
                         break;
                     }
                 }
+                if (error !== undefined)
+                    throw Error("missing end group");
                 return message;
             };
 
@@ -7070,7 +7174,7 @@ $root.jspb = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    return "maximum nesting depth exceeded";
+                    return "max depth exceeded";
                 if (message.group != null && message.hasOwnProperty("group")) {
                     var error = $root.jspb.test.TestGroup.RepeatedGroup.verify(message.group, long + 1);
                     if (error)
@@ -7093,7 +7197,7 @@ $root.jspb = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var message = new $root.jspb.test.TestGroup1();
                 if (object.group != null) {
                     if (typeof object.group !== "object")
@@ -7254,12 +7358,14 @@ $root.jspb = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $Reader.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.TestReservedNames();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
-                    if (tag === error)
+                    if (tag === error) {
+                        error = undefined;
                         break;
+                    }
                     switch (tag) {
                     case 8: {
                             message.extension = reader.int32();
@@ -7270,10 +7376,12 @@ $root.jspb = (function() {
                             break;
                         }
                     default:
-                        reader.skipType(tag & 7, long);
+                        reader.skipType(tag & 7, long, tag >>> 3);
                         break;
                     }
                 }
+                if (error !== undefined)
+                    throw Error("missing end group");
                 return message;
             };
 
@@ -7307,7 +7415,7 @@ $root.jspb = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    return "maximum nesting depth exceeded";
+                    return "max depth exceeded";
                 if (message.extension != null && message.hasOwnProperty("extension"))
                     if (!$util.isInteger(message.extension))
                         return "extension: integer expected";
@@ -7331,7 +7439,7 @@ $root.jspb = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var message = new $root.jspb.test.TestReservedNames();
                 if (object.extension != null)
                     message.extension = object.extension | 0;
@@ -7473,18 +7581,22 @@ $root.jspb = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $Reader.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.TestReservedNamesExtension();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
-                    if (tag === error)
+                    if (tag === error) {
+                        error = undefined;
                         break;
+                    }
                     switch (tag) {
                     default:
-                        reader.skipType(tag & 7, long);
+                        reader.skipType(tag & 7, long, tag >>> 3);
                         break;
                     }
                 }
+                if (error !== undefined)
+                    throw Error("missing end group");
                 return message;
             };
 
@@ -7518,7 +7630,7 @@ $root.jspb = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    return "maximum nesting depth exceeded";
+                    return "max depth exceeded";
                 return null;
             };
 
@@ -7536,7 +7648,7 @@ $root.jspb = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 return new $root.jspb.test.TestReservedNamesExtension();
             };
 
@@ -7821,12 +7933,14 @@ $root.jspb = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $Reader.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.TestMessageWithOneof();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
-                    if (tag === error)
+                    if (tag === error) {
+                        error = undefined;
                         break;
+                    }
                     switch (tag) {
                     case 26: {
                             message.pone = reader.string();
@@ -7879,10 +7993,12 @@ $root.jspb = (function() {
                             break;
                         }
                     default:
-                        reader.skipType(tag & 7, long);
+                        reader.skipType(tag & 7, long, tag >>> 3);
                         break;
                     }
                 }
+                if (error !== undefined)
+                    throw Error("missing end group");
                 return message;
             };
 
@@ -7916,7 +8032,7 @@ $root.jspb = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    return "maximum nesting depth exceeded";
+                    return "max depth exceeded";
                 var properties = {};
                 if (message.pone != null && message.hasOwnProperty("pone")) {
                     properties.partialOneof = 1;
@@ -7996,7 +8112,7 @@ $root.jspb = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var message = new $root.jspb.test.TestMessageWithOneof();
                 if (object.pone != null)
                     message.pone = String(object.pone);
@@ -8227,12 +8343,14 @@ $root.jspb = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $Reader.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.TestEndsWithBytes();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
-                    if (tag === error)
+                    if (tag === error) {
+                        error = undefined;
                         break;
+                    }
                     switch (tag) {
                     case 8: {
                             message.value = reader.int32();
@@ -8243,10 +8361,12 @@ $root.jspb = (function() {
                             break;
                         }
                     default:
-                        reader.skipType(tag & 7, long);
+                        reader.skipType(tag & 7, long, tag >>> 3);
                         break;
                     }
                 }
+                if (error !== undefined)
+                    throw Error("missing end group");
                 return message;
             };
 
@@ -8280,7 +8400,7 @@ $root.jspb = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    return "maximum nesting depth exceeded";
+                    return "max depth exceeded";
                 if (message.value != null && message.hasOwnProperty("value"))
                     if (!$util.isInteger(message.value))
                         return "value: integer expected";
@@ -8304,7 +8424,7 @@ $root.jspb = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var message = new $root.jspb.test.TestEndsWithBytes();
                 if (object.value != null)
                     message.value = object.value | 0;
@@ -8613,12 +8733,14 @@ $root.jspb = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $Reader.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.TestMapFieldsNoBinary(), key, value;
                 while (reader.pos < end) {
                     var tag = reader.uint32();
-                    if (tag === error)
+                    if (tag === error) {
+                        error = undefined;
                         break;
+                    }
                     switch (tag) {
                     case 10: {
                             if (message.mapStringString === $util.emptyObject)
@@ -8636,7 +8758,7 @@ $root.jspb = (function() {
                                     value = reader.string();
                                     break;
                                 default:
-                                    reader.skipType(tag2 & 7, long);
+                                    reader.skipType(tag2 & 7, long, tag2 >>> 3);
                                     break;
                                 }
                             }
@@ -8661,7 +8783,7 @@ $root.jspb = (function() {
                                     value = reader.int32();
                                     break;
                                 default:
-                                    reader.skipType(tag2 & 7, long);
+                                    reader.skipType(tag2 & 7, long, tag2 >>> 3);
                                     break;
                                 }
                             }
@@ -8686,7 +8808,7 @@ $root.jspb = (function() {
                                     value = reader.int64();
                                     break;
                                 default:
-                                    reader.skipType(tag2 & 7, long);
+                                    reader.skipType(tag2 & 7, long, tag2 >>> 3);
                                     break;
                                 }
                             }
@@ -8711,7 +8833,7 @@ $root.jspb = (function() {
                                     value = reader.bool();
                                     break;
                                 default:
-                                    reader.skipType(tag2 & 7, long);
+                                    reader.skipType(tag2 & 7, long, tag2 >>> 3);
                                     break;
                                 }
                             }
@@ -8736,7 +8858,7 @@ $root.jspb = (function() {
                                     value = reader.double();
                                     break;
                                 default:
-                                    reader.skipType(tag2 & 7, long);
+                                    reader.skipType(tag2 & 7, long, tag2 >>> 3);
                                     break;
                                 }
                             }
@@ -8761,7 +8883,7 @@ $root.jspb = (function() {
                                     value = reader.int32();
                                     break;
                                 default:
-                                    reader.skipType(tag2 & 7, long);
+                                    reader.skipType(tag2 & 7, long, tag2 >>> 3);
                                     break;
                                 }
                             }
@@ -8786,7 +8908,7 @@ $root.jspb = (function() {
                                     value = $root.jspb.test.MapValueMessageNoBinary.decode(reader, reader.uint32(), undefined, long + 1);
                                     break;
                                 default:
-                                    reader.skipType(tag2 & 7, long);
+                                    reader.skipType(tag2 & 7, long, tag2 >>> 3);
                                     break;
                                 }
                             }
@@ -8811,7 +8933,7 @@ $root.jspb = (function() {
                                     value = reader.string();
                                     break;
                                 default:
-                                    reader.skipType(tag2 & 7, long);
+                                    reader.skipType(tag2 & 7, long, tag2 >>> 3);
                                     break;
                                 }
                             }
@@ -8834,7 +8956,7 @@ $root.jspb = (function() {
                                     value = reader.string();
                                     break;
                                 default:
-                                    reader.skipType(tag2 & 7, long);
+                                    reader.skipType(tag2 & 7, long, tag2 >>> 3);
                                     break;
                                 }
                             }
@@ -8857,7 +8979,7 @@ $root.jspb = (function() {
                                     value = reader.string();
                                     break;
                                 default:
-                                    reader.skipType(tag2 & 7, long);
+                                    reader.skipType(tag2 & 7, long, tag2 >>> 3);
                                     break;
                                 }
                             }
@@ -8884,7 +9006,7 @@ $root.jspb = (function() {
                                     value = $root.jspb.test.TestMapFieldsNoBinary.decode(reader, reader.uint32(), undefined, long + 1);
                                     break;
                                 default:
-                                    reader.skipType(tag2 & 7, long);
+                                    reader.skipType(tag2 & 7, long, tag2 >>> 3);
                                     break;
                                 }
                             }
@@ -8894,10 +9016,12 @@ $root.jspb = (function() {
                             break;
                         }
                     default:
-                        reader.skipType(tag & 7, long);
+                        reader.skipType(tag & 7, long, tag >>> 3);
                         break;
                     }
                 }
+                if (error !== undefined)
+                    throw Error("missing end group");
                 return message;
             };
 
@@ -8931,7 +9055,7 @@ $root.jspb = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    return "maximum nesting depth exceeded";
+                    return "max depth exceeded";
                 if (message.mapStringString != null && message.hasOwnProperty("mapStringString")) {
                     if (!$util.isObject(message.mapStringString))
                         return "mapStringString: object expected";
@@ -9061,7 +9185,7 @@ $root.jspb = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var message = new $root.jspb.test.TestMapFieldsNoBinary();
                 if (object.mapStringString) {
                     if (typeof object.mapStringString !== "object")
@@ -9473,22 +9597,26 @@ $root.jspb = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $Reader.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.MapValueMessageNoBinary();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
-                    if (tag === error)
+                    if (tag === error) {
+                        error = undefined;
                         break;
+                    }
                     switch (tag) {
                     case 8: {
                             message.foo = reader.int32();
                             break;
                         }
                     default:
-                        reader.skipType(tag & 7, long);
+                        reader.skipType(tag & 7, long, tag >>> 3);
                         break;
                     }
                 }
+                if (error !== undefined)
+                    throw Error("missing end group");
                 return message;
             };
 
@@ -9522,7 +9650,7 @@ $root.jspb = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    return "maximum nesting depth exceeded";
+                    return "max depth exceeded";
                 if (message.foo != null && message.hasOwnProperty("foo"))
                     if (!$util.isInteger(message.foo))
                         return "foo: integer expected";
@@ -9543,7 +9671,7 @@ $root.jspb = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var message = new $root.jspb.test.MapValueMessageNoBinary();
                 if (object.foo != null)
                     message.foo = object.foo | 0;
@@ -9679,18 +9807,22 @@ $root.jspb = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $Reader.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.Deeply();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
-                    if (tag === error)
+                    if (tag === error) {
+                        error = undefined;
                         break;
+                    }
                     switch (tag) {
                     default:
-                        reader.skipType(tag & 7, long);
+                        reader.skipType(tag & 7, long, tag >>> 3);
                         break;
                     }
                 }
+                if (error !== undefined)
+                    throw Error("missing end group");
                 return message;
             };
 
@@ -9724,7 +9856,7 @@ $root.jspb = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    return "maximum nesting depth exceeded";
+                    return "max depth exceeded";
                 return null;
             };
 
@@ -9742,7 +9874,7 @@ $root.jspb = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 return new $root.jspb.test.Deeply();
             };
 
@@ -9865,18 +9997,22 @@ $root.jspb = (function() {
                     if (long === undefined)
                         long = 0;
                     if (long > $Reader.recursionLimit)
-                        throw Error("maximum nesting depth exceeded");
+                        throw Error("max depth exceeded");
                     var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.Deeply.Nested();
                     while (reader.pos < end) {
                         var tag = reader.uint32();
-                        if (tag === error)
+                        if (tag === error) {
+                            error = undefined;
                             break;
+                        }
                         switch (tag) {
                         default:
-                            reader.skipType(tag & 7, long);
+                            reader.skipType(tag & 7, long, tag >>> 3);
                             break;
                         }
                     }
+                    if (error !== undefined)
+                        throw Error("missing end group");
                     return message;
                 };
 
@@ -9910,7 +10046,7 @@ $root.jspb = (function() {
                     if (long === undefined)
                         long = 0;
                     if (long > $util.recursionLimit)
-                        return "maximum nesting depth exceeded";
+                        return "max depth exceeded";
                     return null;
                 };
 
@@ -9928,7 +10064,7 @@ $root.jspb = (function() {
                     if (long === undefined)
                         long = 0;
                     if (long > $util.recursionLimit)
-                        throw Error("maximum nesting depth exceeded");
+                        throw Error("max depth exceeded");
                     return new $root.jspb.test.Deeply.Nested();
                 };
 
@@ -10062,22 +10198,26 @@ $root.jspb = (function() {
                         if (long === undefined)
                             long = 0;
                         if (long > $Reader.recursionLimit)
-                            throw Error("maximum nesting depth exceeded");
+                            throw Error("max depth exceeded");
                         var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.Deeply.Nested.Message();
                         while (reader.pos < end) {
                             var tag = reader.uint32();
-                            if (tag === error)
+                            if (tag === error) {
+                                error = undefined;
                                 break;
+                            }
                             switch (tag) {
                             case 8: {
                                     message.count = reader.int32();
                                     break;
                                 }
                             default:
-                                reader.skipType(tag & 7, long);
+                                reader.skipType(tag & 7, long, tag >>> 3);
                                 break;
                             }
                         }
+                        if (error !== undefined)
+                            throw Error("missing end group");
                         return message;
                     };
 
@@ -10111,7 +10251,7 @@ $root.jspb = (function() {
                         if (long === undefined)
                             long = 0;
                         if (long > $util.recursionLimit)
-                            return "maximum nesting depth exceeded";
+                            return "max depth exceeded";
                         if (message.count != null && message.hasOwnProperty("count"))
                             if (!$util.isInteger(message.count))
                                 return "count: integer expected";
@@ -10132,7 +10272,7 @@ $root.jspb = (function() {
                         if (long === undefined)
                             long = 0;
                         if (long > $util.recursionLimit)
-                            throw Error("maximum nesting depth exceeded");
+                            throw Error("max depth exceeded");
                         var message = new $root.jspb.test.Deeply.Nested.Message();
                         if (object.count != null)
                             message.count = object.count | 0;
@@ -10311,12 +10451,14 @@ $root.google = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $Reader.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.FileDescriptorSet();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
-                    if (tag === error)
+                    if (tag === error) {
+                        error = undefined;
                         break;
+                    }
                     switch (tag) {
                     case 10: {
                             if (!(message.file && message.file.length))
@@ -10325,10 +10467,12 @@ $root.google = (function() {
                             break;
                         }
                     default:
-                        reader.skipType(tag & 7, long);
+                        reader.skipType(tag & 7, long, tag >>> 3);
                         break;
                     }
                 }
+                if (error !== undefined)
+                    throw Error("missing end group");
                 return message;
             };
 
@@ -10362,7 +10506,7 @@ $root.google = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    return "maximum nesting depth exceeded";
+                    return "max depth exceeded";
                 if (message.file != null && message.hasOwnProperty("file")) {
                     if (!Array.isArray(message.file))
                         return "file: array expected";
@@ -10389,7 +10533,7 @@ $root.google = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var message = new $root.google.protobuf.FileDescriptorSet();
                 if (object.file) {
                     if (!Array.isArray(object.file))
@@ -10740,12 +10884,14 @@ $root.google = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $Reader.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.FileDescriptorProto();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
-                    if (tag === error)
+                    if (tag === error) {
+                        error = undefined;
                         break;
+                    }
                     switch (tag) {
                     case 10: {
                             message.name = reader.string();
@@ -10832,10 +10978,12 @@ $root.google = (function() {
                             break;
                         }
                     default:
-                        reader.skipType(tag & 7, long);
+                        reader.skipType(tag & 7, long, tag >>> 3);
                         break;
                     }
                 }
+                if (error !== undefined)
+                    throw Error("missing end group");
                 return message;
             };
 
@@ -10869,7 +11017,7 @@ $root.google = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    return "maximum nesting depth exceeded";
+                    return "max depth exceeded";
                 if (message.name != null && message.hasOwnProperty("name"))
                     if (!$util.isString(message.name))
                         return "name: string expected";
@@ -10988,7 +11136,7 @@ $root.google = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var message = new $root.google.protobuf.FileDescriptorProto();
                 if (object.name != null)
                     message.name = String(object.name);
@@ -11465,12 +11613,14 @@ $root.google = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $Reader.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.DescriptorProto();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
-                    if (tag === error)
+                    if (tag === error) {
+                        error = undefined;
                         break;
+                    }
                     switch (tag) {
                     case 10: {
                             message.name = reader.string();
@@ -11533,10 +11683,12 @@ $root.google = (function() {
                             break;
                         }
                     default:
-                        reader.skipType(tag & 7, long);
+                        reader.skipType(tag & 7, long, tag >>> 3);
                         break;
                     }
                 }
+                if (error !== undefined)
+                    throw Error("missing end group");
                 return message;
             };
 
@@ -11570,7 +11722,7 @@ $root.google = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    return "maximum nesting depth exceeded";
+                    return "max depth exceeded";
                 if (message.name != null && message.hasOwnProperty("name"))
                     if (!$util.isString(message.name))
                         return "name: string expected";
@@ -11675,7 +11827,7 @@ $root.google = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var message = new $root.google.protobuf.DescriptorProto();
                 if (object.name != null)
                     message.name = String(object.name);
@@ -12000,12 +12152,14 @@ $root.google = (function() {
                     if (long === undefined)
                         long = 0;
                     if (long > $Reader.recursionLimit)
-                        throw Error("maximum nesting depth exceeded");
+                        throw Error("max depth exceeded");
                     var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.DescriptorProto.ExtensionRange();
                     while (reader.pos < end) {
                         var tag = reader.uint32();
-                        if (tag === error)
+                        if (tag === error) {
+                            error = undefined;
                             break;
+                        }
                         switch (tag) {
                         case 8: {
                                 message.start = reader.int32();
@@ -12020,10 +12174,12 @@ $root.google = (function() {
                                 break;
                             }
                         default:
-                            reader.skipType(tag & 7, long);
+                            reader.skipType(tag & 7, long, tag >>> 3);
                             break;
                         }
                     }
+                    if (error !== undefined)
+                        throw Error("missing end group");
                     return message;
                 };
 
@@ -12057,7 +12213,7 @@ $root.google = (function() {
                     if (long === undefined)
                         long = 0;
                     if (long > $util.recursionLimit)
-                        return "maximum nesting depth exceeded";
+                        return "max depth exceeded";
                     if (message.start != null && message.hasOwnProperty("start"))
                         if (!$util.isInteger(message.start))
                             return "start: integer expected";
@@ -12086,7 +12242,7 @@ $root.google = (function() {
                     if (long === undefined)
                         long = 0;
                     if (long > $util.recursionLimit)
-                        throw Error("maximum nesting depth exceeded");
+                        throw Error("max depth exceeded");
                     var message = new $root.google.protobuf.DescriptorProto.ExtensionRange();
                     if (object.start != null)
                         message.start = object.start | 0;
@@ -12258,12 +12414,14 @@ $root.google = (function() {
                     if (long === undefined)
                         long = 0;
                     if (long > $Reader.recursionLimit)
-                        throw Error("maximum nesting depth exceeded");
+                        throw Error("max depth exceeded");
                     var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.DescriptorProto.ReservedRange();
                     while (reader.pos < end) {
                         var tag = reader.uint32();
-                        if (tag === error)
+                        if (tag === error) {
+                            error = undefined;
                             break;
+                        }
                         switch (tag) {
                         case 8: {
                                 message.start = reader.int32();
@@ -12274,10 +12432,12 @@ $root.google = (function() {
                                 break;
                             }
                         default:
-                            reader.skipType(tag & 7, long);
+                            reader.skipType(tag & 7, long, tag >>> 3);
                             break;
                         }
                     }
+                    if (error !== undefined)
+                        throw Error("missing end group");
                     return message;
                 };
 
@@ -12311,7 +12471,7 @@ $root.google = (function() {
                     if (long === undefined)
                         long = 0;
                     if (long > $util.recursionLimit)
-                        return "maximum nesting depth exceeded";
+                        return "max depth exceeded";
                     if (message.start != null && message.hasOwnProperty("start"))
                         if (!$util.isInteger(message.start))
                             return "start: integer expected";
@@ -12335,7 +12495,7 @@ $root.google = (function() {
                     if (long === undefined)
                         long = 0;
                     if (long > $util.recursionLimit)
-                        throw Error("maximum nesting depth exceeded");
+                        throw Error("max depth exceeded");
                     var message = new $root.google.protobuf.DescriptorProto.ReservedRange();
                     if (object.start != null)
                         message.start = object.start | 0;
@@ -12528,12 +12688,14 @@ $root.google = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $Reader.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.ExtensionRangeOptions();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
-                    if (tag === error)
+                    if (tag === error) {
+                        error = undefined;
                         break;
+                    }
                     switch (tag) {
                     case 7994: {
                             if (!(message.uninterpretedOption && message.uninterpretedOption.length))
@@ -12556,10 +12718,12 @@ $root.google = (function() {
                             break;
                         }
                     default:
-                        reader.skipType(tag & 7, long);
+                        reader.skipType(tag & 7, long, tag >>> 3);
                         break;
                     }
                 }
+                if (error !== undefined)
+                    throw Error("missing end group");
                 return message;
             };
 
@@ -12593,7 +12757,7 @@ $root.google = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    return "maximum nesting depth exceeded";
+                    return "max depth exceeded";
                 if (message.uninterpretedOption != null && message.hasOwnProperty("uninterpretedOption")) {
                     if (!Array.isArray(message.uninterpretedOption))
                         return "uninterpretedOption: array expected";
@@ -12642,7 +12806,7 @@ $root.google = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var message = new $root.google.protobuf.ExtensionRangeOptions();
                 if (object.uninterpretedOption) {
                     if (!Array.isArray(object.uninterpretedOption))
@@ -12887,12 +13051,14 @@ $root.google = (function() {
                     if (long === undefined)
                         long = 0;
                     if (long > $Reader.recursionLimit)
-                        throw Error("maximum nesting depth exceeded");
+                        throw Error("max depth exceeded");
                     var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.ExtensionRangeOptions.Declaration();
                     while (reader.pos < end) {
                         var tag = reader.uint32();
-                        if (tag === error)
+                        if (tag === error) {
+                            error = undefined;
                             break;
+                        }
                         switch (tag) {
                         case 8: {
                                 message.number = reader.int32();
@@ -12915,10 +13081,12 @@ $root.google = (function() {
                                 break;
                             }
                         default:
-                            reader.skipType(tag & 7, long);
+                            reader.skipType(tag & 7, long, tag >>> 3);
                             break;
                         }
                     }
+                    if (error !== undefined)
+                        throw Error("missing end group");
                     return message;
                 };
 
@@ -12952,7 +13120,7 @@ $root.google = (function() {
                     if (long === undefined)
                         long = 0;
                     if (long > $util.recursionLimit)
-                        return "maximum nesting depth exceeded";
+                        return "max depth exceeded";
                     if (message.number != null && message.hasOwnProperty("number"))
                         if (!$util.isInteger(message.number))
                             return "number: integer expected";
@@ -12985,7 +13153,7 @@ $root.google = (function() {
                     if (long === undefined)
                         long = 0;
                     if (long > $util.recursionLimit)
-                        throw Error("maximum nesting depth exceeded");
+                        throw Error("max depth exceeded");
                     var message = new $root.google.protobuf.ExtensionRangeOptions.Declaration();
                     if (object.number != null)
                         message.number = object.number | 0;
@@ -13280,12 +13448,14 @@ $root.google = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $Reader.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.FieldDescriptorProto();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
-                    if (tag === error)
+                    if (tag === error) {
+                        error = undefined;
                         break;
+                    }
                     switch (tag) {
                     case 10: {
                             message.name = reader.string();
@@ -13332,10 +13502,12 @@ $root.google = (function() {
                             break;
                         }
                     default:
-                        reader.skipType(tag & 7, long);
+                        reader.skipType(tag & 7, long, tag >>> 3);
                         break;
                     }
                 }
+                if (error !== undefined)
+                    throw Error("missing end group");
                 return message;
             };
 
@@ -13369,7 +13541,7 @@ $root.google = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    return "maximum nesting depth exceeded";
+                    return "max depth exceeded";
                 if (message.name != null && message.hasOwnProperty("name"))
                     if (!$util.isString(message.name))
                         return "name: string expected";
@@ -13449,7 +13621,7 @@ $root.google = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var message = new $root.google.protobuf.FieldDescriptorProto();
                 if (object.name != null)
                     message.name = String(object.name);
@@ -13819,12 +13991,14 @@ $root.google = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $Reader.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.OneofDescriptorProto();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
-                    if (tag === error)
+                    if (tag === error) {
+                        error = undefined;
                         break;
+                    }
                     switch (tag) {
                     case 10: {
                             message.name = reader.string();
@@ -13835,10 +14009,12 @@ $root.google = (function() {
                             break;
                         }
                     default:
-                        reader.skipType(tag & 7, long);
+                        reader.skipType(tag & 7, long, tag >>> 3);
                         break;
                     }
                 }
+                if (error !== undefined)
+                    throw Error("missing end group");
                 return message;
             };
 
@@ -13872,7 +14048,7 @@ $root.google = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    return "maximum nesting depth exceeded";
+                    return "max depth exceeded";
                 if (message.name != null && message.hasOwnProperty("name"))
                     if (!$util.isString(message.name))
                         return "name: string expected";
@@ -13898,7 +14074,7 @@ $root.google = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var message = new $root.google.protobuf.OneofDescriptorProto();
                 if (object.name != null)
                     message.name = String(object.name);
@@ -14115,12 +14291,14 @@ $root.google = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $Reader.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.EnumDescriptorProto();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
-                    if (tag === error)
+                    if (tag === error) {
+                        error = undefined;
                         break;
+                    }
                     switch (tag) {
                     case 10: {
                             message.name = reader.string();
@@ -14153,10 +14331,12 @@ $root.google = (function() {
                             break;
                         }
                     default:
-                        reader.skipType(tag & 7, long);
+                        reader.skipType(tag & 7, long, tag >>> 3);
                         break;
                     }
                 }
+                if (error !== undefined)
+                    throw Error("missing end group");
                 return message;
             };
 
@@ -14190,7 +14370,7 @@ $root.google = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    return "maximum nesting depth exceeded";
+                    return "max depth exceeded";
                 if (message.name != null && message.hasOwnProperty("name"))
                     if (!$util.isString(message.name))
                         return "name: string expected";
@@ -14250,7 +14430,7 @@ $root.google = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var message = new $root.google.protobuf.EnumDescriptorProto();
                 if (object.name != null)
                     message.name = String(object.name);
@@ -14484,12 +14664,14 @@ $root.google = (function() {
                     if (long === undefined)
                         long = 0;
                     if (long > $Reader.recursionLimit)
-                        throw Error("maximum nesting depth exceeded");
+                        throw Error("max depth exceeded");
                     var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.EnumDescriptorProto.EnumReservedRange();
                     while (reader.pos < end) {
                         var tag = reader.uint32();
-                        if (tag === error)
+                        if (tag === error) {
+                            error = undefined;
                             break;
+                        }
                         switch (tag) {
                         case 8: {
                                 message.start = reader.int32();
@@ -14500,10 +14682,12 @@ $root.google = (function() {
                                 break;
                             }
                         default:
-                            reader.skipType(tag & 7, long);
+                            reader.skipType(tag & 7, long, tag >>> 3);
                             break;
                         }
                     }
+                    if (error !== undefined)
+                        throw Error("missing end group");
                     return message;
                 };
 
@@ -14537,7 +14721,7 @@ $root.google = (function() {
                     if (long === undefined)
                         long = 0;
                     if (long > $util.recursionLimit)
-                        return "maximum nesting depth exceeded";
+                        return "max depth exceeded";
                     if (message.start != null && message.hasOwnProperty("start"))
                         if (!$util.isInteger(message.start))
                             return "start: integer expected";
@@ -14561,7 +14745,7 @@ $root.google = (function() {
                     if (long === undefined)
                         long = 0;
                     if (long > $util.recursionLimit)
-                        throw Error("maximum nesting depth exceeded");
+                        throw Error("max depth exceeded");
                     var message = new $root.google.protobuf.EnumDescriptorProto.EnumReservedRange();
                     if (object.start != null)
                         message.start = object.start | 0;
@@ -14739,12 +14923,14 @@ $root.google = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $Reader.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.EnumValueDescriptorProto();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
-                    if (tag === error)
+                    if (tag === error) {
+                        error = undefined;
                         break;
+                    }
                     switch (tag) {
                     case 10: {
                             message.name = reader.string();
@@ -14759,10 +14945,12 @@ $root.google = (function() {
                             break;
                         }
                     default:
-                        reader.skipType(tag & 7, long);
+                        reader.skipType(tag & 7, long, tag >>> 3);
                         break;
                     }
                 }
+                if (error !== undefined)
+                    throw Error("missing end group");
                 return message;
             };
 
@@ -14796,7 +14984,7 @@ $root.google = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    return "maximum nesting depth exceeded";
+                    return "max depth exceeded";
                 if (message.name != null && message.hasOwnProperty("name"))
                     if (!$util.isString(message.name))
                         return "name: string expected";
@@ -14825,7 +15013,7 @@ $root.google = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var message = new $root.google.protobuf.EnumValueDescriptorProto();
                 if (object.name != null)
                     message.name = String(object.name);
@@ -15010,12 +15198,14 @@ $root.google = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $Reader.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.ServiceDescriptorProto();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
-                    if (tag === error)
+                    if (tag === error) {
+                        error = undefined;
                         break;
+                    }
                     switch (tag) {
                     case 10: {
                             message.name = reader.string();
@@ -15032,10 +15222,12 @@ $root.google = (function() {
                             break;
                         }
                     default:
-                        reader.skipType(tag & 7, long);
+                        reader.skipType(tag & 7, long, tag >>> 3);
                         break;
                     }
                 }
+                if (error !== undefined)
+                    throw Error("missing end group");
                 return message;
             };
 
@@ -15069,7 +15261,7 @@ $root.google = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    return "maximum nesting depth exceeded";
+                    return "max depth exceeded";
                 if (message.name != null && message.hasOwnProperty("name"))
                     if (!$util.isString(message.name))
                         return "name: string expected";
@@ -15104,7 +15296,7 @@ $root.google = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var message = new $root.google.protobuf.ServiceDescriptorProto();
                 if (object.name != null)
                     message.name = String(object.name);
@@ -15332,12 +15524,14 @@ $root.google = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $Reader.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.MethodDescriptorProto();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
-                    if (tag === error)
+                    if (tag === error) {
+                        error = undefined;
                         break;
+                    }
                     switch (tag) {
                     case 10: {
                             message.name = reader.string();
@@ -15364,10 +15558,12 @@ $root.google = (function() {
                             break;
                         }
                     default:
-                        reader.skipType(tag & 7, long);
+                        reader.skipType(tag & 7, long, tag >>> 3);
                         break;
                     }
                 }
+                if (error !== undefined)
+                    throw Error("missing end group");
                 return message;
             };
 
@@ -15401,7 +15597,7 @@ $root.google = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    return "maximum nesting depth exceeded";
+                    return "max depth exceeded";
                 if (message.name != null && message.hasOwnProperty("name"))
                     if (!$util.isString(message.name))
                         return "name: string expected";
@@ -15439,7 +15635,7 @@ $root.google = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var message = new $root.google.protobuf.MethodDescriptorProto();
                 if (object.name != null)
                     message.name = String(object.name);
@@ -15837,12 +16033,14 @@ $root.google = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $Reader.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.FileOptions();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
-                    if (tag === error)
+                    if (tag === error) {
+                        error = undefined;
                         break;
+                    }
                     switch (tag) {
                     case 10: {
                             message.javaPackage = reader.string();
@@ -15931,10 +16129,12 @@ $root.google = (function() {
                             break;
                         }
                     default:
-                        reader.skipType(tag & 7, long);
+                        reader.skipType(tag & 7, long, tag >>> 3);
                         break;
                     }
                 }
+                if (error !== undefined)
+                    throw Error("missing end group");
                 return message;
             };
 
@@ -15968,7 +16168,7 @@ $root.google = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    return "maximum nesting depth exceeded";
+                    return "max depth exceeded";
                 if (message.javaPackage != null && message.hasOwnProperty("javaPackage"))
                     if (!$util.isString(message.javaPackage))
                         return "javaPackage: string expected";
@@ -16063,7 +16263,7 @@ $root.google = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var message = new $root.google.protobuf.FileOptions();
                 if (object.javaPackage != null)
                     message.javaPackage = String(object.javaPackage);
@@ -16428,12 +16628,14 @@ $root.google = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $Reader.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.MessageOptions();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
-                    if (tag === error)
+                    if (tag === error) {
+                        error = undefined;
                         break;
+                    }
                     switch (tag) {
                     case 8: {
                             message.messageSetWireFormat = reader.bool();
@@ -16466,10 +16668,12 @@ $root.google = (function() {
                             break;
                         }
                     default:
-                        reader.skipType(tag & 7, long);
+                        reader.skipType(tag & 7, long, tag >>> 3);
                         break;
                     }
                 }
+                if (error !== undefined)
+                    throw Error("missing end group");
                 return message;
             };
 
@@ -16503,7 +16707,7 @@ $root.google = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    return "maximum nesting depth exceeded";
+                    return "max depth exceeded";
                 if (message.messageSetWireFormat != null && message.hasOwnProperty("messageSetWireFormat"))
                     if (typeof message.messageSetWireFormat !== "boolean")
                         return "messageSetWireFormat: boolean expected";
@@ -16550,7 +16754,7 @@ $root.google = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var message = new $root.google.protobuf.MessageOptions();
                 if (object.messageSetWireFormat != null)
                     message.messageSetWireFormat = Boolean(object.messageSetWireFormat);
@@ -16892,12 +17096,14 @@ $root.google = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $Reader.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.FieldOptions();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
-                    if (tag === error)
+                    if (tag === error) {
+                        error = undefined;
                         break;
+                    }
                     switch (tag) {
                     case 8: {
                             message.ctype = reader.int32();
@@ -16968,10 +17174,12 @@ $root.google = (function() {
                             break;
                         }
                     default:
-                        reader.skipType(tag & 7, long);
+                        reader.skipType(tag & 7, long, tag >>> 3);
                         break;
                     }
                 }
+                if (error !== undefined)
+                    throw Error("missing end group");
                 return message;
             };
 
@@ -17005,7 +17213,7 @@ $root.google = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    return "maximum nesting depth exceeded";
+                    return "max depth exceeded";
                 if (message.ctype != null && message.hasOwnProperty("ctype"))
                     switch (message.ctype) {
                     default:
@@ -17116,7 +17324,7 @@ $root.google = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var message = new $root.google.protobuf.FieldOptions();
                 switch (object.ctype) {
                 default:
@@ -17553,12 +17761,14 @@ $root.google = (function() {
                     if (long === undefined)
                         long = 0;
                     if (long > $Reader.recursionLimit)
-                        throw Error("maximum nesting depth exceeded");
+                        throw Error("max depth exceeded");
                     var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.FieldOptions.EditionDefault();
                     while (reader.pos < end) {
                         var tag = reader.uint32();
-                        if (tag === error)
+                        if (tag === error) {
+                            error = undefined;
                             break;
+                        }
                         switch (tag) {
                         case 24: {
                                 message.edition = reader.int32();
@@ -17569,10 +17779,12 @@ $root.google = (function() {
                                 break;
                             }
                         default:
-                            reader.skipType(tag & 7, long);
+                            reader.skipType(tag & 7, long, tag >>> 3);
                             break;
                         }
                     }
+                    if (error !== undefined)
+                        throw Error("missing end group");
                     return message;
                 };
 
@@ -17606,7 +17818,7 @@ $root.google = (function() {
                     if (long === undefined)
                         long = 0;
                     if (long > $util.recursionLimit)
-                        return "maximum nesting depth exceeded";
+                        return "max depth exceeded";
                     if (message.edition != null && message.hasOwnProperty("edition"))
                         switch (message.edition) {
                         default:
@@ -17645,7 +17857,7 @@ $root.google = (function() {
                     if (long === undefined)
                         long = 0;
                     if (long > $util.recursionLimit)
-                        throw Error("maximum nesting depth exceeded");
+                        throw Error("max depth exceeded");
                     var message = new $root.google.protobuf.FieldOptions.EditionDefault();
                     switch (object.edition) {
                     default:
@@ -17885,12 +18097,14 @@ $root.google = (function() {
                     if (long === undefined)
                         long = 0;
                     if (long > $Reader.recursionLimit)
-                        throw Error("maximum nesting depth exceeded");
+                        throw Error("max depth exceeded");
                     var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.FieldOptions.FeatureSupport();
                     while (reader.pos < end) {
                         var tag = reader.uint32();
-                        if (tag === error)
+                        if (tag === error) {
+                            error = undefined;
                             break;
+                        }
                         switch (tag) {
                         case 8: {
                                 message.editionIntroduced = reader.int32();
@@ -17909,10 +18123,12 @@ $root.google = (function() {
                                 break;
                             }
                         default:
-                            reader.skipType(tag & 7, long);
+                            reader.skipType(tag & 7, long, tag >>> 3);
                             break;
                         }
                     }
+                    if (error !== undefined)
+                        throw Error("missing end group");
                     return message;
                 };
 
@@ -17946,7 +18162,7 @@ $root.google = (function() {
                     if (long === undefined)
                         long = 0;
                     if (long > $util.recursionLimit)
-                        return "maximum nesting depth exceeded";
+                        return "max depth exceeded";
                     if (message.editionIntroduced != null && message.hasOwnProperty("editionIntroduced"))
                         switch (message.editionIntroduced) {
                         default:
@@ -18021,7 +18237,7 @@ $root.google = (function() {
                     if (long === undefined)
                         long = 0;
                     if (long > $util.recursionLimit)
-                        throw Error("maximum nesting depth exceeded");
+                        throw Error("max depth exceeded");
                     var message = new $root.google.protobuf.FieldOptions.FeatureSupport();
                     switch (object.editionIntroduced) {
                     default:
@@ -18362,12 +18578,14 @@ $root.google = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $Reader.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.OneofOptions();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
-                    if (tag === error)
+                    if (tag === error) {
+                        error = undefined;
                         break;
+                    }
                     switch (tag) {
                     case 10: {
                             message.features = $root.google.protobuf.FeatureSet.decode(reader, reader.uint32(), undefined, long + 1);
@@ -18380,10 +18598,12 @@ $root.google = (function() {
                             break;
                         }
                     default:
-                        reader.skipType(tag & 7, long);
+                        reader.skipType(tag & 7, long, tag >>> 3);
                         break;
                     }
                 }
+                if (error !== undefined)
+                    throw Error("missing end group");
                 return message;
             };
 
@@ -18417,7 +18637,7 @@ $root.google = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    return "maximum nesting depth exceeded";
+                    return "max depth exceeded";
                 if (message.features != null && message.hasOwnProperty("features")) {
                     var error = $root.google.protobuf.FeatureSet.verify(message.features, long + 1);
                     if (error)
@@ -18449,7 +18669,7 @@ $root.google = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var message = new $root.google.protobuf.OneofOptions();
                 if (object.features != null) {
                     if (typeof object.features !== "object")
@@ -18673,12 +18893,14 @@ $root.google = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $Reader.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.EnumOptions();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
-                    if (tag === error)
+                    if (tag === error) {
+                        error = undefined;
                         break;
+                    }
                     switch (tag) {
                     case 16: {
                             message.allowAlias = reader.bool();
@@ -18707,10 +18929,12 @@ $root.google = (function() {
                             break;
                         }
                     default:
-                        reader.skipType(tag & 7, long);
+                        reader.skipType(tag & 7, long, tag >>> 3);
                         break;
                     }
                 }
+                if (error !== undefined)
+                    throw Error("missing end group");
                 return message;
             };
 
@@ -18744,7 +18968,7 @@ $root.google = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    return "maximum nesting depth exceeded";
+                    return "max depth exceeded";
                 if (message.allowAlias != null && message.hasOwnProperty("allowAlias"))
                     if (typeof message.allowAlias !== "boolean")
                         return "allowAlias: boolean expected";
@@ -18788,7 +19012,7 @@ $root.google = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var message = new $root.google.protobuf.EnumOptions();
                 if (object.allowAlias != null)
                     message.allowAlias = Boolean(object.allowAlias);
@@ -19022,12 +19246,14 @@ $root.google = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $Reader.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.EnumValueOptions();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
-                    if (tag === error)
+                    if (tag === error) {
+                        error = undefined;
                         break;
+                    }
                     switch (tag) {
                     case 8: {
                             message.deprecated = reader.bool();
@@ -19052,10 +19278,12 @@ $root.google = (function() {
                             break;
                         }
                     default:
-                        reader.skipType(tag & 7, long);
+                        reader.skipType(tag & 7, long, tag >>> 3);
                         break;
                     }
                 }
+                if (error !== undefined)
+                    throw Error("missing end group");
                 return message;
             };
 
@@ -19089,7 +19317,7 @@ $root.google = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    return "maximum nesting depth exceeded";
+                    return "max depth exceeded";
                 if (message.deprecated != null && message.hasOwnProperty("deprecated"))
                     if (typeof message.deprecated !== "boolean")
                         return "deprecated: boolean expected";
@@ -19132,7 +19360,7 @@ $root.google = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var message = new $root.google.protobuf.EnumValueOptions();
                 if (object.deprecated != null)
                     message.deprecated = Boolean(object.deprecated);
@@ -19342,12 +19570,14 @@ $root.google = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $Reader.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.ServiceOptions();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
-                    if (tag === error)
+                    if (tag === error) {
+                        error = undefined;
                         break;
+                    }
                     switch (tag) {
                     case 274: {
                             message.features = $root.google.protobuf.FeatureSet.decode(reader, reader.uint32(), undefined, long + 1);
@@ -19364,10 +19594,12 @@ $root.google = (function() {
                             break;
                         }
                     default:
-                        reader.skipType(tag & 7, long);
+                        reader.skipType(tag & 7, long, tag >>> 3);
                         break;
                     }
                 }
+                if (error !== undefined)
+                    throw Error("missing end group");
                 return message;
             };
 
@@ -19401,7 +19633,7 @@ $root.google = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    return "maximum nesting depth exceeded";
+                    return "max depth exceeded";
                 if (message.features != null && message.hasOwnProperty("features")) {
                     var error = $root.google.protobuf.FeatureSet.verify(message.features, long + 1);
                     if (error)
@@ -19436,7 +19668,7 @@ $root.google = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var message = new $root.google.protobuf.ServiceOptions();
                 if (object.features != null) {
                     if (typeof object.features !== "object")
@@ -19644,12 +19876,14 @@ $root.google = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $Reader.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.MethodOptions();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
-                    if (tag === error)
+                    if (tag === error) {
+                        error = undefined;
                         break;
+                    }
                     switch (tag) {
                     case 264: {
                             message.deprecated = reader.bool();
@@ -19670,10 +19904,12 @@ $root.google = (function() {
                             break;
                         }
                     default:
-                        reader.skipType(tag & 7, long);
+                        reader.skipType(tag & 7, long, tag >>> 3);
                         break;
                     }
                 }
+                if (error !== undefined)
+                    throw Error("missing end group");
                 return message;
             };
 
@@ -19707,7 +19943,7 @@ $root.google = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    return "maximum nesting depth exceeded";
+                    return "max depth exceeded";
                 if (message.deprecated != null && message.hasOwnProperty("deprecated"))
                     if (typeof message.deprecated !== "boolean")
                         return "deprecated: boolean expected";
@@ -19751,7 +19987,7 @@ $root.google = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var message = new $root.google.protobuf.MethodOptions();
                 if (object.deprecated != null)
                     message.deprecated = Boolean(object.deprecated);
@@ -20031,12 +20267,14 @@ $root.google = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $Reader.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.UninterpretedOption();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
-                    if (tag === error)
+                    if (tag === error) {
+                        error = undefined;
                         break;
+                    }
                     switch (tag) {
                     case 18: {
                             if (!(message.name && message.name.length))
@@ -20069,10 +20307,12 @@ $root.google = (function() {
                             break;
                         }
                     default:
-                        reader.skipType(tag & 7, long);
+                        reader.skipType(tag & 7, long, tag >>> 3);
                         break;
                     }
                 }
+                if (error !== undefined)
+                    throw Error("missing end group");
                 return message;
             };
 
@@ -20106,7 +20346,7 @@ $root.google = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    return "maximum nesting depth exceeded";
+                    return "max depth exceeded";
                 if (message.name != null && message.hasOwnProperty("name")) {
                     if (!Array.isArray(message.name))
                         return "name: array expected";
@@ -20151,7 +20391,7 @@ $root.google = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var message = new $root.google.protobuf.UninterpretedOption();
                 if (object.name) {
                     if (!Array.isArray(object.name))
@@ -20384,12 +20624,14 @@ $root.google = (function() {
                     if (long === undefined)
                         long = 0;
                     if (long > $Reader.recursionLimit)
-                        throw Error("maximum nesting depth exceeded");
+                        throw Error("max depth exceeded");
                     var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.UninterpretedOption.NamePart();
                     while (reader.pos < end) {
                         var tag = reader.uint32();
-                        if (tag === error)
+                        if (tag === error) {
+                            error = undefined;
                             break;
+                        }
                         switch (tag) {
                         case 10: {
                                 message.namePart = reader.string();
@@ -20400,10 +20642,12 @@ $root.google = (function() {
                                 break;
                             }
                         default:
-                            reader.skipType(tag & 7, long);
+                            reader.skipType(tag & 7, long, tag >>> 3);
                             break;
                         }
                     }
+                    if (error !== undefined)
+                        throw Error("missing end group");
                     if (!message.hasOwnProperty("namePart"))
                         throw $util.ProtocolError("missing required 'namePart'", { instance: message });
                     if (!message.hasOwnProperty("isExtension"))
@@ -20441,7 +20685,7 @@ $root.google = (function() {
                     if (long === undefined)
                         long = 0;
                     if (long > $util.recursionLimit)
-                        return "maximum nesting depth exceeded";
+                        return "max depth exceeded";
                     if (!$util.isString(message.namePart))
                         return "namePart: string expected";
                     if (typeof message.isExtension !== "boolean")
@@ -20463,7 +20707,7 @@ $root.google = (function() {
                     if (long === undefined)
                         long = 0;
                     if (long > $util.recursionLimit)
-                        throw Error("maximum nesting depth exceeded");
+                        throw Error("max depth exceeded");
                     var message = new $root.google.protobuf.UninterpretedOption.NamePart();
                     if (object.namePart != null)
                         message.namePart = String(object.namePart);
@@ -20696,12 +20940,14 @@ $root.google = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $Reader.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.FeatureSet();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
-                    if (tag === error)
+                    if (tag === error) {
+                        error = undefined;
                         break;
+                    }
                     switch (tag) {
                     case 8: {
                             message.fieldPresence = reader.int32();
@@ -20736,10 +20982,12 @@ $root.google = (function() {
                             break;
                         }
                     default:
-                        reader.skipType(tag & 7, long);
+                        reader.skipType(tag & 7, long, tag >>> 3);
                         break;
                     }
                 }
+                if (error !== undefined)
+                    throw Error("missing end group");
                 return message;
             };
 
@@ -20773,7 +21021,7 @@ $root.google = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    return "maximum nesting depth exceeded";
+                    return "max depth exceeded";
                 if (message.fieldPresence != null && message.hasOwnProperty("fieldPresence"))
                     switch (message.fieldPresence) {
                     default:
@@ -20866,7 +21114,7 @@ $root.google = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var message = new $root.google.protobuf.FeatureSet();
                 switch (object.fieldPresence) {
                 default:
@@ -21305,18 +21553,22 @@ $root.google = (function() {
                     if (long === undefined)
                         long = 0;
                     if (long > $Reader.recursionLimit)
-                        throw Error("maximum nesting depth exceeded");
+                        throw Error("max depth exceeded");
                     var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.FeatureSet.VisibilityFeature();
                     while (reader.pos < end) {
                         var tag = reader.uint32();
-                        if (tag === error)
+                        if (tag === error) {
+                            error = undefined;
                             break;
+                        }
                         switch (tag) {
                         default:
-                            reader.skipType(tag & 7, long);
+                            reader.skipType(tag & 7, long, tag >>> 3);
                             break;
                         }
                     }
+                    if (error !== undefined)
+                        throw Error("missing end group");
                     return message;
                 };
 
@@ -21350,7 +21602,7 @@ $root.google = (function() {
                     if (long === undefined)
                         long = 0;
                     if (long > $util.recursionLimit)
-                        return "maximum nesting depth exceeded";
+                        return "max depth exceeded";
                     return null;
                 };
 
@@ -21368,7 +21620,7 @@ $root.google = (function() {
                     if (long === undefined)
                         long = 0;
                     if (long > $util.recursionLimit)
-                        throw Error("maximum nesting depth exceeded");
+                        throw Error("max depth exceeded");
                     return new $root.google.protobuf.FeatureSet.VisibilityFeature();
                 };
 
@@ -21552,12 +21804,14 @@ $root.google = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $Reader.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.FeatureSetDefaults();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
-                    if (tag === error)
+                    if (tag === error) {
+                        error = undefined;
                         break;
+                    }
                     switch (tag) {
                     case 10: {
                             if (!(message.defaults && message.defaults.length))
@@ -21574,10 +21828,12 @@ $root.google = (function() {
                             break;
                         }
                     default:
-                        reader.skipType(tag & 7, long);
+                        reader.skipType(tag & 7, long, tag >>> 3);
                         break;
                     }
                 }
+                if (error !== undefined)
+                    throw Error("missing end group");
                 return message;
             };
 
@@ -21611,7 +21867,7 @@ $root.google = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    return "maximum nesting depth exceeded";
+                    return "max depth exceeded";
                 if (message.defaults != null && message.hasOwnProperty("defaults")) {
                     if (!Array.isArray(message.defaults))
                         return "defaults: array expected";
@@ -21674,7 +21930,7 @@ $root.google = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var message = new $root.google.protobuf.FeatureSetDefaults();
                 if (object.defaults) {
                     if (!Array.isArray(object.defaults))
@@ -21971,12 +22227,14 @@ $root.google = (function() {
                     if (long === undefined)
                         long = 0;
                     if (long > $Reader.recursionLimit)
-                        throw Error("maximum nesting depth exceeded");
+                        throw Error("max depth exceeded");
                     var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.FeatureSetDefaults.FeatureSetEditionDefault();
                     while (reader.pos < end) {
                         var tag = reader.uint32();
-                        if (tag === error)
+                        if (tag === error) {
+                            error = undefined;
                             break;
+                        }
                         switch (tag) {
                         case 24: {
                                 message.edition = reader.int32();
@@ -21991,10 +22249,12 @@ $root.google = (function() {
                                 break;
                             }
                         default:
-                            reader.skipType(tag & 7, long);
+                            reader.skipType(tag & 7, long, tag >>> 3);
                             break;
                         }
                     }
+                    if (error !== undefined)
+                        throw Error("missing end group");
                     return message;
                 };
 
@@ -22028,7 +22288,7 @@ $root.google = (function() {
                     if (long === undefined)
                         long = 0;
                     if (long > $util.recursionLimit)
-                        return "maximum nesting depth exceeded";
+                        return "max depth exceeded";
                     if (message.edition != null && message.hasOwnProperty("edition"))
                         switch (message.edition) {
                         default:
@@ -22074,7 +22334,7 @@ $root.google = (function() {
                     if (long === undefined)
                         long = 0;
                     if (long > $util.recursionLimit)
-                        throw Error("maximum nesting depth exceeded");
+                        throw Error("max depth exceeded");
                     var message = new $root.google.protobuf.FeatureSetDefaults.FeatureSetEditionDefault();
                     switch (object.edition) {
                     default:
@@ -22297,12 +22557,14 @@ $root.google = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $Reader.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.SourceCodeInfo();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
-                    if (tag === error)
+                    if (tag === error) {
+                        error = undefined;
                         break;
+                    }
                     switch (tag) {
                     case 10: {
                             if (!(message.location && message.location.length))
@@ -22311,10 +22573,12 @@ $root.google = (function() {
                             break;
                         }
                     default:
-                        reader.skipType(tag & 7, long);
+                        reader.skipType(tag & 7, long, tag >>> 3);
                         break;
                     }
                 }
+                if (error !== undefined)
+                    throw Error("missing end group");
                 return message;
             };
 
@@ -22348,7 +22612,7 @@ $root.google = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    return "maximum nesting depth exceeded";
+                    return "max depth exceeded";
                 if (message.location != null && message.hasOwnProperty("location")) {
                     if (!Array.isArray(message.location))
                         return "location: array expected";
@@ -22375,7 +22639,7 @@ $root.google = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var message = new $root.google.protobuf.SourceCodeInfo();
                 if (object.location) {
                     if (!Array.isArray(object.location))
@@ -22586,12 +22850,14 @@ $root.google = (function() {
                     if (long === undefined)
                         long = 0;
                     if (long > $Reader.recursionLimit)
-                        throw Error("maximum nesting depth exceeded");
+                        throw Error("max depth exceeded");
                     var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.SourceCodeInfo.Location();
                     while (reader.pos < end) {
                         var tag = reader.uint32();
-                        if (tag === error)
+                        if (tag === error) {
+                            error = undefined;
                             break;
+                        }
                         switch (tag) {
                         case 8:
                         case 10: {
@@ -22632,10 +22898,12 @@ $root.google = (function() {
                                 break;
                             }
                         default:
-                            reader.skipType(tag & 7, long);
+                            reader.skipType(tag & 7, long, tag >>> 3);
                             break;
                         }
                     }
+                    if (error !== undefined)
+                        throw Error("missing end group");
                     return message;
                 };
 
@@ -22669,7 +22937,7 @@ $root.google = (function() {
                     if (long === undefined)
                         long = 0;
                     if (long > $util.recursionLimit)
-                        return "maximum nesting depth exceeded";
+                        return "max depth exceeded";
                     if (message.path != null && message.hasOwnProperty("path")) {
                         if (!Array.isArray(message.path))
                             return "path: array expected";
@@ -22714,7 +22982,7 @@ $root.google = (function() {
                     if (long === undefined)
                         long = 0;
                     if (long > $util.recursionLimit)
-                        throw Error("maximum nesting depth exceeded");
+                        throw Error("max depth exceeded");
                     var message = new $root.google.protobuf.SourceCodeInfo.Location();
                     if (object.path) {
                         if (!Array.isArray(object.path))
@@ -22913,12 +23181,14 @@ $root.google = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $Reader.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.GeneratedCodeInfo();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
-                    if (tag === error)
+                    if (tag === error) {
+                        error = undefined;
                         break;
+                    }
                     switch (tag) {
                     case 10: {
                             if (!(message.annotation && message.annotation.length))
@@ -22927,10 +23197,12 @@ $root.google = (function() {
                             break;
                         }
                     default:
-                        reader.skipType(tag & 7, long);
+                        reader.skipType(tag & 7, long, tag >>> 3);
                         break;
                     }
                 }
+                if (error !== undefined)
+                    throw Error("missing end group");
                 return message;
             };
 
@@ -22964,7 +23236,7 @@ $root.google = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    return "maximum nesting depth exceeded";
+                    return "max depth exceeded";
                 if (message.annotation != null && message.hasOwnProperty("annotation")) {
                     if (!Array.isArray(message.annotation))
                         return "annotation: array expected";
@@ -22991,7 +23263,7 @@ $root.google = (function() {
                 if (long === undefined)
                     long = 0;
                 if (long > $util.recursionLimit)
-                    throw Error("maximum nesting depth exceeded");
+                    throw Error("max depth exceeded");
                 var message = new $root.google.protobuf.GeneratedCodeInfo();
                 if (object.annotation) {
                     if (!Array.isArray(object.annotation))
@@ -23195,12 +23467,14 @@ $root.google = (function() {
                     if (long === undefined)
                         long = 0;
                     if (long > $Reader.recursionLimit)
-                        throw Error("maximum nesting depth exceeded");
+                        throw Error("max depth exceeded");
                     var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.GeneratedCodeInfo.Annotation();
                     while (reader.pos < end) {
                         var tag = reader.uint32();
-                        if (tag === error)
+                        if (tag === error) {
+                            error = undefined;
                             break;
+                        }
                         switch (tag) {
                         case 8:
                         case 10: {
@@ -23231,10 +23505,12 @@ $root.google = (function() {
                                 break;
                             }
                         default:
-                            reader.skipType(tag & 7, long);
+                            reader.skipType(tag & 7, long, tag >>> 3);
                             break;
                         }
                     }
+                    if (error !== undefined)
+                        throw Error("missing end group");
                     return message;
                 };
 
@@ -23268,7 +23544,7 @@ $root.google = (function() {
                     if (long === undefined)
                         long = 0;
                     if (long > $util.recursionLimit)
-                        return "maximum nesting depth exceeded";
+                        return "max depth exceeded";
                     if (message.path != null && message.hasOwnProperty("path")) {
                         if (!Array.isArray(message.path))
                             return "path: array expected";
@@ -23311,7 +23587,7 @@ $root.google = (function() {
                     if (long === undefined)
                         long = 0;
                     if (long > $util.recursionLimit)
-                        throw Error("maximum nesting depth exceeded");
+                        throw Error("max depth exceeded");
                     var message = new $root.google.protobuf.GeneratedCodeInfo.Annotation();
                     if (object.path) {
                         if (!Array.isArray(object.path))
