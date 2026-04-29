@@ -261,6 +261,18 @@ function buildFunction(type, functionName, gen, scope) {
                     "type": "Identifier",
                     "name": "$root" + type.fullName
                 };
+            // replace types[N].ctor with the field's actual type constructor
+            if (
+                node.type === "MemberExpression"
+             && node.object.type === "MemberExpression"
+             && node.object.object.type === "Identifier" && node.object.object.name === "types"
+             && node.object.property.type === "Literal"
+             && node.property.type === "Identifier" && node.property.name === "ctor"
+            )
+                return {
+                    "type": "Identifier",
+                    "name": "$root" + type.fieldsArray[node.object.property.value].resolvedType.fullName
+                };
             // replace types[N] with the field's actual type
             if (
                 node.type === "MemberExpression"
