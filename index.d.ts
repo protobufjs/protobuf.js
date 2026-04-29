@@ -2366,6 +2366,21 @@ export namespace util {
     function longFromHash(hash: string, unsigned?: boolean): (Long|number);
 
     /**
+     * Converts a 64 bit key to a long or number if it is an 8 characters long hash string.
+     * @param key Map key
+     * @param [unsigned=false] Whether unsigned or not
+     * @returns Original value
+     */
+    function longFromKey(key: string, unsigned?: boolean): (Long|number|string);
+
+    /**
+     * Converts a boolean key to a boolean value.
+     * @param key Map key
+     * @returns Boolean value
+     */
+    function boolFromKey(key: string): boolean;
+
+    /**
      * Merges the properties of the source object into the destination object.
      * @param dst Destination object
      * @param src Source object

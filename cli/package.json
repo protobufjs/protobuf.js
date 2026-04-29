@@ -18,7 +18,7 @@
     "pbts": "bin/pbts"
   },
   "peerDependencies": {
-    "protobufjs": ">=8.0.2 <9"
+    "protobufjs": ">=8.0.4 <9"
   },
   "dependencies": {
     "chalk": "^4.0.0",

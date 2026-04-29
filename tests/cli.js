@@ -165,6 +165,17 @@ tape.test("pbts passes jsdoc arguments without a shell", function(test) {
     });
 });
 
+tape.test("pbts emits class properties for extension fields", function(test) {
+    var pbts = require("../cli/pbts");
+
+    pbts.main(["tests/data/test.js"], function(err, tsCode) {
+        test.error(err, "definition generation worked");
+        test.ok(tsCode.indexOf('public ".jspb.test.IndirectExtension.str": string;') >= 0, "should emit scalar extension property on the class");
+        test.ok(tsCode.indexOf('public ".jspb.test.CloneExtension.extField"?: (jspb.test.ICloneExtension|null);') >= 0, "should emit message extension property on the class");
+        test.end();
+    });
+});
+
 tape.test("without null-defaults, absent optional fields have zero values", function(test) {
     cliTest(test, function() {
         var root = protobuf.loadSync("tests/data/cli/null-defaults.proto");

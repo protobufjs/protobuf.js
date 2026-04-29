@@ -5,8 +5,9 @@
  */
 var converter = exports;
 
-var Enum = require("./enum"),
-    util = require("./util");
+var Enum  = require("./enum"),
+    types = require("./types"),
+    util  = require("./util");
 
 /**
  * Generates a partial value fromObject conveter.
@@ -162,23 +163,26 @@ converter.fromObject = function fromObject(mtype) {
  * @param {Codegen} gen Codegen instance
  * @param {Field} field Reflected field
  * @param {number} fieldIndex Field index
- * @param {string} prop Property reference
+ * @param {string} dstProp Destination property reference
+ * @param {string} [srcProp] Source property reference
  * @returns {Codegen} Codegen instance
  * @ignore
  */
-function genValuePartial_toObject(gen, field, fieldIndex, prop) {
+function genValuePartial_toObject(gen, field, fieldIndex, dstProp, srcProp) {
     /* eslint-disable no-unexpected-multiline, block-scoped-var, no-redeclare */
+    if (!srcProp)
+        srcProp = dstProp;
     if (field.resolvedType) {
         if (field.resolvedType instanceof Enum) gen
-            ("d%s=o.enums===String?(types[%i].values[m%s]===undefined?m%s:types[%i].values[m%s]):m%s", prop, fieldIndex, prop, prop, fieldIndex, prop, prop);
+            ("d%s=o.enums===String?(types[%i].values[m%s]===undefined?m%s:types[%i].values[m%s]):m%s", dstProp, fieldIndex, srcProp, srcProp, fieldIndex, srcProp, srcProp);
         else gen
-            ("d%s=types[%i].toObject(m%s,o)", prop, fieldIndex, prop);
+            ("d%s=types[%i].toObject(m%s,o)", dstProp, fieldIndex, srcProp);
     } else {
         var isUnsigned = false;
         switch (field.type) {
             case "double":
             case "float": gen
-            ("d%s=o.json&&!isFinite(m%s)?String(m%s):m%s", prop, prop, prop, prop);
+            ("d%s=o.json&&!isFinite(m%s)?String(m%s):m%s", dstProp, srcProp, srcProp, srcProp);
                 break;
             case "uint64":
                 isUnsigned = true;
@@ -187,16 +191,16 @@ function genValuePartial_toObject(gen, field, fieldIndex, prop) {
             case "sint64":
             case "fixed64":
             case "sfixed64": gen
-            ("if(typeof m%s===\"number\")", prop)
-                ("d%s=o.longs===String?String(m%s):m%s", prop, prop, prop)
+            ("if(typeof m%s===\"number\")", srcProp)
+                ("d%s=o.longs===String?String(m%s):m%s", dstProp, srcProp, srcProp)
             ("else") // Long-like
-                ("d%s=o.longs===String?util.Long.prototype.toString.call(m%s):o.longs===Number?new util.LongBits(m%s.low>>>0,m%s.high>>>0).toNumber(%s):m%s", prop, prop, prop, prop, isUnsigned ? "true": "", prop);
+                ("d%s=o.longs===String?util.Long.prototype.toString.call(m%s):o.longs===Number?new util.LongBits(m%s.low>>>0,m%s.high>>>0).toNumber(%s):m%s", dstProp, srcProp, srcProp, srcProp, isUnsigned ? "true": "", srcProp);
                 break;
             case "bytes": gen
-            ("d%s=o.bytes===String?util.base64.encode(m%s,0,m%s.length):o.bytes===Array?Array.prototype.slice.call(m%s):m%s", prop, prop, prop, prop, prop);
+            ("d%s=o.bytes===String?util.base64.encode(m%s,0,m%s.length):o.bytes===Array?Array.prototype.slice.call(m%s):m%s", dstProp, srcProp, srcProp, srcProp, srcProp);
                 break;
             default: gen
-            ("d%s=m%s", prop, prop);
+            ("d%s=m%s", dstProp, srcProp);
                 break;
         }
     }
@@ -281,12 +285,17 @@ converter.toObject = function toObject(mtype) {
     ("var ks2");
             } gen
     ("if(m%s&&(ks2=Object.keys(m%s)).length){", prop, prop)
-        ("d%s={}", prop)
+        ("d%s={}", prop);
+            var longKey = types.long[field.keyType] !== undefined,
+                srcProp = prop + "[ks2[j]]";
+            gen
         ("for(var j=0;j<ks2.length;++j){");
+            if (longKey) gen
+            ("var k2=util.longFromKey(ks2[j],%j).toString()", field.keyType === "uint64" || field.keyType === "fixed64");
             gen
         ("if(ks2[j]===\"__proto__\")")
             ("util.makeProp(d%s,ks2[j])", prop);
-            genValuePartial_toObject(gen, field, /* sorted */ index, prop + "[ks2[j]]")
+            genValuePartial_toObject(gen, field, /* sorted */ index, longKey ? prop + "[k2]" : srcProp, srcProp)
         ("}");
         } else if (field.repeated) { gen
     ("if(m%s&&m%s.length){", prop, prop)
