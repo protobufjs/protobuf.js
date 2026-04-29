@@ -288,7 +288,7 @@ $root.TypeUrlTest = (function() {
         Nested.encode = function encode(message, writer) {
             if (!writer)
                 writer = $Writer.create();
-            if (message.a != null && Object.hasOwnProperty.call(message, "a"))
+            if (message.a != null && message.a.length)
                 writer.uint32(/* id 1, wireType 2 =*/10).string(message.a);
             return writer;
         };

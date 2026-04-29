@@ -131,7 +131,7 @@ export const MyRequest = $root.MyRequest = (() => {
     MyRequest.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.path != null && Object.hasOwnProperty.call(message, "path"))
+        if (message.path != null && message.path.length)
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.path);
         return writer;
     };
@@ -352,7 +352,7 @@ export const MyResponse = $root.MyResponse = (() => {
     MyResponse.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.status != null && Object.hasOwnProperty.call(message, "status"))
+        if (message.status != null && Number(message.status) !== 0)
             writer.uint32(/* id 2, wireType 0 =*/16).int32(message.status);
         return writer;
     };

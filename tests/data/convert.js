@@ -142,12 +142,12 @@ $root.Message = (function() {
     Message.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.stringVal != null && Object.hasOwnProperty.call(message, "stringVal"))
+        if (message.stringVal != null && message.stringVal.length)
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.stringVal);
         if (message.stringRepeated != null && message.stringRepeated.length)
             for (var i = 0; i < message.stringRepeated.length; ++i)
                 writer.uint32(/* id 2, wireType 2 =*/18).string(message.stringRepeated[i]);
-        if (message.uint64Val != null && Object.hasOwnProperty.call(message, "uint64Val"))
+        if (message.uint64Val != null && (typeof message.uint64Val === "object" ? message.uint64Val.low || message.uint64Val.high : Number(message.uint64Val) !== 0))
             writer.uint32(/* id 3, wireType 0 =*/24).uint64(message.uint64Val);
         if (message.uint64Repeated != null && message.uint64Repeated.length) {
             writer.uint32(/* id 4, wireType 2 =*/34).fork();
@@ -155,12 +155,12 @@ $root.Message = (function() {
                 writer.uint64(message.uint64Repeated[i]);
             writer.ldelim();
         }
-        if (message.bytesVal != null && Object.hasOwnProperty.call(message, "bytesVal"))
+        if (message.bytesVal != null && message.bytesVal.length)
             writer.uint32(/* id 5, wireType 2 =*/42).bytes(message.bytesVal);
         if (message.bytesRepeated != null && message.bytesRepeated.length)
             for (var i = 0; i < message.bytesRepeated.length; ++i)
                 writer.uint32(/* id 6, wireType 2 =*/50).bytes(message.bytesRepeated[i]);
-        if (message.enumVal != null && Object.hasOwnProperty.call(message, "enumVal"))
+        if (message.enumVal != null && Number(message.enumVal) !== 0)
             writer.uint32(/* id 7, wireType 0 =*/56).int32(message.enumVal);
         if (message.enumRepeated != null && message.enumRepeated.length) {
             writer.uint32(/* id 8, wireType 2 =*/66).fork();
