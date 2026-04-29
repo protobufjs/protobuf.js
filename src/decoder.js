@@ -52,7 +52,7 @@ function decoder(mtype) {
             if (types.defaults[type] !== undefined) gen
                 ("value=%j", types.defaults[type]);
             else if (types.basic[type] === undefined) gen
-                ("value=new types[%i].ctor", i);
+                ("value=new (types[%i].ctor||types[%i])", i, i);
             else gen
                 ("value=null");
 
