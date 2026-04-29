@@ -1,4 +1,4 @@
-/*eslint-disable block-scoped-var, id-length, no-control-regex, no-magic-numbers, no-prototype-builtins, no-redeclare, no-shadow, no-var, sort-vars*/
+/*eslint-disable block-scoped-var, id-length, no-control-regex, no-magic-numbers, no-prototype-builtins, no-redeclare, no-shadow, no-var, sort-vars, jsdoc/require-param*/
 "use strict";
 
 var $protobuf = require("../../minimal");
@@ -162,18 +162,18 @@ $root.MyRequest = (function() {
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    MyRequest.decode = function decode(reader, length, error, long) {
+    MyRequest.decode = function decode(reader, length, _end, _depth, _target) {
         if (!(reader instanceof $Reader))
             reader = $Reader.create(reader);
-        if (long === undefined)
-            long = 0;
-        if (long > $Reader.recursionLimit)
+        if (_depth === undefined)
+            _depth = 0;
+        if (_depth > $Reader.recursionLimit)
             throw Error("max depth exceeded");
-        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.MyRequest();
+        var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.MyRequest();
         while (reader.pos < end) {
             var tag = reader.uint32();
-            if (tag === error) {
-                error = undefined;
+            if (tag === _end) {
+                _end = undefined;
                 break;
             }
             switch (tag) {
@@ -182,11 +182,11 @@ $root.MyRequest = (function() {
                     break;
                 }
             default:
-                reader.skipType(tag & 7, long, tag >>> 3);
+                reader.skipType(tag & 7, _depth, tag >>> 3);
                 break;
             }
         }
-        if (error !== undefined)
+        if (_end !== undefined)
             throw Error("missing end group");
         return message;
     };
@@ -215,12 +215,12 @@ $root.MyRequest = (function() {
      * @param {Object.<string,*>} message Plain object to verify
      * @returns {string|null} `null` if valid, otherwise the reason why it is not
      */
-    MyRequest.verify = function verify(message, long) {
+    MyRequest.verify = function verify(message, _depth) {
         if (typeof message !== "object" || message === null)
             return "object expected";
-        if (long === undefined)
-            long = 0;
-        if (long > $util.recursionLimit)
+        if (_depth === undefined)
+            _depth = 0;
+        if (_depth > $util.recursionLimit)
             return "max depth exceeded";
         if (message.path != null && message.hasOwnProperty("path"))
             if (!$util.isString(message.path))
@@ -236,12 +236,12 @@ $root.MyRequest = (function() {
      * @param {Object.<string,*>} object Plain object
      * @returns {MyRequest} MyRequest
      */
-    MyRequest.fromObject = function fromObject(object, long) {
+    MyRequest.fromObject = function fromObject(object, _depth) {
         if (object instanceof $root.MyRequest)
             return object;
-        if (long === undefined)
-            long = 0;
-        if (long > $util.recursionLimit)
+        if (_depth === undefined)
+            _depth = 0;
+        if (_depth > $util.recursionLimit)
             throw Error("max depth exceeded");
         var message = new $root.MyRequest();
         if (object.path != null)
@@ -383,18 +383,18 @@ $root.MyResponse = (function() {
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    MyResponse.decode = function decode(reader, length, error, long) {
+    MyResponse.decode = function decode(reader, length, _end, _depth, _target) {
         if (!(reader instanceof $Reader))
             reader = $Reader.create(reader);
-        if (long === undefined)
-            long = 0;
-        if (long > $Reader.recursionLimit)
+        if (_depth === undefined)
+            _depth = 0;
+        if (_depth > $Reader.recursionLimit)
             throw Error("max depth exceeded");
-        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.MyResponse();
+        var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.MyResponse();
         while (reader.pos < end) {
             var tag = reader.uint32();
-            if (tag === error) {
-                error = undefined;
+            if (tag === _end) {
+                _end = undefined;
                 break;
             }
             switch (tag) {
@@ -403,11 +403,11 @@ $root.MyResponse = (function() {
                     break;
                 }
             default:
-                reader.skipType(tag & 7, long, tag >>> 3);
+                reader.skipType(tag & 7, _depth, tag >>> 3);
                 break;
             }
         }
-        if (error !== undefined)
+        if (_end !== undefined)
             throw Error("missing end group");
         return message;
     };
@@ -436,12 +436,12 @@ $root.MyResponse = (function() {
      * @param {Object.<string,*>} message Plain object to verify
      * @returns {string|null} `null` if valid, otherwise the reason why it is not
      */
-    MyResponse.verify = function verify(message, long) {
+    MyResponse.verify = function verify(message, _depth) {
         if (typeof message !== "object" || message === null)
             return "object expected";
-        if (long === undefined)
-            long = 0;
-        if (long > $util.recursionLimit)
+        if (_depth === undefined)
+            _depth = 0;
+        if (_depth > $util.recursionLimit)
             return "max depth exceeded";
         if (message.status != null && message.hasOwnProperty("status"))
             if (!$util.isInteger(message.status))
@@ -457,12 +457,12 @@ $root.MyResponse = (function() {
      * @param {Object.<string,*>} object Plain object
      * @returns {MyResponse} MyResponse
      */
-    MyResponse.fromObject = function fromObject(object, long) {
+    MyResponse.fromObject = function fromObject(object, _depth) {
         if (object instanceof $root.MyResponse)
             return object;
-        if (long === undefined)
-            long = 0;
-        if (long > $util.recursionLimit)
+        if (_depth === undefined)
+            _depth = 0;
+        if (_depth > $util.recursionLimit)
             throw Error("max depth exceeded");
         var message = new $root.MyResponse();
         if (object.status != null)

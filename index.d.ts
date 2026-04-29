@@ -1702,13 +1702,11 @@ export class Type extends NamespaceBase {
      * Decodes a message of this type.
      * @param reader Reader or buffer to decode from
      * @param [length] Length of the message, if known beforehand
-     * @param [end] Expected group end tag, if decoding a group
-     * @param [depth] Current nesting depth
      * @returns Decoded message
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {util.ProtocolError<{}>} If required fields are missing
      */
-    public decode(reader: (Reader|Uint8Array), length?: number, end?: number, depth?: number): Message<{}>;
+    public decode(reader: (Reader|Uint8Array), length?: number): Message<{}>;
 
     /**
      * Decodes a message of this type preceeded by its byte length as a varint.
@@ -1722,18 +1720,16 @@ export class Type extends NamespaceBase {
     /**
      * Verifies that field values are valid and that required fields are present.
      * @param message Plain object to verify
-     * @param [depth] Current nesting depth
      * @returns `null` if valid, otherwise the reason why it is not
      */
-    public verify(message: { [k: string]: any }, depth?: number): (null|string);
+    public verify(message: { [k: string]: any }): (null|string);
 
     /**
      * Creates a new message of this type from a plain object. Also converts values to their respective internal types.
      * @param object Plain object to convert
-     * @param [depth] Current nesting depth
      * @returns Message instance
      */
-    public fromObject(object: { [k: string]: any }, depth?: number): Message<{}>;
+    public fromObject(object: { [k: string]: any }): Message<{}>;
 
     /**
      * Creates a plain object from a message of this type. Also converts values to other types if specified.

@@ -32,7 +32,7 @@ function genVerifyValue(gen, field, fieldIndex, ref) {
         } else {
             gen
             ("{")
-                ("var e=types[%i].verify(%s,n+1);", fieldIndex, ref)
+                ("var e=types[%i].verify(%s,q+1);", fieldIndex, ref)
                 ("if(e)")
                     ("return%j+e", field.name + ".")
             ("}");
@@ -122,11 +122,11 @@ function genVerifyKey(gen, field, ref) {
 function verifier(mtype) {
     /* eslint-disable no-unexpected-multiline */
 
-    var gen = util.codegen(["m", "n"], mtype.name + "$verify")
+    var gen = util.codegen(["m", "q"], mtype.name + "$verify")
     ("if(typeof m!==\"object\"||m===null)")
         ("return%j", "object expected")
-    ("if(n===undefined)n=0")
-    ("if(n>util.recursionLimit)")
+    ("if(q===undefined)q=0")
+    ("if(q>util.recursionLimit)")
         ("return%j", "max depth exceeded");
     var oneofs = mtype.oneofsArray,
         seenFirstField = {};

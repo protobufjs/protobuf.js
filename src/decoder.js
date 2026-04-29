@@ -16,17 +16,17 @@ function missing(field) {
  */
 function decoder(mtype) {
     /* eslint-disable no-unexpected-multiline */
-    var gen = util.codegen(["r", "l", "e", "n"], mtype.name + "$decode")
+    var gen = util.codegen(["r", "l", "z", "q", "g"], mtype.name + "$decode")
     ("if(!(r instanceof Reader))")
         ("r=Reader.create(r)")
-    ("if(n===undefined)n=0")
-    ("if(n>Reader.recursionLimit)")
+    ("if(q===undefined)q=0")
+    ("if(q>Reader.recursionLimit)")
         ("throw Error(\"max depth exceeded\")")
-    ("var c=l===undefined?r.len:r.pos+l,m=new this.ctor" + (mtype.fieldsArray.filter(function(field) { return field.map; }).length ? ",k,value" : ""))
+    ("var c=l===undefined?r.len:r.pos+l,m=g||new this.ctor" + (mtype.fieldsArray.filter(function(field) { return field.map; }).length ? ",k,value" : ""))
     ("while(r.pos<c){")
         ("var t=r.uint32()")
-        ("if(t===e){")
-            ("e=undefined")
+        ("if(t===z){")
+            ("z=undefined")
             ("break")
         ("}")
         ("switch(t){");
@@ -62,14 +62,14 @@ function decoder(mtype) {
                         ("case %i:", 16 + (types.basic[type] === undefined ? 2 : types.basic[type]));
 
             if (types.basic[type] === undefined) gen
-                            ("value=types[%i].decode(r,r.uint32(),undefined,n+1)", i); // can't be groups
+                            ("value=types[%i].decode(r,r.uint32(),undefined,q+1)", i); // can't be groups
             else gen
                             ("value=r.%s()", type);
 
             gen
                             ("break")
                         ("default:")
-                            ("r.skipType(tag2&7,n,tag2>>>3)")
+                            ("r.skipType(tag2&7,q,tag2>>>3)")
                             ("break")
                     ("}")
                 ("}");
@@ -107,9 +107,9 @@ function decoder(mtype) {
             // Non-packed
             if (types.basic[type] === undefined) {
                 if (field.delimited) gen
-                    ("%s.push(types[%i].decode(r,undefined,%i,n+1))", ref, i, field.id * 8 + 4);
+                    ("%s.push(types[%i].decode(r,undefined,%i,q+1))", ref, i, field.id * 8 + 4);
                 else gen
-                    ("%s.push(types[%i].decode(r,r.uint32(),undefined,n+1))", ref, i);
+                    ("%s.push(types[%i].decode(r,r.uint32(),undefined,q+1))", ref, i);
             }
             else gen
                     ("%s.push(r.%s())", ref, type);
@@ -119,9 +119,9 @@ function decoder(mtype) {
             gen
             ("case %i:{", field.id * 8 + (field.delimited ? 3 : 2));
             if (field.delimited) gen
-                ("%s=types[%i].decode(r,undefined,%i,n+1)", ref, i, field.id * 8 + 4);
+                ("%s=types[%i].decode(r,undefined,%i,q+1,%s)", ref, i, field.id * 8 + 4, ref);
             else gen
-                ("%s=types[%i].decode(r,r.uint32(),undefined,n+1)", ref, i);
+                ("%s=types[%i].decode(r,r.uint32(),undefined,q+1,%s)", ref, i, ref);
         }
         else gen
             ("case %i:{", field.id * 8 + types.basic[type])
@@ -134,14 +134,14 @@ function decoder(mtype) {
         // Unknown fields
     } gen
             ("default:")
-                ("r.skipType(t&7,n,t>>>3)")
+                ("r.skipType(t&7,q,t>>>3)")
                 ("break")
 
         ("}")
     ("}");
 
     gen
-    ("if(e!==undefined)")
+    ("if(z!==undefined)")
         ("throw Error(\"missing end group\")");
 
     // Field presence

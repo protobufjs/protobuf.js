@@ -1,4 +1,4 @@
-/*eslint-disable block-scoped-var, id-length, no-control-regex, no-magic-numbers, no-prototype-builtins, no-redeclare, no-shadow, no-var, sort-vars*/
+/*eslint-disable block-scoped-var, id-length, no-control-regex, no-magic-numbers, no-prototype-builtins, no-redeclare, no-shadow, no-var, sort-vars, jsdoc/require-param*/
 "use strict";
 
 var $protobuf = require("../../minimal");
@@ -282,18 +282,18 @@ $root.Package = (function() {
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    Package.decode = function decode(reader, length, error, long) {
+    Package.decode = function decode(reader, length, _end, _depth, _target) {
         if (!(reader instanceof $Reader))
             reader = $Reader.create(reader);
-        if (long === undefined)
-            long = 0;
-        if (long > $Reader.recursionLimit)
+        if (_depth === undefined)
+            _depth = 0;
+        if (_depth > $Reader.recursionLimit)
             throw Error("max depth exceeded");
-        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Package(), key, value;
+        var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.Package(), key, value;
         while (reader.pos < end) {
             var tag = reader.uint32();
-            if (tag === error) {
-                error = undefined;
+            if (tag === _end) {
+                _end = undefined;
                 break;
             }
             switch (tag) {
@@ -322,7 +322,7 @@ $root.Package = (function() {
                     break;
                 }
             case 50: {
-                    message.repository = $root.Package.Repository.decode(reader, reader.uint32(), undefined, long + 1);
+                    message.repository = $root.Package.Repository.decode(reader, reader.uint32(), undefined, _depth + 1, message.repository);
                     break;
                 }
             case 58: {
@@ -359,7 +359,7 @@ $root.Package = (function() {
                             value = reader.string();
                             break;
                         default:
-                            reader.skipType(tag2 & 7, long, tag2 >>> 3);
+                            reader.skipType(tag2 & 7, _depth, tag2 >>> 3);
                             break;
                         }
                     }
@@ -384,7 +384,7 @@ $root.Package = (function() {
                             value = reader.string();
                             break;
                         default:
-                            reader.skipType(tag2 & 7, long, tag2 >>> 3);
+                            reader.skipType(tag2 & 7, _depth, tag2 >>> 3);
                             break;
                         }
                     }
@@ -409,7 +409,7 @@ $root.Package = (function() {
                             value = reader.string();
                             break;
                         default:
-                            reader.skipType(tag2 & 7, long, tag2 >>> 3);
+                            reader.skipType(tag2 & 7, _depth, tag2 >>> 3);
                             break;
                         }
                     }
@@ -434,7 +434,7 @@ $root.Package = (function() {
                             value = reader.string();
                             break;
                         default:
-                            reader.skipType(tag2 & 7, long, tag2 >>> 3);
+                            reader.skipType(tag2 & 7, _depth, tag2 >>> 3);
                             break;
                         }
                     }
@@ -454,11 +454,11 @@ $root.Package = (function() {
                     break;
                 }
             default:
-                reader.skipType(tag & 7, long, tag >>> 3);
+                reader.skipType(tag & 7, _depth, tag >>> 3);
                 break;
             }
         }
-        if (error !== undefined)
+        if (_end !== undefined)
             throw Error("missing end group");
         return message;
     };
@@ -487,12 +487,12 @@ $root.Package = (function() {
      * @param {Object.<string,*>} message Plain object to verify
      * @returns {string|null} `null` if valid, otherwise the reason why it is not
      */
-    Package.verify = function verify(message, long) {
+    Package.verify = function verify(message, _depth) {
         if (typeof message !== "object" || message === null)
             return "object expected";
-        if (long === undefined)
-            long = 0;
-        if (long > $util.recursionLimit)
+        if (_depth === undefined)
+            _depth = 0;
+        if (_depth > $util.recursionLimit)
             return "max depth exceeded";
         if (message.name != null && message.hasOwnProperty("name"))
             if (!$util.isString(message.name))
@@ -513,7 +513,7 @@ $root.Package = (function() {
             if (!$util.isString(message.license))
                 return "license: string expected";
         if (message.repository != null && message.hasOwnProperty("repository")) {
-            var error = $root.Package.Repository.verify(message.repository, long + 1);
+            var error = $root.Package.Repository.verify(message.repository, _depth + 1);
             if (error)
                 return "repository." + error;
         }
@@ -586,12 +586,12 @@ $root.Package = (function() {
      * @param {Object.<string,*>} object Plain object
      * @returns {Package} Package
      */
-    Package.fromObject = function fromObject(object, long) {
+    Package.fromObject = function fromObject(object, _depth) {
         if (object instanceof $root.Package)
             return object;
-        if (long === undefined)
-            long = 0;
-        if (long > $util.recursionLimit)
+        if (_depth === undefined)
+            _depth = 0;
+        if (_depth > $util.recursionLimit)
             throw Error("max depth exceeded");
         var message = new $root.Package();
         if (object.name != null)
@@ -609,7 +609,7 @@ $root.Package = (function() {
         if (object.repository != null) {
             if (typeof object.repository !== "object")
                 throw TypeError(".Package.repository: object expected");
-            message.repository = $root.Package.Repository.fromObject(object.repository, long + 1);
+            message.repository = $root.Package.Repository.fromObject(object.repository, _depth + 1);
         }
         if (object.bugs != null)
             message.bugs = String(object.bugs);
@@ -902,18 +902,18 @@ $root.Package = (function() {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        Repository.decode = function decode(reader, length, error, long) {
+        Repository.decode = function decode(reader, length, _end, _depth, _target) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            if (long === undefined)
-                long = 0;
-            if (long > $Reader.recursionLimit)
+            if (_depth === undefined)
+                _depth = 0;
+            if (_depth > $Reader.recursionLimit)
                 throw Error("max depth exceeded");
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Package.Repository();
+            var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.Package.Repository();
             while (reader.pos < end) {
                 var tag = reader.uint32();
-                if (tag === error) {
-                    error = undefined;
+                if (tag === _end) {
+                    _end = undefined;
                     break;
                 }
                 switch (tag) {
@@ -926,11 +926,11 @@ $root.Package = (function() {
                         break;
                     }
                 default:
-                    reader.skipType(tag & 7, long, tag >>> 3);
+                    reader.skipType(tag & 7, _depth, tag >>> 3);
                     break;
                 }
             }
-            if (error !== undefined)
+            if (_end !== undefined)
                 throw Error("missing end group");
             return message;
         };
@@ -959,12 +959,12 @@ $root.Package = (function() {
          * @param {Object.<string,*>} message Plain object to verify
          * @returns {string|null} `null` if valid, otherwise the reason why it is not
          */
-        Repository.verify = function verify(message, long) {
+        Repository.verify = function verify(message, _depth) {
             if (typeof message !== "object" || message === null)
                 return "object expected";
-            if (long === undefined)
-                long = 0;
-            if (long > $util.recursionLimit)
+            if (_depth === undefined)
+                _depth = 0;
+            if (_depth > $util.recursionLimit)
                 return "max depth exceeded";
             if (message.type != null && message.hasOwnProperty("type"))
                 if (!$util.isString(message.type))
@@ -983,12 +983,12 @@ $root.Package = (function() {
          * @param {Object.<string,*>} object Plain object
          * @returns {Package.Repository} Repository
          */
-        Repository.fromObject = function fromObject(object, long) {
+        Repository.fromObject = function fromObject(object, _depth) {
             if (object instanceof $root.Package.Repository)
                 return object;
-            if (long === undefined)
-                long = 0;
-            if (long > $util.recursionLimit)
+            if (_depth === undefined)
+                _depth = 0;
+            if (_depth > $util.recursionLimit)
                 throw Error("max depth exceeded");
             var message = new $root.Package.Repository();
             if (object.type != null)
