@@ -16,10 +16,9 @@ base64.length = function length(string) {
     var p = string.length;
     if (!p)
         return 0;
-    var n = 0;
-    while (--p % 4 > 1 && string.charAt(p) === "=")
-        ++n;
-    return Math.ceil(string.length * 3) / 4 - n;
+    while (p > 0 && string.charAt(p - 1) === "=")
+        --p;
+    return Math.floor(p * 3 / 4);
 };
 
 // Base64 encoding table
@@ -31,6 +30,9 @@ var s64 = new Array(123);
 // 65..90, 97..122, 48..57, 43, 47
 for (var i = 0; i < 64;)
     s64[b64[i] = i < 26 ? i + 65 : i < 52 ? i + 71 : i < 62 ? i - 4 : i - 59 | 43] = i++;
+
+s64[45] = 62; // - -> +
+s64[95] = 63; // _ -> /
 
 /**
  * Encodes a buffer to a base64 encoded string.
@@ -129,11 +131,16 @@ base64.decode = function decode(string, buffer, offset) {
     return offset - start;
 };
 
+var base64Re = /^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/,
+    base64UrlRe = /[-_]/,
+    base64UrlNoPaddingRe = /^(?:[A-Za-z0-9_-]{4})*(?:[A-Za-z0-9_-]{2}(?:==)?|[A-Za-z0-9_-]{3}=?)?$/;
+
 /**
  * Tests if the specified string appears to be base64 encoded.
  * @param {string} string String to test
  * @returns {boolean} `true` if probably base64 encoded, otherwise false
  */
 base64.test = function test(string) {
-    return /^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/.test(string);
+    return base64Re.test(string)
+        || base64UrlRe.test(string) && base64UrlNoPaddingRe.test(string);
 };
