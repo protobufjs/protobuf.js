@@ -39,6 +39,9 @@ tape.test("writer & reader", function(test) {
     test.ok(expect("uint32", -1 >>> 0, [ 255, 255, 255, 255, 15 ]), "should write -1 as an unsigned varint of length 5");
     test.ok(expect("int32", -1, [ 255, 255, 255, 255, 255, 255, 255, 255, 255, 1 ]), "should write -1 as a signed varint of length 10");
     test.ok(expect("sint32", -1, [ 1 ]), "should write -1 as a signed zig-zag encoded varint of length 1");
+    var reader = Reader.create([ 128, 128, 128, 128, 128, 0, 1 ]);
+    test.equal(reader.uint32(), 0, "should read non-minimal uint32 varints");
+    test.equal(reader.uint32(), 1, "should stop after the non-minimal uint32 varint");
 
     // fixed32, sfixed32
 
