@@ -92,6 +92,19 @@ tape.test("maps", function(test) {
         test.end();
     });
 
+    test.test(test.name + " - omitted message value", function(test) {
+
+        var dec = Outer.decode(Uint8Array.of(0x0a, 0x03, 0x0a, 0x01, 0x61));
+        test.ok(dec.value.a instanceof Inner.ctor, "should decode an omitted message value as a default message");
+        test.deepEqual(
+            Array.prototype.slice.call(Outer.encode(dec).finish()),
+            [ 0x0a, 0x05, 0x0a, 0x01, 0x61, 0x12, 0x00 ],
+            "should re-encode the default message value"
+        );
+
+        test.end();
+    });
+
     test.test(test.name + " - special string key", function(test) {
 
         var map = {};

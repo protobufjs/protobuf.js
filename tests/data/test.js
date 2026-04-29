@@ -8852,7 +8852,7 @@ $root.jspb = (function() {
                                 message.mapStringMsg = {};
                             var end2 = reader.uint32() + reader.pos;
                             key = "";
-                            value = null;
+                            value = new $root.jspb.test.MapValueMessageNoBinary.ctor();
                             while (reader.pos < end2) {
                                 var tag2 = reader.uint32();
                                 switch (tag2) {
@@ -8950,7 +8950,7 @@ $root.jspb = (function() {
                                 message.mapStringTestmapfields = {};
                             var end2 = reader.uint32() + reader.pos;
                             key = "";
-                            value = null;
+                            value = new $root.jspb.test.TestMapFieldsNoBinary.ctor();
                             while (reader.pos < end2) {
                                 var tag2 = reader.uint32();
                                 switch (tag2) {
