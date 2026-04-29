@@ -1886,6 +1886,12 @@ $root.jspb = (function() {
              * @implements IHasExtensions
              * @constructor
              * @param {jspb.test.IHasExtensions=} [properties] Properties to set
+             * @property {jspb.test.IIsExtension|null} [".jspb.test.IsExtension.extField"] HasExtensions .jspb.test.IsExtension.extField
+             * @property {jspb.test.ISimple1|null} [".jspb.test.IndirectExtension.simple"] HasExtensions .jspb.test.IndirectExtension.simple
+             * @property {string} ".jspb.test.IndirectExtension.str" HasExtensions .jspb.test.IndirectExtension.str
+             * @property {Array.<string>} ".jspb.test.IndirectExtension.repeatedStr" HasExtensions .jspb.test.IndirectExtension.repeatedStr
+             * @property {Array.<jspb.test.ISimple1>} ".jspb.test.IndirectExtension.repeatedSimple" HasExtensions .jspb.test.IndirectExtension.repeatedSimple
+             * @property {jspb.test.ISimple1|null} [".jspb.test.simple1"] HasExtensions .jspb.test.simple1
              */
             function HasExtensions(properties) {
                 this[".jspb.test.IndirectExtension.repeatedStr"] = [];
@@ -1920,52 +1926,11 @@ $root.jspb = (function() {
              */
             HasExtensions.prototype.str3 = "";
 
-            /**
-             * HasExtensions .jspb.test.IsExtension.extField.
-             * @member {jspb.test.IIsExtension|null|undefined} .jspb.test.IsExtension.extField
-             * @memberof jspb.test.HasExtensions
-             * @instance
-             */
             HasExtensions.prototype[".jspb.test.IsExtension.extField"] = null;
-
-            /**
-             * HasExtensions .jspb.test.IndirectExtension.simple.
-             * @member {jspb.test.ISimple1|null|undefined} .jspb.test.IndirectExtension.simple
-             * @memberof jspb.test.HasExtensions
-             * @instance
-             */
             HasExtensions.prototype[".jspb.test.IndirectExtension.simple"] = null;
-
-            /**
-             * HasExtensions .jspb.test.IndirectExtension.str.
-             * @member {string} .jspb.test.IndirectExtension.str
-             * @memberof jspb.test.HasExtensions
-             * @instance
-             */
             HasExtensions.prototype[".jspb.test.IndirectExtension.str"] = "";
-
-            /**
-             * HasExtensions .jspb.test.IndirectExtension.repeatedStr.
-             * @member {Array.<string>} .jspb.test.IndirectExtension.repeatedStr
-             * @memberof jspb.test.HasExtensions
-             * @instance
-             */
             HasExtensions.prototype[".jspb.test.IndirectExtension.repeatedStr"] = $util.emptyArray;
-
-            /**
-             * HasExtensions .jspb.test.IndirectExtension.repeatedSimple.
-             * @member {Array.<jspb.test.ISimple1>} .jspb.test.IndirectExtension.repeatedSimple
-             * @memberof jspb.test.HasExtensions
-             * @instance
-             */
             HasExtensions.prototype[".jspb.test.IndirectExtension.repeatedSimple"] = $util.emptyArray;
-
-            /**
-             * HasExtensions .jspb.test.simple1.
-             * @member {jspb.test.ISimple1|null|undefined} .jspb.test.simple1
-             * @memberof jspb.test.HasExtensions
-             * @instance
-             */
             HasExtensions.prototype[".jspb.test.simple1"] = null;
 
             /**
@@ -4538,6 +4503,7 @@ $root.jspb = (function() {
              * @implements ITestClone
              * @constructor
              * @param {jspb.test.ITestClone=} [properties] Properties to set
+             * @property {jspb.test.ICloneExtension|null} [".jspb.test.CloneExtension.extField"] TestClone .jspb.test.CloneExtension.extField
              */
             function TestClone(properties) {
                 this.simple2 = [];
@@ -4587,12 +4553,6 @@ $root.jspb = (function() {
              */
             TestClone.prototype.unused = "";
 
-            /**
-             * TestClone .jspb.test.CloneExtension.extField.
-             * @member {jspb.test.ICloneExtension|null|undefined} .jspb.test.CloneExtension.extField
-             * @memberof jspb.test.TestClone
-             * @instance
-             */
             TestClone.prototype[".jspb.test.CloneExtension.extField"] = null;
 
             /**
@@ -7166,6 +7126,7 @@ $root.jspb = (function() {
              * @implements ITestReservedNames
              * @constructor
              * @param {jspb.test.ITestReservedNames=} [properties] Properties to set
+             * @property {number} ".jspb.test.TestReservedNamesExtension.foo" TestReservedNames .jspb.test.TestReservedNamesExtension.foo
              */
             function TestReservedNames(properties) {
                 if (properties)
@@ -7182,12 +7143,6 @@ $root.jspb = (function() {
              */
             TestReservedNames.prototype.extension = 0;
 
-            /**
-             * TestReservedNames .jspb.test.TestReservedNamesExtension.foo.
-             * @member {number} .jspb.test.TestReservedNamesExtension.foo
-             * @memberof jspb.test.TestReservedNames
-             * @instance
-             */
             TestReservedNames.prototype[".jspb.test.TestReservedNamesExtension.foo"] = 0;
 
             /**
@@ -18540,6 +18495,7 @@ $root.google = (function() {
              * @implements IEnumOptions
              * @constructor
              * @param {google.protobuf.IEnumOptions=} [properties] Properties to set
+             * @property {string} ".jspb.test.IsExtension.simpleOption" EnumOptions .jspb.test.IsExtension.simpleOption
              */
             function EnumOptions(properties) {
                 this.uninterpretedOption = [];
@@ -18589,12 +18545,6 @@ $root.google = (function() {
              */
             EnumOptions.prototype.uninterpretedOption = $util.emptyArray;
 
-            /**
-             * EnumOptions .jspb.test.IsExtension.simpleOption.
-             * @member {string} .jspb.test.IsExtension.simpleOption
-             * @memberof google.protobuf.EnumOptions
-             * @instance
-             */
             EnumOptions.prototype[".jspb.test.IsExtension.simpleOption"] = "";
 
             /**

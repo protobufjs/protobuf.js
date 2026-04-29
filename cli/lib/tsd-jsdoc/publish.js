@@ -397,9 +397,11 @@ function writeInterfaceBody(element) {
     write("}");
 }
 
-function writeProperty(property, declare) {
+function writeProperty(property, declare, inClass) {
     writeComment(property.description);
-    if (declare)
+    if (inClass)
+        write("public ");
+    else if (declare)
         write("let ");
     write(property.name);
     if (property.optional)
@@ -543,9 +545,9 @@ function handleClass(element, parent) {
         handleFunction(element, parent, true);
 
     // properties
-    if (is_interface && element.properties)
+    if (element.properties)
         element.properties.forEach(function(property) {
-            writeProperty(property);
+            writeProperty(property, false, !is_interface);
         });
 
     // class-compatible members

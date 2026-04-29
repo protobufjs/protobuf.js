@@ -367,6 +367,29 @@ function toJsType(field, parentIsInterface = false) {
     return type;
 }
 
+function toJsTypeWithNullability(field) {
+    var jsType = toJsType(field, /* parentIsInterface = */ false);
+    if (config["null-semantics"]) {
+        // With semantic nulls, fields are nullable if they are explicitly optional or part of a one-of
+        // Maps, repeated values and fields with implicit defaults are never null after construction
+        // Members are never undefined, at a minimum they are initialized to null
+        if (isNullable(field))
+            jsType = jsType + "|null";
+    } else {
+        // Without semantic nulls, everything is optional in proto3
+        // Keep |undefined for backwards compatibility
+        if (field.optional && !field.map && !field.repeated && (field.resolvedType instanceof protobuf.Type || config["null-defaults"]) || field.partOf)
+            jsType = jsType + "|null|undefined";
+    }
+    return jsType;
+}
+
+function toPropName(field, optional) {
+    var prop = util.safeProp(field.name); // either .name or ["name"]
+    prop = prop.substring(1, prop.charAt(0) === "[" ? prop.length - 1 : prop.length);
+    return optional ? "[" + prop + "]" : prop;
+}
+
 function isNullable(field) {
     return field.hasPresence && !field.required;
 }
@@ -380,8 +403,6 @@ function buildType(ref, type) {
             "@interface " + escapeName("I" + type.name)
         ];
         type.fieldsArray.forEach(function(field) {
-            var prop = util.safeProp(field.name); // either .name or ["name"]
-            prop = prop.substring(1, prop.charAt(0) === "[" ? prop.length - 1 : prop.length);
             var jsType = toJsType(field, /* parentIsInterface = */ true);
             var nullable = false;
             if (config["null-semantics"]) {
@@ -407,7 +428,7 @@ function buildType(ref, type) {
                     nullable = true;
                 }
             }
-            typeDef.push("@property {" + jsType + "} " + (nullable ? "[" + prop + "]" : prop) + " " + (field.comment || type.name + " " + field.name));
+            typeDef.push("@property {" + jsType + "} " + toPropName(field, nullable) + " " + (field.comment || type.name + " " + field.name));
         });
         push("");
         pushComment(typeDef);
@@ -415,14 +436,25 @@ function buildType(ref, type) {
 
     // constructor
     push("");
-    pushComment([
+    var classDef = [
         "Constructs a new " + type.name + ".",
         type.parent instanceof protobuf.Root ? "@exports " + escapeName(type.name) : "@memberof " + exportName(type.parent),
         "@classdesc " + (type.comment || "Represents " + aOrAn(type.name) + "."),
         config.comments ? "@implements " + escapeName("I" + type.name) : null,
         "@constructor",
         "@param {" + exportName(type, true) + "=} [" + (config.beautify ? "properties" : "p") + "] Properties to set"
-    ]);
+    ];
+    if (config.comments) {
+        type.fieldsArray.forEach(function(field) {
+            if (!field.declaringField)
+                return;
+            var jsType = toJsTypeWithNullability(field);
+            var optional = /\bundefined\b/.test(jsType);
+            var propType = optional ? jsType.replace(/\|undefined\b/g, "") : jsType;
+            classDef.push("@property {" + propType + "} " + toPropName(field, optional) + " " + (field.comment || type.name + " " + field.name));
+        });
+    }
+    pushComment(classDef);
     buildFunction(type, type.name, Type.generateConstructor(type));
 
     // default values
@@ -430,24 +462,9 @@ function buildType(ref, type) {
     type.fieldsArray.forEach(function(field) {
         field.resolve();
         var prop = util.safeProp(field.name);
-        if (config.comments) {
+        if (config.comments && !field.declaringField) {
             push("");
-            var jsType = toJsType(field, /* parentIsInterface = */ false);
-            if (config["null-semantics"]) {
-                // With semantic nulls, fields are nullable if they are explicitly optional or part of a one-of
-                // Maps, repeated values and fields with implicit defaults are never null after construction
-                // Members are never undefined, at a minimum they are initialized to null
-                if (isNullable(field)) {
-                    jsType = jsType + "|null";
-                }
-            }
-            else {
-                // Without semantic nulls, everything is optional in proto3
-                // Keep |undefined for backwards compatibility
-                if (field.optional && !field.map && !field.repeated && (field.resolvedType instanceof Type || config["null-defaults"]) || field.partOf) {
-                    jsType = jsType + "|null|undefined";
-                }
-            }
+            var jsType = toJsTypeWithNullability(field);
             pushComment([
                 field.comment || type.name + " " + field.name + ".",
                 "@member {" + jsType + "} " + field.name,
