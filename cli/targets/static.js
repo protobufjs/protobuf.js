@@ -175,7 +175,10 @@ var shortVars = {
     "o": "options",
     "d": "object",
     "n": "long",
-    "p": "properties"
+    "p": "properties",
+    "z": "_end",
+    "q": "_depth",
+    "g": "_target"
 };
 
 function beautifyCode(code) {

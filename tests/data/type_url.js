@@ -1,4 +1,4 @@
-/*eslint-disable block-scoped-var, id-length, no-control-regex, no-magic-numbers, no-prototype-builtins, no-redeclare, no-shadow, no-var, sort-vars*/
+/*eslint-disable block-scoped-var, id-length, no-control-regex, no-magic-numbers, no-prototype-builtins, no-redeclare, no-shadow, no-var, sort-vars, jsdoc/require-param*/
 "use strict";
 
 var $protobuf = require("../../minimal");
@@ -94,25 +94,25 @@ $root.TypeUrlTest = (function() {
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    TypeUrlTest.decode = function decode(reader, length, error, long) {
+    TypeUrlTest.decode = function decode(reader, length, _end, _depth, _target) {
         if (!(reader instanceof $Reader))
             reader = $Reader.create(reader);
-        if (long === undefined)
-            long = 0;
-        if (long > $Reader.recursionLimit)
+        if (_depth === undefined)
+            _depth = 0;
+        if (_depth > $Reader.recursionLimit)
             throw Error("maximum nesting depth exceeded");
-        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.TypeUrlTest();
+        var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.TypeUrlTest();
         while (reader.pos < end) {
             var tag = reader.uint32();
-            if (tag === error)
+            if (tag === _end)
                 break;
             switch (tag >>> 3) {
             case 1: {
-                    message.nested = $root.TypeUrlTest.Nested.decode(reader, reader.uint32(), undefined, long + 1);
+                    message.nested = $root.TypeUrlTest.Nested.decode(reader, reader.uint32(), undefined, _depth + 1, message.nested);
                     break;
                 }
             default:
-                reader.skipType(tag & 7, long);
+                reader.skipType(tag & 7, _depth);
                 break;
             }
         }
@@ -143,15 +143,15 @@ $root.TypeUrlTest = (function() {
      * @param {Object.<string,*>} message Plain object to verify
      * @returns {string|null} `null` if valid, otherwise the reason why it is not
      */
-    TypeUrlTest.verify = function verify(message, long) {
+    TypeUrlTest.verify = function verify(message, _depth) {
         if (typeof message !== "object" || message === null)
             return "object expected";
-        if (long === undefined)
-            long = 0;
-        if (long > $util.recursionLimit)
+        if (_depth === undefined)
+            _depth = 0;
+        if (_depth > $util.recursionLimit)
             return "maximum nesting depth exceeded";
         if (message.nested != null && message.hasOwnProperty("nested")) {
-            var error = $root.TypeUrlTest.Nested.verify(message.nested, long + 1);
+            var error = $root.TypeUrlTest.Nested.verify(message.nested, _depth + 1);
             if (error)
                 return "nested." + error;
         }
@@ -166,18 +166,18 @@ $root.TypeUrlTest = (function() {
      * @param {Object.<string,*>} object Plain object
      * @returns {TypeUrlTest} TypeUrlTest
      */
-    TypeUrlTest.fromObject = function fromObject(object, long) {
+    TypeUrlTest.fromObject = function fromObject(object, _depth) {
         if (object instanceof $root.TypeUrlTest)
             return object;
-        if (long === undefined)
-            long = 0;
-        if (long > $util.recursionLimit)
+        if (_depth === undefined)
+            _depth = 0;
+        if (_depth > $util.recursionLimit)
             throw Error("maximum nesting depth exceeded");
         var message = new $root.TypeUrlTest();
         if (object.nested != null) {
             if (typeof object.nested !== "object")
                 throw TypeError(".TypeUrlTest.nested: object expected");
-            message.nested = $root.TypeUrlTest.Nested.fromObject(object.nested, long + 1);
+            message.nested = $root.TypeUrlTest.Nested.fromObject(object.nested, _depth + 1);
         }
         return message;
     };
@@ -313,17 +313,17 @@ $root.TypeUrlTest = (function() {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        Nested.decode = function decode(reader, length, error, long) {
+        Nested.decode = function decode(reader, length, _end, _depth, _target) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            if (long === undefined)
-                long = 0;
-            if (long > $Reader.recursionLimit)
+            if (_depth === undefined)
+                _depth = 0;
+            if (_depth > $Reader.recursionLimit)
                 throw Error("maximum nesting depth exceeded");
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.TypeUrlTest.Nested();
+            var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.TypeUrlTest.Nested();
             while (reader.pos < end) {
                 var tag = reader.uint32();
-                if (tag === error)
+                if (tag === _end)
                     break;
                 switch (tag >>> 3) {
                 case 1: {
@@ -331,7 +331,7 @@ $root.TypeUrlTest = (function() {
                         break;
                     }
                 default:
-                    reader.skipType(tag & 7, long);
+                    reader.skipType(tag & 7, _depth);
                     break;
                 }
             }
@@ -362,12 +362,12 @@ $root.TypeUrlTest = (function() {
          * @param {Object.<string,*>} message Plain object to verify
          * @returns {string|null} `null` if valid, otherwise the reason why it is not
          */
-        Nested.verify = function verify(message, long) {
+        Nested.verify = function verify(message, _depth) {
             if (typeof message !== "object" || message === null)
                 return "object expected";
-            if (long === undefined)
-                long = 0;
-            if (long > $util.recursionLimit)
+            if (_depth === undefined)
+                _depth = 0;
+            if (_depth > $util.recursionLimit)
                 return "maximum nesting depth exceeded";
             if (message.a != null && message.hasOwnProperty("a"))
                 if (!$util.isString(message.a))
@@ -383,12 +383,12 @@ $root.TypeUrlTest = (function() {
          * @param {Object.<string,*>} object Plain object
          * @returns {TypeUrlTest.Nested} Nested
          */
-        Nested.fromObject = function fromObject(object, long) {
+        Nested.fromObject = function fromObject(object, _depth) {
             if (object instanceof $root.TypeUrlTest.Nested)
                 return object;
-            if (long === undefined)
-                long = 0;
-            if (long > $util.recursionLimit)
+            if (_depth === undefined)
+                _depth = 0;
+            if (_depth > $util.recursionLimit)
                 throw Error("maximum nesting depth exceeded");
             var message = new $root.TypeUrlTest.Nested();
             if (object.a != null)

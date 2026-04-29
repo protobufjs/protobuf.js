@@ -44,7 +44,7 @@ function genValuePartial_fromObject(gen, field, fieldIndex, prop) {
         } else gen
             ("if(typeof d%s!==\"object\")", prop)
                 ("throw TypeError(%j)", field.fullName + ": object expected")
-            ("m%s=types[%i].fromObject(d%s,n+1)", prop, fieldIndex, prop);
+            ("m%s=types[%i].fromObject(d%s,q+1)", prop, fieldIndex, prop);
     } else {
         var isUnsigned = false;
         switch (field.type) {
@@ -106,11 +106,11 @@ function genValuePartial_fromObject(gen, field, fieldIndex, prop) {
 converter.fromObject = function fromObject(mtype) {
     /* eslint-disable no-unexpected-multiline, block-scoped-var, no-redeclare */
     var fields = mtype.fieldsArray;
-    var gen = util.codegen(["d", "n"], mtype.name + "$fromObject")
+    var gen = util.codegen(["d", "q"], mtype.name + "$fromObject")
     ("if(d instanceof this.ctor)")
         ("return d")
-    ("if(n===undefined)n=0")
-    ("if(n>util.recursionLimit)")
+    ("if(q===undefined)q=0")
+    ("if(q>util.recursionLimit)")
         ("throw Error(\"maximum nesting depth exceeded\")");
     if (!fields.length) return gen
     ("return new this.ctor");
