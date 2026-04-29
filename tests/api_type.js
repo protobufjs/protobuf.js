@@ -178,7 +178,7 @@ tape.test("decode nesting", function(test) {
         test.equal(Node.decode(nestedPayload(2)).child.child.value, 42, "should decode below the limit");
         test.throws(function() {
             Node.decode(nestedPayload(4));
-        }, /maximum nesting depth exceeded/, "should reject excessive nesting");
+        }, /max depth exceeded/, "should reject excessive nesting");
     } finally {
         protobuf.Reader.recursionLimit = recursionLimit;
     }
@@ -197,9 +197,16 @@ tape.test("decode known fields by wire type", function(test) {
         }
     });
     var Message = root.lookupType("Message");
+    var field0Varint = [ 0, 0 ];
     var field1WireType6 = [ 1 << 3 | 6, 0 ];
     var field1WireType7 = [ 1 << 3 | 7, 0 ];
     var field1Fixed64 = [ 1 << 3 | 1, 1, 2, 3, 4, 5, 6, 7, 8 ];
+    var field1Group = [ 1 << 3 | 3, 1 << 3 | 4 ];
+    var field1GroupField2End = [ 1 << 3 | 3, 2 << 3 | 4 ];
+
+    test.throws(function() {
+        Message.decode(protobuf.util.newBuffer(field0Varint));
+    }, /illegal tag: field number 0/, "should reject field number 0");
 
     test.throws(function() {
         Message.decode(protobuf.util.newBuffer(field1WireType6));
@@ -211,6 +218,13 @@ tape.test("decode known fields by wire type", function(test) {
 
     var message = Message.decode(protobuf.util.newBuffer(field1Fixed64));
     test.notOk(Object.prototype.hasOwnProperty.call(message, "value"), "should skip valid but unexpected wire types");
+
+    message = Message.decode(protobuf.util.newBuffer(field1Group));
+    test.notOk(Object.prototype.hasOwnProperty.call(message, "value"), "should skip valid but unexpected groups");
+
+    test.throws(function() {
+        Message.decode(protobuf.util.newBuffer(field1GroupField2End));
+    }, /invalid end group tag/, "should reject mismatched unknown group tags");
     test.end();
 });
 
@@ -238,11 +252,11 @@ tape.test("object conversion nesting", function(test) {
     protobuf.util.recursionLimit = 3;
     try {
         test.equal(Node.verify(nestedObject(2)), null, "should verify below the limit");
-        test.match(Node.verify(nestedObject(4)), /maximum nesting depth exceeded/, "should reject excessive nesting while verifying");
+        test.match(Node.verify(nestedObject(4)), /max depth exceeded/, "should reject excessive nesting while verifying");
         test.equal(Node.fromObject(nestedObject(2)).child.child.value, 42, "should convert below the limit");
         test.throws(function() {
             Node.fromObject(nestedObject(4));
-        }, /maximum nesting depth exceeded/, "should reject excessive nesting while converting");
+        }, /max depth exceeded/, "should reject excessive nesting while converting");
     } finally {
         protobuf.util.recursionLimit = recursionLimit;
     }

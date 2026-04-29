@@ -67,6 +67,14 @@ tape.test("legacy groups", function(test) {
         test.end();
     };})(Test, msg));
 
+    test.test(test.name + " - should reject unmatched start group", (function(Test) { return function(test) {
+        var buf = protobuf.util.newBuffer([1 << 3 | 3]);
+        test.throws(function() {
+            Test.decode(buf);
+        }, /missing end group/, "should reject groups without an end tag");
+        test.end();
+    };})(Test));
+
     // Same but repeated
     root = protobuf.parse(protoRepeated).root;
     Test = root.resolveAll().lookup("Test");

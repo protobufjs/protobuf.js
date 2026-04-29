@@ -166,22 +166,26 @@ export const MyRequest = $root.MyRequest = (() => {
         if (_depth === undefined)
             _depth = 0;
         if (_depth > $Reader.recursionLimit)
-            throw Error("maximum nesting depth exceeded");
+            throw Error("max depth exceeded");
         let end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.MyRequest();
         while (reader.pos < end) {
             let tag = reader.uint32();
-            if (tag === _end)
+            if (tag === _end) {
+                _end = undefined;
                 break;
+            }
             switch (tag) {
             case 10: {
                     message.path = reader.string();
                     break;
                 }
             default:
-                reader.skipType(tag & 7, _depth);
+                reader.skipType(tag & 7, _depth, tag >>> 3);
                 break;
             }
         }
+        if (_end !== undefined)
+            throw Error("missing end group");
         return message;
     };
 
@@ -215,7 +219,7 @@ export const MyRequest = $root.MyRequest = (() => {
         if (_depth === undefined)
             _depth = 0;
         if (_depth > $util.recursionLimit)
-            return "maximum nesting depth exceeded";
+            return "max depth exceeded";
         if (message.path != null && message.hasOwnProperty("path"))
             if (!$util.isString(message.path))
                 return "path: string expected";
@@ -236,7 +240,7 @@ export const MyRequest = $root.MyRequest = (() => {
         if (_depth === undefined)
             _depth = 0;
         if (_depth > $util.recursionLimit)
-            throw Error("maximum nesting depth exceeded");
+            throw Error("max depth exceeded");
         let message = new $root.MyRequest();
         if (object.path != null)
             message.path = String(object.path);
@@ -383,22 +387,26 @@ export const MyResponse = $root.MyResponse = (() => {
         if (_depth === undefined)
             _depth = 0;
         if (_depth > $Reader.recursionLimit)
-            throw Error("maximum nesting depth exceeded");
+            throw Error("max depth exceeded");
         let end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.MyResponse();
         while (reader.pos < end) {
             let tag = reader.uint32();
-            if (tag === _end)
+            if (tag === _end) {
+                _end = undefined;
                 break;
+            }
             switch (tag) {
             case 16: {
                     message.status = reader.int32();
                     break;
                 }
             default:
-                reader.skipType(tag & 7, _depth);
+                reader.skipType(tag & 7, _depth, tag >>> 3);
                 break;
             }
         }
+        if (_end !== undefined)
+            throw Error("missing end group");
         return message;
     };
 
@@ -432,7 +440,7 @@ export const MyResponse = $root.MyResponse = (() => {
         if (_depth === undefined)
             _depth = 0;
         if (_depth > $util.recursionLimit)
-            return "maximum nesting depth exceeded";
+            return "max depth exceeded";
         if (message.status != null && message.hasOwnProperty("status"))
             if (!$util.isInteger(message.status))
                 return "status: integer expected";
@@ -453,7 +461,7 @@ export const MyResponse = $root.MyResponse = (() => {
         if (_depth === undefined)
             _depth = 0;
         if (_depth > $util.recursionLimit)
-            throw Error("maximum nesting depth exceeded");
+            throw Error("max depth exceeded");
         let message = new $root.MyResponse();
         if (object.status != null)
             message.status = object.status | 0;
