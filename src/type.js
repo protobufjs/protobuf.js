@@ -531,14 +531,12 @@ Type.prototype.encodeDelimited = function encodeDelimited(message, writer) {
  * Decodes a message of this type.
  * @param {Reader|Uint8Array} reader Reader or buffer to decode from
  * @param {number} [length] Length of the message, if known beforehand
- * @param {number} [end] Expected group end tag, if decoding a group
- * @param {number} [depth] Current nesting depth
  * @returns {Message<{}>} Decoded message
  * @throws {Error} If the payload is not a reader or valid buffer
  * @throws {util.ProtocolError<{}>} If required fields are missing
  */
-Type.prototype.decode = function decode_setup(reader, length, end, depth) {
-    return this.setup().decode(reader, length, end, depth); // overrides this method
+Type.prototype.decode = function decode_setup(reader, length) { // eslint-disable-line no-unused-vars
+    return this.setup().decode.apply(this, arguments); // overrides this method
 };
 
 /**
@@ -557,21 +555,19 @@ Type.prototype.decodeDelimited = function decodeDelimited(reader) {
 /**
  * Verifies that field values are valid and that required fields are present.
  * @param {Object.<string,*>} message Plain object to verify
- * @param {number} [depth] Current nesting depth
  * @returns {null|string} `null` if valid, otherwise the reason why it is not
  */
-Type.prototype.verify = function verify_setup(message, depth) {
-    return this.setup().verify(message, depth); // overrides this method
+Type.prototype.verify = function verify_setup(message) { // eslint-disable-line no-unused-vars
+    return this.setup().verify.apply(this, arguments); // overrides this method
 };
 
 /**
  * Creates a new message of this type from a plain object. Also converts values to their respective internal types.
  * @param {Object.<string,*>} object Plain object to convert
- * @param {number} [depth] Current nesting depth
  * @returns {Message<{}>} Message instance
  */
-Type.prototype.fromObject = function fromObject(object, depth) {
-    return this.setup().fromObject(object, depth);
+Type.prototype.fromObject = function fromObject(object) { // eslint-disable-line no-unused-vars
+    return this.setup().fromObject.apply(this, arguments);
 };
 
 /**

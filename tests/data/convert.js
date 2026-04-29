@@ -1,4 +1,4 @@
-/*eslint-disable block-scoped-var, id-length, no-control-regex, no-magic-numbers, no-prototype-builtins, no-redeclare, no-shadow, no-var, sort-vars*/
+/*eslint-disable block-scoped-var, id-length, no-control-regex, no-magic-numbers, no-prototype-builtins, no-redeclare, no-shadow, no-var, sort-vars, jsdoc/require-param*/
 "use strict";
 
 var $protobuf = require("../../minimal");
@@ -198,17 +198,17 @@ $root.Message = (function() {
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    Message.decode = function decode(reader, length, error, long) {
+    Message.decode = function decode(reader, length, _end, _depth, _target) {
         if (!(reader instanceof $Reader))
             reader = $Reader.create(reader);
-        if (long === undefined)
-            long = 0;
-        if (long > $Reader.recursionLimit)
+        if (_depth === undefined)
+            _depth = 0;
+        if (_depth > $Reader.recursionLimit)
             throw Error("maximum nesting depth exceeded");
-        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Message(), key, value;
+        var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.Message(), key, value;
         while (reader.pos < end) {
             var tag = reader.uint32();
-            if (tag === error)
+            if (tag === _end)
                 break;
             switch (tag) {
             case 10: {
@@ -279,7 +279,7 @@ $root.Message = (function() {
                             value = reader.int64();
                             break;
                         default:
-                            reader.skipType(tag2 & 7, long);
+                            reader.skipType(tag2 & 7, _depth);
                             break;
                         }
                     }
@@ -289,7 +289,7 @@ $root.Message = (function() {
                     break;
                 }
             default:
-                reader.skipType(tag & 7, long);
+                reader.skipType(tag & 7, _depth);
                 break;
             }
         }
@@ -320,12 +320,12 @@ $root.Message = (function() {
      * @param {Object.<string,*>} message Plain object to verify
      * @returns {string|null} `null` if valid, otherwise the reason why it is not
      */
-    Message.verify = function verify(message, long) {
+    Message.verify = function verify(message, _depth) {
         if (typeof message !== "object" || message === null)
             return "object expected";
-        if (long === undefined)
-            long = 0;
-        if (long > $util.recursionLimit)
+        if (_depth === undefined)
+            _depth = 0;
+        if (_depth > $util.recursionLimit)
             return "maximum nesting depth exceeded";
         if (message.stringVal != null && message.hasOwnProperty("stringVal"))
             if (!$util.isString(message.stringVal))
@@ -396,12 +396,12 @@ $root.Message = (function() {
      * @param {Object.<string,*>} object Plain object
      * @returns {Message} Message
      */
-    Message.fromObject = function fromObject(object, long) {
+    Message.fromObject = function fromObject(object, _depth) {
         if (object instanceof $root.Message)
             return object;
-        if (long === undefined)
-            long = 0;
-        if (long > $util.recursionLimit)
+        if (_depth === undefined)
+            _depth = 0;
+        if (_depth > $util.recursionLimit)
             throw Error("maximum nesting depth exceeded");
         var message = new $root.Message();
         if (object.stringVal != null)
