@@ -63,5 +63,7 @@ tape.test("google.protobuf wrapper types", function(test) {
     }, "should preserve direct wrapper objects without json conversion");
     test.equal(StringValue.toObject(stringValue, { json: true }), "abc", "should unwrap direct wrapper objects with json conversion");
 
+    test.same(StringValue.toObject(StringValue.fromObject({})), {}, "should preserve empty wrapper objects");
+
     test.end();
 });

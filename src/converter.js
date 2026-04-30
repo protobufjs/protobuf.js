@@ -118,7 +118,7 @@ converter.fromObject = function fromObject(mtype) {
     ("if(q>util.recursionLimit)")
         ("throw Error(\"max depth exceeded\")");
     if (wrapperValueRe.test(mtype.fullName)) gen
-    ("if(d==null||typeof d!==\"object\"||!Object.prototype.hasOwnProperty.call(d,\"value\"))")
+    ("if(d!=null&&typeof d!==\"object\")")
         ("d={value:d}");
     if (!fields.length) return gen
     ("return new this.ctor");
