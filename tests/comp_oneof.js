@@ -50,7 +50,7 @@ tape.test("oneofs", function(test) {
     delete message.other;
     var buf = Message.encode(message).finish();
     test.equal(buf.length, 2, "should write a total of 2 bytes");
-    test.equal(buf[0], 16, "should write id 1, wireType 0");
+    test.equal(buf[0], 16, "should write id 2, wireType 0");
     test.equal(buf[1], 0, "should write a value of 0");
 
     message = Message.decode([ 10, 1, 97, 16, 1 ]);

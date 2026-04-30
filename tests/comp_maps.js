@@ -168,19 +168,19 @@ tape.test("maps", function(test) {
 
         // 1 <chunk> = message(1 <varint> = 0, 2 <chunk> = empty chunk)
         dec = MapMessage.decode(Uint8Array.of(0x0a, 0x04, 0x08, 0x00, 0x12, 0x00));
-        test.deepEqual(MapMessage.toObject(dec), value, "should correct decode the buffer without omitted fields");
+        test.deepEqual(MapMessage.toObject(dec), value, "should correctly decode the buffer without omitted fields");
 
         // 1 <chunk> = message(1 <varint> = 0)
         dec = MapMessage.decode(Uint8Array.of(0x0a, 0x02, 0x08, 0x00));
-        test.deepEqual(MapMessage.toObject(dec), value, "should correct decode the buffer with omitted value");
+        test.deepEqual(MapMessage.toObject(dec), value, "should correctly decode the buffer with omitted value");
 
         // 1 <chunk> = message(2 <chunk> = empty chunk)
         dec = MapMessage.decode(Uint8Array.of(0x0a, 0x02, 0x12, 0x00));
-        test.deepEqual(MapMessage.toObject(dec), value, "should correct decode the buffer with omitted key");
+        test.deepEqual(MapMessage.toObject(dec), value, "should correctly decode the buffer with omitted key");
 
         // 1 <chunk> = empty chunk
         dec = MapMessage.decode(Uint8Array.of(0x0a, 0x00));
-        test.deepEqual(MapMessage.toObject(dec), value, "should correct decode the buffer with both key and value omitted");
+        test.deepEqual(MapMessage.toObject(dec), value, "should correctly decode the buffer with both key and value omitted");
 
         test.end();
     });
@@ -282,7 +282,7 @@ tape.test("maps", function(test) {
 
 function verifyEncode(test, buf) {
     test.test(test.name + " - should encode", function(test) {
-        test.equal(buf.length, 32, "a total of 30 bytes");
+        test.equal(buf.length, 32, "a total of 32 bytes");
 
         // first kv:
         /*

@@ -48,8 +48,8 @@ tape.test("proto3 implicit scalar defaults", function(test) {
     }
 
     test.same(reencode([8, 0]), [], "should omit default int32");
-    test.same(reencode([26, 0]), [], "should omit default string");
-    test.same(reencode([34, 0]), [], "should omit default bytes");
+    test.same(reencode([34, 0]), [], "should omit default string");
+    test.same(reencode([42, 0]), [], "should omit default bytes");
     test.same(reencode([48, 0]), [], "should omit default int64");
     test.same(reencode([56, 0]), [], "should omit default bool");
     test.same(reencode([16, 0]), [16, 0], "should preserve proto3 optional default");
