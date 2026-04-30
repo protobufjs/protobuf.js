@@ -5,10 +5,12 @@ export namespace jspb {
     namespace test {
 
         interface IEmpty {
+            $unknowns?: Uint8Array[];
         }
 
         class Empty implements IEmpty {
             constructor(properties?: jspb.test.IEmpty);
+            public $unknowns?: Uint8Array[];
             public static create(properties?: jspb.test.IEmpty): jspb.test.Empty;
             public static encode(message: jspb.test.IEmpty, writer?: $protobuf.Writer): $protobuf.Writer;
             public static encodeDelimited(message: jspb.test.IEmpty, writer?: $protobuf.Writer): $protobuf.Writer;
@@ -28,10 +30,12 @@ export namespace jspb {
 
         interface IEnumContainer {
             outerEnum?: (jspb.test.OuterEnum|null);
+            $unknowns?: Uint8Array[];
         }
 
         class EnumContainer implements IEnumContainer {
             constructor(properties?: jspb.test.IEnumContainer);
+            public $unknowns?: Uint8Array[];
             public outerEnum: jspb.test.OuterEnum;
             public static create(properties?: jspb.test.IEnumContainer): jspb.test.EnumContainer;
             public static encode(message: jspb.test.IEnumContainer, writer?: $protobuf.Writer): $protobuf.Writer;
@@ -49,10 +53,12 @@ export namespace jspb {
             aString: string;
             aRepeatedString?: (string[]|null);
             aBoolean?: (boolean|null);
+            $unknowns?: Uint8Array[];
         }
 
         class Simple1 implements ISimple1 {
             constructor(properties?: jspb.test.ISimple1);
+            public $unknowns?: Uint8Array[];
             public aString: string;
             public aRepeatedString: string[];
             public aBoolean: boolean;
@@ -71,10 +77,12 @@ export namespace jspb {
         interface ISimple2 {
             aString: string;
             aRepeatedString?: (string[]|null);
+            $unknowns?: Uint8Array[];
         }
 
         class Simple2 implements ISimple2 {
             constructor(properties?: jspb.test.ISimple2);
+            public $unknowns?: Uint8Array[];
             public aString: string;
             public aRepeatedString: string[];
             public static create(properties?: jspb.test.ISimple2): jspb.test.Simple2;
@@ -94,10 +102,12 @@ export namespace jspb {
             "default": string;
             "function": string;
             "var": string;
+            $unknowns?: Uint8Array[];
         }
 
         class SpecialCases implements ISpecialCases {
             constructor(properties?: jspb.test.ISpecialCases);
+            public $unknowns?: Uint8Array[];
             public normal: string;
             public default: string;
             public function: string;
@@ -120,10 +130,12 @@ export namespace jspb {
             aNestedMessage?: (jspb.test.OptionalFields.INested|null);
             aRepeatedMessage?: (jspb.test.OptionalFields.INested[]|null);
             aRepeatedString?: (string[]|null);
+            $unknowns?: Uint8Array[];
         }
 
         class OptionalFields implements IOptionalFields {
             constructor(properties?: jspb.test.IOptionalFields);
+            public $unknowns?: Uint8Array[];
             public aString: string;
             public aBool: boolean;
             public aNestedMessage?: (jspb.test.OptionalFields.INested|null);
@@ -145,10 +157,12 @@ export namespace jspb {
 
             interface INested {
                 anInt?: (number|null);
+                $unknowns?: Uint8Array[];
             }
 
             class Nested implements INested {
                 constructor(properties?: jspb.test.OptionalFields.INested);
+                public $unknowns?: Uint8Array[];
                 public anInt: number;
                 public static create(properties?: jspb.test.OptionalFields.INested): jspb.test.OptionalFields.Nested;
                 public static encode(message: jspb.test.OptionalFields.INested, writer?: $protobuf.Writer): $protobuf.Writer;
@@ -173,6 +187,7 @@ export namespace jspb {
             ".jspb.test.IndirectExtension.repeatedStr"?: (string[]|null);
             ".jspb.test.IndirectExtension.repeatedSimple"?: (jspb.test.ISimple1[]|null);
             ".jspb.test.simple1"?: (jspb.test.ISimple1|null);
+            $unknowns?: Uint8Array[];
         }
 
         class HasExtensions implements IHasExtensions {
@@ -183,6 +198,7 @@ export namespace jspb {
             public ".jspb.test.IndirectExtension.repeatedStr": string[];
             public ".jspb.test.IndirectExtension.repeatedSimple": jspb.test.ISimple1[];
             public ".jspb.test.simple1"?: (jspb.test.ISimple1|null);
+            public $unknowns?: Uint8Array[];
             public str1: string;
             public str2: string;
             public str3: string;
@@ -204,10 +220,12 @@ export namespace jspb {
             aNestedMessage?: (jspb.test.Complex.INested|null);
             aRepeatedMessage?: (jspb.test.Complex.INested[]|null);
             aRepeatedString?: (string[]|null);
+            $unknowns?: Uint8Array[];
         }
 
         class Complex implements IComplex {
             constructor(properties?: jspb.test.IComplex);
+            public $unknowns?: Uint8Array[];
             public aString: string;
             public anOutOfOrderBool: boolean;
             public aNestedMessage?: (jspb.test.Complex.INested|null);
@@ -229,10 +247,12 @@ export namespace jspb {
 
             interface INested {
                 anInt: number;
+                $unknowns?: Uint8Array[];
             }
 
             class Nested implements INested {
                 constructor(properties?: jspb.test.Complex.INested);
+                public $unknowns?: Uint8Array[];
                 public anInt: number;
                 public static create(properties?: jspb.test.Complex.INested): jspb.test.Complex.Nested;
                 public static encode(message: jspb.test.Complex.INested, writer?: $protobuf.Writer): $protobuf.Writer;
@@ -248,10 +268,12 @@ export namespace jspb {
         }
 
         interface IOuterMessage {
+            $unknowns?: Uint8Array[];
         }
 
         class OuterMessage implements IOuterMessage {
             constructor(properties?: jspb.test.IOuterMessage);
+            public $unknowns?: Uint8Array[];
             public static create(properties?: jspb.test.IOuterMessage): jspb.test.OuterMessage;
             public static encode(message: jspb.test.IOuterMessage, writer?: $protobuf.Writer): $protobuf.Writer;
             public static encodeDelimited(message: jspb.test.IOuterMessage, writer?: $protobuf.Writer): $protobuf.Writer;
@@ -268,10 +290,12 @@ export namespace jspb {
 
             interface IComplex {
                 innerComplexField?: (number|null);
+                $unknowns?: Uint8Array[];
             }
 
             class Complex implements IComplex {
                 constructor(properties?: jspb.test.OuterMessage.IComplex);
+                public $unknowns?: Uint8Array[];
                 public innerComplexField: number;
                 public static create(properties?: jspb.test.OuterMessage.IComplex): jspb.test.OuterMessage.Complex;
                 public static encode(message: jspb.test.OuterMessage.IComplex, writer?: $protobuf.Writer): $protobuf.Writer;
@@ -288,10 +312,12 @@ export namespace jspb {
 
         interface IIsExtension {
             ext1?: (string|null);
+            $unknowns?: Uint8Array[];
         }
 
         class IsExtension implements IIsExtension {
             constructor(properties?: jspb.test.IIsExtension);
+            public $unknowns?: Uint8Array[];
             public ext1: string;
             public static create(properties?: jspb.test.IIsExtension): jspb.test.IsExtension;
             public static encode(message: jspb.test.IIsExtension, writer?: $protobuf.Writer): $protobuf.Writer;
@@ -306,10 +332,12 @@ export namespace jspb {
         }
 
         interface IIndirectExtension {
+            $unknowns?: Uint8Array[];
         }
 
         class IndirectExtension implements IIndirectExtension {
             constructor(properties?: jspb.test.IIndirectExtension);
+            public $unknowns?: Uint8Array[];
             public static create(properties?: jspb.test.IIndirectExtension): jspb.test.IndirectExtension;
             public static encode(message: jspb.test.IIndirectExtension, writer?: $protobuf.Writer): $protobuf.Writer;
             public static encodeDelimited(message: jspb.test.IIndirectExtension, writer?: $protobuf.Writer): $protobuf.Writer;
@@ -329,10 +357,12 @@ export namespace jspb {
             enumField?: (jspb.test.DefaultValues.Enum|null);
             emptyField?: (string|null);
             bytesField?: (Uint8Array|null);
+            $unknowns?: Uint8Array[];
         }
 
         class DefaultValues implements IDefaultValues {
             constructor(properties?: jspb.test.IDefaultValues);
+            public $unknowns?: Uint8Array[];
             public stringField: string;
             public boolField: boolean;
             public intField: (number|Long);
@@ -368,10 +398,12 @@ export namespace jspb {
             requiredDoubleField: number;
             repeatedDoubleField?: (number[]|null);
             defaultDoubleField?: (number|null);
+            $unknowns?: Uint8Array[];
         }
 
         class FloatingPointFields implements IFloatingPointFields {
             constructor(properties?: jspb.test.IFloatingPointFields);
+            public $unknowns?: Uint8Array[];
             public optionalFloatField: number;
             public requiredFloatField: number;
             public repeatedFloatField: number[];
@@ -399,11 +431,13 @@ export namespace jspb {
             bytesField?: (Uint8Array|null);
             unused?: (string|null);
             ".jspb.test.CloneExtension.extField"?: (jspb.test.ICloneExtension|null);
+            $unknowns?: Uint8Array[];
         }
 
         class TestClone implements ITestClone {
             constructor(properties?: jspb.test.ITestClone);
             public ".jspb.test.CloneExtension.extField"?: (jspb.test.ICloneExtension|null);
+            public $unknowns?: Uint8Array[];
             public str: string;
             public simple1?: (jspb.test.ISimple1|null);
             public simple2: jspb.test.ISimple1[];
@@ -423,10 +457,12 @@ export namespace jspb {
 
         interface ICloneExtension {
             ext?: (string|null);
+            $unknowns?: Uint8Array[];
         }
 
         class CloneExtension implements ICloneExtension {
             constructor(properties?: jspb.test.ICloneExtension);
+            public $unknowns?: Uint8Array[];
             public ext: string;
             public static create(properties?: jspb.test.ICloneExtension): jspb.test.CloneExtension;
             public static encode(message: jspb.test.ICloneExtension, writer?: $protobuf.Writer): $protobuf.Writer;
@@ -449,10 +485,12 @@ export namespace jspb {
             id?: (string|null);
             requiredSimple: jspb.test.ISimple2;
             optionalSimple?: (jspb.test.ISimple2|null);
+            $unknowns?: Uint8Array[];
         }
 
         class TestGroup implements ITestGroup {
             constructor(properties?: jspb.test.ITestGroup);
+            public $unknowns?: Uint8Array[];
             public repeatedGroup: jspb.test.TestGroup.IRepeatedGroup[];
             public requiredGroup: jspb.test.TestGroup.IRequiredGroup;
             public optionalGroup?: (jspb.test.TestGroup.IOptionalGroup|null);
@@ -478,10 +516,12 @@ export namespace jspb {
             interface IRepeatedGroup {
                 id: string;
                 someBool?: (boolean[]|null);
+                $unknowns?: Uint8Array[];
             }
 
             class RepeatedGroup implements IRepeatedGroup {
                 constructor(properties?: jspb.test.TestGroup.IRepeatedGroup);
+                public $unknowns?: Uint8Array[];
                 public id: string;
                 public someBool: boolean[];
                 public static create(properties?: jspb.test.TestGroup.IRepeatedGroup): jspb.test.TestGroup.RepeatedGroup;
@@ -498,10 +538,12 @@ export namespace jspb {
 
             interface IRequiredGroup {
                 id: string;
+                $unknowns?: Uint8Array[];
             }
 
             class RequiredGroup implements IRequiredGroup {
                 constructor(properties?: jspb.test.TestGroup.IRequiredGroup);
+                public $unknowns?: Uint8Array[];
                 public id: string;
                 public static create(properties?: jspb.test.TestGroup.IRequiredGroup): jspb.test.TestGroup.RequiredGroup;
                 public static encode(message: jspb.test.TestGroup.IRequiredGroup, writer?: $protobuf.Writer): $protobuf.Writer;
@@ -517,10 +559,12 @@ export namespace jspb {
 
             interface IOptionalGroup {
                 id: string;
+                $unknowns?: Uint8Array[];
             }
 
             class OptionalGroup implements IOptionalGroup {
                 constructor(properties?: jspb.test.TestGroup.IOptionalGroup);
+                public $unknowns?: Uint8Array[];
                 public id: string;
                 public static create(properties?: jspb.test.TestGroup.IOptionalGroup): jspb.test.TestGroup.OptionalGroup;
                 public static encode(message: jspb.test.TestGroup.IOptionalGroup, writer?: $protobuf.Writer): $protobuf.Writer;
@@ -536,10 +580,12 @@ export namespace jspb {
 
             interface IMessageInGroup {
                 id: jspb.test.TestGroup.MessageInGroup.INestedMessage;
+                $unknowns?: Uint8Array[];
             }
 
             class MessageInGroup implements IMessageInGroup {
                 constructor(properties?: jspb.test.TestGroup.IMessageInGroup);
+                public $unknowns?: Uint8Array[];
                 public id: jspb.test.TestGroup.MessageInGroup.INestedMessage;
                 public static create(properties?: jspb.test.TestGroup.IMessageInGroup): jspb.test.TestGroup.MessageInGroup;
                 public static encode(message: jspb.test.TestGroup.IMessageInGroup, writer?: $protobuf.Writer): $protobuf.Writer;
@@ -557,10 +603,12 @@ export namespace jspb {
 
                 interface INestedMessage {
                     id?: (string|null);
+                    $unknowns?: Uint8Array[];
                 }
 
                 class NestedMessage implements INestedMessage {
                     constructor(properties?: jspb.test.TestGroup.MessageInGroup.INestedMessage);
+                    public $unknowns?: Uint8Array[];
                     public id: string;
                     public static create(properties?: jspb.test.TestGroup.MessageInGroup.INestedMessage): jspb.test.TestGroup.MessageInGroup.NestedMessage;
                     public static encode(message: jspb.test.TestGroup.MessageInGroup.INestedMessage, writer?: $protobuf.Writer): $protobuf.Writer;
@@ -577,10 +625,12 @@ export namespace jspb {
 
             interface IEnumInGroup {
                 id: jspb.test.TestGroup.EnumInGroup.NestedEnum;
+                $unknowns?: Uint8Array[];
             }
 
             class EnumInGroup implements IEnumInGroup {
                 constructor(properties?: jspb.test.TestGroup.IEnumInGroup);
+                public $unknowns?: Uint8Array[];
                 public id: jspb.test.TestGroup.EnumInGroup.NestedEnum;
                 public static create(properties?: jspb.test.TestGroup.IEnumInGroup): jspb.test.TestGroup.EnumInGroup;
                 public static encode(message: jspb.test.TestGroup.IEnumInGroup, writer?: $protobuf.Writer): $protobuf.Writer;
@@ -605,10 +655,12 @@ export namespace jspb {
 
         interface ITestGroup1 {
             group?: (jspb.test.TestGroup.IRepeatedGroup|null);
+            $unknowns?: Uint8Array[];
         }
 
         class TestGroup1 implements ITestGroup1 {
             constructor(properties?: jspb.test.ITestGroup1);
+            public $unknowns?: Uint8Array[];
             public group?: (jspb.test.TestGroup.IRepeatedGroup|null);
             public static create(properties?: jspb.test.ITestGroup1): jspb.test.TestGroup1;
             public static encode(message: jspb.test.ITestGroup1, writer?: $protobuf.Writer): $protobuf.Writer;
@@ -625,11 +677,13 @@ export namespace jspb {
         interface ITestReservedNames {
             extension?: (number|null);
             ".jspb.test.TestReservedNamesExtension.foo"?: (number|null);
+            $unknowns?: Uint8Array[];
         }
 
         class TestReservedNames implements ITestReservedNames {
             constructor(properties?: jspb.test.ITestReservedNames);
             public ".jspb.test.TestReservedNamesExtension.foo": number;
+            public $unknowns?: Uint8Array[];
             public extension: number;
             public static create(properties?: jspb.test.ITestReservedNames): jspb.test.TestReservedNames;
             public static encode(message: jspb.test.ITestReservedNames, writer?: $protobuf.Writer): $protobuf.Writer;
@@ -644,10 +698,12 @@ export namespace jspb {
         }
 
         interface ITestReservedNamesExtension {
+            $unknowns?: Uint8Array[];
         }
 
         class TestReservedNamesExtension implements ITestReservedNamesExtension {
             constructor(properties?: jspb.test.ITestReservedNamesExtension);
+            public $unknowns?: Uint8Array[];
             public static create(properties?: jspb.test.ITestReservedNamesExtension): jspb.test.TestReservedNamesExtension;
             public static encode(message: jspb.test.ITestReservedNamesExtension, writer?: $protobuf.Writer): $protobuf.Writer;
             public static encodeDelimited(message: jspb.test.ITestReservedNamesExtension, writer?: $protobuf.Writer): $protobuf.Writer;
@@ -671,10 +727,12 @@ export namespace jspb {
             atwo?: (number|null);
             bone?: (number|null);
             btwo?: (number|null);
+            $unknowns?: Uint8Array[];
         }
 
         class TestMessageWithOneof implements ITestMessageWithOneof {
             constructor(properties?: jspb.test.ITestMessageWithOneof);
+            public $unknowns?: Uint8Array[];
             public pone?: (string|null);
             public pthree?: (string|null);
             public rone?: (jspb.test.ITestMessageWithOneof|null);
@@ -704,10 +762,12 @@ export namespace jspb {
         interface ITestEndsWithBytes {
             value?: (number|null);
             data?: (Uint8Array|null);
+            $unknowns?: Uint8Array[];
         }
 
         class TestEndsWithBytes implements ITestEndsWithBytes {
             constructor(properties?: jspb.test.ITestEndsWithBytes);
+            public $unknowns?: Uint8Array[];
             public value: number;
             public data: Uint8Array;
             public static create(properties?: jspb.test.ITestEndsWithBytes): jspb.test.TestEndsWithBytes;
@@ -735,10 +795,12 @@ export namespace jspb {
             mapBoolString?: ({ [k: string]: string }|null);
             testMapFields?: (jspb.test.ITestMapFieldsNoBinary|null);
             mapStringTestmapfields?: ({ [k: string]: jspb.test.ITestMapFieldsNoBinary }|null);
+            $unknowns?: Uint8Array[];
         }
 
         class TestMapFieldsNoBinary implements ITestMapFieldsNoBinary {
             constructor(properties?: jspb.test.ITestMapFieldsNoBinary);
+            public $unknowns?: Uint8Array[];
             public mapStringString: { [k: string]: string };
             public mapStringInt32: { [k: string]: number };
             public mapStringInt64: { [k: string]: (number|Long) };
@@ -771,10 +833,12 @@ export namespace jspb {
 
         interface IMapValueMessageNoBinary {
             foo?: (number|null);
+            $unknowns?: Uint8Array[];
         }
 
         class MapValueMessageNoBinary implements IMapValueMessageNoBinary {
             constructor(properties?: jspb.test.IMapValueMessageNoBinary);
+            public $unknowns?: Uint8Array[];
             public foo: number;
             public static create(properties?: jspb.test.IMapValueMessageNoBinary): jspb.test.MapValueMessageNoBinary;
             public static encode(message: jspb.test.IMapValueMessageNoBinary, writer?: $protobuf.Writer): $protobuf.Writer;
@@ -789,10 +853,12 @@ export namespace jspb {
         }
 
         interface IDeeply {
+            $unknowns?: Uint8Array[];
         }
 
         class Deeply implements IDeeply {
             constructor(properties?: jspb.test.IDeeply);
+            public $unknowns?: Uint8Array[];
             public static create(properties?: jspb.test.IDeeply): jspb.test.Deeply;
             public static encode(message: jspb.test.IDeeply, writer?: $protobuf.Writer): $protobuf.Writer;
             public static encodeDelimited(message: jspb.test.IDeeply, writer?: $protobuf.Writer): $protobuf.Writer;
@@ -808,10 +874,12 @@ export namespace jspb {
         namespace Deeply {
 
             interface INested {
+                $unknowns?: Uint8Array[];
             }
 
             class Nested implements INested {
                 constructor(properties?: jspb.test.Deeply.INested);
+                public $unknowns?: Uint8Array[];
                 public static create(properties?: jspb.test.Deeply.INested): jspb.test.Deeply.Nested;
                 public static encode(message: jspb.test.Deeply.INested, writer?: $protobuf.Writer): $protobuf.Writer;
                 public static encodeDelimited(message: jspb.test.Deeply.INested, writer?: $protobuf.Writer): $protobuf.Writer;
@@ -828,10 +896,12 @@ export namespace jspb {
 
                 interface IMessage {
                     count?: (number|null);
+                    $unknowns?: Uint8Array[];
                 }
 
                 class Message implements IMessage {
                     constructor(properties?: jspb.test.Deeply.Nested.IMessage);
+                    public $unknowns?: Uint8Array[];
                     public count: number;
                     public static create(properties?: jspb.test.Deeply.Nested.IMessage): jspb.test.Deeply.Nested.Message;
                     public static encode(message: jspb.test.Deeply.Nested.IMessage, writer?: $protobuf.Writer): $protobuf.Writer;
@@ -855,10 +925,12 @@ export namespace google {
 
         interface IFileDescriptorSet {
             file?: (google.protobuf.IFileDescriptorProto[]|null);
+            $unknowns?: Uint8Array[];
         }
 
         class FileDescriptorSet implements IFileDescriptorSet {
             constructor(properties?: google.protobuf.IFileDescriptorSet);
+            public $unknowns?: Uint8Array[];
             public file: google.protobuf.IFileDescriptorProto[];
             public static create(properties?: google.protobuf.IFileDescriptorSet): google.protobuf.FileDescriptorSet;
             public static encode(message: google.protobuf.IFileDescriptorSet, writer?: $protobuf.Writer): $protobuf.Writer;
@@ -902,10 +974,12 @@ export namespace google {
             sourceCodeInfo?: (google.protobuf.ISourceCodeInfo|null);
             syntax?: (string|null);
             edition?: (google.protobuf.Edition|null);
+            $unknowns?: Uint8Array[];
         }
 
         class FileDescriptorProto implements IFileDescriptorProto {
             constructor(properties?: google.protobuf.IFileDescriptorProto);
+            public $unknowns?: Uint8Array[];
             public name: string;
             public package: string;
             public dependency: string[];
@@ -944,10 +1018,12 @@ export namespace google {
             reservedRange?: (google.protobuf.DescriptorProto.IReservedRange[]|null);
             reservedName?: (string[]|null);
             visibility?: (google.protobuf.SymbolVisibility|null);
+            $unknowns?: Uint8Array[];
         }
 
         class DescriptorProto implements IDescriptorProto {
             constructor(properties?: google.protobuf.IDescriptorProto);
+            public $unknowns?: Uint8Array[];
             public name: string;
             public field: google.protobuf.IFieldDescriptorProto[];
             public extension: google.protobuf.IFieldDescriptorProto[];
@@ -977,10 +1053,12 @@ export namespace google {
                 start?: (number|null);
                 end?: (number|null);
                 options?: (google.protobuf.IExtensionRangeOptions|null);
+                $unknowns?: Uint8Array[];
             }
 
             class ExtensionRange implements IExtensionRange {
                 constructor(properties?: google.protobuf.DescriptorProto.IExtensionRange);
+                public $unknowns?: Uint8Array[];
                 public start: number;
                 public end: number;
                 public options?: (google.protobuf.IExtensionRangeOptions|null);
@@ -999,10 +1077,12 @@ export namespace google {
             interface IReservedRange {
                 start?: (number|null);
                 end?: (number|null);
+                $unknowns?: Uint8Array[];
             }
 
             class ReservedRange implements IReservedRange {
                 constructor(properties?: google.protobuf.DescriptorProto.IReservedRange);
+                public $unknowns?: Uint8Array[];
                 public start: number;
                 public end: number;
                 public static create(properties?: google.protobuf.DescriptorProto.IReservedRange): google.protobuf.DescriptorProto.ReservedRange;
@@ -1023,10 +1103,12 @@ export namespace google {
             declaration?: (google.protobuf.ExtensionRangeOptions.IDeclaration[]|null);
             features?: (google.protobuf.IFeatureSet|null);
             verification?: (google.protobuf.ExtensionRangeOptions.VerificationState|null);
+            $unknowns?: Uint8Array[];
         }
 
         class ExtensionRangeOptions implements IExtensionRangeOptions {
             constructor(properties?: google.protobuf.IExtensionRangeOptions);
+            public $unknowns?: Uint8Array[];
             public uninterpretedOption: google.protobuf.IUninterpretedOption[];
             public declaration: google.protobuf.ExtensionRangeOptions.IDeclaration[];
             public features?: (google.protobuf.IFeatureSet|null);
@@ -1051,10 +1133,12 @@ export namespace google {
                 type?: (string|null);
                 reserved?: (boolean|null);
                 repeated?: (boolean|null);
+                $unknowns?: Uint8Array[];
             }
 
             class Declaration implements IDeclaration {
                 constructor(properties?: google.protobuf.ExtensionRangeOptions.IDeclaration);
+                public $unknowns?: Uint8Array[];
                 public number: number;
                 public fullName: string;
                 public type: string;
@@ -1090,10 +1174,12 @@ export namespace google {
             jsonName?: (string|null);
             options?: (google.protobuf.IFieldOptions|null);
             proto3Optional?: (boolean|null);
+            $unknowns?: Uint8Array[];
         }
 
         class FieldDescriptorProto implements IFieldDescriptorProto {
             constructor(properties?: google.protobuf.IFieldDescriptorProto);
+            public $unknowns?: Uint8Array[];
             public name: string;
             public number: number;
             public label: google.protobuf.FieldDescriptorProto.Label;
@@ -1150,10 +1236,12 @@ export namespace google {
         interface IOneofDescriptorProto {
             name?: (string|null);
             options?: (google.protobuf.IOneofOptions|null);
+            $unknowns?: Uint8Array[];
         }
 
         class OneofDescriptorProto implements IOneofDescriptorProto {
             constructor(properties?: google.protobuf.IOneofDescriptorProto);
+            public $unknowns?: Uint8Array[];
             public name: string;
             public options?: (google.protobuf.IOneofOptions|null);
             public static create(properties?: google.protobuf.IOneofDescriptorProto): google.protobuf.OneofDescriptorProto;
@@ -1175,10 +1263,12 @@ export namespace google {
             reservedRange?: (google.protobuf.EnumDescriptorProto.IEnumReservedRange[]|null);
             reservedName?: (string[]|null);
             visibility?: (google.protobuf.SymbolVisibility|null);
+            $unknowns?: Uint8Array[];
         }
 
         class EnumDescriptorProto implements IEnumDescriptorProto {
             constructor(properties?: google.protobuf.IEnumDescriptorProto);
+            public $unknowns?: Uint8Array[];
             public name: string;
             public value: google.protobuf.IEnumValueDescriptorProto[];
             public options?: (google.protobuf.IEnumOptions|null);
@@ -1202,10 +1292,12 @@ export namespace google {
             interface IEnumReservedRange {
                 start?: (number|null);
                 end?: (number|null);
+                $unknowns?: Uint8Array[];
             }
 
             class EnumReservedRange implements IEnumReservedRange {
                 constructor(properties?: google.protobuf.EnumDescriptorProto.IEnumReservedRange);
+                public $unknowns?: Uint8Array[];
                 public start: number;
                 public end: number;
                 public static create(properties?: google.protobuf.EnumDescriptorProto.IEnumReservedRange): google.protobuf.EnumDescriptorProto.EnumReservedRange;
@@ -1225,10 +1317,12 @@ export namespace google {
             name?: (string|null);
             number?: (number|null);
             options?: (google.protobuf.IEnumValueOptions|null);
+            $unknowns?: Uint8Array[];
         }
 
         class EnumValueDescriptorProto implements IEnumValueDescriptorProto {
             constructor(properties?: google.protobuf.IEnumValueDescriptorProto);
+            public $unknowns?: Uint8Array[];
             public name: string;
             public number: number;
             public options?: (google.protobuf.IEnumValueOptions|null);
@@ -1248,10 +1342,12 @@ export namespace google {
             name?: (string|null);
             method?: (google.protobuf.IMethodDescriptorProto[]|null);
             options?: (google.protobuf.IServiceOptions|null);
+            $unknowns?: Uint8Array[];
         }
 
         class ServiceDescriptorProto implements IServiceDescriptorProto {
             constructor(properties?: google.protobuf.IServiceDescriptorProto);
+            public $unknowns?: Uint8Array[];
             public name: string;
             public method: google.protobuf.IMethodDescriptorProto[];
             public options?: (google.protobuf.IServiceOptions|null);
@@ -1274,10 +1370,12 @@ export namespace google {
             options?: (google.protobuf.IMethodOptions|null);
             clientStreaming?: (boolean|null);
             serverStreaming?: (boolean|null);
+            $unknowns?: Uint8Array[];
         }
 
         class MethodDescriptorProto implements IMethodDescriptorProto {
             constructor(properties?: google.protobuf.IMethodDescriptorProto);
+            public $unknowns?: Uint8Array[];
             public name: string;
             public inputType: string;
             public outputType: string;
@@ -1318,10 +1416,12 @@ export namespace google {
             rubyPackage?: (string|null);
             features?: (google.protobuf.IFeatureSet|null);
             uninterpretedOption?: (google.protobuf.IUninterpretedOption[]|null);
+            $unknowns?: Uint8Array[];
         }
 
         class FileOptions implements IFileOptions {
             constructor(properties?: google.protobuf.IFileOptions);
+            public $unknowns?: Uint8Array[];
             public javaPackage: string;
             public javaOuterClassname: string;
             public javaMultipleFiles: boolean;
@@ -1372,10 +1472,12 @@ export namespace google {
             deprecatedLegacyJsonFieldConflicts?: (boolean|null);
             features?: (google.protobuf.IFeatureSet|null);
             uninterpretedOption?: (google.protobuf.IUninterpretedOption[]|null);
+            $unknowns?: Uint8Array[];
         }
 
         class MessageOptions implements IMessageOptions {
             constructor(properties?: google.protobuf.IMessageOptions);
+            public $unknowns?: Uint8Array[];
             public messageSetWireFormat: boolean;
             public noStandardDescriptorAccessor: boolean;
             public deprecated: boolean;
@@ -1410,10 +1512,12 @@ export namespace google {
             features?: (google.protobuf.IFeatureSet|null);
             featureSupport?: (google.protobuf.FieldOptions.IFeatureSupport|null);
             uninterpretedOption?: (google.protobuf.IUninterpretedOption[]|null);
+            $unknowns?: Uint8Array[];
         }
 
         class FieldOptions implements IFieldOptions {
             constructor(properties?: google.protobuf.IFieldOptions);
+            public $unknowns?: Uint8Array[];
             public ctype: google.protobuf.FieldOptions.CType;
             public packed: boolean;
             public jstype: google.protobuf.FieldOptions.JSType;
@@ -1476,10 +1580,12 @@ export namespace google {
             interface IEditionDefault {
                 edition?: (google.protobuf.Edition|null);
                 value?: (string|null);
+                $unknowns?: Uint8Array[];
             }
 
             class EditionDefault implements IEditionDefault {
                 constructor(properties?: google.protobuf.FieldOptions.IEditionDefault);
+                public $unknowns?: Uint8Array[];
                 public edition: google.protobuf.Edition;
                 public value: string;
                 public static create(properties?: google.protobuf.FieldOptions.IEditionDefault): google.protobuf.FieldOptions.EditionDefault;
@@ -1499,10 +1605,12 @@ export namespace google {
                 editionDeprecated?: (google.protobuf.Edition|null);
                 deprecationWarning?: (string|null);
                 editionRemoved?: (google.protobuf.Edition|null);
+                $unknowns?: Uint8Array[];
             }
 
             class FeatureSupport implements IFeatureSupport {
                 constructor(properties?: google.protobuf.FieldOptions.IFeatureSupport);
+                public $unknowns?: Uint8Array[];
                 public editionIntroduced: google.protobuf.Edition;
                 public editionDeprecated: google.protobuf.Edition;
                 public deprecationWarning: string;
@@ -1523,10 +1631,12 @@ export namespace google {
         interface IOneofOptions {
             features?: (google.protobuf.IFeatureSet|null);
             uninterpretedOption?: (google.protobuf.IUninterpretedOption[]|null);
+            $unknowns?: Uint8Array[];
         }
 
         class OneofOptions implements IOneofOptions {
             constructor(properties?: google.protobuf.IOneofOptions);
+            public $unknowns?: Uint8Array[];
             public features?: (google.protobuf.IFeatureSet|null);
             public uninterpretedOption: google.protobuf.IUninterpretedOption[];
             public static create(properties?: google.protobuf.IOneofOptions): google.protobuf.OneofOptions;
@@ -1548,11 +1658,13 @@ export namespace google {
             features?: (google.protobuf.IFeatureSet|null);
             uninterpretedOption?: (google.protobuf.IUninterpretedOption[]|null);
             ".jspb.test.IsExtension.simpleOption"?: (string|null);
+            $unknowns?: Uint8Array[];
         }
 
         class EnumOptions implements IEnumOptions {
             constructor(properties?: google.protobuf.IEnumOptions);
             public ".jspb.test.IsExtension.simpleOption": string;
+            public $unknowns?: Uint8Array[];
             public allowAlias: boolean;
             public deprecated: boolean;
             public deprecatedLegacyJsonFieldConflicts: boolean;
@@ -1576,10 +1688,12 @@ export namespace google {
             debugRedact?: (boolean|null);
             featureSupport?: (google.protobuf.FieldOptions.IFeatureSupport|null);
             uninterpretedOption?: (google.protobuf.IUninterpretedOption[]|null);
+            $unknowns?: Uint8Array[];
         }
 
         class EnumValueOptions implements IEnumValueOptions {
             constructor(properties?: google.protobuf.IEnumValueOptions);
+            public $unknowns?: Uint8Array[];
             public deprecated: boolean;
             public features?: (google.protobuf.IFeatureSet|null);
             public debugRedact: boolean;
@@ -1601,10 +1715,12 @@ export namespace google {
             features?: (google.protobuf.IFeatureSet|null);
             deprecated?: (boolean|null);
             uninterpretedOption?: (google.protobuf.IUninterpretedOption[]|null);
+            $unknowns?: Uint8Array[];
         }
 
         class ServiceOptions implements IServiceOptions {
             constructor(properties?: google.protobuf.IServiceOptions);
+            public $unknowns?: Uint8Array[];
             public features?: (google.protobuf.IFeatureSet|null);
             public deprecated: boolean;
             public uninterpretedOption: google.protobuf.IUninterpretedOption[];
@@ -1625,10 +1741,12 @@ export namespace google {
             idempotencyLevel?: (google.protobuf.MethodOptions.IdempotencyLevel|null);
             features?: (google.protobuf.IFeatureSet|null);
             uninterpretedOption?: (google.protobuf.IUninterpretedOption[]|null);
+            $unknowns?: Uint8Array[];
         }
 
         class MethodOptions implements IMethodOptions {
             constructor(properties?: google.protobuf.IMethodOptions);
+            public $unknowns?: Uint8Array[];
             public deprecated: boolean;
             public idempotencyLevel: google.protobuf.MethodOptions.IdempotencyLevel;
             public features?: (google.protobuf.IFeatureSet|null);
@@ -1662,10 +1780,12 @@ export namespace google {
             doubleValue?: (number|null);
             stringValue?: (Uint8Array|null);
             aggregateValue?: (string|null);
+            $unknowns?: Uint8Array[];
         }
 
         class UninterpretedOption implements IUninterpretedOption {
             constructor(properties?: google.protobuf.IUninterpretedOption);
+            public $unknowns?: Uint8Array[];
             public name: google.protobuf.UninterpretedOption.INamePart[];
             public identifierValue: string;
             public positiveIntValue: (number|Long);
@@ -1690,10 +1810,12 @@ export namespace google {
             interface INamePart {
                 namePart: string;
                 isExtension: boolean;
+                $unknowns?: Uint8Array[];
             }
 
             class NamePart implements INamePart {
                 constructor(properties?: google.protobuf.UninterpretedOption.INamePart);
+                public $unknowns?: Uint8Array[];
                 public namePart: string;
                 public isExtension: boolean;
                 public static create(properties?: google.protobuf.UninterpretedOption.INamePart): google.protobuf.UninterpretedOption.NamePart;
@@ -1718,10 +1840,12 @@ export namespace google {
             jsonFormat?: (google.protobuf.FeatureSet.JsonFormat|null);
             enforceNamingStyle?: (google.protobuf.FeatureSet.EnforceNamingStyle|null);
             defaultSymbolVisibility?: (google.protobuf.FeatureSet.VisibilityFeature.DefaultSymbolVisibility|null);
+            $unknowns?: Uint8Array[];
         }
 
         class FeatureSet implements IFeatureSet {
             constructor(properties?: google.protobuf.IFeatureSet);
+            public $unknowns?: Uint8Array[];
             public fieldPresence: google.protobuf.FeatureSet.FieldPresence;
             public enumType: google.protobuf.FeatureSet.EnumType;
             public repeatedFieldEncoding: google.protobuf.FeatureSet.RepeatedFieldEncoding;
@@ -1788,10 +1912,12 @@ export namespace google {
             }
 
             interface IVisibilityFeature {
+                $unknowns?: Uint8Array[];
             }
 
             class VisibilityFeature implements IVisibilityFeature {
                 constructor(properties?: google.protobuf.FeatureSet.IVisibilityFeature);
+                public $unknowns?: Uint8Array[];
                 public static create(properties?: google.protobuf.FeatureSet.IVisibilityFeature): google.protobuf.FeatureSet.VisibilityFeature;
                 public static encode(message: google.protobuf.FeatureSet.IVisibilityFeature, writer?: $protobuf.Writer): $protobuf.Writer;
                 public static encodeDelimited(message: google.protobuf.FeatureSet.IVisibilityFeature, writer?: $protobuf.Writer): $protobuf.Writer;
@@ -1820,10 +1946,12 @@ export namespace google {
             defaults?: (google.protobuf.FeatureSetDefaults.IFeatureSetEditionDefault[]|null);
             minimumEdition?: (google.protobuf.Edition|null);
             maximumEdition?: (google.protobuf.Edition|null);
+            $unknowns?: Uint8Array[];
         }
 
         class FeatureSetDefaults implements IFeatureSetDefaults {
             constructor(properties?: google.protobuf.IFeatureSetDefaults);
+            public $unknowns?: Uint8Array[];
             public defaults: google.protobuf.FeatureSetDefaults.IFeatureSetEditionDefault[];
             public minimumEdition: google.protobuf.Edition;
             public maximumEdition: google.protobuf.Edition;
@@ -1845,10 +1973,12 @@ export namespace google {
                 edition?: (google.protobuf.Edition|null);
                 overridableFeatures?: (google.protobuf.IFeatureSet|null);
                 fixedFeatures?: (google.protobuf.IFeatureSet|null);
+                $unknowns?: Uint8Array[];
             }
 
             class FeatureSetEditionDefault implements IFeatureSetEditionDefault {
                 constructor(properties?: google.protobuf.FeatureSetDefaults.IFeatureSetEditionDefault);
+                public $unknowns?: Uint8Array[];
                 public edition: google.protobuf.Edition;
                 public overridableFeatures?: (google.protobuf.IFeatureSet|null);
                 public fixedFeatures?: (google.protobuf.IFeatureSet|null);
@@ -1867,10 +1997,12 @@ export namespace google {
 
         interface ISourceCodeInfo {
             location?: (google.protobuf.SourceCodeInfo.ILocation[]|null);
+            $unknowns?: Uint8Array[];
         }
 
         class SourceCodeInfo implements ISourceCodeInfo {
             constructor(properties?: google.protobuf.ISourceCodeInfo);
+            public $unknowns?: Uint8Array[];
             public location: google.protobuf.SourceCodeInfo.ILocation[];
             public static create(properties?: google.protobuf.ISourceCodeInfo): google.protobuf.SourceCodeInfo;
             public static encode(message: google.protobuf.ISourceCodeInfo, writer?: $protobuf.Writer): $protobuf.Writer;
@@ -1892,10 +2024,12 @@ export namespace google {
                 leadingComments?: (string|null);
                 trailingComments?: (string|null);
                 leadingDetachedComments?: (string[]|null);
+                $unknowns?: Uint8Array[];
             }
 
             class Location implements ILocation {
                 constructor(properties?: google.protobuf.SourceCodeInfo.ILocation);
+                public $unknowns?: Uint8Array[];
                 public path: number[];
                 public span: number[];
                 public leadingComments: string;
@@ -1916,10 +2050,12 @@ export namespace google {
 
         interface IGeneratedCodeInfo {
             annotation?: (google.protobuf.GeneratedCodeInfo.IAnnotation[]|null);
+            $unknowns?: Uint8Array[];
         }
 
         class GeneratedCodeInfo implements IGeneratedCodeInfo {
             constructor(properties?: google.protobuf.IGeneratedCodeInfo);
+            public $unknowns?: Uint8Array[];
             public annotation: google.protobuf.GeneratedCodeInfo.IAnnotation[];
             public static create(properties?: google.protobuf.IGeneratedCodeInfo): google.protobuf.GeneratedCodeInfo;
             public static encode(message: google.protobuf.IGeneratedCodeInfo, writer?: $protobuf.Writer): $protobuf.Writer;
@@ -1941,10 +2077,12 @@ export namespace google {
                 begin?: (number|null);
                 end?: (number|null);
                 semantic?: (google.protobuf.GeneratedCodeInfo.Annotation.Semantic|null);
+                $unknowns?: Uint8Array[];
             }
 
             class Annotation implements IAnnotation {
                 constructor(properties?: google.protobuf.GeneratedCodeInfo.IAnnotation);
+                public $unknowns?: Uint8Array[];
                 public path: number[];
                 public sourceFile: string;
                 public begin: number;

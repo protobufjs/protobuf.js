@@ -18,6 +18,7 @@ $root.Test1 = (function() {
      * @property {string|null} [field1] Field with a comment.
      * @property {number|null} [field2] Test1 field2
      * @property {boolean|null} [field3] Field with a comment and a <a href="http://example.com/foo/">link</a>
+     * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
      */
 
     /**
@@ -30,6 +31,7 @@ $root.Test1 = (function() {
      * @implements ITest1
      * @constructor
      * @param {ITest1=} [properties] Properties to set
+     * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
      */
     function Test1(properties) {
         if (properties)
@@ -92,6 +94,9 @@ $root.Test1 = (function() {
             writer.uint32(/* id 2, wireType 0 =*/16).uint32(message.field2);
         if (message.field3 != null && Object.hasOwnProperty.call(message, "field3"))
             writer.uint32(/* id 3, wireType 0 =*/24).bool(message.field3);
+        if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+            for (var i = 0; i < message.$unknowns.length; ++i)
+                writer.raw(message.$unknowns[i]);
         return writer;
     };
 
@@ -128,6 +133,7 @@ $root.Test1 = (function() {
             throw Error("max depth exceeded");
         var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.Test1();
         while (reader.pos < end) {
+            var start = reader.pos;
             var tag = reader.uint32();
             if (tag === _end) {
                 _end = undefined;
@@ -148,6 +154,8 @@ $root.Test1 = (function() {
                 }
             default:
                 reader.skipType(tag & 7, _depth, tag >>> 3);
+                $util.makeProp(message, "$unknowns", false);
+                (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 break;
             }
         }
@@ -286,6 +294,7 @@ $root.Test2 = (function() {
      * Properties of a Test2.
      * @exports ITest2
      * @interface ITest2
+     * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
      */
 
     /**
@@ -295,6 +304,7 @@ $root.Test2 = (function() {
      * @implements ITest2
      * @constructor
      * @param {ITest2=} [properties] Properties to set
+     * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
      */
     function Test2(properties) {
         if (properties)
@@ -327,6 +337,9 @@ $root.Test2 = (function() {
     Test2.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
+        if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+            for (var i = 0; i < message.$unknowns.length; ++i)
+                writer.raw(message.$unknowns[i]);
         return writer;
     };
 
@@ -363,6 +376,7 @@ $root.Test2 = (function() {
             throw Error("max depth exceeded");
         var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.Test2();
         while (reader.pos < end) {
+            var start = reader.pos;
             var tag = reader.uint32();
             if (tag === _end) {
                 _end = undefined;
@@ -371,6 +385,8 @@ $root.Test2 = (function() {
             switch (tag) {
             default:
                 reader.skipType(tag & 7, _depth, tag >>> 3);
+                $util.makeProp(message, "$unknowns", false);
+                (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 break;
             }
         }

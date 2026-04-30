@@ -30,6 +30,19 @@ BufferReader._configure = function () {
         BufferReader.prototype._slice = util.Buffer.prototype.slice;
 };
 
+/**
+ * Returns raw bytes from the backing buffer without advancing the reader.
+ * @name BufferReader#raw
+ * @function
+ * @param {number} start Start offset
+ * @param {number} end End offset
+ * @returns {Buffer} Raw bytes
+ */
+BufferReader.prototype.raw = function read_raw_buffer(start, end) {
+    if (start === end)
+        return util.Buffer.alloc(0);
+    return this._slice.call(this.buf, start, end);
+};
 
 /**
  * @override

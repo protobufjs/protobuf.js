@@ -32,6 +32,9 @@ $root.Test = (function() {
             $root.Test.Inner.encode(message.inner, writer.uint32(26).fork()).ldelim();
         if (message.float != null && Object.hasOwnProperty.call(message, "float"))
             writer.uint32(37).float(message.float);
+        if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+            for (var i = 0; i < message.$unknowns.length; ++i)
+                writer.raw(message.$unknowns[i]);
         return writer;
     };
 
@@ -44,6 +47,7 @@ $root.Test = (function() {
             throw Error("max depth exceeded");
         var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.Test();
         while (reader.pos < end) {
+            var start = reader.pos;
             var tag = reader.uint32();
             if (tag === _end) {
                 _end = undefined;
@@ -68,6 +72,8 @@ $root.Test = (function() {
                 }
             default:
                 reader.skipType(tag & 7, _depth, tag >>> 3);
+                $util.makeProp(message, "$unknowns", false);
+                (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 break;
             }
         }
@@ -98,6 +104,9 @@ $root.Test = (function() {
                 $root.Test.Inner.InnerInner.encode(message.innerInner, writer.uint32(18).fork()).ldelim();
             if (message.outer != null && Object.hasOwnProperty.call(message, "outer"))
                 $root.Outer.encode(message.outer, writer.uint32(26).fork()).ldelim();
+            if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                for (var i = 0; i < message.$unknowns.length; ++i)
+                    writer.raw(message.$unknowns[i]);
             return writer;
         };
 
@@ -110,6 +119,7 @@ $root.Test = (function() {
                 throw Error("max depth exceeded");
             var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.Test.Inner();
             while (reader.pos < end) {
+                var start = reader.pos;
                 var tag = reader.uint32();
                 if (tag === _end) {
                     _end = undefined;
@@ -130,6 +140,8 @@ $root.Test = (function() {
                     }
                 default:
                     reader.skipType(tag & 7, _depth, tag >>> 3);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                     break;
                 }
             }
@@ -160,6 +172,9 @@ $root.Test = (function() {
                     writer.uint32(16).int32(message["enum"]);
                 if (message.sint32 != null && Object.hasOwnProperty.call(message, "sint32"))
                     writer.uint32(24).sint32(message.sint32);
+                if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                    for (var i = 0; i < message.$unknowns.length; ++i)
+                        writer.raw(message.$unknowns[i]);
                 return writer;
             };
 
@@ -172,6 +187,7 @@ $root.Test = (function() {
                     throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.Test.Inner.InnerInner();
                 while (reader.pos < end) {
+                    var start = reader.pos;
                     var tag = reader.uint32();
                     if (tag === _end) {
                         _end = undefined;
@@ -192,6 +208,8 @@ $root.Test = (function() {
                         }
                     default:
                         reader.skipType(tag & 7, _depth, tag >>> 3);
+                        $util.makeProp(message, "$unknowns", false);
+                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                         break;
                     }
                 }
@@ -243,6 +261,9 @@ $root.Outer = (function() {
         }
         if (message.double != null && Object.hasOwnProperty.call(message, "double"))
             writer.uint32(17).double(message.double);
+        if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+            for (var i = 0; i < message.$unknowns.length; ++i)
+                writer.raw(message.$unknowns[i]);
         return writer;
     };
 
@@ -255,6 +276,7 @@ $root.Outer = (function() {
             throw Error("max depth exceeded");
         var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.Outer();
         while (reader.pos < end) {
+            var start = reader.pos;
             var tag = reader.uint32();
             if (tag === _end) {
                 _end = undefined;
@@ -279,6 +301,8 @@ $root.Outer = (function() {
                 }
             default:
                 reader.skipType(tag & 7, _depth, tag >>> 3);
+                $util.makeProp(message, "$unknowns", false);
+                (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 break;
             }
         }

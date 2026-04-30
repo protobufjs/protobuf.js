@@ -8,6 +8,7 @@ var util = require("./util/minimal");
  * @classdesc Abstract runtime message.
  * @constructor
  * @param {Properties<T>} [properties] Properties to set
+ * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
  * @template T extends object = object
  */
 function Message(properties) {

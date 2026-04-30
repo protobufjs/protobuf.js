@@ -82,6 +82,7 @@ export const MyRequest = $root.MyRequest = (() => {
      * @exports IMyRequest
      * @interface IMyRequest
      * @property {string|null} [path] MyRequest path
+     * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
      */
 
     /**
@@ -91,6 +92,7 @@ export const MyRequest = $root.MyRequest = (() => {
      * @implements IMyRequest
      * @constructor
      * @param {IMyRequest=} [properties] Properties to set
+     * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
      */
     function MyRequest(properties) {
         if (properties)
@@ -133,6 +135,9 @@ export const MyRequest = $root.MyRequest = (() => {
             writer = $Writer.create();
         if (message.path != null && Object.hasOwnProperty.call(message, "path"))
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.path);
+        if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+            for (let i = 0; i < message.$unknowns.length; ++i)
+                writer.raw(message.$unknowns[i]);
         return writer;
     };
 
@@ -169,6 +174,7 @@ export const MyRequest = $root.MyRequest = (() => {
             throw Error("max depth exceeded");
         let end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.MyRequest();
         while (reader.pos < end) {
+            let start = reader.pos;
             let tag = reader.uint32();
             if (tag === _end) {
                 _end = undefined;
@@ -181,6 +187,8 @@ export const MyRequest = $root.MyRequest = (() => {
                 }
             default:
                 reader.skipType(tag & 7, _depth, tag >>> 3);
+                $util.makeProp(message, "$unknowns", false);
+                (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 break;
             }
         }
@@ -303,6 +311,7 @@ export const MyResponse = $root.MyResponse = (() => {
      * @exports IMyResponse
      * @interface IMyResponse
      * @property {number|null} [status] MyResponse status
+     * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
      */
 
     /**
@@ -312,6 +321,7 @@ export const MyResponse = $root.MyResponse = (() => {
      * @implements IMyResponse
      * @constructor
      * @param {IMyResponse=} [properties] Properties to set
+     * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
      */
     function MyResponse(properties) {
         if (properties)
@@ -354,6 +364,9 @@ export const MyResponse = $root.MyResponse = (() => {
             writer = $Writer.create();
         if (message.status != null && Object.hasOwnProperty.call(message, "status"))
             writer.uint32(/* id 2, wireType 0 =*/16).int32(message.status);
+        if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+            for (let i = 0; i < message.$unknowns.length; ++i)
+                writer.raw(message.$unknowns[i]);
         return writer;
     };
 
@@ -390,6 +403,7 @@ export const MyResponse = $root.MyResponse = (() => {
             throw Error("max depth exceeded");
         let end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.MyResponse();
         while (reader.pos < end) {
+            let start = reader.pos;
             let tag = reader.uint32();
             if (tag === _end) {
                 _end = undefined;
@@ -402,6 +416,8 @@ export const MyResponse = $root.MyResponse = (() => {
                 }
             default:
                 reader.skipType(tag & 7, _depth, tag >>> 3);
+                $util.makeProp(message, "$unknowns", false);
+                (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 break;
             }
         }

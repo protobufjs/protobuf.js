@@ -25,6 +25,7 @@ $root.vector_tile = (function() {
          * @memberof vector_tile
          * @interface ITile
          * @property {Array.<vector_tile.Tile.ILayer>|null} [layers] Tile layers
+         * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
          */
 
         /**
@@ -34,6 +35,7 @@ $root.vector_tile = (function() {
          * @implements ITile
          * @constructor
          * @param {vector_tile.ITile=} [properties] Properties to set
+         * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
          */
         function Tile(properties) {
             this.layers = [];
@@ -78,6 +80,9 @@ $root.vector_tile = (function() {
             if (message.layers != null && message.layers.length)
                 for (var i = 0; i < message.layers.length; ++i)
                     $root.vector_tile.Tile.Layer.encode(message.layers[i], writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
+            if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                for (var i = 0; i < message.$unknowns.length; ++i)
+                    writer.raw(message.$unknowns[i]);
             return writer;
         };
 
@@ -114,6 +119,7 @@ $root.vector_tile = (function() {
                 throw Error("max depth exceeded");
             var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.vector_tile.Tile();
             while (reader.pos < end) {
+                var start = reader.pos;
                 var tag = reader.uint32();
                 if (tag === _end) {
                     _end = undefined;
@@ -128,6 +134,8 @@ $root.vector_tile = (function() {
                     }
                 default:
                     reader.skipType(tag & 7, _depth, tag >>> 3);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                     break;
                 }
             }
@@ -288,6 +296,7 @@ $root.vector_tile = (function() {
              * @property {number|Long|null} [uintValue] Value uintValue
              * @property {number|Long|null} [sintValue] Value sintValue
              * @property {boolean|null} [boolValue] Value boolValue
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
 
             /**
@@ -297,6 +306,7 @@ $root.vector_tile = (function() {
              * @implements IValue
              * @constructor
              * @param {vector_tile.Tile.IValue=} [properties] Properties to set
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
             function Value(properties) {
                 if (properties)
@@ -399,6 +409,9 @@ $root.vector_tile = (function() {
                     writer.uint32(/* id 6, wireType 0 =*/48).sint64(message.sintValue);
                 if (message.boolValue != null && Object.hasOwnProperty.call(message, "boolValue"))
                     writer.uint32(/* id 7, wireType 0 =*/56).bool(message.boolValue);
+                if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                    for (var i = 0; i < message.$unknowns.length; ++i)
+                        writer.raw(message.$unknowns[i]);
                 return writer;
             };
 
@@ -435,6 +448,7 @@ $root.vector_tile = (function() {
                     throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.vector_tile.Tile.Value();
                 while (reader.pos < end) {
+                    var start = reader.pos;
                     var tag = reader.uint32();
                     if (tag === _end) {
                         _end = undefined;
@@ -471,6 +485,8 @@ $root.vector_tile = (function() {
                         }
                     default:
                         reader.skipType(tag & 7, _depth, tag >>> 3);
+                        $util.makeProp(message, "$unknowns", false);
+                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                         break;
                     }
                 }
@@ -687,6 +703,7 @@ $root.vector_tile = (function() {
              * @property {Array.<number>|null} [tags] Feature tags
              * @property {vector_tile.Tile.GeomType|null} [type] Feature type
              * @property {Array.<number>|null} [geometry] Feature geometry
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
 
             /**
@@ -696,6 +713,7 @@ $root.vector_tile = (function() {
              * @implements IFeature
              * @constructor
              * @param {vector_tile.Tile.IFeature=} [properties] Properties to set
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
             function Feature(properties) {
                 this.tags = [];
@@ -778,6 +796,9 @@ $root.vector_tile = (function() {
                         writer.uint32(message.geometry[i]);
                     writer.ldelim();
                 }
+                if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                    for (var i = 0; i < message.$unknowns.length; ++i)
+                        writer.raw(message.$unknowns[i]);
                 return writer;
             };
 
@@ -814,6 +835,7 @@ $root.vector_tile = (function() {
                     throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.vector_tile.Tile.Feature();
                 while (reader.pos < end) {
+                    var start = reader.pos;
                     var tag = reader.uint32();
                     if (tag === _end) {
                         _end = undefined;
@@ -854,6 +876,8 @@ $root.vector_tile = (function() {
                         }
                     default:
                         reader.skipType(tag & 7, _depth, tag >>> 3);
+                        $util.makeProp(message, "$unknowns", false);
+                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                         break;
                     }
                 }
@@ -1075,6 +1099,7 @@ $root.vector_tile = (function() {
              * @property {Array.<string>|null} [keys] Layer keys
              * @property {Array.<vector_tile.Tile.IValue>|null} [values] Layer values
              * @property {number|null} [extent] Layer extent
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
 
             /**
@@ -1084,6 +1109,7 @@ $root.vector_tile = (function() {
              * @implements ILayer
              * @constructor
              * @param {vector_tile.Tile.ILayer=} [properties] Properties to set
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
             function Layer(properties) {
                 this.features = [];
@@ -1180,6 +1206,9 @@ $root.vector_tile = (function() {
                 if (message.extent != null && Object.hasOwnProperty.call(message, "extent"))
                     writer.uint32(/* id 5, wireType 0 =*/40).uint32(message.extent);
                 writer.uint32(/* id 15, wireType 0 =*/120).uint32(message.version);
+                if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                    for (var i = 0; i < message.$unknowns.length; ++i)
+                        writer.raw(message.$unknowns[i]);
                 return writer;
             };
 
@@ -1216,6 +1245,7 @@ $root.vector_tile = (function() {
                     throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.vector_tile.Tile.Layer();
                 while (reader.pos < end) {
+                    var start = reader.pos;
                     var tag = reader.uint32();
                     if (tag === _end) {
                         _end = undefined;
@@ -1254,6 +1284,8 @@ $root.vector_tile = (function() {
                         }
                     default:
                         reader.skipType(tag & 7, _depth, tag >>> 3);
+                        $util.makeProp(message, "$unknowns", false);
+                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                         break;
                     }
                 }

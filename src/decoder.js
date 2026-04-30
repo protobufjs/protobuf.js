@@ -24,6 +24,7 @@ function decoder(mtype) {
         ("throw Error(\"max depth exceeded\")")
     ("var c=l===undefined?r.len:r.pos+l,m=g||new this.ctor" + (mtype.fieldsArray.filter(function(field) { return field.map; }).length ? ",k,value" : ""))
     ("while(r.pos<c){")
+        ("var s=r.pos")
         ("var t=r.uint32()")
         ("if(t===z){")
             ("z=undefined")
@@ -135,6 +136,8 @@ function decoder(mtype) {
     } gen
             ("default:")
                 ("r.skipType(t&7,q,t>>>3)")
+                ("util.makeProp(m,\"$unknowns\",false);")
+                ("(m.$unknowns||(m.$unknowns=[])).push(r.raw(s,r.pos))")
                 ("break")
 
         ("}")

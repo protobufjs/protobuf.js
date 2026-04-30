@@ -167,6 +167,7 @@ var shortVars = {
     "m": "message",
     "t": "tag",
     "l": "length",
+    "s": "start",
     "c": "end", "c2": "end2",
     "k": "key",
     "ks": "keys", "ks2": "keys2",
@@ -433,6 +434,7 @@ function buildType(ref, type) {
             }
             typeDef.push("@property {" + jsType + "} " + toPropName(field, nullable) + " " + (field.comment || type.name + " " + field.name));
         });
+        typeDef.push("@property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding");
         push("");
         pushComment(typeDef);
     }
@@ -456,6 +458,7 @@ function buildType(ref, type) {
             var propType = optional ? jsType.replace(/\|undefined\b/g, "") : jsType;
             classDef.push("@property {" + propType + "} " + toPropName(field, optional) + " " + (field.comment || type.name + " " + field.name));
         });
+        classDef.push("@property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding");
     }
     pushComment(classDef);
     buildFunction(type, type.name, Type.generateConstructor(type));

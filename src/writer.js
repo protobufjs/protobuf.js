@@ -384,6 +384,16 @@ Writer.prototype.bytes = function write_bytes(value) {
 };
 
 /**
+ * Writes raw bytes without a tag or length prefix.
+ * @param {Uint8Array} value Raw bytes
+ * @returns {Writer} `this`
+ */
+Writer.prototype.raw = function write_raw(value) {
+    var len = value.length >>> 0;
+    return len ? this._push(writeBytes, len, value) : this;
+};
+
+/**
  * Writes a string.
  * @param {string} value Value to write
  * @returns {Writer} `this`
