@@ -24,13 +24,13 @@ $root.Test = (function() {
     Test.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.string != null && Object.hasOwnProperty.call(message, "string"))
+        if (message.string != null && message.string.length)
             writer.uint32(10).string(message.string);
-        if (message.uint32 != null && Object.hasOwnProperty.call(message, "uint32"))
+        if (message.uint32 != null && Number(message.uint32) !== 0)
             writer.uint32(16).uint32(message.uint32);
         if (message.inner != null && Object.hasOwnProperty.call(message, "inner"))
             $root.Test.Inner.encode(message.inner, writer.uint32(26).fork()).ldelim();
-        if (message.float != null && Object.hasOwnProperty.call(message, "float"))
+        if (message.float != null && Number(message.float) !== 0)
             writer.uint32(37).float(message.float);
         return writer;
     };
@@ -92,7 +92,7 @@ $root.Test = (function() {
         Inner.encode = function encode(message, writer) {
             if (!writer)
                 writer = $Writer.create();
-            if (message.int32 != null && Object.hasOwnProperty.call(message, "int32"))
+            if (message.int32 != null && Number(message.int32) !== 0)
                 writer.uint32(8).int32(message.int32);
             if (message.innerInner != null && Object.hasOwnProperty.call(message, "innerInner"))
                 $root.Test.Inner.InnerInner.encode(message.innerInner, writer.uint32(18).fork()).ldelim();
@@ -154,11 +154,11 @@ $root.Test = (function() {
             InnerInner.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
-                if (message.long != null && Object.hasOwnProperty.call(message, "long"))
+                if (message.long != null && (typeof message.long === "object" ? message.long.low || message.long.high : Number(message.long) !== 0))
                     writer.uint32(8).int64(message.long);
-                if (message["enum"] != null && Object.hasOwnProperty.call(message, "enum"))
+                if (message["enum"] != null && Number(message["enum"]) !== 0)
                     writer.uint32(16).int32(message["enum"]);
-                if (message.sint32 != null && Object.hasOwnProperty.call(message, "sint32"))
+                if (message.sint32 != null && Number(message.sint32) !== 0)
                     writer.uint32(24).sint32(message.sint32);
                 return writer;
             };
@@ -241,7 +241,7 @@ $root.Outer = (function() {
                 writer.bool(message.bool[i]);
             writer.ldelim();
         }
-        if (message.double != null && Object.hasOwnProperty.call(message, "double"))
+        if (message.double != null && Number(message.double) !== 0)
             writer.uint32(17).double(message.double);
         return writer;
     };
