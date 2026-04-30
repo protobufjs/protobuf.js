@@ -35,10 +35,18 @@ BufferReader._configure = function () {
  * @override
  */
 BufferReader.prototype.string = function read_string_buffer() {
-    var len = this.uint32(); // modifies pos
+    var len = this.uint32(), // modifies pos
+        start = this.pos,
+        end = this.pos + len;
+
+    /* istanbul ignore if */
+    if (end > this.len)
+        throw RangeError("index out of range: " + this.pos + " + " + len + " > " + this.len);
+
+    this.pos = end;
     return this.buf.utf8Slice
-        ? this.buf.utf8Slice(this.pos, this.pos = Math.min(this.pos + len, this.len))
-        : this.buf.toString("utf-8", this.pos, this.pos = Math.min(this.pos + len, this.len));
+        ? this.buf.utf8Slice(start, end)
+        : this.buf.toString("utf-8", start, end);
 };
 
 /**
