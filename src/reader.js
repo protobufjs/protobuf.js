@@ -79,6 +79,21 @@ Reader.create = create();
 Reader.prototype._slice = util.Array.prototype.subarray || /* istanbul ignore next */ util.Array.prototype.slice;
 
 /**
+ * Returns raw bytes from the backing buffer without advancing the reader.
+ * @param {number} start Start offset
+ * @param {number} end End offset
+ * @returns {Uint8Array} Raw bytes
+ */
+Reader.prototype.raw = function read_raw(start, end) {
+    if (Array.isArray(this.buf)) // plain array
+        return this.buf.slice(start, end);
+
+    if (start === end) // fix for IE 10/Win8 and others' subarray returning array of size 1
+        return new this.buf.constructor(0);
+    return this._slice.call(this.buf, start, end);
+};
+
+/**
  * Reads a varint as an unsigned 32 bit value.
  * @function
  * @returns {number} Value read
@@ -325,17 +340,8 @@ Reader.prototype.bytes = function read_bytes() {
     if (end > this.len)
         throw indexOutOfRange(this, length);
 
-    this.pos += length;
-    if (Array.isArray(this.buf)) // plain array
-        return this.buf.slice(start, end);
-
-    if (start === end) { // fix for IE 10/Win8 and others' subarray returning array of size 1
-        var nativeBuffer = util.Buffer;
-        return nativeBuffer
-            ? nativeBuffer.alloc(0)
-            : new this.buf.constructor(0);
-    }
-    return this._slice.call(this.buf, start, end);
+    this.pos = end;
+    return this.raw(start, end);
 };
 
 /**

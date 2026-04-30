@@ -18,10 +18,12 @@ export interface IPackage {
     devDependencies?: ({ [k: string]: string }|null);
     types?: (string|null);
     cliDependencies?: (string[]|null);
+    $unknowns?: Uint8Array[];
 }
 
 export class Package implements IPackage {
     constructor(properties?: IPackage);
+    public $unknowns?: Uint8Array[];
     public name: string;
     public version: string;
     public versionScheme: string;
@@ -56,10 +58,12 @@ export namespace Package {
     interface IRepository {
         type?: (string|null);
         url?: (string|null);
+        $unknowns?: Uint8Array[];
     }
 
     class Repository implements IRepository {
         constructor(properties?: Package.IRepository);
+        public $unknowns?: Uint8Array[];
         public type: string;
         public url: string;
         public static create(properties?: Package.IRepository): Package.Repository;

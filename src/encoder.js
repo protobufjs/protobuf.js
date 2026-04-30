@@ -110,6 +110,9 @@ function encoder(mtype) {
     }
 
     return gen
+    ("if(m.$unknowns!=null&&Object.hasOwnProperty.call(m,\"$unknowns\"))")
+        ("for(var i=0;i<m.$unknowns.length;++i)")
+            ("w.raw(m.$unknowns[i])")
     ("return w");
     /* eslint-enable no-unexpected-multiline, block-scoped-var, no-redeclare */
 }

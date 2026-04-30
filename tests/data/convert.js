@@ -24,6 +24,7 @@ $root.Message = (function() {
      * @property {Message.SomeEnum|null} [enumVal] Message enumVal
      * @property {Array.<Message.SomeEnum>|null} [enumRepeated] Message enumRepeated
      * @property {Object.<string,number|Long>|null} [int64Map] Message int64Map
+     * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
      */
 
     /**
@@ -33,6 +34,7 @@ $root.Message = (function() {
      * @implements IMessage
      * @constructor
      * @param {IMessage=} [properties] Properties to set
+     * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
      */
     function Message(properties) {
         this.stringRepeated = [];
@@ -171,6 +173,9 @@ $root.Message = (function() {
         if (message.int64Map != null && Object.hasOwnProperty.call(message, "int64Map"))
             for (var keys = Object.keys(message.int64Map), i = 0; i < keys.length; ++i)
                 writer.uint32(/* id 9, wireType 2 =*/74).fork().uint32(/* id 1, wireType 2 =*/10).string(keys[i]).uint32(/* id 2, wireType 0 =*/16).int64(message.int64Map[keys[i]]).ldelim();
+        if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+            for (var i = 0; i < message.$unknowns.length; ++i)
+                writer.raw(message.$unknowns[i]);
         return writer;
     };
 
@@ -207,6 +212,7 @@ $root.Message = (function() {
             throw Error("max depth exceeded");
         var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.Message(), key, value;
         while (reader.pos < end) {
+            var start = reader.pos;
             var tag = reader.uint32();
             if (tag === _end) {
                 _end = undefined;
@@ -292,6 +298,8 @@ $root.Message = (function() {
                 }
             default:
                 reader.skipType(tag & 7, _depth, tag >>> 3);
+                $util.makeProp(message, "$unknowns", false);
+                (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 break;
             }
         }

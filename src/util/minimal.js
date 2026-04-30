@@ -277,11 +277,14 @@ util.recursionLimit = 100;
  * @memberof util
  * @param {Object.<string,*>} obj Object
  * @param {string} key Property key
+ * @param {boolean} [enumerable=true] Whether the property should be enumerable
  * @returns {undefined}
  */
-util.makeProp = function makeProp(obj, key) {
+util.makeProp = function makeProp(obj, key, enumerable) {
+    if (Object.prototype.hasOwnProperty.call(obj, key))
+        return;
     Object.defineProperty(obj, key, {
-        enumerable: true,
+        enumerable: enumerable === undefined ? true : enumerable,
         configurable: true,
         writable: true
     });

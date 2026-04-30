@@ -545,6 +545,9 @@ export class Message<T extends object = object> {
     /** Reference to the reflected type. */
     public readonly $type: Type;
 
+    /** Unknown fields preserved while decoding. */
+    public $unknowns?: Uint8Array[];
+
     /**
      * Creates a new message of this type using the specified properties.
      * @param [properties] Properties to set
@@ -1175,6 +1178,14 @@ export class Reader {
     public static create(buffer: (Uint8Array|Buffer)): (Reader|BufferReader);
 
     /**
+     * Returns raw bytes from the backing buffer without advancing the reader.
+     * @param start Start offset
+     * @param end End offset
+     * @returns Raw bytes
+     */
+    public raw(start: number, end: number): Uint8Array;
+
+    /**
      * Reads a varint as an unsigned 32 bit value.
      * @returns Value read
      */
@@ -1292,6 +1303,14 @@ export class BufferReader extends Reader {
      * @param buffer Buffer to read from
      */
     constructor(buffer: Buffer);
+
+    /**
+     * Returns raw bytes from the backing buffer without advancing the reader.
+     * @param start Start offset
+     * @param end End offset
+     * @returns Raw bytes
+     */
+    public raw(start: number, end: number): Buffer;
 
     /**
      * Reads a sequence of bytes preceeded by its length as a varint.
@@ -2397,8 +2416,9 @@ export namespace util {
      * Makes a property safe for assignment as an own property.
      * @param obj Object
      * @param key Property key
+     * @param [enumerable=true] Whether the property should be enumerable
      */
-    function makeProp(obj: { [k: string]: any }, key: string): void;
+    function makeProp(obj: { [k: string]: any }, key: string, enumerable?: boolean): void;
 
     /**
      * Converts the first character of a string to lower case.
@@ -2776,6 +2796,13 @@ export class Writer {
     public bytes(value: (Uint8Array|string)): Writer;
 
     /**
+     * Writes raw bytes without a tag or length prefix.
+     * @param value Raw bytes
+     * @returns `this`
+     */
+    public raw(value: Uint8Array): Writer;
+
+    /**
      * Writes a string.
      * @param value Value to write
      * @returns `this`
@@ -2820,6 +2847,13 @@ export class BufferWriter extends Writer {
      * @returns Buffer
      */
     public static alloc(size: number): Buffer;
+
+    /**
+     * Writes raw bytes without a tag or length prefix.
+     * @param value Raw bytes
+     * @returns `this`
+     */
+    public raw(value: Uint8Array): BufferWriter;
 
     /**
      * Finishes the write operation.

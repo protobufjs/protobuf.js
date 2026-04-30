@@ -4,10 +4,12 @@ export namespace vector_tile {
 
     interface ITile {
         layers?: (vector_tile.Tile.ILayer[]|null);
+        $unknowns?: Uint8Array[];
     }
 
     class Tile implements ITile {
         constructor(properties?: vector_tile.ITile);
+        public $unknowns?: Uint8Array[];
         public layers: vector_tile.Tile.ILayer[];
         public static create(properties?: vector_tile.ITile): vector_tile.Tile;
         public static encode(message: vector_tile.ITile, writer?: $protobuf.Writer): $protobuf.Writer;
@@ -38,10 +40,12 @@ export namespace vector_tile {
             uintValue?: (number|Long|null);
             sintValue?: (number|Long|null);
             boolValue?: (boolean|null);
+            $unknowns?: Uint8Array[];
         }
 
         class Value implements IValue {
             constructor(properties?: vector_tile.Tile.IValue);
+            public $unknowns?: Uint8Array[];
             public stringValue: string;
             public floatValue: number;
             public doubleValue: number;
@@ -66,10 +70,12 @@ export namespace vector_tile {
             tags?: (number[]|null);
             type?: (vector_tile.Tile.GeomType|null);
             geometry?: (number[]|null);
+            $unknowns?: Uint8Array[];
         }
 
         class Feature implements IFeature {
             constructor(properties?: vector_tile.Tile.IFeature);
+            public $unknowns?: Uint8Array[];
             public id: (number|Long);
             public tags: number[];
             public type: vector_tile.Tile.GeomType;
@@ -93,10 +99,12 @@ export namespace vector_tile {
             keys?: (string[]|null);
             values?: (vector_tile.Tile.IValue[]|null);
             extent?: (number|null);
+            $unknowns?: Uint8Array[];
         }
 
         class Layer implements ILayer {
             constructor(properties?: vector_tile.Tile.ILayer);
+            public $unknowns?: Uint8Array[];
             public version: number;
             public name: string;
             public features: vector_tile.Tile.IFeature[];

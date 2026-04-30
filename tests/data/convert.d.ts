@@ -10,10 +10,12 @@ export interface IMessage {
     enumVal?: (Message.SomeEnum|null);
     enumRepeated?: (Message.SomeEnum[]|null);
     int64Map?: ({ [k: string]: (number|Long) }|null);
+    $unknowns?: Uint8Array[];
 }
 
 export class Message implements IMessage {
     constructor(properties?: IMessage);
+    public $unknowns?: Uint8Array[];
     public stringVal: string;
     public stringRepeated: string[];
     public uint64Val: (number|Long);

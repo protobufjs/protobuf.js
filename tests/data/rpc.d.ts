@@ -14,10 +14,12 @@ export namespace MyService {
 
 export interface IMyRequest {
     path?: (string|null);
+    $unknowns?: Uint8Array[];
 }
 
 export class MyRequest implements IMyRequest {
     constructor(properties?: IMyRequest);
+    public $unknowns?: Uint8Array[];
     public path: string;
     public static create(properties?: IMyRequest): MyRequest;
     public static encode(message: IMyRequest, writer?: $protobuf.Writer): $protobuf.Writer;
@@ -33,10 +35,12 @@ export class MyRequest implements IMyRequest {
 
 export interface IMyResponse {
     status?: (number|null);
+    $unknowns?: Uint8Array[];
 }
 
 export class MyResponse implements IMyResponse {
     constructor(properties?: IMyResponse);
+    public $unknowns?: Uint8Array[];
     public status: number;
     public static create(properties?: IMyResponse): MyResponse;
     public static encode(message: IMyResponse, writer?: $protobuf.Writer): $protobuf.Writer;

@@ -109,6 +109,15 @@ tape.test("writer & reader", function(test) {
     test.ok(expect("bytes", [], [0]), "should write [] as bytes prefixed with its length as a varint and read it back equally");
     test.ok(expect("bytes", "MTIz", [3,49,50,51]), "should write MTIz as bytes prefixed with its length as a varint and read it back equally");
 
+    // raw bytes
+
+    var rawReader = Reader.create([0,1,2,3]);
+    test.deepEqual(Array.prototype.slice.call(rawReader.raw(1, 3)), [1,2], "should read raw bytes without a length prefix");
+    test.equal(rawReader.pos, 0, "should read raw bytes without advancing");
+    if (protobuf.util.Buffer)
+        test.deepEqual(Reader.create(protobuf.util.Buffer.from([0,1,2,3])).raw(1, 3), protobuf.util.Buffer.from([1,2]), "should preserve buffer backed raw bytes");
+    test.deepEqual(Array.prototype.slice.call(Writer.create().raw([1,2,3]).finish()), [1,2,3], "should write raw bytes without a length prefix");
+
     // skipType
 
     test.test(test.name + " - should allow to skip", function(test) {

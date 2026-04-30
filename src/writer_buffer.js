@@ -54,6 +54,18 @@ BufferWriter.prototype.bytes = function write_bytes_buffer(value) {
     return this;
 };
 
+/**
+ * Writes raw bytes without a tag or length prefix.
+ * @name BufferWriter#raw
+ * @function
+ * @param {Uint8Array} value Raw bytes
+ * @returns {BufferWriter} `this`
+ */
+BufferWriter.prototype.raw = function write_raw_buffer(value) {
+    var len = value.length >>> 0;
+    return len ? this._push(BufferWriter.writeBytesBuffer, len, value) : this;
+};
+
 function writeStringBuffer(val, buf, pos) {
     if (val.length < 40) // plain js is faster for short strings (probably due to redundant assertions)
         util.utf8.write(val, buf, pos);

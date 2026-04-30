@@ -32,6 +32,7 @@ $root.Package = (function() {
      * @property {Object.<string,string>|null} [devDependencies] Package devDependencies
      * @property {string|null} [types] Package types
      * @property {Array.<string>|null} [cliDependencies] Package cliDependencies
+     * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
      */
 
     /**
@@ -41,6 +42,7 @@ $root.Package = (function() {
      * @implements IPackage
      * @constructor
      * @param {IPackage=} [properties] Properties to set
+     * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
      */
     function Package(properties) {
         this.keywords = [];
@@ -255,6 +257,9 @@ $root.Package = (function() {
                 writer.uint32(/* id 18, wireType 2 =*/146).string(message.cliDependencies[i]);
         if (message.versionScheme != null && message.versionScheme.length)
             writer.uint32(/* id 19, wireType 2 =*/154).string(message.versionScheme);
+        if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+            for (var i = 0; i < message.$unknowns.length; ++i)
+                writer.raw(message.$unknowns[i]);
         return writer;
     };
 
@@ -291,6 +296,7 @@ $root.Package = (function() {
             throw Error("max depth exceeded");
         var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.Package(), key, value;
         while (reader.pos < end) {
+            var start = reader.pos;
             var tag = reader.uint32();
             if (tag === _end) {
                 _end = undefined;
@@ -455,6 +461,8 @@ $root.Package = (function() {
                 }
             default:
                 reader.skipType(tag & 7, _depth, tag >>> 3);
+                $util.makeProp(message, "$unknowns", false);
+                (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 break;
             }
         }
@@ -814,6 +822,7 @@ $root.Package = (function() {
          * @interface IRepository
          * @property {string|null} [type] Repository type
          * @property {string|null} [url] Repository url
+         * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
          */
 
         /**
@@ -823,6 +832,7 @@ $root.Package = (function() {
          * @implements IRepository
          * @constructor
          * @param {Package.IRepository=} [properties] Properties to set
+         * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
          */
         function Repository(properties) {
             if (properties)
@@ -875,6 +885,9 @@ $root.Package = (function() {
                 writer.uint32(/* id 1, wireType 2 =*/10).string(message.type);
             if (message.url != null && message.url.length)
                 writer.uint32(/* id 2, wireType 2 =*/18).string(message.url);
+            if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                for (var i = 0; i < message.$unknowns.length; ++i)
+                    writer.raw(message.$unknowns[i]);
             return writer;
         };
 
@@ -911,6 +924,7 @@ $root.Package = (function() {
                 throw Error("max depth exceeded");
             var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.Package.Repository();
             while (reader.pos < end) {
+                var start = reader.pos;
                 var tag = reader.uint32();
                 if (tag === _end) {
                     _end = undefined;
@@ -927,6 +941,8 @@ $root.Package = (function() {
                     }
                 default:
                     reader.skipType(tag & 7, _depth, tag >>> 3);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                     break;
                 }
             }
