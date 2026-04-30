@@ -51,6 +51,8 @@ function decoder(mtype) {
 
             if (types.defaults[type] !== undefined) gen
                 ("value=%j", types.defaults[type]);
+            else if (types.basic[type] === undefined) gen
+                ("value=new types[%i].ctor", i);
             else gen
                 ("value=null");
 

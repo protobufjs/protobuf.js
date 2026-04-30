@@ -63,7 +63,7 @@ tape.test("maps", function(test) {
         var buf = Outer.encode(outer).finish();
         var dec = Outer.decode(buf);
 
-        test.deepEqual(dec, outer, "should decode back the original random map");
+        test.deepEqual(Outer.toObject(dec), outer, "should decode back the original random map");
 
         test.end();
     });
@@ -87,7 +87,20 @@ tape.test("maps", function(test) {
         verifyEncode(test, buf);
 
         var dec = Outer.decode(buf);
-        test.deepEqual(dec, outer, "should decode back the original map");
+        test.deepEqual(Outer.toObject(dec), outer, "should decode back the original map");
+
+        test.end();
+    });
+
+    test.test(test.name + " - omitted message value", function(test) {
+
+        var dec = Outer.decode(Uint8Array.of(0x0a, 0x03, 0x0a, 0x01, 0x61));
+        test.ok(dec.value.a instanceof Inner.ctor, "should decode an omitted message value as a default message");
+        test.deepEqual(
+            Array.prototype.slice.call(Outer.encode(dec).finish()),
+            [ 0x0a, 0x05, 0x0a, 0x01, 0x61, 0x12, 0x00 ],
+            "should re-encode the default message value"
+        );
 
         test.end();
     });
@@ -155,19 +168,19 @@ tape.test("maps", function(test) {
 
         // 1 <chunk> = message(1 <varint> = 0, 2 <chunk> = empty chunk)
         dec = MapMessage.decode(Uint8Array.of(0x0a, 0x04, 0x08, 0x00, 0x12, 0x00));
-        test.deepEqual(dec, value, "should correct decode the buffer without omitted fields");
+        test.deepEqual(MapMessage.toObject(dec), value, "should correct decode the buffer without omitted fields");
 
         // 1 <chunk> = message(1 <varint> = 0)
         dec = MapMessage.decode(Uint8Array.of(0x0a, 0x02, 0x08, 0x00));
-        test.deepEqual(dec, value, "should correct decode the buffer with omitted value");
+        test.deepEqual(MapMessage.toObject(dec), value, "should correct decode the buffer with omitted value");
 
         // 1 <chunk> = message(2 <chunk> = empty chunk)
         dec = MapMessage.decode(Uint8Array.of(0x0a, 0x02, 0x12, 0x00));
-        test.deepEqual(dec, value, "should correct decode the buffer with omitted key");
+        test.deepEqual(MapMessage.toObject(dec), value, "should correct decode the buffer with omitted key");
 
         // 1 <chunk> = empty chunk
         dec = MapMessage.decode(Uint8Array.of(0x0a, 0x00));
-        test.deepEqual(dec, value, "should correct decode the buffer with both key and value omitted");
+        test.deepEqual(MapMessage.toObject(dec), value, "should correct decode the buffer with both key and value omitted");
 
         test.end();
     });

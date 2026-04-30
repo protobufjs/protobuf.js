@@ -232,8 +232,7 @@ var renameVars = {
 };
 
 function buildFunction(type, functionName, gen, scope) {
-    var code = gen.toString(functionName)
-        .replace(/((?!\.)types\[\d+])(\.values)/g, "$1"); // enums: use types[N] instead of reflected types[N].values
+    var code = gen.toString(functionName);
 
     var ast = espree.parse(code);
     /* eslint-disable no-extra-parens */
@@ -260,6 +259,30 @@ function buildFunction(type, functionName, gen, scope) {
                 return {
                     "type": "Identifier",
                     "name": "$root" + type.fullName
+                };
+            // replace types[N].ctor with the field's actual type constructor
+            if (
+                node.type === "MemberExpression"
+             && node.object.type === "MemberExpression"
+             && node.object.object.type === "Identifier" && node.object.object.name === "types"
+             && node.object.property.type === "Literal"
+             && node.property.type === "Identifier" && node.property.name === "ctor"
+            )
+                return {
+                    "type": "Identifier",
+                    "name": "$root" + type.fieldsArray[node.object.property.value].resolvedType.fullName
+                };
+            // replace types[N].values with the field's actual enum object
+            if (
+                node.type === "MemberExpression"
+             && node.object.type === "MemberExpression"
+             && node.object.object.type === "Identifier" && node.object.object.name === "types"
+             && node.object.property.type === "Literal"
+             && node.property.type === "Identifier" && node.property.name === "values"
+            )
+                return {
+                    "type": "Identifier",
+                    "name": "$root" + type.fieldsArray[node.object.property.value].resolvedType.fullName
                 };
             // replace types[N] with the field's actual type
             if (
