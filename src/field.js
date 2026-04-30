@@ -352,8 +352,8 @@ Field.prototype.resolve = function resolve() {
         this.defaultValue = this.typeDefault;
 
     // ensure proper value on prototype
-    if (this.parent instanceof Type)
-        this.parent.ctor.prototype[this.name] = this.defaultValue;
+    if (this.parent instanceof Type && this.parent._ctor)
+        this.parent._ctor.prototype[this.name] = this.defaultValue;
 
     return ReflectionObject.prototype.resolve.call(this);
 };

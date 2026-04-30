@@ -174,8 +174,10 @@ Object.defineProperties(Type.prototype, {
 
             // Messages have non-enumerable default values on their prototype
             var i = 0;
-            for (; i < /* initializes */ this.fieldsArray.length; ++i)
-                this._fieldsArray[i].resolve(); // ensures a proper value
+            for (var field; i < /* initializes */ this.fieldsArray.length; ++i) {
+                field = this._fieldsArray[i].resolve(); // ensures a proper value
+                ctor.prototype[field.name] = field.defaultValue;
+            }
 
             // Messages have non-enumerable getters and setters for each virtual oneof field
             var ctorProperties = {};
@@ -493,15 +495,13 @@ Type.prototype.setup = function setup() {
     // Inject custom wrappers for common types
     var wrapper = wrappers[fullName];
     if (wrapper) {
-        var originalThis = Object.create(this);
-        // if (wrapper.fromObject) {
-            originalThis.fromObject = this.fromObject;
-            this.fromObject = wrapper.fromObject.bind(originalThis);
-        // }
-        // if (wrapper.toObject) {
-            originalThis.toObject = this.toObject;
-            this.toObject = wrapper.toObject.bind(originalThis);
-        // }
+        var wrapperThis = Object.create(this);
+        // Reuse this type's runtime constructor in wrapper fromObject/toObject
+        wrapperThis._ctor = this.ctor;
+        wrapperThis.fromObject = this.fromObject;
+        this.fromObject = wrapper.fromObject.bind(wrapperThis);
+        wrapperThis.toObject = this.toObject;
+        this.toObject = wrapper.toObject.bind(wrapperThis);
     }
 
     return this;
