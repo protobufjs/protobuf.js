@@ -44,12 +44,14 @@ tape.test("reflected types", function(test) {
     type.ctor = MyMessageAuto;
     test.ok(MyMessageAuto.prototype instanceof protobuf.Message, "should properly register a constructor through assignment");
     test.ok(typeof MyMessageAuto.encode === "function", "should populate static methods on assigned constructors");
+    test.equal(new MyMessageAuto().a, 0, "should initialize prototype defaults on assigned constructors");
 
     function MyMessageManual() {}
     MyMessageManual.prototype = Object.create(protobuf.Message.prototype);
     type.ctor = MyMessageManual;
     test.ok(MyMessageManual.prototype instanceof protobuf.Message, "should properly register a constructor through assignment if already extending message");
     test.ok(typeof MyMessageManual.encode === "function", "should populate static methods on assigned constructors");
+    test.equal(new MyMessageManual().a, 0, "should initialize prototype defaults on assigned constructors if already extending message");
 
     type = protobuf.Type.fromJSON("My", {
         fields: {
