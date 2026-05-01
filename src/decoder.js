@@ -41,9 +41,7 @@ function decoder(mtype) {
             ("break")
         ("}")
         ("var u=t&7")
-        ("switch(t>>>=3){")
-            ("case 0:")
-                ("throw Error(\"illegal tag: field number 0\")");
+        ("switch(t>>>=3){");
 
     for (i = 0; i < /* initializes */ mtype.fieldsArray.length; ++i) {
         var field = mtype._fieldsArray[i].resolve(),
@@ -75,8 +73,6 @@ function decoder(mtype) {
                     ("var t2=r.uint32()")
                     ("u=t2&7")
                     ("switch(t2>>>=3){")
-                        ("case 0:")
-                            ("throw Error(\"illegal tag: field number 0\")")
                         ("case 1:")
                             ("if(u!==%i)", types.mapKey[field.keyType])
                                 ("break")

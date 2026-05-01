@@ -55,8 +55,6 @@ $root.Test = (function() {
             }
             var wireType = tag & 7;
             switch (tag >>>= 3) {
-            case 0:
-                throw Error("illegal tag: field number 0");
             case 1: {
                     if (wireType !== 2)
                         break;
@@ -145,8 +143,6 @@ $root.Test = (function() {
                 }
                 var wireType = tag & 7;
                 switch (tag >>>= 3) {
-                case 0:
-                    throw Error("illegal tag: field number 0");
                 case 1: {
                         if (wireType !== 0)
                             break;
@@ -223,8 +219,6 @@ $root.Test = (function() {
                     }
                     var wireType = tag & 7;
                     switch (tag >>>= 3) {
-                    case 0:
-                        throw Error("illegal tag: field number 0");
                     case 1: {
                             if (wireType !== 0)
                                 break;
@@ -328,8 +322,6 @@ $root.Outer = (function() {
             }
             var wireType = tag & 7;
             switch (tag >>>= 3) {
-            case 0:
-                throw Error("illegal tag: field number 0");
             case 1: {
                     if (wireType === 2) {
                         if (!(message.bool && message.bool.length))

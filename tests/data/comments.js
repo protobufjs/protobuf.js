@@ -141,8 +141,6 @@ $root.Test1 = (function() {
             }
             var wireType = tag & 7;
             switch (tag >>>= 3) {
-            case 0:
-                throw Error("illegal tag: field number 0");
             case 1: {
                     if (wireType !== 2)
                         break;
@@ -403,8 +401,6 @@ $root.Test2 = (function() {
             }
             var wireType = tag & 7;
             switch (tag >>>= 3) {
-            case 0:
-                throw Error("illegal tag: field number 0");
             }
             reader.skipType(wireType, _depth, tag);
             $util.makeProp(message, "$unknowns", false);

@@ -182,8 +182,6 @@ export const MyRequest = $root.MyRequest = (() => {
             }
             let wireType = tag & 7;
             switch (tag >>>= 3) {
-            case 0:
-                throw Error("illegal tag: field number 0");
             case 1: {
                     if (wireType !== 2)
                         break;
@@ -418,8 +416,6 @@ export const MyResponse = $root.MyResponse = (() => {
             }
             let wireType = tag & 7;
             switch (tag >>>= 3) {
-            case 0:
-                throw Error("illegal tag: field number 0");
             case 2: {
                     if (wireType !== 0)
                         break;

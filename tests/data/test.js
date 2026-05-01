@@ -123,8 +123,6 @@ $root.jspb = (function() {
                     }
                     var wireType = tag & 7;
                     switch (tag >>>= 3) {
-                    case 0:
-                        throw Error("illegal tag: field number 0");
                     }
                     reader.skipType(wireType, _depth, tag);
                     $util.makeProp(message, "$unknowns", false);
@@ -350,8 +348,6 @@ $root.jspb = (function() {
                     }
                     var wireType = tag & 7;
                     switch (tag >>>= 3) {
-                    case 0:
-                        throw Error("illegal tag: field number 0");
                     case 1: {
                             if (wireType !== 0)
                                 break;
@@ -624,8 +620,6 @@ $root.jspb = (function() {
                     }
                     var wireType = tag & 7;
                     switch (tag >>>= 3) {
-                    case 0:
-                        throw Error("illegal tag: field number 0");
                     case 1: {
                             if (wireType !== 2)
                                 break;
@@ -913,8 +907,6 @@ $root.jspb = (function() {
                     }
                     var wireType = tag & 7;
                     switch (tag >>>= 3) {
-                    case 0:
-                        throw Error("illegal tag: field number 0");
                     case 1: {
                             if (wireType !== 2)
                                 break;
@@ -1204,8 +1196,6 @@ $root.jspb = (function() {
                     }
                     var wireType = tag & 7;
                     switch (tag >>>= 3) {
-                    case 0:
-                        throw Error("illegal tag: field number 0");
                     case 1: {
                             if (wireType !== 2)
                                 break;
@@ -1530,8 +1520,6 @@ $root.jspb = (function() {
                     }
                     var wireType = tag & 7;
                     switch (tag >>>= 3) {
-                    case 0:
-                        throw Error("illegal tag: field number 0");
                     case 1: {
                             if (wireType !== 2)
                                 break;
@@ -1857,8 +1845,6 @@ $root.jspb = (function() {
                         }
                         var wireType = tag & 7;
                         switch (tag >>>= 3) {
-                        case 0:
-                            throw Error("illegal tag: field number 0");
                         case 1: {
                                 if (wireType !== 0)
                                     break;
@@ -2149,8 +2135,6 @@ $root.jspb = (function() {
                     }
                     var wireType = tag & 7;
                     switch (tag >>>= 3) {
-                    case 0:
-                        throw Error("illegal tag: field number 0");
                     case 1: {
                             if (wireType !== 2)
                                 break;
@@ -2590,8 +2574,6 @@ $root.jspb = (function() {
                     }
                     var wireType = tag & 7;
                     switch (tag >>>= 3) {
-                    case 0:
-                        throw Error("illegal tag: field number 0");
                     case 1: {
                             if (wireType !== 2)
                                 break;
@@ -2917,8 +2899,6 @@ $root.jspb = (function() {
                         }
                         var wireType = tag & 7;
                         switch (tag >>>= 3) {
-                        case 0:
-                            throw Error("illegal tag: field number 0");
                         case 2: {
                                 if (wireType !== 0)
                                     break;
@@ -3142,8 +3122,6 @@ $root.jspb = (function() {
                     }
                     var wireType = tag & 7;
                     switch (tag >>>= 3) {
-                    case 0:
-                        throw Error("illegal tag: field number 0");
                     }
                     reader.skipType(wireType, _depth, tag);
                     $util.makeProp(message, "$unknowns", false);
@@ -3352,8 +3330,6 @@ $root.jspb = (function() {
                         }
                         var wireType = tag & 7;
                         switch (tag >>>= 3) {
-                        case 0:
-                            throw Error("illegal tag: field number 0");
                         case 1: {
                                 if (wireType !== 0)
                                     break;
@@ -3587,8 +3563,6 @@ $root.jspb = (function() {
                     }
                     var wireType = tag & 7;
                     switch (tag >>>= 3) {
-                    case 0:
-                        throw Error("illegal tag: field number 0");
                     case 1: {
                             if (wireType !== 2)
                                 break;
@@ -3808,8 +3782,6 @@ $root.jspb = (function() {
                     }
                     var wireType = tag & 7;
                     switch (tag >>>= 3) {
-                    case 0:
-                        throw Error("illegal tag: field number 0");
                     }
                     reader.skipType(wireType, _depth, tag);
                     $util.makeProp(message, "$unknowns", false);
@@ -4076,8 +4048,6 @@ $root.jspb = (function() {
                     }
                     var wireType = tag & 7;
                     switch (tag >>>= 3) {
-                    case 0:
-                        throw Error("illegal tag: field number 0");
                     case 1: {
                             if (wireType !== 2)
                                 break;
@@ -4518,8 +4488,6 @@ $root.jspb = (function() {
                     }
                     var wireType = tag & 7;
                     switch (tag >>>= 3) {
-                    case 0:
-                        throw Error("illegal tag: field number 0");
                     case 1: {
                             if (wireType !== 5)
                                 break;
@@ -4949,8 +4917,6 @@ $root.jspb = (function() {
                     }
                     var wireType = tag & 7;
                     switch (tag >>>= 3) {
-                    case 0:
-                        throw Error("illegal tag: field number 0");
                     case 1: {
                             if (wireType !== 2)
                                 break;
@@ -5291,8 +5257,6 @@ $root.jspb = (function() {
                     }
                     var wireType = tag & 7;
                     switch (tag >>>= 3) {
-                    case 0:
-                        throw Error("illegal tag: field number 0");
                     case 2: {
                             if (wireType !== 2)
                                 break;
@@ -5600,8 +5564,6 @@ $root.jspb = (function() {
                     }
                     var wireType = tag & 7;
                     switch (tag >>>= 3) {
-                    case 0:
-                        throw Error("illegal tag: field number 0");
                     case 1: {
                             if (wireType !== 3)
                                 break;
@@ -5994,8 +5956,6 @@ $root.jspb = (function() {
                         }
                         var wireType = tag & 7;
                         switch (tag >>>= 3) {
-                        case 0:
-                            throw Error("illegal tag: field number 0");
                         case 1: {
                                 if (wireType !== 2)
                                     break;
@@ -6263,8 +6223,6 @@ $root.jspb = (function() {
                         }
                         var wireType = tag & 7;
                         switch (tag >>>= 3) {
-                        case 0:
-                            throw Error("illegal tag: field number 0");
                         case 1: {
                                 if (wireType !== 2)
                                     break;
@@ -6495,8 +6453,6 @@ $root.jspb = (function() {
                         }
                         var wireType = tag & 7;
                         switch (tag >>>= 3) {
-                        case 0:
-                            throw Error("illegal tag: field number 0");
                         case 1: {
                                 if (wireType !== 2)
                                     break;
@@ -6727,8 +6683,6 @@ $root.jspb = (function() {
                         }
                         var wireType = tag & 7;
                         switch (tag >>>= 3) {
-                        case 0:
-                            throw Error("illegal tag: field number 0");
                         case 1: {
                                 if (wireType !== 2)
                                     break;
@@ -6963,8 +6917,6 @@ $root.jspb = (function() {
                             }
                             var wireType = tag & 7;
                             switch (tag >>>= 3) {
-                            case 0:
-                                throw Error("illegal tag: field number 0");
                             case 1: {
                                     if (wireType !== 2)
                                         break;
@@ -7197,8 +7149,6 @@ $root.jspb = (function() {
                         }
                         var wireType = tag & 7;
                         switch (tag >>>= 3) {
-                        case 0:
-                            throw Error("illegal tag: field number 0");
                         case 1: {
                                 if (wireType !== 0)
                                     break;
@@ -7466,8 +7416,6 @@ $root.jspb = (function() {
                     }
                     var wireType = tag & 7;
                     switch (tag >>>= 3) {
-                    case 0:
-                        throw Error("illegal tag: field number 0");
                     case 1: {
                             if (wireType !== 2)
                                 break;
@@ -7709,8 +7657,6 @@ $root.jspb = (function() {
                     }
                     var wireType = tag & 7;
                     switch (tag >>>= 3) {
-                    case 0:
-                        throw Error("illegal tag: field number 0");
                     case 1: {
                             if (wireType !== 0)
                                 break;
@@ -7945,8 +7891,6 @@ $root.jspb = (function() {
                     }
                     var wireType = tag & 7;
                     switch (tag >>>= 3) {
-                    case 0:
-                        throw Error("illegal tag: field number 0");
                     }
                     reader.skipType(wireType, _depth, tag);
                     $util.makeProp(message, "$unknowns", false);
@@ -8306,8 +8250,6 @@ $root.jspb = (function() {
                     }
                     var wireType = tag & 7;
                     switch (tag >>>= 3) {
-                    case 0:
-                        throw Error("illegal tag: field number 0");
                     case 3: {
                             if (wireType !== 2)
                                 break;
@@ -8745,8 +8687,6 @@ $root.jspb = (function() {
                     }
                     var wireType = tag & 7;
                     switch (tag >>>= 3) {
-                    case 0:
-                        throw Error("illegal tag: field number 0");
                     case 1: {
                             if (wireType !== 0)
                                 break;
@@ -9148,8 +9088,6 @@ $root.jspb = (function() {
                     }
                     var wireType = tag & 7;
                     switch (tag >>>= 3) {
-                    case 0:
-                        throw Error("illegal tag: field number 0");
                     case 1: {
                             if (wireType !== 2)
                                 break;
@@ -9162,8 +9100,6 @@ $root.jspb = (function() {
                                 var tag2 = reader.uint32();
                                 wireType = tag2 & 7;
                                 switch (tag2 >>>= 3) {
-                                case 0:
-                                    throw Error("illegal tag: field number 0");
                                 case 1:
                                     if (wireType !== 2)
                                         break;
@@ -9194,8 +9130,6 @@ $root.jspb = (function() {
                                 var tag2 = reader.uint32();
                                 wireType = tag2 & 7;
                                 switch (tag2 >>>= 3) {
-                                case 0:
-                                    throw Error("illegal tag: field number 0");
                                 case 1:
                                     if (wireType !== 2)
                                         break;
@@ -9226,8 +9160,6 @@ $root.jspb = (function() {
                                 var tag2 = reader.uint32();
                                 wireType = tag2 & 7;
                                 switch (tag2 >>>= 3) {
-                                case 0:
-                                    throw Error("illegal tag: field number 0");
                                 case 1:
                                     if (wireType !== 2)
                                         break;
@@ -9258,8 +9190,6 @@ $root.jspb = (function() {
                                 var tag2 = reader.uint32();
                                 wireType = tag2 & 7;
                                 switch (tag2 >>>= 3) {
-                                case 0:
-                                    throw Error("illegal tag: field number 0");
                                 case 1:
                                     if (wireType !== 2)
                                         break;
@@ -9290,8 +9220,6 @@ $root.jspb = (function() {
                                 var tag2 = reader.uint32();
                                 wireType = tag2 & 7;
                                 switch (tag2 >>>= 3) {
-                                case 0:
-                                    throw Error("illegal tag: field number 0");
                                 case 1:
                                     if (wireType !== 2)
                                         break;
@@ -9322,8 +9250,6 @@ $root.jspb = (function() {
                                 var tag2 = reader.uint32();
                                 wireType = tag2 & 7;
                                 switch (tag2 >>>= 3) {
-                                case 0:
-                                    throw Error("illegal tag: field number 0");
                                 case 1:
                                     if (wireType !== 2)
                                         break;
@@ -9354,8 +9280,6 @@ $root.jspb = (function() {
                                 var tag2 = reader.uint32();
                                 wireType = tag2 & 7;
                                 switch (tag2 >>>= 3) {
-                                case 0:
-                                    throw Error("illegal tag: field number 0");
                                 case 1:
                                     if (wireType !== 2)
                                         break;
@@ -9386,8 +9310,6 @@ $root.jspb = (function() {
                                 var tag2 = reader.uint32();
                                 wireType = tag2 & 7;
                                 switch (tag2 >>>= 3) {
-                                case 0:
-                                    throw Error("illegal tag: field number 0");
                                 case 1:
                                     if (wireType !== 0)
                                         break;
@@ -9416,8 +9338,6 @@ $root.jspb = (function() {
                                 var tag2 = reader.uint32();
                                 wireType = tag2 & 7;
                                 switch (tag2 >>>= 3) {
-                                case 0:
-                                    throw Error("illegal tag: field number 0");
                                 case 1:
                                     if (wireType !== 0)
                                         break;
@@ -9446,8 +9366,6 @@ $root.jspb = (function() {
                                 var tag2 = reader.uint32();
                                 wireType = tag2 & 7;
                                 switch (tag2 >>>= 3) {
-                                case 0:
-                                    throw Error("illegal tag: field number 0");
                                 case 1:
                                     if (wireType !== 0)
                                         break;
@@ -9482,8 +9400,6 @@ $root.jspb = (function() {
                                 var tag2 = reader.uint32();
                                 wireType = tag2 & 7;
                                 switch (tag2 >>>= 3) {
-                                case 0:
-                                    throw Error("illegal tag: field number 0");
                                 case 1:
                                     if (wireType !== 2)
                                         break;
@@ -10100,8 +10016,6 @@ $root.jspb = (function() {
                     }
                     var wireType = tag & 7;
                     switch (tag >>>= 3) {
-                    case 0:
-                        throw Error("illegal tag: field number 0");
                     case 1: {
                             if (wireType !== 0)
                                 break;
@@ -10321,8 +10235,6 @@ $root.jspb = (function() {
                     }
                     var wireType = tag & 7;
                     switch (tag >>>= 3) {
-                    case 0:
-                        throw Error("illegal tag: field number 0");
                     }
                     reader.skipType(wireType, _depth, tag);
                     $util.makeProp(message, "$unknowns", false);
@@ -10520,8 +10432,6 @@ $root.jspb = (function() {
                         }
                         var wireType = tag & 7;
                         switch (tag >>>= 3) {
-                        case 0:
-                            throw Error("illegal tag: field number 0");
                         }
                         reader.skipType(wireType, _depth, tag);
                         $util.makeProp(message, "$unknowns", false);
@@ -10730,8 +10640,6 @@ $root.jspb = (function() {
                             }
                             var wireType = tag & 7;
                             switch (tag >>>= 3) {
-                            case 0:
-                                throw Error("illegal tag: field number 0");
                             case 1: {
                                     if (wireType !== 0)
                                         break;
@@ -10994,8 +10902,6 @@ $root.google = (function() {
                     }
                     var wireType = tag & 7;
                     switch (tag >>>= 3) {
-                    case 0:
-                        throw Error("illegal tag: field number 0");
                     case 1: {
                             if (wireType !== 2)
                                 break;
@@ -11438,8 +11344,6 @@ $root.google = (function() {
                     }
                     var wireType = tag & 7;
                     switch (tag >>>= 3) {
-                    case 0:
-                        throw Error("illegal tag: field number 0");
                     case 1: {
                             if (wireType !== 2)
                                 break;
@@ -12208,8 +12112,6 @@ $root.google = (function() {
                     }
                     var wireType = tag & 7;
                     switch (tag >>>= 3) {
-                    case 0:
-                        throw Error("illegal tag: field number 0");
                     case 1: {
                             if (wireType !== 2)
                                 break;
@@ -12778,8 +12680,6 @@ $root.google = (function() {
                         }
                         var wireType = tag & 7;
                         switch (tag >>>= 3) {
-                        case 0:
-                            throw Error("illegal tag: field number 0");
                         case 1: {
                                 if (wireType !== 0)
                                     break;
@@ -13055,8 +12955,6 @@ $root.google = (function() {
                         }
                         var wireType = tag & 7;
                         switch (tag >>>= 3) {
-                        case 0:
-                            throw Error("illegal tag: field number 0");
                         case 1: {
                                 if (wireType !== 0)
                                     break;
@@ -13342,8 +13240,6 @@ $root.google = (function() {
                     }
                     var wireType = tag & 7;
                     switch (tag >>>= 3) {
-                    case 0:
-                        throw Error("illegal tag: field number 0");
                     case 999: {
                             if (wireType !== 2)
                                 break;
@@ -13722,8 +13618,6 @@ $root.google = (function() {
                         }
                         var wireType = tag & 7;
                         switch (tag >>>= 3) {
-                        case 0:
-                            throw Error("illegal tag: field number 0");
                         case 1: {
                                 if (wireType !== 0)
                                     break;
@@ -14138,8 +14032,6 @@ $root.google = (function() {
                     }
                     var wireType = tag & 7;
                     switch (tag >>>= 3) {
-                    case 0:
-                        throw Error("illegal tag: field number 0");
                     case 1: {
                             if (wireType !== 2)
                                 break;
@@ -14712,8 +14604,6 @@ $root.google = (function() {
                     }
                     var wireType = tag & 7;
                     switch (tag >>>= 3) {
-                    case 0:
-                        throw Error("illegal tag: field number 0");
                     case 1: {
                             if (wireType !== 2)
                                 break;
@@ -15025,8 +14915,6 @@ $root.google = (function() {
                     }
                     var wireType = tag & 7;
                     switch (tag >>>= 3) {
-                    case 0:
-                        throw Error("illegal tag: field number 0");
                     case 1: {
                             if (wireType !== 2)
                                 break;
@@ -15419,8 +15307,6 @@ $root.google = (function() {
                         }
                         var wireType = tag & 7;
                         switch (tag >>>= 3) {
-                        case 0:
-                            throw Error("illegal tag: field number 0");
                         case 1: {
                                 if (wireType !== 0)
                                     break;
@@ -15691,8 +15577,6 @@ $root.google = (function() {
                     }
                     var wireType = tag & 7;
                     switch (tag >>>= 3) {
-                    case 0:
-                        throw Error("illegal tag: field number 0");
                     case 1: {
                             if (wireType !== 2)
                                 break;
@@ -15981,8 +15865,6 @@ $root.google = (function() {
                     }
                     var wireType = tag & 7;
                     switch (tag >>>= 3) {
-                    case 0:
-                        throw Error("illegal tag: field number 0");
                     case 1: {
                             if (wireType !== 2)
                                 break;
@@ -16322,8 +16204,6 @@ $root.google = (function() {
                     }
                     var wireType = tag & 7;
                     switch (tag >>>= 3) {
-                    case 0:
-                        throw Error("illegal tag: field number 0");
                     case 1: {
                             if (wireType !== 2)
                                 break;
@@ -16852,8 +16732,6 @@ $root.google = (function() {
                     }
                     var wireType = tag & 7;
                     switch (tag >>>= 3) {
-                    case 0:
-                        throw Error("illegal tag: field number 0");
                     case 1: {
                             if (wireType !== 2)
                                 break;
@@ -17498,8 +17376,6 @@ $root.google = (function() {
                     }
                     var wireType = tag & 7;
                     switch (tag >>>= 3) {
-                    case 0:
-                        throw Error("illegal tag: field number 0");
                     case 1: {
                             if (wireType !== 0)
                                 break;
@@ -17989,8 +17865,6 @@ $root.google = (function() {
                     }
                     var wireType = tag & 7;
                     switch (tag >>>= 3) {
-                    case 0:
-                        throw Error("illegal tag: field number 0");
                     case 1: {
                             if (wireType !== 0)
                                 break;
@@ -18693,8 +18567,6 @@ $root.google = (function() {
                         }
                         var wireType = tag & 7;
                         switch (tag >>>= 3) {
-                        case 0:
-                            throw Error("illegal tag: field number 0");
                         case 3: {
                                 if (wireType !== 0)
                                     break;
@@ -19042,8 +18914,6 @@ $root.google = (function() {
                         }
                         var wireType = tag & 7;
                         switch (tag >>>= 3) {
-                        case 0:
-                            throw Error("illegal tag: field number 0");
                         case 1: {
                                 if (wireType !== 0)
                                     break;
@@ -19540,8 +19410,6 @@ $root.google = (function() {
                     }
                     var wireType = tag & 7;
                     switch (tag >>>= 3) {
-                    case 0:
-                        throw Error("illegal tag: field number 0");
                     case 1: {
                             if (wireType !== 2)
                                 break;
@@ -19863,8 +19731,6 @@ $root.google = (function() {
                     }
                     var wireType = tag & 7;
                     switch (tag >>>= 3) {
-                    case 0:
-                        throw Error("illegal tag: field number 0");
                     case 2: {
                             if (wireType !== 0)
                                 break;
@@ -20237,8 +20103,6 @@ $root.google = (function() {
                     }
                     var wireType = tag & 7;
                     switch (tag >>>= 3) {
-                    case 0:
-                        throw Error("illegal tag: field number 0");
                     case 1: {
                             if (wireType !== 0)
                                 break;
@@ -20580,8 +20444,6 @@ $root.google = (function() {
                     }
                     var wireType = tag & 7;
                     switch (tag >>>= 3) {
-                    case 0:
-                        throw Error("illegal tag: field number 0");
                     case 34: {
                             if (wireType !== 2)
                                 break;
@@ -20901,8 +20763,6 @@ $root.google = (function() {
                     }
                     var wireType = tag & 7;
                     switch (tag >>>= 3) {
-                    case 0:
-                        throw Error("illegal tag: field number 0");
                     case 33: {
                             if (wireType !== 0)
                                 break;
@@ -21309,8 +21169,6 @@ $root.google = (function() {
                     }
                     var wireType = tag & 7;
                     switch (tag >>>= 3) {
-                    case 0:
-                        throw Error("illegal tag: field number 0");
                     case 2: {
                             if (wireType !== 2)
                                 break;
@@ -21689,8 +21547,6 @@ $root.google = (function() {
                         }
                         var wireType = tag & 7;
                         switch (tag >>>= 3) {
-                        case 0:
-                            throw Error("illegal tag: field number 0");
                         case 1: {
                                 if (wireType !== 2)
                                     break;
@@ -22018,8 +21874,6 @@ $root.google = (function() {
                     }
                     var wireType = tag & 7;
                     switch (tag >>>= 3) {
-                    case 0:
-                        throw Error("illegal tag: field number 0");
                     case 1: {
                             if (wireType !== 0)
                                 break;
@@ -22656,8 +22510,6 @@ $root.google = (function() {
                         }
                         var wireType = tag & 7;
                         switch (tag >>>= 3) {
-                        case 0:
-                            throw Error("illegal tag: field number 0");
                         }
                         reader.skipType(wireType, _depth, tag);
                         $util.makeProp(message, "$unknowns", false);
@@ -22916,8 +22768,6 @@ $root.google = (function() {
                     }
                     var wireType = tag & 7;
                     switch (tag >>>= 3) {
-                    case 0:
-                        throw Error("illegal tag: field number 0");
                     case 1: {
                             if (wireType !== 2)
                                 break;
@@ -23354,8 +23204,6 @@ $root.google = (function() {
                         }
                         var wireType = tag & 7;
                         switch (tag >>>= 3) {
-                        case 0:
-                            throw Error("illegal tag: field number 0");
                         case 3: {
                                 if (wireType !== 0)
                                     break;
@@ -23699,8 +23547,6 @@ $root.google = (function() {
                     }
                     var wireType = tag & 7;
                     switch (tag >>>= 3) {
-                    case 0:
-                        throw Error("illegal tag: field number 0");
                     case 1: {
                             if (wireType !== 2)
                                 break;
@@ -24003,8 +23849,6 @@ $root.google = (function() {
                         }
                         var wireType = tag & 7;
                         switch (tag >>>= 3) {
-                        case 0:
-                            throw Error("illegal tag: field number 0");
                         case 1: {
                                 if (wireType === 2) {
                                     if (!(message.path && message.path.length))
@@ -24357,8 +24201,6 @@ $root.google = (function() {
                     }
                     var wireType = tag & 7;
                     switch (tag >>>= 3) {
-                    case 0:
-                        throw Error("illegal tag: field number 0");
                     case 1: {
                             if (wireType !== 2)
                                 break;
@@ -24654,8 +24496,6 @@ $root.google = (function() {
                         }
                         var wireType = tag & 7;
                         switch (tag >>>= 3) {
-                        case 0:
-                            throw Error("illegal tag: field number 0");
                         case 1: {
                                 if (wireType === 2) {
                                     if (!(message.path && message.path.length))

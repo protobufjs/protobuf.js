@@ -127,8 +127,6 @@ $root.vector_tile = (function() {
                 }
                 var wireType = tag & 7;
                 switch (tag >>>= 3) {
-                case 0:
-                    throw Error("illegal tag: field number 0");
                 case 3: {
                         if (wireType !== 2)
                             break;
@@ -459,8 +457,6 @@ $root.vector_tile = (function() {
                     }
                     var wireType = tag & 7;
                     switch (tag >>>= 3) {
-                    case 0:
-                        throw Error("illegal tag: field number 0");
                     case 1: {
                             if (wireType !== 2)
                                 break;
@@ -861,8 +857,6 @@ $root.vector_tile = (function() {
                     }
                     var wireType = tag & 7;
                     switch (tag >>>= 3) {
-                    case 0:
-                        throw Error("illegal tag: field number 0");
                     case 1: {
                             if (wireType !== 0)
                                 break;
@@ -1284,8 +1278,6 @@ $root.vector_tile = (function() {
                     }
                     var wireType = tag & 7;
                     switch (tag >>>= 3) {
-                    case 0:
-                        throw Error("illegal tag: field number 0");
                     case 15: {
                             if (wireType !== 0)
                                 break;

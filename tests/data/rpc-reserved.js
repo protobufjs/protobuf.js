@@ -184,8 +184,6 @@ $root.MyRequest = (function() {
             }
             var wireType = tag & 7;
             switch (tag >>>= 3) {
-            case 0:
-                throw Error("illegal tag: field number 0");
             case 1: {
                     if (wireType !== 2)
                         break;
@@ -420,8 +418,6 @@ $root.MyResponse = (function() {
             }
             var wireType = tag & 7;
             switch (tag >>>= 3) {
-            case 0:
-                throw Error("illegal tag: field number 0");
             case 2: {
                     if (wireType !== 0)
                         break;

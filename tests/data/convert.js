@@ -220,8 +220,6 @@ $root.Message = (function() {
             }
             var wireType = tag & 7;
             switch (tag >>>= 3) {
-            case 0:
-                throw Error("illegal tag: field number 0");
             case 1: {
                     if (wireType !== 2)
                         break;
@@ -318,8 +316,6 @@ $root.Message = (function() {
                         var tag2 = reader.uint32();
                         wireType = tag2 & 7;
                         switch (tag2 >>>= 3) {
-                        case 0:
-                            throw Error("illegal tag: field number 0");
                         case 1:
                             if (wireType !== 2)
                                 break;
