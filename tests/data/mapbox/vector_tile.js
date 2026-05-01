@@ -125,19 +125,20 @@ $root.vector_tile = (function() {
                     _end = undefined;
                     break;
                 }
-                switch (tag) {
-                case 26: {
+                var wireType = tag & 7;
+                switch (tag >>>= 3) {
+                case 3: {
+                        if (wireType !== 2)
+                            break;
                         if (!(message.layers && message.layers.length))
                             message.layers = [];
                         message.layers.push($root.vector_tile.Tile.Layer.decode(reader, reader.uint32(), undefined, _depth + 1));
-                        break;
+                        continue;
                     }
-                default:
-                    reader.skipType(tag & 7, _depth, tag >>> 3);
-                    $util.makeProp(message, "$unknowns", false);
-                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
-                    break;
                 }
+                reader.skipType(wireType, _depth, tag);
+                $util.makeProp(message, "$unknowns", false);
+                (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
             }
             if (_end !== undefined)
                 throw Error("missing end group");
@@ -454,41 +455,54 @@ $root.vector_tile = (function() {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 10: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 1: {
+                            if (wireType !== 2)
+                                break;
                             message.stringValue = reader.string();
-                            break;
+                            continue;
                         }
-                    case 21: {
+                    case 2: {
+                            if (wireType !== 5)
+                                break;
                             message.floatValue = reader.float();
-                            break;
+                            continue;
                         }
-                    case 25: {
+                    case 3: {
+                            if (wireType !== 1)
+                                break;
                             message.doubleValue = reader.double();
-                            break;
+                            continue;
                         }
-                    case 32: {
+                    case 4: {
+                            if (wireType !== 0)
+                                break;
                             message.intValue = reader.int64();
-                            break;
+                            continue;
                         }
-                    case 40: {
+                    case 5: {
+                            if (wireType !== 0)
+                                break;
                             message.uintValue = reader.uint64();
-                            break;
+                            continue;
                         }
-                    case 48: {
+                    case 6: {
+                            if (wireType !== 0)
+                                break;
                             message.sintValue = reader.sint64();
-                            break;
+                            continue;
                         }
-                    case 56: {
+                    case 7: {
+                            if (wireType !== 0)
+                                break;
                             message.boolValue = reader.bool();
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        $util.makeProp(message, "$unknowns", false);
-                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -841,45 +855,56 @@ $root.vector_tile = (function() {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 8: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 1: {
+                            if (wireType !== 0)
+                                break;
                             message.id = reader.uint64();
-                            break;
+                            continue;
                         }
-                    case 16:
-                    case 18: {
-                            if (!(message.tags && message.tags.length))
-                                message.tags = [];
-                            if ((tag & 7) === 2) {
+                    case 2: {
+                            if (wireType === 2) {
+                                if (!(message.tags && message.tags.length))
+                                    message.tags = [];
                                 var end2 = reader.uint32() + reader.pos;
                                 while (reader.pos < end2)
                                     message.tags.push(reader.uint32());
-                            } else
-                                message.tags.push(reader.uint32());
-                            break;
+                                continue;
+                            }
+                            if (wireType !== 0)
+                                break;
+                            if (!(message.tags && message.tags.length))
+                                message.tags = [];
+                            message.tags.push(reader.uint32());
+                            continue;
                         }
-                    case 24: {
+                    case 3: {
+                            if (wireType !== 0)
+                                break;
                             message.type = reader.int32();
-                            break;
+                            continue;
                         }
-                    case 32:
-                    case 34: {
-                            if (!(message.geometry && message.geometry.length))
-                                message.geometry = [];
-                            if ((tag & 7) === 2) {
+                    case 4: {
+                            if (wireType === 2) {
+                                if (!(message.geometry && message.geometry.length))
+                                    message.geometry = [];
                                 var end2 = reader.uint32() + reader.pos;
                                 while (reader.pos < end2)
                                     message.geometry.push(reader.uint32());
-                            } else
-                                message.geometry.push(reader.uint32());
-                            break;
+                                continue;
+                            }
+                            if (wireType !== 0)
+                                break;
+                            if (!(message.geometry && message.geometry.length))
+                                message.geometry = [];
+                            message.geometry.push(reader.uint32());
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        $util.makeProp(message, "$unknowns", false);
-                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -1251,43 +1276,54 @@ $root.vector_tile = (function() {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 120: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 15: {
+                            if (wireType !== 0)
+                                break;
                             message.version = reader.uint32();
-                            break;
+                            continue;
                         }
-                    case 10: {
+                    case 1: {
+                            if (wireType !== 2)
+                                break;
                             message.name = reader.string();
-                            break;
+                            continue;
                         }
-                    case 18: {
+                    case 2: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.features && message.features.length))
                                 message.features = [];
                             message.features.push($root.vector_tile.Tile.Feature.decode(reader, reader.uint32(), undefined, _depth + 1));
-                            break;
+                            continue;
                         }
-                    case 26: {
+                    case 3: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.keys && message.keys.length))
                                 message.keys = [];
                             message.keys.push(reader.string());
-                            break;
+                            continue;
                         }
-                    case 34: {
+                    case 4: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.values && message.values.length))
                                 message.values = [];
                             message.values.push($root.vector_tile.Tile.Value.decode(reader, reader.uint32(), undefined, _depth + 1));
-                            break;
+                            continue;
                         }
-                    case 40: {
+                    case 5: {
+                            if (wireType !== 0)
+                                break;
                             message.extent = reader.uint32();
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        $util.makeProp(message, "$unknowns", false);
-                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");

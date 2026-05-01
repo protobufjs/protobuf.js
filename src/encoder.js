@@ -88,18 +88,8 @@ function encoder(mtype) {
 
         // Non-repeated
         } else {
-            if (!field.required) {
-                if (wireType === undefined || field.hasPresence) gen
+            if (!field.required) gen
     ("if(%s!=null&&Object.hasOwnProperty.call(m,%j))", ref, field.name); // !== undefined && !== null
-                else if (type === "string" || type === "bytes") gen
-    ("if(%s!=null&&%s.length)", ref, ref);
-                else if (types.long[type] !== undefined) gen
-    ("if(%s!=null&&(typeof %s===\"object\"?%s.low||%s.high:Number(%s)!==0))", ref, ref, ref, ref, ref);
-                else if (type === "bool") gen
-    ("if(%s)", ref);
-                else gen
-    ("if(%s!=null&&Number(%s)!==0)", ref, ref);
-            }
 
             if (wireType === undefined)
         genTypePartial(gen, field, index, ref);

@@ -106,7 +106,7 @@ $root.TypeUrlTest = (function() {
             _depth = 0;
         if (_depth > $Reader.recursionLimit)
             throw Error("max depth exceeded");
-        var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.TypeUrlTest();
+        var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.TypeUrlTest(), value;
         while (reader.pos < end) {
             var start = reader.pos;
             var tag = reader.uint32();
@@ -114,17 +114,18 @@ $root.TypeUrlTest = (function() {
                 _end = undefined;
                 break;
             }
-            switch (tag) {
-            case 10: {
+            var wireType = tag & 7;
+            switch (tag >>>= 3) {
+            case 1: {
+                    if (wireType !== 2)
+                        break;
                     message.nested = $root.TypeUrlTest.Nested.decode(reader, reader.uint32(), undefined, _depth + 1, message.nested);
-                    break;
+                    continue;
                 }
-            default:
-                reader.skipType(tag & 7, _depth, tag >>> 3);
-                $util.makeProp(message, "$unknowns", false);
-                (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
-                break;
             }
+            reader.skipType(wireType, _depth, tag);
+            $util.makeProp(message, "$unknowns", false);
+            (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
         }
         if (_end !== undefined)
             throw Error("missing end group");
@@ -298,7 +299,7 @@ $root.TypeUrlTest = (function() {
         Nested.encode = function encode(message, writer) {
             if (!writer)
                 writer = $Writer.create();
-            if (message.a != null && message.a.length)
+            if (message.a != null && Object.hasOwnProperty.call(message, "a"))
                 writer.uint32(/* id 1, wireType 2 =*/10).string(message.a);
             if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
                 for (var i = 0; i < message.$unknowns.length; ++i)
@@ -337,7 +338,7 @@ $root.TypeUrlTest = (function() {
                 _depth = 0;
             if (_depth > $Reader.recursionLimit)
                 throw Error("max depth exceeded");
-            var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.TypeUrlTest.Nested();
+            var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.TypeUrlTest.Nested(), value;
             while (reader.pos < end) {
                 var start = reader.pos;
                 var tag = reader.uint32();
@@ -345,17 +346,21 @@ $root.TypeUrlTest = (function() {
                     _end = undefined;
                     break;
                 }
-                switch (tag) {
-                case 10: {
-                        message.a = reader.string();
-                        break;
+                var wireType = tag & 7;
+                switch (tag >>>= 3) {
+                case 1: {
+                        if (wireType !== 2)
+                            break;
+                        if ((value = reader.string()).length)
+                            message.a = value;
+                        else
+                            delete message.a;
+                        continue;
                     }
-                default:
-                    reader.skipType(tag & 7, _depth, tag >>> 3);
-                    $util.makeProp(message, "$unknowns", false);
-                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
-                    break;
                 }
+                reader.skipType(wireType, _depth, tag);
+                $util.makeProp(message, "$unknowns", false);
+                (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
             }
             if (_end !== undefined)
                 throw Error("missing end group");
@@ -416,7 +421,8 @@ $root.TypeUrlTest = (function() {
                 throw Error("max depth exceeded");
             var message = new $root.TypeUrlTest.Nested();
             if (object.a != null)
-                message.a = String(object.a);
+                if (typeof object.a !== "string" || object.a.length)
+                    message.a = String(object.a);
             return message;
         };
 

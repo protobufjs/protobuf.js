@@ -217,26 +217,26 @@ $root.Package = (function() {
     Package.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.name != null && message.name.length)
+        if (message.name != null && Object.hasOwnProperty.call(message, "name"))
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.name);
-        if (message.version != null && message.version.length)
+        if (message.version != null && Object.hasOwnProperty.call(message, "version"))
             writer.uint32(/* id 2, wireType 2 =*/18).string(message.version);
-        if (message.description != null && message.description.length)
+        if (message.description != null && Object.hasOwnProperty.call(message, "description"))
             writer.uint32(/* id 3, wireType 2 =*/26).string(message.description);
-        if (message.author != null && message.author.length)
+        if (message.author != null && Object.hasOwnProperty.call(message, "author"))
             writer.uint32(/* id 4, wireType 2 =*/34).string(message.author);
-        if (message.license != null && message.license.length)
+        if (message.license != null && Object.hasOwnProperty.call(message, "license"))
             writer.uint32(/* id 5, wireType 2 =*/42).string(message.license);
         if (message.repository != null && Object.hasOwnProperty.call(message, "repository"))
             $root.Package.Repository.encode(message.repository, writer.uint32(/* id 6, wireType 2 =*/50).fork()).ldelim();
-        if (message.bugs != null && message.bugs.length)
+        if (message.bugs != null && Object.hasOwnProperty.call(message, "bugs"))
             writer.uint32(/* id 7, wireType 2 =*/58).string(message.bugs);
-        if (message.homepage != null && message.homepage.length)
+        if (message.homepage != null && Object.hasOwnProperty.call(message, "homepage"))
             writer.uint32(/* id 8, wireType 2 =*/66).string(message.homepage);
         if (message.keywords != null && message.keywords.length)
             for (var i = 0; i < message.keywords.length; ++i)
                 writer.uint32(/* id 9, wireType 2 =*/74).string(message.keywords[i]);
-        if (message.main != null && message.main.length)
+        if (message.main != null && Object.hasOwnProperty.call(message, "main"))
             writer.uint32(/* id 10, wireType 2 =*/82).string(message.main);
         if (message.bin != null && Object.hasOwnProperty.call(message, "bin"))
             for (var keys = Object.keys(message.bin), i = 0; i < keys.length; ++i)
@@ -250,12 +250,12 @@ $root.Package = (function() {
         if (message.devDependencies != null && Object.hasOwnProperty.call(message, "devDependencies"))
             for (var keys = Object.keys(message.devDependencies), i = 0; i < keys.length; ++i)
                 writer.uint32(/* id 15, wireType 2 =*/122).fork().uint32(/* id 1, wireType 2 =*/10).string(keys[i]).uint32(/* id 2, wireType 2 =*/18).string(message.devDependencies[keys[i]]).ldelim();
-        if (message.types != null && message.types.length)
+        if (message.types != null && Object.hasOwnProperty.call(message, "types"))
             writer.uint32(/* id 17, wireType 2 =*/138).string(message.types);
         if (message.cliDependencies != null && message.cliDependencies.length)
             for (var i = 0; i < message.cliDependencies.length; ++i)
                 writer.uint32(/* id 18, wireType 2 =*/146).string(message.cliDependencies[i]);
-        if (message.versionScheme != null && message.versionScheme.length)
+        if (message.versionScheme != null && Object.hasOwnProperty.call(message, "versionScheme"))
             writer.uint32(/* id 19, wireType 2 =*/154).string(message.versionScheme);
         if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
             for (var i = 0; i < message.$unknowns.length; ++i)
@@ -302,54 +302,106 @@ $root.Package = (function() {
                 _end = undefined;
                 break;
             }
-            switch (tag) {
-            case 10: {
-                    message.name = reader.string();
-                    break;
+            var wireType = tag & 7;
+            switch (tag >>>= 3) {
+            case 1: {
+                    if (wireType !== 2)
+                        break;
+                    if ((value = reader.string()).length)
+                        message.name = value;
+                    else
+                        delete message.name;
+                    continue;
                 }
-            case 18: {
-                    message.version = reader.string();
-                    break;
+            case 2: {
+                    if (wireType !== 2)
+                        break;
+                    if ((value = reader.string()).length)
+                        message.version = value;
+                    else
+                        delete message.version;
+                    continue;
                 }
-            case 154: {
-                    message.versionScheme = reader.string();
-                    break;
+            case 19: {
+                    if (wireType !== 2)
+                        break;
+                    if ((value = reader.string()).length)
+                        message.versionScheme = value;
+                    else
+                        delete message.versionScheme;
+                    continue;
                 }
-            case 26: {
-                    message.description = reader.string();
-                    break;
+            case 3: {
+                    if (wireType !== 2)
+                        break;
+                    if ((value = reader.string()).length)
+                        message.description = value;
+                    else
+                        delete message.description;
+                    continue;
                 }
-            case 34: {
-                    message.author = reader.string();
-                    break;
+            case 4: {
+                    if (wireType !== 2)
+                        break;
+                    if ((value = reader.string()).length)
+                        message.author = value;
+                    else
+                        delete message.author;
+                    continue;
                 }
-            case 42: {
-                    message.license = reader.string();
-                    break;
+            case 5: {
+                    if (wireType !== 2)
+                        break;
+                    if ((value = reader.string()).length)
+                        message.license = value;
+                    else
+                        delete message.license;
+                    continue;
                 }
-            case 50: {
+            case 6: {
+                    if (wireType !== 2)
+                        break;
                     message.repository = $root.Package.Repository.decode(reader, reader.uint32(), undefined, _depth + 1, message.repository);
-                    break;
+                    continue;
                 }
-            case 58: {
-                    message.bugs = reader.string();
-                    break;
+            case 7: {
+                    if (wireType !== 2)
+                        break;
+                    if ((value = reader.string()).length)
+                        message.bugs = value;
+                    else
+                        delete message.bugs;
+                    continue;
                 }
-            case 66: {
-                    message.homepage = reader.string();
-                    break;
+            case 8: {
+                    if (wireType !== 2)
+                        break;
+                    if ((value = reader.string()).length)
+                        message.homepage = value;
+                    else
+                        delete message.homepage;
+                    continue;
                 }
-            case 74: {
+            case 9: {
+                    if (wireType !== 2)
+                        break;
                     if (!(message.keywords && message.keywords.length))
                         message.keywords = [];
                     message.keywords.push(reader.string());
-                    break;
+                    continue;
                 }
-            case 82: {
-                    message.main = reader.string();
-                    break;
+            case 10: {
+                    if (wireType !== 2)
+                        break;
+                    if ((value = reader.string()).length)
+                        message.main = value;
+                    else
+                        delete message.main;
+                    continue;
                 }
-            case 90: {
+            case 11: {
+                    if (wireType !== 2)
+                        break;
                     if (message.bin === $util.emptyObject)
                         message.bin = {};
                     var end2 = reader.uint32() + reader.pos;
@@ -357,24 +409,29 @@ $root.Package = (function() {
                     value = "";
                     while (reader.pos < end2) {
                         var tag2 = reader.uint32();
-                        switch (tag2) {
-                        case 10:
+                        wireType = tag2 & 7;
+                        switch (tag2 >>>= 3) {
+                        case 1:
+                            if (wireType !== 2)
+                                break;
                             key = reader.string();
-                            break;
-                        case 18:
+                            continue;
+                        case 2:
+                            if (wireType !== 2)
+                                break;
                             value = reader.string();
-                            break;
-                        default:
-                            reader.skipType(tag2 & 7, _depth, tag2 >>> 3);
-                            break;
+                            continue;
                         }
+                        reader.skipType(wireType, _depth, tag2);
                     }
                     if (key === "__proto__")
                         $util.makeProp(message.bin, key);
                     message.bin[key] = value;
-                    break;
+                    continue;
                 }
-            case 98: {
+            case 12: {
+                    if (wireType !== 2)
+                        break;
                     if (message.scripts === $util.emptyObject)
                         message.scripts = {};
                     var end2 = reader.uint32() + reader.pos;
@@ -382,24 +439,29 @@ $root.Package = (function() {
                     value = "";
                     while (reader.pos < end2) {
                         var tag2 = reader.uint32();
-                        switch (tag2) {
-                        case 10:
+                        wireType = tag2 & 7;
+                        switch (tag2 >>>= 3) {
+                        case 1:
+                            if (wireType !== 2)
+                                break;
                             key = reader.string();
-                            break;
-                        case 18:
+                            continue;
+                        case 2:
+                            if (wireType !== 2)
+                                break;
                             value = reader.string();
-                            break;
-                        default:
-                            reader.skipType(tag2 & 7, _depth, tag2 >>> 3);
-                            break;
+                            continue;
                         }
+                        reader.skipType(wireType, _depth, tag2);
                     }
                     if (key === "__proto__")
                         $util.makeProp(message.scripts, key);
                     message.scripts[key] = value;
-                    break;
+                    continue;
                 }
-            case 106: {
+            case 13: {
+                    if (wireType !== 2)
+                        break;
                     if (message.dependencies === $util.emptyObject)
                         message.dependencies = {};
                     var end2 = reader.uint32() + reader.pos;
@@ -407,24 +469,29 @@ $root.Package = (function() {
                     value = "";
                     while (reader.pos < end2) {
                         var tag2 = reader.uint32();
-                        switch (tag2) {
-                        case 10:
+                        wireType = tag2 & 7;
+                        switch (tag2 >>>= 3) {
+                        case 1:
+                            if (wireType !== 2)
+                                break;
                             key = reader.string();
-                            break;
-                        case 18:
+                            continue;
+                        case 2:
+                            if (wireType !== 2)
+                                break;
                             value = reader.string();
-                            break;
-                        default:
-                            reader.skipType(tag2 & 7, _depth, tag2 >>> 3);
-                            break;
+                            continue;
                         }
+                        reader.skipType(wireType, _depth, tag2);
                     }
                     if (key === "__proto__")
                         $util.makeProp(message.dependencies, key);
                     message.dependencies[key] = value;
-                    break;
+                    continue;
                 }
-            case 122: {
+            case 15: {
+                    if (wireType !== 2)
+                        break;
                     if (message.devDependencies === $util.emptyObject)
                         message.devDependencies = {};
                     var end2 = reader.uint32() + reader.pos;
@@ -432,39 +499,47 @@ $root.Package = (function() {
                     value = "";
                     while (reader.pos < end2) {
                         var tag2 = reader.uint32();
-                        switch (tag2) {
-                        case 10:
+                        wireType = tag2 & 7;
+                        switch (tag2 >>>= 3) {
+                        case 1:
+                            if (wireType !== 2)
+                                break;
                             key = reader.string();
-                            break;
-                        case 18:
+                            continue;
+                        case 2:
+                            if (wireType !== 2)
+                                break;
                             value = reader.string();
-                            break;
-                        default:
-                            reader.skipType(tag2 & 7, _depth, tag2 >>> 3);
-                            break;
+                            continue;
                         }
+                        reader.skipType(wireType, _depth, tag2);
                     }
                     if (key === "__proto__")
                         $util.makeProp(message.devDependencies, key);
                     message.devDependencies[key] = value;
-                    break;
+                    continue;
                 }
-            case 138: {
-                    message.types = reader.string();
-                    break;
+            case 17: {
+                    if (wireType !== 2)
+                        break;
+                    if ((value = reader.string()).length)
+                        message.types = value;
+                    else
+                        delete message.types;
+                    continue;
                 }
-            case 146: {
+            case 18: {
+                    if (wireType !== 2)
+                        break;
                     if (!(message.cliDependencies && message.cliDependencies.length))
                         message.cliDependencies = [];
                     message.cliDependencies.push(reader.string());
-                    break;
+                    continue;
                 }
-            default:
-                reader.skipType(tag & 7, _depth, tag >>> 3);
-                $util.makeProp(message, "$unknowns", false);
-                (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
-                break;
             }
+            reader.skipType(wireType, _depth, tag);
+            $util.makeProp(message, "$unknowns", false);
+            (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
         }
         if (_end !== undefined)
             throw Error("missing end group");
@@ -603,26 +678,34 @@ $root.Package = (function() {
             throw Error("max depth exceeded");
         var message = new $root.Package();
         if (object.name != null)
-            message.name = String(object.name);
+            if (typeof object.name !== "string" || object.name.length)
+                message.name = String(object.name);
         if (object.version != null)
-            message.version = String(object.version);
+            if (typeof object.version !== "string" || object.version.length)
+                message.version = String(object.version);
         if (object.versionScheme != null)
-            message.versionScheme = String(object.versionScheme);
+            if (typeof object.versionScheme !== "string" || object.versionScheme.length)
+                message.versionScheme = String(object.versionScheme);
         if (object.description != null)
-            message.description = String(object.description);
+            if (typeof object.description !== "string" || object.description.length)
+                message.description = String(object.description);
         if (object.author != null)
-            message.author = String(object.author);
+            if (typeof object.author !== "string" || object.author.length)
+                message.author = String(object.author);
         if (object.license != null)
-            message.license = String(object.license);
+            if (typeof object.license !== "string" || object.license.length)
+                message.license = String(object.license);
         if (object.repository != null) {
             if (typeof object.repository !== "object")
                 throw TypeError(".Package.repository: object expected");
             message.repository = $root.Package.Repository.fromObject(object.repository, _depth + 1);
         }
         if (object.bugs != null)
-            message.bugs = String(object.bugs);
+            if (typeof object.bugs !== "string" || object.bugs.length)
+                message.bugs = String(object.bugs);
         if (object.homepage != null)
-            message.homepage = String(object.homepage);
+            if (typeof object.homepage !== "string" || object.homepage.length)
+                message.homepage = String(object.homepage);
         if (object.keywords) {
             if (!Array.isArray(object.keywords))
                 throw TypeError(".Package.keywords: array expected");
@@ -631,7 +714,8 @@ $root.Package = (function() {
                 message.keywords[i] = String(object.keywords[i]);
         }
         if (object.main != null)
-            message.main = String(object.main);
+            if (typeof object.main !== "string" || object.main.length)
+                message.main = String(object.main);
         if (object.bin) {
             if (typeof object.bin !== "object")
                 throw TypeError(".Package.bin: object expected");
@@ -673,7 +757,8 @@ $root.Package = (function() {
             }
         }
         if (object.types != null)
-            message.types = String(object.types);
+            if (typeof object.types !== "string" || object.types.length)
+                message.types = String(object.types);
         if (object.cliDependencies) {
             if (!Array.isArray(object.cliDependencies))
                 throw TypeError(".Package.cliDependencies: array expected");
@@ -881,9 +966,9 @@ $root.Package = (function() {
         Repository.encode = function encode(message, writer) {
             if (!writer)
                 writer = $Writer.create();
-            if (message.type != null && message.type.length)
+            if (message.type != null && Object.hasOwnProperty.call(message, "type"))
                 writer.uint32(/* id 1, wireType 2 =*/10).string(message.type);
-            if (message.url != null && message.url.length)
+            if (message.url != null && Object.hasOwnProperty.call(message, "url"))
                 writer.uint32(/* id 2, wireType 2 =*/18).string(message.url);
             if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
                 for (var i = 0; i < message.$unknowns.length; ++i)
@@ -922,7 +1007,7 @@ $root.Package = (function() {
                 _depth = 0;
             if (_depth > $Reader.recursionLimit)
                 throw Error("max depth exceeded");
-            var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.Package.Repository();
+            var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.Package.Repository(), value;
             while (reader.pos < end) {
                 var start = reader.pos;
                 var tag = reader.uint32();
@@ -930,21 +1015,30 @@ $root.Package = (function() {
                     _end = undefined;
                     break;
                 }
-                switch (tag) {
-                case 10: {
-                        message.type = reader.string();
-                        break;
+                var wireType = tag & 7;
+                switch (tag >>>= 3) {
+                case 1: {
+                        if (wireType !== 2)
+                            break;
+                        if ((value = reader.string()).length)
+                            message.type = value;
+                        else
+                            delete message.type;
+                        continue;
                     }
-                case 18: {
-                        message.url = reader.string();
-                        break;
+                case 2: {
+                        if (wireType !== 2)
+                            break;
+                        if ((value = reader.string()).length)
+                            message.url = value;
+                        else
+                            delete message.url;
+                        continue;
                     }
-                default:
-                    reader.skipType(tag & 7, _depth, tag >>> 3);
-                    $util.makeProp(message, "$unknowns", false);
-                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
-                    break;
                 }
+                reader.skipType(wireType, _depth, tag);
+                $util.makeProp(message, "$unknowns", false);
+                (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
             }
             if (_end !== undefined)
                 throw Error("missing end group");
@@ -1008,9 +1102,11 @@ $root.Package = (function() {
                 throw Error("max depth exceeded");
             var message = new $root.Package.Repository();
             if (object.type != null)
-                message.type = String(object.type);
+                if (typeof object.type !== "string" || object.type.length)
+                    message.type = String(object.type);
             if (object.url != null)
-                message.url = String(object.url);
+                if (typeof object.url !== "string" || object.url.length)
+                    message.url = String(object.url);
             return message;
         };
 
