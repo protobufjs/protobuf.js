@@ -13,6 +13,7 @@ module.exports = [
             "coverage/**",
             "dist/**",
             "docs/**",
+            "examples/**",
             "lib/deep-equal/**",
             "lib/prelude.js",
             "lib/polyfill.js",
