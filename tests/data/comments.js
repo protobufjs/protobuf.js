@@ -88,11 +88,11 @@ $root.Test1 = (function() {
     Test1.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.field1 != null && message.field1.length)
+        if (message.field1 != null && Object.hasOwnProperty.call(message, "field1"))
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.field1);
-        if (message.field2 != null && Number(message.field2) !== 0)
+        if (message.field2 != null && Object.hasOwnProperty.call(message, "field2"))
             writer.uint32(/* id 2, wireType 0 =*/16).uint32(message.field2);
-        if (message.field3)
+        if (message.field3 != null && Object.hasOwnProperty.call(message, "field3"))
             writer.uint32(/* id 3, wireType 0 =*/24).bool(message.field3);
         if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
             for (var i = 0; i < message.$unknowns.length; ++i)
@@ -131,7 +131,7 @@ $root.Test1 = (function() {
             _depth = 0;
         if (_depth > $Reader.recursionLimit)
             throw Error("max depth exceeded");
-        var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.Test1();
+        var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.Test1(), value;
         while (reader.pos < end) {
             var start = reader.pos;
             var tag = reader.uint32();
@@ -139,25 +139,41 @@ $root.Test1 = (function() {
                 _end = undefined;
                 break;
             }
-            switch (tag) {
-            case 10: {
-                    message.field1 = reader.string();
-                    break;
+            var wireType = tag & 7;
+            switch (tag >>>= 3) {
+            case 0:
+                throw Error("illegal tag: field number 0");
+            case 1: {
+                    if (wireType !== 2)
+                        break;
+                    if ((value = reader.string()).length)
+                        message.field1 = value;
+                    else
+                        delete message.field1;
+                    continue;
                 }
-            case 16: {
-                    message.field2 = reader.uint32();
-                    break;
+            case 2: {
+                    if (wireType !== 0)
+                        break;
+                    if (value = reader.uint32())
+                        message.field2 = value;
+                    else
+                        delete message.field2;
+                    continue;
                 }
-            case 24: {
-                    message.field3 = reader.bool();
-                    break;
+            case 3: {
+                    if (wireType !== 0)
+                        break;
+                    if (value = reader.bool())
+                        message.field3 = value;
+                    else
+                        delete message.field3;
+                    continue;
                 }
-            default:
-                reader.skipType(tag & 7, _depth, tag >>> 3);
-                $util.makeProp(message, "$unknowns", false);
-                (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
-                break;
             }
+            reader.skipType(wireType, _depth, tag);
+            $util.makeProp(message, "$unknowns", false);
+            (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
         }
         if (_end !== undefined)
             throw Error("missing end group");
@@ -224,11 +240,14 @@ $root.Test1 = (function() {
             throw Error("max depth exceeded");
         var message = new $root.Test1();
         if (object.field1 != null)
-            message.field1 = String(object.field1);
+            if (typeof object.field1 !== "string" || object.field1.length)
+                message.field1 = String(object.field1);
         if (object.field2 != null)
-            message.field2 = object.field2 >>> 0;
+            if (Number(object.field2) !== 0)
+                message.field2 = object.field2 >>> 0;
         if (object.field3 != null)
-            message.field3 = Boolean(object.field3);
+            if (object.field3)
+                message.field3 = Boolean(object.field3);
         return message;
     };
 
@@ -382,13 +401,14 @@ $root.Test2 = (function() {
                 _end = undefined;
                 break;
             }
-            switch (tag) {
-            default:
-                reader.skipType(tag & 7, _depth, tag >>> 3);
-                $util.makeProp(message, "$unknowns", false);
-                (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
-                break;
+            var wireType = tag & 7;
+            switch (tag >>>= 3) {
+            case 0:
+                throw Error("illegal tag: field number 0");
             }
+            reader.skipType(wireType, _depth, tag);
+            $util.makeProp(message, "$unknowns", false);
+            (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
         }
         if (_end !== undefined)
             throw Error("missing end group");

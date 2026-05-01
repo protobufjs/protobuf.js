@@ -121,13 +121,14 @@ $root.jspb = (function() {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        $util.makeProp(message, "$unknowns", false);
-                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
-                        break;
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 0:
+                        throw Error("illegal tag: field number 0");
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -347,17 +348,20 @@ $root.jspb = (function() {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 8: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 0:
+                        throw Error("illegal tag: field number 0");
+                    case 1: {
+                            if (wireType !== 0)
+                                break;
                             message.outerEnum = reader.int32();
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        $util.makeProp(message, "$unknowns", false);
-                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -618,27 +622,34 @@ $root.jspb = (function() {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 10: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 0:
+                        throw Error("illegal tag: field number 0");
+                    case 1: {
+                            if (wireType !== 2)
+                                break;
                             message.aString = reader.string();
-                            break;
+                            continue;
                         }
-                    case 18: {
+                    case 2: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.aRepeatedString && message.aRepeatedString.length))
                                 message.aRepeatedString = [];
                             message.aRepeatedString.push(reader.string());
-                            break;
+                            continue;
                         }
-                    case 24: {
+                    case 3: {
+                            if (wireType !== 0)
+                                break;
                             message.aBoolean = reader.bool();
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        $util.makeProp(message, "$unknowns", false);
-                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -900,23 +911,28 @@ $root.jspb = (function() {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 10: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 0:
+                        throw Error("illegal tag: field number 0");
+                    case 1: {
+                            if (wireType !== 2)
+                                break;
                             message.aString = reader.string();
-                            break;
+                            continue;
                         }
-                    case 18: {
+                    case 2: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.aRepeatedString && message.aRepeatedString.length))
                                 message.aRepeatedString = [];
                             message.aRepeatedString.push(reader.string());
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        $util.makeProp(message, "$unknowns", false);
-                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -1186,29 +1202,38 @@ $root.jspb = (function() {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 10: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 0:
+                        throw Error("illegal tag: field number 0");
+                    case 1: {
+                            if (wireType !== 2)
+                                break;
                             message.normal = reader.string();
-                            break;
+                            continue;
                         }
-                    case 18: {
+                    case 2: {
+                            if (wireType !== 2)
+                                break;
                             message["default"] = reader.string();
-                            break;
+                            continue;
                         }
-                    case 26: {
+                    case 3: {
+                            if (wireType !== 2)
+                                break;
                             message["function"] = reader.string();
-                            break;
+                            continue;
                         }
-                    case 34: {
+                    case 4: {
+                            if (wireType !== 2)
+                                break;
                             message["var"] = reader.string();
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        $util.makeProp(message, "$unknowns", false);
-                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -1503,37 +1528,48 @@ $root.jspb = (function() {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 10: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 0:
+                        throw Error("illegal tag: field number 0");
+                    case 1: {
+                            if (wireType !== 2)
+                                break;
                             message.aString = reader.string();
-                            break;
+                            continue;
                         }
-                    case 16: {
+                    case 2: {
+                            if (wireType !== 0)
+                                break;
                             message.aBool = reader.bool();
-                            break;
+                            continue;
                         }
-                    case 26: {
+                    case 3: {
+                            if (wireType !== 2)
+                                break;
                             message.aNestedMessage = $root.jspb.test.OptionalFields.Nested.decode(reader, reader.uint32(), undefined, _depth + 1, message.aNestedMessage);
-                            break;
+                            continue;
                         }
-                    case 34: {
+                    case 4: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.aRepeatedMessage && message.aRepeatedMessage.length))
                                 message.aRepeatedMessage = [];
                             message.aRepeatedMessage.push($root.jspb.test.OptionalFields.Nested.decode(reader, reader.uint32(), undefined, _depth + 1));
-                            break;
+                            continue;
                         }
-                    case 42: {
+                    case 5: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.aRepeatedString && message.aRepeatedString.length))
                                 message.aRepeatedString = [];
                             message.aRepeatedString.push(reader.string());
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        $util.makeProp(message, "$unknowns", false);
-                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -1819,17 +1855,20 @@ $root.jspb = (function() {
                             _end = undefined;
                             break;
                         }
-                        switch (tag) {
-                        case 8: {
+                        var wireType = tag & 7;
+                        switch (tag >>>= 3) {
+                        case 0:
+                            throw Error("illegal tag: field number 0");
+                        case 1: {
+                                if (wireType !== 0)
+                                    break;
                                 message.anInt = reader.int32();
-                                break;
+                                continue;
                             }
-                        default:
-                            reader.skipType(tag & 7, _depth, tag >>> 3);
-                            $util.makeProp(message, "$unknowns", false);
-                            (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
-                            break;
                         }
+                        reader.skipType(wireType, _depth, tag);
+                        $util.makeProp(message, "$unknowns", false);
+                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                     }
                     if (_end !== undefined)
                         throw Error("missing end group");
@@ -2108,53 +2147,72 @@ $root.jspb = (function() {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 10: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 0:
+                        throw Error("illegal tag: field number 0");
+                    case 1: {
+                            if (wireType !== 2)
+                                break;
                             message.str1 = reader.string();
-                            break;
+                            continue;
                         }
-                    case 18: {
+                    case 2: {
+                            if (wireType !== 2)
+                                break;
                             message.str2 = reader.string();
-                            break;
+                            continue;
                         }
-                    case 26: {
+                    case 3: {
+                            if (wireType !== 2)
+                                break;
                             message.str3 = reader.string();
-                            break;
+                            continue;
                         }
-                    case 802: {
+                    case 100: {
+                            if (wireType !== 2)
+                                break;
                             message[".jspb.test.IsExtension.extField"] = $root.jspb.test.IsExtension.decode(reader, reader.uint32(), undefined, _depth + 1, message[".jspb.test.IsExtension.extField"]);
-                            break;
+                            continue;
                         }
-                    case 810: {
+                    case 101: {
+                            if (wireType !== 2)
+                                break;
                             message[".jspb.test.IndirectExtension.simple"] = $root.jspb.test.Simple1.decode(reader, reader.uint32(), undefined, _depth + 1, message[".jspb.test.IndirectExtension.simple"]);
-                            break;
+                            continue;
                         }
-                    case 818: {
+                    case 102: {
+                            if (wireType !== 2)
+                                break;
                             message[".jspb.test.IndirectExtension.str"] = reader.string();
-                            break;
+                            continue;
                         }
-                    case 826: {
+                    case 103: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message[".jspb.test.IndirectExtension.repeatedStr"] && message[".jspb.test.IndirectExtension.repeatedStr"].length))
                                 message[".jspb.test.IndirectExtension.repeatedStr"] = [];
                             message[".jspb.test.IndirectExtension.repeatedStr"].push(reader.string());
-                            break;
+                            continue;
                         }
-                    case 834: {
+                    case 104: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message[".jspb.test.IndirectExtension.repeatedSimple"] && message[".jspb.test.IndirectExtension.repeatedSimple"].length))
                                 message[".jspb.test.IndirectExtension.repeatedSimple"] = [];
                             message[".jspb.test.IndirectExtension.repeatedSimple"].push($root.jspb.test.Simple1.decode(reader, reader.uint32(), undefined, _depth + 1));
-                            break;
+                            continue;
                         }
-                    case 842: {
+                    case 105: {
+                            if (wireType !== 2)
+                                break;
                             message[".jspb.test.simple1"] = $root.jspb.test.Simple1.decode(reader, reader.uint32(), undefined, _depth + 1, message[".jspb.test.simple1"]);
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        $util.makeProp(message, "$unknowns", false);
-                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -2530,37 +2588,48 @@ $root.jspb = (function() {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 10: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 0:
+                        throw Error("illegal tag: field number 0");
+                    case 1: {
+                            if (wireType !== 2)
+                                break;
                             message.aString = reader.string();
-                            break;
+                            continue;
                         }
-                    case 72: {
+                    case 9: {
+                            if (wireType !== 0)
+                                break;
                             message.anOutOfOrderBool = reader.bool();
-                            break;
+                            continue;
                         }
-                    case 34: {
+                    case 4: {
+                            if (wireType !== 2)
+                                break;
                             message.aNestedMessage = $root.jspb.test.Complex.Nested.decode(reader, reader.uint32(), undefined, _depth + 1, message.aNestedMessage);
-                            break;
+                            continue;
                         }
-                    case 42: {
+                    case 5: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.aRepeatedMessage && message.aRepeatedMessage.length))
                                 message.aRepeatedMessage = [];
                             message.aRepeatedMessage.push($root.jspb.test.Complex.Nested.decode(reader, reader.uint32(), undefined, _depth + 1));
-                            break;
+                            continue;
                         }
-                    case 58: {
+                    case 7: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.aRepeatedString && message.aRepeatedString.length))
                                 message.aRepeatedString = [];
                             message.aRepeatedString.push(reader.string());
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        $util.makeProp(message, "$unknowns", false);
-                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -2846,17 +2915,20 @@ $root.jspb = (function() {
                             _end = undefined;
                             break;
                         }
-                        switch (tag) {
-                        case 16: {
+                        var wireType = tag & 7;
+                        switch (tag >>>= 3) {
+                        case 0:
+                            throw Error("illegal tag: field number 0");
+                        case 2: {
+                                if (wireType !== 0)
+                                    break;
                                 message.anInt = reader.int32();
-                                break;
+                                continue;
                             }
-                        default:
-                            reader.skipType(tag & 7, _depth, tag >>> 3);
-                            $util.makeProp(message, "$unknowns", false);
-                            (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
-                            break;
                         }
+                        reader.skipType(wireType, _depth, tag);
+                        $util.makeProp(message, "$unknowns", false);
+                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                     }
                     if (_end !== undefined)
                         throw Error("missing end group");
@@ -3068,13 +3140,14 @@ $root.jspb = (function() {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        $util.makeProp(message, "$unknowns", false);
-                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
-                        break;
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 0:
+                        throw Error("illegal tag: field number 0");
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -3277,17 +3350,20 @@ $root.jspb = (function() {
                             _end = undefined;
                             break;
                         }
-                        switch (tag) {
-                        case 8: {
+                        var wireType = tag & 7;
+                        switch (tag >>>= 3) {
+                        case 0:
+                            throw Error("illegal tag: field number 0");
+                        case 1: {
+                                if (wireType !== 0)
+                                    break;
                                 message.innerComplexField = reader.int32();
-                                break;
+                                continue;
                             }
-                        default:
-                            reader.skipType(tag & 7, _depth, tag >>> 3);
-                            $util.makeProp(message, "$unknowns", false);
-                            (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
-                            break;
                         }
+                        reader.skipType(wireType, _depth, tag);
+                        $util.makeProp(message, "$unknowns", false);
+                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                     }
                     if (_end !== undefined)
                         throw Error("missing end group");
@@ -3509,17 +3585,20 @@ $root.jspb = (function() {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 10: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 0:
+                        throw Error("illegal tag: field number 0");
+                    case 1: {
+                            if (wireType !== 2)
+                                break;
                             message.ext1 = reader.string();
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        $util.makeProp(message, "$unknowns", false);
-                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -3727,13 +3806,14 @@ $root.jspb = (function() {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        $util.makeProp(message, "$unknowns", false);
-                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
-                        break;
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 0:
+                        throw Error("illegal tag: field number 0");
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -3994,37 +4074,50 @@ $root.jspb = (function() {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 10: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 0:
+                        throw Error("illegal tag: field number 0");
+                    case 1: {
+                            if (wireType !== 2)
+                                break;
                             message.stringField = reader.string();
-                            break;
+                            continue;
                         }
-                    case 16: {
+                    case 2: {
+                            if (wireType !== 0)
+                                break;
                             message.boolField = reader.bool();
-                            break;
+                            continue;
                         }
-                    case 24: {
+                    case 3: {
+                            if (wireType !== 0)
+                                break;
                             message.intField = reader.int64();
-                            break;
+                            continue;
                         }
-                    case 32: {
+                    case 4: {
+                            if (wireType !== 0)
+                                break;
                             message.enumField = reader.int32();
-                            break;
+                            continue;
                         }
-                    case 50: {
+                    case 6: {
+                            if (wireType !== 2)
+                                break;
                             message.emptyField = reader.string();
-                            break;
+                            continue;
                         }
-                    case 66: {
+                    case 8: {
+                            if (wireType !== 2)
+                                break;
                             message.bytesField = reader.bytes();
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        $util.makeProp(message, "$unknowns", false);
-                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -4423,61 +4516,82 @@ $root.jspb = (function() {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 13: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 0:
+                        throw Error("illegal tag: field number 0");
+                    case 1: {
+                            if (wireType !== 5)
+                                break;
                             message.optionalFloatField = reader.float();
-                            break;
+                            continue;
                         }
-                    case 21: {
+                    case 2: {
+                            if (wireType !== 5)
+                                break;
                             message.requiredFloatField = reader.float();
-                            break;
+                            continue;
                         }
-                    case 29:
-                    case 26: {
-                            if (!(message.repeatedFloatField && message.repeatedFloatField.length))
-                                message.repeatedFloatField = [];
-                            if ((tag & 7) === 2) {
+                    case 3: {
+                            if (wireType === 2) {
+                                if (!(message.repeatedFloatField && message.repeatedFloatField.length))
+                                    message.repeatedFloatField = [];
                                 var end2 = reader.uint32() + reader.pos;
                                 while (reader.pos < end2)
                                     message.repeatedFloatField.push(reader.float());
-                            } else
-                                message.repeatedFloatField.push(reader.float());
-                            break;
+                                continue;
+                            }
+                            if (wireType !== 5)
+                                break;
+                            if (!(message.repeatedFloatField && message.repeatedFloatField.length))
+                                message.repeatedFloatField = [];
+                            message.repeatedFloatField.push(reader.float());
+                            continue;
                         }
-                    case 37: {
+                    case 4: {
+                            if (wireType !== 5)
+                                break;
                             message.defaultFloatField = reader.float();
-                            break;
+                            continue;
                         }
-                    case 41: {
+                    case 5: {
+                            if (wireType !== 1)
+                                break;
                             message.optionalDoubleField = reader.double();
-                            break;
+                            continue;
                         }
-                    case 49: {
+                    case 6: {
+                            if (wireType !== 1)
+                                break;
                             message.requiredDoubleField = reader.double();
-                            break;
+                            continue;
                         }
-                    case 57:
-                    case 58: {
-                            if (!(message.repeatedDoubleField && message.repeatedDoubleField.length))
-                                message.repeatedDoubleField = [];
-                            if ((tag & 7) === 2) {
+                    case 7: {
+                            if (wireType === 2) {
+                                if (!(message.repeatedDoubleField && message.repeatedDoubleField.length))
+                                    message.repeatedDoubleField = [];
                                 var end2 = reader.uint32() + reader.pos;
                                 while (reader.pos < end2)
                                     message.repeatedDoubleField.push(reader.double());
-                            } else
-                                message.repeatedDoubleField.push(reader.double());
-                            break;
+                                continue;
+                            }
+                            if (wireType !== 1)
+                                break;
+                            if (!(message.repeatedDoubleField && message.repeatedDoubleField.length))
+                                message.repeatedDoubleField = [];
+                            message.repeatedDoubleField.push(reader.double());
+                            continue;
                         }
-                    case 65: {
+                    case 8: {
+                            if (wireType !== 1)
+                                break;
                             message.defaultDoubleField = reader.double();
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        $util.makeProp(message, "$unknowns", false);
-                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -4833,39 +4947,52 @@ $root.jspb = (function() {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 10: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 0:
+                        throw Error("illegal tag: field number 0");
+                    case 1: {
+                            if (wireType !== 2)
+                                break;
                             message.str = reader.string();
-                            break;
+                            continue;
                         }
-                    case 26: {
+                    case 3: {
+                            if (wireType !== 2)
+                                break;
                             message.simple1 = $root.jspb.test.Simple1.decode(reader, reader.uint32(), undefined, _depth + 1, message.simple1);
-                            break;
+                            continue;
                         }
-                    case 42: {
+                    case 5: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.simple2 && message.simple2.length))
                                 message.simple2 = [];
                             message.simple2.push($root.jspb.test.Simple1.decode(reader, reader.uint32(), undefined, _depth + 1));
-                            break;
+                            continue;
                         }
-                    case 50: {
+                    case 6: {
+                            if (wireType !== 2)
+                                break;
                             message.bytesField = reader.bytes();
-                            break;
+                            continue;
                         }
-                    case 58: {
+                    case 7: {
+                            if (wireType !== 2)
+                                break;
                             message.unused = reader.string();
-                            break;
+                            continue;
                         }
-                    case 802: {
+                    case 100: {
+                            if (wireType !== 2)
+                                break;
                             message[".jspb.test.CloneExtension.extField"] = $root.jspb.test.CloneExtension.decode(reader, reader.uint32(), undefined, _depth + 1, message[".jspb.test.CloneExtension.extField"]);
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        $util.makeProp(message, "$unknowns", false);
-                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -5162,17 +5289,20 @@ $root.jspb = (function() {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 18: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 0:
+                        throw Error("illegal tag: field number 0");
+                    case 2: {
+                            if (wireType !== 2)
+                                break;
                             message.ext = reader.string();
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        $util.makeProp(message, "$unknowns", false);
-                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -5468,47 +5598,64 @@ $root.jspb = (function() {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 11: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 0:
+                        throw Error("illegal tag: field number 0");
+                    case 1: {
+                            if (wireType !== 3)
+                                break;
                             if (!(message.repeatedGroup && message.repeatedGroup.length))
                                 message.repeatedGroup = [];
                             message.repeatedGroup.push($root.jspb.test.TestGroup.RepeatedGroup.decode(reader, undefined, 12, _depth + 1));
-                            break;
+                            continue;
                         }
-                    case 19: {
+                    case 2: {
+                            if (wireType !== 3)
+                                break;
                             message.requiredGroup = $root.jspb.test.TestGroup.RequiredGroup.decode(reader, undefined, 20, _depth + 1, message.requiredGroup);
-                            break;
+                            continue;
                         }
-                    case 27: {
+                    case 3: {
+                            if (wireType !== 3)
+                                break;
                             message.optionalGroup = $root.jspb.test.TestGroup.OptionalGroup.decode(reader, undefined, 28, _depth + 1, message.optionalGroup);
-                            break;
+                            continue;
                         }
-                    case 35: {
+                    case 4: {
+                            if (wireType !== 3)
+                                break;
                             message.messageInGroup = $root.jspb.test.TestGroup.MessageInGroup.decode(reader, undefined, 36, _depth + 1, message.messageInGroup);
-                            break;
+                            continue;
                         }
-                    case 43: {
+                    case 5: {
+                            if (wireType !== 3)
+                                break;
                             message.enumInGroup = $root.jspb.test.TestGroup.EnumInGroup.decode(reader, undefined, 44, _depth + 1, message.enumInGroup);
-                            break;
+                            continue;
                         }
-                    case 50: {
+                    case 6: {
+                            if (wireType !== 2)
+                                break;
                             message.id = reader.string();
-                            break;
+                            continue;
                         }
-                    case 58: {
+                    case 7: {
+                            if (wireType !== 2)
+                                break;
                             message.requiredSimple = $root.jspb.test.Simple2.decode(reader, reader.uint32(), undefined, _depth + 1, message.requiredSimple);
-                            break;
+                            continue;
                         }
-                    case 66: {
+                    case 8: {
+                            if (wireType !== 2)
+                                break;
                             message.optionalSimple = $root.jspb.test.Simple2.decode(reader, reader.uint32(), undefined, _depth + 1, message.optionalSimple);
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        $util.makeProp(message, "$unknowns", false);
-                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -5845,29 +5992,36 @@ $root.jspb = (function() {
                             _end = undefined;
                             break;
                         }
-                        switch (tag) {
-                        case 10: {
+                        var wireType = tag & 7;
+                        switch (tag >>>= 3) {
+                        case 0:
+                            throw Error("illegal tag: field number 0");
+                        case 1: {
+                                if (wireType !== 2)
+                                    break;
                                 message.id = reader.string();
-                                break;
+                                continue;
                             }
-                        case 16:
-                        case 18: {
-                                if (!(message.someBool && message.someBool.length))
-                                    message.someBool = [];
-                                if ((tag & 7) === 2) {
+                        case 2: {
+                                if (wireType === 2) {
+                                    if (!(message.someBool && message.someBool.length))
+                                        message.someBool = [];
                                     var end2 = reader.uint32() + reader.pos;
                                     while (reader.pos < end2)
                                         message.someBool.push(reader.bool());
-                                } else
-                                    message.someBool.push(reader.bool());
-                                break;
+                                    continue;
+                                }
+                                if (wireType !== 0)
+                                    break;
+                                if (!(message.someBool && message.someBool.length))
+                                    message.someBool = [];
+                                message.someBool.push(reader.bool());
+                                continue;
                             }
-                        default:
-                            reader.skipType(tag & 7, _depth, tag >>> 3);
-                            $util.makeProp(message, "$unknowns", false);
-                            (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
-                            break;
                         }
+                        reader.skipType(wireType, _depth, tag);
+                        $util.makeProp(message, "$unknowns", false);
+                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                     }
                     if (_end !== undefined)
                         throw Error("missing end group");
@@ -6107,17 +6261,20 @@ $root.jspb = (function() {
                             _end = undefined;
                             break;
                         }
-                        switch (tag) {
-                        case 10: {
+                        var wireType = tag & 7;
+                        switch (tag >>>= 3) {
+                        case 0:
+                            throw Error("illegal tag: field number 0");
+                        case 1: {
+                                if (wireType !== 2)
+                                    break;
                                 message.id = reader.string();
-                                break;
+                                continue;
                             }
-                        default:
-                            reader.skipType(tag & 7, _depth, tag >>> 3);
-                            $util.makeProp(message, "$unknowns", false);
-                            (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
-                            break;
                         }
+                        reader.skipType(wireType, _depth, tag);
+                        $util.makeProp(message, "$unknowns", false);
+                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                     }
                     if (_end !== undefined)
                         throw Error("missing end group");
@@ -6336,17 +6493,20 @@ $root.jspb = (function() {
                             _end = undefined;
                             break;
                         }
-                        switch (tag) {
-                        case 10: {
+                        var wireType = tag & 7;
+                        switch (tag >>>= 3) {
+                        case 0:
+                            throw Error("illegal tag: field number 0");
+                        case 1: {
+                                if (wireType !== 2)
+                                    break;
                                 message.id = reader.string();
-                                break;
+                                continue;
                             }
-                        default:
-                            reader.skipType(tag & 7, _depth, tag >>> 3);
-                            $util.makeProp(message, "$unknowns", false);
-                            (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
-                            break;
                         }
+                        reader.skipType(wireType, _depth, tag);
+                        $util.makeProp(message, "$unknowns", false);
+                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                     }
                     if (_end !== undefined)
                         throw Error("missing end group");
@@ -6565,17 +6725,20 @@ $root.jspb = (function() {
                             _end = undefined;
                             break;
                         }
-                        switch (tag) {
-                        case 10: {
+                        var wireType = tag & 7;
+                        switch (tag >>>= 3) {
+                        case 0:
+                            throw Error("illegal tag: field number 0");
+                        case 1: {
+                                if (wireType !== 2)
+                                    break;
                                 message.id = $root.jspb.test.TestGroup.MessageInGroup.NestedMessage.decode(reader, reader.uint32(), undefined, _depth + 1, message.id);
-                                break;
+                                continue;
                             }
-                        default:
-                            reader.skipType(tag & 7, _depth, tag >>> 3);
-                            $util.makeProp(message, "$unknowns", false);
-                            (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
-                            break;
                         }
+                        reader.skipType(wireType, _depth, tag);
+                        $util.makeProp(message, "$unknowns", false);
+                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                     }
                     if (_end !== undefined)
                         throw Error("missing end group");
@@ -6798,17 +6961,20 @@ $root.jspb = (function() {
                                 _end = undefined;
                                 break;
                             }
-                            switch (tag) {
-                            case 10: {
+                            var wireType = tag & 7;
+                            switch (tag >>>= 3) {
+                            case 0:
+                                throw Error("illegal tag: field number 0");
+                            case 1: {
+                                    if (wireType !== 2)
+                                        break;
                                     message.id = reader.string();
-                                    break;
+                                    continue;
                                 }
-                            default:
-                                reader.skipType(tag & 7, _depth, tag >>> 3);
-                                $util.makeProp(message, "$unknowns", false);
-                                (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
-                                break;
                             }
+                            reader.skipType(wireType, _depth, tag);
+                            $util.makeProp(message, "$unknowns", false);
+                            (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                         }
                         if (_end !== undefined)
                             throw Error("missing end group");
@@ -7029,17 +7195,20 @@ $root.jspb = (function() {
                             _end = undefined;
                             break;
                         }
-                        switch (tag) {
-                        case 8: {
+                        var wireType = tag & 7;
+                        switch (tag >>>= 3) {
+                        case 0:
+                            throw Error("illegal tag: field number 0");
+                        case 1: {
+                                if (wireType !== 0)
+                                    break;
                                 message.id = reader.int32();
-                                break;
+                                continue;
                             }
-                        default:
-                            reader.skipType(tag & 7, _depth, tag >>> 3);
-                            $util.makeProp(message, "$unknowns", false);
-                            (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
-                            break;
                         }
+                        reader.skipType(wireType, _depth, tag);
+                        $util.makeProp(message, "$unknowns", false);
+                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                     }
                     if (_end !== undefined)
                         throw Error("missing end group");
@@ -7295,17 +7464,20 @@ $root.jspb = (function() {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 10: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 0:
+                        throw Error("illegal tag: field number 0");
+                    case 1: {
+                            if (wireType !== 2)
+                                break;
                             message.group = $root.jspb.test.TestGroup.RepeatedGroup.decode(reader, reader.uint32(), undefined, _depth + 1, message.group);
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        $util.makeProp(message, "$unknowns", false);
-                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -7535,21 +7707,26 @@ $root.jspb = (function() {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 8: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 0:
+                        throw Error("illegal tag: field number 0");
+                    case 1: {
+                            if (wireType !== 0)
+                                break;
                             message.extension = reader.int32();
-                            break;
+                            continue;
                         }
-                    case 80: {
+                    case 10: {
+                            if (wireType !== 0)
+                                break;
                             message[".jspb.test.TestReservedNamesExtension.foo"] = reader.int32();
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        $util.makeProp(message, "$unknowns", false);
-                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -7766,13 +7943,14 @@ $root.jspb = (function() {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        $util.makeProp(message, "$unknowns", false);
-                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
-                        break;
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 0:
+                        throw Error("illegal tag: field number 0");
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -8126,63 +8304,84 @@ $root.jspb = (function() {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 26: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 0:
+                        throw Error("illegal tag: field number 0");
+                    case 3: {
+                            if (wireType !== 2)
+                                break;
                             message.pone = reader.string();
                             message.partialOneof = "pone";
-                            break;
+                            continue;
                         }
-                    case 42: {
+                    case 5: {
+                            if (wireType !== 2)
+                                break;
                             message.pthree = reader.string();
                             message.partialOneof = "pthree";
-                            break;
+                            continue;
                         }
-                    case 50: {
+                    case 6: {
+                            if (wireType !== 2)
+                                break;
                             message.rone = $root.jspb.test.TestMessageWithOneof.decode(reader, reader.uint32(), undefined, _depth + 1, message.rone);
                             message.recursiveOneof = "rone";
-                            break;
+                            continue;
                         }
-                    case 58: {
+                    case 7: {
+                            if (wireType !== 2)
+                                break;
                             message.rtwo = reader.string();
                             message.recursiveOneof = "rtwo";
-                            break;
+                            continue;
                         }
-                    case 64: {
+                    case 8: {
+                            if (wireType !== 0)
+                                break;
                             message.normalField = reader.bool();
-                            break;
+                            continue;
                         }
-                    case 74: {
+                    case 9: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.repeatedField && message.repeatedField.length))
                                 message.repeatedField = [];
                             message.repeatedField.push(reader.string());
-                            break;
+                            continue;
                         }
-                    case 80: {
+                    case 10: {
+                            if (wireType !== 0)
+                                break;
                             message.aone = reader.int32();
                             message.defaultOneofA = "aone";
-                            break;
+                            continue;
                         }
-                    case 88: {
+                    case 11: {
+                            if (wireType !== 0)
+                                break;
                             message.atwo = reader.int32();
                             message.defaultOneofA = "atwo";
-                            break;
+                            continue;
                         }
-                    case 96: {
+                    case 12: {
+                            if (wireType !== 0)
+                                break;
                             message.bone = reader.int32();
                             message.defaultOneofB = "bone";
-                            break;
+                            continue;
                         }
-                    case 104: {
+                    case 13: {
+                            if (wireType !== 0)
+                                break;
                             message.btwo = reader.int32();
                             message.defaultOneofB = "btwo";
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        $util.makeProp(message, "$unknowns", false);
-                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -8544,21 +8743,26 @@ $root.jspb = (function() {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 8: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 0:
+                        throw Error("illegal tag: field number 0");
+                    case 1: {
+                            if (wireType !== 0)
+                                break;
                             message.value = reader.int32();
-                            break;
+                            continue;
                         }
-                    case 18: {
+                    case 2: {
+                            if (wireType !== 2)
+                                break;
                             message.data = reader.bytes();
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        $util.makeProp(message, "$unknowns", false);
-                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -8942,8 +9146,13 @@ $root.jspb = (function() {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 10: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 0:
+                        throw Error("illegal tag: field number 0");
+                    case 1: {
+                            if (wireType !== 2)
+                                break;
                             if (message.mapStringString === $util.emptyObject)
                                 message.mapStringString = {};
                             var end2 = reader.uint32() + reader.pos;
@@ -8951,24 +9160,31 @@ $root.jspb = (function() {
                             value = "";
                             while (reader.pos < end2) {
                                 var tag2 = reader.uint32();
-                                switch (tag2) {
-                                case 10:
+                                wireType = tag2 & 7;
+                                switch (tag2 >>>= 3) {
+                                case 0:
+                                    throw Error("illegal tag: field number 0");
+                                case 1:
+                                    if (wireType !== 2)
+                                        break;
                                     key = reader.string();
-                                    break;
-                                case 18:
+                                    continue;
+                                case 2:
+                                    if (wireType !== 2)
+                                        break;
                                     value = reader.string();
-                                    break;
-                                default:
-                                    reader.skipType(tag2 & 7, _depth, tag2 >>> 3);
-                                    break;
+                                    continue;
                                 }
+                                reader.skipType(wireType, _depth, tag2);
                             }
                             if (key === "__proto__")
                                 $util.makeProp(message.mapStringString, key);
                             message.mapStringString[key] = value;
-                            break;
+                            continue;
                         }
-                    case 18: {
+                    case 2: {
+                            if (wireType !== 2)
+                                break;
                             if (message.mapStringInt32 === $util.emptyObject)
                                 message.mapStringInt32 = {};
                             var end2 = reader.uint32() + reader.pos;
@@ -8976,24 +9192,31 @@ $root.jspb = (function() {
                             value = 0;
                             while (reader.pos < end2) {
                                 var tag2 = reader.uint32();
-                                switch (tag2) {
-                                case 10:
+                                wireType = tag2 & 7;
+                                switch (tag2 >>>= 3) {
+                                case 0:
+                                    throw Error("illegal tag: field number 0");
+                                case 1:
+                                    if (wireType !== 2)
+                                        break;
                                     key = reader.string();
-                                    break;
-                                case 16:
+                                    continue;
+                                case 2:
+                                    if (wireType !== 0)
+                                        break;
                                     value = reader.int32();
-                                    break;
-                                default:
-                                    reader.skipType(tag2 & 7, _depth, tag2 >>> 3);
-                                    break;
+                                    continue;
                                 }
+                                reader.skipType(wireType, _depth, tag2);
                             }
                             if (key === "__proto__")
                                 $util.makeProp(message.mapStringInt32, key);
                             message.mapStringInt32[key] = value;
-                            break;
+                            continue;
                         }
-                    case 26: {
+                    case 3: {
+                            if (wireType !== 2)
+                                break;
                             if (message.mapStringInt64 === $util.emptyObject)
                                 message.mapStringInt64 = {};
                             var end2 = reader.uint32() + reader.pos;
@@ -9001,24 +9224,31 @@ $root.jspb = (function() {
                             value = 0;
                             while (reader.pos < end2) {
                                 var tag2 = reader.uint32();
-                                switch (tag2) {
-                                case 10:
+                                wireType = tag2 & 7;
+                                switch (tag2 >>>= 3) {
+                                case 0:
+                                    throw Error("illegal tag: field number 0");
+                                case 1:
+                                    if (wireType !== 2)
+                                        break;
                                     key = reader.string();
-                                    break;
-                                case 16:
+                                    continue;
+                                case 2:
+                                    if (wireType !== 0)
+                                        break;
                                     value = reader.int64();
-                                    break;
-                                default:
-                                    reader.skipType(tag2 & 7, _depth, tag2 >>> 3);
-                                    break;
+                                    continue;
                                 }
+                                reader.skipType(wireType, _depth, tag2);
                             }
                             if (key === "__proto__")
                                 $util.makeProp(message.mapStringInt64, key);
                             message.mapStringInt64[key] = value;
-                            break;
+                            continue;
                         }
-                    case 34: {
+                    case 4: {
+                            if (wireType !== 2)
+                                break;
                             if (message.mapStringBool === $util.emptyObject)
                                 message.mapStringBool = {};
                             var end2 = reader.uint32() + reader.pos;
@@ -9026,24 +9256,31 @@ $root.jspb = (function() {
                             value = false;
                             while (reader.pos < end2) {
                                 var tag2 = reader.uint32();
-                                switch (tag2) {
-                                case 10:
+                                wireType = tag2 & 7;
+                                switch (tag2 >>>= 3) {
+                                case 0:
+                                    throw Error("illegal tag: field number 0");
+                                case 1:
+                                    if (wireType !== 2)
+                                        break;
                                     key = reader.string();
-                                    break;
-                                case 16:
+                                    continue;
+                                case 2:
+                                    if (wireType !== 0)
+                                        break;
                                     value = reader.bool();
-                                    break;
-                                default:
-                                    reader.skipType(tag2 & 7, _depth, tag2 >>> 3);
-                                    break;
+                                    continue;
                                 }
+                                reader.skipType(wireType, _depth, tag2);
                             }
                             if (key === "__proto__")
                                 $util.makeProp(message.mapStringBool, key);
                             message.mapStringBool[key] = value;
-                            break;
+                            continue;
                         }
-                    case 42: {
+                    case 5: {
+                            if (wireType !== 2)
+                                break;
                             if (message.mapStringDouble === $util.emptyObject)
                                 message.mapStringDouble = {};
                             var end2 = reader.uint32() + reader.pos;
@@ -9051,24 +9288,31 @@ $root.jspb = (function() {
                             value = 0;
                             while (reader.pos < end2) {
                                 var tag2 = reader.uint32();
-                                switch (tag2) {
-                                case 10:
+                                wireType = tag2 & 7;
+                                switch (tag2 >>>= 3) {
+                                case 0:
+                                    throw Error("illegal tag: field number 0");
+                                case 1:
+                                    if (wireType !== 2)
+                                        break;
                                     key = reader.string();
-                                    break;
-                                case 17:
+                                    continue;
+                                case 2:
+                                    if (wireType !== 1)
+                                        break;
                                     value = reader.double();
-                                    break;
-                                default:
-                                    reader.skipType(tag2 & 7, _depth, tag2 >>> 3);
-                                    break;
+                                    continue;
                                 }
+                                reader.skipType(wireType, _depth, tag2);
                             }
                             if (key === "__proto__")
                                 $util.makeProp(message.mapStringDouble, key);
                             message.mapStringDouble[key] = value;
-                            break;
+                            continue;
                         }
-                    case 50: {
+                    case 6: {
+                            if (wireType !== 2)
+                                break;
                             if (message.mapStringEnum === $util.emptyObject)
                                 message.mapStringEnum = {};
                             var end2 = reader.uint32() + reader.pos;
@@ -9076,49 +9320,63 @@ $root.jspb = (function() {
                             value = 0;
                             while (reader.pos < end2) {
                                 var tag2 = reader.uint32();
-                                switch (tag2) {
-                                case 10:
+                                wireType = tag2 & 7;
+                                switch (tag2 >>>= 3) {
+                                case 0:
+                                    throw Error("illegal tag: field number 0");
+                                case 1:
+                                    if (wireType !== 2)
+                                        break;
                                     key = reader.string();
-                                    break;
-                                case 16:
+                                    continue;
+                                case 2:
+                                    if (wireType !== 0)
+                                        break;
                                     value = reader.int32();
-                                    break;
-                                default:
-                                    reader.skipType(tag2 & 7, _depth, tag2 >>> 3);
-                                    break;
+                                    continue;
                                 }
+                                reader.skipType(wireType, _depth, tag2);
                             }
                             if (key === "__proto__")
                                 $util.makeProp(message.mapStringEnum, key);
                             message.mapStringEnum[key] = value;
-                            break;
+                            continue;
                         }
-                    case 58: {
+                    case 7: {
+                            if (wireType !== 2)
+                                break;
                             if (message.mapStringMsg === $util.emptyObject)
                                 message.mapStringMsg = {};
                             var end2 = reader.uint32() + reader.pos;
                             key = "";
-                            value = new $root.jspb.test.MapValueMessageNoBinary();
+                            value = null;
                             while (reader.pos < end2) {
                                 var tag2 = reader.uint32();
-                                switch (tag2) {
-                                case 10:
+                                wireType = tag2 & 7;
+                                switch (tag2 >>>= 3) {
+                                case 0:
+                                    throw Error("illegal tag: field number 0");
+                                case 1:
+                                    if (wireType !== 2)
+                                        break;
                                     key = reader.string();
-                                    break;
-                                case 18:
+                                    continue;
+                                case 2:
+                                    if (wireType !== 2)
+                                        break;
                                     value = $root.jspb.test.MapValueMessageNoBinary.decode(reader, reader.uint32(), undefined, _depth + 1);
-                                    break;
-                                default:
-                                    reader.skipType(tag2 & 7, _depth, tag2 >>> 3);
-                                    break;
+                                    continue;
                                 }
+                                reader.skipType(wireType, _depth, tag2);
                             }
                             if (key === "__proto__")
                                 $util.makeProp(message.mapStringMsg, key);
-                            message.mapStringMsg[key] = value;
-                            break;
+                            message.mapStringMsg[key] = value || new $root.jspb.test.MapValueMessageNoBinary();
+                            continue;
                         }
-                    case 66: {
+                    case 8: {
+                            if (wireType !== 2)
+                                break;
                             if (message.mapInt32String === $util.emptyObject)
                                 message.mapInt32String = {};
                             var end2 = reader.uint32() + reader.pos;
@@ -9126,22 +9384,29 @@ $root.jspb = (function() {
                             value = "";
                             while (reader.pos < end2) {
                                 var tag2 = reader.uint32();
-                                switch (tag2) {
-                                case 8:
+                                wireType = tag2 & 7;
+                                switch (tag2 >>>= 3) {
+                                case 0:
+                                    throw Error("illegal tag: field number 0");
+                                case 1:
+                                    if (wireType !== 0)
+                                        break;
                                     key = reader.int32();
-                                    break;
-                                case 18:
+                                    continue;
+                                case 2:
+                                    if (wireType !== 2)
+                                        break;
                                     value = reader.string();
-                                    break;
-                                default:
-                                    reader.skipType(tag2 & 7, _depth, tag2 >>> 3);
-                                    break;
+                                    continue;
                                 }
+                                reader.skipType(wireType, _depth, tag2);
                             }
                             message.mapInt32String[key] = value;
-                            break;
+                            continue;
                         }
-                    case 74: {
+                    case 9: {
+                            if (wireType !== 2)
+                                break;
                             if (message.mapInt64String === $util.emptyObject)
                                 message.mapInt64String = {};
                             var end2 = reader.uint32() + reader.pos;
@@ -9149,22 +9414,29 @@ $root.jspb = (function() {
                             value = "";
                             while (reader.pos < end2) {
                                 var tag2 = reader.uint32();
-                                switch (tag2) {
-                                case 8:
+                                wireType = tag2 & 7;
+                                switch (tag2 >>>= 3) {
+                                case 0:
+                                    throw Error("illegal tag: field number 0");
+                                case 1:
+                                    if (wireType !== 0)
+                                        break;
                                     key = reader.int64();
-                                    break;
-                                case 18:
+                                    continue;
+                                case 2:
+                                    if (wireType !== 2)
+                                        break;
                                     value = reader.string();
-                                    break;
-                                default:
-                                    reader.skipType(tag2 & 7, _depth, tag2 >>> 3);
-                                    break;
+                                    continue;
                                 }
+                                reader.skipType(wireType, _depth, tag2);
                             }
                             message.mapInt64String[typeof key === "object" ? $util.longToHash(key) : key] = value;
-                            break;
+                            continue;
                         }
-                    case 82: {
+                    case 10: {
+                            if (wireType !== 2)
+                                break;
                             if (message.mapBoolString === $util.emptyObject)
                                 message.mapBoolString = {};
                             var end2 = reader.uint32() + reader.pos;
@@ -9172,56 +9444,68 @@ $root.jspb = (function() {
                             value = "";
                             while (reader.pos < end2) {
                                 var tag2 = reader.uint32();
-                                switch (tag2) {
-                                case 8:
+                                wireType = tag2 & 7;
+                                switch (tag2 >>>= 3) {
+                                case 0:
+                                    throw Error("illegal tag: field number 0");
+                                case 1:
+                                    if (wireType !== 0)
+                                        break;
                                     key = reader.bool();
-                                    break;
-                                case 18:
+                                    continue;
+                                case 2:
+                                    if (wireType !== 2)
+                                        break;
                                     value = reader.string();
-                                    break;
-                                default:
-                                    reader.skipType(tag2 & 7, _depth, tag2 >>> 3);
-                                    break;
+                                    continue;
                                 }
+                                reader.skipType(wireType, _depth, tag2);
                             }
                             message.mapBoolString[key] = value;
-                            break;
+                            continue;
                         }
-                    case 90: {
+                    case 11: {
+                            if (wireType !== 2)
+                                break;
                             message.testMapFields = $root.jspb.test.TestMapFieldsNoBinary.decode(reader, reader.uint32(), undefined, _depth + 1, message.testMapFields);
-                            break;
+                            continue;
                         }
-                    case 98: {
+                    case 12: {
+                            if (wireType !== 2)
+                                break;
                             if (message.mapStringTestmapfields === $util.emptyObject)
                                 message.mapStringTestmapfields = {};
                             var end2 = reader.uint32() + reader.pos;
                             key = "";
-                            value = new $root.jspb.test.TestMapFieldsNoBinary();
+                            value = null;
                             while (reader.pos < end2) {
                                 var tag2 = reader.uint32();
-                                switch (tag2) {
-                                case 10:
+                                wireType = tag2 & 7;
+                                switch (tag2 >>>= 3) {
+                                case 0:
+                                    throw Error("illegal tag: field number 0");
+                                case 1:
+                                    if (wireType !== 2)
+                                        break;
                                     key = reader.string();
-                                    break;
-                                case 18:
+                                    continue;
+                                case 2:
+                                    if (wireType !== 2)
+                                        break;
                                     value = $root.jspb.test.TestMapFieldsNoBinary.decode(reader, reader.uint32(), undefined, _depth + 1);
-                                    break;
-                                default:
-                                    reader.skipType(tag2 & 7, _depth, tag2 >>> 3);
-                                    break;
+                                    continue;
                                 }
+                                reader.skipType(wireType, _depth, tag2);
                             }
                             if (key === "__proto__")
                                 $util.makeProp(message.mapStringTestmapfields, key);
-                            message.mapStringTestmapfields[key] = value;
-                            break;
+                            message.mapStringTestmapfields[key] = value || new $root.jspb.test.TestMapFieldsNoBinary();
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        $util.makeProp(message, "$unknowns", false);
-                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -9814,17 +10098,20 @@ $root.jspb = (function() {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 8: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 0:
+                        throw Error("illegal tag: field number 0");
+                    case 1: {
+                            if (wireType !== 0)
+                                break;
                             message.foo = reader.int32();
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        $util.makeProp(message, "$unknowns", false);
-                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -10032,13 +10319,14 @@ $root.jspb = (function() {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        $util.makeProp(message, "$unknowns", false);
-                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
-                        break;
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 0:
+                        throw Error("illegal tag: field number 0");
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -10230,13 +10518,14 @@ $root.jspb = (function() {
                             _end = undefined;
                             break;
                         }
-                        switch (tag) {
-                        default:
-                            reader.skipType(tag & 7, _depth, tag >>> 3);
-                            $util.makeProp(message, "$unknowns", false);
-                            (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
-                            break;
+                        var wireType = tag & 7;
+                        switch (tag >>>= 3) {
+                        case 0:
+                            throw Error("illegal tag: field number 0");
                         }
+                        reader.skipType(wireType, _depth, tag);
+                        $util.makeProp(message, "$unknowns", false);
+                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                     }
                     if (_end !== undefined)
                         throw Error("missing end group");
@@ -10439,17 +10728,20 @@ $root.jspb = (function() {
                                 _end = undefined;
                                 break;
                             }
-                            switch (tag) {
-                            case 8: {
+                            var wireType = tag & 7;
+                            switch (tag >>>= 3) {
+                            case 0:
+                                throw Error("illegal tag: field number 0");
+                            case 1: {
+                                    if (wireType !== 0)
+                                        break;
                                     message.count = reader.int32();
-                                    break;
+                                    continue;
                                 }
-                            default:
-                                reader.skipType(tag & 7, _depth, tag >>> 3);
-                                $util.makeProp(message, "$unknowns", false);
-                                (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
-                                break;
                             }
+                            reader.skipType(wireType, _depth, tag);
+                            $util.makeProp(message, "$unknowns", false);
+                            (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                         }
                         if (_end !== undefined)
                             throw Error("missing end group");
@@ -10700,19 +10992,22 @@ $root.google = (function() {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 10: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 0:
+                        throw Error("illegal tag: field number 0");
+                    case 1: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.file && message.file.length))
                                 message.file = [];
                             message.file.push($root.google.protobuf.FileDescriptorProto.decode(reader, reader.uint32(), undefined, _depth + 1));
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        $util.makeProp(message, "$unknowns", false);
-                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -11141,97 +11436,130 @@ $root.google = (function() {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 10: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 0:
+                        throw Error("illegal tag: field number 0");
+                    case 1: {
+                            if (wireType !== 2)
+                                break;
                             message.name = reader.string();
-                            break;
+                            continue;
                         }
-                    case 18: {
+                    case 2: {
+                            if (wireType !== 2)
+                                break;
                             message["package"] = reader.string();
-                            break;
+                            continue;
                         }
-                    case 26: {
+                    case 3: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.dependency && message.dependency.length))
                                 message.dependency = [];
                             message.dependency.push(reader.string());
-                            break;
+                            continue;
                         }
-                    case 80:
-                    case 82: {
-                            if (!(message.publicDependency && message.publicDependency.length))
-                                message.publicDependency = [];
-                            if ((tag & 7) === 2) {
+                    case 10: {
+                            if (wireType === 2) {
+                                if (!(message.publicDependency && message.publicDependency.length))
+                                    message.publicDependency = [];
                                 var end2 = reader.uint32() + reader.pos;
                                 while (reader.pos < end2)
                                     message.publicDependency.push(reader.int32());
-                            } else
-                                message.publicDependency.push(reader.int32());
-                            break;
+                                continue;
+                            }
+                            if (wireType !== 0)
+                                break;
+                            if (!(message.publicDependency && message.publicDependency.length))
+                                message.publicDependency = [];
+                            message.publicDependency.push(reader.int32());
+                            continue;
                         }
-                    case 88:
-                    case 90: {
-                            if (!(message.weakDependency && message.weakDependency.length))
-                                message.weakDependency = [];
-                            if ((tag & 7) === 2) {
+                    case 11: {
+                            if (wireType === 2) {
+                                if (!(message.weakDependency && message.weakDependency.length))
+                                    message.weakDependency = [];
                                 var end2 = reader.uint32() + reader.pos;
                                 while (reader.pos < end2)
                                     message.weakDependency.push(reader.int32());
-                            } else
-                                message.weakDependency.push(reader.int32());
-                            break;
+                                continue;
+                            }
+                            if (wireType !== 0)
+                                break;
+                            if (!(message.weakDependency && message.weakDependency.length))
+                                message.weakDependency = [];
+                            message.weakDependency.push(reader.int32());
+                            continue;
                         }
-                    case 122: {
+                    case 15: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.optionDependency && message.optionDependency.length))
                                 message.optionDependency = [];
                             message.optionDependency.push(reader.string());
-                            break;
+                            continue;
                         }
-                    case 34: {
+                    case 4: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.messageType && message.messageType.length))
                                 message.messageType = [];
                             message.messageType.push($root.google.protobuf.DescriptorProto.decode(reader, reader.uint32(), undefined, _depth + 1));
-                            break;
+                            continue;
                         }
-                    case 42: {
+                    case 5: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.enumType && message.enumType.length))
                                 message.enumType = [];
                             message.enumType.push($root.google.protobuf.EnumDescriptorProto.decode(reader, reader.uint32(), undefined, _depth + 1));
-                            break;
+                            continue;
                         }
-                    case 50: {
+                    case 6: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.service && message.service.length))
                                 message.service = [];
                             message.service.push($root.google.protobuf.ServiceDescriptorProto.decode(reader, reader.uint32(), undefined, _depth + 1));
-                            break;
+                            continue;
                         }
-                    case 58: {
+                    case 7: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.extension && message.extension.length))
                                 message.extension = [];
                             message.extension.push($root.google.protobuf.FieldDescriptorProto.decode(reader, reader.uint32(), undefined, _depth + 1));
-                            break;
+                            continue;
                         }
-                    case 66: {
+                    case 8: {
+                            if (wireType !== 2)
+                                break;
                             message.options = $root.google.protobuf.FileOptions.decode(reader, reader.uint32(), undefined, _depth + 1, message.options);
-                            break;
+                            continue;
                         }
-                    case 74: {
+                    case 9: {
+                            if (wireType !== 2)
+                                break;
                             message.sourceCodeInfo = $root.google.protobuf.SourceCodeInfo.decode(reader, reader.uint32(), undefined, _depth + 1, message.sourceCodeInfo);
-                            break;
+                            continue;
                         }
-                    case 98: {
+                    case 12: {
+                            if (wireType !== 2)
+                                break;
                             message.syntax = reader.string();
-                            break;
+                            continue;
                         }
-                    case 112: {
+                    case 14: {
+                            if (wireType !== 0)
+                                break;
                             message.edition = reader.int32();
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        $util.makeProp(message, "$unknowns", false);
-                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -11878,73 +12206,96 @@ $root.google = (function() {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 10: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 0:
+                        throw Error("illegal tag: field number 0");
+                    case 1: {
+                            if (wireType !== 2)
+                                break;
                             message.name = reader.string();
-                            break;
+                            continue;
                         }
-                    case 18: {
+                    case 2: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.field && message.field.length))
                                 message.field = [];
                             message.field.push($root.google.protobuf.FieldDescriptorProto.decode(reader, reader.uint32(), undefined, _depth + 1));
-                            break;
+                            continue;
                         }
-                    case 50: {
+                    case 6: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.extension && message.extension.length))
                                 message.extension = [];
                             message.extension.push($root.google.protobuf.FieldDescriptorProto.decode(reader, reader.uint32(), undefined, _depth + 1));
-                            break;
+                            continue;
                         }
-                    case 26: {
+                    case 3: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.nestedType && message.nestedType.length))
                                 message.nestedType = [];
                             message.nestedType.push($root.google.protobuf.DescriptorProto.decode(reader, reader.uint32(), undefined, _depth + 1));
-                            break;
+                            continue;
                         }
-                    case 34: {
+                    case 4: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.enumType && message.enumType.length))
                                 message.enumType = [];
                             message.enumType.push($root.google.protobuf.EnumDescriptorProto.decode(reader, reader.uint32(), undefined, _depth + 1));
-                            break;
+                            continue;
                         }
-                    case 42: {
+                    case 5: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.extensionRange && message.extensionRange.length))
                                 message.extensionRange = [];
                             message.extensionRange.push($root.google.protobuf.DescriptorProto.ExtensionRange.decode(reader, reader.uint32(), undefined, _depth + 1));
-                            break;
+                            continue;
                         }
-                    case 66: {
+                    case 8: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.oneofDecl && message.oneofDecl.length))
                                 message.oneofDecl = [];
                             message.oneofDecl.push($root.google.protobuf.OneofDescriptorProto.decode(reader, reader.uint32(), undefined, _depth + 1));
-                            break;
+                            continue;
                         }
-                    case 58: {
+                    case 7: {
+                            if (wireType !== 2)
+                                break;
                             message.options = $root.google.protobuf.MessageOptions.decode(reader, reader.uint32(), undefined, _depth + 1, message.options);
-                            break;
+                            continue;
                         }
-                    case 74: {
+                    case 9: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.reservedRange && message.reservedRange.length))
                                 message.reservedRange = [];
                             message.reservedRange.push($root.google.protobuf.DescriptorProto.ReservedRange.decode(reader, reader.uint32(), undefined, _depth + 1));
-                            break;
+                            continue;
                         }
-                    case 82: {
+                    case 10: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.reservedName && message.reservedName.length))
                                 message.reservedName = [];
                             message.reservedName.push(reader.string());
-                            break;
+                            continue;
                         }
-                    case 88: {
+                    case 11: {
+                            if (wireType !== 0)
+                                break;
                             message.visibility = reader.int32();
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        $util.makeProp(message, "$unknowns", false);
-                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -12425,25 +12776,32 @@ $root.google = (function() {
                             _end = undefined;
                             break;
                         }
-                        switch (tag) {
-                        case 8: {
+                        var wireType = tag & 7;
+                        switch (tag >>>= 3) {
+                        case 0:
+                            throw Error("illegal tag: field number 0");
+                        case 1: {
+                                if (wireType !== 0)
+                                    break;
                                 message.start = reader.int32();
-                                break;
+                                continue;
                             }
-                        case 16: {
+                        case 2: {
+                                if (wireType !== 0)
+                                    break;
                                 message.end = reader.int32();
-                                break;
+                                continue;
                             }
-                        case 26: {
+                        case 3: {
+                                if (wireType !== 2)
+                                    break;
                                 message.options = $root.google.protobuf.ExtensionRangeOptions.decode(reader, reader.uint32(), undefined, _depth + 1, message.options);
-                                break;
+                                continue;
                             }
-                        default:
-                            reader.skipType(tag & 7, _depth, tag >>> 3);
-                            $util.makeProp(message, "$unknowns", false);
-                            (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
-                            break;
                         }
+                        reader.skipType(wireType, _depth, tag);
+                        $util.makeProp(message, "$unknowns", false);
+                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                     }
                     if (_end !== undefined)
                         throw Error("missing end group");
@@ -12695,21 +13053,26 @@ $root.google = (function() {
                             _end = undefined;
                             break;
                         }
-                        switch (tag) {
-                        case 8: {
+                        var wireType = tag & 7;
+                        switch (tag >>>= 3) {
+                        case 0:
+                            throw Error("illegal tag: field number 0");
+                        case 1: {
+                                if (wireType !== 0)
+                                    break;
                                 message.start = reader.int32();
-                                break;
+                                continue;
                             }
-                        case 16: {
+                        case 2: {
+                                if (wireType !== 0)
+                                    break;
                                 message.end = reader.int32();
-                                break;
+                                continue;
                             }
-                        default:
-                            reader.skipType(tag & 7, _depth, tag >>> 3);
-                            $util.makeProp(message, "$unknowns", false);
-                            (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
-                            break;
                         }
+                        reader.skipType(wireType, _depth, tag);
+                        $util.makeProp(message, "$unknowns", false);
+                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                     }
                     if (_end !== undefined)
                         throw Error("missing end group");
@@ -12977,33 +13340,42 @@ $root.google = (function() {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 7994: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 0:
+                        throw Error("illegal tag: field number 0");
+                    case 999: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.uninterpretedOption && message.uninterpretedOption.length))
                                 message.uninterpretedOption = [];
                             message.uninterpretedOption.push($root.google.protobuf.UninterpretedOption.decode(reader, reader.uint32(), undefined, _depth + 1));
-                            break;
+                            continue;
                         }
-                    case 18: {
+                    case 2: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.declaration && message.declaration.length))
                                 message.declaration = [];
                             message.declaration.push($root.google.protobuf.ExtensionRangeOptions.Declaration.decode(reader, reader.uint32(), undefined, _depth + 1));
-                            break;
+                            continue;
                         }
-                    case 402: {
+                    case 50: {
+                            if (wireType !== 2)
+                                break;
                             message.features = $root.google.protobuf.FeatureSet.decode(reader, reader.uint32(), undefined, _depth + 1, message.features);
-                            break;
+                            continue;
                         }
-                    case 24: {
+                    case 3: {
+                            if (wireType !== 0)
+                                break;
                             message.verification = reader.int32();
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        $util.makeProp(message, "$unknowns", false);
-                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -13348,33 +13720,44 @@ $root.google = (function() {
                             _end = undefined;
                             break;
                         }
-                        switch (tag) {
-                        case 8: {
+                        var wireType = tag & 7;
+                        switch (tag >>>= 3) {
+                        case 0:
+                            throw Error("illegal tag: field number 0");
+                        case 1: {
+                                if (wireType !== 0)
+                                    break;
                                 message.number = reader.int32();
-                                break;
+                                continue;
                             }
-                        case 18: {
+                        case 2: {
+                                if (wireType !== 2)
+                                    break;
                                 message.fullName = reader.string();
-                                break;
+                                continue;
                             }
-                        case 26: {
+                        case 3: {
+                                if (wireType !== 2)
+                                    break;
                                 message.type = reader.string();
-                                break;
+                                continue;
                             }
-                        case 40: {
+                        case 5: {
+                                if (wireType !== 0)
+                                    break;
                                 message.reserved = reader.bool();
-                                break;
+                                continue;
                             }
-                        case 48: {
+                        case 6: {
+                                if (wireType !== 0)
+                                    break;
                                 message.repeated = reader.bool();
-                                break;
+                                continue;
                             }
-                        default:
-                            reader.skipType(tag & 7, _depth, tag >>> 3);
-                            $util.makeProp(message, "$unknowns", false);
-                            (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
-                            break;
                         }
+                        reader.skipType(wireType, _depth, tag);
+                        $util.makeProp(message, "$unknowns", false);
+                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                     }
                     if (_end !== undefined)
                         throw Error("missing end group");
@@ -13753,57 +14136,80 @@ $root.google = (function() {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 10: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 0:
+                        throw Error("illegal tag: field number 0");
+                    case 1: {
+                            if (wireType !== 2)
+                                break;
                             message.name = reader.string();
-                            break;
+                            continue;
                         }
-                    case 24: {
+                    case 3: {
+                            if (wireType !== 0)
+                                break;
                             message.number = reader.int32();
-                            break;
+                            continue;
                         }
-                    case 32: {
+                    case 4: {
+                            if (wireType !== 0)
+                                break;
                             message.label = reader.int32();
-                            break;
+                            continue;
                         }
-                    case 40: {
+                    case 5: {
+                            if (wireType !== 0)
+                                break;
                             message.type = reader.int32();
-                            break;
+                            continue;
                         }
-                    case 50: {
+                    case 6: {
+                            if (wireType !== 2)
+                                break;
                             message.typeName = reader.string();
-                            break;
+                            continue;
                         }
-                    case 18: {
+                    case 2: {
+                            if (wireType !== 2)
+                                break;
                             message.extendee = reader.string();
-                            break;
+                            continue;
                         }
-                    case 58: {
+                    case 7: {
+                            if (wireType !== 2)
+                                break;
                             message.defaultValue = reader.string();
-                            break;
+                            continue;
                         }
-                    case 72: {
+                    case 9: {
+                            if (wireType !== 0)
+                                break;
                             message.oneofIndex = reader.int32();
-                            break;
+                            continue;
                         }
-                    case 82: {
+                    case 10: {
+                            if (wireType !== 2)
+                                break;
                             message.jsonName = reader.string();
-                            break;
+                            continue;
                         }
-                    case 66: {
+                    case 8: {
+                            if (wireType !== 2)
+                                break;
                             message.options = $root.google.protobuf.FieldOptions.decode(reader, reader.uint32(), undefined, _depth + 1, message.options);
-                            break;
+                            continue;
                         }
-                    case 136: {
+                    case 17: {
+                            if (wireType !== 0)
+                                break;
                             message.proto3Optional = reader.bool();
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        $util.makeProp(message, "$unknowns", false);
-                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -14304,21 +14710,26 @@ $root.google = (function() {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 10: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 0:
+                        throw Error("illegal tag: field number 0");
+                    case 1: {
+                            if (wireType !== 2)
+                                break;
                             message.name = reader.string();
-                            break;
+                            continue;
                         }
-                    case 18: {
+                    case 2: {
+                            if (wireType !== 2)
+                                break;
                             message.options = $root.google.protobuf.OneofOptions.decode(reader, reader.uint32(), undefined, _depth + 1, message.options);
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        $util.makeProp(message, "$unknowns", false);
-                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -14612,43 +15023,56 @@ $root.google = (function() {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 10: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 0:
+                        throw Error("illegal tag: field number 0");
+                    case 1: {
+                            if (wireType !== 2)
+                                break;
                             message.name = reader.string();
-                            break;
+                            continue;
                         }
-                    case 18: {
+                    case 2: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.value && message.value.length))
                                 message.value = [];
                             message.value.push($root.google.protobuf.EnumValueDescriptorProto.decode(reader, reader.uint32(), undefined, _depth + 1));
-                            break;
+                            continue;
                         }
-                    case 26: {
+                    case 3: {
+                            if (wireType !== 2)
+                                break;
                             message.options = $root.google.protobuf.EnumOptions.decode(reader, reader.uint32(), undefined, _depth + 1, message.options);
-                            break;
+                            continue;
                         }
-                    case 34: {
+                    case 4: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.reservedRange && message.reservedRange.length))
                                 message.reservedRange = [];
                             message.reservedRange.push($root.google.protobuf.EnumDescriptorProto.EnumReservedRange.decode(reader, reader.uint32(), undefined, _depth + 1));
-                            break;
+                            continue;
                         }
-                    case 42: {
+                    case 5: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.reservedName && message.reservedName.length))
                                 message.reservedName = [];
                             message.reservedName.push(reader.string());
-                            break;
+                            continue;
                         }
-                    case 48: {
+                    case 6: {
+                            if (wireType !== 0)
+                                break;
                             message.visibility = reader.int32();
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        $util.makeProp(message, "$unknowns", false);
-                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -14993,21 +15417,26 @@ $root.google = (function() {
                             _end = undefined;
                             break;
                         }
-                        switch (tag) {
-                        case 8: {
+                        var wireType = tag & 7;
+                        switch (tag >>>= 3) {
+                        case 0:
+                            throw Error("illegal tag: field number 0");
+                        case 1: {
+                                if (wireType !== 0)
+                                    break;
                                 message.start = reader.int32();
-                                break;
+                                continue;
                             }
-                        case 16: {
+                        case 2: {
+                                if (wireType !== 0)
+                                    break;
                                 message.end = reader.int32();
-                                break;
+                                continue;
                             }
-                        default:
-                            reader.skipType(tag & 7, _depth, tag >>> 3);
-                            $util.makeProp(message, "$unknowns", false);
-                            (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
-                            break;
                         }
+                        reader.skipType(wireType, _depth, tag);
+                        $util.makeProp(message, "$unknowns", false);
+                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                     }
                     if (_end !== undefined)
                         throw Error("missing end group");
@@ -15260,25 +15689,32 @@ $root.google = (function() {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 10: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 0:
+                        throw Error("illegal tag: field number 0");
+                    case 1: {
+                            if (wireType !== 2)
+                                break;
                             message.name = reader.string();
-                            break;
+                            continue;
                         }
-                    case 16: {
+                    case 2: {
+                            if (wireType !== 0)
+                                break;
                             message.number = reader.int32();
-                            break;
+                            continue;
                         }
-                    case 26: {
+                    case 3: {
+                            if (wireType !== 2)
+                                break;
                             message.options = $root.google.protobuf.EnumValueOptions.decode(reader, reader.uint32(), undefined, _depth + 1, message.options);
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        $util.makeProp(message, "$unknowns", false);
-                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -15543,27 +15979,34 @@ $root.google = (function() {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 10: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 0:
+                        throw Error("illegal tag: field number 0");
+                    case 1: {
+                            if (wireType !== 2)
+                                break;
                             message.name = reader.string();
-                            break;
+                            continue;
                         }
-                    case 18: {
+                    case 2: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.method && message.method.length))
                                 message.method = [];
                             message.method.push($root.google.protobuf.MethodDescriptorProto.decode(reader, reader.uint32(), undefined, _depth + 1));
-                            break;
+                            continue;
                         }
-                    case 26: {
+                    case 3: {
+                            if (wireType !== 2)
+                                break;
                             message.options = $root.google.protobuf.ServiceOptions.decode(reader, reader.uint32(), undefined, _depth + 1, message.options);
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        $util.makeProp(message, "$unknowns", false);
-                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -15877,37 +16320,50 @@ $root.google = (function() {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 10: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 0:
+                        throw Error("illegal tag: field number 0");
+                    case 1: {
+                            if (wireType !== 2)
+                                break;
                             message.name = reader.string();
-                            break;
+                            continue;
                         }
-                    case 18: {
+                    case 2: {
+                            if (wireType !== 2)
+                                break;
                             message.inputType = reader.string();
-                            break;
+                            continue;
                         }
-                    case 26: {
+                    case 3: {
+                            if (wireType !== 2)
+                                break;
                             message.outputType = reader.string();
-                            break;
+                            continue;
                         }
-                    case 34: {
+                    case 4: {
+                            if (wireType !== 2)
+                                break;
                             message.options = $root.google.protobuf.MethodOptions.decode(reader, reader.uint32(), undefined, _depth + 1, message.options);
-                            break;
+                            continue;
                         }
-                    case 40: {
+                    case 5: {
+                            if (wireType !== 0)
+                                break;
                             message.clientStreaming = reader.bool();
-                            break;
+                            continue;
                         }
-                    case 48: {
+                    case 6: {
+                            if (wireType !== 0)
+                                break;
                             message.serverStreaming = reader.bool();
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        $util.makeProp(message, "$unknowns", false);
-                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -16394,99 +16850,142 @@ $root.google = (function() {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 10: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 0:
+                        throw Error("illegal tag: field number 0");
+                    case 1: {
+                            if (wireType !== 2)
+                                break;
                             message.javaPackage = reader.string();
-                            break;
+                            continue;
                         }
-                    case 66: {
+                    case 8: {
+                            if (wireType !== 2)
+                                break;
                             message.javaOuterClassname = reader.string();
-                            break;
+                            continue;
                         }
-                    case 80: {
+                    case 10: {
+                            if (wireType !== 0)
+                                break;
                             message.javaMultipleFiles = reader.bool();
-                            break;
+                            continue;
                         }
-                    case 160: {
+                    case 20: {
+                            if (wireType !== 0)
+                                break;
                             message.javaGenerateEqualsAndHash = reader.bool();
-                            break;
+                            continue;
                         }
-                    case 216: {
+                    case 27: {
+                            if (wireType !== 0)
+                                break;
                             message.javaStringCheckUtf8 = reader.bool();
-                            break;
+                            continue;
                         }
-                    case 72: {
+                    case 9: {
+                            if (wireType !== 0)
+                                break;
                             message.optimizeFor = reader.int32();
-                            break;
+                            continue;
                         }
-                    case 90: {
+                    case 11: {
+                            if (wireType !== 2)
+                                break;
                             message.goPackage = reader.string();
-                            break;
+                            continue;
                         }
-                    case 128: {
+                    case 16: {
+                            if (wireType !== 0)
+                                break;
                             message.ccGenericServices = reader.bool();
-                            break;
+                            continue;
                         }
-                    case 136: {
+                    case 17: {
+                            if (wireType !== 0)
+                                break;
                             message.javaGenericServices = reader.bool();
-                            break;
+                            continue;
                         }
-                    case 144: {
+                    case 18: {
+                            if (wireType !== 0)
+                                break;
                             message.pyGenericServices = reader.bool();
-                            break;
+                            continue;
                         }
-                    case 184: {
+                    case 23: {
+                            if (wireType !== 0)
+                                break;
                             message.deprecated = reader.bool();
-                            break;
+                            continue;
                         }
-                    case 248: {
+                    case 31: {
+                            if (wireType !== 0)
+                                break;
                             message.ccEnableArenas = reader.bool();
-                            break;
+                            continue;
                         }
-                    case 290: {
+                    case 36: {
+                            if (wireType !== 2)
+                                break;
                             message.objcClassPrefix = reader.string();
-                            break;
+                            continue;
                         }
-                    case 298: {
+                    case 37: {
+                            if (wireType !== 2)
+                                break;
                             message.csharpNamespace = reader.string();
-                            break;
+                            continue;
                         }
-                    case 314: {
+                    case 39: {
+                            if (wireType !== 2)
+                                break;
                             message.swiftPrefix = reader.string();
-                            break;
+                            continue;
                         }
-                    case 322: {
+                    case 40: {
+                            if (wireType !== 2)
+                                break;
                             message.phpClassPrefix = reader.string();
-                            break;
+                            continue;
                         }
-                    case 330: {
+                    case 41: {
+                            if (wireType !== 2)
+                                break;
                             message.phpNamespace = reader.string();
-                            break;
+                            continue;
                         }
-                    case 354: {
+                    case 44: {
+                            if (wireType !== 2)
+                                break;
                             message.phpMetadataNamespace = reader.string();
-                            break;
+                            continue;
                         }
-                    case 362: {
+                    case 45: {
+                            if (wireType !== 2)
+                                break;
                             message.rubyPackage = reader.string();
-                            break;
+                            continue;
                         }
-                    case 402: {
+                    case 50: {
+                            if (wireType !== 2)
+                                break;
                             message.features = $root.google.protobuf.FeatureSet.decode(reader, reader.uint32(), undefined, _depth + 1, message.features);
-                            break;
+                            continue;
                         }
-                    case 7994: {
+                    case 999: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.uninterpretedOption && message.uninterpretedOption.length))
                                 message.uninterpretedOption = [];
                             message.uninterpretedOption.push($root.google.protobuf.UninterpretedOption.decode(reader, reader.uint32(), undefined, _depth + 1));
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        $util.makeProp(message, "$unknowns", false);
-                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -16997,43 +17496,58 @@ $root.google = (function() {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 8: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 0:
+                        throw Error("illegal tag: field number 0");
+                    case 1: {
+                            if (wireType !== 0)
+                                break;
                             message.messageSetWireFormat = reader.bool();
-                            break;
+                            continue;
                         }
-                    case 16: {
+                    case 2: {
+                            if (wireType !== 0)
+                                break;
                             message.noStandardDescriptorAccessor = reader.bool();
-                            break;
+                            continue;
                         }
-                    case 24: {
+                    case 3: {
+                            if (wireType !== 0)
+                                break;
                             message.deprecated = reader.bool();
-                            break;
+                            continue;
                         }
-                    case 56: {
+                    case 7: {
+                            if (wireType !== 0)
+                                break;
                             message.mapEntry = reader.bool();
-                            break;
+                            continue;
                         }
-                    case 88: {
+                    case 11: {
+                            if (wireType !== 0)
+                                break;
                             message.deprecatedLegacyJsonFieldConflicts = reader.bool();
-                            break;
+                            continue;
                         }
-                    case 98: {
+                    case 12: {
+                            if (wireType !== 2)
+                                break;
                             message.features = $root.google.protobuf.FeatureSet.decode(reader, reader.uint32(), undefined, _depth + 1, message.features);
-                            break;
+                            continue;
                         }
-                    case 7994: {
+                    case 999: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.uninterpretedOption && message.uninterpretedOption.length))
                                 message.uninterpretedOption = [];
                             message.uninterpretedOption.push($root.google.protobuf.UninterpretedOption.decode(reader, reader.uint32(), undefined, _depth + 1));
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        $util.makeProp(message, "$unknowns", false);
-                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -17473,81 +17987,112 @@ $root.google = (function() {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 8: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 0:
+                        throw Error("illegal tag: field number 0");
+                    case 1: {
+                            if (wireType !== 0)
+                                break;
                             message.ctype = reader.int32();
-                            break;
+                            continue;
+                        }
+                    case 2: {
+                            if (wireType !== 0)
+                                break;
+                            message.packed = reader.bool();
+                            continue;
+                        }
+                    case 6: {
+                            if (wireType !== 0)
+                                break;
+                            message.jstype = reader.int32();
+                            continue;
+                        }
+                    case 5: {
+                            if (wireType !== 0)
+                                break;
+                            message.lazy = reader.bool();
+                            continue;
+                        }
+                    case 15: {
+                            if (wireType !== 0)
+                                break;
+                            message.unverifiedLazy = reader.bool();
+                            continue;
+                        }
+                    case 3: {
+                            if (wireType !== 0)
+                                break;
+                            message.deprecated = reader.bool();
+                            continue;
+                        }
+                    case 10: {
+                            if (wireType !== 0)
+                                break;
+                            message.weak = reader.bool();
+                            continue;
                         }
                     case 16: {
-                            message.packed = reader.bool();
-                            break;
-                        }
-                    case 48: {
-                            message.jstype = reader.int32();
-                            break;
-                        }
-                    case 40: {
-                            message.lazy = reader.bool();
-                            break;
-                        }
-                    case 120: {
-                            message.unverifiedLazy = reader.bool();
-                            break;
-                        }
-                    case 24: {
-                            message.deprecated = reader.bool();
-                            break;
-                        }
-                    case 80: {
-                            message.weak = reader.bool();
-                            break;
-                        }
-                    case 128: {
+                            if (wireType !== 0)
+                                break;
                             message.debugRedact = reader.bool();
-                            break;
+                            continue;
                         }
-                    case 136: {
+                    case 17: {
+                            if (wireType !== 0)
+                                break;
                             message.retention = reader.int32();
-                            break;
+                            continue;
                         }
-                    case 152:
-                    case 154: {
-                            if (!(message.targets && message.targets.length))
-                                message.targets = [];
-                            if ((tag & 7) === 2) {
+                    case 19: {
+                            if (wireType === 2) {
+                                if (!(message.targets && message.targets.length))
+                                    message.targets = [];
                                 var end2 = reader.uint32() + reader.pos;
                                 while (reader.pos < end2)
                                     message.targets.push(reader.int32());
-                            } else
-                                message.targets.push(reader.int32());
-                            break;
+                                continue;
+                            }
+                            if (wireType !== 0)
+                                break;
+                            if (!(message.targets && message.targets.length))
+                                message.targets = [];
+                            message.targets.push(reader.int32());
+                            continue;
                         }
-                    case 162: {
+                    case 20: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.editionDefaults && message.editionDefaults.length))
                                 message.editionDefaults = [];
                             message.editionDefaults.push($root.google.protobuf.FieldOptions.EditionDefault.decode(reader, reader.uint32(), undefined, _depth + 1));
-                            break;
+                            continue;
                         }
-                    case 170: {
+                    case 21: {
+                            if (wireType !== 2)
+                                break;
                             message.features = $root.google.protobuf.FeatureSet.decode(reader, reader.uint32(), undefined, _depth + 1, message.features);
-                            break;
+                            continue;
                         }
-                    case 178: {
+                    case 22: {
+                            if (wireType !== 2)
+                                break;
                             message.featureSupport = $root.google.protobuf.FieldOptions.FeatureSupport.decode(reader, reader.uint32(), undefined, _depth + 1, message.featureSupport);
-                            break;
+                            continue;
                         }
-                    case 7994: {
+                    case 999: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.uninterpretedOption && message.uninterpretedOption.length))
                                 message.uninterpretedOption = [];
                             message.uninterpretedOption.push($root.google.protobuf.UninterpretedOption.decode(reader, reader.uint32(), undefined, _depth + 1));
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        $util.makeProp(message, "$unknowns", false);
-                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -18146,21 +18691,26 @@ $root.google = (function() {
                             _end = undefined;
                             break;
                         }
-                        switch (tag) {
-                        case 24: {
+                        var wireType = tag & 7;
+                        switch (tag >>>= 3) {
+                        case 0:
+                            throw Error("illegal tag: field number 0");
+                        case 3: {
+                                if (wireType !== 0)
+                                    break;
                                 message.edition = reader.int32();
-                                break;
+                                continue;
                             }
-                        case 18: {
+                        case 2: {
+                                if (wireType !== 2)
+                                    break;
                                 message.value = reader.string();
-                                break;
+                                continue;
                             }
-                        default:
-                            reader.skipType(tag & 7, _depth, tag >>> 3);
-                            $util.makeProp(message, "$unknowns", false);
-                            (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
-                            break;
                         }
+                        reader.skipType(wireType, _depth, tag);
+                        $util.makeProp(message, "$unknowns", false);
+                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                     }
                     if (_end !== undefined)
                         throw Error("missing end group");
@@ -18490,29 +19040,38 @@ $root.google = (function() {
                             _end = undefined;
                             break;
                         }
-                        switch (tag) {
-                        case 8: {
+                        var wireType = tag & 7;
+                        switch (tag >>>= 3) {
+                        case 0:
+                            throw Error("illegal tag: field number 0");
+                        case 1: {
+                                if (wireType !== 0)
+                                    break;
                                 message.editionIntroduced = reader.int32();
-                                break;
+                                continue;
                             }
-                        case 16: {
+                        case 2: {
+                                if (wireType !== 0)
+                                    break;
                                 message.editionDeprecated = reader.int32();
-                                break;
+                                continue;
                             }
-                        case 26: {
+                        case 3: {
+                                if (wireType !== 2)
+                                    break;
                                 message.deprecationWarning = reader.string();
-                                break;
+                                continue;
                             }
-                        case 32: {
+                        case 4: {
+                                if (wireType !== 0)
+                                    break;
                                 message.editionRemoved = reader.int32();
-                                break;
+                                continue;
                             }
-                        default:
-                            reader.skipType(tag & 7, _depth, tag >>> 3);
-                            $util.makeProp(message, "$unknowns", false);
-                            (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
-                            break;
                         }
+                        reader.skipType(wireType, _depth, tag);
+                        $util.makeProp(message, "$unknowns", false);
+                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                     }
                     if (_end !== undefined)
                         throw Error("missing end group");
@@ -18979,23 +19538,28 @@ $root.google = (function() {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 10: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 0:
+                        throw Error("illegal tag: field number 0");
+                    case 1: {
+                            if (wireType !== 2)
+                                break;
                             message.features = $root.google.protobuf.FeatureSet.decode(reader, reader.uint32(), undefined, _depth + 1, message.features);
-                            break;
+                            continue;
                         }
-                    case 7994: {
+                    case 999: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.uninterpretedOption && message.uninterpretedOption.length))
                                 message.uninterpretedOption = [];
                             message.uninterpretedOption.push($root.google.protobuf.UninterpretedOption.decode(reader, reader.uint32(), undefined, _depth + 1));
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        $util.makeProp(message, "$unknowns", false);
-                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -19297,39 +19861,52 @@ $root.google = (function() {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 16: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 0:
+                        throw Error("illegal tag: field number 0");
+                    case 2: {
+                            if (wireType !== 0)
+                                break;
                             message.allowAlias = reader.bool();
-                            break;
+                            continue;
                         }
-                    case 24: {
+                    case 3: {
+                            if (wireType !== 0)
+                                break;
                             message.deprecated = reader.bool();
-                            break;
+                            continue;
                         }
-                    case 48: {
+                    case 6: {
+                            if (wireType !== 0)
+                                break;
                             message.deprecatedLegacyJsonFieldConflicts = reader.bool();
-                            break;
+                            continue;
                         }
-                    case 58: {
+                    case 7: {
+                            if (wireType !== 2)
+                                break;
                             message.features = $root.google.protobuf.FeatureSet.decode(reader, reader.uint32(), undefined, _depth + 1, message.features);
-                            break;
+                            continue;
                         }
-                    case 7994: {
+                    case 999: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.uninterpretedOption && message.uninterpretedOption.length))
                                 message.uninterpretedOption = [];
                             message.uninterpretedOption.push($root.google.protobuf.UninterpretedOption.decode(reader, reader.uint32(), undefined, _depth + 1));
-                            break;
+                            continue;
                         }
-                    case 336904306: {
+                    case 42113038: {
+                            if (wireType !== 2)
+                                break;
                             message[".jspb.test.IsExtension.simpleOption"] = reader.string();
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        $util.makeProp(message, "$unknowns", false);
-                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -19658,35 +20235,46 @@ $root.google = (function() {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 8: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 0:
+                        throw Error("illegal tag: field number 0");
+                    case 1: {
+                            if (wireType !== 0)
+                                break;
                             message.deprecated = reader.bool();
-                            break;
+                            continue;
                         }
-                    case 18: {
+                    case 2: {
+                            if (wireType !== 2)
+                                break;
                             message.features = $root.google.protobuf.FeatureSet.decode(reader, reader.uint32(), undefined, _depth + 1, message.features);
-                            break;
+                            continue;
                         }
-                    case 24: {
+                    case 3: {
+                            if (wireType !== 0)
+                                break;
                             message.debugRedact = reader.bool();
-                            break;
+                            continue;
                         }
-                    case 34: {
+                    case 4: {
+                            if (wireType !== 2)
+                                break;
                             message.featureSupport = $root.google.protobuf.FieldOptions.FeatureSupport.decode(reader, reader.uint32(), undefined, _depth + 1, message.featureSupport);
-                            break;
+                            continue;
                         }
-                    case 7994: {
+                    case 999: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.uninterpretedOption && message.uninterpretedOption.length))
                                 message.uninterpretedOption = [];
                             message.uninterpretedOption.push($root.google.protobuf.UninterpretedOption.decode(reader, reader.uint32(), undefined, _depth + 1));
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        $util.makeProp(message, "$unknowns", false);
-                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -19990,27 +20578,34 @@ $root.google = (function() {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 274: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 0:
+                        throw Error("illegal tag: field number 0");
+                    case 34: {
+                            if (wireType !== 2)
+                                break;
                             message.features = $root.google.protobuf.FeatureSet.decode(reader, reader.uint32(), undefined, _depth + 1, message.features);
-                            break;
+                            continue;
                         }
-                    case 264: {
+                    case 33: {
+                            if (wireType !== 0)
+                                break;
                             message.deprecated = reader.bool();
-                            break;
+                            continue;
                         }
-                    case 7994: {
+                    case 999: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.uninterpretedOption && message.uninterpretedOption.length))
                                 message.uninterpretedOption = [];
                             message.uninterpretedOption.push($root.google.protobuf.UninterpretedOption.decode(reader, reader.uint32(), undefined, _depth + 1));
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        $util.makeProp(message, "$unknowns", false);
-                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -20304,31 +20899,40 @@ $root.google = (function() {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 264: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 0:
+                        throw Error("illegal tag: field number 0");
+                    case 33: {
+                            if (wireType !== 0)
+                                break;
                             message.deprecated = reader.bool();
-                            break;
+                            continue;
                         }
-                    case 272: {
+                    case 34: {
+                            if (wireType !== 0)
+                                break;
                             message.idempotencyLevel = reader.int32();
-                            break;
+                            continue;
                         }
-                    case 282: {
+                    case 35: {
+                            if (wireType !== 2)
+                                break;
                             message.features = $root.google.protobuf.FeatureSet.decode(reader, reader.uint32(), undefined, _depth + 1, message.features);
-                            break;
+                            continue;
                         }
-                    case 7994: {
+                    case 999: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.uninterpretedOption && message.uninterpretedOption.length))
                                 message.uninterpretedOption = [];
                             message.uninterpretedOption.push($root.google.protobuf.UninterpretedOption.decode(reader, reader.uint32(), undefined, _depth + 1));
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        $util.makeProp(message, "$unknowns", false);
-                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -20703,43 +21307,58 @@ $root.google = (function() {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 18: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 0:
+                        throw Error("illegal tag: field number 0");
+                    case 2: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.name && message.name.length))
                                 message.name = [];
                             message.name.push($root.google.protobuf.UninterpretedOption.NamePart.decode(reader, reader.uint32(), undefined, _depth + 1));
-                            break;
+                            continue;
                         }
-                    case 26: {
+                    case 3: {
+                            if (wireType !== 2)
+                                break;
                             message.identifierValue = reader.string();
-                            break;
+                            continue;
                         }
-                    case 32: {
+                    case 4: {
+                            if (wireType !== 0)
+                                break;
                             message.positiveIntValue = reader.uint64();
-                            break;
+                            continue;
                         }
-                    case 40: {
+                    case 5: {
+                            if (wireType !== 0)
+                                break;
                             message.negativeIntValue = reader.int64();
-                            break;
+                            continue;
                         }
-                    case 49: {
+                    case 6: {
+                            if (wireType !== 1)
+                                break;
                             message.doubleValue = reader.double();
-                            break;
+                            continue;
                         }
-                    case 58: {
+                    case 7: {
+                            if (wireType !== 2)
+                                break;
                             message.stringValue = reader.bytes();
-                            break;
+                            continue;
                         }
-                    case 66: {
+                    case 8: {
+                            if (wireType !== 2)
+                                break;
                             message.aggregateValue = reader.string();
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        $util.makeProp(message, "$unknowns", false);
-                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -21068,21 +21687,26 @@ $root.google = (function() {
                             _end = undefined;
                             break;
                         }
-                        switch (tag) {
-                        case 10: {
+                        var wireType = tag & 7;
+                        switch (tag >>>= 3) {
+                        case 0:
+                            throw Error("illegal tag: field number 0");
+                        case 1: {
+                                if (wireType !== 2)
+                                    break;
                                 message.namePart = reader.string();
-                                break;
+                                continue;
                             }
-                        case 16: {
+                        case 2: {
+                                if (wireType !== 0)
+                                    break;
                                 message.isExtension = reader.bool();
-                                break;
+                                continue;
                             }
-                        default:
-                            reader.skipType(tag & 7, _depth, tag >>> 3);
-                            $util.makeProp(message, "$unknowns", false);
-                            (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
-                            break;
                         }
+                        reader.skipType(wireType, _depth, tag);
+                        $util.makeProp(message, "$unknowns", false);
+                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                     }
                     if (_end !== undefined)
                         throw Error("missing end group");
@@ -21392,45 +22016,62 @@ $root.google = (function() {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 8: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 0:
+                        throw Error("illegal tag: field number 0");
+                    case 1: {
+                            if (wireType !== 0)
+                                break;
                             message.fieldPresence = reader.int32();
-                            break;
+                            continue;
                         }
-                    case 16: {
+                    case 2: {
+                            if (wireType !== 0)
+                                break;
                             message.enumType = reader.int32();
-                            break;
+                            continue;
                         }
-                    case 24: {
+                    case 3: {
+                            if (wireType !== 0)
+                                break;
                             message.repeatedFieldEncoding = reader.int32();
-                            break;
+                            continue;
                         }
-                    case 32: {
+                    case 4: {
+                            if (wireType !== 0)
+                                break;
                             message.utf8Validation = reader.int32();
-                            break;
+                            continue;
                         }
-                    case 40: {
+                    case 5: {
+                            if (wireType !== 0)
+                                break;
                             message.messageEncoding = reader.int32();
-                            break;
+                            continue;
                         }
-                    case 48: {
+                    case 6: {
+                            if (wireType !== 0)
+                                break;
                             message.jsonFormat = reader.int32();
-                            break;
+                            continue;
                         }
-                    case 56: {
+                    case 7: {
+                            if (wireType !== 0)
+                                break;
                             message.enforceNamingStyle = reader.int32();
-                            break;
+                            continue;
                         }
-                    case 64: {
+                    case 8: {
+                            if (wireType !== 0)
+                                break;
                             message.defaultSymbolVisibility = reader.int32();
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        $util.makeProp(message, "$unknowns", false);
-                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -22013,13 +22654,14 @@ $root.google = (function() {
                             _end = undefined;
                             break;
                         }
-                        switch (tag) {
-                        default:
-                            reader.skipType(tag & 7, _depth, tag >>> 3);
-                            $util.makeProp(message, "$unknowns", false);
-                            (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
-                            break;
+                        var wireType = tag & 7;
+                        switch (tag >>>= 3) {
+                        case 0:
+                            throw Error("illegal tag: field number 0");
                         }
+                        reader.skipType(wireType, _depth, tag);
+                        $util.makeProp(message, "$unknowns", false);
+                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                     }
                     if (_end !== undefined)
                         throw Error("missing end group");
@@ -22272,27 +22914,34 @@ $root.google = (function() {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 10: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 0:
+                        throw Error("illegal tag: field number 0");
+                    case 1: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.defaults && message.defaults.length))
                                 message.defaults = [];
                             message.defaults.push($root.google.protobuf.FeatureSetDefaults.FeatureSetEditionDefault.decode(reader, reader.uint32(), undefined, _depth + 1));
-                            break;
+                            continue;
                         }
-                    case 32: {
+                    case 4: {
+                            if (wireType !== 0)
+                                break;
                             message.minimumEdition = reader.int32();
-                            break;
+                            continue;
                         }
-                    case 40: {
+                    case 5: {
+                            if (wireType !== 0)
+                                break;
                             message.maximumEdition = reader.int32();
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        $util.makeProp(message, "$unknowns", false);
-                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -22703,25 +23352,32 @@ $root.google = (function() {
                             _end = undefined;
                             break;
                         }
-                        switch (tag) {
-                        case 24: {
+                        var wireType = tag & 7;
+                        switch (tag >>>= 3) {
+                        case 0:
+                            throw Error("illegal tag: field number 0");
+                        case 3: {
+                                if (wireType !== 0)
+                                    break;
                                 message.edition = reader.int32();
-                                break;
+                                continue;
                             }
-                        case 34: {
+                        case 4: {
+                                if (wireType !== 2)
+                                    break;
                                 message.overridableFeatures = $root.google.protobuf.FeatureSet.decode(reader, reader.uint32(), undefined, _depth + 1, message.overridableFeatures);
-                                break;
+                                continue;
                             }
-                        case 42: {
+                        case 5: {
+                                if (wireType !== 2)
+                                    break;
                                 message.fixedFeatures = $root.google.protobuf.FeatureSet.decode(reader, reader.uint32(), undefined, _depth + 1, message.fixedFeatures);
-                                break;
+                                continue;
                             }
-                        default:
-                            reader.skipType(tag & 7, _depth, tag >>> 3);
-                            $util.makeProp(message, "$unknowns", false);
-                            (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
-                            break;
                         }
+                        reader.skipType(wireType, _depth, tag);
+                        $util.makeProp(message, "$unknowns", false);
+                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                     }
                     if (_end !== undefined)
                         throw Error("missing end group");
@@ -23041,19 +23697,22 @@ $root.google = (function() {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 10: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 0:
+                        throw Error("illegal tag: field number 0");
+                    case 1: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.location && message.location.length))
                                 message.location = [];
                             message.location.push($root.google.protobuf.SourceCodeInfo.Location.decode(reader, reader.uint32(), undefined, _depth + 1));
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        $util.makeProp(message, "$unknowns", false);
-                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -23342,51 +24001,66 @@ $root.google = (function() {
                             _end = undefined;
                             break;
                         }
-                        switch (tag) {
-                        case 8:
-                        case 10: {
-                                if (!(message.path && message.path.length))
-                                    message.path = [];
-                                if ((tag & 7) === 2) {
+                        var wireType = tag & 7;
+                        switch (tag >>>= 3) {
+                        case 0:
+                            throw Error("illegal tag: field number 0");
+                        case 1: {
+                                if (wireType === 2) {
+                                    if (!(message.path && message.path.length))
+                                        message.path = [];
                                     var end2 = reader.uint32() + reader.pos;
                                     while (reader.pos < end2)
                                         message.path.push(reader.int32());
-                                } else
-                                    message.path.push(reader.int32());
-                                break;
+                                    continue;
+                                }
+                                if (wireType !== 0)
+                                    break;
+                                if (!(message.path && message.path.length))
+                                    message.path = [];
+                                message.path.push(reader.int32());
+                                continue;
                             }
-                        case 16:
-                        case 18: {
-                                if (!(message.span && message.span.length))
-                                    message.span = [];
-                                if ((tag & 7) === 2) {
+                        case 2: {
+                                if (wireType === 2) {
+                                    if (!(message.span && message.span.length))
+                                        message.span = [];
                                     var end2 = reader.uint32() + reader.pos;
                                     while (reader.pos < end2)
                                         message.span.push(reader.int32());
-                                } else
-                                    message.span.push(reader.int32());
-                                break;
+                                    continue;
+                                }
+                                if (wireType !== 0)
+                                    break;
+                                if (!(message.span && message.span.length))
+                                    message.span = [];
+                                message.span.push(reader.int32());
+                                continue;
                             }
-                        case 26: {
+                        case 3: {
+                                if (wireType !== 2)
+                                    break;
                                 message.leadingComments = reader.string();
-                                break;
+                                continue;
                             }
-                        case 34: {
+                        case 4: {
+                                if (wireType !== 2)
+                                    break;
                                 message.trailingComments = reader.string();
-                                break;
+                                continue;
                             }
-                        case 50: {
+                        case 6: {
+                                if (wireType !== 2)
+                                    break;
                                 if (!(message.leadingDetachedComments && message.leadingDetachedComments.length))
                                     message.leadingDetachedComments = [];
                                 message.leadingDetachedComments.push(reader.string());
-                                break;
+                                continue;
                             }
-                        default:
-                            reader.skipType(tag & 7, _depth, tag >>> 3);
-                            $util.makeProp(message, "$unknowns", false);
-                            (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
-                            break;
                         }
+                        reader.skipType(wireType, _depth, tag);
+                        $util.makeProp(message, "$unknowns", false);
+                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                     }
                     if (_end !== undefined)
                         throw Error("missing end group");
@@ -23681,19 +24355,22 @@ $root.google = (function() {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 10: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 0:
+                        throw Error("illegal tag: field number 0");
+                    case 1: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.annotation && message.annotation.length))
                                 message.annotation = [];
                             message.annotation.push($root.google.protobuf.GeneratedCodeInfo.Annotation.decode(reader, reader.uint32(), undefined, _depth + 1));
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        $util.makeProp(message, "$unknowns", false);
-                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -23975,41 +24652,54 @@ $root.google = (function() {
                             _end = undefined;
                             break;
                         }
-                        switch (tag) {
-                        case 8:
-                        case 10: {
-                                if (!(message.path && message.path.length))
-                                    message.path = [];
-                                if ((tag & 7) === 2) {
+                        var wireType = tag & 7;
+                        switch (tag >>>= 3) {
+                        case 0:
+                            throw Error("illegal tag: field number 0");
+                        case 1: {
+                                if (wireType === 2) {
+                                    if (!(message.path && message.path.length))
+                                        message.path = [];
                                     var end2 = reader.uint32() + reader.pos;
                                     while (reader.pos < end2)
                                         message.path.push(reader.int32());
-                                } else
-                                    message.path.push(reader.int32());
-                                break;
+                                    continue;
+                                }
+                                if (wireType !== 0)
+                                    break;
+                                if (!(message.path && message.path.length))
+                                    message.path = [];
+                                message.path.push(reader.int32());
+                                continue;
                             }
-                        case 18: {
+                        case 2: {
+                                if (wireType !== 2)
+                                    break;
                                 message.sourceFile = reader.string();
-                                break;
+                                continue;
                             }
-                        case 24: {
+                        case 3: {
+                                if (wireType !== 0)
+                                    break;
                                 message.begin = reader.int32();
-                                break;
+                                continue;
                             }
-                        case 32: {
+                        case 4: {
+                                if (wireType !== 0)
+                                    break;
                                 message.end = reader.int32();
-                                break;
+                                continue;
                             }
-                        case 40: {
+                        case 5: {
+                                if (wireType !== 0)
+                                    break;
                                 message.semantic = reader.int32();
-                                break;
+                                continue;
                             }
-                        default:
-                            reader.skipType(tag & 7, _depth, tag >>> 3);
-                            $util.makeProp(message, "$unknowns", false);
-                            (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
-                            break;
                         }
+                        reader.skipType(wireType, _depth, tag);
+                        $util.makeProp(message, "$unknowns", false);
+                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                     }
                     if (_end !== undefined)
                         throw Error("missing end group");

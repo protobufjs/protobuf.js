@@ -16,13 +16,23 @@ function missing(field) {
  */
 function decoder(mtype) {
     /* eslint-disable no-unexpected-multiline */
+    var hasMapField = false,
+        hasImplicitPresenceField = false,
+        i = 0;
+    for (; i < mtype.fieldsArray.length; ++i) {
+        var pfield = mtype._fieldsArray[i];
+        if (pfield.map)
+            hasMapField = true;
+        if (!pfield.repeated && !pfield.map && !pfield.hasPresence)
+            hasImplicitPresenceField = true;
+    }
     var gen = util.codegen(["r", "l", "z", "q", "g"], mtype.name + "$decode")
     ("if(!(r instanceof Reader))")
         ("r=Reader.create(r)")
     ("if(q===undefined)q=0")
     ("if(q>Reader.recursionLimit)")
         ("throw Error(\"max depth exceeded\")")
-    ("var c=l===undefined?r.len:r.pos+l,m=g||new this.ctor" + (mtype.fieldsArray.filter(function(field) { return field.map; }).length ? ",k,value" : ""))
+    ("var c=l===undefined?r.len:r.pos+l,m=g||new this.ctor" + (hasMapField ? ",k,v" : hasImplicitPresenceField ? ",v" : ""))
     ("while(r.pos<c){")
         ("var s=r.pos")
         ("var t=r.uint32()")
@@ -30,17 +40,22 @@ function decoder(mtype) {
             ("z=undefined")
             ("break")
         ("}")
-        ("switch(t){");
+        ("var u=t&7")
+        ("switch(t>>>=3){")
+            ("case 0:")
+                ("throw Error(\"illegal tag: field number 0\")");
 
-    var i = 0;
-    for (; i < /* initializes */ mtype.fieldsArray.length; ++i) {
+    for (i = 0; i < /* initializes */ mtype.fieldsArray.length; ++i) {
         var field = mtype._fieldsArray[i].resolve(),
             type  = field.resolvedType instanceof Enum ? "int32" : field.type,
             ref   = "m" + util.safeProp(field.name);
 
         // Map fields
-        if (field.map) { gen
-            ("case %i:{", field.id * 8 + 2)
+        if (field.map) {
+            gen
+            ("case %i:{", field.id)
+                ("if(u!==2)")
+                    ("break")
                 ("if(%s===util.emptyObject)", ref)
                     ("%s={}", ref)
                 ("var c2=r.uint32()+r.pos");
@@ -51,101 +66,126 @@ function decoder(mtype) {
                 ("k=null");
 
             if (types.defaults[type] !== undefined) gen
-                ("value=%j", types.defaults[type]);
-            else if (types.basic[type] === undefined) gen
-                ("value=new types[%i].ctor", i);
+                ("v=%j", types.defaults[type]);
             else gen
-                ("value=null");
+                ("v=null");
 
             gen
                 ("while(r.pos<c2){")
-                    ("var tag2=r.uint32()")
-                    ("switch(tag2){")
-                        ("case %i:k=r.%s();break", 8 + types.mapKey[field.keyType], field.keyType)
-                        ("case %i:", 16 + (types.basic[type] === undefined ? 2 : types.basic[type]));
+                    ("var t2=r.uint32()")
+                    ("u=t2&7")
+                    ("switch(t2>>>=3){")
+                        ("case 0:")
+                            ("throw Error(\"illegal tag: field number 0\")")
+                        ("case 1:")
+                            ("if(u!==%i)", types.mapKey[field.keyType])
+                                ("break")
+                            ("k=r.%s()", field.keyType)
+                            ("continue")
+                        ("case 2:")
+                            ("if(u!==%i)", types.basic[type] === undefined ? 2 : types.basic[type])
+                                ("break");
 
             if (types.basic[type] === undefined) gen
-                            ("value=types[%i].decode(r,r.uint32(),undefined,q+1)", i); // can't be groups
+                            ("v=types[%i].decode(r,r.uint32(),undefined,q+1)", i); // can't be groups
             else gen
-                            ("value=r.%s()", type);
+                            ("v=r.%s()", type);
 
             gen
-                            ("break")
-                        ("default:")
-                            ("r.skipType(tag2&7,q,tag2>>>3)")
-                            ("break")
+                            ("continue")
                     ("}")
+                    ("r.skipType(u,q,t2)")
                 ("}");
 
+            var val = types.basic[type] === undefined ? "v||new types[" + i + "].ctor" : "v";
             if (types.long[field.keyType] !== undefined) gen
-                ("%s[typeof k===\"object\"?util.longToHash(k):k]=value", ref);
+                ("%s[typeof k===\"object\"?util.longToHash(k):k]=%s", ref, val);
             else {
                 if (field.keyType === "string") gen
                 ("if(k===\"__proto__\")")
                     ("util.makeProp(%s,k)", ref);
                 gen
-                ("%s[k]=value", ref);
+                ("%s[k]=%s", ref, val);
             }
 
         // Repeated fields
         } else if (field.repeated) { gen
-            ("case %i:", field.id * 8 + (types.basic[type] === undefined ? field.delimited ? 3 : 2 : types.basic[type]));
-
-            if (types.packed[type] !== undefined) gen
-            ("case %i:", field.id * 8 + 2);
-
-            gen
-            ("{")
-                ("if(!(%s&&%s.length))", ref, ref)
-                    ("%s=[]", ref);
+            ("case %i:", field.id)
+            ("{");
 
             // Packable (always check for forward and backward compatiblity)
             if (types.packed[type] !== undefined) gen
-                ("if((t&7)===2){")
+                ("if(u===2){")
+                    ("if(!(%s&&%s.length))", ref, ref)
+                        ("%s=[]", ref)
                     ("var c2=r.uint32()+r.pos")
                     ("while(r.pos<c2)")
                         ("%s.push(r.%s())", ref, type)
-                ("}else");
+                    ("continue")
+                ("}");
 
             // Non-packed
+            gen
+                ("if(u!==%i)", types.basic[type] === undefined ? field.delimited ? 3 : 2 : types.basic[type])
+                    ("break")
+                ("if(!(%s&&%s.length))", ref, ref)
+                    ("%s=[]", ref);
             if (types.basic[type] === undefined) {
                 if (field.delimited) gen
                     ("%s.push(types[%i].decode(r,undefined,%i,q+1))", ref, i, field.id * 8 + 4);
                 else gen
                     ("%s.push(types[%i].decode(r,r.uint32(),undefined,q+1))", ref, i);
-            }
-            else gen
+            } else gen
                     ("%s.push(r.%s())", ref, type);
 
         // Non-repeated
         } else if (types.basic[type] === undefined) {
             gen
-            ("case %i:{", field.id * 8 + (field.delimited ? 3 : 2));
+            ("case %i:{", field.id)
+                ("if(u!==%i)", field.delimited ? 3 : 2)
+                    ("break");
             if (field.delimited) gen
                 ("%s=types[%i].decode(r,undefined,%i,q+1,%s)", ref, i, field.id * 8 + 4, ref);
             else gen
                 ("%s=types[%i].decode(r,r.uint32(),undefined,q+1,%s)", ref, i, ref);
         }
-        else gen
-            ("case %i:{", field.id * 8 + types.basic[type])
+        else if (field.hasPresence) {
+            gen
+            ("case %i:{", field.id)
+                ("if(u!==%i)", types.basic[type])
+                    ("break")
                 ("%s=r.%s()", ref, type);
+        } else {
+            gen
+            ("case %i:{", field.id)
+                ("if(u!==%i)", types.basic[type])
+                    ("break");
+            if (type === "string" || type === "bytes") gen
+                ("if((v=r.%s()).length)", type);
+            else if (types.long[type] !== undefined) gen
+                ("if(typeof(v=r.%s())===\"object\"?v.low||v.high:v!==0)", type);
+            else if (type === "double" || type === "float") gen
+                ("if((v=r.%s())!==0)", type);
+            else gen
+                ("if(v=r.%s())", type);
+            gen
+                    ("%s=v", ref)
+                ("else")
+                    ("delete %s", ref); // rare/odd case: later default clears earlier non-default
+        }
         if (field.partOf) gen
                 ("m%s=%j", util.safeProp(field.partOf.name), field.name);
         gen
-                ("break")
+                ("continue")
             ("}");
-        // Unknown fields
-    } gen
-            ("default:")
-                ("r.skipType(t&7,q,t>>>3)")
-                ("util.makeProp(m,\"$unknowns\",false);")
-                ("(m.$unknowns||(m.$unknowns=[])).push(r.raw(s,r.pos))")
-                ("break")
-
-        ("}")
-    ("}");
-
+    }
     gen
+        ("}")
+    // Unknown fields
+        ("r.skipType(u,q,t)")
+        ("util.makeProp(m,\"$unknowns\",false);")
+        ("(m.$unknowns||(m.$unknowns=[])).push(r.raw(s,r.pos))")
+    ("}")
     ("if(z!==undefined)")
         ("throw Error(\"missing end group\")");
 

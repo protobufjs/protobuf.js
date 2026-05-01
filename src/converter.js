@@ -118,7 +118,9 @@ converter.fromObject = function fromObject(mtype) {
     ("var m=new this.ctor");
     for (var i = 0; i < fields.length; ++i) {
         var field  = fields[i].resolve(),
-            prop   = util.safeProp(field.name);
+            prop   = util.safeProp(field.name),
+            implicitPresence = !field.hasPresence && !field.repeated && !field.map
+                && (field.resolvedType instanceof Enum || types.basic[field.type] !== undefined);
 
         // Map fields
         if (field.map) { gen
@@ -149,7 +151,23 @@ converter.fromObject = function fromObject(mtype) {
         } else {
             if (!(field.resolvedType instanceof Enum)) gen // no need to test for null/undefined if an enum (uses switch)
     ("if(d%s!=null){", prop); // !== undefined && !== null
+            if (implicitPresence) {
+                if (field.resolvedType instanceof Enum) gen
+    ("if(d%s!==%j&&(typeof d%s!==\"string\"||types[%i].values[d%s]!==%j)){", prop, field.typeDefault, prop, i, prop, field.typeDefault);
+                else if (field.type === "string") gen
+    ("if(typeof d%s!==\"string\"||d%s.length){", prop, prop);
+                else if (field.type === "bytes") gen
+    ("if(d%s.length){", prop);
+                else if (field.type === "bool") gen
+    ("if(d%s){", prop);
+                else if (types.long[field.type] !== undefined) gen
+    ("if(typeof d%s===\"object\"?d%s.low||d%s.high:Number(d%s)!==0){", prop, prop, prop, prop);
+                else gen
+    ("if(Number(d%s)!==0){", prop);
+            }
         genValuePartial_fromObject(gen, field, /* not sorted */ i, prop);
+            if (implicitPresence) gen
+    ("}");
             if (!(field.resolvedType instanceof Enum)) gen
     ("}");
         }
