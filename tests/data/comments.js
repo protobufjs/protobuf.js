@@ -399,10 +399,7 @@ $root.Test2 = (function() {
                 _end = undefined;
                 break;
             }
-            var wireType = tag & 7;
-            switch (tag >>>= 3) {
-            }
-            reader.skipType(wireType, _depth, tag);
+            reader.skipType(tag & 7, _depth, tag);
             $util.makeProp(message, "$unknowns", false);
             (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
         }

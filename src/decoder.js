@@ -39,10 +39,10 @@ function decoder(mtype) {
         ("if(t===z){")
             ("z=undefined")
             ("break")
-        ("}")
+        ("}");
+    if (mtype.fieldsArray.length) gen
         ("var u=t&7")
         ("switch(t>>>=3){");
-
     for (i = 0; i < /* initializes */ mtype.fieldsArray.length; ++i) {
         var field = mtype._fieldsArray[i].resolve(),
             type  = field.resolvedType instanceof Enum ? "int32" : field.type,
@@ -175,10 +175,11 @@ function decoder(mtype) {
                 ("continue")
             ("}");
     }
-    gen
-        ("}")
+    if (i) gen
+        ("}");
     // Unknown fields
-        ("r.skipType(u,q,t)")
+    gen
+        ("r.skipType(%s,q,t)", i ? 'u':'t&7')
         ("util.makeProp(m,\"$unknowns\",false);")
         ("(m.$unknowns||(m.$unknowns=[])).push(r.raw(s,r.pos))")
     ("}")
