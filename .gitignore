@@ -4,7 +4,6 @@
 npm-debug.*
 node_modules/
 cli/node_modules/
-cli/package-lock.json
 docs/
 coverage/
 sandbox/
