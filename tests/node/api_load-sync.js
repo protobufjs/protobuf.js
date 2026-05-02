@@ -46,3 +46,30 @@ tape.test("should load bundled definitions even if resolvePath method was overri
     test.ok(root.lookup("Something"), "should parse message Something");
     test.end();
 });
+
+tape.test("should load custom common definitions by full file name", function(test) {
+    protobuf.common("custom/common.proto", {
+        nested: {
+            custom: {
+                nested: {
+                    CommonMessage: {
+                        fields: {}
+                    }
+                }
+            }
+        }
+    });
+
+    try {
+        var root = protobuf.loadSync("tests/data/common-custom.proto");
+
+        test.ok(root.files.indexOf("custom/common.proto") > -1, "should track the custom common file name");
+        test.ok(root.lookup("custom.CommonMessage"), "should load the custom common type");
+        test.ok(root.lookup("UsesCustomCommon"), "should parse the importing message");
+    } catch (err) {
+        test.fail(err && err.message || err);
+    } finally {
+        delete protobuf.common["custom/common.proto"];
+        test.end();
+    }
+});

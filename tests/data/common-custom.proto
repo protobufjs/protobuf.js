@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+import "custom/common.proto";
+
+message UsesCustomCommon {
+  custom.CommonMessage value = 1;
+}
