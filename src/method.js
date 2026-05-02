@@ -20,7 +20,7 @@ var util = require("./util");
  * @param {boolean|Object.<string,*>} [responseStream] Whether the response is streamed
  * @param {Object.<string,*>} [options] Declared options
  * @param {string} [comment] The comment for this method
- * @param {Object.<string,*>} [parsedOptions] Declared options, properly parsed into an object
+ * @param {Array.<Object.<string,*>>} [parsedOptions] Declared options, properly parsed into objects
  */
 function Method(name, type, requestType, responseType, requestStream, responseStream, options, comment, parsedOptions) {
 
@@ -96,7 +96,8 @@ function Method(name, type, requestType, responseType, requestStream, responseSt
     this.comment = comment;
 
     /**
-     * Options properly parsed into an object
+     * Options properly parsed into objects
+     * @type {Array.<Object.<string,*>>|undefined}
      */
     this.parsedOptions = parsedOptions;
 }
@@ -111,7 +112,7 @@ function Method(name, type, requestType, responseType, requestStream, responseSt
  * @property {boolean} [responseStream=false] Whether responses are streamed
  * @property {Object.<string,*>} [options] Method options
  * @property {string} comment Method comments
- * @property {Object.<string,*>} [parsedOptions] Method options properly parsed into an object
+ * @property {Array.<Object.<string,*>>} [parsedOptions] Method options properly parsed into objects
  */
 
 /**

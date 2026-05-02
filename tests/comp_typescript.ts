@@ -1,6 +1,6 @@
 // test currently consists only of not throwing
 
-import { Root, Message, Type, Field, MapField, OneOf } from "..";
+import { Root, Message, Method, Type, Field, MapField, OneOf } from "..";
 
 // Reflection
 const root = Root.fromJSON({
@@ -19,6 +19,10 @@ const root = Root.fromJSON({
 const HelloReflected = root.lookupType("Hello");
 
 HelloReflected.create({ value: "hi" });
+
+const parsedOptionValue: number | undefined = HelloReflected.parsedOptions?.[0]["(custom_option)"];
+const reflectedMethod = new Method("Call", undefined, "Hello", "Hello", false, false, undefined, undefined, [{ option: 1 }]);
+const parsedMethodOptionValue: number | undefined = reflectedMethod.parsedOptions?.[0].option;
 
 // Custom classes
 

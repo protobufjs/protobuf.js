@@ -22,6 +22,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var _a, _b;
 exports.__esModule = true;
 exports.AwesomeMessage = exports.AwesomeSubMessage = exports.AwesomeEnum = exports.Hello = void 0;
 var __1 = require("..");
@@ -41,6 +42,9 @@ var root = __1.Root.fromJSON({
 });
 var HelloReflected = root.lookupType("Hello");
 HelloReflected.create({ value: "hi" });
+var parsedOptionValue = (_a = HelloReflected.parsedOptions) === null || _a === void 0 ? void 0 : _a[0]["(custom_option)"];
+var reflectedMethod = new __1.Method("Call", undefined, "Hello", "Hello", false, false, undefined, undefined, [{ option: 1 }]);
+var parsedMethodOptionValue = (_b = reflectedMethod.parsedOptions) === null || _b === void 0 ? void 0 : _b[0].option;
 // Custom classes
 var Hello = /** @class */ (function (_super) {
     __extends(Hello, _super);

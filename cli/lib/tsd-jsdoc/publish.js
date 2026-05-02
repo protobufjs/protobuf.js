@@ -276,19 +276,25 @@ function getTypeOf(element) {
     // Ensure upper case Object for map expressions below
     name = name.replace(/\bobject\b/g, "Object");
 
+    // Convert innermost generic types first so Array.<Object.<...>>
+    // and Object.<string,Array.<...>> are both handled correctly
+    var prevName;
+    do {
+        prevName = name;
+        name = name.replace(/\bObject\.?<([^,<>]*), *([^<>]*)>/gi, function($0, $1, $2) {
+            return "{ [k: " + $1 + "]: " + $2 + " }";
+        });
+        name = name.replace(/\bArray\.?<([^<>]*)>/gi, function($0, $1) {
+            return $1 + "[]";
+        });
+        name = name.replace(/\b(?!Object|Array)([\w$]+)\.<([^<>]*)>/gi, function($0, $1, $2) {
+            return $1 + "<" + $2 + ">";
+        });
+    } while (name !== prevName);
+
     // Correct Something.<Something> to Something<Something>
     name = replaceRecursive(name, /\b(?!Object|Array)([\w$]+)\.<([^>]*)>/gi, function($0, $1, $2) {
         return $1 + "<" + $2 + ">";
-    });
-
-    // Replace Array.<string> with string[]
-    name = replaceRecursive(name, /\bArray\.?<([^>]*)>/gi, function($0, $1) {
-        return $1 + "[]";
-    });
-
-    // Replace Object.<string,number> with { [k: string]: number }
-    name = replaceRecursive(name, /\bObject\.?<([^,]*), *([^>]*)>/gi, function($0, $1, $2) {
-        return "{ [k: " + $1 + "]: " + $2 + " }";
     });
 
     // Replace functions (there are no signatures) with Function
