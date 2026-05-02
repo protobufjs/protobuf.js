@@ -1,7 +1,6 @@
-// Legacy example for the deprecated `grpc` package.
-// Prefer `@grpc/grpc-js` for new code.
+// Service implementation using the `@grpc/grpc-js` npm package
 
-const grpc = require('grpc')
+const grpc = require('@grpc/grpc-js')
 
 const Client = grpc.makeGenericClientConstructor({})
 const client = new Client(
@@ -10,8 +9,9 @@ const client = new Client(
 )
 
 const rpcImpl = function(method, requestData, callback) {
+  const methodPath = `/${method.parent.fullName.slice(1)}/${method.name}`;
   client.makeUnaryRequest(
-    method.name,
+    methodPath,
     arg => arg,
     arg => arg,
     requestData,
