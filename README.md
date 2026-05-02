@@ -9,7 +9,7 @@
 
 **Protocol Buffers** are a language-neutral, platform-neutral, extensible way of serializing structured data for use in communications protocols, data storage, and more, originally designed at Google ([see](https://protobuf.dev/)).
 
-**protobuf.js** is a freestanding JavaScript implementation of Protocol Buffers with TypeScript support. It works with `.proto` files out of the box, requires no separate toolchain, and can generate optimized encoders, decoders, verifiers, and converters at runtime or emit them as static code.
+**protobuf.js** is a freestanding JavaScript implementation of Protocol Buffers with TypeScript support. It works with `.proto` files out of the box and can generate optimized encoders and decoders at runtime or emit them statically.
 
 ## Getting started
 
@@ -19,7 +19,7 @@
 npm install protobufjs
 ```
 
-The [command line utility](./cli/) for generating static code and TS declarations is published as an add-on package:
+The [command line utility](./cli/) for generating reflection bundles, static code and TypeScript declarations is published as an add-on package:
 
 ```sh
 npm install --save-dev protobufjs-cli
@@ -32,10 +32,10 @@ The CLI is a standalone protobuf.js toolchain: it reads `.proto` files directly 
 | Import                  | Includes           | Use when
 | ----------------------- | ------------------ | --------
 | `protobufjs`            | Reflection, Parser | You load `.proto` files at runtime
-| `protobufjs/light.js`   | Reflection         | You load JSON descriptors or build schemas programmatically
+| `protobufjs/light.js`   | Reflection         | You load JSON bundles or build schemas programmatically
 | `protobufjs/minimal.js` | Static runtime     | You only use generated static code
 
-Builds with reflection include just-in-time code generation. Use the CLI to emit the same optimized code ahead of time and run it on the minimal runtime.
+Builds with reflection include just-in-time code generation. Use the CLI to emit the same optimized code ahead of time and run it on the minimal runtime. The full build includes the light build, and the light build includes the minimal runtime.
 
 ### Browser builds
 
@@ -160,44 +160,47 @@ If required fields are missing while decoding proto2 data, `decode` throws `prot
 
 ## Schemas and code generation
 
-### Loading JSON descriptors
+Use [`protobufjs-cli`](./cli/) to generate reflection bundles, static JavaScript code and TypeScript declarations.
+
+Reflection keeps schemas as descriptors and generates optimized functions at runtime. Static code emits the same optimized functions ahead of time. The main tradeoffs are how schemas are loaded, how bundle size scales with schema size, whether runtime code generation is allowed by your environment, and whether reflection metadata should remain available at runtime.
+
+| Target | Output | Minimum Runtime |
+|--------|--------|-----------------|
+| `json` | JSON bundle | `protobufjs/light.js` |
+| `json-module` | JSON bundle module | `protobufjs/light.js` |
+| `static` | Static code | custom wrapper/integration, not standalone |
+| `static-module` | Static code module | `protobufjs/minimal.js` |
+
+Module targets support `--wrap default` for CommonJS and AMD, plus `commonjs`, `amd`, `es6`, and `closure`; `--wrap` can also load a custom wrapper module.
+
+### Reflection bundles
+
+Bundling up schemas to a JSON file minimizes the number of network requests and avoids redundant parsing.
+
+```sh
+npx pbjs -t json -o awesome.json awesome1.proto awesome2.proto ...
+```
 
 ```js
-const descriptor = require("./awesome.json");
+const bundle = require("./awesome.json");
 
-const root = protobuf.Root.fromJSON(descriptor);
+const root = protobuf.Root.fromJSON(bundle);
 const AwesomeMessage = root.lookupType("awesomepackage.AwesomeMessage");
 ```
 
-JSON descriptors can be loaded with `protobufjs/light.js` because the `.proto` parser is not required.
-
-### Generating static code
-
-Use [`protobufjs-cli`](./cli/) to generate static JavaScript and TypeScript declarations:
-
 ```sh
-npx pbjs -t static-module -w commonjs -o awesome.js awesome.proto
-npx pbts -o awesome.d.ts awesome.js
+npx pbjs -t json-module -w es6 -o awesome.json awesome.proto
 ```
-
-Generated static code only needs `protobufjs/minimal.js`.
-
-### Building schemas programmatically
-
-The full and light builds can construct schemas directly through reflection:
 
 ```js
-const AwesomeMessage = new protobuf.Type("AwesomeMessage")
-  .add(new protobuf.Field("awesomeField", 1, "string"));
+const root = require("./awesome.js");
 
-const root = new protobuf.Root()
-  .define("awesomepackage")
-  .add(AwesomeMessage);
+const AwesomeMessage = root.lookupType("awesomepackage.AwesomeMessage");
 ```
 
-### TypeScript
+Reflection bundles can be loaded with `protobufjs/light.js` because the `.proto` parser is not required.
 
-The runtime API is typed, but fields of dynamically loaded messages are only known at runtime. For statically typed messages and fields, generate static code with declarations:
+### Static modules
 
 ```sh
 npx pbjs -t static-module -w es6 -o awesome.js awesome.proto
@@ -210,7 +213,11 @@ import { awesomepackage } from "./awesome.js";
 const message = awesomepackage.AwesomeMessage.create({ awesomeField: "hello" });
 ```
 
-Or use reflection with declarations generated from the equivalent static module:
+Generated static code only needs `protobufjs/minimal.js`.
+
+### TypeScript integration
+
+The runtime API is typed, but fields of dynamically loaded messages are only known at runtime. For statically typed messages and fields, either generate static code with declarations, or use reflection bundles with declarations generated from the equivalent static module:
 
 ```sh
 npx pbjs -t json-module -w commonjs -o awesome.js awesome.proto
@@ -220,6 +227,19 @@ npx pbjs -t static-module awesome.proto | npx pbts -o awesome.d.ts -
 Use `create(...)` instead of constructors with reflection-backed declarations.
 
 ## Advanced usage
+
+### Programmatic schemas
+
+The full and light builds can construct schemas directly through reflection:
+
+```js
+const AwesomeMessage = new protobuf.Type("AwesomeMessage")
+  .add(new protobuf.Field("awesomeField", 1, "string"));
+
+const root = new protobuf.Root()
+  .define("awesomepackage")
+  .add(AwesomeMessage);
+```
 
 ### Custom message classes
 
@@ -280,9 +300,9 @@ Support for [Content Security Policy](https://w3c.github.io/webappsec-csp/)-rest
 
 ## Performance
 
-The repository includes a small benchmark for the bundled fixture in [`bench/`](./bench/). It compares protobuf.js reflection and static code against native `JSON.stringify`/`JSON.parse` and [google-protobuf](https://www.npmjs.com/package/google-protobuf) 4.0.2. Results depend on hardware, Node.js version, and the message shape, but are useful as a quick regression check.
+The repository includes a small benchmark for the bundled fixture in [`bench/`](./bench/). It compares protobuf.js reflection and static code against native `JSON.stringify`/`JSON.parse` and [google-protobuf](https://www.npmjs.com/package/google-protobuf). Results depend on hardware, Node.js version, and the message shape, but are useful as a quick regression check.
 
-One run on an AMD Ryzen 9 9950X3D with Node.js 24.13.0 produced:
+One run on an AMD Ryzen 9 9950X3D with Node.js 24.13.0 and google-protobuf 4.0.2 produced:
 
 ```
 benchmarking encoding performance ...
