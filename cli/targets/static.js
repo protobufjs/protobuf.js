@@ -97,7 +97,12 @@ function exportName(object, asInterface) {
 function escapeName(name) {
     if (!name)
         return "$root";
-    return util.isReserved(name) ? name + "_" : name;
+    name = name.replace(/\W/g, "");
+    if (!name)
+        return "_";
+    if (/^\d/.test(name))
+        name = "_" + name;
+    return util.patterns.reservedRe.test(name) ? name + "_" : name;
 }
 
 function aOrAn(name) {
@@ -161,16 +166,23 @@ var shortVars = {
     "w": "writer",
     "m": "message",
     "t": "tag",
+    "t2": "tag2",
+    "u": "wireType",
     "l": "length",
+    "s": "start",
     "c": "end", "c2": "end2",
     "k": "key",
+    "v": "value",
     "ks": "keys", "ks2": "keys2",
     "e": "error",
     "f": "impl",
     "o": "options",
     "d": "object",
     "n": "long",
-    "p": "properties"
+    "p": "properties",
+    "z": "_end",
+    "q": "_depth",
+    "g": "_target"
 };
 
 function beautifyCode(code) {
@@ -224,8 +236,7 @@ var renameVars = {
 };
 
 function buildFunction(type, functionName, gen, scope) {
-    var code = gen.toString(functionName)
-        .replace(/((?!\.)types\[\d+])(\.values)/g, "$1"); // enums: use types[N] instead of reflected types[N].values
+    var code = gen.toString(functionName);
 
     var ast = espree.parse(code);
     /* eslint-disable no-extra-parens */
@@ -252,6 +263,30 @@ function buildFunction(type, functionName, gen, scope) {
                 return {
                     "type": "Identifier",
                     "name": "$root" + type.fullName
+                };
+            // replace types[N].ctor with the field's actual type constructor
+            if (
+                node.type === "MemberExpression"
+             && node.object.type === "MemberExpression"
+             && node.object.object.type === "Identifier" && node.object.object.name === "types"
+             && node.object.property.type === "Literal"
+             && node.property.type === "Identifier" && node.property.name === "ctor"
+            )
+                return {
+                    "type": "Identifier",
+                    "name": "$root" + type.fieldsArray[node.object.property.value].resolvedType.fullName
+                };
+            // replace types[N].values with the field's actual enum object
+            if (
+                node.type === "MemberExpression"
+             && node.object.type === "MemberExpression"
+             && node.object.object.type === "Identifier" && node.object.object.name === "types"
+             && node.object.property.type === "Literal"
+             && node.property.type === "Identifier" && node.property.name === "values"
+            )
+                return {
+                    "type": "Identifier",
+                    "name": "$root" + type.fieldsArray[node.object.property.value].resolvedType.fullName
                 };
             // replace types[N] with the field's actual type
             if (
@@ -362,6 +397,29 @@ function toJsType(field, parentIsInterface = false) {
     return type;
 }
 
+function toJsTypeWithNullability(field) {
+    var jsType = toJsType(field, /* parentIsInterface = */ false);
+    if (config["null-semantics"]) {
+        // With semantic nulls, fields are nullable if they are explicitly optional or part of a one-of
+        // Maps, repeated values and fields with implicit defaults are never null after construction
+        // Members are never undefined, at a minimum they are initialized to null
+        if (isNullable(field))
+            jsType = jsType + "|null";
+    } else {
+        // Without semantic nulls, everything is optional in proto3
+        // Keep |undefined for backwards compatibility
+        if (field.optional && !field.map && !field.repeated && (field.resolvedType instanceof protobuf.Type || config["null-defaults"]) || field.partOf)
+            jsType = jsType + "|null|undefined";
+    }
+    return jsType;
+}
+
+function toPropName(field, optional) {
+    var prop = util.safeProp(field.name); // either .name or ["name"]
+    prop = prop.substring(1, prop.charAt(0) === "[" ? prop.length - 1 : prop.length);
+    return optional ? "[" + prop + "]" : prop;
+}
+
 function isNullable(field) {
     return field.hasPresence && !field.required;
 }
@@ -375,8 +433,6 @@ function buildType(ref, type) {
             "@interface " + escapeName("I" + type.name)
         ];
         type.fieldsArray.forEach(function(field) {
-            var prop = util.safeProp(field.name); // either .name or ["name"]
-            prop = prop.substring(1, prop.charAt(0) === "[" ? prop.length - 1 : prop.length);
             var jsType = toJsType(field, /* parentIsInterface = */ true);
             var nullable = false;
             if (config["null-semantics"]) {
@@ -402,22 +458,35 @@ function buildType(ref, type) {
                     nullable = true;
                 }
             }
-            typeDef.push("@property {" + jsType + "} " + (nullable ? "[" + prop + "]" : prop) + " " + (field.comment || type.name + " " + field.name));
+            typeDef.push("@property {" + jsType + "} " + toPropName(field, nullable) + " " + (field.comment || type.name + " " + field.name));
         });
+        typeDef.push("@property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding");
         push("");
         pushComment(typeDef);
     }
 
     // constructor
     push("");
-    pushComment([
+    var classDef = [
         "Constructs a new " + type.name + ".",
         type.parent instanceof protobuf.Root ? "@exports " + escapeName(type.name) : "@memberof " + exportName(type.parent),
         "@classdesc " + (type.comment || "Represents " + aOrAn(type.name) + "."),
         config.comments ? "@implements " + escapeName("I" + type.name) : null,
         "@constructor",
         "@param {" + exportName(type, true) + "=} [" + (config.beautify ? "properties" : "p") + "] Properties to set"
-    ]);
+    ];
+    if (config.comments) {
+        type.fieldsArray.forEach(function(field) {
+            if (!field.declaringField)
+                return;
+            var jsType = toJsTypeWithNullability(field);
+            var optional = /\bundefined\b/.test(jsType);
+            var propType = optional ? jsType.replace(/\|undefined\b/g, "") : jsType;
+            classDef.push("@property {" + propType + "} " + toPropName(field, optional) + " " + (field.comment || type.name + " " + field.name));
+        });
+        classDef.push("@property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding");
+    }
+    pushComment(classDef);
     buildFunction(type, type.name, Type.generateConstructor(type));
 
     // default values
@@ -425,24 +494,9 @@ function buildType(ref, type) {
     type.fieldsArray.forEach(function(field) {
         field.resolve();
         var prop = util.safeProp(field.name);
-        if (config.comments) {
+        if (config.comments && !field.declaringField) {
             push("");
-            var jsType = toJsType(field, /* parentIsInterface = */ false);
-            if (config["null-semantics"]) {
-                // With semantic nulls, fields are nullable if they are explicitly optional or part of a one-of
-                // Maps, repeated values and fields with implicit defaults are never null after construction
-                // Members are never undefined, at a minimum they are initialized to null
-                if (isNullable(field)) {
-                    jsType = jsType + "|null";
-                }
-            }
-            else {
-                // Without semantic nulls, everything is optional in proto3
-                // Keep |undefined for backwards compatibility
-                if (field.optional && !field.map && !field.repeated && (field.resolvedType instanceof Type || config["null-defaults"]) || field.partOf) {
-                    jsType = jsType + "|null|undefined";
-                }
-            }
+            var jsType = toJsTypeWithNullability(field);
             pushComment([
                 field.comment || type.name + " " + field.name + ".",
                 "@member {" + jsType + "} " + field.name,
@@ -759,7 +813,7 @@ function buildEnum(ref, enm) {
     push("");
     var comment = [
         enm.comment || enm.name + " enum.",
-        enm.parent instanceof protobuf.Root ? "@exports " + escapeName(enm.name) : "@name " + exportName(enm),
+        "@name " + exportName(enm),
         config.forceEnumString ? "@enum {string}" : "@enum {number}",
     ];
     Object.keys(enm.values).forEach(function(key) {

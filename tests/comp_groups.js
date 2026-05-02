@@ -16,6 +16,16 @@ var protoRepeated = "message Test {\
     };\
 }";
 
+var protoExtension = "syntax = \"proto2\";\
+message Message {\
+    extensions 100 to max;\
+}\
+extend Message {\
+    optional group GroupField = 100 {\
+        optional uint32 a = 101;\
+    }\
+}";
+
 tape.test("legacy groups", function(test) {
     var root = protobuf.parse(protoRequired).root.resolveAll();
 
@@ -39,6 +49,13 @@ tape.test("legacy groups", function(test) {
     // NOTE: fromJSON alone does not add the sister-field.
     // The parser does this explicitly and the field is part of the exported JSON itself.
 
+    test.test(test.name + " - should decode without prior setup", (function(Test, msg) { return function(test) {
+        // Use a fixed buffer so encode() does not set up the nested group decoder first
+        var buf = protobuf.util.newBuffer([1 << 3 | 3, 2 << 3 | 0, 111, 1 << 3 | 4]);
+        test.same(Test.decode(buf), msg, "and decode back the original message");
+        test.end();
+    };})(Test, msg));
+
     test.test(test.name + " - should encode required", (function(Test, msg) { return function(test) {
         var buf = Test.encode(msg).finish();
         test.equal(buf.length, 4, "a total of 4 bytes");
@@ -49,6 +66,14 @@ tape.test("legacy groups", function(test) {
         test.same(Test.decode(buf), msg, "and decode back the original message");
         test.end();
     };})(Test, msg));
+
+    test.test(test.name + " - should reject unmatched start group", (function(Test) { return function(test) {
+        var buf = protobuf.util.newBuffer([1 << 3 | 3]);
+        test.throws(function() {
+            Test.decode(buf);
+        }, /missing end group/, "should reject groups without an end tag");
+        test.end();
+    };})(Test));
 
     // Same but repeated
     root = protobuf.parse(protoRepeated).root;
@@ -150,5 +175,25 @@ tape.test("delimited encoding", function(test) {
         test.end();
     };})(Test, msg));
 
+    test.end();
+});
+
+tape.test("extension groups", function(test) {
+    var root = protobuf.parse(protoExtension).root.resolveAll();
+
+    var Message = root.lookupType("Message");
+    var GroupField = root.get("groupField");
+    var ExtensionField = Message.get(GroupField.fullName);
+    var msg = {};
+    msg[GroupField.fullName] = {
+        a: 111
+    };
+
+    test.equal(ExtensionField.declaringField, GroupField, "should add the sister field to the extended type");
+    test.equal(ExtensionField.delimited, true, "should use delimited encoding on the sister field");
+
+    var buf = Message.encode(msg).finish();
+    test.same(Array.prototype.slice.call(buf), [ 163, 6, 168, 6, 111, 164, 6 ], "should encode as a group");
+    test.same(Message.decode(buf), msg, "and decode back the original message");
     test.end();
 });

@@ -39,6 +39,9 @@ tape.test("writer & reader", function(test) {
     test.ok(expect("uint32", -1 >>> 0, [ 255, 255, 255, 255, 15 ]), "should write -1 as an unsigned varint of length 5");
     test.ok(expect("int32", -1, [ 255, 255, 255, 255, 255, 255, 255, 255, 255, 1 ]), "should write -1 as a signed varint of length 10");
     test.ok(expect("sint32", -1, [ 1 ]), "should write -1 as a signed zig-zag encoded varint of length 1");
+    var reader = Reader.create([ 128, 128, 128, 128, 128, 0, 1 ]);
+    test.equal(reader.uint32(), 0, "should read non-minimal uint32 varints");
+    test.equal(reader.uint32(), 1, "should stop after the non-minimal uint32 varint");
 
     // fixed32, sfixed32
 
@@ -90,17 +93,30 @@ tape.test("writer & reader", function(test) {
 
     test.ok(expect("bool", true, [1]), "should write true as a varint of length 1 and read it back equally");
     test.ok(expect("bool", false, [0]), "should write false as a varint of length 1 and read it back equally");
+    test.equal(Reader.create([ 128, 128, 128, 128, 16 ]).bool(), true, "should read 64 bit non-zero bool varints as true");
 
-    // string, see also lib_utf8
+    // string, see also util_utf8
 
     test.ok(expect("string", "123", [3,49,50,51]), "should write \"123\" as a string prefixed with its length as a varint and read it back equally");
     test.ok(expect("string", "", [0]), "should write \"\" as a string prefixed with its length as a varint and read it back equally");
+    test.throws(function() {
+        Reader.create(protobuf.util.newBuffer([ 3, 49, 50 ])).string();
+    }, /index out of range/, "should throw on truncated strings");
 
     // bytes
 
     test.ok(expect("bytes", [1,2,3], [3,1,2,3]), "should write [1,2,3] as bytes prefixed with its length as a varint and read it back equally");
     test.ok(expect("bytes", [], [0]), "should write [] as bytes prefixed with its length as a varint and read it back equally");
     test.ok(expect("bytes", "MTIz", [3,49,50,51]), "should write MTIz as bytes prefixed with its length as a varint and read it back equally");
+
+    // raw bytes
+
+    var rawReader = Reader.create([0,1,2,3]);
+    test.deepEqual(Array.prototype.slice.call(rawReader.raw(1, 3)), [1,2], "should read raw bytes without a length prefix");
+    test.equal(rawReader.pos, 0, "should read raw bytes without advancing");
+    if (protobuf.util.Buffer)
+        test.deepEqual(Reader.create(protobuf.util.Buffer.from([0,1,2,3])).raw(1, 3), protobuf.util.Buffer.from([1,2]), "should preserve buffer backed raw bytes");
+    test.deepEqual(Array.prototype.slice.call(Writer.create().raw([1,2,3]).finish()), [1,2,3], "should write raw bytes without a length prefix");
 
     // skipType
 
@@ -109,8 +125,8 @@ tape.test("writer & reader", function(test) {
             .uint32(1)
             .double(0.1)
             .string("123")
-            .uint32(1 << 3 | 1).double(0.1).uint32(4)
-            .uint32(4)
+            .uint32(1 << 3 | 1).double(0.1).uint32(1 << 3 | 4)
+            .uint32(1 << 3 | 4)
             .float(0.125)
             .finish()
         );
@@ -128,6 +144,22 @@ tape.test("writer & reader", function(test) {
         test.equal(reader.pos, 28, "fixed 32 bits");
         test.end();
     });
+
+    test.throws(function() {
+      const root = protobuf.Root.fromJSON({
+        nested: {
+          MyMessage: {
+            fields: {
+              name: { type: "string", id: 1 }
+            }
+          }
+        }
+      });
+      const MyMessage = root.lookupType("MyMessage");
+      // 0x7B (field 15, wire type 3 = start group)
+      const payload = Buffer.alloc(50000, 0x7B);
+      MyMessage.decode(payload);
+    }, /max depth exceeded/, "limits recursion in reader");
 
     test.end();
 });

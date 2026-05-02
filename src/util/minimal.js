@@ -2,25 +2,25 @@
 var util = exports;
 
 // used to return a Promise where callback is omitted
-util.asPromise = require("@protobufjs/aspromise");
+util.asPromise = require("./aspromise");
 
 // converts to / from base64 encoded strings
-util.base64 = require("@protobufjs/base64");
+util.base64 = require("./base64");
 
 // base class of rpc.Service
-util.EventEmitter = require("@protobufjs/eventemitter");
+util.EventEmitter = require("./eventemitter");
 
 // float handling accross browsers
-util.float = require("@protobufjs/float");
+util.float = require("./float");
 
 // requires modules optionally and hides the call from bundlers
-util.inquire = require("@protobufjs/inquire");
+util.inquire = require("./inquire");
 
 // converts to / from utf8 encoded strings
-util.utf8 = require("@protobufjs/utf8");
+util.utf8 = require("./utf8");
 
 // provides a node-like buffer pool in the browser
-util.pool = require("@protobufjs/pool");
+util.pool = require("./pool");
 
 // utility to work with the low and high bits of a 64 bit value
 util.LongBits = require("./longbits");
@@ -200,7 +200,7 @@ util.key32Re = /^-?(?:0|[1-9][0-9]*)$/;
  * @type {RegExp}
  * @const
  */
-util.key64Re = /^(?:[\\x00-\\xff]{8}|-?(?:0|[1-9][0-9]*))$/;
+util.key64Re = /^(?:[\x00-\xff]{8}|-?(?:0|[1-9][0-9]*))$/; // eslint-disable-line no-control-regex
 
 /**
  * Converts a number or long to an 8 characters long hash string.
@@ -227,6 +227,27 @@ util.longFromHash = function longFromHash(hash, unsigned) {
 };
 
 /**
+ * Converts a 64 bit key to a long or number if it is an 8 characters long hash string.
+ * @param {string} key Map key
+ * @param {boolean} [unsigned=false] Whether unsigned or not
+ * @returns {Long|number|string} Original value
+ */
+util.longFromKey = function longFromKey(key, unsigned) {
+    return util.key64Re.test(key) && !util.key32Re.test(key)
+        ? util.longFromHash(key, unsigned)
+        : key;
+};
+
+/**
+ * Converts a boolean key to a boolean value.
+ * @param {string} key Map key
+ * @returns {boolean} Boolean value
+ */
+util.boolFromKey = function boolFromKey(key) {
+    return key === "true" || key === "1";
+};
+
+/**
  * Merges the properties of the source object into the destination object.
  * @memberof util
  * @param {Object.<string,*>} dst Destination object
@@ -237,11 +258,37 @@ util.longFromHash = function longFromHash(hash, unsigned) {
 function merge(dst, src, ifNotSet) { // used by converters
     for (var keys = Object.keys(src), i = 0; i < keys.length; ++i)
         if (dst[keys[i]] === undefined || !ifNotSet)
-            dst[keys[i]] = src[keys[i]];
+            if (keys[i] !== "__proto__")
+                dst[keys[i]] = src[keys[i]];
     return dst;
 }
 
 util.merge = merge;
+
+/**
+ * Recursion limit.
+ * @memberof util
+ * @type {number}
+ */
+util.recursionLimit = 100;
+
+/**
+ * Makes a property safe for assignment as an own property.
+ * @memberof util
+ * @param {Object.<string,*>} obj Object
+ * @param {string} key Property key
+ * @param {boolean} [enumerable=true] Whether the property should be enumerable
+ * @returns {undefined}
+ */
+util.makeProp = function makeProp(obj, key, enumerable) {
+    if (Object.prototype.hasOwnProperty.call(obj, key))
+        return;
+    Object.defineProperty(obj, key, {
+        enumerable: enumerable === undefined ? true : enumerable,
+        configurable: true,
+        writable: true
+    });
+};
 
 /**
  * Converts the first character of a string to lower case.

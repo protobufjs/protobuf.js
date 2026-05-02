@@ -29,6 +29,7 @@ var Enum      = require("./enum"),
  * @param {Object.<string,*>} [options] Declared options
  */
 function Type(name, options) {
+    name = name.replace(/\W/g, "");
     Namespace.call(this, name, options);
 
     /**
@@ -173,8 +174,10 @@ Object.defineProperties(Type.prototype, {
 
             // Messages have non-enumerable default values on their prototype
             var i = 0;
-            for (; i < /* initializes */ this.fieldsArray.length; ++i)
-                this._fieldsArray[i].resolve(); // ensures a proper value
+            for (var field; i < /* initializes */ this.fieldsArray.length; ++i) {
+                field = this._fieldsArray[i].resolve(); // ensures a proper value
+                ctor.prototype[field.name] = field.defaultValue;
+            }
 
             // Messages have non-enumerable getters and setters for each virtual oneof field
             var ctorProperties = {};
@@ -204,7 +207,7 @@ Type.generateConstructor = function generateConstructor(mtype) {
         else if (field.repeated) gen
             ("this%s=[]", util.safeProp(field.name));
     return gen
-    ("if(p)for(var ks=Object.keys(p),i=0;i<ks.length;++i)if(p[ks[i]]!=null)") // omit undefined or null
+    ("if(p)for(var ks=Object.keys(p),i=0;i<ks.length;++i)if(p[ks[i]]!=null&&ks[i]!==\"__proto__\")") // omit undefined or null
         ("this[ks[i]]=p[ks[i]]");
     /* eslint-enable no-unexpected-multiline */
 };
@@ -337,10 +340,13 @@ Type.prototype._resolveFeaturesRecursive = function _resolveFeaturesRecursive(ed
  * @override
  */
 Type.prototype.get = function get(name) {
-    return this.fields[name]
-        || this.oneofs && this.oneofs[name]
-        || this.nested && this.nested[name]
-        || null;
+    if (Object.prototype.hasOwnProperty.call(this.fields, name))
+        return this.fields[name];
+    if (this.oneofs && Object.prototype.hasOwnProperty.call(this.oneofs, name))
+        return this.oneofs[name];
+    if (this.nested && Object.prototype.hasOwnProperty.call(this.nested, name))
+        return this.nested[name];
+    return null;
 };
 
 /**
@@ -351,7 +357,6 @@ Type.prototype.get = function get(name) {
  * @throws {Error} If there is already a nested object with this name or, if a field, when there is already a field with this id
  */
 Type.prototype.add = function add(object) {
-
     if (this.get(object.name))
         throw Error("duplicate name '" + object.name + "' in " + this);
 
@@ -367,6 +372,8 @@ Type.prototype.add = function add(object) {
             throw Error("id " + object.id + " is reserved in " + this);
         if (this.isReservedName(object.name))
             throw Error("name '" + object.name + "' is reserved in " + this);
+        if (object.name === "__proto__")
+            return this;
 
         if (object.parent)
             object.parent.remove(object);
@@ -376,6 +383,8 @@ Type.prototype.add = function add(object) {
         return clearCache(this);
     }
     if (object instanceof OneOf) {
+        if (object.name === "__proto__")
+            return this;
         if (!this.oneofs)
             this.oneofs = {};
         this.oneofs[object.name] = object;
@@ -486,15 +495,13 @@ Type.prototype.setup = function setup() {
     // Inject custom wrappers for common types
     var wrapper = wrappers[fullName];
     if (wrapper) {
-        var originalThis = Object.create(this);
-        // if (wrapper.fromObject) {
-            originalThis.fromObject = this.fromObject;
-            this.fromObject = wrapper.fromObject.bind(originalThis);
-        // }
-        // if (wrapper.toObject) {
-            originalThis.toObject = this.toObject;
-            this.toObject = wrapper.toObject.bind(originalThis);
-        // }
+        var wrapperThis = Object.create(this);
+        // Reuse this type's runtime constructor in wrapper fromObject/toObject
+        wrapperThis._ctor = this.ctor;
+        wrapperThis.fromObject = this.fromObject;
+        this.fromObject = wrapper.fromObject.bind(wrapperThis);
+        wrapperThis.toObject = this.toObject;
+        this.toObject = wrapper.toObject.bind(wrapperThis);
     }
 
     return this;
@@ -528,8 +535,8 @@ Type.prototype.encodeDelimited = function encodeDelimited(message, writer) {
  * @throws {Error} If the payload is not a reader or valid buffer
  * @throws {util.ProtocolError<{}>} If required fields are missing
  */
-Type.prototype.decode = function decode_setup(reader, length) {
-    return this.setup().decode(reader, length); // overrides this method
+Type.prototype.decode = function decode_setup(reader, length) { // eslint-disable-line no-unused-vars
+    return this.setup().decode.apply(this, arguments); // overrides this method
 };
 
 /**
@@ -550,8 +557,8 @@ Type.prototype.decodeDelimited = function decodeDelimited(reader) {
  * @param {Object.<string,*>} message Plain object to verify
  * @returns {null|string} `null` if valid, otherwise the reason why it is not
  */
-Type.prototype.verify = function verify_setup(message) {
-    return this.setup().verify(message); // overrides this method
+Type.prototype.verify = function verify_setup(message) { // eslint-disable-line no-unused-vars
+    return this.setup().verify.apply(this, arguments); // overrides this method
 };
 
 /**
@@ -559,8 +566,8 @@ Type.prototype.verify = function verify_setup(message) {
  * @param {Object.<string,*>} object Plain object to convert
  * @returns {Message<{}>} Message instance
  */
-Type.prototype.fromObject = function fromObject(object) {
-    return this.setup().fromObject(object);
+Type.prototype.fromObject = function fromObject(object) { // eslint-disable-line no-unused-vars
+    return this.setup().fromObject.apply(this, arguments);
 };
 
 /**

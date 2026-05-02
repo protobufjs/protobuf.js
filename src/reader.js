@@ -79,6 +79,21 @@ Reader.create = create();
 Reader.prototype._slice = util.Array.prototype.subarray || /* istanbul ignore next */ util.Array.prototype.slice;
 
 /**
+ * Returns raw bytes from the backing buffer without advancing the reader.
+ * @param {number} start Start offset
+ * @param {number} end End offset
+ * @returns {Uint8Array} Raw bytes
+ */
+Reader.prototype.raw = function read_raw(start, end) {
+    if (Array.isArray(this.buf)) // plain array
+        return this.buf.slice(start, end);
+
+    if (start === end) // fix for IE 10/Win8 and others' subarray returning array of size 1
+        return new this.buf.constructor(0);
+    return this._slice.call(this.buf, start, end);
+};
+
+/**
  * Reads a varint as an unsigned 32 bit value.
  * @function
  * @returns {number} Value read
@@ -92,12 +107,15 @@ Reader.prototype.uint32 = (function read_uint32_setup() {
         value = (value | (this.buf[this.pos] & 127) << 21) >>> 0; if (this.buf[this.pos++] < 128) return value;
         value = (value | (this.buf[this.pos] &  15) << 28) >>> 0; if (this.buf[this.pos++] < 128) return value;
 
-        /* istanbul ignore if */
-        if ((this.pos += 5) > this.len) {
-            this.pos = this.len;
-            throw indexOutOfRange(this, 10);
+        for (var i = 0; i < 5; ++i) {
+            /* istanbul ignore if */
+            if (this.pos >= this.len)
+                throw indexOutOfRange(this);
+            if (this.buf[this.pos++] < 128)
+                return value;
         }
-        return value;
+        /* istanbul ignore next */
+        throw Error("invalid varint encoding");
     };
 })();
 
@@ -201,7 +219,20 @@ function readLongVarint() {
  * @returns {boolean} Value read
  */
 Reader.prototype.bool = function read_bool() {
-    return this.uint32() !== 0;
+    var value = false,
+        b;
+    for (var i = 0; i < 10; ++i) {
+        /* istanbul ignore if */
+        if (this.pos >= this.len)
+            throw indexOutOfRange(this);
+        b = this.buf[this.pos++];
+        if (b & 127)
+            value = true;
+        if (b < 128)
+            return value;
+    }
+    /* istanbul ignore next */
+    throw Error("invalid varint encoding");
 };
 
 function readFixed32_end(buf, end) { // note that this uses `end`, not `pos`
@@ -309,17 +340,8 @@ Reader.prototype.bytes = function read_bytes() {
     if (end > this.len)
         throw indexOutOfRange(this, length);
 
-    this.pos += length;
-    if (Array.isArray(this.buf)) // plain array
-        return this.buf.slice(start, end);
-
-    if (start === end) { // fix for IE 10/Win8 and others' subarray returning array of size 1
-        var nativeBuffer = util.Buffer;
-        return nativeBuffer
-            ? nativeBuffer.alloc(0)
-            : new this.buf.constructor(0);
-    }
-    return this._slice.call(this.buf, start, end);
+    this.pos = end;
+    return this.raw(start, end);
 };
 
 /**
@@ -353,11 +375,24 @@ Reader.prototype.skip = function skip(length) {
 };
 
 /**
+ * Recursion limit.
+ * @type {number}
+ */
+Reader.recursionLimit = util.recursionLimit;
+
+/**
  * Skips the next element of the specified wire type.
  * @param {number} wireType Wire type received
+ * @param {number} [depth] Depth of recursion to control nested calls; 0 if omitted
+ * @param {number} [fieldNumber] Field number for validating group end tags
  * @returns {Reader} `this`
  */
-Reader.prototype.skipType = function(wireType) {
+Reader.prototype.skipType = function(wireType, depth, fieldNumber) {
+    if (depth === undefined) depth = 0;
+    if (depth > Reader.recursionLimit)
+        throw Error("max depth exceeded");
+    if (fieldNumber === 0)
+        throw Error("illegal tag: field number 0");
     switch (wireType) {
         case 0:
             this.skip();
@@ -369,8 +404,18 @@ Reader.prototype.skipType = function(wireType) {
             this.skip(this.uint32());
             break;
         case 3:
-            while ((wireType = this.uint32() & 7) !== 4) {
-                this.skipType(wireType);
+            while (true) {
+                var tag = this.uint32();
+                var nestedField = tag >>> 3;
+                wireType = tag & 7;
+                if (!nestedField)
+                    throw Error("illegal tag: field number 0");
+                if (wireType === 4) {
+                    if (fieldNumber !== undefined && nestedField !== fieldNumber)
+                        throw Error("invalid end group tag");
+                    break;
+                }
+                this.skipType(wireType, depth + 1, nestedField);
             }
             break;
         case 5:

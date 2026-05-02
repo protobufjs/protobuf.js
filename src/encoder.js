@@ -47,7 +47,12 @@ function encoder(mtype) {
         if (field.map) {
             gen
     ("if(%s!=null&&Object.hasOwnProperty.call(m,%j)){", ref, field.name) // !== undefined && !== null
-        ("for(var ks=Object.keys(%s),i=0;i<ks.length;++i){", ref)
+        ("for(var ks=Object.keys(%s),i=0;i<ks.length;++i){", ref);
+            if (field.keyType === "bool") gen
+            ("w.uint32(%i).fork().uint32(%i).bool(util.boolFromKey(ks[i]))", (field.id << 3 | 2) >>> 0, 8 | types.mapKey[field.keyType]);
+            else if (types.long[field.keyType] !== undefined) gen
+            ("w.uint32(%i).fork().uint32(%i).%s(util.longFromKey(ks[i],%j))", (field.id << 3 | 2) >>> 0, 8 | types.mapKey[field.keyType], field.keyType, field.keyType === "uint64" || field.keyType === "fixed64");
+            else gen
             ("w.uint32(%i).fork().uint32(%i).%s(ks[i])", (field.id << 3 | 2) >>> 0, 8 | types.mapKey[field.keyType], field.keyType);
             if (wireType === undefined) gen
             ("types[%i].encode(%s[ks[i]],w.uint32(18).fork()).ldelim().ldelim()", index, ref); // can't be groups
@@ -83,7 +88,7 @@ function encoder(mtype) {
 
         // Non-repeated
         } else {
-            if (field.optional) gen
+            if (!field.required) gen
     ("if(%s!=null&&Object.hasOwnProperty.call(m,%j))", ref, field.name); // !== undefined && !== null
 
             if (wireType === undefined)
@@ -95,6 +100,9 @@ function encoder(mtype) {
     }
 
     return gen
+    ("if(m.$unknowns!=null&&Object.hasOwnProperty.call(m,\"$unknowns\"))")
+        ("for(var i=0;i<m.$unknowns.length;++i)")
+            ("w.raw(m.$unknowns[i])")
     ("return w");
     /* eslint-enable no-unexpected-multiline, block-scoped-var, no-redeclare */
 }

@@ -28,6 +28,7 @@ exports.main = function main(args, callback) {
         "no-var",
         "sort-vars",
         "default-case"
+        "jsdoc/require-param"
     ].join(", ");
     var argv = minimist(args, {
         alias: {

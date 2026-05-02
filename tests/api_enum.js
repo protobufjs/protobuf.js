@@ -49,6 +49,10 @@ tape.test("reflected enums", function(test) {
         3: "c"
     }, "should also expose any new values by id");
 
+    var special = new protobuf.Enum("Special", {});
+    special.add("__proto__", 1);
+    test.notOk(Object.prototype.hasOwnProperty.call(special.values, "__proto__"), "should ignore reserved enum value names");
+
     test.throws(function() {
         enm.remove(1);
     }, TypeError, "should throw if name is not a string");

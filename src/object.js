@@ -10,9 +10,10 @@ var Root; // cyclic
 
 /* eslint-disable no-warning-comments */
 // TODO: Replace with embedded proto.
-var editions2023Defaults = {enum_type: "OPEN", field_presence: "EXPLICIT", json_format: "ALLOW", message_encoding: "LENGTH_PREFIXED", repeated_field_encoding: "PACKED", utf8_validation: "VERIFY"};
-var proto2Defaults = {enum_type: "CLOSED", field_presence: "EXPLICIT", json_format: "LEGACY_BEST_EFFORT", message_encoding: "LENGTH_PREFIXED", repeated_field_encoding: "EXPANDED", utf8_validation: "NONE"};
-var proto3Defaults = {enum_type: "OPEN", field_presence: "IMPLICIT", json_format: "ALLOW", message_encoding: "LENGTH_PREFIXED", repeated_field_encoding: "PACKED", utf8_validation: "VERIFY"};
+var editions2024Defaults = {enum_type: "OPEN", field_presence: "EXPLICIT", json_format: "ALLOW", message_encoding: "LENGTH_PREFIXED", repeated_field_encoding: "PACKED", utf8_validation: "VERIFY", enforce_naming_style: "STYLE2024", default_symbol_visibility: "EXPORT_TOP_LEVEL" };
+var editions2023Defaults = {enum_type: "OPEN", field_presence: "EXPLICIT", json_format: "ALLOW", message_encoding: "LENGTH_PREFIXED", repeated_field_encoding: "PACKED", utf8_validation: "VERIFY", enforce_naming_style: "STYLE_LEGACY", default_symbol_visibility: "EXPORT_ALL" };
+var proto2Defaults = {enum_type: "CLOSED", field_presence: "EXPLICIT", json_format: "LEGACY_BEST_EFFORT", message_encoding: "LENGTH_PREFIXED", repeated_field_encoding: "EXPANDED", utf8_validation: "NONE", enforce_naming_style: "STYLE_LEGACY", default_symbol_visibility: "EXPORT_ALL" };
+var proto3Defaults = {enum_type: "OPEN", field_presence: "IMPLICIT", json_format: "ALLOW", message_encoding: "LENGTH_PREFIXED", repeated_field_encoding: "PACKED", utf8_validation: "VERIFY", enforce_naming_style: "STYLE_LEGACY", default_symbol_visibility: "EXPORT_ALL" };
 
 /**
  * Constructs a new reflection object instance.
@@ -225,27 +226,27 @@ ReflectionObject.prototype._resolveFeatures = function _resolveFeatures(edition)
             defaults = Object.assign({}, proto3Defaults);
         } else if (edition === "2023") {
             defaults = Object.assign({}, editions2023Defaults);
+        } else if (edition === "2024") {
+            defaults = Object.assign({}, editions2024Defaults);
         } else {
             throw new Error("Unknown edition: " + edition);
         }
         this._features = Object.assign(defaults, protoFeatures || {});
-        this._featuresResolved = true;
-        return;
-    }
-
-    // fields in Oneofs aren't actually children of them, so we have to
-    // special-case it
-    /* istanbul ignore else */
-    if (this.partOf instanceof OneOf) {
-        var lexicalParentFeaturesCopy = Object.assign({}, this.partOf._features);
-        this._features = Object.assign(lexicalParentFeaturesCopy, protoFeatures || {});
-    } else if (this.declaringField) {
-        // Skip feature resolution of sister fields.
-    } else if (this.parent) {
-        var parentFeaturesCopy = Object.assign({}, this.parent._features);
-        this._features = Object.assign(parentFeaturesCopy, protoFeatures || {});
     } else {
-        throw new Error("Unable to find a parent for " + this.fullName);
+        // fields in Oneofs aren't actually children of them, so we have to
+        // special-case it
+        /* istanbul ignore else */
+        if (this.partOf instanceof OneOf) {
+            var lexicalParentFeaturesCopy = Object.assign({}, this.partOf._features);
+            this._features = Object.assign(lexicalParentFeaturesCopy, protoFeatures || {});
+        } else if (this.declaringField) {
+            // Skip feature resolution of sister fields.
+        } else if (this.parent) {
+            var parentFeaturesCopy = Object.assign({}, this.parent._features);
+            this._features = Object.assign(parentFeaturesCopy, protoFeatures || {});
+        } else {
+            throw new Error("Unable to find a parent for " + this.fullName);
+        }
     }
     if (this.extensionField) {
         // Sister fields should have the same features as their extensions.
@@ -283,6 +284,8 @@ ReflectionObject.prototype.getOption = function getOption(name) {
  * @returns {ReflectionObject} `this`
  */
 ReflectionObject.prototype.setOption = function setOption(name, value, ifNotSet) {
+    if (name === "__proto__")
+        return this;
     if (!this.options)
         this.options = {};
     if (/^features\./.test(name)) {
@@ -303,6 +306,8 @@ ReflectionObject.prototype.setOption = function setOption(name, value, ifNotSet)
  * @returns {ReflectionObject} `this`
  */
 ReflectionObject.prototype.setParsedOption = function setParsedOption(name, value, propName) {
+    if (name === "__proto__")
+        return this;
     if (!this.parsedOptions) {
         this.parsedOptions = [];
     }

@@ -55,7 +55,7 @@ tape.test("packed repeated values encode", function(top) {
             var Test = root.lookup("Test");
 
             var buf = Test.encode(msg).finish();
-            test.equal(buf.length, 5, "a total of 4 bytes");
+            test.equal(buf.length, 5, "a total of 5 bytes");
             test.equal(buf[0], 1 << 3 | 2, "id 1, wireType 2");
             test.equal(buf[1], 3, "length 3");
             test.equal(buf[2], 1, "element 1");
@@ -69,7 +69,7 @@ tape.test("packed repeated values encode", function(top) {
     top.end()
 });
 
-tape.test("packed repeated values encode", function(top) {
+tape.test("unpacked repeated values encode", function(top) {
     [
         unpackedOption,
         regular,

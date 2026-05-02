@@ -5,6 +5,8 @@ var path = require("path");
 var Module = require("module");
 var protobuf = require("..");
 var fs = require("fs");
+var EventEmitter = require("events").EventEmitter;
+var child_process = require("child_process");
 
 function cliTest(test, testFunc) {
     // pbjs does not seem to work with Node v4, so skip this test if we're running on it
@@ -66,7 +68,7 @@ tape.test("pbjs generates static code", function(test) {
                     value: 42,
                 },
                 regularField: "abc",
-                enumField: 0,
+                enumField: 1,
             };
             var obj1 = OneofContainer.toObject(OneofContainer.fromObject(obj));
             test.deepEqual(obj, obj1, "fromObject and toObject work for plain object");
@@ -78,9 +80,9 @@ tape.test("pbjs generates static code", function(test) {
             instance.messageInOneof = new Message();
             instance.messageInOneof.value = 42;
             instance.regularField = "abc";
-            instance.enumField = 0;
+            instance.enumField = 1;
             var instance1 = OneofContainerDynamic.toObject(OneofContainerDynamic.fromObject(instance));
-            test.deepEqual(instance, instance1, "fromObject and toObject work for instance of the static type");
+            test.deepEqual(OneofContainer.toObject(instance), instance1, "fromObject and toObject work for instance of the static type");
 
             // Check that getTypeUrl works
             var defaultTypeUrl = Message.getTypeUrl();
@@ -90,6 +92,87 @@ tape.test("pbjs generates static code", function(test) {
 
             test.end();
         });
+    });
+});
+
+tape.test("pbjs generates correct ES6 static-module imports", function(test) {
+    cliTest(test, function() {
+        var root = protobuf.loadSync("tests/data/cli/test.proto");
+        root.resolveAll();
+
+        var staticModuleTarget = require("../cli/targets/static-module");
+
+        staticModuleTarget(root, {
+            wrap: "es6",
+        }, function(err, jsCode) {
+            test.error(err, "static-module code generation worked");
+            test.ok(jsCode.includes("import $protobuf from \"protobufjs/minimal.js\";"), "es6 wrapper uses a default import and explicit .js extension");
+            test.end();
+        });
+    });
+});
+
+tape.test("pbjs escapes static target names", function(test) {
+    cliTest(test, function() {
+        var root = protobuf.Root.fromJSON({
+            nested: {
+                "1-ns": {
+                    nested: {}
+                }
+            }
+        });
+        var staticTarget = require("../cli/targets/static");
+
+        staticTarget(root, {}, function(err, jsCode) {
+            test.error(err, "static code generation worked");
+            test.doesNotThrow(function() {
+                new Function("$protobuf", jsCode); // eslint-disable-line no-new-func
+            }, "should generate parseable output");
+            test.end();
+        });
+    });
+});
+
+tape.test("pbts passes jsdoc arguments without a shell", function(test) {
+    var pbts = require("../cli/pbts");
+    var originalSpawn = child_process.spawn;
+    var file = "file with \"quotes\" `backticks` 'apostrophes' and ;.js";
+
+    test.plan(5);
+
+    child_process.spawn = function(cmd, args, options) {
+        var child = new EventEmitter();
+        child.stdout = new EventEmitter();
+        child.stderr = { pipe: function() {} };
+
+        test.equal(cmd, process.execPath, "should execute node directly");
+        test.ok(/jsdoc[\\/]jsdoc\.js$/.test(args[0]), "should execute jsdoc directly");
+        test.equal(args[args.length - 1], file, "should pass file path as a single argument");
+        test.equal(options.stdio, "pipe", "should pipe jsdoc output");
+
+        process.nextTick(function() {
+            child.stdout.emit("data", "declare namespace test {}\n");
+            child.stdout.emit("end");
+            child.emit("close", 0);
+        });
+
+        return child;
+    };
+
+    pbts.main([file], function(err) {
+        child_process.spawn = originalSpawn;
+        test.error(err, "should generate definitions");
+    });
+});
+
+tape.test("pbts emits class properties for extension fields", function(test) {
+    var pbts = require("../cli/pbts");
+
+    pbts.main(["tests/data/test.js"], function(err, tsCode) {
+        test.error(err, "definition generation worked");
+        test.ok(tsCode.indexOf('public ".jspb.test.IndirectExtension.str": string;') >= 0, "should emit scalar extension property on the class");
+        test.ok(tsCode.indexOf('public ".jspb.test.CloneExtension.extField"?: (jspb.test.ICloneExtension|null);') >= 0, "should emit message extension property on the class");
+        test.end();
     });
 });
 

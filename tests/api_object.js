@@ -23,6 +23,9 @@ tape.test("reflection objects", function(test) {
     test.same(obj.options, { a: 1, b: 2 }, "should accept undefined as options");    
     obj.setOption("c", 3);
     test.same(obj.options, { a: 1, b: 2, c: 3 }, "should set single options");
+    obj.setOption("__proto__", { marker: true });
+    test.equal(Object.getPrototypeOf(obj.options), Object.prototype, "should keep the options object shape");
+    test.notOk(Object.prototype.hasOwnProperty.call(obj.options, "__proto__"), "should ignore reserved option names");
 
     obj.setParsedOption("opt1", {a: 1, b: 2});
     test.same(obj.parsedOptions, [{"opt1": {a: 1, b: 2}}], "should set single parsed option");
@@ -34,6 +37,8 @@ tape.test("reflection objects", function(test) {
     test.same(obj.parsedOptions, [{"opt1": {a: 1, b: 2}}, {"opt1": {a: 3, b: 4}}, {"opt2": {x: 1, a: {b :5}}}], "should merge new property path in existing option");
     obj.setParsedOption("opt2", 6, "x");
     test.same(obj.parsedOptions, [{"opt1": {a: 1, b: 2}}, {"opt1": {a: 3, b: 4}}, {"opt2": {x: [1,6], a: {b :5}}}], "should convert property to array when set more than once");
+    obj.setParsedOption("__proto__", { marker: true });
+    test.equal(obj.parsedOptions.length, 3, "should ignore reserved parsed option names");
 
 
     test.equal(obj.toString(), "ReflectionObject Test", "should convert to a string (even if not part of a root)");

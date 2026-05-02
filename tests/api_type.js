@@ -44,12 +44,14 @@ tape.test("reflected types", function(test) {
     type.ctor = MyMessageAuto;
     test.ok(MyMessageAuto.prototype instanceof protobuf.Message, "should properly register a constructor through assignment");
     test.ok(typeof MyMessageAuto.encode === "function", "should populate static methods on assigned constructors");
+    test.equal(new MyMessageAuto().a, 0, "should initialize prototype defaults on assigned constructors");
 
     function MyMessageManual() {}
     MyMessageManual.prototype = Object.create(protobuf.Message.prototype);
     type.ctor = MyMessageManual;
     test.ok(MyMessageManual.prototype instanceof protobuf.Message, "should properly register a constructor through assignment if already extending message");
     test.ok(typeof MyMessageManual.encode === "function", "should populate static methods on assigned constructors");
+    test.equal(new MyMessageManual().a, 0, "should initialize prototype defaults on assigned constructors if already extending message");
 
     type = protobuf.Type.fromJSON("My", {
         fields: {
@@ -97,6 +99,169 @@ tape.test("reflected types", function(test) {
         type.add(new protobuf.Field("b", 2, "uint32"));
     }, Error, "should throw when trying to add reserved names");
 
+
+    test.end();
+});
+
+tape.test("generated message constructors", function(test) {
+    var root = protobuf.Root.fromJSON({
+        nested: {
+            Message: {
+                fields: {
+                    value: { type: "uint32", id: 1 }
+                }
+            }
+        }
+    });
+    var Message = root.lookupType("Message");
+    var msg = new Message.ctor(JSON.parse("{\"__proto__\":{\"marker\":true},\"value\":1}"));
+
+    test.equal(msg.value, 1, "should copy regular properties");
+    test.equal(msg.marker, undefined, "should ignore reserved properties");
+
+    var type = new protobuf.Type("Type");
+    type.add(new protobuf.Field("__proto__", 2, "uint32"));
+    test.equal(type.get("__proto__"), null, "should ignore reserved field names");
+    type.add(new protobuf.OneOf("__proto__"));
+    test.equal(type.get("__proto__"), null, "should ignore reserved oneof names");
+
+    ["1Message", "default"].forEach(function(name) {
+        var root = protobuf.Root.fromJSON({
+            nested: {
+                [name]: {
+                    fields: {
+                        value: { type: "uint32", id: 1 }
+                    }
+                }
+            }
+        });
+        var Type = root.lookupType(name);
+        test.equal(Type.create({ value: 1 }).value, 1, "should create messages with generated-safe type names");
+    });
+
+    test.end();
+});
+
+tape.test("decode nesting", function(test) {
+    function varint(value) {
+        var bytes = [];
+        do {
+            var b = value & 0x7F;
+            value >>>= 7;
+            if (value)
+                b |= 0x80;
+            bytes.push(b);
+        } while (value);
+        return bytes;
+    }
+
+    function nestedPayload(depth) {
+        var payload = [ 0x10, 0x2A ];
+        for (var i = 0; i < depth; ++i)
+            payload = [ 0x0A ].concat(varint(payload.length), payload);
+        return protobuf.util.newBuffer(payload);
+    }
+
+    var root = protobuf.Root.fromJSON({
+        nested: {
+            Node: {
+                fields: {
+                    child: { type: "Node", id: 1 },
+                    value: { type: "int32", id: 2 }
+                }
+            }
+        }
+    });
+    var Node = root.lookupType("Node");
+    var recursionLimit = protobuf.Reader.recursionLimit;
+
+    protobuf.Reader.recursionLimit = 3;
+    try {
+        test.equal(Node.decode(nestedPayload(2)).child.child.value, 42, "should decode below the limit");
+        test.throws(function() {
+            Node.decode(nestedPayload(4));
+        }, /max depth exceeded/, "should reject excessive nesting");
+    } finally {
+        protobuf.Reader.recursionLimit = recursionLimit;
+    }
+
+    test.end();
+});
+
+tape.test("decode known fields by wire type", function(test) {
+    var root = protobuf.Root.fromJSON({
+        nested: {
+            Message: {
+                fields: {
+                    value: { type: "int32", id: 1 }
+                }
+            }
+        }
+    });
+    var Message = root.lookupType("Message");
+    var field0Varint = [ 0, 0 ];
+    var field1WireType6 = [ 1 << 3 | 6, 0 ];
+    var field1WireType7 = [ 1 << 3 | 7, 0 ];
+    var field1Fixed64 = [ 1 << 3 | 1, 1, 2, 3, 4, 5, 6, 7, 8 ];
+    var field1Group = [ 1 << 3 | 3, 1 << 3 | 4 ];
+    var field1GroupField2End = [ 1 << 3 | 3, 2 << 3 | 4 ];
+
+    test.throws(function() {
+        Message.decode(protobuf.util.newBuffer(field0Varint));
+    }, /illegal tag: field number 0/, "should reject field number 0");
+
+    test.throws(function() {
+        Message.decode(protobuf.util.newBuffer(field1WireType6));
+    }, /invalid wire type 6/, "should reject invalid wire types for known fields");
+
+    test.throws(function() {
+        Message.decode(protobuf.util.newBuffer(field1WireType7));
+    }, /invalid wire type 7/, "should reject invalid wire types for known fields");
+
+    var message = Message.decode(protobuf.util.newBuffer(field1Fixed64));
+    test.notOk(Object.prototype.hasOwnProperty.call(message, "value"), "should skip valid but unexpected wire types");
+
+    message = Message.decode(protobuf.util.newBuffer(field1Group));
+    test.notOk(Object.prototype.hasOwnProperty.call(message, "value"), "should skip valid but unexpected groups");
+
+    test.throws(function() {
+        Message.decode(protobuf.util.newBuffer(field1GroupField2End));
+    }, /invalid end group tag/, "should reject mismatched unknown group tags");
+    test.end();
+});
+
+tape.test("object conversion nesting", function(test) {
+    function nestedObject(depth) {
+        var object = { value: 42 };
+        for (var i = 0; i < depth; ++i)
+            object = { child: object };
+        return object;
+    }
+
+    var root = protobuf.Root.fromJSON({
+        nested: {
+            Node: {
+                fields: {
+                    child: { type: "Node", id: 1 },
+                    value: { type: "int32", id: 2 }
+                }
+            }
+        }
+    });
+    var Node = root.lookupType("Node");
+    var recursionLimit = protobuf.util.recursionLimit;
+
+    protobuf.util.recursionLimit = 3;
+    try {
+        test.equal(Node.verify(nestedObject(2)), null, "should verify below the limit");
+        test.match(Node.verify(nestedObject(4)), /max depth exceeded/, "should reject excessive nesting while verifying");
+        test.equal(Node.fromObject(nestedObject(2)).child.child.value, 42, "should convert below the limit");
+        test.throws(function() {
+            Node.fromObject(nestedObject(4));
+        }, /max depth exceeded/, "should reject excessive nesting while converting");
+    } finally {
+        protobuf.util.recursionLimit = recursionLimit;
+    }
 
     test.end();
 });

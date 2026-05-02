@@ -1,4 +1,4 @@
-/*eslint-disable block-scoped-var, id-length, no-control-regex, no-magic-numbers, no-prototype-builtins, no-redeclare, no-shadow, no-var, sort-vars*/
+/*eslint-disable block-scoped-var, id-length, no-control-regex, no-magic-numbers, no-prototype-builtins, no-redeclare, no-shadow, no-var, sort-vars, jsdoc/require-param*/
 "use strict";
 
 var $protobuf = require("../../minimal");
@@ -12,7 +12,7 @@ $root.Test = (function() {
     function Test(properties) {
         if (properties)
             for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                if (properties[keys[i]] != null)
+                if (properties[keys[i]] != null && keys[i] !== "__proto__")
                     this[keys[i]] = properties[keys[i]];
     }
 
@@ -32,33 +32,69 @@ $root.Test = (function() {
             $root.Test.Inner.encode(message.inner, writer.uint32(26).fork()).ldelim();
         if (message.float != null && Object.hasOwnProperty.call(message, "float"))
             writer.uint32(37).float(message.float);
+        if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+            for (var i = 0; i < message.$unknowns.length; ++i)
+                writer.raw(message.$unknowns[i]);
         return writer;
     };
 
-    Test.decode = function decode(reader, length) {
+    Test.decode = function decode(reader, length, _end, _depth, _target) {
         if (!(reader instanceof $Reader))
             reader = $Reader.create(reader);
-        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Test();
+        if (_depth === undefined)
+            _depth = 0;
+        if (_depth > $Reader.recursionLimit)
+            throw Error("max depth exceeded");
+        var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.Test(), value;
         while (reader.pos < end) {
+            var start = reader.pos;
             var tag = reader.uint32();
-            switch (tag >>> 3) {
-            case 1:
-                message.string = reader.string();
-                break;
-            case 2:
-                message.uint32 = reader.uint32();
-                break;
-            case 3:
-                message.inner = $root.Test.Inner.decode(reader, reader.uint32());
-                break;
-            case 4:
-                message.float = reader.float();
-                break;
-            default:
-                reader.skipType(tag & 7);
+            if (tag === _end) {
+                _end = undefined;
                 break;
             }
+            var wireType = tag & 7;
+            switch (tag >>>= 3) {
+            case 1: {
+                    if (wireType !== 2)
+                        break;
+                    if ((value = reader.string()).length)
+                        message.string = value;
+                    else
+                        delete message.string;
+                    continue;
+                }
+            case 2: {
+                    if (wireType !== 0)
+                        break;
+                    if (value = reader.uint32())
+                        message.uint32 = value;
+                    else
+                        delete message.uint32;
+                    continue;
+                }
+            case 3: {
+                    if (wireType !== 2)
+                        break;
+                    message.inner = $root.Test.Inner.decode(reader, reader.uint32(), undefined, _depth + 1, message.inner);
+                    continue;
+                }
+            case 4: {
+                    if (wireType !== 5)
+                        break;
+                    if ((value = reader.float()) !== 0)
+                        message.float = value;
+                    else
+                        delete message.float;
+                    continue;
+                }
+            }
+            reader.skipType(wireType, _depth, tag);
+            $util.makeProp(message, "$unknowns", false);
+            (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
         }
+        if (_end !== undefined)
+            throw Error("missing end group");
         return message;
     };
 
@@ -67,7 +103,7 @@ $root.Test = (function() {
         function Inner(properties) {
             if (properties)
                 for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
+                    if (properties[keys[i]] != null && keys[i] !== "__proto__")
                         this[keys[i]] = properties[keys[i]];
         }
 
@@ -84,30 +120,57 @@ $root.Test = (function() {
                 $root.Test.Inner.InnerInner.encode(message.innerInner, writer.uint32(18).fork()).ldelim();
             if (message.outer != null && Object.hasOwnProperty.call(message, "outer"))
                 $root.Outer.encode(message.outer, writer.uint32(26).fork()).ldelim();
+            if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                for (var i = 0; i < message.$unknowns.length; ++i)
+                    writer.raw(message.$unknowns[i]);
             return writer;
         };
 
-        Inner.decode = function decode(reader, length) {
+        Inner.decode = function decode(reader, length, _end, _depth, _target) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Test.Inner();
+            if (_depth === undefined)
+                _depth = 0;
+            if (_depth > $Reader.recursionLimit)
+                throw Error("max depth exceeded");
+            var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.Test.Inner(), value;
             while (reader.pos < end) {
+                var start = reader.pos;
                 var tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1:
-                    message.int32 = reader.int32();
-                    break;
-                case 2:
-                    message.innerInner = $root.Test.Inner.InnerInner.decode(reader, reader.uint32());
-                    break;
-                case 3:
-                    message.outer = $root.Outer.decode(reader, reader.uint32());
-                    break;
-                default:
-                    reader.skipType(tag & 7);
+                if (tag === _end) {
+                    _end = undefined;
                     break;
                 }
+                var wireType = tag & 7;
+                switch (tag >>>= 3) {
+                case 1: {
+                        if (wireType !== 0)
+                            break;
+                        if (value = reader.int32())
+                            message.int32 = value;
+                        else
+                            delete message.int32;
+                        continue;
+                    }
+                case 2: {
+                        if (wireType !== 2)
+                            break;
+                        message.innerInner = $root.Test.Inner.InnerInner.decode(reader, reader.uint32(), undefined, _depth + 1, message.innerInner);
+                        continue;
+                    }
+                case 3: {
+                        if (wireType !== 2)
+                            break;
+                        message.outer = $root.Outer.decode(reader, reader.uint32(), undefined, _depth + 1, message.outer);
+                        continue;
+                    }
+                }
+                reader.skipType(wireType, _depth, tag);
+                $util.makeProp(message, "$unknowns", false);
+                (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
             }
+            if (_end !== undefined)
+                throw Error("missing end group");
             return message;
         };
 
@@ -116,7 +179,7 @@ $root.Test = (function() {
             function InnerInner(properties) {
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                        if (properties[keys[i]] != null)
+                        if (properties[keys[i]] != null && keys[i] !== "__proto__")
                             this[keys[i]] = properties[keys[i]];
             }
 
@@ -133,30 +196,63 @@ $root.Test = (function() {
                     writer.uint32(16).int32(message["enum"]);
                 if (message.sint32 != null && Object.hasOwnProperty.call(message, "sint32"))
                     writer.uint32(24).sint32(message.sint32);
+                if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                    for (var i = 0; i < message.$unknowns.length; ++i)
+                        writer.raw(message.$unknowns[i]);
                 return writer;
             };
 
-            InnerInner.decode = function decode(reader, length) {
+            InnerInner.decode = function decode(reader, length, _end, _depth, _target) {
                 if (!(reader instanceof $Reader))
                     reader = $Reader.create(reader);
-                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Test.Inner.InnerInner();
+                if (_depth === undefined)
+                    _depth = 0;
+                if (_depth > $Reader.recursionLimit)
+                    throw Error("max depth exceeded");
+                var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.Test.Inner.InnerInner(), value;
                 while (reader.pos < end) {
+                    var start = reader.pos;
                     var tag = reader.uint32();
-                    switch (tag >>> 3) {
-                    case 1:
-                        message.long = reader.int64();
-                        break;
-                    case 2:
-                        message["enum"] = reader.int32();
-                        break;
-                    case 3:
-                        message.sint32 = reader.sint32();
-                        break;
-                    default:
-                        reader.skipType(tag & 7);
+                    if (tag === _end) {
+                        _end = undefined;
                         break;
                     }
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 1: {
+                            if (wireType !== 0)
+                                break;
+                            if (typeof (value = reader.int64()) === "object" ? value.low || value.high : value !== 0)
+                                message.long = value;
+                            else
+                                delete message.long;
+                            continue;
+                        }
+                    case 2: {
+                            if (wireType !== 0)
+                                break;
+                            if (value = reader.int32())
+                                message["enum"] = value;
+                            else
+                                delete message["enum"];
+                            continue;
+                        }
+                    case 3: {
+                            if (wireType !== 0)
+                                break;
+                            if (value = reader.sint32())
+                                message.sint32 = value;
+                            else
+                                delete message.sint32;
+                            continue;
+                        }
+                    }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
+                if (_end !== undefined)
+                    throw Error("missing end group");
                 return message;
             };
 
@@ -185,7 +281,7 @@ $root.Outer = (function() {
         this.bool = [];
         if (properties)
             for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                if (properties[keys[i]] != null)
+                if (properties[keys[i]] != null && keys[i] !== "__proto__")
                     this[keys[i]] = properties[keys[i]];
     }
 
@@ -203,34 +299,61 @@ $root.Outer = (function() {
         }
         if (message.double != null && Object.hasOwnProperty.call(message, "double"))
             writer.uint32(17).double(message.double);
+        if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+            for (var i = 0; i < message.$unknowns.length; ++i)
+                writer.raw(message.$unknowns[i]);
         return writer;
     };
 
-    Outer.decode = function decode(reader, length) {
+    Outer.decode = function decode(reader, length, _end, _depth, _target) {
         if (!(reader instanceof $Reader))
             reader = $Reader.create(reader);
-        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Outer();
+        if (_depth === undefined)
+            _depth = 0;
+        if (_depth > $Reader.recursionLimit)
+            throw Error("max depth exceeded");
+        var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.Outer(), value;
         while (reader.pos < end) {
+            var start = reader.pos;
             var tag = reader.uint32();
-            switch (tag >>> 3) {
-            case 1:
-                if (!(message.bool && message.bool.length))
-                    message.bool = [];
-                if ((tag & 7) === 2) {
-                    var end2 = reader.uint32() + reader.pos;
-                    while (reader.pos < end2)
-                        message.bool.push(reader.bool());
-                } else
-                    message.bool.push(reader.bool());
-                break;
-            case 2:
-                message.double = reader.double();
-                break;
-            default:
-                reader.skipType(tag & 7);
+            if (tag === _end) {
+                _end = undefined;
                 break;
             }
+            var wireType = tag & 7;
+            switch (tag >>>= 3) {
+            case 1: {
+                    if (wireType === 2) {
+                        if (!(message.bool && message.bool.length))
+                            message.bool = [];
+                        var end2 = reader.uint32() + reader.pos;
+                        while (reader.pos < end2)
+                            message.bool.push(reader.bool());
+                        continue;
+                    }
+                    if (wireType !== 0)
+                        break;
+                    if (!(message.bool && message.bool.length))
+                        message.bool = [];
+                    message.bool.push(reader.bool());
+                    continue;
+                }
+            case 2: {
+                    if (wireType !== 1)
+                        break;
+                    if ((value = reader.double()) !== 0)
+                        message.double = value;
+                    else
+                        delete message.double;
+                    continue;
+                }
+            }
+            reader.skipType(wireType, _depth, tag);
+            $util.makeProp(message, "$unknowns", false);
+            (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
         }
+        if (_end !== undefined)
+            throw Error("missing end group");
         return message;
     };
 

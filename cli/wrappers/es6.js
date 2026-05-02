@@ -1,4 +1,4 @@
-import * as $protobuf from $DEPENDENCY;
+import $protobuf from $DEPENDENCY;
 
 $OUTPUT;
 

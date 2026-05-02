@@ -1,4 +1,4 @@
-/*eslint-disable block-scoped-var, id-length, no-control-regex, no-magic-numbers, no-prototype-builtins, no-redeclare, no-shadow, no-var, sort-vars*/
+/*eslint-disable block-scoped-var, id-length, no-control-regex, no-magic-numbers, no-prototype-builtins, no-redeclare, no-shadow, no-var, sort-vars, jsdoc/require-param*/
 "use strict";
 
 var $protobuf = require("../../../minimal");
@@ -25,6 +25,7 @@ $root.vector_tile = (function() {
          * @memberof vector_tile
          * @interface ITile
          * @property {Array.<vector_tile.Tile.ILayer>|null} [layers] Tile layers
+         * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
          */
 
         /**
@@ -34,12 +35,13 @@ $root.vector_tile = (function() {
          * @implements ITile
          * @constructor
          * @param {vector_tile.ITile=} [properties] Properties to set
+         * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
          */
         function Tile(properties) {
             this.layers = [];
             if (properties)
                 for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
+                    if (properties[keys[i]] != null && keys[i] !== "__proto__")
                         this[keys[i]] = properties[keys[i]];
         }
 
@@ -78,6 +80,9 @@ $root.vector_tile = (function() {
             if (message.layers != null && message.layers.length)
                 for (var i = 0; i < message.layers.length; ++i)
                     $root.vector_tile.Tile.Layer.encode(message.layers[i], writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
+            if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                for (var i = 0; i < message.$unknowns.length; ++i)
+                    writer.raw(message.$unknowns[i]);
             return writer;
         };
 
@@ -105,23 +110,38 @@ $root.vector_tile = (function() {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        Tile.decode = function decode(reader, length) {
+        Tile.decode = function decode(reader, length, _end, _depth, _target) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.vector_tile.Tile();
+            if (_depth === undefined)
+                _depth = 0;
+            if (_depth > $Reader.recursionLimit)
+                throw Error("max depth exceeded");
+            var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.vector_tile.Tile();
             while (reader.pos < end) {
+                var start = reader.pos;
                 var tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 3:
-                    if (!(message.layers && message.layers.length))
-                        message.layers = [];
-                    message.layers.push($root.vector_tile.Tile.Layer.decode(reader, reader.uint32()));
-                    break;
-                default:
-                    reader.skipType(tag & 7);
+                if (tag === _end) {
+                    _end = undefined;
                     break;
                 }
+                var wireType = tag & 7;
+                switch (tag >>>= 3) {
+                case 3: {
+                        if (wireType !== 2)
+                            break;
+                        if (!(message.layers && message.layers.length))
+                            message.layers = [];
+                        message.layers.push($root.vector_tile.Tile.Layer.decode(reader, reader.uint32(), undefined, _depth + 1));
+                        continue;
+                    }
+                }
+                reader.skipType(wireType, _depth, tag);
+                $util.makeProp(message, "$unknowns", false);
+                (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
             }
+            if (_end !== undefined)
+                throw Error("missing end group");
             return message;
         };
 
@@ -149,14 +169,18 @@ $root.vector_tile = (function() {
          * @param {Object.<string,*>} message Plain object to verify
          * @returns {string|null} `null` if valid, otherwise the reason why it is not
          */
-        Tile.verify = function verify(message) {
+        Tile.verify = function verify(message, _depth) {
             if (typeof message !== "object" || message === null)
                 return "object expected";
+            if (_depth === undefined)
+                _depth = 0;
+            if (_depth > $util.recursionLimit)
+                return "max depth exceeded";
             if (message.layers != null && message.hasOwnProperty("layers")) {
                 if (!Array.isArray(message.layers))
                     return "layers: array expected";
                 for (var i = 0; i < message.layers.length; ++i) {
-                    var error = $root.vector_tile.Tile.Layer.verify(message.layers[i]);
+                    var error = $root.vector_tile.Tile.Layer.verify(message.layers[i], _depth + 1);
                     if (error)
                         return "layers." + error;
                 }
@@ -172,9 +196,13 @@ $root.vector_tile = (function() {
          * @param {Object.<string,*>} object Plain object
          * @returns {vector_tile.Tile} Tile
          */
-        Tile.fromObject = function fromObject(object) {
+        Tile.fromObject = function fromObject(object, _depth) {
             if (object instanceof $root.vector_tile.Tile)
                 return object;
+            if (_depth === undefined)
+                _depth = 0;
+            if (_depth > $util.recursionLimit)
+                throw Error("max depth exceeded");
             var message = new $root.vector_tile.Tile();
             if (object.layers) {
                 if (!Array.isArray(object.layers))
@@ -183,7 +211,7 @@ $root.vector_tile = (function() {
                 for (var i = 0; i < object.layers.length; ++i) {
                     if (typeof object.layers[i] !== "object")
                         throw TypeError(".vector_tile.Tile.layers: object expected");
-                    message.layers[i] = $root.vector_tile.Tile.Layer.fromObject(object.layers[i]);
+                    message.layers[i] = $root.vector_tile.Tile.Layer.fromObject(object.layers[i], _depth + 1);
                 }
             }
             return message;
@@ -269,6 +297,7 @@ $root.vector_tile = (function() {
              * @property {number|Long|null} [uintValue] Value uintValue
              * @property {number|Long|null} [sintValue] Value sintValue
              * @property {boolean|null} [boolValue] Value boolValue
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
 
             /**
@@ -278,11 +307,12 @@ $root.vector_tile = (function() {
              * @implements IValue
              * @constructor
              * @param {vector_tile.Tile.IValue=} [properties] Properties to set
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
             function Value(properties) {
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                        if (properties[keys[i]] != null)
+                        if (properties[keys[i]] != null && keys[i] !== "__proto__")
                             this[keys[i]] = properties[keys[i]];
             }
 
@@ -380,6 +410,9 @@ $root.vector_tile = (function() {
                     writer.uint32(/* id 6, wireType 0 =*/48).sint64(message.sintValue);
                 if (message.boolValue != null && Object.hasOwnProperty.call(message, "boolValue"))
                     writer.uint32(/* id 7, wireType 0 =*/56).bool(message.boolValue);
+                if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                    for (var i = 0; i < message.$unknowns.length; ++i)
+                        writer.raw(message.$unknowns[i]);
                 return writer;
             };
 
@@ -407,39 +440,72 @@ $root.vector_tile = (function() {
              * @throws {Error} If the payload is not a reader or valid buffer
              * @throws {$protobuf.util.ProtocolError} If required fields are missing
              */
-            Value.decode = function decode(reader, length) {
+            Value.decode = function decode(reader, length, _end, _depth, _target) {
                 if (!(reader instanceof $Reader))
                     reader = $Reader.create(reader);
-                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.vector_tile.Tile.Value();
+                if (_depth === undefined)
+                    _depth = 0;
+                if (_depth > $Reader.recursionLimit)
+                    throw Error("max depth exceeded");
+                var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.vector_tile.Tile.Value();
                 while (reader.pos < end) {
+                    var start = reader.pos;
                     var tag = reader.uint32();
-                    switch (tag >>> 3) {
-                    case 1:
-                        message.stringValue = reader.string();
-                        break;
-                    case 2:
-                        message.floatValue = reader.float();
-                        break;
-                    case 3:
-                        message.doubleValue = reader.double();
-                        break;
-                    case 4:
-                        message.intValue = reader.int64();
-                        break;
-                    case 5:
-                        message.uintValue = reader.uint64();
-                        break;
-                    case 6:
-                        message.sintValue = reader.sint64();
-                        break;
-                    case 7:
-                        message.boolValue = reader.bool();
-                        break;
-                    default:
-                        reader.skipType(tag & 7);
+                    if (tag === _end) {
+                        _end = undefined;
                         break;
                     }
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 1: {
+                            if (wireType !== 2)
+                                break;
+                            message.stringValue = reader.string();
+                            continue;
+                        }
+                    case 2: {
+                            if (wireType !== 5)
+                                break;
+                            message.floatValue = reader.float();
+                            continue;
+                        }
+                    case 3: {
+                            if (wireType !== 1)
+                                break;
+                            message.doubleValue = reader.double();
+                            continue;
+                        }
+                    case 4: {
+                            if (wireType !== 0)
+                                break;
+                            message.intValue = reader.int64();
+                            continue;
+                        }
+                    case 5: {
+                            if (wireType !== 0)
+                                break;
+                            message.uintValue = reader.uint64();
+                            continue;
+                        }
+                    case 6: {
+                            if (wireType !== 0)
+                                break;
+                            message.sintValue = reader.sint64();
+                            continue;
+                        }
+                    case 7: {
+                            if (wireType !== 0)
+                                break;
+                            message.boolValue = reader.bool();
+                            continue;
+                        }
+                    }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
+                if (_end !== undefined)
+                    throw Error("missing end group");
                 return message;
             };
 
@@ -467,9 +533,13 @@ $root.vector_tile = (function() {
              * @param {Object.<string,*>} message Plain object to verify
              * @returns {string|null} `null` if valid, otherwise the reason why it is not
              */
-            Value.verify = function verify(message) {
+            Value.verify = function verify(message, _depth) {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
+                if (_depth === undefined)
+                    _depth = 0;
+                if (_depth > $util.recursionLimit)
+                    return "max depth exceeded";
                 if (message.stringValue != null && message.hasOwnProperty("stringValue"))
                     if (!$util.isString(message.stringValue))
                         return "stringValue: string expected";
@@ -502,9 +572,13 @@ $root.vector_tile = (function() {
              * @param {Object.<string,*>} object Plain object
              * @returns {vector_tile.Tile.Value} Value
              */
-            Value.fromObject = function fromObject(object) {
+            Value.fromObject = function fromObject(object, _depth) {
                 if (object instanceof $root.vector_tile.Tile.Value)
                     return object;
+                if (_depth === undefined)
+                    _depth = 0;
+                if (_depth > $util.recursionLimit)
+                    throw Error("max depth exceeded");
                 var message = new $root.vector_tile.Tile.Value();
                 if (object.stringValue != null)
                     message.stringValue = String(object.stringValue);
@@ -643,6 +717,7 @@ $root.vector_tile = (function() {
              * @property {Array.<number>|null} [tags] Feature tags
              * @property {vector_tile.Tile.GeomType|null} [type] Feature type
              * @property {Array.<number>|null} [geometry] Feature geometry
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
 
             /**
@@ -652,13 +727,14 @@ $root.vector_tile = (function() {
              * @implements IFeature
              * @constructor
              * @param {vector_tile.Tile.IFeature=} [properties] Properties to set
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
             function Feature(properties) {
                 this.tags = [];
                 this.geometry = [];
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                        if (properties[keys[i]] != null)
+                        if (properties[keys[i]] != null && keys[i] !== "__proto__")
                             this[keys[i]] = properties[keys[i]];
             }
 
@@ -734,6 +810,9 @@ $root.vector_tile = (function() {
                         writer.uint32(message.geometry[i]);
                     writer.ldelim();
                 }
+                if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                    for (var i = 0; i < message.$unknowns.length; ++i)
+                        writer.raw(message.$unknowns[i]);
                 return writer;
             };
 
@@ -761,44 +840,74 @@ $root.vector_tile = (function() {
              * @throws {Error} If the payload is not a reader or valid buffer
              * @throws {$protobuf.util.ProtocolError} If required fields are missing
              */
-            Feature.decode = function decode(reader, length) {
+            Feature.decode = function decode(reader, length, _end, _depth, _target) {
                 if (!(reader instanceof $Reader))
                     reader = $Reader.create(reader);
-                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.vector_tile.Tile.Feature();
+                if (_depth === undefined)
+                    _depth = 0;
+                if (_depth > $Reader.recursionLimit)
+                    throw Error("max depth exceeded");
+                var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.vector_tile.Tile.Feature();
                 while (reader.pos < end) {
+                    var start = reader.pos;
                     var tag = reader.uint32();
-                    switch (tag >>> 3) {
-                    case 1:
-                        message.id = reader.uint64();
-                        break;
-                    case 2:
-                        if (!(message.tags && message.tags.length))
-                            message.tags = [];
-                        if ((tag & 7) === 2) {
-                            var end2 = reader.uint32() + reader.pos;
-                            while (reader.pos < end2)
-                                message.tags.push(reader.uint32());
-                        } else
-                            message.tags.push(reader.uint32());
-                        break;
-                    case 3:
-                        message.type = reader.int32();
-                        break;
-                    case 4:
-                        if (!(message.geometry && message.geometry.length))
-                            message.geometry = [];
-                        if ((tag & 7) === 2) {
-                            var end2 = reader.uint32() + reader.pos;
-                            while (reader.pos < end2)
-                                message.geometry.push(reader.uint32());
-                        } else
-                            message.geometry.push(reader.uint32());
-                        break;
-                    default:
-                        reader.skipType(tag & 7);
+                    if (tag === _end) {
+                        _end = undefined;
                         break;
                     }
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 1: {
+                            if (wireType !== 0)
+                                break;
+                            message.id = reader.uint64();
+                            continue;
+                        }
+                    case 2: {
+                            if (wireType === 2) {
+                                if (!(message.tags && message.tags.length))
+                                    message.tags = [];
+                                var end2 = reader.uint32() + reader.pos;
+                                while (reader.pos < end2)
+                                    message.tags.push(reader.uint32());
+                                continue;
+                            }
+                            if (wireType !== 0)
+                                break;
+                            if (!(message.tags && message.tags.length))
+                                message.tags = [];
+                            message.tags.push(reader.uint32());
+                            continue;
+                        }
+                    case 3: {
+                            if (wireType !== 0)
+                                break;
+                            message.type = reader.int32();
+                            continue;
+                        }
+                    case 4: {
+                            if (wireType === 2) {
+                                if (!(message.geometry && message.geometry.length))
+                                    message.geometry = [];
+                                var end2 = reader.uint32() + reader.pos;
+                                while (reader.pos < end2)
+                                    message.geometry.push(reader.uint32());
+                                continue;
+                            }
+                            if (wireType !== 0)
+                                break;
+                            if (!(message.geometry && message.geometry.length))
+                                message.geometry = [];
+                            message.geometry.push(reader.uint32());
+                            continue;
+                        }
+                    }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
+                if (_end !== undefined)
+                    throw Error("missing end group");
                 return message;
             };
 
@@ -826,9 +935,13 @@ $root.vector_tile = (function() {
              * @param {Object.<string,*>} message Plain object to verify
              * @returns {string|null} `null` if valid, otherwise the reason why it is not
              */
-            Feature.verify = function verify(message) {
+            Feature.verify = function verify(message, _depth) {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
+                if (_depth === undefined)
+                    _depth = 0;
+                if (_depth > $util.recursionLimit)
+                    return "max depth exceeded";
                 if (message.id != null && message.hasOwnProperty("id"))
                     if (!$util.isInteger(message.id) && !(message.id && $util.isInteger(message.id.low) && $util.isInteger(message.id.high)))
                         return "id: integer|Long expected";
@@ -867,9 +980,13 @@ $root.vector_tile = (function() {
              * @param {Object.<string,*>} object Plain object
              * @returns {vector_tile.Tile.Feature} Feature
              */
-            Feature.fromObject = function fromObject(object) {
+            Feature.fromObject = function fromObject(object, _depth) {
                 if (object instanceof $root.vector_tile.Tile.Feature)
                     return object;
+                if (_depth === undefined)
+                    _depth = 0;
+                if (_depth > $util.recursionLimit)
+                    throw Error("max depth exceeded");
                 var message = new $root.vector_tile.Tile.Feature();
                 if (object.id != null)
                     if ($util.Long)
@@ -888,6 +1005,12 @@ $root.vector_tile = (function() {
                         message.tags[i] = object.tags[i] >>> 0;
                 }
                 switch (object.type) {
+                default:
+                    if (typeof object.type === "number") {
+                        message.type = object.type;
+                        break;
+                    }
+                    break;
                 case "UNKNOWN":
                 case 0:
                     message.type = 0;
@@ -951,7 +1074,7 @@ $root.vector_tile = (function() {
                         object.tags[j] = message.tags[j];
                 }
                 if (message.type != null && message.hasOwnProperty("type"))
-                    object.type = options.enums === String ? $root.vector_tile.Tile.GeomType[message.type] : message.type;
+                    object.type = options.enums === String ? $root.vector_tile.Tile.GeomType[message.type] === undefined ? message.type : $root.vector_tile.Tile.GeomType[message.type] : message.type;
                 if (message.geometry && message.geometry.length) {
                     object.geometry = [];
                     for (var j = 0; j < message.geometry.length; ++j)
@@ -1001,6 +1124,7 @@ $root.vector_tile = (function() {
              * @property {Array.<string>|null} [keys] Layer keys
              * @property {Array.<vector_tile.Tile.IValue>|null} [values] Layer values
              * @property {number|null} [extent] Layer extent
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
 
             /**
@@ -1010,6 +1134,7 @@ $root.vector_tile = (function() {
              * @implements ILayer
              * @constructor
              * @param {vector_tile.Tile.ILayer=} [properties] Properties to set
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
             function Layer(properties) {
                 this.features = [];
@@ -1017,7 +1142,7 @@ $root.vector_tile = (function() {
                 this.values = [];
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                        if (properties[keys[i]] != null)
+                        if (properties[keys[i]] != null && keys[i] !== "__proto__")
                             this[keys[i]] = properties[keys[i]];
             }
 
@@ -1106,6 +1231,9 @@ $root.vector_tile = (function() {
                 if (message.extent != null && Object.hasOwnProperty.call(message, "extent"))
                     writer.uint32(/* id 5, wireType 0 =*/40).uint32(message.extent);
                 writer.uint32(/* id 15, wireType 0 =*/120).uint32(message.version);
+                if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                    for (var i = 0; i < message.$unknowns.length; ++i)
+                        writer.raw(message.$unknowns[i]);
                 return writer;
             };
 
@@ -1133,42 +1261,72 @@ $root.vector_tile = (function() {
              * @throws {Error} If the payload is not a reader or valid buffer
              * @throws {$protobuf.util.ProtocolError} If required fields are missing
              */
-            Layer.decode = function decode(reader, length) {
+            Layer.decode = function decode(reader, length, _end, _depth, _target) {
                 if (!(reader instanceof $Reader))
                     reader = $Reader.create(reader);
-                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.vector_tile.Tile.Layer();
+                if (_depth === undefined)
+                    _depth = 0;
+                if (_depth > $Reader.recursionLimit)
+                    throw Error("max depth exceeded");
+                var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.vector_tile.Tile.Layer();
                 while (reader.pos < end) {
+                    var start = reader.pos;
                     var tag = reader.uint32();
-                    switch (tag >>> 3) {
-                    case 15:
-                        message.version = reader.uint32();
-                        break;
-                    case 1:
-                        message.name = reader.string();
-                        break;
-                    case 2:
-                        if (!(message.features && message.features.length))
-                            message.features = [];
-                        message.features.push($root.vector_tile.Tile.Feature.decode(reader, reader.uint32()));
-                        break;
-                    case 3:
-                        if (!(message.keys && message.keys.length))
-                            message.keys = [];
-                        message.keys.push(reader.string());
-                        break;
-                    case 4:
-                        if (!(message.values && message.values.length))
-                            message.values = [];
-                        message.values.push($root.vector_tile.Tile.Value.decode(reader, reader.uint32()));
-                        break;
-                    case 5:
-                        message.extent = reader.uint32();
-                        break;
-                    default:
-                        reader.skipType(tag & 7);
+                    if (tag === _end) {
+                        _end = undefined;
                         break;
                     }
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 15: {
+                            if (wireType !== 0)
+                                break;
+                            message.version = reader.uint32();
+                            continue;
+                        }
+                    case 1: {
+                            if (wireType !== 2)
+                                break;
+                            message.name = reader.string();
+                            continue;
+                        }
+                    case 2: {
+                            if (wireType !== 2)
+                                break;
+                            if (!(message.features && message.features.length))
+                                message.features = [];
+                            message.features.push($root.vector_tile.Tile.Feature.decode(reader, reader.uint32(), undefined, _depth + 1));
+                            continue;
+                        }
+                    case 3: {
+                            if (wireType !== 2)
+                                break;
+                            if (!(message.keys && message.keys.length))
+                                message.keys = [];
+                            message.keys.push(reader.string());
+                            continue;
+                        }
+                    case 4: {
+                            if (wireType !== 2)
+                                break;
+                            if (!(message.values && message.values.length))
+                                message.values = [];
+                            message.values.push($root.vector_tile.Tile.Value.decode(reader, reader.uint32(), undefined, _depth + 1));
+                            continue;
+                        }
+                    case 5: {
+                            if (wireType !== 0)
+                                break;
+                            message.extent = reader.uint32();
+                            continue;
+                        }
+                    }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
+                if (_end !== undefined)
+                    throw Error("missing end group");
                 if (!message.hasOwnProperty("version"))
                     throw $util.ProtocolError("missing required 'version'", { instance: message });
                 if (!message.hasOwnProperty("name"))
@@ -1200,9 +1358,13 @@ $root.vector_tile = (function() {
              * @param {Object.<string,*>} message Plain object to verify
              * @returns {string|null} `null` if valid, otherwise the reason why it is not
              */
-            Layer.verify = function verify(message) {
+            Layer.verify = function verify(message, _depth) {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
+                if (_depth === undefined)
+                    _depth = 0;
+                if (_depth > $util.recursionLimit)
+                    return "max depth exceeded";
                 if (!$util.isInteger(message.version))
                     return "version: integer expected";
                 if (!$util.isString(message.name))
@@ -1211,7 +1373,7 @@ $root.vector_tile = (function() {
                     if (!Array.isArray(message.features))
                         return "features: array expected";
                     for (var i = 0; i < message.features.length; ++i) {
-                        var error = $root.vector_tile.Tile.Feature.verify(message.features[i]);
+                        var error = $root.vector_tile.Tile.Feature.verify(message.features[i], _depth + 1);
                         if (error)
                             return "features." + error;
                     }
@@ -1227,7 +1389,7 @@ $root.vector_tile = (function() {
                     if (!Array.isArray(message.values))
                         return "values: array expected";
                     for (var i = 0; i < message.values.length; ++i) {
-                        var error = $root.vector_tile.Tile.Value.verify(message.values[i]);
+                        var error = $root.vector_tile.Tile.Value.verify(message.values[i], _depth + 1);
                         if (error)
                             return "values." + error;
                     }
@@ -1246,9 +1408,13 @@ $root.vector_tile = (function() {
              * @param {Object.<string,*>} object Plain object
              * @returns {vector_tile.Tile.Layer} Layer
              */
-            Layer.fromObject = function fromObject(object) {
+            Layer.fromObject = function fromObject(object, _depth) {
                 if (object instanceof $root.vector_tile.Tile.Layer)
                     return object;
+                if (_depth === undefined)
+                    _depth = 0;
+                if (_depth > $util.recursionLimit)
+                    throw Error("max depth exceeded");
                 var message = new $root.vector_tile.Tile.Layer();
                 if (object.version != null)
                     message.version = object.version >>> 0;
@@ -1261,7 +1427,7 @@ $root.vector_tile = (function() {
                     for (var i = 0; i < object.features.length; ++i) {
                         if (typeof object.features[i] !== "object")
                             throw TypeError(".vector_tile.Tile.Layer.features: object expected");
-                        message.features[i] = $root.vector_tile.Tile.Feature.fromObject(object.features[i]);
+                        message.features[i] = $root.vector_tile.Tile.Feature.fromObject(object.features[i], _depth + 1);
                     }
                 }
                 if (object.keys) {
@@ -1278,7 +1444,7 @@ $root.vector_tile = (function() {
                     for (var i = 0; i < object.values.length; ++i) {
                         if (typeof object.values[i] !== "object")
                             throw TypeError(".vector_tile.Tile.Layer.values: object expected");
-                        message.values[i] = $root.vector_tile.Tile.Value.fromObject(object.values[i]);
+                        message.values[i] = $root.vector_tile.Tile.Value.fromObject(object.values[i], _depth + 1);
                     }
                 }
                 if (object.extent != null)

@@ -3,11 +3,57 @@ on:
     branches:
       - master
 name: release-please
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+  id-token: write
+
 jobs:
   release-please:
     runs-on: ubuntu-latest
     steps:
-      - uses: google-github-actions/release-please-action@v3
+      - uses: googleapis/release-please-action@v3
+        id: release
         with:
           command: manifest
           package-name: release-please-action
+
+      - uses: actions/checkout@v6
+        if: ${{ steps.release.outputs.releases_created == 'true' }}
+
+      - uses: actions/setup-node@v6
+        if: ${{ steps.release.outputs.releases_created == 'true' }}
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org/
+
+      - name: Use npm with trusted publishing support
+        if: ${{ steps.release.outputs.releases_created == 'true' }}
+        run: npm install -g npm@^11.5.1
+
+      - name: Install dependencies
+        if: ${{ steps.release.outputs.releases_created == 'true' }}
+        run: npm install --ignore-scripts
+
+      - name: Install CLI dependencies
+        if: ${{ steps.release.outputs.releases_created == 'true' }}
+        run: npm --prefix cli install --ignore-scripts
+
+      - name: Build
+        if: ${{ steps.release.outputs.releases_created == 'true' }}
+        run: npm run build
+
+      - name: Test
+        if: ${{ steps.release.outputs.releases_created == 'true' }}
+        run: npm test
+
+      - name: Publish protobufjs
+        if: ${{ steps.release.outputs.release_created == 'true' }}
+        run: npm publish --ignore-scripts
+
+      - name: Publish protobufjs-cli
+        if: ${{ steps.release.outputs['cli--release_created'] == 'true' }}
+        working-directory: cli
+        run: npm publish --ignore-scripts

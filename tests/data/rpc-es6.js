@@ -1,5 +1,5 @@
-/*eslint-disable block-scoped-var, id-length, no-control-regex, no-magic-numbers, no-prototype-builtins, no-redeclare, no-shadow, no-var, sort-vars*/
-import * as $protobuf from "../../minimal";
+/*eslint-disable block-scoped-var, id-length, no-control-regex, no-magic-numbers, no-prototype-builtins, no-redeclare, no-shadow, no-var, sort-vars, jsdoc/require-param*/
+import $protobuf from "protobufjs/minimal.js";
 
 // Common aliases
 const $Reader = $protobuf.Reader, $Writer = $protobuf.Writer, $util = $protobuf.util;
@@ -82,6 +82,7 @@ export const MyRequest = $root.MyRequest = (() => {
      * @exports IMyRequest
      * @interface IMyRequest
      * @property {string|null} [path] MyRequest path
+     * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
      */
 
     /**
@@ -91,11 +92,12 @@ export const MyRequest = $root.MyRequest = (() => {
      * @implements IMyRequest
      * @constructor
      * @param {IMyRequest=} [properties] Properties to set
+     * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
      */
     function MyRequest(properties) {
         if (properties)
             for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                if (properties[keys[i]] != null)
+                if (properties[keys[i]] != null && keys[i] !== "__proto__")
                     this[keys[i]] = properties[keys[i]];
     }
 
@@ -133,6 +135,9 @@ export const MyRequest = $root.MyRequest = (() => {
             writer = $Writer.create();
         if (message.path != null && Object.hasOwnProperty.call(message, "path"))
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.path);
+        if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+            for (let i = 0; i < message.$unknowns.length; ++i)
+                writer.raw(message.$unknowns[i]);
         return writer;
     };
 
@@ -160,21 +165,39 @@ export const MyRequest = $root.MyRequest = (() => {
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    MyRequest.decode = function decode(reader, length) {
+    MyRequest.decode = function decode(reader, length, _end, _depth, _target) {
         if (!(reader instanceof $Reader))
             reader = $Reader.create(reader);
-        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.MyRequest();
+        if (_depth === undefined)
+            _depth = 0;
+        if (_depth > $Reader.recursionLimit)
+            throw Error("max depth exceeded");
+        let end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.MyRequest(), value;
         while (reader.pos < end) {
+            let start = reader.pos;
             let tag = reader.uint32();
-            switch (tag >>> 3) {
-            case 1:
-                message.path = reader.string();
-                break;
-            default:
-                reader.skipType(tag & 7);
+            if (tag === _end) {
+                _end = undefined;
                 break;
             }
+            let wireType = tag & 7;
+            switch (tag >>>= 3) {
+            case 1: {
+                    if (wireType !== 2)
+                        break;
+                    if ((value = reader.string()).length)
+                        message.path = value;
+                    else
+                        delete message.path;
+                    continue;
+                }
+            }
+            reader.skipType(wireType, _depth, tag);
+            $util.makeProp(message, "$unknowns", false);
+            (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
         }
+        if (_end !== undefined)
+            throw Error("missing end group");
         return message;
     };
 
@@ -202,9 +225,13 @@ export const MyRequest = $root.MyRequest = (() => {
      * @param {Object.<string,*>} message Plain object to verify
      * @returns {string|null} `null` if valid, otherwise the reason why it is not
      */
-    MyRequest.verify = function verify(message) {
+    MyRequest.verify = function verify(message, _depth) {
         if (typeof message !== "object" || message === null)
             return "object expected";
+        if (_depth === undefined)
+            _depth = 0;
+        if (_depth > $util.recursionLimit)
+            return "max depth exceeded";
         if (message.path != null && message.hasOwnProperty("path"))
             if (!$util.isString(message.path))
                 return "path: string expected";
@@ -219,12 +246,17 @@ export const MyRequest = $root.MyRequest = (() => {
      * @param {Object.<string,*>} object Plain object
      * @returns {MyRequest} MyRequest
      */
-    MyRequest.fromObject = function fromObject(object) {
+    MyRequest.fromObject = function fromObject(object, _depth) {
         if (object instanceof $root.MyRequest)
             return object;
+        if (_depth === undefined)
+            _depth = 0;
+        if (_depth > $util.recursionLimit)
+            throw Error("max depth exceeded");
         let message = new $root.MyRequest();
         if (object.path != null)
-            message.path = String(object.path);
+            if (typeof object.path !== "string" || object.path.length)
+                message.path = String(object.path);
         return message;
     };
 
@@ -284,6 +316,7 @@ export const MyResponse = $root.MyResponse = (() => {
      * @exports IMyResponse
      * @interface IMyResponse
      * @property {number|null} [status] MyResponse status
+     * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
      */
 
     /**
@@ -293,11 +326,12 @@ export const MyResponse = $root.MyResponse = (() => {
      * @implements IMyResponse
      * @constructor
      * @param {IMyResponse=} [properties] Properties to set
+     * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
      */
     function MyResponse(properties) {
         if (properties)
             for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                if (properties[keys[i]] != null)
+                if (properties[keys[i]] != null && keys[i] !== "__proto__")
                     this[keys[i]] = properties[keys[i]];
     }
 
@@ -335,6 +369,9 @@ export const MyResponse = $root.MyResponse = (() => {
             writer = $Writer.create();
         if (message.status != null && Object.hasOwnProperty.call(message, "status"))
             writer.uint32(/* id 2, wireType 0 =*/16).int32(message.status);
+        if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+            for (let i = 0; i < message.$unknowns.length; ++i)
+                writer.raw(message.$unknowns[i]);
         return writer;
     };
 
@@ -362,21 +399,39 @@ export const MyResponse = $root.MyResponse = (() => {
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    MyResponse.decode = function decode(reader, length) {
+    MyResponse.decode = function decode(reader, length, _end, _depth, _target) {
         if (!(reader instanceof $Reader))
             reader = $Reader.create(reader);
-        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.MyResponse();
+        if (_depth === undefined)
+            _depth = 0;
+        if (_depth > $Reader.recursionLimit)
+            throw Error("max depth exceeded");
+        let end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.MyResponse(), value;
         while (reader.pos < end) {
+            let start = reader.pos;
             let tag = reader.uint32();
-            switch (tag >>> 3) {
-            case 2:
-                message.status = reader.int32();
-                break;
-            default:
-                reader.skipType(tag & 7);
+            if (tag === _end) {
+                _end = undefined;
                 break;
             }
+            let wireType = tag & 7;
+            switch (tag >>>= 3) {
+            case 2: {
+                    if (wireType !== 0)
+                        break;
+                    if (value = reader.int32())
+                        message.status = value;
+                    else
+                        delete message.status;
+                    continue;
+                }
+            }
+            reader.skipType(wireType, _depth, tag);
+            $util.makeProp(message, "$unknowns", false);
+            (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
         }
+        if (_end !== undefined)
+            throw Error("missing end group");
         return message;
     };
 
@@ -404,9 +459,13 @@ export const MyResponse = $root.MyResponse = (() => {
      * @param {Object.<string,*>} message Plain object to verify
      * @returns {string|null} `null` if valid, otherwise the reason why it is not
      */
-    MyResponse.verify = function verify(message) {
+    MyResponse.verify = function verify(message, _depth) {
         if (typeof message !== "object" || message === null)
             return "object expected";
+        if (_depth === undefined)
+            _depth = 0;
+        if (_depth > $util.recursionLimit)
+            return "max depth exceeded";
         if (message.status != null && message.hasOwnProperty("status"))
             if (!$util.isInteger(message.status))
                 return "status: integer expected";
@@ -421,12 +480,17 @@ export const MyResponse = $root.MyResponse = (() => {
      * @param {Object.<string,*>} object Plain object
      * @returns {MyResponse} MyResponse
      */
-    MyResponse.fromObject = function fromObject(object) {
+    MyResponse.fromObject = function fromObject(object, _depth) {
         if (object instanceof $root.MyResponse)
             return object;
+        if (_depth === undefined)
+            _depth = 0;
+        if (_depth > $util.recursionLimit)
+            throw Error("max depth exceeded");
         let message = new $root.MyResponse();
         if (object.status != null)
-            message.status = object.status | 0;
+            if (Number(object.status) !== 0)
+                message.status = object.status | 0;
         return message;
     };
 

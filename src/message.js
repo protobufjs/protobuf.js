@@ -8,13 +8,18 @@ var util = require("./util/minimal");
  * @classdesc Abstract runtime message.
  * @constructor
  * @param {Properties<T>} [properties] Properties to set
+ * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
  * @template T extends object = object
  */
 function Message(properties) {
     // not used internally
     if (properties)
-        for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-            this[keys[i]] = properties[keys[i]];
+        for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i) {
+            var key = keys[i];
+            if (key === "__proto__")
+                continue;
+            this[key] = properties[key];
+        }
 }
 
 /**
@@ -30,8 +35,6 @@ function Message(properties) {
  * @type {Type}
  * @readonly
  */
-
-/*eslint-disable valid-jsdoc*/
 
 /**
  * Creates a new message of this type using the specified properties.
@@ -135,5 +138,3 @@ Message.toObject = function toObject(message, options) {
 Message.prototype.toJSON = function toJSON() {
     return this.$type.toObject(this, util.toJSONOptions);
 };
-
-/*eslint-enable valid-jsdoc*/

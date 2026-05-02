@@ -1,4 +1,4 @@
-/*eslint-disable block-scoped-var, id-length, no-control-regex, no-magic-numbers, no-prototype-builtins, no-redeclare, no-shadow, no-var, sort-vars*/
+/*eslint-disable block-scoped-var, id-length, no-control-regex, no-magic-numbers, no-prototype-builtins, no-redeclare, no-shadow, no-var, sort-vars, jsdoc/require-param*/
 "use strict";
 
 var $protobuf = require("../../minimal");
@@ -32,6 +32,7 @@ $root.Package = (function() {
      * @property {Object.<string,string>|null} [devDependencies] Package devDependencies
      * @property {string|null} [types] Package types
      * @property {Array.<string>|null} [cliDependencies] Package cliDependencies
+     * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
      */
 
     /**
@@ -41,6 +42,7 @@ $root.Package = (function() {
      * @implements IPackage
      * @constructor
      * @param {IPackage=} [properties] Properties to set
+     * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
      */
     function Package(properties) {
         this.keywords = [];
@@ -51,7 +53,7 @@ $root.Package = (function() {
         this.cliDependencies = [];
         if (properties)
             for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                if (properties[keys[i]] != null)
+                if (properties[keys[i]] != null && keys[i] !== "__proto__")
                     this[keys[i]] = properties[keys[i]];
     }
 
@@ -255,6 +257,9 @@ $root.Package = (function() {
                 writer.uint32(/* id 18, wireType 2 =*/146).string(message.cliDependencies[i]);
         if (message.versionScheme != null && Object.hasOwnProperty.call(message, "versionScheme"))
             writer.uint32(/* id 19, wireType 2 =*/154).string(message.versionScheme);
+        if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+            for (var i = 0; i < message.$unknowns.length; ++i)
+                writer.raw(message.$unknowns[i]);
         return writer;
     };
 
@@ -282,149 +287,262 @@ $root.Package = (function() {
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    Package.decode = function decode(reader, length) {
+    Package.decode = function decode(reader, length, _end, _depth, _target) {
         if (!(reader instanceof $Reader))
             reader = $Reader.create(reader);
-        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Package(), key, value;
+        if (_depth === undefined)
+            _depth = 0;
+        if (_depth > $Reader.recursionLimit)
+            throw Error("max depth exceeded");
+        var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.Package(), key, value;
         while (reader.pos < end) {
+            var start = reader.pos;
             var tag = reader.uint32();
-            switch (tag >>> 3) {
-            case 1:
-                message.name = reader.string();
-                break;
-            case 2:
-                message.version = reader.string();
-                break;
-            case 19:
-                message.versionScheme = reader.string();
-                break;
-            case 3:
-                message.description = reader.string();
-                break;
-            case 4:
-                message.author = reader.string();
-                break;
-            case 5:
-                message.license = reader.string();
-                break;
-            case 6:
-                message.repository = $root.Package.Repository.decode(reader, reader.uint32());
-                break;
-            case 7:
-                message.bugs = reader.string();
-                break;
-            case 8:
-                message.homepage = reader.string();
-                break;
-            case 9:
-                if (!(message.keywords && message.keywords.length))
-                    message.keywords = [];
-                message.keywords.push(reader.string());
-                break;
-            case 10:
-                message.main = reader.string();
-                break;
-            case 11:
-                if (message.bin === $util.emptyObject)
-                    message.bin = {};
-                var end2 = reader.uint32() + reader.pos;
-                key = "";
-                value = "";
-                while (reader.pos < end2) {
-                    var tag2 = reader.uint32();
-                    switch (tag2 >>> 3) {
-                    case 1:
-                        key = reader.string();
-                        break;
-                    case 2:
-                        value = reader.string();
-                        break;
-                    default:
-                        reader.skipType(tag2 & 7);
-                        break;
-                    }
-                }
-                message.bin[key] = value;
-                break;
-            case 12:
-                if (message.scripts === $util.emptyObject)
-                    message.scripts = {};
-                var end2 = reader.uint32() + reader.pos;
-                key = "";
-                value = "";
-                while (reader.pos < end2) {
-                    var tag2 = reader.uint32();
-                    switch (tag2 >>> 3) {
-                    case 1:
-                        key = reader.string();
-                        break;
-                    case 2:
-                        value = reader.string();
-                        break;
-                    default:
-                        reader.skipType(tag2 & 7);
-                        break;
-                    }
-                }
-                message.scripts[key] = value;
-                break;
-            case 13:
-                if (message.dependencies === $util.emptyObject)
-                    message.dependencies = {};
-                var end2 = reader.uint32() + reader.pos;
-                key = "";
-                value = "";
-                while (reader.pos < end2) {
-                    var tag2 = reader.uint32();
-                    switch (tag2 >>> 3) {
-                    case 1:
-                        key = reader.string();
-                        break;
-                    case 2:
-                        value = reader.string();
-                        break;
-                    default:
-                        reader.skipType(tag2 & 7);
-                        break;
-                    }
-                }
-                message.dependencies[key] = value;
-                break;
-            case 15:
-                if (message.devDependencies === $util.emptyObject)
-                    message.devDependencies = {};
-                var end2 = reader.uint32() + reader.pos;
-                key = "";
-                value = "";
-                while (reader.pos < end2) {
-                    var tag2 = reader.uint32();
-                    switch (tag2 >>> 3) {
-                    case 1:
-                        key = reader.string();
-                        break;
-                    case 2:
-                        value = reader.string();
-                        break;
-                    default:
-                        reader.skipType(tag2 & 7);
-                        break;
-                    }
-                }
-                message.devDependencies[key] = value;
-                break;
-            case 17:
-                message.types = reader.string();
-                break;
-            case 18:
-                if (!(message.cliDependencies && message.cliDependencies.length))
-                    message.cliDependencies = [];
-                message.cliDependencies.push(reader.string());
-                break;
-            default:
-                reader.skipType(tag & 7);
+            if (tag === _end) {
+                _end = undefined;
                 break;
             }
+            var wireType = tag & 7;
+            switch (tag >>>= 3) {
+            case 1: {
+                    if (wireType !== 2)
+                        break;
+                    if ((value = reader.string()).length)
+                        message.name = value;
+                    else
+                        delete message.name;
+                    continue;
+                }
+            case 2: {
+                    if (wireType !== 2)
+                        break;
+                    if ((value = reader.string()).length)
+                        message.version = value;
+                    else
+                        delete message.version;
+                    continue;
+                }
+            case 19: {
+                    if (wireType !== 2)
+                        break;
+                    if ((value = reader.string()).length)
+                        message.versionScheme = value;
+                    else
+                        delete message.versionScheme;
+                    continue;
+                }
+            case 3: {
+                    if (wireType !== 2)
+                        break;
+                    if ((value = reader.string()).length)
+                        message.description = value;
+                    else
+                        delete message.description;
+                    continue;
+                }
+            case 4: {
+                    if (wireType !== 2)
+                        break;
+                    if ((value = reader.string()).length)
+                        message.author = value;
+                    else
+                        delete message.author;
+                    continue;
+                }
+            case 5: {
+                    if (wireType !== 2)
+                        break;
+                    if ((value = reader.string()).length)
+                        message.license = value;
+                    else
+                        delete message.license;
+                    continue;
+                }
+            case 6: {
+                    if (wireType !== 2)
+                        break;
+                    message.repository = $root.Package.Repository.decode(reader, reader.uint32(), undefined, _depth + 1, message.repository);
+                    continue;
+                }
+            case 7: {
+                    if (wireType !== 2)
+                        break;
+                    if ((value = reader.string()).length)
+                        message.bugs = value;
+                    else
+                        delete message.bugs;
+                    continue;
+                }
+            case 8: {
+                    if (wireType !== 2)
+                        break;
+                    if ((value = reader.string()).length)
+                        message.homepage = value;
+                    else
+                        delete message.homepage;
+                    continue;
+                }
+            case 9: {
+                    if (wireType !== 2)
+                        break;
+                    if (!(message.keywords && message.keywords.length))
+                        message.keywords = [];
+                    message.keywords.push(reader.string());
+                    continue;
+                }
+            case 10: {
+                    if (wireType !== 2)
+                        break;
+                    if ((value = reader.string()).length)
+                        message.main = value;
+                    else
+                        delete message.main;
+                    continue;
+                }
+            case 11: {
+                    if (wireType !== 2)
+                        break;
+                    if (message.bin === $util.emptyObject)
+                        message.bin = {};
+                    var end2 = reader.uint32() + reader.pos;
+                    key = "";
+                    value = "";
+                    while (reader.pos < end2) {
+                        var tag2 = reader.uint32();
+                        wireType = tag2 & 7;
+                        switch (tag2 >>>= 3) {
+                        case 1:
+                            if (wireType !== 2)
+                                break;
+                            key = reader.string();
+                            continue;
+                        case 2:
+                            if (wireType !== 2)
+                                break;
+                            value = reader.string();
+                            continue;
+                        }
+                        reader.skipType(wireType, _depth, tag2);
+                    }
+                    if (key === "__proto__")
+                        $util.makeProp(message.bin, key);
+                    message.bin[key] = value;
+                    continue;
+                }
+            case 12: {
+                    if (wireType !== 2)
+                        break;
+                    if (message.scripts === $util.emptyObject)
+                        message.scripts = {};
+                    var end2 = reader.uint32() + reader.pos;
+                    key = "";
+                    value = "";
+                    while (reader.pos < end2) {
+                        var tag2 = reader.uint32();
+                        wireType = tag2 & 7;
+                        switch (tag2 >>>= 3) {
+                        case 1:
+                            if (wireType !== 2)
+                                break;
+                            key = reader.string();
+                            continue;
+                        case 2:
+                            if (wireType !== 2)
+                                break;
+                            value = reader.string();
+                            continue;
+                        }
+                        reader.skipType(wireType, _depth, tag2);
+                    }
+                    if (key === "__proto__")
+                        $util.makeProp(message.scripts, key);
+                    message.scripts[key] = value;
+                    continue;
+                }
+            case 13: {
+                    if (wireType !== 2)
+                        break;
+                    if (message.dependencies === $util.emptyObject)
+                        message.dependencies = {};
+                    var end2 = reader.uint32() + reader.pos;
+                    key = "";
+                    value = "";
+                    while (reader.pos < end2) {
+                        var tag2 = reader.uint32();
+                        wireType = tag2 & 7;
+                        switch (tag2 >>>= 3) {
+                        case 1:
+                            if (wireType !== 2)
+                                break;
+                            key = reader.string();
+                            continue;
+                        case 2:
+                            if (wireType !== 2)
+                                break;
+                            value = reader.string();
+                            continue;
+                        }
+                        reader.skipType(wireType, _depth, tag2);
+                    }
+                    if (key === "__proto__")
+                        $util.makeProp(message.dependencies, key);
+                    message.dependencies[key] = value;
+                    continue;
+                }
+            case 15: {
+                    if (wireType !== 2)
+                        break;
+                    if (message.devDependencies === $util.emptyObject)
+                        message.devDependencies = {};
+                    var end2 = reader.uint32() + reader.pos;
+                    key = "";
+                    value = "";
+                    while (reader.pos < end2) {
+                        var tag2 = reader.uint32();
+                        wireType = tag2 & 7;
+                        switch (tag2 >>>= 3) {
+                        case 1:
+                            if (wireType !== 2)
+                                break;
+                            key = reader.string();
+                            continue;
+                        case 2:
+                            if (wireType !== 2)
+                                break;
+                            value = reader.string();
+                            continue;
+                        }
+                        reader.skipType(wireType, _depth, tag2);
+                    }
+                    if (key === "__proto__")
+                        $util.makeProp(message.devDependencies, key);
+                    message.devDependencies[key] = value;
+                    continue;
+                }
+            case 17: {
+                    if (wireType !== 2)
+                        break;
+                    if ((value = reader.string()).length)
+                        message.types = value;
+                    else
+                        delete message.types;
+                    continue;
+                }
+            case 18: {
+                    if (wireType !== 2)
+                        break;
+                    if (!(message.cliDependencies && message.cliDependencies.length))
+                        message.cliDependencies = [];
+                    message.cliDependencies.push(reader.string());
+                    continue;
+                }
+            }
+            reader.skipType(wireType, _depth, tag);
+            $util.makeProp(message, "$unknowns", false);
+            (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
         }
+        if (_end !== undefined)
+            throw Error("missing end group");
         return message;
     };
 
@@ -452,9 +570,13 @@ $root.Package = (function() {
      * @param {Object.<string,*>} message Plain object to verify
      * @returns {string|null} `null` if valid, otherwise the reason why it is not
      */
-    Package.verify = function verify(message) {
+    Package.verify = function verify(message, _depth) {
         if (typeof message !== "object" || message === null)
             return "object expected";
+        if (_depth === undefined)
+            _depth = 0;
+        if (_depth > $util.recursionLimit)
+            return "max depth exceeded";
         if (message.name != null && message.hasOwnProperty("name"))
             if (!$util.isString(message.name))
                 return "name: string expected";
@@ -474,7 +596,7 @@ $root.Package = (function() {
             if (!$util.isString(message.license))
                 return "license: string expected";
         if (message.repository != null && message.hasOwnProperty("repository")) {
-            var error = $root.Package.Repository.verify(message.repository);
+            var error = $root.Package.Repository.verify(message.repository, _depth + 1);
             if (error)
                 return "repository." + error;
         }
@@ -547,31 +669,43 @@ $root.Package = (function() {
      * @param {Object.<string,*>} object Plain object
      * @returns {Package} Package
      */
-    Package.fromObject = function fromObject(object) {
+    Package.fromObject = function fromObject(object, _depth) {
         if (object instanceof $root.Package)
             return object;
+        if (_depth === undefined)
+            _depth = 0;
+        if (_depth > $util.recursionLimit)
+            throw Error("max depth exceeded");
         var message = new $root.Package();
         if (object.name != null)
-            message.name = String(object.name);
+            if (typeof object.name !== "string" || object.name.length)
+                message.name = String(object.name);
         if (object.version != null)
-            message.version = String(object.version);
+            if (typeof object.version !== "string" || object.version.length)
+                message.version = String(object.version);
         if (object.versionScheme != null)
-            message.versionScheme = String(object.versionScheme);
+            if (typeof object.versionScheme !== "string" || object.versionScheme.length)
+                message.versionScheme = String(object.versionScheme);
         if (object.description != null)
-            message.description = String(object.description);
+            if (typeof object.description !== "string" || object.description.length)
+                message.description = String(object.description);
         if (object.author != null)
-            message.author = String(object.author);
+            if (typeof object.author !== "string" || object.author.length)
+                message.author = String(object.author);
         if (object.license != null)
-            message.license = String(object.license);
+            if (typeof object.license !== "string" || object.license.length)
+                message.license = String(object.license);
         if (object.repository != null) {
             if (typeof object.repository !== "object")
                 throw TypeError(".Package.repository: object expected");
-            message.repository = $root.Package.Repository.fromObject(object.repository);
+            message.repository = $root.Package.Repository.fromObject(object.repository, _depth + 1);
         }
         if (object.bugs != null)
-            message.bugs = String(object.bugs);
+            if (typeof object.bugs !== "string" || object.bugs.length)
+                message.bugs = String(object.bugs);
         if (object.homepage != null)
-            message.homepage = String(object.homepage);
+            if (typeof object.homepage !== "string" || object.homepage.length)
+                message.homepage = String(object.homepage);
         if (object.keywords) {
             if (!Array.isArray(object.keywords))
                 throw TypeError(".Package.keywords: array expected");
@@ -580,37 +714,51 @@ $root.Package = (function() {
                 message.keywords[i] = String(object.keywords[i]);
         }
         if (object.main != null)
-            message.main = String(object.main);
+            if (typeof object.main !== "string" || object.main.length)
+                message.main = String(object.main);
         if (object.bin) {
             if (typeof object.bin !== "object")
                 throw TypeError(".Package.bin: object expected");
             message.bin = {};
-            for (var keys = Object.keys(object.bin), i = 0; i < keys.length; ++i)
+            for (var keys = Object.keys(object.bin), i = 0; i < keys.length; ++i) {
+                if (keys[i] === "__proto__")
+                    $util.makeProp(message.bin, keys[i]);
                 message.bin[keys[i]] = String(object.bin[keys[i]]);
+            }
         }
         if (object.scripts) {
             if (typeof object.scripts !== "object")
                 throw TypeError(".Package.scripts: object expected");
             message.scripts = {};
-            for (var keys = Object.keys(object.scripts), i = 0; i < keys.length; ++i)
+            for (var keys = Object.keys(object.scripts), i = 0; i < keys.length; ++i) {
+                if (keys[i] === "__proto__")
+                    $util.makeProp(message.scripts, keys[i]);
                 message.scripts[keys[i]] = String(object.scripts[keys[i]]);
+            }
         }
         if (object.dependencies) {
             if (typeof object.dependencies !== "object")
                 throw TypeError(".Package.dependencies: object expected");
             message.dependencies = {};
-            for (var keys = Object.keys(object.dependencies), i = 0; i < keys.length; ++i)
+            for (var keys = Object.keys(object.dependencies), i = 0; i < keys.length; ++i) {
+                if (keys[i] === "__proto__")
+                    $util.makeProp(message.dependencies, keys[i]);
                 message.dependencies[keys[i]] = String(object.dependencies[keys[i]]);
+            }
         }
         if (object.devDependencies) {
             if (typeof object.devDependencies !== "object")
                 throw TypeError(".Package.devDependencies: object expected");
             message.devDependencies = {};
-            for (var keys = Object.keys(object.devDependencies), i = 0; i < keys.length; ++i)
+            for (var keys = Object.keys(object.devDependencies), i = 0; i < keys.length; ++i) {
+                if (keys[i] === "__proto__")
+                    $util.makeProp(message.devDependencies, keys[i]);
                 message.devDependencies[keys[i]] = String(object.devDependencies[keys[i]]);
+            }
         }
         if (object.types != null)
-            message.types = String(object.types);
+            if (typeof object.types !== "string" || object.types.length)
+                message.types = String(object.types);
         if (object.cliDependencies) {
             if (!Array.isArray(object.cliDependencies))
                 throw TypeError(".Package.cliDependencies: array expected");
@@ -683,23 +831,35 @@ $root.Package = (function() {
         var keys2;
         if (message.bin && (keys2 = Object.keys(message.bin)).length) {
             object.bin = {};
-            for (var j = 0; j < keys2.length; ++j)
+            for (var j = 0; j < keys2.length; ++j) {
+                if (keys2[j] === "__proto__")
+                    $util.makeProp(object.bin, keys2[j]);
                 object.bin[keys2[j]] = message.bin[keys2[j]];
+            }
         }
         if (message.scripts && (keys2 = Object.keys(message.scripts)).length) {
             object.scripts = {};
-            for (var j = 0; j < keys2.length; ++j)
+            for (var j = 0; j < keys2.length; ++j) {
+                if (keys2[j] === "__proto__")
+                    $util.makeProp(object.scripts, keys2[j]);
                 object.scripts[keys2[j]] = message.scripts[keys2[j]];
+            }
         }
         if (message.dependencies && (keys2 = Object.keys(message.dependencies)).length) {
             object.dependencies = {};
-            for (var j = 0; j < keys2.length; ++j)
+            for (var j = 0; j < keys2.length; ++j) {
+                if (keys2[j] === "__proto__")
+                    $util.makeProp(object.dependencies, keys2[j]);
                 object.dependencies[keys2[j]] = message.dependencies[keys2[j]];
+            }
         }
         if (message.devDependencies && (keys2 = Object.keys(message.devDependencies)).length) {
             object.devDependencies = {};
-            for (var j = 0; j < keys2.length; ++j)
+            for (var j = 0; j < keys2.length; ++j) {
+                if (keys2[j] === "__proto__")
+                    $util.makeProp(object.devDependencies, keys2[j]);
                 object.devDependencies[keys2[j]] = message.devDependencies[keys2[j]];
+            }
         }
         if (message.types != null && message.hasOwnProperty("types"))
             object.types = message.types;
@@ -747,6 +907,7 @@ $root.Package = (function() {
          * @interface IRepository
          * @property {string|null} [type] Repository type
          * @property {string|null} [url] Repository url
+         * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
          */
 
         /**
@@ -756,11 +917,12 @@ $root.Package = (function() {
          * @implements IRepository
          * @constructor
          * @param {Package.IRepository=} [properties] Properties to set
+         * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
          */
         function Repository(properties) {
             if (properties)
                 for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
+                    if (properties[keys[i]] != null && keys[i] !== "__proto__")
                         this[keys[i]] = properties[keys[i]];
         }
 
@@ -808,6 +970,9 @@ $root.Package = (function() {
                 writer.uint32(/* id 1, wireType 2 =*/10).string(message.type);
             if (message.url != null && Object.hasOwnProperty.call(message, "url"))
                 writer.uint32(/* id 2, wireType 2 =*/18).string(message.url);
+            if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                for (var i = 0; i < message.$unknowns.length; ++i)
+                    writer.raw(message.$unknowns[i]);
             return writer;
         };
 
@@ -835,24 +1000,48 @@ $root.Package = (function() {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        Repository.decode = function decode(reader, length) {
+        Repository.decode = function decode(reader, length, _end, _depth, _target) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Package.Repository();
+            if (_depth === undefined)
+                _depth = 0;
+            if (_depth > $Reader.recursionLimit)
+                throw Error("max depth exceeded");
+            var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.Package.Repository(), value;
             while (reader.pos < end) {
+                var start = reader.pos;
                 var tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1:
-                    message.type = reader.string();
-                    break;
-                case 2:
-                    message.url = reader.string();
-                    break;
-                default:
-                    reader.skipType(tag & 7);
+                if (tag === _end) {
+                    _end = undefined;
                     break;
                 }
+                var wireType = tag & 7;
+                switch (tag >>>= 3) {
+                case 1: {
+                        if (wireType !== 2)
+                            break;
+                        if ((value = reader.string()).length)
+                            message.type = value;
+                        else
+                            delete message.type;
+                        continue;
+                    }
+                case 2: {
+                        if (wireType !== 2)
+                            break;
+                        if ((value = reader.string()).length)
+                            message.url = value;
+                        else
+                            delete message.url;
+                        continue;
+                    }
+                }
+                reader.skipType(wireType, _depth, tag);
+                $util.makeProp(message, "$unknowns", false);
+                (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
             }
+            if (_end !== undefined)
+                throw Error("missing end group");
             return message;
         };
 
@@ -880,9 +1069,13 @@ $root.Package = (function() {
          * @param {Object.<string,*>} message Plain object to verify
          * @returns {string|null} `null` if valid, otherwise the reason why it is not
          */
-        Repository.verify = function verify(message) {
+        Repository.verify = function verify(message, _depth) {
             if (typeof message !== "object" || message === null)
                 return "object expected";
+            if (_depth === undefined)
+                _depth = 0;
+            if (_depth > $util.recursionLimit)
+                return "max depth exceeded";
             if (message.type != null && message.hasOwnProperty("type"))
                 if (!$util.isString(message.type))
                     return "type: string expected";
@@ -900,14 +1093,20 @@ $root.Package = (function() {
          * @param {Object.<string,*>} object Plain object
          * @returns {Package.Repository} Repository
          */
-        Repository.fromObject = function fromObject(object) {
+        Repository.fromObject = function fromObject(object, _depth) {
             if (object instanceof $root.Package.Repository)
                 return object;
+            if (_depth === undefined)
+                _depth = 0;
+            if (_depth > $util.recursionLimit)
+                throw Error("max depth exceeded");
             var message = new $root.Package.Repository();
             if (object.type != null)
-                message.type = String(object.type);
+                if (typeof object.type !== "string" || object.type.length)
+                    message.type = String(object.type);
             if (object.url != null)
-                message.url = String(object.url);
+                if (typeof object.url !== "string" || object.url.length)
+                    message.url = String(object.url);
             return message;
         };
 

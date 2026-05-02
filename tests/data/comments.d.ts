@@ -1,12 +1,15 @@
 import * as $protobuf from "../..";
+import Long = require("long");
 export interface ITest1 {
     field1?: (string|null);
     field2?: (number|null);
     field3?: (boolean|null);
+    $unknowns?: Uint8Array[];
 }
 
 export class Test1 implements ITest1 {
     constructor(properties?: ITest1);
+    public $unknowns?: Uint8Array[];
     public field1: string;
     public field2: number;
     public field3: boolean;
@@ -23,10 +26,12 @@ export class Test1 implements ITest1 {
 }
 
 export interface ITest2 {
+    $unknowns?: Uint8Array[];
 }
 
 export class Test2 implements ITest2 {
     constructor(properties?: ITest2);
+    public $unknowns?: Uint8Array[];
     public static create(properties?: ITest2): Test2;
     public static encode(message: ITest2, writer?: $protobuf.Writer): $protobuf.Writer;
     public static encodeDelimited(message: ITest2, writer?: $protobuf.Writer): $protobuf.Writer;

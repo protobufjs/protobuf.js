@@ -23,9 +23,9 @@ var base10Re    = /^[1-9][0-9]*$/,
     base16NegRe = /^-?0[x][0-9a-fA-F]+$/,
     base8Re     = /^0[0-7]+$/,
     base8NegRe  = /^-?0[0-7]+$/,
-    numberRe    = /^(?![eE])[0-9]*(?:\.[0-9]*)?(?:[eE][+-]?[0-9]+)?$/,
+    numberRe    = util.patterns.numberRe,
     nameRe      = /^[a-zA-Z_][a-zA-Z_0-9]*$/,
-    typeRefRe   = /^(?:\.?[a-zA-Z_][a-zA-Z_0-9]*)(?:\.[a-zA-Z_][a-zA-Z_0-9]*)*$/;
+    typeRefRe   = util.patterns.typeRefRe;
 
 /**
  * Result object returned from {@link parse}.
@@ -261,6 +261,16 @@ function parse(source, root, options) {
         var token = peek();
         var whichImports;
         switch (token) {
+            case "option":
+                if (edition < "2024") {
+                    throw illegal("option");
+                }
+                // Import options are only used for resolving options, which we don't
+                // do.  We can just throw them out.
+                next();
+                readString();
+                skip(";");
+                return;
             case "weak":
                 whichImports = weakImports || (weakImports = []);
                 next();
@@ -291,7 +301,7 @@ function parse(source, root, options) {
     function parseEdition() {
         skip("=");
         edition = readString();
-        const supportedEditions = ["2023"];
+        const supportedEditions = ["2023", "2024"];
 
         /* istanbul ignore if */
         if (!supportedEditions.includes(edition))
@@ -316,6 +326,22 @@ function parse(source, root, options) {
             case "enum":
                 parseEnum(parent, token);
                 return true;
+
+            case "export":
+            case "local":
+                if (edition < "2024") {
+                    return false;
+                }
+                token = next();
+                if (token === "export" || token === "local") {
+                    return false;
+                }
+                if (token !== "message" && token !== "enum") {
+                    return false;
+                }
+                /* eslint-disable no-warning-comments */
+                // TODO: actually enforce visiblity modifiers like protoc does.
+                return parseCommon(parent, token);
 
             case "service":
                 parseService(parent, token);
@@ -362,6 +388,9 @@ function parse(source, root, options) {
                 return;
 
             switch (token) {
+
+                case ";":
+                    break;
 
                 case "map":
                     parseMapField(type, token);
@@ -418,7 +447,7 @@ function parse(source, root, options) {
     function parseField(parent, rule, extend) {
         var type = next();
         if (type === "group") {
-            parseGroup(parent, rule);
+            parseGroup(parent, rule, extend);
             return;
         }
         // Type names can consume multiple tokens, in multiple variants:
@@ -475,7 +504,7 @@ function parse(source, root, options) {
         }
     }
 
-    function parseGroup(parent, rule) {
+    function parseGroup(parent, rule, extend) {
         if (edition >= 2023) {
             throw illegal("group");
         }
@@ -492,10 +521,13 @@ function parse(source, root, options) {
         var id = parseId(next());
         var type = new Type(name);
         type.group = true;
-        var field = new Field(fieldName, id, name, rule);
+        var field = new Field(fieldName, id, name, rule, extend);
         field.filename = parse.filename;
         ifBlock(type, function parseGroup_block(token) {
             switch (token) {
+
+                case ";":
+                    break;
 
                 case "option":
                     parseOption(type, token);
@@ -527,6 +559,24 @@ function parse(source, root, options) {
                     readRanges(type.reserved || (type.reserved = []), true);
                     break;
 
+                case "export":
+                case "local":
+                    if (edition < "2024") {
+                        throw illegal(token);
+                    }
+                    token = next();
+                    switch (token) {
+                        case "message":
+                            parseType(type, token);
+                            break;
+                        case "enum":
+                            parseType(type, token);
+                            break;
+                        default:
+                            throw illegal(token);
+                    }
+                    break;
+
                 /* istanbul ignore next */
                 default:
                     throw illegal(token); // there are no groups with proto3 semantics
@@ -534,6 +584,10 @@ function parse(source, root, options) {
         });
         parent.add(type)
               .add(field);
+        if (parent === ptr) {
+            topLevelObjects.push(type);
+            topLevelObjects.push(field);
+        }
     }
 
     function parseMapField(parent) {
@@ -603,6 +657,9 @@ function parse(source, root, options) {
         var enm = new Enum(token);
         ifBlock(enm, function parseEnum_block(token) {
           switch(token) {
+            case ";":
+              break;
+
             case "option":
               parseOption(enm, token);
               skip(";");
@@ -721,13 +778,15 @@ function parse(source, root, options) {
                     value = [];
                     var lastValue;
                     if (skip("[", true)) {
-                        do {
-                            lastValue = readValue(true);
-                            value.push(lastValue);
-                        } while (skip(",", true));
-                        skip("]");
-                        if (typeof lastValue !== "undefined") {
-                            setOption(parent, name + "." + token, lastValue);
+                        if (!skip("]", true)) {
+                            do {
+                                lastValue = readValue(true);
+                                value.push(lastValue);
+                            } while (skip(",", true));
+                            skip("]");
+                            if (typeof lastValue !== "undefined") {
+                                setOption(parent, name + "." + token, lastValue);
+                            }
                         }
                     }
                 } else {
@@ -740,7 +799,8 @@ function parse(source, root, options) {
                 if (prevValue)
                     value = [].concat(prevValue).concat(value);
 
-                objectResult[propName] = value;
+                if (propName !== "__proto__")
+                    objectResult[propName] = value;
 
                 // Semicolons and commas can be optional
                 skip(",", true);
@@ -793,6 +853,8 @@ function parse(source, root, options) {
             }
 
             /* istanbul ignore else */
+            if (token === ";")
+                return;
             if (token === "rpc")
                 parseMethod(service, token);
             else
@@ -844,6 +906,8 @@ function parse(source, root, options) {
         ifBlock(method, function parseMethod_block(token) {
 
             /* istanbul ignore else */
+            if (token === ";")
+                return;
             if (token === "option") {
                 parseOption(method, token);
                 skip(";");
@@ -893,6 +957,9 @@ function parse(source, root, options) {
     while ((token = next()) !== null) {
         switch (token) {
 
+            case ";":
+                break;
+
             case "package":
 
                 /* istanbul ignore if */
@@ -903,10 +970,6 @@ function parse(source, root, options) {
                 break;
 
             case "import":
-
-                /* istanbul ignore if */
-                if (!head)
-                    throw illegal(token);
 
                 parseImport();
                 break;
