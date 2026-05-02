@@ -95,7 +95,7 @@ const encoded = AwesomeMessage.encode(message).finish();
 const decoded = AwesomeMessage.decode(encoded);
 ```
 
-`encode` expects a message instance or equivalent plain object and does not verify input implicitly. Use `verify` for unknown plain objects, `create` to create a message instance from already valid data when useful, and `fromObject` when conversion from broader JavaScript input is needed.
+`encode` expects a message instance or equivalent plain object and does not verify input implicitly. Use `verify` for plain objects whose shape is not guaranteed, `create` to create a message instance from already valid data when useful, and `fromObject` when conversion from broader JavaScript input is needed.
 
 Plain objects can be encoded directly when they already use protobuf.js runtime types: numbers for 32-bit numeric fields, booleans for `bool`, strings for `string`, `Uint8Array` or `Buffer` for `bytes`, arrays for repeated fields, and plain objects for maps. Map keys are the string representation of the respective value or an 8-character hash string for 64-bit/`Long` keys. Use `fromObject` when input may use broader JSON-style forms such as enum names, base64 strings for bytes, or decimal strings for 64-bit values.
 
@@ -175,7 +175,7 @@ Module targets support `--wrap default` for CommonJS and AMD, plus `commonjs`, `
 
 ### Reflection bundles
 
-Bundling up schemas to a JSON file minimizes the number of network requests and avoids redundant parsing.
+Bundling schemas to JSON avoids reparsing `.proto` files and can reduce browser requests when schemas would otherwise be loaded separately.
 
 ```sh
 npx pbjs -t json -o awesome.json awesome1.proto awesome2.proto ...
@@ -217,7 +217,7 @@ Generated static code only needs `protobufjs/minimal.js`.
 
 ### TypeScript integration
 
-The runtime API is typed, but fields of dynamically loaded messages are only known at runtime. For statically typed messages and fields, either generate static code with declarations, or use reflection bundles with declarations generated from the equivalent static module:
+The protobuf.js runtime API is typed, but fields of dynamically loaded messages are only known at runtime. For statically typed messages and fields, either generate static code with declarations, or use reflection bundles with declarations generated from the equivalent static module:
 
 ```sh
 npx pbjs -t json-module -w commonjs -o awesome.js awesome.proto
@@ -274,7 +274,7 @@ protobuf.js supports service clients built from reflected service definitions. T
 
 ### Decorators
 
-Experimental decorators can be tried out to define message classes directly in code.
+Experimental decorators are available for defining message classes directly in code.
 
 * **Type.d(typeName?: `string`)** &nbsp; *(optional)*<br />
   Annotates a class as a protobuf message type.
@@ -296,11 +296,11 @@ For protobuf descriptor interoperability, see [ext/descriptor](./ext/descriptor)
 
 ### Content Security Policy
 
-Support for [Content Security Policy](https://w3c.github.io/webappsec-csp/)-restricted environments like Chrome extensions without unsafe-eval can be achieved by generating and using static code instead.
+In [CSP](https://w3c.github.io/webappsec-csp/)-restricted environments that disallow unsafe-eval, use generated static code instead of runtime code generation.
 
 ## Performance
 
-The repository includes a small benchmark for the bundled fixture in [`bench/`](./bench/). It compares protobuf.js reflection and static code against native `JSON.stringify`/`JSON.parse` and [google-protobuf](https://www.npmjs.com/package/google-protobuf). Results depend on hardware, Node.js version, and the message shape, but are useful as a quick regression check.
+The repository includes a small benchmark for the bundled fixture in [`bench/`](./bench/). It compares protobuf.js reflection and static code against native `JSON.stringify`/`JSON.parse` and [google-protobuf](https://www.npmjs.com/package/google-protobuf). Results depend on hardware, Node.js version, and the message shape, so they should be treated as indicative rather than absolute.
 
 One run on an AMD Ryzen 9 9950X3D with Node.js 24.13.0 and google-protobuf 4.0.2 produced:
 

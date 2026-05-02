@@ -2,7 +2,7 @@
 
 [![npm](https://img.shields.io/npm/v/protobufjs-cli.svg)](https://www.npmjs.com/package/protobufjs-cli)
 
-Command line interface add-on for [protobuf.js](https://github.com/protobufjs/protobuf.js). Generates static code, reflection bundles, and TypeScript definitions.
+Command line add-on for [protobuf.js](https://github.com/protobufjs/protobuf.js). Generates static code, reflection bundles, and TypeScript definitions.
 
 ```sh
 npm install --save-dev protobufjs-cli
