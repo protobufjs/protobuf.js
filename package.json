@@ -2,12 +2,11 @@
   "name": "protobufjs",
   "version": "8.0.3",
   "versionScheme": "~",
-  "description": "Protocol Buffers for JavaScript (& TypeScript).",
+  "description": "Protocol Buffers for JavaScript & TypeScript.",
   "author": "Daniel Wirtz <dcode+protobufjs@dcode.io>",
   "license": "BSD-3-Clause",
   "repository": "protobufjs/protobuf.js",
   "bugs": "https://github.com/protobufjs/protobuf.js/issues",
-  "homepage": "https://protobufjs.github.io/protobuf.js/",
   "engines": {
     "node": ">=12.0.0"
   },
