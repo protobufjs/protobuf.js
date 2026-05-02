@@ -2830,9 +2830,10 @@ export class Writer {
 
     /**
      * Finishes the write operation.
+     * @param {Uint8Array} [buf] Optional buffer that's 'this.len' bytes long
      * @returns Finished buffer
      */
-    public finish(): Uint8Array;
+    public finish(buf?: Uint8Array): Uint8Array;
 }
 
 /** Wire format writer using node buffers. */
@@ -2857,7 +2858,8 @@ export class BufferWriter extends Writer {
 
     /**
      * Finishes the write operation.
+     * @param {Buffer} [buf] Optional buffer that's 'this.len' bytes long
      * @returns Finished buffer
      */
-    public finish(): Buffer;
+    public finish(buf?: Buffer): Buffer;
 }
