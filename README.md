@@ -356,21 +356,21 @@ npm run bench
 
 ## Development
 
-```
-$> git clone https://github.com/protobufjs/protobuf.js
-$> cd protobuf.js
-$> npm install
+```sh
+git clone https://github.com/protobufjs/protobuf.js
+cd protobuf.js
+npm install
 ```
 
 Running the tests:
 
-```
+```sh
 npm test
 ```
 
 Building the development and production versions with their respective source maps to `dist/`:
 
-```
+```sh
 npm run build
 ```
 
