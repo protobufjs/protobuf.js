@@ -300,6 +300,8 @@ In [CSP](https://w3c.github.io/webappsec-csp/)-restricted environments that disa
 
 ## Performance
 
+Both protobuf.js reflection and static modes execute specialized encoder and decoder functions generated for each message type instead of a generic descriptor-walking interpreter.
+
 The repository includes a small benchmark for the bundled fixture in [`bench/`](./bench/). It compares protobuf.js reflection and static code against native `JSON.stringify`/`JSON.parse` and [google-protobuf](https://www.npmjs.com/package/google-protobuf). Results depend on hardware, Node.js version, and the message shape, so they should be treated as indicative rather than absolute.
 
 One run on an AMD Ryzen 9 9950X3D with Node.js 24.13.0 and google-protobuf 4.0.2 produced:
