@@ -76,7 +76,7 @@ Translates between file formats and generates static code.
 usage: pbjs [options] file1.proto file2.json ...  (or pipe)  other | pbjs [options] -
 ```
 
-### pbts for TypeScript
+## pbts for TypeScript
 
 ```sh
 npx pbts --help
@@ -100,7 +100,7 @@ Generates TypeScript definitions from annotated JavaScript files.
 usage: pbts [options] file1.js file2.js ...  (or)  other | pbts [options] -
 ```
 
-### Common commands
+## Common commands
 
 Generate static code and declarations:
 
@@ -118,7 +118,7 @@ npx pbjs -t static-module file1.proto file2.proto | npx pbts -o bundle.d.ts -
 
 Reflection-backed declarations should use `MyMessage.create(...)` instead of constructors because reflected message types are distinct from generated runtime classes. For nested reflected properties like `MyMessage.MyEnum`, type, service, and enum names must start with an uppercase letter.
 
-### Command line API
+## Command line API
 
 Both utilities can be used programmatically by providing command line arguments and a callback to their respective `main` functions:
 
