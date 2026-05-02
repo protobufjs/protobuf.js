@@ -25,7 +25,7 @@ The [command line utility](./cli/) for generating reflection bundles, static cod
 npm install --save-dev protobufjs-cli
 ```
 
-The CLI is a standalone protobuf.js toolchain: it reads `.proto` files directly and does not require `protoc`.
+The CLI is a small but capable standalone protobuf.js toolchain. It does not require `protoc`.
 
 ### Choose a runtime
 
