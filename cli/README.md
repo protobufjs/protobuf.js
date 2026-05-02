@@ -1,17 +1,18 @@
-protobufjs-cli
-==============
+# protobufjs-cli
+
 [![npm](https://img.shields.io/npm/v/protobufjs-cli.svg)](https://www.npmjs.com/package/protobufjs-cli)
 
-Command line interface (CLI) for [protobuf.js](https://github.com/dcodeIO/protobuf.js).
+Command line add-on for [protobuf.js](https://github.com/protobufjs/protobuf.js). Generates static code, reflection bundles, and TypeScript definitions.
 
-This can be used to translate between file formats and to generate static code as well as TypeScript definitions.
+```sh
+npm install --save-dev protobufjs-cli
+```
 
-* [pbjs for JavaScript](#pbjs-for-javascript)
-* [pbts for TypeScript](#pbts-for-typescript)
-* [Reflection vs. static code](#reflection-vs-static-code)
-* [Command line API](#command-line-api)<br />
+## pbjs for JavaScript
 
-### pbjs for JavaScript
+```sh
+npx pbjs --help
+```
 
 ```
 Translates between file formats and generates static code.
@@ -75,38 +76,11 @@ Translates between file formats and generates static code.
 usage: pbjs [options] file1.proto file2.json ...  (or pipe)  other | pbjs [options] -
 ```
 
-For production environments it is recommended to bundle all your .proto files to a single .json file, which minimizes the number of network requests and avoids any parser overhead (hint: works with just the **light** library):
+## pbts for TypeScript
 
+```sh
+npx pbts --help
 ```
-$> pbjs -t json file1.proto file2.proto > bundle.json
-```
-
-Now, either include this file in your final bundle:
-
-```js
-var root = protobuf.Root.fromJSON(require("./bundle.json"));
-```
-
-or load it the usual way:
-
-```js
-protobuf.load("bundle.json", function(err, root) {
-    ...
-});
-```
-
-Generated static code, on the other hand, works with just the **minimal** library. For example
-
-```
-$> pbjs -t static-module -w commonjs -o compiled.js file1.proto file2.proto
-```
-
-will generate static code for definitions within `file1.proto` and `file2.proto` to a CommonJS module `compiled.js`.
-
-**ProTip!** Documenting your .proto files with `/** ... */`-blocks or (trailing) `/// ...` lines translates to generated static code.
-
-
-### pbts for TypeScript
 
 ```
 Generates TypeScript definitions from annotated JavaScript files.
@@ -126,51 +100,37 @@ Generates TypeScript definitions from annotated JavaScript files.
 usage: pbts [options] file1.js file2.js ...  (or)  other | pbts [options] -
 ```
 
-Picking up on the example above, the following not only generates static code to a CommonJS module `compiled.js` but also its respective TypeScript definitions to `compiled.d.ts`:
+## Common commands
 
-```
-$> pbjs -t static-module -w commonjs -o compiled.js file1.proto file2.proto
-$> pbts -o compiled.d.ts compiled.js
-```
+Generate static code and declarations:
 
-Additionally, TypeScript definitions of static modules are compatible with their reflection-based counterparts (i.e. as exported by JSON modules), as long as the following conditions are met:
-
-1. Instead of using `new SomeMessage(...)`, always use `SomeMessage.create(...)` because reflection objects do not provide a constructor.
-2. Types, services and enums must start with an uppercase letter to become available as properties of the reflected types as well (i.e. to be able to use `MyMessage.MyEnum` instead of `root.lookup("MyMessage.MyEnum")`).
-
-For example, the following generates a JSON module `bundle.js` and a `bundle.d.ts`, but no static code:
-
-```
-$> pbjs -t json-module -w commonjs -o bundle.js file1.proto file2.proto
-$> pbjs -t static-module file1.proto file2.proto | pbts -o bundle.d.ts -
+```sh
+npx pbjs -t static-module -w commonjs -o compiled.js file1.proto file2.proto
+npx pbts -o compiled.d.ts compiled.js
 ```
 
-### Reflection vs. static code
+Generate a reflection bundle with declarations from the equivalent static module:
 
-While using .proto files directly requires the full library respectively pure reflection/JSON the light library, pretty much all code but the relatively short descriptors is shared.
+```sh
+npx pbjs -t json-module -w commonjs -o bundle.js file1.proto file2.proto
+npx pbjs -t static-module file1.proto file2.proto | npx pbts -o bundle.d.ts -
+```
 
-Static code, on the other hand, requires just the minimal library, but generates additional source code without any reflection features. This also implies that there is a break-even point where statically generated code becomes larger than descriptor-based code once the amount of code generated exceeds the size of the full respectively light library.
+Reflection-backed declarations should use `MyMessage.create(...)` instead of constructors because reflected message types are distinct from generated runtime classes. For nested reflected properties like `MyMessage.MyEnum`, type, service, and enum names must start with an uppercase letter.
 
-There is no significant difference performance-wise as the code generated statically is pretty much the same as generated at runtime and both are largely interchangeable as seen in the previous section.
-
-| Source | Library | Advantages | Tradeoffs
-|--------|---------|------------|-----------
-| .proto | full    | Easily editable<br />Interoperability with other libraries<br />No compile step | Some parsing and possibly network overhead
-| JSON   | light   | Easily editable<br />No parsing overhead<br />Single bundle (no network overhead) | protobuf.js specific<br />Has a compile step
-| static | minimal | Works where `eval` access is restricted<br />Fully documented<br />Small footprint for small protos | Can be hard to edit<br />No reflection<br />Has a compile step
-
-### Command line API
+## Command line API
 
 Both utilities can be used programmatically by providing command line arguments and a callback to their respective `main` functions:
 
 ```js
-var pbjs = require("protobufjs-cli/pbjs"); // or require("protobufjs-cli").pbjs / .pbts
+const { pbjs, pbts } = require("protobufjs-cli");
 
-pbjs.main([ "--target", "json-module", "path/to/myproto.proto" ], function(err, output) {
-    if (err)
-        throw err;
-    // do something with output
+pbjs.main(["--target", "json-module", "path/to/myproto.proto"], function(err, output) {
+  if (err) throw err;
+  // do something with output
 });
 ```
 
-**License:** [BSD 3-Clause License](https://opensource.org/licenses/BSD-3-Clause)
+## Additional documentation
+
+See the [protobuf.js README](https://github.com/protobufjs/protobuf.js) for runtime variants, usage examples, and additional documentation.
