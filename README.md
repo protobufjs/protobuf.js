@@ -9,7 +9,7 @@
 
 **Protocol Buffers** are a language-neutral, platform-neutral, extensible way of serializing structured data for use in communications protocols, data storage, and more, originally designed at Google ([see](https://protobuf.dev/)).
 
-**protobuf.js** is a freestanding JavaScript implementation of Protocol Buffers with TypeScript support. It works with `.proto` files out of the box and can generate optimized encoders and decoders at runtime or emit them statically.
+**protobuf.js** is a freestanding JavaScript implementation of Protocol Buffers with TypeScript support for Node.js and the browser. It works with `.proto` files out of the box and can generate optimized encoders and decoders at runtime or emit them statically.
 
 ## Getting started
 
