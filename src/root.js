@@ -130,8 +130,9 @@ Root.prototype.load = function load(filename, options, callback) {
         var idx = filename.lastIndexOf("google/protobuf/");
         if (idx > -1) {
             var altname = filename.substring(idx);
-            if (altname in common) return altname;
+            if (Object.prototype.hasOwnProperty.call(common, altname)) return altname;
         }
+        if (Object.prototype.hasOwnProperty.call(common, filename)) return filename;
         return null;
     }
 
@@ -175,7 +176,7 @@ Root.prototype.load = function load(filename, options, callback) {
         self.files.push(filename);
 
         // Shortcut bundled definitions
-        if (filename in common) {
+        if (Object.prototype.hasOwnProperty.call(common, filename)) {
             if (sync) {
                 process(filename, common[filename]);
             } else {
