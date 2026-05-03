@@ -9,6 +9,8 @@ var Enum  = require("./enum"),
     types = require("./types"),
     util  = require("./util");
 
+var wrapperValueRe = /^\.google\.protobuf\.(?:DoubleValue|FloatValue|Int64Value|UInt64Value|Int32Value|UInt32Value|BoolValue|StringValue|BytesValue)$/;
+
 /**
  * Generates a partial value fromObject conveter.
  * @param {Codegen} gen Codegen instance
@@ -41,10 +43,13 @@ function genValuePartial_fromObject(gen, field, fieldIndex, prop) {
                     ("break");
             } gen
             ("}");
-        } else gen
+        } else {
+            if (!wrapperValueRe.test(field.resolvedType.fullName)) gen
             ("if(typeof d%s!==\"object\")", prop)
-                ("throw TypeError(%j)", field.fullName + ": object expected")
+                ("throw TypeError(%j)", field.fullName + ": object expected");
+            gen
             ("m%s=types[%i].fromObject(d%s,q+1)", prop, fieldIndex, prop);
+        }
     } else {
         var isUnsigned = false;
         switch (field.type) {
@@ -112,6 +117,9 @@ converter.fromObject = function fromObject(mtype) {
     ("if(q===undefined)q=0")
     ("if(q>util.recursionLimit)")
         ("throw Error(\"max depth exceeded\")");
+    if (wrapperValueRe.test(mtype.fullName)) gen
+    ("if(d!=null&&typeof d!==\"object\")")
+        ("d={value:d}");
     if (!fields.length) return gen
     ("return new this.ctor");
     gen
@@ -331,6 +339,9 @@ converter.toObject = function toObject(mtype) {
         gen
     ("}");
     }
+    if (wrapperValueRe.test(mtype.fullName)) gen
+    ("if(o.json)")
+        ("return d.value");
     return gen
     ("return d");
     /* eslint-enable no-unexpected-multiline, block-scoped-var, no-redeclare */
