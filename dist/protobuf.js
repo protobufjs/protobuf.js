@@ -1,6 +1,6 @@
 /*!
- * protobuf.js v6.11.5 (c) 2016, daniel wirtz
- * compiled tue, 14 apr 2026 07:11:28 utc
+ * protobuf.js v6.11.6 (c) 2016, daniel wirtz
+ * compiled sun, 03 may 2026 19:29:29 utc
  * licensed under the bsd-3-clause license
  * see: https://github.com/dcodeio/protobuf.js for details
  */
@@ -6530,6 +6530,7 @@ var Enum      = require(15),
  * @param {Object.<string,*>} [options] Declared options
  */
 function Type(name, options) {
+    name = name.replace(/\W/g, "");
     Namespace.call(this, name, options);
 
     /**
