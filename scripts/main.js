@@ -1,69 +1,165 @@
-$(function () {
-    // Search Items
-    $('#search').on('keyup', function (e) {
-        var value = $(this).val();
-        var $el = $('.navigation');
+(function() {
+    'use strict';
 
-        if (value) {
-            var regexp = new RegExp(value, 'i');
-            $el.find('li, .itemMembers').hide();
-
-            $el.find('li').each(function (i, v) {
-                var $item = $(v);
-
-                if ($item.data('name') && regexp.test($item.data('name'))) {
-                    $item.show();
-                    $item.closest('.itemMembers').show();
-                    $item.closest('.item').show();
-                }
-            });
+    function onReady(callback) {
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', callback);
         } else {
-            $el.find('.item, .itemMembers').show();
+            callback();
+        }
+    }
+
+    function each(items, callback) {
+        Array.from(items).forEach(callback);
+    }
+
+    function show(element) {
+        element.style.display = 'block';
+    }
+
+    function hide(element) {
+        element.style.display = 'none';
+    }
+
+    function openItem(item) {
+        show(item);
+        each(item.querySelectorAll('.itemMembers'), show);
+    }
+
+    function addSourceLineAnchors() {
+        let counter = 0;
+        const source = document.querySelector('.prettyprint.source');
+
+        if (!source) {
+            return;
         }
 
-        $el.find('.list').scrollTop(0);
-    });
+        if (source.classList.contains('linenums')) {
+            const list = source.querySelector('ol');
 
-    // Toggle when click an item element
-    $('.navigation').on('click', '.title', function (e) {
-        $(this).parent().find('.itemMembers').toggle();
-    });
+            if (!list) {
+                return;
+            }
 
-    // Show an item related a current documentation automatically
-    var filename = $('.page-title').data('filename').replace(/\.[a-z]+$/, '');
-    var $currentItem = $('.navigation .item[data-name*="' + filename + '"]:eq(0)');
+            each(list.children, function(item) {
+                counter++;
+                item.id = 'line' + counter;
+            });
 
-    if ($currentItem.length) {
-        $currentItem
-            .remove()
-            .prependTo('.navigation .list')
-            .show()
-            .find('.itemMembers')
-                .show();
-    }
+            return;
+        }
 
-    // Auto resizing on navigation
-    var _onResize = function () {
-        var height = $(window).height();
-        var $el = $('.navigation');
+        const code = source.querySelector('code');
 
-        $el.height(height).find('.list').height(height - 153);
-    };
+        if (!code) {
+            return;
+        }
 
-    $(window).on('resize', _onResize);
-    _onResize();
-
-    // disqus code
-    if (config.disqus) {
-        $(window).on('load', function () {
-            var disqus_shortname = config.disqus; // required: replace example with your forum shortname
-            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-            dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
-            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-            var s = document.createElement('script'); s.async = true;
-            s.type = 'text/javascript';
-            s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
-            document.getElementsByTagName('BODY')[0].appendChild(s);
+        const numbered = code.innerHTML.split('\n').map(function(line) {
+            counter++;
+            return '<span id="line' + counter + '"></span>' + line;
         });
+
+        code.innerHTML = numbered.join('\n');
     }
-});
+
+    onReady(function() {
+        const navigation = document.querySelector('.navigation');
+        const list = navigation && navigation.querySelector('.list');
+        const search = document.getElementById('search');
+        const pageTitle = document.querySelector('.page-title');
+        let currentItem = null;
+
+        addSourceLineAnchors();
+
+        if (!navigation || !list) {
+            return;
+        }
+
+        function showDefaultNavigation() {
+            each(navigation.querySelectorAll('.item'), show);
+            each(navigation.querySelectorAll('.itemMembers'), hide);
+
+            if (currentItem) {
+                openItem(currentItem);
+            }
+        }
+
+        function filterNavigation() {
+            const value = search.value.trim().toLowerCase();
+
+            if (value) {
+                each(navigation.querySelectorAll('li, .itemMembers'), hide);
+
+                each(navigation.querySelectorAll('li'), function(item) {
+                    const name = item.getAttribute('data-name');
+
+                    if (name && name.toLowerCase().indexOf(value) !== -1) {
+                        const itemMembers = item.closest('.itemMembers');
+                        const parentItem = item.closest('.item');
+
+                        show(item);
+
+                        if (itemMembers) {
+                            show(itemMembers);
+                        }
+                        if (parentItem) {
+                            show(parentItem);
+                        }
+                    }
+                });
+            } else {
+                showDefaultNavigation();
+            }
+
+            list.scrollTop = 0;
+        }
+
+        if (search) {
+            search.addEventListener('input', filterNavigation);
+            search.addEventListener('keyup', filterNavigation);
+        }
+
+        navigation.addEventListener('click', function(event) {
+            const title = event.target.closest('.title');
+
+            if (!title || !navigation.contains(title)) {
+                return;
+            }
+
+            each(title.parentNode.querySelectorAll('.itemMembers'), function(item) {
+                if (window.getComputedStyle(item).display === 'none') {
+                    show(item);
+                } else {
+                    hide(item);
+                }
+            });
+        });
+
+        if (pageTitle) {
+            const filename = pageTitle.getAttribute('data-filename') || '';
+
+            each(navigation.querySelectorAll('.item'), function(item) {
+                const link = item.querySelector('.title a');
+                const href = link && link.getAttribute('href');
+
+                if (!currentItem && href === filename) {
+                    currentItem = item;
+                }
+            });
+
+            if (currentItem) {
+                const currentLink = currentItem.querySelector('.title a');
+
+                currentItem.classList.add('is-current');
+                if (currentLink) {
+                    currentLink.setAttribute('aria-current', 'page');
+                }
+
+                openItem(currentItem);
+                currentItem.scrollIntoView({ block: 'nearest' });
+            }
+        }
+
+    });
+})();

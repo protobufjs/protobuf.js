@@ -1,29 +1,34 @@
 (function() {
-    var counter = 0;
-    var numbered;
-    var source = document.getElementsByClassName('prettyprint source');
+    'use strict';
 
-    if (source && source[0]) {
-        var linenums = config.linenums;
+    let counter = 0;
+    const source = document.querySelector('.prettyprint.source');
+
+    if (source) {
+        const linenums = source.classList.contains('linenums');
 
         if (linenums) {
-            source = source[0].getElementsByTagName('ol')[0];
+            const list = source.getElementsByTagName('ol')[0];
+            if (!list) {
+                return;
+            }
 
-            numbered = Array.prototype.slice.apply(source.children);
-            numbered = numbered.map(function(item) {
+            Array.from(list.children).forEach(function(item) {
                 counter++;
                 item.id = 'line' + counter;
             });
         } else {
-            source = source[0].getElementsByTagName('code')[0];
+            const code = source.getElementsByTagName('code')[0];
+            if (!code) {
+                return;
+            }
 
-            numbered = source.innerHTML.split('\n');
-            numbered = numbered.map(function(item) {
+            const numbered = code.innerHTML.split('\n').map(function(item) {
                 counter++;
                 return '<span id="line' + counter + '"></span>' + item;
             });
 
-            source.innerHTML = numbered.join('\n');
+            code.innerHTML = numbered.join('\n');
         }
     }
 })();
