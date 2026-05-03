@@ -1,0 +1,3 @@
+[submodule "lib/jsdoc-template"]
+	path = lib/jsdoc-template
+	url = https://github.com/protobufjs/jsdoc-template.git
