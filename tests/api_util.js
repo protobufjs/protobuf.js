@@ -169,5 +169,21 @@ tape.test("util", function(test) {
         test.end();
     });
 
+    test.test(test.name + " - key2Re", function(test) {
+        [ "true", "false", "0", "1" ].forEach(function(k) {
+            test.ok(util.key2Re.test(k), "should accept canonical bool key " + JSON.stringify(k));
+        });
+        [
+            "TRUE", "FALSE", "True",
+            "yes", "no",
+            "trueblue", "true-yes", "blah-false-blah",
+            "x100x", "abc1", "100", "0x0", "01",
+            "true ", " true", "", "truefalse"
+        ].forEach(function(k) {
+            test.notOk(util.key2Re.test(k), "should reject non-canonical bool key " + JSON.stringify(k));
+        });
+        test.end();
+    });
+
     test.end();
 });
